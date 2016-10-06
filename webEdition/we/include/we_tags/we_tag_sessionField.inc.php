@@ -43,8 +43,8 @@ function we_tag_sessionField(array $attribs, $content){
 	$autofill = weTag_getAttribute('autofill', $attribs, false, we_base_request::BOOL);
 	if($autofill){
 		$condition = ($name === 'Username' ?
-				['caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0] :
-				['caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2]);
+			['caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0] :
+			['caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2]);
 
 		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
@@ -64,16 +64,13 @@ function we_tag_sessionField(array $attribs, $content){
 			} catch (Exception $e){
 				$date = new DateTime('now');
 			}
-			return we_html_tools::getDateInput("s[we_date_" . $name . "]", $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput('s[we_date_' . $name . ']', $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows',
+				'cols', 'maxlength', 'wysiwyg']);
 			$newAtts['name'] = 's[' . $name . ']';
-			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
-			$lang = $doc->Language;
-			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+			list($lang, $langcode) = getFieldOutLang($attribs);
 
 			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : [];
 			foreach($topCountries as $countrykey => &$countryvalue){
@@ -93,27 +90,26 @@ function we_tag_sessionField(array $attribs, $content){
 
 			$content = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$content.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$content .= '<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => $countryvalue){
-				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+				$content .= '<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
 
 			if($topCountries && $shownCountries){
-				$content.='<option value="-" disabled="disabled">----</option>';
+				$content .= '<option value="-" disabled="disabled">----</option>';
 			}
 			foreach($shownCountries as $countrykey => $countryvalue){
-				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+				$content .= '<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
 
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'language':
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+				'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
 			$newAtts['name'] = 's[' . $name . ']';
-			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
-			$lang = $doc->Language;
-			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+			list($lang, $langcode) = getFieldOutLang($attribs);
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
@@ -131,22 +127,25 @@ function we_tag_sessionField(array $attribs, $content){
 			setlocale(LC_ALL, $oldLocale);
 			$content = '';
 			foreach($frontendLL as $langkey => &$langvalue){
-				$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
+				$content .= '<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 			}
 			unset($langvalue);
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'select':
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+				'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
 			return we_getSelectField('s[' . $name . ']', $orgVal, $values, $newAtts, true);
 
 		case 'choice':
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+				'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg']);
 			return we_html_tools::htmlInputChoiceField('s_' . $name, $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
 
 		case 'textinput':
 			$choice = weTag_getAttribute('choice', $attribs, false, we_base_request::BOOL);
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'wysiwyg', 'rows', 'cols']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+				'choice', 'pure', 'wysiwyg', 'rows', 'cols']);
 			//FIXME: can't this be done by calling the 'choice' switch?
 			if($choice){ // because of backwards compatibility
 				$newAtts = removeAttribs($newAtts, ['maxlength']);
@@ -174,7 +173,8 @@ function we_tag_sessionField(array $attribs, $content){
 			//old Attribute
 			$pure = weTag_getAttribute('pure', $attribs, false, we_base_request::BOOL);
 			if($pure){
-				$attribs = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg']);
+				$attribs = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+					'choice', 'pure', 'size', 'wysiwyg']);
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
 			}
 			$autobr = $autobrAttr ? 'on' : 'off';
@@ -192,36 +192,30 @@ function we_tag_sessionField(array $attribs, $content){
 			if((!isset($_SESSION['webuser'][$name])) && $checked){
 				$orgVal = $value;
 			}
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode',
+				'choice', 'pure', 'rows', 'cols', 'wysiwyg']);
 
 			return we_getInputRadioField('s[' . $name . ']', $orgVal, $value, $newAtts);
 		case 'checkbox':
-			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows',
+				'cols', 'wysiwyg']);
 
 			if((!isset($_SESSION['webuser'][$name])) && $checked){
 				$orgVal = 1;
 			}
 			return we_getInputCheckboxField('s[' . $name . ']', $orgVal, $newAtts);
 		case 'password':
-			$newAtts = removeAttribs($attribs, ['checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg']);
+			$newAtts = removeAttribs($attribs, ['checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows',
+				'cols', 'wysiwyg']);
 			$newAtts['name'] = 's[' . $name . ']';
 			$newAtts['value'] = !empty($_SESSION['webuser']['registered']) ? we_customer_customer::NOPWD_CHANGE : '';
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
 			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
-			if($ascountry || $aslanguage){
+			list($lang, $langcode) = getFieldOutLang($attribs);
 
-				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
-				if(!$lang){
-					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
-					$lang = $doc->Language;
-				}
-				$langcode = substr($lang, 0, 2);
-				if(!$lang){
-					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-					$langcode = array_search($lang[0], getWELangs());
-				}
+			if($ascountry || $aslanguage){
 				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(we_base_country::getTranslation($orgVal, ($ascountry ? we_base_country::TERRITORY : we_base_country::LANGUAGE), $langcode)));
 			}
 			if($dateformat){//FIXME: use document settings for dateformat => get locale - note DateTime doesn't use locale settings
@@ -229,7 +223,7 @@ function we_tag_sessionField(array $attribs, $content){
 					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
 					//we need to set it explicitly
 					$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
-					return $date->format($dateformat);
+					return we_base_country::dateformat($langcode, $date, $dateformat);
 				} catch (Exception $e){
 					//fallback to default return
 				}
@@ -244,9 +238,7 @@ function we_tag_sessionField(array $attribs, $content){
 				'value' => weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars($v) : $v,
 				'xml' => $xml];
 			if($languageautofill){
-				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
-				$lang = $doc->Language;
-				$langcode = substr($lang, 0, 2);
+				list(, $langcode) = getFieldOutLang($attribs);
 				$hidden['value'] = $langcode;
 			}
 			return getHtmlTag('input', array_merge(removeAttribs($attribs, ['doc', 'usevalue', 'languageautofill', 'htmlspecialchars', 'xml']), $hidden));
@@ -264,7 +256,7 @@ function we_tag_sessionField(array $attribs, $content){
 			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, 8, we_base_request::INT);
 			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, we_base_request::BOOL);
 			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
-			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? : '';
+			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ?: '';
 
 			$foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
 			if(!$foo){
