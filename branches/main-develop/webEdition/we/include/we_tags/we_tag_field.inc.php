@@ -612,17 +612,3 @@ function we_tag_field(array $attribs){
 
 	return $out;
 }
-
-function getFieldOutLang(array $attribs){
-	$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
-	if(!$lang){
-		$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
-		$lang = $doc->Language;
-	}
-	$langcode = substr($lang, 0, 2);
-	if(!$lang){
-		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-		$langcode = array_search($lang[0], getWELangs());
-	}
-	return $langcode;
-}
