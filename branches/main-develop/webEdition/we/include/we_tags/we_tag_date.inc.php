@@ -31,8 +31,7 @@ function we_tag_date(array $attribs){
 			ksort($monthsLong);
 			$monthsShort = g_l('date', '[month][short]');
 			ksort($monthsShort);
-			$js = 'heute = new Date();
-function getDateS(d){
+			$js = 'function getDateS(d){
 	switch(d){
 		case 1:
 		case 21:
@@ -138,8 +137,11 @@ function getDateWord(f,dateObj){
 					$ret[] = $format[$i];
 				}
 			}
-			$js.=implode('', $js_arr) .
-				'document.write(' . stripslashes(implode('+', $ret)) . ');';
+			$js.='(function(){
+	var heute = new Date();'.
+implode('', $js_arr) .'
+	document.write(' . stripslashes(implode('+', $ret)) . ');
+})();';
 
 			return we_html_element::jsElement($js);
 		case 'php':
