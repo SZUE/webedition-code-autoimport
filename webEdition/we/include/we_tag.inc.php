@@ -535,7 +535,7 @@ function getFieldOutLang(array $attribs, $fallBackBackend = false){
 		$lang = $doc->Language;
 	}
 	if(!$lang){
-		$lang = ($fallBackBackend ? $GLOBALS['WE_LANGUAGE'] : $GLOBALS['weDefaultFrontendLanguage']);
+		$lang = ($fallBackBackend ? array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) : $GLOBALS['weDefaultFrontendLanguage']);
 	}
 	$langcode = substr($lang, 0, 2);
 	return [$lang, $langcode];

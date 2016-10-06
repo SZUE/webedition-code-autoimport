@@ -405,7 +405,7 @@ this.selectedIndex = 0;' .
 	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = '', $langcode = ''){
 		$attsSelect = $attsOption = $attsHidden = $xml ? ['xml' => $xml] : [];
 
-		$langcode = $langcode ?: substr($GLOBALS['WE_LANGUAGE'], 0, 2);
+		$langcode = $langcode ?: array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 		if($class){
 			$attsSelect['class'] = $class;
@@ -465,9 +465,8 @@ this.selectedIndex = 0;' .
 		if(!$format || $monthPos > -1){
 			$months = getHtmlTag('option', array_merge($attsOption, ['value' => 0]), '--');
 
-			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
+			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : '0'));
 			$monthsArray = $monthType ? we_base_country::getTranslationList(we_base_country::MONTH, $langcode) : [];
-
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
 					case 'F':
@@ -479,6 +478,7 @@ this.selectedIndex = 0;' .
 					default:
 						$val = sprintf('%02d', $i);
 				}
+
 				$atts2 = ($time && $month == $i) ? ['selected' => 'selected', 'value' => $i] : ['value' => $i];
 				$months .= getHtmlTag('option', array_merge($attsOption, $atts2), $val);
 			}
