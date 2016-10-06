@@ -56,8 +56,8 @@ function we_tag_setVar(array $attribs){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) :
-						'';
+							$GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) :
+							'';
 				}
 				break;
 			case 'self' :
@@ -65,8 +65,8 @@ function we_tag_setVar(array $attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['we_doc']->getField(['name' => $nameFrom], $typeFrom, true) :
-						'';
+							$GLOBALS['we_doc']->getField(['name' => $nameFrom], $typeFrom, true) :
+							'';
 				}
 				break;
 			case 'object' :
@@ -80,7 +80,7 @@ function we_tag_setVar(array $attribs){
 				$valueFrom = isset($_SESSION['webuser'][$nameFrom]) ? $_SESSION['webuser'][$nameFrom] : '';
 				break;
 			case 'calendar' :
-				$valueFrom = we_listview_base::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom);
+				$valueFrom = we_listview_base::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom, getFieldOutLang($attribs));
 				break;
 			case 'listview' :
 				if(!isset($GLOBALS['lv'])){

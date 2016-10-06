@@ -300,11 +300,11 @@ function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
 	return substr($text, 0, max([strrpos($text, ' '),
-			strrpos($text, '.'),
-			strrpos($text, ','),
-			strrpos($text, "\n"),
-			strrpos($text, "\t"),
-		])? : $len
+				strrpos($text, '.'),
+				strrpos($text, ','),
+				strrpos($text, "\n"),
+				strrpos($text, "\t"),
+			]) ?: $len
 	);
 }
 
@@ -327,23 +327,23 @@ function cutText($text, $max = 0, $striphtml = false){
 		switch(count($cur)){
 			case 2://entity
 				if($max > 0){
-					$ret.=$cur[0];
-					$max-=1;
+					$ret .= $cur[0];
+					$max -= 1;
 				}
 				break;
 			case 3://text
 				if($max > 0){
 					$len = strlen($cur[0]);
-					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
-					$max-=$len;
+					$ret .= ($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
+					$max -= $len;
 					if($max <= 0){
-						$ret.=($striphtml ? ' ...' : ' &hellip;');
+						$ret .= ($striphtml ? ' ...' : ' &hellip;');
 					}
 				}
 				break;
 			case 7://tags
 				if($max > 0){
-					$ret.=$cur[0];
+					$ret .= $cur[0];
 					if(!$cur[6]){//!selfclosing
 						if($cur[3]){//close
 							array_pop($tags);
@@ -358,7 +358,7 @@ function cutText($text, $max = 0, $striphtml = false){
 
 //close open tags
 	while($tags){
-		$ret.='</' . array_pop($tags) . '>';
+		$ret .= '</' . array_pop($tags) . '>';
 	}
 
 	return $ret;
@@ -498,7 +498,7 @@ function we_getSelectField($name, $value, $values, array $attribs = [], $addMiss
 	}
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', ['value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-			], oldHtmlspecialchars($value), true);
+				], oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
@@ -526,4 +526,18 @@ function we_post_tag_listview(){
 			unset($GLOBALS['we_lv_array']);
 		}
 	}
+}
+
+function getFieldOutLang(array $attribs){
+	$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
+	if(!$lang){
+		$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
+		$lang = $doc->Language;
+	}
+	$langcode = substr($lang, 0, 2);
+	if(!$lang){
+		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+		$langcode = array_search($lang[0], getWELangs());
+	}
+	return $langcode;
 }
