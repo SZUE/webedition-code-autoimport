@@ -24,13 +24,13 @@
  */
 function we_tag_date(array $attribs){
 	$format = weTag_getAttribute('format', $attribs, g_l('date', '[format][default]'), we_base_request::RAW);
+	list(, $langcode) = getFieldOutLang($attribs);
 
 	switch(strtolower(weTag_getAttribute('type', $attribs, 'php', we_base_request::STRING))){
 		case 'js':
-			$monthsLong = g_l('date', '[month][long]');
-			ksort($monthsLong);
-			$monthsShort = g_l('date', '[month][short]');
-			ksort($monthsShort);
+			$months = we_base_country::getTranslationList(we_base_country::MONTH, $langcode);
+			$days = we_base_country::getTranslationList(we_base_country::DAY, $langcode);
+
 			$js = 'function getDateS(d){
 	switch(d){
 		case 1:
@@ -48,10 +48,10 @@ function we_tag_date(array $attribs){
 	}
 }
 function getDateWord(f,dateObj){
-	var l_day_Short = ["' . implode('","', g_l('date', '[day][short]')) . '"];
-	var l_monthLong = ["' . implode('","', $monthsLong) . '"];
-	var l_dayLong = ["' . implode('","', g_l('date', '[day][long]')) . '"];
-	var l_monthShort = ["' . implode('","', $monthsShort) . '"];
+	var l_day_Short = ["' . implode('","', $days['abbreviated']) . '"];
+	var l_monthLong = ["' . implode('","', $months['wide']) . '"];
+	var l_dayLong = ["' . implode('","', $days['wide']) . '"];
+	var l_monthShort = ["' . implode('","', $months['abbreviated']) . '"];
 	switch(f){
 		case "D":
 			return l_day_Short[dateObj.getDay()];
@@ -137,16 +137,15 @@ function getDateWord(f,dateObj){
 					$ret[] = $format[$i];
 				}
 			}
-			$js.='(function(){
-	var heute = new Date();'.
-implode('', $js_arr) .'
+			$js .= '(function(){
+	var heute = new Date();' .
+				implode('', $js_arr) . '
 	document.write(' . stripslashes(implode('+', $ret)) . ');
 })();';
 
 			return we_html_element::jsElement($js);
 		case 'php':
 		default:
-			$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 			return we_base_country::dateformat($langcode, new DateTime(), $format);
 	}

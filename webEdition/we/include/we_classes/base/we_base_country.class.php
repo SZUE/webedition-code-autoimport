@@ -35,7 +35,7 @@ abstract class we_base_country{
 	private static function loadLang($langcode){
 		$file = WE_INCLUDES_PATH . 'country/' . $langcode . '.inc.php';
 		if(!file_exists($file)){
-			//	echo 'no file' . $file;
+				echo 'no file' . $file;
 			return false;
 		}
 
@@ -69,7 +69,8 @@ abstract class we_base_country{
 		$months = self::getTranslationList(self::MONTH, $langcode);
 		$days = self::getTranslationList(self::DAY, $langcode);
 
-		$dat = $date->format(strtr($format, ['D' => "\dD\d", //Mon bis Sun
+		$dat = $date->format(strtr($format, [
+			'D' => "\dD\d", //Mon bis Sun
 			'l' => "\lD\l", //Sunday bis Saturday
 			'F' => "\\fn\\f", //January bis December
 			'M' => '\mn\m', //Jan bis Dec
@@ -78,7 +79,8 @@ abstract class we_base_country{
 		$wd = $date->format('D');
 		$mon = $date->format('n');
 
-		return strtr($dat, ['d' . $wd . 'd' => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
+		return strtr($dat, [
+			'd' . $wd . 'd' => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
 			'l' . $wd . 'l' => $days['wide'][strtolower($wd)], //Sunday bis Saturday
 			'f' . $mon . 'f' => $months['wide'][$mon], //January bis December
 			'm' . $mon . 'm' => $months['abbreviated'][$mon], //Jan bis Dec

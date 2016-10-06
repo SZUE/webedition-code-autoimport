@@ -528,16 +528,15 @@ function we_post_tag_listview(){
 	}
 }
 
-function getFieldOutLang(array $attribs){
+function getFieldOutLang(array $attribs, $fallBackBackend = false){
 	$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 	if(!$lang){
-		$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
+		$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 		$lang = $doc->Language;
 	}
-	$langcode = substr($lang, 0, 2);
 	if(!$lang){
-		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-		$langcode = array_search($lang[0], getWELangs());
+		$lang = ($fallBackBackend ? $GLOBALS['WE_LANGUAGE'] : $GLOBALS['weDefaultFrontendLanguage']);
 	}
+	$langcode = substr($lang, 0, 2);
 	return [$lang, $langcode];
 }
