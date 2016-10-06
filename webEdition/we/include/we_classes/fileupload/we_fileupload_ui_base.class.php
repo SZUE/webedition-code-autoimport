@@ -178,7 +178,7 @@ class we_fileupload_ui_base extends we_fileupload{
 				return we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'], $fileInput . $btn
 				);
 			case 'reset':
-				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return $notWrapped ? $btn : we_html_element::htmlDiv(['id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'], $btn);
 
 			case 'upload':
@@ -218,7 +218,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public function getHtmlAlertBoxes(){
-		$text = $this->maxUploadSizeMBytes ? sprintf(g_l('newFile', '[size_limit_set_to]'), $this->maxUploadSizeMBytes) : g_l('newFile', '[no_size_limit]');
+		$text = we_fileupload::getMaxUploadSizeMB() ? sprintf(g_l('newFile', '[size_limit_set_to]'), we_fileupload::getMaxUploadSizeMB()) : g_l('newFile', '[no_size_limit]');
 		$box = we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, ($this->dimensions['alertBoxWidth'] ? : $this->dimensions['width']));
 
 		return we_html_element::htmlDiv(['id' => 'div_alert'], $box);
@@ -279,15 +279,17 @@ class we_fileupload_ui_base extends we_fileupload{
 		}
 		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
-		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
-			we_html_element::jsScript('/webEdition/lib/additional/ExifReader/ExifReader.js') .
-			we_html_element::jsScript('/webEdition/lib/additional/pngChunksEncode/index.js') .
-			we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/index.js') .
-			we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/crc32.js') .
-			we_html_element::jsScript('/webEdition/lib/additional/pica/pica.js') .
-			we_html_element::jsElement('
-we_FileUpload = new weFileUpload("' . $this->type . '");
-we_FileUpload.init({
+		return we_html_element::jsElement('
+(function (win) {
+	win.we_FileUpload_addListeners = false;
+	win.addEventListener("load", function () {
+		win.we_FileUpload_addListeners = true;
+	}, false);
+})(window);
+
+weFileUpload_instance = new WE().layout.weFileUpload("' . $this->type . '", window);
+
+weFileUpload_instance.init({
 	uiType : "' . $this->type . '",
 	fieldName : "' . $this->name . '",
 	genericFilename : ' . json_encode($this->genericFilename) . ',
@@ -322,7 +324,7 @@ we_FileUpload.init({
 		return '{
 		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
 		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
-		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
+		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . we_fileupload::getMaxUploadSizeMB() . ' MB, ",
 		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
 		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
 		errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
@@ -359,9 +361,9 @@ we_FileUpload.init({
 		//FIXME: still need direct callback
 		$win = $contentName ? 'top.' . $contentName . '.' : '';
 		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
-		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
+		$call = $win . 'weFileUpload_instance.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
-		return 'if(' . $win . 'we_FileUpload === undefined){' . $callback . ';}else{' . $call . ';}';
+		return 'if(' . $win . 'weFileUpload_instance === undefined){' . $callback . ';}else{' . $call . ';}';
 	}
 
 }

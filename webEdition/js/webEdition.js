@@ -129,8 +129,8 @@ var WebEdition = {
 			var parentObj = WE().layout.weEditorFrameController;
 			var frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
-			if (parentObj !== undefined && (frame.we_FileUpload) !== undefined && frame.we_FileUpload.getType() === 'binDoc') {
-				frame.we_FileUpload.doUploadIfReady(function () {
+			if (parentObj !== undefined && (frame.weFileUpload_instance) !== undefined && frame.weFileUpload_instance.getType() === 'binDoc') {
+				frame.weFileUpload_instance.doUploadIfReady(function () {
 					top.we_cmd.apply(this, we_cmd_args);
 				});
 			} else {

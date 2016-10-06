@@ -239,19 +239,27 @@ echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEDat
 	'data-session' => setDynamicVar($session),
 	'data-consts' => setDynamicVar($const),
 ]) .
- we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
- we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
- YAHOO_FILES .
- we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
- we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
- we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
- we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
- we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
- we_html_element::jsScript(JS_DIR . 'weButton.js') .
- we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
- we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
- we_main_headermenu::css() .
- we_html_element::cssLink(CSS_DIR . 'sidebar.css');
+	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
+	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
+	YAHOO_FILES .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
+	we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
+	we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+	we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+	we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+	we_html_element::jsScript(JS_DIR . 'weButton.js') .
+	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
+	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+
+	we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
+	we_html_element::jsScript(LIB_DIR. 'additional/ExifReader/ExifReader.js') .
+	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksEncode/index.js') .
+	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksExtract/index.js') .
+	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksExtract/crc32.js') .
+	we_html_element::jsScript(LIB_DIR. 'additional/pica/pica.js') .
+
+	we_main_headermenu::css() .
+	we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);

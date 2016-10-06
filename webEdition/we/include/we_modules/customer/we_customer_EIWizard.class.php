@@ -1194,7 +1194,7 @@ function callBack(){
 			$head = we_html_element::jsElement('
 function doNext(){
 	if(top.body.document.we_form.step.value === "2" &&
-			top.body.we_FileUpload !== undefined &&
+			top.body.weFileUpload_instance !== undefined &&
 			top.body.document.we_form.import_from[1].checked){
 		' . we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
 		return;

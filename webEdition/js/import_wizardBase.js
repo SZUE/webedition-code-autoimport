@@ -355,7 +355,7 @@ function handleEvent_step_1(evt, type) {
 			break;
 		case 'next':
 			if(f.elements['v[rdofloc]'][1].checked === true){
-				top.wizbody.we_FileUpload.startUpload();
+				top.wizbody.weFileUpload_instance.startUpload();
 			} else {
 				switch(type){
 					case 'WXMLImport':
@@ -485,7 +485,7 @@ function doNext_GXMLImportStep1(){
 	f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
 
 	var fs = f.elements['v[fserver]'].value;
-	var fl = top.wizbody.we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
+	var fl = top.wizbody.weFileUpload_instance !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 	var ext = '';
 
 	if ((f.elements['v[rdofloc]'][0].checked == true) && fs != '/') {
