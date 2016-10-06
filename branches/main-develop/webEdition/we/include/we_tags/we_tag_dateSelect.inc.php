@@ -44,7 +44,6 @@ function we_tag_dateSelect(array $attribs){
 
 		$js = we_html_element::jsElement('
 function WE_checkDate_' . $name . '() {
-
 	var name = \'' . $name . '\';
 
 	var from = new Date(' . $from['year'] . ', ' . $from['month'] . ', ' . $from['day'] . ', ' . $from['hour'] . ', ' . $from['minute'] . ', 0);
@@ -142,5 +141,7 @@ WE_checkDate_' . $name . '();');
 
 	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
 	$time = we_base_request::_(we_base_request::HTML, $name, time());
-	return we_html_tools::getDateInput($name . '%s', ($time == -1 ? time() : $time), false, "dmy", $submitonchange ? $checkDate . 'we_submitForm();' : $checkDate, $class, '', $minyear, $maxyear, $style) . $js;
+	list(, $langcode) = getFieldOutLang($attribs, true);
+
+	return we_html_tools::getDateInput($name . '%s', ($time == -1 ? time() : $time), false, "dmy", $submitonchange ? $checkDate . 'we_submitForm();' : $checkDate, $class, '', $minyear, $maxyear, $style, $langcode) . $js;
 }

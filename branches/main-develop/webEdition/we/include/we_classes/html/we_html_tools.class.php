@@ -405,6 +405,8 @@ this.selectedIndex = 0;' .
 	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = '', $langcode = ''){
 		$attsSelect = $attsOption = $attsHidden = $xml ? ['xml' => $xml] : [];
 
+		$langcode = $langcode ?: substr($GLOBALS['WE_LANGUAGE'], 0, 2);
+
 		if($class){
 			$attsSelect['class'] = $class;
 		}
@@ -464,13 +466,15 @@ this.selectedIndex = 0;' .
 			$months = getHtmlTag('option', array_merge($attsOption, ['value' => 0]), '--');
 
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
+			$monthsArray = $monthType ? we_base_country::getTranslationList(we_base_country::MONTH, $langcode) : [];
+
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
 					case 'F':
-						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
+						$val = $monthsArray['wide'][$i];
 						break;
 					case 'M':
-						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
+						$val = $monthsArray['abbreviated'][$i];
 						break;
 					default:
 						$val = sprintf('%02d', $i);
