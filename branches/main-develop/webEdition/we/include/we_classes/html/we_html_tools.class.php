@@ -37,7 +37,7 @@ abstract class we_html_tools{
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
-				$allow|=permissionhandler::hasPerm($perm);
+				$allow |= permissionhandler::hasPerm($perm);
 			}
 		} else {
 			$allow = true;
@@ -86,7 +86,7 @@ abstract class we_html_tools{
 					$colText = $var;
 				}
 				$tmp .= '>' . $colText . '</td>';
-				$elemOut.=$tmp;
+				$elemOut .= $tmp;
 				$colspan++;
 			}
 		}
@@ -108,7 +108,7 @@ this.selectedIndex = 0;' .
 			$onChange,
 			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : ''),
 			'class' => 'defaultfont'
-			];
+		];
 
 		if($disabled){
 			$inputs['disabled'] = 'true';
@@ -120,7 +120,7 @@ this.selectedIndex = 0;' .
 			'_parent' => '_parent',
 			'_self' => '_self',
 			'_blank' => '_blank'
-			]);
+		]);
 
 
 		if($width){
@@ -158,9 +158,9 @@ this.selectedIndex = 0;' .
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
 		return we_html_multiIconBox::getHTML('', [["html" => $content,
-					"headline" => ""
-					]
-		], $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+				"headline" => ""
+				]
+				], $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, array $content, array $headline, $class = "middlefont", $id = ""){
@@ -240,9 +240,9 @@ this.selectedIndex = 0;' .
 
 		return ($name ? we_html_element::htmlSelect(array_merge(['class' => 'weSelect ' . $cls,
 				'name' => trim($name),
-					'size' => abs($size),
-					($multiple ? 'multiple' : '') => 'multiple',
-					($width ? 'width' : '') => ($width ? : '')
+				'size' => abs($size),
+				($multiple ? 'multiple' : '') => 'multiple',
+				($width ? 'width' : '') => ($width ?: '')
 					], $attribs
 				), $ret) : $ret);
 	}
@@ -253,12 +253,12 @@ this.selectedIndex = 0;' .
 		$countrycode = array_search($langcode, getWECountries());
 
 		$attributes = ['name' => $name,
-			'id' => ($id ? : $name),
+			'id' => ($id ?: $name),
 			'size' => $size,
 			'width' => $width,
 			'style' => (isset($attribs['style']) ? $attribs['style'] : ''),
 			'class' => 'weSelect ' . $cls
-			];
+		];
 		if($multiple){
 			$attributes['multiple'] = 'multiple';
 		}
@@ -339,8 +339,8 @@ this.selectedIndex = 0;' .
 			$atts['id'] = 'tmp_' . $atts['id'];
 		}
 		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode === 'add' ?
-				' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
-				'=this.options[this.selectedIndex].value;'
+			' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
+			'=this.options[this.selectedIndex].value;'
 			) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
@@ -401,7 +401,8 @@ this.selectedIndex = 0;' .
 	}
 
 	//note it is possible to set "no date"
-	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
+	//FIXME: #11068: langcode unused
+	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = '', $langcode = ''){
 		$attsSelect = $attsOption = $attsHidden = $xml ? ['xml' => $xml] : [];
 
 		if($class){
@@ -456,7 +457,7 @@ this.selectedIndex = 0;' .
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
 				'value' => $time ? $day : 0
-				]));
+			]));
 		}
 
 		if(!$format || $monthPos > -1){
@@ -485,7 +486,7 @@ this.selectedIndex = 0;' .
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
 				'value' => $time ? $month : 0
-				]));
+			]));
 		}
 		if(!$format || $yearPos > -1){
 			$years = getHtmlTag('option', array_merge($attsOption, ['value' => 0]), '--');
@@ -507,7 +508,7 @@ this.selectedIndex = 0;' .
 				'name' => sprintf($name, '_year'),
 				'id' => sprintf($name, '_year'),
 				'value' => $time ? $year : 0
-				]));
+			]));
 		}
 
 		if(!$format || $hourPos > -1){
@@ -524,7 +525,7 @@ this.selectedIndex = 0;' .
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
 				'value' => $time ? $hour : 0
-				]));
+			]));
 			$showHour = false;
 		}
 
@@ -542,18 +543,18 @@ this.selectedIndex = 0;' .
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
 				'value' => $time ? $minute : 0,
-				]));
+			]));
 			$showMinute = false;
 		}
 
 		$datePosArray = [($dayPos == -1) ? 'd' : $dayPos => $daySelect,
 			($monthPos == -1) ? 'm' : $monthPos => $monthSelect,
 			($yearPos == -1) ? 'y' : $yearPos => $yearSelect
-			];
+		];
 
 		$timePosArray = [($hourPos == -1) ? 'h' : $hourPos => $hourSelect,
 			($minutePos == -1) ? 'i' : $minutePos => $minSelect
-			];
+		];
 
 		ksort($datePosArray);
 		ksort($timePosArray);
@@ -567,7 +568,7 @@ this.selectedIndex = 0;' .
 
 	public static function getHtmlTop($title = '', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
-			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title? : 'webEdition', $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
+			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title ?: 'webEdition', $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
 				$body, ($body ? true : false)
 		);
 	}
@@ -577,15 +578,15 @@ this.selectedIndex = 0;' .
 	}
 
 	private static function getHtmlInnerHead($title, $charset, $skipErrorHandler){
-		self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
+		self::headerCtCharset('text/html', ($charset ?: $GLOBALS['WE_BACKENDCHARSET']));
 		return
 			//load this as early as possible
 			($skipErrorHandler ?
-				'' :
-				self::getJSErrorHandler(true)
+			'' :
+			self::getJSErrorHandler(true)
 			) .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
+			self::htmlMetaCtCharset(($charset ?: $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(['name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes']) .
 			we_html_element::htmlMeta(['http-equiv' => 'expires', 'content' => 0]) .
