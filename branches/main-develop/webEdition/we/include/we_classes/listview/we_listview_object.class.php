@@ -105,9 +105,9 @@ class we_listview_object extends we_listview_objectBase{
 		if($this->customers && $this->customers !== "*"){
 			$wsql = ' of.WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
-			$encrypted = we_customer_customer::getEncryptedFields();
+			//$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
-				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();//array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 			$webUserID_tail = '(' . $wsql . ')';
 		} else {
@@ -172,9 +172,9 @@ class we_listview_object extends we_listview_objectBase{
 					$idlist = implode(',', array_unique($idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $idlist . ')');
-					$encrypted = we_customer_customer::getEncryptedFields();
+					//$encrypted = we_customer_customer::getEncryptedFields();
 					while($db->next_record(MYSQL_ASSOC)){
-						$this->customerArray['cid_' . $db->f('ID')] = array_merge($db->Record, $encrypted);
+						$this->customerArray['cid_' . $db->f('ID')] = $db->Record;//array_merge($db->Record, $encrypted);
 					}
 				}
 				unset($idListArray);

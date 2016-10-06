@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_field(array $attribs){
+	if(!isset($GLOBALS['lv'])){
+		return parseError(g_l('parser', '[field_not_in_lv]'));
+	}
 	//show field in case of e.g. listdir
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
 		return $GLOBALS['lv']->field;
@@ -43,49 +46,38 @@ function we_tag_field(array $attribs){
 	if(isset($attribs['alt'])){
 		$attribs['alt'] = $alt;
 	}
-	$title = weTag_getAttribute('title', $attribs, '', we_base_request::STRING);
+
 	if(isset($attribs['title'])){
-		$attribs['title'] = $title;
+		$attribs['title'] = weTag_getAttribute('title', $attribs, '', we_base_request::STRING);
 	}
-	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 	if(isset($attribs['value'])){
-		$attribs['value'] = $value;
+		$attribs['value'] = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 	}
-	$max = weTag_getAttribute('max', $attribs);
-	if(isset($attribs['max'])){
-		$attribs['max'] = $max;
-	}
-	$format = weTag_getAttribute('format', $attribs);
 	if(isset($attribs['format'])){
-		$attribs['format'] = $format;
+		$attribs['format'] = weTag_getAttribute('format', $attribs);
 	}
-	$target = weTag_getAttribute('target', $attribs);
 	if(isset($attribs['target'])){
-		$attribs['target'] = $target;
+		$attribs['target'] = weTag_getAttribute('target', $attribs);
 	}
 	$tid = weTag_getAttribute('tid', $attribs);
 	if(isset($attribs['tid'])){
 		$attribs['tid'] = $tid;
 	}
-	$class = weTag_getAttribute('class', $attribs);
 	if(isset($attribs['class'])){
-		$attribs['class'] = $class;
+		$attribs['class'] = weTag_getAttribute('class', $attribs);
 	}
 	$classid = weTag_getAttribute('classid', $attribs);
 	if(isset($attribs['classid'])){
 		$attribs['classid'] = $classid;
 	}
-	$style = weTag_getAttribute('style', $attribs);
+
 	if(isset($attribs['style'])){
-		$attribs['style'] = $style;
+		$attribs['style'] = weTag_getAttribute('style', $attribs);
 	}
 	$hyperlink = weTag_getAttribute('hyperlink', $attribs, false, we_base_request::BOOL);
-	if(isset($attribs['hyperlink'])){
-		$attribs['hyperlink'] = $hyperlink;
-	}
-	$src = weTag_getAttribute('src', $attribs);
+
 	if(isset($attribs['src'])){
-		$attribs['src'] = $src;
+		$attribs['src'] = weTag_getAttribute('src', $attribs);
 	}
 	$winprops = weTag_getAttribute('winprops', $attribs);
 	if(isset($attribs['winprops'])){
@@ -100,9 +92,6 @@ function we_tag_field(array $attribs){
 		$attribs['xml'] = $xml;
 	}
 	$striphtml = weTag_getAttribute('striphtml', $attribs, false, we_base_request::BOOL);
-	if(isset($attribs['striphtml'])){
-		$attribs['striphtml'] = $striphtml;
-	}
 	$only = weTag_getAttribute('only', $attribs);
 	if(isset($attribs['only'])){
 		$attribs['only'] = $only;
@@ -115,9 +104,8 @@ function we_tag_field(array $attribs){
 	if(isset($attribs['triggerid'])){
 		$attribs['triggerid'] = $triggerid;
 	}
-	$seeMode = weTag_getAttribute('seeMode', $attribs, true, we_base_request::BOOL);
 	if(isset($attribs['seeMode'])){
-		$attribs['seeMode'] = $seeMode;
+		$attribs['seeMode'] = weTag_getAttribute('seeMode', $attribs, true, we_base_request::BOOL);
 	}
 
 	//zusatz typen für verchiedene field-Typen
@@ -142,28 +130,16 @@ function we_tag_field(array $attribs){
 	if(isset($attribs['rootdir'])){
 		$attribs['rootdir'] = $rootdir;
 	}
-	$field = weTag_getAttribute('field', $attribs);
 	if(isset($attribs['field'])){
-		$attribs['field'] = $field;
+		$attribs['field'] = weTag_getAttribute('field', $attribs);
 	}
-	$vatfield = weTag_getAttribute('vatfield', $attribs);
-	if(isset($attribs['vatfield'])){
-		$attribs['vatfield'] = $vatfield;
-	}
-	$customerid = weTag_getAttribute('customerid', $attribs);
 	if(isset($attribs['customerid'])){
-		$attribs['customerid'] = $customerid;
+		$attribs['customerid'] = weTag_getAttribute('customerid', $attribs);
 	}
-	$country = weTag_getAttribute('country', $attribs);
 	if(isset($attribs['country'])){
-		$attribs['country'] = $country;
+		$attribs['country'] = weTag_getAttribute('country', $attribs);
 	}
 	$out = '';
-
-
-	if(!isset($GLOBALS['lv'])){
-		return parseError(g_l('parser', '[field_not_in_lv]'));
-	}
 
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
 	$alt = ($alt === 'we_path' ? 'WE_PATH' : ($alt === 'we_text' ? 'WE_TEXT' : $alt));
@@ -172,10 +148,7 @@ function we_tag_field(array $attribs){
 	//listview of documents, document with a block. Try to access by blockname.
 	$name = ($GLOBALS['lv']->f($name) ? $name : $orgName);
 
-
-	if(isset($attribs['winprops'])){
-		unset($attribs['winprops']);
-	}
+	unset($attribs['winprops']);
 
 	$classid = ($classid ? :
 			(isset($GLOBALS['lv']) ? (
@@ -191,6 +164,7 @@ function we_tag_field(array $attribs){
 					0
 				)
 			)
+
 		);
 
 
@@ -226,18 +200,18 @@ function we_tag_field(array $attribs){
 					$out = $t[5];
 					break;
 			}
-			$href = ($href ? : $t[1]);
+			$href = ($href ?: $t[1]);
 			break;
 		case 'link' :
 			if(is_object($GLOBALS['lv'])){
 				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-				$href = ($href ? : $out);
+				$href = ($href ?: $out);
 				break;
 			}
 		case 'img' :
-			if($src){
+			if(!empty($attribs['src'])){
 				$imgAtts = ['alt' => '', //  alt must be set
-					'src' => $src,
+					'src' => $attribs['src'],
 					'xml' => $xml,
 				];
 
@@ -282,33 +256,14 @@ function we_tag_field(array $attribs){
 			$out = is_array($temp) ? (!empty($temp['objects']) ? implode(',', $temp['objects']) : implode(',', $temp)) : '';
 			break;
 		case 'country' :
-			$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
-			if(!$lang){
-				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
-				$lang = $doc->Language;
-			}
-			$langcode = substr($lang, 0, 2);
-			if(!$lang){
-				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], getWELangs());
-			}
-			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) === '--'){
-				$out = WE_COUNTRIES_DEFAULT;
-			} else {
-				$out = CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::TERRITORY, $langcode));
-			}
+			$langcode = getFieldOutoutLang($attribs);
+			$out = (WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) === '--' ?
+				WE_COUNTRIES_DEFAULT :
+				CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::TERRITORY, $langcode))
+				);
 			break;
 		case 'language' :
-			$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
-			if(!$lang){
-				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
-				$lang = $doc->Language;
-			}
-			$langcode = substr($lang, 0, 2);
-			if(!$lang){
-				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], getWELangs());
-			}
+			$langcode = getFieldOutoutLang($attribs);
 			$out = CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::LANGUAGE, $langcode));
 			break;
 		case 'shopVat' :
@@ -331,14 +286,15 @@ function we_tag_field(array $attribs){
 				$id = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
 				$wedocCategory = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 
-				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, $field, $showpath, $rootdir, true);
+				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, weTag_getAttribute('field', $attribs), $showpath, $rootdir, true);
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
 			if(isset($GLOBALS['lv'])){
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_listview_document':
-						$hrefArr = ['int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
+						$hrefArr = [
+							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
 							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
 							'extPath' => $GLOBALS['lv']->f($name)
 						];
@@ -368,7 +324,7 @@ function we_tag_field(array $attribs){
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
 					(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename']) ?
-						'' : $triggerpath_parts['filename'] . '/' ) .
+					'' : $triggerpath_parts['filename'] . '/' ) .
 					$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL');
 			} else {
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
@@ -379,7 +335,7 @@ function we_tag_field(array $attribs){
 							$attribs['name'] = $attribs['_name_orig'];
 						}
 					default:
-						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
+						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 						if($orgName === 'WE_PATH'){
 							$path_parts = pathinfo($normVal);
 							if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename'])){
@@ -410,7 +366,7 @@ function we_tag_field(array $attribs){
 
 			if($name && $name != 'we_href'){
 				if($normVal === ''){
-					$altVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+					$altVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 					if($altVal === ''){
 						return '';
 					}
@@ -423,8 +379,9 @@ function we_tag_field(array $attribs){
 					}
 					$normVal = $altVal;
 				}
+				$max = weTag_getAttribute('max', $attribs, 0, we_base_request::INT);
 				$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max, $striphtml);
-			} elseif($value){
+			} elseif(($value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW))){
 				$out = ($striphtml ? strip_tags($value) : $value);
 			} else if($striphtml){
 				$out = strip_tags($out);
@@ -432,16 +389,16 @@ function we_tag_field(array $attribs){
 	}
 
 	if($hyperlink || $name === 'we_href'){
-
 		$linkAttribs = ['xml' => $xml];
+		$target = weTag_getAttribute('target', $attribs);
 		if($target && !$winprops){ //  save atts in array
 			$linkAttribs['target'] = $target;
 		}
-		if($class){
-			$linkAttribs['class'] = $class;
+		if(isset($attribs['class'])){
+			$linkAttribs['class'] = $attribs['class'];
 		}
-		if($style){
-			$linkAttribs['style'] = $style;
+		if(isset($attribs['style'])){
+			$linkAttribs['style'] = $attribs['style'];
 		}
 		foreach($attribs as $key => $val){
 			if(strpos($key, 'pass_') === 0){
@@ -575,8 +532,8 @@ function we_tag_field(array $attribs){
 			$linkAttribs['href'] .= $tail;
 
 			return ($name === 'we_href' ?
-					$linkAttribs['href'] :
-					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
+				$linkAttribs['href'] :
+				getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
@@ -584,14 +541,14 @@ function we_tag_field(array $attribs){
 			$linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?
-					$linkAttribs['href'] :
-					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
+				$linkAttribs['href'] :
+				getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		$showlink = false;
 		switch(get_class($GLOBALS['lv'])){
 			case 'we_listview_document':
-				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
+				$triggerid = $triggerid ?: $GLOBALS['lv']->triggerID;
 				$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
 			case '':
 			case 'we_listview_search':
@@ -602,7 +559,7 @@ function we_tag_field(array $attribs){
 				$showlink = true;
 				break;
 			case 'we_listview_object':
-				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
+				$triggerid = $triggerid ?: $GLOBALS['lv']->triggerID;
 				$showlink = $tid || $triggerid || $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TEMPLATES') || $GLOBALS['lv']->docID;
 				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->f('OF_ID');
 				break;
@@ -649,9 +606,23 @@ function we_tag_field(array $attribs){
 		}
 
 		return ($name === 'we_href' ? //  return href for this object
-				$linkAttribs['href'] :
-				$out = getHtmlTag('a', $linkAttribs, $out, true));
+			$linkAttribs['href'] :
+			$out = getHtmlTag('a', $linkAttribs, $out, true));
 	}
 
 	return $out;
+}
+
+function getFieldOutoutLang(array $attribs){
+	$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
+	if(!$lang){
+		$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
+		$lang = $doc->Language;
+	}
+	$langcode = substr($lang, 0, 2);
+	if(!$lang){
+		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+		$langcode = array_search($lang[0], getWELangs());
+	}
+	return $langcode;
 }

@@ -27,6 +27,7 @@
  * @version    	SVN: $Id$
  */
 class we_navigation_items{
+
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
 	const TEMPLATE_DEFAULT_LEVEL = 'defaultLevel';
@@ -61,13 +62,13 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-			['id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
+				['id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
 			'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : [],
 			'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : [],
 			'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : [],
 			'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-			] :
-			['id' => '',
+				] :
+				['id' => '',
 			'filter' => '',
 			'blacklist' => '',
 			'whitelist' => '',
@@ -142,7 +143,7 @@ class we_navigation_items{
 		$this->setDefaultTemplates();
 		list($table, $linkid) = $navigation->getTableIdForItem();
 		$this->items['id' . $navigation->ID] = new we_navigation_item(
-			$navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref(), (!$showRoot || $navigation->ID == 0 ? 'root' : ($navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+				$navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref(), (!$showRoot || $navigation->ID == 0 ? 'root' : ($navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
 		$items = $navigation->getDynamicPreview(self::$Storage['items'], true);
 
@@ -203,15 +204,23 @@ class we_navigation_items{
 		$mainCats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
 		$currentWorkspace = $isObject ? //webEdition object
-			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-			we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, 0, $GLOBALS['DB_WE']) :
-			parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
-			) : //webEdition document
-			$GLOBALS['WE_MAIN_DOC']->Path;
+				(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
+				substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)) :
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+				) : //webEdition document
+				$GLOBALS['WE_MAIN_DOC']->Path;
 
 		foreach($this->currentRules as $rule){
 			$ponder = 4;
 			$parentPath = '';
+
+			if(($cats = makeArrayFromCSV($rule->Categories))){
+				if(!$this->checkCategories($cats, $mainCats)){
+					continue; // remove from selection
+				}
+				$ponder--;
+			}
+
 			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STYPE_DOCTYPE:
 					if($isObject){
@@ -224,12 +233,10 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = self::id2path($rule->FolderID);
-					if($parentPath && $parentPath != '/'){
-						$parentPath .= '/';
+					if($rule->FolderID){
+						$parentPath = rtrim(self::id2path($rule->FolderID), '/') . '/';
 					}
 					break;
-
 				case we_navigation_navigation::STYPE_CLASS:
 					if(!$isObject){
 						continue; // remove from selection
@@ -241,24 +248,18 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+					if($rule->WorkspaceID){
+						$parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+					}
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) === 0){
+			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) !== false){
 				$ponder--;
 				$currLen = strlen($parentPath);
-				if($currLen > $len){
+				if($currLen >= $len){ //the longest path wins
 					$len = $currLen;
 					$ponder--;
-				}
-			}
-
-			if(($cats = makeArrayFromCSV($rule->Categories))){
-				if($this->checkCategories($cats, $mainCats)){
-					$ponder--;
-				} else {
-					continue; // remove from selection
 				}
 			}
 
@@ -296,8 +297,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-			$this->getItemIds($id) :
-			array_keys($this->items));
+				$this->getItemIds($id) :
+				array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -327,7 +328,7 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-			((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
+				((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
 			return $useTemplate['last'];
 		}
 
@@ -359,9 +360,9 @@ class we_navigation_items{
 	private function setDefaultTemplates(){
 		if(empty($this->templates)){
 			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array(
-					'name' => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+						'name' => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array(
-					'name' => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+						'name' => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 			$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 		}
 	}
