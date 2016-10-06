@@ -270,58 +270,57 @@ class we_fileupload_ui_base extends we_fileupload{
 				}
 			');
 	}
-
+	
 	public function getJs(){
 		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
 		if($this->externalProgress['create']){
 			$progressbar = new we_progressBar(0, $this->externalProgress['width'], $this->externalProgress['name']);
 			$this->externalProgress['html'] = str_replace(["\r", "\n"], '', $progressbar->getHTML());
 		}
-		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
-		return we_html_element::jsElement('
-(function (win) {
-	win.we_FileUpload_addListeners = false;
-	win.addEventListener("load", function () {
-		win.we_FileUpload_addListeners = true;
-	}, false);
-})(window);
-
-weFileUpload_instance = new WE().layout.weFileUpload("' . $this->type . '", window);
-
-weFileUpload_instance.init({
-	uiType : "' . $this->type . '",
-	fieldName : "' . $this->name . '",
-	genericFilename : ' . json_encode($this->genericFilename) . ',
-	doCommitFile: ' . ($this->doCommitFile ? 'true' : 'false') . ',
-		form : ' . json_encode($this->form) . ', // FIXME: no paths to eval!
-	footerName : "' . $this->footerName . '",
-	uploadBtnName : "' . $this->externalUiElements['btnUploadName'] . '",
-	maxUploadSize : ' . $this->maxUploadSizeBytes . ',
-	typeCondition : ' . str_replace(["\n\r", "\r\n", "\r", "\n"], "", json_encode($this->typeCondition)) . ',
-	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
-	isPreset: ' . ($this->isPreset ? 'true' : 'false') . ',
-	nextCmd : "' . $this->nextCmd . '",
-	cmdFileselectOnclick : "' . $this->cmdFileselectOnclick . '",
-	chunkSize : ' . self::CHUNK_SIZE . ',
-	intProgress : ' . json_encode($this->internalProgress) . ',
-	extProgress : ' . json_encode($this->externalProgress) . ',
-		gl: ' . $this->_getJsGl() . ', // FIXME: move to some getJSConsts()
-	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
-	htmlFileRow : \'' . (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()) . '\',
-	fileTable : "' . $this->fileTable . '",
-	binDocProperties : ' . json_encode($this->binDocProperties) . ',
-	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . ',
-	moreFieldsToAppend : ' . json_encode($this->moreFieldsToAppend) . ',
-	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
-	responseClass : "' . $this->responseClass . '",
-	clientsideImageEditing : ' . ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0) . '
-});
-			') . ($this->externalProgress['create'] ? we_progressBar::getJSCode() : '');
+		return we_html_element::jsScript(JS_DIR . 'weFileUpload_init.js', '', ['id' => 'loadVarWeFileUpload_init', 'data-initObject' => setDynamicVar($this->getJSDynamic())]);// .
 	}
 
-	protected function _getJsGl(){ // move to consts
-		return '{
+	public function getJSDynamic(){
+		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
+		if($this->externalProgress['create']){
+			$progressbar = new we_progressBar(0, $this->externalProgress['width'], $this->externalProgress['name']);
+			$this->externalProgress['html'] = str_replace(["\r", "\n"], '', $progressbar->getHTML());
+		}
+
+		return ['uiType' => $this->type,
+				'fieldName' => $this->name,
+				'genericFilename' => $this->genericFilename,
+				'doCommitFile' => $this->doCommitFile,
+				'form' => $this->form,
+				'footerName' => $this->footerName,
+				'uploadBtnName' => $this->externalUiElements['btnUploadName'],
+				'maxUploadSize' => $this->maxUploadSizeBytes,
+				'typeCondition' => str_replace(['\n\r', '\r\n', '\r', '\n'], '', $this->typeCondition),
+				'isDragAndDrop' => $this->isDragAndDrop,
+				'isPreset' => $this->isPreset,
+				'nextCmd' => $this->nextCmd,
+				'cmdFileselectOnclick' => $this->cmdFileselectOnclick,
+				'chunkSize' => self::CHUNK_SIZE,
+				'intProgress' => $this->internalProgress,
+				'extProgress' => $this->externalProgress,
+				'isGdOk' => $this->isGdOk,
+				'htmlFileRow' => (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()),
+				'fileTable' => $this->fileTable,
+				'binDocProperties' => $this->binDocProperties,
+				'disableUploadBtnOnInit' => $this->disableUploadBtnOnInit,
+				'moreFieldsToAppend' => $this->moreFieldsToAppend,
+				'isInternalBtnUpload' => $this->isInternalBtnUpload,
+				'responseClass' => $this->responseClass,
+				'clientsideImageEditing' => ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0)
+			];
+
+//			') . ($this->externalProgress['create'] ? we_progressBar::getJSCode() : ''); // FIXME: use normal progress js here!
+	}
+
+	public static function getJSLangConsts(){
+		return '
+WE().consts.g_l.fileupload = {
 		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
 		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
 		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . we_fileupload::getMaxUploadSizeMB() . ' MB, ",
@@ -350,13 +349,14 @@ weFileUpload_instance.init({
 		editQuality: "' . g_l('weClass', '[quality]') . '",
 		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
 		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
-}';
+};';
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){
 		return self::getJsBtnCmdStatic($btn, $this->externalUiElements['contentName'], $this->callback);
 	}
 
+	/* obsolete: when weFileUpload_instance is undefined we have an error and need no callback anymore */
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
 		//FIXME: still need direct callback
 		$win = $contentName ? 'top.' . $contentName . '.' : '';

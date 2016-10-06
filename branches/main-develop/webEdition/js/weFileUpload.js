@@ -30,6 +30,7 @@
 	}, false);
 })(_.window);
 */
+WE().util.loadConsts(document, 'g_l.fileupload');
 
 WE().layout.weFileUpload = (function () {
 	var _ = {};
@@ -121,7 +122,7 @@ WE().layout.weFileUpload = (function () {
 				}
 				s.moreFieldsToAppend = conf.moreFieldsToAppend || [];
 
-				u.gl = conf.gl || u.gl;
+				u.gl = WE().consts.g_l.fileupload; // FIXME: call translations on WE().consts.g_l.fileupload directly
 
 				v.isDragAndDrop = typeof conf.isDragAndDrop !== 'undefined' ? conf.isDragAndDrop : v.isDragAndDrop;
 				v.footerName = conf.footerName || v.footerName;
