@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -6,8 +7,10 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = [new weTagData_textAttribute('value', false, ''),
-	new weTagData_selectAttribute('from', [new weTagDataOption('request'),
+$this->Attributes = [
+	new weTagData_textAttribute('value', false, ''),
+	new weTagData_selectAttribute('from', [
+		new weTagDataOption('request'),
 		new weTagDataOption('post'),
 		new weTagDataOption('get'),
 		new weTagDataOption('global'),
@@ -21,7 +24,7 @@ $this->Attributes = [new weTagData_textAttribute('value', false, ''),
 		new weTagDataOption('listview'),
 		new weTagDataOption('block'),
 		new weTagDataOption('listdir'),
-		], false, ''),
+			], false, ''),
 	new weTagData_textAttribute('namefrom', false, ''),
 	new weTagData_selectAttribute('typefrom', [new weTagDataOption('text'),
 		new weTagDataOption('date'),
@@ -33,7 +36,7 @@ $this->Attributes = [new weTagData_textAttribute('value', false, ''),
 		new weTagDataOption('binary'),
 		new weTagDataOption('float'),
 		new weTagDataOption('int'),
-		], false, ''),
+			], false, ''),
 	new weTagData_selectAttribute('propertyto', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_selectAttribute('propertyfrom', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_textAttribute('formnameto', false, ''),
@@ -45,7 +48,8 @@ $this->Attributes = [new weTagData_textAttribute('value', false, ''),
 		new weTagDataOption(we_base_request::EMAIL),
 		new weTagDataOption(we_base_request::URL),
 		new weTagDataOption(we_base_request::RAW),
-		], false, ''),
+			], false, ''),
 	new weTagData_selectAttribute('prepareSQL', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_selectAttribute('striptags', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new weTagData_textAttribute('outputlanguage', false, ''),
 ];

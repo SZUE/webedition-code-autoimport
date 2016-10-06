@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 abstract class we_listview_base{
+
 	const PROPPREFIX = 'WE_';
 
 	var $DB_WE; /* Main DB Object */
@@ -89,7 +91,7 @@ abstract class we_listview_base{
 		$this->cats = trim($cats);
 		$this->categoryids = trim($categoryids);
 		$this->catOr = $catOr;
-		$this->workspaceID = $workspaceID ? : '';
+		$this->workspaceID = $workspaceID ?: '';
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
 		$this->stop_next_row = false;
@@ -105,9 +107,9 @@ abstract class we_listview_base{
 			'forceFetch' => false,
 			'count' => 0,
 			'weekstart' => 0
-			];
+		];
 		if($calendar != ''){
-			$this->calendar_struct['datefield'] = $datefield ? : '###Published###';
+			$this->calendar_struct['datefield'] = $datefield ?: '###Published###';
 			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
 			if($weekstart){
 				$wdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -285,7 +287,7 @@ abstract class we_listview_base{
 			$newdate = $year . '-' . $month . '-' . $day;
 
 			$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
-			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
+			$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
 			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
@@ -297,7 +299,7 @@ abstract class we_listview_base{
 		}
 
 		$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
-		$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
+		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -320,7 +322,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-			], ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
+				], ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
 		if(TAGLINKS_OBJECTSEOURLS && !empty($GLOBALS['WE_MAIN_DOC']->Url) && show_SeoLinks()){
 			$filterArr[] = 'we_objectID';
 			$filterArr[] = 'we_oid';
@@ -426,26 +428,33 @@ abstract class we_listview_base{
 		return ($this->count > $this->anz);
 	}
 
-	public static function getCalendarField($calendar, $type){
+	public static function getCalendarField($calendar, $type, $langcode){
 		switch($type){
 			case 'day':
 				if($calendar === 'day'){
 					return date('j', $GLOBALS['lv']->calendar_struct['defaultDate']);
-				} else {
-					return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
 				}
+				return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
 			case 'dayname':
 			case 'dayname_long':
-				return g_l('date', '[day][long][' . date('w', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) . ']');
+				$days = self::getTranslationList(self::DAY, $langcode);
+				$day = strtolower(date('D', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])));
+				return $days['wide'][$day];
 			case 'dayname_short':
-				return g_l('date', '[day][short][' . date('w', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) . ']');
+				$days = self::getTranslationList(self::DAY, $langcode);
+				$day = strtolower(date('D', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])));
+				return $days['abbreviated'][$day];
 			case 'month':
 				return date('m', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
 			case 'monthname':
 			case 'monthname_long':
-				return g_l('date', '[month][long][' . intval(date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+				$months = self::getTranslationList(self::MONTH, $langcode);
+				$mon = date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
+				return $months['wide'][$mon];
 			case 'monthname_short':
-				return g_l('date', '[month][short][' . intval(date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+				$months = self::getTranslationList(self::MONTH, $langcode);
+				$mon = date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
+				return $months['abbreviated'][$mon];
 			case 'year':
 				return date('Y', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
 			case 'hour':
@@ -467,14 +476,22 @@ abstract class we_listview_base{
 				return date('Y', $calendar['date']);
 			case 'dayname':
 			case 'dayname_long':
-				return g_l('date', '[day][long][' . date('w', $calendar['date']) . ']');
+				$days = self::getTranslationList(self::DAY, $langcode);
+				$day = strtolower(date('D', $calendar['date']));
+				return $days['wide'][$day];
 			case 'dayname_short':
-				return g_l('date', '[day][short][' . date('w', $calendar['date']) . ']');
+				$days = self::getTranslationList(self::DAY, $langcode);
+				$day = strtolower(date('D', $calendar['date']));
+				return $days['abbreviated'][$day];
 			case 'monthname':
 			case 'monthname_long':
-				return g_l('date', '[month][long][' . (date('n', $calendar['date']) - 1) . ']');
+				$months = self::getTranslationList(self::MONTH, $langcode);
+				$mon = date('n', $calendar['date']);
+				return $months['wide'][$mon];
 			case 'monthname_short':
-				return g_l('date', '[month][short][' . (date('n', $calendar['date']) - 1) . ']');
+				$months = self::getTranslationList(self::MONTH, $langcode);
+				$mon = date('n', $calendar['date']);
+				return $months['abbreviated'][$mon];
 			case 'hour':
 				return date('H:i', $calendar['date']);
 			case 'start_date':
@@ -536,8 +553,8 @@ abstract class we_listview_base{
 			$calendar_where = '(f.Published>=' . $start_date . ' AND f.Published<=' . $end_date . ') ';
 		} else {
 			$field = ($matrix && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-				$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-				CONTENT_TABLE . '.Dat';
+					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+					CONTENT_TABLE . '.Dat';
 
 			$calendar_select = ',' . $field . ' AS Calendar ';
 			$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
@@ -569,8 +586,8 @@ abstract class we_listview_base{
 				$this->calendar_struct['calendarCount'] = 0 - $start;
 				$rest = $this->cols - ($this->anz % $this->cols);
 				if($rest < $this->cols){
-					$this->anz+=$rest;
-					$this->anz_all+=$rest;
+					$this->anz += $rest;
+					$this->anz_all += $rest;
 				}
 				break;
 			default:
@@ -644,14 +661,14 @@ abstract class we_listview_base{
 
 	public function getListviewRequest($lvname){
 		return
-			(empty($this->contentTypes) ? '' : ('we_lv_ct_' . $lvname . '=' . rawurlencode($this->contentTypes) . '&amp;')) .
-			($this->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($this->order) . '&amp;') : '') .
-			($this->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($this->desc) . '&amp;') : '') .
-			($this->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($this->cats) . '&amp;') : '') .
-			($this->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($this->catOr) . '&amp;') : '') .
-			($this->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($this->workspaceID) . '&amp;') : '') .
-			((isset($this->searchable) && !$this->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
-			(!empty($this->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($this->condition) . '&amp;') : '');
+				(empty($this->contentTypes) ? '' : ('we_lv_ct_' . $lvname . '=' . rawurlencode($this->contentTypes) . '&amp;')) .
+				($this->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($this->order) . '&amp;') : '') .
+				($this->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($this->desc) . '&amp;') : '') .
+				($this->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($this->cats) . '&amp;') : '') .
+				($this->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($this->catOr) . '&amp;') : '') .
+				($this->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($this->workspaceID) . '&amp;') : '') .
+				((isset($this->searchable) && !$this->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
+				(!empty($this->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($this->condition) . '&amp;') : '');
 	}
 
 }
