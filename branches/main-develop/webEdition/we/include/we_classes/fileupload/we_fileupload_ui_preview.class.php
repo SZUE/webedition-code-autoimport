@@ -446,9 +446,9 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){
-		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
+		$call = 'window.weFileUpload_instance.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
-		return 'if(window.we_FileUpload === undefined){alert("what\'s wrong?");}else{' . $call . ';}';
+		return 'if(window.weFileUpload_instance === undefined){alert("what\'s wrong?");}else{' . $call . ';}';
 	}
 
 	public function setIsExternalBtnUpload($isExternal){

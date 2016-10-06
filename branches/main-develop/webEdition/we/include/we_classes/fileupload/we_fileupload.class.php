@@ -23,9 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_fileupload{
+	private static $maxUploadSizeMB = -1;
+
 	protected $name = 'weFileSelect';
 	protected $isDragAndDrop = true;
-	protected $maxUploadSizeMBytes = 16;
 	protected $maxUploadSizeBytes = 0;
 	protected $isGdOk = true;
 	protected $genericFileNameTemp = '';
@@ -68,15 +69,8 @@ abstract class we_fileupload{
 	protected function __construct($name){
 		$this->name = $name;
 		$this->isDragAndDrop = !(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera();
-		$this->maxUploadSizeMBytes = 128;
-		intval(defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : -1);
-		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
-		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
-	}
-
-	public function setMaxUploadSize($sizeMB){
-		$this->maxUploadSizeMBytes = $sizeMB;
-		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
+		$this->maxUploadSizeBytes = (self::getMaxUploadSizeMB()) * 1048576;
+		$this->maxChunkCount = (self::getMaxUploadSizeMB()) * 1024 / self::CHUNK_SIZE;
 	}
 
 	public function setIsDragAndDrop($isDragAndDrop = true){
@@ -97,6 +91,14 @@ abstract class we_fileupload{
 
 	public static function isDragAndDrop(){
 		return !((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera());
+	}
+
+	public static function getMaxUploadSizeMB(){
+		if(self::$maxUploadSizeMB === -1){
+			self::$maxUploadSizeMB = intval(defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0);
+		}
+
+		return self::$maxUploadSizeMB;
 	}
 
 	public function getMaxUploadSize(){

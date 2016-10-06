@@ -290,8 +290,8 @@ function weCheckAC(j){
 // TODO: let we_fileupload deliver fn
 function cancel() {
 	var cf = top.imgimportcontent;
-	if(cf.weFileUpload !== undefined){
-		cf.we_FileUpload.cancelUpload();
+	if(cf.weFileUpload_instance !== undefined){
+		cf.weFileUpload_instance.cancelUpload();
 	} else {
 		top.close();
 	}
@@ -304,8 +304,8 @@ function next() {
 		' . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
 		cf.document.we_startform.submit();
 	} else {
-		if(cf.we_FileUpload !== undefined){
-			cf.we_FileUpload.startUpload();
+		if(cf.weFileUpload_instance !== undefined){
+			cf.weFileUpload_instance.startUpload();
 		} else {
 			alert("what\'s wrong?");
 		}

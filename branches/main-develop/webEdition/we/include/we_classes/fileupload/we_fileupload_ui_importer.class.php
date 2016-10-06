@@ -61,7 +61,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				'cmd' => 'content',
 				'step' => 2
 				]) .
-			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 568, false, 20));
+			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . (we_fileupload::getMaxUploadSizeMB() ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), we_fileupload::getMaxUploadSizeMB())), we_html_tools::TYPE_INFO, 568, false, 20));
 
 		$topParts = [["headline" => "",
 			"html" => $alert]
@@ -69,7 +69,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 		$butBrowse = str_replace(["\n\r", "\r\n", "\r", "\n"], "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn') :
 				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn', false, '', 'importerBrowseHarddisk'));
-		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', true, false, '_btn'));
+		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', true, 0, 0, '', '', true, false, '_btn'));
 		// TODO: get fileselect from parent!
 		$fileselect = '
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
@@ -118,8 +118,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 	protected function _getHtmlFileRow(){
 		$btnTable = new we_html_table(['class' => 'default'], 1, 2);
-		$btnTable->addCol(we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
-		$btnTable->setCol(0, 0, [], we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
+		$btnTable->addCol(we_html_button::create_button(we_html_button::TRASH, "javascript:weFileUpload_instance.deleteRow(WEFORMNUM,this);"));
+		$btnTable->setCol(0, 0, [], we_html_button::create_button(we_html_button::TRASH, "javascript:weFileUpload_instance.deleteRow(WEFORMNUM,this);"));
 		$divBtnSelect = we_html_element::htmlDiv(
 				['class' => 'fileInputWrapper', 'style' => 'overflow:hidden;vertical-align: bottom; display: inline-block;'], we_html_element::htmlInput(['type' => 'file', 'id' => 'fileInput_uploadFiles_WEFORMNUM',
 					'class' => 'fileInput fileInputList fileInputHidden elemFileinput']) .
@@ -221,7 +221,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 							<td class="weFileUploadEntry_size" style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
 							<td style="text-align:middle"><span id="alert_img_WEFORMNUM" style="visibility:hidden;" class="fa-stack fa-lg" style="color:#F2F200;" title=""><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td>
 							<td>
-								' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);") . '
+								' . we_html_button::create_button(we_html_button::TRASH, "javascript:weFileUpload_instance.deleteRow(WEFORMNUM,this);") . '
 							</td>
 							<td>
 								<div class="fileInputWrapper" style="overflow:hidde;vertical-align: bottom; display: inline-block;">
