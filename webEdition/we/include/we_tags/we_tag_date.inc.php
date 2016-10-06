@@ -55,10 +55,10 @@ function getDateWord(f,dateObj){
 	switch(f){
 		case "D":
 			return l_day_Short[dateObj.getDay()];
-		case "F":
-			return l_monthLong[dateObj.getMonth()];
 		case "l":
 			return l_dayLong[dateObj.getDay()];
+		case "F":
+			return l_monthLong[dateObj.getMonth()];
 		case "M":
 			return l_monthShort[dateObj.getMonth()];
 	}
