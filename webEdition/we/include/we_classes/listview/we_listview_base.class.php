@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 abstract class we_listview_base{
-
 	const PROPPREFIX = 'WE_';
 
 	var $DB_WE; /* Main DB Object */
@@ -56,6 +54,7 @@ abstract class we_listview_base{
 	var $id = 0;
 	public $hidedirindex = false; //since $lv->hidedirindex is accessed at output
 	protected $searchable = true;
+	protected static $lvNr = 0;
 
 	/**
 	 * listviewBase()
@@ -73,8 +72,9 @@ abstract class we_listview_base{
 	 *
 	 */
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
+		self::$lvNr++;
 
-		$this->name = $name;
+		$this->name = $name ?: (self::$lvNr);
 		//? strange setting - comes from we_tag_search
 		$this->search = trim(str_replace(['"', '\\"'], '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
 		$this->DB_WE = new DB_WE();
@@ -322,7 +322,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-				], ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
+			], ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
 		if(TAGLINKS_OBJECTSEOURLS && !empty($GLOBALS['WE_MAIN_DOC']->Url) && show_SeoLinks()){
 			$filterArr[] = 'we_objectID';
 			$filterArr[] = 'we_oid';
@@ -553,8 +553,8 @@ abstract class we_listview_base{
 			$calendar_where = '(f.Published>=' . $start_date . ' AND f.Published<=' . $end_date . ') ';
 		} else {
 			$field = ($matrix && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-					CONTENT_TABLE . '.Dat';
+				$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+				CONTENT_TABLE . '.Dat';
 
 			$calendar_select = ',' . $field . ' AS Calendar ';
 			$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
@@ -661,14 +661,14 @@ abstract class we_listview_base{
 
 	public function getListviewRequest($lvname){
 		return
-				(empty($this->contentTypes) ? '' : ('we_lv_ct_' . $lvname . '=' . rawurlencode($this->contentTypes) . '&amp;')) .
-				($this->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($this->order) . '&amp;') : '') .
-				($this->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($this->desc) . '&amp;') : '') .
-				($this->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($this->cats) . '&amp;') : '') .
-				($this->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($this->catOr) . '&amp;') : '') .
-				($this->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($this->workspaceID) . '&amp;') : '') .
-				((isset($this->searchable) && !$this->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
-				(!empty($this->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($this->condition) . '&amp;') : '');
+			(empty($this->contentTypes) ? '' : ('we_lv_ct_' . $lvname . '=' . rawurlencode($this->contentTypes) . '&amp;')) .
+			($this->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($this->order) . '&amp;') : '') .
+			($this->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($this->desc) . '&amp;') : '') .
+			($this->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($this->cats) . '&amp;') : '') .
+			($this->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($this->catOr) . '&amp;') : '') .
+			($this->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($this->workspaceID) . '&amp;') : '') .
+			((isset($this->searchable) && !$this->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
+			(!empty($this->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($this->condition) . '&amp;') : '');
 	}
 
 }
