@@ -23,13 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-(function (win) {
-	win.we_FileUpload_addListeners = false;
-	win.addEventListener('load', function () {
-		win.we_FileUpload_addListeners = true;
-	}, false);
-})(window);
-
 window.initObj = WE().util.getDynamicVar(document, 'loadVarWeFileUpload_init', 'data-initObject');
 window.weFileUpload_instance = new WE().layout.weFileUpload(window.initObj.uiType, window);
 window.weFileUpload_instance.init(window.initObj);
