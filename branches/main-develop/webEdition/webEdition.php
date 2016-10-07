@@ -239,27 +239,25 @@ echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEDat
 	'data-session' => setDynamicVar($session),
 	'data-consts' => setDynamicVar($const),
 ]) .
-	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
-	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
-	YAHOO_FILES .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
-	we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
-	we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
-	we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
-	we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
-	we_html_element::jsScript(JS_DIR . 'weButton.js') .
-	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
-	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-
-	we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
-	we_html_element::jsScript(LIB_DIR. 'additional/ExifReader/ExifReader.js') .
-	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksEncode/index.js') .
-	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksExtract/index.js') .
-	we_html_element::jsScript(LIB_DIR. 'additional/pngChunksExtract/crc32.js') .
-	we_html_element::jsScript(LIB_DIR. 'additional/pica/pica.js') .
-
-	we_main_headermenu::css() .
-	we_html_element::cssLink(CSS_DIR . 'sidebar.css');
+ we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
+ we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
+ YAHOO_FILES .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
+ we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
+ we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+ we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+ we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+ we_html_element::jsScript(JS_DIR . 'weButton.js') .
+ we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
+ we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+ we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
+ we_main_headermenu::css() .
+ we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);
@@ -320,7 +318,68 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 			}
 			?>
 			<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
-				<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+				<div id="vtabs"><?php
+					$vtab = [
+						'FILE_TABLE' => [
+							'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'),
+							'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
+						],
+						'TEMPLATES_TABLE' => [
+							'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
+							'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
+						],
+						'OBJECT_FILES_TABLE' => [
+							'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
+							'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
+						],
+						'OBJECT_TABLE' => [
+							'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
+							'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
+						],
+						'VFILE_TABLE' => [
+							'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS"),
+							'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
+						]
+					];
+					foreach($vtab as $tab => $val){
+						if($val['show']){
+							echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
+						}
+					}
+					?>
+					<div id="baumArrows">
+						<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.inc();"><i class="fa fa-plus"></i></div>
+						<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.dec();"><i class="fa fa-minus"></i></div>
+					</div>
+				</div>
+				<div id="treeFrameDiv">
+					<div id="treeControl">
+						<span id="treeName" class="middlefont"></span>
+						<span id="reloadTree" onclick="we_cmd('loadVTab', top.treeData.table, 0);"><i class="fa fa-refresh"></i></span>
+						<span id="toggleTree" onclick="WE().layout.tree.toggle();" title="<?= g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?= ($treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
+					</div>
+					<div id="treeContent">
+						<div id="bm_treeheaderDiv">
+							<iframe src="about:blank" name="treeheader"></iframe>
+						</div>
+						<?php
+						$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
+						echo $Tree->getHTMLConstruct();
+						?>
+						<div id="bm_searchField">
+							<div id="infoField" class="defaultfont"></div>
+							<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
+									return false;">
+								<div id="search">
+									<?php
+									echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
+									we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);");
+									?>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
 				<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
