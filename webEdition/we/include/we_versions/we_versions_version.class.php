@@ -1258,8 +1258,10 @@ class we_versions_version{
 												foreach($vl as $k => $v){
 													$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-												foreach($lastEntryField[$k] as $k => $v){
+												if(!empty($lastEntryField[$k])){
+													foreach($lastEntryField[$k] as $k => $v){
 													$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
+												}
 												}
 												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
 												if(!empty($diffs)){
