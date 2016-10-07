@@ -221,13 +221,13 @@ abstract class we_newsletter_util{
 								$lists[] = $p;
 							}
 						} else {
-							t_e('newsletter file not found');
+							t_e('newsletter file unable to read', $p, $realPath);
 							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 							return;
 						}
 					} else {
-						t_e('newsletter file not found');
+						t_e('newsletter file not found', $p, $realPath);
 						$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 						$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 						return;
