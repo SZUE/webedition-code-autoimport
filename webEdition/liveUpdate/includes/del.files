@@ -1,10 +1,3 @@
-js/we_modules/customer/customer_treeHeader.js
-js/we_lcmd.js
-!rpc/views/json/customer
-!rpc/views/json/widgets
-rpc/views/json/rpcSelectorGetSelectedIdView.class.php
-rpc/views/text/rpcSelectorGetSelectedIdView.class.php
-rpc/views/json/rpcHelloView.class.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -51,6 +44,7 @@ we/include/we_widgets/dlg/msg.inc.php
 we/include/we_widgets/dlg/mfd.inc.php
 we/include/we_widgets/dlg/mdc.inc.php
 we/include/we_widgets/cmd.php
+we/include/we_vtabs.inc.php
 we/include/we_versions/we_versions_logBase.class.php
 we/include/we_versions/we_editor_versions.inc.php
 we/include/we_versions/weVersionsView.class.php
@@ -691,6 +685,7 @@ we/include/home_rss.inc.php
 we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php
+we/include/baumFrame.inc.php
 we/include/accessibility/checkDocument.inc.php
 treeMainModules.php
 treeMain.php
@@ -698,7 +693,10 @@ treeInfo.php
 sysinfo.php
 stay_alive.php
 showDoc.php
+rpc/views/text/rpcSelectorGetSelectedIdView.class.php
 rpc/views/json/widgets/rpcGetRssView.class.php
+rpc/views/json/rpcSelectorGetSelectedIdView.class.php
+rpc/views/json/rpcHelloView.class.php
 rpc/views/json/rpcGetNaviItemsView.class.php
 rpc/views/json/customer/rpcGetUpdateDocumentCustomerFilterQuestionView.class.php
 rpc/rpcRoot.inc.php
@@ -777,7 +775,9 @@ js/we_tabs/images.js
 js/we_showMessage.js
 js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
+js/we_modules/customer/customer_treeHeader.js
 js/we_modules/banner/banner_cmd.js
+js/we_lcmd.js
 js/we_editor_collectionContent.js
 js/we_colors.js
 js/weValidate.js
@@ -1095,6 +1095,8 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/java_menu
 !we/include/fonts
 !sidebar/img
+!rpc/views/json/widgets
+!rpc/views/json/customer
 !rpc/cmds/tools/navigation
 !rpc/base
 !multiEditor
