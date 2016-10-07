@@ -748,7 +748,7 @@ class we_objectFile extends we_document{
 		}
 		$table = OBJECT_FILES_TABLE;
 
-		$editObjectButton = we_html_button::create_button(we_html_button::VIEW, ($myid ? "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');" : ''), true, 0, 0, '', '', ($myid ? false : true));
+		$editObjectButton = we_html_button::create_button(we_html_button::VIEW, ($myid ? "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');" : ''), '', 0, 0, '', '', ($myid ? false : true));
 		$inputWidth = 443;
 		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$uniq = md5(uniqid(__FUNCTION__, true));
@@ -815,9 +815,9 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
 		$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','" . $wecmdenc3 . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')');
 
-		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . VFILE_TABLE . "');", true, 0, 0, "", "", false, false);
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . VFILE_TABLE . "');", '', 0, 0, "", "", false, false);
 
-		$btnEdit = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), true, 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
+		$btnEdit = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), '', 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
 
 		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
@@ -861,7 +861,7 @@ class we_objectFile extends we_document{
 			list($rootDir, $rootDirPath) = getHash('SELECT of.ID,of.Path FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . OBJECT_TABLE . ' o ON of.Path=o.Path WHERE of.IsClassFolder=1 AND o.ID=' . intval($classid), $db, MYSQL_NUM);
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
-			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
+			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", '', 0, 0, "", "", true);
 
 			$openCloseButton = $reloadEntry = '';
 
@@ -896,12 +896,12 @@ class we_objectFile extends we_document{
 				$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(top.fileSelect.data.currentID==" . $this->ID . "){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['" . $idname . "'].value='';opener.document.we_form.elements['" . $textname . "'].value='';};" . $reloadEntry) . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$upbutDis = we_html_button::create_button(we_html_button::DIRUP, "#", true, 0, 0, "", "", true);
+				$upbutDis = we_html_button::create_button(we_html_button::DIRUP, "#", '', 0, 0, "", "", true);
 				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$downbutDis = we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true);
+				$downbutDis = we_html_button::create_button(we_html_button::DIRDOWN, "#", '', 0, 0, "", "", true);
 
 				$plusbut = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$plusbutDis = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "#", true, 0, 0, "", "", true);
+				$plusbutDis = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "#", '', 0, 0, "", "", true);
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 
 				$buttontable = $selectObject .
@@ -1319,9 +1319,9 @@ class we_objectFile extends we_document{
 			($thumbID ?
 			'<img src="' . $imgSrc . '" ' . ($imgHeight ? 'style="height:' . $imgHeight . 'px;width:' . $imgWight . 'px"' : '') . '/>' :
 			$img->getHtml()) .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id ?: 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
+			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id ?: 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", '', 0, 0, '', '', ($id ? false : true)) .
 			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ?: (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();", true, 0, 0, '', '', ($id ? false : true));
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();", '', 0, 0, '', '', ($id ? false : true));
 	}
 
 	private function getBinaryHTML($type, $name, array $attribs, $editable = true){

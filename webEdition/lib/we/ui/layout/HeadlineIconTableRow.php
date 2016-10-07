@@ -103,9 +103,9 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 		if($this->_isFoldable){
 			$this->_leftWidth = 700;
 			if($this->_isFolded){
-				$folderHTML = we_html_button::create_button('fa:, fa-lg fa-caret-right', '', true, 0, 0, 'd = document.getElementById(\'' . $divID . '\'); btn = document.getElementById(\'' . $imgID . '\').firstChild; if(d.style.display == \'none\'){d.style.display = \'block\'; btn.classList.remove("fa-caret-right"); btn.classList.add("fa-caret-down");} else {d.style.display = \'none\'; btn.classList.remove("fa-caret-down"); btn.classList.add("fa-caret-right");}', '', false, false, '', false, 'open', $class = 'clipbutton', $imgID);
+				$folderHTML = we_html_button::create_button('fa:, fa-lg fa-caret-right', '', '', 0, 0, 'd = document.getElementById(\'' . $divID . '\'); btn = document.getElementById(\'' . $imgID . '\').firstChild; if(d.style.display == \'none\'){d.style.display = \'block\'; btn.classList.remove("fa-caret-right"); btn.classList.add("fa-caret-down");} else {d.style.display = \'none\'; btn.classList.remove("fa-caret-down"); btn.classList.add("fa-caret-right");}', '', false, false, '', false, 'open', $class = 'clipbutton', $imgID);
 			} else {
-				$folderHTML = we_html_button::create_button('fa:, fa-lg fa-caret-down', '', true, 0, 0, 'd = document.getElementById(\'' . $divID . '\'); btn = document.getElementById(\'' . $imgID . '\').firstChild; if(d.style.display == \'none\'){d.style.display = \'block\'; btn.classList.remove("fa-caret-right"); btn.classList.add("fa-caret-down");} else {d.style.display = \'none\'; btn.classList.remove("fa-caret-down"); btn.classList.add("fa-caret-right");}', '', false, false, '', false, 'open', $class = 'clipbutton', $imgID);
+				$folderHTML = we_html_button::create_button('fa:, fa-lg fa-caret-down', '', '', 0, 0, 'd = document.getElementById(\'' . $divID . '\'); btn = document.getElementById(\'' . $imgID . '\').firstChild; if(d.style.display == \'none\'){d.style.display = \'block\'; btn.classList.remove("fa-caret-right"); btn.classList.add("fa-caret-down");} else {d.style.display = \'none\'; btn.classList.remove("fa-caret-down"); btn.classList.add("fa-caret-right");}', '', false, false, '', false, 'open', $class = 'clipbutton', $imgID);
 			}
 		} else {
 			$folderHTML = '';

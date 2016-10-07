@@ -59,7 +59,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 		return parent::printHeaderTable($weCmd, '<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
 					'makefolderState' => $makefolderState
 				]) .
-				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", '', 0, 0, "", "", $makefolderState ? false : true) .
 				'</td>');
 	}
 

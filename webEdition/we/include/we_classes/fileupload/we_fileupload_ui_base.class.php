@@ -173,20 +173,22 @@ class we_fileupload_ui_base extends we_fileupload{
 						'id' => $this->name,
 						'accept' => trim($this->typeCondition['accepted']['all'], ','),
 						]);
-				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', '', 0, 0, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
 				return we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'], $fileInput . $btn
 				);
 			case 'reset':
-				$btn = we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return $notWrapped ? $btn : we_html_element::htmlDiv(['id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'], $btn);
 
 			case 'upload':
-				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$js = 'top.' . ($this->externalUiElements['contentName'] ? $this->externalUiElements['contentName'] . '.' : '') . 'weFileUpload_instance.startUpload();';
+				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $js, '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'], $btn);
 
 			case 'cancel':
-				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$js = 'top.' . ($this->externalUiElements['contentName'] ? $this->externalUiElements['contentName'] . '.' : '') . 'weFileUpload_instance.cancelUpload();';
+				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $js, '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'], $btn);
 		}
 	}
@@ -272,13 +274,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 	
 	public function getJs(){
-		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
-		if($this->externalProgress['create']){
-			$progressbar = new we_progressBar(0, $this->externalProgress['width'], $this->externalProgress['name']);
-			$this->externalProgress['html'] = str_replace(["\r", "\n"], '', $progressbar->getHTML());
-		}
-
-		return we_html_element::jsScript(JS_DIR . 'weFileUpload_init.js', '', ['id' => 'loadVarWeFileUpload_init', 'data-initObject' => setDynamicVar($this->getJSDynamic())]);// .
+		return we_html_element::jsScript(JS_DIR . 'weFileUpload_init.js', '', ['id' => 'loadVarWeFileUpload_init', 'data-initObject' => setDynamicVar($this->getJSDynamic())]);
 	}
 
 	public function getJSDynamic(){
@@ -351,19 +347,4 @@ WE().consts.g_l.fileupload = {
 		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
 };';
 	}
-
-	public function getJsBtnCmd($btn = 'upload'){
-		return self::getJsBtnCmdStatic($btn, $this->externalUiElements['contentName'], $this->callback);
-	}
-
-	/* obsolete: when weFileUpload_instance is undefined we have an error and need no callback anymore */
-	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
-		//FIXME: still need direct callback
-		$win = $contentName ? 'top.' . $contentName . '.' : '';
-		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
-		$call = $win . 'weFileUpload_instance.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
-
-		return 'if(' . $win . 'weFileUpload_instance === undefined){' . $callback . ';}else{' . $call . ';}';
-	}
-
 }

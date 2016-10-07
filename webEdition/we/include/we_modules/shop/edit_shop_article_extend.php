@@ -266,7 +266,7 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 					array(
 						'html' => '<table style="width:100%">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
-						'<tr><td class="defaultfont">' . we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
+						'<tr><td class="defaultfont">' . we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
 					)
 				);

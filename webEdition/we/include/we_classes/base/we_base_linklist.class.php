@@ -475,10 +475,10 @@ class we_base_linklist{
 			} else {
 				// Create button object
 				// Create buttons
-				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('up_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
-				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('down_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
-				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('edit_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true);
-				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('delete_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "','')", true);
+				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('up_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", '', 0, 0, "", "", !($this->cnt > 0));
+				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('down_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", '', 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
+				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('edit_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')");
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('delete_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "','')");
 				echo $plusbut . $upbut . $downbut . $editbut . $trashbut . '<br/>';
 			}
 		}

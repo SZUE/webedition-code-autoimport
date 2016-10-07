@@ -72,7 +72,7 @@ $yuiSuggest->setContainerWidth(300);
 $cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
 
 $yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements." . $idname . ".value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 6);
-$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
+$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", '', 0, 0, "", "", false, false), 0);
 $weAcSelector = $yuiSuggest->getHTML();
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 

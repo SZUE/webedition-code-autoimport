@@ -258,7 +258,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 	private function getButtons(){
 		$bodyAttribs = array('class' => "weDialogButtonsBody");
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", '', 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");
 
 		$js = we_html_element::jsElement('
@@ -312,9 +312,9 @@ function next() {
 	}
 
 }');
-		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false);
-		$prevButton2 = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false, false);
-		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
+		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, "", "", false);
+		$prevButton2 = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, "", "", false, false);
+		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, "", "", $this->step > 0, false);
 
 		// TODO: let we_fileupload set pb
 		$pb = new we_progressBar(0, 200);

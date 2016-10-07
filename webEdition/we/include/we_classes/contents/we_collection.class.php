@@ -435,7 +435,7 @@ class we_collection extends we_root{
 		$idname = 'we_' . $item['name'] . '_ItemID_' . $item['index'];
 
 		$btnEdit = we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit');
-		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', true, 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree');
+		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree');
 
 		$yuiSuggest->setTable($item['remTable']);
 		$yuiSuggest->setContentType('folder,' . $item['remCT']);
@@ -455,8 +455,8 @@ class we_collection extends we_root{
 
 		$btnSelect =we_html_button::create_button(we_html_button::SELECT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnSelect');
 		$btnAdd = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnAdd');
-		$btnUp = we_html_button::create_button(we_html_button::DIRUP, '', true, 0, 0, '', '', false, true, '', false, '', 'btn_up collectionItem_btnUp');
-		$btnDown = we_html_button::create_button(we_html_button::DIRDOWN, '', true, 0, 0, '', '', false, true, '', false, '', 'btn_down collectionItem_btnDown');
+		$btnUp = we_html_button::create_button(we_html_button::DIRUP, '', '', 0, 0, '', '', false, true, '', false, '', 'btn_up collectionItem_btnUp');
+		$btnDown = we_html_button::create_button(we_html_button::DIRDOWN, '', '', 0, 0, '', '', false, true, '', false, '', 'btn_down collectionItem_btnDown');
 		$btnRemove = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnTrash');
 
 		$rowControlls = $btnAdd . $btnUp . $btnDown . $btnRemove;

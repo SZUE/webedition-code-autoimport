@@ -459,9 +459,9 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 			"cmd" => "home",
 			'pnt' => 'edbody'
 		);
-		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
+		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
 			'<br/>' .
-			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
+			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
 
 		return parent::getActualHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}

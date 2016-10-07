@@ -116,7 +116,7 @@ abstract class we_html_multiIconBox{
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){
 		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");') .
-			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", true, 0, 0, '', '', false, true, $name, false, $title);
+			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", '', 0, 0, '', '', false, true, $name, false, $title);
 	}
 
 }

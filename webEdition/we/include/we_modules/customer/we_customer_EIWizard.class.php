@@ -948,19 +948,19 @@ function callBack(){
 			case "1":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 				break;
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_back&step=" . $step . "';") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';", true, 0, 0, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body'))
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';", '', 0, 0, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.body.weFileUpload_instance.cancelUpload();')
 				);
 				break;
 			case "5":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
@@ -1196,10 +1196,10 @@ function doNext(){
 	if(top.body.document.we_form.step.value === "2" &&
 			top.body.weFileUpload_instance !== undefined &&
 			top.body.document.we_form.import_from[1].checked){
-		' . we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
-		return;
-	}
-	doNextAction();
+				top.body.weFileUpload_instance.startUpload()
+				return;
+			}
+			doNextAction();
 }
 ');
 
@@ -1468,7 +1468,7 @@ top.customers="' . implode(',', $customers) . '";');
 				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")]);
 
 
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", '', 0, 0, "", "", ($customers ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer')");
 		$custs = new we_chooser_multiDir(400, ($customers ? : []), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 

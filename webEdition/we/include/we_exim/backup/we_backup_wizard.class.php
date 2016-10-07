@@ -658,10 +658,8 @@ function press_yes() {
 						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 3:
-						//FIXME: delete condition when new uploader is stable
-						//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
-						$startImportCall = we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
-						$cancelCall = we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body');
+						$startImportCall = 'top.body.weFileUpload_instance.startUpload()';
+						$cancelCall = 'top.body.weFileUpload_instance.cancelUpload()';
 
 						if(defined('WORKFLOW_TABLE')){
 							$db = new DB_WE();

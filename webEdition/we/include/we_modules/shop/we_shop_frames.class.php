@@ -64,8 +64,8 @@ class we_shop_frames extends we_modules_frame{
 		$c = 0;
 		$iconBarTable = new we_html_table(array('class' => 'iconBar'), 1, 4);
 
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_extArt,fa-lg fa-cart-plus', "javascript:top.opener.top.we_cmd('new_article')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_delOrd,fa-lg fa-shopping-cart,fa-lg fa-trash-o', "javascript:top.opener.top.we_cmd('delete_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_extArt,fa-lg fa-cart-plus', "javascript:top.opener.top.we_cmd('new_article')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_delOrd,fa-lg fa-shopping-cart,fa-lg fa-trash-o', "javascript:top.opener.top.we_cmd('delete_shop')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($resultD){
 			$iconBarTable->addCol();
@@ -75,8 +75,8 @@ class we_shop_frames extends we_modules_frame{
 			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_sum,fa-lg fa-line-chart', "javascript:top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_payment_val,fa-lg fa-long-arrow-right,fa-lg fa-money', "javascript:top.opener.top.we_cmd('payment_val')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_payment_val,fa-lg fa-long-arrow-right,fa-lg fa-money', "javascript:top.opener.top.we_cmd('payment_val')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($headline){
 			$iconBarTable->addCol();

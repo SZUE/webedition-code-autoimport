@@ -463,8 +463,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
 
-		$createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
-		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
+		$createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", '', 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
+		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", '', 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 		$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
 		return parent::getActualHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));

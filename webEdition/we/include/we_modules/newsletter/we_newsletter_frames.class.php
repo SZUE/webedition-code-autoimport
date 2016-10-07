@@ -1343,12 +1343,12 @@ window.onload=extraInit;');
 
 	function getHTMLUploadCsv($what){
 		$weFileupload = new we_fileupload_ui_base('we_File');
-		$weFileupload->setCallback("we_cmd('do_" . $what . "');");
+		$weFileupload->setNextCmd('do_' . $what);
 		$weFileupload->setExternalProgress(['isExternalProgress' => true]);
 		$weFileupload->setExternalUiElements(['btnUploadName' => 'upload_footer']);
 		$weFileupload->setDimensions(['width' => 330, 'marginTop' => 6]);
-		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
-		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, 0, 0, '', '', false, false, '_footer');
+		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:weFileUpload_instance.cancelUpload();");
+		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:weFileUpload_instance.startUpload();", '', 0, 0, '', '', false, false, '_footer');
 
 		$buttons = $cancel . $upload;
 		$footerTable = new we_html_table(['class' => 'default', 'style' => 'width:100%;'], 1, 2);

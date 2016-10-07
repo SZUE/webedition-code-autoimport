@@ -173,7 +173,7 @@ function build_dialog($selected_setting = 'ui'){
 <td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>';
 					$row1 = '<td style="width:210px;padding-right:5px;">' . we_html_tools::htmlTextInput('tag[' . $key . ']', 24, $value['tagname'], 255, "", "text", 205, 0, '', true) . '</td>
 <td style="width:200px;">' . we_html_tools::htmlSelect('type[' . $key . ']', $metadata_types, 1, $value['type'], false, ['class' => "defaultfont", "disabled" => "disabled"]) . '</td>
-<td style="text-align:right;width:30px;">' . we_html_element::htmlHiddens(['metadataTag[' . $key . ']' => $value['tag'], 'metadataType[' . $key . ']' => $value['type']]) . we_html_button::create_button(we_html_button::TRASH, '', true, 0, 0, '', '', true) . '</td>';
+<td style="text-align:right;width:30px;">' . we_html_element::htmlHiddens(['metadataTag[' . $key . ']' => $value['tag'], 'metadataType[' . $key . ']' => $value['type']]) . we_html_button::create_button(we_html_button::TRASH, '', '', 0, 0, '', '', true) . '</td>';
 					$row2 = '<td colspan="3" style="padding-bottom:6px;">' . we_html_element::htmlHidden('metadataImportFrom[' . $key . ']', '') . '</td>';
 				}
 

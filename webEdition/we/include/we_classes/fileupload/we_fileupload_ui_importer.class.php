@@ -67,9 +67,9 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 			"html" => $alert]
 		];
 
-		$butBrowse = str_replace(["\n\r", "\r\n", "\r", "\n"], "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn') :
-				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn', false, '', 'importerBrowseHarddisk'));
-		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', true, 0, 0, '', '', true, false, '_btn'));
+		$butBrowse = str_replace(["\n\r", "\r\n", "\r", "\n"], "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', '', 0, 0, '', '', false, false, '_btn') :
+				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', '', 0, 0, '', '', false, false, '_btn', false, '', 'importerBrowseHarddisk'));
+		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', '', 0, 0, '', '', true, false, '_btn'));
 		// TODO: get fileselect from parent!
 		$fileselect = '
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
@@ -141,11 +141,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		 *
 		 */
 
-		$quality = we_html_element::htmlDiv(['class' => 'qualityInputContainer'], we_html_element::htmlInput(['disabled' => true, 'class' => 'optsQuality', 'type' => 'range',
-					'title' => 'test', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'oninput' => 'this.parentNode.nextSibling.innerHTML = this.value', 'name' => 'fuOpts_quality']) .
-				we_html_element::htmlDiv(['class' => 'qualityValueContainer'], 100)
-		);
-
 		$optsCheckbox = we_html_forms::checkbox(0, false, 'fuOpts_useCustomOpts', 'Eigene Einstellungen'/* . g_l('importFiles', '[edit_useGlobalOpts]')*/, true, 'defaultfont');
 
 		$scaleValue = we_html_tools::htmlTextInput('fuOpts_scale', 11, '', '', 'class="optsScaleInput optsScaleInput_row"', "text", 0, 0, '', true);
@@ -179,7 +174,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$divOptopnsRight = we_html_element::htmlDiv(['class' => 'optsRight' . (we_base_browserDetect::isIE() ? ' optsRightIE' : '')], we_html_element::htmlDiv(['class' => 'optsRightTop'], $divOptsScale) .
 				we_html_element::htmlDiv(['class' => 'optsRightBottom'], $divOptsQuality)
 		);
-		$divBtnRefresh = we_html_element::htmlDiv(['class' => 'btnRefresh'], we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
+		$divBtnRefresh = we_html_element::htmlDiv(['class' => 'btnRefresh'], we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", '', 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
 
 		return str_replace(["\r", "\n"], "", we_html_element::htmlDiv(['class' => 'importerElem'], we_html_element::htmlDiv(['class' => 'weMultiIconBoxHeadline elemNum'], 'Nr. WE_FORM_NUM') .
 		we_html_element::htmlDiv(['class' => 'elemContainer'],
