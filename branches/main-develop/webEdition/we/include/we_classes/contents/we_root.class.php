@@ -385,7 +385,7 @@ abstract class we_root extends we_class{
 
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('users_del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('users_del_all_owners','')", '', 0, 0, "", "", $this->Owners ? false : true);
 		$addbut = $canChange ?
 			we_html_element::htmlHiddens([$idname => '', $textname => '']) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $textname . "','','" . $idname . "','users_add_owner','','',1);") : "";
 

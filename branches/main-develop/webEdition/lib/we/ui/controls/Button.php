@@ -622,7 +622,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 		$dimensions = array('width' => $this->getWidth(), 'height' => 0 /* $this->getHeight()*/);
 
 		//FIXME: make css
-		return we_html_element::htmlDiv(array('style' => 'margin: ' . $this->_margin . ';'), we_html_button::create_button($this->getButtonContent(), $this->getHref(), true, 0, 0, $this->getOnClick(), $this->getTarget(), $this->getDisabled(), false, '', false, $this->getTitle(), $this->getClass(), $this->getId(), $this->_isTextReady, array_filter($dimensions)));
+		return we_html_element::htmlDiv(array('style' => 'margin: ' . $this->_margin . ';'), we_html_button::create_button($this->getButtonContent(), $this->getHref(), '', 0, 0, $this->getOnClick(), $this->getTarget(), $this->getDisabled(), false, '', false, $this->getTitle(), $this->getClass(), $this->getId(), $this->_isTextReady, array_filter($dimensions)));
 	}
 
 }

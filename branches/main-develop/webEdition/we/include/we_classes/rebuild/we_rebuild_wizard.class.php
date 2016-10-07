@@ -52,7 +52,7 @@ abstract class we_rebuild_wizard{
 		$pb = $WE_PB->getHTML();
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
-		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
+		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", '', 0, 0, "", "", false, false);
 
 		$nextbutdisabled = !(permissionhandler::hasPerm(["REBUILD_ALL", "REBUILD_FILTERD", "REBUILD_OBJECTS", "REBUILD_INDEX", "REBUILD_THUMBS", "REBUILD_META"]));
 
@@ -60,8 +60,8 @@ abstract class we_rebuild_wizard{
 			$buttons = $refreshButton . $cancelButton;
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $buttons);
 		} else {
-			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
-			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
+			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
+			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = we_html_element::htmlSpan(["id" => "prev", "style" => "padding-left:10px;text-align:right"], $prevButton) .
 				we_html_element::htmlSpan(["id" => "next", "style" => "padding-left:10px;text-align:right"], $nextButton) .

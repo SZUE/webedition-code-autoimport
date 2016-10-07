@@ -1236,7 +1236,7 @@ switch (args[0]) {
 				"cat" => we_base_request::_(we_base_request::RAW, "cat", "")]);
 
 
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')", '', 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$cats = new we_chooser_multiDir(350, $this->exportVars["categories"], "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 

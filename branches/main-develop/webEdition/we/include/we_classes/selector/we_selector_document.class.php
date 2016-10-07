@@ -212,8 +212,8 @@ class we_selector_document extends we_selector_directory{
 			case FILE_TABLE:
 				$extra = '<td>' .
 					($this->filter && isset($this->ctb[$this->filter]) ?
-						we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
-						(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+						we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+						(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
 							'')
 					) .
 					'</td>' .
@@ -221,7 +221,7 @@ class we_selector_document extends we_selector_directory{
 				break;
 
 			case VFILE_TABLE:
-				$extra = '<td>' . we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') . '</td>';
+				$extra = '<td>' . we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') . '</td>';
 				break;
 		}
 		return parent::printHeaderTable($weCmd, $extra, true);

@@ -56,7 +56,7 @@ class we_voting_dirSelector extends we_selector_directory{
 		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
 		$weCmd->addCmd('updateSelectData', ['makefolderState' => $makefolderState]);
 		return parent::printHeaderTable($weCmd, '<td>' .
-				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", '', 0, 0, "", "", $makefolderState ? false : true) .
 				'</td>');
 	}
 

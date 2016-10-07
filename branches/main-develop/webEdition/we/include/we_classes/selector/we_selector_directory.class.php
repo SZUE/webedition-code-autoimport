@@ -249,9 +249,9 @@ class we_selector_directory extends we_selector_file{
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select>' .
 			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
-		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
-		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:if(top.fileSelect.data.rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-				($append || !$extra ? '<td>' . we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false, '', false, '', '', 'btn_new_dir') . '</td>' : '') .
+		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", '', 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
+		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:if(top.fileSelect.data.rootDirButsState){top.goBackDir();}", '', 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
+				($append || !$extra ? '<td>' . we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.drawNewFolder();", '', 0, 0, '', '', !$this->userCanMakeNewDir(), false, '', false, '', '', 'btn_new_dir') . '</td>' : '') .
 				($extra? : '') :
 				''
 			) . '

@@ -188,14 +188,6 @@ switch($mod){
 				break;
 		}
 
-		/* switch($ncmd){
-		  case 'do_upload_csv':
-		  case 'do_upload_black':
-		  break;
-		  default:
-		  echo $weFrame->getHTMLDocumentHeader($what, $mode);
-		  } */
-
 		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
 			$weFrame->View->newsletter = new we_newsletter_newsletter($id);
 		} else {

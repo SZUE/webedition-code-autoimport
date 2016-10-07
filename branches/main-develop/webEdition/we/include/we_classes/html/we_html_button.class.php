@@ -114,8 +114,13 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $htmlName = "", $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
+	static function create_button($name, $href, $htmlName = '', $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
 		$cmd = '';
+
+		if($htmlName === true){
+			$htmlName = '';
+			t_e("we_html_button::create_button: $htmlName = true => change to ''");
+		}
 
 		restart:
 		$all = explode(':', $name, 2);

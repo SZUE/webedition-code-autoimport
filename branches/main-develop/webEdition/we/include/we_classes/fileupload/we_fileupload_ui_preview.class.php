@@ -144,7 +144,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				90 => g_l('weClass', '[rotate90r]'),
 				], 1, 0, false, ($disabled ? ['disabled' => 'disabled'] : []), '28', 0, 'weSelect optsRotateSelect' . ($multimport ? ' multiimport' : ''));
 		$quality = we_html_element::htmlInput(['type' => 'range', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality', 'class' => 'optsQuality']);
-		$btnProcess = we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh');
+		$btnProcess = we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", '', 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv([], $editCheckbox) .
 			we_html_element::htmlDiv(['class' => 'imgEditOpts', 'id' => 'editImage'], we_html_element::htmlDiv(['class' => 'scaleDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[scale_label]') . ':') .
@@ -443,12 +443,6 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		];
 
 		return !empty($this->formElements[$formname]['noline']) ? array_merge($row, ['noline' => true]) : $row;
-	}
-
-	public function getJsBtnCmd($btn = 'upload'){
-		$call = 'window.weFileUpload_instance.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
-
-		return 'if(window.weFileUpload_instance === undefined){alert("what\'s wrong?");}else{' . $call . ';}';
 	}
 
 	public function setIsExternalBtnUpload($isExternal){

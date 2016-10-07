@@ -870,11 +870,11 @@ class we_object extends we_document{
 						we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") .
 						(($f > 0) ?
 						we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
-						we_html_button::create_button(we_html_button::DIRUP, "#", true, 0, 0, "", "", true)
+						we_html_button::create_button(we_html_button::DIRUP, "#", '', 0, 0, "", "", true)
 						) .
 						(($f < ($this->getElement($name . 'count', 'dat', 0))) ?
 						we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
-						we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true)
+						we_html_button::create_button(we_html_button::DIRDOWN, "#", '', 0, 0, "", "", true)
 						) .
 						we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") .
 						'</td></tr>';
@@ -1128,7 +1128,7 @@ class we_object extends we_document{
 
 		$btnDelete = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
 
-		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", true, 0, 0, "", "", false, false);
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", '', 0, 0, "", "", false, false);
 
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht...
@@ -1278,7 +1278,7 @@ class we_object extends we_document{
 
 		$textname = 'we_' . $this->Name . '_input[' . $name . 'usertext]';
 		$idname = 'we_' . $this->Name . '_input[' . $name . 'userid]';
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", ($users ? false : true));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", '', 0, 0, "", "", ($users ? false : true));
 		$addbut = we_html_element::htmlHiddens([$idname => 0, $textname => ""]) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'" . $textname . "','','" . $idname . "','opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.fileSelect.data.allIDs.join(\\',\\'),\\'" . $name . "\\')','','',1)");
 
 		return '<table class="default"><tr><td>' .
@@ -1312,7 +1312,7 @@ class we_object extends we_document{
 
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','')", true, 0, 0, "", "", $this->Users ? false : true);
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','')", '', 0, 0, "", "", $this->Users ? false : true);
 //FIXME: bad encoded field!
 		$addbut = $canChange ?
 			we_html_element::htmlHiddens([$idname => "", $textname => ""]) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'" . $textname . "','',document.we_form.elements['" . $idname . "'].value,'users_add_user','','',1)") : '';

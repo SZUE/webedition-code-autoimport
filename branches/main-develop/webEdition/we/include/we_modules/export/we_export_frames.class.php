@@ -727,7 +727,7 @@ if (top.content.editor.edbody.addLog){
 				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")));
 
 
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", '', 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')");
 
 		$cats = new we_chooser_multiDir(520, $this->View->export->Categorys, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
