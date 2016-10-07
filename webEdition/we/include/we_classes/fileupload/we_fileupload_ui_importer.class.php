@@ -54,6 +54,10 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css');
 	}
+	
+	public function getJs(){
+		return parent::getJs() . we_html_multiIconBox::getDynJS('uploadFiles');
+	}
 
 	public function getHTML($hiddens = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;

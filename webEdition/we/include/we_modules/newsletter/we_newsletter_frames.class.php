@@ -1344,19 +1344,21 @@ window.onload=extraInit;');
 	function getHTMLUploadCsv($what){
 		$weFileupload = new we_fileupload_ui_base('we_File');
 		$weFileupload->setNextCmd('do_' . $what);
-		$weFileupload->setExternalProgress(['isExternalProgress' => true]);
+		$weFileupload->setExternalProgress(['isExternalProgress' => true, 'name' => 'fu_extProgress_we_File', 'parentElemId' => 'progressbar']);
 		$weFileupload->setExternalUiElements(['btnUploadName' => 'upload_footer']);
 		$weFileupload->setDimensions(['width' => 330, 'marginTop' => 6]);
+
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:weFileUpload_instance.cancelUpload();");
 		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:weFileUpload_instance.startUpload();", '', 0, 0, '', '', false, false, '_footer');
-
 		$buttons = $cancel . $upload;
+
+		$pb = new we_progressBar(0, 120, 'fu_extProgress_we_File');
+
 		$footerTable = new we_html_table(['class' => 'default', 'style' => 'width:100%;'], 1, 2);
-		$footerTable->setCol(0, 0, [], we_html_element::htmlDiv(['id' => 'progressbar', 'style' => 'display:none;padding-left:10px']));
+		$footerTable->setCol(0, 0, [], we_html_element::htmlDiv(['id' => 'progressbar', 'style' => 'display:none;padding-left:10px'], $pb->getHTML()));
 		$footerTable->setCol(0, 1, ['style' => 'text-align:right'], $buttons);
 
-		$js = $this->View->getJSProperty() .
-			$weFileupload->getJs();
+		$js = $this->View->getJSProperty() . $weFileupload->getJs() . we_progressBar::getJSCode();
 
 		$table = new we_html_table(['class' => 'default withBigSpace'], 2, 1);
 		$table->setCol(0, 0, ["style" => "padding-right:30px"], $weFileupload->getHtmlAlertBoxes());

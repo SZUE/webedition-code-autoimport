@@ -53,11 +53,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	 ];
 	protected $externalProgress = ['isExternalProgress' => false,
 		'parentElemId' => 'progressbar',
-		'create' => true,
-		'html' => '',
-		'width' => 120,
 		'name' => '',
-		'additionalParams' => []
 	 ];
 	protected $isPreset = false;
 	protected $fileTable = '';
@@ -182,7 +178,7 @@ class we_fileupload_ui_base extends we_fileupload{
 				return $notWrapped ? $btn : we_html_element::htmlDiv(['id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'], $btn);
 
 			case 'upload':
-				$js = 'top.' . ($this->externalUiElements['contentName'] ? $this->externalUiElements['contentName'] . '.' : '') . 'weFileUpload_instance.startUpload();';
+				$js = ($this->externalUiElements['contentName'] ? 'top.' . $this->externalUiElements['contentName'] . '.' : '') . 'weFileUpload_instance.startUpload();';
 				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $js, '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'], $btn);
 
@@ -278,12 +274,6 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public function getJSDynamic(){
-		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
-		if($this->externalProgress['create']){
-			$progressbar = new we_progressBar(0, $this->externalProgress['width'], $this->externalProgress['name']);
-			$this->externalProgress['html'] = str_replace(["\r", "\n"], '', $progressbar->getHTML());
-		}
-
 		return ['uiType' => $this->type,
 				'fieldName' => $this->name,
 				'genericFilename' => $this->genericFilename,
@@ -310,8 +300,6 @@ class we_fileupload_ui_base extends we_fileupload{
 				'responseClass' => $this->responseClass,
 				'clientsideImageEditing' => ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0)
 			];
-
-//			') . ($this->externalProgress['create'] ? we_progressBar::getJSCode() : ''); // FIXME: use normal progress js here!
 	}
 
 	public static function getJSLangConsts(){

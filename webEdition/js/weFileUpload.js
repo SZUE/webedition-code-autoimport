@@ -85,11 +85,7 @@ WE().layout.weFileUpload = (function () {
 		_.init_abstract = function (conf) {
 			var that = _.self, c = _.controller, s = _.sender, v = _.view, u = _.utils;
 
-			//if site loaded allready we must call onload() manually
-			if (_.window.we_FileUpload_addListeners) {
-				_.onload(that);
-			} else {
-				//if not, we add listener now
+			if(!_.onload(that)){
 				_.window.addEventListener('load', function (e) {
 					_.onload(that);
 				}, true);
@@ -132,15 +128,17 @@ WE().layout.weFileUpload = (function () {
 				}
 				if (typeof conf.extProgress === 'object') {
 					v.extProgress.isExtProgress = conf.extProgress.isExternalProgress || v.extProgress.isExtProgress;
-					v.extProgress.width = conf.extProgress.width || v.extProgress.width;
 					v.extProgress.parentElemId = conf.extProgress.parentElemId || v.extProgress.parentElemId;
-					v.extProgress.create = typeof conf.extProgress.create !== 'undefined' ? conf.extProgress.create : v.extProgress.create;
-					v.extProgress.html = conf.extProgress.html || v.extProgress.html;
+					v.extProgress.name = conf.extProgress.name;
 				}
 			}
 		};
 
 		_.onload_abstract = function (scope) {
+			if(!_.document.getElementById(_.fieldName)){
+				return false;
+			}
+
 			var that = scope, s = _.sender, v = _.view;
 
 			s.form.form = s.form.name ? _.document.forms[s.form.name] : _.document.forms[0];
@@ -150,17 +148,10 @@ WE().layout.weFileUpload = (function () {
 			v.elems.fileSelect = _.document.getElementById(_.fieldName);
 			v.elems.fileDrag = _.document.getElementById('div_' + _.fieldName + '_fileDrag');//FIXME: change to div_fileDrag
 			v.elems.fileInputWrapper = _.document.getElementById('div_' + _.fieldName + '_fileInputWrapper');//FIXME: change to div_fileInputWrapper
-			v.elems.footer = v.footerName ? _.window.frames[v.footerName] : _.window;
-			v.elems.extProgressDiv = v.elems.footer.document.getElementById(v.extProgress.parentElemId);
 
-			if (v.extProgress.isExtProgress && v.elems.extProgressDiv) {
-				if (v.extProgress.create) {
-					v.extProgress.isExtProgress = v.extProgress.html ? true : false;
-					v.elems.extProgressDiv.innerHTML = v.extProgress.html;
-				}
-			} else {
-				v.extProgress.isExtProgress = false;
-			}
+			v.elems.footer = v.footerName ? _.window.parent.frames[v.footerName] : _.window;
+			v.elems.extProgressDiv = v.elems.footer.document.getElementById(v.extProgress.parentElemId);
+			v.extProgress.isExtProgress = !v.elems.extProgressDiv ? false : v.extProgress.isExtProgress;
 
 			//add eventhandlers for some html elements
 			if (v.elems.fileSelect) {
@@ -178,6 +169,8 @@ WE().layout.weFileUpload = (function () {
 					v.elems.fileDrag.style.display = 'none';
 				}
 			}
+
+			return true;
 		};
 
 		function AbstractController() {
@@ -936,8 +929,6 @@ WE().layout.weFileUpload = (function () {
 				name: '',
 				width: 0,
 				parentElemId: 'progressbar',
-				create: false,
-				html: ''
 			};
 			this.previewSize = 116;
 			this.useOriginalAsPreviewIfNotEdited = false;
@@ -2132,7 +2123,10 @@ WE().layout.weFileUpload = (function () {
 
 		_.onload = function (scope) {
 			var that = scope;
-			_.onload_abstract(that);
+
+			if(!_.onload_abstract(that)){
+				return false;
+			};
 
 			//get references to some include-specific html elements
 			_.view.elems.message = _.document.getElementById('div_' + _.fieldName + '_message');
@@ -2145,6 +2139,8 @@ WE().layout.weFileUpload = (function () {
 			_.view.repaintGUI({what: 'initGui'});
 
 			_.controller.checkIsPresetFiles();
+
+			return true;
 		};
 
 		function Controller() {
@@ -2268,8 +2264,7 @@ WE().layout.weFileUpload = (function () {
 							this.setInternalProgress(prog.toFixed(digits), false);
 						}
 						if (this.extProgress.isExtProgress) {
-							//FIXME: use elems.footer (with elems.footer = top, when not in seperate iFrame!
-							this.elems.footer['setProgress' + this.extProgress.name](prog.toFixed(digits));
+							this.elems.footer.setProgress(this.extProgress.name, prog.toFixed(digits));
 						}
 						return;
 					case 'fileOK' :
@@ -2277,8 +2272,7 @@ WE().layout.weFileUpload = (function () {
 							this.setInternalProgressCompleted(true);
 						}
 						if (this.extProgress.isExtProgress) {
-							//FIXME: use elems.footer (with elems.footer = top, when not in seperate iFrame!
-							this.elems.footer['setProgress' + this.extProgress.name](100);
+							this.elems.footer.setProgress(this.extProgress.name, 100)
 						}
 						return;
 					case 'fileNOK' :
@@ -2295,6 +2289,7 @@ WE().layout.weFileUpload = (function () {
 							this.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + _.utils.computeSize(_.sender.currentFile.size);
 						}
 						if (this.extProgress.isExtProgress) {
+							this.elems.footer.setProgress(this.extProgress.name, 0)
 							this.elems.extProgressDiv.style.display = '';
 						}
 						_.controller.setWeButtonState('reset_btn', false);
@@ -2326,7 +2321,7 @@ WE().layout.weFileUpload = (function () {
 							_.view.elems.progress.style.display = 'none';
 						}
 						if (this.extProgress.isExtProgress) {
-							this.elems.footer['setProgress' + this.extProgress.name](0);
+							this.elems.footer.setProgress(this.extProgress.name, 0);
 							_.view.elems.extProgressDiv.style.display = 'none';
 						}
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
@@ -2377,7 +2372,10 @@ WE().layout.weFileUpload = (function () {
 		_.onload = function (scope) {
 			var that = scope;
 
-			_.onload_abstract(that);
+			if(!_.onload_abstract(that)){
+				return false;
+			};
+
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
 
@@ -2405,6 +2403,8 @@ WE().layout.weFileUpload = (function () {
 				var btn = generalform.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, -1, true);}, false);
 			}
+
+			return true;
 		};
 
 		function Controller() {
@@ -2658,7 +2658,7 @@ WE().layout.weFileUpload = (function () {
 			//this.useOriginalAsPreviewIfNotEdited = true;
 
 			this.addFile = function (f, index) {
-				this.appendRow(f, _.sender.preparedFiles.length - 1);//_.document.getElementById('name_uploadFiles_0').innerHTML = 'juhu';
+				this.appendRow(f, _.sender.preparedFiles.length - 1);
 			};
 
 			this.repaintEntry = function (fileobj) { // TODO: get rid of fileobj.entry
@@ -2763,7 +2763,7 @@ WE().layout.weFileUpload = (function () {
 						replace(/FILENAME/g, (f.file.name)).
 						replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
-				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
+				_.window.weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 				entry = _.document.getElementById('div_uploadFiles_' + index);
 
 				div = _.document.getElementById('div_upload_files');
@@ -2836,7 +2836,7 @@ WE().layout.weFileUpload = (function () {
 				_.utils.memorymanagerUnregister(_.sender.preparedFiles[index]);
 				_.sender.preparedFiles[index] = null;
 
-				weDelMultiboxRow(index);
+				_.window.weDelMultiboxRow(index);
 
 				for (i = 0; i < divs.length; i++) {
 					if (divs[i].id.length > prefix.length && divs[i].id.substring(0, prefix.length) === prefix) {
@@ -3194,9 +3194,12 @@ WE().layout.weFileUpload = (function () {
 
 		_.onload = function (scope) {
 			var that = scope,
-							v = _.view,
-							i;
-			_.onload_abstract(that);
+				v = _.view,
+				i;
+		
+			if(!_.onload_abstract(that)){
+				return false;
+			};
 
 			for (i = 0; i < _.document.forms.length; i++) {
 				_.document.forms[i].addEventListener('submit', _.controller.formHandler, false);
@@ -3277,6 +3280,8 @@ WE().layout.weFileUpload = (function () {
 			v.spinner.className = "fa fa-2x fa-spinner fa-pulse";
 
 			_.controller.checkIsPresetFiles();
+			
+			return true;
 		};
 
 		function Controller() {
