@@ -53,6 +53,7 @@ abstract class we_listview_base{
 	var $calendar_struct = array();
 	var $id = 0;
 	public $hidedirindex = false; //since $lv->hidedirindex is accessed at output
+	protected static $lvNr = 0;
 
 	/**
 	 * listviewBase()
@@ -72,7 +73,7 @@ abstract class we_listview_base{
 
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
 
-		$this->name = $name;
+		$this->name = $name ?: (self::$lvNr++);
 		//? strange setting - comes from we_tag_search
 		$this->search = trim(str_replace(array('"', '\\"'), '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
 		$this->DB_WE = new DB_WE();
