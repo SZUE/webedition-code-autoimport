@@ -25,10 +25,9 @@
 $perm_group_name = 'banner';
 $perm_group_title[$perm_group_name] = g_l('perms_banner', '[perm_group_title]');
 
-$perm_defaults[$perm_group_name] = array(
-	'NEW_BANNER' => 1,
+$perm_defaults[$perm_group_name] = ['NEW_BANNER' => 1,
 	'DELETE_BANNER' => 0,
-	'EDIT_BANNER' => 0);
+	'EDIT_BANNER' => 0];
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 

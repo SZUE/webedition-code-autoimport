@@ -24,14 +24,13 @@
  */
 $perm_group_name = 'shop';
 $perm_group_title[$perm_group_name] = g_l('perms_shop', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_SHOP_ARTICLE' => 0,
+$perm_defaults[$perm_group_name] = ['NEW_SHOP_ARTICLE' => 0,
 	'DELETE_SHOP_ARTICLE' => 0,
 	'EDIT_SHOP_ORDER' => 0,
 	'DELETE_SHOP_ORDER' => 0,
 	'EDIT_SHOP_PREFS' => 0,
 	'CAN_EDIT_VARIANTS' => 1
-);
+ ];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.

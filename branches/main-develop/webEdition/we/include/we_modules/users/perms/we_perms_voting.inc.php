@@ -24,11 +24,10 @@
  */
 $perm_group_name = 'voting';
 $perm_group_title[$perm_group_name] = g_l('perms_voting', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_VOTING' => 1,
+$perm_defaults[$perm_group_name] = ['NEW_VOTING' => 1,
 	'DELETE_VOTING' => 1,
 	'EDIT_VOTING' => 1
-);
+ ];
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 

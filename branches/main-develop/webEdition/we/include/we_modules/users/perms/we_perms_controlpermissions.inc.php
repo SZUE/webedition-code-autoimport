@@ -26,8 +26,7 @@ $perm_group_name = 'controlpermissions';
 
 $perm_group_title[$perm_group_name] = g_l('perms_controlpermissions', '[perm_group_title]');
 
-$perm_defaults[$perm_group_name] = array(
-	'NEW_GROUP' => 0,
+$perm_defaults[$perm_group_name] = ['NEW_GROUP' => 0,
 	'NEW_USER' => 0,
 	'SAVE_GROUP' => 0,
 	'SAVE_USER' => 0,
@@ -40,7 +39,7 @@ $perm_defaults[$perm_group_name] = array(
 	'EDIT_SETTINGS' => 1,
 	'EDIT_PASSWD' => 1,
 	'EDIT_MFD_USER' => 0
-);
+ ];
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
