@@ -256,7 +256,23 @@ abstract class we_updater{
 		return ['text' => 'Objects ' . $pos . ' / ' . $max, 'pos' => ($pos + $maxStep)];
 	}
 
-	private static function upgradeTblLink($db){
+		private static function upgradeTblFileLink(we_database_base $db){
+		//added in 7.1
+		if($db->isColExist(FILELINK_TABLE, 'element')){
+			if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
+				//md5 is binary in mysql <5.5.3
+				$db->query('UPDATE ' . FILELINK_TABLE . ' SET nHash=md5(element) WHERE element!=""');
+			} else {
+				$db->query('UPDATE ' . FILELINK_TABLE . ' SET nHash=unhex(md5(element)) WHERE element!=""');
+			}
+			$db->delCol(FILELINK_TABLE, 'element');
+			$db->delKey(FILELINK_TABLE, 'PRIMARY');
+			$db->addKey(FILELINK_TABLE, 'PRIMARY KEY (ID,DocumentTable,`type`,remObj,nHash,`position`,isTemp)');
+		}
+
+		}
+
+	private static function upgradeTblLink(we_database_base $db){
 		//added in 7.0
 		if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\' LIMIT 1')){
 			if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
@@ -764,6 +780,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					self::updateGlossar();
 					self::meassure('updateGlossar');
 				}
+				self::upgradeTblFileLink($db);
+				self::meassure('updateFileLink');
 				self::updateCats($db);
 				self::meassure('updateCats');
 				/* self::fixHistory();

@@ -180,7 +180,7 @@ abstract class we_root extends we_class{
 		//NOTE: this is used for temporary documents! so be carefull when changing
 		$save = [[],
 			$this->elements
-			];
+		];
 		foreach($this->persistent_slots as $slot){
 			switch($slot){
 				case 'elements'://elements are saved in slot 1
@@ -266,7 +266,7 @@ abstract class we_root extends we_class{
 	/* creates the filename input-field */
 
 	function formFilename($text = ''){
-		return $this->formTextInput('', 'Filename', $text ? : g_l('weClass', '[filename]'), 24, 255);
+		return $this->formTextInput('', 'Filename', $text ?: g_l('weClass', '[filename]'), 24, 255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -302,7 +302,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setAcId('Path', id_to_path([$rootDirID], $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$yuiSuggest->setInput($textname, $path, ['onblur' => $parentPathChangedBlur]);
-		$yuiSuggest->setLabel($label ? : '');
+		$yuiSuggest->setLabel($label ?: '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
@@ -317,7 +317,7 @@ abstract class we_root extends we_class{
 		$attribs = ['class' => 'wetextinput',
 			'size' => 30,
 			'value' => '',
-			];
+		];
 
 		foreach($addAttribs as $key => $value){
 			if(isset($attribs[$key])){
@@ -403,7 +403,7 @@ abstract class we_root extends we_class{
 <tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
-				'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+			'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 
@@ -477,7 +477,7 @@ abstract class we_root extends we_class{
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
 		if($this->ContentType === we_base_ContentTypes::HTACCESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
-			$this->Filename = $this->Filename ? : current($vals);
+			$this->Filename = $this->Filename ?: current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
 		} else {
 			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); ') . 'if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
@@ -510,8 +510,8 @@ abstract class we_root extends we_class{
 
 	#
 	function formUserChooser($old_userID = -1, $width = '', $in_textname = '', $in_idname = ''){
-		$textname = $in_textname ? : 'we_' . $this->Name . '_UserName';
-		$idname = $in_idname ? : 'we_' . $this->Name . '_UserID';
+		$textname = $in_textname ?: 'we_' . $this->Name . '_UserName';
+		$idname = $in_idname ?: 'we_' . $this->Name . '_UserID';
 
 		$username = '';
 		$userid = $old_userID;
@@ -553,10 +553,10 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? : '';
+			$myid = $this->DefaultTriggerID ?: '';
 		} else {
 			$idname = 'we_' . $this->Name . '_TriggerID';
-			$myid = $this->TriggerID ? : '';
+			$myid = $this->TriggerID ?: '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
@@ -582,9 +582,9 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
-		$myid = $LDID ? : '';
+		$myid = $LDID ?: '';
 		$table = $this->IsFolder ? FILE_TABLE : $this->Table;
-		$path = $path ? : ($LDID ? f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
+		$path = $path ?: ($LDID ? f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
 		$rootDirID = $table === OBJECT_FILES_TABLE ? $this->rootDirID : 0;
 		if($rootDirID && !$path){
@@ -633,7 +633,7 @@ abstract class we_root extends we_class{
 
 	function formLangLinks($withHeadline = true){
 		$defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? : $defLang);
+		$value = ($this->Language ?: $defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$languages = getWeFrontendLanguagesForBackend();
 		$headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
@@ -645,7 +645,7 @@ abstract class we_root extends we_class{
 				$LDID = !empty($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
 				$path = $LDID ? $this->LangLinks[$langkey]['path'] : '';
 
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formInputLangLink($lang, $langkey, $LDID, $path) . '</div>';
+				$htmlzw .= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formInputLangLink($lang, $langkey, $LDID, $path) . '</div>';
 				$langkeys[] = $langkey;
 			}
 			return '
@@ -706,10 +706,10 @@ abstract class we_root extends we_class{
 			case 'dat':
 				//check bdid first
 				return (!empty($this->elements[$name]['bdid']) ?
-						$this->elements[$name]['bdid'] :
-						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
-							$this->elements[$name]['dat'] :
-							$default));
+					$this->elements[$name]['bdid'] :
+					(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
+					$this->elements[$name]['dat'] :
+					$default));
 			default:
 				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 		}
@@ -1144,7 +1144,7 @@ abstract class we_root extends we_class{
 				$data = ['Dat' => $dat,
 					'BDID' => intval($bdid),
 					'dHash' => sql_function('x\'' . ($bdid ? '00' : md5($dat)) . '\''),
-					];
+				];
 
 				$key = $v['type'] . '_' . $k;
 				if(isset($replace[$key])){
@@ -1155,7 +1155,7 @@ abstract class we_root extends we_class{
 					$cid = 0;
 				}
 				$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . we_database_base::arraySetter($data));
-				$cid = $cid ? : $this->DB_WE->getInsertId();
+				$cid = $cid ?: $this->DB_WE->getInsertId();
 				$this->elements[$k]['id'] = $cid; // update Object itself
 				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $this->ID,
 							'CID' => $cid,
@@ -1163,7 +1163,7 @@ abstract class we_root extends we_class{
 							'Type' => $v['type'],
 							'nHash' => sql_function('x\'' . md5($k) . '\''),
 							'DocumentTable' => stripTblPrefix($this->Table)
-							])
+						])
 					)){
 					//this should never happen
 					return false;
@@ -1382,7 +1382,7 @@ abstract class we_root extends we_class{
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
-					'element' => !is_numeric($k) ? $k : '',
+					'nHash' => sql_function(is_numeric($k) ? 'NULL' : 'x\'' . md5($k) . '\''),
 					'position' => 0,
 					'isTemp' => $temp ? 1 : 0
 					], ',', true);

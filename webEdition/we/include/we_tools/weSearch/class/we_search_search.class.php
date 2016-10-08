@@ -879,8 +879,8 @@ class we_search_search extends we_search_base{
 		$useState = intval($useState);
 		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = [];
 
-		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj,isTemp,element' : 'DISTINCT remObj';
-		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND position=0');
+		$fields = $holdAllLinks ? 'fl.ID,fl.DocumentTable,fl.remObj,fl.isTemp,l.Name AS element' : 'DISTINCT fl.remObj';
+		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' fl ' . ($holdAllLinks ? ' LEFT JOIN ' . LINK_TABLE . ' l ON l.nHash=fl.nHash AND l.DocumentTable=fl.DocumentTable AND l.DID=fl.remObj' : '') . ' WHERE fl.type="media" AND fl.remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND fl.remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND fl.position=0');
 
 		if($holdAllLinks){
 			$types = array(
@@ -899,7 +899,7 @@ class we_search_search extends we_search_base{
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
-				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp'], $rec['element']);
+				$tmpMediaLinks[$rec['remObj']][] = [$rec['ID'], $rec['DocumentTable'], $rec['isTemp'], $rec['element']];
 				$groups[$rec['DocumentTable']][] = $rec['ID'];
 				$this->usedMedia[] = $rec['remObj'];
 			}

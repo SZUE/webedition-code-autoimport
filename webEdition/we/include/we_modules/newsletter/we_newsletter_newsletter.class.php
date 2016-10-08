@@ -109,11 +109,11 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	function load($newsletterID = 0){
 		parent::load($newsletterID);
 		$this->Text = stripslashes($this->Text);
-		$this->Path = ($this->Path ? : '/');
+		$this->Path = ($this->Path ?: '/');
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = we_newsletter_group::__getAllGroups($newsletterID, $this->db);
 		$this->blocks = we_newsletter_block::__getAllBlocks($newsletterID, $this->db);
-		$this->Charset = $this->Charset ? : $GLOBALS['WE_BACKENDCHARSET'];
+		$this->Charset = $this->Charset ?: $GLOBALS['WE_BACKENDCHARSET'];
 	}
 
 	/**
@@ -223,10 +223,10 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
-					'element' => (is_numeric($element) ? '' : $element),
+					'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
 					'position' => 0,
 					'isTemp' => 0
-					]));
+			]));
 		}
 	}
 
@@ -400,7 +400,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(['NewsletterID' => $this->ID,
 				'Log' => $log,
 				'Param' => $param
-				]));
+		]));
 	}
 
 	/**

@@ -40,7 +40,7 @@ class we_base_model{
 	 * Default Constructor
 	 */
 	public function __construct($table, we_database_base $db = null, $load = true, $isAdvanced = false){
-		$this->db = ($db ? : new DB_WE());
+		$this->db = ($db ?: new DB_WE());
 		$this->table = $table;
 		$this->isAdvanced = $isAdvanced;
 		if($load){
@@ -77,7 +77,7 @@ class we_base_model{
 			$this->ID = $id;
 		}
 		if($this->isKeyDefined()){
-			$isAdvanced|=$this->isAdvanced || !is_numeric(key($this->persistent_slots));
+			$isAdvanced |= $this->isAdvanced || !is_numeric(key($this->persistent_slots));
 
 			if(($data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db, MYSQL_ASSOC))){
 				foreach($data as $fieldName => $value){
@@ -118,8 +118,8 @@ class we_base_model{
 				$sets[$val] = is_array($this->{$val}) ?
 					(empty($this->{$val}) ? '' : we_serialize($this->{$val}, ($jsonSer ? SERIALIZE_JSON : SERIALIZE_PHP))) :
 					(in_array($val, $this->binFields) ?
-						sql_function('x\'' . bin2hex($this->{$val}) . '\'') :
-						$this->{$val});
+					sql_function('x\'' . bin2hex($this->{$val}) . '\'') :
+					$this->{$val});
 			}
 		}
 		$where = $this->getKeyWhere();
@@ -178,10 +178,10 @@ class we_base_model{
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
-					'element' => (is_numeric($element) ? '' : $element),
+					'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
 					'position' => 0,
 					'isTemp' => 0
-					]));
+			]));
 		}
 	}
 
