@@ -305,10 +305,10 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$prev = ($Search->Offset > 0 ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
-				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true));
+				we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true));
 
 		$next = ($Search->Offset + $Search->Rows >= $sum ?
-				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true) :
+				we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true) :
 				we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
 
 

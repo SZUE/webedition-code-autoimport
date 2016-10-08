@@ -314,8 +314,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					]);
 		}
 
-		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', true, 100, 22, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
-		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', true, 100, 22, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
+		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', '', 0, 0, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
+		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', '', 0, 0, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, ['onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"], 'value', 0, 'selectSearchPages');
 
 		$tbl = new we_html_table(array('style' => 'margin-top:-2px;'), 1, 4);
@@ -809,9 +809,9 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					$out .= '<tr style="background-color:white;">' .
 						($makeLink ? '
 							<td style="padding:8px 0 6px 26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? '<br>' . 'in: ' . $element : '') . '</span></td>
-							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:" . $reference['onclick'] . ";", true, 27, 22) . '</td>' :
+							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:" . $reference['onclick'] . ";") . '</td>' :
 							'<td style="padding:8px 0 6px 26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
-							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, g_l('searchtool', '[linkPublishedOnly]')) . '</td>') .
+							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', true, false, '', false, g_l('searchtool', '[linkPublishedOnly]')) . '</td>') .
 						'</tr>';
 				}
 			}
@@ -863,8 +863,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 			$tbl->setCol(0, ++$c, array('style' => 'font-size:12px; padding:6px 6px 0 12px;'), 'Medialinks:');
 			$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 12px 0 0;'), $selectAnzahlMedialinks);
 		}
-		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, '', '', '', false));
-		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, '', '', '', false));
+		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", '', 0, '', '', '', false));
+		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", '', 0, '', '', '', false));
 		if($whichSearch === self::SEARCH_DOCLIST){
 			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
 				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
@@ -891,7 +891,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
-				we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", true, 100, 22, "", "") :
+				we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", '') :
 				'');
 
 		$actionButton = $actionButtonCheckboxAll = '';
@@ -901,14 +901,14 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 			case self::SEARCH_DOCLIST:
 				if(permissionhandler::hasPerm('PUBLISH') && !($whichSearch === self::SEARCH_DOCLIST && $table === TEMPLATES_TABLE)){
 					$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
-					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');");
 					break;
 				}
 				$actionButton = $actionButtonCheckboxAll = '';
 				break;
 			case self::SEARCH_MEDIA:
 				$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
-				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteMediaDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteMediaDocs('" . $whichSearch . "');");
 				break;
 		}
 
@@ -949,7 +949,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 </tr>';
 
 		for($i = ($whichSearch === self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0); $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
+			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', '', '', '', '', '', false);
 			$locationDisabled = $handle = '';
 			$searchInput = we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 30, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"search" . $whichSearch . "[" . $i . "]\" ", "search", 170);
 
@@ -1000,7 +1000,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 						$rootDirID = 0;
 						$cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','')";
-						$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ""), $button);
 
 						$searchInput = $selector;

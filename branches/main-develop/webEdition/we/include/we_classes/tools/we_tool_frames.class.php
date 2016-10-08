@@ -169,11 +169,11 @@ abstract class we_tool_frames extends we_modules_frame{
 		$cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
 
 		if($showtrash){
-			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled) .
-				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled) .
+				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";');
 			$width = 157;
 		} else {
-			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled);
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled);
 			$width = 120;
 		}
 

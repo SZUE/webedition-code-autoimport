@@ -63,7 +63,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 					if($this->disabledDelItems){
 						$DisArr = $this->disabledDelItems;
 						if(in_array($id, $DisArr)){
-							$trash = we_html_button::create_button(we_html_button::TRASH, 'javascript:' . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');", true, 100, 22, "", "", true);
+							$trash = we_html_button::create_button(we_html_button::TRASH, 'javascript:' . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');", '', 0, 22, "", "", true);
 
 							$table->setCol($c, 0, ["title" => $this->disabledDelReason, 'class' => 'chooserFileIcon', 'data-contenttype' => (@is_dir($id) ? $this->iconFolder : $this->iconFile)], '');
 							$table->setCol($c, 1, ['class' => $this->css, "title" => $this->disabledDelReason], $id);

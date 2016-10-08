@@ -314,12 +314,12 @@ class we_workflow_view extends we_modules_view{
 	<tr style="vertical-align:top">
 		<td>' . we_html_tools::htmlDialogBorder3(400, $content, $headline) . '</td>
 		<td><table class="default" style="margin-top:3px;">
-			<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30) . '</td>
+			<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()") . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()") . '</td>
 			</tr>
 			</table></td>
 	</tr>
 	<tr style="vertical-align:top">
-		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
+		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()") . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()") . '</td></tr>
 </table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(

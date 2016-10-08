@@ -154,7 +154,7 @@ abstract class we_base_variants{
 				foreach($variation as $name => $varArr){
 					$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i] = ['type' => 'txt',
 						'dat' => $name
-						];
+					];
 
 					foreach($varArr as $name => $datArr){
 						$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
@@ -178,8 +178,8 @@ abstract class we_base_variants{
 
 	public static function getNumberOfVariants(&$model){
 		return (isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) ?
-				count($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) :
-				0);
+			count($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) :
+			0);
 	}
 
 	private static function insertVariant(&$model, $position){
@@ -305,8 +305,8 @@ abstract class we_base_variants{
 		if($count){
 			for($i = 0; $i < $count; $i++){
 				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');");
-				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_up','" . $i . "');"));
-				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_down','" . $i . "');"));
+				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, "", '', 0, 0, "", "", true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_up','" . $i . "');"));
+				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", '', 0, 0, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_down','" . $i . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('remove_variant','" . $i . "');");
 
 				$content = '<table class="defaultfont lowContrast" style="width:700px">
@@ -345,7 +345,7 @@ abstract class we_base_variants{
 				$content .= '</table>';
 				$parts[] = ['headline' => '',
 					'html' => $content,
-					];
+				];
 			}
 		} else {
 			$i = 0;
@@ -353,7 +353,7 @@ abstract class we_base_variants{
 
 		$parts[] = ['headline' => '',
 			'html' => we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');"),
-			];
+		];
 		return $parts;
 	}
 
@@ -366,11 +366,11 @@ abstract class we_base_variants{
 
 		if($count){
 			for($i = 0; $i < $count; $i++){
-				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');", true, 40);
-				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, '', true, 21, 22, '', '', true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_up','" . $i . "');"));
-				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_down','" . $i . "');"));
-				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('remove_variant','" . $i . "');", true, 30);
-				$previewBut = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
+				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');");
+				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, '', '', 0, 0, '', '', true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_up','" . $i . "');"));
+				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", '', 0, 0, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_down','" . $i . "');"));
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('remove_variant','" . $i . "');");
+				$previewBut = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');");
 
 				$content = '<table class="defaultfont lowContrast" style="width:700px;">
 <tr>
@@ -407,7 +407,7 @@ abstract class we_base_variants{
 
 				$parts[] = ['headline' => '',
 					'html' => $content,
-					];
+				];
 			}
 		} else {
 			$i = 0;
@@ -417,7 +417,7 @@ abstract class we_base_variants{
 
 		$parts[] = ['headline' => '',
 			'html' => $content,
-			];
+		];
 		return $parts;
 	}
 
@@ -583,7 +583,7 @@ abstract class we_base_variants{
 		$fields = $we_doc->getVariantFieldNames();
 
 		$headline = [['dat' => g_l('weClass', '[variant_fields]')
-				]
+			]
 		];
 
 
@@ -591,17 +591,17 @@ abstract class we_base_variants{
 		foreach($fields as $ind => $field){
 			$element = $we_doc->getElement('variant_' . $field);
 			$content[$ind] = [['dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . '_variant[variant_' . $field . ']', $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
-					]];
+			]];
 		}
 
 		$parts = [['headline' => '',
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
-				'noline' => 1
-				],
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
+			'noline' => 1
+			],
 				['headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(600, $content, $headline),
 				'noline' => 1
-				]
+			]
 		];
 
 		echo we_class::hiddenTrans() .

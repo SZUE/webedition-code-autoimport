@@ -284,7 +284,7 @@ function getTagWizzard($we_doc){
 	$tagselect .= '</select>';
 
 	// buttons
-	$editTagbut = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+	$editTagbut = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:executeEditButton();", '', 0, 0, "", "", false, false, "_applyCode");
 	/*
 	  $selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
 	  $prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');

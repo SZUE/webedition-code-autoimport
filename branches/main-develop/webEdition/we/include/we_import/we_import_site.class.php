@@ -463,7 +463,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
 		$others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
-		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
+		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, "", "", false, true, "", true);
 		// Depth
 		$select = we_html_tools::htmlSelect(
 				"depth", [
@@ -679,10 +679,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			'style' => 'overflow:hidden;'
 		];
 
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", true, 100, 22, "", "", false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", '', 0, 0, "", "", false, false);
 
-		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 100, 22, "", "", false, false) .
-			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 100, 22, "", "", false, false);
+		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, "", "", false, false) .
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, "", "", false, false);
 
 		$pb = new we_progressBar(0, 200);
 		$pb->addText("&nbsp;", 0, "progressTxt");

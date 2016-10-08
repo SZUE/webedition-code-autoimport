@@ -786,7 +786,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setResult('seem_start_document', $document_id);
 					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
 					$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $yuiSuggest->getHTML());
@@ -807,7 +807,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
 					$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $yuiSuggest->getHTML());
@@ -1091,8 +1091,8 @@ function build_dialog($selected_setting = 'ui'){
 			$editlist_table = new we_html_table(['class' => 'default'], 1, 2);
 
 			// Buttons
-			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$enabled_buttons);
-			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()', true, 100);
+			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', '', 0, 0, '', '', !$enabled_buttons);
+			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()');
 
 			$editlist_table->setCol(0, 0, ['style' => 'padding-right:10px;'], $hidden_fields . $select_box->getHtml());
 			$editlist_table->setCol(0, 1, ['style' => 'vertical-align:top'], $default . $delete);
@@ -1378,7 +1378,7 @@ function build_dialog($selected_setting = 'ui'){
 				$editlist_table = new we_html_table(['class' => 'default'], 2, 3);
 
 				$editlist_table->setCol(0, 0, ['style' => 'padding-right:10px;'], $hidden_fields . $select_box->getHtml());
-				$editlist_table->setCol(0, 2, ['style' => 'vertical-align:top;'], we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$enabled_buttons, false));
+				$editlist_table->setCol(0, 2, ['style' => 'vertical-align:top;'], we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", '', 0, 0, "", "", !$enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", '', 0, 0, "", "", !$enabled_buttons, false));
 
 				// Build dialog if user has permission
 				$settings[] = ["headline" => "", "html" => $editlist_table->getHtml(),];
@@ -1761,7 +1761,7 @@ function build_dialog($selected_setting = 'ui'){
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$thumbnail_dir = $inp . $but;
 			} else { //  gd lib ist nicht installiert
-				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", true, 100, 22, '', '', true) : "";
+				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", '', 0, 0, '', '', true) : "";
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
 				$thumbnail_dir = $inp . $but . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
 			}
@@ -2140,7 +2140,7 @@ function checkAll(val) {
 			$versions_anzahl_tmpl = we_html_tools::htmlTextInput('newconf[VERSIONS_ANZAHL_TMPL]', 24, get_value('VERSIONS_ANZAHL_TMPL'), 5, '', 'text', 50, 0, '');
 			$versions_create_tmpl_publishing = we_html_forms::radiobutton(1, (get_value('VERSIONS_CREATE_TMPL') == 1), 'newconf[VERSIONS_CREATE_TMPL]', g_l('prefs', '[versions_create_tmpl_publishing]'), true, 'defaultfont', '', false, '');
 			$versions_create_tmpl_always = we_html_forms::radiobutton(0, (get_value('VERSIONS_CREATE_TMPL') == 0), 'newconf[VERSIONS_CREATE_TMPL]', g_l('prefs', '[versions_create_tmpl_always]'), true, 'defaultfont', '', false, '');
-			$versions_wizard = '<div style="float:left;">' . we_html_button::create_button('openVersionWizard', 'javascript:openVersionWizard()', true, 100, 22, '', '') . '</div>';
+			$versions_wizard = '<div style="float:left;">' . we_html_button::create_button('openVersionWizard', 'javascript:openVersionWizard()', '', 0, 0, '', '') . '</div>';
 
 			return create_dialog('', [
 				['headline' => g_l('prefs', '[ContentType]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), we_html_tools::TYPE_HELP),

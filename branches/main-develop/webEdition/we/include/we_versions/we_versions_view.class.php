@@ -118,7 +118,7 @@ var searchClass={
 
 		for($i = 0; $i < count($currentSearchFields); $i++){
 
-			$button = we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
+			$button = we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $i . ");", '', "", "", "", "", false);
 			$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
 					'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 			$locationDisabled = '';
@@ -250,7 +250,7 @@ var searchClass={
 		$out = '<table class="default"><tr><td id="zurueck">' .
 			($searchstart ?
 			we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
-			we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
+			we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true)) .
 			'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
 			$we_search_anzahl :
@@ -258,7 +258,7 @@ var searchClass={
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
-			we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
+			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true)) .
 			'</td><td>';
 
 		$pages = [];
