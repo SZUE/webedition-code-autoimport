@@ -158,7 +158,7 @@ abstract class we_base_delete{
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND LDID=' . intval($id));
 				break;
 			case (defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE'):
-				$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")'); //FIXME: delete OR archive
+				$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND type IN ("collection","archive")'); //FIXME: delete OR archive
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID>0 AND ID=' . intval($id));

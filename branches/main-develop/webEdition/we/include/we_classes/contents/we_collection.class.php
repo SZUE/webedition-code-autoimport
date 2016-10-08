@@ -718,7 +718,7 @@ class we_collection extends we_root{
 	protected function i_getContentData(){
 		//! parent::i_getContentData();
 
-		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive") ORDER BY position ASC');
+		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND type IN("collection","archive") ORDER BY position ASC');
 
 		$this->fileCollection = ',';
 		$this->objectCollection = ',';
@@ -768,7 +768,7 @@ class we_collection extends we_root{
 	}
 
 	function writeCollectionToDB($collection){// FIXME: is there a standard function called by some parent to save non-persistent data?
-		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")');
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND type IN("collection","archive")');
 
 		$i = 0;
 		foreach(($this->IsDuplicates ? $collection : array_unique($collection)) as $remObj){
