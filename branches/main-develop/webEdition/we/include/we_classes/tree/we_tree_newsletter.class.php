@@ -28,15 +28,14 @@ class we_tree_newsletter extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_tree.js');
 	}
 
-	public function getItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
 		$db = new DB_WE();
-		$table = NEWSLETTER_TABLE;
 		$wsQuery = '';
 
 		$items = $aWsQuery = $parentpaths = [];
 
-		if(($ws = get_ws($table, true))){
-			$wsPathArray = id_to_path($ws, $table, $db, true);
+		if(($ws = get_ws(NEWSLETTER_TABLE, true))){
+			$wsPathArray = id_to_path($ws, NEWSLETTER_TABLE, $db, true);
 			foreach($wsPathArray as $path){
 				$aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
@@ -60,12 +59,11 @@ class we_tree_newsletter extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $prevoffset
-				];
+			];
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
+		$db->query('SELECT ID,ParentID,Path,Text,IsFolder FROM ' . NEWSLETTER_TABLE . '  WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
 
 		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
@@ -85,7 +83,7 @@ class we_tree_newsletter extends we_tree_base{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
+		$total = f('SELECT COUNT(1) FROM ' . NEWSLETTER_TABLE . '  WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID), '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = ['id' => 'next_' . $ParentID,
@@ -98,7 +96,7 @@ class we_tree_newsletter extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $nextoffset
-				];
+			];
 		}
 
 		return $items;

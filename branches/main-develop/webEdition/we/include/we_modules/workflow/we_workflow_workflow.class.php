@@ -122,7 +122,7 @@ class we_workflow_workflow extends we_workflow_base{
 			$newdoc = [
 				'ID' => $this->db->f('ID'),
 				'Text' => $this->db->f('Text'),
-				'contentType' => $this->db->f('ContentType')
+				'contenttype' => $this->db->f('ContentType')
 			];
 			$this->documents[] = $newdoc;
 		}

@@ -29,7 +29,7 @@ class we_search_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'search_tree.js') . we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
-	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
+	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
 		$db = new DB_WE();
 		$openFolders = [];
 
@@ -46,8 +46,7 @@ class we_search_tree extends we_tree_base{
 		$wsQuery = '';
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
-			self::$treeItems[] = array(
-				'id' => 'prev_' . $ParentID,
+			self::$treeItems[] = ['id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 				'contenttype' => 'arrowup',
@@ -58,7 +57,7 @@ class we_search_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $prevoffset
-			);
+				];
 		}
 
 		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ';
@@ -104,7 +103,7 @@ class we_search_tree extends we_tree_base{
 					self::$treeItems[] = array_merge($fields, $typ);
 
 					if($typ['typ'] === "group" && $OpenCloseStatus == 1){
-						$this->getItems($db->f('ID'), 0, $segment);
+						static::getItems($db->f('ID'), 0, $segment);
 					}
 			}
 		}
@@ -112,8 +111,7 @@ class we_search_tree extends we_tree_base{
 		$total = f('SELECT COUNT(1) FROM `' . $db->escape(SUCHE_TABLE) . "` $where", '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
-			self::$treeItems[] = array(
-				'id' => 'next_' . $ParentID,
+			self::$treeItems[] = ['id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
 				'contenttype' => 'arrowdown',
@@ -123,7 +121,7 @@ class we_search_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $nextoffset
-			);
+				];
 		}
 
 		return self::$treeItems;

@@ -242,8 +242,7 @@ abstract class we_modules_frame{
 	}
 
 	private function setTreeWidthFromCookie(){
-		if(isset($_COOKIE["treewidth_modules"])){
-			$tw = we_unserialize($_COOKIE["treewidth_modules"]);
+		if(isset($_COOKIE["treewidth_modules"]) && ($tw = we_unserialize($_COOKIE["treewidth_modules"], [], true))){
 			$this->treeWidth = empty($tw[$this->module]) ? $this->treeDefaultWidth : $tw[$this->module];
 		} else {
 			$this->treeWidth = $this->treeDefaultWidth;

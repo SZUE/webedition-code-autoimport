@@ -38,7 +38,7 @@ class we_tool_treeDataSource{
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ''){
 		switch($this->SourceType){
 			case 'table' :
-				return $this->getItems($pid, $offset, $segment);
+				return $this->getItemsDB($pid, $offset, $segment);
 			case 'file':
 				return $this->getItemsFromFile($pid, $offset, $segment);
 			case 'custom':
@@ -56,7 +56,7 @@ class we_tool_treeDataSource{
 		return ($out ? 'Path IN(' . implode(',', $out) . ')' : '');
 	}
 
-	function getItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsDB($ParentID = 0, $offset = 0, $segment = 500){
 
 		$db = new DB_WE();
 		$table = $this->SourceName;
@@ -92,12 +92,12 @@ class we_tool_treeDataSource{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $prevoffset
-				];
+			];
 		}
 
-		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
+		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID);
 
-		$db->query('SELECT ' . $elem . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . abs($offset) . ',' . abs($segment) : '' ));
+		$db->query('SELECT ID,ParentID,Path,Text,IsFolder FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . abs($offset) . ',' . abs($segment) : '' ));
 
 		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
@@ -109,7 +109,7 @@ class we_tool_treeDataSource{
 				'published' => 1,
 				'disabled' => 0,
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
-				];
+			];
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
@@ -129,40 +129,40 @@ class we_tool_treeDataSource{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $nextoffset
-				];
+			];
 		}
 
 
 		return $items;
 	}
 
-	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500){
 
 		return [['id' => 1,
 			'parentid' => 0,
-				'text' => 'Test 1',
-				'contenttype' => 'item',
-				'table' => $this->SourceName,
-				'typ' => 'item',
-				'open' => 0,
-				'published' => 1,
-				'disabled' => 0,
-				'tooltip' => ''
-				]];
+			'text' => 'Test 1',
+			'contenttype' => 'item',
+			'table' => $this->SourceName,
+			'typ' => 'item',
+			'open' => 0,
+			'published' => 1,
+			'disabled' => 0,
+			'tooltip' => ''
+		]];
 	}
 
-	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500){
 		return [['id' => 1,
 			'parentid' => 0,
-				'text' => 'Custom Group',
-				'contenttype' => 'item',
-				'table' => '',
-				'typ' => 'group',
-				'open' => 0,
-				'published' => 1,
-				'disabled' => 0,
-				'tooltip' => ''
-				],
+			'text' => 'Custom Group',
+			'contenttype' => 'item',
+			'table' => '',
+			'typ' => 'group',
+			'open' => 0,
+			'published' => 1,
+			'disabled' => 0,
+			'tooltip' => ''
+			],
 				['icon' => '',
 				'id' => 2,
 				'parentid' => 1,
@@ -174,7 +174,7 @@ class we_tool_treeDataSource{
 				'published' => 1,
 				'disabled' => 0,
 				'tooltip' => ''
-				]
+			]
 		];
 	}
 

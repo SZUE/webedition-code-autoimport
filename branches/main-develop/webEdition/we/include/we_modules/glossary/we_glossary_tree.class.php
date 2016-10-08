@@ -28,7 +28,7 @@ class we_glossary_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_tree.js');
 	}
 
-	public function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$Types = [we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
@@ -61,7 +61,7 @@ class we_glossary_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => $Val,
 				'offset' => 0,
-				'published' => 1,
+			'published' => 1,
 				'cmd' => "glossary_view_folder",
 				'contenttype' => 'folder'
 			];
@@ -150,7 +150,7 @@ class we_glossary_tree extends we_tree_base{
 				'tooltip' => intval($Db->f('ID')),
 				'offset' => $Offset,
 				'published' => ($Db->f('Published') > 0 ? 1 : 0),
-				'contentType' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
+				'contenttype' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
 			);
 
 			switch($Type){

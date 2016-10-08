@@ -28,7 +28,7 @@ class we_workflow_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'workflow_tree.js');
 	}
 
-	public function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$items = [];
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');

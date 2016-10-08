@@ -33,90 +33,32 @@ class we_tree_customer extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
 	}
 
-	function getJSLoadTree($clear, array $treeItems){
-		$days = [
-			'Sunday' => 0,
-			'Monday' => 1,
-			'Tuesday' => 2,
-			'Wednesday' => 3,
-			'Thursday' => 4,
-			'Friday' => 5,
-			'Saturday' => 6
-		];
-
-		$months = [
-			'January' => 0,
-			'February' => 1,
-			'March' => 2,
-			'April' => 3,
-			'May' => 4,
-			'June' => 5,
-			'July' => 6,
-			'August' => 7,
-			'September' => 8,
-			'October' => 9,
-			'November' => 10,
-			'December' => 11
-		];
-
-		$js = ($clear ?
-			'top.content.treeData.clear();' .
-			'top.content.treeData.add(top.content.node.prototype.rootEntry(0,\'root\',\'root\'));' : '') .
-			'var attribs={};';
-		foreach($treeItems as $item){
-			$js .= (!$clear ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(["\n", "\r", '\''], '', $item["id"]) . '\')<0){' : '') .
-				'attribs={';
-
-			foreach($item as $k => $v){
-				if($k === 'text'){
-					if(in_array($v, array_keys($days))){
-						$v = g_l('date', '[day][long][' . $days[$v] . ']');
-					}
-					if(in_array($v, array_keys($months))){
-						$v = g_l('date', '[month][long][' . $months[$v] . ']');
-					}
-				}
-				$js .= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-					intval($v) :
-					'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') .
-					',';
-			}
-
-			$js .= '};
-	  top.content.treeData.add(new top.content.node(attribs));' .
-				(!$clear ? '}' : '');
-		}
-		$js .= 'top.content.drawTree();';
-
-		return $js;
-	}
-
-	public function getItems($pid, $offset = 0, $segment = 500, $sort = false){
+	public static function getItems($pid, $offset = 0, $segment = 500, $sort = false){
 		if($sort === false){
 			$view = new we_customer_view('');
 			$sort = $view->settings->getSettings('default_sort_view');
 		}
 		return (empty($sort) ?
-			self::getItemsFromDB($pid, $offset, $segment) :
-			self::getSortFromDB($pid, $sort, $offset, $segment));
+			static::getItemsFromDB($pid, $offset, $segment) :
+			static::getSortFromDB($pid, $sort, $offset, $segment));
 	}
 
-	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,Forename,Surname', $addWhere = "", $addOrderBy = ""){
+	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,Forename,Surname', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 
 		$prevoffset = max(0, $offset - $segment);
 		$items = ($offset && $segment ? [[
-			"id" => "prev_" . $ParentID,
-			"parentid" => $ParentID,
-			"text" => "display (" . $prevoffset . "-" . $offset . ")",
-			"contenttype" => "arrowup",
-			"table" => CUSTOMER_TABLE,
-			"typ" => "threedots",
-			"open" => 0,
-			"published" => 1,
-			"disabled" => 0,
-			"tooltip" => "",
-			"offset" => $prevoffset
+			'id' => 'prev_' . $ParentID,
+			'parentid' => $ParentID,
+			'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+			'contenttype' => 'arrowup',
+			'table' => CUSTOMER_TABLE,
+			'typ' => 'threedots',
+			'open' => 0,
+			'published' => 1,
+			'disabled' => 0,
+			'tooltip' => '',
+			'offset' => $prevoffset
 			]] : []);
 
 
@@ -125,21 +67,21 @@ class we_tree_customer extends we_tree_base{
 
 
 		$where = ' WHERE 1 ' .
-			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+			(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 			' ' . $addWhere;
 
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){
 			$items[] = [
-				'typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
-				'contenttype' => ($db->f("IsFolder") == 1 ? 'we/customerGroup' : 'we/customer'),
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'contenttype' => ($db->f('IsFolder') == 1 ? 'we/customerGroup' : 'we/customer'),
 				'disabled' => 0,
 				'path' => '',
 				'published' => $db->f('LoginDenied') ? 0 : 1,
-				'tooltip' => intval($db->f("ID")),
+				'tooltip' => intval($db->f('ID')),
 				'offset' => $offset,
-				'id' => intval($db->f("ID")),
+				'id' => intval($db->f('ID')),
 				'parentid' => 0,
 				'isfolder' => 0,
 				'text' => oldHtmlspecialchars($db->f('treeFormat'))
@@ -150,16 +92,16 @@ class we_tree_customer extends we_tree_base{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = [
-				"id" => "next_" . $ParentID,
-				"parentid" => 0,
-				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
-				"contenttype" => "arrowdown",
-				"table" => CUSTOMER_TABLE,
-				"typ" => "threedots",
-				"open" => 0,
-				"disabled" => 0,
-				"tooltip" => "",
-				"offset" => $nextoffset
+				'id' => 'next_' . $ParentID,
+				'parentid' => 0,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => CUSTOMER_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
 			];
 		}
 
@@ -176,7 +118,7 @@ class we_tree_customer extends we_tree_base{
 		$pid = strtr($pid, ['{' => '', '}' => '', '*****quot*****' => "\\\\\'"]);
 
 		if($pid || $notroot){
-			$pidarr = explode("-|-", $pid);
+			$pidarr = explode('-|-', $pid);
 		}
 
 		$settings = new we_customer_settings();
@@ -193,15 +135,15 @@ class we_tree_customer extends we_tree_base{
 		foreach($sort_defs as $c => $sortdef){
 			if(!empty($sortdef['function'])){
 				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
-					sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
-					sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
+					sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef['field'] . '_' . $sortdef['function'] :
+					sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef['function']);
 
 				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
 				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
-						'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
+						'(' . $sortdef['field'] . '_' . $sortdef['function'] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
 						$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
 				}
 			} else {
@@ -224,7 +166,7 @@ class we_tree_customer extends we_tree_base{
 
 		$db->query('SELECT COUNT(1) AS Anz,' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
 			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
-			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+			(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 			' GROUP BY ' . $grp . ($grouparr ? ($level ? ',ID' : '') : 'ID') . ($havingarr ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = [];
@@ -284,32 +226,32 @@ class we_tree_customer extends we_tree_base{
 						$prevoffset = max(0, $offset - $segment);
 						if($offset && $segment){
 							$items[] = [
-								'id' => "prev_" . $gname,
+								'id' => 'prev_' . $gname,
 								'parentid' => $gname,
 								'text' => 'display (' . $prevoffset . '-' . $offset . ')',
-								'contenttype' => "arrowup",
+								'contenttype' => 'arrowup',
 								'table' => CUSTOMER_TABLE,
-								'typ' => "threedots",
+								'typ' => 'threedots',
 								'open' => 0,
 								'published' => 1,
 								'disabled' => 0,
-								'tooltip' => "",
+								'tooltip' => '',
 								'offset' => $prevoffset
 							];
 						}
 						$first = false;
 					}
 					$items[] = [
-						'id' => $db->f("ID"),
+						'id' => $db->f('ID'),
 						'parentid' => str_replace("\'", "*****quot*****", $gname),
 						'path' => '',
 						'text' => oldHtmlspecialchars($tt),
 						'contenttype' => 'we/customer',
-						'isfolder' => $db->f("IsFolder"),
-						'typ' => "item",
+						'isfolder' => $db->f('IsFolder'),
+						'typ' => 'item',
 						'disabled' => 0,
 						'published' => $db->f('LoginDenied') ? 0 : 1,
-						'tooltip' => $db->f("ID")
+						'tooltip' => $db->f('ID')
 					];
 				}
 			}
@@ -321,15 +263,15 @@ class we_tree_customer extends we_tree_base{
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
 				$items[] = [
-					'id' => "next_" . str_replace("\'", "*****quot*****", $old),
+					'id' => 'next_' . str_replace("\'", "*****quot*****", $old),
 					'parentid' => str_replace("\'", "*****quot*****", $old),
-					'text' => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
-					'contenttype' => "arrowdown",
+					'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+					'contenttype' => 'arrowdown',
 					'table' => CUSTOMER_TABLE,
-					'typ' => "threedots",
+					'typ' => 'threedots',
 					'open' => 0,
 					'disabled' => 0,
-					'tooltip' => "",
+					'tooltip' => '',
 					'offset' => $nextoffset
 				];
 			}

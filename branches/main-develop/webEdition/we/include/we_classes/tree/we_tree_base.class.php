@@ -103,7 +103,7 @@ container.prototype.frames={
 ' . $this->getJSStartTree()
 			) . ($this->autoload ? we_base_jsCmd::singleCmd('loadTree', [
 				'pid' => 0,
-				'items' => $this->getItems(0, 0, $this->Tree->default_segment),
+				'items' => static::getItems(0, 0, $this->Tree->default_segment),
 				'sorted' => $this->addSorted
 			]) : '');
 	}
@@ -117,24 +117,6 @@ container.prototype.frames={
 				'class' => 'tree' . ($this->extraClasses ? ' ' . $this->extraClasses : ''),
 				], ''
 		);
-	}
-
-	function getJSLoadTree($clear, array $treeItems){
-		$js = '';
-		foreach($treeItems as $item){
-			$item['id'] = (is_numeric($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
-			$js .= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
-				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
-			foreach($item as $k => $v){
-				$js .= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-					intval($v) :
-					'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') . ',';
-			}
-			$js .= '}));' . ($clear ? '' : '}');
-		}
-		$js .= $this->topFrame . '.drawTree();';
-
-		return $js;
 	}
 
 	public static function deleteTreeEntries($dontDeleteClassFolders = false){
@@ -156,8 +138,5 @@ top.treeData = cont;
 top.drawTree();';
 	}
 
-	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
-
-	}
-
+	abstract public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false);
 }

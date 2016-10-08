@@ -191,13 +191,11 @@ class we_backup_XMLParser{
 	}
 
 	function nextSibling(){
-
 		if(isset($this->Nodes[$this->Handle]['next'])){
 			$this->Handle = $this->Nodes[$this->Handle]['next'];
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	function seek($position){
@@ -226,7 +224,6 @@ class we_backup_XMLParser{
 	}
 
 	function gotoMark($name){
-
 		if(isset($this->Mark[$name])){
 			$this->Handle = $this->Mark[$name];
 			return true;

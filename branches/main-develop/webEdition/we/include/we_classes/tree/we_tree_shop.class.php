@@ -38,7 +38,7 @@ class we_tree_shop extends we_tree_base{
 		return parent::getJSStartTree() . 'treeData.yearshop = ' . $year . ';';
 	}
 
-	public function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
 		$items = [];
 		$this->db->query("SELECT
@@ -74,7 +74,7 @@ ORDER BY o.ID DESC');
 				'text' => $this->db->f('text'),
 				'typ' => 'shop',
 				'checked' => false,
-				'contentType' => 'shop',
+				'contenttype' => 'shop',
 				'table' => SHOP_ORDER_TABLE,
 				'published' => $this->db->f("published"),
 				'class' => $style,
@@ -104,7 +104,7 @@ ORDER BY o.ID DESC');
 				'text' => (($f < 10) ? '0' : '') . $f . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : '0') . '/' . (($r > 0) ? $r : 0) . ')',
 				'typ' => 'folder',
 				'open' => false,
-				'contentType' => 'we/shop',
+				'contenttype' => 'we/shop',
 				'table' => '',
 				'loaded' => 0,
 				'checked' => false,

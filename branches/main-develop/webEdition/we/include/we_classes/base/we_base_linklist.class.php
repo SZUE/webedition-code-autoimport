@@ -463,13 +463,13 @@ class we_base_linklist{
 
 		if($this->editmode){
 			$disabled = ($this->show > 0 && $this->length() >= $this->show);
-			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
+			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", '', 100, 22, "", "", $disabled);
 			if($ret === false){
 				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs['name'])){
 					echo we_base_jsCmd::singleCmd('we_cmd', ['edit_linklist', $this->attribs['name'], (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID())]);
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
-					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", true, 100, 22, "", "", $disabled) .
+					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", '', 100, 22, "", "", $disabled) .
 					we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs['name'] . ']', $this->getString()) . ($this->length() ? '' : $plusbut);
 				}
 			} else {
@@ -629,7 +629,7 @@ class we_base_linklist{
 	function last(){
 		if($this->editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" .
-			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", true, 100, 22, "", "", false) .
+			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", '', 100, 22, "", "", false) .
 			we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs['name'] . ']', $this->getString());
 		}
 	}

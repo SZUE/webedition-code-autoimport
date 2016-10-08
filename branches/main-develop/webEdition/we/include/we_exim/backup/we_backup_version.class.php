@@ -33,7 +33,7 @@ class we_backup_version{
 	var $db;
 	var $ClassName = __CLASS__;
 	var $attribute_slots = [];
-	var $persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
+	var $persistent_slots = ["ID", "ClassName", "Path", "Data", "SeqN"];
 	var $ID = 0;
 	var $Path = '';
 	var $Data = '';
@@ -58,7 +58,7 @@ class we_backup_version{
 	}
 
 	function loadFile($file){
-		$this->Path = stri_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
+		$this->Path = stri_replace([$_SERVER['DOCUMENT_ROOT'], SITE_DIR], '', $file);
 		return ($this->linkData ?
 				$this->Data = we_base_file::load($file, 'rb', 8192, we_base_file::isCompressed($file)) :
 				true);

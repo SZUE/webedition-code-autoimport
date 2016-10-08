@@ -43,10 +43,9 @@ abstract class we_backup_XMLFileReader{
 			if(!($fp = $open($filename, 'rb'))){
 				return false;
 			}
-			self::$file = array(
-				'fp' => $fp,
+			self::$file = ['fp' => $fp,
 				'offset' => $offset,
-			);
+				];
 			$seek($fp, $offset);
 		}
 
