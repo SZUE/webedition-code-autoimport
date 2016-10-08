@@ -124,13 +124,19 @@ class update extends updateBase{
 			$phpversionOkForV640 = false;
 		}
 
-		if($mysqlV != '' && version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
+		if($mysqlV != ''){
+			if(version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
 			$mysqlversionOK = false;
 			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL4'];
 		}
-		if($mysqlV != '' && version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
+		if(version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
 			$mysqlversionOK = false;
 			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL5'];
+		}
+		if(version_compare($mysqlV, '5.5', '<') && $_SESSION['clientTargetVersionNumber'] >= 6430){
+			$mysqlversionOK = false;
+			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL5'];
+		}
 		}
 
 		if(!empty($phpextensionsMissing)){

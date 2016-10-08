@@ -86,7 +86,7 @@ EOF;
 			$Content = $this->Language["content"];
 
 			$_SESSION['le_dbserver_version'] = mysqli_get_server_info($Resource);
-			if((float) $_SESSION['le_dbserver_version'] < 5.0){
+			if((float) $_SESSION['le_dbserver_version'] < 5.5){
 				$Content .= sprintf($this->Language["dbserverwarning"], $_SESSION['le_dbserver_version']);
 			}
 		}
