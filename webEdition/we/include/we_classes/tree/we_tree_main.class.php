@@ -124,4 +124,8 @@ if(weWindow.treeData){
 		return $ret;
 	}
 
+	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
+		//unused
+	}
+
 }
