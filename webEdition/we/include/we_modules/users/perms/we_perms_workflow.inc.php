@@ -24,12 +24,11 @@
  */
 $perm_group_name = 'workflow';
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_WORKFLOW' => 0,
+$perm_defaults[$perm_group_name] = ['NEW_WORKFLOW' => 0,
 	'DELETE_WORKFLOW' => 0,
 	'EDIT_WORKFLOW' => 0,
 	'EMPTY_LOG' => 0
-);
+ ];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 

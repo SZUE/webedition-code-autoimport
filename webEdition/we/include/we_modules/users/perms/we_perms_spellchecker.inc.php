@@ -25,9 +25,8 @@
 $perm_group_name = 'spellchecker';
 $perm_group_title[$perm_group_name] = g_l('perms_spellchecker', '[perm_group_title]');
 
-$perm_defaults[$perm_group_name] = array(
-	'SPELLCHECKER_ADMIN' => 0
-);
+$perm_defaults[$perm_group_name] = ['SPELLCHECKER_ADMIN' => 0
+	];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.

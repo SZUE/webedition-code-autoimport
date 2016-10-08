@@ -26,7 +26,7 @@ $perm_group_name = 'administrator';
 
 $perm_group_title[$perm_group_name] = g_l('perms_administrator', '[perm_group_title]');
 
-$perm_defaults[$perm_group_name] = array('ADMINISTRATOR' => 0);
+$perm_defaults[$perm_group_name] = ['ADMINISTRATOR' => 0];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.

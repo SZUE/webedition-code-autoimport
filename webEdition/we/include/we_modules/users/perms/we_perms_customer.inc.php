@@ -23,8 +23,7 @@
  */
 $perm_group_name = 'customer';
 $perm_group_title[$perm_group_name] = g_l('perms_customer', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_CUSTOMER' => 0,
+$perm_defaults[$perm_group_name] = ['NEW_CUSTOMER' => 0,
 	'DELETE_CUSTOMER' => 0,
 	'EDIT_CUSTOMER' => 0,
 	'SHOW_CUSTOMER_ADMIN' => 0,
@@ -34,7 +33,7 @@ $perm_defaults[$perm_group_name] = array(
 	'CAN_CHANGE_DOCS_CUSTOMER' => 1,
 	'CUSTOMER_DECRYPT_FIELD' => 1,
 	'CUSTOMER_CHANGE_ENCRYPTED_FIELD' => 1,
-);
+ ];
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 

@@ -24,15 +24,14 @@
  */
 $perm_group_name = 'newsletter';
 $perm_group_title[$perm_group_name] = g_l('perms_newsletter', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_NEWSLETTER' => 0,
+$perm_defaults[$perm_group_name] = ['NEW_NEWSLETTER' => 0,
 	'DELETE_NEWSLETTER' => 0,
 	'EDIT_NEWSLETTER' => 0,
 	'SEND_NEWSLETTER' => 0,
 	'SEND_TEST_EMAIL' => 0,
 	'NEWSLETTER_SETTINGS' => 0,
 	'NEWSLETTER_FILES' => 0
-);
+ ];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.

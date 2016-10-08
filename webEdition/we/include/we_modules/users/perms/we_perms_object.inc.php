@@ -24,8 +24,7 @@
  */
 $perm_group_name = 'object';
 $perm_group_title[$perm_group_name] = g_l('perms_object', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = array(
-	'NEW_OBJECTFILE' => 1,
+$perm_defaults[$perm_group_name] = ['NEW_OBJECTFILE' => 1,
 	'NEW_OBJECT' => 0,
 	'NEW_OBJECTFILE_FOLDER' => 1,
 	'DELETE_OBJECTFILE' => 1,
@@ -35,7 +34,7 @@ $perm_defaults[$perm_group_name] = array(
 	'CAN_SEE_OBJECTFILES' => 1,
 	'CAN_SELECT_OTHER_USERS_OBJECTS' => 1,
 	'CAN_COPY_OBJECTS' => 1
-);
+ ];
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 
 //	Here the array of the permission-titles is set.
