@@ -6,7 +6,7 @@
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblFile)###
 /* query separator */
-UPDATE ###TBLPREFIX###tblFile SET ClassName="we_otherDocument",ContentType="application/*" WHERE ClassName="we_quicktimeDocument"
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblFile SET ClassName="we_otherDocument",ContentType="application/*" WHERE ClassName="we_quicktimeDocument";
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblFile (

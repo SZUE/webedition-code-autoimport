@@ -35,12 +35,12 @@ class we_backup_delete extends we_fragment_base{
 
 			$this->db->query('SELECT ContentType,Path FROM ' . FILE_TABLE . ' ORDER BY IsFolder, CHAR_LENGTH(Path) DESC');
 			while($this->db->next_record()){
-				$this->alldata[] = array($_SERVER['DOCUMENT_ROOT'] . $this->db->f("Path"), $this->db->f("ContentType"));
-				$this->alldata[] = array($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->db->f("Path"), $this->db->f("ContentType"));
+				$this->alldata[] = [$_SERVER['DOCUMENT_ROOT'] . $this->db->f("Path"), $this->db->f("ContentType")];
+				$this->alldata[] = [$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->db->f("Path"), $this->db->f("ContentType")];
 			}
 			$this->db->query('SELECT ContentType,Path FROM ' . TEMPLATES_TABLE . ' ORDER BY IsFolder, CHAR_LENGTH(Path) DESC');
 			while($this->db->next_record()){
-				$this->alldata[] = array(TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")), $this->db->f("ContentType"));
+				$this->alldata[] = [TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")), $this->db->f("ContentType")];
 			}
 
 			if(!$this->alldata){
@@ -72,8 +72,8 @@ class we_backup_delete extends we_fragment_base{
 
 	function finish(){
 		$js = (!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) ?
-				'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,600,550,true,true,true);' :
-				'');
+			'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,600,550,true,true,true);' :
+			'');
 		unset($_SESSION['weS']['backup_delete'], $_SESSION['weS']['delete_files_nok']);
 		echo we_html_element::jsElement($js . 'top.close();');
 	}

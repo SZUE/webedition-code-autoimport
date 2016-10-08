@@ -28,9 +28,8 @@ class we_voting_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
 	}
 
-	public function getItems($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
+	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
 		$db = new DB_WE();
-		$table = VOTING_TABLE;
 
 		$items = [];
 
@@ -52,9 +51,9 @@ class we_voting_tree extends we_tree_base{
 				];
 		}
 
-		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere . $owners_sql;
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' .  $owners_sql;
 
-		$db->query('SELECT ' . $db->escape($elem) . ' FROM ' . $db->escape($table) . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
+		$db->query('SELECT ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid FROM ' . VOTING_TABLE . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
 		$now = time();
 
 		while($db->next_record(MYSQLI_ASSOC)){
@@ -74,11 +73,10 @@ class we_voting_tree extends we_tree_base{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
+		$total = f('SELECT COUNT(1) FROM ' . VOTING_TABLE . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
-			$items[] = array(
-				"id" => "next_" . $ParentID,
+			$items[] = ["id" => "next_" . $ParentID,
 				"parentid" => 0,
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
 				"contenttype" => "arrowdown",
@@ -88,7 +86,7 @@ class we_voting_tree extends we_tree_base{
 				"disabled" => 0,
 				"tooltip" => "",
 				"offset" => $nextoffset
-			);
+				];
 		}
 
 		return $items;

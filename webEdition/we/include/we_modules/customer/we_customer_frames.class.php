@@ -190,9 +190,9 @@ function setTab(tab) {
 			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')");
 
 		return we_html_element::htmlForm(['name' => "we_form_treeheader"], we_html_element::htmlHiddens([
-					"pnt" => "treeheader",
-					"pid" => 0,
-					"cmd" => "no_cmd"]) .
+					'pnt' => "treeheader",
+					'pid' => '',
+					'cmd' => "no_cmd"]) .
 				$table
 		);
 	}
@@ -355,8 +355,8 @@ function setTab(tab) {
 					)
 				), we_html_element::jsElement(
 					(we_base_request::_(we_base_request::STRING, 'error') ?
-					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
-					$this->Tree->getJSLoadTree(!$pid, we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
+					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '')).
+					we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment,($sort ? $sortField : ''))])
 		);
 	}
 

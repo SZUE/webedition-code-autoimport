@@ -30,7 +30,7 @@ abstract class we_backup_export{
 			return false;
 		}
 		static $db = 0;
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 
 		if($offset == 0){
 
@@ -43,10 +43,10 @@ abstract class we_backup_export{
 
 			$object = new we_backup_tableAdv($table, true);
 
-			$attributes = array(
+			$attributes = [
 				'name' => we_backup_util::getDefaultTableName($table),
 				'type' => 'create'
-			);
+			];
 
 			we_exim_contentProvider::object2xml($object, $fh, $attributes, $_SESSION['weS']['weBackupVars']['write']);
 
@@ -87,9 +87,7 @@ abstract class we_backup_export{
 
 		$db->query('SELECT ' . $db->escape($keys_str) . ' FROM  ' . $db->escape($table) . ' ORDER BY ' . $keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
 		$def_table = we_backup_util::getDefaultTableName($table);
-		$attributes = array(
-			'table' => $def_table
-		);
+		$attributes = ['table' => $def_table];
 
 		while($db->next_record()){
 			$keyvalue = [];

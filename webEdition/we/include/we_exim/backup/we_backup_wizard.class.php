@@ -45,8 +45,9 @@ class we_backup_wizard{
 	}
 
 	function getHTMLFrameset(){
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', '', we_html_element::htmlBody(array('id' => 'weMainBody')
-					, we_html_element::htmlIFrame('body', $this->frameset . '&pnt=body', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', '', we_html_element::htmlBody([
+					'id' => 'weMainBody']
+		, we_html_element::htmlIFrame('body', $this->frameset . '&pnt=body', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
 					we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd')
 				)
@@ -98,7 +99,8 @@ class we_backup_wizard{
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1]
 		];
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep(2);"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(2);"], we_html_element::htmlForm([
+						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(["pnt" => "body", "step" => 3]) .
 						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
 					)
 				)
@@ -199,8 +201,8 @@ class we_backup_wizard{
 
 			/* foreach($files as $fk=>$fv)	$select->addOption($fk,$fv); */
 
-			$default = we_html_select::getNewOptionGroup(array('class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')));
-			$other = we_html_select::getNewOptionGroup(array('class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')));
+			$default = we_html_select::getNewOptionGroup(['class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')]);
+			$other = we_html_select::getNewOptionGroup(['class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')]);
 
 			foreach($files as $fk => $fv){
 				if(strlen($fv) > 75){
@@ -569,7 +571,7 @@ class we_backup_wizard{
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', '', we_html_element::htmlBody(array('class' => 'weEditorBody', "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', '', we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus()", "onload" => "self.focus();"], we_html_element::htmlForm(['name' => 'we_form'], we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
 				)
 		);
 	}
@@ -686,7 +688,7 @@ function press_yes() {
 				break;
 		}
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array('class' => "weDialogButtonsBody"), $table->getHtml())
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(['class' => "weDialogButtonsBody"], $table->getHtml())
 		);
 	}
 

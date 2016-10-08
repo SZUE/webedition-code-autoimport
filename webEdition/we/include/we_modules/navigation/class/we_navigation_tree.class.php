@@ -28,7 +28,7 @@ class we_navigation_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
 	}
 
-	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
+	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
 		$db = new DB_WE();
 
 		$items = $aWsQuery = $parentpaths = [];
@@ -46,8 +46,7 @@ class we_navigation_tree extends we_tree_base{
 
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
-			$items[] = array(
-				'id' => 'prev_' . $ParentID,
+			$items[] = ['id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 				'contenttype' => 'arrowup',
@@ -58,7 +57,7 @@ class we_navigation_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $prevoffset,
-			);
+				];
 		}
 
 		$where = ($aWsQuery ? '(' . implode(' OR ', $aWsQuery) . ') AND ' : '') . ' ParentID=' . intval($ParentID) . ' ';
@@ -66,8 +65,7 @@ class we_navigation_tree extends we_tree_base{
 		$db->query('SELECT ID,ParentID,Path,Text,IsFolder,Ordn,Depended,Charset,abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){
-			$typ = array(
-				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => intval($db->f('ID')),
@@ -76,7 +74,7 @@ class we_navigation_tree extends we_tree_base{
 				'published' => $db->f('Depended') ? 0 : 1,
 				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
 				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
-			);
+				];
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 

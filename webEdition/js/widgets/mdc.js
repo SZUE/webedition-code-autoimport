@@ -106,8 +106,8 @@ function exit_close() {
 function we_submit() {
 	var bSelection = _fo.Selection.selectedIndex;
 	var bSelType = _fo.headerSwitch.selectedIndex;
-	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + opener.base64_encode(_fo.title.value) + ';' +
-					(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
+	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + WE().util.Base64.encode(_fo.title.value) + ';' +
+		(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
 	_fo.method = 'post';
 	_fo.submit();
 }
@@ -191,7 +191,7 @@ function init(tab, title, sBinary, _sCsv) {
 		if (parseInt(sBinary.substr(1)) == parseInt(aInitCsv[1].substr(1))) {
 			_fo.FolderID.value = dir[0];
 			_fo.FolderPath.value = dir[1];
-			if (aInitCsv[3] !== 0) {
+			if (aInitCsv[3] !== undefined && aInitCsv[3] !== '') {
 				var obj = parseInt(sBinary.substr(1)) ? _fo.classID : _fo.DocTypeID;
 				obj.value = aInitCsv[3];
 			}

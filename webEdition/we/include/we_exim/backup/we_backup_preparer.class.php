@@ -40,7 +40,7 @@ abstract class we_backup_preparer{
 		}
 		$execTime = ini_get('max_execution_time');
 
-		$_SESSION['weS']['weBackupVars'] = array(
+		$_SESSION['weS']['weBackupVars'] = [
 			'options' => [],
 			'handle_options' => [],
 			'offset' => 0,
@@ -60,7 +60,7 @@ abstract class we_backup_preparer{
 				'lastMem' => 0,
 			),
 			'retry' => 0,
-		);
+			];
 
 		self::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
 		$_SESSION['weS']['weBackupVars']['tables'] = self::getTables($_SESSION['weS']['weBackupVars']['handle_options']);

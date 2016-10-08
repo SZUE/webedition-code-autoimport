@@ -125,7 +125,7 @@ function setTab(tab) {
 		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
@@ -380,7 +380,7 @@ function closeAllType(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			return we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd'");
+			return $this->getHTMLDocument(we_html_element::htmlBody(), we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd'"));
 		}
 		return '';
 	}
@@ -388,11 +388,9 @@ function closeAllType(){
 	private function getMainLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 
-			$js = ($pid ? '' :
-				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
-
-			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($pid, we_export_treeMain::getItems($pid)));
+			return $this->getHTMLDocument(
+					we_html_element::htmlBody(), we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => we_export_treeMain::getItems($pid)])
+			);
 		}
 		return '';
 	}

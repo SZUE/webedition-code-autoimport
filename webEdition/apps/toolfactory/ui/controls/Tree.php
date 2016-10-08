@@ -91,8 +91,8 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 				}
 				$items[] = ['ID' => $tool['name'],
 					'ParentID' => 0,
-					'Text' => $name,
-					'ContentType' => 'toolfactory/item',
+					'text' => $name,
+					'Contenttype' => 'toolfactory/item',
 					'IsFolder' => 0,
 					'Published' => !$tool['appdisabled'],
 					'Status' => ''

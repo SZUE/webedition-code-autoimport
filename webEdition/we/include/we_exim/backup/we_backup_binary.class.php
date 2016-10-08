@@ -31,7 +31,7 @@ class we_backup_binary{
 	var $db;
 	var $ClassName = __CLASS__;
 	var $attribute_slots = [];
-	var $persistent_slots = array('ID', 'ClassName', 'Path', 'Data', 'SeqN');
+	var $persistent_slots = ['ID', 'ClassName', 'Path', 'Data', 'SeqN'];
 	var $ID = 0;
 	var $Path = "";
 	var $Data = "";
@@ -60,7 +60,7 @@ class we_backup_binary{
 	}
 
 	function loadFile($file){
-		$path = str_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
+		$path = str_replace([$_SERVER['DOCUMENT_ROOT'], SITE_DIR], '', $file);
 		$this->Path = $path;
 		return ($this->linkData ? $this->Data = we_base_file::load($file) : true);
 	}
@@ -84,10 +84,11 @@ class we_backup_binary{
 
 	public function getFilesize(){
 		$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-		if(!file_exists($path)){
-			$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path;
-		}
-		return file_exists($path) ? filesize($path) : 0;
+		return (file_exists($path) ? filesize($path) :
+			(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path) ?
+			filesize($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path) :
+			0)
+			);
 	}
 
 	public function getLogString($prefix = ''){

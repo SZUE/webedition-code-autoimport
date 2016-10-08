@@ -304,10 +304,10 @@ abstract class we_base_variants{
 
 		if($count){
 			for($i = 0; $i < $count; $i++){
-				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');", true, 40);
+				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');");
 				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_up','" . $i . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('move_variant_down','" . $i . "');"));
-				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('remove_variant','" . $i . "');", true, 30);
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('remove_variant','" . $i . "');");
 
 				$content = '<table class="defaultfont lowContrast" style="width:700px">
 <tr>

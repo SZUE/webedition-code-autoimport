@@ -40,7 +40,7 @@ class we_tree_users extends we_tree_base{
 			parent::getJSStartTree();
 	}
 
-	public function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$items = [];
 		$db = new DB_WE();
 		if(permissionhandler::hasPerm(['NEW_USER', 'NEW_GROUP', 'SAVE_USER', 'SAVE_GROUP', 'DELETE_USER', 'DELETE_GROUP'])){
