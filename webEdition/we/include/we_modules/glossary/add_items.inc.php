@@ -305,7 +305,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		<?php
 		if($cmd3 != "checkOnly"){
 			?>
-							document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
+							document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false)); ?>';
 							WE().layout.button.enable(document, 'publish');
 			<?php
 		}
@@ -402,15 +402,15 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					// Only glossary check
 					if($cmd3 === "checkOnly"){
-						$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", true, 120, 22, "", "", false, false);
+						$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", '', 0, 0, "", "", false, false);
 						$PublishButton = "";
 
 						// glossary check and publishing
 					} else {
-						$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", true, 120, 22, "", "", false, false);
-						$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
+						$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", '', 0, 0, "", "", false, false);
+						$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false);
 					}
-					$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", true, 120, 22, "", "", true, false);
+					$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", '', 0, 0, "", "", true, false);
 
 
 					$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);

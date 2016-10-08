@@ -113,14 +113,14 @@ abstract class we_customer_add{
 				$sort_table->setCol($row_num, 1, ['class' => 'defaultfont'], $field->getHtml());
 				$sort_table->setCol($row_num, 2, ['class' => 'defaultfont'], $function->getHtml());
 				$sort_table->setCol($row_num, 3, ['class' => 'defaultfont'], $order->getHtml());
-				$sort_table->setCol($row_num, 4, ['class' => 'defaultfont'], we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
+				$sort_table->setCol($row_num, 4, ['class' => 'defaultfont'], we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)"));
 
 				$fcounter++;
 			}
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num, 4, ['style' => 'padding-top:5px;'], we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
+			$sort_table->setCol($row_num, 4, ['style' => 'padding-top:5px;'], we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)"));
 
 
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");

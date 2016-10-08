@@ -74,7 +74,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
 					'') .
 				(!in_array($we_doc->Table, [TEMPLATES_TABLE, VFILE_TABLE]) && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER && $GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
-					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', "javascript:top.we_cmd('revert_published_question');", true, 280) . '</div>' :
+					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', "javascript:top.we_cmd('revert_published_question');") . '</div>' :
 					'') :
 				'');
 

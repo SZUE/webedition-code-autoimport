@@ -179,7 +179,7 @@ function build_dialog($selected_setting = 'ui'){
 			// Create thumbnails list
 			$thumbnails_table = new we_html_table(['class' => 'default'], 1, 2);
 			$thumbnails_table->setCol(0, 0, ['style' => "padding-right:10px;"], we_html_element::htmlHidden('edited_id', $id) . $thumbnails->getHtml());
-			$thumbnails_table->setCol(0, 1, ['style' => 'vertical-align:top'], we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$enabled_buttons, false));
+			$thumbnails_table->setCol(0, 1, ['style' => 'vertical-align:top'], we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', '', 0, 0, '', '', !$enabled_buttons, false));
 
 			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options,description FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
 					['Name' => '',

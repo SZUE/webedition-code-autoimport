@@ -83,7 +83,7 @@ class we_selector_category extends we_selector_file{
 			($this->userCanEditCat() ?
 				'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', '', 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
-				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
+				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', '', 0, 0, '', '', false, false) . '</td>' : '') .
 			'</tr>
 </table>';
 	}

@@ -116,9 +116,9 @@ $parts = [
 		$select .
 		$hiddens .
 		'</td><td style="padding-right:20px;">' .
-		we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
+		we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'customValidationService\')', '', 0, 0, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' .
-		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
+		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', '', 0, 0, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => we_html_multiIconBox::SPACE_MED],
 	['html' => g_l('validation', '[result]'), 'noline' => 1,],

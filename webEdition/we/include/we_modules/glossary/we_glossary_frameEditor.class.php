@@ -66,7 +66,7 @@ function setTab(tab) {
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
-		$form = we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
+		$form = we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", '', 0, 0, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 

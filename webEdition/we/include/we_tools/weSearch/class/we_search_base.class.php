@@ -75,8 +75,8 @@ class we_search_base{
 						$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] ? $searchname[$i]['hour'] : '');
 						$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] ? $searchname[$i]['minute'] : '');
 
-						$from = mktime(($hour ? : 0), ($minute ? : 0), 0, ($month ? : 1), ($day ? : 1), $year);
-						$till = mktime(($hour ? : 23), ($minute ? : 59), 59, ($month ? : 12), ($day ? : date('t', mktime(0, 0, 0, ($month ? : 12), 1, $year))), $year);
+						$from = mktime(($hour ?: 0), ($minute ?: 0), 0, ($month ?: 1), ($day ?: 1), $year);
+						$till = mktime(($hour ?: 23), ($minute ?: 59), 59, ($month ?: 12), ($day ?: date('t', mktime(0, 0, 0, ($month ?: 12), 1, $year))), $year);
 
 						switch($searchlocation[$i]){
 							case '<':
@@ -158,26 +158,26 @@ class we_search_base{
 	}
 
 	function countitems($where = '', $table = ''){
-		$this->table = ($table ? : ($this->table ? : ''));
+		$this->table = ($table ?: ($this->table ?: ''));
 
 		if(!$this->table){
 			return -1;
 		}
-		$this->where = ($where ? : ($this->where ? : '1'));
+		$this->where = ($where ?: ($this->where ?: '1'));
 		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WETABLE WHERE ' . $this->where, '', $this->db);
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
-		$this->table = ($table ? : $this->table);
+		$this->table = ($table ?: $this->table);
 
 		if(!$this->table){
 			return -1;
 		}
-		$this->where = ($where? : $this->where);
-		$this->get = ($get? : rtrim($this->get, ',')? : '*' );
-		$this->Order = ($order? : $this->Order);
+		$this->where = ($where ?: $this->where);
+		$this->get = ($get ?: rtrim($this->get, ',') ?: '*' );
+		$this->Order = ($order ?: $this->Order);
 		$this->maxItems = f('SELECT COUNT(1) FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : ''));
-		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
+		$this->limit = ' LIMIT ' . ($limit ?: $this->searchstart . ',' . $this->anzahl . ' ');
 
 		//FIXME: this is a bad fix
 		$count = 0;
@@ -187,8 +187,8 @@ class we_search_base{
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
-		$this->anzahl = ($anzahl ? : ($this->anzahl ? : $this->defaultanzahl));
-		$this->searchstart = ($searchstart ? : ($this->searchstart ? : '0'));
+		$this->anzahl = ($anzahl ?: ($this->anzahl ?: $this->defaultanzahl));
+		$this->searchstart = ($searchstart ?: ($this->searchstart ?: '0'));
 
 
 		return ($this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ');
@@ -235,20 +235,20 @@ class we_search_base{
 <tr>
 	<td>' .
 			($this->searchstart ?
-				we_html_button::create_button(we_html_button::BACK, 'javascript:back();') : //bt_back
-				we_html_button::create_button(we_html_button::BACK, '', true, 100, 22, '', '', true)
+			we_html_button::create_button(we_html_button::BACK, 'javascript:back();') : //bt_back
+			we_html_button::create_button(we_html_button::BACK, '', '', 0, 0, '', '', true)
 			) . '
 	</td>
 	<td class="defaultfont"><b>' . (($we_search_anzahl) ? $this->searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $this->searchstart) < $this->anzahl ?
-				$we_search_anzahl :
-				$this->searchstart + $this->anzahl) .
+			$we_search_anzahl :
+			$this->searchstart + $this->anzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td>
 	<td>' .
 			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?
-				we_html_button::create_button(we_html_button::NEXT, "javascript:next();") : //bt_back
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next();") : //bt_back
 
-				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
+			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true)) .
 			'</td>
 	<td>';
 

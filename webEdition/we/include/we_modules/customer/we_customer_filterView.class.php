@@ -281,7 +281,7 @@ EO_SCRIPT;
 				'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightFilterInput"/></td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($i + 1) . ")", true, 25) . '</td>
+				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($i + 1) . ")") . '</td>
 	<td style="padding-left:5px;padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:25px;">' .
 				(($i != 0 || $startEmpty) ? we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($i)") : '') . '</td>

@@ -542,7 +542,7 @@ set_button_state(false);';
 			'noline' => 1,
 		);
 
-		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
+		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('reset_date').value='';", '', 0, 0, "", "", "", false);
 
 		$parts[] = array(
 			'headline' => g_l('versions', '[time]'),

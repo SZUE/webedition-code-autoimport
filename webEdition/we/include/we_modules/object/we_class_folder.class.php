@@ -427,7 +427,7 @@ class we_class_folder extends we_folder{
 <input type="hidden" name="position" />';
 
 		for($i = 0; $i <= $this->searchclass->height; $i++){
-			$button = ($i == 0 ? '' : we_html_button::create_button(we_html_button::TRASH, "javascript:del(" . $i . ");", true, 26, 22, "", "", false) );
+			$button = ($i == 0 ? '' : we_html_button::create_button(we_html_button::TRASH, "javascript:del(" . $i . ");", '', 0, 0, "", "", false) );
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) === "checkbox")){
 				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));

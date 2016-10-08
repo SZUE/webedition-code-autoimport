@@ -54,7 +54,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css');
 	}
-	
+
 	public function getJs(){
 		return parent::getJs() . we_html_multiIconBox::getDynJS('uploadFiles');
 	}
@@ -117,7 +117,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 	//TODO: add param filetype
 	public static function getBtnImportFiles($parentID = 0, $nextCmd = '', $text = ''){
-		return we_html_button::create_button('fa:' . ($text ? : 'btn_import_files') . ',fa-lg fa-upload', "javascript:we_cmd('import_files','" . $parentID . "', '" . $nextCmd . "')", true, 62);
+		return we_html_button::create_button('fa:' . ($text ? : 'btn_import_files') . ',fa-lg fa-upload', "javascript:we_cmd('import_files','" . $parentID . "', '" . $nextCmd . "')");
 	}
 
 	protected function _getHtmlFileRow(){

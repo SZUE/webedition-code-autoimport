@@ -1180,16 +1180,16 @@ class we_object extends we_document{
 			$selectObject .
 			we_html_element::htmlHidden($idname, $myid) .
 			(($count + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ?
-			we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
+			we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", '', 0, 22) :
 			we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "#", true, 21, 22, "", "", true)
 			) .
 			(($f > 0) ?
 			we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
-			we_html_button::create_button(we_html_button::DIRUP, "#", true, 21, 22, "", "", true)
+			we_html_button::create_button(we_html_button::DIRUP, "#", '', 0, 0, "", "", true)
 			) .
 			(($f < ($count)) ?
 			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
-			we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 21, 22, "", "", true)
+			we_html_button::create_button(we_html_button::DIRDOWN, "#", '', 0, 0, "", "", true)
 			) .
 			($count >= 1 ?
 			we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22) :

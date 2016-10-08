@@ -721,11 +721,11 @@ function CalendarChanged(calObject) {
 
 				$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
 					we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-					we_html_button::create_button(we_html_button::BACK, '#', true, 100, 22, '', '', true));
+					we_html_button::create_button(we_html_button::BACK, '#', '', 0, 0, '', '', true));
 
 				$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
 					we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-					we_html_button::create_button(we_html_button::NEXT, '#', true, 100, 22, '', '', true));
+					we_html_button::create_button(we_html_button::NEXT, '#', '', 0, 0, '', '', true));
 
 
 				$shopArticlesSelect = $shopArticlesParts[$page];

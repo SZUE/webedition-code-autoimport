@@ -239,8 +239,8 @@ function setTab(tab) {
 
 			$num = $this->Model->ID ? f('SELECT COUNT(ID) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid)) : 0;
 
-			$table->setColContent(0, 2, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::DIRUP, 'javascript:top.content.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false) .
-					we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:top.content.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($num - 1)) ? false : true), false)));
+			$table->setColContent(0, 2, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::DIRUP, 'javascript:top.content.we_cmd("move_up");', '', 0, 0, '', '', (($this->Model->Ordn > 0) ? false : true), false) .
+					we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:top.content.we_cmd("move_down");', '', 0, 0, '', '', (($this->Model->Ordn < ($num - 1)) ? false : true), false)));
 		} else {
 			$table->setColContent(0, 1, we_html_element::htmlHiddens(['name' => 'Ordn', 'value' => -1]));
 		}
@@ -374,7 +374,7 @@ function setTab(tab) {
 		$yuiSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth(330);
 		$yuiSuggest->setSelectButton($buttons);
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', '', 0, 0));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -413,7 +413,7 @@ function setTab(tab) {
 		$disabled = ($this->Model->isnew ? ' ' . g_l('weClass', '[availableAfterSave]') : '');
 
 		$cmd = "javascript:we_cmd('we_navigation_dirSelector',document.we_form.CopyFolderID.value,'CopyFolderID','CopyFolderPath','opener.we_cmd(\"copyNaviFolder\")')";
-		$button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', !empty($disabled));
+		$button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', !empty($disabled));
 
 		$parts[] = [
 			'headline' => g_l('weClass', '[copyFolder]'),
@@ -839,7 +839,7 @@ function showPreview() {
 
 	private function getHTMLFieldChooser($title, $name, $value, $cmd, $type, $extraField = '', $extraFieldWidth = 0){
 		$disabled = !(($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->ClassID != 0) || ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE && $this->Model->DocTypeID != 0));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:fieldChooserBut('" . $cmd . "');", true, 100, 22, '', '', $disabled, false, '_' . $name);
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:fieldChooserBut('" . $cmd . "');", '', 0, 0, '', '', $disabled, false, '_' . $name);
 		if(!$extraField){
 			$showValue = ($type === we_navigation_navigation::STYPE_CLASS && stristr($value, '_')) ? substr($value, strpos($value, '_') + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
@@ -890,12 +890,12 @@ function showPreview() {
 		}
 
 		if($showtrash){
-			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled) .
-				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled) .
+				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', '', 0, 0);
 			$width = 157;
 		} else {
 			$width = 120;
-			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled);
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled);
 		}
 
 		$yuiSuggest = &weSuggest::getInstance();
@@ -986,7 +986,7 @@ function showPreview() {
 					'fields', $fields, 20, '', ($multi ? true : false), ['style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem,100);"]),
 			]
 		];
-		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $cmd . "');", true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
+		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $cmd . "');", '', 0, 0, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
 		$body = we_html_element::htmlBody(
 				['class' => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
@@ -1350,7 +1350,7 @@ function showPreview() {
 		}
 
 		$table2 = new we_html_table(['class' => 'default'], 1, 3);
-		$table2->setColContent(0, 0, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
+		$table2->setColContent(0, 0, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", '', 0, 0, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
 		if(permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
 			$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('module_navigation_delete');"));
