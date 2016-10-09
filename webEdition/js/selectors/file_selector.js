@@ -42,8 +42,8 @@ function applyOnEnter(evt) {
 	}
 
 	if (!(evt[_elemName].tagName === "SELECT" ||
-					(evt[_elemName].tagName === "INPUT" && evt[_elemName].name !== "fname")
-					)) {
+		(evt[_elemName].tagName === "INPUT" && evt[_elemName].name !== "fname")
+		)) {
 		top.press_ok_button();
 		return true;
 	}
@@ -146,9 +146,9 @@ function selectFile(id) {
 		e = getEntry(id);
 
 		if (a.value != e.text &&
-						a.value.indexOf(e.text + ",") === -1 &&
-						a.value.indexOf("," + e.text + ",") === -1 &&
-						a.value.indexOf("," + e.text + ",") === -1) {
+			a.value.indexOf(e.text + ",") === -1 &&
+			a.value.indexOf("," + e.text + ",") === -1 &&
+			a.value.indexOf("," + e.text + ",") === -1) {
 
 			a.value = a.value ? (a.value + "," + e.text) : e.text;
 		}
@@ -177,9 +177,9 @@ function writeBody(d) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr' + ((entries[i].ID == top.fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
-						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
-						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
-						'</tr>';
+			'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
+			'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
+			'</tr>';
 	}
 	body += '</table>';
 	d.innerHTML = body;
@@ -390,8 +390,8 @@ function addOption(txt, id) {
 	var a = top.document.getElementById("lookin");
 	a.options[a.options.length] = new Option(txt, id);
 	a.selectedIndex = (a.options.length > 0 ?
-					a.options.length - 1 :
-					0);
+		a.options.length - 1 :
+		0);
 
 }
 function selectIt() {
@@ -521,6 +521,9 @@ function we_cmd() {
 			top.addEntry(importedDoc.currentID, importedDoc.currentText, false, importedDoc.currentPath, importedDoc.currentType);
 			top.doClick(importedDoc.currentID);
 			setTimeout(top.selectFile, 200, importedDoc.currentID);
+			break;
+		case "we_selector_file":
+			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));

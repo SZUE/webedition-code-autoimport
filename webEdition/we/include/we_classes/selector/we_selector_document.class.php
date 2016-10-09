@@ -167,7 +167,7 @@ class we_selector_document extends we_selector_directory{
 		$entries = [];
 		while($this->db->next_record()){
 
-			$title = strip_tags(str_replace(['"', "\n\r", "\n", "\\", '°',], ['\"', ' ', ' ', "\\\\", '&deg;'], (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
+			$title = strip_tags(str_replace(['"', "\n\r", "\n", "\\", '°',], ['\"', ' ', ' ', "\\\\", '&deg;'], (isset($this->titles[$this->db->f("ID")]) ? $this->titles[$this->db->f("ID")] : '-')));
 
 			$entries[] = [
 				intval($this->db->f('ID')),
