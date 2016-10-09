@@ -40,8 +40,9 @@ class we_tree_shop extends we_tree_base{
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
+		$db=new DB_WE();
 		$items = [];
-		$this->db->query("SELECT
+		$db->query("SELECT
 o.ID,
 CONCAT(o.ID,IF(o.shopname,CONCAT(' (',o.shopname,'), '),', '),DATE_FORMAT(o.DateOrder,'" . g_l('date', '[format][mysql]') . "')) AS text,
 o.DateShipping IS NOT NULL AS published,
@@ -53,47 +54,50 @@ o.DateShipping IS NOT NULL AS isShipped
 FROM " . SHOP_ORDER_TABLE . ' o WHERE
 o.DateOrder BETWEEN "' . ($year - 1) . '-12-31" AND "' . ($year + 1) . '-01-01"
 ORDER BY o.ID DESC');
-		while($this->db->next_record()){
+		$l=[];
+		while($db->next_record()){
 			//added for #6786
 			$style = 'default';
 
-			if($this->db->f('isActive')){
+			if($db->f('isActive')){
 				$style = 'active';
 			}
 
-			if($this->db->f('isPayed')){
+			if($db->f('isPayed')){
 				$style = 'payed';
 			}
 
-			if($this->db->f('isFinished')){
+			if($db->f('isFinished')){
 				$style = 'finished';
 			}
 			$items[] = [
-				'id' => $this->db->f('ID'),
-				'parentid' => $this->db->f('mdate'),
-				'text' => $this->db->f('text'),
+				'id' => $db->f('ID'),
+				'parentid' => $db->f('mdate'),
+				'text' => $db->f('text'),
 				'typ' => 'shop',
 				'checked' => false,
 				'contenttype' => 'shop',
 				'table' => SHOP_ORDER_TABLE,
-				'published' => $this->db->f("published"),
+				'published' => $db->f("published"),
 				'class' => $style,
 			];
 
-			if(!$this->db->f('isShipped')){
-				if(isset($l[$this->db->f('mdate')])){
-					$l[$this->db->f('mdate')] ++;
+			if(!$db->f('isShipped')){
+				if(isset($l[$db->f('mdate')])){
+					$l[$db->f('mdate')] ++;
 				} else {
-					$l[$this->db->f('mdate')] = 1;
+					$l[$db->f('mdate')] = 1;
 				}
 			}
 
-			if(isset($v[$this->db->f('mdate')])){
-				$v[$this->db->f('mdate')] ++;
+			if(isset($v[$db->f('mdate')])){
+				$v[$db->f('mdate')] ++;
 			} else {
-				$v[$this->db->f('mdate')] = 1;
+				$v[$db->f('mdate')] = 1;
 			}
 		}
+
+		$months = we_base_country::getTranslationList(we_base_country::MONTH, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 		for($f = 12; $f > 0; $f--){
 			$r = (isset($v[$f . $year]) ? $v[$f . $year] : '');
@@ -101,7 +105,7 @@ ORDER BY o.ID DESC');
 			$items[] = [
 				'id' => $f . $year,
 				'parentid' => 0,
-				'text' => (($f < 10) ? '0' : '') . $f . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : '0') . '/' . (($r > 0) ? $r : 0) . ')',
+				'text' => (($f < 10) ? '0' : '') . $f . ' ' . g_l('modules_shop', '[sl]') . " " . $months['wide'][$f] . " (" . (($k > 0) ? "<b>" . $k . "</b>" : '0') . '/' . (($r > 0) ? $r : 0) . ')',
 				'typ' => 'folder',
 				'open' => false,
 				'contenttype' => 'we/shop',
