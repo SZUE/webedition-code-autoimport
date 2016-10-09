@@ -74,15 +74,16 @@ class we_schedpro{
 	}
 
 	function getMonthsHTML(){
-		$months = '<table class="default"><tr>';
+		$ret = '<table class="default"><tr>';
+		$months = we_base_country::getTranslationList(we_base_country::MONTH, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 		for($i = 1; $i <= 12; $i++){
-			$months .= '<td>' . we_html_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$ret .= '<td>' . we_html_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, $months['abbreviated'][$i], false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				we_html_element::htmlHidden('we_schedule_month' . $i . '_' . $this->nr, $this->months[$i - 1]) . '</td>';
 		}
 
-		$months .= '</tr></table>';
-		return $months;
+		$ret .= '</tr></table>';
+		return $ret;
 	}
 
 	function getDaysHTML(){
@@ -108,15 +109,16 @@ class we_schedpro{
 	}
 
 	function getWeekdaysHTML(){
-		$wd = '<table class="default"><tr>';
+		$ret = '<table class="default"><tr>';
+		$days = we_base_country::getTranslationList(we_base_country::DAY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 		for($i = 1; $i <= 7; $i++){
-			$wd .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$ret .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", $days['abbreviated'][$i], false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
-		$wd .= '</tr></table>';
-		return $wd;
+		$ret .= '</tr></table>';
+		return $ret;
 	}
 
 	//needed to switch description of button publish to "save to scheduler" and vice versa
@@ -414,8 +416,8 @@ class we_schedpro{
 
 		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
-					$GLOBALS['we_doc']->we_publish() :
-					$GLOBALS['we_doc']->we_unpublish());
+				$GLOBALS['we_doc']->we_publish() :
+				$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
 				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->getErrMsg(), $GLOBALS['we_doc']);
@@ -701,13 +703,13 @@ class we_schedpro{
 	}
 
 	static function publInScheduleTable($object, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = [];
 		foreach($object->schedArr as $s){
 			$serializedDoc = ($s['task'] == self::SCHEDULE_FROM && $s['active'] ?
-					we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
-					false);
+				we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+				false);
 
 			$Wann = self::getNextTimestamp($s, time());
 			if($serializedDoc !== false){

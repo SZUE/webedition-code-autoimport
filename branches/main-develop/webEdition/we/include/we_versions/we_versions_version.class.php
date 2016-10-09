@@ -1208,8 +1208,8 @@ class we_versions_version{
 												}
 												if(!empty($lastEntryField[$k])){
 													foreach($lastEntryField[$k] as $k => $v){
-													$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
-												}
+														$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
+													}
 												}
 												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
 												if(!empty($diffs)){
@@ -1616,6 +1616,10 @@ class we_versions_version{
 	private static function _showValue($k, $v, $table){
 		$pathLength = 41;
 		$db = new DB_WE();
+		static $months = 0;
+		$months = $months ?: we_base_country::getTranslationList(we_base_country::MONTH, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+		static $days = 0;
+		$days = $days ?: we_base_country::getTranslationList(we_base_country::DAY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 		switch($k){
 			case 'timestamp':
@@ -1753,7 +1757,7 @@ class we_versions_version{
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
-							$months[] = g_l('date', '[month][short][' . $k . ']');
+							$months[] = $months['abbreviated'][$k];
 						}
 					}
 				}
@@ -1777,7 +1781,7 @@ class we_versions_version{
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
-							$weekdays[] = g_l('date', '[day][short][' . $k . ']');
+							$weekdays[] = $days['abbreviated'][$k];
 						}
 					}
 				}
