@@ -133,8 +133,8 @@ class we_mail_mail extends we_mail_znd{
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
 				$tr = ($_sender && !empty($_sender['email']) && !$suhosin ?
-						new we_mail_TransportSendmail('-f' . $_sender['email']) :
-						new we_mail_TransportSendmail());
+					new we_mail_TransportSendmail('-f' . $_sender['email']) :
+					new we_mail_TransportSendmail());
 
 				we_mail_znd::setDefaultTransport($tr);
 				break;
@@ -266,7 +266,7 @@ class we_mail_mail extends we_mail_znd{
 						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 						}
-						$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
+						$this->basedir = ($this->basedir ?: $_SERVER['DOCUMENT_ROOT']) .
 							((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
 							((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . $filename);
@@ -303,7 +303,11 @@ class we_mail_mail extends we_mail_znd{
 					$this->addAttachment($at);
 				}
 			}
-			$this->setBodyHtml(trim($this->Body));
+			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+			$content = trim($this->Body);
+			$this->setBodyHtml(($urlReplace ?
+					preg_replace($urlReplace, array_keys($urlReplace), $content) :
+					$content));
 		}
 		if(!$this->AltBody){ //Es gibt keinen Text-Part
 			$this->parseHtml2TextPart($this->Body);
@@ -318,10 +322,10 @@ class we_mail_mail extends we_mail_znd{
 		$this->AltBody = trim(strip_tags(preg_replace(['-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-			], ["\n",
+					], ["\n",
 			"\n\n",
 			''
-			], strtr($html, ["\n" => '',
+					], strtr($html, ["\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
 			'</h2>' => "\n\n",
@@ -334,7 +338,7 @@ class we_mail_mail extends we_mail_znd{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-			]
+						]
 				))
 		));
 	}
@@ -397,7 +401,7 @@ class we_mail_mail extends we_mail_znd{
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
 	public static function get_mime_type($ext, $name = '', $filepath = ''/* , $useLegacy = false */){
-		return (we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION) ? : 'application/octet-stream') . '; name="' . $name . '"';
+		return (we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION) ?: 'application/octet-stream') . '; name="' . $name . '"';
 	}
 
 	/*	 * ******************************************
