@@ -175,8 +175,8 @@ if(top.content.treeData){
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-								'top.content.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
-								'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
+							'top.content.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
+							'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
 							'top.content.hot=0;'
@@ -250,16 +250,24 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					],
 					'elems' => [
 						'btnTrash' => we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)"),
-						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value', '', 0, '', '__we_content_types__');", true, 60, 22),
+						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value', '', 0, '', '__we_content_types__');"),
 						'fieldSearch' => we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170),
-						'selStatus' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
-						'selSpeicherart' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
-						'selLocation' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
-						'selLocationDate' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
-						'selLocationText' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
-						'selModFields' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
-						'selUsers' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
-						'searchFields' => we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
+						'selStatus' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selSpeicherart' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selLocation' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont",
+							'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selLocationDate' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont",
+							'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selLocationText' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont",
+							'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selModFields' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selUsers' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'searchFields' => we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, [
+							'class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
 					]
 					]
 		)]);
@@ -280,7 +288,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$currentOrder = $this->Model->getProperty('currentOrder');
 		$currentSetView = $this->Model->getProperty('currentSetView');
 		$currentSearchstart = $this->Model->getProperty('currentSearchstart');
-		$currentAnzahl = $this->Model->getProperty('currentAnzahl') ? : 1;
+		$currentAnzahl = $this->Model->getProperty('currentAnzahl') ?: 1;
 
 		$disableBack = $currentSearchstart ? false : true;
 		$disableNext = ($currentSearchstart + $currentAnzahl) >= $we_search_anzahl;
@@ -311,7 +319,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					'data-pageValue' => implode(',', array_keys($pages)),
 					'data-pageText' => implode(',', array_values($pages)),
 					'data-page' => $page
-					]);
+			]);
 		}
 
 		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', '', 0, 0, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
@@ -488,25 +496,25 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_element::htmlHiddens(['location' . $whichSearch . '[0]' => 'CONTAIN',
 				$searchTables => 1
-				]) . '</td>
+			]) . '</td>
  <td></td>
  <td></td>
 </tr>' . (false && $whichSearch == self::SEARCH_MEDIA ?
-				'<tr><td colspan="5"></td></tr>' :
-				'') . '
+			'<tr><td colspan="5"></td></tr>' :
+			'') . '
 </tbody></table>';
 	}
 
 	function makeHeadLines($whichSearch){
 		return $whichSearch !== self::SEARCH_MEDIA ?
 			[
-			['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
+				['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . ' <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>']
 			] :
 			[
-			['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
+				['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . ' <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . ' <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span></span>'],
 			['dat' => '<span onclick="weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span></span>'],
@@ -557,7 +565,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 							$resetDisabled = true;
 						}
 
-						list($table, $ID, $timestamp, $version, $active) = getHash('SELECT documentTable,documentID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM)? : array(0, 0, 0, 0);
+						list($table, $ID, $timestamp, $version, $active) = getHash('SELECT documentTable,documentID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM) ?: [
+							0, 0, 0, 0];
 
 						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $table . "'," . $ID . "," . $version . ");");
 
@@ -577,19 +586,18 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 							}
 						}
 
-						$content[] = array(
-							array("version" => array($k => "")),
-							array("version" => array($k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>")),
-							array("version" => array($k => "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" .
-									we_html_forms::checkbox($ID, 0, "resetVersion[" . $result[$f]['docID'] . "_" . $result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>")),
-							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
-							array("version" => array($k => "")),
-							array("version" => array($k => "<div style='margin-left:5px;'>" .
-									(in_array($result[$f]["ContentType"], array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::OBJECT_FILE)) ?
-										we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
-										"") .
-									"</div>")),
-						);
+						$content[] = [["version" => [$k => ""]],
+								["version" => [$k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>"]],
+							["version" => [$k => "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" .
+									we_html_forms::checkbox($ID, 0, "resetVersion[" . $result[$f]['docID'] . "_" . $result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>"]],
+							["version" => [$k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>"]],
+								["version" => [$k => ""]],
+								["version" => [$k => "<div style='margin-left:5px;'>" .
+									(in_array($result[$f]["ContentType"], [we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::OBJECT_FILE]) ?
+									we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+									"") .
+									"</div>"]],
+						];
 					}
 				}
 //Checkbox
@@ -599,10 +607,10 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						case we_base_ContentTypes::HTML:
 						case 'objectFile':
 							$actionCheckbox = (!$showPubCheckbox ?
-									(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE)) ?
-										we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
-										'' :
-									'');
+								(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE)) ?
+								we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
+								'' :
+								'');
 							break;
 						default:
 							$actionCheckbox = '';
@@ -616,7 +624,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						case we_base_ContentTypes::APPLICATION:
 							$actionCheckbox = '';
 							if($result[$f]["IsProtected"]){
-								$actionCheckbox = we_html_element::htmlSpan(array('class' => 'wealertIcon', 'style' => 'margin-left:4px;', 'title' => g_l('searchtool', '[image_protected]')));
+								$actionCheckbox = we_html_element::htmlSpan(['class' => 'wealertIcon', 'style' => 'margin-left:4px;', 'title' => g_l('searchtool', '[image_protected]')]);
 							} else if(!in_array($result[$f]['docID'], $this->searchclass->getUsedMedia())){
 								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]["docTable"])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE) ?
 									we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'delete_docs_' . $whichSearch, '', false, 'middlefont', '') : '';
@@ -632,52 +640,48 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				$iconHTML = $this->getHtmlIconThmubnail($result[$f], 64, 140, $view, $whichSearch);
 				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
-					array(
-					array('dat' => $actionCheckbox),
-					array('dat' => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
-					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]),
-					array('dat' => ($whichSearch === 'TmplSearch' ? str_replace('/' . $result[$f]["Text"], '', $result[$f]["Path"]) : $result[$f]["SiteTitle"])),
-					array('dat' => isset($result[$f]["VersionID"]) && $result[$f]['VersionID'] ?
-							"-" :
-							($result[$f]["CreationDate"] ?
-								date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) :
-								"-")),
-					array('dat' => ($result[$f]["ModDate"] ?
-							date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) :
-							"-")),
-					) :
-					array(
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
-							array('elem' => 'table', '' => '', 'dat' => array(
-									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => $actionCheckbox),
-										)
-									),
-									array('elem' => 'row', 'attribs' => '', 'dat' => array(
-											array('elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'),
-										)
-									)
-								)
-							)
-						)),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
-							array('elem' => 'table', '' => '', 'dat' => array(
-									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"] . '</u></a>'),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => (($result[$f]['IsUsed'] && $this->Model->getProperty('currentAnzahlMedialinks')) ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $result[$f]['docID'], false, 'Verwendet in:') : '')),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $result[$f]['fileSize']),
-											array('elem' => 'td', 'attribs' => ($result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
-											array('elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_alt'] ? : 'Alt-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_alt'] ? 'green' : 'red') . ';"></i>'),
-											array('elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_title'] ? : 'Title-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_title'] ? 'green' : 'red') . ';"></i>'),
-											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-'),
-											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-'),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');", true, 27, 22)),
-										)),
-									array('elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? array(
-											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($result[$f])),
-											) : ''))
-								), 'colgroup' => '</colgroup>
+					[['dat' => $actionCheckbox],
+						['dat' => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'],
+						['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]],
+					['dat' => ($whichSearch === 'TmplSearch' ? str_replace('/' . $result[$f]["Text"], '', $result[$f]["Path"]) : $result[$f]["SiteTitle"])],
+						['dat' => isset($result[$f]["VersionID"]) && $result[$f]['VersionID'] ?
+						"-" :
+						($result[$f]["CreationDate"] ?
+						date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) :
+						"-")],
+						['dat' => ($result[$f]["ModDate"] ?
+						date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) :
+						"-")],
+					] :
+					[['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => [['elem' => 'table', '' => '', 'dat' => [['elem' => 'row', 'dat' => [
+								['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => $actionCheckbox],
+							]
+							],
+								['elem' => 'row', 'attribs' => '', 'dat' => [['elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'],
+								]
+							]
+						]
+						]
+					]],
+						['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'],
+					['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => [['elem' => 'table', '' => '', 'dat' => [['elem' => 'row', 'dat' => [
+									['elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"] . '</u></a>'],
+									['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => (($result[$f]['IsUsed'] && $this->Model->getProperty('currentAnzahlMedialinks')) ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $result[$f]['docID'] . ")", '', 0, 0, "", "", false, false, '__' . $result[$f]['docID'], false, 'Verwendet in:') : '')],
+									['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $result[$f]['fileSize']],
+										['elem' => 'td', 'attribs' => ($result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'),
+										'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'],
+										['elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_alt'] ?: 'Alt-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"',
+										'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_alt'] ? 'green' : 'red') . ';"></i>'],
+										['elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_title'] ?: 'Title-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"',
+										'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_title'] ? 'green' : 'red') . ';"></i>'],
+										['elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-'],
+									['elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-'],
+									['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');")],
+								]],
+									['elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? [array('elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"',
+									'dat' => $this->makeAdditionalContentMedia($result[$f])),
+									] : '')]
+							], 'colgroup' => '</colgroup>
 	<col style="text-align:left;"/>
 	<col style="width:48px;text-align:left;"/>
 	<col style="width:80px;text-align:left;"/>
@@ -688,9 +692,9 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 	<col style="width:90px;text-align:left;"/>
 	<col style="width:60px;text-align:left;"/>
 </colgroup>'
-							)
-						)),
-				);
+							]
+						]],
+				];
 			} else {
 				$result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result[$f]["Path"]) : 0;
 				$result[$f]['fileSize'] = we_base_file::getHumanFileSize($result[$f]['size']);
@@ -699,8 +703,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 				if($result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $result[$f]["Table"] != VERSIONS_TABLE){
 					$templateID = ($result[$f]["Published"] >= $result[$f]["ModDate"] && $result[$f]["Published"] != 0 ?
-							$result[$f]["TemplateID"] :
-							$result[$f]["temp_template_id"]);
+						$result[$f]["TemplateID"] :
+						$result[$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
@@ -728,29 +732,28 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					}
 				}
 
-				$content[] = array(
-					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
-					array('dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)),
-					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'),
-					array('dat' => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array('dat' => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
-					array('dat' => $result[$f]['fileSize']),
-					array('dat' => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
-					array('dat' => we_base_util::shortenPath(g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']'), 22)),
-					array('dat' => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]["Text"], 30) . '</span>'),
-					array('dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 45)),
-					array('dat' => we_base_util::shortenPath($result[$f]["Description"], 100)),
-					array('dat' => $result[$f]['ContentType']),
-					array('dat' => we_base_util::shortenPath($creator, 22)),
-					array('dat' => $templateText),
-					array('dat' => $metafields),
-					array('dat' => $result[$f]['docID']),
-					array('dat' => (isset($result[$f]['media_alt']) ? $result[$f]['media_alt'] : '')),
-					array('dat' => (isset($result[$f]['media_title']) ? $result[$f]['media_title'] : '')),
-					array('dat' => (isset($result[$f]['isProtected']) ? $result[$f]['isProtected'] : '')),
-					array('dat' => (isset($result[$f]['isUsed']) ? $result[$f]['isUsed'] : '')),
-				);
+				$content[] = [['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'],
+					['dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)],
+						['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'],
+					['dat' => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'],
+						['dat' => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'],
+						['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'],
+					['dat' => $result[$f]['fileSize']],
+						['dat' => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']],
+						['dat' => we_base_util::shortenPath(g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']'), 22)],
+						['dat' => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]["Text"], 30) . '</span>'],
+						['dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 45)],
+						['dat' => we_base_util::shortenPath($result[$f]["Description"], 100)],
+						['dat' => $result[$f]['ContentType']],
+						['dat' => we_base_util::shortenPath($creator, 22)],
+						['dat' => $templateText],
+						['dat' => $metafields],
+						['dat' => $result[$f]['docID']],
+						['dat' => (isset($result[$f]['media_alt']) ? $result[$f]['media_alt'] : '')],
+						['dat' => (isset($result[$f]['media_title']) ? $result[$f]['media_title'] : '')],
+						['dat' => (isset($result[$f]['isProtected']) ? $result[$f]['isProtected'] : '')],
+						['dat' => (isset($result[$f]['isUsed']) ? $result[$f]['isUsed'] : '')],
+				];
 			}
 		}
 
@@ -810,7 +813,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						($makeLink ? '
 							<td style="padding:8px 0 6px 26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? '<br>' . 'in: ' . $element : '') . '</span></td>
 							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:" . $reference['onclick'] . ";") . '</td>' :
-							'<td style="padding:8px 0 6px 26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
+						'<td style="padding:8px 0 6px 26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
 							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', true, false, '', false, g_l('searchtool', '[linkPublishedOnly]')) . '</td>') .
 						'</tr>';
 				}
@@ -853,46 +856,45 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
 		$selectAnzahl = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $currentAnzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
-		$selectAnzahlMedialinks = we_html_tools::htmlSelect('anzahlMedialinks' . $whichSearch, array(0 => g_l('searchtool', '[no_template]'), 10 => 10, -1 => g_l('searchtool', '[all]')), 1, $currentAnzahlMedialinks, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumberMedialinks');
+		$selectAnzahlMedialinks = we_html_tools::htmlSelect('anzahlMedialinks' . $whichSearch, [0 => g_l('searchtool', '[no_template]'), 10 => 10, -1 => g_l('searchtool', '[all]')], 1, $currentAnzahlMedialinks, false, [
+				'onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"], 'value', 0, 'selectSearchNumberMedialinks');
 
-		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 9);
-		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; padding:6px 6px 0 0;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
-		$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 10px 0 0;'), $selectAnzahl);
+		$tbl = new we_html_table(['class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'], 1, 9);
+		$tbl->setCol(0, ($c = 0), ['style' => 'font-size:12px; padding:6px 6px 0 0;'], g_l('searchtool', '[eintraege_pro_seite]') . ':');
+		$tbl->setCol(0, ++$c, ['class' => 'defaultfont lowContrast', 'style' => 'padding:0 10px 0 0;'], $selectAnzahl);
 		$tbl->setCol(0, ++$c, [], $this->getNextPrev($foundItems, $whichSearch));
 		if($whichSearch === self::SEARCH_MEDIA){
-			$tbl->setCol(0, ++$c, array('style' => 'font-size:12px; padding:6px 6px 0 12px;'), 'Medialinks:');
-			$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 12px 0 0;'), $selectAnzahlMedialinks);
+			$tbl->setCol(0, ++$c, ['style' => 'font-size:12px; padding:6px 6px 0 12px;'], 'Medialinks:');
+			$tbl->setCol(0, ++$c, ['class' => 'defaultfont lowContrast', 'style' => 'padding:0 12px 0 0;'], $selectAnzahlMedialinks);
 		}
 		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", '', 0, '', '', '', false));
 		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", '', 0, '', '', '', false));
 		if($whichSearch === self::SEARCH_DOCLIST){
 			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
-				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
+				$tbl->setCol(0, ++$c, ['style' => 'width:50px;'], we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
 			}
-			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", true, 50, '', '', '', false);
-			$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), $btnNewdir);
+			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", '', 0, 0, '', '', false);
+			$tbl->setCol(0, ++$c, ['style' => 'width:50px;'], $btnNewdir);
 
-			$moreHiddens = we_html_element::htmlHiddens(array(
-					'we_transaction' => $this->Model->transaction,
-			));
+			$moreHiddens = we_html_element::htmlHiddens(['we_transaction' => $this->Model->transaction,
+			]);
 		}
 		$moreHiddens = '';
 
-		return we_html_element::htmlHiddens(array(
-				'setView' . $whichSearch => $currentSetView,
+		return we_html_element::htmlHiddens(['setView' . $whichSearch => $currentSetView,
 				'Order' . $whichSearch => $currentOrder,
 				'mode' => $mode = $this->Model->mode,
 				'searchstart' . $whichSearch => $currentSearchstart,
 				'newSearch' => 1,
 				'position' => '',
 				'do' => '',
-			)) . $moreHiddens . $tbl->getHtml();
+			]) . $moreHiddens . $tbl->getHtml();
 	}
 
 	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
-				we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", '') :
-				'');
+			we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", '') :
+			'');
 
 		$actionButton = $actionButtonCheckboxAll = '';
 		switch($whichSearch){
@@ -912,12 +914,12 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				break;
 		}
 
-		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 4);
-		$tbl->setCol(($k = 0), ($c = 0), array('style' => 'font-size:12px;width:12px;'), $actionButtonCheckboxAll);
-		$tbl->setCol($k, ++$c, array('style' => 'font-size:12px;width:125px;'), $actionButton);
-		$tbl->setCol($k, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'width:48px;height:30px;', 'id' => 'resetBusy' . $whichSearch), '');
+		$tbl = new we_html_table(['class' => 'default', 'style' => 'margin-top:10px;'], 2, 4);
+		$tbl->setCol(($k = 0), ($c = 0), ['style' => 'font-size:12px;width:12px;'], $actionButtonCheckboxAll);
+		$tbl->setCol($k, ++$c, ['style' => 'font-size:12px;width:125px;'], $actionButton);
+		$tbl->setCol($k, ++$c, ['class' => 'defaultfont lowContrast', 'style' => 'width:48px;height:30px;', 'id' => 'resetBusy' . $whichSearch], '');
 		if($resetButton){
-			$tbl->setCol($k++, ++$c, array('style' => 'font-size:12px;'), $resetButton);
+			$tbl->setCol($k++, ++$c, ['style' => 'font-size:12px;'], $resetButton);
 			$c = 0;
 		}
 
@@ -979,13 +981,16 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					case 'CreatorName':
 						break;
 					case 'allModsIn':
-						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, [
+								'class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']']);
 						break;
 					case 'Status':
-						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsStatus(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsStatus(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, [
+								'class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']']);
 						break;
 					case 'Speicherart':
-						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsSpeicherart(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsSpeicherart(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, [
+								'class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']']);
 						break;
 					case 'Published':
 					case 'CreationDate':
@@ -1010,7 +1015,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 						$rootDirID = 0;
 
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','','" . we_base_ContentTypes::IMAGE . "')", true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','','" . we_base_ContentTypes::IMAGE . "')", '', 0, 0, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
@@ -1021,7 +1026,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 						$rootDirID = 0;
 
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", '', 0, 0, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
@@ -1029,7 +1034,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					case 'temp_category':
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 						$rootDirID = 0;
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $rootDirID . "','','')", true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $rootDirID . "','','')", '', 0, 0, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
@@ -1039,9 +1044,11 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 			$locationValue = (isset($currentLocation[$i]) ? $currentLocation[$i] : '');
 			$out .= '<tr id="filterRow_' . $i . '">
 	<td>' . we_html_element::htmlHidden('hidden_searchFields' . $whichSearch . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') .
-				we_html_tools::htmlSelect('searchFields' . $whichSearch . '[' . $i . ']', $this->searchclass->getFields($i, $whichSearch), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ''), false, array('class' => "defaultfont", 'id' => 'searchFields' . $whichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
+				we_html_tools::htmlSelect('searchFields' . $whichSearch . '[' . $i . ']', $this->searchclass->getFields($i, $whichSearch), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ''), false, [
+					'class' => "defaultfont", 'id' => 'searchFields' . $whichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');']) .
 				'</td>
-	<td id="td_location' . $whichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . $whichSearch . '[' . $i . ']', we_search_search::getLocation($handle), 1, $locationValue, false, array('class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . $whichSearch . '[' . $i . ']')) . '</td>
+	<td id="td_location' . $whichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . $whichSearch . '[' . $i . ']', we_search_search::getLocation($handle), 1, $locationValue, false, [
+					'class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . $whichSearch . '[' . $i . ']']) . '</td>
 	<td id="td_search' . $whichSearch . '[' . $i . ']">' . $searchInput . '</td>
 	<td id="td_delButton[' . $i . ']">' . $button . '</td>
 	<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location' . $whichSearch . '[' . $i . ']', $locationValue)) . '</td>
@@ -1245,8 +1252,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				$out .= '</tr><tr><td style="width:20px;"></td>';
 				for($y = 0; $y < $anz; $y++){
 					$out .= '<td class="middlefont bold" style="' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
-							$content[5]["version"][$k] . '<br/>' :
-							''
+						$content[5]["version"][$k] . '<br/>' :
+						''
 						) . '</td>';
 				}
 			}
@@ -1266,7 +1273,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					break;
 				case 'table':
 					// FIXME :this whole colgroup-stuff in dynamically built tables is absurde! throw out or generate dynamically too!
-					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;" >' .
+					$out .= !isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;" >' .
 						(!empty($content[$i]['colgroup']) ? $content[$i]['colgroup'] : '') .
 						self::tblListRowMedia($content[$i]["dat"]) .
 						'</table>');

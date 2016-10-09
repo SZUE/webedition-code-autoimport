@@ -59,14 +59,14 @@ if($num_rows > 0){
 	$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
 		($start > 0 ?
 			we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=show_formmail_log&start=" . ($start - $count)) : //bt_back
-			we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
+			we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true)
 		) .
 		'</td><td class="defaultfont bold" style="width:120px;text-align:center;padding-right:20px;">' . ($start + 1) . "&nbsp;-&nbsp;" .
 		min($num_all, $start + $count) .
 		"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . '</td><td>' .
 		($next < $num_all ?
 			we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=show_formmail_log&start=" . $next) : //bt_next
-			we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
+			we_html_button::create_button(we_html_button::NEXT, "", "", 0, 0, "", "", true)
 		) .
 		"</td></tr></table>";
 

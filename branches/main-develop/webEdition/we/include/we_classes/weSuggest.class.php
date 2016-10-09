@@ -29,7 +29,7 @@
  * echo $yuiSuggest->getYuiFiles																										// Die notwendigen YUI-JS-Dateien werden an einer passenden Stelle eingebunden
  * echo $yuiSuggest->createAutocompleter(																								// GUI-Element mit Input-Feld und Auswahl-Button
  * 			"Doc", 																														// AC-Id
- * 			we_button::create_button(we_html_button::SELECT, "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
+ * 			we_button::create_button(we_html_button::SELECT, "javascript:select_seem_start()", , "", "", false, false),					// Auswahl-Button
  * 			we_html_tools::htmlTextInput("seem_start_document_name", 11, $document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  * 			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
  * 			rray("name" => "seem_start_document", "value" => $document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) für die Document-, Folder-, Object-,...ID

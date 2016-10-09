@@ -931,7 +931,7 @@ class we_objectFile extends we_document{
 
 			$content .= (empty($max) || count($objects) < $max ?
 				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
-				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
+				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', '', 0, 0, "", "", true));
 
 			$this->setElement($name, implode(',', $objects), 'multiobject');
 

@@ -268,8 +268,8 @@ class we_selector_file{
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 		</select>
 		</td>
-		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
-		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
+		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", '', 0, 0, "", "", ($this->dir == 0), false) . '</td>
+		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", '', 0, 0, "", "", ($this->dir == 0), false) . '</td>' .
 			$extra .
 			'</tr>
 </table>';

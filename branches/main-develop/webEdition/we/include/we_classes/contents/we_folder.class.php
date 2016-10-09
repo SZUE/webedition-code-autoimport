@@ -416,7 +416,7 @@ class we_folder extends we_root{
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 				"javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "')" :
 				"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
-				, true, 100, 22, "", "", !empty($disabledNote));
+				, '', 0, 0, "", "", !empty($disabledNote));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
