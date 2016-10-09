@@ -28,6 +28,7 @@ we_html_tools::protect($protect);
 $selectedYear = we_base_request::_(we_base_request::INT, 'ViewYear', date('Y'));
 $selectedMonth = we_base_request::_(we_base_request::INT, 'ViewMonth', 1);
 $orderBy = we_base_request::_(we_base_request::STRING, 'orderBy', 'ID');
+$orderDesc = we_base_request::_(we_base_request::BOOL, "orderDesc");
 $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
@@ -50,7 +51,7 @@ function getTitleLink($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
-	return '<a href="' . $href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
+	return '<span onclick="document.location=\'' . $href . '\';">' . $text . '</span>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLink(){
@@ -208,7 +209,7 @@ FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi
 FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID JOIN ' . SHOP_ORDER_DOCUMENT_TABLE . ' od ON oi.orderDocID=od.ID
 WHERE ' .
 		$queryShopDateCondtion . '
-ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'o.ID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'o.ID') . ($orderDesc ? ' DESC' : '') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 
 	while($DB_WE->next_record(MYSQL_ASSOC)){
 		$hash = $DB_WE->getRecord();
