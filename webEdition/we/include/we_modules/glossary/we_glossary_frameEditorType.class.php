@@ -261,7 +261,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	private static function getHTMLPreferences($Search, $Type, $Language){
 
 		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
-		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 		$rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 

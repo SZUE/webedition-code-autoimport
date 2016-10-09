@@ -1580,7 +1580,7 @@ window.onload=extraInit;');
 
 		$nextprev->setCol(0, 0, array('style' => 'padding-right:10px;'), ($offset ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
-				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)));
+				we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)));
 
 		$nextprev->setCol(0, 1, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), we_html_element::htmlB(( $anz ? $offset + 1 : 0 ) . "-" . (($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
 				g_l('global', '[from]') .
@@ -1588,7 +1588,7 @@ window.onload=extraInit;');
 
 		$nextprev->setCol(0, 2, [], (($offset + $numRows) < $anz ?
 				we_html_button::create_button(we_html_button::NEXT, "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
-				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true)
 		));
 
 		if(!empty($emails)){

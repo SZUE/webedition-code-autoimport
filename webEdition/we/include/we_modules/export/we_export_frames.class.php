@@ -125,7 +125,7 @@ function setTab(tab) {
 		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 

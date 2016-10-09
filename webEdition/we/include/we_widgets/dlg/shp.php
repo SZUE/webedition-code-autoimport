@@ -84,8 +84,8 @@ $parts = [["headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
 	]
 ];
 
-$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();");
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 

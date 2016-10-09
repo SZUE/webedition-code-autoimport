@@ -351,7 +351,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				break;
 			}
 		}
-		$date_help_button = we_html_button::create_button('fa:btn_help,fa-question', "javascript:showDateHelp();", true, 0, 0);
+		$date_help_button = we_html_button::create_button('fa:btn_help,fa-question', "javascript:showDateHelp();");
 		$dateformatvals = ["unix" => g_l('import', '[uts]'),
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')

@@ -93,7 +93,7 @@ if($ac){
 }
 
 function getHTMLCategory(&$widgetData){
-	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();');
 	$widgetData['cats'] = [
 		'del' => $del_but,
@@ -152,8 +152,8 @@ $parts = [["headline" => "",
 	]
 ];
 
-$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();");
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 

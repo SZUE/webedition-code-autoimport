@@ -792,7 +792,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 		switch($step){
 			case 0:
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) .
 						we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.document.we_form.submit();"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
@@ -833,7 +833,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				} else if($step == 99 && $show_controls){
 					$buttons = we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?x=y&pnt=body&step=0';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=0';") .
-							we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+							we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 					);
 				}
 				break;

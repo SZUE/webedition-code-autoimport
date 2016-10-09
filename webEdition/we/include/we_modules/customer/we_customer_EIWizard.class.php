@@ -904,12 +904,12 @@ function callBack(){
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else if($step == 4){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
@@ -919,8 +919,8 @@ function callBack(){
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		} else if($step == 5){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else {
 			$buttons = we_html_button::position_yes_no_cancel(
@@ -947,7 +947,7 @@ function callBack(){
 		switch($step){
 			case "1":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) .
 						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 				break;
@@ -959,8 +959,8 @@ function callBack(){
 				break;
 			case "5":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
+						we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true) .
+						we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
@@ -977,7 +977,7 @@ function callBack(){
 			case "99":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.load.location='" . $this->frameset . "&pnt=eiload&cmd=import_back&step=2';") .
-						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			default:

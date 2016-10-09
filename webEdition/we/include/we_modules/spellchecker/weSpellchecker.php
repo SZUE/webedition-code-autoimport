@@ -97,7 +97,7 @@ we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 		we_html_button::create_button('ignore', "javascript:findNext();", '', 0, 0, '', '', true, false),
 		we_html_button::create_button('change', "javascript:changeWord();", '', 0, 0, '', '', true, false),
 		we_html_button::create_button(we_html_button::ADD, "javascript:add();", '', 0, 0, '', '', true, false),
-		we_html_button::create_button('check', "javascript:WE().layout.button.disable(document, \"check\");setTimeout(spellcheck,100);", true, 100, 22, '', '', true, false)
+		we_html_button::create_button('check', "javascript:WE().layout.button.disable(document, \"check\");setTimeout(spellcheck,100);", '', 0, 0, '', '', true, false)
 	);
 
 	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';

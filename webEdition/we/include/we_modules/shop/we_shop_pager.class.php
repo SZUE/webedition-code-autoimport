@@ -348,14 +348,14 @@ class we_shop_pager{
 		return '<table class="default"><tr><td>' .
 			($actPage > 0 ?
 				we_html_button::create_button(we_html_button::BACK, $url . '&actPage=' . ($actPage - 1)) :
-				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)) .
 			'</td><td class="defaultfont" style="padding:0xp 23px;"><b>' . (($anz) ? $offset + 1 : 0) . "-" .
 			(($anz - $offset) < $nrOfPage ?
 				$anz : $offset + $nrOfPage) .
 			"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" .
 			(($offset + $nrOfPage) < $anz ?
 				we_html_button::create_button(we_html_button::NEXT, $url . '&actPage=' . ($actPage + 1)) :
-				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true)) .
 			"</td></tr></table>";
 	}
 

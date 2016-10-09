@@ -119,7 +119,7 @@ $options = array(
 while($DB_WE->next_record()){
 	$options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
-$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($options), 1, "", false, array('id' => "title", 'onchange' => ""), 'value');
+$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($options), 1, "", false, ['id' => "title", 'onchange' => ""], 'value');
 $parts[] = array(
 	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, 'space' => we_html_multiIconBox::SPACE_MED
 );
@@ -127,8 +127,8 @@ $parts[] = array(
 	"headline" => g_l('cockpit', '[bg_color]'), "html" => $oSctCls->getHTML(), 'space' => we_html_multiIconBox::SPACE_MED
 );
 
-$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();");
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 

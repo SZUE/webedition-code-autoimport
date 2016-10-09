@@ -71,9 +71,9 @@ $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cock
 $oRemTopFeeds = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_edit_rem]'), we_html_tools::TYPE_INFO, 380);
 $oIptNewTitle = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newTitle', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[title]'), "left", "defaultfont");
 $oIptNewUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newUri', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
-$btnAddTopRssFeed = we_html_button::create_button(we_html_button::ADD, "javascript:handleTopRssFeed('add');", false, 0, 0, "", "", false, false);
-$btnOverwriteTopRssFeed = we_html_button::create_button('overwrite', "javascript:handleTopRssFeed('overwrite');", false, 0, 0, "", "", false, false);
-$btnDeleteTopRssFeed = we_html_button::create_button(we_html_button::DELETE, "javascript:handleTopRssFeed('delete');", false, 0, 0, "", "", false, false);
+$btnAddTopRssFeed = we_html_button::create_button(we_html_button::ADD, "javascript:handleTopRssFeed('add');", '', 0, 0, "", "", false, false);
+$btnOverwriteTopRssFeed = we_html_button::create_button('overwrite', "javascript:handleTopRssFeed('overwrite');", '', 0, 0, "", "", false, false);
+$btnDeleteTopRssFeed = we_html_button::create_button(we_html_button::DELETE, "javascript:handleTopRssFeed('delete');", '', 0, 0, "", "", false, false);
 
 $oBtnNewFeed = new we_html_table(['class' => 'default'], 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
@@ -152,8 +152,8 @@ $parts = [
 	["headline" => "", "html" => $oSelCls->getHTML(),]
 ];
 
-$save_button = we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', false, 0, 0);
-$preview_button = we_html_button::create_button(we_html_button::PREVIEW, 'javascript:preview();', false, 0, 0);
+$save_button = we_html_button::create_button(we_html_button::SAVE, 'javascript:save();');
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, 'javascript:preview();');
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, 'javascript:exit_close();');
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
