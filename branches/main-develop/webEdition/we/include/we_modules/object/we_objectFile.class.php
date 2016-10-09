@@ -1564,8 +1564,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				$text = preg_replace('/%urlunique[^%]*%/', $unique, $text);
 			}
 
-			$text = strtr($text, array(
-				'%ID%' => $this->ID,
+			$text = strtr($text, ['%ID%' => $this->ID,
 				'%locale%' => $this->Language,
 				'%language%' => substr($this->Language, 0, 2),
 				'%country%' => substr($this->Language, 4, 2),
@@ -1600,14 +1599,14 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				'%Fh%' => date("H", $urlfield[0]),
 				'%FH%' => date("H", $urlfield[0]),
 				'%DirSep%' => '/'
-				)
+				]
 			);
 
 
 			if(strpos($text, '%Parent%') !== false){
 				$fooo = getHash('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), $this->DB_WE);
-				if(!empty($fooo["Text"])){
-					$text = str_replace('%Parent%', $fooo["Text"], $text);
+				if(!empty($fooo['Text'])){
+					$text = str_replace('%Parent%', $fooo['Text'], $text);
 				}
 			}
 			if(strpos($text, '%PathIncC%') !== false){
@@ -1621,7 +1620,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
 			//remove duplicate "//" which will produce errors and transform URL to lowercase
-			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
+			$text = preg_replace('|\.+$|', '', str_replace([' ', '//'], ['-', '/'], (OBJECTSEOURLS_LOWERCASE ? mb_convert_case($text, MB_CASE_LOWER, $this->Charset) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
 				str_replace('%2F', '/', urlencode($text)) :
 				preg_replace(['~&szlig;~',
