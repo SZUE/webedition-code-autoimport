@@ -32,13 +32,13 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
 		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
 		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
-	 ];
+	];
 	protected $ctb = ["" => "btn_add_file",
 		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-upload,fa-lg fa-file-image-o',
 		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-upload,fa-lg fa-flash',
 		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-upload,fa-lg fa-file-video-o',
 		we_base_ContentTypes::COLLECTION => 'fa:btn_add_collection,fa-plus,fa-lg fa-archive',
-	 ];
+	];
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0, $lang = ''){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
@@ -81,7 +81,7 @@ class we_selector_document extends we_selector_directory{
 			$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") OR ' : '') . ' isFolder=1)';
 		}
 		if($this->language){
-			$filterQuery .=' AND (Language="' . $this->language . '" OR isFolder=1)';
+			$filterQuery .= ' AND (Language="' . $this->language . '" OR isFolder=1)';
 		}
 		// deal with workspaces
 		$wsQuery = '';
@@ -99,7 +99,7 @@ class we_selector_document extends we_selector_directory{
 				}
 				$wsQuery = ($wsQueryA ? ' AND (' . implode(' OR ', $wsQueryA) . ')' : '');
 			}
-			$wsQuery = $wsQuery? : ' OR RestrictOwners=0 ';
+			$wsQuery = $wsQuery ?: ' OR RestrictOwners=0 ';
 		}
 
 		switch($this->table){
@@ -138,7 +138,7 @@ class we_selector_document extends we_selector_directory{
 		$ws = get_ws($this->table, true);
 		$rootDirID = ($ws ? reset($ws) : 0);
 
-		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID);
+		$this->dir = $this->startID ?: ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID);
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
 				$this->dir = $this->rootDirID;
@@ -177,7 +177,7 @@ class we_selector_document extends we_selector_directory{
 				$this->db->f('Path'),
 				date(g_l('date', '[format][default]'), $this->db->f('ModDate')),
 				$this->db->f('ContentType'),
-				$this->db->f('Published'),
+				($this->db->f('Published') ? 1 : 0),
 				$title
 			];
 		}
@@ -212,9 +212,9 @@ class we_selector_document extends we_selector_directory{
 			case FILE_TABLE:
 				$extra = '<td>' .
 					($this->filter && isset($this->ctb[$this->filter]) ?
-						we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
-						(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
-							'')
+					we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+					(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+					'')
 					) .
 					'</td>' .
 					$extra;
@@ -251,7 +251,7 @@ class we_selector_document extends we_selector_directory{
 
 	protected function printSetDirHTML(we_base_jsCmd $weCmd){
 		$isWS = $this->userCanMakeNewFile && we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
-		$weCmd->addCmd('setButtons', [['NewFileBut' ,$isWS]]);
+		$weCmd->addCmd('setButtons', [['NewFileBut', $isWS]]);
 		parent::printSetDirHTML($weCmd);
 	}
 
@@ -259,21 +259,21 @@ class we_selector_document extends we_selector_directory{
 		$ret = '
 <table id="footer">';
 		if(!$this->filter){
-			$ret.= '
+			$ret .= '
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 		<td class="defaultfont">
 			<select name="filter" class="weSelect" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 				<option value="">' . g_l('fileselector', '[all_Types]') . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
-				$ret.= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
+				$ret .= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
 			}
-			$ret.= '
+			$ret .= '
 			</select></td>
 	</tr>';
 		}
 
-		$ret.= '
+		$ret .= '
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
 		<td class="defaultfont">' . we_html_tools::htmlTextInput("fname", 24, ($this->values["Text"] === '/' ? '' : $this->values["Text"]), "", 'style="width:100%" readonly="readonly"') . '</td>
@@ -372,10 +372,10 @@ class we_selector_document extends we_selector_directory{
 					$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->id,
 							'size' => ['width' => 150,
 								'height' => 200,
-								],
+							],
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
-							]);
+					]);
 					$imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
@@ -387,44 +387,44 @@ class we_selector_document extends we_selector_directory{
 				"masterTemplate" => ["headline" => g_l('weClass', '[master_template]'), "data" => []],
 				"properies" => ["headline" => g_l('weClass', '[tab_properties]'), "data" => [["caption" => g_l('fileselector', '[name]'),
 						"content" => (
-							$showPreview ?
-								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'><i style='margin-right:4px' class='fa fa-external-link fa-lg'></i>" . $result['Text'] . "</a>" :
-								$result['Text']
-							)
-							],
+						$showPreview ?
+						"<a href='" . $result['Path'] . "' target='_blank' style='color:black'><i style='margin-right:4px' class='fa fa-external-link fa-lg'></i>" . $result['Text'] . "</a>" :
+						$result['Text']
+						)
+						],
 							["caption" => "ID",
 							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><i style='margin-right:4px' class='fa fa-edit fa-lg'></i>" . $this->id . "</a>"
-							]
+						]
 					]],
 			];
 			if($result['CreationDate']){
 				$previewFields["properies"]["data"][] = ['caption' => g_l('fileselector', '[created]'),
 					'content' => is_numeric($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
-					];
+				];
 			}
 
 			if($result['ModDate']){
 				$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[modified]'),
 					"content" => is_numeric($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
-					];
+				];
 			}
 
 			$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[type]'),
 				"content" => ((g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false) ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType'])
-				];
+			];
 
 			if(isset($result['Language'])){
 				$langs = getWeFrontendLanguagesForBackend();
 				$previewFields['properies']['data'][] = ['caption' => g_l('weClass', '[language]'),
 					'content' => $result['Language'] ? $langs[$result['Language']] : '-'
-					];
+				];
 			}
 
 
 			if(isset($imagesize)){
 				$previewFields["properies"]["data"][] = ["caption" => g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]'),
 					"content" => $imagesize[0] . " x " . $imagesize[1] . " px "
-					];
+				];
 			}
 
 			switch($result['ContentType']){
@@ -436,26 +436,26 @@ class we_selector_document extends we_selector_directory{
 				default:
 					$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[filesize]'),
 						"content" => $filesize
-						];
+					];
 			}
 
 
 			if(isset($metainfos['Title'])){
 				$previewFields["metainfos"]["data"][] = ["caption" => g_l('weClass', '[Title]'),
 					"content" => $metainfos['Title']
-					];
+				];
 			}
 
 			if(isset($metainfos['Description'])){
 				$previewFields["metainfos"]["data"][] = ["caption" => g_l('weClass', '[Description]'),
 					"content" => $metainfos['Description']
-					];
+				];
 			}
 
 			if(isset($metainfos['Keywords'])){
 				$previewFields['metainfos']['data'][] = ["caption" => g_l('weClass', '[Keywords]'),
 					"content" => $metainfos['Keywords']
-					];
+				];
 			}
 			switch($result['ContentType']){
 				case we_base_ContentTypes::IMAGE:
@@ -465,17 +465,17 @@ class we_selector_document extends we_selector_directory{
 					if($Title !== ""){
 						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[Title]'),
 							"content" => oldHtmlspecialchars($Title)
-							];
+						];
 					}
 					if($name){
 						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[name]'),
 							"content" => $name
-							];
+						];
 					}
 					if($alt){
 						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)
-							];
+						];
 					}
 				//no break!
 				case we_base_ContentTypes::FLASH:
@@ -487,7 +487,7 @@ class we_selector_document extends we_selector_directory{
 							if(isset($metainfos[$md['tag']])){
 								$previewFields["metainfos"]["data"][] = ["caption" => $md['tag'],
 									"content" => $metainfos[$md['tag']]
-									];
+								];
 							}
 						}
 					}
@@ -498,14 +498,14 @@ class we_selector_document extends we_selector_directory{
 						foreach($folderFolders as $fId => $fxVal){
 							$previewFields["folders"]["data"][] = ["caption" => $fId,
 								"content" => $fxVal
-								];
+							];
 						}
 					}
 					if(isset($folderFiles) && is_array($folderFiles) && !empty($folderFiles)){
 						foreach($folderFiles as $fId => $fxVal){
 							$previewFields["files"]["data"][] = ["caption" => $fId,
 								"content" => $fxVal
-								];
+							];
 						}
 					}
 					break;
@@ -515,10 +515,10 @@ class we_selector_document extends we_selector_directory{
 						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
 						$previewFields["masterTemplate"]["data"][] = ["caption" => "ID",
 							"content" => $result['MasterTemplateID']
-							];
+						];
 						$previewFields["masterTemplate"]["data"][] = ["caption" => g_l('weClass', '[path]'),
 							"content" => $mastertemppath
-							];
+						];
 					}
 					break;
 			}

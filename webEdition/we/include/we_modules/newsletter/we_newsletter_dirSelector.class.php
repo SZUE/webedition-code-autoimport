@@ -124,10 +124,10 @@ class we_newsletter_dirSelector extends we_selector_directory{
 		$this->query();
 		while($this->db->next_record()){
 			$entries[] = [
-				intval($this->db->f("ID")),
-				$this->db->f("Text"),
-				intval($this->db->f("IsFolder")),
-				$this->db->f("Path")
+				intval($this->db->f('ID')),
+				$this->db->f('Text'),
+				intval($this->db->f('IsFolder')),
+				$this->db->f('Path')
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
