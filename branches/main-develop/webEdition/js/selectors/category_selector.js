@@ -303,20 +303,6 @@ function saveOnKeyBoard() {
 	return true;
 }
 
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
-			break;
-		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
-	}
-}
-
 function we_checkName() {
 	var regExp = /'|"|>|<|\\|\//;
 	if (regExp.test(document.getElementById("category").value)) {
