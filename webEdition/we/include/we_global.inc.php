@@ -605,7 +605,10 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 	if(isset($backupdoc)){
 		$GLOBALS['we_doc'] = $backupdoc;
 	}
-	return $content;
+	$urlReplace = we_folder::getUrlReplacements($db);
+	return ($urlReplace ?
+		preg_replace($urlReplace, array_keys($urlReplace), $content) :
+		$content);
 }
 
 /**
