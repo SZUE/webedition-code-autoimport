@@ -397,11 +397,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, ['onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'], 'value', 254);
+			$retSelect = we_html_tools::htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, ['onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'], 'value', 254);
 		} else {
 			//	charset-tag NOT available
 			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
-			$retSelect = $this->htmlSelect("dummi2", [g_l('charset', '[error][no_charset_available]')], 1, DEFAULT_CHARSET, false, ['disabled' => 'disabled'], 'value', 254);
+			$retSelect = we_html_tools::htmlSelect("dummi2", [g_l('charset', '[error][no_charset_available]')], 1, DEFAULT_CHARSET, false, ['disabled' => 'disabled'], 'value', 254);
 		}
 		//getCharsets
 		return '

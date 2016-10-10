@@ -454,12 +454,12 @@ function setTab(tab) {
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][CountryField]'));
 
-		/* 		$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
+		/* 		$countrySelect = we_html_tools::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 		  $countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		 */
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][LanguageField]'));
-		$languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
+		$languageSelect = we_html_tools::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 		$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		$htmlTable->setColContent($row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 
@@ -753,9 +753,9 @@ function setTab(tab) {
 		$tabEMail->setCol(2, 0, ['class' => 'defaultfont', "width" => 220], g_l('modules_shop', '[statusmails][bcc]') .
 			'<br/>' . we_html_tools::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
 		$tabEMail->setCol(0, 1, ['class' => 'defaultfont', "width" => 340], g_l('modules_shop', '[statusmails][EMailFeld]') .
-			'<br/>' . we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
+			'<br/>' . we_html_tools::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
 		$tabEMail->setCol(1, 1, ['class' => 'defaultfont', "width" => 340], g_l('modules_shop', '[statusmails][TitelFeld]') .
-			'<br/>' . we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
+			'<br/>' . we_html_tools::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
 		$tabEMail->setCol(2, 1, ['class' => 'defaultfont', "width" => 340], g_l('modules_shop', '[statusmails][DocumentSubjectField]') .
 			'<br/>' . we_html_tools::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
 		$tabEMail->setCol(3, 0, ['class' => 'defaultfont', "width" => 340], g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_html_tools::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
@@ -763,7 +763,7 @@ function setTab(tab) {
 
 		$tabSprache = new we_html_table(['class' => 'withSpace'], $rows_num = 2, $cols_num = 5);
 		$tabSprache->setCol(0, 0, ['class' => 'defaultfont', "width" => 220], we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
-		$tabSprache->setCol(0, 2, ['class' => 'defaultfont', "width" => 220], g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
+		$tabSprache->setCol(0, 2, ['class' => 'defaultfont', "width" => 220], g_l('modules_shop', '[statusmails][SprachenFeld]') . we_html_tools::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
 		$parts = [
 				[
@@ -1011,9 +1011,9 @@ function setTab(tab) {
 		}
 
 // default value f�r mwst
-		$defaultInput = we_class::htmlSelect('defaultValue', ['true' => 'true', 'false' => 'false'], 1, $weShopVatRule->defaultValue);
+		$defaultInput = we_html_tools::htmlSelect('defaultValue', ['true' => 'true', 'false' => 'false'], 1, $weShopVatRule->defaultValue);
 // select field containing land
-		$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $weShopVatRule->stateField);
+		$countrySelect = we_html_tools::htmlSelect('stateField', $selectFields, 1, $weShopVatRule->stateField);
 		$countrySelectISO = we_html_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 // states which must always pay vat
 
@@ -1026,9 +1026,9 @@ function setTab(tab) {
 		$actCondition = $weShopVatRule->conditionalRules[0];
 
 		$conditionTextarea = we_class::htmlTextArea('conditionalStates[]', 3, 30, implode("\n", $actCondition['states']));
-		$conditionField = we_class::htmlSelect('conditionalCustomerField[]', $selectFields, 1, $actCondition['customerField']);
-		$conditionSelect = we_class::htmlSelect('conditionalCondition[]', ['is_empty' => g_l('modules_shop', '[vat_country][condition_is_empty]'), 'is_set' => g_l('modules_shop', '[vat_country][condition_is_set]')], 1, $actCondition['condition']);
-		$conditionReturn = we_class::htmlSelect('conditionalReturn[]', ['false' => 'false', 'true' => 'true'], 1, $actCondition['returnValue']);
+		$conditionField = we_html_tools::htmlSelect('conditionalCustomerField[]', $selectFields, 1, $actCondition['customerField']);
+		$conditionSelect = we_html_tools::htmlSelect('conditionalCondition[]', ['is_empty' => g_l('modules_shop', '[vat_country][condition_is_empty]'), 'is_set' => g_l('modules_shop', '[vat_country][condition_is_set]')], 1, $actCondition['condition']);
+		$conditionReturn = we_html_tools::htmlSelect('conditionalReturn[]', ['false' => 'false', 'true' => 'true'], 1, $actCondition['returnValue']);
 
 		$parts = [
 				['headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
@@ -1368,23 +1368,23 @@ function setTab(tab) {
 		$parts = [
 				['headline' => g_l('modules_shop', '[vat_country][stateField]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, [], 'value', 280),
+				'html' => we_html_tools::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, [], 'value', 280),
 				'noline' => 1
 			],
 				['headline' => g_l('modules_shop', '[mwst]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, [], 'value', 280),
+				'html' => we_html_tools::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, [], 'value', 280),
 				'noline' => 1
 			],
 				['headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('isNet', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], 1, $weShippingControl->isNet, false, [], 'value', 280)
+				'html' => we_html_tools::htmlSelect('isNet', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], 1, $weShippingControl->isNet, false, [], 'value', 280)
 			],
 				['headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default defaultfont">
 	<tr>
-		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, ['onchange' => 'document.location=WE().consts.dirs.WEBEDITION_DIR + \'we_showMod.php?mod=shop&pnt=edit_shop_shipping&we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'], 'value', 280) . '</td>
+		<td>' . we_html_tools::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, ['onchange' => 'document.location=WE().consts.dirs.WEBEDITION_DIR + \'we_showMod.php?mod=shop&pnt=edit_shop_shipping&we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'], 'value', 280) . '</td>
 		<td style="width:10px;"></td>
 		<td style="vertical-align:top">'
 				. we_html_button::create_button('new_entry', 'javascript:we_cmd(\'newEntry\');') .
@@ -1449,7 +1449,7 @@ function setTab(tab) {
 			];
 			$parts[] = ['headline' => 'Standard',
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('weShipping_default', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], 1, $weShipping->default),
+				'html' => we_html_tools::htmlSelect('weShipping_default', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], 1, $weShipping->default),
 				'noline' => 1
 			];
 		}

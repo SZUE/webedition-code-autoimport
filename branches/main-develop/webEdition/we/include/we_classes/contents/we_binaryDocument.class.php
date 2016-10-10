@@ -383,7 +383,7 @@ class we_binaryDocument extends we_document{
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
 
-		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, [], 'value', 388), '', 'left', 'defaultfont', '', $button);
+		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('MediaReferences', $values, 1, '', false, [], 'value', 388), '', 'left', 'defaultfont', '', $button);
 
 		return ['form' => $form, 'num' => $num];
 	}

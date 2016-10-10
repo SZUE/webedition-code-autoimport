@@ -27,5 +27,3 @@
 $(function () {
 	$('.searchSelect').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: true});
 });
-
-

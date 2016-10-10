@@ -44,7 +44,7 @@ function we_tag_shopVat(array $attribs){
 		// use a defined name for this
 		if($GLOBALS['we_editmode']){
 			$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_attrib[' . $name . ']';
-			return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $weShopVat->id);
+			return we_html_tools::htmlSelect($fieldname, $values, 1, $weShopVat->id);
 		}
 
 		return $weShopVat->vat;

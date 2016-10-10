@@ -82,7 +82,7 @@ function do_confirm() {
 				'noline' => 1
 			],
 				["headline" => g_l('modules_messaging', '[priority]'),
-				"html" => we_html_tools::html_select('todo_priority', 1, [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10], $compose->get_priority()),
+				"html" => we_html_tools::htmlSelect('todo_priority', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10], 1, $compose->get_priority()),
 				'space' => we_html_multiIconBox::SPACE_MED,
 			],
 				["headline" => "",

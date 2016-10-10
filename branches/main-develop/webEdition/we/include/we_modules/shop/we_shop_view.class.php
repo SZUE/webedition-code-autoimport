@@ -743,7 +743,7 @@ function CalendarChanged(calObject) {
 					)) . '
 			<table class="default">
 			<tr>
-			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, ['onchange' => "selectArticle(this.options[this.selectedIndex].value)"], 'value', '380') . '</td>
+			<td>' . we_html_tools::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, ['onchange' => "selectArticle(this.options[this.selectedIndex].value)"], 'value', '380') . '</td>
 			<td width="10"></td>
 			<td style="vertical-align:top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
@@ -814,7 +814,7 @@ function CalendarChanged(calObject) {
 
 					$parts[] = ['headline' => g_l('modules_shop', '[variant]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
+						'html' => we_html_tools::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
 						'noline' => 1
 					];
 
@@ -961,7 +961,7 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 					],
 						['headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlSelect('weShipping_isNet', [1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')], 1, $shipping['shippingNet']),
+						'html' => we_html_tools::htmlSelect('weShipping_isNet', [1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')], 1, $shipping['shippingNet']),
 						'noline' => 1
 					],
 						['headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
