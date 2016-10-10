@@ -179,6 +179,7 @@ EOS;
 			$settingsSQL = $settings->treeTextFormatSQL;
 		}
 		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
+		t_e($delBut,$this->width);
 		$script = <<<EO_SCRIPT
 
 var $name = new (WE().util.multi_edit)("{$name}MultiEdit",document.we_form,0,"$delBut",$this->width,false);

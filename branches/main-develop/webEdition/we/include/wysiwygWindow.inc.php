@@ -134,7 +134,6 @@ top.close();');
 	<body class="weDialogBody">
 		<?php
 	} else {
-		echo STYLESHEET;
 		?>
 	</head>
 	<body class="weDialogBody" onload="top.focus();">
