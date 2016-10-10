@@ -58,7 +58,9 @@ window.addEventListener('load', function () {
 					break;
 				default:
 					//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
-					if (parent.we_cmd) {
+					if(window.we_cmd){
+						window.we_cmd.apply(this, [cmds[i], cmdData]);
+					}else if (parent.we_cmd) {
 						parent.we_cmd.apply(this, [cmds[i], cmdData]);
 					} else {
 						top.we_cmd.apply(this, [cmds[i], cmdData]);
