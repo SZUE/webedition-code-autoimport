@@ -841,7 +841,7 @@ function setTab(tab) {
 			$selected = $block->Groups ?: "1";
 			$content .= we_html_element::htmlHiddens(['block' . $counter . '_Groups' => $selected,
 					'block' . $counter . '_Pack' => $block->Pack]) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'searchSelect', "style" => 'width:440px;',
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'newSelect', "style" => 'width:440px;',
 						"onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1"]), g_l('modules_newsletter', '[block_lists]'));
 
 			switch($block->Type){

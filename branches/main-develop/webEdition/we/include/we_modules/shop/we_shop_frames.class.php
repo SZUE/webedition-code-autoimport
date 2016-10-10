@@ -446,11 +446,11 @@ function setTab(tab) {
 		}
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][customerFields]'));
-		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, 1, implode(',', $fields['customerFields']), true, ['class' => 'searchSelect'], 'value', 280));
+		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, 1, implode(',', $fields['customerFields']), true, ['class' => 'searchSelectUp'], 'value', 280));
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][orderCustomerFields]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $showFields, 1, implode(',', $fields['orderCustomerFields']), true, [
-				'class' => 'searchSelect'], 'value', 280));
+				'class' => 'searchSelectUp'], 'value', 280));
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][CountryField]'));
 
@@ -459,7 +459,7 @@ function setTab(tab) {
 		 */
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][LanguageField]'));
-		$languageSelect = we_html_tools::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
+		$languageSelect = we_html_tools::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField'],false,['class' => 'searchSelectUp']);
 		$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		$htmlTable->setColContent($row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 

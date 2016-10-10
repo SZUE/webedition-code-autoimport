@@ -24,6 +24,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//FIXME: add text replacements
 $(function () {
-	$('.searchSelect').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: true});
+	$('.searchSelect').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false});
+	$('.searchSelectUp').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false, up: true});
+	$('.newSelect').SumoSelect({csvDispCount: 0, selectAll: true, okCancelInMulti: false});
 });
