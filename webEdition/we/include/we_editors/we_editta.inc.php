@@ -102,7 +102,7 @@ $selected = $we_doc->getElement($name . "xml", "dat", 'on') === "on" ? 'on' : 'o
 $xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') === "on" ? 'on' : 'off';
-$removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
@@ -163,7 +163,7 @@ $parts[] = ["headline" => "",
 
 // COMMANDS && CONTEXTMENU
 $select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, ['onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
-$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, ['onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 
 $table = '<table class="default">
 	<tr class="withBigSpace">

@@ -996,7 +996,7 @@ class we_objectFile extends we_document{
 
 			if($attribs['shopcatLimitChoice']){
 				$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE, '', 'Path');
-				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
+				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, ['disabled' => 'disabled']) .
 					we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
 			} else {
 				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!

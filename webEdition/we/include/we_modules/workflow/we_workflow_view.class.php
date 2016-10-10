@@ -67,7 +67,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getHiddensFormOverviewPage(){
 		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
-		array_push($this->hiddens, 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+		array_push($this->hiddens, 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'Objects');
 
 		$out = '';
 
@@ -162,7 +162,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getWorkflowSelectHTML(){
 		$vals = we_workflow_workflow::getAllWorkflowsInfo();
-		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick" => "we_cmd(\"workflow_edit\")"), "value", 200);
+		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, ["onclick" => "we_cmd(\"workflow_edit\")"], "value", 200);
 	}
 
 	function getWorkflowTypeHTML(){
@@ -356,24 +356,16 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getDocTypeHTML($width = 498){
-		$vals = [];
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
-		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
-		while($this->db->next_record()){
-			$v = $this->db->f('ID');
-			$t = $this->db->f('DocType');
-			$vals[$v] = $t;
-		}
-		return we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
+		$vals = $this->db->getAllFirstq('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'], false);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 1, $this->workflowDef->DocType, true, ['class' => 'searchSelect', 'onchange' => "top.content.setHot();"], "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
 	}
 
 	function getJSTop(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		return
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js', "parent.document.title='" . $title . "';");
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js', "parent.document.title='" . $title . "';");
 	}
 
 	function getJSProperty(){
@@ -384,7 +376,7 @@ function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }
 ' : '')) .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_property.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_property.js') . JQUERY;
 	}
 
 	function processCommands(){

@@ -289,7 +289,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
-		<td>' . we_html_tools::htmlSelect("Rows", $rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
+		<td>' . we_html_tools::htmlSelect("Rows", $rows, 1, $Search->Rows, "", ['onchange' => "SubmitForm();"]) . '</td>
 		<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 		<td></td>
 		<td>' . $newButton . '</td>
@@ -314,7 +314,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$pages = $Search->getPages();
 
-		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array('onchange' => "jump(this.value);"));
+		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, ['onchange' => "jump(this.value);"]);
 
 		return '
 	<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
