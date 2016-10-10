@@ -27,6 +27,12 @@
  */
 WE().util.loadConsts(document, "g_l.users");
 
+var usersData = WE().util.getDynamicVar(document, 'loadVarUsersView', 'data-users');
+
+var frameset = usersData.frameset;
+var cgroup = usersData.cgroup;
+parent.document.title = usersData.modTitle;
+
 var loaded = 0;
 var hot = false;
 
@@ -96,6 +102,14 @@ function we_cmd() {
 			if (orgname !== null) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_organization&orn=" + orgname;
 			}
+			break;
+		case 'loadUsersContent':
+			var home = args[1].home !== undefined ? "&home=1" : "";
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader" + home;
+			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody" + home + (args[1].oldtab !== undefined ? '&oldtab=' + args[1].oldtab : '');
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter" + home;
+
+
 			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
