@@ -1427,7 +1427,7 @@ class we_document extends we_root{
 		];
 
 		$input = we_html_tools::htmlTextInput($inputName, 23, ($this->getElement($field) ?: (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, ['onchange' => $onchange], "value", 200);
+		$sel = we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, ['onchange' => $onchange], "value", 200);
 
 		// FIXME: if we want the icons make icon-css and better js
 		$csvText = g_l('metadata', '[txtIconCsv]');
@@ -1465,7 +1465,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, [
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, [
 				"onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');",
 				"onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"], "value", 330) . '</td></tr>' .
 			'</table>';

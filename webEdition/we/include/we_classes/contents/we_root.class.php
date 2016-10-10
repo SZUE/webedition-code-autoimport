@@ -651,7 +651,7 @@ abstract class we_root extends we_class{
 			return '
 <table class="default" style="margin-top:2px;">' .
 				$headline . '
-	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
 					'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
@@ -660,7 +660,7 @@ abstract class we_root extends we_class{
 		return '
 <table class="default" style="margin-top:2px;">' .
 			$headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
+	<tr><td>' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
 				'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
 </table>';
 	}

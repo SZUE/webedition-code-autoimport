@@ -71,14 +71,14 @@ function yearSelect($select_name){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
-	return we_class::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::INT, $select_name, ''), false, ['id' => $select_name]);
+	return we_html_tools::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::INT, $select_name, ''), false, ['id' => $select_name]);
 }
 
 function monthSelect($select_name, $selectedMonth){
 	$opts = g_l('modules_shop', '[month]');
 	$opts[-1] = '-';
 	ksort($opts, SORT_NUMERIC);
-	return we_class::htmlSelect($select_name, $opts, 1, $selectedMonth, false, ['id' => $select_name]);
+	return we_html_tools::htmlSelect($select_name, $opts, 1, $selectedMonth, false, ['id' => $select_name]);
 }
 
 $mon = we_base_request::_(we_base_request::INT, 'ViewMonth');

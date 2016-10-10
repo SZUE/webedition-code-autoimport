@@ -216,10 +216,6 @@ this.selectedIndex = 0;' .
 		return $out;
 	}
 
-	static function html_select($name, $size, $vals, $value = '', array $attribs = []){
-		return self::htmlSelect($name, $vals, $size, $value, false, $attribs, 'value');
-	}
-
 	static function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = [], $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
 		$selIndex = is_array($selectedIndex) ? $selectedIndex : makeArrayFromCSV($selectedIndex);

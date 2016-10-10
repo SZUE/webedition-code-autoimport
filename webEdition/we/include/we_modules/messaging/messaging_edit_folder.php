@@ -85,12 +85,12 @@ document.edit_folder.submit();
 		switch($mode){
 			case 'new':
 				$heading = g_l('modules_messaging', '[new_folder]');
-				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), '', array('onchange' => "top.content.setHot();"));
+				$acc_html = we_html_tools::htmlSelect('foldertypes', $messaging->get_wesel_folder_types(), 1, '', false, ['onchange' => "top.content.setHot();"]);
 				break;
 			case 'edit':
 				$heading = g_l('modules_messaging', '[change_folder_settings]');
 				$finf = $messaging->get_folder_info($fid);
-				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'], array('onchange' => "top.content.setHot();"));
+				$acc_html = we_html_tools::htmlSelect('foldertypes', $messaging->get_wesel_folder_types(), 1, $finf['ClassName'], fasle, ['onchange' => "top.content.setHot();"]);
 		}
 
 		$n = isset($finf) ? $finf['Name'] : '';
@@ -117,7 +117,7 @@ document.edit_folder.submit();
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[parent_folder]') . '</td>
-	  <td>' . we_html_tools::html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '', array('onchange' => "top.content.setHot();")) . '</td>
+	  <td>' . we_html_tools::htmlSelect('parent_folder', $messaging->get_wesel_available_folders(), 1, isset($finf) ? $finf['ParentID'] : '', false, ['onchange' => "top.content.setHot();"]) . '</td>
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[type]') . '</td>

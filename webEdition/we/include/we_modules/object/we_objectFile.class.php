@@ -533,7 +533,7 @@ class we_objectFile extends we_document{
 		return '
 			<table class="default">
 				' . $headline . '
-				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array(
+				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array(
 				'onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');',
 				'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
@@ -716,7 +716,7 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
 		}
 		return ($variant ?
-			$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
+			we_html_tools::htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
 			$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
@@ -978,7 +978,7 @@ class we_objectFile extends we_document{
 			return
 				'<table class="defaultfont">
 				<tr><td>' . $this->getPreviewHeadline('shopVat', 'shopvat') . '</td></tr>
-				<tr><td>' . we_class::htmlSelect('we_' . $this->Name . '_shopVat[' . $name . ']', $values, 1, $val) . '</td></tr>
+				<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_shopVat[' . $name . ']', $values, 1, $val) . '</td></tr>
 			</table>';
 		}
 		$val = $this->getElement($name);
@@ -996,11 +996,11 @@ class we_objectFile extends we_document{
 
 			if($attribs['shopcatLimitChoice']){
 				$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE, '', 'Path');
-				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, ['disabled' => 'disabled']) .
+				$input = we_html_tools::htmlSelect('dummy', $values, 1, 0, false, ['disabled' => 'disabled']) .
 					we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
 			} else {
 				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
-				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ?: $attribs['default']));
+				$input = we_html_tools::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ?: $attribs['default']));
 			}
 
 			return

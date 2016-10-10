@@ -121,7 +121,7 @@ abstract class we_class{
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput($name, $size = 25, $type = 'txt'){
-		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ? : $name), $size);
+		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ?: $name), $size);
 	}
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
@@ -135,7 +135,7 @@ abstract class we_class{
 		$out = we_html_element::htmlHidden($formname, $this->getElement($name)) .
 			'<table class="default" style="border:1px solid black">
 				<tr>
-					<td style="background-color: ' . ($value ? : 'inherit') . ';">
+					<td style="background-color: ' . ($value ?: 'inherit') . ';">
 						<a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="display:block;width:' . $width . 'px;height:' . $height . 'px">&nbsp;</span></a>
 					</td>
 				</tr>
@@ -162,7 +162,7 @@ abstract class we_class{
 	}
 
 	function formSelectFromArray($elementtype, $name, array $vals, $text, $size = 1, $multiple = false, array $attribs = []){
-		$pop = $this->htmlSelect('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $vals, $size, ($elementtype ? $this->getElement($name) : $this->$name), $multiple, $attribs);
+		$pop = we_html_tools::htmlSelect('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $vals, $size, ($elementtype ? $this->getElement($name) : $this->$name), $multiple, $attribs);
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}
 
@@ -175,39 +175,12 @@ abstract class we_class{
 				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
-	//fixme: add auto-grouping, add format
-	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = [], $compare = 'value', $width = 0, $classes = []){
-		$optgroup = false;
-		$selIndex = $multiple ? explode(',', $selectedIndex) : [$selectedIndex];
-		$ret = '';
-		foreach($values as $value => $text){
-			if($text === we_html_tools::OPTGROUP){
-				$ret .= ($optgroup ? '</optgroup>' : '') . '<optgroup label="' . oldHtmlspecialchars($value) . '">';
-				$optgroup = true;
-				continue;
-			}
-
-			$ret .= '<option ' . (isset($classes[$value]) ? 'class="' . $classes[$value] . '" ' : '') . ' value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
-		}
-		if($optgroup){
-			$ret .= '</optgroup>';
-		}
-
-		return we_html_element::htmlSelect(array_merge($attribs, ['id' => trim($name),
-				'class' => "weSelect defaultfont",
-				'name' => trim($name),
-				'size' => abs($size),
-				($multiple ? 'multiple' : null) => 'multiple',
-				($width ? 'width' : null) => $width
-				]), $ret);
-	}
-
 	############## new fns
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = []){
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(['class' => 'defaultfont',
+				we_html_tools::htmlSelect('we_' . $this->Name . '_' . $type . '[' . $name . ']', $values, $size, $this->getElement($name), false, array_merge(['class' => 'defaultfont',
 					'width' => $width,
 						], $attribs))
 				, g_l('weClass', '[' . $name . ']'));
@@ -216,8 +189,8 @@ abstract class we_class{
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
 
 	function formInput2($width, $name, $size, $type = 'txt', $attribs = '', $infoname = ''){
-		$infotext = $infoname ? ' (' . (g_l('weClass', '[' . $infoname . ']', true) ? : $infoname) . ': ' . $this->getElement($infoname) . ')' : '';
-		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ? : $name) . $infotext, $size, $width, '', $attribs);
+		$infotext = $infoname ? ' (' . (g_l('weClass', '[' . $infoname . ']', true) ?: $infoname) . ': ' . $this->getElement($infoname) . ')' : '';
+		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ?: $name) . $infotext, $size, $width, '', $attribs);
 	}
 
 	function formSelect2($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
@@ -233,8 +206,8 @@ abstract class we_class{
 
 		$ps = $this->$name;
 
-		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(['onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
-				], $attribs), 'value', $width);
+		$pop = we_html_tools::htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(['onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
+					], $attribs), 'value', $width);
 
 		if($precode || $postcode){
 			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
@@ -252,7 +225,7 @@ abstract class we_class{
 
 		$myname = 'we_' . $this->Name . '_' . $name;
 
-		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(['onchange' => $onChange], $attribs), 'value', $width);
+		$pop = we_html_tools::htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(['onchange' => $onChange], $attribs), 'value', $width);
 		if($precode || $postcode){
 			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
@@ -361,7 +334,7 @@ abstract class we_class{
 		if($fields){
 			$where = ($this->wasUpdate || $this->ID ? ' WHERE ID=' . intval($this->ID) : '');
 			$ret = (bool) ($this->DB_WE->query(($where ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
-			$this->ID = ($this->ID ? : $this->DB_WE->getInsertId());
+			$this->ID = ($this->ID ?: $this->DB_WE->getInsertId());
 			return $ret;
 		}
 		return false;
@@ -381,8 +354,8 @@ abstract class we_class{
 
 	function isValidEditPage($editPageNr){
 		return (is_array($this->EditPageNrs) ?
-				in_array($editPageNr, $this->EditPageNrs) :
-				false);
+			in_array($editPageNr, $this->EditPageNrs) :
+			false);
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
