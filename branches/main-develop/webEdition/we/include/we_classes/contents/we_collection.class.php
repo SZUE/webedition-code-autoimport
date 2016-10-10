@@ -210,6 +210,7 @@ class we_collection extends we_root{
 
 	public function getPropertyPage(){
 		return we_html_element::jsScript(JS_DIR . 'collection.js') .
+			JQUERY.
 			we_html_multiIconBox::getHTML('PropertyPage', [
 				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2],
@@ -245,7 +246,9 @@ class we_collection extends we_root{
 		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array_merge($attribsFrom, ["id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"]), 'value', 175);
 		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array_merge($attribsTo, ["id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"]), 'value', 175);
 		$mimeTable = new we_html_table(['class' => 'collection_props-mime default'], 1, 3);
-		$mimeTable->setCol(0, 0, [], $mimeListFrom);
+		$mimeTable->setCol(0, 0, [], $mimeListFrom.
+			 we_html_tools::htmlSelect('mimeListFrom', $allMime, 1, $selectedMime, true, array_merge($attribsFrom, ['class' => 'searchSelect']), 'value', 175)
+			);
 		$mimeTable->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle'], we_html_element::htmlA(['href' => '#',
 					'onclick' => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListFrom'),document.getElementById('mimeListTo'),true, 'document');return false;"
 				], '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .

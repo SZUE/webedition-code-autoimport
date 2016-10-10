@@ -855,7 +855,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$currentFolderID = $this->Model->getProperty('currentFolderID');
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
-		$selectAnzahl = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $currentAnzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
+		$selectAnzahl = we_html_tools::htmlSelect('anzahl' . $whichSearch, [10 => 10, 25 => 25, 50 => 50, 100 => 100], 1, $currentAnzahl, false, ['onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"], 'value', 0, 'selectSearchNumber');
 		$selectAnzahlMedialinks = we_html_tools::htmlSelect('anzahlMedialinks' . $whichSearch, [0 => g_l('searchtool', '[no_template]'), 10 => 10, -1 => g_l('searchtool', '[all]')], 1, $currentAnzahlMedialinks, false, [
 				'onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"], 'value', 0, 'selectSearchNumberMedialinks');
 

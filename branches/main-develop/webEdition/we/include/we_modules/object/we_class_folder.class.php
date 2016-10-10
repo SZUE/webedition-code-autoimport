@@ -549,14 +549,14 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
-		<td style="width:40px;">' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
+		<td style="width:40px;">' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", ['onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');']) .
 			'</td>
 		<td style="width:10px;">&nbsp;</td>
 		<td style="width:350px;">' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>	</tr>
 <tr>
 	<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[anzeige]') . '</td>
-	<td colspan="3">' . we_html_tools::htmlSelect('searchView', array('properties' => g_l('weClass', '[properties]'), 'fields' => g_l('modules_objectClassfoldersearch', '[FELDER]')), 1, $this->searchView, "", array(
-				'onchange' => 'this.form.elements.SearchStart.value=0;submit();')) . '</td>
+	<td colspan="3">' . we_html_tools::htmlSelect('searchView', ['properties' => g_l('weClass', '[properties]'), 'fields' => g_l('modules_objectClassfoldersearch', '[FELDER]')], 1, $this->searchView, "", [
+				'onchange' => 'this.form.elements.SearchStart.value=0;submit();']) . '</td>
 </tr>
 </table>
 	<table class="default" style="margin-bottom:12px;">

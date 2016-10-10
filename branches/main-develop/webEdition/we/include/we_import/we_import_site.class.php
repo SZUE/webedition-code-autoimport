@@ -465,47 +465,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, "", "", false, true, "", true);
 		// Depth
-		$select = we_html_tools::htmlSelect(
-				"depth", [
-				"-1" => g_l('siteimport', '[nolimit]'),
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10,
-				11,
-				12,
-				13,
-				14,
-				15,
-				16,
-				17,
-				18,
-				19,
-				20,
-				21,
-				22,
-				23,
-				24,
-				25,
-				26,
-				27,
-				28,
-				29,
-				30
-				], 1, $this->depth, false, [], "value", 150);
+
+		$select = we_html_tools::htmlSelect("depth", array_merge([-1 => g_l('siteimport', '[nolimit]')], range(0, 30)), 1, $this->depth, false, [], "value", 150);
 
 		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ?: 20;
-		$maxarray = [
-			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
-		];
+		$maxarray = [0 => g_l('siteimport', '[nolimit]'), 0.5 => "0.5"];
 		for($i = 1; $i <= $maxallowed; $i++){
 			$maxarray[$i] = $i;
 		}
@@ -516,7 +481,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 		$thumbsarray = $GLOBALS['DB_WE']->getAllFirst(false);
-		$select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, [], "value", 150);
+		$select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 1, $this->thumbs, true, ['class' => 'searchSelect',], "value", 150);
 		$thumbs = we_html_tools::htmlFormElementTable($select, g_l('importFiles', '[thumbnails]'));
 
 		/* Create Main Table */
@@ -648,7 +613,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$js = we_html_element::jsScript(JS_DIR . 'import_site.js');
 
-		return $this->_getHtmlPage($body, $js);
+		return $this->_getHtmlPage($body, $js . JQUERY);
 	}
 
 	/**

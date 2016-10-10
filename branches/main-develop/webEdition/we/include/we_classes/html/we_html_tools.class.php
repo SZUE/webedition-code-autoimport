@@ -226,11 +226,8 @@ this.selectedIndex = 0;' .
 		$optgroup = false;
 		foreach($values as $value => $text){
 			if($text === self::OPTGROUP || $value === self::OPTGROUP){
-				if($optgroup){
-					$ret .= '</optgroup>';
-				}
+				$ret .= ($optgroup? '</optgroup>':'').'<optgroup label="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '">';
 				$optgroup = true;
-				$ret .= '<optgroup label="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '">';
 				continue;
 			}
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(

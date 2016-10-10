@@ -109,12 +109,12 @@ var openFolders= {
 				$captions[VFILE_TABLE] = g_l('export', '[collections]');
 			}
 
-			$header = we_html_element::htmlDiv(array('style' => 'margin:5px 0px;'), we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array(
-						'onchange' => "setHead(this.value);"), 'value', $width));
+			$header = we_html_element::htmlDiv(['style' => 'margin:5px 0px;'], we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, [
+						'onchange' => "setHead(this.value);"], 'value', $width));
 		} else {
 			$header = '';
 		}
-		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'position: relative;width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
+		return $js . $header . we_html_element::htmlDiv(['id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'position: relative;width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'], '');
 	}
 
 	private static function getQueryParents($path){

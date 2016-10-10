@@ -119,28 +119,28 @@ var searchClass={
 		for($i = 0; $i < count($currentSearchFields); $i++){
 
 			$button = we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $i . ");", '', "", "", "", "", false);
-			$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
-					'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+			$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, [
+					'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']']);
 			$locationDisabled = '';
 			$handle = '';
 
 			if(isset($currentSearchFields[$i])){
 				switch($currentSearchFields[$i]){
 					case "allModsIn":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
-								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, [
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']']);
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
 					case "modifierID":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
-								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, [
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']']);
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
 					case "status":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
-								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, [
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']']);
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
@@ -153,11 +153,11 @@ var searchClass={
 
 			$out .= '
 				<tr id="filterRow_' . $i . '">
-					<td>' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, array(
-					'class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+					<td>' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, [
+					'class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');']) . '</td>
 					<td id="td_location[' . $i . ']">' .
-				we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array(
-					'class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
+				we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, [
+					'class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']']) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>
 					<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location[' . $i . ']', $currentLocation[$i])) . '</td>
@@ -218,7 +218,7 @@ var searchClass={
 	<td></td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultfont lowContrast" style="width:70px;">' .
-			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $anzahl, "", ['id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);']) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
@@ -268,7 +268,7 @@ var searchClass={
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements.searchstart.value=this.value;search(false);'));
+		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, ['id' => 'pageselect', 'onchange' => 'this.form.elements.searchstart.value=this.value;search(false);']);
 
 		if(!isset($GLOBALS['setInputSearchstart'])){
 			if(!defined('searchstart')){

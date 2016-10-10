@@ -130,9 +130,9 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array('onchange' => "top.content.setHot();"), "value", 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, ['onchange' => "top.content.setHot();"], "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, array('onchange' => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, ['onchange' => "top.content.setHot();showType(this.value);"], "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . we_html_forms::checkboxWithHidden((bool) $glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
 		$parts = array(
@@ -241,12 +241,11 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 <table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[link]') . '</td></tr>
 	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("link[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][mode]", array(
-				'intern' => g_l('modules_glossary', '[link_intern]'),
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][mode]", ['intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				'object' => g_l('modules_glossary', '[link_object]'),
 				'category' => g_l('modules_glossary', '[link_category]'),
-				), 1, $mode, false, array('onchange' => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
+				], 1, $mode, false, ['onchange' => "setHot();showLinkMode(this.value);"], "value", 520) . '</td></tr>
 </table>' .
 			self::getHTMLIntern($glossary) .
 			self::getHTMLExtern($glossary) .
@@ -340,7 +339,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table class="default">
 			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
-			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $wsid, 0, $workspaceID, false, array('style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"), 'value') . '</td></tr>
+			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $wsid, 0, $workspaceID, false, ['style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"], 'value') . '</td></tr>
 		</table>
 	</div>
 	<table class="default">
@@ -384,10 +383,9 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 <table class="default">
 		<tr><td style="padding:2px 0px;">' . $selector1 . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[link_selection]') . '</td></tr>
-		<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
-				'intern' => g_l('modules_glossary', '[link_intern]'),
+		<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", ['intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
-				), 1, $modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
+				], 1, $modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
 	<table class="default">
