@@ -142,8 +142,8 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	var wecf_onTemplateRadio 	= r2[0];
 	var wecf_errorDocRadio 		= r2[1];
 
-	$('accessControlSelectorDiv').style.display = wecf_errorDocRadio.checked ? "block" : "none";
-	$('accessControlDiv').style.display = modeRadioOff.checked ? "none" : "block";
+	getById('accessControlSelectorDiv').style.display = wecf_errorDocRadio.checked ? "block" : "none";
+	getById('accessControlDiv').style.display = modeRadioOff.checked ? "none" : "block";
 
 EOF;
 	}

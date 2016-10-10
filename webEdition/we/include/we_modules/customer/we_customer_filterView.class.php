@@ -63,24 +63,20 @@ class we_customer_filterView{
 	 */
 	function getFilterHTML($ShowModeNone = false){
 		$script = '
-function wecf_hot() {
-			top.content.setHot();
-}
-
 function updateView() {' .
 			$this->createUpdateViewScript() . '
 }';
 		$mode = $this->filter->getMode();
 
 		// ################# Radio buttons ###############
-		$modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $mode === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
+		$modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $mode === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 		$modeRadioNone = ($ShowModeNone ?
-				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $mode === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $mode === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "we_cmd('setHot');updateView();") :
 				'');
 
-		$modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $mode === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
-		$modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $mode === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
-		$modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
+		$modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $mode === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "we_cmd('setHot');updateView();");
+		$modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $mode === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "we_cmd('setHot');updateView();");
+		$modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 
 		// ################# Selector for specific customers ###############
 		list($specificCustomersSelect, $myscript) = $this->getMultiEdit('specificCustomersEdit', $this->filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
@@ -108,18 +104,11 @@ function updateView() {' .
 	public function getFilterCustomers(){
 		$this->filter->setMode(we_customer_abstractFilter::FILTER);
 
-		return we_html_element::jsElement('
-function $(id) {
-	return document.getElementById(id);
-}
-
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js') .we_html_element::jsElement('
 function updateView() {' .
 				$this->createUpdateViewScript() . '
 }
-
-function wecf_hot() {
-				top.content.setHot();
-}') .
+') .
 			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
 
@@ -138,12 +127,12 @@ function wecf_hot() {
 	var modeRadioAll 		= r[1];
 	var modeRadioSpecific 	= r[2];
 	var modeRadioFilter 	= r[3];
-    var modeRadioNone	 	= r[4];
+  var modeRadioNone	 	= r[4];
 
-	$('specificCustomersEditDiv').style.display = modeRadioSpecific.checked ? "block" : "none";
-	$('blackListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
-	$('whiteListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
-	$('filterCustomerDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+	getById('specificCustomersEditDiv').style.display = modeRadioSpecific.checked ? "block" : "none";
+	getById('blackListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+	getById('whiteListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+	getById('filterCustomerDiv').style.display = modeRadioFilter.checked ? "block" : "none";
 
 EOS;
 	}
@@ -178,8 +167,7 @@ EOS;
 			$settings->load();
 			$settingsSQL = $settings->treeTextFormatSQL;
 		}
-		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
-		t_e($delBut,$this->width);
+		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;we_cmd('setHot');"));
 		$script = <<<EO_SCRIPT
 
 var $name = new (WE().util.multi_edit)("{$name}MultiEdit",document.we_form,0,"$delBut",$this->width,false);
@@ -202,7 +190,7 @@ EO_SCRIPT;
 
 		$script .= $name . '.showVariant(0);';
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','opener.addToMultiEdit(opener." . $name . ", top.fileSelect.data.allTexts,top.fileSelect.data.allIDs);opener.wecf_hot();','','','',1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','opener.addToMultiEdit(opener." . $name . ", top.fileSelect.data.allTexts,top.fileSelect.data.allIDs);we_cmd('setHot');','','','',1)");
 
 		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $addbut;
 
@@ -273,13 +261,13 @@ EO_SCRIPT;
 				(($i == 0) ? '' : we_html_tools::htmlSelect('filterLogic_' . $i, $filter_logic, 1, $value['logic'], false, ['onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"])) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, ['onchange' => "wecf_hot();", 'class' => "defaultfont leftFilterInput"]) . '</td>
+				we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont leftFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, ['onchange' => "wecf_hot();", 'class' => "defaultfont middleFilterInput"]) . '</td>
+				we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont middleFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightFilterInput"/></td>
+				'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="we_cmd(\'setHot\');" class="defaultfont rightFilterInput"/></td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($i + 1) . ")") . '</td>

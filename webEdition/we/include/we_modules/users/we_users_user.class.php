@@ -1659,14 +1659,13 @@ function delElement(elvalues,elem) {
 			} else {
 				$parent = ' - ';
 			}
-			$parts[] = array(
-				'headline' => g_l('modules_users', '[workspace_customer]'),
+			$parts[] = ['headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
 				'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
 				$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
 				$view->getFilterCustomers(),
 				'space' => we_html_multiIconBox::SPACE_BIG
-			);
+				];
 		}
 
 		return $content .

@@ -25,7 +25,8 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-function $(id) {
+
+function getById(id) {
 	return document.getElementById(id);
 }
 
