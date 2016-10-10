@@ -1334,7 +1334,7 @@ function showPreview() {
 		$filter = new we_navigation_customerFilter();
 		$filter->initByNavModel($this->Model);
 
-		$view = new we_navigation_customerFilterView($filter, 'top.content.mark()', 520);
+		$view = new we_navigation_customerFilterView($filter, 520);
 		return [
 				[
 				'headline' => '',

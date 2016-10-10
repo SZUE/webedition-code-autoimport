@@ -29,7 +29,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	if(!$filter){
 		$filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$view = new we_customer_documentFilterView($filter, '_EditorFrame.setEditorIsHot(true);', 520);
+	$view = new we_customer_documentFilterView($filter, 520);
 
 	$parts[] = ['headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $view->getFilterHTML(),

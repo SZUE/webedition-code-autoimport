@@ -307,7 +307,6 @@ function getMainDialog(){
 }
 
 echo
-STYLESHEET .
  '</head>' .
  we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();']
 	, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
