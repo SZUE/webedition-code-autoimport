@@ -250,7 +250,15 @@ function selectCategories() {
 			return;
 		}
 
-		$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
+		$parentDir = '';
+		if(!$this->doImport && $this->parentID['preset'] && !is_numeric($this->parentID['preset']) && !path_to_id($this->parentID['preset'])){
+			// in sselect we when uploading to ext dir we have parentDir in $this->parentID['preset' with no id to path!
+			$parentDir = $this->parentID['preset'];
+			$parentID = -1;
+		} else {
+			$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
+		}
+
 		if(($ws = get_ws(FILE_TABLE, true))){
 			if(!(we_users_util::in_workspace($parentID, $ws, FILE_TABLE))){
 				$parentID = intval(reset($ws));
@@ -294,11 +302,12 @@ function selectCategories() {
 
 			$html = $yuiSuggest->getHTML();
 		} else {
-			$parentPath = id_to_path($parentID);
+			$parentPath = $parentDir ? : id_to_path($parentID);
 			$html = we_html_element::htmlInput(array('value' => $parentPath, 'disabled' => 'disabled')) .
 				we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
 				we_html_element::htmlHiddens(array(
 					'fu_file_parentID' => $parentID,
+					'fu_file_parentDir' => $parentDir,
 			));
 		}
 
