@@ -37,7 +37,7 @@ class we_base_jsCmd{
 		}
 	}
 
-		public function addCmd($cmd, $data = ''){
+	public function addCmd($cmd, $data = ''){
 		$this->cmds[] = $cmd;
 		$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
 	}
@@ -57,7 +57,7 @@ class we_base_jsCmd{
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 
-	public static function singleCmd($cmd, $data){
+	public static function singleCmd($cmd, $data = ''){
 		$tmp = new self();
 		$tmp->addCmd($cmd, $data);
 		return $tmp->getCmds();

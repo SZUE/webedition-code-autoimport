@@ -54,12 +54,12 @@ class we_modules_view implements we_modules_viewIF{
 		return '';
 	}
 
-	function getJSSubmitFunction($def_target = "edbody"){
+	function getJSSubmitFunction(){
 		//only by customer + user
 		return '
 function submitForm(target,action,method,form) {
 	var f = form ? self.document.forms[form] : self.document.we_form;
-	f.target = target?target:"' . $def_target . '";
+	f.target = target?target:"cmd";
 	f.action = action?action:"' . $this->frameset . '";
 	f.method = method?method:"post";
 

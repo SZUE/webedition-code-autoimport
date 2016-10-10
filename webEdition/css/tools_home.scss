@@ -27,7 +27,7 @@ body.home{
 	#tabelle{
 		background-color: $MiddleGrey;
 		height: 220px;
-	    left: 40px;
+		left: 40px;
 		margin-top: 3px;
 		position: absolute;
 		top: 0px;
@@ -50,6 +50,9 @@ body.home{
 			background: $MiddleBlue;
 			color: $White;
 			font-size: 16px;
+		}
+		i.alias{//users
+						color:grey;
 		}
 	}
 	#modimage{

@@ -36,11 +36,11 @@ class we_users_view extends we_modules_view{
 			unset($_SESSION['user_session_data']);
 		}
 
-		return we_html_element::jsElement('
-var frameset="' . $this->frameset . '";
-var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0) . ';
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', "parent.document.title='" . $title . "';");
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', '', ['id' => 'loadVarUsersView', 'data-users' => setDynamicVar([
+					'modTitle' => $title,
+					'frameset' => $this->frameset,
+					'cgroup' => ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0)
+		])]);
 	}
 
 	function getJSProperty(){
@@ -50,7 +50,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 	}
 
 	private function new_group(){
-		if(!permissionhandler::hasPerm("NEW_GROUP")){
+		if(!permissionhandler::hasPerm('NEW_GROUP')){
 			echo we_message_reporting::jsMessagePush(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 			return;
 		}
@@ -68,10 +68,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 
 		$_SESSION["user_session_data"] = $user_object;
 
-		echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
-top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
+		echo we_base_jsCmd::singleCmd('loadUsersContent');
 	}
 
 	private function new_alias(){
@@ -92,10 +89,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$user_object->initType(we_users_user::TYPE_ALIAS);
 
 		$_SESSION["user_session_data"] = $user_object;
-		echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
-top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
+		echo we_base_jsCmd::singleCmd('loadUsersContent');
 	}
 
 	private function new_user(){
@@ -114,10 +108,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$user_object->initType(we_users_user::TYPE_USER);
 
 		$_SESSION["user_session_data"] = $user_object;
-		echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
-top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
+		echo we_base_jsCmd::singleCmd('loadUsersContent', ['oldtab' => 0]);
 	}
 
 	private function display_user(){
@@ -135,10 +126,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			echo we_html_element::jsElement('top.content.usetHot();' .
 				($user_object->Type == 1 ?
 					'top.content.cgroup=' . $user_object->ID . ';' :
-					'') . '
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
-top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
+					'')) .
+			we_base_jsCmd::singleCmd('loadUsersContent', ['oldtab' => 0]);
 		}
 	}
 
@@ -239,8 +228,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			return;
 		}
 		$foo = ($user_object->ID ?
-				getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-				['ParentID' => 0]);
+			getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+			['ParentID' => 0]);
 
 		$ret = $user_object->saveToDB();
 		$_SESSION['user_session_data'] = $user_object;
@@ -276,8 +265,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			return;
 		}
 		$tree_code = ($id ?
-				'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-				'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? 'we/userGroup' : (($user_object->Type == we_users_user::TYPE_ALIAS) ? 'we/alias' : 'we/user')) . '",table:"' . USER_TABLE . '",published:' . ($user_object->LoginDenied ? 0 : 1) . ',class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . '"});') .
+			'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
+			'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? 'we/userGroup' : (($user_object->Type == we_users_user::TYPE_ALIAS) ? 'we/alias' : 'we/user')) . '",table:"' . USER_TABLE . '",published:' . ($user_object->LoginDenied ? 0 : 1) . ',class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . '"});') .
 			'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
 
 		switch($user_object->Type){
@@ -372,10 +361,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			}
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
-		top.content.treeData.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader&home=1";
-		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&home=1";
-		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter&home=1";');
+		top.content.treeData.deleteEntry(' . $user_object->ID . ');') .
+				we_base_jsCmd::singleCmd('loadUsersContent', ['home' => 1]);
 				unset($_SESSION["user_session_data"]);
 			}
 		}
@@ -441,11 +428,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_element::cssElement('
-	i.alias{
-	color:grey;
-	}
-') . we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
+		$content = we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
 			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
 			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 
