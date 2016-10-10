@@ -344,12 +344,6 @@ function setTab(tab) {
 		return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => "weEditorBody"], we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname)));
 	}
 
-	private static function prepareFieldname($str){
-		return (strpos($str, '_') ?
-			substr_replace($str, '/', strpos($str, '_'), 1) :
-			$str);
-	}
-
 	private static function showPrefDialog(){
 		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 		we_html_tools::protect($protect);
@@ -431,16 +425,13 @@ function setTab(tab) {
 		$extraIgnore = explode(',', we_shop_shop::ignoredExtraShowFields);
 		$showFields = [];
 
-		while($DB_WE->next_record()){
-			if(!in_array($DB_WE->f('Field'), $ignoreFields)){
-				$showFields[$DB_WE->f('Field')] = self::prepareFieldname($DB_WE->f('Field'));
+		while($DB_WE->next_record(MYSQL_ASSOC)){
+			$field = $DB_WE->f('Field');
+			if(!in_array($field, $ignoreFields) && !in_array($field, $extraIgnore)){
+				$showFields[$field] = $field;
 			}
 		}
-		asort($showFields);
-		$orderFields = $showFields;
-		foreach($extraIgnore as $cur){
-			unset($showFields[$cur]);
-		}
+		$showFields = we_html_tools::groupArray($showFields);
 
 //	get the already selected fields ...
 		$entry = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="edit_shop_properties"');
@@ -455,10 +446,11 @@ function setTab(tab) {
 		}
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][customerFields]'));
-		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, ['class'=>'searchSelect'], 'value', 280));
+		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, 1, implode(',', $fields['customerFields']), true, ['class' => 'searchSelect'], 'value', 280));
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][orderCustomerFields]'));
-		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, ['class'=>'searchSelect'], 'value', 280));
+		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $showFields, 1, implode(',', $fields['orderCustomerFields']), true, [
+				'class' => 'searchSelect'], 'value', 280));
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][CountryField]'));
 
@@ -498,7 +490,7 @@ function setTab(tab) {
 			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'shop',
 					'pref_name' => "shop_pref",
 					'pref_value' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
-					]));
+			]));
 
 			$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', []);
 			$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', []);
@@ -507,7 +499,7 @@ function setTab(tab) {
 			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'shop',
 					'pref_name' => 'edit_shop_properties',
 					'pref_value' => we_serialize($fields, SERIALIZE_JSON)
-					]));
+			]));
 
 			$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
 			$CLFields['stateFieldIsISO'] = we_base_request::_(we_base_request::STRING, 'stateFieldIsISO', 0);
@@ -667,7 +659,7 @@ function setTab(tab) {
 			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['pref_value' => $fname . "|" . we_base_request::_(we_base_request::STRING, "fieldSurname") . "|" . we_base_request::_(we_base_request::STRING, "fieldStreet") . "|" . we_base_request::_(we_base_request::STRING, "fieldZip") . "|" . we_base_request::_(we_base_request::STRING, "fieldCity") . "|" . we_base_request::_(we_base_request::STRING, "lc") . "|" . we_base_request::_(we_base_request::STRING, "ppB") . "|" . we_base_request::_(we_base_request::STRING, "psb") . "|" . we_base_request::_(we_base_request::STRING, "lcS") . "|" . we_base_request::_(we_base_request::STRING, "spAID") . "|" . we_base_request::_(we_base_request::STRING, "spB") . "|" . we_base_request::_(we_base_request::STRING, "spC") . "|" . we_base_request::_(we_base_request::STRING, "spD") . "|" . we_base_request::_(we_base_request::STRING, "spCo") . "|" . we_base_request::_(we_base_request::STRING, "spPS") . "|" . we_base_request::_(we_base_request::STRING, "spcmdP") . "|" . we_base_request::_(we_base_request::STRING, "spconfP") . "|" . we_base_request::_(we_base_request::STRING, "spdesc") . "|" . we_base_request::_(we_base_request::STRING, "fieldEmail"),
 					'tool' => 'shop',
 					'pref_name' => 'payment_details',
-					]));
+			]));
 
 			//	Close window when finished
 			return we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('close'), we_html_element::htmlBody());
