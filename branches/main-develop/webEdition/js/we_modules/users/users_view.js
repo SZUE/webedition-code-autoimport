@@ -46,6 +46,7 @@ function we_cmd() {
 
 	if (args[0] === 'usetHot') {
 		usetHot();
+		return;
 	}
 	if (hot && args[0] !== "save_user") {
 		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {

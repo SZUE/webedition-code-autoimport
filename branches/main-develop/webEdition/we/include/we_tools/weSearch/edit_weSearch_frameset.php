@@ -26,7 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
-//we_database_base::t_e_query(30);
 $weFrame = new we_search_frames();
 $weFrame->process();
 echo $weFrame->getHTML($what);

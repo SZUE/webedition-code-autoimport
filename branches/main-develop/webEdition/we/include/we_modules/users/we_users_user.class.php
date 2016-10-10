@@ -1229,6 +1229,7 @@ _multiEditorreload = true;';
 
 	function formGeneralData(){
 		switch($this->Type){
+			default:
 			case self::TYPE_USER:
 				return $this->formUserData();
 			case self::TYPE_USER_GROUP:
