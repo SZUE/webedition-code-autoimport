@@ -42,9 +42,12 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+//	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_user") {
+	if (args[0] === 'usetHot') {
+		usetHot();
+	}
+	if (hot && args[0] !== "save_user") {
 		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
 			args[0] = "save_user";
 		} else {
@@ -103,6 +106,21 @@ function we_cmd() {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_organization&orn=" + orgname;
 			}
 			break;
+		case "updateTitle":
+			top.content.editor.edheader.document.getElementById("titlePath").innerText=args[1];
+		break;
+		case "setCgroup":
+			cgroup = args[1];
+			break;
+		case 'makeTreeEntry':
+			top.content.treeData.makeNewEntry(args[1]);
+		break;
+		case 'updateTreeEntry':
+			top.content.treeData.updateEntry(args[1]);
+		break;
+		case 'deleteTreeEntry':
+			top.content.treeData.deleteEntry(args[1]);
+		break;
 		case 'loadUsersContent':
 			var home = args[1].home !== undefined ? "&home=1" : "";
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader" + home;
