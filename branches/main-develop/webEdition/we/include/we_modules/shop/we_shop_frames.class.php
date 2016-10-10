@@ -454,19 +454,19 @@ function setTab(tab) {
 			t_e('unsupported Shop-Settings found');
 		}
 
-		$htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][customerFields]'));
-		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, [], 'value', 280));
+		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][customerFields]'));
+		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, ['class'=>'searchSelect'], 'value', 280));
 
-		$htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
-		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, [], 'value', 280));
+		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][orderCustomerFields]'));
+		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, ['class'=>'searchSelect'], 'value', 280));
 
-		$htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][CountryField]'));
+		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][CountryField]'));
 
 		/* 		$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 		  $countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		 */
 
-		$htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][LanguageField]'));
+		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][LanguageField]'));
 		$languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 		$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		$htmlTable->setColContent($row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
@@ -474,12 +474,12 @@ function setTab(tab) {
 
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();'));
 
-		return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=savePrefDialog" style="margin-left:8px; margin-top:16px;">
+		return we_html_tools::getHtmlTop('', '', '', JQUERY, we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=savePrefDialog" style="margin-left:8px; margin-top:16px;">
 	' . we_html_tools::htmlDialogLayout($htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $buttons) . '</form>'));
 	}
 
 	private static function savePrefDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
 		if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data in arrays ..
