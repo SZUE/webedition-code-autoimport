@@ -252,7 +252,7 @@ class we_collection extends we_root{
 		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array_merge($attribsTo, ["id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"]), 'value', 175);
 		$mimeTable = new we_html_table(['class' => 'collection_props-mime default'], 1, 3);
 		$mimeTable->setCol(0, 0, [], $mimeListFrom .
-			we_html_tools::htmlSelect('mimeListFrom', $mimes, 1, array_keys($selectedMime), true, array_merge($attribsFrom, ['class' => 'searchSelect']), 'value', 175)
+			we_html_tools::htmlSelect('mimeListFrom', $mimes, 1, array_keys($selectedMime), true, array_merge($attribsFrom, ['class' => 'newSelect']), 'value', 350)
 		);
 
 		$mimeTable->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle'], we_html_element::htmlA(['href' => '#',
