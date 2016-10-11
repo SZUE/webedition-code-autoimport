@@ -46,8 +46,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 			'create' => false
 			];
 		$this->fileTable = FILE_TABLE;
-		$this->footerName = 'imgimportbuttons';
-		$this->contentName = 'imgimportcontent';
+		$this->footerName = 'wizbusy';
+		$this->contentName = 'wizbody';
 		$this->cliensideImageEditing = true;
 	}
 
@@ -63,7 +63,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		$alert = we_html_element::htmlHiddens(['we_cmd[0]' => 'import_files',
 				'cmd' => 'content',
-				'step' => 2
 				]) .
 			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . (we_fileupload::getMaxUploadSizeMB() ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), we_fileupload::getMaxUploadSizeMB())), we_html_tools::TYPE_INFO, 568, false, 20));
 
@@ -76,7 +75,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:weFileUpload_instance.reset()', '', 0, 0, '', '', true, false, '_btn'));
 		// TODO: get fileselect from parent!
 		$fileselect = '
-		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 		<div style="float:left;">
 			<div>
 				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper">
@@ -89,8 +87,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ($isIE10 || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;width:316px;height:88px;padding-top:40px"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
 		</div>' .
-		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div style="position:absolute; left: 370px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true, false) . '</div>' : '') .
-		'</form>';
+		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div style="position:absolute; left: 370px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true, false) . '</div>' : '');
 
 		$topParts[] = ["html" => $fileselect, 'space' => 0];
 
@@ -101,17 +98,16 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		);
 		$loupe = we_fileupload_ui_preview::getHtmlLoup();
 
-		$content = we_html_element::htmlDiv(['id' => 'forms', 'class' => 'fileuploadImporter', 'style' => 'display:block'], we_html_element::htmlForm(['action' => WEBEDITION_DIR . 'we_cmd.php',
-					'name' => 'we_startform',
-					'method' => 'post'
-					], $hiddens) .
+		$content = we_html_element::htmlDiv(['id' => 'forms', 'class' => 'fileuploadImporter', 'style' => 'display:block'], we_html_element::htmlForm(['action' => '',
+					'name' => 'we_form',
+					'enctype' => 'multipart/form-data'
+			], $hiddens .
 				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
-				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", [], 30, "", -1, "", "", "", "") . '</div>' .
-				$divMask .
-				$loupe .
-				$divBusyMessage
+				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", [], 30, "", -1, "", "", "", "") . '</div>'
+			) . $divMask . $loupe . $divBusyMessage
 		);
-//<div id="imgfocus_point" style="display:none;" draggable="false"></div>
+		//<div id="imgfocus_point" style="display:none;" draggable="false"></div>
+
 		return we_html_element::htmlBody(['class' => "weDialogBody"], $content);
 	}
 
@@ -198,7 +194,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 					we_html_element::htmlDiv(['id' => 'div_rowProgress_WEFORMNUM', 'class' => 'elemProgress'], $progressbar)
 				) .
 				we_html_element::htmlDiv(['id' => 'editoptions_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_editoption elemContentBottom'],
-					we_html_element::htmlForm(['id' => 'form_editOpts_WEFORMNUM', 'data-type' => 'importer_rowForm', 'data-index' => 'WEFORMNUM'],
+					we_html_element::htmlForm(['id' => 'form_editOpts_WEFORMNUM', 'name' => 'form_editOpts', 'data-type' => 'importer_rowForm', 'data-index' => 'WEFORMNUM'],
 							$divOptionsLeft . $divOptopnsRight . $divBtnRefresh
 					)
 				) .

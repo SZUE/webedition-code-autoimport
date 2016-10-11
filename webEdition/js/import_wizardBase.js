@@ -274,10 +274,16 @@ function handleEvent(evt) {
 		task = 'get' + type + '_step_' + step;
 
 	switch(task) {
+		case 'getFileImport_step_1':
 		case 'getWXMLImport_step_1':
 		case 'getGXMLImport_step_1':
 		case 'getCSVImport_step_1':
 			handleEvent_step_1(evt, type);
+			break;
+		case 'getFileImport_step_2':
+			handleEvent_FileImport_step_2(evt);
+			break;
+		case 'getFileImport_step_3':
 			break;
 		case 'getWXMLImport_step_2':
 			handleEvent_WXMLImport_step_2(evt);
@@ -354,8 +360,8 @@ function handleEvent_step_1(evt, type) {
 			top.location.href = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=' + type;
 			break;
 		case 'next':
-			if(f.elements['v[rdofloc]'][1].checked === true){
-				top.wizbody.weFileUpload_instance.startUpload();
+			if(f.elements['v[rdofloc]'] && f.elements['v[rdofloc]'][1].checked === true){
+				top.wizbody.weFileUpload_instance.startUpload(); //FIXME: move this to the respective functions!
 			} else {
 				switch(type){
 					case 'WXMLImport':
@@ -367,6 +373,9 @@ function handleEvent_step_1(evt, type) {
 					case 'CSVImport':
 						doNext_CSVImportStep1();
 						break;
+					case 'FileImport':
+						doNext_FileImportStep1();
+						break;
 				}
 			}
 			break;
@@ -377,6 +386,30 @@ function handleEvent_step_1(evt, type) {
 
 	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
 	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+}
+
+function handleEvent_FileImport_step_2(evt) {
+	var frame = top.wizbody;
+
+	switch (evt) {
+		case "previous":
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files";
+			break;
+		case "next":
+			if(frame.weFileUpload_instance !== undefined){top.console.log('jap');
+				frame.weFileUpload_instance.startUpload();
+			} else {
+				WE().t_e('fileupload instance missing');
+			}
+			break;
+		case "cancel":
+			if(frame.weFileUpload_instance !== undefined){
+				frame.weFileUpload_instance.cancelUpload();
+			} else {
+				WE().t_e('fileupload instance missing');
+			}
+			break;
+	}
 }
 
 function handleEvent_WXMLImport_step_2(evt) {
@@ -452,6 +485,16 @@ function handleEvent_GXMLImport_step_3(evt) {
 			top.close();
 			break;
 	}
+}
+
+function doNext_FileImportStep1(){
+	var frame = top.wizbody;
+
+	if(frame.selectCategories !== undefined){
+		frame.selectCategories();
+	}
+	frame.document.we_form.step.value = 2;
+	frame.document.we_form.submit();
 }
 
 function doNext_WXMLImportStep1(){
