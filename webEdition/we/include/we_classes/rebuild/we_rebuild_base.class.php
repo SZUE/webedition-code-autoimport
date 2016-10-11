@@ -55,7 +55,7 @@ abstract class we_rebuild_base{
 					flush();
 				}
 
-				$imgdoc->Thumbs = $data['thumbs'] ? : -1;
+				$imgdoc->Thumbs = $data['thumbs'] ?: -1;
 				$imgdoc->DocChanged = true;
 				$imgdoc->we_save(true);
 				unset($imgdoc);
@@ -180,9 +180,9 @@ abstract class we_rebuild_base{
 					}
 
 					$ret = ($table == TEMPLATES_TABLE ?
-							// templates has to be treated differently
-							$GLOBALS['we_doc']->we_save(true) :
-							$GLOBALS['we_doc']->we_resaveMainTable());
+						// templates has to be treated differently
+						$GLOBALS['we_doc']->we_save(true) :
+						$GLOBALS['we_doc']->we_resaveMainTable());
 					if(!$ret){
 						t_e('error writing ' . $GLOBALS['we_doc']->Path);
 					}
@@ -287,7 +287,7 @@ abstract class we_rebuild_base{
 					'onlyEmpty' => $onlyEmpty,
 					'path' => $GLOBALS['DB_WE']->f('path'),
 					'metaFields' => $metaFields
-					];
+				];
 			}
 		}
 		return $data;
@@ -384,7 +384,7 @@ abstract class we_rebuild_base{
 				'tt' => $tt,
 				'path' => $cur['Path'],
 				'it' => 0
-				];
+			];
 		}
 	}
 
@@ -486,7 +486,7 @@ abstract class we_rebuild_base{
 		}
 
 		if($templateID){
-			$arr = self::getTemplAndDocIDsOfTemplate($templateID);
+			$arr = self::getTemplAndDocIDsOfTemplate($templateID, true, true);
 
 			if($arr['templateIDs']){
 
@@ -595,7 +595,7 @@ abstract class we_rebuild_base{
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0
-				];
+			];
 		}
 
 		if(we_base_request::_(we_base_request::BOOL, 'rebuildStaticAfterNavi')){
@@ -679,8 +679,8 @@ abstract class we_rebuild_base{
 		return $data;
 	}
 
-	private static function getTemplatesOfTemplate($id, &$arr){
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . ' OR FIND_IN_SET(' . intval($id) . ',IncludedTemplates) ' . ($arr ? 'AND ID NOT IN (' . implode($arr) . ')' : ''));
+	private static function getTemplatesOfTemplate($id, &$arr, $onlyMaster=false){
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . ($onlyMaster?'':' OR FIND_IN_SET(' . intval($id) . ',IncludedTemplates) ') . ($arr ? ' AND ID NOT IN (' . implode($arr) . ')' : ''));
 		$foo = $GLOBALS['DB_WE']->getAll(true);
 
 		if(!$foo){
@@ -702,11 +702,12 @@ abstract class we_rebuild_base{
 			return 0;
 		}
 
-		$returnIDs = ['templateIDs' => [],
+		$returnIDs = [
+			'templateIDs' => [],
 			'documentIDs' => [],
-			];
+		];
 
-		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
+		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs'], $publishedOnly);
 
 		$id = intval($id);
 
