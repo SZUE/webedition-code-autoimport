@@ -49,19 +49,19 @@ function we_tag_userInput(array $attribs, $content){
 	$fieldname = $property ?
 		('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
 		('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
-			$GLOBALS['WE_FORM'] :
-			''
+		$GLOBALS['WE_FORM'] :
+		''
 		) . '[' . $name . ']');
 
 	$object = (isset($GLOBALS['WE_FORM']) ?
-			(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-					$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-					(isset($GLOBALS['we_doc']) ?
-						$GLOBALS['we_doc'] :
-						false))) :
-			'');
+		(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
+		$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+		(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+		$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+		(isset($GLOBALS['we_doc']) ?
+		$GLOBALS['we_doc'] :
+		false))) :
+		'');
 
 	if($object){
 		if($property){
@@ -69,8 +69,8 @@ function we_tag_userInput(array $attribs, $content){
 			$orgVal = $isset ? $object->{$name} : $value;
 		} else {
 			$isset = (!$object->ID && $object->getElement($name) === '' ?
-					false :
-					$object->issetElement($name));
+				false :
+				$object->issetElement($name));
 
 			$orgVal = $isset ? $object->getElement($name) : $value;
 		}
@@ -121,7 +121,7 @@ function we_tag_userInput(array $attribs, $content){
 				$_SESSION[$imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8, we_base_request::INT);
 				$_SESSION[$imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, we_base_request::BOOL);
 				$_SESSION[$imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
-				$_SESSION[$imgDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$imgDataId]['id'] = $orgVal ?: '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -208,7 +208,7 @@ function we_tag_userInput(array $attribs, $content){
 				//$_SESSION[$imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 				$_SESSION[$flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
 				$_SESSION[$flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
-				$_SESSION[$flashmovieDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$flashmovieDataId]['id'] = $orgVal ?: '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -228,8 +228,8 @@ function we_tag_userInput(array $attribs, $content){
 					$attribs = removeAttribs($attribs, ['width', 'height']);
 					// Include Flash class
 					$flashmovieTag = (!empty($attribs['id']) ?
-							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
-							'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
+						$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
+						'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
 				$checked = (!empty($_SESSION[$flashmovieDataId]['doDelete']) ? ' checked' : '');
@@ -286,7 +286,7 @@ function we_tag_userInput(array $attribs, $content){
 				$_SESSION[$binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 				//$_SESSION[$binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 
-				$_SESSION[$binaryDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$binaryDataId]['id'] = $orgVal ?: '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -338,7 +338,7 @@ function we_tag_userInput(array $attribs, $content){
 			if(!isset($_SESSION[$binaryDataId])){
 				$_SESSION[$binaryDataId] = [];
 			}
-			$_SESSION[$binaryDataId]['id'] = $orgVal ? : '';
+			$_SESSION[$binaryDataId]['id'] = $orgVal ?: '';
 			if($_SESSION[$binaryDataId]['id']){
 				$attribs['id'] = $_SESSION[$binaryDataId]['id'];
 			}
@@ -390,7 +390,7 @@ function we_tag_userInput(array $attribs, $content){
 					'ignoredocumentcss',
 					'buttonpos'
 				]);
-				return we_getTextareaField($fieldname, ($content ? : $value), $atts);
+				return we_getTextareaField($fieldname, ($content ?: $value), $atts);
 			}
 
 			$autobr = $autobrAttr ? 'on' : 'off';
@@ -404,12 +404,12 @@ function we_tag_userInput(array $attribs, $content){
 			}
 			return $ret .
 				(!$inlineedit ?
-					//FIXME: does tiny really use weButtons?!
-					STYLESHEET_MINIMAL .
-					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
-					''
+				//FIXME: does tiny really use weButtons?!
+				STYLESHEET_MINIMAL .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
+				''
 				) .
-				we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+				we_html_forms::weTextarea($fieldname, ($content ?: $value), $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 
 		case 'checkbox' :
 			$atts = removeAttribs($attribs, ['wysiwyg',
@@ -440,13 +440,13 @@ function we_tag_userInput(array $attribs, $content){
 			if($hidden){
 				$attsHidden = ['type' => 'hidden',
 					'name' => $fieldname,
-					'value' => $orgVal ? : time(),
+					'value' => $orgVal ?: time(),
 					'xml' => $xml
 				];
 				return getHtmlTag('input', $attsHidden);
 			}
 			$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
-			$orgVal = $orgVal ? : ($currentdate ? time() : 0);
+			$orgVal = $orgVal ?: ($currentdate ? time() : 0);
 			$year = date('Y');
 			$minyear = weTag_getAttribute('minyear', $attribs, 0, we_base_request::INT);
 			switch($minyear ? $minyear{0} : ''){
@@ -475,25 +475,35 @@ function we_tag_userInput(array $attribs, $content){
 			return we_html_tools::getDateInput('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', $orgVal, false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
-			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
+			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property',
+				'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+				substr($lang, 0, 2) :
+				array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
+
+			if(WE_COUNTRIES_TOP){
+				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+				foreach($topCountries as $countrykey => &$countryvalue){
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
+				}
+				unset($countryvalue);
+			} else {
+				$topCountries = [];
 			}
-			unset($countryvalue);
-			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
-			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
+			if(WE_COUNTRIES_SHOWN){
+				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+				foreach($shownCountries as $countrykey => &$countryvalue){
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
+				}
+				unset($countryvalue);
+			} else {
+				$shownCountries = [];
 			}
-			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $lang . '.UTF-8');
 			asort($topCountries, SORT_LOCALE_STRING);
@@ -502,31 +512,32 @@ function we_tag_userInput(array $attribs, $content){
 
 			$options = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$options.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$options .= '<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$options.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+				$options .= '<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
 			unset($countryvalue);
 			if(!empty($topCountries) && !empty($shownCountries)){
-				$options.='<option value="-" disabled="disabled">----</option>';
+				$options .= '<option value="-" disabled="disabled">----</option>';
 			}
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
-				$options.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+				$options .= '<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
 			unset($countryvalue2);
 			$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
 			$newAtts['name'] = $fieldname;
 			return getHtmlTag('select', $newAtts, $options, true);
 		case 'language':
-			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
+			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property',
+				'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
 
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
+				substr($lang, 0, 2) :
+				array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
@@ -544,7 +555,7 @@ function we_tag_userInput(array $attribs, $content){
 			setlocale(LC_ALL, $oldLocale);
 			$options = '';
 			foreach($frontendLL as $langkey => &$langvalue){
-				$options.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
+				$options .= '<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
 			}
 			unset($langvalue);
 			$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
@@ -580,9 +591,9 @@ function we_tag_userInput(array $attribs, $content){
 				foreach($values as $txt){
 
 					$attsOption = ($txt == $orgVal ?
-							['selected' => 'selected'
-							] :
-							[]);
+						['selected' => 'selected'
+						] :
+						[]);
 
 					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
 				}
@@ -625,8 +636,8 @@ function we_tag_userInput(array $attribs, $content){
 				'fontnames'
 			]);
 			return (!$isset ?
-					we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
-					we_getInputRadioField($fieldname, $orgVal, $value, $atts));
+				we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
+				we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
 			return getHtmlTag('input', ['type' => 'hidden',

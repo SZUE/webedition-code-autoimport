@@ -654,7 +654,6 @@ class liveUpdateFunctions{
 				// make tmptable and check these tables
 				$namePattern = '/CREATE TABLE (\w+) \(/';
 				preg_match($namePattern, $query, $matches);
-
 				if($matches[1]){
 
 					// get name of table and build name of temptable
@@ -683,7 +682,6 @@ class liveUpdateFunctions{
 					// get keys from existing and new table
 					$origTableKeys = $this->getKeysFromTable($tableName, true);
 					$newTableKeys = $this->getKeysFromTable($tmpName);
-
 
 					// determine changed and new fields.
 					$changeFields = []; // array with changed fields

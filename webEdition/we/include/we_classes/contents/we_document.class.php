@@ -580,61 +580,59 @@ class we_document extends we_root{
 	}
 
 	function registerMediaLinks($temp = false, $linksReady = false){
-		if(!$linksReady){
-			switch($this->ContentType){
-				case we_base_ContentTypes::CSS:
-				case we_base_ContentTypes::JS:
-					$this->replaceWEIDs('', true);
-					return parent::registerMediaLinks(true);
-				case we_base_ContentTypes::WEDOCUMENT:
-				case we_base_ContentTypes::OBJECT_FILE:
-					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
-						$c = 0;
-						foreach($this->elements as $k => $v){
-							$element = $v['type'] . '[name=' . ($k ?: 'NN' . ++$c) . ']';
-							switch(isset($v['type']) ? $v['type'] : ''){
-								case 'audio':
-								case 'binary':
-								case 'flashmovie':
-								case 'href':
-								case 'img':
-								case 'video':
-									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
-										$this->MediaLinks[$element] = $v['bdid'];
-									} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
-										$this->MediaLinks[$element] = $v['dat'];
-									}
-									break;
-								case 'link':
-									/*
-									 * documents: when no link is set but there is a default id in template $v['dat'] is serialized twice:
-									 * we do not register such links, they belong to the template and are they are not stored in tblContent!
-									 *
-									 * objectfiles: here the default defined in class is stored in tblObject_X:
-									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
-									 */
-									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], [], true)) && is_array($link)){
-										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
-											if($link['type'] === 'int' && $link['id']){
-												$this->MediaLinks[$element] = $link['id'];
-											}
-											if($link['img_id']){
-												$this->MediaLinks[$element] = $link['img_id'];
-											}
-										}
-									}
-									break;
-								default:
-									if(!empty($v['bdid'])){
-										$this->MediaLinks[$element] = $v['bdid'];
-									}
+		if($linksReady){
+			return parent::registerMediaLinks($temp);
+		}
+		switch($this->ContentType){
+			case we_base_ContentTypes::CSS:
+			case we_base_ContentTypes::JS:
+				$this->replaceWEIDs('', true);
+				return parent::registerMediaLinks(true);
+			case we_base_ContentTypes::WEDOCUMENT:
+			case we_base_ContentTypes::OBJECT_FILE:
+				//FIXME: maybe move this part do we_webEditionDocument
+				$c = 0;
+				foreach($this->elements as $k => $v){
+					$element = $v['type'] . '[name=' . ($k ?: 'NN' . ++$c) . ']';
+					switch(isset($v['type']) ? $v['type'] : ''){
+						case 'audio':
+						case 'binary':
+						case 'flashmovie':
+						case 'href':
+						case 'img':
+						case 'video':
+							if(!empty($v['bdid']) && is_numeric($v['bdid'])){
+								$this->MediaLinks[$element] = $v['bdid'];
+							} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
+								$this->MediaLinks[$element] = $v['dat'];
 							}
-						}
+							break;
+						case 'link':
+							/*
+							 * documents: when no link is set but there is a default id in template $v['dat'] is serialized twice:
+							 * we do not register such links, they belong to the template and are they are not stored in tblContent!
+							 *
+							 * objectfiles: here the default defined in class is stored in tblObject_X:
+							 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
+							 */
+							if(isset($v['dat']) && ($link = we_unserialize($v['dat'], [], true)) && is_array($link)){
+								if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
+									if($link['type'] === 'int' && $link['id']){
+										$this->MediaLinks[$element] = $link['id'];
+									}
+									if($link['img_id']){
+										$this->MediaLinks[$element] = $link['img_id'];
+									}
+								}
+							}
+							break;
+						default:
+							if(!empty($v['bdid'])){
+								$this->MediaLinks[$element] = $v['bdid'];
+							}
 					}
-					break;
-				default:
-				//
-			}
+				}
+				break;
 		}
 
 		return parent::registerMediaLinks($temp);
