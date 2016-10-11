@@ -486,7 +486,7 @@ abstract class we_rebuild_base{
 		}
 
 		if($templateID){
-			$arr = self::getTemplAndDocIDsOfTemplate($templateID, true, true);
+			$arr = self::getTemplAndDocIDsOfTemplate($templateID);
 
 			if($arr['templateIDs']){
 
