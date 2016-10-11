@@ -805,6 +805,7 @@ if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
+$GLOBALS[\'FROM_WE_SHOW_DOC\'] = true;
 
 if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 		$_REQUEST[\'we_cmd\'] = [
@@ -814,8 +815,6 @@ if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 } else {
 		$_REQUEST[\'we_cmd\'] = [1 => ' . $this->ID . '];
 }
-
-$FROM_WE_SHOW_DOC = true;
 
 if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showObject.inc.php\');

@@ -33,7 +33,7 @@ wePropertiesEdit = {
 		}
 		return false;
 	},
-	moveSelectedOptions: function (from, to, sort, type) {
+	/*moveSelectedOptions: function (from, to, sort, type) {
 		sort = sort || true;
 		type = type || 'document';
 
@@ -65,7 +65,7 @@ wePropertiesEdit = {
 		from.selectedIndex = -1;
 		to.selectedIndex = -1;
 		this.retrieveCsv(type);
-	},
+	},*/
 	sortSelect: function (obj) {
 		var o = [];
 		if (!this.hasOptions(obj)) {
@@ -93,7 +93,7 @@ wePropertiesEdit = {
 			obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 		}
 	},
-	retrieveCsv: function (type) {
+	/*retrieveCsv: function (type) {
 		type = type || 'document';
 		var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'),
 						mimeStr = '';
@@ -102,7 +102,7 @@ wePropertiesEdit = {
 			mimeStr += mimeListTo.options[i].value + ',';
 		}
 		document.getElementById(type === 'document' ? 'we_remCT' : 'we_remClass').value = mimeStr ? ',' + mimeStr : mimeStr;
-	}
+	}*/
 };
 
 weCollectionEdit = {
