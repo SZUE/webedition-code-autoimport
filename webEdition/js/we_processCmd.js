@@ -44,7 +44,13 @@ window.addEventListener('load', function () {
 					history.back();
 					break;
 				case 'we_cmd':
-					top.we_cmd.apply(this, cmdData);
+					if (window.we_cmd) {
+						window.we_cmd.apply(this, cmdData);
+					} else if (parent.we_cmd) {
+						parent.we_cmd.apply(this, cmdData);
+					} else {
+						top.we_cmd.apply(this, cmdData);
+					}
 					break;
 				case 'location':
 					switch (cmdData.doc) {
@@ -58,9 +64,9 @@ window.addEventListener('load', function () {
 					break;
 				default:
 					//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
-					if(window.we_cmd){
+					if (window.we_cmd) {
 						window.we_cmd.apply(this, [cmds[i], cmdData]);
-					}else if (parent.we_cmd) {
+					} else if (parent.we_cmd) {
 						parent.we_cmd.apply(this, [cmds[i], cmdData]);
 					} else {
 						top.we_cmd.apply(this, [cmds[i], cmdData]);
