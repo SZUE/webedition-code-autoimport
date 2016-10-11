@@ -226,37 +226,38 @@ abstract class we_updater{
 					$db->query('ALTER TABLE `' . OBJECT_X_TABLE . $table . '` ' . $query);
 					$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');
 				}
-			}
-			if(($sort = f('SELECT strOrder FROM ' . OBJECT_TABLE . 'WHERE ID=' . $table))){
-				$ctable = OBJECT_X_TABLE . $table;
-				$tableInfo = $db->metadata($ctable, we_database_base::META_NAME);
-				$sort = [];
-				$i = 0;
-				foreach($tableInfo as $name){
-					list($type, $name) = explode('_', $name, 2);
-					switch($type){
-						case 'OF':
-						case 'variant':
-							break;
-						default:
-							$sort[$name] = $sort[$i];
-							$i++;
-					}
-				}
-				asort($sort, SORT_NUMERIC);
-				$last = 'OF_ID';
-				foreach(array_keys($sort) as $value){
-					$db->moveCol($ctable, $value, $last);
-					$last = $value;
-				}
 
-				$db->query('UPDATE ' . OBJECT_TABLE . ' SET strOrder="" WHERE ID=' . $table);
+				if(($sort = f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . $table))){
+					$ctable = OBJECT_X_TABLE . $table;
+					$tableInfo = $db->metadata($ctable, we_database_base::META_NAME);
+					$sort = [];
+					$i = 0;
+					foreach($tableInfo as $name){
+						list($type, $name) = explode('_', $name, 2);
+						switch($type){
+							case 'OF':
+							case 'variant':
+								break;
+							default:
+								$sort[$name] = $sort[$i];
+								$i++;
+						}
+					}
+					asort($sort, SORT_NUMERIC);
+					$last = 'OF_ID';
+					foreach(array_keys($sort) as $value){
+						$db->moveCol($ctable, $value, $last);
+						$last = $value;
+					}
+
+					$db->query('UPDATE ' . OBJECT_TABLE . ' SET strOrder="" WHERE ID=' . $table);
+				}
 			}
 		}
 		return ['text' => 'Objects ' . $pos . ' / ' . $max, 'pos' => ($pos + $maxStep)];
 	}
 
-		private static function upgradeTblFileLink(we_database_base $db){
+	private static function upgradeTblFileLink(we_database_base $db){
 		//added in 7.1
 		if($db->isColExist(FILELINK_TABLE, 'element')){
 			if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
@@ -269,8 +270,7 @@ abstract class we_updater{
 			$db->delKey(FILELINK_TABLE, 'PRIMARY');
 			$db->addKey(FILELINK_TABLE, 'PRIMARY KEY (ID,DocumentTable,`type`,remObj,nHash,`position`,isTemp)');
 		}
-
-		}
+	}
 
 	private static function upgradeTblLink(we_database_base $db){
 		//added in 7.0
