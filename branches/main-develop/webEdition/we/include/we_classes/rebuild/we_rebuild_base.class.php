@@ -546,7 +546,7 @@ abstract class we_rebuild_base{
 	public static function getObjects(){
 		$data = [];
 		if(permissionhandler::hasPerm('REBUILD_OBJECTS')){
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 ORDER BY ID');
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'object',

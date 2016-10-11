@@ -34,6 +34,9 @@
 abstract class permissionhandler{
 
 	public static function hasPerm($perm, $or = true){
+		if(empty($_SESSION['user']['isWeSession'])){
+			return false;
+		}
 		if((!empty($_SESSION['perms']['ADMINISTRATOR']))){
 			return true;
 		}

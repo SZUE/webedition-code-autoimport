@@ -80,6 +80,9 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			}
 		} else {
 			$this->responseClass = 'we_fileupload_resp_base';
+			$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
+				array('fu_file_parentDir', 'text'),
+			));
 		}
 	}
 

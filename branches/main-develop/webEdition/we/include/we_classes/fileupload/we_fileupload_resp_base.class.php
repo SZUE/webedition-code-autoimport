@@ -81,6 +81,7 @@ class we_fileupload_resp_base extends we_fileupload{
 			'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
 			'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
 			'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
+			'parentDir' => we_base_request::_(we_base_request::URL, 'fu_file_parentDir', we_base_request::NOT_VALID),
 			'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
 			'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
 			'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
@@ -174,7 +175,12 @@ class we_fileupload_resp_base extends we_fileupload{
 	}
 
 	protected function checkSetFile(){
-		$path = rtrim(($this->fileVars['parentID'] ? id_to_path($this->fileVars['parentID']) : ''), '/') . '/';
+		if($this->fileVars['parentDir'] && $this->fileVars['parentID'] == -1){
+			$path = $this->fileVars['parentDir'];
+		} else {
+			$path = $this->fileVars['parentID'] ? id_to_path($this->fileVars['parentID']) : '';
+		}
+		$path = rtrim($path, '/') . '/';
 
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . $this->fileVars['weFileName'])){
 			switch($this->fileVars['sameName']){

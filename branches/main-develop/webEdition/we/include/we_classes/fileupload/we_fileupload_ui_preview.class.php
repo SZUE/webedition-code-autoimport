@@ -253,7 +253,15 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			return;
 		}
 
-		$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
+		$parentDir = '';
+		if(!$this->doImport && $this->parentID['preset'] && !is_numeric($this->parentID['preset']) && !path_to_id($this->parentID['preset'])){
+			// in sselect we when uploading to ext dir we have parentDir in $this->parentID['preset' with no id to path!
+			$parentDir = $this->parentID['preset'];
+			$parentID = -1;
+		} else {
+			$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
+		}
+
 		$DB_WE = new DB_WE();
 		$parentID = !$parentID ? 0 : (!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($parentID) . ' AND IsFolder=1', '', $DB_WE) ? 0 : $parentID);
 
@@ -300,10 +308,12 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 			$html = $yuiSuggest->getHTML();
 		} else {
-			$parentPath = id_to_path($parentID);
+			$parentPath = $parentDir ? : id_to_path($parentID);
 			$html = we_html_element::htmlInput(['value' => $parentPath, 'disabled' => 'disabled']) .
 				we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
-				we_html_element::htmlHiddens(['fu_file_parentID' => $parentID,]);
+				we_html_element::htmlHiddens(['fu_file_parentID' => $parentID,
+					'fu_file_parentDir' => $parentDir,
+					]);
 		}
 
 		$headline = g_l('importFiles', '[destination_dir]');

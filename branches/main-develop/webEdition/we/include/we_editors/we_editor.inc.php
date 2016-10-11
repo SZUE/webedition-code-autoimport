@@ -285,8 +285,8 @@ function includeEditor($we_doc, $we_transaction, $insertReloadFooter){//this is 
 		$contents = we_SEEM::parseDocument($contents);
 
 		$contents = (strpos($contents, '</head>') ?
-				str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
-				$insertReloadFooter . $contents);
+			str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
+			$insertReloadFooter . $contents);
 	}
 	switch($we_doc->Extension){
 		case '.js':
@@ -386,7 +386,7 @@ function includeEditorDefault($we_doc, $we_transaction, $insertReloadFooter){
 
 		ob_start();
 		if(!defined('WE_CONTENT_TYPE_SET')){
-			$charset = $we_doc->getElement('Charset') ? : DEFAULT_CHARSET; //	send charset which might be determined in template
+			$charset = $we_doc->getElement('Charset') ?: DEFAULT_CHARSET; //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
 			we_html_tools::headerCtCharset('text/html', $charset);
 		}
@@ -501,39 +501,40 @@ if(
 						we_editor_save::templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $nrDocsUsedByThisTemplate, $GLOBALS['we_responseJS']);
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
-					} else if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) && $somethingNeedsToBeResaved){
+					}
+					if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) && $somethingNeedsToBeResaved){
 // this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
 						we_editor_save::templateSave($we_transaction); // this calls again we_cmd with save_document and sets we_cmd[2]
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
-					} else {
-//this happens when we_cmd[3] is set and not we_cmd[2]
-						$oldID = $we_doc->ID;
-						if($we_doc->we_save()){
-							if($oldID == 0){
-								$we_doc->lockDocument();
-							}
-							$wasSaved = true;
-							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "', '" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');" .
-								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
-							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
-							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-							if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4)){
-// this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
-								if($somethingNeedsToBeResaved){
-									$we_JavaScript .= '_EditorFrame.setEditorIsHot(false);
-top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' . $we_doc->ID . '&responseText=' . rawurlencode(sprintf($we_responseText, $we_doc->Path)) . '\',\'resave\',-1,-1,600,130,0,true);';
-									$we_responseText = '';
-								}
-							}
-						} else {
-// we got an error while saving the template
-							$we_JavaScript = '';
-							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
-							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-						}
 					}
+//this happens when we_cmd[3] is set and not we_cmd[2]
+					$oldID = $we_doc->ID;
+					if($we_doc->we_save()){
+						if($oldID == 0){
+							$we_doc->lockDocument();
+						}
+						$wasSaved = true;
+						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
+						$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "', '" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');" .
+							'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+						$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
+						$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+						if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4)){
+// this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
+							if($somethingNeedsToBeResaved){
+								$we_JavaScript .= '_EditorFrame.setEditorIsHot(false);
+top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' . $we_doc->ID . '&responseText=' . rawurlencode(sprintf($we_responseText, $we_doc->Path)) . '\',\'resave\',-1,-1,600,130,0,true);';
+								$we_responseText = '';
+							}
+						}
+					} else {
+// we got an error while saving the template
+						$we_JavaScript = '';
+						$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
+						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+					}
+
 ####TEMPLATE_SAVE_CODE2_END###
 					if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2){
 						$we_responseText = g_l('weEditor', '[text/weTmpl][no_template_save]');
@@ -674,7 +675,8 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$showAlert = true; //	don't show confirm box in editor_save.inc
-								$GLOBALS['we_responseJS'][] = ['switch_edit_page', (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr), $we_transaction];
+								$GLOBALS['we_responseJS'][] = ['switch_edit_page', (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr),
+									$we_transaction];
 								break;
 							case we_base_constants::MODE_NORMAL:
 								$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction];
@@ -687,7 +689,7 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 					$we_JavaScript .= "WE().layout.weNavigationHistory.addDocToHistory('" . $we_doc->Table . "', " . $we_doc->ID . ", '" . $we_doc->ContentType . "');";
 				}
 			}
-			$we_responseText.=$we_doc->getErrMsg();
+			$we_responseText .= $we_doc->getErrMsg();
 			if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 				//will show the message
 				echo we_message_reporting::jsMessagePush(g_l('weEditor', '[incompleteRequest]'), we_message_reporting::WE_MESSAGE_ERROR);
