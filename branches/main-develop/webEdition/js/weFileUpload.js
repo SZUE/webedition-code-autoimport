@@ -2381,7 +2381,7 @@ WE().layout.weFileUpload = (function () {
 
 			// add some listeners:
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
-				var generalform = _.document.getElementById('filechooser');
+				var generalform = _.document.we_form;
 				generalform.elements.fuOpts_scale.addEventListener('keyup', function (e) {
 					_.controller.editOptionsOnChange(e.target);
 				});
@@ -2563,7 +2563,7 @@ WE().layout.weFileUpload = (function () {
 			};
 
 			this.appendMoreData = function (fd) { // TODO: set additional fields oninit
-				var sf = _.document.we_startform,
+				var sf = _.document.we_form,
 					cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
@@ -2571,13 +2571,13 @@ WE().layout.weFileUpload = (function () {
 				fd.append('we_cmd[0]', 'import_files');
 				fd.append('step', 1);
 
-				if(!_.EDIT_IMAGES_CLIENTSIDE){
+				//if(!_.EDIT_IMAGES_CLIENTSIDE){
 					fd.append('fu_file_sameName', sf.fu_file_sameName.value);
 					fd.append('fu_file_parentID', sf.fu_file_parentID.value);
 					fd.append('fu_doc_categories', sf.fu_doc_categories.value);
 					fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
 					fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
-				}
+				//}
 
 				if (_.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1) {
 					fd.append('fu_doc_focusX', cur.img.focusX);
@@ -2860,7 +2860,7 @@ WE().layout.weFileUpload = (function () {
 				try {
 					var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
-					if (_.document.we_startform.fu_file_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+					if (_.document.we_form.fu_file_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
 						top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 					}
 					top.opener.top.we_cmd('load', 'tblFile');
@@ -2996,7 +2996,7 @@ WE().layout.weFileUpload = (function () {
 			};
 
 			this.formCustomEditOptsSync = function (pos, general) {
-				var generalForm = _.document.getElementById('filechooser'),
+				var generalForm = _.document.we_form,
 					form, indexes;
 
 				pos = general ? -1 : (pos && pos !== -1 ? pos : -1);
@@ -3084,7 +3084,7 @@ WE().layout.weFileUpload = (function () {
 
 		function Utils() {
 			this.setImageEditOptionsGeneral = function () {
-				_.utils.abstractSetImageEditOptionsGeneral('filechooser');
+				_.utils.abstractSetImageEditOptionsGeneral('we_form');
 			};
 
 			this.setImageEditOptionsFile = function (fileobj, general) {
@@ -3135,7 +3135,7 @@ WE().layout.weFileUpload = (function () {
 					forms, i;
 
 				if(general){
-					forms = _.document.getElementsByName('we_form');
+					forms = _.document.getElementsByName('form_editOpts');
 					for(i = 0; i < forms.length; i++){
 						index = forms[i].getAttribute('data-index');
 						if (_.sender.preparedFiles[index] && _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1 &&
@@ -3148,7 +3148,7 @@ WE().layout.weFileUpload = (function () {
 								_.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1) {
 					indexes.push(index);
 					if(formposition){
-						forms = _.document.getElementsByName('we_form');
+						forms = _.document.getElementsByName('form_editOpts');
 						for(i = 0; i < forms.length; i++){
 							if(forms[i].getAttribute('data-index') == index){
 								return [index];
