@@ -1355,6 +1355,26 @@ abstract class we_root extends we_class{
 
 	}
 
+	protected function registerFileLinks(array $ids, $type, $isTemp = false){
+		$sets = [];
+		foreach($ids as $k => $remObj){
+			$sets[] = we_database_base::arraySetter([
+					$this->ID,
+					stripTblPrefix($this->Table),
+					$type,
+					$remObj,
+					stripTblPrefix(FILE_TABLE),
+					sql_function(is_numeric($k) ? 'NULL' : 'x\'' . md5($k) . '\''),
+					0,
+					$isTemp ? 1 : 0
+					], ',', true);
+		}
+		if($sets){
+			return (bool) $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . '(ID,DocumentTable,type,remObj,remTable,nHash,position,isTemp) VALUES ' . implode(',', $sets));
+		}
+		return true;
+	}
+
 	function registerMediaLinks($temp = false){
 		$this->MediaLinks = array_filter($this->MediaLinks, function($v){
 			return $v && is_numeric($v);
@@ -1375,23 +1395,7 @@ abstract class we_root extends we_class{
 			return true;
 		}
 
-		$sets = [];
-		foreach($this->MediaLinks as $k => $remObj){
-			$sets[] = we_database_base::arraySetter(['ID' => $this->ID,
-					'DocumentTable' => stripTblPrefix($this->Table),
-					'type' => 'media',
-					'remObj' => $remObj,
-					'remTable' => stripTblPrefix(FILE_TABLE),
-					'nHash' => sql_function(is_numeric($k) ? 'NULL' : 'x\'' . md5($k) . '\''),
-					'position' => 0,
-					'isTemp' => $temp ? 1 : 0
-					], ',', true);
-		}
-		if($sets){
-			return (bool) $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . '(ID,DocumentTable,type,remObj,remTable,nHash,position,isTemp) VALUES ' . implode(',', $sets));
-		}
-
-		return true;
+		return $this->registerFileLinks($this->MediaLinks, 'media', $temp);
 	}
 
 	function unregisterMediaLinks($delPublished = true, $delTemp = true){

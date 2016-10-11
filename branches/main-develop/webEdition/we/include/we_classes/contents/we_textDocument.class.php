@@ -157,11 +157,13 @@ class we_textDocument extends we_document{
 							we_helpers_lessParser::$includedFiles = [];
 							$less->setImportDir([$_SERVER['DOCUMENT_ROOT'],
 								$_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(),
-								]);
+							]);
 							$less->setFormatter('classic');
 							try{
 								//we prepend an extra / before #WE, to make parser believe this is an absolute path
 								$doc = str_replace('/#WE:', '#WE:', $less->compile(preg_replace('|(#WE:\d+#)|', '/$1', $doc)));
+								$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND type="css"');
+								return $this->registerFileLinks(we_helpers_lessParser::$includedFiles, 'css');
 							} catch (exception $e){
 								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
@@ -175,6 +177,8 @@ class we_textDocument extends we_document{
 							$scss->setImportPaths(array_unique(['', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/']));
 							try{
 								$doc = $scss->compile($doc);
+								$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND type="css"');
+								return $this->registerFileLinks(we_helpers_scss::$includedFiles, 'css');
 							} catch (exception $e){
 								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
