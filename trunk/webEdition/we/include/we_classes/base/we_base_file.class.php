@@ -309,7 +309,7 @@ abstract class we_base_file{
 			return true;
 		}
 
-// if instead of the directory a file exists, we delete the file and create the directory
+		// if instead of the directory a file exists, we delete the file and create the directory
 		if(file_exists($path) && (!is_dir($path))){
 			if(!self::deleteLocalFile($path)){
 				t_e('Warning', "Could not delete File '" . $path . "'");
@@ -319,9 +319,9 @@ abstract class we_base_file{
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 		$umask = umask(0);
 
-// check for directories: create it if we could no write into it:
+		// check for directories: create it if we could no write into it:
 		if(!mkdir($path, $mod, $recursive)){
-			t_e('warning', "Could not create local Folder at '" . __FUNCTION__ . "': '" . $path . "'");
+			t_e('Warning', "Could not create local Folder at '" . __FUNCTION__ . "': '" . $path . "'");
 			umask($umask);
 			return false;
 		}
@@ -359,7 +359,7 @@ abstract class we_base_file{
 
 		foreach(array_reverse($cf) as $dir){
 			if(!mkdir($dir, $mod, true)){
-				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $dir . "'");
+				t_e('Warning', "Could not create local Folder at '" . __FUNCTION__ . "': '" . $dir . "'");
 				$returnValue = false;
 			}
 		}

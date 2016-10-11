@@ -133,19 +133,31 @@ class we_folder extends we_root{
 		}
 	}
 
+	/**
+	 * Initialize a folder by its path. Creates the folder and its parents if it does not exist yet.
+	 * @param  string  $path          The path to initialize
+	 * @param  string  $tblName       The table to store the folder in (default: FILE_TABLE)
+	 * @param  boolean $IsClassFolder Flag for class folder (default: false)
+	 * @param  boolean $IsNotEditable Flag for non-editable folders (default: false)
+	 * @return boolean                Returns true if the folder could be initialized.
+	 */
 	function initByPath($path, $tblName = FILE_TABLE, $IsClassFolder = 0, $IsNotEditable = 0){
+		// remove tailing '/'
 		if(substr($path, -1) == '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
+
+		// Try to retieve the given folder from the database
 		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($path) . '" AND IsFolder=1', 'ID', $this->DB_WE);
 		if($id != ''){
+			// Folder exists: use initByID() to initialize the object.
 			$this->initByID($id, $tblName);
 			if(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 				$this->ClassName = 'we_class_folder';
 			}
-		} else{
-			## Folder does not exist, so we have to create it (if user has permissons to create folders)
-
+		} else {
+			// Folder does not exist: create it (if user has permissons to create folders).
+			// Iterate the given path and create non-existent folders on-the-fly.
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = array();
@@ -168,7 +180,7 @@ class we_folder extends we_root{
 						$folder->Text = $p[$i];
 						$folder->Filename = $p[$i];
 						$folder->IsClassFolder = $IsClassFolder;
-						$folder->IsNotEditable = $IsClassFolder;
+						$folder->IsNotEditable = $IsNotEditable;
 						$folder->Path = $pa;
 						$folder->save();
 						$last_pid = $folder->ID;
@@ -177,15 +189,17 @@ class we_folder extends we_root{
 					}
 				}
 			}
+
+			// Eventually initialize the folder object
 			$this->we_new();
 			$this->Icon = $IsClassFolder ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 			$this->Table = $tblName;
-			$this->IsClassFolder = $IsClassFolder;
 			$this->ParentID = $last_pid;
 			$this->Text = $folderName;
 			$this->Filename = $folderName;
-			$this->Path = $path;
+			$this->IsClassFolder = $IsClassFolder;
 			$this->IsNotEditable = $IsNotEditable;
+			$this->Path = $path;
 			$this->save();
 		}
 		return true;
@@ -702,7 +716,7 @@ class we_folder extends we_root{
 	}
 
 	/**
-	 * Beseitigt #Bug 3705: sorgt daf�r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
+	 * Beseitigt #Bug 3705: sorgt dafuer, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
 	function we_rewrite(){
 		if(parent::we_rewrite()){
