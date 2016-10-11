@@ -13,8 +13,6 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
 	Description longtext NOT NULL,
 	`Language` varchar(5) NOT NULL default '',
   PRIMARY KEY  (ID),
-	UNIQUE KEY ParentID (ParentID,Text),
+	UNIQUE KEY ParentID (ParentID,`Text`),
   KEY Path (Path(250))
 ) ENGINE=MyISAM;
-
-/*drop IsFolder */

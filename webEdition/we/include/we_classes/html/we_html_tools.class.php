@@ -34,6 +34,10 @@ abstract class we_html_tools{
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
 	static function protect(array $perms = null, $redirect = ''){
+		if(empty($_SESSION['user']['isWeSession'])){
+			return false;
+		}
+
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){

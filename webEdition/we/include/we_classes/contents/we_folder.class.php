@@ -147,17 +147,27 @@ class we_folder extends we_root{
 		}
 	}
 
+	/**
+	 * Initialize a folder by its path. Creates the folder and its parents if it does not exist yet.
+	 * @param  string  $path          The path to initialize
+	 * @param  string  $tblName       The table to store the folder in (default: FILE_TABLE)
+	 * @return boolean                Returns true if the folder could be initialized.
+	 */
 	public function initByPath($path, $tblName = FILE_TABLE){
+		// remove tailing '/'
 		$path = rtrim($path, '/');
+
+		// Try to retieve the given folder from the database
 		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($path) . '" AND IsFolder=1', '', $this->DB_WE);
 		if($id != ''){
+			// Folder exists: use initByID() to initialize the object.
 			$this->initByID($id, $tblName);
 			if(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 				$this->ClassName = 'we_class_folder';
 			}
 		} else {
-			## Folder does not exist, so we have to create it (if user has permissons to create folders)
-
+			// Folder does not exist: create it (if user has permissons to create folders).
+			// Iterate the given path and create non-existent folders on-the-fly.
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = [];
@@ -180,6 +190,8 @@ class we_folder extends we_root{
 					}
 				}
 			}
+			
+			// Eventually initialize the folder object
 			$this->we_new($tblName, $last_pid, $folderName);
 			$this->IsClassFolder = $last_pid == 0;
 			$this->save();
