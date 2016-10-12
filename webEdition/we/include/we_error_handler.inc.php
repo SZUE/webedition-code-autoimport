@@ -41,8 +41,7 @@ if(!defined('E_SQL')){
 	define('E_JS', -2);
 }
 
-$GLOBALS['we']['errorhandler'] = array(
-	'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
+$GLOBALS['we']['errorhandler'] = ['notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
 	'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
 	'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
 	'error' => true,
@@ -51,11 +50,10 @@ $GLOBALS['we']['errorhandler'] = array(
 	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
 	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
 	'shutdown' => 'we',
-);
+ ];
 
 function we_error_setHandleAll(){
-	$GLOBALS['we']['errorhandler'] = array(
-		'notice' => true,
+	$GLOBALS['we']['errorhandler'] = ['notice' => true,
 		'deprecated' => true,
 		'warning' => true,
 		'error' => true,
@@ -64,7 +62,7 @@ function we_error_setHandleAll(){
 		'log' => true,
 		'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
 		'shutdown' => 'we',
-	);
+		];
 }
 
 function we_error_handler($in_webEdition = true){
@@ -178,12 +176,12 @@ function getBacktrace(array $skip = []){
 			continue;
 		} else if($cnt == 0){ //this is the caller
 			$caller = $arr['function'];
-			$file = (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '');
+			$file = (isset($arr['file']) ? str_replace([realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']], '', $arr['file']) : '');
 			$line = (isset($arr['line']) ? $arr['line'] : '');
 		}
-		$detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
+		$detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace([realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']], '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
 	}
-	return array($detailedError, $caller, $file, $line);
+	return [$detailedError, $caller, $file, $line];
 }
 
 /**
@@ -196,7 +194,8 @@ function getBacktrace(array $skip = []){
 function display_error_message($type, $message, $file, $line, $skipBT = false){
 	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? ['error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message'] : [
+			'error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message']));
 	} else if(is_string($skipBT)){
 		$detailedError = $skipBT;
 	}
@@ -224,20 +223,20 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	</tr>
 	<tr style="vertical-align:top">
 			<td style="white-space:nowrap;border-right: 1px solid #265da6;text-weight:bold;">Backtrace</td>
-			<td>' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . '</td>
+			<td>' . str_replace(["\r", "\n"], '', nl2br($detailedError)) . '</td>
 	</tr>
 	</table><br />';
 }
 
 function we_NiceArray($var, $unindent = ''){
-	return preg_replace(array('|Array\n\(|', '|\n\)$|', '|\n(    )' . ($unindent ? '{' . $unindent . '}' : '+' ) . '|', '|\n(    )|'), array('', '', "\n", "\n\t"), $var);
+	return preg_replace(['|Array\n\(|', '|\n\)$|', '|\n(    )' . ($unindent ? '{' . $unindent . '}' : '+' ) . '|', '|\n(    )|'], ['', '', "\n", "\n\t"], $var);
 }
 
 function getVariableMax($var){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
-			$ret = (isset($_REQUEST) ? we_NiceArray(print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '', 'WE_LOGIN_password', 'WE_LOGIN_username', 'Password', 'Password2')), true), 1) : ' - ');
+			$ret = (isset($_REQUEST) ? we_NiceArray(print_r(array_diff_key($_REQUEST, ['user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '', 'WE_LOGIN_password', 'WE_LOGIN_username', 'Password', 'Password2']), true), 1) : ' - ');
 			break;
 		case 'Session':
 			if(!isset($_SESSION)){
@@ -246,20 +245,20 @@ function getVariableMax($var){
 			}
 			$ret = '';
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
-			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered']){
+			if(!empty($_SESSION['webuser']['registered'])){
 				$ret.= 'webUser: ' .
-					we_NiceArray(print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true)) .
+					we_NiceArray(print_r(['ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'], true)) .
 					"----------------------------------------\n";
 			}
-			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){
+			if(!empty($_SESSION['user']['ID'])){
 				$ret.= 'webEdition-User: ' .
-					we_NiceArray(print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true)) .
+					we_NiceArray(print_r(['ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']], true)) .
 					"----------------------------------------\n";
 			}
 
 			if(isset($_SESSION['weS'])){
 				$ret.= "Internal data:\n" .
-					we_NiceArray(print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true), 1) .
+					we_NiceArray(print_r(array_diff_key($_SESSION['weS'], ['versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '']), true), 1) .
 					"----------------------------------------\n";
 			}
 
@@ -267,7 +266,7 @@ function getVariableMax($var){
 				$ret.="Effective Permissions:\n" . we_NiceArray(print_r(array_filter($_SESSION['perms']), true)) .
 					"\n------------------------------------\n";
 			}
-			$ret.= we_NiceArray(print_r(array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '')), true), 1);
+			$ret.= we_NiceArray(print_r(array_diff_key($_SESSION, ['prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '']), true), 1);
 
 			break;
 		case 'Global':
@@ -275,8 +274,8 @@ function getVariableMax($var){
 				$ret = ' - ';
 				break;
 			}
-			$ignore = array('GLOBALS', '_GET', '_POST', '_REQUEST', '_COOKIE', '_FILES', '_SERVER', '_SESSION',
-				'we', 'DB_WE', 'we_doc', 'WE_MAIN_DOC', 'loader', 'WE_MAIN_DOC_REF');
+			$ignore = ['GLOBALS', '_GET', '_POST', '_REQUEST', '_COOKIE', '_FILES', '_SERVER', '_SESSION',
+				'we', 'DB_WE', 'we_doc', 'WE_MAIN_DOC', 'loader', 'WE_MAIN_DOC_REF'];
 			$clone = [];
 			foreach($GLOBALS as $key => $val){
 				if(!in_array($key, $ignore)){
@@ -308,18 +307,19 @@ function log_error_message($type, $message, $file, $line, $skipBT = false){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? ['error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message'] : [
+			'error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message']));
 	} else if(is_string($skipBT)){
 		$detailedError = $skipBT;
 	}
 
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
-		$logVars = array('Request', 'Session', 'Server');
+		$logVars = ['Request', 'Session', 'Server'];
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
 		$query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
 			`Function`="' . escape_sql_query($caller) . '",
-			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT/', $file)) . '",
+			File="' . escape_sql_query(str_replace([realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']], 'SECURITY_REPL_DOC_ROOT/', $file)) . '",
 			Line=' . intval($line) . ',
 			Text="' . escape_sql_query(str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message)) . '",
 			Backtrace="' . escape_sql_query($detailedError) . '"';
@@ -372,7 +372,8 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 	}
 	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? ['error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message'] : [
+			'error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message']));
 	} else if(is_array($skipBT)){
 		list($detailedError, $caller, $file, $line) = $skipBT;
 	}
@@ -400,12 +401,12 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
 		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype . ': ' . $_SERVER['SERVER_NAME'] . '(webEdition)', $detailedError)){
-			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
+			if(in_array($type, ['E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'])){
 				echo 'Cannot log error! Could not send e-mail: <pre>' . $detailedError . '</pre>';
 			}
 		}
 	} else {
-		if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
+		if(in_array($type, ['E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'])){
 			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>' . $detailedError . '</pre>';
 		}
 	}

@@ -678,6 +678,10 @@ class liveUpdateFunctions{
 					// get information from existing and new table
 					$origTable = $this->getFieldsOfTable($tableName, $db);
 					$newTable = $this->getFieldsOfTable($tmpName, $db);
+					if(empty($newTable)){
+						$this->QueryLog['error'][] = 'Update of table ' . $tableName . "failed\n-- $query --";
+						break;
+					}
 
 					// get keys from existing and new table
 					$origTableKeys = $this->getKeysFromTable($tableName, true);

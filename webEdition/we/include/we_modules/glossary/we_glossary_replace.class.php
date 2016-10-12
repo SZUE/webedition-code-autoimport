@@ -57,13 +57,13 @@ abstract class we_glossary_replace{
 		$matches = [];
 		// get the words to replace
 		$cache = new we_glossary_cache($language);
-		$replace = array(
+		$replace = [
 			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since other might generate iritation annotations
 			'span' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
 			'abbr' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
 			'acronym' => (REPLACEACRONYM ? [] : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
 			'a' => $cache->get(we_glossary_glossary::TYPE_LINK),
-		);
+			];
 		unset($cache);
 
 		//forbid self-reference links
@@ -91,7 +91,7 @@ abstract class we_glossary_replace{
 		// replace words in non-tag pieces
 		$lastHtmlTag = '';
 		$tagMatch = [];
-		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0, 'abbr' => 0, 'acronym' => 0, self::NO_GLOSSAR_TAG => 0);
+		$ignoreTags = ['script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0, 'abbr' => 0, 'acronym' => 0, self::NO_GLOSSAR_TAG => 0];
 		foreach($pieces as &$piece){
 			if(preg_match('|^<(/)?([[:alnum:]-]+)|', $piece, $tagMatch)){//is a tag
 				list(, $not, $lastHtmlTag) = $tagMatch;
@@ -112,7 +112,7 @@ abstract class we_glossary_replace{
 			}
 		}
 
-		$replBody = strtr(implode('', $pieces), array('@@@we@@@' => '\''));
+		$replBody = strtr(implode('', $pieces), ['@@@we@@@' => '\'']);
 		return (isset($matches[1]) ?
 				str_replace($srcBody, $replBody, $src) :
 				$replBody);

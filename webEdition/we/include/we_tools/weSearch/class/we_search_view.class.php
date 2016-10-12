@@ -326,7 +326,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', '', 0, 0, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, ['onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"], 'value', 0, 'selectSearchPages');
 
-		$tbl = new we_html_table(array('style' => 'margin-top:-2px;'), 1, 4);
+		$tbl = new we_html_table(['style' => 'margin-top:-2px;'], 1, 4);
 		$tbl->setCol(0, 0, [], $btnBack);
 		$tbl->setCol(0, 1, ['class' => 'defaultfont', 'style' => 'padding-top:6px;'], we_html_element::htmlSpan(['class' => 'spanSearchText bold'], $text));
 		$tbl->setCol(0, 2, [], $btnNext);
@@ -356,7 +356,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, ['style' => 'width:200px;'], we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 				$table->setCol($row++, 1, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
@@ -371,7 +371,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 
 				return $table->getHtml();
 		}
-		$table->setCol($row++, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol($row++, 2, ['style' => 'text-align:right'], we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $table->getHtml();
 	}
@@ -399,9 +399,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 	}
 
 	function getSearchDialogFilter($whichSearch){
-		$table = new we_html_table(array(
-			'width' => 400,
-			), 4, 4);
+		$table = new we_html_table(['width' => 400,], 4, 4);
 
 		$currentSearch = $this->Model->getProperty('currentSearch');
 
@@ -678,8 +676,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 									['elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-'],
 									['elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');")],
 								]],
-									['elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? [array('elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"',
-									'dat' => $this->makeAdditionalContentMedia($result[$f])),
+									['elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? [['elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"',
+									'dat' => $this->makeAdditionalContentMedia($result[$f])],
 									] : '')]
 							], 'colgroup' => '</colgroup>
 	<col style="text-align:left;"/>
@@ -829,21 +827,19 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		if(!($view !== self::VIEW_ICONS && $whichsearch !== self::SEARCH_MEDIA) && $file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
-				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size[width]=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
-				$imageView = '<img src="' . $url . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
-
-				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size[width]=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
-				$imageViewPopup = '<img src="' . $urlPopup . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file['docID'] . '&path=' . urlencode($file['Path']) . '&extension=' . $file['Extension'];
+				$imageView = '<img src="' . $url . '&size[width]=' . $smallSize . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
+				$imageViewPopup = '<img src="' . $url . '&size[width]=' . $bigSize . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
 			} else {
 				$imagesize = [0, 0];
-				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
+				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file['ContentType'] . '" data-extension="' . $file['Extension'] . '"></span>';
 			}
 		} else {
 			$imagesize = [0, 0];
-			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
+			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file['ContentType'] . '" data-extension="' . $file['Extension'] . '"></span>';
 		}
 
-		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);
+		return ['imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup];
 	}
 
 	function getSearchParameterTop($foundItems, $whichSearch){
@@ -1358,15 +1354,14 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 	}
 
 	function getCommonHiddens($cmds = []){
-		return we_html_element::htmlHiddens(array(
-				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+		return we_html_element::htmlHiddens(['cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
 				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''),
 				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
 				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
 				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
-		));
+		]);
 	}
 
 	function getJSProperty(){
@@ -1388,11 +1383,11 @@ function submitForm(target,action,method) {
 		}
 
 		$tmp = '';
-		$modelVars = array_merge(array(// some vars are not persistent in db but must be written to session anyway
+		$modelVars = array_merge([// some vars are not persistent in db but must be written to session anyway
 			'searchstartDocSearch',
 			'searchstartTmplSearch',
 			'searchstartMediaSearch',
-			'searchstartAdvSearch'), (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : []));
+			'searchstartAdvSearch'], (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : []));
 
 		$doInitModelByHttp = false;
 		foreach($modelVars as $val){
