@@ -135,7 +135,7 @@ class update extends updateBase{
 		}
 		if(version_compare($mysqlV, '5.5', '<') && $_SESSION['clientTargetVersionNumber'] >= 6430){
 			$mysqlversionOK = false;
-			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL5'];
+			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL55'];
 		}
 		}
 
