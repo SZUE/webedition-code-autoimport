@@ -199,21 +199,21 @@ class we_navigation_items{
 
 		$candidate = 0;
 		$score = 3;
-		$len = 0;
+        $pathLen = 0;
 
 		$isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 		$mainCats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
 		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-                substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)) :
+                substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['we_obj']->Url)) :
 				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
 
 		foreach($this->currentRules as $rule){
 			$ponder = 4;
-			$parentPath = '';
+			$rulePath = '';
 
             if(($cats = makeArrayFromCSV($rule->Categories))){
                 if(!$this->checkCategories($cats, $mainCats)){
@@ -222,7 +222,7 @@ class we_navigation_items{
                 $ponder--;
             }
 
-			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
+			switch($rule->SelectionType){
 				case we_navigation_navigation::STYPE_DOCTYPE:
 					if($isObject){
 						continue; // remove from selection
@@ -235,7 +235,7 @@ class we_navigation_items{
 					}
 
 					if($rule->FolderID){
-                        $parentPath = rtrim(self::id2path($rule->FolderID), '/') . '/';
+                        $rulePath = rtrim(self::id2path($rule->FolderID), '/') . '/';
                     }
 					break;
 				case we_navigation_navigation::STYPE_CLASS:
@@ -243,28 +243,29 @@ class we_navigation_items{
 						continue; // remove from selection
 					}
 					if($rule->ClassID){
-						if($GLOBALS["WE_MAIN_DOC"]->TableID != $rule->ClassID){
+						if($GLOBALS["we_obj"]->TableID != $rule->ClassID){
 							continue; // remove from selection
 						}
 						$ponder--;
 					}
 
 					if($rule->WorkspaceID){
-                        $parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+                        $rulePath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
                     }
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) !== false){
-				$ponder--;
-				$currLen = strlen($parentPath);
-				if($currLen >= $len){ //the longest path wins
-					$len = $currLen;
-					$ponder--;
-				}
-			}
+            if(!empty($rulePath) && strpos($currentWorkspace, $rulePath) !== false){
+                $ponder--;
+                if(($currPathLen = strlen($rulePath)) >= $pathLen){ //the longest path wins
+                    if($pathLen > 0){//no ponder for first match
+                        $ponder--;
+                    }
+                    $pathLen = $currPathLen;
+                }
+            }
 
-			if($ponder <= $score){
+			if($ponder < $score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 					$this->setCurrent($rule->NavigationID);
 				} else {
