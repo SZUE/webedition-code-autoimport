@@ -25,7 +25,7 @@
 class we_backup_tableAdv{
 	var $ClassName = __CLASS__;
 	var $db;
-	var $table = "";
+	var $table;
 	var $elements;
 	var $persistent_slots = [];
 	var $attribute_slots = [];
@@ -59,27 +59,25 @@ class we_backup_tableAdv{
 		// fix for bannerclicks table - primary key has been added
 		if(defined('BANNER_CLICKS_TABLE') && $this->table == BANNER_CLICKS_TABLE){
 			if(!isset($this->elements['clickid'])){
-				$this->elements['clickid'] = array(
-					'Field' => 'clickid',
+				$this->elements['clickid'] = ['Field' => 'clickid',
 					'Type' => 'BIGINT',
 					'Null' => 'NO',
 					'Key' => 'PRI',
 					'Default' => '',
 					'Extra' => 'auto_increment'
-				);
+					];
 			}
 		}
 		// fix for bannerviews table - primary key has been added
 		if(defined('BANNER_VIEWS_TABLE') && $this->table == BANNER_VIEWS_TABLE){
 			if(!isset($this->elements['viewid'])){
-				$this->elements['viewid'] = array(
-					'Field' => 'viewid',
+				$this->elements['viewid'] = ['Field' => 'viewid',
 					'Type' => 'BIGINT',
 					'Null' => 'NO',
 					'Key' => 'PRI',
 					'Default' => '',
 					'Extra' => 'auto_increment'
-				);
+					];
 			}
 		}
 	}
@@ -95,7 +93,7 @@ class we_backup_tableAdv{
 				$zw = explode("\n", $this->db->f("Create Table"));
 				$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
 			}
-			$this->elements[$this->db->f("Table")] = array('Field' => 'create');
+			$this->elements[$this->db->f('Table')] = ['Field' => 'create'];
 			foreach($zw as $k => $v){
 				$this->elements[$this->db->f("Table")]['line' . $k] = $v;
 			}

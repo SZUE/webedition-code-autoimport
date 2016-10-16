@@ -31,7 +31,7 @@ class we_exim_XMLExIm{
 	var $level = 0;
 	//var $recover_mode=0; // 0 -	save all to selected folder; 1 - save with given path
 
-	var $options = array(
+	var $options = [
 		'handle_paths' => 0,
 		'handle_def_templates' => 0,
 		'handle_doctypes' => 0,
@@ -70,7 +70,7 @@ class we_exim_XMLExIm{
 		'xml_encoding' => '',
 		'target_encoding' => '',
 		'rebuild' => 1
-	);
+	 ];
 	var $xmlBrowser;
 
 	function __construct($file = ''){
@@ -99,12 +99,12 @@ class we_exim_XMLExIm{
 	}
 
 	function setBackupProfile(){
-		$options = array(
+		$options = [
 			"handle_content" => 1,
 			"handle_table" => 1,
 			"handle_tableitems" => 1,
 			"handle_binarys" => 1,
-		);
+			];
 
 		$this->setOptions($options);
 	}
@@ -141,9 +141,9 @@ class we_exim_XMLExIm{
 
 	function getTableForCT($we_ContentType, $table = ''){
 		switch($we_ContentType){
-			case "doctype":
+			case 'doctype':
 				return DOC_TYPES_TABLE;
-			case "category":
+			case 'category':
 				return CATEGORY_TABLE;
 			case we_base_ContentTypes::OBJECT:
 				return (defined('OBJECT_TABLE')) ? OBJECT_TABLE : null;
@@ -151,16 +151,16 @@ class we_exim_XMLExIm{
 				return TEMPLATES_TABLE;
 			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
-			case "we_backup_binary":
+			case 'we_backup_binary':
 			case 'weBinary'://FIMXE remove
 				return null;
 			case we_base_ContentTypes::NAVIGATION:
 				return NAVIGATION_TABLE;
 			case we_base_ContentTypes::NAVIGATIONRULE:
 				return NAVIGATION_RULE_TABLE;
-			case "weThumbnail":
+			case 'weThumbnail':
 				return THUMBNAILS_TABLE;
-			case "folder":
+			case 'folder':
 				if(!empty($table)){
 					return $table;
 				}
