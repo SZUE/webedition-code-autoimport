@@ -2,7 +2,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigationrules (
   ID int unsigned NOT NULL auto_increment,
   NavigationName varchar(255) default NULL,
   NavigationID int unsigned NOT NULL default '0',
-  SelectionType varchar(16) NOT NULL default '',
+  SelectionType enum('doctype','classname') NOT NULL default 'doctype',
   FolderID int unsigned NOT NULL default '0',
   DoctypeID mediumint unsigned NOT NULL default '0',
   Categories text NOT NULL,
