@@ -30,15 +30,11 @@ if(!isset($_SESSION)){
 
 if(!isset($_SESSION['weS'])){
 	$_SESSION['weS'] = [];
-	$_SESSION['user'] = array(
-		'ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false
-	);
+	$_SESSION['user'] = ['ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false];
 }
 
 if(!isset($_SESSION['user'])){
-	$_SESSION['user'] = array(
-		'ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false
-	);
+	$_SESSION['user'] = ['ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false];
 }
 
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', md5(uniqID('', true)));

@@ -143,7 +143,7 @@ switch($mod){
 			case 'ruleCmd':
 			case 'ruleContent':
 			case 'ruleFrameset':
-				we_html_tools::protect(array('EDIT_NAVIAGTION_RULES'));
+				we_html_tools::protect(['EDIT_NAVIAGTION_RULES']);
 
 				$weFrame = new we_navigation_ruleFrames();
 				ob_start();
