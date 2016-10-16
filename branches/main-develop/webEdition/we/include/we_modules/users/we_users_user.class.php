@@ -1172,7 +1172,7 @@ _multiEditorreload = true;';
 
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
-		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
+		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
 		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = we_unserialize($db->f('Permissions'));
@@ -1199,7 +1199,7 @@ _multiEditorreload = true;';
 		/* 		if(!$onlyParent && !array_filter($user_permissions)){
 		  t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
 		  } */
-		return (!empty($user_permissions['ADMINISTRATOR']) ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
+		return (!empty($user_permissions['ADMINISTRATOR']) ? ['ADMINISTRATOR' => 1] : array_filter($user_permissions));
 	}
 
 	/**

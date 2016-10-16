@@ -763,7 +763,7 @@ abstract class we_base_file{
 	 * @return array
 	 * @param int $folderID
 	 */
-	static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
+	public static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
 		$outArray = [$folderID];
 		$db = ($db ? : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
