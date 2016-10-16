@@ -42,6 +42,7 @@ class we_backup_tableItem extends we_base_model{
 		$this->keys = self::getTableKey($this->table);
 	}
 
+	//FIXME: incompatible header
 	function load(array $ids, $isAdvanced = false){
 		foreach($ids as $key => $val){
 			$this->$key = $val;
@@ -76,11 +77,12 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	function doConvertCharset($was){ //dies konvertiert die Daten, die binary im backup waren
-		$tables = [];
-		$tables[CONTENT_TABLE] = array('Dat');
+		$tables = [
+			CONTENT_TABLE => ['Dat']
+		];
 
 		if(defined('OBJECT_TABLE')){
-			$tables[OBJECT_FILES_TABLE] = array('Category');
+			$tables[OBJECT_FILES_TABLE] = ['Category'];
 		}
 		if(defined('SHOP_ORDER_TABLE')){
 			$tables[SHOP_TABLE] = ['strSerial', 'strSerialOrder'];
@@ -91,17 +93,16 @@ class we_backup_tableItem extends we_base_model{
 	function doCorrectExactCharsetString($was){
 		$tables = [];
 		$table = $this->table;
-		$tables[NAVIGATION_TABLE] = array('Charset');
+		$tables[NAVIGATION_TABLE] = ['Charset'];
 		if(defined('OBJECT_TABLE')){
-			$tables[OBJECT_FILES_TABLE] = array('Charset');
-			$tables[OBJECT_X_TABLE] = array('OF_Charset');
+			$tables[OBJECT_FILES_TABLE] = ['Charset'];
 			if($this->isObjectXTable($table)){
 				$table = OBJECT_X_TABLE;
 				$was = $this->getFieldType($was);
 			}
 		}
 		if(defined('NEWSLETTER_TABLE')){
-			$tables[NEWSLETTER_TABLE] = array('Charset');
+			$tables[NEWSLETTER_TABLE] = ['Charset'];
 		}
 
 		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
@@ -110,17 +111,17 @@ class we_backup_tableItem extends we_base_model{
 	function doCorrectSerializedLenghtValues($was){
 		$tables = [];
 		$table = $this->table;
-		$tables[NAVIGATION_TABLE] = array('Attributes');
+		$tables[NAVIGATION_TABLE] = ['Attributes'];
 		if(defined('OBJECT_TABLE')){
-			$tables[OBJECT_TABLE] = array('dDefaultValues'); //DefaultValues bewusst entfernt
-			$tables[OBJECT_X_TABLE] = array('link', 'variant'); //href nicht da ser str in ser str
+			$tables[OBJECT_TABLE] = ['dDefaultValues']; //DefaultValues bewusst entfernt
+			$tables[OBJECT_X_TABLE] = ['link', 'variant']; //href nicht da ser str in ser str
 			if($this->isObjectXTable($table)){
 				$table = OBJECT_X_TABLE;
 				$was = $this->getFieldType($was);
 			}
 		}
 		if(defined('VOTING_TABLE')){
-			$tables[VOTING_TABLE] = array('QASet', 'QASetAdditions', 'Scores', 'LogData');
+			$tables[VOTING_TABLE] = ['QASet', 'QASetAdditions', 'Scores', 'LogData'];
 		}
 
 		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
@@ -135,7 +136,7 @@ class we_backup_tableItem extends we_base_model{
 	function doCorrectSerializedExactCharsetString($was){
 		$tables = [];
 		if(defined('OBJECT_TABLE')){
-			$tables[OBJECT_TABLE] = array('DefaultValues');
+			$tables[OBJECT_TABLE] = ['DefaultValues'];
 		}
 
 		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
@@ -145,9 +146,11 @@ class we_backup_tableItem extends we_base_model{
 		if($fromC != '' && $toC != ''){
 			if(function_exists('iconv')){
 				return iconv($fromC, $toC . '//TRANSLIT', $string);
-			} elseif($fromC === 'UTF-8' && $toC === 'ISO-8859-1'){
+			}
+			if($fromC === 'UTF-8' && $toC === 'ISO-8859-1'){
 				return utf8_decode($string);
-			} elseif($fromC === 'ISO-8859-1' && $toC === 'UTF-8'){
+			}
+			if($fromC === 'ISO-8859-1' && $toC === 'UTF-8'){
 				return utf8_encode($string);
 			}
 		}
