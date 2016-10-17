@@ -47,7 +47,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_newsletter") {
+	if (hot && args[0] !== "save_newsletter") {
 		if (confirm(WE().consts.g_l.newsletter.save_changed_newsletter)) {
 			args[0] = "save_newsletter";
 		} else {
@@ -56,7 +56,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_newsletter":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

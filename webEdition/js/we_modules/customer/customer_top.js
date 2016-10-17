@@ -46,7 +46,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_customer") {
+	if (hot && args[0] !== "save_customer") {
 		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
 		} else {
@@ -56,7 +56,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "exit_customer":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

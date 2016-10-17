@@ -299,7 +299,7 @@ function we_cmd() {
 		case "popPreview":
 			if (document.we_form.ncmd.value == "home")
 				return;
-			if (top.content.hot !== 0) {
+			if (top.content.hot) {
 				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
@@ -312,7 +312,7 @@ function we_cmd() {
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (top.content.hot !== 0) {
+			} else if (top.content.hot) {
 				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (document.we_form.IsFolder.value === 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -332,7 +332,7 @@ function we_cmd() {
 		case "send_test":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (top.content.hot !== 0) {
+			} else if (top.content.hot) {
 				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);

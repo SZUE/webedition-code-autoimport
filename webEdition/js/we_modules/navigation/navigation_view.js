@@ -37,6 +37,7 @@ function mark() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var delay = Array.prototype.slice.call(arguments);
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -44,7 +45,6 @@ function we_cmd() {
 			case "module_navigation_new":
 			case "module_navigation_new_group":
 			case "exit_navigation":
-				top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value = args[0];
 				args[0] = "exit_doc_question";
 		}
 	}
@@ -111,8 +111,8 @@ function we_cmd() {
 			}
 			if (top.content.editor.edbody.loaded) {
 				q = (args[0] === "populate" ?
-								WE().consts.g_l.navigation.view.populate_question :
-								WE().consts.g_l.navigation.view.depopulate_question);
+					WE().consts.g_l.navigation.view.populate_question :
+					WE().consts.g_l.navigation.view.depopulate_question);
 
 				if (confirm(q)) {
 					top.content.editor.edbody.document.we_form.pnt.value = "edbody";
@@ -196,12 +196,15 @@ function we_cmd() {
 			top.content.drawTree();
 			break;
 		case "exit_navigation":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "exit_doc_question":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question";
+			for (var i = 0; i < delay.length; i++) {
+				url += "&delayCmd[]=" + delay[i];
+			}
 			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 

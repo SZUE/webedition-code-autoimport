@@ -37,7 +37,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_workflow") {
+	if (hot && args[0] !== "save_workflow") {
 		var hotConfirmMsg = confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
@@ -48,7 +48,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_workflow":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd('exit_modules');
 			}
 			break;

@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -44,7 +44,7 @@ container.prototype.openClose = function(id) {
 function doClick(id, typ) {
 	var cmd = "";
 	var node;
-	if (top.content.hot === 1) {
+	if (top.content.hot) {
 		if (confirm(WE().consts.g_l.exports.save_changed_export)) {
 			cmd = "save_export";
 			top.content.we_cmd("save_export");

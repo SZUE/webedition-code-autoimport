@@ -57,7 +57,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_users":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
@@ -108,20 +108,20 @@ function we_cmd() {
 			}
 			break;
 		case "updateTitle":
-			top.content.editor.edheader.document.getElementById("titlePath").innerText=args[1];
-		break;
+			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
+			break;
 		case "setCgroup":
 			cgroup = args[1];
 			break;
 		case 'makeTreeEntry':
 			top.content.treeData.makeNewEntry(args[1]);
-		break;
+			break;
 		case 'updateTreeEntry':
 			top.content.treeData.updateEntry(args[1]);
-		break;
+			break;
 		case 'deleteTreeEntry':
 			top.content.treeData.deleteEntry(args[1]);
-		break;
+			break;
 		case 'loadUsersContent':
 			var home = args[1].home !== undefined ? "&home=1" : "";
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader" + home;
@@ -137,7 +137,7 @@ function we_cmd() {
 }
 
 function saveBeforeNextCmd(args) {
-	if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
+	if (hot && top.content.editor.edbody.document.we_form.cmd) {
 		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
 			top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 			top.content.editor.edbody.document.we_form.sd.value = 1;

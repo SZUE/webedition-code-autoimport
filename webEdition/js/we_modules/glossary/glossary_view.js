@@ -39,7 +39,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_glossary") {
+	if (hot && args[0] !== "save_glossary") {
 		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			args[0] = "save_glossary";
 		} else {
@@ -53,7 +53,7 @@ function we_cmd() {
 			top.content.setHot();
 			break;
 		case "exit_glossary":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
