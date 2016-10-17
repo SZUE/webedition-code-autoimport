@@ -119,27 +119,28 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-				($size == -1 ?
-					we_base_file::load($file) :
-					we_base_file::loadPart($file, 0, $size)
-				) :
-				'');
+			($size == -1 ?
+			we_base_file::load($file) :
+			we_base_file::loadPart($file, 0, $size)
+			) :
+			'');
 	}
 
 	protected function i_writeDocument(){
 		$file = $this->getElement('data');
-		if(!($file && file_exists($file))){
+		if(!($file && file_exists($file)) ||
+			$this->i_pathNotValid()
+		){
 			return false;
 		}
-		if($this->i_pathNotValid()){
+		$sitePath = $this->getSitePath();
+		$realPath = $this->getRealPath();
+		if(!we_base_file::checkAndMakeFolder(dirname($sitePath), true) ||
+			!we_base_file::checkAndMakeFolder(dirname($realPath), true) ||
+			($file != $sitePath && !we_base_file::copyFile($file, $sitePath))){
 			return false;
 		}
-		if($file != $this->getSitePath()){
-			if(!we_base_file::copyFile($file, $this->getSitePath())){
-				return false;
-			}
-		}
-		if(!we_base_file::makeHardLink($file, $this->getRealPath())){
+		if(!we_base_file::makeHardLink($file, $realPath)){
 			return false;
 		}
 		if($this->isMoved()){
@@ -283,7 +284,7 @@ class we_binaryDocument extends we_document{
 			}
 		}
 
-		$mdcontent.=$content->getHtml();
+		$mdcontent .= $content->getHtml();
 
 		// Return HTML
 		return $mdcontent;
@@ -313,11 +314,11 @@ class we_binaryDocument extends we_document{
 		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-				'' :
-				g_l('metadata', '[supported_types]') . ': ' .
-				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-				(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
-				'</a>');
+			'' :
+			g_l('metadata', '[supported_types]') . ': ' .
+			'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+			(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
+			'</a>');
 
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
 
@@ -390,11 +391,11 @@ class we_binaryDocument extends we_document{
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', [
-				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				//['icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
+					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 
