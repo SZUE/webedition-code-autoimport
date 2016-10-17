@@ -498,6 +498,7 @@ var selfNaviId = '" . $this->Model->ID . "';") .
 				$classDirsJS[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
 				$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 			}
+			asort($classID2Name);
 			if($classDirs){
 				$this->db->query('SELECT ID,ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $allowedClasses) . ') AND IsFolder=1');
 				while($this->db->next_record()){
@@ -954,10 +955,9 @@ function showPreview() {
 		$cmd = we_base_request::_(we_base_request::JS, 'cmd'); // js command
 		$multi = we_base_request::_(we_base_request::JS, 'multi'); // js command
 
-
+		$fields = [];
 		switch($type){
 			case we_navigation_navigation::DYN_DOCTYPE:
-				$fields = [];
 				$templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($selection));
 				$ids = makeArrayFromCSV($templates);
 
@@ -970,22 +970,22 @@ function showPreview() {
 				$fields = array_combine($f, $f);
 				break;
 			default:
-				$fields = [];
 				if(defined('OBJECT_TABLE')){
 
 					$class = new we_object();
 					$class->initByID($selection, OBJECT_TABLE);
-					$fields = array_keys($class->getAllVariantFields());
-					foreach($fields as $key){
+					$found = array_keys($class->getAllVariantFields());
+					foreach($found as $key){
 						$fields[$key] = substr($key, strpos($key, "_") + 1);
 					}
 				}
 		}
+		asort($fields);
 		$parts = [
 				[
 				'headline' => '',
-				'html' => we_html_tools::htmlSelect(
-					'fields', $fields, 20, '', ($multi ? true : false), ['style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem,100);"]),
+				'html' => we_html_tools::htmlSelect('fields', $fields, 20, '', ($multi ? true : false), ['style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;",
+					'onclick' => "setTimeout(selectItem,100);"]),
 			]
 		];
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $cmd . "');", '', 0, 0, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
@@ -1351,7 +1351,7 @@ function showPreview() {
 		$table2 = new we_html_table(['class' => 'default'], 1, 3);
 		$table2->setColContent(0, 0, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", '', 0, 0, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
-		if($this->Model->ID &&  permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
+		if($this->Model->ID && permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
 			$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('module_navigation_delete');"));
 		}
 

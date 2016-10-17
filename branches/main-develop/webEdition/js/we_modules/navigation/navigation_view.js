@@ -176,7 +176,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_navigation_dyn_preview", -1, -1, 480, 350, true, true, true);
 			break;
 		case "populateWorkspaces":
-			WE().layout.button.switch_button_state(document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
+			WE().layout.button.switch_button_state(document, 'open_navigation_obj', document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
 			/*falls through*/
 		case "create_template":
 		case "populateFolderWs":
