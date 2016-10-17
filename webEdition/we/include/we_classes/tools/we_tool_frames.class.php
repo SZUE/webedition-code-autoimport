@@ -39,7 +39,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$class = we_tool_lookup::getModelClassName($this->toolName);
-		$this->Model = $this->Model ? : new $class();
+		$this->Model = $this->Model ?: new $class();
 
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
 			$this->Model = new $class();
@@ -68,7 +68,8 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		  $table->setCol(1, 0, array('class' => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
-		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') . "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
+		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') . "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()",
+				"onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
 				'</div>'
 		);
@@ -100,7 +101,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		switch($what){
 			case 'edfooter':
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [ [], 'tool_' . $this->toolName . '_save']
+						we_html_button::SAVE => [[], 'tool_' . $this->toolName . '_save']
 						], we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 			default:
 				return parent::getHTML($what, $mode, $step);
@@ -125,7 +126,6 @@ abstract class we_tool_frames extends we_modules_frame{
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
 		];
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -149,9 +149,9 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLExitQuestion(){
-		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
+		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
 			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd("tool_' . $this->toolName . '_save");self.close();';
-			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
+			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '");self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .

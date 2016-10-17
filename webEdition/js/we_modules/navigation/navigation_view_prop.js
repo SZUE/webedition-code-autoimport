@@ -28,7 +28,7 @@ var loaded = false;
 var table = WE().consts.tables.FILE_TABLE;
 
 function setFieldValue(fieldNameTo, fieldFrom) {
-	if (document.we_form.SelectionType.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
+	if (document.we_form.DynamicSelection.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
 		document.we_form[fieldNameTo].value = fieldFrom.value;
 		weInputRemoveClass(fieldFrom, "weMarkInputError");
 	} else if (weNavTitleField[fieldFrom.value] !== undefined) {
@@ -163,14 +163,14 @@ function closeAllStats() {
 function putTitleField(field) {
 	top.content.mark();
 	document.we_form.TitleField.value = field;
-	document.we_form.__TitleField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
+	document.we_form.__TitleField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
 	weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
 }
 
 function putSortField(field) {
 	top.content.mark();
 	document.we_form.SortField.value = field;
-	document.we_form.__SortField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
+	document.we_form.__SortField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
 	weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
 }
 
@@ -184,7 +184,7 @@ function setWorkspaces(value) {
 	setVisible("objLinkWorkspaceClass", false);
 	setVisible("objLinkWorkspace", false);
 	switch (value) {
-		case WE().consts.navigation.STYPE_CLASS:
+		case WE().consts.navigation.DYN_CLASS:
 			setVisible("objLinkWorkspaceClass", true);
 			break;
 		case WE().consts.navigation.STYPE_OBJLINK:
@@ -195,7 +195,7 @@ function setWorkspaces(value) {
 
 function setStaticSelection(value) {
 	switch (value) {
-		case WE().consts.navigation.STYPE_CATEGORY:
+		case WE().consts.navigation.DYN_CATEGORY:
 			setVisible("dynUrl", true);
 			setVisible("dynamic_LinkSelectionDiv", true);
 			setLinkSelection("dynamic_", WE().consts.navigation.LSELECTION_INTERN);
@@ -266,43 +266,6 @@ function setFolderSelection(value) {
 	}
 }
 
-function setPresentation(type) {
-	top.content.mark();
-	var st = document.we_form.SelectionType;
-	st.options.length = 0;
-	switch (type) {
-		case WE().consts.navigation.SELECTION_DYNAMIC:
-			st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.documents, WE().consts.navigation.STYPE_DOCTYPE);
-			if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
-				st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.objects, WE().consts.navigation.STYPE_CLASS);
-			}
-			st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.categories, WE().consts.navigation.STYPE_CATEGORY);
-			setVisible("doctype", true);
-			setVisible("classname", false);
-			setVisible("docFolder", true);
-			setVisible("objFolder", false);
-			setVisible("catFolder", false);
-			setStaticSelection("document");
-			break;
-		default:
-			st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.docLink, WE().consts.navigation.STYPE_DOCLINK);
-			st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.urlLink, WE().consts.navigation.STYPE_URLLINK);
-			if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
-				st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.objLink, WE().consts.navigation.STYPE_OBJLINK);
-			}
-			st.options[st.options.length] = new Option(WE().consts.g_l.navigation.view.catLink, WE().consts.navigation.STYPE_CATLINK);
-			setVisible("classname", true);
-			setVisible("doctype", false);
-			setVisible("docFolder", false);
-			setVisible("objFolder", true);
-			setVisible("catFolder", true);
-			setVisible("docLink", true);
-			setStaticSelection("docLink");
-	}
-	clearFields();
-}
-
-
 function submitForm(target, action, method) {
 	var f = window.document.we_form;
 	populateVars();
@@ -314,12 +277,12 @@ function submitForm(target, action, method) {
 
 function clearFields() {
 	top.content.mark();
-	var st = document.we_form.SelectionType;
+	var st = document.we_form.DynamicSelection;
 	if (st.selectedIndex > -1) {
 		removeAllCats();
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "enabled");
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_SortField", "enabled");
-		if (st.options[st.selectedIndex].value === WE().consts.navigation.STYPE_CLASS && document.we_form.ClassID.options.length < 1) {
+		if (st.options[st.selectedIndex].value === WE().consts.navigation.DYN_CLASS && document.we_form.ClassID.options.length < 1) {
 			WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "disabled");
 			WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_XFolder", "disabled");
 			document.getElementById("yuiAcInputFolderPath").disabled = true;
@@ -328,7 +291,7 @@ function clearFields() {
 			document.getElementById("yuiAcInputFolderPath").disabled = false;
 		}
 		switch (st.options[st.selectedIndex].value) {
-			case WE().consts.navigation.STYPE_DOCTYPE:
+			case WE().consts.navigation.DYN_DOCTYPE:
 				setVisible("docFolder", true);
 				setVisible("objFolder", false);
 				setVisible("catFolder", false);
@@ -337,7 +300,7 @@ function clearFields() {
 					WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_SortField", "disabled");
 				}
 				break;
-			case WE().consts.navigation.STYPE_CLASS:
+			case WE().consts.navigation.DYN_CLASS:
 				setVisible("docFolder", false);
 				setVisible("objFolder", true);
 				setVisible("catFolder", false);
@@ -361,7 +324,7 @@ function clearFields() {
 			document.we_form.Url.value = "http://";
 		}
 
-		if (st.options[st.selectedIndex].value == WE().consts.navigation.STYPE_CATEGORY) {
+		if (st.options[st.selectedIndex].value == WE().consts.navigation.DYN_CATEGORY) {
 			setVisible("docFolder", false);
 			setVisible("objFolder", false);
 			setVisible("catFolder", true);
@@ -378,7 +341,6 @@ function setCustomerFilter(sel) {
 	if (data.IsFolder) {
 		return;
 	}
-	var st = document.we_form.SelectionType;
 	if (sel.options[sel.selectedIndex].value == "dynamic") {
 		try {//FIXME
 			document.we_form.elements._wecf_useDocumentFilter.checked = false;

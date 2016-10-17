@@ -246,12 +246,11 @@ class we_document extends we_root{
 			$naviItem->LinkID = $this->ID;
 			$naviItem->Text = $text;
 			$naviItem->Path = $new_path;
+			$naviItem->SelectionType = we_navigation_navigation::STYPE_DOCLINK;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT){
 				$naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
-				$naviItem->SelectionType = we_navigation_navigation::STYPE_DOCLINK;
 			} else {
 				$naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
-				$naviItem->SelectionType = we_navigation_navigation::STYPE_DOCTYPE;
 				$naviItem->IsFolder = 1;
 				$charset = $naviItem->findCharset($naviItem->ParentID);
 				$naviItem->Charset = ($charset ?: (DEFAULT_CHARSET ?: $GLOBALS['WE_BACKENDCHARSET']));
@@ -1608,7 +1607,7 @@ class we_document extends we_root{
 
 	private function getNavigationItems(){
 		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID));
+			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") AND LinkID=' . intval($this->ID));
 			return $this->DB_WE->getAll(true);
 		}
 		return [];

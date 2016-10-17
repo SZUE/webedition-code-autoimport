@@ -352,7 +352,7 @@ abstract class we_rebuild_base{
 				[(defined('BANNER_TABLE') ? BANNER_TABLE : false), '', 'we_banner_banner'],
 				[CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'],
 				[(defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : false), 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'],
-				[NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="docLink" AND LinkID!=0)', 'we_navigation_navigation'],
+				[NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '" AND LinkID!=0)', 'we_navigation_navigation'],
 				[(defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : false), '', 'we_newsletter_newsletter'],
 				[(defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : false), 'WHERE 1', 'we_customer_customer'],
 		];
@@ -679,8 +679,8 @@ abstract class we_rebuild_base{
 		return $data;
 	}
 
-	private static function getTemplatesOfTemplate($id, &$arr, $onlyMaster=false){
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . ($onlyMaster?'':' OR FIND_IN_SET(' . intval($id) . ',IncludedTemplates) ') . ($arr ? ' AND ID NOT IN (' . implode($arr) . ')' : ''));
+	private static function getTemplatesOfTemplate($id, &$arr, $onlyMaster = false){
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . ($onlyMaster ? '' : ' OR FIND_IN_SET(' . intval($id) . ',IncludedTemplates) ') . ($arr ? ' AND ID NOT IN (' . implode($arr) . ')' : ''));
 		$foo = $GLOBALS['DB_WE']->getAll(true);
 
 		if(!$foo){

@@ -443,13 +443,13 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 				switch(isset($object->Selection) ? $object->Selection : ''){
 					case we_navigation_navigation::SELECTION_DYNAMIC:
-						switch($object->SelectionType){
-							case we_navigation_navigation::STYPE_DOCTYPE:
+						switch($object->DynamicSelection){
+							case we_navigation_navigation::DYN_DOCTYPE:
 								$this->updateField($object, 'DocTypeID', DOC_TYPES_TABLE);
 								$this->updateField($object, 'FolderID', FILE_TABLE);
 								break;
 
-							case we_navigation_navigation::STYPE_CLASS:
+							case we_navigation_navigation::DYN_CLASS:
 								if(defined('OBJECT_TABLE')){
 									$this->updateField($object, 'ClassID', OBJECT_TABLE);
 									$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
@@ -457,7 +457,7 @@ class we_import_updater extends we_exim_XMLExIm{
 								}
 								break;
 
-							case we_navigation_navigation::STYPE_CATEGORY:
+							case we_navigation_navigation::DYN_CATEGORY:
 								$this->updateField($object, 'FolderID', CATEGORY_TABLE);
 								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
@@ -465,22 +465,20 @@ class we_import_updater extends we_exim_XMLExIm{
 								break;
 						}
 						break;
-
-					case we_navigation_navigation::SELECTION_STATIC:
-						switch($object->SelectionType){
-							case we_navigation_navigation::STYPE_DOCLINK:
-								$this->updateField($object, 'LinkID', FILE_TABLE);
-								break;
-							case we_navigation_navigation::STYPE_OBJLINK:
-								$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
-								break;
-							case we_navigation_navigation::STYPE_CATLINK:
-								$this->updateField($object, 'LinkID', CATEGORY_TABLE);
-								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
-									$this->updateField($object, 'UrlID', FILE_TABLE);
-								}
-								break;
+				}
+				switch($object->SelectionType){
+					case we_navigation_navigation::STYPE_DOCLINK:
+						$this->updateField($object, 'LinkID', FILE_TABLE);
+						break;
+					case we_navigation_navigation::STYPE_OBJLINK:
+						$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
+						break;
+					case we_navigation_navigation::STYPE_CATLINK:
+						$this->updateField($object, 'LinkID', CATEGORY_TABLE);
+						if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
+							$this->updateField($object, 'UrlID', FILE_TABLE);
 						}
+						break;
 				}
 				break;
 
@@ -503,8 +501,8 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		$cats = (isset($object->Categories) ?
-				(is_array($object->Categories) ? $object->Categories : makeArrayFromCSV($object->Categories)) :
-				[]);
+			(is_array($object->Categories) ? $object->Categories : makeArrayFromCSV($object->Categories)) :
+			[]);
 
 		$new_cats = [];
 		foreach($cats as $cat){

@@ -28,7 +28,6 @@ abstract class we_navigation_dynList{
 		$select = 'f.ID AS id,f.Text AS text,IFNULL(c.Dat,c.BDID) AS field';
 
 		return self::getDocData($select, $doctypeid, $dirid, $categories, $catlogic, $field, $sort, $count);
-
 	}
 
 	private static function getDocData($select, $doctype, $dirID, array $categories, $catlogic, $field, $order, $count = 100){
@@ -63,7 +62,7 @@ abstract class we_navigation_dynList{
 			$ids[] = ['id' => $data['ID'],
 				'text' => $data['Text'],
 				'field' => $field && $data[$field] ? we_navigation_navigation::encodeSpecChars($data[$field]) : ''
-				];
+			];
 		}
 
 		return $ids;
@@ -110,39 +109,19 @@ abstract class we_navigation_dynList{
 	}
 
 	public static function getWorkspacesForObject($id){
-		$obj = new we_objectFile();
-		$obj->initByID($id, OBJECT_FILES_TABLE);
-
-		$values = makeArrayFromCSV($obj->Workspaces);
-
-		$all = $obj->getPossibleWorkspaces(false);
-		$ret = [];
 		$db = new DB_WE();
-		foreach($values as $k => $id){
-			if(!we_base_file::isWeFile($id, FILE_TABLE, $db) || !isset($all[$id])){
-				unset($values[$k]);
-			} else {
-				$ret[$id] = id_to_path($id, FILE_TABLE, $db);
-			}
-		}
-		return $ret;
+
+		list($obWsp, $clWsp) = getHash('SELECT of.Workspaces,o.Workspaces FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON of.TableID=o.ID WHERE of.ID=' . intval($id), $db, MYSQLI_NUM);
+
+		$ret = id_to_path($obWsp, FILE_TABLE, $db, true);
+
+		$all = we_objectFile::getPossibleWorkspaces($clWsp, $db);
+		return array_intersect_key($ret, $all);
 	}
 
 	public static function getWorkspacesForClass($id){
-		$obj = new we_object();
-		$obj->initByID($id, OBJECT_TABLE);
-
-		$values = makeArrayFromCSV($obj->Workspaces);
-		$db = new DB_WE();
-		$ret = [];
-		foreach($values as $k => $id){
-			if(!we_base_file::isWeFile($id, FILE_TABLE, $db)){
-				unset($values[$k]);
-			} else {
-				$ret[$id] = id_to_path($id, FILE_TABLE, $db);
-			}
-		}
-		return $ret;
+		$values = f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($id));
+		return id_to_path($values, FILE_TABLE, $GLOBALS['DB_WE'], true);
 	}
 
 	/* 	function getDocumentsWithWorkspacePath($ws){
@@ -155,10 +134,10 @@ abstract class we_navigation_dynList{
 	  } */
 
 	public static function getFirstDynDocument($id, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		return (
-			($id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db))? :
-				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape(id_to_path($id, FILE_TABLE, $db)) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db)
+			($id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db)) ?:
+			f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape(id_to_path($id, FILE_TABLE, $db)) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db)
 			);
 	}
 

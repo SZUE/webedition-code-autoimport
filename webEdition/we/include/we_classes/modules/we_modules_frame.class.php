@@ -232,7 +232,7 @@ abstract class we_modules_frame{
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
 			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd("module_' . $this->module . '_save");self.close();';
-			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
+			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '");self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
