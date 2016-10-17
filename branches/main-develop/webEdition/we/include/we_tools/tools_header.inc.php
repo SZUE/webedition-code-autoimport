@@ -44,7 +44,7 @@ foreach($menuItems as $menuItem){
 echo we_tabs::getHeader('
 var current = "' . $tool . '";
 function openTool(tool) {
-	if (top.content.hot === 1) {
+	if (top.content.hot) {
 		if (confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 			top.content.hot = false;
 			current = tool;

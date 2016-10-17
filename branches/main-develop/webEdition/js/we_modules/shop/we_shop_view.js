@@ -46,7 +46,7 @@ function we_cmd() {
 			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor";
 			break;
 		case "delete_shop":
-			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1) {
+			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
 				if (confirm(WE().consts.g_l.shop.del_shop)) {
 					top.content.editor.edbody.deleteorder();
 				}
@@ -55,7 +55,7 @@ function we_cmd() {
 			}
 			break;
 		case "new_article":
-			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1) {
+			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
 				top.content.editor.edbody.neuerartikel();
 			} else {
 				top.we_showMessage(WE().consts.g_l.shop.no_order_there, WE().consts.message.WE_MESSAGE_ERROR, this);

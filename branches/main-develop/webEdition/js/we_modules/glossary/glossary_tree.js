@@ -45,7 +45,7 @@ container.prototype.openClose = function(id) {
 
 function doClick(id, typ) {
 	var node;
-	if (top.content.hot === 1) {
+	if (top.content.hot) {
 		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			top.content.we_cmd("save_glossary");
 		} else {

@@ -182,10 +182,10 @@ if(top.content.treeData){
 							'top.content.hot=0;'
 					);
 
-					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
-						$js .= we_html_element::jsElement('top.content.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '");'
+					if(($delay = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
+						$js .= we_html_element::jsElement('top.content.we_cmd("' . implode('","', $delay) . '");'
 						);
-						$_REQUEST['delayCmd'] = '';
+						unset($_REQUEST['delayCmd']);
 					}
 				} else {
 					$js = we_html_element::jsElement($js .
@@ -1358,7 +1358,6 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
 				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''),
 				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
-				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
 		]);
 	}
 

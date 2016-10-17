@@ -33,6 +33,7 @@ WE().util.loadConsts(document, "g_l.weSearch");
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var delay = args;
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -40,7 +41,6 @@ function we_cmd() {
 			case "tool_weSearch_new":
 			case "tool_weSearch_new_group":
 			case "tool_weSearch_exit":
-				top.content.editor.edbody.document.we_form.delayCmd.value = args[0];
 				args[0] = "exit_doc_question";
 		}
 	}
@@ -76,7 +76,11 @@ function we_cmd() {
 			top.close();
 			break;
 		case "exit_doc_question":
-			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value;
+			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&pnt=exit_doc_question";
+			for (var i = 0; i < delay.length; i++) {
+				url += "&delayCmd[]=" + delay[i];
+			}
+
 			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 		case "tool_weSearch_save":

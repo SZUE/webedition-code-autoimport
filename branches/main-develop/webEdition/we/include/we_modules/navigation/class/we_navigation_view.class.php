@@ -37,7 +37,6 @@ class we_navigation_view extends we_modules_view{
 			parent::getCommonHiddens($cmds) .
 			we_html_element::htmlHiddens(array(
 				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
-				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
 		));
 	}
 
@@ -201,7 +200,7 @@ if(top.content.treeData){
 						}
 					}
 				}
-				$delaycmd = we_base_request::_(we_base_request::JS, 'delayCmd');
+				$delaycmd = we_base_request::_(we_base_request::STRING, 'delayCmd');
 
 				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();' .
 					we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
@@ -210,13 +209,13 @@ if(top.content.makeNewDoc) {
 	setTimeout(top.content.we_cmd,100,"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
 }' .
 					($delaycmd ?
-						'top.content.we_cmd("' . $delaycmd . '");' :
+						'top.content.we_cmd("' . implode('","', $delaycmd) . '");' :
 						''
 					)
 				);
 
 				if($delaycmd){
-					$_REQUEST['delayCmd'] = '';
+					unset($_REQUEST['delayCmd']);
 				}
 
 				break;

@@ -113,7 +113,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&");
 
-	if (hot === 1 && args[0] !== "messaging_start_view") {
+	if (hot && args[0] !== "messaging_start_view") {
 		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {
@@ -122,7 +122,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "messaging_exit":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
@@ -211,11 +211,11 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	}
 
 	ret += "<span id='_" + nf[ai].id + "' onclick=\"" + trg + "\">" +
-					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-					"</span>" +
-					"<span id=\"_" + nf[ai].id + "\" onclick=\"" + trg + "\">" +
-					 translate(nf[ai].text) + "</span>" +
-					"<br/>";
+		WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+		"</span>" +
+		"<span id=\"_" + nf[ai].id + "\" onclick=\"" + trg + "\">" +
+		translate(nf[ai].text) + "</span>" +
+		"<br/>";
 	if (nf[ai].open) {
 		newAst += '<span class="' + (ai === nf.len ? 'strich ' : '') + 'treeKreuz"></span>';
 		ret += this.draw(nf[ai].id, newAst);
@@ -233,8 +233,8 @@ container.prototype.drawItem = function (nf, ai) {
 		}
 	} else {
 		ret += '<span id="_' + nf[ai].id + "\" onclick=\"doClick(" + nf[ai].id + ");\">" +
-						WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-						"</span>";
+			WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+			"</span>";
 		trg = "doClick(" + nf[ai].id + ");";
 	}
 	ret += "<span id=\"_" + nf[ai].id + "\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</span><br/>";

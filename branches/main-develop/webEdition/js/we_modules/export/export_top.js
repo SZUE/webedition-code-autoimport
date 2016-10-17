@@ -43,7 +43,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot === 1 && args[0] !== "save_export") {
+	if (hot && args[0] !== "save_export") {
 		if (confirm(WE().consts.g_l.exports.save_changed_export)) {
 			args[0] = "save_export";
 		} else {
@@ -56,7 +56,7 @@ function we_cmd() {
 			setHot();
 			break;
 		case "exit_export":
-			if (hot !== 1) {
+			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
@@ -109,7 +109,7 @@ function we_cmd() {
 			}
 			break;
 		case "start_export":
-			if (top.content.hot !== 0) {
+			if (top.content.hot) {
 				WE().util.showMessage(WE().consts.g_l.exports.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
