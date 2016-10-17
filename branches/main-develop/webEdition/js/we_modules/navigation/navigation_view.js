@@ -45,7 +45,6 @@ function we_cmd() {
 			case "module_navigation_new_group":
 			case "exit_navigation":
 				top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value = args[0];
-				top.content.editor.edbody.document.getElementsByName("delayParam")[0].value = args[1];
 				args[0] = "exit_doc_question";
 		}
 	}
@@ -202,7 +201,7 @@ function we_cmd() {
 			}
 			break;
 		case "exit_doc_question":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value;
 			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 

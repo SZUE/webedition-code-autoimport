@@ -3,6 +3,20 @@
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblnavigation)###
 /* query separator */
 
+
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection="doctype" WHERE IsFolder=1 AND FolderSelection IS NULL;###
+/* query separator */
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation MODIFY `FolderSelection` `FolderSelection` enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
+/* query separator */
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection=SelectionType WHERE IsFolder=0;###
+/* query separator */
+
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE SelectionType DynamicSelection enum('doctype','category','classname') NOT NULL default 'doctype';###
+/* query separator */
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE FolderSelection SelectionType enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
+/* query separator */
+
+
 CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
@@ -25,7 +39,8 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   LinkID int unsigned NOT NULL default '0',
   CurrentOnUrlPar tinyint unsigned NOT NULL DEFAULT '0',
   CurrentOnAnker tinyint unsigned NOT NULL DEFAULT '0',
-  SelectionType enum('urlLink','category','catLink','classname','objLink','docLink','doctype') NOT NULL default 'docLink',
+  SelectionType enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink',
+	DynamicSelection enum('doctype','category','classname') NOT NULL default 'doctype',
   FolderID int unsigned NOT NULL default '0',
   DocTypeID mediumint unsigned NOT NULL default '0',
   ClassID smallint unsigned NOT NULL default '0',
@@ -65,12 +80,6 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
 ###ONCOL(FolderWsID,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET WorkspaceID=FolderWsID WHERE IsFolder=1;###
 /* query separator */
 ###UPDATEDROPCOL(FolderWsID,###TBLPREFIX###tblnavigation)###
-/* query separator */
-###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection="doctype" WHERE IsFolder=1 AND FolderSelection IS NULL;###
-/* query separator */
-###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET SelectionType=FolderSelection WHERE IsFolder=1;###
-/* query separator */
-###UPDATEDROPCOL(FolderSelection,###TBLPREFIX###tblnavigation)###
 /* query separator */
 ###ONCOL(FolderParameter,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET Parameter=FolderParameter WHERE IsFolder=1;###
 /* query separator */

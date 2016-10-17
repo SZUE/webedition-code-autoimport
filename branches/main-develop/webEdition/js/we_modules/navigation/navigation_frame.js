@@ -46,41 +46,73 @@ function onSelectionClassChangeJS(value) {
 function onSelectionTypeChangeJS(value) {
 	if (document.we_form.elements.Selection.value === WE().consts.navigation.SELECTION_STATIC) {
 		onFolderSelectionChangeJS(value);
-	} else {
-		if ((WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE") && value === WE().consts.navigation.STYPE_CLASS) {
-			document.we_form.elements.ClassID.selectedIndex = 0;
-			onSelectionClassChangeJS(document.we_form.elements.ClassID.options[0].value);
-		} else {
+		return;
+	}
+	switch (value) {
+		case WE().consts.navigation.DYN_CLASS:
+			if ((WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE")) {
+				document.we_form.elements.ClassID.selectedIndex = 0;
+				onSelectionClassChangeJS(document.we_form.elements.ClassID.options[0].value);
+			}
+			break;
+		default:
 			YAHOO.autocoml.modifySetById("yuiAcInputFolderPath", {
-				table: value === WE().consts.navigation.STYPE_DOCTYPE ? WE().consts.tables.FILE_TABLE : WE().consts.tables.CATEGORY_TABLE,
+				table: value === WE().consts.navigation.DYN_DOCTYPE ? WE().consts.tables.FILE_TABLE : WE().consts.tables.CATEGORY_TABLE,
 				rootDir: "",
-				mayBeEmpty: value === WE().consts.navigation.STYPE_DOCTYPE
+				mayBeEmpty: value === WE().consts.navigation.DYN_DOCTYPE
 			}
 			);
-		}
-		YAHOO.autocoml.setValidById("yuiAcInputFolderPath");
 	}
+	YAHOO.autocoml.setValidById("yuiAcInputFolderPath");
 }
 
 function onFolderSelectionChangeJS(value) {
-	var linktype = value === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.navigation.STYPE_DOCLINK : (value === WE().consts.navigation.STYPE_CATLINK ? WE().consts.navigation.STYPE_CATLINK : (value === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.navigation.STYPE_OBJLINK : WE().consts.navigation.STYPE_DOCLINK));
-	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath", {
-		table: linktype === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.tables.FILE_TABLE : (linktype === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.tables.OBJECT_FILES_TABLE : (linktype === WE().consts.navigation.STYPE_CATLINK ? WE().consts.tables.CATEGORY_TABLE : "")),
-		cTypes: linktype === WE().consts.navigation.STYPE_DOCLINK ? [
-			WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML,
-			WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE,
-			WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION,
-			WE().consts.contentTypes.FLASH
-		].join(",") : (linktype === WE().consts.navigation.STYPE_OBJLINK ? [
-			WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.OBJECT_FILE
-		].join(",") : "")
+	var linktype = '';
+	switch (value) {
+		case WE().consts.navigation.STYPE_DOCLINK:
+		case WE().consts.navigation.STYPE_OBJLINK:
+		case WE().consts.navigation.STYPE_CATLINK:
+			linktype = value;
+			break;
+		default:
+			linktype = WE().consts.navigation.STYPE_DOCLINK;
 	}
-	);
+
+	var set = {};
+	switch (linktype) {
+		case WE().consts.navigation.STYPE_DOCLINK:
+			set = {
+				table: WE().consts.tables.FILE_TABLE,
+				cTypes: [
+					WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML,
+					WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE,
+					WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION,
+					WE().consts.contentTypes.FLASH
+				].join(",")
+			};
+			break;
+		case WE().consts.navigation.STYPE_OBJLINK:
+			set = {
+				table: WE().consts.tables.OBJECT_FILES_TABLE,
+				cTypes: [WE().consts.contentTypes.FOLDER,
+					WE().consts.contentTypes.OBJECT_FILE].join(",")
+			};
+			break;
+		case WE().consts.navigation.STYPE_CATLINK:
+			set = {
+				table: WE().consts.tables.CATEGORY_TABLE,
+				cTypes: ''
+			};
+			break;
+	}
+
+
+	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath", set);
 }
 
 function fieldChooserBut(cmd) {
 	var st = document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value;
-	var s = (st === WE().consts.navigation.STYPE_DOCTYPE ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value);
+	var s = (st === WE().consts.navigation.DYN_DOCTYPE ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value);
 	we_cmd('openFieldSelector', cmd, st, s, 0);
 }
 

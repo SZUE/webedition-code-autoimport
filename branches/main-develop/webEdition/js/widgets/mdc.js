@@ -45,10 +45,6 @@ function setVisible(id, visible) {
 	}
 }
 
-function setPresentation(type) {
-
-}
-
 function closeAllSelection() {
 	setVisible('dynamic', false);
 	setVisible('static', false);

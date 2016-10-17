@@ -1378,30 +1378,29 @@ class we_objectFile extends we_document{
 		return count($ac);
 	}
 
-	public function getPossibleWorkspaces($ClassWs, $all = false){
-		$ClassWs = $ClassWs ?: $this->classData['Workspaces'];
+	public static function getPossibleWorkspaces($ClassWs, we_database_base $db, $all = false){
 		$wsArray = makeArrayFromCSV($ClassWs);
 		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden zurückgeben
-			return $wsArray ? id_to_path($wsArray, FILE_TABLE, $this->DB_WE, true) : [];
+			return $wsArray ? id_to_path($wsArray, FILE_TABLE, $db, true) : [];
 		}
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
 		$out = [];
 		foreach($userWs as $ws){
-			if(we_users_util::in_workspace($ws, $ClassWs, FILE_TABLE, $this->DB_WE)){
+			if(we_users_util::in_workspace($ws, $ClassWs, FILE_TABLE, $db)){
 				$out[] = $ws;
 			}
 		}
 
-		return $out ? id_to_path($out, FILE_TABLE, $this->DB_WE, true) : [];
+		return $out ? id_to_path($out, FILE_TABLE, $db, true) : [];
 	}
 
 	private function formWorkspaces(){
 		$classWsTmpl = $this->classData['WorkspacesTemplates'];
 
-		$values = $this->getPossibleWorkspaces(false);
+		$values = self::getPossibleWorkspaces($this->classData['Workspaces'], $this->DB_WE);
 
 //    remove not existing workspaces and templates
 		$arr = id_to_path($this->Workspaces, FILE_TABLE, $this->DB_WE, true);
@@ -2637,14 +2636,13 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 	protected function getNavigationFoldersForDoc(){
 		$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
 
-		$queries = array(
-			'(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+		$queries = ['( (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '")  AND LinkID=' . intval($this->ID) . ')',
 			//FIXME: query should use ID, not parentID
-			'((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND SelectionType="' . we_navigation_navigation::STYPE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
-		);
+			'(Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND DynamicSelection="' . we_navigation_navigation::DYN_CLASS . '" AND ClassID=' . $this->TableID . ')'
+		];
 		if($category){
 			//FIXME: query should use ID, not parentID
-			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_CLASS . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
+			$queries[] = '( Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND DynamicSelection="' . we_navigation_navigation::DYN_CLASS . '" AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories) ) )';
 		}
 
 		$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));

@@ -170,7 +170,6 @@ function setTab(tab) {
 				'pnt' => 'edbody',
 				'tabnr' => $tabNr,
 				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-				'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
 			)) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')), $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .

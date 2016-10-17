@@ -222,7 +222,7 @@ class we_navigation_items{
 			}
 
 			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
-				case we_navigation_navigation::STYPE_DOCTYPE:
+				case we_navigation_navigation::DYN_DOCTYPE:
 					if($isObject){
 						continue; // remove from selection
 					}
@@ -237,7 +237,7 @@ class we_navigation_items{
 						$parentPath = rtrim(self::id2path($rule->FolderID), '/') . '/';
 					}
 					break;
-				case we_navigation_navigation::STYPE_CLASS:
+				case we_navigation_navigation::DYN_CLASS:
 					if(!$isObject){
 						continue; // remove from selection
 					}
@@ -407,11 +407,11 @@ class we_navigation_items{
 			$tmpItem['Name'] = $tmpItem['Text'];
 			self::$Storage['items'][] = $tmpItem;
 
-			if($db->Record['IsFolder'] && ($db->Record['SelectionType'] === '' || $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK)){
+			if($db->Record['IsFolder'] && $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
 				$ids[] = $db->Record['LinkID'];
-			} elseif($db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
+			} elseif($db->Record['Selection'] === we_navigation_navigation::SELECTION_STATIC && $db->Record['SelectionType'] === we_navigation_navigation::STYPE_DOCLINK){
 				$ids[] = $db->Record['LinkID'];
-			} elseif(($db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATEGORY || $db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATLINK) && $db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
+			} elseif(($db->Record['DynamicSelection'] === we_navigation_navigation::DYN_CATEGORY || $db->Record['SelectionType'] === we_navigation_navigation::STYPE_CATLINK) && $db->Record['LinkSelection'] !== we_navigation_navigation::LSELECTION_EXTERN){
 				$ids[] = $db->Record['UrlID'];
 			}
 

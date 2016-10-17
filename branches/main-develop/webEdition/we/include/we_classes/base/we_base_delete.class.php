@@ -29,8 +29,8 @@ abstract class we_base_delete{
 			return true;
 		}
 		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($id)) ?
-				self::checkDeleteFolder($id, $table) :
-				self::checkDeleteFile($id, $table));
+			self::checkDeleteFolder($id, $table) :
+			self::checkDeleteFile($id, $table));
 	}
 
 	private static function checkDeleteFolder($id, $table){
@@ -65,8 +65,8 @@ abstract class we_base_delete{
 	private static function deleteFolder($id, $table, $path = '', $delR = true, we_database_base $DB_WE = null){
 		$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
-		$DB_WE = ($DB_WE ? : new DB_WE());
-		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
+		$DB_WE = ($DB_WE ?: new DB_WE());
+		$path = $path ?: f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
 		if(!$path){
 			return false;
 		}
@@ -117,11 +117,11 @@ abstract class we_base_delete{
 	}
 
 	private static function deleteFile($id, $table, $path = '', $contentType = '', we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? : new DB_WE();
+		$DB_WE = $DB_WE ?: new DB_WE();
 
 		$isTemplateFile = ($table == TEMPLATES_TABLE);
 
-		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
+		$path = $path ?: f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
 		self::deleteContentFromDB($id, $table);
 
 		$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
@@ -151,7 +151,7 @@ abstract class we_base_delete{
 					$DB_WE->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId=' . intval($id));
 				}
 
-				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '" AND LinkID=' . intval($id));
+				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '" AND LinkID=' . intval($id));
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=0 AND IsFolder=0 AND DID=' . intval($id));
@@ -165,7 +165,7 @@ abstract class we_base_delete{
 				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), '', $DB_WE);
 				if($tableID){
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($id));
-					$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '" AND LinkID=' . intval($id));
+					$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '" AND LinkID=' . intval($id));
 					//Bug 2892
 					$foo = $DB_WE->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
 					foreach($foo as $testclassID){
@@ -228,7 +228,7 @@ abstract class we_base_delete{
 				die('unsupported delete');
 		}
 
-		$DB_WE = ($DB_WE ? : new DB_WE());
+		$DB_WE = ($DB_WE ?: new DB_WE());
 		if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 			if(we_workflow_utility::inWorkflow($id, $table, $GLOBALS['DB_WE'])){
 				we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
@@ -281,7 +281,7 @@ abstract class we_base_delete{
 	 * @return bool true on success, or if not in DB
 	 */
 	public static function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? : new DB_WE();
+		$DB_WE = $DB_WE ?: new DB_WE();
 
 		if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
 			return true;

@@ -1487,15 +1487,14 @@ abstract class we_root extends we_class{
 			return [];
 		}
 		$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
-		$queries = ['(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
-		];
+		$queries = ['( (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '" AND LinkID=' . intval($this->ID) . ')',];
 		if(isset($this->DocType)){
 			//FIXME: query should use ID, not parentID
-			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
+			$queries[] = '(Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
 		}
 		if($category){
 			//FIXME: query should use ID, not parentID
-			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCTYPE . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
+			$queries[] = '(Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND DynamicSelection="' . we_navigation_navigation::DYN_DOCTYPE . '" AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories) ) )';
 		}
 		return $this->DB_WE->getAllq('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries), true);
 	}
