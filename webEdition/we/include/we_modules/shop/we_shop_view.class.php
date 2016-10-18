@@ -939,7 +939,7 @@ function CalendarChanged(calObject) {
 					list($id, $type) = explode('_', $_REQUEST['add_article']);
 
 					$variantOptions = array(
-						'-' => '-'
+						'' => '-' //Fix #11087 we need an empty key for default: non variant
 					);
 
 					$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
@@ -1071,7 +1071,7 @@ function CalendarChanged(calObject) {
 					),
 					array(
 						'headline' => g_l('modules_shop', '[field_value]'),
-						'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
+						'html' => '<textarea name="cartfieldvalue" style="width: 350px; height: 150px">' . $val . '</textarea>',
 						'space' => we_html_multiIconBox::SPACE_MED
 					)
 				);
