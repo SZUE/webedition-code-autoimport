@@ -249,8 +249,16 @@ var WebEdition = {
 				}
 			} catch (e) {
 			}
+		},
+		pushCmdToModule: function (args) {
+			var wind = WE().util.jsWindow.prototype.find('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
+				if (args[0] !== "empty_log") {
+					wind.focus();
+				}
+			}
 		}
-
 	},
 	handler: {
 		errorHandler: errorHandler,
@@ -267,9 +275,9 @@ var WebEdition = {
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
 			doc.cookie = name + "=" + encodeURI(value) +
-							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-							((path === undefined) ? "" : "; path=" + path) +
-							((domain === undefined) ? "" : "; domain=" + domain);
+				((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+				((path === undefined) ? "" : "; path=" + path) +
+				((domain === undefined) ? "" : "; domain=" + domain);
 		},
 		weGetCookie: function (doc, name) {
 			var cname = name + "=";
@@ -339,7 +347,7 @@ var WebEdition = {
 		getTreeIcon: function (contentType, open, extension) {
 			var simplepre = '<span class="fa-stack fa-lg fileicon">';
 			var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
-							post = '</span>';
+				post = '</span>';
 			switch (contentType) {
 				case 'cockpit':
 					return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
@@ -668,8 +676,8 @@ var WebEdition = {
 					}
 
 					output = output +
-									this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-									this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+						this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+						this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
 
 				}
 
@@ -737,9 +745,9 @@ var WebEdition = {
 			// private method for UTF-8 decoding
 			_utf8_decode: function (utftext) {
 				var string = "",
-								i = 0,
-								c = 0,
-								c2 = 0;
+					i = 0,
+					c = 0,
+					c2 = 0;
 
 				while (i < utftext.length) {
 					c = utftext.charCodeAt(i);
@@ -787,9 +795,9 @@ var WebEdition = {
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
 			return (el ?
-							this.decodeDynamicVar(el, dataname) :
-							null
-							);
+				this.decodeDynamicVar(el, dataname) :
+				null
+				);
 		},
 		decodeDynamicVar: function (el, dataname) {
 			var data = el.getAttribute(dataname);
@@ -854,8 +862,8 @@ function we_repl(target, url) {
 			if (target.name === "load" || target.name === "load2") {
 				if (top.lastUsedLoadFrame === target.name) {
 					target = (target.name === "load" ?
-									window.load2 :
-									window.load);
+						window.load2 :
+						window.load);
 				}
 				top.lastUsedLoadFrame = target.name;
 			}
@@ -1106,7 +1114,7 @@ function we_cmd() {
 
 var we_cmd_modules = {
 	base: function (args, url) {
-		var ctrl, cType, eTable, nextWindow, width, widthSidebar,postData,table;
+		var ctrl, cType, eTable, nextWindow, width, widthSidebar, postData, table;
 		switch (args[0]) {
 			case "loadVTab":
 				var op = top.treeData.makeFoldersOpenString();
@@ -1310,15 +1318,15 @@ var we_cmd_modules = {
 				break;
 			case "help_tools":
 				WE().util.jsWindow.prototype.focus('tool_window') ||
-								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+					WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+					WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
 				break;
 			case "info_tools":
 				WE().util.jsWindow.prototype.focus('tool_window') ||
-								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+					WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+					WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
 				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
 				break;
@@ -1459,12 +1467,12 @@ var we_cmd_modules = {
 					WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 					// use Editor Frame
 					nextWindow.initEditorFrameData(
-									{
-										"EditorType": "model",
-										"EditorEditorTable": args[1],
-										"EditorDocumentId": args[2],
-										"EditorContentType": args[3]
-									}
+						{
+							"EditorType": "model",
+							"EditorEditorTable": args[1],
+							"EditorDocumentId": args[2],
+							"EditorContentType": args[3]
+						}
 					);
 					// set Window Active and show it
 					ctrl.setActiveEditorFrame(nextWindow.FrameId);
@@ -1820,12 +1828,13 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
 			case 'collection_insertFiles':
-				if(args[1] === undefined || args[2] === undefined){
+				if (args[1] === undefined || args[2] === undefined) {
 					break;
 				}
 
 				var collection = parseInt(args[2]);
-				var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [args[1].currentID] : args[1]));
+				var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
+					args[1].currentID] : args[1]));
 
 				if (collection && ids) {
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
@@ -2087,7 +2096,7 @@ var we_cmd_modules = {
 				} else {
 					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], WE().consts.tables.FILE_TABLE);
 					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: WE().consts.tables.FILE_TABLE, transaction: verifiedTransaction},
-									{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+						{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 				}
 				break;
 			case 'wedoc_setPropertyOrElement_rpc':
@@ -2096,12 +2105,12 @@ var we_cmd_modules = {
 				}
 
 				postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id) +
-								'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
-								'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
-								'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
-								'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
-								'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
-								'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+					'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
+					'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
+					'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
+					'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
+					'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
+					'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					success: function (o) {
@@ -2113,14 +2122,14 @@ var we_cmd_modules = {
 				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
 				break;
 			case "suggest_openToEdit":
-				if(this.YAHOO.autocoml){
+				if (this.YAHOO.autocoml) {
 					this.YAHOO.autocoml.openSelectionToEdit(args[1]);
 				} else {
 					WE().t_e('we_cmd "suggest_openToEdit": no autocompleter found on this frame');
 				}
 				break;
 			case "suggest_writeBack":
-				if(this.YAHOO.autocoml){
+				if (this.YAHOO.autocoml) {
 					this.YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
 				} else {
 					WE().t_e('suggest_writeBack: no autocompleter found on this frame');
@@ -2150,7 +2159,7 @@ function doReloadCmd(args, url, hot) {
 	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
 		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
-						(args[1] ? '#f' + args[1] : '');
+			(args[1] ? '#f' + args[1] : '');
 	} else if (args[0] === "remove_image" && args[2]) {
 		url += '#f' + args[2];
 	}

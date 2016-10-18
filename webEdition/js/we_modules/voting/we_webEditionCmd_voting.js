@@ -33,11 +33,7 @@ we_cmd_modules.voting = function (args, url) {
 		case "save_voting":
 		case "exit_voting":
 		case "delete_voting":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:???
 			we_repl(window.load, url, args[0]);

@@ -601,7 +601,7 @@ function setTab(tab) {
 			$cats->get();
 	}
 
-	function getHTMLCustomerFilter($group){
+	private function getHTMLCustomerFilter($group){
 		$custfields = [];
 		foreach($this->View->customers_fields as $fv){
 			switch($fv){

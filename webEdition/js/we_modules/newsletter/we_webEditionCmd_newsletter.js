@@ -49,11 +49,7 @@ we_cmd_modules.newsletter = function (args, url) {
 		case "edit_file":
 		case "clear_log":
 		case "exit_newsletter":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 	}
 	return false;

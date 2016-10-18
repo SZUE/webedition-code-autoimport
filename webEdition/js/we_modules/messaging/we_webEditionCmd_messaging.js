@@ -42,11 +42,7 @@ we_cmd_modules.messaging = function (args, url) {
 		case "messaging_cut":
 		case "messaging_paste":
 		case "messaging_settings":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 	}
 	return false;

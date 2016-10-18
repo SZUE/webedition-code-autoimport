@@ -44,13 +44,7 @@ we_cmd_modules.banner = function (args, url) {
 		case "save_banner":
 		case "exit_banner":
 		case "delete_banner":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				if (args[0] !== "empty_log") {
-					wind.focus();
-				}
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 	}
 	return false;

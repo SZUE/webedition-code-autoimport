@@ -43,11 +43,7 @@ we_cmd_modules.workflow = function (args, url) {
 		case "new_workflow":
 		case "delete_workflow":
 		case "empty_log":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 	}
 	return false;

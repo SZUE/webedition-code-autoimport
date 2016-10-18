@@ -274,30 +274,31 @@ switch (args[0]){
 	}
 
 	function getHTMLExportStep4(){
-		$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 		$path = urldecode(we_base_request::_(we_base_request::FILE, "path", ''));
 		$filename = urldecode(we_base_request::_(we_base_request::FILE, "filename", ''));
 		$js = we_html_element::jsElement('top.footer.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
 
-		if($export_to == self::EXPORT_LOCAL){
-			$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
-					g_l('modules_customer', '[download_starting]') .
-					we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename], g_l('modules_customer', '[download]'))
-			);
-			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $js .
-					we_html_element::htmlMeta(["http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename]), we_html_element::htmlBody([
-						'class' => "weDialogBody"], we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
-					)
-			);
-		} else {
-			$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
-					g_l('modules_customer', '[server_finished]') . "<br/>" .
-					rtrim($path, '/') . '/' . $filename
-			);
+		switch(we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER)){
+			case self::EXPORT_LOCAL:
+				$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . '<br/><br/>' .
+						g_l('modules_customer', '[download_starting]') .
+						we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename], g_l('modules_customer', '[download]'))
+				);
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $js .
+						we_html_element::htmlMeta(["http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename]), we_html_element::htmlBody([
+							'class' => "weDialogBody"], we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
+						)
+				);
+			default:
+			case self::EXPORT_SERVER:
+				$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
+						g_l('modules_customer', '[server_finished]') . "<br/>" .
+						rtrim($path, '/') . '/' . $filename
+				);
 
-			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
-					)
-			);
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
+						)
+				);
 		}
 	}
 
@@ -1173,22 +1174,10 @@ function callBack(){
 
 	private function getImportNextCode(){
 		if(we_base_request::_(we_base_request::INT, "step") !== false){
-			$head = we_html_element::jsElement('
-function doNext(){
-	if(top.body.document.we_form.step.value === "2" &&
-			top.body.weFileUpload_instance !== undefined &&
-			top.body.document.we_form.import_from[1].checked){
-				top.body.weFileUpload_instance.startUpload()
-				return;
-			}
-			doNextAction();
-}
-');
-
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
 						'data-wizzard' => setDynamicVar([
-							'art' => self::ART_EXPORT,
-					])]) . $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
+							'art' => self::ART_IMPORT,
+					])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
 							"method" => "post", "target" => "body", "action" => $this->frameset], "")
 					)
 			);
@@ -1197,12 +1186,11 @@ function doNext(){
 	}
 
 	private function getImportBackCode(){
-		$head = we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard', 'data-wizzard' => setDynamicVar([
-					'art' => self::ART_IMPORT,
-		])]);
-
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px',
-					"onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
+					'data-wizzard' => setDynamicVar([
+						'art' => self::ART_IMPORT,
+				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form',
+						"method" => "post", "target" => "body", "action" => $this->frameset], "")
 				)
 		);
 	}
@@ -1302,10 +1290,10 @@ function doNext(){
 				"same" => $same]);
 
 		foreach($field_mappings as $key => $field){
-			$hiddens .= we_html_element::htmlHidden("field_mappings[" . $key . ']', $field);
+			$hiddens .= we_html_element::htmlHidden('field_mappings[' . $key . ']', $field);
 		}
 		foreach($att_mappings as $key => $field){
-			$hiddens .= we_html_element::htmlHidden("att_mappings[" . $key . "]", $field);
+			$hiddens .= we_html_element::htmlHidden('att_mappings[' . $key . ']', $field);
 		}
 
 		$percent = ($fcount == 0 || $fcount == '0' ? 0 : min(100, max(0, (int) (($fstart / $fcount) * 100))) );

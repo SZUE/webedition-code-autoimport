@@ -42,45 +42,38 @@ we_cmd_modules.users = function (args, url) {
 			break;
 		case "new_user":
 			if (WE().util.hasPerm('NEW_USER')) {
-				showNewWindow(args);
-				break;
+				WE().layout.pushCmdToModule(args);
+				return true;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			break;
 		case "save_user":
 			if (WE().util.hasPerm('SAVE_USER')) {
-				showNewWindow(args);
-				break;
+				WE().layout.pushCmdToModule(args);
+				return true;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			break;
 		case "new_group":
 			if (WE().util.hasPerm('NEW_GROUP')) {
-				showNewWindow(args);
-				break;
+				WE().layout.pushCmdToModule(args);
+				return true;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			break;
 		case "new_alias":
 			if (WE().util.hasPerm('NEW_USER')) {
-				showNewWindow(args);
+				WE().layout.pushCmdToModule(args);
 				break;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			break;
 		case "exit_users":
-			showNewWindow(args);
+			WE().layout.pushCmdToModule(args);
 			break;
 		case "delete_user":
 			if (WE().util.hasPerm('DELETE_USER')) {
-				showNewWindow(args);
-				break;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
-			break;
-		case "new_organization":
-			if (WE().util.hasPerm('NEW_USER')) {
-				showNewWindow(args);
+				WE().layout.pushCmdToModule(args);
 				break;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -121,11 +114,3 @@ we_cmd_modules.users = function (args, url) {
 	}
 	return true;
 };
-
-function showNewWindow(args) {
-	var wind = WE().util.jsWindow.prototype.find('edit_module');
-	if (wind) {
-		wind.content.we_cmd(args[0]);
-		wind.focus();
-	}
-}

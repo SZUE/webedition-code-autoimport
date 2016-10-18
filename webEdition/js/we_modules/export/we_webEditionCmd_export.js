@@ -34,11 +34,7 @@ we_cmd_modules.export = function (args, url) {
 		case "delete_export":
 		case "exit_export":
 		case "start_export":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:???
 			we_repl(window.load, url, args[0]);
