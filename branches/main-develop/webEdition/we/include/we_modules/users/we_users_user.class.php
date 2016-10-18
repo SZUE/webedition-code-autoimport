@@ -41,7 +41,7 @@ class we_users_user{
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 	// In this array are all storagable class variables
-	public $persistent_slots = array(
+	public $persistent_slots = [
 		'ID' => we_base_request::INT,
 		'Type' => we_base_request::INT,
 		'ParentID' => we_base_request::INT,
@@ -90,7 +90,7 @@ class we_users_user{
 		'ParentWsCust' => we_base_request::BOOL,
 		'altID' => we_base_request::INT,
 		'LoginDenied' => we_base_request::BOOL,
-	);
+	];
 	// Name of the Object that was createt from this class
 	var $Name = '';
 	// ID from the database record
@@ -192,11 +192,11 @@ class we_users_user{
 	 * ADDITIONAL
 	 */
 	// Workspace array
-	var $workspaces = array(
+	var $workspaces = [
 		FILE_TABLE => [],
 		TEMPLATES_TABLE => [],
 		NAVIGATION_TABLE => [],
-	);
+	];
 	// Permissions headers array
 	var $permissions_main_titles = [];
 	// Permissions values array
@@ -207,9 +207,9 @@ class we_users_user{
 	var $extensions_slots = [];
 	private $permissions_defaults = [];
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file',
+	private $preference_slots = ['sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file',
 		'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */
-		'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
+		'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode'];
 
 	// Constructor
 	public function __construct(){
@@ -630,7 +630,7 @@ class we_users_user{
 		}
 
 		$this->ModDate = time();
-		$updt = array('userID' => intval($this->ID));
+		$updt = ['userID' => intval($this->ID)];
 		foreach($this->preference_slots as $fieldName){
 			switch($fieldName){
 				case 'editorFontsize':
@@ -1249,7 +1249,7 @@ _multiEditorreload = true;';
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -1261,8 +1261,8 @@ _multiEditorreload = true;';
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$tableObj->setCol(0, 0, null, $username);
-		$tableObj->setCol(1, 0, array('style' => 'padding-top:5px;'), we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')));
-		$tableObj->setCol(2, 0, array('style' => 'padding-top:10px;'), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
+		$tableObj->setCol(1, 0, ['style' => 'padding-top:5px;'], we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')));
+		$tableObj->setCol(2, 0, ['style' => 'padding-top:10px;'], we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){WE().layout.button.switch_button_state(document, \'edit\', \'enabled\');}else{WE().layout.button.switch_button_state(document, \'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
@@ -1274,18 +1274,15 @@ _multiEditorreload = true;';
 
 		$content .= '</select><br/><br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", '', 0, 0, "", "", true, false);
 
-		$parts = array(
-			array(
-				'headline' => g_l('modules_users', '[group_data]'),
-				'html' => $tableObj->getHtml(),
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('modules_users', '[user]'),
+		$parts = [['headline' => g_l('modules_users', '[group_data]'),
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				['headline' => g_l('modules_users', '[user]'),
 				'html' => $content,
 				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+			]
+		];
 
 		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
@@ -1301,48 +1298,37 @@ _multiEditorreload = true;';
 	function formUserData(){
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 
-		$tableObj = new we_html_table(array('class' => 'withBigSpace'), 12, 2, array(
-			array(array(null, $this->getUserfield('Salutation', 'salutation'))),
-			array(
-				array(null, $this->getUserfield('First', 'first_name')),
-				array(null, $this->getUserfield('Second', 'second_name'))
-			),
-			array(
-				array(null, $this->getUserfield('Address', 'address')),
-				array(null, $this->getUserfield('HouseNo', 'houseno'))
-			),
-			array(
-				array(null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true)),
-				array(null, $this->getUserfield('City', 'city'))
-			),
-			array(
-				array(null, $this->getUserfield('State', 'state')),
-				array(null, $this->getUserfield('Country', 'country'))
-			),
-			array(
-				array(null, $this->getUserfield('Tel_preselection', 'tel_pre')),
-				array(null, $this->getUserfield('Telephone', 'telephone', 'tel'))
-			),
-			array(
-				array(null, $this->getUserfield('Fax_preselection', 'fax_pre')),
-				array(null, $this->getUserfield('Fax', 'fax', 'tel'))
-			),
-			array(
-				array(null, $this->getUserfield('Handy', 'mobile')),
-				array(null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"'))
-			),
-			array(
-				array(array('colspan' => 2), we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')))
-			)
-		));
+		$tableObj = new we_html_table(['class' => 'withBigSpace'], 12, 2, [[[null, $this->getUserfield('Salutation', 'salutation')]],
+				[[null, $this->getUserfield('First', 'first_name')],
+					[null, $this->getUserfield('Second', 'second_name')]
+			],
+				[[null, $this->getUserfield('Address', 'address')],
+					[null, $this->getUserfield('HouseNo', 'houseno')]
+			],
+				[[null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true)],
+					[null, $this->getUserfield('City', 'city')]
+			],
+				[[null, $this->getUserfield('State', 'state')],
+					[null, $this->getUserfield('Country', 'country')]
+			],
+				[[null, $this->getUserfield('Tel_preselection', 'tel_pre')],
+					[null, $this->getUserfield('Telephone', 'telephone', 'tel')]
+			],
+				[[null, $this->getUserfield('Fax_preselection', 'fax_pre')],
+					[null, $this->getUserfield('Fax', 'fax', 'tel')]
+			],
+				[[null, $this->getUserfield('Handy', 'mobile')],
+					[null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"')]
+			],
+				[[['colspan' => 2], we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]'))]
+			]
+		]);
 
-		$parts = array(
-			array(
-				'headline' => g_l('modules_users', '[general_data]'),
-				'html' => $tableObj->getHtml(),
-				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+		$parts = [['headline' => g_l('modules_users', '[general_data]'),
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
+			]
+		];
 
 
 		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);" required="required"');
@@ -1357,7 +1343,7 @@ _multiEditorreload = true;';
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -1381,33 +1367,26 @@ _multiEditorreload = true;';
 			g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
 			) :
 			'-');
-		$tableObj = new we_html_table([], 5, 2, array(
-			array(
-				array(array('style' => 'padding-bottom:10px;width:280px;'), $username),
-				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]')))
-			),
-			array(
-				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
-				array(['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-'))
-			),
-			array(
-				array(array("colspan" => 2, 'style' => 'padding-bottom:10px;'), we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]')))
-			),
-			array(
-				array(['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext),
-				array(['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-'))
-			),
-			array(
-				array(['class' => 'defaultfont'], g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext),
-				array(['class' => 'defaultfont'], g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-'))
-			),
-		));
+		$tableObj = new we_html_table([], 5, 2, [[[['style' => 'padding-bottom:10px;width:280px;'], $username],
+				[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
+			],
+				[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))],
+				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
+			],
+				[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]'))]
+			],
+				[[['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext],
+					[['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-')]
+			],
+				[[['class' => 'defaultfont'], g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext],
+					[['class' => 'defaultfont'], g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-')]
+			],
+		]);
 
-		$parts[] = array(
-			'headline' => g_l('modules_users', '[user_data]'),
+		$parts[] = ['headline' => g_l('modules_users', '[user_data]'),
 			'html' => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 
 		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
@@ -1426,8 +1405,8 @@ _multiEditorreload = true;';
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$parentPerm = $this->ParentID ? self::getAllPermissions($this->ID, true) : false;
-		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array(
-			'administrator'), true, true, 'we_form', 'perm_branch', true, true);
+		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, [
+			'administrator'], true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
 function rebuildCheckboxClicked() {
@@ -1469,13 +1448,11 @@ function toggleRebuildPerm(disabledOnly) {';
 			$javascript .= $handler;
 		}
 
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => $content,
-				'noline' => 1
-			)
-		);
+		$parts = [['headline' => '',
+			'html' => $content,
+			'noline' => 1
+			]
+		];
 
 		// js to uncheck all permissions
 		$uncheckjs = $checkjs = $defaultjs = '';
@@ -1492,10 +1469,9 @@ function toggleRebuildPerm(disabledOnly) {';
 		$button_uncheckall = we_html_button::create_button('uncheckall', 'javascript:' . $uncheckjs);
 		$button_checkall = we_html_button::create_button('checkall', 'javascript:' . $checkjs);
 		$button_default = we_html_button::create_button('default', 'javascript:' . $defaultjs);
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => $button_default . $button_uncheckall . $button_checkall,
-		);
+		];
 
 		// Check if user has right to decide to give administrative rights
 		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
@@ -1505,14 +1481,12 @@ function toggleRebuildPerm(disabledOnly) {';
 	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
-			$parts[] = array(
-				'headline' => '',
+			$parts[] = ['headline' => '',
 				'html' => $content,
-			);
+			];
 		}
 		if($this->ParentID){
-			$parts[] = array(
-				'headline' => '',
+			$parts[] = ['headline' => '',
 				'html' => we_html_element::jsElement('
 function showParentPerms(show) {
 	tmp=document.getElementsByClassName("showParentPerms");
@@ -1522,7 +1496,7 @@ function showParentPerms(show) {
 }
 showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 				$this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
-			);
+			];
 		}
 
 		return we_html_multiIconBox::getHTML('', $parts, 30) . we_html_element::jsElement($javascript);
@@ -1638,11 +1612,10 @@ function delElement(elvalues,elem) {
 				$parent = ' - ';
 			}
 
-			$parts[] = array(
-				'headline' => $title,
+			$parts[] = ['headline' => $title,
 				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600, false) . '</div>' : '') . $content1,
 				'space' => we_html_multiIconBox::SPACE_BIG
-			);
+			];
 		}
 
 		if(defined('CUSTOMER_TABLE')){
@@ -1666,7 +1639,7 @@ function delElement(elvalues,elem) {
 				$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
 				$view->getFilterCustomers(),
 				'space' => we_html_multiIconBox::SPACE_BIG
-				];
+			];
 		}
 
 		return $content .
@@ -1676,26 +1649,22 @@ function delElement(elvalues,elem) {
 	function formPreferences($branch = ''){
 		//FIXME: change we_html_dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
-		$groups = array(
-			'glossary' => g_l('prefs', '[tab_glossary]'),
+		$groups = ['glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
 			//'editor' => g_l('prefs', '[tab][editor]'),
-		);
+		];
 
 		$titles = $groups;
 
-		$multiboxes = array(
-			'glossary' => $this->formPreferencesGlossary(),
+		$multiboxes = ['glossary' => $this->formPreferencesGlossary(),
 			'ui' => $this->formPreferencesUI(),
 			//'editor' => $this->formPreferencesEditor(),
-		);
+		];
 
-		return we_html_multiIconBox::getHTML('', array(
-				array(
-					'headline' => '',
-					'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
-				)
-				), 30);
+		return we_html_multiIconBox::getHTML('', [['headline' => '',
+				'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
+				]
+				], 30);
 	}
 
 	function formPreferencesGlossary(){
@@ -1710,7 +1679,7 @@ function delElement(elvalues,elem) {
 
 		// Build dialog if user has permission
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
-			$settings[] = array('headline' => g_l('prefs', '[glossary_publishing]'), 'html' => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+			$settings[] = ['headline' => g_l('prefs', '[glossary_publishing]'), 'html' => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1];
 		}
 
 		return $settings;
@@ -1732,7 +1701,7 @@ function delElement(elvalues,elem) {
 		global $languages;
 
 		if(!empty($language)){ // Build language select box
-			$languages = new we_html_select(array('name' => $this->Name . '_Preference_Language', 'class' => 'weSelect'));
+			$languages = new we_html_select(['name' => $this->Name . '_Preference_Language', 'class' => 'weSelect']);
 			$myCompLang = (!empty($this->Preferences['Language']) ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
 
 			foreach($language as $key => $value){
@@ -1747,25 +1716,24 @@ function delElement(elvalues,elem) {
 			}
 
 			// Build dialog
-			$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $languages->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+			$settings[] = ['headline' => g_l('prefs', '[choose_language]'), 'html' => $languages->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1];
 		}
 
 
-		$charset = new we_html_select(array('name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();'));
+		$charset = new we_html_select(['name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();']);
 		$c = we_base_charsetHandler::getAvailCharsets();
 		foreach($c as $char){
 			$charset->addOption($char, $char);
 		}
 		$myCompChar = (!empty($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
 		$charset->selectOption($myCompChar);
-		$settings[] = array(
-			'headline' => g_l('prefs', '[choose_backendcharset]'),
+		$settings[] = ['headline' => g_l('prefs', '[choose_backendcharset]'),
 			'html' => $charset->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_BIG
-		);
+		];
 
 		//AMOUNT Number of Columns
-		$amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onchange' => "top.content.setHot();"));
+		$amount = new we_html_select(['name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onchange' => "top.content.setHot();"]);
 		if(!$this->Preferences['cockpit_amount_columns']){
 			$this->Preferences['cockpit_amount_columns'] = 3;
 		}
@@ -1776,11 +1744,10 @@ function delElement(elvalues,elem) {
 			}
 		}
 
-		$settings[] = array(
-			'headline' => g_l('prefs', '[cockpit_amount_columns]'),
+		$settings[] = ['headline' => g_l('prefs', '[cockpit_amount_columns]'),
 			'html' => $amount->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_BIG
-		);
+		];
 
 		//SEEM
 		// Generate needed JS
@@ -1789,9 +1756,9 @@ function select_seem_start() {
 	myWindStr=\"WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody\";
 
 	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, " . (defined('OBJECT_FILES_TABLE') ? 'seem_start_document' : "'x'") . ", myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'? 'seem_start_document' : 'x'), myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile',WE().util.hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1);
 	} else {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, WE().consts.tables.FILE_TABLE, myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, WE().consts.tables.FILE_TABLE, myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', WE().consts.contentTypes.WEDOCUMENT,'objectFile',WE().util.hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1);
 	}
 }
 
@@ -1804,13 +1771,13 @@ function show_seem_chooser(val) {
 		document.getElementById('seem_start_document').style.display = 'block';
 		document.getElementById('seem_start_weapp').style.display = 'none';
 		break;
-" . (defined('OBJECT_FILES_TABLE') ? "
 	case 'object':
+	if(WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'){
 		document.getElementById('seem_start_document').style.display = 'none';
 		document.getElementById('seem_start_weapp').style.display = 'none';
 		document.getElementById('seem_start_object').style.display = 'block';
+		}
 		break;
-" : '') . "
 	case 'weapp':
 		document.getElementById('seem_start_document').style.display = 'none';
 		document.getElementById('seem_start_object').style.display = 'none';
@@ -1865,7 +1832,7 @@ function show_seem_chooser(val) {
 				}
 		}
 
-		$start_type = new we_html_select(array('name' => 'seem_start_type', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value); top.content.setHot();"));
+		$start_type = new we_html_select(['name' => 'seem_start_type', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value); top.content.setHot();"]);
 		$start_type->addOption(0, '-');
 		$start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 		$start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
@@ -1875,7 +1842,7 @@ function show_seem_chooser(val) {
 
 		//weapp
 
-		$start_weapp = new we_html_select(array('name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
+		$start_weapp = new we_html_select(['name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();']);
 		$tools = we_tool_lookup::getAllTools(true, false);
 		foreach($tools as $tool){
 			if(!$tool['appdisabled'] && permissionhandler::hasPerm($tool['startpermission'])){
@@ -1889,7 +1856,7 @@ function show_seem_chooser(val) {
 		$start_type->selectOption($seem_start_type);
 		$start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 
-		$seem_weapp_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_weapp', 'style' => 'display:none'), $start_weapp->getHtml());
+		$seem_weapp_chooser = we_html_element::htmlSpan(['id' => 'seem_start_weapp', 'style' => 'display:none'], $start_weapp->getHtml());
 
 
 		// Build SEEM select start document chooser
@@ -1906,7 +1873,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$seem_document_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_document', 'style' => 'display:none'), $yuiSuggest->getHTML());
+		$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $yuiSuggest->getHTML());
 
 		// Build SEEM select start object chooser
 		$yuiSuggest->setAcId('Obj');
@@ -1923,19 +1890,18 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$seem_object_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_object', 'style' => 'display:none'), $yuiSuggest->getHTML());
+		$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $yuiSuggest->getHTML());
 
 		// Build final HTML code
-		$seem_html = new we_html_table(array('class' => 'default'), 2, 1);
+		$seem_html = new we_html_table(['class' => 'default'], 2, 1);
 		$seem_html->setCol(0, 0, ['class' => 'defaultfont'], $start_type->getHtml());
 		$seem_html->setCol(1, 0, null, $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
 
 		if(permissionhandler::hasPerm('CHANGE_START_DOCUMENT')){
-			$settings[] = array(
-				'headline' => g_l('prefs', '[seem_startdocument]'),
+			$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'),
 				'html' => $js . $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'),
 				'space' => we_html_multiIconBox::SPACE_BIG
-			);
+			];
 		}
 
 		// TREE
@@ -1943,7 +1909,7 @@ function show_seem_chooser(val) {
 		$value_selected = false;
 		$tree_count = $this->Preferences['default_tree_count'];
 
-		$file_tree_count = new we_html_select(array('name' => $this->Name . '_Preference_default_tree_count', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();'));
+		$file_tree_count = new we_html_select(['name' => $this->Name . '_Preference_default_tree_count', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();']);
 
 		$file_tree_count->addOption(0, g_l('prefs', '[all]'));
 		if(0 == $tree_count){
@@ -1977,8 +1943,8 @@ function show_seem_chooser(val) {
 			$file_tree_count->selectOption($tree_count);
 		}
 
-		$settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(),
-			'space' => we_html_multiIconBox::SPACE_BIG);
+		$settings[] = ['headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_BIG];
 
 		// WINDOW DIMENSIONS
 
@@ -1997,11 +1963,11 @@ function show_seem_chooser(val) {
 		$window_specify_code = we_html_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name . '_Preference_sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
-		$window_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin:5px 0px;'), 2, 2);
+		$window_specify_table = new we_html_table(['class' => 'default', 'style' => 'margin:5px 0px;'], 2, 2);
 
-		$window_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'), g_l('prefs', '[width]') . ':');
+		$window_specify_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[width]') . ':');
 		$window_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
-		$window_specify_table->setCol(1, 0, array('class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'), g_l('prefs', '[height]') . ':');
+		$window_specify_table->setCol(1, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[height]') . ':');
 		$window_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
@@ -2009,23 +1975,23 @@ function show_seem_chooser(val) {
 			we_html_button::create_button('apply_current_dimension', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;") . '</div>';
 
 		// Build final HTML code
-		$window_html = new we_html_table(array('class' => 'default withBigSpace'), 3, 1);
+		$window_html = new we_html_table(['class' => 'default withBigSpace'], 3, 1);
 		$window_html->setCol(0, 0, null, $window_max_code);
 		$window_html->setCol(1, 0, null, $window_specify_code . $window_specify_table->getHtml());
 		$window_html->setCol(2, 0, null, $window_current_dimension_table);
 
 		// Build dialog
-		$settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+		$settings[] = ["headline" => g_l('prefs', '[dimension]'), "html" => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 		// Create predefined window dimension buttons
-		$window_predefined_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'text-align:right'), 2, 1);
+		$window_predefined_table = new we_html_table(['class' => 'withBigSpace', 'style' => 'text-align:right'], 2, 1);
 
 		$window_predefined_table->setCol(0, 0, null, we_html_button::create_button('res_800', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';") .
 			we_html_button::create_button('res_1024', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';"));
 		$window_predefined_table->setCol(1, 0, null, we_html_button::create_button('res_1280', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';") . we_html_button::create_button('res_1600', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';"));
 
 		// Build dialog
-		$settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $window_predefined_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+		$settings[] = ["headline" => g_l('prefs', '[predefined]'), "html" => $window_predefined_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 		return $settings;
 	}
@@ -2034,16 +2000,15 @@ function show_seem_chooser(val) {
 		return [];
 		//FIXME: this is not correct!
 		//Editor Mode
-		$template_editor_mode = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+		$template_editor_mode = new we_html_select(['class' => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"]);
 		$template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 		$template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$template_editor_mode->selectOption($this->Preferences['editorMode']);
-		$settings = array(
-			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2)
-		);
+		$settings = [["headline" => g_l('prefs', '[editor_mode]'), "html" => $template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2]
+		];
 //FIXME: use code from preferences for font-selection
-		$template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
-		$template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
+		$template_fonts = ['Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none'];
+		$template_font_sizes = [8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1];
 
 		$template_editor_font_specify = false;
 		$template_editor_font_size_specify = false;
@@ -2059,8 +2024,8 @@ function show_seem_chooser(val) {
 		// Build specify font
 		$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$template_editor_font_select_box = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;",
-			($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_select_box = new we_html_select(['class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;",
+			($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"]);
 
 		foreach($template_fonts as $tf){
 			$template_editor_font_select_box->addOption($tf, $tf);
@@ -2076,8 +2041,8 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;",
-			($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_sizes_select_box = new we_html_select(['class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;",
+			($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"]);
 
 		foreach($template_font_sizes as $tf){
 			$template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2093,19 +2058,18 @@ function show_seem_chooser(val) {
 			}
 		}
 		// Create specify window dimension input
-		$template_editor_font_specify_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0px 0px 50px;'), 2, 2);
+		$template_editor_font_specify_table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin:5px 0px 0px 50px;'], 2, 2);
 
-		$template_editor_font_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontname]') . ":");
+		$template_editor_font_specify_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-right:10px;'], g_l('prefs', '[editor_fontname]') . ":");
 		$template_editor_font_specify_table->setCol(0, 1, null, $template_editor_font_select_box->getHtml());
-		$template_editor_font_specify_table->setCol(1, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontsize]') . ":");
+		$template_editor_font_specify_table->setCol(1, 0, ['class' => 'defaultfont', 'style' => 'padding-right:10px;'], g_l('prefs', '[editor_fontsize]') . ":");
 		$template_editor_font_specify_table->setCol(1, 1, null, $template_editor_font_sizes_select_box->getHtml());
 
 		// Build dialog
-		$settings[] = array(
-			'headline' => g_l('prefs', '[editor_font]'),
+		$settings[] = ['headline' => g_l('prefs', '[editor_font]'),
 			'html' => $template_editor_font_specify_code . $template_editor_font_specify_table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_BIG
-		);
+		];
 
 		return $settings;
 	}
@@ -2117,7 +2081,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathName');
 		$yuiSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
-		$yuiSuggest->setInput($this->Name . '_Alias_Text', $alias_text, array('onchange' => 'top.content.setHot();'));
+		$yuiSuggest->setInput($this->Name . '_Alias_Text', $alias_text, ['onchange' => 'top.content.setHot();']);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_Alias', $this->Alias);
@@ -2130,7 +2094,7 @@ function show_seem_chooser(val) {
 
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array('onchange' => "top.content.setHot();"));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, ['onchange' => "top.content.setHot();"]);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -2160,20 +2124,17 @@ function show_seem_chooser(val) {
 	</tr>
 </table>';
 
-		$parts = array(
-			array(
-				"headline" => g_l('modules_users', '[alias_data]'),
-				"html" => $content,
-				'space' => we_html_multiIconBox::SPACE_MED
-			), array(
-				"headline" => g_l('modules_users', '[rights_and_workspaces]'),
+		$parts = [["headline" => g_l('modules_users', '[alias_data]'),
+			"html" => $content,
+			'space' => we_html_multiIconBox::SPACE_MED
+			], ["headline" => g_l('modules_users', '[rights_and_workspaces]'),
 				"html" =>
 				$this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', '[inherit]')) .
 				$this->formInherits("_ParentWs", $this->ParentWs, g_l('modules_users', '[inherit_ws]')) .
 				$this->formInherits("_ParentWst", $this->ParentWst, g_l('modules_users', '[inherit_wst]')),
 				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+			]
+		];
 
 		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
@@ -2262,26 +2223,26 @@ function resetTabs(){
 	}
 
 	static function setEffectiveWorkspaces($user, we_database_base $db, $onlyParent = false){
-		$workspaces = array(
-			FILE_TABLE => array('key' => 'workSpace', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWs', 'explodeValue' => true),
-			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWst', 'explodeValue' => true),
-			NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsn', 'explodeValue' => true),
-		);
+		$workspaces = [
+			FILE_TABLE => ['key' => 'workSpace', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWs', 'explodeValue' => true],
+			TEMPLATES_TABLE => ['key' => 'workSpaceTmp', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWst', 'explodeValue' => true],
+			NAVIGATION_TABLE => ['key' => 'workSpaceNav', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsn', 'explodeValue' => true],
+		];
 
 		if(defined('OBJECT_FILES_TABLE')){
-			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWso', 'explodeValue' => true);
+			$workspaces[OBJECT_FILES_TABLE] = ['key' => 'workSpaceObj', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWso', 'explodeValue' => true];
 		}
 
 		if(defined('NEWSLETTER_TABLE')){
-			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsnl', 'explodeValue' => true);
+			$workspaces[NEWSLETTER_TABLE] = ['key' => 'workSpaceNwl', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsnl', 'explodeValue' => true];
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsCust', 'explodeValue' => false);
+			$workspaces[CUSTOMER_TABLE] = ['key' => 'workSpaceCust', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsCust', 'explodeValue' => false];
 		}
 
 //FIXME: onlyParent doesn't work correctly
-		$fields = array('ParentID');
+		$fields = ['ParentID'];
 		foreach($workspaces as $cur){
 			$fields[] = $cur['key'];
 			$fields[] = $cur['parentKey'];
@@ -2403,7 +2364,7 @@ function resetTabs(){
 
 	static function readPrefs($id, $db, $login = false){
 //set defaults
-		$ret = array('userID' => $id);
+		$ret = ['userID' => $id];
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 		foreach($GLOBALS['configs']['user'] as $key => $vals){
 			$ret[$key] = $vals[1];
@@ -2431,7 +2392,7 @@ function resetTabs(){
 	static function writePrefs($id, $db, array $data = []){
 		$id = intval($id);
 		if($data){
-			$old = array('userID' => $id);
+			$old = ['userID' => $id];
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
 				//only write config data, if data is read! otherwise we overwrite some settings
@@ -2467,7 +2428,7 @@ function resetTabs(){
 				'Servername' => $_SERVER['SERVER_NAME'],
 				'Port' => $_SERVER['SERVER_PORT'],
 				'Script' => $_SERVER['SCRIPT_NAME']
-				]));
+		]));
 	}
 
 	public static function updateActiveUser(){

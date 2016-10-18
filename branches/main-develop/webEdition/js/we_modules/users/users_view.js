@@ -101,12 +101,6 @@ function we_cmd() {
 			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
 			break;
-		case "new_organization":
-			var orgname = prompt(WE().consts.g_l.users.view.give_org_name, "");
-			if (orgname !== null) {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_organization&orn=" + orgname;
-			}
-			break;
 		case "updateTitle":
 			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
 			break;

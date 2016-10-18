@@ -34,13 +34,7 @@ we_cmd_modules.navigation = function (args, url) {
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				if (args[0] !== "empty_log") {
-					wind.focus();
-				}
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 		case "module_navigation_rules":
 			WE().util.jsWindow.prototype.focus('edit_module');

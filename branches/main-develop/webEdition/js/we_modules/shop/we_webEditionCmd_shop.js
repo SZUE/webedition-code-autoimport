@@ -23,16 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function shopCloseWindow(args) {
-	var wind = WE().util.jsWindow.prototype.find('edit_module');
-	if (wind && wind.content) {
-		wind.content.we_cmd(args[0]);
-		wind.focus();
-		return true;
-	}
-	return false;
-}
-
 we_cmd_modules.shop = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_shop":
@@ -43,43 +33,39 @@ we_cmd_modules.shop = function (args, url) {
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "pref_shop":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 470, 600, true, true, true, false);
 			break;
 		case "edit_shop_status":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 580, true, true, true, false);
 			break;
 		case "edit_shop_vat_country":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 780, true, true, true, false);
 			break;
 		case "edit_shop_categories":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 740, 650, true, false, true, false);
 			break;
 		case "edit_shop_vats":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 650, 650, true, false, true, false);
 			break;
 		case "edit_shop_shipping":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 600, true, false, true, false);
 			break;
 		case "payment_val":
-			shopCloseWindow(args);
+			WE().layout.pushCmdToModule(args);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 520, 720, true, false, true, false);
 			break;
 		case 'yearCmd'://pseudocommand
 		case "revenue_view":
 		case "new_article":
 		case "delete_shop":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd.apply(this, args);
-				wind.focus();
-			}
-			break;
+			WE().layout.pushCmdToModule(args);
+			return true;
 		case "exit_shop":
 			top.opener.top.we_cmd("exit_modules");
 			break;

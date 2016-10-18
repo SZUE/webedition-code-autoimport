@@ -36,11 +36,7 @@ we_cmd_modules.customer = function (args, url) {
 		case "delete_customer":
 		case "exit_customer":
 		case "show_search":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(args[0]);
-				wind.focus();
-			}
+			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:????
 			we_repl(window.load, url, args[0]);

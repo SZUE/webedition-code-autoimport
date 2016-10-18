@@ -204,7 +204,7 @@ EO_SCRIPT;
 		return array(self::getDiv($select, $name . 'Div', $isVisible, 22), $script);
 	}
 
-	function getHTMLCustomerFilter($startEmpty = false){
+	private function getHTMLCustomerFilter($startEmpty = false){
 		$filter_args = [];
 
 		$GLOBALS['DB_WE']->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);

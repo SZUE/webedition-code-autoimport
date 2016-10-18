@@ -71,16 +71,8 @@ we_cmd_modules.glossary = function (args, url) {
 		case "save_exception":
 		case "save_glossary":
 		case "delete_glossary":
-			wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				if (args[1] !== undefined) {
-					wind.content.we_cmd(args[0], args[1]);
-				} else {
-					wind.content.we_cmd(args[0]);
-				}
-				wind.focus();
-			}
-			break;
+			WE().layout.pushCmdToModule(args);
+			return true;
 		case "unlock"://FIXME:???
 			we_repl(window.load, url, args[0]);
 			break;
