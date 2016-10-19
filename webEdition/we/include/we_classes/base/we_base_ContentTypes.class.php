@@ -89,7 +89,7 @@ class we_base_ContentTypes{
 				'Class' => 'we_htmlDocument'
 			),
 			self::WEDOCUMENT => array(
-				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
+				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.aspx', '.pl', '.cgi', '.xml'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
