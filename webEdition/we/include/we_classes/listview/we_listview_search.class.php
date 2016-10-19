@@ -86,30 +86,30 @@ class we_listview_search extends we_listview_base{
 		foreach($orderArr as $o){
 			switch($o['oname']){
 				case 'we_creationdate':
-					$this->order .= 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_moddate':
-					$this->order .='COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_filename':
-					$this->order .= 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Path':
-					$this->order .= 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Workspace':
-					$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_id':
 				case 'OID':
 				case 'DID':
 				case 'ID':
-					$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Title':
 				case 'Text':
 				case 'Description':
-					$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 			}
 		}
@@ -124,7 +124,7 @@ class we_listview_search extends we_listview_base{
 		$this->casesensitive = $casesensitive;
 		$this->search = $this->DB_WE->escape($this->search);
 
-		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
+		$cat_tail = ($this->cats ? ' AND ' . we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : 0);
 
 		if($dt && $this->class){
