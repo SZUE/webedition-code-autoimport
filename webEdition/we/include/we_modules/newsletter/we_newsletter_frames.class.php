@@ -1837,21 +1837,21 @@ self.focus();');
 		if($gcount <= $egc){
 			$cc = 0;
 			while(true){
-				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc)){
-					we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_p_" . $cc);
+				if(file_exists(WE_CACHE_DIR . 'nl_' . $blockcache . "_p_" . $cc)){
+					we_base_file::delete(WE_CACHE_DIR . 'nl_' . $blockcache . "_p_" . $cc);
 				} else {
 					break;
 				}
-				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc)){
-					$buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
-					if(is_array($buffer) && isset($buffer['inlines'])){
+				if(file_exists(WE_CACHE_DIR . 'nl_' . $blockcache . "_h_" . $cc)){
+					$buffer = we_newsletter_newsletter::getFromCache($blockcache . "_h_" . $cc);
+					if(isset($buffer['inlines'])){
 						foreach($buffer['inlines'] as $fn){
 							if(file_exists($fn)){
 								we_base_file::delete($fn);
 							}
 						}
 					}
-					we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc);
+					we_base_file::delete(WE_CACHE_DIR . 'nl_' . $blockcache . "_h_" . $cc);
 				} else {
 					break;
 				}
@@ -1878,7 +1878,7 @@ self.focus();');
 
 		$content = "";
 
-		$emails = $this->View->getFromCache($emailcache . "_" . $egc);
+		$emails = we_newsletter_newsletter::getFromCache($emailcache . "_" . $egc);
 		$end = count($emails);
 
 		for($j = $start; $j < $end; $j++){
@@ -1907,8 +1907,8 @@ self.focus();');
 			}
 
 			foreach($user_blocks as $user_block){
-				$html_block = $this->View->getFromCache($blockcache . "_h_" . $user_block);
-				$plain_block = $this->View->getFromCache($blockcache . "_p_" . $user_block);
+				$html_block = we_newsletter_newsletter::getFromCache($blockcache . "_h_" . $user_block);
+				$plain_block = we_newsletter_newsletter::getFromCache($blockcache . "_p_" . $user_block);
 
 				$contentDefault .= $html_block["default" . $iscustomer];
 				$content_plainDefault .= $plain_block["default" . $iscustomer];
@@ -2095,7 +2095,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 			flush();
 		}
 
-		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
+		we_base_file::delete(WE_CACHE_DIR . 'nl_' . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
 				'setTimeout(function (doc) {doc.we_form.submit();},' . $this->View->settings["send_wait"] . ',document);' :
