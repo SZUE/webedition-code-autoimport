@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
-
 	var $nodehierarchy = [];
 
 	function __construct(){
@@ -65,7 +64,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				'OldTemplatePath' => isset($object->TemplatePath) ? $object->TemplatePath : '',
 				'OldDocTypeName' => isset($object->DocTypeName) ? $object->DocTypeName : '',
 				'Examined' => 1,
-				];
+			];
 
 			if(isset($object->elements)){
 				$extra['elements'] = $object->elements;
@@ -140,16 +139,16 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-											$object->Path :
-											'/' . $object->Text);
+								$object->Path :
+								'/' . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
 								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-									$object->Path :
-									'/' . $object->Text);
+								$object->Path :
+								'/' . $object->Text);
 							break;
 						case NAVIGATION_TABLE:
 							if($this->options["navigation_path"]){
@@ -166,7 +165,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
-								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+							($object->ClassName == "we_folder" && $this->RefTable->exists(["OldID" => $object->ID, "Table" => $object->Table]))
 						){
 							$object->ID = $id;
 							if(isset($object->isnew)){
@@ -219,7 +218,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 									'OldPath' => null,
 									'OldTemplatePath' => null,
 									'Examined' => 0,
-									]
+								]
 							);
 						}
 					}
@@ -246,23 +245,21 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 					}
 
-					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
-						$this->RefTable->add2(array(
-							'ID' => $object->ID,
+					if($save && !$this->RefTable->exists(['ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'])){
+						$this->RefTable->add2(['ID' => $object->ID,
 							'ParentID' => 0,
 							'Path' => $object->Path,
 							'Table' => $object->Table,
 							'ContentType' => 'weBinary'
-						));
+						]);
 					}
 				}
 			}
 
 			if(defined('OBJECT_TABLE') && ($object->ClassName === 'we_objectFile' || $object->ClassName === 'we_class_folder')){
-				$ref = $this->RefTable->getRef(array(
-					'OldID' => $object->TableID,
+				$ref = $this->RefTable->getRef(['OldID' => $object->TableID,
 					'ContentType' => "object"
-				));
+				]);
 				if($ref){
 					// assign TableID and ParentID from reference
 					$object->TableID = $ref->ID;
@@ -327,7 +324,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				default:
 					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . '/' . $newname), $object->Table, $GLOBALS['DB_WE']);
 			}
-		}while($newid);
+		} while($newid);
 		$this->renameObject($object, $newname);
 	}
 
@@ -347,10 +344,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 		if(isset($object->Path)){
 			$path = dirname($object->Path);
-			$ref = $this->RefTable->getRef(array(
-				'OldID' => $object->ParentID,
+			$ref = $this->RefTable->getRef(['OldID' => $object->ParentID,
 				'ContentType' => we_base_ContentTypes::NAVIGATION
-					));
+			]);
 			if($ref){
 				$object->ParentID = $ref->ID;
 				$object->Path = $ref->Path . '/' . $new_name;
@@ -487,8 +483,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $value;
 				}
 				return ($this->options['xml_encoding'] === 'ISO-8859-1' ?
-								utf8_encode($value) :
-								utf8_decode($value));
+					utf8_encode($value) :
+					utf8_decode($value));
 			}
 		}
 		return $value;
@@ -634,7 +630,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				if($fh_temp){
 					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_util::weXmlExImHead) && (substr($line, 0, 12) != we_backup_util::weXmlExImFooter)){
 
-						$buff.=$line;
+						$buff .= $line;
 						$write = false;
 						if($marker_size){
 							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
@@ -643,7 +639,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 
 						if($write){
-							$fsize+=strlen($buff);
+							$fsize += strlen($buff);
 							fwrite($fh_temp, $buff);
 							if($marker_size){
 								$elnum++;
@@ -659,7 +655,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 					} else {
 						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_util::weXmlExImHead)) && $num == 0){
-							$header.=$line;
+							$header .= $line;
 							fwrite($fh_temp, $line);
 						}
 					}
@@ -750,9 +746,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$new->CreatorID = $owner;
 					$new->ModifierID = $owner;
 					$new->Owners = ',' . $owner . ',';
-					$new->OwnersReadOnly = serialize(array(
-						$owner => 0
-					));
+					$new->OwnersReadOnly = serialize([$owner => 0]);
 					$new->we_save();
 					$id = $new->ID;
 					$pathids[] = $id;

@@ -259,12 +259,11 @@ if($nf === 'new_folder'){
 		<?php
 		if(( $nf === "new_folder") || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 			$isRename = ($nf === "rename_folder" || $nf === "rename_file");
-			echo we_html_element::htmlHiddens(array(
-				'cmd' => $nf,
+			echo we_html_element::htmlHiddens(['cmd' => $nf,
 				'pat' => we_base_request::_(we_base_request::RAW, "pat", ""),
 				($isRename ? 'sid' : '') => $sid,
 				($isRename ? 'oldtxt' : '') => ''
-			));
+				]);
 		}
 		?>
 	</form>

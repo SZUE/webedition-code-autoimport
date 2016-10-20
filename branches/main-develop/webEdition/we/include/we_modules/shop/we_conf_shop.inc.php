@@ -43,11 +43,10 @@ define('WE_SHOP_PRICENAME', 'we_shopPricename');
 define('WE_SHOP_SHIPPING', 'we_shopPriceShipping');
 define('WE_SHOP_CALC_VAT', 'we_shopCalcVat');
 
-we_base_request::registerTables(array(
-	'SHOP_TABLE' => SHOP_TABLE,
+we_base_request::registerTables(['SHOP_TABLE' => SHOP_TABLE,
 	'WE_SHOP_VAT_TABLE' => WE_SHOP_VAT_TABLE,
 	'SHOP_ORDER_TABLE' => SHOP_ORDER_TABLE,
 	'SHOP_ORDER_DATES_TABLE' => SHOP_ORDER_DATES_TABLE,
 	'SHOP_ORDER_DOCUMENT_TABLE' => SHOP_ORDER_DOCUMENT_TABLE,
 	'SHOP_ORDER_ITEM_TABLE' => SHOP_ORDER_ITEM_TABLE,
-));
+ ]);

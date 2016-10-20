@@ -44,11 +44,10 @@ abstract class we_users_util{
 		$db_tmp = new DB_WE();
 		$db_tmp->query('SELECT ID,username,Type WHERE ParentID=' . intval($id));
 		while($db_tmp->next_record()){
-			$ret[$db_tmp->f("ID")] = array(
-				"name" => $db_tmp->f("username"),
+			$ret[$db_tmp->f("ID")] = ["name" => $db_tmp->f("username"),
 				"ParentID" => $id,
 				"Type" => $db_tmp->f("Type")
-			);
+				];
 			$section = self::getUserTree($db_tmp->f("ID"));
 			$ret = array_merge($ret, $section);
 		}
@@ -131,7 +130,7 @@ abstract class we_users_util{
 	}
 
 	static function getUsersForDocWorkspace(we_database_base $db, $id, $wsField = "workSpace"){
-		$ids = (is_array($id) ? $id : array($id));
+		$ids = (is_array($id) ? $id : [$id]);
 
 		$where = [];
 		foreach($ids as $id){
@@ -199,7 +198,7 @@ abstract class we_users_util{
 		foreach($aliases as $id){
 			$q[] = 'FIND_IN_SET(' . intval($id) . ',Owners)';
 		}
-		$groups = array($_SESSION['user']['ID']);
+		$groups = [$_SESSION['user']['ID']];
 		we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
 		foreach($aliases as $id){
 			we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);

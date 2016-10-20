@@ -272,11 +272,10 @@ function doUnload() {
 	</form>
 	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 		<?php
-		echo we_html_element::htmlHiddens(array(
-			'mode' => 'save_addrbook',
+		echo we_html_element::htmlHiddens(['mode' => 'save_addrbook',
 			'we_transaction' => $transaction,
 			'addrbook_arr' => ''
-		));
+		 ]);
 		?>
 	</form>
 </body>

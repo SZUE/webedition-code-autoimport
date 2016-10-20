@@ -19,11 +19,10 @@ function saveSettings($default, $active, $langs = []){
 	}
 
 	$_construct = '<?php
-				$spellcheckerConf = array(
-				\'default\' => \'' . $default . '\',
-				\'active\' => array(\'' . implode('\',\'', $active) . '\'),
-				);
-				' . $_lang;
+$spellcheckerConf = [
+\'default\' => \'' . $default . '\',
+\'active\' => [\'' . implode('\',\'', $active) . '\'],
+];' . $_lang;
 
 	we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
@@ -36,7 +35,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		if($cmd1 !== false){
 
 			$_username = $_SESSION['user']['Username'];
-			$_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
+			$_replacement = ['\\', '/', ':', '*', '?', '<', '>', '|', '"'];
 			for($i = 0; $i < count($_replacement); $i++){
 				$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
 			}
@@ -57,7 +56,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			}
 
 			$_username = $_SESSION['user']['Username'];
-			$_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
+			$_replacement = ['\\', '/', ':', '*', '?', '<', '>', '|', '"'];
 			for($i = 0; $i < count($_replacement); $i++){
 				$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
 			}
@@ -157,17 +156,17 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		break;
 
 	case 'refresh':
-		$table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 1, 6);
+		$table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 1, 6);
 
-		$table->setRow(0, array('class' => 'bold', 'style' => 'background-color: silver;'), 6);
-		$table->setCol(0, 0, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[default]'));
-		$table->setCol(0, 1, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[dictionary]'));
-		$table->setCol(0, 2, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[language]'));
-		$table->setCol(0, 3, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[active]'));
-		$table->setCol(0, 4, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[refresh]'));
-		$table->setCol(0, 5, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[delete]'));
+		$table->setRow(0, ['class' => 'bold', 'style' => 'background-color: silver;'], 6);
+		$table->setCol(0, 0, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[default]'));
+		$table->setCol(0, 1, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[dictionary]'));
+		$table->setCol(0, 2, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[language]'));
+		$table->setCol(0, 3, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[active]'));
+		$table->setCol(0, 4, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[refresh]'));
+		$table->setCol(0, 5, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[delete]'));
 
-		$_lanSelect = new we_html_select(array('style' => 'width: 100px;', 'class' => 'weSelect'));
+		$_lanSelect = new we_html_select(['style' => 'width: 100px;', 'class' => 'weSelect']);
 		foreach(getWeFrontendLanguagesForBackend() as $klan => $vlan){
 			$_lanSelect->addOption($klan, $vlan);
 		}
@@ -185,17 +184,17 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 				$_name = str_replace('.zip', '', $entry);
 				$_display = (strlen($_name) > 10) ? (substr($_name, 0, 10) . '...') : $_name;
 
-				$table->setCol($i, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
-				$table->setCol($i, 1, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_display);
+				$table->setCol($i, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+				$table->setCol($i, 1, ['style' => 'vertical-align:top', 'class' => 'defaultfont'], $_display);
 
 				$_lanSelect->setAttribute('name', 'lang[' . $_name . ']');
 				$_lanSelect->selectOption((isset($_langs[$_name]) ? $_langs[$_name] : $GLOBALS['weDefaultFrontendLanguage']));
 
-				$table->setCol($i, 2, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_lanSelect->getHtml());
+				$table->setCol($i, 2, ['style' => 'vertical-align:top', 'class' => 'defaultfont'], $_lanSelect->getHtml());
 
-				$table->setCol($i, 3, array('style' => 'vertical-align:top;text-align:center'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-				$table->setCol($i, 4, array('style' => 'vertical-align:top;text-align:center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><i class="fa fa-2x fa-spinner fa-pulse"></i></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");') . '</div>');
-				$table->setCol($i, 5, array('style' => 'vertical-align:top;text-align:center'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
+				$table->setCol($i, 3, ['style' => 'vertical-align:top;text-align:center'], we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+				$table->setCol($i, 4, ['style' => 'vertical-align:top;text-align:center'], '<div style="display: none;" id="updateIcon_' . $_name . '"><i class="fa fa-2x fa-spinner fa-pulse"></i></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");') . '</div>');
+				$table->setCol($i, 5, ['style' => 'vertical-align:top;text-align:center'], we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 			}
 		}
 		$_dir->close();

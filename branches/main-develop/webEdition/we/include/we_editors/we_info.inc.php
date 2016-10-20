@@ -59,7 +59,7 @@ if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 			break;
 	}
 }
-$table = new we_html_table(array('id' => 'mainTable'), 8, 1);
+$table = new we_html_table(['id' => 'mainTable'], 8, 1);
 $actRow = 0;
 //	First row with background
 $table->setCol($actRow++, 0, ['class' => 'logo'], '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));

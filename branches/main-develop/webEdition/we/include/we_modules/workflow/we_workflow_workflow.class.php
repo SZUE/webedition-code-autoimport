@@ -267,7 +267,7 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	private static function findWfIdForFolder($folderID, we_database_base $db, array &$all){
-		$folders = array($folderID);
+		$folders = [$folderID];
 		while($folderID != 0){
 			$folderID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db);
 			$folders[] = $folderID;

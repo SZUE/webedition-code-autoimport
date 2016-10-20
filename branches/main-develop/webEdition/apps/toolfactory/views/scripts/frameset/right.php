@@ -42,12 +42,11 @@ $controller = $this->modelId ? 'editor/index' . $params : 'home/index/';
 
 
 $frameset->setCols('*');
-$frameset->addFrame(array(
-	'src' => $appDir . '/index.php/' . $controller,
+$frameset->addFrame(['src' => $appDir . '/index.php/' . $controller,
 	'name' => 'editor',
 	'noresize' => 'noresize',
 	'scrolling' => 'no'
-));
+ ]);
 
 $page = we_ui_layout_HTMLPage::getInstance();
 $page->setFrameset($frameset);

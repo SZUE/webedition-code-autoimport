@@ -27,7 +27,7 @@ abstract class we_glossary_frameEditor{
 	protected static function buildHeader(we_glossary_frames $weGlossaryFrames, $we_tabs, $titlePre, $titlePost){
 		$bodyContent = '<div id="main" ><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . $titlePost . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 
-		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), $bodyContent
+		$body = we_html_element::htmlBody(["onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"], $bodyContent
 				//$table->getHtml() .
 				//$tabsBody
 		);
@@ -42,26 +42,23 @@ function setTab(tab) {
 
 	protected static function buildBody(we_glossary_frames $weGlossaryFrames, $content = ""){
 
-		$hidden = $weGlossaryFrames->View->getCommonHiddens(array(
-			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
+		$hidden = $weGlossaryFrames->View->getCommonHiddens(['cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
 			'cmdid' => we_base_request::_(we_base_request::STRING, 'cmdid', ''),
 			'pnt' => 'edbody',
-		));
+			]);
 
-		$form = we_html_element::htmlForm(array(
-				'name' => 'we_form',
+		$form = we_html_element::htmlForm(['name' => 'we_form',
 				'onsubmit' => 'return false',
-				), $hidden . $content);
+				], $hidden . $content);
 
-		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody(array(
-					'class' => 'weEditorBody',
+		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody',
 					'onload' => 'loaded=1;',
 					'onunload' => "doUnload()"
-					), $form), $weGlossaryFrames->View->getJSProperty());
+					], $form), $weGlossaryFrames->View->getJSProperty());
 	}
 
 	protected static function buildFooter(we_glossary_frames $weGlossaryFrames, $content = ""){
-		$body = we_html_element::htmlBody(array('id' => 'footerBody'), $content);
+		$body = we_html_element::htmlBody(['id' => 'footerBody'], $content);
 		return $weGlossaryFrames->getHTMLDocument($body);
 	}
 

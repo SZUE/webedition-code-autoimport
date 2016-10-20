@@ -96,11 +96,10 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 </script>
 <?php
 $form = '<form name="we_form" method="post">' .
-	we_html_element::htmlHiddens(array(
-		'we_transaction' => $transaction,
+	we_html_element::htmlHiddens(['we_transaction' => $transaction,
 		'folders' => '',
 		'mcmd' => 'delete_folders'
-	)) .
+	 ]) .
 	'</form>';
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_delete()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view')")

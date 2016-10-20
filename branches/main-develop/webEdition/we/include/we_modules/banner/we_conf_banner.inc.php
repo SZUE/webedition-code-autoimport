@@ -25,8 +25,7 @@ define('BANNER_TABLE', TBL_PREFIX . 'tblbanner');
 define('BANNER_CLICKS_TABLE', TBL_PREFIX . 'tblbannerclicks');
 define('BANNER_VIEWS_TABLE', TBL_PREFIX . 'tblbannerviews');
 
-we_base_request::registerTables(array(
-	'BANNER_TABLE' => BANNER_TABLE,
+we_base_request::registerTables(['BANNER_TABLE' => BANNER_TABLE,
 	'BANNER_CLICKS_TABLE' => BANNER_CLICKS_TABLE,
 	'BANNER_VIEWS_TABLE' => BANNER_VIEWS_TABLE
-));
+ ]);

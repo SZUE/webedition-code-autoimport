@@ -35,8 +35,7 @@ class we_workflow_tree extends we_tree_base{
 		$ids = $db->getAll(true);
 		foreach($ids as $id){
 			$workflowDef = new we_workflow_workflow($id);
-			$items[] = array(
-				'id' => $workflowDef->ID,
+			$items[] = ['id' => $workflowDef->ID,
 				'parentid' => 0,
 				'text' => oldHtmlspecialchars(addslashes($workflowDef->Text)),
 				'typ' => 'group',
@@ -46,18 +45,17 @@ class we_workflow_tree extends we_tree_base{
 				'loaded' => 0,
 				'checked' => false,
 				'class' => ($workflowDef->Status ? '' : 'blue')
-			);
+				];
 
 			foreach($workflowDef->documents as $v){
-				$items[] = array(
-					'id' => $v["ID"],
+				$items[] = ['id' => $v["ID"],
 					'parentid' => $workflowDef->ID,
 					'text' => oldHtmlspecialchars(addslashes($v["Text"])),
 					'typ' => 'item',
 					'open' => 0,
 					'contenttype' => 'file',
 					'table' => FILE_TABLE,
-				);
+					];
 			}
 		}
 

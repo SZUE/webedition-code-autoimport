@@ -38,10 +38,9 @@ class we_messaging_view extends we_modules_view{
 	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(array(
-				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+			we_html_element::htmlHiddens(["vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
 				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0)
-		));
+				]);
 	}
 
 	function processVariables(){
@@ -273,7 +272,7 @@ top.content.drawTree();');
 				return '';
 			case 'save_settings':
 				if($ui){
-					if($this->messaging->save_settings(array('update_interval' => $ui))){
+					if($this->messaging->save_settings(['update_interval' => $ui])){
 						$out .= we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
 							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .

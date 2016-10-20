@@ -75,12 +75,11 @@ document.edit_folder.submit();
 		<?php
 		$fid = we_base_request::_(we_base_request::INT, 'fid');
 		echo
-		we_html_element::htmlHiddens(array(
-			'we_transaction' => $transaction,
+		we_html_element::htmlHiddens(['we_transaction' => $transaction,
 			'mcmd' => 'save_folder_settings',
 			'mode' => $mode,
 			($fid ? 'fid' : '') => $fid
-		));
+		 ]);
 
 		switch($mode){
 			case 'new':

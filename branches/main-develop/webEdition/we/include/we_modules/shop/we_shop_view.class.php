@@ -737,10 +737,9 @@ function CalendarChanged(calObject) {
 					['headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'html' => '
-		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
-						'bid' => $_REQUEST['bid'],
+		<form name="we_intern_form">' . we_html_element::htmlHiddens(['bid' => $_REQUEST['bid'],
 						'we_cmd[]' => 'add_new_article'
-					)) . '
+						]) . '
 			<table class="default">
 			<tr>
 			<td>' . we_html_tools::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, ['onchange' => "selectArticle(this.options[this.selectedIndex].value)"], 'value', '380') . '</td>

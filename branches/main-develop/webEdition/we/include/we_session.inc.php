@@ -40,7 +40,7 @@ if(!isset($_SESSION['user'])){
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', md5(uniqID('', true)));
 
 if(!isset($_SESSION['weS']['we_data'])){
-	$_SESSION['weS']['we_data'] = array($we_transaction => '');
+	$_SESSION['weS']['we_data'] = [$we_transaction => ''];
 }
 
 $_SESSION['weS']['EditPageNr'] = (isset($_SESSION['weS']['EditPageNr']) && (($_SESSION['weS']['EditPageNr'] != '') || ($_SESSION['weS']['EditPageNr'] == 0))) ? $_SESSION['weS']['EditPageNr'] : 1;

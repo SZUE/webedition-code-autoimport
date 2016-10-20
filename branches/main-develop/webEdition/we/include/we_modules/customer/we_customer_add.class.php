@@ -139,17 +139,16 @@ abstract class we_customer_add{
 
 		$buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
 
-		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(array('class' => "defaultfont lowContrast"), g_l('modules_customer', '[add_sort_group]'));
+		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(['class' => "defaultfont lowContrast"], g_l('modules_customer', '[add_sort_group]'));
 		$parts[] = ['html' => $add_button];
 
 		$sort_code = we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
 			we_html_element::htmlComment("hiddens start") .
-			we_html_element::htmlHiddens(array(
-				"pnt" => "sort_admin",
+			we_html_element::htmlHiddens(["pnt" => "sort_admin",
 				"cmd" => "",
 				"counter" => "$counter",
 				"sortindex" => "",
-				"fieldindex" => "")) .
+				"fieldindex" => ""]) .
 			$fhidden .
 			we_html_element::htmlComment("hiddens ends");
 

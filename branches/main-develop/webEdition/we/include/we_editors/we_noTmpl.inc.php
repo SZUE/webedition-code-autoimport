@@ -57,11 +57,11 @@ echo we_html_element::htmlDocType();
 				echo we_class::hiddenTrans();
 				$foo = '<html><head>' .
 					($we_doc->getElement('Keywords') ?
-						we_html_element::htmlMeta(array('name' => 'keywords', 'content' => $we_doc->getElement("Keywords"))) : '') .
+						we_html_element::htmlMeta(['name' => 'keywords', 'content' => $we_doc->getElement("Keywords")]) : '') .
 					($we_doc->getElement('Charset') ?
 						we_html_tools::htmlMetaCtCharset($we_doc->getElement('Charset')) : '') .
 					($we_doc->getElement('Description') ?
-						we_html_element::htmlMeta(array('name' => 'description', 'content' => $we_doc->getElement("Description"))) : '');
+						we_html_element::htmlMeta(['name' => 'description', 'content' => $we_doc->getElement("Description")]) : '');
 
 				$foo = '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement('Title'))) . '
 </pre>

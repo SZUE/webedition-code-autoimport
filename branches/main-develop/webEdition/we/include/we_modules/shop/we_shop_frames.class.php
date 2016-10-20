@@ -62,7 +62,7 @@ class we_shop_frames extends we_modules_frame{
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 		$c = 0;
-		$iconBarTable = new we_html_table(array('class' => 'iconBar'), 1, 4);
+		$iconBarTable = new we_html_table(['class' => 'iconBar'], 1, 4);
 
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_extArt,fa-lg fa-cart-plus', "javascript:top.opener.top.we_cmd('new_article')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_delOrd,fa-lg fa-shopping-cart,fa-lg fa-trash-o', "javascript:top.opener.top.we_cmd('delete_shop')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
@@ -115,7 +115,7 @@ class we_shop_frames extends we_modules_frame{
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, '', '', '', false, 'editorHeader') .
+				we_html_element::htmlBody(['class' => 'moduleEditor'], we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, '', '', '', false, 'editorHeader') .
 					we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'bottom: 0px;', 'border:0px;width:100%;height:100%;', '', true, 'editorBody')
 				)
 		);
@@ -268,7 +268,7 @@ function setTab(tab) {
 		$tab_body_content = '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' .
 			$we_tabs->getHTML() .
 			'</div>';
-		$tab_body = we_html_element::htmlBody(array('id' => 'eHeaderBody'), $tab_body_content);
+		$tab_body = we_html_element::htmlBody(['id' => 'eHeaderBody'], $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}
@@ -371,7 +371,7 @@ function setTab(tab) {
 
 
 //	generate html-output table
-		$htmlTable = new we_html_table(array('class' => 'default withBigSpace', 'width' => 410), 10, 3);
+		$htmlTable = new we_html_table(['class' => 'default withBigSpace', 'width' => 410], 10, 3);
 
 
 //	NumberFormat - currency and taxes
@@ -480,11 +480,10 @@ function setTab(tab) {
 			];
 
 			foreach($settings as $dbField => $value){
-				$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'tool' => "shop",
+				$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => "shop",
 						'pref_name' => $dbField,
 						'pref_value' => $value
-				)));
+						]));
 			}
 
 			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'shop',

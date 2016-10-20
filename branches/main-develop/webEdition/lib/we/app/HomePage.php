@@ -90,9 +90,9 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
 		we_core_Local::addTranslation('default.xml', $appName);
 
-		$mainDiv = new we_ui_layout_Div(array('width' => 250, 'height' => $this->_boxHeight, 'top' => 30, 'left' => 40, 'position' => 'absolute'));
+		$mainDiv = new we_ui_layout_Div(['width' => 250, 'height' => $this->_boxHeight, 'top' => 30, 'left' => 40, 'position' => 'absolute']);
 
-		$headerDiv = new we_ui_layout_Div(array('width' => 250, 'top' => 0, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxHeader));
+		$headerDiv = new we_ui_layout_Div(['width' => 250, 'top' => 0, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxHeader]);
 
 		if($this->_title === ''){
 			$this->_title = oldHtmlspecialchars($translate->_($appName));
@@ -124,14 +124,14 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
 
-		$bodyDiv = new we_ui_layout_Div(array('width' => 206, 'height' => $this->_boxHeight - (38 + 22), 'top' => 20, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxBody));
+		$bodyDiv = new we_ui_layout_Div(['width' => 206, 'height' => $this->_boxHeight - (38 + 22), 'top' => 20, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxBody]);
 
 		$perm = 'NEW_APP_' . strtoupper($appName);
 
-		$newItemButton = new we_ui_controls_Button(array('text' => $translate->_('New Entry'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})', 'type' => 'onClick', 'disabled' => !permissionhandler::hasPerm($perm), 'width' => 200));
+		$newItemButton = new we_ui_controls_Button(['text' => $translate->_('New Entry'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})', 'type' => 'onClick', 'disabled' => !permissionhandler::hasPerm($perm), 'width' => 200]);
 		$bodyDiv->addElement($newItemButton);
 
-		$newFolderButton = new we_ui_controls_Button(array('text' => $translate->_('New Folder'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new_folder"})', 'type' => 'onClick', 'width' => 200, 'disabled' => !permissionhandler::hasPerm($perm), 'style' => 'margin:10px 0 0 0;'));
+		$newFolderButton = new we_ui_controls_Button(['text' => $translate->_('New Folder'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new_folder"})', 'type' => 'onClick', 'width' => 200, 'disabled' => !permissionhandler::hasPerm($perm), 'style' => 'margin:10px 0 0 0;']);
 		$bodyDiv->addElement($newFolderButton);
 
 		return $bodyDiv;

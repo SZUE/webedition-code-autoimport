@@ -321,7 +321,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		$source = $object->getElement("data");
-		$this->updateSource(array("/(#WE:)(\d+)(#)/se"), $source, 'ID', FILE_TABLE);
+		$this->updateSource(["/(#WE:)(\d+)(#)/se"], $source, 'ID', FILE_TABLE);
 		$object->setElement("data", $source);
 	}
 

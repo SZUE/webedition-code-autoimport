@@ -72,7 +72,7 @@ class we_voting_voting extends we_base_model{
 	var $answerCount = -1;
 	var $defVersion = 0;
 	var $LogDB = 0;
-	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
+	var $protected = ['ID', 'ParentID', 'IsFolder', 'Path', 'Text'];
 	var $FallbackActive = 0;
 
 	/**
@@ -81,8 +81,7 @@ class we_voting_voting extends we_base_model{
 	 */
 	function __construct($votingID = 0){
 		parent::__construct(VOTING_TABLE);
-		$this->persistent_slots = array(
-			'ID' => we_base_request::INT,
+		$this->persistent_slots = ['ID' => we_base_request::INT,
 			'ParentID' => we_base_request::INT,
 			'Path' => we_base_request::FILE,
 			'IsFolder' => we_base_request::BOOL,
@@ -114,26 +113,21 @@ class we_voting_voting extends we_base_model{
 			'LogData' => we_base_request::RAW,
 			'RestrictIP' => we_base_request::BOOL,
 			'BlackList' => we_base_request::RAW,
-		);
+			];
 
 		if($votingID){
 			$this->ID = $votingID;
 			$this->load($votingID);
 		}
 
-		$this->QASet = $this->QASet ? : array(
-			0 => array(
-				'question' => '',
-				'answers' => array(
-					0 => '',
+		$this->QASet = $this->QASet ? : [0 => ['question' => '',
+				'answers' => [0 => '',
 					1 => ''
-				)
-			)
-		);
+					]
+		]
+		];
 
-		$this->QASetAdditions = $this->QASetAdditions ? : array(
-			0 => array('imageID' => '', 'mediaID' => '', 'successorID' => '')
-		);
+		$this->QASetAdditions = $this->QASetAdditions ? : [0 => ['imageID' => '', 'mediaID' => '', 'successorID' => '']		];
 
 		$this->Valid = ($this->Valid? : time() + 31536000); //365 days
 		$this->Active = ($this->Valid < time() && $this->ActiveTime ? 0 : $this->Active);
@@ -359,9 +353,8 @@ class we_voting_voting extends we_base_model{
 	function getOwnersSql(){
 		$owners_sql = '';
 		if(!permissionhandler::hasPerm('ADMINISTRATOR')){
-			$userids = array(
-				$_SESSION['user']['ID']
-			);
+			$userids = [$_SESSION['user']['ID']
+				];
 			we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);
 
 			$sqlarr = [];
@@ -596,14 +589,13 @@ class we_voting_voting extends we_base_model{
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
 		} else {
 			$this->LogData = we_unserialize($this->LogData);
-			$this->LogData[] = array(
-				'time' => time(),
+			$this->LogData[] = ['time' => time(),
 				'ip' => $_SERVER['REMOTE_ADDR'],
 				'agent' => $_SERVER['HTTP_USER_AGENT'],
 				'cookie' => $this->cookieDisabled() ? 0 : 1,
 				'fallback' => $this->FallbackActive,
 				'status' => $status
-			);
+				];
 			$this->saveField('LogData', true);
 		}
 	}
@@ -661,7 +653,7 @@ class we_voting_voting extends we_base_model{
 		$this->db->query($logQuery);
 		$this->LogData = [];
 		while($this->db->next_record()){
-			$this->LogData[] = array('votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
+			$this->LogData[] = ['votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
 				'time' => $this->db->f('time'),
 				'ip' => $this->db->f('ip'),
 				'agent' => $this->db->f('agent'),
@@ -673,7 +665,7 @@ class we_voting_voting extends we_base_model{
 				'answertext' => $this->db->f('answertext'),
 				'successor' => $this->db->f('successor'),
 				'additionalfields' => $this->db->f('additionalfields'),
-			);
+				];
 		}
 		return $this->LogData;
 	}

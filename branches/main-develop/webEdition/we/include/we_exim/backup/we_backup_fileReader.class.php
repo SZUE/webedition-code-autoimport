@@ -36,7 +36,7 @@ abstract class we_backup_fileReader extends we_backup_XMLFileReader{
 				case 'table':
 
 					// if the table should't be imported
-					if(we_backup_util::getRealTableName(trim(str_replace(array('"', '\''), '', $attributes[1]))) === false){
+					if(we_backup_util::getRealTableName(trim(str_replace(['"', '\''], '', $attributes[1]))) === false){
 						return true;
 					}
 			}

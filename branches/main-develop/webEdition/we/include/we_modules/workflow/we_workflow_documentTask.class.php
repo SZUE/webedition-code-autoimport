@@ -54,14 +54,13 @@ class we_workflow_documentTask extends we_workflow_base{
 		$this->table = WORKFLOW_DOC_TASK_TABLE;
 		$this->ClassName = __CLASS__;
 
-		$this->persistents = array(
-			"ID" => we_base_request::INT,
+		$this->persistents = ["ID" => we_base_request::INT,
 			"documentStepID" => we_base_request::INT,
 			"workflowTaskID" => we_base_request::INT,
 			"Date" => we_base_request::INT,
 			"todoID" => we_base_request::INT,
 			"Status" => we_base_request::INT,
-		);
+			];
 
 		if($wfDocumentTask){
 			$this->ID = $wfDocumentTask;

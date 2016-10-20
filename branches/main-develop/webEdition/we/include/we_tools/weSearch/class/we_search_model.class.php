@@ -147,22 +147,22 @@ class we_search_model extends we_search_modelBase{
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	 ];
+	];
 	protected $searchForFieldDocSearch = ['text' => 0,
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	 ];
+	];
 	protected $searchForFieldMediaSearch = ['text' => 0,
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	 ];
+	];
 	protected $searchForContentTypeMediaSearch = ['image' => 0,
 		'audio' => 0,
 		'video' => 0,
 		'other' => 0,
-	 ];
+	];
 
 	/**
 	 * Default Constructor
@@ -223,11 +223,11 @@ class we_search_model extends we_search_modelBase{
 				}
 			}
 		} else {
-			$modelVars = array_merge(array(// some vars are not persistent in db but must be written to session anyway: must COMPLETE!!
+			$modelVars = array_merge([// some vars are not persistent in db but must be written to session anyway: must COMPLETE!!
 				'searchstartDocSearch',
 				'searchstartTmplSearch',
 				'searchstartMediaSearch',
-				'searchstartAdvSearch'), (is_array($this->persistent_slots) ? $this->persistent_slots : []));
+				'searchstartAdvSearch'], (is_array($this->persistent_slots) ? $this->persistent_slots : []));
 
 			/* was nice before 7.0, but it's not typed!
 			  foreach($modelVars as $val){
@@ -326,7 +326,7 @@ class we_search_model extends we_search_modelBase{
 				// process some SEARCH_DOCS specialties
 				if(count(($tmpSearch = $this->searchDocSearch))){
 					$this->searchFieldsDocSearch = $this->locationDocSearch = $this->searchDocSearch = [];
-					foreach(array('Text' => $this->searchForTextDocSearch, 'Title' => $this->searchForTitleDocSearch, 'Content' => $this->searchForContentDocSearch) as $field => $val){
+					foreach(['Text' => $this->searchForTextDocSearch, 'Title' => $this->searchForTitleDocSearch, 'Content' => $this->searchForContentDocSearch] as $field => $val){
 						if($val){
 							$this->searchFieldsDocSearch[] = $field;
 							$this->locationDocSearch[] = 'CONTAIN';
@@ -338,7 +338,7 @@ class we_search_model extends we_search_modelBase{
 					'title' => $this->searchForTitleDocSearch,
 					'content' => $this->searchForContentDocSearch,
 					'meta' => false,
-					];
+				];
 
 				// write current set
 				$this->currentSearchTables = $this->searchTablesDocSearch = [FILE_TABLE];
@@ -355,7 +355,7 @@ class we_search_model extends we_search_modelBase{
 			case we_search_view::SEARCH_TMPL:
 				if(count(($tmpSearch = $this->searchTmplSearch))){
 					$this->searchFieldsTmplSearch = $this->locationTmplSearch = $this->searchTmplSearch = [];
-					foreach(array('Text' => $this->searchForTextTmplSearch, 'Content' => $this->searchForContentTmplSearch) as $field => $val){
+					foreach(['Text' => $this->searchForTextTmplSearch, 'Content' => $this->searchForContentTmplSearch] as $field => $val){
 						if($val){
 							$this->searchFieldsTmplSearch[] = $field;
 							$this->locationTmplSearch[] = 'CONTAIN';
@@ -367,7 +367,7 @@ class we_search_model extends we_search_modelBase{
 					'title' => false,
 					'content' => $this->searchForContentTmplSearch,
 					'meta' => false,
-					];
+				];
 
 				// write current set
 				$this->currentSearchTables = $this->searchTablesTmplSearch = [TEMPLATES_TABLE];
@@ -387,12 +387,12 @@ class we_search_model extends we_search_modelBase{
 					'title' => $this->searchForTitleMediaSearch,
 					'content' => false,
 					'meta' => $this->searchForMetaMediaSearch,
-					];
+				];
 				$this->searchForContentTypeMediaSearch = ['image' => $this->searchForImageMediaSearch,
 					'audio' => $this->searchForAudioMediaSearch,
 					'video' => $this->searchForVideoMediaSearch,
 					'other' => $this->searchForOtherMediaSearch,
-					];
+				];
 
 				// write current set
 				$this->currentSearchTables = $this->searchTablesMediaSearch = [FILE_TABLE];
@@ -416,7 +416,7 @@ class we_search_model extends we_search_modelBase{
 					addTblPrefix('tblObjectFiles') => 1,
 					addTblPrefix('tblObject') => 0,
 					addTblPrefix('tblversions') => 0,
-					];
+				];
 
 				$this->searchTablesAdvSearch = [];
 				foreach($this->search_tables_advSearch as $k => $v){
@@ -482,7 +482,7 @@ class we_search_model extends we_search_modelBase{
 			addTblPrefix('tblObjectFiles') => 0,
 			addTblPrefix('tblObject') => 0,
 			VERSIONS_TABLE => 0,
-			];
+		];
 
 		switch($tables){
 			case 1:

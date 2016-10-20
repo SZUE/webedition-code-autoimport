@@ -405,11 +405,11 @@ if(!empty($this->model->ID)){
 				}
 			}
 			$rowExTool->addHTML($html);
-			$tableExTool->setRows(array($rowExTool));
+			$tableExTool->setRows([$rowExTool]);
 			$propertyTab->addElement($tableExTool);
 		}
 	}
-	$rowTags = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Tags')));
+	$rowTags = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Tags')]);
 	$html = '';
 	foreach($this->model->tags as $tag => $incfile){
 		$html .= '<strong>' . $tag . '</strong>' .
@@ -421,10 +421,10 @@ if(!empty($this->model->ID)){
 	$tableTags = new we_ui_layout_HeadlineIconTable();
 	$tableTags->setId('tabTags');
 	$tableTags->setMarginLeft(30);
-	$tableTags->setRows(array($rowTags));
+	$tableTags->setRows([$rowTags]);
 	$propertyTab->addElement($tableTags);
 
-	$rowServices = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Services')));
+	$rowServices = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Services')]);
 	$html = '';
 	foreach($this->model->services as $service => $incfile){
 		$html .= '<strong>' . $service . '</strong>' .
@@ -436,10 +436,10 @@ if(!empty($this->model->ID)){
 	$tableServices = new we_ui_layout_HeadlineIconTable();
 	$tableServices->setId('tabServices');
 	$tableServices->setMarginLeft(30);
-	$tableServices->setRows(array($rowServices));
+	$tableServices->setRows([$rowServices]);
 	$propertyTab->addElement($tableServices);
 
-	$rowLanguage = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Language')));
+	$rowLanguage = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Language')]);
 	$html = '';
 	foreach($this->model->languages as $lan => $incfile){
 		$html .= '<strong>' . $lan . '</strong>' .
@@ -451,10 +451,10 @@ if(!empty($this->model->ID)){
 	$tableLanguage = new we_ui_layout_HeadlineIconTable();
 	$tableLanguage->setId('tabLanguage');
 	$tableLanguage->setMarginLeft(30);
-	$tableLanguage->setRows(array($rowLanguage));
+	$tableLanguage->setRows([$rowLanguage]);
 	$propertyTab->addElement($tableLanguage);
 
-	$rowPermissions = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Permissions')));
+	$rowPermissions = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Permissions')]);
 	$html = '';
 	foreach($this->model->permissions as $key => $value){
 		$html .= '<strong>' . $key . '</strong>' .
@@ -466,10 +466,10 @@ if(!empty($this->model->ID)){
 	$tablePermissions = new we_ui_layout_HeadlineIconTable();
 	$tablePermissions->setId('tabPermissions');
 	$tablePermissions->setMarginLeft(30);
-	$tablePermissions->setRows(array($rowPermissions));
+	$tablePermissions->setRows([$rowPermissions]);
 	$propertyTab->addElement($tablePermissions);
 
-	$rowBackupTable = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Backup table')));
+	$rowBackupTable = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Backup table')]);
 	$html = '';
 	foreach($this->model->backupTables as $table){
 		$html .= $table .
@@ -479,7 +479,7 @@ if(!empty($this->model->ID)){
 	$tableBackupTable = new we_ui_layout_HeadlineIconTable();
 	$tableBackupTable->setId('tabBackupTable');
 	$tableBackupTable->setMarginLeft(30);
-	$tableBackupTable->setRows(array($rowBackupTable));
+	$tableBackupTable->setRows([$rowBackupTable]);
 	$propertyTab->addElement($tableBackupTable);
 }
 
@@ -640,7 +640,7 @@ $containerDiv->addElement($form);
 $htmlPage->addElement($containerDiv);
 
 $htmlPage->addInlineJS($js);
-$htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
+$htmlPage->setBodyAttributes(['class' => 'weEditorBody', 'onload' => 'loaded=1;']);
 
 $htmlPage->addInlineCSS($cssLoadingWheel);
 

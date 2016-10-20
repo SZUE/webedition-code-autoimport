@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,34 +29,31 @@ $frameset->setRows('40,*,0');
 
 // parameter for each frame
 $param = ($this->tab ?
-		'/tab/' . $this->tab :
-		'') .
+	'/tab/' . $this->tab :
+	'') .
 	($this->sid ?
-		'/sid/' . $this->sid :
-		'') .
+	'/sid/' . $this->sid :
+	'') .
 	($this->modelId ?
-		'/modelId/' . $this->modelId :
-		'');
+	'/modelId/' . $this->modelId :
+	'');
 
-$frameset->addFrame(array(
-	'src' => $appDir . '/index.php/header/index',
+$frameset->addFrame(['src' => $appDir . '/index.php/header/index',
 	'name' => 'header',
 	'scrolling' => 'no',
 	'noresize' => 'noresize'
-));
+]);
 
-$frameset->addFrame(array(
-	'src' => $appDir . '/index.php/frameset/resize' . $param,
+$frameset->addFrame(['src' => $appDir . '/index.php/frameset/resize' . $param,
 	'name' => 'resize',
 	'scrolling' => 'no'
-));
+]);
 
-$frameset->addFrame(array(
-	'src' => 'about:blank',
+$frameset->addFrame(['src' => 'about:blank',
 	'name' => 'cmd_' . $appName,
 	'scrolling' => 'no',
 	'noresize' => 'noresize'
-));
+]);
 
 $page = we_ui_layout_HTMLPage::getInstance();
 $page->setIsTopFrame(true);

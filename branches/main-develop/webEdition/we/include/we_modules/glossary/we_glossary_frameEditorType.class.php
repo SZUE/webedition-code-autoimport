@@ -85,7 +85,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		}
 
 		$Search = new we_glossary_search(GLOSSARY_TABLE);
-		$Search->setFields(array("*"));
+		$Search->setFields(["*"]);
 		$Search->setLimit($Offset, $Rows);
 		$Search->setOrder($Order, $Sort);
 		$Search->setWhere($Where);
@@ -99,7 +99,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			self::getHTMLPrevNext($Search) .
 			self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
 			self::getHTMLPrevNext($Search, true) :
-			we_html_element::htmlDiv(array('style' => "margin:12px 5px;"), g_l('modules_glossary', '[no_entries_found]'))
+			we_html_element::htmlDiv(['style' => "margin:12px 5px;"], g_l('modules_glossary', '[no_entries_found]'))
 			);
 
 
@@ -181,12 +181,11 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 				case we_glossary_glossary::TYPE_ABBREVATION:
 				case we_glossary_glossary::TYPE_ACRONYM:
-					$temp[3] = array(
-						'dat' => ($Search->getField('Title') ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
+					$temp[3] = ['dat' => ($Search->getField('Title') ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-					);
+						];
 					break;
 
 				case we_glossary_glossary::TYPE_FOREIGNWORD:

@@ -29,7 +29,7 @@ we_html_tools::protect();
 //	the navigation history
 
 
-$table = new we_html_table(array("border" => 0), 1, 2);
+$table = new we_html_table(["border" => 0], 1, 2);
 $table->setColContent(0, 1, we_html_button::create_button(we_html_button::BACK, "javascript:WE().layout.weNavigationHistory.navigateBack();"));
 
 

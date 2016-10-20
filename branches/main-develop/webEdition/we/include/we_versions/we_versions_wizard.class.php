@@ -65,12 +65,12 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton) .
-				we_html_element::htmlSpan(array("id" => "next", "style" => "padding-left:10px;text-align:right"), $nextButton) .
-				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
-				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
+			$content2 = we_html_element::htmlSpan(["id" => "prev", "style" => "padding-left:10px;text-align:right"], $prevButton) .
+				we_html_element::htmlSpan(["id" => "next", "style" => "padding-left:10px;text-align:right"], $nextButton) .
+				we_html_element::htmlSpan(["id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
+				we_html_element::htmlSpan(["id" => "cancel", "style" => "padding-left:10px;text-align:right"], $cancelButton);
 
-			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
+			$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 			$content->setCol(0, 0, ["id" => "progr", "style" => "display:none;text-align:left"], $pb);
 			$content->setCol(0, 1, ["style" => "text-align:right"], $content2);
 		}
@@ -88,7 +88,7 @@ abstract class we_versions_wizard{
 	 * @return string for now it is an empty page
 	 */
 	static function getCmd(){
-		return self::getPage(array('', ''));
+		return self::getPage(['', '']);
 	}
 
 	/**
@@ -242,13 +242,12 @@ set_button_state(false);';
 
 		$versions_delete_date = we_html_tools::getDateSelector('delete_date', '_1', $version_delete_date);
 
-		$reset_hours = new we_html_select(array(
-			"id" => "delete_hours",
+		$reset_hours = new we_html_select(["id" => "delete_hours",
 			"name" => "delete_hours",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+		]);
 
 		for($x = 0; $x <= 23; $x++){
 			$txt = $x;
@@ -260,13 +259,12 @@ set_button_state(false);';
 
 		$reset_hours->selectOption($version_delete_hours);
 
-		$reset_minutes = new we_html_select(array(
-			"id" => "delete_minutes",
+		$reset_minutes = new we_html_select(["id" => "delete_minutes",
 			"name" => "delete_minutes",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+		]);
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -278,13 +276,12 @@ set_button_state(false);';
 
 		$reset_minutes->selectOption($version_delete_minutes);
 
-		$reset_seconds = new we_html_select(array(
-			"id" => "delete_seconds",
+		$reset_seconds = new we_html_select(["id" => "delete_seconds",
 			"name" => "delete_seconds",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+			]);
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -776,7 +773,7 @@ set_button_state(false);';
 			if(!in_array($GLOBALS['DB_WE']->f('documentID'), $docIds)){
 				$docIds[$GLOBALS['DB_WE']->f('documentID')] = ['Path' => $GLOBALS['DB_WE']->f('path'),
 					'ContentType' => $GLOBALS['DB_WE']->f('ContentType')
-					];
+				];
 			}
 
 			$cont[] = $GLOBALS['DB_WE']->getRecord();
@@ -785,7 +782,7 @@ set_button_state(false);';
 				'Path' => $GLOBALS['DB_WE']->f('path'),
 				'Version' => $GLOBALS['DB_WE']->f('version'),
 				'documentID' => $GLOBALS['DB_WE']->f('documentID'),
-				];
+			];
 			if($GLOBALS['DB_WE']->f('binaryPath')){
 				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f('binaryPath');
 			}
@@ -821,18 +818,17 @@ set_button_state(false);';
 
 		$parts[] = ["headline" => "",
 			"html" => $out,
-			];
+		];
 
 		$hiddenFields = we_html_element::htmlHiddens($version_delete);
 
 		return [self::getPage2Js(!empty($cont), 'delete'),
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHiddens(array(
-				"fr" => "body",
+			we_html_element::htmlHiddens(["fr" => "body",
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
-				"step" => 3)
+				"step" => 3]
 		)];
 	}
 
@@ -845,7 +841,7 @@ set_button_state(false);';
 			'reset_hours' => we_base_request::_(we_base_request::INT, "reset_hours", 0),
 			'reset_minutes' => we_base_request::_(we_base_request::INT, "reset_minutes", 0),
 			'reset_seconds' => we_base_request::_(we_base_request::INT, "reset_seconds", 0),
-			];
+		];
 
 		foreach(we_versions_version::getContentTypesVersioning() as $k){
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
@@ -913,7 +909,7 @@ set_button_state(false);';
 				"table" => $GLOBALS['DB_WE']->f("documentTable"),
 				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
 				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
-				];
+			];
 		}
 
 //FIXME: date format should be obtained from g_l
@@ -940,7 +936,7 @@ set_button_state(false);';
 
 		$parts[] = ["headline" => "",
 			"html" => $out,
-			];
+		];
 
 		$hiddenFields = we_html_element::htmlHiddens($version_reset);
 
@@ -951,7 +947,7 @@ set_button_state(false);';
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
 				"step" => 3])
-				];
+		];
 	}
 
 	/**
@@ -988,13 +984,13 @@ set_button_state(false);';
 			$query['fr'] = 'body';
 			//maybe restore of a given version?
 			$body = we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';"]
-			, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'busy',
+					, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'busy',
 							'dc' => 1]), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		} else {
 			$body = we_html_element::htmlBody(['class' => 'weDialogBody']
-			, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'body']), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+					, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'body']), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'busy']), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'cmd']), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			);

@@ -63,7 +63,7 @@ class we_users_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 		$user_object = $_SESSION["user_session_data"];
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody')), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+		return $this->getHTMLDocument(we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody']), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -105,13 +105,12 @@ class we_users_frames extends we_modules_frame{
 
 		$content .= $yuiSuggest->getYuiJs();
 
-		$form = we_html_element::htmlForm(array(
-				'name' => 'we_form',
+		$form = we_html_element::htmlForm(['name' => 'we_form',
 				'method' => 'post',
 				'autocomplete' => 'off',
 				'onsubmit' => 'return false'
-				), $content);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $form), $js);
+				], $content);
+		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'], $form), $js);
 	}
 
 	function getHTMLSearch(){

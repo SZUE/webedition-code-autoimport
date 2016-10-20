@@ -146,39 +146,35 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		}
 
 		foreach($selDocs as $v){
-			$this->RefTable->add2(array(
-				"ID" => $v,
+			$this->RefTable->add2(["ID" => $v,
 				"ContentType" => f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
-				)
+				]
 			);
 		}
 
 		foreach($selTempl as $v){
-			$this->RefTable->add2(array(
-				"ID" => $v,
+			$this->RefTable->add2(["ID" => $v,
 				"ContentType" => we_base_ContentTypes::TEMPLATE,
 				"level" => 0
-				)
+				]
 			);
 		}
 		if(is_array($selObjs)){
 			foreach($selObjs as $v){
-				$this->RefTable->add2(array(
-					"ID" => $v,
+				$this->RefTable->add2(["ID" => $v,
 					"ContentType" => we_base_ContentTypes::OBJECT_FILE,
 					"level" => 0
-					)
+					]
 				);
 			}
 		}
 		if(is_array($selClasses)){
 			foreach($selClasses as $v){
-				$this->RefTable->add2(array(
-					"ID" => $v,
+				$this->RefTable->add2(["ID" => $v,
 					"ContentType" => "object",
 					"level" => 0
-				));
+					]);
 			}
 		}
 	}

@@ -74,33 +74,30 @@ class we_workflow_view extends we_modules_view{
 		$counter = 0;
 		$counter1 = 0;
 		foreach($this->workflowDef->steps as $sv){
-			$out .= we_html_element::htmlHiddens(array(
-					$this->uid . '_step' . $counter . '_sid' => $sv->ID,
+			$out .= we_html_element::htmlHiddens([$this->uid . '_step' . $counter . '_sid' => $sv->ID,
 					$this->uid . '_step' . $counter . '_and' => $sv->stepCondition,
 					$this->uid . '_step' . $counter . '_Worktime' => $sv->Worktime,
 					$this->uid . '_step' . $counter . '_timeAction' => $sv->timeAction
-			));
+			]);
 			$counter1 = 0;
 			foreach($sv->tasks as $tv){
-				$out .= we_html_element::htmlHiddens(array(
-						$this->uid . '_task' . $counter . $counter1 . '_tid' => $tv->ID,
+				$out .= we_html_element::htmlHiddens([$this->uid . '_task' . $counter . $counter1 . '_tid' => $tv->ID,
 						$this->uid . '_task_' . $counter . '_' . $counter1 . '_userid' => $tv->userID,
 						$this->uid . '_task_' . $counter . '_' . $counter1 . '_Edit' => ($tv->Edit ? 1 : 0),
 						$this->uid . '_task_' . $counter . '_' . $counter1 . '_Mail' => ($tv->Mail ? 1 : 0)
-				));
+				]);
 				++$counter1;
 			}
 			++$counter;
 		}
-		$out .= we_html_element::htmlHiddens(array(
-				'wcat' => '0',
+		$out .= we_html_element::htmlHiddens(['wcat' => '0',
 				'wocat' => '0',
 				'wfolder' => '0',
 				'woffolder' => '0',
 				'wobject' => '0',
 				'wsteps' => $counter,
 				'wtasks' => $counter1
-		));
+		]);
 
 		return $out;
 	}
@@ -145,7 +142,7 @@ class we_workflow_view extends we_modules_view{
 			$content .= $this->workflowHiddens();
 		}
 		$content .= '</form>';
-		return we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
+		return we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'], $content);
 	}
 
 	/**
@@ -153,11 +150,10 @@ class we_workflow_view extends we_modules_view{
 	 * @desc Enter description here...
 	 */
 	function getWorkflowHeaderMultiboxParts($space){
-		return array(
-			'headline' => g_l('modules_workflow', '[name]'),
+		return ['headline' => g_l('modules_workflow', '[name]'),
 			'html' => we_html_tools::htmlTextInput($this->uid . '_Text', 37, stripslashes($this->workflowDef->Text), '', ' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur=" parent.edheader.weTabs.setTitlePath(this.value);"', "text", 498),
 			'space' => $space
-		);
+			];
 	}
 
 	function getWorkflowSelectHTML(){
@@ -236,11 +232,10 @@ class we_workflow_view extends we_modules_view{
 
 		$ids = '';
 
-		$headline = array(
-			array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'),
-			array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[and_or]') . '</div>'),
-			array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[worktime]') . '</div>')
-		);
+		$headline = [['dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'],
+				['dat' => '<div class="middlefont">' . g_l('modules_workflow', '[and_or]') . '</div>'],
+				['dat' => '<div class="middlefont">' . g_l('modules_workflow', '[worktime]') . '</div>']
+		];
 
 		$counter = 0;
 		$counter1 = 0;
@@ -250,39 +245,35 @@ class we_workflow_view extends we_modules_view{
 		/*		 * *** WORKFLOWSTEPS **** */
 		foreach($this->workflowDef->steps as $sv){
 			$ids .= we_html_element::htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID);
-			$content[$counter] = array(
-				array(
-					'dat' => $counter + 1,
-					'height' => '',
-					'align' => 'center',
-				),
-				array(
-					'dat' => '<table><tr style="vertical-align:top"><td>' . we_html_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td style="padding-left:5px;">' . we_html_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
+			$content[$counter] = [['dat' => $counter + 1,
+				'height' => '',
+				'align' => 'center',
+				],
+					['dat' => '<table><tr style="vertical-align:top"><td>' . we_html_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td style="padding-left:5px;">' . we_html_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
 					'height' => '',
 					'align' => '',
-				),
-				array(
-					'dat' => '<table class="default" style="margin-top:5px;">
+				],
+					['dat' => '<table class="default" style="margin-top:5px;">
 	<tr style="vertical-align:middle"><td class="middlefont" style="padding-bottom:1em;">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"', 'number') . '</td></tr>
 	<tr style="vertical-align:top"><td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td></tr>
 </table>',
 					'height' => '',
 					'align' => '',
-				)
-			);
+				]
+			];
 
 
 			$counter1 = 0;
 			foreach($sv->tasks as $tv){
 				$ids .= we_html_element::htmlHidden($this->uid . '_task' . $counter . '_' . $counter1 . '_tid', $tv->ID);
-				$headline[$counter1 + 3] = array('dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1));
+				$headline[$counter1 + 3] = ['dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1)];
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
-				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, array('onchange' => 'top.content.setHot();'));
+				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, ['onchange' => 'top.content.setHot();']);
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(false);
 				$yuiSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
@@ -292,8 +283,7 @@ class we_workflow_view extends we_modules_view{
 				$yuiSuggest->setContainerWidth(305);
 				$yuiSuggest->setSelectButton($button, 6);
 
-				$content[$counter][$counter1 + 3] = array(
-					'dat' => '<table class="default" style="margin-top:1ex;">
+				$content[$counter][$counter1 + 3] = ['dat' => '<table class="default" style="margin-top:1ex;">
 						<tr style="vertical-align:middle"><td>' . $yuiSuggest->getHTML() . '</td>
 						</tr></table>
 						<table class="default">
@@ -303,7 +293,7 @@ class we_workflow_view extends we_modules_view{
 						</tr></table>',
 					'height' => '',
 					'align' => ''
-				);
+				];
 				$counter1++;
 			}
 			++$counter;
@@ -322,10 +312,9 @@ class we_workflow_view extends we_modules_view{
 		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()") . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()") . '</td></tr>
 </table>' .
 			$yuiSuggest->getYuiJs() .
-			we_html_element::htmlHiddens(array(
-				'wsteps' => $counter,
+			we_html_element::htmlHiddens(['wsteps' => $counter,
 				'wtasks' => $counter1
-		));
+		]);
 	}
 
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
@@ -358,7 +347,8 @@ class we_workflow_view extends we_modules_view{
 	function getDocTypeHTML($width = 498){
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
 		$vals = $this->db->getAllFirstq('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'], false);
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 1, $this->workflowDef->DocType, true, ['class' => 'searchSelect', 'onchange' => "top.content.setHot();"], "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 1, $this->workflowDef->DocType, true, ['class' => 'searchSelect',
+					'onchange' => "top.content.setHot();"], "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
 	}
 
 	function getJSTop(){
@@ -663,69 +653,61 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		//	Part - file-information
-		$parts = array(
-			array(
-				'headline' => g_l('weEditorInfo', '[content_type]'),
-				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
-			)
-		);
+		$parts = [['headline' => g_l('weEditorInfo', '[content_type]'),
+			'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
+			]
+		];
 		if($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
 			$GLOBALS['we_doc'] = $this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
-			$parts[] = array(
-				'headline' => g_l('weEditorInfo', '[file_size]'),
+			$parts[] = ['headline' => g_l('weEditorInfo', '[file_size]'),
 				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+			];
 		}
 
 		//	Part - publish-information
-		$parts[] = array(
-			'headline' => g_l('weEditorInfo', '[creation_date]'),
+		$parts[] = ['headline' => g_l('weEditorInfo', '[creation_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+		];
 
 		if($this->documentDef->document->CreatorID){
 			$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->CreatorID);
 			if($this->db->next_record()){
-				$parts[] = array(
-					'headline' => g_l('modules_users', '[created_by]'),
+				$parts[] = ['headline' => g_l('modules_users', '[created_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'noline' => 1
-				);
+				];
 			}
 		}
 
-		$parts[] = array(
-			'headline' => g_l('weEditorInfo', '[changed_date]'),
+		$parts[] = ['headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+		];
 
 		if($this->documentDef->document->ModifierID){
 			$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->ModifierID);
 			if($this->db->next_record()){
-				$parts[] = array(
-					'headline' => g_l('modules_users', '[changed_by]'),
+				$parts[] = ['headline' => g_l('modules_users', '[changed_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'noline' => 1
-				);
+				];
 			}
 		}
 
 		if($this->documentDef->document->ContentType == we_base_ContentTypes::HTML || $this->documentDef->document->ContentType == we_base_ContentTypes::WEDOCUMENT){
-			$parts[] = array(
-				'headline' => g_l('weEditorInfo', '[lastLive]'),
+			$parts[] = ['headline' => g_l('weEditorInfo', '[lastLive]'),
 				'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+			];
 		}
 
 		//	Part - Path-information
@@ -747,30 +729,26 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$showlink = true;
 			}
 
-			$parts[] = array(
-				'headline' => g_l('weEditorInfo', '[local_path]'),
+			$parts[] = ['headline' => g_l('weEditorInfo', '[local_path]'),
 				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onmouseover="showtip(this,event,\'' . $rp . '\')" onmouseout="hidetip()"  onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			);
+			];
 
-			$parts[] = array(
-				'headline' => g_l('weEditorInfo', '[http_path]'),
+			$parts[] = ['headline' => g_l('weEditorInfo', '[http_path]'),
 				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onmouseover="showtip(this,event,\'' . $http . '\')" onmouseout="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
-			$parts[] = array(
-				'headline' => '',
+			];
+			$parts[] = ['headline' => '',
 				'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+			];
 		}
 
 		//	Logbook
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
-		);
+		];
 
 		return we_html_element::jsScript(JS_DIR . 'tooltip.js') .
 			we_html_multiIconBox::getHTML('', $parts, 30);
@@ -778,70 +756,60 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function getObjectInfo(){
 		//	Dokument properties
-		$parts = array(
-			array(
-				'headline' => 'ID',
-				'html' => $this->documentDef->document->ID,
-				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1
-			),
-			array(
-				'headline' => g_l('weEditorInfo', '[content_type]'),
+		$parts = [['headline' => 'ID',
+			'html' => $this->documentDef->document->ID,
+			'space' => we_html_multiIconBox::SPACE_MED2,
+			'noline' => 1
+			],
+				['headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-			),
+			],
 			// publish information
-			array(
-				'headline' => g_l('weEditorInfo', '[creation_date]'),
+			['headline' => g_l('weEditorInfo', '[creation_date]'),
 				'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
-			)
-		);
+			]
+		];
 
 		$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->CreatorID);
 		if($this->db->next_record()){
-			$parts[] = array(
-				'headline' => g_l('modules_users', '[created_by]'),
+			$parts[] = ['headline' => g_l('modules_users', '[created_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
-			);
+			];
 		}
 
-		$parts[] = array(
-			'headline' => g_l('weEditorInfo', '[changed_date]'),
+		$parts[] = ['headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
 			'space' => we_html_multiIconBox::SPACE_MED2,
 			'noline' => 1
-		);
+		];
 
 		$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->ModifierID);
 		if($this->db->next_record()){
-			$parts[] = array(
-				'headline' => g_l('modules_users', '[changed_by]'),
+			$parts[] = ['headline' => g_l('modules_users', '[changed_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
-			);
+			];
 		}
 
-		$parts[] = array(
-			'headline' => g_l('weEditorInfo', '[lastLive]'),
+		$parts[] = ['headline' => g_l('weEditorInfo', '[lastLive]'),
 			'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
 			'space' => we_html_multiIconBox::SPACE_MED2,
-		);
+		];
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 			'space' => we_html_multiIconBox::SPACE_MED2
-		);
+		];
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
-		);
+		];
 
 		ob_start();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
@@ -857,17 +825,16 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function getTime($seconds){
 		$min = floor($seconds / 60);
-		$ret = array(
-			'hour' => floor($min / 60),
+		$ret = ['hour' => floor($min / 60),
 			'min' => $min,
-			'sec' => $seconds - ($min * 60));
+			'sec' => $seconds - ($min * 60)];
 		$ret['min'] -= ($ret['hour'] * 60);
 		return $ret;
 	}
 
 	static function getDocumentStatus($workflowDocID){
 		$db = new DB_WE();
-		$headline = array(array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'));
+		$headline = [['dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>']];
 
 		$workflowDocument = new we_workflow_document($workflowDocID);
 
@@ -902,13 +869,11 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 			$end = date(g_l('weEditorInfo', '[date_format]'), $sv->startDate + round($workflowStep->Worktime * 3600));
 
-			$content[$counter] = array(
-				array(
-					'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . ($counter + 1) . "</div>",
-					'height' => '',
-					'align' => 'center'
-				)
-			);
+			$content[$counter] = [['dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . ($counter + 1) . "</div>",
+				'height' => '',
+				'align' => 'center'
+				]
+			];
 
 			$counter1 = 0;
 			foreach($sv->tasks as $tk => $tv){
@@ -927,46 +892,41 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$out = '<div class="' . $notfinished_font . '">' . $foo . '</div>';
 				}
 
-				$content[$counter][$counter1] = array(
-					'dat' => $out,
+				$content[$counter][$counter1] = ['dat' => $out,
 					'height' => '',
 					'align' => '',
-				);
+				];
 			}
 
 
-			$headline[++$counter1] = array('dat' => g_l('modules_workflow', '[worktime]'));
+			$headline[++$counter1] = ['dat' => g_l('modules_workflow', '[worktime]')];
 
-			$content[$counter][$counter1] = array(
-				'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $workflowStep->Worktime . '</div>',
+			$content[$counter][$counter1] = ['dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $workflowStep->Worktime . '</div>',
 				'height' => '',
-				'align' => 'right');
+				'align' => 'right'];
 
 			if($sk <= $current){
 				$headline[++$counter1]['dat'] = g_l('modules_workflow', '[time_elapsed]');
 
 
-				$content[$counter][$counter1] = array(
-					'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $elapsed["hour"] . ":" . $elapsed["min"] . ":" . $elapsed["sec"] . "</div>",
+				$content[$counter][$counter1] = ['dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $elapsed["hour"] . ":" . $elapsed["min"] . ":" . $elapsed["sec"] . "</div>",
 					'height' => '',
 					'align' => 'right',
-				);
+				];
 
 				$headline[++$counter1]['dat'] = g_l('modules_workflow', '[time_remained]');
 
-				$content[$counter][$counter1] = array(
-					'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $remained["hour"] . ":" . $remained["min"] . ":" . $remained["sec"] . "</div>",
+				$content[$counter][$counter1] = ['dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $remained["hour"] . ":" . $remained["min"] . ":" . $remained["sec"] . "</div>",
 					'height' => '',
 					'align' => 'right',
-				);
+				];
 
 				$headline[++$counter1]['dat'] = g_l('modules_workflow', '[step_plan]');
 
-				$content[$counter][$counter1] = array(
-					'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $end . "</div>",
+				$content[$counter][$counter1] = ['dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $end . "</div>",
 					'height' => '',
 					'align' => 'right',
-				);
+				];
 			}
 			++$counter;
 		}
@@ -982,12 +942,11 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$content = [];
 
-		$headlines = array(
-			array('dat' => g_l('modules_workflow', '[action]')),
-			array('dat' => g_l('modules_workflow', '[description]')),
-			array('dat' => g_l('modules_workflow', '[time]')),
-			array('dat' => g_l('modules_workflow', '[user]')),
-		);
+		$headlines = [['dat' => g_l('modules_workflow', '[action]')],
+				['dat' => g_l('modules_workflow', '[description]')],
+				['dat' => g_l('modules_workflow', '[time]')],
+				['dat' => g_l('modules_workflow', '[user]')],
+		];
 
 		$logs = we_workflow_log::getLogForDocument($docID, 'DESC', $type);
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
@@ -997,28 +956,23 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		foreach($logs as $v){
 			$foo = getHash('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . intval($v['userID']), $db);
-			$content[] = array(
-				array(
-					'dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
+			$content[] = [['dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
+				'height' => '',
+				'align' => '',
+				],
+					['dat' => '<div class="middlefont">' . $v['Description'] . '</div>',
 					'height' => '',
 					'align' => '',
-				),
-				array(
-					'dat' => '<div class="middlefont">' . $v['Description'] . '</div>',
-					'height' => '',
-					'align' => '',
-				),
-				array(
-					'dat' => '<div class="middlefont"><nobr>' . date(g_l('weEditorInfo', '[date_format]'), $v['logDate']) . '</nobr></div>',
+				],
+					['dat' => '<div class="middlefont"><nobr>' . date(g_l('weEditorInfo', '[date_format]'), $v['logDate']) . '</nobr></div>',
 					'height' => '',
 					'align' => 'right',
-				),
-				array(
-					'dat' => '<div class="middlefont">' . ((!empty($foo['First'])) ? $foo['First'] : '-') . ' ' . ((!empty($foo['Second'])) ? $foo['Second'] : '-') . ((!empty($foo['username'])) ? ' (' . $foo['username'] . ')' : '') . '</div>',
+				],
+					['dat' => '<div class="middlefont">' . ((!empty($foo['First'])) ? $foo['First'] : '-') . ' ' . ((!empty($foo['Second'])) ? $foo['Second'] : '-') . ((!empty($foo['username'])) ? ' (' . $foo['username'] . ')' : '') . '</div>',
 					'height' => '',
 					'align' => 'left',
-				),
-			);
+				],
+			];
 		}
 
 		$nextprev = '<table class="default"><tr><td>' .
@@ -1065,7 +1019,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	static function showFooterForNormalMode($we_doc, $showPubl){
 		$col = 0;
 
-		$footerTable = new we_html_table(array('class' => 'default'), 1, 0);
+		$footerTable = new we_html_table(['class' => 'default'], 1, 0);
 
 		$publishbutton = '';
 		//	decline
@@ -1100,7 +1054,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	static function showFooterForSEEMMode($we_doc, $showPubl){
 		$col = 0;
-		$footerTable = new we_html_table(array('class' => 'default'), 1, 0);
+		$footerTable = new we_html_table(['class' => 'default'], 1, 0);
 
 		switch($we_doc->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PREVIEW:

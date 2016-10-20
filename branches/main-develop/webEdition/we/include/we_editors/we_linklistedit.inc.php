@@ -646,13 +646,12 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				<input type="hidden" name="linklist" value="<?= oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
-			echo we_html_element::htmlHiddens(array(
-				"name" => $name,
+			echo we_html_element::htmlHiddens(["name" => $name,
 				"nr" => we_base_request::_(we_base_request::INT, 'nr', $nr),
 				"ok" => 1,
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
-			)) .
+				]) .
 			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiJs();
 			?>

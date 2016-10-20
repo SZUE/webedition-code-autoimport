@@ -235,7 +235,7 @@ class we_app_Model extends we_core_AbstractModel{
 		if($this->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->Path){
 			$result = $db->getAllq('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like "' . $db->escape($oldpath . '%') . '" AND ' . $this->_primaryKey . ' !=' . intval($this->{$this->_primaryKey}));
 			foreach($result as $row){
-				$updateFields = array('Path' => $this->_evalPath($row[$this->_primaryKey]));
+				$updateFields = ['Path' => $this->_evalPath($row[$this->_primaryKey])];
 				$cond = $this->_primaryKey . '=' . intval($row[$this->_primaryKey]);
 				$db->update($this->_table, $updateFields, $cond);
 			}

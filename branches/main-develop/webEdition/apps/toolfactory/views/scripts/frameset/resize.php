@@ -37,38 +37,33 @@ $param = ($this->tab ?
 		'');
 
 if($client->getBrowser() === we_ui_Client::kBrowserGecko){
-	$frameAttribs = array(
-		'cols' => '200,*',
+	$frameAttribs = ['cols' => '200,*',
 		'border' => 1,
 		'id' => 'resizeframeid',
-	);
+		];
 } else {
-	$frameAttribs = array(
-		'cols' => '200,*',
+	$frameAttribs = ['cols' => '200,*',
 		'id' => 'resizeframeid'
-	);
+		];
 }
 
 $frameset = new we_ui_layout_Frameset($frameAttribs);
 
 if($client->getBrowser() === we_ui_Client::kBrowserIE){
-	$frameset->addFrame(array(
-		'src' => $appDir . '/index.php/frameset/left' . $param,
+	$frameset->addFrame(['src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',
 		'scrolling' => 'no',
-	));
+		]);
 } else {
-	$frameset->addFrame(array(
-		'src' => $appDir . '/index.php/frameset/left' . $param,
+	$frameset->addFrame(['src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',
 		'scrolling' => 'no'
-	));
+		]);
 }
 
-$frameset->addFrame(array(
-	'src' => $appDir . '/index.php/frameset/right' . $param,
+$frameset->addFrame(['src' => $appDir . '/index.php/frameset/right' . $param,
 	'name' => 'right'
-));
+ ]);
 
 $page = we_ui_layout_HTMLPage::getInstance();
 $page->setFrameset($frameset);

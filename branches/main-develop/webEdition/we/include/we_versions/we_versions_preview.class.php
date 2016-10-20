@@ -477,12 +477,11 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 			$this->contentOld = '<textarea style="width:99%;height:99%">' . ($oDocElements ? $oDocElements['data']['dat'] : '') . '</textarea>';
 		}
 
-		$versions_time_days = new we_html_select(array(
-			'name' => 'versions_time_days',
+		$versions_time_days = new we_html_select(['name' => 'versions_time_days',
 			'style' => '',
 			'class' => 'weSelect',
 			'onchange' => "previewVersion('" . $this->document['table'] . "'," . $this->document['ID'] . "," . $this->document['version'] . ", this.value);"
-			)
+			]
 		);
 
 		$versionOld = '';
