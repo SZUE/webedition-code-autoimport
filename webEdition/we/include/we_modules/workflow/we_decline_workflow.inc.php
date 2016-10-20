@@ -88,10 +88,9 @@ if($cmd === "ok"){
 
 				$button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
 				$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $button);
-				echo $frame . we_html_element::htmlHiddens(array(
-					"cmd" => "ok",
+				echo $frame . we_html_element::htmlHiddens(["cmd" => "ok",
 					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-					"we_cmd[1]" => $we_transaction));
+					"we_cmd[1]" => $we_transaction]);
 				?>
 			</form>
 		<?php } ?>

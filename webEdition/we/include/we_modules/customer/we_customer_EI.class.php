@@ -292,7 +292,7 @@ abstract class we_customer_EI{
 								];
 						}
 						$f = $path . 'temp_' . $fcount . '.xml';
-						self::save2File($f, we_exim_XMLExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement(array($rootnode)), 'wb');
+						self::save2File($f, we_exim_XMLExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement([$rootnode]), 'wb');
 						we_base_file::insertIntoCleanUp($f);
 						$fcount++;
 					}

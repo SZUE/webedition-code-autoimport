@@ -419,8 +419,7 @@ function closeAllType(){
 
 
 
-			$xmlExIm->setOptions(array(
-				"handle_def_templates" => $this->View->export->HandleDefTemplates,
+			$xmlExIm->setOptions(["handle_def_templates" => $this->View->export->HandleDefTemplates,
 				"handle_doctypes" => $this->View->export->HandleDoctypes,
 				"handle_categorys" => $this->View->export->HandleCategorys,
 				"handle_def_classes" => $this->View->export->HandleDefClasses,
@@ -437,19 +436,18 @@ function closeAllType(){
 				"handle_objects" => 1,
 				"handle_navigation" => $this->View->export->HandleNavigation,
 				"handle_thumbnails" => $this->View->export->HandleThumbnails
-			));
+				]);
 
 			$xmlExIm->RefTable->reset();
 			$xmlExIm->savePerserves();
 
 			$all = $xmlExIm->RefTable->getCount();
-			$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
+			$hiddens = we_html_element::htmlHiddens(["pnt" => "cmd",
 					"all" => $all,
-					"cmd" => "do_export"));
+					"cmd" => "do_export"]);
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array(
-							'name' => 'we_form', "method" => "post", "action" => $this->frameset), $hiddens)
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens)
 					)
 			);
 		}
@@ -494,13 +492,12 @@ if(top.content.editor.edbody.addLog){
 
 			$xmlExIm->savePerserves();
 
-			$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
+			$hiddens = we_html_element::htmlHiddens(["pnt" => "cmd",
 					"all" => $all,
-					"cmd" => "do_export"));
+					"cmd" => "do_export"]);
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array(
-							'name' => 'we_form', "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens) . $progress_update
 					)
 			);
 		}
@@ -568,10 +565,9 @@ if (top.content.editor.edfooter.doProgress){
 }');
 		$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
+		$hiddens = we_html_element::htmlHiddens(["pnt" => "cmd",
 				"all" => $all,
-				"cmd" => "do_export"));
+				"cmd" => "do_export"]);
 
 		if($all > $exports){
 			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
@@ -598,8 +594,8 @@ if (top.content.editor.edbody.addLog){
 				we_html_element::htmlSpan(['class' => 'defaultfont'], addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
 					g_l('export', '[download_starting2]') . "<br/><br/>" .
 					g_l('export', '[download_starting3]') . "<br/>" .
-					we_html_element::htmlB(we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename),
-							'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
+					we_html_element::htmlB(we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename),
+							'download' => $this->View->export->ExportFilename], g_l('export', '[download]'))) . "<br/><br/>"
 				) .
 				'\');' :
 				''
@@ -717,9 +713,8 @@ if (top.content.editor.edbody.addLog){
 
 
 
-		$hiddens = we_html_element::htmlHiddens(array(
-				"Categorys" => $this->View->export->Categorys,
-				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")));
+		$hiddens = we_html_element::htmlHiddens(["Categorys" => $this->View->export->Categorys,
+				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")]);
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", '', 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

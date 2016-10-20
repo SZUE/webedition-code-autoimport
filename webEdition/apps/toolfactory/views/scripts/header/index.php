@@ -30,25 +30,24 @@ include ($appName . '/conf/we_menu_' . $appName . '.conf.php');
 
 $lang_arr = 'we_menu_' . $appName;
 
-$menu = new we_ui_controls_CssMenu(array(
-	'entries' => ${$lang_arr},
+$menu = new we_ui_controls_CssMenu(['entries' => ${$lang_arr},
 	'width' => 350,
 	'height' => 30,
 	'cmdURL' => $appDir . '/index.php/cmd/menu/name/',
 	'cmdTarget' => 'cmd_' . $appName
-	));
+ ]);
 
-$messageConsole = new we_ui_controls_MessageConsole(array('consoleName' => 'toolFrame'));
+$messageConsole = new we_ui_controls_MessageConsole(['consoleName' => 'toolFrame']);
 $table = new we_ui_layout_Table();
 $table->setWidth('100%');
 
 $table->addElement($menu, 0, 0);
-$table->setCellAttributes(array('style' => 'text-align:left;vertical-align:top'));
+$table->setCellAttributes(['style' => 'text-align:left;vertical-align:top']);
 $table->addElement($messageConsole, 1, 0);
-$table->setCellAttributes(array('style' => 'padding-right:10px;vertical-align:bottom;text-align:right'));
+$table->setCellAttributes(['style' => 'padding-right:10px;vertical-align:bottom;text-align:right']);
 
 $page = we_ui_layout_HTMLPage::getInstance();
-$page->setBodyAttributes(array('class' => 'weMenuBody'));
+$page->setBodyAttributes(['class' => 'weMenuBody']);
 $page->addElement($table);
 
 // needed for menu !

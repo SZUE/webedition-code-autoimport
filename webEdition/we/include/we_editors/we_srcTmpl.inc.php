@@ -297,12 +297,11 @@ function getTagWizzard($we_doc){
 	<tr>
 		<td id="tagSelectCol" style="width: 250px;">' . $tagselect . we_wizard_code::getSelect() . we_wizard_code::getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
-		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(array(
-			'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
+		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(['name' => 'we_' . $we_doc->Name . '_TagWizardCode',
 			'id' => 'tag_edit_area',
 			'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
 			'class' => 'defaultfont'
-			), $we_doc->TagWizardCode) . '</td>
+			], $we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
 ';

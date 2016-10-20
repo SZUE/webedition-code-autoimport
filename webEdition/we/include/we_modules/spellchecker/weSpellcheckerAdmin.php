@@ -77,11 +77,11 @@ while(false !== ($entry = $_dir->read())){
 
 		$_name = str_replace('.zip', '', $entry);
 
-		$table->setCol($i, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
-		$table->setCol($i, 1, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_name);
-		$table->setCol($i, 2, array('style' => 'vertical-align:top;text-align:right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-		$table->setCol($i, 3, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($i, 4, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($i, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+		$table->setCol($i, 1, ['style' => 'vertical-align:top', 'class' => 'defaultfont'], $_name);
+		$table->setCol($i, 2, ['style' => 'vertical-align:top;text-align:right'], we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+		$table->setCol($i, 3, ['style' => 'vertical-align:top;text-align:right'], we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
+		$table->setCol($i, 4, ['style' => 'vertical-align:top;text-align:right'], we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
@@ -111,19 +111,17 @@ $tab_2 = we_html_tools::htmlDialogLayout('
 
 
 $_username = $_SESSION['user']['Username'];
-$_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
-for($i = 0; $i < count($_replacement); $i++){
-	$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
+foreach(['\\', '/', ':', '*', '?', '<', '>', '|', '"'] as $cur){
+	$_username = str_replace($cur, 'MASK' . $i, $_username);
 }
 
-$_applet_code = we_html_element::htmlApplet(array(
-		'name' => 'spellchecker',
+$_applet_code = we_html_element::htmlApplet(['name' => 'spellchecker',
 		'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
 		'archive' => 'lespellchecker.jar',
 		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 		'width' => 400,
 		'height' => 220,
-		), '
+	 ], '
 <param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -132,13 +130,12 @@ $_applet_code = we_html_element::htmlApplet(array(
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '"/>' .
 		$l_params);
-$_applet_code2 = we_html_element::htmlApplet(array(
-		'name' => "spellcheckerCmd",
+$_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
 		'code' => "LeSpellchecker.class",
 		'archive' => "lespellchecker.jar",
 		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 		'width' => 20,
-		'height' => 20,), '
+		'height' => 20,], '
 <param name="scriptable" value="true"/>
 <param name="mayscript" value="true"/>
 <param name="CODE" value="LeSpellchecker.class"/>

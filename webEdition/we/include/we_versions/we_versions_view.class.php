@@ -199,12 +199,11 @@ var searchClass={
 		$Path = we_base_request::_(we_base_request::FILE, 'path', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '/');
 
 
-		return we_html_element::htmlHiddens(array(
-				"we_transaction" => $we_transaction,
+		return we_html_element::htmlHiddens(["we_transaction" => $we_transaction,
 				"order" => $order,
 				"mode" => $mode,
 				"height" => $height
-			)) .
+				]) .
 			'<table class="default" style="margin-top:20px;margin-bottom:12px;">
 <tr id="beschreibung_print" class="defaultfont">
 	<td>

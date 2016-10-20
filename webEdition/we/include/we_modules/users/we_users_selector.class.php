@@ -35,20 +35,18 @@ class we_users_selector extends we_selector_file{
 		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$foo = getHash('SELECT IsFolder,Text,Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), $this->db);
 		if(!empty($foo['IsFolder']) && $this->dir){
-			$this->values = array(
-				'ParentID' => $this->dir,
+			$this->values = ['ParentID' => $this->dir,
 				'Text' => $foo['Text'],
 				'Path' => $foo['Path'],
-				'IsFolder' => 1);
+				'IsFolder' => 1];
 			$this->path = $foo['Path'];
 			$this->id = $this->dir;
 		} else {
 			$this->dir = 0;
-			$this->values = array(
-				'ParentID' => 0,
+			$this->values = ['ParentID' => 0,
 				'Text' => '',
 				'Path' => '',
-				'IsFolder' => 1);
+				'IsFolder' => 1];
 			$this->path = '';
 			$this->id = 0;
 		}

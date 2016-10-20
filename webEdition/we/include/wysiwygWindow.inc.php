@@ -153,7 +153,7 @@ top.close();');
 			echo we_html_element::htmlDiv(
 				['style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'], we_wysiwyg_editor::getHeaderHTML(false, $fields['isInFrontend']) . $e->getHTML()
 			) .
-			we_html_element::htmlDiv(array('style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel($okBut, $cancelBut)));
+			we_html_element::htmlDiv(['style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'], we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%;'], we_html_button::position_yes_no_cancel($okBut, $cancelBut)));
 			?>
 		</form>
 		<?php

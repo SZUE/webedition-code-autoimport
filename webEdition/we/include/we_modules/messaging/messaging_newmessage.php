@@ -88,11 +88,10 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	?>
   <form action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_send_nm.php" name="compose_form" method="post">
 		<?php
-		echo we_html_element::htmlHiddens(array(
-			'we_transaction' => $transaction,
+		echo we_html_element::htmlHiddens(['we_transaction' => $transaction,
 			'rcpts_string' => '',
 			'mode' => $mode
-		));
+		 ]);
 
 		$tbl = '<table style="text-align:center;width:100%" cellpadding="6">
       <tr><td class="defaultfont lowContrast">' . g_l('modules_messaging', '[from]') . ':</td><td class="defaultfont">' . $compose->get_from() . '</td></tr>

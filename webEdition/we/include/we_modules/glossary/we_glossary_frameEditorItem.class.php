@@ -59,7 +59,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			we_html_element::jsElement('var table="' . GLOSSARY_TABLE . '";') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter();') .
 			we_html_multiIconBox::getJs() .
-			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
 			we_html_element::jsElement(
 				'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
 				($weGlossaryFrames->View->Glossary->Type === "link" ?

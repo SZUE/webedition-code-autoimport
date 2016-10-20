@@ -166,11 +166,10 @@ class we_app_Installer{
 			$this->_instance->_toc = &we_app_Common::readAppTOCsxmle();
 			$this->_instance->_tmpDir = rtrim($_SERVER['DOCUMENT_ROOT'] . $this->_instance->_config->tmp_installer, '/') . '/';
 			$applicationPath = we_app_Common::getConfigElement("applicationpath") . $this->_instance->_appname . "/";
-			$this->_instance->_configFiles = array(
-				$applicationPath . "conf/toc.xml",
+			$this->_instance->_configFiles = [$applicationPath . "conf/toc.xml",
 				$applicationPath . "conf/manifest.xml",
 				$applicationPath . "conf/installhooks.xml",
-			);
+				];
 		}
 	}
 
@@ -528,7 +527,7 @@ class we_app_Installer{
 		error_log("executing sql queries for operation \"$operation\"");
 
 		$failedQueries = [];
-		$validOperations = array("install", "update", "uninstall");
+		$validOperations = ["install", "update", "uninstall"];
 		if(!in_array($operation, $validOperations) || is_null($this->_files)){
 			return false;
 		}

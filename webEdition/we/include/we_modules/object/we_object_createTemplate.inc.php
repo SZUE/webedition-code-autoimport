@@ -205,10 +205,9 @@ $buttons = we_html_button::position_yes_no_cancel(
 
 
 echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) .
- we_html_element::htmlHiddens(array(
-	"SID" => $tmpl->Name,
+ we_html_element::htmlHiddens(["SID" => $tmpl->Name,
 	"we_cmd[3]" => $cmd3,
 	"we_cmd[2]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2)
-)) . '
+ ]) . '
 </form>
 </body></html>';

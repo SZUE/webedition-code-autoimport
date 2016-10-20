@@ -35,10 +35,9 @@ class we_voting_view extends we_modules_view{
 	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(array(
-				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+			we_html_element::htmlHiddens(["vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
 				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
-		));
+		]);
 	}
 
 	function getJSTop(){
@@ -166,7 +165,7 @@ class we_voting_view extends we_modules_view{
 
 				if($this->voting->ParentID > 0){
 					$weAcQuery = new we_selector_query();
-					$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, array("IsFolder"));
+					$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, ["IsFolder"]);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						echo we_message_reporting::jsMessagePush(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
@@ -273,8 +272,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 
 				$allData = $this->voting->loadDB();
 				$CSV_Charset = we_base_request::_(we_base_request::STRING, 'the_charset', 'UTF-8');
-				$content = array(
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
+				$content = [$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[time]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[ip]'))) . $enclose . $delimiter .
@@ -286,7 +284,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerText]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-successor]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-additionalfields]'))) . $enclose . $delimiter
-				);
+				];
 
 				foreach($allData as $key => $data){
 					$cookie = g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]');
@@ -377,10 +375,9 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 		if($qname && $vcount && $aname && $icount){
 			for($i = 0; $i < $vcount; $i++){
 				if(($quest = we_base_request::_(we_base_request::STRING, $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
-					$set = array(
-						'question' => addslashes($quest),
+					$set = ['question' => addslashes($quest),
 						'answers' => [],
-					);
+					];
 
 					$an = $aname . '_variant' . $i . '_' . $aname . '_item';
 					$anImage = $an . 'ImageID';
@@ -455,15 +452,14 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 	}
 
 	public function getHomeScreen(){
-		$hiddens = array(
-			"cmd" => "home",
+		$hiddens = ["cmd" => "home",
 			'pnt' => 'edbody'
-		);
+		];
 		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
 			'<br/>' .
 			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
 
-		return parent::getActualHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
+		return parent::getActualHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}
 
 }

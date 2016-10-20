@@ -81,7 +81,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 	if(!$id){
 		return false;
 	}
-	return moveItem($targetDirectoryID, array($id), $table, $notMovedItems);
+	return moveItem($targetDirectoryID, [$id], $table, $notMovedItems);
 }
 
 function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
@@ -121,12 +121,11 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 		$folder->ParentID = $targetDirectoryID;
 		$folder->Path = $folder->getPath();
 		if(!$folder->save()){
-			$notMovedItems[] = array(
-				'ID' => $folder->ID,
+			$notMovedItems[] = ['ID' => $folder->ID,
 				'Text' => $folder->Text,
 				'Path' => $folder->Path,
 				'ContentType' => $folder->ContentType
-			);
+				];
 		}
 	}
 	//if folders are unable to move, we must stop here.
@@ -148,12 +147,11 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				$template->initByID($id, TEMPLATES_TABLE);
 				$template->ParentID = $targetDirectoryID;
 				if(!$template->save()){
-					$notMovedItems[] = array(
-						'ID' => $template->ID,
+					$notMovedItems[] = ['ID' => $template->ID,
 						'Text' => $template->Text,
 						'Path' => $template->Path,
 						'ContentType' => $template->ContentType
-					);
+						];
 				}
 			}
 			break;
@@ -169,12 +167,11 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 					(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)) ||
 					// move published document file
 					(($isPublished) && file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
-					$notMovedItems[] = array(
-						'ID' => $id,
+					$notMovedItems[] = ['ID' => $id,
 						'Text' => $fileName,
 						'Path' => $oldPath,
 						'ContentType' => $row['ContentType']
-					);
+						];
 					continue;
 				}
 

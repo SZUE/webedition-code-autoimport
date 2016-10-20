@@ -134,7 +134,7 @@ $oTitleTb = new we_html_table(['class' => 'default'], 2, 1);
 $oTitleTb->setCol(0, 0, ["width" => 165], $oRdoTitle[0]);
 $oTitleTb->setCol(1, 0, ["width" => 165], $oRdoTitle[1]);
 
-$oEditTb = new we_html_table(array('class' => 'default'), 6, 2);
+$oEditTb = new we_html_table(['class' => 'default'], 6, 2);
 $oEditTb->setCol(0, 0, ["width" => 165], $oChbxTb[0]);
 $oEditTb->setCol(1, 0, ["width" => 165, 'style' => 'vertical-align:top;'], $oChbxTb[1]);
 $oEditTb->setCol(1, 1, ["width" => 165], $oTitleTb->getHTML());

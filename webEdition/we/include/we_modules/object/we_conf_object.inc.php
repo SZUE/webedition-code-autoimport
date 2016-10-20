@@ -26,8 +26,7 @@ define('OBJECT_FILES_TABLE', TBL_PREFIX . 'tblObjectFiles');
 define('OBJECT_X_TABLE', TBL_PREFIX . 'tblObject_');
 define('OBJECTLINK_TABLE', TBL_PREFIX . 'tblObjectLink');
 
-we_base_request::registerTables(array(
-	'OBJECT_TABLE' => OBJECT_TABLE,
+we_base_request::registerTables(['OBJECT_TABLE' => OBJECT_TABLE,
 	'OBJECT_FILES_TABLE' => OBJECT_FILES_TABLE,
 	'OBJECTLINK_TABLE' => OBJECTLINK_TABLE
-));
+ ]);

@@ -56,7 +56,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</optgroup>
 </select>'
 		) .
-		we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
+		we_html_element::htmlDiv(['id' => 'focus_info', 'style' => 'margin-top:10px; display:none'], we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
 		'<table class="default">
 ' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?
 			'<tr><td style="padding-bottom:20px;"></td></tr>' :

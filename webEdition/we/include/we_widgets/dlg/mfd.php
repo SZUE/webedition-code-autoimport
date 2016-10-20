@@ -48,7 +48,7 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 }
 $content .= '</table>';
 
-$sUsrContent = '<table class="default" style="width:300px"><tr><td>' . we_html_element::htmlDiv(array('class' => "multichooser"), $content) .
+$sUsrContent = '<table class="default" style="width:300px"><tr><td>' . we_html_element::htmlDiv(['class' => "multichooser"], $content) .
 	we_html_element::htmlHiddens(["UserNameTmp" => "",
 		"UserIDTmp" => ""
 	]) .
@@ -84,7 +84,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 
 $oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;
 
-$oSctDate = new we_html_select(array('name' => "sct_date", 'class' => 'defaultfont', "onchange" => ""));
+$oSctDate = new we_html_select(['name' => "sct_date", 'class' => 'defaultfont', "onchange" => ""]);
 $aLangDate = [g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),
 	g_l('cockpit', '[last_week]'),
@@ -98,7 +98,7 @@ $oSctDate->selectOption($iDate);
 
 $oChbxShowMfdBy = we_html_forms::checkbox(0, $sDisplayOpt{0}, "chbx_display_opt", g_l('cockpit', '[modified_by]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxShowDate = we_html_forms::checkbox(0, $sDisplayOpt{1}, "chbx_display_opt", g_l('cockpit', '[date_last_modification]'), true, "defaultfont", "", false, "", 0, 0);
-$oSctNumEntries = new we_html_select(array('name' => "sct_amount_entries", 'class' => 'defaultfont'));
+$oSctNumEntries = new we_html_select(['name' => "sct_amount_entries", 'class' => 'defaultfont']);
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);

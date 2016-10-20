@@ -51,8 +51,7 @@ class we_banner_view extends we_modules_view{
 	}
 
 	function getHiddens(){
-		$out = we_html_element::htmlHiddens(array(
-				'home' => 0,
+		$out = we_html_element::htmlHiddens(['home' => 0,
 				'ncmd' => 'new_banner',
 				'ncmdvalue' => '',
 				'bid' => $this->banner->ID,
@@ -61,7 +60,7 @@ class we_banner_view extends we_modules_view{
 				'bname' => $this->uid,
 				'order' => $this->Order,
 				$this->uid . '_IsFolder' => $this->banner->IsFolder
-		));
+				]);
 		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
@@ -91,11 +90,10 @@ class we_banner_view extends we_modules_view{
 		$headline = $openText = $closeText = $wepos = $itsname = '';
 		switch($this->page){
 			case we_banner_banner::PAGE_PROPERTY:
-				$out .= we_html_element::htmlHiddens(array(
-						'UseFilter' => $this->UseFilter,
+				$out .= we_html_element::htmlHiddens(['UseFilter' => $this->UseFilter,
 						'FilterDate' => $this->FilterDate,
 						'FilterDateEnd' => $this->FilterDateEnd
-				));
+						]);
 				$parts = [['headline' => g_l('modules_banner', '[path]'),
 					'html' => $this->formPath(),
 					'space' => we_html_multiIconBox::SPACE_MED

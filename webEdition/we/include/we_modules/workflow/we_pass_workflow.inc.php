@@ -90,11 +90,10 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 </table>';
 
 				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[pass_workflow]'), we_html_button::position_yes_no_cancel($okbut, "", $cancelbut)) .
-				we_html_element::htmlHiddens(array(
-					"cmd" => "ok",
+				we_html_element::htmlHiddens(["cmd" => "ok",
 					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 					"we_cmd[1]" => $we_transaction
-				));
+					]);
 				?>
 			</form>
 		<?php } ?>

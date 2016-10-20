@@ -45,8 +45,8 @@ class we_glossary_settingFrames{
 
 	function getHTMLFrameset(){
 		return
-			we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'formFunctions.js'), we_html_element::htmlBody(array('class' => 'weDialogBody')
-					, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+			we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'formFunctions.js'), we_html_element::htmlBody(['class' => 'weDialogBody']
+		, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 					we_html_element::htmlIFrame('cmdFrame', 'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		));
 	}

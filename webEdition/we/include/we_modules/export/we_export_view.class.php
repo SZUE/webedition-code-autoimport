@@ -38,8 +38,7 @@ class we_export_view extends we_modules_view{
 	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(array(
-				"table" => we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE),
+			we_html_element::htmlHiddens(["table" => we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE),
 				"ID" => $this->export->ID,
 				"IsFolder" => $this->export->IsFolder,
 				"selDocs" => $this->export->selDocs,
@@ -50,7 +49,7 @@ class we_export_view extends we_modules_view{
 				"selTempl_open" => we_base_request::_(we_base_request::INTLIST, "selTempl_open", ''),
 				"selObjs_open" => we_base_request::_(we_base_request::INTLIST, "selObjs_open", ''),
 				"selClasses_open" => we_base_request::_(we_base_request::INTLIST, "selClasses_open", '')
-		));
+				]);
 	}
 
 	function getJSTop(){
@@ -267,7 +266,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$hiddens["cmd"] = "home";
 		$content = we_html_button::create_button('new_export', "javascript:top.we_cmd('new_export');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT")) . '<br/>' .
 			we_html_button::create_button('new_export_group', "javascript:top.we_cmd('new_export_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT"));
-		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
+		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
 		));
 	}
 

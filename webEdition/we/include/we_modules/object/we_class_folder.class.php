@@ -532,10 +532,9 @@ class we_class_folder extends we_folder{
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 <form name="we_form" method="post">' . we_class::hiddenTrans() .
-			we_html_element::htmlHiddens(array(
-				"Order" => $this->searchclass->Order,
+			we_html_element::htmlHiddens(["Order" => $this->searchclass->Order,
 				"do" => ''
-			)) . '
+				]) . '
 <table class="default" style="margin-bottom:20px;">
 	<tr>
 		<td class="defaultfont lowContrast" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>

@@ -65,8 +65,7 @@ class we_newsletter_view extends we_modules_view{
 	}
 
 	function getHiddens($predefs = []){
-		return we_html_element::htmlHiddens(array(
-				'mod' => 'newsletter',
+		return we_html_element::htmlHiddens(['mod' => 'newsletter',
 				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
 				'we_cmd[0]' => 'show_newsletter',
 				'nid' => (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID),
@@ -76,7 +75,7 @@ class we_newsletter_view extends we_modules_view{
 				'hm' => (isset($predefs['hm']) ? $predefs['hm'] : 0),
 				'ask' => (isset($predefs['ask']) ? $predefs['ask'] : 1),
 				'test' => (isset($predefs['test']) ? $predefs['test'] : 0)
-		));
+				]);
 	}
 
 	function newsletterHiddens(){
@@ -104,18 +103,16 @@ class we_newsletter_view extends we_modules_view{
 			$counter++;
 		}
 
-		$out .= we_html_element::htmlHiddens(array(
-				'groups' => $counter,
+		$out .= we_html_element::htmlHiddens(['groups' => $counter,
 				'Step' => $this->newsletter->Step,
 				'Offset' => $this->newsletter->Offset,
-				'IsFolder' => $this->newsletter->IsFolder)
+				'IsFolder' => $this->newsletter->IsFolder]
 		);
 		return $out;
 	}
 
 	function getHiddensPropertyPage(){
-		return we_html_element::htmlHiddens(array(
-				'Text' => $this->newsletter->Text,
+		return we_html_element::htmlHiddens(['Text' => $this->newsletter->Text,
 				'Subject' => $this->newsletter->Subject,
 				'ParentID' => $this->newsletter->ParentID,
 				'Sender' => $this->newsletter->Sender,
@@ -123,7 +120,7 @@ class we_newsletter_view extends we_modules_view{
 				'Test' => $this->newsletter->Test,
 				'Charset' => $this->newsletter->Charset,
 				'isEmbedImages' => $this->newsletter->isEmbedImages
-		));
+				]);
 	}
 
 	function getHiddensMailingPage(){
@@ -924,9 +921,8 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				}
 				break;
 			case we_newsletter_block::TEXT:
-				$blockHtml = $block->Html ? preg_replace(array(
-						'/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
-						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '${1}${3}${5}', stripslashes($block->Html)) : '';
+				$blockHtml = $block->Html ? preg_replace(['/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
+						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'], '${1}${3}${5}', stripslashes($block->Html)) : '';
 
 				if($hm){
 					$content = $blockHtml ?
@@ -943,7 +939,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				}
 				$content = ($block->Source ?
 						$block->Source :
-						str_ireplace(['&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",], array(' ', "<", ">", '"', "&",), preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
+						str_ireplace(['&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",], [' ', "<", ">", '"', "&",], preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
 				//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
 
 				break;
@@ -1328,8 +1324,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	static function getSettings(){
 		$db = new DB_WE();
 		$domainName = str_replace("www.", "", $_SERVER['SERVER_NAME']);
-		$ret = array(
-			'black_list' => '',
+		$ret = ['black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',
 			'customer_firstname_field' => 'Forename',
 			'customer_html_field' => 'ID',
@@ -1353,7 +1348,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'use_port' => 0,
 			'use_https_refer' => 0,
 			'use_base_href' => 1
-		);
+			];
 
 		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter"');
 		while($db->next_record()){
@@ -1477,8 +1472,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 		for($blockid = 0; $blockid < $blockcount; $blockid++){
 
-			$this->saveToCache(serialize(array(
-				"defaultC" => $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###"),
+			$this->saveToCache(serialize(["defaultC" => $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###"),
 				"femaleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
 				"maleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
 				"title_firstname_lastnameC" => $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
@@ -1494,10 +1488,9 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				"firstname_lastname" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", ""),
 				"firstname" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "", ""),
 				"lastname" => $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", ""),
-				)), $blockcache . "_p_" . $blockid);
+				]), $blockcache . "_p_" . $blockid);
 
-			$this->saveToCache(serialize(array(
-				'defaultC' => $this->getContent($blockid, 0, 1, '', '', '', '', '###CUSTOMERID###'),
+			$this->saveToCache(serialize(['defaultC' => $this->getContent($blockid, 0, 1, '', '', '', '', '###CUSTOMERID###'),
 				'femaleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
 				'maleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
 				'title_firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
@@ -1514,7 +1507,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				'firstname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', ''),
 				'lastname' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', ''),
 				'inlines' => ($this->newsletter->blocks[$blockid]->Pack ? $this->cacheInlines($buffer) : []),
-				)), $blockcache . '_h_' . $blockid);
+				]), $blockcache . '_h_' . $blockid);
 		}
 		// END cache newlsetter blocks
 
@@ -1590,7 +1583,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'<br/>' .
 			we_html_button::create_button('new_newsletter_group', "javascript:top.we_cmd('new_newsletter_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
 
-		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getHiddens(['ncmd' => 'home']) . we_html_element::htmlHidden('home', 0)));
 	}
 
 	private static function we_getObjectFileByID($id, $includepath = ''){

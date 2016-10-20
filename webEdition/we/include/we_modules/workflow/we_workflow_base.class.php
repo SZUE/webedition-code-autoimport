@@ -84,7 +84,7 @@ class we_workflow_base{
 
 	function sendMessage($userID, $subject, $description){
 		$errs = [];
-		$rcpts = array(f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db));
+		$rcpts = [f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db)];
 		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
 	}
 
@@ -102,10 +102,10 @@ class we_workflow_base{
 	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = [];
 		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
-		$rcpts = array($foo); /* user names */
+		$rcpts = [$foo]; /* user names */
 		$m = new we_messaging_todo();
 		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
-		$data = array('subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5);
+		$data = ['subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5];
 
 		$res = $m->send($rcpts, $data);
 
@@ -124,14 +124,14 @@ class we_workflow_base{
 		$errs = '';
 		$m = new we_messaging_todo();
 
-		$i_headers = array('_ID' => $id);
+		$i_headers = ['_ID' => $id];
 
 		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', new DB_WE());
 
 		$m->set_login_data($userid, isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$m->init();
 
-		$data = array('todo_status' => 100);
+		$data = ['todo_status' => 100];
 
 		$res = $m->update_status($data, $i_headers, $userid);
 
@@ -149,7 +149,7 @@ class we_workflow_base{
 		$m = new we_messaging_todo();
 		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 
-		$i_headers = array('_ID' => $id);
+		$i_headers = ['_ID' => $id];
 
 		return $m->delete_items($i_headers);
 	}
@@ -165,8 +165,8 @@ class we_workflow_base{
 		$m->set_login_data($userid, isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$m->init();
 
-		$msg = array('int_hdrs' => array('_ID' => $id, '_from_userid' => $userid));
-		$data = array('body' => '');
+		$msg = ['int_hdrs' => ['_ID' => $id, '_from_userid' => $userid]];
+		$data = ['body' => ''];
 
 		$m->reject($msg, $data);
 	}

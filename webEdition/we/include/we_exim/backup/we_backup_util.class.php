@@ -67,15 +67,14 @@ abstract class we_backup_util{
 	}
 
 	public static function getSettingsFiles($import){
-		return array_filter(array(
-			WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php',
+		return array_filter([WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
 			($import || file_exists(WEBEDITION_PATH . 'agency.php') ?
 			WEBEDITION_DIR . 'agency.php' :
 			'')
-		));
+			]);
 	}
 
 	static function getRealTableName($table){

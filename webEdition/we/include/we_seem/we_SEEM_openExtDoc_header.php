@@ -33,9 +33,9 @@ $errormsg = (strpos($url, $webEditionSiteUrl) === 0 ?
 		sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
-$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
+$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'], 1, 2);
 $table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-$table->setCol(0, 1, array('class' => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $errormsg);
+$table->setCol(0, 1, ['class' => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'], $errormsg);
 
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', we_html_element::htmlBody(["id" => 'eHeaderBody',], $table->getHtml())

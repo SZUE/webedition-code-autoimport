@@ -371,8 +371,8 @@ function we_cmd(){
 		$parts[] = ["headline" => "", "html" => $category, 'space' => we_html_multiIconBox::SPACE_SMALL, 'noline' => 1];
 
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array(
-						'name' => 'we_form'), $hiddens .
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+						'name' => 'we_form'], $hiddens .
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
 					) . $yuiSuggest->getYuiJs()
 				)

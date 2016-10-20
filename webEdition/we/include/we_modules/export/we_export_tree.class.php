@@ -251,7 +251,7 @@ if(!' . $this->topFrame . '.treeData) {
 					$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 				) .
 				$this->getJSLoadTree(!$parentFolder, $treeItems)
-			), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
+			), we_html_element::htmlBody(["bgcolor" => "#ffffff"])
 		);
 	}
 

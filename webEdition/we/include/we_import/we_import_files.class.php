@@ -134,11 +134,10 @@ class we_import_files{
 			$this->parentID = $pid;
 		}
 
-		$fileupload->setFieldParentID(array(
-			'setField' => true,
+		$fileupload->setFieldParentID(['setField' => true,
 			'preset' => ($this->parentID ?: 0),
 			'setFixed' => false,
-		));
+			]);
 
 		// create Start Screen ##############################################################################
 		$parts = [
@@ -235,7 +234,7 @@ class we_import_files{
 
 		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
-		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
+		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, ["styke" => "text-align:right"], we_html_element::htmlDiv(['id' => 'normButton'
 				], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10)));
@@ -256,8 +255,7 @@ class we_import_files{
 			'fu_doc_quality' => $this->quality,
 		];
 
-		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array_merge(array(
-				'step' => 2,
+		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array_merge(['step' => 2,
 				// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
 				'type' => $this->type,
 				'fu_file_parentID' => $this->parentID,
@@ -266,14 +264,14 @@ class we_import_files{
 				'fu_doc_categories' => $this->categories,
 				'fu_doc_isSearchable' => $this->imgsSearchable,
 				'fu_doc_importMetadata' => $this->importMetadata,
-					), $moreHiddens));
+				], $moreHiddens));
 	}
 
 	function _getFrameset(){
 		$step = we_base_request::_(we_base_request::INT, 'step', -1);
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
-				, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+		$body = we_html_element::htmlBody(['id' => 'weMainBody']
+		, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		);
 

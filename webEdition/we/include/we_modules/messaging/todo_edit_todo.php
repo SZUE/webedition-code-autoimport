@@ -88,11 +88,10 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]'));
 		?>
 		<form action="<?= WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 			<?php
-			echo we_html_element::htmlHiddens(array(
-				'we_transaction' => $transaction,
+			echo we_html_element::htmlHiddens(['we_transaction' => $transaction,
 				'rcpts_string' => '',
 				'mode' => $mode
-			));
+			 ]);
 
 			if($mode === 'reject'){
 				$tbl = '
