@@ -1064,6 +1064,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_templates
 !we/include/we_modules/spellchecker/dict
 !we/include/we_modules/shop/images
+!we/include/we_modules/newsletter/cache
 !we/include/we_modules/navigation/layout
 !we/include/we_modules/navigation/conf
 !we/include/we_message_reporting

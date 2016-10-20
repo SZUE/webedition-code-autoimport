@@ -88,7 +88,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'IsFolder' => we_base_request::BOOL,
 			'Charset' => we_base_request::STRING,
 			'isEmbedImages' => we_base_request::BOOL,
-			];
+		];
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 
 		$this->addBlock();
@@ -485,6 +485,17 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	mailing_list:"' . g_l('modules_newsletter', '[mailing_list]') . '",
 };
 ';
+	}
+
+	public static function getFromCache($filename){
+		$buffer = we_base_file::load(WE_CACHE_DIR . 'nl_' . basename($filename));
+		return $buffer ? we_unserialize($buffer) : [];
+	}
+
+	public static function saveToCache(array $content, $filename){
+		$saveName = WE_CACHE_DIR . 'nl_' . basename($filename);
+		we_base_file::insertIntoCleanUp($saveName, 86400);
+		return we_base_file::save($saveName, we_serialize($content, SERIALIZE_PHP));
 	}
 
 }
