@@ -72,7 +72,7 @@ class we_versions_version{
 	/**
 	 * fields from tblFile and tblObjectFiles which can be modified
 	 */
-	public $modFields = array(//FIXME: use dbset for this!
+	public $modFields = [//FIXME: use dbset for this!
 		'status' => 1,
 		'ParentID' => 2,
 		'Text' => 3,
@@ -96,7 +96,7 @@ class we_versions_version{
 		'Templates' => 23,
 		'Charset' => 25,
 		'InGlossar' => 26
-	);
+	 ];
 
 	/**
 	 *  Constructor for class 'weVersions'
@@ -729,7 +729,7 @@ class we_versions_version{
 	 */
 	public static function getContentTypesVersioning(){
 
-		$contentTypes = array('all');
+		$contentTypes = ['all'];
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
 			switch($k){
@@ -1296,12 +1296,11 @@ class we_versions_version{
 
 	function getDocContent($we_doc, $includepath = ""){
 		update_time_limit(0);
-		$backup = array(
-			'request' => empty($_REQUEST) ? false : $_REQUEST,
+		$backup = ['request' => empty($_REQUEST) ? false : $_REQUEST,
 			'trans' => empty($GLOBALS['we_transaction']) ? false : $GLOBALS['we_transaction'],
 			'doc' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false,
 			'dyn' => isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
-		);
+			];
 		$GLOBALS['getDocContentVersioning'] = true;
 		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
@@ -1362,14 +1361,13 @@ class we_versions_version{
 	 * @abstract save version-entry in DB which is marked as deleted
 	 */
 	function setVersionOnDelete($docID, $docTable, $ct, we_database_base $db){
-		$lastEntry = array_merge(self::getLastEntry($docID, $docTable, $db), array(
-			'timestamp' => sql_function('UNIX_TIMESTAMP()'),
+		$lastEntry = array_merge(self::getLastEntry($docID, $docTable, $db), ['timestamp' => sql_function('UNIX_TIMESTAMP()'),
 			'status' => "deleted",
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '',
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
-		));
+			]);
 		$lastEntry['version'] = (isset($lastEntry['version'])) ? $lastEntry['version'] + 1 : 1;
 
 		unset($lastEntry['ID']);
@@ -1401,13 +1399,12 @@ class we_versions_version{
 		$binaryPath = "";
 		if($data){
 			$binaryPath = $db->f('binaryPath');
-			$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')] = array(
-				'Text' => $data['Text'],
+			$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')] = ['Text' => $data['Text'],
 				'ContentType' => $data['ContentType'],
 				'Path' => $data['Path'],
 				'Version' => $data['version'],
 				'documentID' => $data['documentID'],
-			);
+				];
 		}
 
 		$filePath = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
@@ -1590,13 +1587,12 @@ class we_versions_version{
 				}
 			}
 
-			$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']] = array(
-				'Text' => $resetArray['Text'],
+			$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']] = ['Text' => $resetArray['Text'],
 				'ContentType' => $resetArray['ContentType'],
 				'Path' => $resetArray['Path'],
 				'Version' => $resetArray['version'],
 				'documentID' => $resetArray['documentID'],
-			);
+				];
 
 //update versions if id or path were changed
 			if(!$existsInFileTable){
@@ -1972,13 +1968,12 @@ class we_versions_version{
 				self::resetVersion($data["ID"], $data["version"], $publish);
 
 				//FIXME: isn't this already set in resetVersion
-				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]] = array(
-					'Text' => $data["text"],
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]] = ['Text' => $data["text"],
 					'ContentType' => $data["contenttype"],
 					'Path' => $data["path"],
 					'Version' => $data["version"],
 					'documentID' => $data["documentID"],
-				);
+					];
 
 				break;
 

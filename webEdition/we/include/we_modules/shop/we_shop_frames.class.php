@@ -220,7 +220,7 @@ function setTab(tab) {
 
 /// config
 		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
-		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
+		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : [0];
 
 		$classid = $fe[0];
 		$resultO = array_shift($fe);
@@ -304,7 +304,7 @@ function setTab(tab) {
 			case 'edit_shop_shipping':
 				return self::showDialogShipping();
 			case 'edit_order_properties':
-				$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+				$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 				we_html_tools::protect($protect);
 				return $this->View->getProperties();
 
@@ -345,7 +345,7 @@ function setTab(tab) {
 	}
 
 	private static function showPrefDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 
 		$DB_WE = $GLOBALS['DB_WE'];
@@ -525,7 +525,7 @@ function setTab(tab) {
 	}
 
 	private static function showPaymentDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 
 		$DB_WE = $GLOBALS['DB_WE'];
@@ -542,8 +542,8 @@ function setTab(tab) {
 		$Parts = [];
 
 		if(defined('CUSTOMER_TABLE')){
-			$htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 4, 3);
-			$htmlTable->setCol($row++, 0, array('colspan' => 4, 'class' => 'defaultfont'), g_l('modules_shop', '[FormFieldsTxt]'));
+			$htmlTable = new we_html_table(['class' => 'default withSpace', 'width' => "100%"], 4, 3);
+			$htmlTable->setCol($row++, 0, ['colspan' => 4, 'class' => 'defaultfont'], g_l('modules_shop', '[FormFieldsTxt]'));
 
 			$custfields = [];
 
@@ -553,7 +553,7 @@ function setTab(tab) {
 			}
 
 			$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldForname]'));
-			$htmlTable->setCol($row, 1, array('style' => 'width:10px;'));
+			$htmlTable->setCol($row, 1, ['style' => 'width:10px;']);
 			$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldForname', $custfields, 1, $feldnamen[0]));
 
 			$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldSurname]'));
@@ -572,7 +572,7 @@ function setTab(tab) {
 			$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldEmail]'));
 			$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge([''], $custfields), 1, $feldnamen[18]));
 
-			$Parts[] = array("html" => $htmlTable->getHtml());
+			$Parts[] = ["html" => $htmlTable->getHtml()];
 		}
 
 // PayPal
@@ -596,18 +596,18 @@ function setTab(tab) {
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[paypalbusiness]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("ppB", 30, $feldnamen[6], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalbTxt]') . ' </span>');
 
-		$paypalPV = array("default" => "PayPal-Shop", "test" => "Sandbox (Test) ");
+		$paypalPV = ["default" => "PayPal-Shop", "test" => "Sandbox (Test) "];
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[paypalSB]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalSBTxt]') . ' </span>');
 
-		$Parts[] = array("html" => $htmlTable->getHtml());
+		$Parts[] = ["html" => $htmlTable->getHtml()];
 
 // saferpay
 		$htmlTable = new we_html_table(['class' => 'default withSpace', 'width' => "100%"], 10, 3);
 		$row = 0;
 		$htmlTable->setCol($row++, 0, ['class' => 'weDialogHeadline', 'colspan' => 4], g_l('modules_shop', '[saferpay]'));
 
-		$saferPayLang = array("en" => "english", "de" => "deutsch", "fr" => "francais", "it" => "italiano");
+		$saferPayLang = ["en" => "english", "de" => "deutsch", "fr" => "francais", "it" => "italiano"];
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayTermLang]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('lcS', $saferPayLang, 1, $feldnamen[8]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayLcTxt]') . ' </span>');
 
@@ -617,15 +617,15 @@ function setTab(tab) {
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpaybusiness]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spB", 30, $feldnamen[10], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaybTxt]') . ' </span>');
 
-		$saferPayCollect = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
+		$saferPayCollect = ["no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]')];
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayAllowCollect]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spC', $saferPayCollect, 1, $feldnamen[11]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayAllowCollectTxt]') . ' </span>');
 
-		$saferPayDelivery = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
+		$saferPayDelivery = ["no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]')];
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayDelivery]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spD', $saferPayDelivery, 1, $feldnamen[12]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayDeliveryTxt]') . ' </span>');
 
-		$saferPayConfirm = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
+		$saferPayConfirm = ["no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]')];
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayUnotify]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spCo', $saferPayConfirm, 1, $feldnamen[13]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayUnotifyTxt]') . ' </span>');
 
@@ -638,7 +638,7 @@ function setTab(tab) {
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayconfPath]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
 
-		$htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:20px;'), g_l('modules_shop', '[saferpaydesc]'));
+		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'padding-bottom:20px;'], g_l('modules_shop', '[saferpaydesc]'));
 		$htmlTable->setColContent($row++, 2, we_class::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
 
 		$Parts[] = ["html" => $htmlTable->getHtml()];
@@ -651,7 +651,7 @@ function setTab(tab) {
 	}
 
 	private static function savePaymentDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
 
@@ -667,7 +667,7 @@ function setTab(tab) {
 	}
 
 	private static function showStatusMailsDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
 
@@ -683,7 +683,7 @@ function setTab(tab) {
 
 // array with all rules
 
-		$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Text');
+		$ignoreFields = ['ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Text'];
 		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
 		$selectFields['-'] = '-';
 		foreach($customerTableFields as $tblField){
@@ -715,7 +715,7 @@ function setTab(tab) {
 		}
 
 		foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-			$tabStatus->setCol($fieldkey + 2, 0, array('class' => "defaultfont bold", "width" => 120), $fieldname);
+			$tabStatus->setCol($fieldkey + 2, 0, ['class' => "defaultfont bold", "width" => 120], $fieldname);
 		}
 		foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 			$tabStatus->setCol($fieldkey + 2, 1, ['class' => 'defaultfont'], we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHidden[$fieldname], 'FieldsHidden[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
@@ -819,7 +819,7 @@ function setTab(tab) {
 	}
 
 	private static function showVatsDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 
 		$saveSuccess = false;
@@ -1088,7 +1088,7 @@ function setTab(tab) {
 	}
 
 	private static function showCategoriesDialog(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 
 		$DB_WE = $GLOBALS['DB_WE'];
@@ -1149,7 +1149,7 @@ function setTab(tab) {
 
 //make category dirs select
 		$DB_WE->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' ORDER BY Path');
-		$allCategoryDirs = array('-1' => g_l('modules_shop', '[shopcats][select_shopCatDir]'));
+		$allCategoryDirs = ['-1' => g_l('modules_shop', '[shopcats][select_shopCatDir]')];
 		while($DB_WE->next_record()){
 			$data = $DB_WE->getRecord();
 			$allCategoryDirs[$data['ID']] = $data['Path'];
@@ -1314,7 +1314,7 @@ function setTab(tab) {
 	}
 
 	private static function showDialogShipping(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
 		$weShippingControl = we_shop_shippingControl::getShippingControl();

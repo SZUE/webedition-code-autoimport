@@ -33,16 +33,15 @@ if(is_array($_SESSION['weS']['we_data'][$transaction])){
 	$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
-	$arr = array(
-		'rcpts_string' => we_base_request::_(we_base_request::EMAIL, 'rcpts_string'),
+	$arr = ['rcpts_string' => we_base_request::_(we_base_request::EMAIL, 'rcpts_string'),
 		'subject' => we_base_request::_(we_base_request::STRING, 'mn_subject'),
 		'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
-	);
+		];
 
 	$res = $messaging->send($arr);
 } else {
 	$errs = [];
-	$rcpts = array(urldecode(we_base_request::_(we_base_request::STRING, 'rcpts_string'))); /* user names */
+	$rcpts = [urldecode(we_base_request::_(we_base_request::STRING, 'rcpts_string'))]; /* user names */
 	$res = we_messaging_message::newMessage($rcpts, we_base_request::_(we_base_request::STRING, 'mn_subject'), we_base_request::_(we_base_request::STRING, 'mn_body'), $errs);
 }
 

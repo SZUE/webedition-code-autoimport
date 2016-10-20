@@ -63,11 +63,11 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			we_html_element::jsElement(
 				'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
 				($weGlossaryFrames->View->Glossary->Type === "link" ?
-					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") . '");' :
-					'') .
+				'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ?: "intern") . '");' :
+				'') .
 				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
-					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") . '");' :
-					'')
+				'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ?: "intern") . '");' :
+				'')
 			) . $yuiSuggest->getYuiJs();
 
 
@@ -84,8 +84,8 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$ShowUnpublish = ($weGlossaryFrames->View->Glossary->ID == 0 || $weGlossaryFrames->View->Glossary->Published > 0);
 
 		$col = 0;
-		$table2 = new we_html_table(array('class' => 'default'), 1, 7);
-		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
+		$table2 = new we_html_table(['class' => 'default'], 1, 7);
+		$table2->setRow(0, ['style' => 'vertical-align:middle;']);
 		if($ShowUnpublish){
 			$table2->setColContent(0, $col++, $UnpublishButton);
 		}
@@ -114,19 +114,18 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	}
 
 	private static function getHTMLTabProperties(we_glossary_glossary $glossary){
-		$types = array(
-			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+		$types = [we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
 			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
 			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
 			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
-		);
+		];
 
 		$hidden = we_html_element::htmlHidden('newone', ($glossary->ID == 0 ? 1 : 0)) .
 			we_html_element::htmlHidden('Published', $glossary->ID == 0 ? 1 : ($glossary->Published > 0 ? 1 : 0), 'Published');
 
 
-		$language = ($glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
+		$language = ($glossary->Language ?: $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
@@ -135,14 +134,11 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, ['onchange' => "top.content.setHot();showType(this.value);"], "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . we_html_forms::checkboxWithHidden((bool) $glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
-		$parts = array(
-			array(
-				"headline" => g_l('modules_glossary', '[path]'),
-				"html" => $content,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				"headline" => g_l('modules_glossary', '[selection]'),
+		$parts = [["headline" => g_l('modules_glossary', '[path]'),
+			"html" => $content,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				["headline" => g_l('modules_glossary', '[selection]'),
 				"html" => self::getHTMLAbbreviation($glossary) .
 				self::getHTMLAcronym($glossary) .
 				self::getHTMLForeignWord($glossary) .
@@ -150,8 +146,8 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 				self::getHTMLTextReplacement($glossary),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1,
-			)
-		);
+			]
+		];
 
 		return array_merge($parts, self::getHTMLLinkAttributes($glossary));
 	}
@@ -269,7 +265,8 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId('docPath');
-		$yuiSuggest->setContentType([we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
+		$yuiSuggest->setContentType([we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
+			we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput('link[Attributes][InternLinkPath]', $linkPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
@@ -339,7 +336,8 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table class="default">
 			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
-			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $wsid, 0, $workspaceID, false, ['style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"], 'value') . '</td></tr>
+			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $wsid, 0, $workspaceID, false, ['style' => "width:520px; border: #AAAAAA solid 1px;",
+				'onchange' => "setHot();"], 'value') . '</td></tr>
 		</table>
 	</div>
 	<table class="default">
@@ -385,7 +383,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[link_selection]') . '</td></tr>
 		<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", ['intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
-				], 1, $modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
+				], 1, $modeCategory, false, ['onchange' => "setHot();showLinkModeCategory(this.value);"], "value", 520) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
 	<table class="default">
@@ -410,24 +408,14 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 
 	private static function getLangField($name, $value, $title, $width){
-
 		$name = md5($name);
-		//FIXME: these values should be obtained from global settings
-		$options = array(
-			'' => '',
-			'de' => 'de',
-			'en' => 'en',
-			'es' => 'es',
-			'fi' => 'fi',
-			'ru' => 'ru',
-			'nl' => 'nl',
-			'pl' => 'pl',
-		);
-		$width = 100;
+		$langs = array_keys(getWELangs());
+		array_unshift($langs, '');
+		$options = array_combine($langs, $langs);
 
-		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
+		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text");
 
-		$select = we_html_tools::htmlSelect($name . '_sel', $options, 1, "", false, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], 'value', $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, 1, "", false, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], 'value');
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -452,15 +440,14 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			'bookmark' => 'bookmark',
 			'alternate' => 'alternate',
 			'nofollow' => 'nofollow',
-			];
+		];
 		$size = 1;
 		$multiple = false;
 		$compare = "value";
-		$width = 100;
 
-		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
+		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text");
 
-		$select = we_html_tools::htmlSelect($name . '_sel', $options, $size, "", $multiple, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], $compare, $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, $size, "", $multiple, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], $compare);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -469,7 +456,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		$input_width = 70;
 		$popup = new we_html_table(['class' => 'withSpace'], 4, 4);
 		$popup->setCol(0, 0, ['colspan' => 2], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
-		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
+		$popup->setCol(0, 2, ['colspan' => 2], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 
 		$popup->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_x]')));
 		$popup->setCol(1, 1, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_y]')));
@@ -487,50 +474,43 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		$popup->setCol(3, 2, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
 
 
-		return array(
-			array(
-				'headline' => '',
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1
-			),
-			array(
-				'headline' => g_l('modules_glossary', '[attributes]'),
+		return [['headline' => '',
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1
+			],
+				['headline' => g_l('modules_glossary', '[attributes]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Title]', 30, $glossary->Title, '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[title]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $glossary->getAttribute('anchor'), '', 'onchange="setHot();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 520), g_l('modules_glossary', '[anchor]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][attribute]', 30, $glossary->getAttribute('attribute'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[link_attribute]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::targetBox('link[Attributes][target]', 30, (520 - 100), '', $glossary->getAttribute('target'), 'setHot();', 8, 100), g_l('modules_glossary', '[target]')),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array(
-				'headline' => g_l('modules_glossary', '[language]'),
+			],
+				['headline' => g_l('modules_glossary', '[language]'),
 				'html' => self::getLangField('link[Attributes][lang]', $glossary->getAttribute('lang'), g_l('modules_glossary', '[link_language]'), 520) .
 				self::getLangField('link[Attributes][hreflang]', $glossary->getAttribute('hreflang'), g_l('modules_glossary', '[href_language]'), 520),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array(
-				'headline' => g_l('modules_glossary', '[keyboard]'),
+			],
+				['headline' => g_l('modules_glossary', '[keyboard]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][accesskey]', 30, $glossary->getAttribute('accesskey'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[accesskey]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][tabindex]', 30, $glossary->getAttribute('tabindex'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[tabindex]')),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array(
-				'headline' => g_l('modules_glossary', '[relation]'),
+			],
+				['headline' => g_l('modules_glossary', '[relation]'),
 				'html' => self::getRevRel('link[Attributes][rel]', $glossary->getAttribute('rel'), 'rel', 520) .
 				self::getRevRel('link[Attributes][rev]', $glossary->getAttribute('rev'), 'rev', 520),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array(
-				'headline' => g_l('modules_glossary', '[popup]'),
+			],
+				['headline' => g_l('modules_glossary', '[popup]'),
 				'html' => $popup->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			)
-		);
+			]
+		];
 	}
 
 }

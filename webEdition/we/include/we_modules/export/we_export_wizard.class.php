@@ -231,7 +231,7 @@ var path="/";'
 					top.header.location="' . $this->frameset . '?pnt=header&step=0";
 					self.focus();');
 
-		$parts = array(
+		$parts = [
 			/* 		array(
 			  "headline"	=> g_l('export',"[we_export]"),
 			  "html"		=> we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML,($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
@@ -244,7 +244,7 @@ var path="/";'
 			],
 				["html" => we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($extype == we_import_functions::TYPE_GENERIC_XML && permissionhandler::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', '[gxml_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("GENERICXML_EXPORT"), g_l('export', '[txt_gxml_export]'), 0, 500),
 				'noline' => 1]
-		);
+		];
 
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$parts[] = ["html" => we_html_forms::radiobutton("csv", ($extype === "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', '[csv_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', '[txt_csv_export]'), 0, 500),
@@ -368,7 +368,7 @@ function we_cmd(){
 		}
 
 		$category = $this->getHTMLCategory();
-		$parts[] = array("headline" => "", "html" => $category, 'space' => we_html_multiIconBox::SPACE_SMALL, 'noline' => 1);
+		$parts[] = ["headline" => "", "html" => $category, 'space' => we_html_multiIconBox::SPACE_SMALL, 'noline' => 1];
 
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array(
@@ -875,7 +875,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 					t_e('export is used');
 					return
-					we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "'");
+						we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "'");
 				}
 				break;
 			case "export":

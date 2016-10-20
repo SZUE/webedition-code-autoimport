@@ -25,8 +25,7 @@ $charsetHandler = new we_base_charsetHandler();
 $whiteList = [];
 $charsets = $charsetHandler->charsets;
 
-$fields = array(
-	'cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+$fields = ['cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),
 	'windowwidth' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 2),
 	'windowheight' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 3),
@@ -55,7 +54,7 @@ $fields = array(
 	'imagestartid' => we_base_request::_(we_base_request::INT, 'we_cmd', '', 26),
 	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
 	'fontsizes' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 28),
-);
+ ];
 
 
 if($fields['charset'] != DEFAULT_CHARSET && $charsets && is_array($charsets)){
@@ -152,7 +151,7 @@ top.close();');
 			$okBut = we_html_button::create_button(we_html_button::OK, "javascript:document.we_form.submit();");
 
 			echo we_html_element::htmlDiv(
-					array('style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'), we_wysiwyg_editor::getHeaderHTML(false, $fields['isInFrontend']) . $e->getHTML()
+				['style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'], we_wysiwyg_editor::getHeaderHTML(false, $fields['isInFrontend']) . $e->getHTML()
 			) .
 			we_html_element::htmlDiv(array('style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel($okBut, $cancelBut)));
 			?>

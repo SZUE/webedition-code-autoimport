@@ -123,12 +123,11 @@ class we_shop_vatRule{
 		$conditionalCondition = we_base_request::_(we_base_request::STRING, 'conditionalCondition');
 		$conditionalReturn = we_base_request::_(we_base_request::STRING, 'conditionalReturn');
 		foreach($conditionalStates as $i => $cs){
-			$retArr[] = array(
-				'states' => self::makeArrayFromReq($cs),
+			$retArr[] = ['states' => self::makeArrayFromReq($cs),
 				'customerField' => $conditionalCustomerField[$i],
 				'condition' => $conditionalCondition[$i],
 				'returnValue' => $conditionalReturn[$i],
-			);
+				];
 		}
 		return $retArr;
 	}

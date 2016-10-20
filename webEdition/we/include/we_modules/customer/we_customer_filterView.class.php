@@ -201,7 +201,7 @@ EO_SCRIPT;
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:' . ($this->width + 13) . 'px;text-align:right">' . $buttonTable . '</div>';
-		return array(self::getDiv($select, $name . 'Div', $isVisible, 22), $script);
+		return [self::getDiv($select, $name . 'Div', $isVisible, 22), $script];
 	}
 
 	private function getHTMLCustomerFilter($startEmpty = false){

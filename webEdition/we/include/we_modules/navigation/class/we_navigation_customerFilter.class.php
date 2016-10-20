@@ -116,20 +116,18 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		if(isset($custFilter['AND']) && isset($custFilter['OR'])){ // old style filter => convert into new style
 			$newFilter = [];
 			foreach($custFilter['AND'] as $f){
-				$newFilter[] = array(
-					'logic' => 'AND',
+				$newFilter[] = ['logic' => 'AND',
 					'field' => $f['operand1'],
 					'operation' => $f['operator'],
 					'value' => $f['operand2']
-				);
+				];
 			}
 			foreach($custFilter['OR'] as $f){
-				$newFilter[] = array(
-					'logic' => 'OR',
+				$newFilter[] = ['logic' => 'OR',
 					'field' => $f['operand1'],
 					'operation' => $f['operator'],
 					'value' => $f['operand2']
-				);
+				];
 			}
 			$custFilter = $newFilter;
 		}
@@ -221,7 +219,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_JSON),
 				'BlackList' => implode(',', $filterObj->getBlackList()),
 				'WhiteList' => implode(',', $filterObj->getWhiteList())
-				]) .
+			]) .
 			' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
 	}
 

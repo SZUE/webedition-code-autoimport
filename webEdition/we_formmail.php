@@ -85,15 +85,14 @@ function contains_bad_str($str_to_test){
 }
 
 function replace_bad_str($str_to_test){
-	$bad_strings = array(
-		'#(content-type)(:)#i',
+	$bad_strings = ['#(content-type)(:)#i',
 		'#(mime-version)(:)#i',
 		'#(multipart/mixed)#i',
 		'#(Content-Transfer-Encoding)(:)#i',
 		'#(bcc)(:)#i',
 		'#(cc)(:)#i',
 		'#(to)(:)#i',
-	);
+		];
 
 	return preg_replace($bad_strings, '($1)$2', $str_to_test);
 }
@@ -108,8 +107,8 @@ function print_error($errortext){
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
-	echo we_html_tools::getHtmlTop('', '', '', '', getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
-		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultfont lowContrast'), $content), $headline) .
+	echo we_html_tools::getHtmlTop('', '', '', '', getHtmlTag('body', ['class' => 'weEditorBody'], '', false, true) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], $content), $headline) .
 		'</body>');
 
 	exit();

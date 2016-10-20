@@ -47,17 +47,15 @@ class we_search_modelBase extends we_tool_model{
 	protected $currentAnzahlMedialinks = 0;
 	protected $currentSetView = 0;
 	protected $currentFolderID = 0;
-	protected $currentSearchForField = array(
-		'text' => 0,
+	protected $currentSearchForField = ['text' => 0,
 		'title' => 0,
 		'meta' => 0,
-	);
-	protected $currentSearchForContentType = array(
-		'image' => 0,
+	 ];
+	protected $currentSearchForContentType = ['image' => 0,
 		'audio' => 0,
 		'video' => 0,
 		'other' => 0,
-	);
+	 ];
 
 	/**
 	 * Default Constructor

@@ -65,9 +65,8 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 		if($previewAvailable && $we_doc->ID){
 			echo we_html_element::htmlIFrame('preview', $we_doc->Path);
 		} else {
-			$parts = array(
-				array("headline" => g_l('weClass', '[preview]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[no_preview_available]'), we_html_tools::TYPE_ALERT), 'space' => we_html_multiIconBox::SPACE_MED)
-			);
+			$parts = [["headline" => g_l('weClass', '[preview]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[no_preview_available]'), we_html_tools::TYPE_ALERT), 'space' => we_html_multiIconBox::SPACE_MED]
+	];
 
 			if($we_doc->ID){
 				$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
@@ -75,7 +74,7 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 			} else {
 				$link = g_l('weClass', '[file_not_saved]');
 			}
-			$parts[] = array("headline" => g_l('weClass', '[download]'), "html" => $link, 'space' => we_html_multiIconBox::SPACE_MED);
+			$parts[] = ["headline" => g_l('weClass', '[download]'), "html" => $link, 'space' => we_html_multiIconBox::SPACE_MED];
 
 			echo we_html_multiIconBox::getHTML('weOtherDocPrev', $parts, 20);
 		}

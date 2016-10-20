@@ -126,9 +126,9 @@ foreach($tbls as $table){
 			if($db->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($db->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($db->f("ID"), $table));
-				$row[] = array('dat' => $step . '&nbsp;' . g_l('resave', '[of]') . '&nbsp;' . $steps . '&nbsp;<i class="fa fa-lg fa-circle" style="color:#' . ($db->f("mywforder") ? '006DB8' : 'E7E7E7') . ';"></i>');
+				$row[] = ['dat' => $step . '&nbsp;' . g_l('resave', '[of]') . '&nbsp;' . $steps . '&nbsp;<i class="fa fa-lg fa-circle" style="color:#' . ($db->f("mywforder") ? '006DB8' : 'E7E7E7') . ';"></i>'];
 			} else {
-				$row[] = array('dat' => "-");
+				$row[] = ['dat' => "-"];
 			}
 		}
 		$content[] = $row;

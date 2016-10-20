@@ -74,12 +74,11 @@ abstract class we_newsletter_util{
 			}
 		}
 		if($emailExists){
-			$fields = array(
-				'ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
+			$fields = ['ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
 				'ModifiedBy' => 'frontend',
-			);
-			$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
-				'isUnsubscribe' => true));
+				];
+			$hook = new weHook('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
+				'isUnsubscribe' => true]);
 			$hook->executeHook();
 			$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
 		}
@@ -150,14 +149,13 @@ abstract class we_newsletter_util{
 			return [];
 		}
 
-		return array(
-			'subscribe_mail' => $subscribe_mail,
+		return ['subscribe_mail' => $subscribe_mail,
 			'subscribe_html' => we_base_request::_(we_base_request::BOOL, 'we_subscribe_html__'),
 			'subscribe_salutation' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_salutation__', ''))),
 			'subscribe_title' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_title__', ''))),
 			'subscribe_firstname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_firstname__', ''))),
 			'subscribe_lastname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_lastname__', '')))
-		);
+			];
 	}
 
 	static function mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, array $f, $includeimages){
@@ -171,14 +169,13 @@ abstract class we_newsletter_util{
 
 		$adminmailtextHTML = strtr(
 			(($adminmailid > 0) && we_base_file::isWeFile($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '')
-			, array(
-			'###MAIL###' => $f['subscribe_mail'],
+			, ['###MAIL###' => $f['subscribe_mail'],
 			'###SALUTATION###' => $f['subscribe_salutation'],
 			'###TITLE###' => $f['subscribe_title'],
 			'###FIRSTNAME###' => $f['subscribe_firstname'],
 			'###LASTNAME###' => $f['subscribe_lastname'],
 			'###HTML###' => $f['subscribe_html'],
-		));
+			]);
 		$phpmail->addHTMLPart($adminmailtextHTML);
 		if(isset($includeimages)){
 			$phpmail->setIsEmbedImages($includeimages);
@@ -433,8 +430,7 @@ abstract class we_newsletter_util{
 			$GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'] = substr(md5(time()), 4, 8);
 			$GLOBALS['WE_NEWSUBSCRIBER_USERNAME'] = $f['subscribe_mail'];
 		}
-		$fields = (!$uid ? array(
-			'Username' => $f['subscribe_mail'],
+		$fields = (!$uid ? ['Username' => $f['subscribe_mail'],
 			'Path' => '/' . $f['subscribe_mail'],
 			'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
 			'MemberSince' => time(),
@@ -447,12 +443,11 @@ abstract class we_newsletter_util{
 			($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
 			($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
 			($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
-			) : array(
-			'ModifyDate' => time(),
+			] : ['ModifyDate' => time(),
 			'ModifiedBy' => 'frontend',
-		));
-		$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
-			'isSubscribe' => true, 'isUnsubscribe' => false));
+			]);
+		$hook = new weHook('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
+			'isSubscribe' => true, 'isUnsubscribe' => false]);
 		$hook->executeHook();
 
 		$db->query($uid ?
@@ -468,7 +463,7 @@ abstract class we_newsletter_util{
 			} else if(isset($customerFields['Newsletter_Ok']['default']) && ($customerFields['Newsletter_Ok']['default'])){
 				$setVals = explode(',', $customerFields['Newsletter_Ok']['default']);
 			} else {
-				$setVals = array('', '1');
+				$setVals = ['', '1'];
 			}
 
 			switch(true){
@@ -488,7 +483,7 @@ abstract class we_newsletter_util{
 
 			if(!$db->isColExist(CUSTOMER_TABLE, $abo)){
 				$db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $db->escape($setDefault) . '"', 'Username');
-				$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1');
+				$fieldDefault = ['default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1'];
 				$customerFields[$abo] = $fieldDefault;
 				$updateCustomerFields = true;
 			}

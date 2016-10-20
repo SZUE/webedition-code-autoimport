@@ -35,7 +35,7 @@ class we_xml_browser extends we_xml_parser{
 	}
 
 	function getNodeset($xpath = "*"){
-		$xpath.="/child::*";
+		$xpath .= "/child::*";
 		return $this->evaluate($xpath);
 	}
 
@@ -49,7 +49,7 @@ class we_xml_browser extends we_xml_parser{
 		} else {
 			$this->cache = $cache;
 		}
-		$expire = $expire? : 1800;
+		$expire = $expire ?: 1800;
 
 		if(!is_dir(dirname($cache))){
 			we_base_file::createLocalFolderByPath(dirname($cache));
@@ -81,7 +81,7 @@ class we_xml_browser extends we_xml_parser{
 			}
 			$nodes[$node] = ["attributes" => $nodeattribs,
 				"content" => $this->getData($node)
-				];
+			];
 		}
 		return $nodes;
 	}
@@ -115,9 +115,7 @@ class we_xml_browser extends we_xml_parser{
 					break;
 				}
 				if($timeout){
-					$ctx = stream_context_create(['http' => array(
-							'timeout' => 1
-					)]);
+					$ctx = stream_context_create(['http' => ['timeout' => 1]]);
 				}
 				$content = ($timeout ? file_get_contents($file, false, $ctx) : file_get_contents($file));
 				break;
@@ -179,7 +177,7 @@ class we_xml_browser extends we_xml_parser{
 				$write = true;
 			}
 			if($write){
-				$ret.=$data;
+				$ret .= $data;
 			}
 		}
 		fclose($file);

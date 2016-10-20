@@ -122,7 +122,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				}
 				break;
 			case 'todo_markdone':
-				$arr = array('todo_status' => 100);
+				$arr = ['todo_status' => 100];
 				$this->messaging->used_msgobjs['we_todo']->update_status($arr, $this->messaging->selected_message['int_hdrs']);
 				$out .= $this->refresh_work(true);
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);

@@ -65,8 +65,7 @@ class we_newsletter_block extends we_newsletter_base{
 	function __construct($newsletterID = 0){
 		parent::__construct();
 		$this->table = NEWSLETTER_BLOCK_TABLE;
-		$this->persistents = array(
-			'NewsletterID' => we_base_request::INT,
+		$this->persistents = ['NewsletterID' => we_base_request::INT,
 			'Groups' => we_base_request::INTLIST,
 			'Type' => we_base_request::INT,
 			'LinkID' => we_base_request::INT,
@@ -74,7 +73,7 @@ class we_newsletter_block extends we_newsletter_base{
 			'Source' => we_base_request::RAW,
 			'Html' => we_base_request::RAW,
 			'Pack' => we_base_request::RAW,
-		);
+			];
 
 		if($newsletterID){
 			$this->ID = $newsletterID;

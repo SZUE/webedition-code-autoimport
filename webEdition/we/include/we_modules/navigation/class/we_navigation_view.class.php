@@ -397,12 +397,10 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 
 		if(($field = we_base_request::_(we_base_request::STRING, 'SortField')) !== false){
 			if($field){
-				$this->Model->Sort = array(
-					array(
-						'field' => $field,
+				$this->Model->Sort = [['field' => $field,
 						'order' => we_base_request::_(we_base_request::STRING, 'SortOrder')
-					)
-				);
+						]
+				];
 			} else {
 				$this->Model->Sort = '';
 			}

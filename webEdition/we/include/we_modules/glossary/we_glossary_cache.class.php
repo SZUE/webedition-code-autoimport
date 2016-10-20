@@ -110,9 +110,8 @@ class we_glossary_cache{
 			$Text = oldHtmlspecialchars($Text, ENT_NOQUOTES);
 			$Title = oldHtmlspecialchars($Title, ENT_QUOTES);
 
-			$temp = array(
-				'Fullword' => $DB_WE->f('Fullword')
-			);
+			$temp = ['Fullword' => $DB_WE->f('Fullword')
+				];
 
 			if($Title){
 				$temp['title'] = $Title;
@@ -295,7 +294,7 @@ if (window.screen) {
 							// popup_toolbar
 							",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
 							"';" .
-							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
+							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", ['\'' => '@@@we@@@']);
 
 					$temp['href'] = '#';
 				}
@@ -304,13 +303,12 @@ if (window.screen) {
 			$Items[$Text][$Type] = $temp;
 		}
 
-		$content = array(
-			we_glossary_glossary::TYPE_LINK => [],
+		$content = [we_glossary_glossary::TYPE_LINK => [],
 			we_glossary_glossary::TYPE_ACRONYM => [],
 			we_glossary_glossary::TYPE_ABBREVATION => [],
 			we_glossary_glossary::TYPE_FOREIGNWORD => [],
 			we_glossary_glossary::TYPE_TEXTREPLACE => [],
-		);
+			];
 
 		foreach($Items as $Text => $Value){
 			$prefix = '';

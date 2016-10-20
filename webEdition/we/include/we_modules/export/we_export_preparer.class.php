@@ -195,11 +195,10 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 
 		if($ct){
-			$new = array(
-				'ID' => $id,
+			$new = ['ID' => $id,
 				'ContentType' => $ct,
 				'level' => $level
-			);
+				];
 			if(!$this->RefTable->exists($new)){
 				$this->RefTable->add2($new);
 			}
@@ -207,7 +206,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getDepFromArray($array){
-		$ret = array("docs" => [], "objs" => []);
+		$ret = ["docs" => [], "objs" => []];
 
 		if(!empty($array['id'])){
 			$ret["docs"][] = $array['id'];
@@ -354,7 +353,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function makeExportList(){
-		$searchCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE);
+		$searchCT = [we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE];
 
 		$step = 0;
 		while(($id = $this->RefTable->getNext())){
@@ -377,7 +376,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			if($this->options["handle_owners"]){
 				$uids = [];
 				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users)){
-					$uids = array($doc->CreatorID);
+					$uids = [$doc->CreatorID];
 				}
 				if(isset($doc->Owners)){
 					$uids = array_merge($uids, makeArrayFromCSV($doc->Owners));

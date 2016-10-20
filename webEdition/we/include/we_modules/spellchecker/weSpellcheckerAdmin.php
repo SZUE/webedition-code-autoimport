@@ -1,7 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
-$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : [false];
 we_html_tools::protect($protect);
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
@@ -17,8 +17,7 @@ echo we_html_tools::getHtmlTop();
 $_width = 600;
 $space = 5;
 
-$l_param = array(
-	'l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
+$l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 	'l_userDictAdmin' => g_l('modules_spellchecker', '[userDictAdmin]'),
 	'l_select' => g_l('modules_spellchecker', '[select]'),
 	'l_select_words' => g_l('modules_spellchecker', '[select_words]'),
@@ -41,7 +40,7 @@ $l_param = array(
 	'upload_size' => getUploadMaxFilesize(),
 	'upload_url' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php',
 	'scid' => ''
-);
+ ];
 
 $l_params = '';
 
@@ -53,20 +52,20 @@ foreach($l_param as $key => $value){
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, "setTab(1);", array("id" => "tab_1"));
-$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, "setTab(2);", array("id" => "tab_2"));
+$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, "setTab(1);", ["id" => "tab_1"]);
+$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, "setTab(2);", ["id" => "tab_2"]);
 
 
 $js = we_tabs::getHeader();
 
-$table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 3, 5);
+$table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 3, 5);
 
-$table->setRow(0, array('class' => 'bold', 'style' => 'background-color: silver;'), 5);
-$table->setCol(0, 0, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[default]'));
-$table->setCol(0, 1, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[dictionary]'));
-$table->setCol(0, 2, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[active]'));
-$table->setCol(0, 3, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[refresh]'));
-$table->setCol(0, 4, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[delete]'));
+$table->setRow(0, ['class' => 'bold', 'style' => 'background-color: silver;'], 5);
+$table->setCol(0, 0, ['class' => 'small', 'style' => 'vertical-align:top;color: white;'], g_l('modules_spellchecker', '[default]'));
+$table->setCol(0, 1, ['style' => 'vertical-align:top', 'class' => 'small'], g_l('modules_spellchecker', '[dictionary]'));
+$table->setCol(0, 2, ['style' => 'vertical-align:top', 'class' => 'small'], g_l('modules_spellchecker', '[active]'));
+$table->setCol(0, 3, ['style' => 'vertical-align:top', 'class' => 'small'], g_l('modules_spellchecker', '[refresh]'));
+$table->setCol(0, 4, ['style' => 'vertical-align:top', 'class' => 'small'], g_l('modules_spellchecker', '[delete]'));
 
 $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 

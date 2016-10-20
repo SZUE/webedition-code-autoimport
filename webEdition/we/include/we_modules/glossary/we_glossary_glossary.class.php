@@ -155,7 +155,7 @@ class we_glossary_glossary extends we_base_model{
 	 */
 	public function __construct($GlossaryId = 0){
 		parent::__construct(GLOSSARY_TABLE);
-		$this->_Serialized = array('Attributes');
+		$this->_Serialized = ['Attributes'];
 
 		if(intval($GlossaryId)){
 			$this->ID = intval($GlossaryId);
@@ -202,11 +202,10 @@ class we_glossary_glossary extends we_base_model{
 
 		$ReturnValue = [];
 		while($GLOBALS['DB_WE']->next_record()){
-			$Item = array(
-				'Type' => $GLOBALS['DB_WE']->f("Type"),
+			$Item = ['Type' => $GLOBALS['DB_WE']->f("Type"),
 				'Text' => $GLOBALS['DB_WE']->f("Text"),
 				'Title' => $GLOBALS['DB_WE']->f("Title"),
-			);
+				];
 
 			if($GLOBALS['DB_WE']->f("Type") != self::TYPE_FOREIGNWORD){
 				$temp = we_unserialize($GLOBALS['DB_WE']->f("Attributes"));
@@ -368,7 +367,7 @@ class we_glossary_glossary extends we_base_model{
 	private static function escapeChars($Text){
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )
 
-		$escape = array('{', '&', '/', '\'', '"', '%');
+		$escape = ['{', '&', '/', '\'', '"', '%'];
 
 		foreach($escape as $k){
 			$before = $k;
@@ -450,7 +449,7 @@ class we_glossary_glossary extends we_base_model{
 	}
 
 	function checkFieldText($text){
-		$check = array('\\', '$', '|');
+		$check = ['\\', '$', '|'];
 
 		foreach($check as $k){
 			if(stristr(trim($text), $k)){

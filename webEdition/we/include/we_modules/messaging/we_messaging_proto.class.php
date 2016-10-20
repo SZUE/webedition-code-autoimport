@@ -83,7 +83,7 @@ abstract class we_messaging_proto /* extends we_class */{
 		$this->DB_WE = new DB_WE();
 
 		$this->Name = 'msg_proto_' . md5(uniqid(__FILE__, true));
-		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached');
+		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached'];
 	}
 
 	/* Getters And Setters */
@@ -252,10 +252,9 @@ abstract class we_messaging_proto /* extends we_class */{
 	}
 
 	function delete_folders(array $f_arr){
-		$ret = array(
-			"res" => 0,
+		$ret = ["res" => 0,
 			"ids" => []
-		);
+			];
 
 		if(!$f_arr){
 			return $ret;

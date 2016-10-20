@@ -46,7 +46,7 @@ class we_class_folder extends we_folder{
 	}
 
 	public function makeSameNew(array $keep = []){
-		parent::makeSameNew(array_merge($keep, array('TableID', 'TriggerID', 'ClassPath', 'RootfolderID', 'ParentID', 'Table')));
+		parent::makeSameNew(array_merge($keep, ['TableID', 'TriggerID', 'ClassPath', 'RootfolderID', 'ParentID', 'Table']));
 	}
 
 	private function setClassProp(){
@@ -169,7 +169,7 @@ class we_class_folder extends we_folder{
 
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
-		$parents = array(0, $this->ID);
+		$parents = [0, $this->ID];
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
 		$this->setClassProp();
 		if($this->ID){
@@ -292,13 +292,12 @@ class we_class_folder extends we_folder{
 		$ok = empty($DefaultValues["WorkspaceFlag"]) ? '' : $DefaultValues["WorkspaceFlag"];
 
 		$javascriptAll = "";
-		$headline = array(
+		$headline = [['dat' => ''],
+				['dat' => g_l('modules_objectClassfoldersearch', '[zeige]')],
 				['dat' => ''],
-			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
-				['dat' => ''],
-			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
-		);
+				['dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'],
+				['dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'],
+		];
 
 		$content = $head = $type = [];
 		$f = 0;
@@ -336,29 +335,25 @@ class we_class_folder extends we_folder{
 			}
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
-			$content[$f] = array(
-				array(
-					"align" => "center",
-					'dat' => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
-					'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
-					'<i class="fa fa-square-o wecheckIcon disabled"></i>'
-					)),
-				array(
-					"align" => "center",
+			$content[$f] = [["align" => "center",
+				'dat' => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
+				'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
+				'<i class="fa fa-square-o wecheckIcon disabled"></i>'
+				)],
+					["align" => "center",
 					'dat' => '<i class="fa fa-lg fa-circle" style="color:#' . (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
 					'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '"' : //blue
 					'E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"'//grey
 					) . '></i>'//FIXME: add text as in others shown
-				),
-				array(
-					'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($this->searchclass->f("IsSearchable") ?
+				],
+					['dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($this->searchclass->f("IsSearchable") ?
 					'#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') :
 					'#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]')) .
 					'"></i>'
-				),
-				array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'),
-				array('dat' => $this->searchclass->f("ID")),
-			);
+				],
+					['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'],
+				['dat' => $this->searchclass->f("ID")],
+			];
 			for($i = 5; $i < $count; $i++){
 				switch($type[$i]){
 					case 'date':
@@ -434,10 +429,9 @@ class we_class_folder extends we_folder{
 
 				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" ?
 					$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
-					array(
-					0 => g_l('global', '[no]'),
+					[0 => g_l('global', '[no]'),
 					1 => g_l('global', '[yes]'),
-					)
+					]
 					);
 
 				$out .= '
@@ -455,22 +449,22 @@ class we_class_folder extends we_folder{
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) === "date"){
 				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE));
 
-				$month = array('' => '');
+				$month = ['' => ''];
 				for($j = 1; $j <= 12; $j++){
 					$month[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$day = array('' => '');
+				$day = ['' => ''];
 				for($j = 1; $j <= 31; $j++){
 					$day[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$hour = array('' => '');
+				$hour = ['' => ''];
 				for($j = 0; $j <= 23; $j++){
 					$hour[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$minute = array('' => '');
+				$minute = ['' => ''];
 				for($j = 0; $j <= 59; $j++){
 					$minute[$j] = ($j < 10 ? '0' : '') . $j;
 				}
@@ -533,7 +527,7 @@ class we_class_folder extends we_folder{
 		$foundItems = $this->searchclass->maxItems;
 		$yuiSuggest = & weSuggest::getInstance();
 
-		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000);
+		$values = [10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000];
 
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
@@ -792,10 +786,9 @@ for ( frameId in _usedEditors ) {
 				break;
 			case 'Workspaces':
 				$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-				$set = array(
-					'Workspaces' => $class['Workspaces'],
+				$set = ['Workspaces' => $class['Workspaces'],
 					'Templates' => $class['Templates'],
-				);
+					];
 				break;
 			default:
 				return '';

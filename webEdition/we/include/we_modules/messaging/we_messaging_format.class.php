@@ -44,7 +44,7 @@ class we_messaging_format extends we_class{
 	function __construct($mode, $sel_msg = NULL){
 		parent::__construct();
 		$this->Name = 'messageformat_' . md5(uniqid(__FILE__, true));
-		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'mode', 'userid', 'username');
+		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'mode', 'userid', 'username'];
 		$this->Table = MESSAGES_TABLE;
 		$this->mode = $mode;
 		$this->sel_msg = $sel_msg;
@@ -99,10 +99,9 @@ class we_messaging_format extends we_class{
 	}
 
 	function saveInSession(&$save, $toFile = false){
-		$save = array(
-			[],
+		$save = [[],
 			$this->elements
-		);
+			];
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};
 		}

@@ -609,6 +609,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateShop(we_database_base $db){
+		//FIXME: weShippingControl, weShipping should not be objects!!!
+
 		//convert 1st gen values
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db))){
 			$zw = we_unserialize(

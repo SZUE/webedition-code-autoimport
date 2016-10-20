@@ -28,7 +28,7 @@ class we_messaging_message extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
 	var $selected_message = [];
 	var $selected_set = [];
-	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
+	var $search_fields = ['m.headerSubject', 'm.headerFrom', 'm.MessageText'];
 	var $search_folder_ids = [];
 	var $sortfield = 'm.headerDate';
 	var $last_sortfield = '';
@@ -38,13 +38,13 @@ class we_messaging_message extends we_messaging_proto{
 	var $sql_class_nr = 1;
 	var $Short_Description = 'webEdition Message';
 	var $view_class = 'message';
-	var $sf2sqlfields = array('m.headerSubject' => array('hdrs', 'Subject'),
-		'm.headerDate' => array('hdrs', 'Date'),
-		'm.headerFrom' => array('hdrs', 'From'),
-		'm.seenStatus' => array('hdrs', 'seenStatus'),
-		'm.MessageText' => array('body', 'MessageText'));
-	var $so2sqlso = array('desc' => 'asc',
-		'asc' => 'desc');
+	var $sf2sqlfields = ['m.headerSubject' => ['hdrs', 'Subject'],
+		'm.headerDate' => ['hdrs', 'Date'],
+		'm.headerFrom' => ['hdrs', 'From'],
+		'm.seenStatus' => ['hdrs', 'seenStatus'],
+		'm.MessageText' => ['body', 'MessageText']];
+	var $so2sqlso = ['desc' => 'asc',
+		'asc' => 'desc'];
 	protected $obj_type = we_messaging_proto::MESSAGE_NR;
 
 	/* Constructor */
@@ -53,7 +53,8 @@ class we_messaging_message extends we_messaging_proto{
 		parent::__construct();
 		$this->ClassName = 'we_message';
 		$this->Name = 'message_' . md5(uniqid(__FILE__, true));
-		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields');
+		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids',
+			'search_fields'];
 	}
 
 	function init($sessDat = ''){
@@ -124,7 +125,7 @@ class we_messaging_message extends we_messaging_proto{
 					'MessageText' => $tmp['MessageText'],
 					'seenStatus' => $tmp['seenStatus'],
 					'tag' => $tmp['tag'],
-					]));
+			]));
 
 			//$pending_ids[] = $this->DB_WE->getInsertId();
 		}
@@ -133,11 +134,10 @@ class we_messaging_message extends we_messaging_proto{
 	}
 
 	function send(&$rcpts, &$data){
-		$results = array(
-			'err' => [],
+		$results = ['err' => [],
 			'ok' => [],
 			'failed' => [],
-		);
+		];
 		$db = new DB_WE();
 
 		foreach($rcpts as $rcpt){
@@ -185,7 +185,7 @@ class we_messaging_message extends we_messaging_proto{
 		$sfield_cond = '';
 
 		if(isset($criteria['search_fields'])){
-			$arr = array('hdrs', 'From');
+			$arr = ['hdrs', 'From'];
 			$sf_uoff = self::arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 			if($sf_uoff > -1){
@@ -233,17 +233,17 @@ class we_messaging_message extends we_messaging_proto{
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
 
-			$this->selected_set[] = array('ID' => $i++,
-				'hdrs' => array('Date' => $this->DB_WE->f('headerDate'),
+			$this->selected_set[] = ['ID' => $i++,
+				'hdrs' => ['Date' => $this->DB_WE->f('headerDate'),
 					'Subject' => $this->DB_WE->f('headerSubject'),
 					'From' => $this->DB_WE->f('username'),
 					'Priority' => $this->DB_WE->f('Priority'),
 					'seenStatus' => $this->DB_WE->f('seenStatus'),
-					'ClassName' => $this->ClassName),
-				'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerUserID'),
+					'ClassName' => $this->ClassName],
+				'int_hdrs' => ['_from_userid' => $this->DB_WE->f('headerUserID'),
 					'_ParentID' => $this->DB_WE->f('ParentID'),
 					'_ClassName' => $this->ClassName,
-					'_ID' => $this->DB_WE->f('ID')));
+					'_ID' => $this->DB_WE->f('ID')]];
 		}
 
 		/* mark selected_set messages as seen */
@@ -276,18 +276,18 @@ class we_messaging_message extends we_messaging_proto{
 				$read_ids[] = $this->DB_WE->f('ID');
 			}
 
-			$ret[] = array('ID' => $i++,
-				'hdrs' => array('Date' => $this->DB_WE->f('headerDate'),
+			$ret[] = ['ID' => $i++,
+				'hdrs' => ['Date' => $this->DB_WE->f('headerDate'),
 					'Subject' => $this->DB_WE->f('headerSubject'),
 					'From' => $this->DB_WE->f('First') . ' ' . $this->DB_WE->f('Second') . ' (' . $this->DB_WE->f('username') . ')',
 					'To' => $this->DB_WE->f('headerTo'),
 					'Priority' => $this->DB_WE->f('Priority'),
 					'seenStatus' => $this->DB_WE->f('seenStatus'),
-					'ClassName' => $this->ClassName),
-				'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerUserID'),
+					'ClassName' => $this->ClassName],
+				'int_hdrs' => ['_from_userid' => $this->DB_WE->f('headerUserID'),
 					'_ID' => $this->DB_WE->f('ID'),
-					'_reply_to' => $this->DB_WE->f('username')),
-				'body' => array('MessageText' => $this->DB_WE->f('MessageText')));
+					'_reply_to' => $this->DB_WE->f('username')],
+				'body' => ['MessageText' => $this->DB_WE->f('MessageText')]];
 		}
 
 		if($read_ids){
@@ -302,7 +302,7 @@ class we_messaging_message extends we_messaging_proto{
 	static function newMessage(&$rcpts, $subject, $body, &$errs){
 		$m = new we_messaging_message();
 		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
-		$data = array('subject' => $subject, 'body' => $body);
+		$data = ['subject' => $subject, 'body' => $body];
 
 		$res = $m->send($rcpts, $data);
 
@@ -321,7 +321,7 @@ class we_messaging_message extends we_messaging_proto{
 		$text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ');">' . $msg, '</a>') . '<br/>' : '') .
 			($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ');">' . $todo, '</a>') . '<br/>' : '');
 		$parts = [
-			[
+				[
 				"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
 				"html" => '',
 				'space' => we_html_multiIconBox::SPACE_SMALL,

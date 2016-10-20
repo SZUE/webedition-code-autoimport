@@ -46,13 +46,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function getHTMLOverview($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		$list = array(
-			we_glossary_glossary::TYPE_ABBREVATION,
+		$list = [we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
 			we_glossary_glossary::TYPE_LINK,
 			we_glossary_glossary::TYPE_TEXTREPLACE,
-		);
+			];
 
 		$language = $GLOBALS['DB_WE']->escape(substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5));
 
@@ -63,14 +62,13 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 //FIXME createbuttontable?
 			$button = we_html_button::create_button('new_glossary_' . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-			$parts[] = array(
-				"headline" => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+top.content.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
+			$parts[] = ["headline" => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+top.content.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
 				"html" => '<table style="width:550px;" class="default defaultfont">
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
 						<tr><td style="text-align:right">' . $button . '</td></tr>
 						</table>',
-				'space' => we_html_multiIconBox::SPACE_MED);
+				'space' => we_html_multiIconBox::SPACE_MED];
 		}
 
 		return $parts;

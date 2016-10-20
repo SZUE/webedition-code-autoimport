@@ -86,7 +86,7 @@ doc.weInput.setValue('ID', 0);";
 				$NavigationIDPath = htmlspecialchars_decode($this->NavigationRule->NavigationID ? id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE) : '', ENT_NOQUOTES);
 
 				// workspaces:
-				$workspaceList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
+				$workspaceList = ['{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}'];
 				$selectWorkspace = '';
 				if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
 					$workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
@@ -148,7 +148,7 @@ $selectWorkspace";
 
 				if(defined('OBJECT_TABLE') && ($classid = we_base_request::_(we_base_request::INT, 'ClassID'))){
 					$workspaces = $this->getWorkspacesByClassID($classid);
-					$optionList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
+					$optionList = ['{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}'];
 
 					foreach($workspaces as $key => $value){
 						$optionList[] = '{"text":"' . $value . '","value":"' . $key . '"}';

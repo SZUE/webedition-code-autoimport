@@ -151,8 +151,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			}
 		}
 		?>
-		<script><!--
-			function setDialog() {
+			<script><!--
+				function setDialog() {
 
 		<?php
 		foreach($List as $Key => $Value){
@@ -170,17 +170,17 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			$Text = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 		}
 		?>
-				orginal = "<?= $Text; ?>";
-				window.setTimeout(spellcheck, 1000);
+					orginal = "<?= $Text; ?>";
+					window.setTimeout(spellcheck, 1000);
 
-			}
+				}
 
-			//-->
-		</script>
-		</head>
+				//-->
+			</script>
+				</head>
 
 		<body style="margin:0px;padding:0px;">
-			<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
+					<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
 				if(($cnt = count($_REQUEST['we_cmd'])) > 3){
 					for($i = 3; $i < $cnt; $i++){
@@ -195,16 +195,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 //
 				break;
 			case 'prepare':
-
-				//FIXME: these values should be obtained from global settings
-				$Languages = ['de' => 'de',
-					'en' => 'en',
-					'es' => 'es',
-					'fi' => 'fi',
-					'ru' => 'ru',
-					'nl' => 'nl',
-					'pl' => 'pl',
-				];
+				$langs = array_keys(getWELangs());
+				$Languages = array_combine($langs, $langs);
 
 				$Modes = [];
 				if((
@@ -227,159 +219,159 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
 				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
-				<script><!--
-			Combobox = new weCombobox();
+					<script><!--
+				Combobox = new weCombobox();
 
-					function init() {
-						table = document.getElementById('unknown');
-						top.setDialog();
-					}
+						function init() {
+							table = document.getElementById('unknown');
+							top.setDialog();
+						}
 
-					function getActionColumn(word, type) {
-						var td = document.createElement('td');
-						var html;
+						function getActionColumn(word, type) {
+							var td = document.createElement('td');
+							var html;
 
-						html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
-		<?php
-		foreach($Modes as $Key => $Value){
-			echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
-		}
-		?>
-						+ '</select>';
+							html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
+							<?php
+							foreach($Modes as $Key => $Value){
+								echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
+							}
+							?>
+							+ '</select>';
 
-						td.innerHTML = html;
-						return td;
-					}
-
-
-
-					function getLanguageColumn(word, lang) {
-						var td = document.createElement('td');
-						td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
-										'<option value="' + lang + '">' + lang + '</option>' +
-										'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">'
-						'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
-										'</optgroup>' +
-										'<optgroup label="' + WE().consts.g_l.glossary.languages + '">' +
-		<?php
-		foreach($Languages as $Key => $Value){
-			echo "			'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
-		}
-		?>
-						'</optgroup>' +
-										'</select>';
-
-						return td;
-					}
+							td.innerHTML = html;
+							return td;
+						}
 
 
 
-					function activateButtons() {
-						if (counter === 0) {
+						function getLanguageColumn(word, lang) {
+							var td = document.createElement('td');
+							td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
+								'<option value="' + lang + '">' + lang + '</option>' +
+								'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">'
+							'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
+								'</optgroup>' +
+								'<optgroup label="' + WE().consts.g_l.glossary.languages + '">' +
+							<?php
+							foreach($Languages as $Key => $Value){
+								echo "			'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
+							}
+							?>
+							'</optgroup>' +
+								'</select>';
+
+							return td;
+						}
+
+
+
+						function activateButtons() {
+							if (counter === 0) {
+								var tr = document.createElement('tr');
+
+								tr.appendChild(getTextColumn(WE().consts.g_l.glossary.all_words_identified, 7));
+								table.appendChild(tr);
+								WE().layout.button.hide(document, 'execute');
+							<?php
+							if($cmd3 != "checkOnly"){
+								?>
+									WE().layout.button.enable(document, 'publish');
+									WE().layout.button.show(document, 'publish');
+								<?php
+							}
+							?>
+
+							} else {
+								WE().layout.button.enable(document, 'execute');
+							}
+
+						}
+
+						function noJava() {
 							var tr = document.createElement('tr');
 
-							tr.appendChild(getTextColumn(WE().consts.g_l.glossary.all_words_identified, 7));
+							tr.appendChild(getTextColumn(WE().consts.g_l.glossary.no_java, 7));
 							table.appendChild(tr);
 							WE().layout.button.hide(document, 'execute');
-		<?php
-		if($cmd3 != "checkOnly"){
-			?>
+							<?php
+							if($cmd3 != "checkOnly"){
+								?>
+								document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false)); ?>';
 								WE().layout.button.enable(document, 'publish');
-								WE().layout.button.show(document, 'publish');
-			<?php
-		}
-		?>
-
-						} else {
-							WE().layout.button.enable(document, 'execute');
-						}
-
-					}
-
-					function noJava() {
-						var tr = document.createElement('tr');
-
-						tr.appendChild(getTextColumn(WE().consts.g_l.glossary.no_java, 7));
-						table.appendChild(tr);
-						WE().layout.button.hide(document, 'execute');
-		<?php
-		if($cmd3 != "checkOnly"){
-			?>
-							document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false)); ?>';
-							WE().layout.button.enable(document, 'publish');
-			<?php
-		}
-		?>
-					}
-
-					function checkForm() {
-						for (i = 0; i < counter; i++) {
-							type = document.getElementById('type_' + i).value;
-							title = document.getElementById('title_' + i).value;
-							lang = document.getElementById('lang_' + i).value;
-							switch (type) {
-								case WE().consts.glossary.TYPE_ABBREVATION:
-								case WE().consts.glossary.TYPE_ACRONYM:
-									if (title === '') {
-										document.getElementById('title_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_title, WE().consts.message.WE_MESSAGE_ERROR, window);
-										return false;
-									}
-									if (lang === '') {
-										document.getElementById('lang_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
-										return false;
-									}
-									break;
-								case WE().consts.glossary.TYPE_FOREIGNWORD:
-									if (lang === '') {
-										document.getElementById('lang_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
-										return false;
-									}
-									break;
-								case 'ignore':
-								case 'exception':
-								case 'dictionary':
-									break;
-								case 'correct':
-									document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
-									title = document.getElementById('title_' + i).value;
-									if (title === '') {
-										document.getElementById('title_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_correct_word, WE().consts.message.WE_MESSAGE_ERROR, window);
-										return false;
-									}
-									break;
-								default:
-									document.getElementById('type_' + i).focus();
-									WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
-									return false;
-									break;
+								<?php
 							}
+							?>
 						}
-						document.forms[0].submit();
-					}
-					//-->
-				</script>
-			</head>
-			<body class="weDialogBody" onload="init();">
 
-				<div id="spinner">
-					<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
-					<div id="statusText" class="small" style="color: black;"><?= g_l('modules_glossary', '[download]'); ?></div>
-				</div>
+						function checkForm() {
+							for (i = 0; i < counter; i++) {
+								type = document.getElementById('type_' + i).value;
+								title = document.getElementById('title_' + i).value;
+								lang = document.getElementById('lang_' + i).value;
+								switch (type) {
+									case WE().consts.glossary.TYPE_ABBREVATION:
+									case WE().consts.glossary.TYPE_ACRONYM:
+										if (title === '') {
+											document.getElementById('title_' + i).focus();
+											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_title, WE().consts.message.WE_MESSAGE_ERROR, window);
+											return false;
+										}
+										if (lang === '') {
+											document.getElementById('lang_' + i).focus();
+											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
+											return false;
+										}
+										break;
+									case WE().consts.glossary.TYPE_FOREIGNWORD:
+										if (lang === '') {
+											document.getElementById('lang_' + i).focus();
+											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
+											return false;
+										}
+										break;
+									case 'ignore':
+									case 'exception':
+									case 'dictionary':
+										break;
+									case 'correct':
+										document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
+										title = document.getElementById('title_' + i).value;
+										if (title === '') {
+											document.getElementById('title_' + i).focus();
+											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_correct_word, WE().consts.message.WE_MESSAGE_ERROR, window);
+											return false;
+										}
+										break;
+									default:
+										document.getElementById('type_' + i).focus();
+										WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+										return false;
+										break;
+								}
+							}
+							document.forms[0].submit();
+						}
+						//-->
+						</script>
+					</head>
+					<body class="weDialogBody" onload="init();">
+
+						<div id="spinner">
+							<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
+							<div id="statusText" class="small" style="color: black;"><?= g_l('modules_glossary', '[download]'); ?></div>
+							</div>
 
 
-				<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
-					echo we_html_element::htmlHiddens(['ItemsToPublish' => '',
-						'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-						'we_cmd[1]' => 'finish',
-						'we_cmd[2]' => $Transaction,
-						($cmd3 ? 'we_cmd[3]' : '') => $cmd3
-					]);
+							<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
+								echo we_html_element::htmlHiddens(['ItemsToPublish' => '',
+									'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+									'we_cmd[1]' => 'finish',
+									'we_cmd[2]' => $Transaction,
+									($cmd3 ? 'we_cmd[3]' : '') => $cmd3
+								]);
 
-					$Content = '
+								$Content = '
 	<table style="width:650px;" class="default defaultfont">
 	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	<tr>
@@ -400,125 +392,125 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 	</table>';
 
 
-					// Only glossary check
-					if($cmd3 === "checkOnly"){
-						$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", '', 0, 0, "", "", false, false);
-						$PublishButton = "";
+								// Only glossary check
+								if($cmd3 === "checkOnly"){
+									$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", '', 0, 0, "", "", false, false);
+									$PublishButton = "";
 
-						// glossary check and publishing
-					} else {
-						$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", '', 0, 0, "", "", false, false);
-						$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false);
-					}
-					$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", '', 0, 0, "", "", true, false);
+									// glossary check and publishing
+								} else {
+									$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", '', 0, 0, "", "", false, false);
+									$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false);
+								}
+								$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", '', 0, 0, "", "", true, false);
 
 
-					$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
-					if($cmd3 != "checkOnly"){
-						$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
-					}
+								$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
+								if($cmd3 != "checkOnly"){
+									$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
+								}
 
-					$Parts = [
-						["headline" => "",
-							"html" => $Content,
-						]
-					];
+								$Parts = [
+										["headline" => "",
+										"html" => $Content,
+									]
+								];
 
-					echo we_html_multiIconBox::getHTML('weMultibox', $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
+								echo we_html_multiIconBox::getHTML('weMultibox', $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 
 //
 // --> Finish Step
 //
-					break;
-				case 'finish':
-					$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
+								break;
+							case 'finish':
+								$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
 
-					$we_doc = new $ClassName();
-					$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
+								$we_doc = new $ClassName();
+								$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
 
-					$Language = $we_doc->Language;
+								$Language = $we_doc->Language;
 
-					//
-					// --> Insert or correct needed items
-					//
+								//
+								// --> Insert or correct needed items
+								//
 
 	$AddJs = "";
-					$items = we_base_request::_(we_base_request::STRING, 'item');
-					if($items){
+								$items = we_base_request::_(we_base_request::STRING, 'item');
+								if($items){
 
-						foreach($items as $Key => $Entry){
-							switch($Entry['type']){
-								case 'exception':
-									we_glossary_glossary::addToException($Language, $Key);
-									break;
-								case '':
-								case 'ignore':
-									break;
-								case 'correct':
-									foreach($we_doc->elements as &$val){
-										if(isset($val['type']) && (
-											$val['type'] === 'txt' || $val['type'] === 'input'
-											)
-										){
-											$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
+									foreach($items as $Key => $Entry){
+										switch($Entry['type']){
+											case 'exception':
+												we_glossary_glossary::addToException($Language, $Key);
+												break;
+											case '':
+											case 'ignore':
+												break;
+											case 'correct':
+												foreach($we_doc->elements as &$val){
+													if(isset($val['type']) && (
+														$val['type'] === 'txt' || $val['type'] === 'input'
+														)
+													){
+														$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
+													}
+												}
+												unset($val);
+												break;
+											case "dictionary":
+												$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
+												break;
+											default:
+												$Glossary = new we_glossary_glossary();
+												$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
+												$Glossary->IsFolder = 0;
+												$Glossary->Text = $Key;
+												$Glossary->Type = $Entry['type'];
+												$Glossary->Language = $Language;
+												$Glossary->Title = isset($Entry['title']) ? $Entry['title'] : '';
+												$Glossary->setAttribute('lang', isset($Entry['lang']) ? $Entry['lang'] : '');
+												$Glossary->Published = time();
+
+												if($Glossary->pathExists($Glossary->Path)){
+													$ID = $Glossary->getIDByPath($Glossary->Path);
+													$Glossary->ID = $ID;
+												}
+
+												$Glossary->save();
+												unset($Glossary);
 										}
 									}
-									unset($val);
-									break;
-								case "dictionary":
-									$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
-									break;
-								default:
-									$Glossary = new we_glossary_glossary();
-									$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
-									$Glossary->IsFolder = 0;
-									$Glossary->Text = $Key;
-									$Glossary->Type = $Entry['type'];
-									$Glossary->Language = $Language;
-									$Glossary->Title = isset($Entry['title']) ? $Entry['title'] : '';
-									$Glossary->setAttribute('lang', isset($Entry['lang']) ? $Entry['lang'] : '');
-									$Glossary->Published = time();
+								}
 
-									if($Glossary->pathExists($Glossary->Path)){
-										$ID = $Glossary->getIDByPath($Glossary->Path);
-										$Glossary->ID = $ID;
-									}
+								$we_doc->saveinSession($_SESSION['weS']['we_data'][$Transaction]);
 
-									$Glossary->save();
-									unset($Glossary);
-							}
-						}
-					}
-
-					$we_doc->saveinSession($_SESSION['weS']['we_data'][$Transaction]);
-
-					//
-					// --> Actualize to Cache
-					//
+								//
+								// --> Actualize to Cache
+								//
 
 	$Cache = new we_glossary_cache($Language);
-					$Cache->write();
-					unset($Cache);
+								$Cache->write();
+								unset($Cache);
 
-					echo we_html_element::jsElement('
+								echo we_html_element::jsElement('
 top.we_reloadEditPage();
 var AddWords = "";
 ' . $AddJs . '
 top.add();' .
-						($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
-						we_message_reporting::getShowMessageCall(
-							g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
-									'[check_successful]' :
-									// glossary check with publishing
-									'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
-						"top.close();");
-					?>
-					</head>
-					<body class="weDialogBody">
-						<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-					}
-					?>
-				</form>
-			</body>
+									($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
+									we_message_reporting::getShowMessageCall(
+										g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
+												'[check_successful]' :
+												// glossary check with publishing
+												'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
+									"top.close();");
+								?>
+								</head>
+								<body class="weDialogBody">
+									<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
+								}
+								?>
+							</form>
+						</body>
 
-			</html>
+						</html>

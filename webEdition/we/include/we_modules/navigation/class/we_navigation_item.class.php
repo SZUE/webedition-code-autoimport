@@ -405,8 +405,7 @@ class we_navigation_item{
 			foreach($fields as $field){
 				switch($field){
 					case 'link' :
-						$useFields = array(
-							'href',
+						$useFields = ['href',
 							'title',
 							'target',
 							'lang',
@@ -416,7 +415,7 @@ class we_navigation_item{
 							'rel',
 							'rev',
 							'link_attribute'
-						);
+							];
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
@@ -437,7 +436,7 @@ class we_navigation_item{
 						$iconid = path_to_id($this->icon, FILE_TABLE, $GLOBALS['DB_WE']);
 						if($iconid){
 							$attribs['src'] = $this->icon;
-							$useFields = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title');
+							$useFields = ['width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title'];
 							foreach($useFields as $field){
 								if(!empty($this->attributes['icon_' . $field])){
 									$attribs[$field] = $this->attributes['icon_' . $field];
@@ -511,9 +510,8 @@ if (window.screen) {
 				'\';' .
 				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
-		$attributes = removeAttribs($attributes, array(
-			'name', 'target', 'onClick', 'onclick'
-		));
+		$attributes = removeAttribs($attributes, ['name', 'target', 'onClick', 'onclick'
+			]);
 
 		$attributes['target'] = 'we_ll_' . $this->id;
 		$attributes['onclick'] = $js;

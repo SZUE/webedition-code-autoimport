@@ -34,8 +34,7 @@ class we_users_online{
 	public function __construct(){
 		global $DB_WE;
 		$row = '';
-		$colors = array(
-			'red',
+		$colors = ['red',
 			'blue',
 			'green',
 			'orange',
@@ -48,7 +47,7 @@ class we_users_online{
 			'darkorange',
 			'fuchsia',
 			'seagreen'
-		); //FIXME:add usefull colors
+			]; //FIXME:add usefull colors
 		$i = -1;
 		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User FROM ' . USER_TABLE . ' WHERE Ping>((NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);

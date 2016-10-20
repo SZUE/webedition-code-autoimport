@@ -63,7 +63,7 @@ class we_listview_search extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
-		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$this->languages = $languages ?: (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
 		$where_lang = ($this->languages ? ' AND i.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
 
@@ -86,30 +86,30 @@ class we_listview_search extends we_listview_base{
 		foreach($orderArr as $o){
 			switch($o['oname']){
 				case 'we_creationdate':
-					$this->order .= 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_moddate':
-					$this->order .='COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_filename':
-					$this->order .= 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Path':
-					$this->order .= 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Workspace':
-					$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'we_id':
 				case 'OID':
 				case 'DID':
 				case 'ID':
-					$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 				case 'Title':
 				case 'Text':
 				case 'Description':
-					$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc' || $desc) ? ' DESC' : '') . ',';
 					break;
 			}
 		}
@@ -124,7 +124,7 @@ class we_listview_search extends we_listview_base{
 		$this->casesensitive = $casesensitive;
 		$this->search = $this->DB_WE->escape($this->search);
 
-		$cat_tail = ($this->cats ? ' AND '.we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
+		$cat_tail = ($this->cats ? ' AND ' . we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : 0);
 
 		if($dt && $this->class){
@@ -169,8 +169,8 @@ class we_listview_search extends we_listview_base{
 			}
 		}
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
-				'');
+			we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
+			'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
 		$this->anz_all = f('SELECT COUNT(DISTINCT i.ID,i.WorkspaceID) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
@@ -193,11 +193,11 @@ class we_listview_search extends we_listview_base{
 				$this->DB_WE->Record[self::PROPPREFIX . strtoupper($key)] = $val;
 			}
 			if($this->DB_WE->Record['ClassID'] && $this->objectseourls && show_SeoLinks()){
-				$objecttriggerid = ($this->triggerID ? : ($fileData ? $fileData['TriggerID'] : 0));
+				$objecttriggerid = ($this->triggerID ?: ($fileData ? $fileData['TriggerID'] : 0));
 
 				$path_parts = ($objecttriggerid ?
-						pathinfo(id_to_path($objecttriggerid)) :
-						pathinfo($_SERVER['SCRIPT_NAME'])
+					pathinfo(id_to_path($objecttriggerid)) :
+					pathinfo($_SERVER['SCRIPT_NAME'])
 					);
 
 				$pidstr = ($this->DB_WE->Record['WorkspaceID'] ? '?pid=' . intval($this->DB_WE->Record['WorkspaceID']) : '');
@@ -205,12 +205,12 @@ class we_listview_search extends we_listview_base{
 				if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 					$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
 						($fileData['Url'] ?
-							'/' . $fileData['Url'] . $pidstr :
-							'/?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
+						'/' . $fileData['Url'] . $pidstr :
+						'/?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				} else {
 					$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($fileData && $fileData['Url'] ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $fileData['Url'] . $pidstr :
-							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
+						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $fileData['Url'] . $pidstr :
+						$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID'] = $objecttriggerid;
 			}
@@ -223,7 +223,7 @@ class we_listview_search extends we_listview_base{
 				'WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
-				];
+			];
 			$this->count++;
 			return true;
 		}

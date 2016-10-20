@@ -47,7 +47,7 @@ echo we_html_element::htmlDocType();
 			echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else {
-			echo we_tag('textarea', array('name' => 'HEAD'));
+			echo we_tag('textarea', ['name' => 'HEAD']);
 		}
 		?>
 	</head>
@@ -65,10 +65,10 @@ echo we_html_element::htmlDocType();
 
 				$foo = '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement('Title'))) . '
 </pre>
-	' . we_tag('textarea', array('name' => 'HEAD', 'rows' => 8, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;')) . '<br/>
+	' . we_tag('textarea', ['name' => 'HEAD', 'rows' => 8, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;']) . '<br/>
 <pre class="defaultfont">	&lt;/head&gt;
-	&lt;body ' . we_tag('input', array('type' => 'text', 'size' => 60, 'name' => 'BODYTAG', 'style' => 'width: 480px;')) . '&gt;</pre>
-' . we_tag('textarea', array('name' => 'BODY', 'rows' => 15, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;')) . '
+	&lt;body ' . we_tag('input', ['type' => 'text', 'size' => 60, 'name' => 'BODYTAG', 'style' => 'width: 480px;']) . '&gt;</pre>
+' . we_tag('textarea', ['name' => 'BODY', 'rows' => 15, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;']) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
 				echo we_html_tools::htmlMessageBox(667, 650, $foo) .
@@ -77,8 +77,8 @@ echo we_html_element::htmlDocType();
 			</form>
 		</body>
 	<?php } else { ?>
-		<body <?= we_tag('input', array('name' => 'BODYTAG')); ?>>
-			<?php printElement(we_tag('textarea', array('name' => 'BODY'), '')); ?>
+		<body <?= we_tag('input', ['name' => 'BODYTAG']); ?>>
+			<?php printElement(we_tag('textarea', ['name' => 'BODY'], '')); ?>
 		</body>
 	<?php } ?>
 </html>

@@ -115,16 +115,16 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 			$we_doc->searchclass->show = 'AB';
 			$go = we_base_constants::WE_EDITPAGE_FIELDS;
 			$obj_search = we_base_request::_(we_base_request::STRING, 'obj_search');
-			$we_doc->searchclass->searchname = array(0 => $obj_search);
-			$we_doc->searchclass->searchfield = array(0 => $objsf);
-			$we_doc->searchclass->searchlocation = ((!empty($objlocation)) ? array(0 => $objlocation) : array(0 => 'CONTAIN'));
+			$we_doc->searchclass->searchname = [0 => $obj_search];
+			$we_doc->searchclass->searchfield = [0 => $objsf];
+			$we_doc->searchclass->searchlocation = ((!empty($objlocation)) ? [0 => $objlocation] : [0 => 'CONTAIN']);
 			$we_doc->searchclass->start = 0;
 			$we_doc->searchclass->searchstart = 0;
 			$we_doc->searchclass->setLimit();
 
-			$we_doc->searchclass->objsearch = array(0 => $obj_search);
-			$we_doc->searchclass->objsearchField = array(0 => $objsf);
-			$we_doc->searchclass->objlocation = ((!empty($objlocation)) ? array(0 => $objlocation) : array(0 => 'CONTAIN'));
+			$we_doc->searchclass->objsearch = [0 => $obj_search];
+			$we_doc->searchclass->objsearchField = [0 => $objsf];
+			$we_doc->searchclass->objlocation = ((!empty($objlocation)) ? [0 => $objlocation] : [0 => 'CONTAIN']);
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 

@@ -36,7 +36,7 @@ abstract class we_navigation_dynList{
 		foreach(array_filter($categories) as $cat){
 			$cats[] = 'FIND_IN_SET(' . $cat . ',f.Category)'; //bug #6729
 		}
-		$sort = empty($order) ? array() : $order[0];
+		$sort = empty($order) ? [] : $order[0];
 
 		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' .
 			($sort ? ' JOIN ' . LINK_TABLE . ' ls ON (ls.DID=f.ID AND ls.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' cs ON (cs.ID=ls.CID)' : ''

@@ -43,9 +43,9 @@ class we_banner_view extends we_modules_view{
 		$this->banner = new we_banner_banner();
 		$this->page = 0;
 		$this->settings = $this->getSettings();
-		$this->pageFields[we_banner_banner::PAGE_PROPERTY] = array("Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk",
-			"EndOk", "StartDate", "EndDate");
-		$this->pageFields[we_banner_banner::PAGE_PLACEMENT] = array("DoctypeIDs", "TagName");
+		$this->pageFields[we_banner_banner::PAGE_PROPERTY] = ["Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk",
+			"EndOk", "StartDate", "EndDate"];
+		$this->pageFields[we_banner_banner::PAGE_PLACEMENT] = ["DoctypeIDs", "TagName"];
 		$this->pageFields[we_banner_banner::PAGE_STATISTICS] = [];
 		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 	}
@@ -96,32 +96,27 @@ class we_banner_view extends we_modules_view{
 						'FilterDate' => $this->FilterDate,
 						'FilterDateEnd' => $this->FilterDateEnd
 				));
-				$parts = array(
-					array(
-						'headline' => g_l('modules_banner', '[path]'),
-						'html' => $this->formPath(),
-						'space' => we_html_multiIconBox::SPACE_MED
-				));
+				$parts = [['headline' => g_l('modules_banner', '[path]'),
+					'html' => $this->formPath(),
+					'space' => we_html_multiIconBox::SPACE_MED
+				]];
 				$znr = -1;
 				if(!$this->banner->IsFolder){
-					$parts[] = array(
-						'headline' => g_l('modules_banner', '[banner]'),
+					$parts[] = ['headline' => g_l('modules_banner', '[banner]'),
 						'html' => $this->formBanner(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					);
-					$parts[] = array(
-						'headline' => g_l('modules_banner', '[period]'),
+					];
+					$parts[] = ['headline' => g_l('modules_banner', '[period]'),
 						'html' => $this->formPeriod(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					);
+					];
 					$znr = 2;
 				}
 				if(defined('CUSTOMER_TABLE')){
-					$parts[] = array(
-						'headline' => g_l('modules_banner', '[customers]'),
+					$parts[] = ['headline' => g_l('modules_banner', '[customers]'),
 						'html' => $this->formCustomer(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					);
+					];
 				}
 				$headline = g_l('tabs', '[module][properties]');
 				$itsname = 'weBannerProp';
@@ -130,37 +125,30 @@ class we_banner_view extends we_modules_view{
 				$wepos = weGetCookieVariable('but_weBannerProp');
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
-				$out .= we_html_element::htmlHiddens(array(
-						'UseFilter' => $this->UseFilter,
+				$out .= we_html_element::htmlHiddens(['UseFilter' => $this->UseFilter,
 						'FilterDate' => $this->FilterDate,
 						'FilterDateEnd' => $this->FilterDateEnd
-				));
-				$parts = array(
-					array(
-						'headline' => g_l('modules_banner', '[tagname]'),
-						'html' => $this->formTagName(),
-						'space' => we_html_multiIconBox::SPACE_MED
-					),
-					array(
-						'headline' => g_l('modules_banner', '[pages]'),
+				]);
+				$parts = [['headline' => g_l('modules_banner', '[tagname]'),
+					'html' => $this->formTagName(),
+					'space' => we_html_multiIconBox::SPACE_MED
+					],
+						['headline' => g_l('modules_banner', '[pages]'),
 						'html' => $this->formFiles(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					),
-					array(
-						'headline' => g_l('modules_banner', '[dirs]'),
+					],
+						['headline' => g_l('modules_banner', '[dirs]'),
 						'html' => $this->formFolders(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					),
-					array(
-						'headline' => g_l('modules_banner', '[categories]'),
+					],
+						['headline' => g_l('modules_banner', '[categories]'),
 						'html' => $this->formCategories(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					),
-					array(
-						'headline' => g_l('modules_banner', '[doctypes]'),
+					],
+						['headline' => g_l('modules_banner', '[doctypes]'),
 						'html' => $this->formDoctypes(),
-						'space' => we_html_multiIconBox::SPACE_MED)
-				);
+						'space' => we_html_multiIconBox::SPACE_MED]
+				];
 				$headline = g_l('tabs', '[module][placement]');
 				$znr = 3;
 				$itsname = 'weBannerPlace';
@@ -170,12 +158,10 @@ class we_banner_view extends we_modules_view{
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
 				$headline = g_l('tabs', '[module][statistics]');
-				$parts = array(
-					array(
-						'headline' => '',
-						'html' => $this->formStat(),
-					)
-				);
+				$parts = [['headline' => '',
+					'html' => $this->formStat(),
+					]
+				];
 				break;
 			default:
 				$parts = [];
@@ -394,14 +380,14 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						}
 					}
 					if($this->banner->IntHref){
-						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
+						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, ["IsFolder"]);
 						if(!$acResult || $acResult[0]['IsFolder'] == 1){
 							echo we_message_reporting::jsMessagePush(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR);
 							return;
 						}
 					}
 					if($this->banner->bannerID > 0){
-						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
+						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, ["ContentType"]);
 						if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
 							echo we_message_reporting::jsMessagePush(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR);
 							return;
@@ -495,7 +481,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'banner',
 					'pref_name' => $key,
 					'pref_value' => $value
-					]));
+			]));
 		}
 	}
 
@@ -595,28 +581,24 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$viewslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'views desc\'){this.document.we_form.elements.order.value=\'views\';}else{this.document.we_form.elements.order.value=\'views desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[views]') . '</a>';
 		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'clicks desc\'){this.document.we_form.elements.order.value=\'clicks\';}else{this.document.we_form.elements.order.value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';
 		$ratelink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'rate desc\'){this.document.we_form.elements.order.value=\'rate\';}else{this.document.we_form.elements.order.value=\'rate desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[rate]') . '</a>';
-		$headline = array(
-			array('dat' => $pathlink),
-			array('dat' => $viewslink),
-			array('dat' => $clickslink),
-			array('dat' => $ratelink)
-		);
-		$rows = array(
-			array(
-				array('dat' => g_l('modules_banner', '[all]')),
-				array('dat' => $GLOBALS["lv"]->getAllviews()),
-				array('dat' => $GLOBALS["lv"]->getAllclicks()),
-				array('dat' => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right")
-			)
-		);
+		$headline = [['dat' => $pathlink],
+				['dat' => $viewslink],
+				['dat' => $clickslink],
+				['dat' => $ratelink]
+		];
+		$rows = [[['dat' => g_l('modules_banner', '[all]')],
+				['dat' => $GLOBALS["lv"]->getAllviews()],
+				['dat' => $GLOBALS["lv"]->getAllclicks()],
+				['dat' => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right"]
+			]
+		];
 		while($GLOBALS["lv"]->next_record()){
-			$rows[] = array(
-				array('dat' => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . '" target="_blank">') . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . ($GLOBALS["lv"]->f("page") ? '' : '</a>'),
-					FILE_TABLE),
-				array('dat' => $GLOBALS["lv"]->f("views")),
-				array('dat' => $GLOBALS["lv"]->f("clicks")),
-				array('dat' => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right")
-			);
+			$rows[] = [['dat' => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . '" target="_blank">') . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . ($GLOBALS["lv"]->f("page") ? '' : '</a>'),
+				FILE_TABLE],
+					['dat' => $GLOBALS["lv"]->f("views")],
+					['dat' => $GLOBALS["lv"]->f("clicks")],
+					['dat' => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right"]
+			];
 		}
 
 		$table = we_html_tools::htmlDialogBorder3(650, $rows, $headline, $class);

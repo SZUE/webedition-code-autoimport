@@ -81,8 +81,7 @@ class we_banner_banner extends we_banner_base{
 		parent::__construct();
 		$this->table = BANNER_TABLE;
 
-		$this->persistents = array(
-			'ID' => we_base_request::INT,
+		$this->persistents = ['ID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'ParentID' => we_base_request::INT,
 			'bannerID' => we_base_request::INT,
@@ -110,7 +109,7 @@ class we_banner_banner extends we_banner_base{
 			'Customers' => we_base_request::INTLIST,
 			'TagName' => we_base_request::RAW,
 			'weight' => we_base_request::INT,
-		);
+			];
 
 		$this->IsFolder = $IsFolder;
 		$this->Text = g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
@@ -300,7 +299,7 @@ class we_banner_banner extends we_banner_base{
 			}
 		}
 
-		return array("ID" => 0, "bannerID" => 0);
+		return ["ID" => 0, "bannerID" => 0];
 	}
 
 	private static function getImageInfos($fileID, we_database_base $db){

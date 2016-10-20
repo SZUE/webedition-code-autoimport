@@ -41,7 +41,7 @@ class we_shop_shipping{
 	}
 
 	public static function getNewEmptyShipping(){
-		return new self('weShipping_' . md5(uniqid('', true)), g_l('modules_shop', '[new_entry]'), array('Deutschland'), array(10, 20, 100), array(15, 5, 0), 0);
+		return new self('weShipping_' . md5(uniqid('', true)), g_l('modules_shop', '[new_entry]'), ['Deutschland'], [10, 20, 100], [15, 5, 0], 0);
 	}
 
 }

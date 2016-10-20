@@ -179,8 +179,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 
 				$StateBefore = ($this->Glossary->ID ?
-						f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
-						0);
+					f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
+					0);
 
 				$isNew = $this->Glossary->ID == 0;
 
@@ -291,16 +291,13 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 
 	public function getHomeScreen(){
 
-		$hidden = array(
-			'cmd' => 'home',
+		$hidden = ['cmd' => 'home',
 			'pnt' => 'edbody',
 			'name' => 'home',
 			'value' => 0,
-		);
+		];
 
-		$form = array(
-			'name' => 'we_form',
-		);
+		$form = ['name' => 'we_form',];
 
 		$createAbbreviation = we_html_button::create_button('new_glossary_abbreviation', "javascript:top.we_cmd('new_glossary_abbreviation');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 		$createAcronym = we_html_button::create_button('new_glossary_acronym', "javascript:top.we_cmd('new_glossary_acronym');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));

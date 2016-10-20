@@ -33,10 +33,9 @@ $dbTableType = '<table><tr>' .
 	(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
 	"</tr></table>";
 
-$parts = array(
-	array("headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => we_html_multiIconBox::SPACE_MED),
-	array("headline" => "", "html" => $oSelCls->getHTML(),),
-);
+$parts = [["headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => we_html_multiIconBox::SPACE_MED],
+		["headline" => "", "html" => $oSelCls->getHTML(),],
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();");

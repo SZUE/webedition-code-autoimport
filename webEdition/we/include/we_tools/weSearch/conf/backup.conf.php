@@ -21,7 +21,5 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$toolTables = array(
-	'tblsearchtool' => SUCHE_TABLE
-);
+$toolTables = ['tblsearchtool' => SUCHE_TABLE];
 

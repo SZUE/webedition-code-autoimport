@@ -29,25 +29,22 @@ $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $propertiesTitle = $translate->_('Properties');
 
 $we_tabs = new we_ui_controls_Tabs(
-	array(
-	'contentFrame' => 'parent.edbody.',
-	'tabs' => array(
-		array(
-			'id' => 'idPropertyTab',
+	['contentFrame' => 'parent.edbody.',
+	'tabs' => [['id' => 'idPropertyTab',
 			'text' => $propertiesTitle,
 			'bottomline' => false,
 			'reload' => true,
 			'active' => true,
 			'title' => $propertiesTitle,
 			'hidden' => false
-		)
-	)
-	)
+		 ]
+]
+]
 );
 
 $htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');
 
-$htmlPage->setBodyAttributes(array('class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'));
+$htmlPage->setBodyAttributes(['class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()']);
 
 $titlePathGroup = oldHtmlspecialchars($this->model->IsFolder ? $translate->_('Folder') : $translate->_('Entry'));
 $titlePathName = oldHtmlspecialchars($this->model->Text);

@@ -39,11 +39,10 @@ if(($hour = we_base_request::_(we_base_request::INT, 'td_deadline_hour')) !== fa
 
 switch(we_base_request::_(we_base_request::STRING, "mode")){
 	case 'forward':
-		$arr = array(
-			'rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
+		$arr = ['rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
 			'deadline' => $deadline,
 			'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
-		);
+			];
 		$res = $messaging->forward($arr);
 		$heading = g_l('modules_messaging', '[forwarding_todo]');
 		$action = g_l('modules_messaging', '[forwarded_to]');
@@ -51,9 +50,8 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_forwarded]');
 		break;
 	case 'reject':
-		$arr = array(
-			'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
-		);
+		$arr = ['body' => we_base_request::_(we_base_request::STRING, 'mn_body')
+			];
 		$res = $messaging->reject($arr);
 		$heading = g_l('modules_messaging', '[rejecting_todo]');
 		$action = g_l('modules_messaging', '[rejected_to]');
@@ -61,14 +59,13 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_rejected]');
 		break;
 	default:
-		$arr = array(
-			'rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
+		$arr = ['rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
 			'subject' => we_base_request::_(we_base_request::STRING, 'mn_subject'),
 			'body' => we_base_request::_(we_base_request::STRING, 'mn_body'),
 			'deadline' => $deadline,
 			'status' => 0,
 			'priority' => we_base_request::_(we_base_request::INT, 'mn_priority')
-		);
+			];
 		$res = $messaging->send($arr, "we_todo");
 		$heading = g_l('modules_messaging', '[creating_todo]');
 		$s_action = g_l('modules_messaging', '[todo_s_created]');

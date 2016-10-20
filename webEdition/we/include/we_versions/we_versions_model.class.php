@@ -82,7 +82,7 @@ class we_versions_model extends we_search_modelBase{
 		//parent::__construct(SUCHE_TABLE);
 
 		$this->transaction = $transaction;
-		$this->searchTablesVersionSearch = array(VERSIONS_TABLE);
+		$this->searchTablesVersionSearch = [VERSIONS_TABLE];
 		$this->whichSearch = we_search_view::SEARCH_VERSION;
 	}
 

@@ -96,23 +96,21 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?
-				self::getHTMLPrevNext($Search) .
-				self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
-				self::getHTMLPrevNext($Search, true) :
-				we_html_element::htmlDiv(array('style' => "margin:12px 5px;"), g_l('modules_glossary', '[no_entries_found]'))
+			self::getHTMLPrevNext($Search) .
+			self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
+			self::getHTMLPrevNext($Search, true) :
+			we_html_element::htmlDiv(array('style' => "margin:12px 5px;"), g_l('modules_glossary', '[no_entries_found]'))
 			);
 
 
 		// ---> end of uilding content
 
-		$parts = array(
-			0 => array(
-				'headline' => '',
+		$parts = [0 => ['headline' => '',
 				'html' => $content,
-			),
-		);
+			],
+		];
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1'), we_html_multiIconBox::getHTML('', $parts, 30));
+		$out = we_html_element::htmlDiv(['id' => 'tab1'], we_html_multiIconBox::getHTML('', $parts, 30));
 
 		$content = $js . $out;
 
@@ -129,17 +127,16 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$retVal = "";
 
-		$headline = array(
-			array('dat' => '',),
-			array('dat' => g_l('modules_glossary', '[show]'),),
-			array('dat' => g_l('modules_glossary', '[' . $Type . ']'),)
-		);
+		$headline = [['dat' => '',],
+				['dat' => g_l('modules_glossary', '[show]'),],
+				['dat' => g_l('modules_glossary', '[' . $Type . ']'),]
+		];
 
 		switch($Type){
 
 			case we_glossary_glossary::TYPE_ABBREVATION:
 			case we_glossary_glossary::TYPE_ACRONYM:
-				$headline[3] = array('dat' => g_l('modules_glossary', '[announced_word]'),);
+				$headline[3] = ['dat' => g_l('modules_glossary', '[announced_word]'),];
 				break;
 
 			case we_glossary_glossary::TYPE_FOREIGNWORD:
@@ -147,13 +144,13 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				break;
 
 			case we_glossary_glossary::TYPE_LINK:
-				$headline[3] = array('dat' => g_l('modules_glossary', '[link_mode]'),);
-				$headline[4] = array('dat' => g_l('modules_glossary', '[link_url]'),);
+				$headline[3] = ['dat' => g_l('modules_glossary', '[link_mode]'),];
+				$headline[4] = ['dat' => g_l('modules_glossary', '[link_url]'),];
 				break;
 		}
 
-		$headline[] = array('dat' => g_l('modules_glossary', '[date_published]'),);
-		$headline[] = array('dat' => g_l('modules_glossary', '[date_modified]'),);
+		$headline[] = ['dat' => g_l('modules_glossary', '[date_published]'),];
+		$headline[] = ['dat' => g_l('modules_glossary', '[date_modified]'),];
 
 		$content = [];
 		while($Search->next()){
@@ -162,26 +159,22 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			  $show = '<i class="fa fa-lg fa-circle" style="color:#E7E7E7;"></i>';
 			  } */
 
-			$temp = array(
-				array(
-					'dat' => '<input type="checkbox" name="ID[]" value="' . $Search->getField('ID') . '" />',
+			$temp = [['dat' => '<input type="checkbox" name="ID[]" value="' . $Search->getField('ID') . '" />',
 					'height' => 25,
 					'style' => 'text-align:center',
 					'bgcolor' => '#ffffff',
-				),
-				array(
-					'dat' => $show,
+					],
+						['dat' => $show,
 					'height' => 25,
 					'style' => 'text-align:center',
 					'bgcolor' => '#ffffff',
-				),
-				array(
-					'dat' => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+top.content.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
+					],
+						['dat' => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+top.content.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
 					'height' => 25,
 					'style' => 'text-align:left',
 					'bgcolor' => '#ffffff',
-				)
-			);
+					]
+			];
 
 			$values = we_unserialize($Search->getField('Attributes'));
 			switch($Type){
@@ -224,32 +217,28 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 							$mode = g_l('modules_glossary', '[link_category]');
 							break;
 					}
-					$temp[3] = array(
-						'dat' => $mode,
+					$temp[3] = ['dat' => $mode,
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-					);
-					$temp[4] = array(
-						'dat' => $url,
+						];
+					$temp[4] = ['dat' => $url,
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-					);
+						];
 					break;
 			}
-			$temp[] = array(
-				'dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br/>", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
+			$temp[] = ['dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br/>", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
 				'height' => 25,
 				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
-			);
-			$temp[] = array(
-				'dat' => $Search->getField('ModDate') > 0 ? str_replace(" - ", "<br />", date(g_l('date', '[format][default]'), $Search->getField('ModDate'))) : "-",
+				];
+			$temp[] = ['dat' => $Search->getField('ModDate') > 0 ? str_replace(" - ", "<br />", date(g_l('date', '[format][default]'), $Search->getField('ModDate'))) : "-",
 				'height' => 25,
 				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
-			);
+				];
 			$content[] = $temp;
 		}
 
@@ -263,16 +252,15 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
 		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-		$rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
+		$rows = [10 => 10, 25 => 25, 50 => 50, 100 => 100];
 
-		return we_html_element::htmlHiddens(array(
-				"we_transaction" => $GLOBALS['we_transaction'],
+		return we_html_element::htmlHiddens(["we_transaction" => $GLOBALS['we_transaction'],
 				"Order" => $Search->Order,
 				"Offset" => $Search->Offset,
 				"Sort" => $Search->Sort,
 				"selectAll" => 0,
 				"do" => ""
-			)) . '
+				]) . '
 <table class="default" style="width:637px;margin-bottom:12px;">
 	<tr>
 		<td style="width:80px;"></td>
@@ -304,12 +292,12 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$max = min($Search->Offset + $Search->Rows, $sum);
 
 		$prev = ($Search->Offset > 0 ?
-				we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
-				we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true));
+			we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
+			we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true));
 
 		$next = ($Search->Offset + $Search->Rows >= $sum ?
-				we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true) :
-				we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
+			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true) :
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
 
 
 		$pages = $Search->getPages();
@@ -331,7 +319,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	</tr>
 	' .
 			($extended ?
-				'<tr>
+			'<tr>
 		<td colspan="3">
 			<table class="default">
 			<tr>
@@ -361,7 +349,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			</table>
 		</td>
 	</tr>' :
-				'') .
+			'') .
 			'</table>';
 	}
 

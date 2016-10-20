@@ -55,12 +55,10 @@ class we_glossary_settingFrames{
 		// Automatic Replacement
 		$content = we_html_forms::checkboxWithHidden(we_glossary_replace::useAutomatic(), 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
-		$parts = array(
-			array(
-				'headline' => "",
+		$parts = [['headline' => "",
 				'html' => $content,
-				'noline' => 1)
-		);
+				'noline' => 1]
+		];
 
 		return
 			'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">

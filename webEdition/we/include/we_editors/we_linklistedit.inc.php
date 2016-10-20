@@ -111,8 +111,7 @@ if($ok){
 				}
 		}
 	}
-	$link = array(
-		'id' => we_base_request::_(we_base_request::INT, 'id', 0),
+	$link = ['id' => we_base_request::_(we_base_request::INT, 'id', 0),
 		'obj_id' => defined('OBJECT_TABLE') ? we_base_request::_(we_base_request::INT, 'obj_id', 0) : 0,
 		'anchor' => $anchor,
 		'accesskey' => $accesskey,
@@ -154,7 +153,7 @@ if($ok){
 		'align' => we_base_request::_(we_base_request::STRING, 'align'),
 		'alt' => $alt,
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
-	);
+		];
 
 	if(($linklist = we_base_request::_(we_base_request::SERIALIZED, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
@@ -263,7 +262,7 @@ if($ok){
 	$ctype = $ll->getCType($nr);
 } else {
 	$link = $we_doc->getElement($name) ? we_unserialize($we_doc->getElement($name)) : [];
-	$link = ($link ? : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+	$link = ($link ? : ['ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')]);
 	$href = isset($link['href']) ? $link['href'] : '';
 	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 		$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -271,7 +270,7 @@ if($ok){
 		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
-				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+			['ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')]);
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -583,10 +582,10 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				'html' => $params,
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1],
-			array('headline' => g_l('linklistEdit', '[link_target]'),
+				['headline' => g_l('linklistEdit', '[link_target]'),
 				'html' => $ctarget,
-				'space' => we_html_multiIconBox::SPACE_MED2)
-		];
+				'space' => we_html_multiIconBox::SPACE_MED2]
+	];
 
 
 		if(permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
@@ -622,21 +621,21 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1];
 
-			$parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
+			$parts[] = ['headline' => g_l('wysiwyg', '[relation]'),
 				'html' => '<span class="default" style="margin-right:20px;">' . $relfield . '</span>' . $revfield,
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1);
+				'noline' => 1];
 
-			$parts[] = array('headline' => g_l('linklistEdit', '[link_attr]'),
+			$parts[] = ['headline' => g_l('linklistEdit', '[link_attr]'),
 				'html' => $cattribs,
-				'space' => we_html_multiIconBox::SPACE_MED2);
+				'space' => we_html_multiIconBox::SPACE_MED2];
 		}
 
 
 		//   Pop-Up
-		$parts[] = array('headline' => g_l('global', '[jswin]'),
+		$parts[] = ['headline' => g_l('global', '[jswin]'),
 			'html' => $jswinonoff,
-			'space' => we_html_multiIconBox::SPACE_MED2);
+			'space' => we_html_multiIconBox::SPACE_MED2];
 		?>
 		<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />

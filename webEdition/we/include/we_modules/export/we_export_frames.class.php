@@ -285,11 +285,10 @@ function closeAllType(){
 			$this->SelectionTree->getHTMLMultiExplorer(520, 200)
 		);
 
-		$parts[] = array(
-			"headline" => g_l('export', '[selection]'),
+		$parts[] = ["headline" => g_l('export', '[selection]'),
 			"html" => $js . $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+			];
 
 		return $parts;
 	}
@@ -313,11 +312,10 @@ function closeAllType(){
 			$formattable = new we_html_table([], 3, 1);
 			$formattable->setCol(0, 0, ["colspan" => 2], we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', '[handle_def_classes]'), false, 'defaultfont', 'top.content.hot=1;'));
 			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', 'top.content.hot=1;'));
-			$parts[] = array(
-				"headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
+			$parts[] = ["headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+				];
 		}
 
 		$formattable = new we_html_table([], 3, 1);
@@ -365,7 +363,7 @@ function closeAllType(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("ParentPath", $path, array('onchange' => 'top.content.hot=1;'));
+		$yuiSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=1;']);
 		$yuiSuggest->setLabel(g_l('export', '[group]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -609,14 +607,13 @@ if (top.content.editor.edbody.addLog){
 		);
 
 		$out = we_html_tools::getHtmlTop('', '', '', $progress_update, we_html_element::htmlBody(
-					array(
-						'style' => 'margin:5px;',
+					['style' => 'margin:5px;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
 						($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 						'showEndStatus();') .
 						"top.content.editor.edfooter.hideProgress();"
-					)
-				), null
+						]
+		), null
 		);
 		$xmlExIm->unsetPerserves();
 		return $out;
@@ -676,7 +673,7 @@ if (top.content.editor.edbody.addLog){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, array('onchange' => 'top.content.hot=1;'));
+		$yuiSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=1;']);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);

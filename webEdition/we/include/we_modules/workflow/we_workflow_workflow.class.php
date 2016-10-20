@@ -40,12 +40,12 @@ class we_workflow_workflow extends we_workflow_base{
 	var $ID = 0;
 	var $Text;
 	var $Type = self::FOLDER;
-	var $Folders = array(0);
+	var $Folders = [0];
 	var $FolderPath = '';
 	var $DocType = [];
 	var $Objects = [];
 	var $Categories = [];
-	var $ObjectFileFolders = array(0);
+	var $ObjectFileFolders = [0];
 	var $ObjCategories = [];
 	var $Status = self::STATE_INACTIVE;
 	var $EmailPath = 0;
@@ -70,8 +70,7 @@ class we_workflow_workflow extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_TABLE;
 
-		$this->persistents = array(
-			'ID' => we_base_request::INT,
+		$this->persistents = ['ID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'Type' => we_base_request::INT,
 			'DocType' => we_base_request::INTLISTA,
@@ -83,7 +82,7 @@ class we_workflow_workflow extends we_workflow_base{
 			'Status' => we_base_request::INT,
 			'EmailPath' => we_base_request::BOOL,
 			'LastStepAutoPublish' => we_base_request::BOOL,
-		);
+			];
 
 		$this->Text = g_l('modules_workflow', '[new_workflow]');
 

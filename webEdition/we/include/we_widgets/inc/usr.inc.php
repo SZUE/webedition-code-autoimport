@@ -22,13 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $oTblCont = new we_html_table(
-	array(
-	"id" => "m_" . $iCurrId . "_inline",
+	["id" => "m_" . $iCurrId . "_inline",
 	"style" => "width:" . $iWidth . "px;",
-	), 1, 1);
+	], 1, 1);
 $oTblCont->setCol(0, 0, null, $inline);
-$aLang = array(
-	g_l('cockpit', '[users_online]'), ' (<span id="num_users">' . $UO->getNumUsers() . '</span>)'
-);
+$aLang = [g_l('cockpit', '[users_online]'), ' (<span id="num_users">' . $UO->getNumUsers() . '</span>)'];
 
 $oTblDiv = $oTblCont->getHtml();
