@@ -834,7 +834,7 @@ class liveUpdateFunctions{
 	 *
 	 * @return array
 	 */
-	function getInstalledLanguages(){
+	public static function getInstalledLanguages(){
 		clearstatcache();
 
 		//	Get all installed Languages
@@ -890,7 +890,7 @@ class liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate(){
+	static function weUpdaterDoUpdate($what, $pos){
 		if(method_exists('we_updater', 'doUpdate')){
 			we_updater::doUpdate();
 		}

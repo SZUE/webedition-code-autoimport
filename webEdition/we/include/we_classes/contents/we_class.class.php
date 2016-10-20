@@ -338,7 +338,7 @@ abstract class we_class{
 			$regs = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('#^we_' . preg_quote($this->Name, '#') . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
-					$this->$regs[1] = $v;
+					$this->{$regs[1]} = $v;
 				}
 			}
 		}
