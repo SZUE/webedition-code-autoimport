@@ -2435,7 +2435,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				}
 			}
 			if($hrefFields){
-				$empty = ['int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => ''];
+				$empty = ['int' => 1, 'intID' => '', 'extPath' => ''];
 				$hrefs = $match = [];
 				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_HREF] as $k => $val){
 					if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
@@ -2444,7 +2444,9 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				}
 
 				foreach($hrefs as $k => $v){
+					//remove path
 					$href = array_merge($empty, $v);
+					unset($href['intPath']);
 					$this->setElement($k, we_serialize($href, SERIALIZE_JSON), self::TYPE_HREF);
 				}
 			}
