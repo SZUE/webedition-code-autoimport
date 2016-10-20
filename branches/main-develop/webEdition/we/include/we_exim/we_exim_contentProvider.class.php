@@ -182,10 +182,9 @@ class we_exim_contentProvider{
 		if($prop === 'schedArr' || is_array($object->$prop)){
 			return true;
 		}
-		$serialize = array(
-			'we_object' => array('SerializedArray'),
-			'we_objectFile' => array('DefArray', 'schedArr')
-		);
+		$serialize = ['we_object' => ['SerializedArray'],
+			'we_objectFile' => ['DefArray', 'schedArr']
+		];
 
 		if($prop === 'Dat' && $classname === 'we_element' && $object->Name == we_base_constants::WE_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
@@ -211,7 +210,7 @@ class we_exim_contentProvider{
 					}
 					if(self::needCoding($v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
 						$content = self::encode($content);
-						$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
+						$coding = [self::CODING_ATTRIBUTE => self::CODING_ENCODE];
 					}
 					$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
 			}
@@ -234,7 +233,7 @@ class we_exim_contentProvider{
 				if($data){
 					$fwrite($file, '<' . $tag . '>' . $attribs .
 						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+						we_xml_composer::we_xmlElement('Data', self::encode($data), [self::CODING_ATTRIBUTE => self::CODING_ENCODE]) .
 						'</' . $tag . '>' . we_backup_util::backupMarker . "\n");
 					$offset += $rsize;
 					$object->SeqN++;
@@ -312,13 +311,13 @@ class we_exim_contentProvider{
 			}
 			if(self::needSerialize($object, $classname, $v)){
 				$content = self::encode(we_serialize($content, SERIALIZE_JSON));
-				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
+				$coding = [self::CODING_ATTRIBUTE => self::CODING_SERIALIZE];
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');
 				$coding = self::CODING_NONE;
 				if(self::needCoding($v, $content) || self::needCdata($content)){//fix for faulty parser
 					$content = self::encode($content);
-					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
+					$coding = [self::CODING_ATTRIBUTE => self::CODING_ENCODE];
 				}
 			}
 			$write .= we_xml_composer::we_xmlElement($v, $content, $coding);
@@ -338,10 +337,9 @@ class we_exim_contentProvider{
 						break;
 
 					default:
-						$options = array(
-							'ClassName' => 'we_element',
+						$options = ['ClassName' => 'we_element',
 							'Name' => $ck,
-						);
+							];
 
 						if(isset($object->elements[$ck]['dat'])){
 							$options['Dat'] = $object->elements[$ck]['dat'];

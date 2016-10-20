@@ -173,31 +173,28 @@ function clearSearch() {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
 			}');
 
-		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? array(
-			array(200, 'subject', '[subject]'),
-			array(170, 'date', '[date]'),
-			array(120, 'sender', '[from]'),
-			array(70, 'isread', '[is_read]'),
-			) : array(
-			array(200, 'subject', '[subject]'),
-			array(170, 'deadline', '[deadline]'),
-			array(120, 'priority', '[priority]'),
-			array(70, 'status', '[status]'),
-		);
+		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? [[200, 'subject', '[subject]'],
+				[170, 'date', '[date]'],
+				[120, 'sender', '[from]'],
+				[70, 'isread', '[is_read]'],
+			] : [[200, 'subject', '[subject]'],
+				[170, 'deadline', '[deadline]'],
+				[120, 'priority', '[priority]'],
+				[70, 'status', '[status]'],
+		];
 
-		$table = new we_html_table(array(
-			'style' => 'margin: 5px 0px 0px 0px',
+		$table = new we_html_table(['style' => 'margin: 5px 0px 0px 0px',
 			'class' => 'default',
-			'width' => '100%'), 1, count($colsArray) + 1);
+			'width' => '100%'], 1, count($colsArray) + 1);
 
-		$table->setCol(0, 0, array('width' => 18), '');
+		$table->setCol(0, 0, ['width' => 18], '');
 		for($i = 0; $i < count($colsArray); $i++){
-			$table->setCol(0, $i + 1, array('class' => 'tableHeader defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');">' . g_l('modules_messaging', $colsArray[$i][2]) .
+			$table->setCol(0, $i + 1, ['class' => 'tableHeader defaultfont', 'width' => $colsArray[$i][0]], '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');">' . g_l('modules_messaging', $colsArray[$i][2]) .
 				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : '') . '</a>'
 			);
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('id' => 'eHeaderBody'), $table->getHTML()), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = ['id' => 'eHeaderBody'], $table->getHTML()), $extraHead);
 	}
 
 	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){

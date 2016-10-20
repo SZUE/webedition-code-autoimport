@@ -56,7 +56,7 @@ class we_versions_fragment extends we_fragment_base{
 				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(
-					addslashes($responseText ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+					addslashes($responseText ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 
@@ -120,8 +120,7 @@ class we_versions_fragment extends we_fragment_base{
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()){
 
-				$data[] = array(
-					"ID" => $GLOBALS['DB_WE']->f("ID"),
+				$data[] = ["ID" => $GLOBALS['DB_WE']->f("ID"),
 					"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 					"type" => "version_delete",
 					"version" => $GLOBALS['DB_WE']->f("version"),
@@ -130,7 +129,7 @@ class we_versions_fragment extends we_fragment_base{
 					"table" => $GLOBALS['DB_WE']->f("documentTable"),
 					"contenttype" => $GLOBALS['DB_WE']->f("ContentType"),
 					"text" => $GLOBALS['DB_WE']->f("Text")
-				);
+				];
 			}
 			unset($_SESSION['weS']['versions']['query']);
 		}
@@ -144,8 +143,7 @@ class we_versions_fragment extends we_fragment_base{
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()){
 
-				$data[] = array(
-					"ID" => $GLOBALS['DB_WE']->f("ID"),
+				$data[] = ["ID" => $GLOBALS['DB_WE']->f("ID"),
 					"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 					"type" => "version_reset",
 					"version" => $GLOBALS['DB_WE']->f("version"),
@@ -154,7 +152,7 @@ class we_versions_fragment extends we_fragment_base{
 					"table" => $GLOBALS['DB_WE']->f("documentTable"),
 					"contenttype" => $GLOBALS['DB_WE']->f("ContentType"),
 					"text" => $GLOBALS['DB_WE']->f("Text")
-				);
+				];
 			}
 			unset($_SESSION['weS']['versions']['query']);
 		}

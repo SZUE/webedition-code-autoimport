@@ -49,8 +49,7 @@ abstract class we_backup_preparer{
 			'backup_log' => we_base_request::_(we_base_request::BOOL, 'backup_log'),
 			'backup_log_data' => '',
 			'backup_log_file' => BACKUP_PATH . we_backup_util::logFile,
-			'limits' => array(
-				'mem' => min(60 * 1024 * 1024, we_convertIniSizes(ini_get('memory_limit'))),
+			'limits' => ['mem' => min(60 * 1024 * 1024, we_convertIniSizes(ini_get('memory_limit'))),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
 				/* fix for really faulty php installations, e.g. 1&1
 				 * 1&1 execution time >2000, no matter if the script gets killed after 15 seconds
@@ -58,7 +57,7 @@ abstract class we_backup_preparer{
 				 */
 				'requestTime' => 0,
 				'lastMem' => 0,
-			),
+				],
 			'retry' => 0,
 			];
 

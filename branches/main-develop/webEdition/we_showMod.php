@@ -89,7 +89,7 @@ switch($mod){
 	case 'workflow':
 		$override = ($what === 'log');
 	default:
-		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : array(false);
+		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : [false];
 		we_html_tools::protect($protect);
 }
 

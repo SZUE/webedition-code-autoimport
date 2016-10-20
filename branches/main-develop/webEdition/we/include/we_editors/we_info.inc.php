@@ -62,23 +62,23 @@ if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 $table = new we_html_table(array('id' => 'mainTable'), 8, 1);
 $actRow = 0;
 //	First row with background
-$table->setCol($actRow++, 0, array('class' => 'logo'), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));
+$table->setCol($actRow++, 0, ['class' => 'logo'], '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));
 
 if($we_version){
 //	3rd Version
-	$table->setCol($actRow++, 0, array('class' => 'small row5'), "Version: " . $we_version);
+	$table->setCol($actRow++, 0, ['class' => 'small row5'], "Version: " . $we_version);
 }
 
 
 //	5th credits
-$table->setCol($actRow++, 0, array('class' => "defaultfont small row5"), '<div id="credits">' .
+$table->setCol($actRow++, 0, ['class' => "defaultfont small row5"], '<div id="credits">' .
 	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
 	  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
 
 //	7th agency
 if(is_readable(WEBEDITION_PATH . 'agency.php')){
 	include_once(WEBEDITION_PATH . 'agency.php');
-	$table->setCol($actRow++, 0, array('class' => "defaultfont small row10"), $_agency);
+	$table->setCol($actRow++, 0, ['class' => "defaultfont small row10"], $_agency);
 }
 
 $loginRow = 0;
@@ -87,7 +87,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$loginTable = new we_html_table(['class' => "plainTable"], 4, 1);
 	$loginTable->setCol($loginRow++, 0, ['class' => "small"], we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, ["for" => "username"], g_l('global', '[username]'))));
 	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
-	$loginTable->setCol($loginRow++, 0, array('class' => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
+	$loginTable->setCol($loginRow++, 0, ['class' => "small row5"], we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, ["for" => 'password'], g_l('global', '[password]'))));
 	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
 	$loginTable->setCol($loginRow++, 0, [], '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
@@ -102,15 +102,15 @@ if(!empty($GLOBALS["loginpage"])){
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$modetable->setCol(0, 0, [], '');
-			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
+			$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2], (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
 			$modetable->setCol(0, 0, [], we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
-			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
+			$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2], we_html_element::htmlHidden("mode", "normal") . $loginButton);
 		}
 	} else { //	normal login
 		if(WE_SEEM){
 //	15th Mode
-			$table->setCol($actRow++, 0, array('class' => "small"), g_l('SEEM', '[start_mode]'));
+			$table->setCol($actRow++, 0, ['class' => "small"], g_l('SEEM', '[start_mode]'));
 		}
 		switch(WE_LOGIN_WEWINDOW){
 			case 0:
@@ -131,11 +131,11 @@ if(!empty($GLOBALS["loginpage"])){
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
 			'</td></tr>
 		</table>');
-		$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3), $loginButton);
+		$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3], $loginButton);
 	}
 
 	//	16th
-	$table->setCol($actRow++, 0, array('class' => "small"), $modetable->getHtml());
+	$table->setCol($actRow++, 0, ['class' => "small"], $modetable->getHtml());
 } else if(isset($GLOBALS["loginpage"]) && !$GLOBALS["loginpage"]){
 	srand((double) microtime() * 1000000);
 	$r = rand();
@@ -143,10 +143,10 @@ if(!empty($GLOBALS["loginpage"])){
 	$table->addRow(2);
 
 	//	9th Login ok
-	$table->setCol($actRow++, 0, array('class' => "small spaceTable"), g_l('global', '[loginok]'));
+	$table->setCol($actRow++, 0, ['class' => "small spaceTable"], g_l('global', '[loginok]'));
 
 	//	11th back button
-	$table->setCol($actRow++, 0, array("width" => (432 - 30), "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
+	$table->setCol($actRow++, 0, ["width" => (432 - 30), "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'], we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
 }
 
 return $table->getHtml() . (empty($GLOBALS["loginpage"]) ? '' :

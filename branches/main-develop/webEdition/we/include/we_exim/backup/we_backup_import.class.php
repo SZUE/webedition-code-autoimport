@@ -196,7 +196,7 @@ abstract class we_backup_import{
 		$file = TEMP_DIR . 'we_conf_global.inc.php';
 		$object->Path = $file;
 		$object->save(true);
-		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, array('DB_SET_CHARSET'));
+		we_base_preferences::check_global_config(true, $_SERVER['DOCUMENT_ROOT'] . $file, ['DB_SET_CHARSET']);
 		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 

@@ -206,16 +206,15 @@ class we_search_search extends we_search_base{
 			while($this->next_record()){
 				if(!empty($this->Record['VersionID'])){
 
-					$versionsFound[] = array(
-						$this->Record['ContentType'],
+					$versionsFound[] = [$this->Record['ContentType'],
 						$this->Record['docID'],
 						$this->Record['VersionID']
-					);
+					];
 				}
 				if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 					$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
 
-					$result[] = array_merge(array('Table' => $table), array('foundInVersions' => ""), $this->Record);
+					$result[] = array_merge(['Table' => $table], ['foundInVersions' => ""], $this->Record);
 				}
 			}
 
@@ -233,9 +232,8 @@ class we_search_search extends we_search_base{
 				while($this->next_record()){
 					if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 						$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
-						$result[] = array_merge(array(
-							'Table' => $table
-							), $this->Record);
+						$result[] = array_merge(['Table' => $table
+							], $this->Record);
 					}
 				}
 			}
@@ -290,8 +288,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function getFields($row = 0, $whichSearch = ''){
-		$tableFields = array(
-			'ID' => g_l('searchtool', '[ID]'),
+		$tableFields = ['ID' => g_l('searchtool', '[ID]'),
 			'Text' => g_l('searchtool', '[text]'),
 			'Path' => g_l('searchtool', '[Path]'),
 			'ParentIDDoc' => g_l('searchtool', '[ParentIDDoc]'),
@@ -314,7 +311,7 @@ class we_search_search extends we_search_base{
 			'ModDate' => g_l('searchtool', '[ModDate]'),
 			//'allModsIn' => g_l('versions', '[allModsIn]'),
 			'modifierID' => g_l('versions', '[modUser]')
-		);
+		];
 
 		if($whichSearch === we_search_view::SEARCH_MEDIA){
 			$tableFields = array_merge($this->getFieldsMeta(true), $tableFields);
@@ -368,11 +365,10 @@ class we_search_search extends we_search_base{
 	function getFieldsMeta($usePrefix = false, $getTypes = false){
 		$db = new DB_WE();
 		$db->query('SELECT tag,type FROM ' . METADATA_TABLE);
-		$ret = array(
-			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][field]')),
+		$ret = [($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][field]')),
 			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][description]')),
 			($usePrefix ? 'meta__' : '') . 'Keywords' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][keyword]')),
-		);
+		];
 		while($db->next_record()){
 			$ret[($usePrefix ? 'meta__' : '') . $db->f('tag')] = $getTypes ? $db->f('type') : 'Metadaten: ' . $db->f('tag');
 		}
@@ -381,33 +377,27 @@ class we_search_search extends we_search_base{
 	}
 
 	function getFieldsStatus(){
-
-		$fields = array(
-			'jeder' => g_l('searchtool', '[jeder]'),
+		return ['jeder' => g_l('searchtool', '[jeder]'),
 			'geparkt' => g_l('searchtool', '[geparkt]'),
 			'veroeffentlicht' => g_l('searchtool', '[veroeffentlicht]'),
 			'geaendert' => g_l('searchtool', '[geaendert]'),
 			'veroeff_geaendert' => g_l('searchtool', '[veroeff_geaendert]'),
 			'geparkt_geaendert' => g_l('searchtool', '[geparkt_geaendert]'),
 			'deleted' => g_l('searchtool', '[deleted]')
-		);
-
-		return $fields;
+		];
 	}
 
 	function getFieldsSpeicherart(){
-		return array(
-			'jeder' => g_l('searchtool', '[jeder]'),
+		return ['jeder' => g_l('searchtool', '[jeder]'),
 			'dynamisch' => g_l('searchtool', '[dynamisch]'),
 			'statisch' => g_l('searchtool', '[statisch]')
-		);
+		];
 	}
 
 	static function getLocation($whichField = '', $select = '', $size = 1){
 		switch($whichField){
 			default:
-				return array(
-					'IS' => g_l('searchtool', '[IS]'),
+				return ['IS' => g_l('searchtool', '[IS]'),
 					'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
 					'START' => g_l('searchtool', '[START]'),
 					'END' => g_l('searchtool', '[END]'),
@@ -416,7 +406,7 @@ class we_search_search extends we_search_base{
 					'HEQ' => g_l('searchtool', '[>=]'),
 					'HI' => g_l('searchtool', '[>]'),
 					'IN' => g_l('searchtool', '[IN]'),
-				);
+				];
 			case 'text':
 				return array(
 					'IS' => g_l('searchtool', '[IS]'),
@@ -426,16 +416,15 @@ class we_search_search extends we_search_base{
 					'IN' => g_l('searchtool', '[IN]'),
 				);
 			case 'date':
-				return array(
-					'IS' => g_l('searchtool', '[IS]'),
+				return ['IS' => g_l('searchtool', '[IS]'),
 					'LO' => g_l('searchtool', '[<]'),
 					'LEQ' => g_l('searchtool', '[<=]'),
 					'HEQ' => g_l('searchtool', '[>=]'),
 					'HI' => g_l('searchtool', '[>]'),
 					'IN' => g_l('searchtool', '[IN]'),
-				);
+				];
 			case 'meta':
-				return array('IS' => g_l('searchtool', '[IS]'));
+				return ['IS' => g_l('searchtool', '[IS]')];
 		}
 	}
 
@@ -613,7 +602,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function addToSearchInMeta($search, $field, $location){
-		$this->collectionMetaSearches[] = array($search, $field, $location);
+		$this->collectionMetaSearches[] = [$search, $field, $location];
 	}
 
 	function searchInAllMetas($keyword, $table = ''){
@@ -845,11 +834,10 @@ class we_search_search extends we_search_base{
 					for($c = 0; $c < count($tableInfo); $c++){
 						if(preg_match('/(.+?)_(.*)/', $tableInfo[$c]['name'], $regs)){
 							if($regs[1] != 'OF' && $regs[1] != 'variant'){
-								$fields[] = array(
-									'name' => $tableInfo[$c]['name'],
+								$fields[] = ['name' => $tableInfo[$c]['name'],
 									'type' => $regs[1],
 									'length' => $tableInfo[$c]['len']
-								);
+									];
 							}
 						}
 					}
@@ -883,8 +871,7 @@ class we_search_search extends we_search_base{
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' fl ' . ($holdAllLinks ? ' LEFT JOIN ' . LINK_TABLE . ' l ON l.nHash=fl.nHash AND l.DocumentTable=fl.DocumentTable AND l.DID=fl.remObj' : '') . ' WHERE fl.type="media" AND fl.remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND fl.remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND fl.position=0');
 
 		if($holdAllLinks){
-			$types = array(
-				FILE_TABLE => g_l('global', '[documents]'),
+			$types = [FILE_TABLE => g_l('global', '[documents]'),
 				TEMPLATES_TABLE => g_l('global', '[templates]'),
 				defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE' => g_l('global', '[objects]'),
 				defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE' => g_l('searchtool', '[classes]'),
@@ -895,7 +882,7 @@ class we_search_search extends we_search_base{
 				defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => g_l('javaMenu_moduleInformation', '[customer][text]'),
 				defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => g_l('javaMenu_moduleInformation', '[glossary][text]'),
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
-			);
+				];
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
@@ -956,13 +943,12 @@ class we_search_search extends we_search_base{
 					case defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE':
 					case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
 						$paths[$k] = id_to_path($v, addTblPrefix($k), null, true);
-						$modules = array(
-							defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE' => 'banner',
+						$modules = [defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE' => 'banner',
 							defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => 'customer',
 							defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => 'glossary',
 							defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE' => 'navigation',
 							defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE' => 'newsletter'
-						);
+							];
 						foreach($paths[$k] as $key => $v){
 							$accessible[$k][$key] = true;
 							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)] . '\',' . $key . ')';
@@ -991,8 +977,7 @@ class we_search_search extends we_search_base{
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
 					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]])){
 						if(isset($accessible[$val[1]][$val[0]])){
-							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = array(
-								'exists' => isset($accessible[$val[1]][$val[0]]),
+							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = ['exists' => isset($accessible[$val[1]][$val[0]]),
 								'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
 								'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
 								'id' => $val[0],
@@ -1005,7 +990,7 @@ class we_search_search extends we_search_base{
 								'path' => isset($paths[$val[1]][$val[0]]) ? $paths[$val[1]][$val[0]] : '',
 								'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
 								'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
-							);
+								];
 						} else {
 							$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = true;
 						}
@@ -1460,7 +1445,7 @@ class we_search_search extends we_search_base{
 								}
 							}
 							$contentTypes = $contentTypes ?:
-								array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION);
+								[we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION];
 							$where[] = 'WETABLE.ContentType IN ("' . implode('","', $contentTypes) . '")';
 							break;
 						case 'IsUsed':

@@ -85,13 +85,12 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 $oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;
 
 $oSctDate = new we_html_select(array('name' => "sct_date", 'class' => 'defaultfont', "onchange" => ""));
-$aLangDate = array(
-	g_l('cockpit', '[all]'),
+$aLangDate = [g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),
 	g_l('cockpit', '[last_week]'),
 	g_l('cockpit', '[last_month]'),
 	g_l('cockpit', '[last_year]')
-);
+ ];
 foreach($aLangDate as $k => $v){
 	$oSctDate->insertOption($k, $k, $v);
 }

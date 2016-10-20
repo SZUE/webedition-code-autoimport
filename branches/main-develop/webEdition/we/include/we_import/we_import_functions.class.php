@@ -183,16 +183,7 @@ abstract class we_import_functions{
 	 * @desc corrects the filename if it contains invalid chars
 	 */
 	static function correctFilename($filename, $allowPath = false){
-		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', trim(strtr($filename, array(
-			' ' => '-',
-			'ä' => 'ae',
-			'ö' => 'oe',
-			'ü' => 'ue',
-			'Ä' => 'Ae',
-			'Ö' => 'Oe',
-			'Ü' => 'Ue',
-			'ß' => 'ss'
-				)), '/'));
+		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', trim(correctUml($filename), '/'));
 
 		if(!$allowPath && strlen($filename) > 100){
 			$pos = strrpos($filename, '.');
@@ -216,7 +207,7 @@ abstract class we_import_functions{
 
 		$replaceorder = [];
 
-		$formatchars = array("Y", "y", "m", "n", "d", "j", "H", "G", "i", "s");
+		$formatchars = ['Y', 'y', 'm', 'n', 'd', 'j', 'H', 'G', 'i', 's'];
 
 		$eregchars = implode('', $formatchars);
 
@@ -238,14 +229,13 @@ abstract class we_import_functions{
 			$eregformat = str_replace("###we###" . ord($char) . "###we###", "\\" . $char, $eregformat);
 		}
 
-		$outarray = array(
-			"hour" => 1,
+		$outarray = ["hour" => 1,
 			"minute" => 0,
 			"second" => 0,
 			"month" => 1,
 			"day" => 1,
 			"year" => 1970
-		);
+			];
 
 		if(preg_match_all('/' . $eregformat . '/', $datestring, $matches, PREG_SET_ORDER)){
 

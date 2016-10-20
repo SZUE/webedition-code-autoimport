@@ -183,12 +183,11 @@ class we_versions_search{
 	 */
 	function getFields(){
 
-		$tableFields = array(
-			'allModsIn' => g_l('versions', '[allModsIn]'),
+		$tableFields = ['allModsIn' => g_l('versions', '[allModsIn]'),
 			'timestamp' => g_l('versions', '[modTime]'),
 			'modifierID' => g_l('versions', '[modUser]'),
 			'status' => g_l('versions', '[status]')
-		);
+			];
 
 		return $tableFields;
 	}
@@ -209,12 +208,11 @@ class we_versions_search{
 	 * @return array of stats
 	 */
 	function getStats(){
-		return array(
-			"published" => g_l('versions', '[published]'),
+		return ["published" => g_l('versions', '[published]'),
 			"unpublished" => g_l('versions', '[unpublished]'),
 			"saved" => g_l('versions', '[saved]'),
 			"deleted" => g_l('versions', '[deleted]'),
-		);
+			];
 	}
 
 }

@@ -28,11 +28,8 @@
 
 class we_search_exp extends we_search_base{
 
-	var $Operators = array(
-		'!=' => '<>', '=' => '=', '<>' => '<>', '<' => '<', '>' => '>'
-	);
-	var $FieldMap = array(
-		'id' => 'ID',
+	var $Operators = ['!=' => '<>', '=' => '=', '<>' => '<>', '<' => '<', '>' => '>'		];
+	var $FieldMap = ['id' => 'ID',
 		'path' => 'Path',
 		'text' => 'Text',
 		'doctype' => 'DocType',
@@ -43,7 +40,7 @@ class we_search_exp extends we_search_base{
 		'parentid' => 'ParentID',
 		'tableid' => 'TableID',
 		'mastertemplateid' => 'MasterTemplateID'
-	);
+	 ];
 
 	function getSearchResults($keyword, $options, $res_num = 0){
 
@@ -72,9 +69,8 @@ class we_search_exp extends we_search_base{
 			$this->db->query('SELECT * FROM ' . $table . ' ' . $condition);
 
 			while($this->next_record()){
-				$result[] = array_merge(array(
-					'Table' => $table
-					), $this->db->Record);
+				$result[] = array_merge(['Table' => $table
+					], $this->db->Record);
 			}
 		}
 
@@ -167,11 +163,10 @@ class we_search_exp extends we_search_base{
 		foreach($this->Operators as $k => $v){
 			if(preg_match('_' . $k . '_', $string)){
 				$arr = explode($k, $string);
-				$expr = array(
-					'operand1' => trim($this->fixFieldNames($arr[0])),
+				$expr = ['operand1' => trim($this->fixFieldNames($arr[0])),
 					'operator' => trim($v),
 					'operand2' => trim($this->replaceSpecChars(stripslashes($arr[1])))
-				);
+					];
 
 				if($expr['operator'] === '=' && strpos($expr['operand2'], '%') !== false){
 					$expr['operator'] = 'LIKE';

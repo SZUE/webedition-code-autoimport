@@ -234,8 +234,8 @@ class we_shop_statusMails{
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
 				$this->EMailData['address'] :
-				array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
-				);
+				['email' => $this->EMailData['address'], 'name' => $this->EMailData['name']]
+			);
 
 			$phpmail = new we_mail_mail('', $subject, $from);
 			$phpmail->setIsEmbedImages(true);

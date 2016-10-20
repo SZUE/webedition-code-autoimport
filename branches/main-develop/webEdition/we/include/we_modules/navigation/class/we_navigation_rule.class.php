@@ -37,8 +37,7 @@ class we_navigation_rule extends we_base_model{
 	var $WorkspaceID;
 	var $Href;
 	var $SelfCurrent;
-	var $persistent_slots = array(
-		'ID' => we_base_request::INT,
+	var $persistent_slots = ['ID' => we_base_request::INT,
 		'NavigationName' => we_base_request::STRING,
 		'NavigationID' => we_base_request::INT,
 		'SelectionType' => we_base_request::STRING,
@@ -47,7 +46,7 @@ class we_navigation_rule extends we_base_model{
 		'ClassID' => we_base_request::INT,
 		'Categories' => we_base_request::INTLIST,
 		'WorkspaceID' => we_base_request::INT
-	);
+	 ];
 
 	public function __construct($persData = []){
 		parent::__construct(NAVIGATION_RULE_TABLE, null, false, true);

@@ -34,15 +34,13 @@ class we_shop_vat{
 	public $textProvince;
 	public $categories;
 	public $textTerritory;
-	public $textTerritorySortable;
-	private static $predefinedNames = array(
-		'exempt',
+	private static $predefinedNames = ['exempt',
 		'zero',
 		'superreduced',
 		'reduced',
 		'standard',
 		'parking'
-	);
+	 ];
 
 	function __construct($id = -1, $text = '', $vat = 0, $standard = false, $territory = '', $textProvince = '', $categories = ''){
 		$this->id = $id;
@@ -56,7 +54,6 @@ class we_shop_vat{
 		$this->country = substr($territory, 0, 2);
 		$this->province = (strlen($territory) > 2 ? substr($territory, 3) : '');
 		$this->textTerritory = $textProvince ? : we_base_country::getTranslation($this->country, we_base_country::TERRITORY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
-		$this->textTerritorySortable = strtr($this->textTerritory, ['Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue']);
 	}
 
 	public function getNaturalizedText(){

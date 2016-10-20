@@ -253,12 +253,11 @@ abstract class we_customer_abstractFilter{
 		$filter = [];
 		while(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
 			if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
-				$filter[] = array(
-					'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? 'OR' : 'AND'),
+				$filter[] = ['logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? 'OR' : 'AND'),
 					'field' => $field,
 					'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
 					'value' => $val
-				);
+					];
 			}
 			$count++;
 		}

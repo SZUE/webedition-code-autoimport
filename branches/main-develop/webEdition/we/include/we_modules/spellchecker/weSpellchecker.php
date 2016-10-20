@@ -1,7 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
-$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : [false];
 we_html_tools::protect($protect);
 
 $editname = we_base_request::_(we_base_request::STRING, 'we_dialog_args', false, 'editname');
@@ -17,7 +17,7 @@ if(!isset($_SESSION['weS']['dictLang'])){
 }
 
 $_username = $_SESSION['user']['Username'];
-$_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
+$_replacement = ['\\', '/', ':', '*', '?', '<', '>', '|', '"'];
 for($i = 0; $i < count($_replacement); $i++){
 	$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
 }
@@ -33,14 +33,13 @@ $space = 5;
 
 $_mode = 'normal';
 
-$_applet_code = we_html_element::htmlApplet(array(
-		'name' => "spellchecker",
+$_applet_code = we_html_element::htmlApplet(['name' => "spellchecker",
 		'code' => "LeSpellchecker.class",
 		'archive' => "lespellchecker.jar",
 		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 		'width' => 20,
 		'height' => 20,
-		), '
+		], '
 <param name="scriptable" value="true"/>
 <param name="mayscript" value="true"/>
 <param name="code" value="LeSpellchecker.class"/>
@@ -57,28 +56,28 @@ if($editname !== false){
 	$_mode = 'tinyMce';
 }
 ?>
-<script><!--
-	var mode = "<?= $_mode; ?>";
-	var editname = "<?= $editname; ?>";
-	var g_l = {
-		checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
-		no_java: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
-		finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
-	};
-	var retryjava = 0;
+	<script><!--
+		var mode = "<?= $_mode; ?>";
+		var editname = "<?= $editname; ?>";
+		var g_l = {
+			checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
+			no_java: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
+			finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+		};
+		var retryjava = 0;
 
-	function setAppletCode() {
-		retryjava = 0;
-		document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
-		setTimeout(spellcheck, 1000);
-	}
+		function setAppletCode() {
+			retryjava = 0;
+			document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
+			setTimeout(spellcheck, 1000);
+		}
 
 //-->
-</script>
-<?=
-we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
- we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js');
-?>
+	</script>
+	<?=
+	we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js');
+	?>
 </head>
 <body class="weDialogBody" onload="setDialog()"><?php
 	$_preview = '<div id="preview" class="defaultfont"></div>';
@@ -93,19 +92,17 @@ we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 	</div>';
 
 
-	$_buttonsleft = array(
-		we_html_button::create_button('ignore', "javascript:findNext();", '', 0, 0, '', '', true, false),
+	$_buttonsleft = [we_html_button::create_button('ignore', "javascript:findNext();", '', 0, 0, '', '', true, false),
 		we_html_button::create_button('change', "javascript:changeWord();", '', 0, 0, '', '', true, false),
 		we_html_button::create_button(we_html_button::ADD, "javascript:add();", '', 0, 0, '', '', true, false),
 		we_html_button::create_button('check', "javascript:WE().layout.button.disable(document, \"check\");setTimeout(spellcheck,100);", '', 0, 0, '', '', true, false)
-	);
+	];
 
 	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';
 
-	$buttons = array(
-		we_html_button::create_button('apply', "javascript:apply();self.close();"),
+	$buttons = [we_html_button::create_button('apply', "javascript:apply();self.close();"),
 		we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
-	);
+	];
 	$_buttons_bottom = we_html_button::position_yes_no_cancel($buttons[0], null, $buttons[1]);
 
 	$_selectCode = '<select name="dictSelect" id="dictSelect" onchange="selectDict(this.value)">';
@@ -124,21 +121,17 @@ we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	$_selectCode .= '</select>';
 
-	$parts = array(
-		array(
-			'headline' => '',
-			'html' => $_preview,
-		),
-		array(
-			'headline' => '',
+	$parts = [['headline' => '',
+		'html' => $_preview,
+		],
+			['headline' => '',
 			'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
-		),
-		array(
-			'headline' => g_l('modules_spellchecker', '[dictionary]'),
+		],
+			['headline' => g_l('modules_spellchecker', '[dictionary]'),
 			'html' => $_selectCode,
 			'space' => we_html_multiIconBox::SPACE_MED
-		)
-	);
+		]
+	];
 
 
 	echo '<div id="spinner" style="text-align:center">

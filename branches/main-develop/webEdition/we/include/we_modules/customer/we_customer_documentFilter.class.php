@@ -226,7 +226,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$filter1 = $filter1? : self::getEmptyDocumentCustomerFilter();
 		$filter2 = $filter2? : self::getEmptyDocumentCustomerFilter();
 
-		$checkFields = array('modelTable', 'accessControlOnTemplate', 'errorDocNoLogin', 'errorDocNoAccess', 'mode', 'specificCustomers', 'filter', 'whiteList', 'blackList');
+		$checkFields = ['modelTable', 'accessControlOnTemplate', 'errorDocNoLogin', 'errorDocNoAccess', 'mode', 'specificCustomers', 'filter', 'whiteList', 'blackList'];
 		if(!$applyCheck){
 			$checkFields[] = 'modelId';
 			$checkFields[] = 'modelType';

@@ -37,12 +37,11 @@ class we_messaging_messaging extends we_class{
 	var $selected_message = [];
 	var $selected_set = [];
 	var $last_id = -1;
-	var $search_fields = array(
-		array('hdrs', 'Subject'),
-		array('hdrs', 'From'),
-		array('body', 'MessageText'));
+	var $search_fields = [['hdrs', 'Subject'],
+			['hdrs', 'From'],
+			['body', 'MessageText']];
 	var $search_folder_ids = [];
-	var $sortfield = array('hdrs', 'Date');
+	var $sortfield = ['hdrs', 'Date'];
 	var $last_sortfield = '';
 	var $sortorder = 'desc';
 	var $cont_from_folder = 0;
@@ -53,34 +52,35 @@ class we_messaging_messaging extends we_class{
 	var $cached = [];
 
 	/* Search Field names */
-	var $sf_names = array('subject' => '',
+	var $sf_names = ['subject' => '',
 		'sender' => '',
-		'mtext' => '');
+		'mtext' => ''];
 
 	/* Header Fields */
-	var $si2sf = array('subject' => array('hdrs', 'Subject'),
-		'date' => array('hdrs', 'Date'),
-		'sender' => array('hdrs', 'From'),
-		'isread' => array('hdrs', 'seenStatus'),
-		'mtext' => array('body', 'MessageText'),
-		'deadline' => array('hdrs', 'Deadline'),
-		'creator' => array('hdrs', 'Creator'),
-		'priority' => array('hdrs', 'Priority'),
-		'status' => array('hdrs', 'Status'));
-	var $sf2sh = array('headerSubject' => array('hdrs', 'Subject'),
-		'headerDate' => array('hdrs', 'Date'),
-		'headerFrom' => array('hdrs', 'From'),
-		'seenStatus' => array('hdrs', 'seenStatus'),
-		'MessageText' => array('body', 'MessageText'),
-		'headerDeadline' => array('hdrs', 'Deadline'),
-		'headerCreator' => array('hdrs', 'Creator'),
-		'Priority' => array('hdrs', 'Priority'),
-		'headerStatus' => array('hdrs', 'Status'));
+	var $si2sf = ['subject' => ['hdrs', 'Subject'],
+		'date' => ['hdrs', 'Date'],
+		'sender' => ['hdrs', 'From'],
+		'isread' => ['hdrs', 'seenStatus'],
+		'mtext' => ['body', 'MessageText'],
+		'deadline' => ['hdrs', 'Deadline'],
+		'creator' => ['hdrs', 'Creator'],
+		'priority' => ['hdrs', 'Priority'],
+		'status' => ['hdrs', 'Status']];
+	var $sf2sh = ['headerSubject' => ['hdrs', 'Subject'],
+		'headerDate' => ['hdrs', 'Date'],
+		'headerFrom' => ['hdrs', 'From'],
+		'seenStatus' => ['hdrs', 'seenStatus'],
+		'MessageText' => ['body', 'MessageText'],
+		'headerDeadline' => ['hdrs', 'Deadline'],
+		'headerCreator' => ['hdrs', 'Creator'],
+		'Priority' => ['hdrs', 'Priority'],
+		'headerStatus' => ['hdrs', 'Status']];
 
 	function __construct(&$transact){
 		parent::__construct();
 		$this->Name = 'messaging_' . md5(uniqid(__FILE__, true));
-		$this->persistent_slots = array('Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected', 'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached');
+		$this->persistent_slots = ['Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected',
+			'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached'];
 		$this->we_transact = &$transact;
 
 		$this->sf_names['subject'] = g_l('modules_messaging', '[subject]');
@@ -191,7 +191,7 @@ class we_messaging_messaging extends we_class{
 			if(isset($ret[$elem['ClassName']]) && is_array($ret[$elem['ClassName']])){
 				$ret[$elem['ClassName']][] = $elem['ID'];
 			} else {
-				$ret[$elem['ClassName']] = array((string) $elem['ID']);
+				$ret[$elem['ClassName']] = [(string) $elem['ID']];
 			}
 		}
 
@@ -219,10 +219,9 @@ class we_messaging_messaging extends we_class{
 		$this->clipboard = [];
 		foreach($ids as $id){
 			$offs = self::array_ksearch('ID', $id, $this->selected_set);
-			$this->clipboard[] = array(
-				'ID' => $this->selected_set[$offs]['int_hdrs']['_ID'],
+			$this->clipboard[] = ['ID' => $this->selected_set[$offs]['int_hdrs']['_ID'],
 				'ClassName' => $this->selected_set[$offs]['hdrs']['ClassName']
-			);
+				];
 		}
 
 		$this->clipboard_action = $mode;
@@ -339,17 +338,14 @@ class we_messaging_messaging extends we_class{
 			}
 			$cn = $this->selected_set[$offset]['hdrs']['ClassName'];
 			if(isset($s_hash[$cn])){
-				$s_hash[$cn][] = array(
-					'ID' => $id,
+				$s_hash[$cn][] = ['ID' => $id,
 					'hdrs' => $this->selected_set[$offset]['int_hdrs']
-				);
+					];
 			} else {
-				$s_hash[$cn] = array(
-					array(
-						'ID' => $id,
+				$s_hash[$cn] = [['ID' => $id,
 						'hdrs' => $this->selected_set[$offset]['int_hdrs']
-					)
-				);
+						]
+				];
 			}
 		}
 
@@ -432,7 +428,7 @@ class we_messaging_messaging extends we_class{
 		}
 
 		if(count($this->search_folder_ids) < 1){
-			$this->search_folder_ids = array($this->Folder_ID);
+			$this->search_folder_ids = [$this->Folder_ID];
 		}
 	}
 
@@ -451,12 +447,10 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function saveInSession(&$save, $toFile = false){
-		$save = array(
-			'we_messaging' => array(
-				[],
+		$save = ['we_messaging' => [[],
 				isset($this->elements) ? $this->elements : []
-			)
-		);
+				]
+		];
 
 		foreach($this->persistent_slots as $cur){
 			$save["we_messaging"][0][$cur] = $this->{$cur};
@@ -522,14 +516,13 @@ class we_messaging_messaging extends we_class{
 	function get_message_count($folderid){
 		$classname = $this->available_folders[$folderid]['ClassName'];
 		return ($classname ?
-				$this->used_msgobjs[$classname]->get_count($folderid) :
-				-1);
+			$this->used_msgobjs[$classname]->get_count($folderid) :
+			-1);
 	}
 
 	function delete_folders(array $ids){
-		$ret = array(
-			'ids' => []
-		);
+		$ret = ['ids' => []
+			];
 		$nids = $m = [];
 		for($i = 0, $len = count($ids); $i < $len; $i++){
 			preg_match('/\d+$/', $ids[$i], $m);
@@ -542,7 +535,7 @@ class we_messaging_messaging extends we_class{
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 				$s_hash[$cn][] = (string) $f_id;
 			} else {
-				$s_hash[$cn] = array((string) $f_id);
+				$s_hash[$cn] = [(string) $f_id];
 			}
 		}
 
@@ -583,10 +576,10 @@ class we_messaging_messaging extends we_class{
 	function sort_set(){
 		if($this->selected_set){
 			if(($this->last_sortfield != $this->sortfield) || $this->sortorder != 'desc'){
-				usort($this->selected_set, array($this, 'cmp_desc'));
+				usort($this->selected_set, [$this, 'cmp_desc']);
 				$this->sortorder = 'desc';
 			} else {
-				usort($this->selected_set, array($this, 'cmp_asc'));
+				usort($this->selected_set, [$this, 'cmp_asc']);
 				$this->sortorder = 'asc';
 			}
 
@@ -631,11 +624,10 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function send(&$data, $msgobj_name = ''){
-		$results = array(
-			'err' => [],
+		$results = ['err' => [],
 			'ok' => [],
 			'failed' => [],
-		);
+			];
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
 		$rcpts = [];
 
@@ -680,7 +672,7 @@ class we_messaging_messaging extends we_class{
 				$this->cont_from_folder = 1;
 				$this->Folder_ID = $id;
 				if($this->search_folder_ids[0] == -1){
-					$this->search_folder_ids = array($id);
+					$this->search_folder_ids = [$id];
 				}
 			}
 
@@ -693,7 +685,7 @@ class we_messaging_messaging extends we_class{
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							$s_hash[$cn][] = $afolder['ID'];
 						} else {
-							$s_hash[$cn] = array($afolder['ID']);
+							$s_hash[$cn] = [$afolder['ID']];
 						}
 					}
 				} else {
@@ -702,15 +694,15 @@ class we_messaging_messaging extends we_class{
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							$s_hash[$cn][] = $sfolder;
 						} else {
-							$s_hash[$cn] = array("$sfolder");
+							$s_hash[$cn] = ["$sfolder"];
 						}
 					}
 				}
 				foreach($s_hash as $m_key => $m_val){
-					$arr = array('searchterm' => $searchterm,
+					$arr = ['searchterm' => $searchterm,
 						'search_fields' => $this->search_fields,
 						'search_folder_ids' => $m_val,
-						'start_id' => $this->last_id);
+						'start_id' => $this->last_id];
 					$this->selected_set = array_merge($this->selected_set, $this->used_msgobjs[$m_key]->get_msg_set($arr));
 					$this->update_last_id();
 				}
@@ -727,7 +719,7 @@ class we_messaging_messaging extends we_class{
 				} else {
 					$o = null;
 				}
-				$arr = array('folder_id' => $id, 'last_id' => $this->last_id);
+				$arr = ['folder_id' => $id, 'last_id' => $this->last_id];
 				$this->selected_set = isset($o) ? $o->get_msg_set($arr) : [];
 				$this->update_last_id();
 
@@ -748,7 +740,7 @@ class we_messaging_messaging extends we_class{
 				$m = $this->selected_set[self::array_ksearch('ID', $id, $this->selected_set)];
 			}
 			if($m){
-				$arr = array($m['int_hdrs']);
+				$arr = [$m['int_hdrs']];
 				$this->selected_message = array_pop($this->used_msgobjs[$m['hdrs']['ClassName']]->retrieve_items($arr));
 			}
 		}
@@ -802,30 +794,29 @@ class we_messaging_messaging extends we_class{
 	function create_folder($name, $parent_id, $type){
 		/* Sanity Checks */
 		if(!$type || !isset($this->used_msgobjs[$type])){
-			return array(1, g_l('modules_messaging', '[msg_type_not_found]'));
+			return [1, g_l('modules_messaging', '[msg_type_not_found]')];
 		}
 
 		if((($ind = self::array_ksearch('Name', $name, $this->available_folders)) >= 0) && ($this->available_folders[$ind]['ParentID'] == $parent_id)){
-			return array(-1, g_l('modules_messaging', '[children_same_name]'));
+			return [-1, g_l('modules_messaging', '[children_same_name]')];
 		}
 
 		$parent_id = $parent_id == -1 ? 0 : $parent_id;
 
 		//FIXME: Parent-check must be done by $type object;
 		if($parent_id != 0 && !isset($this->available_folders[$parent_id])){
-			return array(-1, g_l('modules_messaging', '[no_parent_folder]'));
+			return [-1, g_l('modules_messaging', '[no_parent_folder]')];
 		}
 
 		if(($id = $this->used_msgobjs[$type]->create_folder($name, $parent_id)) != -1){
-			$this->available_folders[] = array(
-				'ID' => $id,
+			$this->available_folders[] = ['ID' => $id,
 				'ParentID' => $parent_id,
 				'ClassName' => $type,
-				'Name' => $name);
+				'Name' => $name];
 
-			return array($id, g_l('modules_messaging', '[folder_created]'));
+			return [$id, g_l('modules_messaging', '[folder_created]')];
 		}
-		return array(-1, g_l('modules_messaging', '[folder_create_error]'));
+		return [-1, g_l('modules_messaging', '[folder_create_error]')];
 	}
 
 	function modify_folder($fid, $folder_name, $parent_folder){
@@ -923,27 +914,24 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function get_wesel_available_folders(){
-		$fooArray = array(
-			"sent" => g_l('modules_messaging', '[folder_sent]'),
+		$fooArray = ["sent" => g_l('modules_messaging', '[folder_sent]'),
 			"messages" => g_l('modules_messaging', '[folder_messages]'),
 			"done" => g_l('modules_messaging', '[folder_done]'),
 			"task" => g_l('modules_messaging', '[folder_todo]'),
 			"rejected" => g_l('modules_messaging', '[folder_rejected]'),
 			"todo" => g_l('modules_messaging', '[folder_todo]')
-		);
+			];
 
-		$matchArray = array('name' => $fooArray);
+		$matchArray = ['name' => $fooArray];
 
 		$mergedArray = array_merge(
-			array(
-			array(
-				'ID' => 0,
+			[['ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', '[nofolder]') . " --"
-			)
-			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
+				]
+		], self::array_hash_construct($this->available_folders, ['ID', 'Name'], $matchArray)
 		);
 
-		$arr1 = array('ID', 'Name');
+		$arr1 = ['ID', 'Name'];
 
 		$ret = self::arr_hash_to_wesel_hash($mergedArray, $arr1);
 		return $ret;
@@ -969,18 +957,15 @@ class we_messaging_messaging extends we_class{
 	/* Create the default folders for the given $userid */
 
 	static function createFolders($userid){
-		$default_folders = array(
-			1 => array(
-				5 => "sent",
-				3 => "messages"),
-			2 => array(
-				13 => "done",
+		$default_folders = [1 => [5 => "sent",
+				3 => "messages"],
+			2 => [13 => "done",
 				11 => "rejected",
-				3 => "todo"));
+				3 => "todo"]];
 
 		$db = new DB_WE();
 
-		$pfolders = array(1 => -1, 2 => -1);
+		$pfolders = [1 => -1, 2 => -1];
 
 		$db->query('SELECT ID,msg_type,obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type IN(3,5,9,11,13) AND UserID=' . intval($userid));
 		while($db->next_record()){

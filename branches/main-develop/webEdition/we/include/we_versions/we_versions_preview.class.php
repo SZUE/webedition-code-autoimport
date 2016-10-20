@@ -33,12 +33,10 @@ class we_versions_preview{
 	private $contentDiff = '';
 	private $contentNew = '';
 	private $contentOld = '';
-	private static $notmark = array(
-		'timestamp',
+	private static $notmark = ['timestamp',
 		'version'
-	);
-	private static $notshow = array(
-		'ID',
+	 ];
+	private static $notshow = ['ID',
 		'documentElements',
 		'documentScheduler',
 		'documentCustomFilter',
@@ -56,7 +54,7 @@ class we_versions_preview{
 		'IsClassFolder',
 		'IsNotEditable',
 		'active'
-	);
+	 ];
 
 	public function __construct(){
 		$this->db = $GLOBALS['DB_WE'];

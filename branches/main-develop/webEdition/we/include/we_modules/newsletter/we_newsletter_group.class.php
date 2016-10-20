@@ -49,14 +49,13 @@ class we_newsletter_group extends we_newsletter_base{
 		parent::__construct();
 		$this->table = NEWSLETTER_GROUP_TABLE;
 
-		$this->persistents = array(
-			'NewsletterID' => we_base_request::INT,
+		$this->persistents = ['NewsletterID' => we_base_request::INT,
 			'Emails' => we_base_request::RAW_CHECKED,
 			'Extern' => we_base_request::WEFILELIST,
 			'Customers' => we_base_request::RAW,
 			'SendAll' => we_base_request::BOOL,
 			'Filter' => we_base_request::SERIALIZED_KEEP
-		);
+			];
 
 		$this->settings = self::getSettings();
 		$this->Extern = isset($this->settings['global_mailing_list']) ? $this->settings['global_mailing_list'] : '';
@@ -164,7 +163,7 @@ class we_newsletter_group extends we_newsletter_base{
 	}
 
 	function addFilter($name = ''){
-		$this->aFilter[] = array("fieldname" => $name, "operator" => 0, "fieldvalue" => '', "logic" => '', "hours" => '', "minutes" => '');
+		$this->aFilter[] = ["fieldname" => $name, "operator" => 0, "fieldvalue" => '', "logic" => '', "hours" => '', "minutes" => ''];
 	}
 
 	function appendFilter(array $filter){

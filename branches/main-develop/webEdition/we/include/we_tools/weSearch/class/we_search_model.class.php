@@ -143,30 +143,26 @@ class we_search_model extends we_search_modelBase{
 	protected $searchTablesTmplSearch = [];
 	protected $searchTablesMediaSearch = [];
 	protected $searchTablesAdvSearch = [];
-	protected $searchForFieldTmplSearch = array(
-		'text' => 0,
+	protected $searchForFieldTmplSearch = ['text' => 0,
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	);
-	protected $searchForFieldDocSearch = array(
-		'text' => 0,
+	 ];
+	protected $searchForFieldDocSearch = ['text' => 0,
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	);
-	protected $searchForFieldMediaSearch = array(
-		'text' => 0,
+	 ];
+	protected $searchForFieldMediaSearch = ['text' => 0,
 		'title' => 0,
 		'content' => 0,
 		'meta' => 0,
-	);
-	protected $searchForContentTypeMediaSearch = array(
-		'image' => 0,
+	 ];
+	protected $searchForContentTypeMediaSearch = ['image' => 0,
 		'audio' => 0,
 		'video' => 0,
 		'other' => 0,
-	);
+	 ];
 
 	/**
 	 * Default Constructor
@@ -338,15 +334,14 @@ class we_search_model extends we_search_modelBase{
 						}
 					}
 				}
-				$this->searchForFieldDocSearch = array(
-					'text' => $this->searchForTextDocSearch,
+				$this->searchForFieldDocSearch = ['text' => $this->searchForTextDocSearch,
 					'title' => $this->searchForTitleDocSearch,
 					'content' => $this->searchForContentDocSearch,
 					'meta' => false,
-				);
+					];
 
 				// write current set
-				$this->currentSearchTables = $this->searchTablesDocSearch = array(FILE_TABLE);
+				$this->currentSearchTables = $this->searchTablesDocSearch = [FILE_TABLE];
 				$this->currentSearchFields = $this->searchFieldsDocSearch;
 				$this->currentSearchForField = $this->searchForFieldDocSearch;
 				$this->currentLocation = $this->locationDocSearch;
@@ -368,15 +363,14 @@ class we_search_model extends we_search_modelBase{
 						}
 					}
 				}
-				$this->searchForFieldTmplSearch = array(
-					'text' => $this->searchForTextTmplSearch,
+				$this->searchForFieldTmplSearch = ['text' => $this->searchForTextTmplSearch,
 					'title' => false,
 					'content' => $this->searchForContentTmplSearch,
 					'meta' => false,
-				);
+					];
 
 				// write current set
-				$this->currentSearchTables = $this->searchTablesTmplSearch = array(TEMPLATES_TABLE);
+				$this->currentSearchTables = $this->searchTablesTmplSearch = [TEMPLATES_TABLE];
 				$this->currentSearchFields = $this->searchFieldsTmplSearch;
 				$this->currentSearchForField = $this->searchForFieldTmplSearch;
 				$this->currentLocation = $this->locationTmplSearch;
@@ -389,21 +383,19 @@ class we_search_model extends we_search_modelBase{
 				break;
 			case we_search_view::SEARCH_MEDIA:
 				// process some SEARCH_MEDIA specialties
-				$this->searchForFieldMediaSearch = array(
-					'text' => $this->searchForTextMediaSearch,
+				$this->searchForFieldMediaSearch = ['text' => $this->searchForTextMediaSearch,
 					'title' => $this->searchForTitleMediaSearch,
 					'content' => false,
 					'meta' => $this->searchForMetaMediaSearch,
-				);
-				$this->searchForContentTypeMediaSearch = array(
-					'image' => $this->searchForImageMediaSearch,
+					];
+				$this->searchForContentTypeMediaSearch = ['image' => $this->searchForImageMediaSearch,
 					'audio' => $this->searchForAudioMediaSearch,
 					'video' => $this->searchForVideoMediaSearch,
 					'other' => $this->searchForOtherMediaSearch,
-				);
+					];
 
 				// write current set
-				$this->currentSearchTables = $this->searchTablesMediaSearch = array(FILE_TABLE);
+				$this->currentSearchTables = $this->searchTablesMediaSearch = [FILE_TABLE];
 				$this->currentSearchFields = $this->searchFieldsMediaSearch;
 				$this->currentLocation = $this->locationMediaSearch;
 				$this->currentSearch = $this->searchMediaSearch;
@@ -418,13 +410,13 @@ class we_search_model extends we_search_modelBase{
 				break;
 			case we_search_view::SEARCH_ADV:
 				// process some SEARCH_ADV specialties
-				$tmp = array(// default db entry
+				$tmp = [// default db entry
 					FILE_TABLE => 1,
 					addTblPrefix('tblTemplates') => 0,
 					addTblPrefix('tblObjectFiles') => 1,
 					addTblPrefix('tblObject') => 0,
 					addTblPrefix('tblversions') => 0,
-				);
+					];
 
 				$this->searchTablesAdvSearch = [];
 				foreach($this->search_tables_advSearch as $k => $v){
@@ -485,13 +477,12 @@ class we_search_model extends we_search_modelBase{
 		$this->activTab = $tab;
 
 		// set SEARCH_ADV tables
-		$this->search_tables_advSearch = array(
-			FILE_TABLE => 0,
+		$this->search_tables_advSearch = [FILE_TABLE => 0,
 			TEMPLATES_TABLE => 0,
 			addTblPrefix('tblObjectFiles') => 0,
 			addTblPrefix('tblObject') => 0,
 			VERSIONS_TABLE => 0,
-		);
+			];
 
 		switch($tables){
 			case 1:
@@ -520,13 +511,13 @@ class we_search_model extends we_search_modelBase{
 				$this->searchForTextDocSearch = $this->searchForTitleDocSearch = $this->searchForContentDocSearch = 1; // FIXME: make this default
 
 				if($keyword){
-					$this->searchDocSearch = array($keyword, $keyword, $keyword);
-					$this->searchFieldsDocSearch = array('Text', 'Title', 'Content');
-					$this->locationDocSearch = array('CONTAIN', 'CONTAIN', 'CONTAIN');
+					$this->searchDocSearch = [$keyword, $keyword, $keyword];
+					$this->searchFieldsDocSearch = ['Text', 'Title', 'Content'];
+					$this->locationDocSearch = ['CONTAIN', 'CONTAIN', 'CONTAIN'];
 
-					$this->searchAdvSearch = array($keyword);
-					$this->searchFieldsAdvSearch = array('Content');
-					$this->locationAdvSearch = array('CONTAIN');
+					$this->searchAdvSearch = [$keyword];
+					$this->searchFieldsAdvSearch = ['Content'];
+					$this->locationAdvSearch = ['CONTAIN'];
 
 					$this->searchMediaSearch[0] = $keyword;
 					$this->locationMediaSearch[0] = 'CONTAIN';
@@ -541,18 +532,18 @@ class we_search_model extends we_search_modelBase{
 				$this->searchForTextTmplSearch = $this->searchForContentTmplSearch = 1;
 
 				if($keyword){
-					$this->searchTmplSearch = $this->searchAdvSearch = array($keyword, $keyword);
-					$this->searchFieldsTmplSearch = $this->searchFieldsAdvSearch = array('Text', 'Content');
-					$this->locationTmplSearch = $this->locationAdvSearch = array('CONTAIN', 'CONTAIN');
+					$this->searchTmplSearch = $this->searchAdvSearch = [$keyword, $keyword];
+					$this->searchFieldsTmplSearch = $this->searchFieldsAdvSearch = ['Text', 'Content'];
+					$this->locationTmplSearch = $this->locationAdvSearch = ['CONTAIN', 'CONTAIN'];
 				}
 				break;
 			case 3://Adv
 			case 4:
 			case 4:
 				if($keyword){
-					$this->searchAdvSearch = array($keyword);
-					$this->searchFieldsAdvSearch = array('Text');
-					$this->locationAdvSearch = array('CONTAIN');
+					$this->searchAdvSearch = [$keyword];
+					$this->searchFieldsAdvSearch = ['Text'];
+					$this->locationAdvSearch = ['CONTAIN'];
 				}
 				break;
 		}

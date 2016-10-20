@@ -76,12 +76,14 @@ class we_search_frames extends we_modules_frame{
 			$we_tabs->addTab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), false, "setTab(" . self::TAB_DOCUMENTS . ");", ['id' => 'tab_1', 'style' => 'display:' . $displayEntry]);
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), false, "setTab(" . self::TAB_TEMPLATES . ");", ['id' => 'tab_2', 'style' => 'display:' . $displayEntry]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), false, "setTab(" . self::TAB_TEMPLATES . ");", ['id' => 'tab_2',
+				'style' => 'display:' . $displayEntry]);
 		}
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
 			$we_tabs->addTab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), false, "setTab(" . self::TAB_MEDIA . ");", ['id' => 'tab_5', 'style' => 'display:' . $displayEntry]);
 		}
-		$we_tabs->addTab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), false, "setTab(" . self::TAB_ADVANCED . ");", ['id' => 'tab_3', 'style' => 'display:' . $displayEntry]);
+		$we_tabs->addTab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), false, "setTab(" . self::TAB_ADVANCED . ");", ['id' => 'tab_3',
+			'style' => 'display:' . $displayEntry]);
 
 		//tabs for folders
 		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
@@ -165,31 +167,28 @@ function setTab(tab) {
 	private function getHTMLProperties($preselect = ''){
 		$tabNr = $this->getTab();
 
-		return $this->View->getCommonHiddens(array(
-				'cmd' => '',
+		return $this->View->getCommonHiddens(['cmd' => '',
 				'pnt' => 'edbody',
 				'tabnr' => $tabNr,
 				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			)) .
+			]) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
-			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')), $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')), $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab5', 'style' => ($tabNr == self::TAB_MEDIA ? 'display: block;' : 'display: none')), $tabNr == self::TAB_MEDIA ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == self::TAB_ADVANCED ? 'display: block;' : 'display: none')), $tabNr == self::TAB_ADVANCED ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')), $this->getHTMLSearchtool($this->getHTMLGeneral()));
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')], $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
+			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')], $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
+			we_html_element::htmlDiv(['id' => 'tab5', 'style' => ($tabNr == self::TAB_MEDIA ? 'display: block;' : 'display: none')], $tabNr == self::TAB_MEDIA ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
+			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_ADVANCED ? 'display: block;' : 'display: none')], $tabNr == self::TAB_ADVANCED ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
+			we_html_element::htmlDiv(['id' => 'tab4', 'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')], $this->getHTMLSearchtool($this->getHTMLGeneral()));
 	}
 
 	private function getHTMLGeneral(){
 		$disabled = true;
 		$this->View->Model->Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 
-		return array(
-			array(
-				'headline' => g_l('searchtool', '[general]'),
-				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1
-		));
+		return [['headline' => g_l('searchtool', '[general]'),
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1
+		]];
 	}
 
 	private function getHTMLTabDocuments(){
@@ -209,25 +208,20 @@ function setTab(tab) {
 		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
-		return array(
-			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $searchField_block,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[suchenIn]'),
+		return [['headline' => g_l('searchtool', '[text]'),
+			'html' => $searchField_block,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[optionen]'),
+			],
+				['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
-		));
+			],
+				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+		]];
 	}
 
 	private function getHTMLTabTemplates(){
@@ -245,25 +239,20 @@ function setTab(tab) {
 			$this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
-		return array(
-			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $searchField_block,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[suchenIn]'),
+		return [['headline' => g_l('searchtool', '[text]'),
+			'html' => $searchField_block,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[optionen]'),
+			],
+				['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
-		));
+			],
+				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+		]];
 	}
 
 	private function getHTMLTabMedia(){
@@ -283,35 +272,28 @@ function setTab(tab) {
 		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
-		return array(
-			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $searchField_block,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[suchenIn]'),
+		return [['headline' => g_l('searchtool', '[text]'),
+			'html' => $searchField_block,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[optionen]'),
+			],
+				['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[anzeigen]'),
+			],
+				['headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $searchCheckboxMediaTyp_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => 'Filter', //g_l('searchtool', '[optionen]'),
+			],
+				['headline' => 'Filter', //g_l('searchtool', '[optionen]'),
 				'html' => $searchFilter_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
-		));
+			],
+				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+		]];
 	}
 
 	private function getHTMLTabAdvanced(){
@@ -327,20 +309,16 @@ function setTab(tab) {
 			$this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
-		return array(
-			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $searchFields_block,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => g_l('searchtool', '[anzeigen]'),
+		return [['headline' => g_l('searchtool', '[text]'),
+			'html' => $searchFields_block,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				['headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
-		));
+			],
+				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+		]];
 	}
 
 	private function getHTMLSearchtool($content){
@@ -364,8 +342,8 @@ function setTab(tab) {
 
 			$out .= $rightContent .
 				'<div style="clear:both;' . ($i < (count($content) - 1) && (!isset($c['noline'])) ?
-					'border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;' :
-					'margin:10px 0;'
+				'border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;' :
+				'margin:10px 0;'
 				) . '"></div>';
 		}
 
@@ -380,7 +358,7 @@ function setTab(tab) {
 				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [ [], 'tool_weSearch_save']
+						we_html_button::SAVE => [[], 'tool_weSearch_save']
 				]);
 
 			default:
@@ -395,7 +373,7 @@ function setTab(tab) {
 			$this->Model->saveInSession();
 			$_SESSION['weS']['weSearch']["modelidForTree"] = $modelid;
 		} else {
-			$this->Model = $this->Model ? : new we_search_model();
+			$this->Model = $this->Model ?: new we_search_model();
 		}
 
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);

@@ -32,7 +32,7 @@ class we_messaging_update extends we_class{
 	function __construct(){
 		parent::__construct();
 		$this->Name = 'msg_clipboard_' . md5(uniqid(__FUNCTION__, true));
-		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'sort_order', 'last_sortfield', 'search_ids', 'available_folders', 'search_folders', 'search_fields');
+		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'sort_order', 'last_sortfield', 'search_ids', 'available_folders', 'search_folders', 'search_fields'];
 	}
 
 }

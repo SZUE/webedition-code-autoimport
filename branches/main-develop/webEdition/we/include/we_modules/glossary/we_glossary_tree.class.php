@@ -140,8 +140,7 @@ class we_glossary_tree extends we_tree_base{
 			($Segment ? ' LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
 
 		while($Db->next_record(MYSQL_ASSOC)){
-			$Item = array(
-				'id' => $Db->f('ID'),
+			$Item = ['id' => $Db->f('ID'),
 				'parentid' => $Language . '_' . $Type,
 				'text' => oldHtmlspecialchars($Db->f('Text')),
 				'typ' => 'item',
@@ -151,7 +150,7 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => $Offset,
 				'published' => ($Db->f('Published') > 0 ? 1 : 0),
 				'contenttype' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
-			);
+				];
 
 			switch($Type){
 				case we_glossary_glossary::TYPE_ABBREVATION:

@@ -51,78 +51,76 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 ?>
 <body class="weDialogBody"><?php
 	if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo'){
-		$parts = array(
-			array("headline" => g_l('modules_messaging', '[subject]'),
-				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
-				'noline' => 1,
-				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => g_l('modules_messaging', '[deadline]'),
+		$parts = [["headline" => g_l('modules_messaging', '[subject]'),
+			"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
+			'noline' => 1,
+			'space' => we_html_multiIconBox::SPACE_MED2
+			],
+				["headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => $format->get_deadline(),
 				'noline' => 1,
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => g_l('modules_messaging', '[status]'),
+			],
+				["headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td>' .
 				($messaging->selected_message['hdrs']['status'] < 100 ? '<td>' . we_html_button::create_button('percent100', "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				'noline' => 1,
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => g_l('modules_messaging', '[created_by]'),
+			],
+				["headline" => g_l('modules_messaging', '[created_by]'),
 				"html" => $format->get_from(),
 				'noline' => 1,
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => g_l('modules_messaging', '[assigned_by]'),
+			],
+				["headline" => g_l('modules_messaging', '[assigned_by]'),
 				"html" => $format->get_assigner(),
 				'noline' => 1,
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => g_l('modules_messaging', '[creation_date]'),
+			],
+				["headline" => g_l('modules_messaging', '[creation_date]'),
 				"html" => $format->get_date(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array("headline" => "",
+			],
+				["headline" => "",
 				"html" => $format->get_msg_text(),
-			)
-		);
+			]
+		];
 
 		if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' && ($h = $format->get_todo_history())){
-			$parts[] = array("headline" => "",
+			$parts[] = ["headline" => "",
 				"html" => $format->get_todo_history(),
 				'noline' => 1,
-			);
+			];
 		}
 	} else { //	Message
-		$parts = array(
-			array("headline" => g_l('modules_messaging', '[subject]'),
-				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
-				'noline' => 1,
-				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array("headline" => g_l('modules_messaging', '[from]'),
+		$parts = [["headline" => g_l('modules_messaging', '[subject]'),
+			"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
+			'noline' => 1,
+			'space' => we_html_multiIconBox::SPACE_MED
+			],
+				["headline" => g_l('modules_messaging', '[from]'),
 				"html" => $format->get_from(),
 				'noline' => 1,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array("headline" => g_l('modules_messaging', '[date]'),
+			],
+				["headline" => g_l('modules_messaging', '[date]'),
 				"html" => $format->get_date(),
 				'noline' => (empty($messaging->selected_message['hdrs']['To']) ? null : 1),
 				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+			]
+		];
 
 		if(!empty($messaging->selected_message['hdrs']['To'])){
-			$parts[] = array("headline" => g_l('modules_messaging', '[recipients]'),
+			$parts[] = ["headline" => g_l('modules_messaging', '[recipients]'),
 				"html" => oldHtmlspecialchars($messaging->selected_message['hdrs']['To']),
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+			];
 		}
 
-		$parts[] = array("headline" => "",
+		$parts[] = ["headline" => "",
 			"html" => $format->get_msg_text(),
 			'noline' => 1,
-		);
+		];
 	}
 
 	echo we_html_multiIconBox::getJS() .

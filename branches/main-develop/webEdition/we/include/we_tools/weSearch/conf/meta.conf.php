@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,11 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: remove this file
-$metaInfo = array(
-	'name' => 'weSearch',
+$metaInfo = ['name' => 'weSearch',
 	'classname' => 'we_search_model',
 	'maintable' => SUCHE_TABLE,
 	'datasource' => 'table:' . SUCHE_TABLE,
 	'startpermission' => '',
 	'supportshooks' => 0
-);
+];

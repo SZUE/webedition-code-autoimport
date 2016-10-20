@@ -66,11 +66,11 @@ $html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 
-$parts[] = array("headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $html,
 	'space' => we_html_multiIconBox::SPACE_MED2,
 	'icon' => "cal.gif"
-);
+ ];
 
 
 if(defined('WORKFLOW_TABLE')){
@@ -78,12 +78,12 @@ if(defined('WORKFLOW_TABLE')){
 			we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
 			we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 
-	$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
+	$parts[] = ["headline" => g_l('modules_workflow', '[workflow]'),
 		"html" => $anzeige,
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		"forceRightHeadline" => 1,
 		'icon' => "workflow.gif"
-	);
+		];
 }
 
 echo we_html_tools::getHtmlTop();

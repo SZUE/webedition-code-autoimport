@@ -98,10 +98,9 @@ $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'
 
 $oPool = new we_html_table(["width" => 420, 'class' => 'default'], 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
-$oPool->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle;'), we_html_element::htmlA(array(
-		"href" => "#",
+$oPool->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle;'], we_html_element::htmlA(["href" => "#",
 		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
-		), '<i class="fa fa-lg fa-caret-up"></i>') .
+	 ], '<i class="fa fa-lg fa-caret-up"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(["href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"

@@ -51,13 +51,12 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 
 		while($db->next_record()){
 
-			$this->alldata[] = array(
-				"folder_id" => $id,
+			$this->alldata[] = ["folder_id" => $id,
 				"table" => $table,
 				"idForFilter" => $idForFilter,
 				"id" => $db->f("ID"),
 				"contenttype" => $db->f("ContentType"),
-			);
+				];
 		}
 	}
 

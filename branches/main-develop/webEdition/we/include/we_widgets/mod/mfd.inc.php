@@ -89,8 +89,8 @@ $bDateLastMfd = $sDisplayOpt{1};
 $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
-			makeArrayFromCSV($aCols[4]) :
-			array($uid))));
+		makeArrayFromCSV($aCols[4]) :
+		[$uid])));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,10 +23,7 @@
  */
 $splitMdc = explode(';', $aProps[3]);
 $oTblDiv = we_html_element::htmlDiv(array(
-			"id" => "m_" . $iCurrId . "_inline",
-			"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-				), $mdc);
-$aLang = array(
-	($splitMdc[0]) ? base64_decode($splitMdc[0]) : g_l('cockpit', (empty($splitMdc[1][1]) ? '[my_documents]' : '[my_objects]')),
-	""
-);
+		"id" => "m_" . $iCurrId . "_inline",
+		"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+		), $mdc);
+$aLang = [($splitMdc[0]) ? base64_decode($splitMdc[0]) : g_l('cockpit', (empty($splitMdc[1][1]) ? '[my_documents]' : '[my_objects]')), ""];

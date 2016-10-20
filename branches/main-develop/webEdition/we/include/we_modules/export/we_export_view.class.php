@@ -70,7 +70,7 @@ var table = WE().consts.tables.FILE_TABLE;
 	function getJSProperty(){
 		$selected = '';
 		$opened = '';
-		$arr = array(FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl");
+		$arr = [FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl"];
 		if(defined('OBJECT_TABLE')){
 			$arr[OBJECT_FILES_TABLE] = 'selObjs';
 			$arr[OBJECT_TABLE] = 'selClasses';

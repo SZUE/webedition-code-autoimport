@@ -412,12 +412,11 @@ class we_shop_category extends we_category{
 		}
 		//t_e("getCheck", $origID, $interimsID, $id);
 
-		return $getState ? array("id" => $id, "state" => $state) : $id;
+		return $getState ? ["id" => $id, "state" => $state] : $id;
 	}
 
 	public static function getInternalFieldname($field = 'ID'){
-		$fieldMap = array(
-			'id' => 'ID',
+		$fieldMap = ['id' => 'ID',
 			'category' => 'Category',
 			'path' => 'Path',
 			'title' => 'Title',
@@ -426,7 +425,7 @@ class we_shop_category extends we_category{
 			'is_from doc_object' => 'is_from doc_object',
 			'is_fallback_to_standard' => 'is_fallback_to_standard',
 			'is_fallback_to_active' => 'is_fallback_to_active'
-		);
+			];
 
 		return in_array($field, $fieldMap) ? $field : (isset($fieldMap[$field]) ? $fieldMap[$field] : 'ID');
 	}
@@ -633,15 +632,15 @@ class we_shop_category extends we_category{
 			$customer = array_merge($customer, we_customer_customer::getEncryptedFields());
 			$stateField = we_shop_vatRule::getStateField();
 			if(isset($customer[$stateField]) && ($c = $customer[$stateField])){
-				return $getAllData ? array('country' => $c, 'isFallback' => false, "customer" => $customer) : $c;
+				return $getAllData ? ['country' => $c, 'isFallback' => false, "customer" => $customer] : $c;
 			}
 		}
 
 		if($useFallback && ($c = self::getDefaultCountry())){
-			return $getAllData ? array('country' => $c, "isFallback" => true, "customer" => false) : $c;
+			return $getAllData ? ['country' => $c, "isFallback" => true, "customer" => false] : $c;
 		}
 
-		return $getAllData ? array('country' => false, "isFallback" => false, "customer" => $customer ? true : false) : false;
+		return $getAllData ? ['country' => false, "isFallback" => false, "customer" => $customer ? true : false] : false;
 	}
 
 	/**

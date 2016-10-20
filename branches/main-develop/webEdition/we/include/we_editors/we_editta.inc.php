@@ -113,10 +113,9 @@ $table = '<table class="default">
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+ ];
 
 
 // INLINEEDIT && SHOWMENUS
@@ -135,10 +134,9 @@ $table = '<table class="default">
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+ ];
 
 
 // WIDTH & HEIGHT & BGCOLOR

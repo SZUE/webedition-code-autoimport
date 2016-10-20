@@ -340,8 +340,7 @@ class we_objectFile extends we_document{
 					$id = 1 + intval(f('SELECT max(ID) FROM ' . OBJECT_FILES_TABLE, '', $this->DB_WE));
 					$text = str_replace('%ID%', $id, $text);
 				}
-				$this->Text = strtr($text, array(
-					'%d%' => date('d'),
+				$this->Text = strtr($text, ['%d%' => date('d'),
 					'%j%' => date('j'),
 					'%m%' => date('m'),
 					'%y%' => date('y'),
@@ -351,7 +350,7 @@ class we_objectFile extends we_document{
 					'%H%' => date('H'),
 					'%g%' => date('G'),
 					'%G%' => date('G'),
-				));
+				]);
 			}
 
 			if($hash['DefaultValues']){
@@ -533,9 +532,9 @@ class we_objectFile extends we_document{
 		return '
 			<table class="default">
 				' . $headline . '
-				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array(
+				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, [
 				'onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');',
-				'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
+				'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'], 'value', 330) . '</td></tr>
 			</table>';
 	}
 
@@ -687,10 +686,9 @@ class we_objectFile extends we_document{
 				}
 			} else {
 				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
-				$parts[] = array(
-					'headline' => '',
+				$parts[] = ['headline' => '',
 					'html' => $c2,
-					'name' => $realName);
+					'name' => $realName];
 			}
 
 			$editable = $edMerk;
@@ -717,7 +715,7 @@ class we_objectFile extends we_document{
 		}
 		return ($variant ?
 			we_html_tools::htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
-			$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
+			$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, ['onchange' => '_EditorFrame.setEditorIsHot(true);']));
 	}
 
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
@@ -999,7 +997,7 @@ class we_objectFile extends we_document{
 				$input = we_html_tools::htmlSelect('dummy', $values, 1, 0, false, ['disabled' => 'disabled']) .
 					we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
 			} else {
-				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
+				$values = ['0' => ' '] + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
 				$input = we_html_tools::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ?: $attribs['default']));
 			}
 
@@ -1103,7 +1101,7 @@ class we_objectFile extends we_document{
 	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $variant = true){
 		$attribs['name'] = $n;
 		$link = we_unserialize($this->getElement($n));
-		$link = $link ?: array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
+		$link = $link ?: ["ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]')];
 
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
@@ -1177,7 +1175,7 @@ class we_objectFile extends we_document{
 		}
 		unset($countryvalue);
 		if(!empty($topCountries) && !empty($shownCountries)){
-			$countryselect->addOption('-', '----', array("disabled" => "disabled"));
+			$countryselect->addOption('-', '----', ["disabled" => "disabled"]);
 		}
 
 		foreach($shownCountries as $countrykey => &$countryvalue){
@@ -1849,7 +1847,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		$this->correctMultiObject();
 
 		if(!$skipHook){
-			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
+			$hook = new weHook('preSave', '', [$this, 'resave' => $resave]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -1902,7 +1900,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 // hook
 		if(!$skipHook){
-			$hook = new weHook('save', '', array($this, 'resave' => $resave));
+			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -2057,7 +2055,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
-			$hook = new weHook('prePublish', '', array($this));
+			$hook = new weHook('prePublish', '', [$this]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -2086,7 +2084,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		}
 		//hook
 		if(!$skipHook){
-			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $old));
+			$hook = new weHook('publish', '', [$this, 'prePublishTime' => $old]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -2118,7 +2116,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('unpublish', '', array($this));
+			$hook = new weHook('unpublish', '', [$this]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -2264,11 +2262,10 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 							$key = 'dat';
 					}
 
-					$this->elements[$name] = array(
-						$key => $db->f($cur['name']),
+					$this->elements[$name] = [$key => $db->f($cur['name']),
 						'type' => $regs[0],
 						'len' => $cur["len"]
-					);
+					];
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]['class'] = $db->f($tableInfo[$i]['name']);
 //						}
@@ -2279,11 +2276,10 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 			$elementName = we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 
 			if($db->f($fieldname)){
-				$this->elements[$elementName] = array(
-					"dat" => $db->f($fieldname),
+				$this->elements[$elementName] = ["dat" => $db->f($fieldname),
 					"type" => 'variant',
 					"len" => strlen($db->f($fieldname))
-				);
+				];
 			}
 		}
 	}
@@ -2746,23 +2742,20 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 	public function getPropertyPage(){
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
-			$parts = array(
-				array(
-					"headline" => g_l('weClass', '[path]'),
-					"html" => $this->formPath(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
-					'icon' => "path.gif"
-				)
-			);
+			$parts = [["headline" => g_l('weClass', '[path]'),
+				"html" => $this->formPath(),
+				'space' => we_html_multiIconBox::SPACE_MED2,
+				'icon' => "path.gif"
+				]
+			];
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !permissionhandler::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
-				$parts[] = array(
-					"headline" => g_l('modules_object', '[class]'),
+				$parts[] = ["headline" => g_l('modules_object', '[class]'),
 					"html" => $this->formClass(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'noline' => true,
 					'icon' => "class.gif"
-				);
+				];
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 				$html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 					'<div style="margin-bottom:12px;">' . $this->formClass() . '</div>';
@@ -2770,37 +2763,33 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 					'<div style="margin-bottom:12px;">' . $this->formClassId() . '</div>';
 
 
-				$parts[] = array(
-					"headline" => "",
+				$parts[] = ["headline" => "",
 					"html" => $html,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => 1,
 					'icon' => "class.gif"
-				);
+				];
 			}
 
-			$parts[] = array(
-				"headline" => g_l('weClass', '[language]'),
+			$parts[] = ["headline" => g_l('weClass', '[language]'),
 				"html" => $this->formLangLinks(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "lang.gif"
-			);
+			];
 
 
-			$parts[] = array(
-				"headline" => g_l('global', '[categorys]'),
+			$parts[] = ["headline" => g_l('global', '[categorys]'),
 				"html" => $this->formCategory(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "cat.gif"
-			);
+			];
 
 
-			$parts[] = array(
-				"headline" => g_l('modules_object', '[copyObject]'),
+			$parts[] = ["headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "copy.gif"
-			);
+			];
 
 
 			$parts[] = ["headline" => g_l('weClass', '[owners]'),

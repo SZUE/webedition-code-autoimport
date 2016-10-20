@@ -117,7 +117,7 @@ abstract class we_customer_EI{
 			$nodeName = $xp->nodeName($node);
 			$nodeattribs = [];
 			if($xp->hasAttributes($node)){
-				$attrs = $attrs + array('@n:' => g_l('modules_customer', '[none]'));
+				$attrs = $attrs + ['@n:' => g_l('modules_customer', '[none]')];
 				$attributes = $xp->getAttributes($node);
 				foreach($attributes as $name => $value){
 					$nodeattribs[$name] = $value;
@@ -230,10 +230,9 @@ abstract class we_customer_EI{
 	}
 
 	function prepareImport($options){
-		$ret = array(
-			'tmp_dir' => '',
+		$ret = ['tmp_dir' => '',
 			'file_count' => '',
-		);
+			];
 
 		$type = $options['type'];
 		$filename = $options['filename'];
@@ -270,11 +269,10 @@ abstract class we_customer_EI{
 					$path.='/';
 
 					$fcount = 0;
-					$rootnode = array(
-						'name' => 'customer',
+					$rootnode = ['name' => 'customer',
 						'attributes' => null,
 						'content' => []
-					);
+						];
 
 					$csv = new we_customer_CSVImport();
 
@@ -288,11 +286,10 @@ abstract class we_customer_EI{
 					while(($data = $csv->CSVFetchRow()) != FALSE){
 						$rootnode['content'] = [];
 						foreach($data as $kdat => $vdat){
-							$rootnode['content'][] = array(
-								'name' => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(' ', '', g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
+							$rootnode['content'][] = ['name' => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(' ', '', g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
 								'attributes' => null,
 								'content' => '<![CDATA[' . $vdat . ']]>'
-							);
+								];
 						}
 						$f = $path . 'temp_' . $fcount . '.xml';
 						self::save2File($f, we_exim_XMLExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement(array($rootnode)), 'wb');

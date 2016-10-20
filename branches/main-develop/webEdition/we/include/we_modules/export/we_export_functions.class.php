@@ -151,7 +151,7 @@ abstract class we_export_functions{
 				break;
 		}
 
-		return array("file" => $file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $doctype : ""), "tableid" => ($tableid ? : ""));
+		return ["file" => $file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $doctype : ""), "tableid" => ($tableid ? : "")];
 	}
 
 	/**
@@ -208,7 +208,7 @@ abstract class we_export_functions{
 	static function correctTagname($tagname, $alternative_name, $alternative_number = -1){
 		if($tagname != ''){
 			// Remove spaces + special characters
-			$tagname = preg_replace(array('/\40+/', '/[^a-zA-Z0-9_]+/'), array("_", ''), $tagname);
+			$tagname = preg_replace(['/\40+/', '/[^a-zA-Z0-9_]+/'], ["_", ''], $tagname);
 		}
 
 		// Set alternative name if no name is now present present
@@ -230,20 +230,16 @@ abstract class we_export_functions{
 	static function checkCompatibility($content, $csv_delimiter = ",", $csv_enclose = "'", $type = "escape"){
 		switch($type){
 			case 'escape':
-				$check = array("\\");
-
+				$check = ["\\"];
 				break;
 			case 'enclose':
-				$check = array($csv_enclose);
-
+				$check = [$csv_enclose];
 				break;
 			case 'delimiter':
-				$check = array($csv_delimiter);
-
+				$check = [$csv_delimiter];
 				break;
 			case 'lineend':
-				$check = array("\r\n", "\n", "\r");
-
+				$check = ["\r\n", "\n", "\r"];
 				break;
 		}
 
@@ -617,7 +613,7 @@ abstract class we_export_functions{
 		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
 			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
-				$fields[] = array('name' => $regs[2], "type" => $regs[1]);
+				$fields[] = ['name' => $regs[2], "type" => $regs[1]];
 			}
 		}
 

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : [false];
 we_html_tools::protect($protect);
 
 /* * ************ fuction for orders  ************** */
@@ -105,7 +105,7 @@ $waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 
 //determine more than just one class-ID
-$fe = isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array(0);
+$fe = isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : [0];
 
 if(empty($classid)){
 	$classid = $fe[0];
@@ -208,9 +208,8 @@ if(isset($daten)){
 					array_select($val, 'ViewClass', g_l('modules_shop', '[classSel]')) . '</td>
     </tr>
 </table>';
-				$parts[] = array(
-					'html' => $classSelectTable,
-				);
+				$parts[] = ['html' => $classSelectTable,
+					];
 
 				// :: then do the query for objects
 				$DB_WE->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,obx.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
@@ -256,20 +255,17 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 
 				// now the pager class at last:
 				// Pager: Zweite Linkliste zeigen
-				$parts[] = array(
-					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows)),
-				);
+				$parts[] = ['html' => we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows)),
+					];
 
 				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			} else { // if there is an empty result form the object table
-				$parts = array(
-					array(
-						'html' => '<table style="width:100%">' .
+				$parts = [['html' => '<table style="width:100%">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
 						'<tr><td class="defaultfont">' . we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
-					)
-				);
+						]
+				];
 
 
 				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));

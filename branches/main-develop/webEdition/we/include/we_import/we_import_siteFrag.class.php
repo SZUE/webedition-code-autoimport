@@ -27,7 +27,7 @@ class we_import_siteFrag extends we_fragment_base{
 
 	function __construct($obj){
 		$this->obj = $obj;
-		parent::__construct("siteImport", 1, 0, array('style' => 'margin:10px 15px;'));
+		parent::__construct("siteImport", 1, 0, ['style' => 'margin:10px 15px;']);
 	}
 
 	function init(){

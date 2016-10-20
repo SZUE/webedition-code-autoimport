@@ -60,7 +60,7 @@ class we_customer_customer extends we_base_model{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = ['ID', 'Path', 'ModifiedBy', 'ModifyDate'];
+	protected $protected = ['ID', 'Path', 'ModifiedBy', 'ModifyDate'];
 	var $properties = ['Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin'];
 	var $udates = ['MemberSince', 'LastLogin', 'LastAccess'];
 
@@ -114,7 +114,7 @@ class we_customer_customer extends we_base_model{
 			$this->ModifiedBy = $this->setModifiedBy;
 		}
 
-		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
+		$hook = new weHook('customer_preSave', '', ['customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')]);
 
 		return $hook->executeHook() && we_base_model::save() && $this->registerMediaLinks();
 	}

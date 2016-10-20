@@ -59,14 +59,13 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$save = false;
 		foreach($objects as $object){
 			$save = true;
-			$extra = array(
-				'OldID' => isset($object->ID) ? $object->ID : 0,
+			$extra = ['OldID' => isset($object->ID) ? $object->ID : 0,
 				'OldParentID' => isset($object->ParentID) ? $object->ParentID : 0,
 				'OldPath' => isset($object->Path) ? $object->Path : '',
 				'OldTemplatePath' => isset($object->TemplatePath) ? $object->TemplatePath : '',
 				'OldDocTypeName' => isset($object->DocTypeName) ? $object->DocTypeName : '',
 				'Examined' => 1,
-			);
+				];
 
 			if(isset($object->elements)){
 				$extra['elements'] = $object->elements;
@@ -208,10 +207,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					foreach($pathids as $pid){
 
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
-						if(!$this->RefTable->exists(array('ID' => $pid, 'ContentType' => 'folder'))){
+						if(!$this->RefTable->exists(['ID' => $pid, 'ContentType' => 'folder'])){
 							$this->RefTable->add2(
-								array(
-									'ID' => $pid,
+								['ID' => $pid,
 									'ParentID' => $h['ParentID'],
 									'Path' => $h['Path'],
 									'Table' => $object->Table,
@@ -221,7 +219,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 									'OldPath' => null,
 									'OldTemplatePath' => null,
 									'Examined' => 0,
-								)
+									]
 							);
 						}
 					}

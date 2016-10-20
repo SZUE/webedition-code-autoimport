@@ -83,7 +83,7 @@ function we_getCSSIds(){
 function we_getCodeMirror2Code(&$options){
 	$maineditor = '';
 	$parser_js = [];
-	$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
+	$parser_css = ['theme/' . $_SESSION['prefs']['editorTheme'] . '.css'];
 	$useCompletion = false;
 	switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 		case we_base_ContentTypes::CSS:

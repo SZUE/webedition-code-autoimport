@@ -50,7 +50,7 @@ class we_exim_refTable{
 		foreach($ids as $id){
 			$key = basename(id_to_path($id, USER_TABLE));
 			if($key){
-				$this->Users[$key] = array('user' => $key, 'id' => $id);
+				$this->Users[$key] = ['user' => $key, 'id' => $id];
 			}
 		}
 	}
@@ -112,10 +112,9 @@ class we_exim_refTable{
 	}
 
 	function update($object){
-		$param = array(
-			"ID" => $object->ID,
+		$param = ["ID" => $object->ID,
 			"ContentType" => $object->ContentType
-		);
+			];
 		foreach($this->Storage as $k => $ref){
 			if($ref->match($param)){
 				$this->Storage[$k]->init($object);
@@ -173,7 +172,7 @@ class we_exim_refTable{
 	}
 
 	public function __sleep(){
-		return array('Storage');
+		return ['Storage'];
 	}
 
 	public function getCount(){

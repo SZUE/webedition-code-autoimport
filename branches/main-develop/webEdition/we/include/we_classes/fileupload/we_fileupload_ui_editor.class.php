@@ -80,9 +80,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			}
 		} else {
 			$this->responseClass = 'we_fileupload_resp_base';
-			$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-				array('fu_file_parentDir', 'text'),
-			));
+			$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['fu_file_parentDir', 'text'],]);
 		}
 	}
 
@@ -169,14 +167,14 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 5);
 		$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 6));
 		$nextCmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7);
-		
+
 		/*
 		 * used nextCmd:
-				nextCmds: 
-				collection_insertFiles
-				selector_insertFromUploader
-				sselector_insertFromUploader
-				suggest_writeBack
+		  nextCmds:
+		  collection_insertFiles
+		  selector_insertFromUploader
+		  sselector_insertFromUploader
+		  suggest_writeBack
 		 */
 
 		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);

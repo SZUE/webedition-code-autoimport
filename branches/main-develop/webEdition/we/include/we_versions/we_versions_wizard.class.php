@@ -71,14 +71,14 @@ abstract class we_versions_wizard{
 				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
-			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;text-align:left"), $pb);
-			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
+			$content->setCol(0, 0, ["id" => "progr", "style" => "display:none;text-align:left"], $pb);
+			$content->setCol(0, 1, ["style" => "text-align:right"], $content2);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
 				we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(
-					array('class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
-					), ($dc ? $pb : $content->getHtml()))
+					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
+					], ($dc ? $pb : $content->getHtml()))
 		);
 	}
 
@@ -100,18 +100,16 @@ abstract class we_versions_wizard{
 		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
-		$version_delete = array(
-			'delete_date' => we_base_request::_(we_base_request::RAW, 'delete_date', ''),
+		$version_delete = ['delete_date' => we_base_request::_(we_base_request::RAW, 'delete_date', ''),
 			'delete_hours' => we_base_request::_(we_base_request::INT, 'delete_hours', 0),
 			'delete_minutes' => we_base_request::_(we_base_request::INT, 'delete_minutes', 0),
 			'delete_seconds' => we_base_request::_(we_base_request::INT, 'delete_seconds', 0),
-		);
-		$version_reset = array(
-			'reset_date' => we_base_request::_(we_base_request::RAW, 'reset_date', ''),
+		];
+		$version_reset = ['reset_date' => we_base_request::_(we_base_request::RAW, 'reset_date', ''),
 			'reset_hours' => we_base_request::_(we_base_request::INT, 'reset_hours', 0),
 			'reset_minutes' => we_base_request::_(we_base_request::INT, 'reset_minutes', 0),
 			'reset_seconds' => we_base_request::_(we_base_request::INT, 'reset_seconds', 0),
-		);
+		];
 
 		foreach($version->contentTypes as $k){
 			$version_delete[$k] = we_base_request::_(we_base_request::BOOL, 'version_delete_' . $k);
@@ -121,15 +119,12 @@ abstract class we_versions_wizard{
 		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
-		$parts = array(
-			array(
-				"headline" => "",
-				"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
-			),
-			array(
-				"headline" => "",
+		$parts = [["headline" => "",
+			"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
+			],
+				["headline" => "",
 				"html" => we_html_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
-		));
+		]];
 
 
 		$js = '
@@ -187,15 +182,13 @@ set_button_state(false);';
 		$hiddenFields = we_html_element::htmlHiddens($version_delete) .
 			we_html_element::htmlHiddens($version_reset);
 
-		return array(
-			$js,
+		return [$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
-			we_html_element::htmlHiddens(array(
-				"fr" => "body",
+			we_html_element::htmlHiddens(["fr" => "body",
 				"we_cmd[0]" => "versions_wizard",
-				"step" => 1))
-		);
+				"step" => 1])
+		];
 	}
 
 	/**
@@ -236,18 +229,15 @@ set_button_state(false);';
 				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
-		$parts = array(
-			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), we_html_tools::TYPE_INFO, 520),
-				'noline' => 1,
-			),
-			array(
-				'headline' => g_l('versions', '[ContentType]'),
+		$parts = [['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), we_html_tools::TYPE_INFO, 520),
+			'noline' => 1,
+			],
+				['headline' => g_l('versions', '[ContentType]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
-			)
-		);
+			]
+		];
 
 
 		$versions_delete_date = we_html_tools::getDateSelector('delete_date', '_1', $version_delete_date);
@@ -306,20 +296,18 @@ set_button_state(false);';
 
 		$reset_seconds->selectOption($version_delete_seconds);
 
-		$parts[] = array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), we_html_tools::TYPE_INFO, 520),
+		$parts[] = ['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
-		);
+		];
 
 		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('delete_date').value='';", '', 0, 0, "", "", "", false);
 
 
-		$parts[] = array(
-			'headline' => g_l('versions', '[time]'),
+		$parts[] = ['headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>" . g_l('versions', '[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions', '[clocktime]') . ":</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s",
 			'noline' => 1,
 			'space' => we_html_multiIconBox::SPACE_BIG
-		);
+		];
 
 		//js
 		$jsCheckboxCheckAll = '';
@@ -420,17 +408,15 @@ set_button_state(false);';
 
 		$calendar = we_html_element::jsElement("calendarSetup();");
 
-		$parts[] = array('html' => $calendar);
+		$parts[] = ['html' => $calendar];
 
-		return array(
-			$js,
+		return [$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHiddens(array(
-				"fr" => "body",
+			we_html_element::htmlHiddens(["fr" => "body",
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
-				"step" => 2))
-		);
+				"step" => 2])
+		];
 	}
 
 	static function getReset1(){
@@ -463,33 +449,27 @@ set_button_state(false);';
 		$doPublish = we_html_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
 
 
-		$parts = array(
-			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), we_html_tools::TYPE_INFO, 520),
-				'noline' => 1,
-			),
-			array(
-				'headline' => g_l('versions', '[ContentType]'),
+		$parts = [['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), we_html_tools::TYPE_INFO, 520),
+			'noline' => 1,
+			],
+				['headline' => g_l('versions', '[ContentType]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
-			),
-			array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
+			],
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
-			),
-			array(
-				'headline' => "", 'html' => $doPublish, 'noline' => 1
-			),
-		);
+			],
+				['headline' => "", 'html' => $doPublish, 'noline' => 1
+			],
+		];
 
-		$reset_hours = new we_html_select(array(
-			"id" => "reset_hours",
+		$reset_hours = new we_html_select(["id" => "reset_hours",
 			"name" => "reset_hours",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+		]);
 
 		for($x = 0; $x <= 23; $x++){
 			$txt = $x;
@@ -501,13 +481,12 @@ set_button_state(false);';
 
 		$reset_hours->selectOption($version_reset_hours);
 
-		$reset_minutes = new we_html_select(array(
-			"id" => "reset_minutes",
+		$reset_minutes = new we_html_select(["id" => "reset_minutes",
 			"name" => "reset_minutes",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+		]);
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -519,13 +498,12 @@ set_button_state(false);';
 
 		$reset_minutes->selectOption($version_reset_minutes);
 
-		$reset_seconds = new we_html_select(array(
-			"id" => "reset_seconds",
+		$reset_seconds = new we_html_select(["id" => "reset_seconds",
 			"name" => "reset_seconds",
 			"style" => "",
 			"class" => "weSelect",
 			"onchange" => ""
-		));
+		]);
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -537,19 +515,17 @@ set_button_state(false);';
 
 		$reset_seconds->selectOption($version_reset_seconds);
 
-		$parts[] = array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), we_html_tools::TYPE_INFO, 520),
+		$parts[] = ['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
-		);
+		];
 
 		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('reset_date').value='';", '', 0, 0, "", "", "", false);
 
-		$parts[] = array(
-			'headline' => g_l('versions', '[time]'),
+		$parts[] = ['headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s ",
 			'noline' => 1,
 			'space' => we_html_multiIconBox::SPACE_BIG
-		);
+		];
 
 		//js
 		$jsCheckboxCheckAll = '';
@@ -657,19 +633,16 @@ set_button_state(false);';
 
 		$calendar = we_html_element::jsElement("calendarSetup();");
 
-		$parts[] = array(
-			'html' => $calendar,
-		);
+		$parts[] = ['html' => $calendar,
+		];
 
-		return array(
-			$js,
+		return [$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHiddens(array(
-				"fr" => "body",
+			we_html_element::htmlHiddens(["fr" => "body",
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
-				"step" => 2))
-		);
+				"step" => 2])
+		];
 	}
 
 	/**
@@ -733,10 +706,9 @@ set_button_state(false);';
 
 				return [];
 			}
-			return array(
-				$js . we_message_reporting::getShowMessageCall(g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
+			return [$js . we_message_reporting::getShowMessageCall(g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
 				""
-			);
+			];
 		}
 		$fr = new we_versions_fragment($taskname);
 		return [];
@@ -752,12 +724,11 @@ set_button_state(false);';
 
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
-		$version_delete = array(
-			'delete_date' => we_base_request::_(we_base_request::RAW, "delete_date", ""),
+		$version_delete = ['delete_date' => we_base_request::_(we_base_request::RAW, "delete_date", ""),
 			'delete_hours' => we_base_request::_(we_base_request::INT, "delete_hours", 0),
 			'delete_minutes' => we_base_request::_(we_base_request::INT, "delete_minutes", 0),
 			'delete_seconds' => we_base_request::_(we_base_request::INT, "delete_seconds", 0),
-		);
+		];
 
 		foreach($version->contentTypes as $k){
 			$version_delete[$k] = we_base_request::_(we_base_request::BOOL, "version_delete_" . $k);
@@ -803,20 +774,18 @@ set_button_state(false);';
 		$_SESSION['weS']['versions']['logDeleteIds'] = [];
 		while($GLOBALS['DB_WE']->next_record(MYSQL_ASSOC)){
 			if(!in_array($GLOBALS['DB_WE']->f('documentID'), $docIds)){
-				$docIds[$GLOBALS['DB_WE']->f('documentID')] = array(
-					'Path' => $GLOBALS['DB_WE']->f('path'),
+				$docIds[$GLOBALS['DB_WE']->f('documentID')] = ['Path' => $GLOBALS['DB_WE']->f('path'),
 					'ContentType' => $GLOBALS['DB_WE']->f('ContentType')
-				);
+					];
 			}
 
 			$cont[] = $GLOBALS['DB_WE']->getRecord();
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')] = array(
-				'Text' => $GLOBALS['DB_WE']->f('text'),
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')] = ['Text' => $GLOBALS['DB_WE']->f('text'),
 				'ContentType' => $GLOBALS['DB_WE']->f('ContentType'),
 				'Path' => $GLOBALS['DB_WE']->f('path'),
 				'Version' => $GLOBALS['DB_WE']->f('version'),
 				'documentID' => $GLOBALS['DB_WE']->f('documentID'),
-			);
+				];
 			if($GLOBALS['DB_WE']->f('binaryPath')){
 				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f('binaryPath');
 			}
@@ -850,15 +819,13 @@ set_button_state(false);';
 		$out .= '</table>
 			</div>';
 
-		$parts[] = array(
-			"headline" => "",
+		$parts[] = ["headline" => "",
 			"html" => $out,
-		);
+			];
 
 		$hiddenFields = we_html_element::htmlHiddens($version_delete);
 
-		return array(
-			self::getPage2Js(!empty($cont), 'delete'),
+		return [self::getPage2Js(!empty($cont), 'delete'),
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHiddens(array(
@@ -866,7 +833,7 @@ set_button_state(false);';
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
 				"step" => 3)
-		));
+		)];
 	}
 
 	static function getReset2(){
@@ -874,12 +841,11 @@ set_button_state(false);';
 
 		$_SESSION['weS']['versions']['logResetIds'] = [];
 
-		$version_reset = array(
-			'reset_date' => we_base_request::_(we_base_request::STRING, "reset_date", ""),
+		$version_reset = ['reset_date' => we_base_request::_(we_base_request::STRING, "reset_date", ""),
 			'reset_hours' => we_base_request::_(we_base_request::INT, "reset_hours", 0),
 			'reset_minutes' => we_base_request::_(we_base_request::INT, "reset_minutes", 0),
 			'reset_seconds' => we_base_request::_(we_base_request::INT, "reset_seconds", 0),
-		);
+			];
 
 		foreach(we_versions_version::getContentTypesVersioning() as $k){
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
@@ -939,8 +905,7 @@ set_button_state(false);';
 				$docIds[$GLOBALS['DB_WE']->f("documentID")]["ContentType"] = $GLOBALS['DB_WE']->f("ContentType");
 			}
 
-			$cont[] = array(
-				"ID" => $GLOBALS['DB_WE']->f("ID"),
+			$cont[] = ["ID" => $GLOBALS['DB_WE']->f("ID"),
 				"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 				"version" => $GLOBALS['DB_WE']->f("version"),
 				"text" => $GLOBALS['DB_WE']->f("Text"),
@@ -948,7 +913,7 @@ set_button_state(false);';
 				"table" => $GLOBALS['DB_WE']->f("documentTable"),
 				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
 				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
-			);
+				];
 		}
 
 //FIXME: date format should be obtained from g_l
@@ -973,23 +938,20 @@ set_button_state(false);';
 		$out .= '</table>
 			</div>';
 
-		$parts[] = array(
-			"headline" => "",
+		$parts[] = ["headline" => "",
 			"html" => $out,
-		);
+			];
 
 		$hiddenFields = we_html_element::htmlHiddens($version_reset);
 
-		return array(
-			self::getPage2Js(!empty($cont), "reset"),
+		return [self::getPage2Js(!empty($cont), "reset"),
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHiddens(array(
-				"fr" => "body",
+			we_html_element::htmlHiddens(["fr" => "body",
 				"type" => $type,
 				"we_cmd[0]" => "versions_wizard",
-				"step" => 3))
-		);
+				"step" => 3])
+				];
 	}
 
 	/**
@@ -1025,15 +987,16 @@ set_button_state(false);';
 			$query['we_cmd'][0] = 'versions_wizard';
 			$query['fr'] = 'body';
 			//maybe restore of a given version?
-			$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';")
-					, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+			$body = we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';"]
+			, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'busy',
+							'dc' => 1]), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		} else {
-			$body = we_html_element::htmlBody(array('class' => 'weDialogBody')
-					, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy')), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-					we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'cmd')), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			$body = we_html_element::htmlBody(['class' => 'weDialogBody']
+			, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'body']), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'busy']), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+					we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(['we_cmd' => [0 => 'versions_wizard'], 'fr' => 'cmd']), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		}
 
@@ -1083,7 +1046,7 @@ var ajaxCallbackDeleteVersionsWizard = {
 	success: function(o) {
 	if(o.responseText !== undefined && o.responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
-		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[deleteDateVersionsOK]') ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[deleteDateVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 		// reload current document => reload all open Editors on demand
 
 		var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
@@ -1112,7 +1075,7 @@ var ajaxCallbackResetVersionsWizard = {
 	success: function(o) {
 	if(o.responseText !== undefined && o.responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
-		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[resetAllVersionsOK]') ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[resetAllVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 		top.close();
 	}
