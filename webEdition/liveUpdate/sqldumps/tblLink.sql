@@ -25,4 +25,8 @@ CREATE TABLE ###TBLPREFIX###tblLink (
 /* primary key is added in update*/
 
 /* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblLink ADD PRIMARY KEY (DID,DocumentTable,nHash)
+###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblLink ADD PRIMARY KEY (DID,DocumentTable,nHash);
+/* query separator */
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblLink SET Type="object" WHERE DocumentTable="tblFile" AND nHash=x'fe40feec71672d515faa242b1cff2165';
+/* query separator */
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblLink SET Type="link" WHERE DocumentTable="tblFile" AND nHash IN (x'09d2a3e9b7efc29e9a998d7ae84cca87',x'b6b8646a49103a66f9d9e2aae212bdbe');

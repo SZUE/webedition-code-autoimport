@@ -701,9 +701,9 @@ abstract class we_root extends we_class{
 
 	/* get the data from an element */
 
-	function getElement($name, $key = 'dat', $default = '', $defaultOnEmpty = false){//FIXME should we bother bdid?
+	function getElement($name, $key = 'ALLKEYS', $default = '', $defaultOnEmpty = false){//FIXME should we bother bdid?
 		switch($key){
-			case 'dat':
+			case 'ALLKEYS':
 				//check bdid first
 				return (!empty($this->elements[$name]['bdid']) ?
 					$this->elements[$name]['bdid'] :
@@ -713,6 +713,10 @@ abstract class we_root extends we_class{
 			default:
 				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 		}
+	}
+
+	public function getElementType($name){
+		return (isset($this->elements[$name]['type']) ? $this->elements[$name]['type'] : '');
 	}
 
 	/* reset the array-pointer (for use with nextElement()) */

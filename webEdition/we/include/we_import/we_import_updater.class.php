@@ -164,17 +164,16 @@ class we_import_updater extends we_exim_XMLExIm{
 			}
 
 			if(strpos($k, 'intID') !== false || strpos($k, 'LinkID') !== false || strpos($k, 'RollOverID') !== false){
-				if(isset($element['dat'])){
+				if(($val = $object->getElement($k))){
 					$ref = $this->RefTable->getRef(
-						['OldID' => $element['dat'],
+						['OldID' => $val,
 							'Table' => FILE_TABLE
 						]
 					);
-					$element['dat'] = ($ref ? $ref->ID : 0);
+					$element['bdid'] = ($ref ? $ref->ID : 0);
+					unset($element['dat']);
 				}
-			}
-
-			if(isset($element["bdid"])){
+			}elseif(isset($element["bdid"])){
 				$ref = $this->RefTable->getRef(
 					['OldID' => $element['bdid'],
 						'Table' => FILE_TABLE
@@ -333,7 +332,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			$ref = $this->RefTable->getRef(
 				['OldID' => $object->MasterTemplateID,
 					'ContentType' => we_base_ContentTypes::TEMPLATE
-					]
+				]
 			);
 			if($ref){
 				$object->MasterTemplateID = $ref->ID;
@@ -371,7 +370,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					$ref = $this->RefTable->getRef(
 						['OldID' => $regs[1],
 							'Table' => OBJECT_TABLE
-							]
+						]
 					);
 					if($ref){
 						$new[we_object::QUERY_PREFIX . $ref->ID] = array_merge_recursive($elvalue);
@@ -409,7 +408,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				$ref = $this->RefTable->getRef(
 					['OldID' => $tid,
 						'Table' => TEMPLATES_TABLE
-						]
+					]
 				);
 				if($ref){
 					$new_tids[] = $ref->ID;
@@ -496,7 +495,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			$ref = $this->RefTable->getRef(
 				['OldID' => isset($object->$cat) ? $object->$cat : 0,
 					'Table' => CATEGORY_TABLE
-					]
+				]
 			);
 			$new_cats[] = ($ref ? $ref->ID : $cat);
 		}
@@ -507,7 +506,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		$ref = $this->RefTable->getRef(
 			['OldID' => isset($object->$field) ? $object->$field : 0,
 				'Table' => $table
-				]
+			]
 		);
 
 		if($ref){
@@ -524,7 +523,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				$ref = $this->RefTable->getRef(
 					["OldID" => $value,
 						"Table" => (($key === "obj_id" && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE)
-						]
+					]
 				);
 				if($ref){
 					$array[$key] = $ref->ID;
@@ -548,7 +547,7 @@ class we_import_updater extends we_exim_XMLExIm{
 							$ref = $this->RefTable->getRef(
 								['OldID' => $item3['bdid'],
 									'Table' => $table
-									]
+								]
 							);
 							if($ref){
 								$source[$k1][$k2][$k3]['bdid'] = $ref->ID;
@@ -575,7 +574,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					$ref = $this->RefTable->getRef(
 						['Old' . $field => $include,
 							'Table' => $table
-							]
+						]
 					);
 					if(isset($match[3][$k])){
 						$this->processedPatterns[] = $match[0][$k];
