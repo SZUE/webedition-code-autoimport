@@ -1048,11 +1048,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		}
 
 		$we_doc->setTemplateID($newTemplateID);
-		$we_doc->setElement("content", $bodyhtml);
-		$we_doc->setElement("Title", $title);
-		$we_doc->setElement("Keywords", $keywords);
-		$we_doc->setElement("Description", $description);
-		$we_doc->setElement("Charset", $charset);
+		$we_doc->setElement('content', $bodyhtml);
+		$we_doc->setElement('Title', $title);
+		$we_doc->setElement('Keywords', $keywords);
+		$we_doc->setElement('Description', $description);
+		$we_doc->setElement('Charset', $charset);
 	}
 
 	/**
@@ -1427,20 +1427,20 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			case we_base_ContentTypes::IMAGE :
 				// getting attributes of image
 				$foo = $GLOBALS["we_doc"]->getimagesize($path);
-				$GLOBALS["we_doc"]->setElement("width", $foo[0], "attrib");
-				$GLOBALS["we_doc"]->setElement("height", $foo[1], "attrib");
-				$GLOBALS["we_doc"]->setElement("origwidth", $foo[0], 'attrib');
-				$GLOBALS["we_doc"]->setElement("origheight", $foo[1], 'attrib');
+				$GLOBALS["we_doc"]->setElement('width', $foo[0], 'attrib', 'bdid');
+				$GLOBALS["we_doc"]->setElement('height', $foo[1], 'attrib', 'bdid');
+				$GLOBALS["we_doc"]->setElement('origwidth', $foo[0], 'attrib', 'bdid');
+				$GLOBALS["we_doc"]->setElement('origheight', $foo[1], 'attrib', 'bdid');
 			// no break!! because we need to do the same after the following case
 			case we_base_ContentTypes::APPLICATION:
 			case we_base_ContentTypes::FLASH:
 			case we_base_ContentTypes::VIDEO:
-				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib', 'bdid');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
 				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
 			case we_base_ContentTypes::AUDIO:
-				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib', 'bdid');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'audio');
 				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
@@ -1451,20 +1451,20 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			case we_base_ContentTypes::CSS:
 			default :
 				// set Data of File
-				$GLOBALS["we_doc"]->setElement("data", $data, "txt");
+				$GLOBALS["we_doc"]->setElement('data', $data, 'txt');
 		}
 
 		if($contentType == we_base_ContentTypes::IMAGE){
 			$GLOBALS["we_doc"]->Thumbs = $thumbs;
 			$newWidth = ($width && $widthSelect === "percent" ?
-				round(($GLOBALS["we_doc"]->getElement("origwidth") / 100) * $width) :
+				round(($GLOBALS["we_doc"]->getElement('origwidth', 'bdid') / 100) * $width) :
 				$width);
 
 			$newHeight = ($height && $widthSelect === "percent" ?
-				round(($GLOBALS["we_doc"]->getElement("origheight") / 100) * $height) :
+				round(($GLOBALS["we_doc"]->getElement('origheight', 'bdid') / 100) * $height) :
 				$height);
 
-			if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement("origwidth"))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement("origheight")))){
+			if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement('origheight', 'bdid')))){
 				$GLOBALS["we_doc"]->resizeImage($newWidth, $newHeight, $quality, $keepRatio);
 				$width = $newWidth;
 				$height = $newHeight;
@@ -1472,8 +1472,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 			if($degrees){
 				$GLOBALS["we_doc"]->rotateImage(
-					($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement("origwidth") : $GLOBALS["we_doc"]->getElement(
-							"origheight"), ($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement("origheight") : $GLOBALS["we_doc"]->getElement(
+					($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement('origwidth', 'bdid') : $GLOBALS["we_doc"]->getElement(
+							"origheight"), ($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement('origheight', 'bdid') : $GLOBALS["we_doc"]->getElement(
 							"origwidth"), $degrees, $quality);
 			}
 			$GLOBALS["we_doc"]->DocChanged = true;

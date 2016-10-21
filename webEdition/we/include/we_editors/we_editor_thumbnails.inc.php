@@ -43,8 +43,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				// look if the fields origwidth & origheight exixts. If not get and set the values
 				if((!$we_doc->issetElement('origwidth')) || (!$we_doc->issetElement('origheight'))){
 					$arr = $we_doc->getOrigSize();
-					$we_doc->setElement('origwidth', $arr[0], 'attrib');
-					$we_doc->setElement('origheight', $arr[1], 'attrib');
+					$we_doc->setElement('origwidth', $arr[0], 'attrib', 'bdid');
+					$we_doc->setElement('origheight', $arr[1], 'attrib', 'bdid');
 					unset($arr);
 				}
 
@@ -52,7 +52,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				foreach($thumbs as $thumbid){
 
 					$thumbObj = new we_thumbnail();
-					$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth'), $we_doc->getElement('origheight'), $doc);
+					$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth', 'bdid'), $we_doc->getElement('origheight', 'bdid'), $doc);
 
 					srand((double) microtime() * 1000000);
 					$randval = rand();

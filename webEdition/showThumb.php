@@ -37,7 +37,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	foreach($thumbIDs as $thumbid){
 		$thumbObj = new we_thumbnail();
-		$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
+		$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth', 'bdid'), $we_doc->getElement('origheight', 'bdid'), $we_doc->getDocument());
 
 
 		srand((double) microtime() * 1000000);

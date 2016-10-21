@@ -82,7 +82,7 @@ class we_wizard_codeSnippet{
 		// set the author
 		if($Parser->execMethod_count("/topic[1]/prolog[1]", "author") > 0){
 			$this->Author = $Parser->getData("/topic[1]/prolog[1]/author[1]");
-			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement("Charset") != "UTF-8"){
+			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement('Charset') != "UTF-8"){
 				$this->Author = $this->Author;
 			}
 		}

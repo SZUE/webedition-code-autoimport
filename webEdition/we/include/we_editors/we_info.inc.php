@@ -85,9 +85,9 @@ $loginRow = 0;
 
 if(!empty($GLOBALS["loginpage"])){
 	$loginTable = new we_html_table(['class' => "plainTable"], 4, 1);
-	$loginTable->setCol($loginRow++, 0, ['class' => "small"], we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, ["for" => "username"], g_l('global', '[username]'))));
+	$loginTable->setCol($loginRow++, 0, ['class' => "small"], we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, ["for" => "username"], g_l('global', '[username]'))));
 	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
-	$loginTable->setCol($loginRow++, 0, ['class' => "small row5"], we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, ["for" => 'password'], g_l('global', '[password]'))));
+	$loginTable->setCol($loginRow++, 0, ['class' => "small row5"], we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, ["for" => 'password'], g_l('global', '[password]'))));
 	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
 	$loginTable->setCol($loginRow++, 0, [], '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 

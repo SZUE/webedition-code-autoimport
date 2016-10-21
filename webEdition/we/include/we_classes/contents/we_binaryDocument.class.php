@@ -406,7 +406,7 @@ class we_binaryDocument extends we_document{
 			case we_base_ContentTypes::IMAGE:
 				$we_doc = new we_imageDocument();
 				$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
-				$contenttype = $we_doc->getElement("type");
+				$contenttype = $we_doc->getElement('type');
 				break;
 			case we_base_ContentTypes::VIDEO:
 				$we_doc = new we_document_video();
@@ -460,11 +460,11 @@ class we_binaryDocument extends we_document{
 		header("Pragma: no-cache");
 		header("Expires: 0");
 
-		$dataPath = $we_doc->getElement("data");
+		$dataPath = $we_doc->getElement('data');
 		if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3))){ // create thumbnail
 			if(we_base_imageEdit::gd_version()){
 				$thumbObj = new we_thumbnail();
-				$thumbObj->initByThumbID($tid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
+				$thumbObj->initByThumbID($tid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth', 'bdid'), $we_doc->getElement('origheight', 'bdid'), $we_doc->getDocument());
 				$thumbObj->getThumb($out);
 				unset($thumbObj);
 				echo $out;

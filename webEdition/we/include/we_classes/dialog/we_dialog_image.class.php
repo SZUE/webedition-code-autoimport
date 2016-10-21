@@ -194,8 +194,8 @@ class we_dialog_image extends we_dialog_base{
 						$imgObj->initByID($fileID);
 
 						$preserveData = (we_base_request::_(we_base_request::BOOL, 'wasThumbnailChange') || we_base_request::_(we_base_request::BOOL, 'isTinyMCEInitialization'));
-						$width = $imgObj->getElement('width');
-						$height = $imgObj->getElement('height');
+						$width = $imgObj->getElement('width', 'bdid');
+						$height = $imgObj->getElement('height', 'bdid');
 						$alt = $preserveData ? $alt : $imgObj->getElement('alt');
 						$hspace = $preserveData ? $hspace : $imgObj->getElement('hspace');
 						$vspace = $preserveData ? $vspace : $imgObj->getElement('vspace');

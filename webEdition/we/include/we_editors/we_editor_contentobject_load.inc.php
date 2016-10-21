@@ -140,7 +140,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			$content = '<div id="' . $uniqid . '" class="objectFileElement">
 <div id="f' . $uniqid . '" class="objectFileElement">
 				<table cellpadding="6" style="float:left;">' .
-				$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+				$we_doc->getFieldHTML($we_doc->getElement('wholename' . $identifier), $uniqid) .
 				'</table>
 				<span class="defaultfont clearfix" style="width:180px;">' .
 				we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
@@ -156,7 +156,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			break;
 		case 'object_change_entry_at_class':
 			$identifier = array_pop(explode('_', $id, 2));
-			$fieldname = $we_doc->getElement("wholename" . $identifier);
+			$fieldname = $we_doc->getElement('wholename' . $identifier);
 			$we_doc->setElement($fieldname . 'default', '');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;

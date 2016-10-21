@@ -63,7 +63,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			//$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $we_doc->ID);
 		}
 
-		$sort = $we_doc->getElement("we_sort");
+		$sort = $we_doc->getElement('we_sort');
 
 		$uniquename = md5(uniqid(__FILE__, true));
 		$width = 800;
@@ -91,7 +91,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			echo '<div id="' . $uniqid . '" class="objectFileElement">
 <div id="f' . $uniqid . '" class="default">
 <table cellpadding="6" style="float:left;">' .
-			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+			$we_doc->getFieldHTML($we_doc->getElement('wholename' . $identifier), $uniqid) .
 			'</table>
 		<span class="defaultfont clearfix" style="width:180px;">' .
 			we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .

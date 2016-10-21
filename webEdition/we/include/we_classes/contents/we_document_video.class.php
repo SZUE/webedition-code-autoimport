@@ -76,8 +76,8 @@ class we_document_video extends we_binaryDocument{
 			} else {
 				$poster = '';
 			}
-			$width = $preload ? 100 : $this->getElement('width');
-			$height = $preload ? 100 : $this->getElement('height');
+			$width = $preload ? 100 : $this->getElement('width', 'bdid');
+			$height = $preload ? 100 : $this->getElement('height', 'bdid');
 			$play = !$preload && $this->getElement('autoplay');
 			$control = !$preload && $this->getElement('controller');
 			$bgcolor = $preload ? '' : $this->getElement('bgcolor');
