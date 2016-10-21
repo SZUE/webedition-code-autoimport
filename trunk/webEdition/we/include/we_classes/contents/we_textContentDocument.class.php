@@ -67,7 +67,13 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		if($only){
 			foreach($only as $cur){
-				$text .= ' ' . $this->getElement($cur);
+				if($this->getElementType($name) === 'txt'){
+					$dat = $this->getElement($cur, 'dat');
+					//skip vars + serialized data
+					if($dat && $dat[0] !== '{' && $dat[0] !== '[' && $dat[0] !== '$' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $dat)){
+						$text .= ' ' . $this->getElement($cur, 'dat');
+					}
+				}
 			}
 		} else {
 			$this->resetElements();
@@ -78,7 +84,7 @@ abstract class we_textContentDocument extends we_textDocument{
 					continue;
 				}
 
-				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $dat)){
+				if($dat[0] !== '{' && $dat[0] !== '[' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $dat)){
 					$text .= ' ' . $dat;
 				}
 			}

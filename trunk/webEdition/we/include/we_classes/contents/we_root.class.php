@@ -732,6 +732,10 @@ abstract class we_root extends we_class{
 		}
 	}
 
+	public function getElementType($name){
+		return (isset($this->elements[$name]['type']) ? $this->elements[$name]['type'] : '');
+	}
+
 	/* reset the array-pointer (for use with nextElement()) */
 
 	function resetElements(){
