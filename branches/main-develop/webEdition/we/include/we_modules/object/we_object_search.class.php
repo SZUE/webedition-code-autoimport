@@ -37,7 +37,7 @@ class we_object_search extends we_search_base{
 			for($i = 0; $i <= count($sessDat); $i++){
 				if(isset($sessDat[$i])){
 					$v = $sessDat[$i];
-					$this->$sessDat[$i] = $v;
+					$this->{$sessDat[$i]} = $v;
 				}
 			}
 		}
@@ -47,7 +47,7 @@ class we_object_search extends we_search_base{
 		for($i = 0; $i <= count($sessDat); $i++){
 			if(isset($sessDat[$i])){
 				$v = $sessDat[$i];
-				$this->$sessDat[$i] = $v;
+				$this->{$sessDat[$i]} = $v;
 			}
 		}
 	}

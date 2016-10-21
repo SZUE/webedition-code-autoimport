@@ -42,11 +42,12 @@ class we_shop_shippingControl{
 		$data = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShippingControl"');
 
 		if($data){
-			$shippingControl = we_unserialize(strtr($data, ['O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
+			$shippingControl = we_unserialize(strtr($data, [
+				'O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
 				'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"',
 				'O:17:"weshippingcontrol"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
 				'O:10:"weshipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"'
-				]));
+			]));
 			if(is_object($shippingControl)){
 				$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 				return $shippingControl;
@@ -61,18 +62,17 @@ class we_shop_shippingControl{
 		$this->isNet = $req['isNet'];
 		$this->vatId = $req['vatId'];
 
-		if(isset($req['weShippingId'])){
+		if(!isset($req['weShippingId'])){
+			return;
+		}
 
-			$newShipping = new we_shop_shipping(
-				$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
-			);
-			$this->shippings[$req['weShippingId']] = $newShipping;
+		$newShipping = new we_shop_shipping($req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0));
+		$this->shippings[$req['weShippingId']] = $newShipping;
 
-			if($newShipping->default){
-				foreach($this->shippings as $id => &$shipping){
-					if($id != $req['weShippingId']){
-						$shipping->default = 0;
-					}
+		if($newShipping->default){
+			foreach($this->shippings as $id => &$shipping){
+				if($id != $req['weShippingId']){
+					$shipping->default = 0;
 				}
 			}
 		}
@@ -81,11 +81,11 @@ class we_shop_shippingControl{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		return $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' .
-				we_database_base::arraySetter(['tool' => 'shop',
+		return $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'tool' => 'shop',
 					'pref_name' => 'weShippingControl',
 					'pref_value' => we_serialize($this)
-					]));
+		]));
 	}
 
 	function delete($id){
@@ -121,8 +121,8 @@ class we_shop_shippingControl{
 			}
 		}
 		$shipping = (empty($shipping) ? // take default shipping
-				$this->getDefaultShipping() :
-				$shipping);
+			$this->getDefaultShipping() :
+			$shipping);
 
 		if(!$shipping){
 			return 0;

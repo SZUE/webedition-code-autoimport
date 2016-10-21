@@ -445,8 +445,8 @@ class we_app_Common{
 			return false;
 		} else if(empty($element) && isset($entry[$attribute])){
 			return $entry[$attribute];
-		} else if(isset($entry->$element[$attribute])){
-			return $entry->$element[$attribute];
+		} else if(isset($entry->{$element[$attribute]})){
+			return $entry->{$element[$attribute]};
 		}
 		return false;
 	}

@@ -27,7 +27,6 @@
  * @version    	SVN: $Id$
  */
 class we_navigation_items{
-
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
 	const TEMPLATE_DEFAULT_LEVEL = 'defaultLevel';
@@ -62,13 +61,13 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-				['id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
+			['id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
 			'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : [],
 			'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : [],
 			'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : [],
 			'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-				] :
-				['id' => '',
+			] :
+			['id' => '',
 			'filter' => '',
 			'blacklist' => '',
 			'whitelist' => '',
@@ -143,7 +142,7 @@ class we_navigation_items{
 		$this->setDefaultTemplates();
 		list($table, $linkid) = $navigation->getTableIdForItem();
 		$this->items['id' . $navigation->ID] = new we_navigation_item(
-				$navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref(), (!$showRoot || $navigation->ID == 0 ? 'root' : ($navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+			$navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref(), (!$showRoot || $navigation->ID == 0 ? 'root' : ($navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
 		$items = $navigation->getDynamicPreview(self::$Storage['items'], true);
 
@@ -198,21 +197,21 @@ class we_navigation_items{
 
 		$candidate = 0;
 		$score = 3;
-		$len = 0;
+		$pathLen = 0;
 
 		$isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 		$mainCats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
 		$currentWorkspace = $isObject ? //webEdition object
-				(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-				substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)) :
-				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
-				) : //webEdition document
-				$GLOBALS['WE_MAIN_DOC']->Path;
+			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
+			substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['we_obj']->Url)) :
+			parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+			) : //webEdition document
+			$GLOBALS['WE_MAIN_DOC']->Path;
 
 		foreach($this->currentRules as $rule){
 			$ponder = 4;
-			$parentPath = '';
+			$rulePath = '';
 
 			if(($cats = makeArrayFromCSV($rule->Categories))){
 				if(!$this->checkCategories($cats, $mainCats)){
@@ -221,7 +220,7 @@ class we_navigation_items{
 				$ponder--;
 			}
 
-			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
+			switch($rule->SelectionType){
 				case we_navigation_navigation::DYN_DOCTYPE:
 					if($isObject){
 						continue; // remove from selection
@@ -234,7 +233,7 @@ class we_navigation_items{
 					}
 
 					if($rule->FolderID){
-						$parentPath = rtrim(self::id2path($rule->FolderID), '/') . '/';
+						$rulePath = rtrim(self::id2path($rule->FolderID), '/') . '/';
 					}
 					break;
 				case we_navigation_navigation::DYN_CLASS:
@@ -242,28 +241,29 @@ class we_navigation_items{
 						continue; // remove from selection
 					}
 					if($rule->ClassID){
-						if($GLOBALS["WE_MAIN_DOC"]->TableID != $rule->ClassID){
+						if($GLOBALS["we_obj"]->TableID != $rule->ClassID){
 							continue; // remove from selection
 						}
 						$ponder--;
 					}
 
 					if($rule->WorkspaceID){
-						$parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+						$rulePath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
 					}
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) !== false){
+			if(!empty($rulePath) && strpos($currentWorkspace, $rulePath) !== false){
 				$ponder--;
-				$currLen = strlen($parentPath);
-				if($currLen >= $len){ //the longest path wins
-					$len = $currLen;
-					$ponder--;
+				if(($currPathLen = strlen($rulePath)) >= $pathLen){ //the longest path wins
+					if($pathLen > 0){//no ponder for first match
+						$ponder--;
+					}
+					$pathLen = $currPathLen;
 				}
 			}
 
-			if($ponder <= $score){
+			if($ponder < $score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 					$this->setCurrent($rule->NavigationID);
 				} else {
@@ -297,8 +297,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-				$this->getItemIds($id) :
-				array_keys($this->items));
+			$this->getItemIds($id) :
+			array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -328,7 +328,7 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-				((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
+			((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
 			return $useTemplate['last'];
 		}
 
