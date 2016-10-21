@@ -105,8 +105,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 					continue;
 				}
 				$path = ($value ?
-						f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $this->db) :
-						'');
+					f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $this->db) :
+					'');
 
 				$this->addToDepArray($level, $value, we_base_ContentTypes::NAVIGATION, NAVIGATION_TABLE);
 				$navrules[] = $value;
@@ -190,7 +190,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 	private function addToDepArray($level, $id, $ct = "", $table = ""){
 		if(!$ct){
-			$table = $table? : FILE_TABLE;
+			$table = $table ?: FILE_TABLE;
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), '', new DB_WE());
 		}
 
@@ -198,7 +198,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			$new = ['ID' => $id,
 				'ContentType' => $ct,
 				'level' => $level
-				];
+			];
 			if(!$this->RefTable->exists($new)){
 				$this->RefTable->add2($new);
 			}
@@ -235,12 +235,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 				if($this->options["handle_document_linked"]){
 
 					if(strpos($ek, 'LinkID') !== false || strpos($ek, 'RollOverID') !== false || strpos($ek, 'longdescid') !== false){
-						if(isset($ev['dat'])){
-							$this->addToDepArray($level, $ev['dat']);
+						if(($val = $object->getElement($ek))){
+							$this->addToDepArray($level, $val);
 						}
 					} else if(strpos($ek, 'ObjID') !== false){
-						if(isset($ev['dat'])){
-							$this->addToDepArray($level, $ev['dat'], 'objectFile');
+						if(($val = $object->getElement($ek))){
+							$this->addToDepArray($level, $val, 'objectFile');
 						}
 					}
 
@@ -254,8 +254,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 				if($this->options["handle_document_includes"]){
 					if(strpos($ek, 'intID') !== false){
-						if(isset($ev['dat'])){
-							$this->addToDepArray($level, $ev['dat']);
+						if(isset($ev['bdid'])){
+							$this->addToDepArray($level, $ev['bdid']);
 						}
 					} else if(isset($ev["dat"])){
 						$dat = we_unserialize($ev["dat"], [], true);
@@ -353,7 +353,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function makeExportList(){
-		$searchCT = [we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE];
+		$searchCT = [we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE,
+			we_base_ContentTypes::IMAGE];
 
 		$step = 0;
 		while(($id = $this->RefTable->getNext())){

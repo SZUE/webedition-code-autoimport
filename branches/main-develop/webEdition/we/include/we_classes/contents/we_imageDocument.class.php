@@ -95,10 +95,10 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	function registerMediaLinks($temp = false, $linksReady = false){
-		if(($id = $this->getElement('LinkID', 'bdid') ?: $this->getElement('LinkID', 'dat'))){
+		if(($id = $this->getElement('LinkID', 'bdid'))){
 			$this->MediaLinks['Hyperlink:Intern'] = $id;
 		}
-		if(($id = $this->getElement('RollOverID', 'bdid') ?: $id = $this->getElement('RollOverID', 'dat'))){
+		if(($id = $this->getElement('RollOverID', 'bdid'))){
 			$this->MediaLinks['Hyperlink:Rollover'] = $id;
 		}
 
@@ -258,7 +258,7 @@ class we_imageDocument extends we_binaryDocument{
 		$js = '
 var img' . self::$imgCnt . 'Over = new Image();
 var img' . self::$imgCnt . 'Out = new Image();
-img' . self::$imgCnt . 'Over.src = "' . ($src_over ?: f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
+img' . self::$imgCnt . 'Over.src = "' . ($src_over ?: f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID', 'bdid')), '', $this->DB_WE)) . '";
 img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
@@ -406,13 +406,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 			switch($this->getElement('LinkType')){
 				case we_base_link::TYPE_INT:
-					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID')), '', $this->DB_WE);
+					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID', 'bdid')), '', $this->DB_WE);
 					break;
 				case we_base_link::TYPE_EXT:
 					$href = $this->getElement('LinkHref');
 					break;
 				case we_base_link::TYPE_OBJ:
-					$id = $this->getElement('ObjID');
+					$id = $this->getElement('ObjID', 'bdid');
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else {
@@ -422,7 +422,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 					}
 
 					$path = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : '';
-					$href = we_objectFile::getObjectHref($this->getElement('ObjID'), $pid, $path, $this->DB_WE, TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS); //FR #7711
+					$href = we_objectFile::getObjectHref($this->getElement('ObjID', 'bdid'), $pid, $path, $this->DB_WE, TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS); //FR #7711
 					if(isset($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 					}
@@ -480,8 +480,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 			}
 
 			// check longdesc here - does file exist?
-			if($this->getElement('longdescid') && $this->getElement('longdescid') != '-1'){
-				$longdesc = id_to_path($this->getElement('longdescid'));
+			if($this->getElement('longdescid', 'bdid')){
+				$longdesc = id_to_path($this->getElement('longdescid', 'bdid'));
 				$attribs['longdesc'] = $longdesc;
 			}
 
@@ -631,9 +631,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
-		$longdesc_id_name = 'we_' . $this->Name . '_attrib[longdescid]';
+		$longdesc_id_name = 'we_' . $this->Name . '_attrib[longdescid#bdid]';
 		$longdesc_text_name = 'tmp_longdesc';
-		$longdesc_id = $this->getElement('longdescid');
+		$longdesc_id = $this->getElement('longdescid', 'bdid');
 		$longdescPath = ($longdesc_id ? id_to_path($longdesc_id) : '');
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -781,16 +781,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 	function formLink(){
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
-		$idname = 'we_' . $this->Name . '_txt[LinkID]';
+		$textname = 'we_' . $this->Name . '_vars[LinkPath]';
+		$idname = 'we_' . $this->Name . '_link[LinkID#bdid]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
 		$linkType = $this->getElement('LinkType') ?: 'no';
-		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID')), '', $this->DB_WE);
+		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID', 'bdid')), '', $this->DB_WE);
 
 		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
-		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
-		$RollOverID = $this->getElement('RollOverID') ?: '';
+		$RollOverIDName = 'we_' . $this->Name . '_link[RollOverID#bdid]';
+		$RollOverID = $this->getElement('RollOverID', 'bdid') ?: '';
 		$RollOverPathname = 'we_' . $this->Name . '_vars[RollOverPath]';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
 
@@ -804,9 +804,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $extname . "','',document.we_form.elements['" . $extname . "'].value,'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
 
 		if(defined('OBJECT_TABLE')){
-			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
-			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
-			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID')), '', $this->DB_WE);
+			$objidname = 'we_' . $this->Name . '_object[ObjID#bdid]';
+			$objtextname = 'we_' . $this->Name . '_vars[ObjPath]';
+			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID', 'bdid')), '', $this->DB_WE);
 
 			$butObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;") . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}
@@ -835,7 +835,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
 			we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput($textname, $linkPath);
-		$yuiSuggest->setResult($idname, $this->getElement('LinkID'));
+		$yuiSuggest->setResult($idname, $this->getElement('LinkID', 'bdid'));
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setSelectButton($but1);
 		$yuiSuggest->setMaxResults(10);
@@ -853,7 +853,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 			$yuiSuggest->setAcId('objPathLink');
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($objtextname, $objPath);
-			$yuiSuggest->setResult($objidname, $this->getElement('ObjID'));
+			$yuiSuggest->setResult($objidname, $this->getElement('ObjID', 'bdid'));
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 			$yuiSuggest->setSelectButton($butObj);
 			$yuiSuggest->setMaxResults(10);
