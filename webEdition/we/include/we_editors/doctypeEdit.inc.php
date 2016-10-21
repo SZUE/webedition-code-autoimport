@@ -121,7 +121,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	default:
-		$id = (we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : 0);
+		$id = (we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ?: 0);
 		if(!$id){
 			$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 			$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
@@ -142,7 +142,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 ])]);
 //FIXME: currently we don't have a class so we can't move js-g_l
 ?>
-<script><!--
+	<script><!--
 <?php
 echo (empty($reloadMenu) ? '' : $reloadMenu . ';');
 
@@ -153,9 +153,9 @@ switch($wecmd0){
 			break;
 		}
 		?>
-		if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
+				if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
 			we_cmd("deleteDocTypeok", "<?= we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
-		}
+				}
 		<?php
 		break;
 	case "deleteDocTypeok":
@@ -163,56 +163,56 @@ switch($wecmd0){
 		break;
 }
 ?>
-//-->
-</script>
+		//-->
+	</script>
 <?= $jsCmd->getCmds(); ?>
-</head>
+	</head>
 
-<body class="weDialogBody" onunload="doUnload()" onload="self.focus();">
-	<form name="we_form" action="" method="post" onsubmit="return false">
-		<?php
-		echo we_class::hiddenTrans();
+	<body class="weDialogBody" onunload="doUnload()" onload="self.focus();">
+		<form name="we_form" action="" method="post" onsubmit="return false">
+			<?php
+			echo we_class::hiddenTrans();
 
-		if($we_doc->ID){
+			if($we_doc->ID){
 			$parts = [["headline" => g_l('weClass', '[doctypes]'),
-				"html" => $we_doc->formDocTypeHeader(),
-				'space' => we_html_multiIconBox::SPACE_MED
+						"html" => $we_doc->formDocTypeHeader(),
+						'space' => we_html_multiIconBox::SPACE_MED
 				],
 				["headline" => g_l('weClass', '[name]'),
-					"html" => $we_doc->formName(),
-					'space' => we_html_multiIconBox::SPACE_MED
+						"html" => $we_doc->formName(),
+						'space' => we_html_multiIconBox::SPACE_MED
 				],
 				["headline" => g_l('global', '[templates]'),
-					"html" => $we_doc->formDocTypeTemplates(),
-					'space' => we_html_multiIconBox::SPACE_MED
+						"html" => $we_doc->formDocTypeTemplates(),
+						'space' => we_html_multiIconBox::SPACE_MED
 				],
 				["headline" => g_l('weClass', '[defaults]'),
-					"html" => $we_doc->formDocTypeDefaults(),
-					'space' => we_html_multiIconBox::SPACE_MED
+						"html" => $we_doc->formDocTypeDefaults(),
+						'space' => we_html_multiIconBox::SPACE_MED
 				]
 			];
-		} else {
+			} else {
 			$parts = [["headline" => "",
-				"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
+						"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
 				]
 			];
-		}
+			}
 
-		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
+			$cancelbut = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
-		$buttons = ($we_doc->ID ?
+			$buttons = ($we_doc->ID ?
 				we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
 				'<div style="text-align:right">' . $cancelbut . '</div>');
 
 
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
-		$yuiSuggest->getYuiJs();
-		?>
-	</form>
-</body>
+			echo we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
+			$yuiSuggest->getYuiJs();
+			?>
+		</form>
+	</body>
 
-</html>
+	</html>
 
-<?php
-$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
+	<?php
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

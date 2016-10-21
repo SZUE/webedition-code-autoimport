@@ -77,7 +77,6 @@ class we_docTypes extends we_class{
 	}
 
 	public function we_initSessDat($sessDat){
-		we_class::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){
 				if(isset($sessDat[0][$cur])){
@@ -247,7 +246,7 @@ class we_docTypes extends we_class{
 
 	/* creates the Template PopupMenue */
 
-	private function formTemplatePopup($width = 100){
+	private function formTemplatePopup(){
 		$tlist = [];
 		if($this->TemplateID){
 			$tlist[] = $this->TemplateID;
@@ -257,7 +256,7 @@ class we_docTypes extends we_class{
 		}
 		$tlist = array_filter(array_unique($tlist));
 		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', [0, g_l('weClass', '[none]')]);
+		return $this->formSelect2(0, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', [0, g_l('weClass', '[none]')]);
 	}
 
 	private function formIsDynamic(){

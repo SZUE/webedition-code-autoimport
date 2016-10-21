@@ -706,7 +706,7 @@ function CalendarChanged(calObject) {
 					}
 				}
 
-				// <<< determine which articles should be shown ...
+				//  determine which articles should be shown ...
 
 				asort($shopArticles);
 				$MAX_PER_PAGE = 10;
@@ -777,7 +777,9 @@ function CalendarChanged(calObject) {
 					$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();window.close();");
 					list($id, $type) = explode('_', $_REQUEST['add_article']);
 
-					$variantOptions = ['-' => '-'];
+					$variantOptions = [
+						'' => '-'//Fix #11087 we need an empty key for default: non variant
+						];
 
 					$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
 
@@ -894,7 +896,7 @@ function CalendarChanged(calObject) {
 						'noline' => 1
 					],
 						['headline' => g_l('modules_shop', '[field_value]'),
-						'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
+						'html' => '<textarea name="cartfieldvalue" style="width: 350px; height: 150px">' . $val . '</textarea>',
 						'space' => we_html_multiIconBox::SPACE_MED
 					]
 				];
