@@ -53,7 +53,7 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 		$templ = new we_template();
 
 		$templ->initByID($this->data, TEMPLATES_TABLE);
-		$content = $templ->getElement("data");
+		$content = $templ->getElement('data');
 		$regs = [];
 		if(preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $cur){

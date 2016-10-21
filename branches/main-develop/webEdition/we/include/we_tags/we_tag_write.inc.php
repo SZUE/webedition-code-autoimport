@@ -369,9 +369,9 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 				$document->Path = rtrim($document->getParentPath(), '/') . '/' . $document->Text;
 				$document->setElement('type', $contentType, 'attrib');
 				$document->setElement('data', $_SESSION[$dataID]['serverPath'], $dataType);
-				$document->setElement('filesize', $_SESSION[$dataID]['size'], 'attrib');
+				$document->setElement('filesize', $_SESSION[$dataID]['size'], 'attrib', 'bdid');
 				foreach($moreAttribs as $eName => $sKey){
-					$document->setElement($eName, $_SESSION[$dataID][$sKey], 'attrib');
+					$document->setElement($eName, $_SESSION[$dataID][$sKey], 'attrib', 'bdid');
 				}
 
 				$document->we_save();

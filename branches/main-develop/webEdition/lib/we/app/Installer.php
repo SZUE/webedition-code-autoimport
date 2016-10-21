@@ -165,7 +165,7 @@ class we_app_Installer{
 			$this->_instance->_config = &we_app_Common::readConfig();
 			$this->_instance->_toc = &we_app_Common::readAppTOCsxmle();
 			$this->_instance->_tmpDir = rtrim($_SERVER['DOCUMENT_ROOT'] . $this->_instance->_config->tmp_installer, '/') . '/';
-			$applicationPath = we_app_Common::getConfigElement("applicationpath") . $this->_instance->_appname . "/";
+			$applicationPath = we_app_Common::getConfigElement('applicationpath') . $this->_instance->_appname . "/";
 			$this->_instance->_configFiles = [$applicationPath . "conf/toc.xml",
 				$applicationPath . "conf/manifest.xml",
 				$applicationPath . "conf/installhooks.xml",
@@ -279,8 +279,8 @@ class we_app_Installer{
 		}
 		error_log("starting deinstallation of application \"" . $this->_appname . "\"");
 
-		$filename = we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml';
-		if(!is_readable(we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml')){
+		$filename = we_app_Common::getConfigElement('applicationpath') . $this->_appname . '/conf/toc.xml';
+		if(!is_readable(we_app_Common::getConfigElement('applicationpath') . $this->_appname . '/conf/toc.xml')){
 			return false;
 		}
 		$this->_files = simplexml_load_file($filename);
@@ -476,7 +476,7 @@ class we_app_Installer{
 		error_log("installing sql files.");
 		$filesNotInstallable = [];
 		foreach($this->_files->sql as $entry){
-			$entry->destination = we_app_Common::getConfigElement("applicationpath");
+			$entry->destination = we_app_Common::getConfigElement('applicationpath');
 
 			if(!isset($entry->destination) || empty($entry->destination)){
 				$filesNotInstallable[] = $entry->source;
@@ -536,7 +536,7 @@ class we_app_Installer{
 				$srcdir = $this->_tmpDir;
 				break;
 			case "uninstall":
-				$srcdir = we_app_Common::getConfigElement("applicationpath") . $this->_appname . "/";
+				$srcdir = we_app_Common::getConfigElement('applicationpath') . $this->_appname . "/";
 				break;
 			case "update":
 				$srcdir = $this->_tmpDir;
@@ -584,7 +584,7 @@ class we_app_Installer{
 	 */
 	protected function _removeAppConfig(){
 		$filesNotRemovable = [];
-		$path = we_app_Common::getConfigElement("applicationpath") . $this->_appname . "/";
+		$path = we_app_Common::getConfigElement('applicationpath') . $this->_appname . "/";
 		foreach($this->_configFiles as $file){
 			if(!@unlink($file)){
 				error_log("ERROR: could not delete " . $file);
@@ -595,7 +595,7 @@ class we_app_Installer{
 		if(!empty($filesNotRemovable)){
 			error_log("the following config files could not be removed: " . print_r($filesNotRemovable, true));
 		} else {
-			we_util_File::rmdirr(we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/', true);
+			we_util_File::rmdirr(we_app_Common::getConfigElement('applicationpath') . $this->_appname . '/conf/', true);
 			error_log("all config files were removed successfully.");
 		}
 		return true;
@@ -607,7 +607,7 @@ class we_app_Installer{
 	protected function _uninstallFiles(){
 		error_log("removing application files.");
 		$filesNotRemovable = [];
-		$weApplicationPath = we_app_Common::getConfigElement("applicationpath");
+		$weApplicationPath = we_app_Common::getConfigElement('applicationpath');
 		$applicationPath = $weApplicationPath . $this->_appname . "/";
 		// the following files are needed in later steps during installation
 		// so we leave them untouched for no:

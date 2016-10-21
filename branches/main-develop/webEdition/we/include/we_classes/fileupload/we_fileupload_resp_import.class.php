@@ -319,16 +319,16 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			case we_base_ContentTypes::FLASH:
 				$we_size = $we_doc->getimagesize($tempFile);
 				if(is_array($we_size) && count($we_size) >= 2){
-					$we_doc->setElement("width", $we_size[0], "attrib");
-					$we_doc->setElement("height", $we_size[1], "attrib");
-					$we_doc->setElement("origwidth", $we_size[0], 'attrib');
-					$we_doc->setElement("origheight", $we_size[1], 'attrib');
+					$we_doc->setElement('width', $we_size[0], 'attrib', 'bdid');
+					$we_doc->setElement('height', $we_size[1], 'attrib', 'bdid');
+					$we_doc->setElement('origwidth', $we_size[0], 'attrib', 'bdid');
+					$we_doc->setElement('origheight', $we_size[1], 'attrib', 'bdid');
 				}
 			// no break
 			default:
 				$we_doc->Table = FILE_TABLE;
 				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
-				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
+				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib', 'bdid');
 
 				if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] ? $this->docVars['categories'] : $we_doc->Category;
@@ -345,15 +345,15 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$newHeight = 0;
 			if(isset($this->docVars['width']) && $this->docVars['width']){
 				$newWidth = ($this->docVars['widthSelect'] === 'percent' ?
-						round(($we_doc->getElement("origwidth") / 100) * $this->docVars['width']) :
+						round(($we_doc->getElement('origwidth', 'bdid') / 100) * $this->docVars['width']) :
 						$this->docVars['width']);
 			}
 			if(isset($this->docVars['height']) && $this->docVars['height']){
 				$newHeight = ($this->docVars['heightSelect'] === 'percent' ?
-						round(($we_doc->getElement("origheight") / 100) * $this->docVars['height']) :
+						round(($we_doc->getElement('origheight', 'bdid') / 100) * $this->docVars['height']) :
 						$this->docVars['height']);
 			}
-			if(($newWidth && ($newWidth != $we_doc->getElement("origwidth"))) || ($newHeight && ($newHeight != $we_doc->getElement("origheight")))){
+			if(($newWidth && ($newWidth != $we_doc->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $we_doc->getElement('origheight', 'bdid')))){
 				if($we_doc->resizeImage($newWidth, $newHeight, $this->docVars['quality'], $this->docVars['keepRatio'])){
 					// why set this vals?
 					//$this->docVars['width'] = $newWidth;
@@ -363,10 +363,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			if($this->docVars['degrees']){
 				$we_doc->rotateImage(
 					($this->docVars['degrees'] % 180 == 0 ?
-						$we_doc->getElement('origwidth') :
-						$we_doc->getElement("origheight")), ($this->docVars['degrees'] % 180 == 0 ?
-						$we_doc->getElement("origheight") :
-						$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
+						$we_doc->getElement('origwidth', 'bdid') :
+						$we_doc->getElement('origheight', 'bdid')), ($this->docVars['degrees'] % 180 == 0 ?
+						$we_doc->getElement('origheight', 'bdid') :
+						$we_doc->getElement('origwidth', 'bdid')), $this->docVars['degrees'], $this->docVars['quality']);
 			}
 			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
 			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->getElement('title')), 'attrib');
@@ -394,10 +394,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		return ['error' => [],
 			'success' => true,
-			'weDoc' => ['id' => $we_doc->ID, 
-					'path' => $we_doc->Path, 
-					'text' => $we_doc->Text, 
-					'ct' => $we_doc->ContentType, 
+			'weDoc' => ['id' => $we_doc->ID,
+					'path' => $we_doc->Path,
+					'text' => $we_doc->Text,
+					'ct' => $we_doc->ContentType,
 					'table' => FILE_TABLE,
 					'currentID' => $we_doc->ID,
 					'currentPath' => $we_doc->Path,

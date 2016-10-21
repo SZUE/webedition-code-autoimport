@@ -63,13 +63,13 @@ class we_imageDocument extends we_binaryDocument{
 	public function we_save($resave = false, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
-		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
-		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib', 'bdid');
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib', 'bdid');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		//if focus changed, rebuild thumbs
 		if($this->ID && ($focus = $this->getElement('focus'))){
 			$oldFocus = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DocumentTable="tblFile" AND l.DID=' . $this->ID . ' AND l.nHash=x\'' . md5('focus') . '\'');
-			$docChanged|=($focus == '[0,0]' && !$oldFocus ? false : ($oldFocus != $focus));
+			$docChanged |= ($focus == '[0,0]' && !$oldFocus ? false : ($oldFocus != $focus));
 		}
 		if(parent::we_save($resave, $skipHook)){
 			$this->unregisterMediaLinks();
@@ -81,7 +81,7 @@ class we_imageDocument extends we_binaryDocument{
 			if($thumbs){
 				foreach($thumbs as $thumbID){
 					$thumbObj = new we_thumbnail();
-					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
+					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth', 'bdid'), $this->getElement('origheight', 'bdid'), $this->getDocument());
 					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
 						t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
 					}
@@ -95,10 +95,10 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	function registerMediaLinks($temp = false, $linksReady = false){
-		if(($id = $this->getElement('LinkID', 'bdid') ? : $this->getElement('LinkID', 'dat'))){
+		if(($id = $this->getElement('LinkID', 'bdid') ?: $this->getElement('LinkID', 'dat'))){
 			$this->MediaLinks['Hyperlink:Intern'] = $id;
 		}
-		if(($id = $this->getElement('RollOverID', 'bdid') ? : $id = $this->getElement('RollOverID', 'dat'))){
+		if(($id = $this->getElement('RollOverID', 'bdid') ?: $id = $this->getElement('RollOverID', 'dat'))){
 			$this->MediaLinks['Hyperlink:Rollover'] = $id;
 		}
 
@@ -115,8 +115,8 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function getOrigSize($calculateNew = false, $useOldPath = false){
 		if(!$this->DocChanged && $this->ID){
-			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
-				return [$this->getElement('origwidth'), $this->getElement('origheight'), 0, ''];
+			if($this->getElement('origwidth', 'bdid') && $this->getElement('origheight', 'bdid') && ($calculateNew == false)){
+				return [$this->getElement('origwidth', 'bdid'), $this->getElement('origheight', 'bdid'), 0, ''];
 			}
 			// we have to calculate the path, because maybe the document was renamed
 			//$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
@@ -143,7 +143,7 @@ class we_imageDocument extends we_binaryDocument{
 		$thumbObj = new we_thumbnail();
 
 		while($this->DB_WE->next_record()){
-			$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Options'), $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
+			$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Options'), $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth', 'bdid'), $this->getElement('origheight', 'bdid'), $this->DB_WE->f('Quality'));
 
 			if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
 				$thumbs[] = $this->DB_WE->f('ID');
@@ -258,8 +258,8 @@ class we_imageDocument extends we_binaryDocument{
 		$js = '
 var img' . self::$imgCnt . 'Over = new Image();
 var img' . self::$imgCnt . 'Out = new Image();
-img' . self::$imgCnt . 'Over.src = "' . ($src_over? : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
-img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
+img' . self::$imgCnt . 'Over.src = "' . ($src_over ?: f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
+img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
@@ -296,11 +296,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 		$this->setElement('data', $dataPath);
 
-		$this->setElement('width', $resized_image[1], 'attrib');
-		$this->setElement('origwidth', $resized_image[1], 'attrib');
+		$this->setElement('width', $resized_image[1], 'attrib', 'bdid');
+		$this->setElement('origwidth', $resized_image[1], 'attrib', 'bdid');
 
-		$this->setElement('height', $resized_image[2], 'attrib');
-		$this->setElement('origheight', $resized_image[2], 'attrib');
+		$this->setElement('height', $resized_image[2], 'attrib', 'bdid');
+		$this->setElement('origheight', $resized_image[2], 'attrib', 'bdid');
 
 		$this->DocChanged = true;
 		return true;
@@ -322,18 +322,19 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, [we_thumbnail::OPTION_INTERLACE], [0, 0], $rotation);
+		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, [we_thumbnail::OPTION_INTERLACE], [
+				0, 0], $rotation);
 
 		if(!$resized_image[0]){
 			return false;
 		}
 		$this->setElement('data', $dataPath);
 
-		$this->setElement('width', $resized_image[1], 'attrib');
-		$this->setElement('origwidth', $resized_image[1], 'attrib');
+		$this->setElement('width', $resized_image[1], 'attrib', 'bdid');
+		$this->setElement('origwidth', $resized_image[1], 'attrib', 'bdid');
 
-		$this->setElement('height', $resized_image[2], 'attrib');
-		$this->setElement('origheight', $resized_image[2], 'attrib');
+		$this->setElement('height', $resized_image[2], 'attrib', 'bdid');
+		$this->setElement('origheight', $resized_image[2], 'attrib', 'bdid');
 
 		$this->DocChanged = true;
 		return true;
@@ -383,11 +384,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						$thumbObj->createThumb();
 					}
 
-					if($this->getElement('width') != ''){//if width set to empty skip width attribute
-						$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
+					if($this->getElement('width', 'bdid')){//if width set to empty skip width attribute
+						$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib', 'bdid');
 					}
-					if($this->getElement('height') != ''){//if height set to empty skip height attribute
-						$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
+					if($this->getElement('height', 'bdid')){//if height set to empty skip height attribute
+						$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib', 'bdid');
 					}
 				}
 			}
@@ -433,8 +434,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$target = $this->getElement('LinkTarget');
 
 			if($this->issetElement('sizingrel')){
-				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
-				$this->setElement('height', round($this->getElement('height') * $this->getElement('sizingrel')), 'attrib');
+				$this->setElement('width', round($this->getElement('width', 'bdid') * $this->getElement('sizingrel')), 'attrib', 'bdid');
+				$this->setElement('height', round($this->getElement('height', 'bdid') * $this->getElement('sizingrel')), 'attrib', 'bdid');
 				$this->delElement('sizingrel');
 			}
 
@@ -454,11 +455,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			}
 
 			if($sizingstyle){
-				$style_width = round($this->getElement('width') / $sizingbase, 6);
-				$style_height = round($this->getElement('height') / $sizingbase, 6);
+				$style_width = round($this->getElement('width', 'bdid') / $sizingbase, 6);
+				$style_height = round($this->getElement('height', 'bdid') / $sizingbase, 6);
 				$newstyle = $this->getElement('style');
 
-				$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
+				$newstyle .= ';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
 				$this->setElement('style', $newstyle, 'attrib');
 				$this->delElement('width');
 				$this->delElement('height');
@@ -471,7 +472,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$attribs = ['src' => $src
 			];
 
-			$filter = ['filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight', 'useMetaTitle']; //  dont use these array-entries
+			$filter = ['filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid',
+				'startid', 'origwidth', 'origheight', 'useMetaTitle']; //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
@@ -513,9 +515,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				case 'parentpath':
 					return $this->getParentPath();
 				case 'width':
-					return $this->getElement('width');
+					return $this->getElement('width', 'bdid');
 				case 'height':
-					return $this->getElement('height');
+					return $this->getElement('height', 'bdid');
 				case '':
 					break;
 			}
@@ -695,7 +697,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		if($this->isSvg()){
-			/* if(($w = $this->getElement('width')) && ($h = $this->getElement('height'))){
+			/* if(($w = $this->getElement('width', 'bdid')) && ($h = $this->getElement('height', 'bdid'))){
 			  if(($tmpH = $h * ($size / $w)) <= $sizeH){
 			  $sizeH = $tmpH;
 			  } else {
@@ -730,7 +732,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
 		while($GLOBALS['DB_WE']->next_record()){
 			list($fieldName, $fieldType, $importFrom) = $GLOBALS['DB_WE']->getRecord();
-			$fieldType = $fieldType ? : 'textfield';
+			$fieldType = $fieldType ?: 'textfield';
 
 			$parts = explode(',', $importFrom);
 			foreach($parts as $part){
@@ -782,13 +784,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
-		$linkType = $this->getElement('LinkType') ? : 'no';
+		$linkType = $this->getElement('LinkType') ?: 'no';
 		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID')), '', $this->DB_WE);
 
 		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
-		$RollOverID = $this->getElement('RollOverID') ? : '';
+		$RollOverID = $this->getElement('RollOverID') ?: '';
 		$RollOverPathname = 'we_' . $this->Name . '_vars[RollOverPath]';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
 
@@ -830,7 +832,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		// Internal link
 		$yuiSuggest->setAcId('internalPath');
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
+		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
+			we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput($textname, $linkPath);
 		$yuiSuggest->setResult($idname, $this->getElement('LinkID'));
 		$yuiSuggest->setTable(FILE_TABLE);
@@ -871,7 +874,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		// Rollover image
 		$yuiSuggest->setAcId('rollOverPath');
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
+		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
+			we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput($RollOverPathname, $RollOverPath);
 		$yuiSuggest->setResult($RollOverIDName, $RollOverID);
 		$yuiSuggest->setTable(FILE_TABLE);
@@ -920,7 +924,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 			if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
 				$_SESSION[$imgDataId]['doDelete'] = true;
-				$_SESSION[$imgDataId]['id'] = $_SESSION[$imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
+				$_SESSION[$imgDataId]['id'] = $_SESSION[$imgDataId]['id'] ?: (intval($GLOBALS[$key][$formname]->getElement($imgName)) ?: 0);
 			} elseif($filename){
 				// file is selected, check to see if it is an image
 				$ct = getContentTypeFromFile($filename);
@@ -956,7 +960,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						!empty($_SESSION[$imgDataId]['height'])){
 						$imageData = we_base_file::load($_SESSION[$imgDataId]['serverPath']);
 						$thumb = new we_thumbnail();
-						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], [$_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $_SESSION[$imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$imgDataId]['quality']);
+						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], [$_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0,
+							$_SESSION[$imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $_SESSION[$imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$imgDataId]['quality']);
 
 						$imgData = '';
 						$thumb->getThumb($imgData);
@@ -980,9 +985,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				//['icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
 		]);
 	}
 

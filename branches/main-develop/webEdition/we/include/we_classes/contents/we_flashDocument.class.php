@@ -39,8 +39,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	// is not written yet
 	function initByAttribs($attribs){
 		if(($sizingrel = weTag_getAttribute('sizingrel', $attribs, 0, we_base_request::INT))){
-			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'), we_base_request::UNIT);
-			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'), we_base_request::UNIT);
+			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width', 'bdid'), we_base_request::UNIT);
+			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height', 'bdid'), we_base_request::UNIT);
 			$attribs['width'] = round($orig_w * $sizingrel);
 			$attribs['height'] = round($orig_h * $sizingrel);
 		}
@@ -213,8 +213,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	}
 
 	protected function getThumbnail($width = 150, $height = 100){
-		$elemWidth = $this->getElement('width');
-		$elemHeight = $this->getElement('height');
+		$elemWidth = $this->getElement('width', 'bdid');
+		$elemHeight = $this->getElement('height', 'bdid');
 		$scale = $this->getElement('scale');
 		$hspace = $this->getElement('hspace');
 		$vspace = $this->getElement('vspace');
@@ -226,11 +226,11 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		$salign = $this->getElement('salign');
 		$loop = $this->getElement('loop');
 		$wmode = $this->getElement('wmode');
-		$origwidth = $this->getElement('origwidth');
-		$origheight = $this->getElement('origheight');
+		$origwidth = $this->getElement('origwidth', 'bdid');
+		$origheight = $this->getElement('origheight', 'bdid');
 
-		$this->setElement('width', $width, 'attrib');
-		$this->setElement('height', $height, 'attrib');
+		$this->setElement('width', $width, 'attrib', 'bdid');
+		$this->setElement('height', $height, 'attrib', 'bdid');
 		$this->setElement('scale', '', 'attrib');
 		$this->setElement('hspace', '', 'attrib');
 		$this->setElement('vspace', '', 'attrib');
@@ -242,12 +242,12 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		$this->setElement('salign', '', 'attrib');
 		$this->setElement('loop', '', 'attrib');
 		$this->setElement('wmode', 'window', 'attrib');
-		$this->setElement('origwidth', '', 'attrib');
-		$this->setElement('origheight', '', 'attrib');
+		$this->setElement('origwidth', '', 'attrib', 'bdid');
+		$this->setElement('origheight', '', 'attrib', 'bdid');
 
 		$html = $this->getHtml(true);
-		$this->setElement('width', $elemWidth, 'attrib');
-		$this->setElement('height', $elemHeight, 'attrib');
+		$this->setElement('width', $elemWidth, 'attrib', 'bdid');
+		$this->setElement('height', $elemHeight, 'attrib', 'bdid');
 		$this->setElement('scale', $scale, 'attrib');
 		$this->setElement('hspace', $hspace, 'attrib');
 		$this->setElement('vspace', $vspace, 'attrib');
@@ -259,8 +259,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		$this->setElement('salign', $salign, 'attrib');
 		$this->setElement('loop', $loop, 'attrib');
 		$this->setElement('wmode', $wmode, 'attrib');
-		$this->setElement('origwidth', $origwidth, 'attrib');
-		$this->setElement('origheight', $origheight, 'attrib');
+		$this->setElement('origwidth', $origwidth, 'attrib', 'bdid');
+		$this->setElement('origheight', $origheight, 'attrib', 'bdid');
 
 		return $html;
 	}
@@ -298,15 +298,15 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	public function we_save($resave = false, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
-		$origw = $this->getElement('origwidth');
-		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
-		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
-		//if ($origw != $this->getElement('origwidth')){$this->DocChanged = true;}
-		if(!$this->getElement('width')){
-			$this->setElement('width', $this->getElement('origwidth'), 'attrib');
+		$origw = $this->getElement('origwidth', 'bdid');
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib', 'bdid');
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib', 'bdid');
+		//if ($origw != $this->getElement('origwidth', 'bdid')){$this->DocChanged = true;}
+		if(!$this->getElement('width', 'bdid')){
+			$this->setElement('width', $this->getElement('origwidth', 'bdid'), 'attrib', 'bdid');
 		}
-		if(!$this->getElement('height')){
-			$this->setElement('height', $this->getElement('origheight'), 'attrib');
+		if(!$this->getElement('height', 'bdid')){
+			$this->setElement('height', $this->getElement('origheight', 'bdid'), 'attrib', 'bdid');
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
@@ -337,8 +337,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	function getOrigSize($calculateNew = false, $useOldPath = false){
 		$arr = [0, 0, 0, ''];
 		if(!$this->DocChanged && $this->ID){
-			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
-				return [$this->getElement('origwidth'), $this->getElement('origheight'), 0, ''];
+			if($this->getElement('origwidth', 'bdid') && $this->getElement('origheight', 'bdid') && ($calculateNew == false)){
+				return [$this->getElement('origwidth', 'bdid'), $this->getElement('origheight', 'bdid'), 0, ''];
 			} else {
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;

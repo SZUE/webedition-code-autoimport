@@ -282,7 +282,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 				$source = $object->getElement('data');
 				$this->updateSource($this->Patterns->ext_patterns, $source, 'Path', FILE_TABLE);
-				$object->setElement("data", $source);
+				$object->setElement('data', $source);
 			}
 		}
 
@@ -320,9 +320,9 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e("Updating text-doc source...\n");
 		}
 
-		$source = $object->getElement("data");
+		$source = $object->getElement('data');
 		$this->updateSource(["/(#WE:)(\d+)(#)/se"], $source, 'ID', FILE_TABLE);
-		$object->setElement("data", $source);
+		$object->setElement('data', $source);
 	}
 
 	private function updateTemplate(we_template &$object){
@@ -340,7 +340,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				$object->_updateCompleteCode(true);
 			}
 		}
-		$source = $object->getElement("data");
+		$source = $object->getElement('data');
 
 		$this->updateSource($this->Patterns->doc_patterns['id'], $source, 'ID', FILE_TABLE);
 		$this->updateSource($this->Patterns->doc_patterns['path'], $source, 'Path', FILE_TABLE);

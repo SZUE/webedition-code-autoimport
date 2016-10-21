@@ -247,15 +247,15 @@ function we_saveCustomerImages(){
 
 				$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
 
-				$imgDocument->setElement('width', $imgwidth, 'attrib');
-				$imgDocument->setElement('height', $imgheight, 'attrib');
-				$imgDocument->setElement('origwidth', $imgwidth, 'attrib');
-				$imgDocument->setElement('origheight', $imgheight, 'attrib');
+				$imgDocument->setElement('width', $imgwidth, 'attrib', 'bdid');
+				$imgDocument->setElement('height', $imgheight, 'attrib', 'bdid');
+				$imgDocument->setElement('origwidth', $imgwidth, 'attrib', 'bdid');
+				$imgDocument->setElement('origheight', $imgheight, 'attrib', 'bdid');
 				$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
 				$imgDocument->setElement('data', $serverPath, 'image');
 
-				$imgDocument->setElement('filesize', $size, 'attrib');
+				$imgDocument->setElement('filesize', $size, 'attrib', 'bdid');
 
 				$imgDocument->Table = FILE_TABLE;
 				$imgDocument->Published = time();

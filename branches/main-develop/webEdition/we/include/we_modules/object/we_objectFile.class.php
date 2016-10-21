@@ -1654,7 +1654,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		$this->setTitleAndDescription();
 		$this->resetElements();
 		$text = '';
-		while((list($k, $v) = $this->nextElement(""))){
+		while((list($k, $v) = $this->nextElement(''))){
 			if(isset($v["dat"]) && !empty($v["dat"])){
 				switch(isset($v['type']) ? $v['type'] : ''){
 					default:
@@ -1726,8 +1726,8 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 						'WorkspaceID' => $w,
 						'Category' => $this->Category,
 						'ClassID' => $this->TableID,
-						'Title' => $this->getElement("Title"),
-						'Description' => $this->getElement("Description"),
+						'Title' => $this->getElement('Title'),
+						'Description' => $this->getElement('Description'),
 						'Language' => $this->Language
 				]))){
 				return false;

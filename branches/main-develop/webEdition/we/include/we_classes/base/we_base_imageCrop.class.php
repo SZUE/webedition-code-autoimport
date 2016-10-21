@@ -30,14 +30,14 @@
 abstract class we_base_imageCrop{
 
 	static function getJS(){
-		if(!$GLOBALS['we_doc']->issetElement("origwidth")){
-			$GLOBALS['we_doc']->setElement("origwidth", $GLOBALS['we_doc']->getElement("width"), 'attrib');
+		if(!$GLOBALS['we_doc']->issetElement('origwidth')){
+			$GLOBALS['we_doc']->setElement('origwidth', $GLOBALS['we_doc']->getElement('width', 'bdid'), 'attrib', 'bdid');
 		}
-		if(!$GLOBALS['we_doc']->issetElement("origheight")){
-			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"), 'attrib');
+		if(!$GLOBALS['we_doc']->issetElement('origheight')){
+			$GLOBALS['we_doc']->setElement('origheight', $GLOBALS['we_doc']->getElement('height', 'bdid'), 'attrib', 'bdid');
 		}
 
-		$js='{origW:' . $GLOBALS['we_doc']->getElement("origwidth", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',origH:' . $GLOBALS['we_doc']->getElement("origheight", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '};';
+		$js='{origW:' . $GLOBALS['we_doc']->getElement('origwidth', 'bdid', 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',origH:' . $GLOBALS['we_doc']->getElement('origheight', 'bdid', 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '};';
 		return 	we_html_element::jsScript(JS_DIR . 'imageEditTools.js','ImageEditTools.size='.$js);
 	}
 

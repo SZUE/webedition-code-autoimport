@@ -33,7 +33,7 @@ if($thumbID){
 	$img = new we_imageDocument();
 	$img->initByID($imageId, FILE_TABLE, false);
 	$thumbObj = new we_thumbnail();
-	$thumbObj->initByThumbID($thumbID, $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth'), $img->getElement('origheight'), $img->getDocument());
+	$thumbObj->initByThumbID($thumbID, $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth', 'bdid'), $img->getElement('origheight', 'bdid'), $img->getDocument());
 	if(!$thumbObj->exists()){
 		$thumbObj->createThumb();
 	}

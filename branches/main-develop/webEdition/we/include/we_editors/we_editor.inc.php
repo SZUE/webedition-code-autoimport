@@ -210,10 +210,10 @@ function processEditorCmd($we_doc, $cmd0){
 			}
 
 			$we_doc->setElement('data', $filename);
-			$we_doc->setElement('width', $width, 'attrib');
-			$we_doc->setElement('origwidth', $width, 'attrib');
-			$we_doc->setElement('height', $height, 'attrib');
-			$we_doc->setElement('origheight', $height, 'attrib');
+			$we_doc->setElement('width', $width, 'attrib', 'bdid');
+			$we_doc->setElement('origwidth', $width, 'attrib', 'bdid');
+			$we_doc->setElement('height', $height, 'attrib', 'bdid');
+			$we_doc->setElement('origheight', $height, 'attrib', 'bdid');
 			$we_doc->DocChanged = true;
 			break;
 		case 'object_add_css':

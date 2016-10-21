@@ -202,7 +202,7 @@ class we_object extends we_document{
 
 		$lastElement = 'OF_ID';
 		foreach(array_keys($we_sort) as $id){
-			$cur = $this->getElement("wholename" . $id, 'dat');
+			$cur = $this->getElement('wholename' . $id, 'dat');
 			$newType = $this->getElement($cur . self::ELEMENT_TYPE);
 			$nam = $newType . '_' . $this->getElement($cur);
 
@@ -456,10 +456,10 @@ class we_object extends we_document{
 		$this->setElement($uid . self::ELEMENT_HEIGHT, 200);
 		$this->setElement($uid . self::ELEMENT_CLASS, "");
 		$this->setElement($uid . self::ELEMENT_MAX, "");
-		$this->setElement("wholename" . $identifier, $uid);
-		$nf = $this->getElement("neuefelder", 'dat', []);
+		$this->setElement('wholename' . $identifier, $uid);
+		$nf = $this->getElement('neuefelder', 'dat', []);
 		$nf[] = $uid;
-		$this->setElement("neuefelder", $nf);
+		$this->setElement('neuefelder', $nf);
 
 		if($after && isset($sort[$after])){
 			$pos = $sort[$after];
@@ -474,24 +474,24 @@ class we_object extends we_document{
 			$sort[$identifier] = count($sort);
 		}
 		asort($sort, SORT_NUMERIC);
-		$this->setElement("we_sort", $sort);
+		$this->setElement('we_sort', $sort);
 	}
 
 	function removeEntryFromClass($identifier){
 		$sort = $this->getElement('we_sort', 'dat');
 
-		$uid = $this->getElement("wholename" . $identifier);
+		$uid = $this->getElement('wholename' . $identifier);
 
 		if(($pos = array_search($uid, ($nf = $this->getElement('neuefelder', 'dat', [])))) !== false){
 			unset($nf[$pos]);
-			$this->setElement("neuefelder", $nf);
+			$this->setElement('neuefelder', $nf);
 		} else {
-			$er = $this->getElement("felderloeschen", 'dat', []);
+			$er = $this->getElement('felderloeschen', 'dat', []);
 			$er[] = $uid;
-			$this->setElement("felderloeschen", $er);
+			$this->setElement('felderloeschen', $er);
 		}
 
-		$this->delElement("wholename" . $identifier);
+		$this->delElement('wholename' . $identifier);
 		$this->delElement($uid);
 		$this->delElement($uid . self::ELEMENT_LENGHT);
 		$this->delElement($uid . self::ELEMENT_TYPE);
@@ -956,11 +956,11 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_HREF:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td class="defaultfont">' .
 // title
-					we_html_forms::radiobutton($name, ($this->getElement("title", "dat") == $name), "we_" . $this->Name . "_input[title]", g_l('global', '[title]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[title]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					we_html_forms::radiobutton($name, ($this->getElement('title', "dat") == $name), "we_" . $this->Name . "_input[title]", g_l('global', '[title]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[title]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 // description
-					we_html_forms::radiobutton($name, ($this->getElement("desc", "dat") == $name), "we_" . $this->Name . "_input[desc]", g_l('global', '[description]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[desc]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					we_html_forms::radiobutton($name, ($this->getElement('desc', "dat") == $name), "we_" . $this->Name . "_input[desc]", g_l('global', '[description]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[desc]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 // keywords
-					we_html_forms::radiobutton($name, ($this->getElement("keywords", "dat") == $name), "we_" . $this->Name . "_input[keywords]", g_l('weClass', '[Keywords]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[keywords]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					we_html_forms::radiobutton($name, ($this->getElement('keywords', "dat") == $name), "we_" . $this->Name . "_input[keywords]", g_l('weClass', '[Keywords]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[keywords]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 					'</td></tr>';
 				break;
 			default:
@@ -972,7 +972,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_DATE:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td class="defaultfont">';
 				if($type == we_objectFile::TYPE_DATE){
-					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield0", "dat") == $name), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', '[urlfield0]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield0]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+					$content .= we_html_forms::radiobutton($name, ($this->getElement('urlfield0', "dat") == $name), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', '[urlfield0]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield0]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 				} else {
 					foreach(array_keys(self::$urlFields) as $key){
 						$content .= we_html_forms::radiobutton($name, ($this->getElement($key) == $name), "we_" . $this->Name . "_input[" . $key . "]", g_l('weClass', '[' . $key . ']'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[" . $key . "]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
@@ -1162,7 +1162,7 @@ class we_object extends we_document{
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");
 
 		$path = (
-			$this->getElement("we_object_" . $name . "_path") ?:
+			$this->getElement('we_object_' . $name . "_path") ?:
 			($myid ?
 			f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, "", $db) :
 			''
@@ -1435,7 +1435,7 @@ class we_object extends we_document{
 				$was = "DefaultText_" . $i;
 				if(($dat = $this->getElement($was)) != ""){
 					if(stristr($dat, 'unique')){
-						$unique = $this->getElement("unique_" . $i);
+						$unique = $this->getElement('unique_' . $i);
 						$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
 						$this->setElement($was, $dat, 'defaultText');
 					}
@@ -1802,7 +1802,7 @@ class we_object extends we_document{
 			if($name && $type != 'OF' && $type != 'variant'){
 
 				$this->setElement($info['name'], $name, 'dat');
-				$this->setElement("wholename" . array_search($f, $sort), $info['name'], 'dat');
+				$this->setElement('wholename' . array_search($f, $sort), $info['name'], 'dat');
 				$this->setElement($info['name'] . self::ELEMENT_LENGHT, $info["len"], 'dat');
 				$this->setElement($info['name'] . self::ELEMENT_TYPE, $type, 'dat');
 				$typeLen = strtoupper($info['type']) . (strpos($info['flags'], 'unsigned') !== false || (defined('MYSQLI_UNSIGNED_FLAG') && (($info['flags'] & MYSQLI_UNSIGNED_FLAG) > 0)) ? '_U' : '');

@@ -283,7 +283,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
 				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 			}
-			$data = $object->getElement("data");
+			$data = $object->getElement('data');
 			if($this->options["handle_document_includes"]){
 				$this->getDocumentIncludes($data, $level);
 			}

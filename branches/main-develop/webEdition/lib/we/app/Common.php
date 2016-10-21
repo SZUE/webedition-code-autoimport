@@ -259,7 +259,7 @@ class we_app_Common{
 			$active = "true";
 		}
 
-		$entry = new SimpleXMLElement("<application></application>");
+		$entry = new SimpleXMLElement('<application></application>');
 		$entry->addAttribute("active", $active);
 		$entry->addChild("name", $appname);
 		$entry->addChild("installer", $installer);
