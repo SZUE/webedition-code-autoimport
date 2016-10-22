@@ -77,7 +77,6 @@ function startTree(pid,offset){
 	};
 	pid = pid ? pid : 0;
 	offset = offset ? offset : 0;
-	//treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 }';
 	}
 

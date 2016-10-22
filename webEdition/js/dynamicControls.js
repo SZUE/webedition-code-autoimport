@@ -124,7 +124,7 @@ function toggle(group_id, display_style, use_form, form_name, form_group_name) {
 
 function toggle_all() {
 	// Hide all groups
-	for (i = 0; i <= all_groups.length; i++) {
+	for (i = 0; i < all_groups.length; i++) {
 		// Check if that group is open
 		if (document.getElementById("group_" + all_groups[i]).style.display === "block") {
 			// Hide the group
