@@ -224,7 +224,6 @@ class we_html_dynamicControls{
 		//	sort the permission-groups alphabetically (perm_group_name)
 		ksort($contentTable);
 		foreach($contentTable as $value){
-
 			$content .= $value;
 		}
 		return $content;
