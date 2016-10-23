@@ -102,7 +102,7 @@ class we_listview_object extends we_listview_objectBase{
 		//allways join the file table itself
 		$sqlParts['tables'].=' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID';
 
-		if($this->customers && $this->customers !== "*"){
+		if($this->customers && $this->customers !== '*'){
 			$wsql = ' of.WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
 			//$encrypted = we_customer_customer::getEncryptedFields();
@@ -125,7 +125,7 @@ class we_listview_object extends we_listview_objectBase{
 			'webUser' => $webUserID_tail,
 		];
 
-		if($sqlParts["tables"] || $we_predefinedSQL != ''){
+		if($sqlParts['tables'] || $we_predefinedSQL){
 
 			if($we_predefinedSQL){
 				$this->DB_WE->query($we_predefinedSQL);
@@ -134,7 +134,7 @@ class we_listview_object extends we_listview_objectBase{
 			} else {
 				$condParts['id'] = $this->getIdQuery('ob' . $this->classID . '.OF_ID');
 
-				if($this->workspaceID != ''){
+				if($this->workspaceID){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
 					$cond = [];
 					foreach($workspaces as $wid){
@@ -156,7 +156,7 @@ class we_listview_object extends we_listview_objectBase{
 						$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 					}
 				}
-				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . $where . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . $where . $sqlParts['order'] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();

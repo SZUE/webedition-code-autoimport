@@ -240,7 +240,37 @@ abstract class we_html_forms{
 			$style[] = 'height:' . $height . (is_numeric($height) ? 'px' : '');
 		}
 
-		if($showAutobr || $showSpell){
+		$atts = removeAttribs($attribs, ['wysiwyg',
+			'commands',
+			'_name_orig',
+			'pure',
+			'type',
+			'value',
+			'checked',
+			'autobr',
+			'name',
+			'values',
+			'hidden',
+			'editable',
+			'format',
+			'property',
+			'size',
+			'maxlength',
+			'width',
+			'height',
+			'rows',
+			'cols',
+			'fontnames',
+			'bgcolor',
+			'editorcss',
+			'ignoredocumentcss',
+			'buttonpos',
+			'importrtf'
+		]);
+		$atts['style'] = $style ? implode(';', $style) : '';
+		$atts['class'] = ($class ? $class . ' ' : '') . 'wetextarea wetextarea-' . $origName;
+
+		if($showAutobr || $importrtf){
 			$clearval = $value;
 			$value = strtr($value, [
 				'<?' => '##|lt;?##',
@@ -251,10 +281,12 @@ abstract class we_html_forms{
 				"\r" => '\r',
 				'"' => '\\"'
 			]);
-			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","","","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
-				'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($style ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
+			$attr = makeHTMLTagAtts($atts);
+			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr && !$hideautobr ? "true" : "false") . ',\'' . $attr . '\',' . ($xml ? "true" : "false") . ');') .
+				'<noscript><textarea name="' . $name . '" ' . $attr . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
 		} else {
-			$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($style ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
+			$atts['name'] = $name;
+			$out .= getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
 		}
 
 		return $out;

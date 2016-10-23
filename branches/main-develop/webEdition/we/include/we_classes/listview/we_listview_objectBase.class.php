@@ -159,13 +159,10 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(!isset($from[$p['table']])){
 				$from[$p['table']] = $p['table'] . ' AS ' . $p['alias'];
 				if($classID != $p['classID']){
-					//if not mistaken this is never used
-				//	$publ_cond[] = '(' . $p['alias'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
 				}
 			}
 			if(!empty($p['join'])){
 				$from[$p['join']] = $p['on'];
-			//	$publ_cond[] = '(ob' . $p['joinClassID'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
 			}
 
 			if(($pos = array_search($n, $orderArr)) !== false){

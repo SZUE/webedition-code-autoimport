@@ -688,19 +688,20 @@ function getHtmlTag($element, $attribs = [], $content = '', $forceEndTag = false
 			break;
 	}
 
-	$attribs = removeAttribs($attribs, $removeAttribs);
-
-	$tag = '<' . $element;
-
-	foreach($attribs as $k => $v){
-		$tag .= ' ' . ($k === 'link_attribute' ? // Bug #3741
-			$v :
-			str_replace('pass_', '', $k) . '="' . $v . '"');
-	}
-	return $tag . ($content || $forceEndTag ? //	use endtag
+	return '<' . $element . makeHTMLTagAtts(removeAttribs($attribs, $removeAttribs)) . ($content || $forceEndTag ? //	use endtag
 		'>' . $content . '</' . $element . '>' :
 //	xml style or not
 		( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
+}
+
+function makeHTMLTagAtts(array $attribs){
+	$ret = '';
+	foreach($attribs as $k => $v){
+		$ret .= ' ' . ($k === 'link_attribute' ? // Bug #3741
+			$v :
+			str_replace('pass_', '', $k) . '="' . $v . '"');
+	}
+	return $ret;
 }
 
 /**

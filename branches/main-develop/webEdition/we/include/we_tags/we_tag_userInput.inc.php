@@ -388,7 +388,8 @@ function we_tag_userInput(array $attribs, $content){
 					'bgcolor',
 					'editorcss',
 					'ignoredocumentcss',
-					'buttonpos'
+					'buttonpos',
+					'_name_orig',
 				]);
 				return we_getTextareaField($fieldname, ($content ?: $value), $atts);
 			}

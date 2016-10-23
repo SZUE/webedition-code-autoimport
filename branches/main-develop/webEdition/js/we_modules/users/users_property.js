@@ -90,3 +90,61 @@ function we_cmd() {
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
+
+function select_seem_start() {
+	myWindStr = "WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody";
+
+	if (document.getElementById('seem_start_type').value == 'object') {
+		we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', WE().consts.contentTypes.OBJECT_FILE, 'objectFile', WE().util.hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1);
+	} else {
+		we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, WE().consts.tables.FILE_TABLE, myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, 'objectFile', WE().util.hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1);
+	}
+}
+
+function show_seem_chooser(val) {
+	switch (val) {
+		case 'document':
+			if (document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+			document.getElementById('seem_start_document').style.display = 'block';
+			document.getElementById('seem_start_weapp').style.display = 'none';
+			break;
+		case 'object':
+			if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
+				document.getElementById('seem_start_document').style.display = 'none';
+				document.getElementById('seem_start_weapp').style.display = 'none';
+				document.getElementById('seem_start_object').style.display = 'block';
+			}
+			break;
+		case 'weapp':
+			document.getElementById('seem_start_document').style.display = 'none';
+			document.getElementById('seem_start_object').style.display = 'none';
+			document.getElementById('seem_start_weapp').style.display = 'block';
+			break;
+		default:
+			document.getElementById('seem_start_document').style.display = 'none';
+			document.getElementById('seem_start_weapp').style.display = 'none';
+			if (document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+			break;
+	}
+}
+
+function showParentPerms(show) {
+	tmp=document.getElementsByClassName("showParentPerms");
+	for( var k=0; k<tmp .length; k++ ) {
+		tmp[k].style.display=(show?"inline":"none");
+	}
+}
+
+function delElement(elvalues,elem) {
+	elvalues.value=elem;
+	top.content.setHot();
+}
+
+function addElement(elvalues) {
+	elvalues.value="new";
+	switchPage(2);
+}

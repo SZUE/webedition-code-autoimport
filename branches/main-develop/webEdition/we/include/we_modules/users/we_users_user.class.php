@@ -1475,26 +1475,17 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		// Check if user has right to decide to give administrative rights
 		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
+			$content = '';
 			foreach($this->permissions_slots['administrator'] as $k => $v){
-				$content = '
-<table class="default" style="width:500px;margin-top:5px;">
-	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
-</table>';
+				$content .= '<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>';
 			}
 			$parts[] = ['headline' => '',
-				'html' => $content,
+				'html' => '<table class="default" style="width:500px;margin-top:5px;">' . $content . '</table>',
 			];
 		}
 		if($this->ParentID){
 			$parts[] = ['headline' => '',
-				'html' => we_html_element::jsElement('
-function showParentPerms(show) {
-	tmp=document.getElementsByClassName("showParentPerms");
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display=(show?"inline":"none");
-	}
-}
-showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
+				'html' => we_html_element::jsElement('showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 				$this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
 			];
 		}
@@ -1505,17 +1496,7 @@ showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 	function formWorkspace(){
 		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
 		$parts = [];
-		$content = we_html_element::jsElement('
-function addElement(elvalues) {
-	elvalues.value="new";
-	switchPage(' . self::TAB_WORKSPACES . ');
-}
 
-function delElement(elvalues,elem) {
-	elvalues.value=elem;
-	top.content.setHot();
-}
-');
 		$yuiSuggest = & weSuggest::getInstance();
 
 		foreach($this->workspaces as $k => $v){
@@ -1597,7 +1578,7 @@ function delElement(elvalues,elem) {
 
 				$content1 .= '
 <tr><td colspan="2">' . $weAcSelector . '</td>
-	<td><div style="position:relative; top:-1px">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' . '
+	<td><div style="position:relative; top:-1px">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");") . '</td></div>' . '
 </tr>';
 			}
 
@@ -1642,8 +1623,7 @@ function delElement(elvalues,elem) {
 			];
 		}
 
-		return $content .
-			we_html_multiIconBox::getHTML('', $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function formPreferences($branch = ''){
@@ -1750,49 +1730,6 @@ function delElement(elvalues,elem) {
 		];
 
 		//SEEM
-		// Generate needed JS
-		$js = we_html_element::jsElement("
-function select_seem_start() {
-	myWindStr=\"WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody\";
-
-	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'? 'seem_start_document' : 'x'), myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile',WE().util.hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1);
-	} else {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, WE().consts.tables.FILE_TABLE, myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', WE().consts.contentTypes.WEDOCUMENT,'objectFile',WE().util.hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1);
-	}
-}
-
-function show_seem_chooser(val) {
-	switch(val){
-	case 'document':
-		if(document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'none';
-		}
-		document.getElementById('seem_start_document').style.display = 'block';
-		document.getElementById('seem_start_weapp').style.display = 'none';
-		break;
-	case 'object':
-	if(WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'){
-		document.getElementById('seem_start_document').style.display = 'none';
-		document.getElementById('seem_start_weapp').style.display = 'none';
-		document.getElementById('seem_start_object').style.display = 'block';
-		}
-		break;
-	case 'weapp':
-		document.getElementById('seem_start_document').style.display = 'none';
-		document.getElementById('seem_start_object').style.display = 'none';
-		document.getElementById('seem_start_weapp').style.display = 'block';
-		break;
-	default:
-		document.getElementById('seem_start_document').style.display = 'none';
-		document.getElementById('seem_start_weapp').style.display = 'none';
-		if(document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'none';
-		}
-		break;
-	}
-}");
-
 		// Cockpit
 		$document_path = $object_path = '';
 		$document_id = $object_id = 0;
@@ -1899,7 +1836,7 @@ function show_seem_chooser(val) {
 
 		if(permissionhandler::hasPerm('CHANGE_START_DOCUMENT')){
 			$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'),
-				'html' => $js . $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'),
+				'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'),
 				'space' => we_html_multiIconBox::SPACE_BIG
 			];
 		}
