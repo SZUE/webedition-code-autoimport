@@ -33,18 +33,18 @@ $jsCmd = new we_base_jsCmd();
 switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "save_docType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			$jsCmd->addCmd('msg', ['msg' => g_l('weClass', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(g_l('weClass', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		if(preg_match('|[\'",]|', $we_doc->DocType)){
-			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[doctype_hochkomma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(g_l('alert', '[doctype_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(!$we_doc->DocType){
-			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[doctype_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(g_l('alert', '[doctype_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
-			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($we_doc->we_save()){
-			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+			$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), we_message_reporting::WE_MESSAGE_NOTICE);
 			$reloadMenu = we_main_headermenu::getMenuReloadCode();
 		} else {
 			echo "ERROR";
@@ -59,7 +59,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		break;
 	case "deleteDocTypeok":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
 		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
@@ -67,13 +67,13 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$del = false;
 		if($name){
 			if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
-				$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_delete_nok]'), $name), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_nok]'), $name), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND (DID=' . $id . ' OR LDID=' . $id . ')');
-				$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_delete_ok]'), $name), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+				$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_ok]'), $name), we_message_reporting::WE_MESSAGE_NOTICE);
 				$del = true;
 			}
 			if($del){
@@ -149,7 +149,7 @@ echo (empty($reloadMenu) ? '' : $reloadMenu . ';');
 switch($wecmd0){
 	case "deleteDocType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
 		?>

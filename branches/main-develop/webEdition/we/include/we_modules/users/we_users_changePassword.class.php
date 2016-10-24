@@ -65,7 +65,7 @@ top.document.forms[0].elements.newpasswd2.select();';
 				$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($newpasswd));
 				$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '" WHERE ID=' . $_SESSION['user']['ID'] . ' AND username="' . $DB_WE->escape($_SESSION['user']["Username"]) . '"');
 				$cmd = new we_base_jsCmd();
-				$cmd->addCmd('msg', ['msg' => g_l('global', '[pass_changed]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+				$cmd->addMsg(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				$cmd->addCmd('close');
 				return $cmd->getCmds();
 			}

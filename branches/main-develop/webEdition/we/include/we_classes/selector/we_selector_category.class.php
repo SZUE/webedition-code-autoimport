@@ -81,9 +81,9 @@ class we_selector_category extends we_selector_file{
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.setRootDir();", '', 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-tag', "javascript:top.goBackDir();", '', 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
-				'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', '', 0, 0, '', '', false, false) . '</td>' : '') .
+			'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', '', 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
-				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', '', 0, 0, '', '', false, false) . '</td>' : '') .
+			'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', '', 0, 0, '', '', false, false) . '</td>' : '') .
 			'</tr>
 </table>';
 	}
@@ -114,13 +114,13 @@ class we_selector_category extends we_selector_file{
 		$weCmd->addCmd('clearEntries');
 
 		if(empty($txt)){
-			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][filename_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(strpos($txt, ',') !== false){
-			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][name_komma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" LIMIT 1', '', $this->db) === '1'){
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\\\'"<>/]|', $txt)){
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 					'Category' => $txt,
@@ -160,13 +160,13 @@ class we_selector_category extends we_selector_file{
 		$weCmd->addCmd('clearEntries');
 
 		if(!$txt){
-			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][filename_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(strpos($txt, ',') !== false){
-			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][name_komma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" AND ID!=' . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 					'Category' => $txt,
@@ -198,7 +198,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	private function renameChildrenPath($id, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$parentPath = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
 		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $db->escape($parentPath) . '","/",Text) WHERE ParentID=' . intval($id));
 		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id)); //IsFolder=1 AND
@@ -209,7 +209,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	function CatInUse($id, $IsDir, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db) ||
 			(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db))){
 			return true;
@@ -222,7 +222,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	function DirInUse($id, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		if($this->CatInUse($id, 0, $db)){
 			return true;
 		}
@@ -264,7 +264,7 @@ class we_selector_category extends we_selector_file{
 				}
 			}
 			if($catlistNotDeleted){
-				$weCmd->addCmd('msg', ['msg' => g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR);
 			}
 			if($changeToParent){
 				$this->dir = $this->values['ParentID'];
@@ -326,7 +326,7 @@ class we_selector_category extends we_selector_file{
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
-				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
+			we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
 			) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
@@ -378,13 +378,13 @@ class we_selector_category extends we_selector_file{
 
 			$cat = new we_category($catId);
 			$cat->registerMediaLinks();
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE);
 		} else {
-			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 		$weCmd->addCmd('setLookinDir');
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',  $weCmd->getCmds(), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	function printPropertiesHTML(){
@@ -397,7 +397,7 @@ class we_selector_category extends we_selector_file{
 		if($showPrefs){
 			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ID WHERE c.ID=' . $showPrefs);
 
-			$path = ($result['ParentID'] ? ($result['PPath']? : '/' ) : '/');
+			$path = ($result['ParentID'] ? ($result['PPath'] ?: '/' ) : '/');
 
 			$parentId = $result ? $result['ParentID'] : 0;
 			$category = $result ? $result['Category'] : '';
@@ -434,7 +434,8 @@ class we_selector_category extends we_selector_file{
 			$table->setCol(3, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[title]') . "</b>");
 			$table->setCol(3, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 			$table->setCol(4, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[description]') . "</b>");
-			$table->setCol(4, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, ["bgcolor" => "white",
+			$table->setCol(4, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, [
+					"bgcolor" => "white",
 					"inlineedit" => "true",
 					"wysiwyg" => "true",
 					"width" => 450,

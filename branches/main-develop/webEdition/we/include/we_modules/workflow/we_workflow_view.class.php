@@ -153,7 +153,7 @@ class we_workflow_view extends we_modules_view{
 		return ['headline' => g_l('modules_workflow', '[name]'),
 			'html' => we_html_tools::htmlTextInput($this->uid . '_Text', 37, stripslashes($this->workflowDef->Text), '', ' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur=" parent.edheader.weTabs.setTitlePath(this.value);"', "text", 498),
 			'space' => $space
-			];
+		];
 	}
 
 	function getWorkflowSelectHTML(){
@@ -369,7 +369,7 @@ function getNumOfDocs(){
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_property.js') . JQUERY;
 	}
 
-	function processCommands(){
+	function processCommands(we_base_jsCmd $jscmd){
 		switch(we_base_request::_(we_base_request::STRING, 'wcmd', '')){
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
@@ -508,7 +508,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 
 				$_REQUEST['wcmd'] = 'reload';
-				$this->processCommands();
+				$this->processCommands($jscmd);
 				break;
 			case 'switchPage':
 				if(($page = we_base_request::_(we_base_request::INT, 'page')) !== false){
@@ -521,35 +521,46 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
-						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
-						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($double){
-						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					$childs = '';
 					$this->workflowDef->loadDocuments();
 					foreach($this->workflowDef->documents as $v){
-						$childs .= "top.content.treeData.deleteEntry(" . $v["ID"] . ",'file');";
+						$jscmd->addCmd('deleteTreeEntry', [$v["ID"], 'file']);
 					}
 					if(($dts = we_base_request::_(we_base_request::INTLISTA, $this->uid . '_DocType')) !== false){
 						$this->workflowDef->DocType = $dts;
 					}
 
 					$this->workflowDef->save();
-					echo we_html_element::jsElement(
-						($newone ?
-							'top.content.treeData.makeNewEntry({id:' . $this->workflowDef->ID . ',parentid:0,text:"' . $this->workflowDef->Text . '",open:1,contenttype:"folder",table:"we_workflow_workflowDef",published:"' . $this->workflowDef->Status . '"});' :
-							'top.content.treeData.updateEntry({id:' . $this->workflowDef->ID . ',text:"' . $this->workflowDef->Text . '",published:"' . $this->workflowDef->Status . '"});'
-						) . $childs .
-						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";' .
-						we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-					);
+					if($newone){
+						$jscmd->addCmd('makeTreeEntry', [
+							'id' => $this->workflowDef->ID,
+							'parentid' => 0,
+							'text' => $this->workflowDef->Text,
+							'open' => true,
+							'contenttype' => "folder",
+							'table' => "we_workflow_workflowDef",
+							'published' => $this->workflowDef->Status
+						]);
+					} else {
+						$jscmd->addCmd('updateTreeEntry', [
+							'id' => $this->workflowDef->ID,
+							'text' => $this->workflowDef->Text,
+							'published' => $this->workflowDef->Status
+						]);
+					}
+					echo we_html_element::jsElement('top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";');
+					$jscmd->addMsg(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
 			case 'show_document':
@@ -573,10 +584,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->workflowDef = new we_workflow_workflow($id);
 					if($this->workflowDef->delete()){
 						$this->workflowDef = new we_workflow_workflow();
-						echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $id . ',"folder");' .
-							we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
+						$jscmd->addCmd('deleteTreeEntry', [$id, "folder"]);
+						$jscmd->addMsg(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
-						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
 				break;
@@ -589,7 +600,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);
-				echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				break;
 			default:
 		}

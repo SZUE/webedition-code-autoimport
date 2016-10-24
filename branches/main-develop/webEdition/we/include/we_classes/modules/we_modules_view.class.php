@@ -67,7 +67,7 @@ function submitForm(target,action,method,form) {
 }';
 	}
 
-	public function processCommands(){
+	public function processCommands(we_base_jsCmd $jscmd){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd', '')){
 			case 'switchPage':
 				break;
@@ -93,7 +93,7 @@ function submitForm(target,action,method,form) {
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		?>
 		<body class="home" onload="loaded = true;
-				var we_is_home = 1;">
+						var we_is_home = 1;">
 			<div id="tabelle"><?= $starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?= IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
 				<?= $body; ?>

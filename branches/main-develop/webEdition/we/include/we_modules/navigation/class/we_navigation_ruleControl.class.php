@@ -29,7 +29,7 @@ class we_navigation_ruleControl{
 		$this->NavigationRule = new we_navigation_rule();
 	}
 
-	function processCommands(){
+	function processCommands(we_base_jsCmd $jscmd){
 		$js = '';
 		$html = '';
 
@@ -54,7 +54,7 @@ class we_navigation_ruleControl{
 				$db = new DB_WE();
 
 				if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID!=' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
-					$js = we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
 					$save = false;
 				}
 
@@ -63,8 +63,8 @@ class we_navigation_ruleControl{
 					$js = "doc = top.frames.content;
 doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
 doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
-doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");" .
-						we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
+doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");";
+					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
 
@@ -166,7 +166,7 @@ doc.weSelect.setOptions("WorkspaceID", optionList);
 				return;
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js), '<body>' . $html . '</body>');
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $jscmd->getCmds() . we_html_element::jsElement($js), '<body>' . $html . '</body>');
 		exit();
 	}
 

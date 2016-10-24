@@ -46,12 +46,12 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 
 	$cmd = new we_base_jsCmd();
 	if($Glossary->Text === "" || $Glossary->getAttribute('lang') === ""){
-		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[name_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		$cmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else if($Glossary->pathExists($Glossary->Path)){
-		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[name_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		$cmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$Glossary->save();
-		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[entry_saved]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+		$cmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		$cmd->addCmd('close');
 	}
 }

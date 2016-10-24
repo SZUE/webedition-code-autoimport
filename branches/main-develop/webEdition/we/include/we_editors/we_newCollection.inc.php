@@ -71,12 +71,12 @@ $jsDynamicVars = ['name' => $collection->Name,
 	'scriptName' => $_SERVER['SCRIPT_NAME'],
 	'cmdOnSuccess' => $jsCommandOnSuccess,
 	'data' => ['id' => $id, 'text' => $collection->Path]
-	
+
 ];
 
 $jsCmd = new we_base_jsCmd();
 if($jsMessage){
-	$jsCmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
+	$jsCmd->addMsg($jsMessage, $jsMessageType);
 }
 if($saveSuccess){
 	$jsCmd->addCmd('do_onSuccess');

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,6 +30,7 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $weFrame = new we_glossary_settingFrames();
 
 $weFrame->Controller->processVariables();
-$weFrame->Controller->processCommands();
+$jscmd = new we_base_jsCmd();
+$weFrame->Controller->processCommands($jscmd);
 
-echo $weFrame->getHTML($what);
+echo $jscmd->getCmds() . $weFrame->getHTML($what);

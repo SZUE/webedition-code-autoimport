@@ -55,8 +55,18 @@ function we_cmd() {
 			}
 
 			top.content.drawTree();
-
-
+			break;
+		case 'drawTree':
+			top.content.drawTree();
+			break;
+		case 'makeTreeEntry':
+			top.content.treeData.makeNewEntry.apply(this, args);
+			break;
+		case 'updateTreeEntry':
+			top.content.treeData.updateEntry.apply(this, args);
+			break;
+		case 'deleteTreeEntry':
+			top.content.treeData.deleteEntry.apply(this, args);
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

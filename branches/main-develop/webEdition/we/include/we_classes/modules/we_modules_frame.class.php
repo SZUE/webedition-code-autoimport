@@ -259,10 +259,11 @@ abstract class we_modules_frame{
 	 */
 
 	public function process(){
+		$jscmd = new we_base_jsCmd();
 		ob_start();
 		$this->View->processVariables();
-		$this->View->processCommands();
-		$GLOBALS['extraJS'] = ob_get_clean();
+		$this->View->processCommands($jscmd);
+		$GLOBALS['extraJS'] = $jscmd->getCmds . ob_get_clean();
 	}
 
 }

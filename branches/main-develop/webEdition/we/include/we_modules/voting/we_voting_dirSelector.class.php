@@ -89,15 +89,15 @@ class we_voting_dirSelector extends we_selector_directory{
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		if(!$txt){
-			$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
-				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[folder_path_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_voting_voting::filenameNotValid($folder->Text)){
-				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
 				if($this->canSelectDir){
@@ -163,7 +163,7 @@ class we_voting_dirSelector extends we_selector_directory{
 			'makeNewFolder' => false
 		]);
 		if(!$txt){
-			$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -172,9 +172,9 @@ class we_voting_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$exists = f('SELECT 1 FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID . ' LIMIT 1', '', $this->db);
 			if($exists){
-				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){
-				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE ID=' . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);

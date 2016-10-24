@@ -96,14 +96,14 @@ class we_navigation_dirSelector extends we_selector_directory{
 		]);
 
 		if(!$txt){
-			$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"', '', $this->db)){
-				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[folder_path_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('navigation', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_navigation_navigation::filenameNotValid($folder->Text)){
-				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
 				if($this->canSelectDir){
@@ -144,7 +144,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 		$weCmd->addCmd('updateSelectData', ['makeNewFolder' => false]);
 
 		if(!$txt){
-			$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg(g_l('navigation', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -153,9 +153,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('navigation', '[folder_exists]'), $folder->Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(sprintf(g_l('navigation', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(strpbrk($folder->Text, '%/\\"\'') !== false){
-				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addMsg(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
 				if($this->canSelectDir){

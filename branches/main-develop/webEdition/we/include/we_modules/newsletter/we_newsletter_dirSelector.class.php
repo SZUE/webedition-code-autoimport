@@ -46,7 +46,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			$weCmd->addCmd('updateSelectData', [
 				'makeNewFolder' => false,
 			]);
-			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$weCmd->addCmd('updateSelectData', [
 				'makeNewFolder' => false,
@@ -92,7 +92,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 		if($msg){
-			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addMsg($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
 			if($this->canSelectDir){

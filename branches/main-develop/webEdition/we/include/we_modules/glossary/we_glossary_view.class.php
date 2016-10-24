@@ -57,7 +57,7 @@ class we_glossary_view extends we_modules_view{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
 	}
 
-	public function processCommands(){
+	public function processCommands(we_base_jsCmd $jscmd){
 		$cmdid = we_base_request::_(we_base_request::STRING, "cmdid");
 		switch(($cmd = we_base_request::_(we_base_request::STRING, "cmd"))){
 
@@ -67,7 +67,7 @@ class we_glossary_view extends we_modules_view{
 			case "new_glossary_link":
 			case "new_glossary_textreplacement":
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary();
@@ -85,7 +85,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "glossary_edit_link":
 			case "glossary_edit_textreplacement":
 				if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 					break;
@@ -125,7 +125,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				we_glossary_glossary::editException($language, $exception);
 
-				echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 
 				break;
 
@@ -144,22 +144,22 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$this->Glossary->Attributes = we_base_request::_(we_base_request::STRING, $type, '', 'Attributes');
 
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->Glossary->Text)){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Text)){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[text_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[text_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Title)){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[title_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[title_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -168,12 +168,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$this->Glossary->setPath();
 
 				if($this->Glossary->pathExists($this->Glossary->Path)){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->isSelf()){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -189,10 +189,23 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->Glossary->Title = htmlentities($this->Glossary->Title, ENT_QUOTES);
 
 					if($isNew){
-						$js = 'top.content.treeData.makeNewEntry({id:\'' . $this->Glossary->ID . '\',parentid:\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',text:\'' . $this->Glossary->Text . '\',open:0,contenttype:\'' . ($this->Glossary->IsFolder ? 'folder' : 'we/glossary') . '\',table:\'' . GLOSSARY_TABLE . '\',published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});
-								top.content.drawTree();';
+						$jscmd->addCmd('makeTreeEntry', [
+							'id' => $this->Glossary->ID,
+							'parentid' => $this->Glossary->Language . '_' . $this->Glossary->Type,
+							'text' => $this->Glossary->Text,
+							'open' => false,
+							'contenttype' => ($this->Glossary->IsFolder ? 'folder' : 'we/glossary'),
+							'table' => GLOSSARY_TABLE,
+							'published' => ($this->Glossary->Published > 0 ? 1 : 0)
+						]);
+						$jscmd->addCmd('drawTree');
 					} else {
-						$js = 'top.content.treeData.updateEntry({id:' . $this->Glossary->ID . ',text:"' . $this->Glossary->Text . '",parentid:"' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});';
+						$jscmd->addCmd('updateEntry', [
+							'id' => $this->Glossary->ID,
+							'parentid' => $this->Glossary->Language . '_' . $this->Glossary->Type,
+							'text' => $this->Glossary->Text,
+							'published' => ($this->Glossary->Published > 0 ? 1 : 0)
+						]);
 					}
 
 					$this->Glossary->Text = html_entity_decode($this->Glossary->Text, ENT_QUOTES);
@@ -210,9 +223,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					}
 					$message .= sprintf(g_l('modules_glossary', '[item_saved]'), $this->Glossary->Text);
 
+					$jscmd->addMsg($message, we_message_reporting::WE_MESSAGE_NOTICE);
 					echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
+						$js . '
 if(top.makeNewEntryCheck==1) {
 	top.content.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
 } else {
@@ -234,13 +247,12 @@ top.content.hot=0;
 			case "delete_glossary":
 
 				if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->Glossary->delete()){
-					echo we_html_element::jsElement('
-top.content.treeData.deleteEntry(' . $this->Glossary->ID . ');
-setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);');
+					$jscmd->addCmd('deleteTreeEntry', $this->Glossary->ID);
+					$jscmd->addMsg(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
 
 					// --> Save to Cache
 
@@ -254,7 +266,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				break;
 

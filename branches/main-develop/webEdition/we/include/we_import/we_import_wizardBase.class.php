@@ -418,7 +418,6 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
 top.wizbusy.setProgress('',Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
-
 									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 								}

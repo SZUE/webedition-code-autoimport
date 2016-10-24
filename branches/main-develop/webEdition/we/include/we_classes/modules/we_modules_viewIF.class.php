@@ -27,7 +27,7 @@
 
 interface we_modules_viewIF{
 
-	function processCommands();
+	function processCommands(we_base_jsCmd $jscmd);
 
 	function processVariables();
 }

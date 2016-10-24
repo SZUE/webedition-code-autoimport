@@ -444,13 +444,14 @@ function setTab(tab) {
 		$settings = we_newsletter_view::getSettings();
 
 		$closeflag = false;
+		$jscmd = new we_base_jsCmd();
 
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === 'save_settings'){
-			$this->View->processCommands();
+			$this->View->processCommands($jscmd);
 			$closeflag = true;
 		}
 
-		$js = $this->View->getJSProperty();
+		$js = $jscmd->getCmds() . $this->View->getJSProperty();
 
 		$texts = ['send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', we_newsletter_newsletter::FEMALE_SALUTATION_FIELD, we_newsletter_newsletter::MALE_SALUTATION_FIELD];
 		$radios = ['reject_malformed', 'reject_not_verified', 'reject_save_malformed', 'log_sending', 'default_htmlmail', 'isEmbedImages', 'title_or_salutation',
@@ -1209,14 +1210,15 @@ window.onload=extraInit;');
 
 	function getHTMLBlackList(){
 		$this->View->settings["black_list"] = we_base_request::_(we_base_request::STRING, "black_list", $this->View->settings["black_list"]);
+		$jscmd = new we_base_jsCmd();
 
 		if(($ncmd = we_base_request::_(we_base_request::STRING, 'ncmd'))){
 			if($ncmd === "save_black"){
-				$this->View->processCommands();
+				$this->View->processCommands($jscmd);
 			}
 		}
 
-		$js = $this->View->getJSProperty() .
+		$js = $jscmd->getCmds() . $this->View->getJSProperty() .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js', 'self.focus();');
 
 		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
