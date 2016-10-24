@@ -577,7 +577,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'delete_workflow':
 				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
-						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 
