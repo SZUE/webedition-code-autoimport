@@ -113,9 +113,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
-					echo we_html_element::jsElement('
-					new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
-					');
+					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);');
 				}
 				break;
 			case 'todo_markdone':

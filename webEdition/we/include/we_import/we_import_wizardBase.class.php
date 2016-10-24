@@ -157,11 +157,11 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 				case -2:
 					$h = $this->getHdns('v', $v);
 					if($v["type"] != "" && $v["type"] != we_import_functions::TYPE_WE_XML){
-						$h.=$this->getHdns("records", $records) .
+						$h .= $this->getHdns("records", $records) .
 							$this->getHdns("we_flds", $we_flds);
 					}
 					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
-						$h.=$this->getHdns("attributes", $attributes) .
+						$h .= $this->getHdns("attributes", $attributes) .
 							$this->getHdns("attrs", $attrs);
 					}
 
@@ -230,14 +230,14 @@ if (top.wizbody && top.wizbody.addLog){
 									$d[0] = $d[1] = '';
 									for($j = 0; $j < $num_fields; $j++){
 										$d[1] .= (!$fieldnames ?
-												(($cp->CSVFieldName($j) != "") ?
-													$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl :
-													'') :
-												$encl . 'f_' . $j . $encl);
+											(($cp->CSVFieldName($j) != "") ?
+											$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl :
+											'') :
+											$encl . 'f_' . $j . $encl);
 										$d[0] .= ($fieldnames && $i == 0) ?
 											(($cp->CSVFieldName($j) != '') ? $encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") :
 											(($cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j] != "") ?
-												$encl . str_replace($encl, "\\" . $encl, $cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j]) . $encl : "");
+											$encl . str_replace($encl, "\\" . $encl, $cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j]) . $encl : "");
 										if($j + 1 < $num_fields){
 											$d[1] .= $del;
 											$d[0] .= $del;
@@ -252,10 +252,10 @@ if (top.wizbody && top.wizbody.addLog){
 
 					$h = $this->getHdns("v", $v);
 					if($v["type"] != we_import_functions::TYPE_WE_XML){
-						$h.=$this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
+						$h .= $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
 					}
 					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
-						$h.=$this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
+						$h .= $this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
 					}
 					$h .= we_html_element::htmlHiddens(["v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
 							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path]);
@@ -264,7 +264,7 @@ if (top.wizbody && top.wizbody.addLog){
 					break;
 
 				case $v['numFiles']:
-					$out.=self::importFinished($v, $type);
+					$out .= self::importFinished($v, $type);
 					break;
 				default:
 					$fields = [];
@@ -382,21 +382,21 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 												$path_info = $ref->Path;
 												break;
 											case 'doctype':
-												$path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID));
 												break;
 											case we_base_ContentTypes::NAVIGATIONRULE:
-												$path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID));
 												break;
 											case 'weThumbnail':
-												$path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID));
 												break;
 											default:
 												$path_info = id_to_path($ref->ID, $ref->Table);
 												break;
 										}
 										$progress_text = we_html_element::htmlB(
-												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ? :
-													(g_l('import', '[' . $ref->ContentType . ']', true) ? : '' )
+												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ?:
+												(g_l('import', '[' . $ref->ContentType . ']', true) ?: '' )
 											) . '  ' . $path_info;
 
 										echo we_html_element::jsElement(
@@ -545,21 +545,7 @@ top.wizbusy.setProgress('',Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] 
 						"cid" => ""]));
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
-				we_html_element::jsElement("
-function we_import(mode, cid,reload) {
-	if(reload==1){
-		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
-	};
-	var we_form = self.document.we_form;
-	we_form.elements['v[mode]'].value = mode;
-	we_form.elements['v[cid]'].value = cid;
-	we_form.target = 'wizcmd';
-	we_form.action = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizcmd';
-	we_form.method = 'post';
-	we_form.submit();
-}"
-				), we_html_element::htmlBody(['style' => 'overflow:hidden;'], $out));
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'import_wizardBase.js'), we_html_element::htmlBody(['style' => 'overflow:hidden;'], $out));
 	}
 
 	private function importFinished($v, $type){
@@ -580,7 +566,7 @@ if(progress!==undefined){
 if (top.wizbody && top.wizbody.addLog) {
 	top.wizbody.addLog(\"" . addslashes(we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "\");
 }" :
-						we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close,100);'
+					we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close,100);'
 					);
 		}
 

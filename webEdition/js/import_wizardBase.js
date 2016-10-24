@@ -151,7 +151,7 @@ function we_cmd() {
 			top.handleEvent(args[1]);
 			break;
 		case 'confirm_start_recoverBackup':
-			if(confirm(WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question)){
+			if (confirm(WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question)) {
 				top.opener.top.we_cmd("recover_backup");
 				top.close();
 			}
@@ -255,11 +255,11 @@ function setFormField(name, value, type, index, frame) {
 	var f = frame === 'top' ? top.document.we_form : top.frames[frame].document.we_form;
 	var field = f.elements[name];
 
-	if(index !== undefined){
+	if (index !== undefined) {
 		field = field[index];
 	}
 
-	if(type === 'checkbox' || type === 'radio'){
+	if (type === 'checkbox' || type === 'radio') {
 		field.checked = value;
 	} else {
 		field.value = value;
@@ -273,7 +273,7 @@ function handleEvent(evt) {
 		type = top.wizbody.document.we_form.elements['type'].value,
 		task = 'get' + type + '_step_' + step;
 
-	switch(task) {
+	switch (task) {
 		case 'getFileImport_step_1':
 		case 'getWXMLImport_step_1':
 		case 'getGXMLImport_step_1':
@@ -304,7 +304,7 @@ function handleEvent(evt) {
 			handleEvent_CSVImportStep_3(evt);
 			break;
 		default:
-			if(step === 0){
+			if (step === 0) {
 				handleEvent_step_0(evt);
 			}
 			//
@@ -349,21 +349,21 @@ function handleEvent_step_0(evt) {
 function handleEvent_step_1(evt, type) {
 	var f = top.wizbody.document.we_form;
 
-	if(type === 'GXMLImport'){
-		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : 
-				f.elements.docTypeTemplateId.value)
+	if (type === 'GXMLImport') {
+		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value :
+			f.elements.docTypeTemplateId.value)
 	}
 
-	switch(evt) {
+	switch (evt) {
 		case 'previous':
 			f.step.value = 0;
 			top.location.href = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=' + type;
 			break;
 		case 'next':
-			if(f.elements['v[rdofloc]'] && f.elements['v[rdofloc]'][1].checked === true){
+			if (f.elements['v[rdofloc]'] && f.elements['v[rdofloc]'][1].checked === true) {
 				top.wizbody.weFileUpload_instance.startUpload(); //FIXME: move this to the respective functions!
 			} else {
-				switch(type){
+				switch (type) {
 					case 'WXMLImport':
 						doNext_WXMLImportStep1();
 						break;
@@ -393,17 +393,18 @@ function handleEvent_FileImport_step_2(evt) {
 
 	switch (evt) {
 		case "previous":
-			top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files";
+			top.location.href = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=import_files";
 			break;
 		case "next":
-			if(frame.weFileUpload_instance !== undefined){top.console.log('jap');
+			if (frame.weFileUpload_instance !== undefined) {
+				top.console.log('jap');
 				frame.weFileUpload_instance.startUpload();
 			} else {
 				WE().t_e('fileupload instance missing');
 			}
 			break;
 		case "cancel":
-			if(frame.weFileUpload_instance !== undefined){
+			if (frame.weFileUpload_instance !== undefined) {
 				frame.weFileUpload_instance.cancelUpload();
 			} else {
 				WE().t_e('fileupload instance missing');
@@ -432,7 +433,7 @@ function handleEvent_WXMLImport_step_2(evt) {
 }
 
 function handleEvent_WXMLImport_step_3(evt) {
-	switch(evt) {
+	switch (evt) {
 		case "cancel":
 			top.close();
 			break;
@@ -441,29 +442,29 @@ function handleEvent_WXMLImport_step_3(evt) {
 
 function handleEvent_GXMLImport_step_2(evt) {
 	var f = top.wizbody.document.we_form;
-	switch(evt) {
-	case 'previous':
-		f.step.value = 1;
-		we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
-		break;
-	case 'next':
-		f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;
-		f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;
-		var iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;
-		var iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
-		var iElements = parseInt(f.elements.we_select.options[f.elements.we_select.selectedIndex].value);
+	switch (evt) {
+		case 'previous':
+			f.step.value = 1;
+			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
+			break;
+		case 'next':
+			f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;
+			f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;
+			var iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value)) ? 0 : f.elements['v[from_iElem]'].value;
+			var iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value)) ? 0 : f.elements['v[to_iElem]'].value;
+			var iElements = parseInt(f.elements.we_select.options[f.elements.we_select.selectedIndex].value);
 
-		if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
-			top.we_showMessage((WE().consts.g_l.import.num_elements + iElements), WE().consts.message.WE_MESSAGE_ERROR, window);
-		} else {
-			f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
-			f.step.value = 3;
-			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
-		}
-		break;
-	case 'cancel':
-		top.close();
-		break;
+			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
+				top.we_showMessage((WE().consts.g_l.import.num_elements + iElements), WE().consts.message.WE_MESSAGE_ERROR, window);
+			} else {
+				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
+				f.step.value = 3;
+				we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
+			}
+			break;
+		case 'cancel':
+			top.close();
+			break;
 	}
 }
 
@@ -487,43 +488,43 @@ function handleEvent_GXMLImport_step_3(evt) {
 	}
 }
 
-function doNext_FileImportStep1(){
+function doNext_FileImportStep1() {
 	var frame = top.wizbody;
 
-	if(frame.selectCategories !== undefined){
+	if (frame.selectCategories !== undefined) {
 		frame.selectCategories();
 	}
 	frame.document.we_form.step.value = 2;
 	frame.document.we_form.submit();
 }
 
-function doNext_WXMLImportStep1(){
+function doNext_WXMLImportStep1() {
 	var f = top.wizbody.document.we_form,
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
 		fl = 'placeholder.xml';
 
 	if (f.elements['v[rdofloc]'][0].checked == true && fs !== '/') {
-		if (fs.match(/\.\./) == '..') { 
+		if (fs.match(/\.\./) == '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length-4, 4);
+		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 
 	} else if (f.elements['v[rdofloc]'][1].checked == true && fl !== '') {
-		ext = fl.substr(fl.length-4, 4);
+		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
-	}	else if (fs === '/' || fl == '') {
+	} else if (fs === '/' || fl == '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 	f.step.value = 2;
 	// timing Problem with Safari
-	setTimeout(top.we_submit_form, 50, top.wizbody.document.forms.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+	setTimeout(top.we_submit_form, 50, top.wizbody.document.forms.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 }
 
-function doNext_GXMLImportStep1(){
+function doNext_GXMLImportStep1() {
 	var f = top.wizbody.document.we_form;
 	f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
 
@@ -536,37 +537,37 @@ function doNext_GXMLImportStep1(){
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length-4, 4);
+		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 	} else if (f.elements['v[rdofloc]'][1].checked == true && fl != '') {
-		ext = fl.substr(fl.length-4, 4);
+		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
-	}else if (fs == '/' || fl == '') {
+	} else if (fs == '/' || fl == '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
-	if (!f.elements['v[we_TemplateID]'].value ) {
+	if (!f.elements['v[we_TemplateID]'].value) {
 		f.elements['v[we_TemplateID]'].value = f.elements.noDocTypeTemplateId.value;
 	}
 
 	if (WE().consts.tables.OBJECT_TABLE) {
-		if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {
+		if ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {
 			f.step.value = 2;
-			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
-		} else if(f.elements['v[import_type]'][0].checked == true) {
+			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
+		} else if (f.elements['v[import_type]'][0].checked == true) {
 			top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	} else {
-		if(f.elements['v[we_TemplateID]'].value!=0) {
+		if (f.elements['v[we_TemplateID]'].value != 0) {
 			f.step.value = 2;
-			top.wizbody.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+			top.wizbody.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 		} else {
 			top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 }
 
-function doNext_CSVImportStep1(){
+function doNext_CSVImportStep1() {
 	var f = top.wizbody.document.we_form,
 		fvalid = true,
 		fs = f.elements['v[fserver]'].value,
@@ -578,19 +579,19 @@ function doNext_CSVImportStep1(){
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length-4, 4);
+		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 	} else if (f.elements['v[rdofloc]'][1].checked == true && fl != '') {
-		ext = fl.substr(fl.length-4,4);
+		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs == '/' || fl == '') {
-			top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
-			return;
+		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return;
 	}
-	
-	if(fvalid){
-		if(f.elements['v[csv_seperator]'].value == ''){
-			fvalid = false; 
+
+	if (fvalid) {
+		if (f.elements['v[csv_seperator]'].value == '') {
+			fvalid = false;
 			top.we_showMessage(WE().consts.g_l.import.select_seperator, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			f.step.value = 2;
@@ -601,38 +602,38 @@ function doNext_CSVImportStep1(){
 
 function handleEvent_CSVImportStep_2(evt) {
 	var f = top.wizbody.document.we_form;
-	if(f.elements['v[import_type]'].value == 'documents'){
+	if (f.elements['v[import_type]'].value == 'documents') {
 		f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
 	}
 
-	switch(evt) {
+	switch (evt) {
 		case 'previous':
 			f.step.value = 1;
-			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 			break;
 		case 'next':
-			if(f.elements['v[import_type]'].value == 'documents'){
-				if(!f.elements['v[we_TemplateID]'].value ) {
+			if (f.elements['v[import_type]'].value == 'documents') {
+				if (!f.elements['v[we_TemplateID]'].value) {
 					f.elements['v[we_TemplateID]'].value = f.elements.DocTypeTemplateId.value;
 				}
 			}
-			if(WE().consts.tables.OBJECT_TABLE){
-				if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {
+			if (WE().consts.tables.OBJECT_TABLE) {
+				if (f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {
 					f.step.value = 3;
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {
-					if(f.elements['v[import_from]'].value == '/') {
+					if (f.elements['v[import_from]'].value == '/') {
 						top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
-					} else if(f.elements['v[import_type]'][0].checked == true) {
+					} else if (f.elements['v[import_type]'][0].checked == true) {
 						top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 					}
 				}
 			} else {
-				if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {
+				if (f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {
 					f.step.value = 3;
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {
-					if(f.elements['v[import_from]'].value == '/') {
+					if (f.elements['v[import_from]'].value == '/') {
 						top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -732,8 +733,22 @@ function cycle() {
 	var bf = top.wizbody.document.we_form;
 	for (var i = 0; i < bf.elements.length; i++) {
 		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
-						(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
+			(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
 			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
 		}
 	}
+}
+
+function we_import(mode, cid, reload) {
+	if (reload == 1) {
+		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=WXMLImport&noload=1';
+	}
+
+	var we_form = self.document.we_form;
+	we_form.elements['v[mode]'].value = mode;
+	we_form.elements['v[cid]'].value = cid;
+	we_form.target = 'wizcmd';
+	we_form.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizcmd';
+	we_form.method = 'post';
+	we_form.submit();
 }
