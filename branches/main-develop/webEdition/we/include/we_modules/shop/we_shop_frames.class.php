@@ -321,8 +321,8 @@ function setTab(tab) {
 	}
 
 	public static function showExitQuestion(){
-		$yes = 'opener.top.hot=0;opener.top.we_cmd("save");self.close()';
-		$no = 'opener.top.hot=0;opener.top.we_cmd("close");self.close();';
+		$yes = 'opener.top.hot=false;opener.top.we_cmd("save");self.close()';
+		$no = 'opener.top.hot=false;opener.top.we_cmd("close");self.close();';
 		$cancel = 'self.close();';
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '
@@ -973,15 +973,15 @@ function setTab(tab) {
 				['html' => $formVat,],
 		];
 
-		$jsCmd = new we_base_jsCmd();
+		$jscmd = new we_base_jsCmd();
 		if(isset($jsMessage)){
-			$jsCmd->addMsg($jsMessage, $jsMessageType);
+			$jscmd->addMsg($jsMessage, $jsMessageType);
 			if($saveSuccess && $onsaveClose){
-				$jsCmd->addCmd('close');
+				$jscmd->addCmd('close');
 			}
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
+		return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds() .
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody([
 					'class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));

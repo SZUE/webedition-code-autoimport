@@ -413,14 +413,14 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 		$art = $this->exportVars["art"];
 
 		$js = ($art === 'objects' && defined('OBJECT_FILES_TABLE') ?
-			we_html_element::jsElement('top.table="' . OBJECT_FILES_TABLE . '";') :
+			'top.table="' . OBJECT_FILES_TABLE . '";' :
 			($art == 'docs' ?
-			we_html_element::jsElement('top.table="' . FILE_TABLE . '";') :
+			'top.table="' . FILE_TABLE . '";' :
 			'')
 			);
 
 
-		$js .= we_html_element::jsElement(
+		$js = we_html_element::jsElement($js .
 				'top.footer.location="' . $this->frameset . '?pnt=footer&step=3";
 	setTimeout(top.startTree,100);
 
@@ -438,16 +438,12 @@ function setHead(tab){
 		case 1:
 			top.table=WE().consts.tables.TEMPLATES_TABLE;
 		break;
-		' . (defined('OBJECT_FILES_TABLE') ? '
 		case 2:
 			top.table=WE().consts.tables.OBJECT_FILES_TABLE;
 		break;
-		' : '') .
-				(defined('OBJECT_TABLE') ? '
 		case 3:
 			top.table=WE().consts.tables.OBJECT_TABLE;
 		break;
-		' : '') . '
 	}
 
 	setTimeout(top.startTree,100);
@@ -952,7 +948,7 @@ if (top.footer.setProgressText){
 if (top.footer.setProgress){
 	top.footer.setProgress("",0);
 }
-							');
+');
 				}
 
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => ($start_export ? ("top.footer.location='" . $this->frameset . "?x=y&pnt=footer&mode=progress&step=4';document.we_form.submit()") : ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=99&error=" . $export_error . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=99';"))], we_html_element::htmlForm([
@@ -996,9 +992,7 @@ if (top.footer.setProgress){
 
 				$percent = min(100, max(0, (int) ((($all - $exports + 2) / $all) * 100)));
 
-				$progress_update = we_html_element::jsElement('
-							if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');
-						');
+				$progress_update = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');');
 
 				if($remaining_docs){
 					array_shift($remaining_docs);

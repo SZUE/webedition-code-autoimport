@@ -2634,7 +2634,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 	protected function getNavigationFoldersForDoc(){
 		$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
 
-		$queries = ['( (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '")  AND LinkID=' . intval($this->ID) . ')',
+		$queries = ['( (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '"  AND LinkID=' . intval($this->ID) . ')',
 			//FIXME: query should use ID, not parentID
 			'(Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND DynamicSelection="' . we_navigation_navigation::DYN_CLASS . '" AND ClassID=' . $this->TableID . ')'
 		];

@@ -229,7 +229,7 @@ if(top.content.treeData){
 
 				$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();
-top.content.hot=0;
+top.content.hot=false;
 if(top.content.makeNewDoc) {
 	setTimeout(top.content.we_cmd,100,"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
 }'
@@ -267,8 +267,7 @@ if(top.content.makeNewDoc) {
 					foreach($posVals as $val => $text){
 						$posText .= '<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-
-					echo we_html_element::jsElement('top.content.moveAbs(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\');');
+					$jscmd->addCmd('we_cmd', ['moveAbs', $this->Model->Ordn, $this->Model->ParentID, $posText]);
 				}
 				break;
 			case 'move_up' :
@@ -278,7 +277,7 @@ if(top.content.makeNewDoc) {
 					foreach($posVals as $val => $text){
 						$posText .= '<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-					echo we_html_element::jsElement('top.content.moveUp(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\');');
+					$jscmd->addCmd('we_cmd', ['moveUp', $this->Model->Ordn, $this->Model->ParentID, $posText]);
 				}
 				break;
 			case 'move_down' :
@@ -290,7 +289,7 @@ if(top.content.makeNewDoc) {
 					foreach($posVals as $val => $text){
 						$posText .= '<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-					echo we_html_element::jsElement('top.content.moveDown(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\',' . $num . ');');
+					$jscmd->addCmd('we_cmd', ['moveDown', $this->Model->Ordn, $this->Model->ParentID, $posText]);
 				}
 				break;
 			case 'populate':
@@ -324,19 +323,14 @@ if(top.content.makeNewDoc) {
 				$jscmd->addCmd('we_cmd', ["new", TEMPLATES_TABLE, "", we_base_ContentTypes::TEMPLATE, "", base64_encode($this->Model->previewCode)]);
 				break;
 			case 'populateFolderWs':
-				$prefix = '';
 				$values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
-				$js = '';
 
 				if($values){
-					foreach($values as $id => $path){
-						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID.options[top.content.editor.edbody.document.we_form.WorkspaceID.options.length] = new Option("' . $path . '",' . $id . ');';
-					}
-					echo we_html_element::jsElement('top.content.populateFolderWs("values");' . $js);
+					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'values', $values]);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-					echo we_html_element::jsElement('top.content.populateFolderWs("workspace");');
+					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'workspace']);
 				} else {
-					echo we_html_element::jsElement('top.content.populateFolderWs("noWorkspace","' . $prefix . '");');
+					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', "noWorkspace"]);
 				}
 
 				break;
@@ -363,17 +357,11 @@ if(top.content.makeNewDoc) {
 				}
 
 				if($values){ // if the class has workspaces
-					$js = '';
-					foreach($values as $id => $path){
-						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options.length] = new Option("' . $path . '",' . $id . ');';
-					}
-					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("values","' . $prefix . '");' . $js);
-				} else { // if the class has no workspaces
-					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("' .
-						(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID) ?
-							'workspace' :
-							'noWorkspace') .
-						'","' . $prefix . '");');
+					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'values', $prefix,$values]);
+				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){ // if the class has no workspaces
+					$jscmd->addCmd('we_cmd', ['populateWorkspaces', 'workspace', $prefix]);
+				} else {
+					$jscmd->addCmd('we_cmd', ['populateWorkspaces', "noWorkspace", $prefix]);
 				}
 				break;
 			case 'populateText':

@@ -195,7 +195,7 @@ if(top.content.treeData){
 					}
 
 					$js = we_html_element::jsElement($this->editorHeaderFrame . '.location.reload();
-								top.content.hot=0;');
+top.content.hot=false;');
 					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 
 
@@ -204,9 +204,8 @@ if(top.content.treeData){
 						unset($_REQUEST['delayCmd']);
 					}
 				} else {
-					$js = we_html_element::jsElement($js .
-							$this->editorHeaderFrame . '.location.reload();
-								top.content.hot=0;');
+					$js = we_html_element::jsElement($this->editorHeaderFrame . '.location.reload();
+top.content.hot=false;');
 					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 

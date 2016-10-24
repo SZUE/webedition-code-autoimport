@@ -151,7 +151,7 @@ switch($mod){
 				$weFrame->Controller->processVariables();
 				$jscmd = new we_base_jsCmd();
 				$weFrame->Controller->processCommands($jscmd);
-				$GLOBALS['extraJS'] = $jscmd->getCmds . ob_get_clean();
+				$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
 				break;
 			default:
 				$weFrame = new we_navigation_frames('');

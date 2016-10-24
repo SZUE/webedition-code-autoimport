@@ -71,7 +71,7 @@ doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");";
 			case "delete_navigation_rule" :
 				if($this->NavigationRule->delete()){
 
-					$js = "doc = top.frames.content;
+					$js = "var doc = top.frames.content;
 doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
 doc.weInput.setValue('ID', 0);";
 				}
@@ -112,7 +112,7 @@ doc.weInput.setValue('ID', 0);";
 				}
 
 				$js = "
-doc = top.frames.content;
+var doc = top.frames.content;
 doc.clearNavigationForm();
 
 doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
@@ -155,7 +155,7 @@ $selectWorkspace";
 					}
 
 					$js = '
-doc = top.frames.content;
+var doc = top.frames.content;
 var optionList = [' . implode(',', $optionList) . '];
 doc.weSelect.setOptions("WorkspaceID", optionList);
 ';

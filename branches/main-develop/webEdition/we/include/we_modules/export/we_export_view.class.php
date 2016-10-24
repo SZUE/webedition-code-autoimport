@@ -57,13 +57,7 @@ class we_export_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return we_html_element::jsElement('
-var get_focus = 1;
-var activ_tab = 1;
-var hot= 0;
-var scrollToVal=0;
-var table = WE().consts.tables.FILE_TABLE;
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
+		return  we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(){
@@ -130,7 +124,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				$this->export = new we_export_export(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement('
-top.content.hot=0;
+top.content.hot=false;
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=' . urlencode($this->export->Text) . '";
 top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
 						');
@@ -220,7 +214,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$jscmd->addMsg(g_l('export', ($this->export->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 
 				echo we_html_element::jsElement('top.content.editor.edheader.location.reload();
-					top.content.hot=0;');
+top.content.hot=false;');
 
 				break;
 			case "delete_export":

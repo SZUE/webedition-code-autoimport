@@ -188,7 +188,7 @@ function addLog(text){
 		$parts = [
 				[
 				'headline' => g_l('export', '[property]'),
-				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
+				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=true;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
@@ -199,14 +199,14 @@ function addLog(text){
 
 		$parts[] = [
 			'headline' => g_l('export', '[export_to]'),
-			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=true;"'), g_l('export', '[filename]')),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		];
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', ['local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')], 1, $this->View->export->ExportTo, false, [
-				'onchange' => 'toggle(\'save_to\');top.content.hot=1;'], 'value', 520));
+				'onchange' => 'toggle(\'save_to\');top.content.hot=true;'], 'value', 520));
 		$table->setCol(1, 0, ["id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', '[save_to]')));
 
 
@@ -259,14 +259,14 @@ function closeAllType(){
 			$seltype['classname'] = g_l('export', '[classname]');
 		}
 
-		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, ['onchange' => "closeAllType();toggle(this.value);top.content.hot=1;"], 'value', 520));
+		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, ['onchange' => "closeAllType();toggle(this.value);top.content.hot=true;"], 'value', 520));
 		$table->setCol(1, 0, ["id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
-				'onchange' => 'top.content.hot=1;'], 'value', 520) .
+				'onchange' => 'top.content.hot=true;'], 'value', 520) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined('OBJECT_TABLE')){
 			$table->setCol(2, 0, ["id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
-					'onchange' => 'top.content.hot=1;'], 'value', 520)
+					'onchange' => 'top.content.hot=true;'], 'value', 520)
 			);
 		}
 
@@ -276,7 +276,7 @@ function closeAllType(){
 
 		$table = new we_html_table(['class' => 'default'], 3, 1);
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('Selection', ['auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')], 1, $this->View->export->Selection, false, [
-				'onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=1;'], 'value', 520));
+				'onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=true;'], 'value', 520));
 		$table->setCol(1, 0, ['id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, 520) .
 			$selectionTypeHtml
 		);
@@ -295,13 +295,13 @@ function closeAllType(){
 
 	private function getHTMLTab2(){
 		$formattable = new we_html_table([], 5, 1);
-		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', 'top.content.hot=1;'));
-		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', 'top.content.hot=1;'));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', 'top.content.hot=true;'));
+		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', 'top.content.hot=true;'));
 		if(defined('OBJECT_TABLE')){
-			$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjIncludes ? true : false), "HandleObjIncludes", g_l('export', '[handle_object_includes]'), false, 'defaultfont', 'top.content.hot=1;'));
+			$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjIncludes ? true : false), "HandleObjIncludes", g_l('export', '[handle_object_includes]'), false, 'defaultfont', 'top.content.hot=true;'));
 		}
-		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocLinked ? true : false), "HandleDocLinked", g_l('export', '[handle_document_linked]'), false, 'defaultfont', 'top.content.hot=1;'));
-		$formattable->setCol(4, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleThumbnails ? true : false), "HandleThumbnails", g_l('export', '[handle_thumbnails]'), false, 'defaultfont', 'top.content.hot=1;'));
+		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocLinked ? true : false), "HandleDocLinked", g_l('export', '[handle_document_linked]'), false, 'defaultfont', 'top.content.hot=true;'));
+		$formattable->setCol(4, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleThumbnails ? true : false), "HandleThumbnails", g_l('export', '[handle_thumbnails]'), false, 'defaultfont', 'top.content.hot=true;'));
 
 		$parts = [["headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
@@ -310,8 +310,8 @@ function closeAllType(){
 
 		if(defined('OBJECT_TABLE')){
 			$formattable = new we_html_table([], 3, 1);
-			$formattable->setCol(0, 0, ["colspan" => 2], we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', '[handle_def_classes]'), false, 'defaultfont', 'top.content.hot=1;'));
-			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', 'top.content.hot=1;'));
+			$formattable->setCol(0, 0, ["colspan" => 2], we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', '[handle_def_classes]'), false, 'defaultfont', 'top.content.hot=true;'));
+			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', 'top.content.hot=true;'));
 			$parts[] = ["headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
@@ -319,9 +319,9 @@ function closeAllType(){
 		}
 
 		$formattable = new we_html_table([], 3, 1);
-		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', '[handle_doctypes]'), false, 'defaultfont', 'top.content.hot=1;'));
-		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', '[handle_categorys]'), false, 'defaultfont', 'top.content.hot=1;'));
-		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', '[handle_navigation]'), false, 'defaultfont', 'top.content.hot=1;', false, g_l('export', '[navigation_hint]'), we_html_tools::TYPE_HELP, false));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', '[handle_doctypes]'), false, 'defaultfont', 'top.content.hot=true;'));
+		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', '[handle_categorys]'), false, 'defaultfont', 'top.content.hot=true;'));
+		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', '[handle_navigation]'), false, 'defaultfont', 'top.content.hot=true;', false, g_l('export', '[navigation_hint]'), we_html_tools::TYPE_HELP, false));
 
 		$parts[] = ["headline" => g_l('export', '[handle_doctype_options]'),
 			"html" => $formattable->getHtml(),
@@ -330,12 +330,12 @@ function closeAllType(){
 
 		$parts[] = ["headline" => g_l('export', '[export_depth]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, 520) . '<br/>' . we_html_element::htmlLabel([
-				'style' => 'padding-right:5px;'], g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=1;}\"", "text", 50),
+				'style' => 'padding-right:5px;'], g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=true;}\"", "text", 50),
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
 		$formattable = new we_html_table([], 1, 1);
-		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', '[handle_owners]'), false, 'defaultfont', 'top.content.hot=1;'));
+		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', '[handle_owners]'), false, 'defaultfont', 'top.content.hot=true;'));
 
 		$parts[] = ["headline" => g_l('export', '[handle_owners_option]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, 520) . $formattable->getHtml(),
@@ -363,7 +363,7 @@ function closeAllType(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=1;']);
+		$yuiSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=true;']);
 		$yuiSuggest->setLabel(g_l('export', '[group]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -669,7 +669,7 @@ if (top.content.editor.edbody.addLog){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=1;']);
+		$yuiSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=true;']);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);

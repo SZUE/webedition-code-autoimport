@@ -26,6 +26,12 @@
 
 WE().util.loadConsts(document, "g_l.exports");
 
+var get_focus = 1;
+var activ_tab = 1;
+var hot = 0;
+var scrollToVal = 0;
+var table = WE().consts.tables.FILE_TABLE;
+
 function setHot() {
 	hot = true;
 }

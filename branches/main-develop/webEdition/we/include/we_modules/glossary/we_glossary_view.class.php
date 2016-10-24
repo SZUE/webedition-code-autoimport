@@ -102,17 +102,11 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
 
 				if($values){
-					$js = '';
-
-					foreach($values as $id => $path){
-						$js .= 'top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("' . $path . '",' . $id . ');
-							';
-					}
-					echo we_html_element::jsElement('top.content.populateWorkspaces("values");' . $js);
+					$jscmd->addCmd('we_cmd', ['doPopulateWorkspaces', 'values', $values]);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($objectLinkID)){
-					echo we_html_element::jsElement('top.content.populateWorkspaces("workspace");');
+					$jscmd->addCmd('doPopulateWorkspaces', 'workspace');
 				} else {
-					echo we_html_element::jsElement('top.content.populateWorkspaces("noWorkspace");');
+					$jscmd->addCmd('doPopulateWorkspaces', 'noWorkspace');
 				}
 				break;
 
@@ -231,7 +225,7 @@ if(top.makeNewEntryCheck==1) {
 } else {
 	top.content.editor.edheader.location.reload();
 }
-top.content.hot=0;
+top.content.hot=false;
 						');
 
 					// --> Save to Cache

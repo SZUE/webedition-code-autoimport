@@ -399,7 +399,7 @@ class weSuggest{
 						break;
 					case "onchange":
 						$onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . $val . '" ';
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=true;' : '') . $val . '" ';
 						break;
 					case "class":
 						$class = 1;
@@ -414,10 +414,10 @@ class weSuggest{
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!$onchange){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=true;' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=true;' : '') . '" ';
 		}
 		if(!$this->inputId){
 			$this->setInputId();

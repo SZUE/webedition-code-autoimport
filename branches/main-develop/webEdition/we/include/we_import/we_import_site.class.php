@@ -625,16 +625,16 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		if($this->step == 1){
 			$this->_fillFiles();
 			if(count($this->files) == 0){
-				$jsCmd = new we_base_jsCmd();
+				$jscmd = new we_base_jsCmd();
 
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
-				$jsCmd->addMsg((count(scandir($importDirectory)) <= 2 ?
+				$jscmd->addMsg((count(scandir($importDirectory)) <= 2 ?
 						g_l('importFiles', '[emptyDir]') :
 						g_l('importFiles', '[noFiles]'))
 					,we_message_reporting::WE_MESSAGE_INFO);
 
-				$jsCmd->addCmd('close');
-				return $jsCmd->getCmds();
+				$jscmd->addCmd('close');
+				return $jscmd->getCmds();
 			}
 			new we_import_siteFrag($this);
 			return '';
