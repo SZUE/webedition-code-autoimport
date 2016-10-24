@@ -111,7 +111,7 @@ function setTab(tab){
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_frames.js'));
 	}
 
-	function getHTMLLog($docID, $type = 0){
+	private function getHTMLLog($docID, $type = 0){
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_workflow_view::getLogForDocument($docID, $type))
 		);
@@ -140,7 +140,7 @@ function submitForm(){
 		);
 	}
 
-	function getHTMLLogQuestion(){
+	private function getHTMLLogQuestion(){
 		$form = we_html_element::htmlForm(['name' => 'we_form'], $this->View->getLogQuestion());
 		$body = we_html_element::htmlBody(['onload' => 'self.focus();'], $form);
 

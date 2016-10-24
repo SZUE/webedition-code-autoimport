@@ -183,7 +183,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				switch($saveret){
 					case self::ERR_SAVE_BRANCH:
-						$jscmd->addMsgjsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_INVALID:
 						$jscmd->addMsg(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);

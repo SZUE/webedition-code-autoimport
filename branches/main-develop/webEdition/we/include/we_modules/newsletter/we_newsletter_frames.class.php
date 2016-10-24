@@ -207,7 +207,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/frames_footer.js'));
 	}
 
-	function getHTMLLog(){
+	private function getHTMLLog(){
 		$start = we_base_request::_(we_base_request::INT, 'newsletterStartTime', 0);
 		$end = we_base_request::_(we_base_request::INT, 'newsletterEndTime', 0);
 		$status = we_base_request::_(we_base_request::INT, 'newsletterStatus');
@@ -330,21 +330,21 @@ function setTab(tab) {
 				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_newsletter::getItems($pid)]));
 	}
 
-	function getHTMLSendQuestion(){
+	private function getHTMLSendQuestion(){
 		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLSaveQuestion1(){
+	private function getHTMLSaveQuestion1(){
 		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLPrintLists(){
+	private function getHTMLPrintLists(){
 		$emails = [];
 		$out = '';
 		$count = count($this->View->newsletter->groups) + 1;
@@ -398,7 +398,7 @@ function setTab(tab) {
 		flush();
 	}
 
-	function getHTMLDCheck(){
+	private function getHTMLDCheck(){
 		$tab1 = "&nbsp;&nbsp;&nbsp;";
 		$tab2 = $tab1 . $tab1;
 		$tab3 = $tab1 . $tab1 . $tab1;
@@ -440,7 +440,7 @@ function setTab(tab) {
 		flush();
 	}
 
-	function getHTMLSettings(){
+	private function getHTMLSettings(){
 		$settings = we_newsletter_view::getSettings();
 
 		$closeflag = false;
@@ -1103,7 +1103,7 @@ window.onload=extraInit;');
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLEmailEdit(){
+	private function getHTMLEmailEdit(){
 		$type = we_base_request::_(we_base_request::INT, 'etyp', 0);
 		$htmlmail = we_base_request::_(we_base_request::STRING, 'htmlmail', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db));
 		$id = we_base_request::_(we_base_request::INT, 'eid', 0);
@@ -1183,7 +1183,7 @@ window.onload=extraInit;');
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLPreview(){
+	private function getHTMLPreview(){
 		$gview = we_base_request::_(we_base_request::INT, "gview", 0);
 		$hm = we_base_request::_(we_base_request::INT, "hm", 0);
 
@@ -1208,7 +1208,7 @@ window.onload=extraInit;');
 		}
 	}
 
-	function getHTMLBlackList(){
+	private function getHTMLBlackList(){
 		$this->View->settings["black_list"] = we_base_request::_(we_base_request::STRING, "black_list", $this->View->settings["black_list"]);
 		$jscmd = new we_base_jsCmd();
 
@@ -1218,7 +1218,7 @@ window.onload=extraInit;');
 			}
 		}
 
-		$js = $jscmd->getCmds() . $this->View->getJSProperty() .
+		$js =  $this->View->getJSProperty() .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js', 'self.focus();');
 
 		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
@@ -1232,7 +1232,7 @@ window.onload=extraInit;');
 				}
 
 				if(strpos($filepath, '..') !== false){
-					echo we_message_reporting::jsMessagePush(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
@@ -1254,7 +1254,7 @@ window.onload=extraInit;');
 							}
 						}
 					} else {
-						echo we_message_reporting::jsMessagePush(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
 				break;
@@ -1336,10 +1336,10 @@ window.onload=extraInit;');
 				)
 		);
 
-		return $this->getHTMLDocument($body, $js);
+		return $this->getHTMLDocument($body, $js.$jscmd->getCmds());
 	}
 
-	function getHTMLUploadCsv($what){
+	private function getHTMLUploadCsv($what){
 		$weFileupload = new we_fileupload_ui_base('we_File');
 		$weFileupload->setNextCmd('do_' . $what);
 		$weFileupload->setExternalProgress(['isExternalProgress' => true, 'name' => 'fu_extProgress_we_File', 'parentElemId' => 'progressbar']);
@@ -1415,7 +1415,7 @@ window.onload=extraInit;');
 	 * @param String $open_file
 	 * @return String
 	 */
-	function getHTMLEditFile($open_file = ""){
+	private function getHTMLEditFile($open_file = ""){
 		$out = '';
 		$content = [];
 
@@ -1508,8 +1508,6 @@ window.onload=extraInit;');
 			case 10:
 			case 12:
 				$emails = array_reverse($emails, true);
-			default:
-				;
 		}
 		$counter = 0;
 		foreach($emails as $k => $cols){
@@ -1672,7 +1670,7 @@ function clearLog(){
 		return $this->getHTMLDocument($this->getHTMLExportCsvMessage(true), $js);
 	}
 
-	function getHTMLSendWait(){
+	private function getHTMLSendWait(){
 		$nid = we_base_request::_(we_base_request::INT, 'nid', 0);
 		$test = we_base_request::_(we_base_request::BOOL, 'test');
 
@@ -1693,7 +1691,7 @@ function clearLog(){
 		);
 	}
 
-	function getHTMLSendFrameset(){
+	private function getHTMLSendFrameset(){
 		$nid = we_base_request::_(we_base_request::INT, "nid", 0);
 
 		$test = we_base_request::_(we_base_request::BOOL, "test");
@@ -1741,7 +1739,7 @@ self.focus();
 		return $this->getHTMLDocument(we_html_element::htmlBody(["onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")], $body), $head);
 	}
 
-	function getHTMLSendBody(){
+	private function getHTMLSendBody(){
 		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0), 400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
@@ -1761,7 +1759,7 @@ self.focus();
 		));
 	}
 
-	function getHTMLSendCmd(){
+	private function getHTMLSendCmd(){
 		$nid = we_base_request::_(we_base_request::INT, 'nid');
 		if($nid === false){
 			return;
@@ -2106,7 +2104,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		flush();
 	}
 
-	function getHTMLSendControl(){
+	private function getHTMLSendControl(){
 		$nid = we_base_request::_(we_base_request::INT, "nid", 0);
 		$gcount = we_base_request::_(we_base_request::INT, "gcount", 0);
 		$ecount = we_base_request::_(we_base_request::INT, "ecount", 0);
@@ -2171,7 +2169,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 	 * @param String $content_plain
 	 * @param Array $customerInfos
 	 */
-	function replacePlaceholder(&$content, &$content_plain, $customerInfos){
+	private function replacePlaceholder(&$content, &$content_plain, $customerInfos){
 		$placeholderfieldsmatches = [];
 		preg_match_all('/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/', $content, $placeholderfieldsmatches);
 		$placeholderfields = $placeholderfieldsmatches[1];

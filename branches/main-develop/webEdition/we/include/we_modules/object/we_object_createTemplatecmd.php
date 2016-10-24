@@ -52,18 +52,22 @@ $GLOBALS['we_doc']->elements['data']['dat'] = $_SESSION['weS']['content'];
 $GLOBALS['we_doc']->elements['data']['type'] = 'txt';
 unset($_SESSION['weS']['content']);
 
+$jscmd = new we_base_jsCmd();
+
 if(($we_responseText = $GLOBALS['we_doc']->checkFieldsOnSave())){
-	echo we_message_reporting::jsMessagePush($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+	$jscmd->addCmd($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+	echo $jscmd->getCmds();
 	require_once(WE_MODULES_PATH . 'object/we_object_createTemplate.inc.php');
 } else {
 	if($GLOBALS['we_doc']->we_save()){
-		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path);
-		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE, false, true) . '
-opener.we_cmd("object_changeTempl_ob",' . $nr . ',' . $GLOBALS['we_doc']->ID . ');
-self.close();');
+		$jscmd->addMsg(sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jscmd->addCmd('we_cmd', ["object_changeTempl_ob", $nr, $GLOBALS['we_doc']->ID]);
+		$jscmd->addCmd('close');
+		echo $jscmd->getCmds();
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
-		echo we_message_reporting::jsMessagePush($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+		$jscmd->addCmd($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+		echo $jscmd->getCmds();
 		require_once(WE_MODULES_PATH . 'object/we_object_createTemplate.inc.php');
 	}
 }
