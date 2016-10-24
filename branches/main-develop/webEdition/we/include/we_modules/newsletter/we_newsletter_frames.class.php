@@ -318,7 +318,7 @@ function setTab(tab) {
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody());
+			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
