@@ -97,14 +97,17 @@ class we_messaging_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		$jscmd = new we_base_jsCmd();
-		$head = $this->View->processCommands($jscmd).$jscmd->getCmds();
+		$head = $this->View->processCommands($jscmd);
 
 		$pid = we_base_request::_(we_base_request::INT, 'pnt');
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
+		if($pid !== false){
+			$jscmd->addCmd('loadTree', ['pid' => intval($pid), 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]);
+		}
+
 		return $this->getHTMLDocument(we_html_element::htmlBody(), $head .
-				($pid === false ? '' :
-				we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]))
+				$jscmd->getCmds()
 		);
 	}
 

@@ -36,7 +36,7 @@ class we_users_frames extends we_modules_frame{
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			//use this to get js code
-			return $this->getHTMLDocument(we_html_element::htmlBody());
+			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
