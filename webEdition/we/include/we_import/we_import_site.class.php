@@ -628,10 +628,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$jsCmd = new we_base_jsCmd();
 
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
-				$jsCmd->addCmd('msg', ['msg' => (count(scandir($importDirectory)) <= 2 ?
+				$jsCmd->addMsg((count(scandir($importDirectory)) <= 2 ?
 						g_l('importFiles', '[emptyDir]') :
 						g_l('importFiles', '[noFiles]'))
-					, 'prio' => we_message_reporting::WE_MESSAGE_INFO]);
+					,we_message_reporting::WE_MESSAGE_INFO);
 
 				$jsCmd->addCmd('close');
 				return $jsCmd->getCmds();

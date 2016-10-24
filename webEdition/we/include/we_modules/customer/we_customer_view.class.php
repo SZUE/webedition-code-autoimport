@@ -76,7 +76,66 @@ var frames={
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
 	}
 
-	function processCommands(){
+	private function saveCustomer(we_base_jsCmd $jscmd){
+		$js = '';
+		$this->customer->Username = trim($this->customer->Username);
+		if(!$this->customer->Username){
+			$jscmd->addMsg(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			return;
+		}
+
+		if($this->customer->filenameNotValid()){
+			$jscmd->addMsg(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+			return;
+		}
+
+		$newone = ($this->customer->ID ? false : true);
+
+		$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
+		if($exists){
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
+			return;
+		}
+		if($_SESSION['weS']['customer_session']->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
+//delete autologins, if password is changed
+			$this->db->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($this->customer->ID));
+		}
+
+		$saveOk = $this->customer->save();
+
+		if($saveOk){
+			$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), [
+				'>' => '&gt;', '<' => '&lt;']);
+			if($newone){
+				$js = 'var attribs = {
+	id:"' . $this->customer->ID . '",
+	typ:"item",
+	parentid:"0",
+	text:"' . $tt . '",
+	disable:"0",
+	tooltip:"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
+}
+top.content.treeData.addSort(new top.content.node(attribs));
+top.content.applySort();';
+			} else {
+				$jscmd->addCmd('updateTreeEntry', [
+					'id' => $this->customer->ID,
+					'text' => $tt]);
+				$js = 'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";';
+			}
+		} else {
+			$js = '';
+		}
+
+		echo we_html_element::jsElement($js);
+		if($saveOk){
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_NOTICE);
+		} else {
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_ERROR);
+		}
+	}
+
+	function processCommands(we_base_jsCmd $jscmd){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'new_customer':
 				$this->customer = new we_customer_customer();
@@ -94,68 +153,15 @@ var frames={
 				);
 				break;
 			case 'save_customer':
-				$js = '';
-				$this->customer->Username = trim($this->customer->Username);
-				if(!$this->customer->Username){
-					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-					break;
-				}
-
-				if($this->customer->filenameNotValid()){
-					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
-					break;
-				}
-
-				$newone = ($this->customer->ID ? false : true);
-
-				$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
-				if($exists){
-					echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
-					break;
-				}
-				if($_SESSION['weS']['customer_session']->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
-//delete autologins, if password is changed
-					$this->db->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($this->customer->ID));
-				}
-
-				$saveOk = $this->customer->save();
-
-				if($saveOk){
-					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), [
-						'>' => '&gt;', '<' => '&lt;']);
-					$js = ($newone ? '
-var attribs = {
-	id:"' . $this->customer->ID . '",
-	typ:"item",
-	parentid:"0",
-	text:"' . $tt . '",
-	disable:"0",
-	tooltip:"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
-}
-top.content.treeData.addSort(new top.content.node(attribs));
-top.content.applySort();' :
-						'top.content.treeData.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
-							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";'
-						);
-				} else {
-					$js = '';
-				}
-
-				echo we_html_element::jsElement(
-					$js . ($saveOk ?
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_NOTICE) :
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_ERROR)
-					)
-				);
-				break;
+				return $this->saveCustomer($jscmd);
 			case 'delete_customer':
 				$oldid = $this->customer->ID;
 				$this->customer->delete();
 				$this->customer = new we_customer_customer();
 
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'top.content.treeData.deleteEntry("' . $oldid . '");
+				$jscmd->addMsg(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addCmd('deleteTreeEntry', $oldid);
+				echo we_html_element::jsElement('
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edheader";
 top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody"
 top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edfooter";'
@@ -177,19 +183,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				switch($saveret){
 					case self::ERR_SAVE_BRANCH:
-						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsgjsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_INVALID:
-						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_PROPERTY:
-						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_EXISTS:
-						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_NOT_EMPTY:
-						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					default:
 						$this->customer->loadPresistents();
@@ -209,10 +215,8 @@ close();');
 				$this->deleteField(($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field) ? $fname : $field));
 
 				$this->customer->loadPresistents();
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'opener.top.content.editor.edbody.refreshForm();'
-				);
+				$jscmd->addMsg(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE);
+				echo we_html_element::jsElement('opener.top.content.editor.edbody.refreshForm();');
 				break;
 			case 'move_field_up':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
@@ -227,7 +231,7 @@ close();');
 				$branch_old = we_base_request::_(we_base_request::STRING, 'branch', '');
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
-					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
 
@@ -235,13 +239,13 @@ close();');
 					$arr = $this->customer->getBranchesNames();
 
 					if(in_array($branch_new, $arr)){
-						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 				}
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
-					echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$this->customer->loadPresistents();
 					echo we_html_element::jsElement('
@@ -290,9 +294,8 @@ close();');
 				foreach(array_keys($this->settings->SortView) as $sort){
 					$sorting .= 'opener.top.content.addSorting("' . $sort . '");' . "\n";
 				}
-
-				echo we_html_element::jsScript(JS_DIR . "global.js", 'initWE();') .
-				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				$jscmd->addMsg(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				echo we_html_element::jsElement('
 var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
 opener.top.content.document.we_form_treeheader.sort.options.length=0;
 ' . $sorting . '
@@ -321,12 +324,13 @@ self.close();');
 						$this->settings->properties[$k] = $set;
 					}
 				}
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement(
-					$this->settings->save() ?
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+
+				if($this->settings->save()){
+					$jscmd->addMsg(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addCmd('close');
+				} else {
+					$jscmd->addMsg(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				}
 				break;
 			default:
 		}

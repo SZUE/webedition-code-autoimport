@@ -24,17 +24,15 @@
  */
 class we_glossary_settingControl{
 
-	function processCommands(){
+	function processCommands(we_base_jsCmd $jscmd){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'save_glossary_setting':
-				$cmd = new we_base_jsCmd();
 				if($this->saveSettings()){
-					$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[preferences_saved]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
-					$cmd->addCmd('close');
+					$jscmd->addMsg(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addCmd('close');
 				} else {
-					$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[preferences_not_saved]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+					$jscmd->addMsg(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
-				echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body>' . $cmd->getCmds() . '</body>');
 
 				break;
 		}

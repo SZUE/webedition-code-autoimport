@@ -63,7 +63,7 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 		}
 	}
 	$cmd = new we_base_jsCmd();
-	$cmd->addCmd('msg', ['msg' => $msg, 'prio' => $msgType]);
+	$cmd->addMsg($msg, $msgType);
 	$cmd->addCmd('close');
 	echo we_html_element::jsElement($script) . $cmd->getCmds();
 }

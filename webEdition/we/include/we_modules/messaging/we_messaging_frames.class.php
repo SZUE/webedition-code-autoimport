@@ -96,7 +96,8 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLCmd(){
-		$head = $this->View->processCommands();
+		$jscmd = new we_base_jsCmd();
+		$head = $this->View->processCommands($jscmd).$jscmd->getCmds();
 
 		$pid = we_base_request::_(we_base_request::INT, 'pnt');
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);

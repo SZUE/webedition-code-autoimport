@@ -63,7 +63,7 @@ class we_search_view extends we_modules_view{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
 	}
 
-	function processCommands(){
+	function processCommands(we_base_jsCmd $jscmd){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
 		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
@@ -119,7 +119,7 @@ class we_search_view extends we_modules_view{
 				$this->Model->prepareModelForSearch();
 
 				if(!$this->Model->isAllowedForUser()){
-					echo we_message_reporting::jsMessagePush(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
@@ -138,34 +138,34 @@ if(top.content.treeData){
 			case 'tool_weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
-					echo we_message_reporting::jsMessagePush(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
-					echo we_message_reporting::jsMessagePush(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Model->filenameNotValid($this->Model->Text)){
-					echo we_message_reporting::jsMessagePush(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1); // TODO: have activeTab always active (initByHttp)!!
 
 				if(!trim($this->Model->Text)){
-					echo we_message_reporting::jsMessagePush(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				$oldpath = $this->Model->Path;
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					echo we_message_reporting::jsMessagePush(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				if($this->Model->isSelf()){
-					echo we_message_reporting::jsMessagePush(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -174,38 +174,50 @@ if(top.content.treeData){
 				if($this->Model->save()){
 					$this->Model->updateChildPaths($oldpath);
 
-					$js = we_html_element::jsElement(($newone ?
-							'top.content.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
-							'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
-							$this->editorHeaderFrame . '.location.reload();' .
-							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-							'top.content.hot=0;'
-					);
+					if($newone){
+						$jscmd->addCmd('makeTreeEntry', [
+							'id' => $this->Model->ID,
+							'parentid' => $this->Model->ParentID,
+							'text' => $this->Model->Text,
+							'open' => false,
+							'contenttype' => ($this->Model->IsFolder ? 'folder' : 'we/search'),
+							'table' => SUCHE_TABLE,
+							'published' => 0
+						]);
+					} else {
+						$jscmd->addCmd('updateTreeEntry', [
+							'id' => $this->Model->ID,
+							'parentid' => $this->Model->ParentID,
+							'text' => $this->Model->Text,
+							'order' => 0,
+							'tooltip' => $this->Model->ID
+						]);
+					}
+
+					$js = we_html_element::jsElement($this->editorHeaderFrame . '.location.reload();
+								top.content.hot=0;');
+					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+
 
 					if(($delay = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
-						$js .= we_html_element::jsElement('top.content.we_cmd("' . implode('","', $delay) . '");'
-						);
+						$jscmd->addCmd('we_cmd', $delay);
 						unset($_REQUEST['delayCmd']);
 					}
 				} else {
 					$js = we_html_element::jsElement($js .
-							$this->editorHeaderFrame . '.location.reload();' .
-							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR) .
-							'top.content.hot=0;'
-					);
+							$this->editorHeaderFrame . '.location.reload();
+								top.content.hot=0;');
+					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
 				echo $js;
 
 				break;
 			case 'tool_weSearch_delete' :
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
-					echo we_html_element::jsElement(
-						'top.content.treeData.deleteEntry("' . $this->Model->ID . '");
-setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);' .
-						'top.content.we_cmd("tool_weSearch_edit");'
-					);
+					$jscmd->addCmd('deleteTreeEntry', $this->Model->ID);
+					$jscmd->addMsg(g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addCmd('tool_weSearch_edit');
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
 				}

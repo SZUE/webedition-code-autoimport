@@ -69,8 +69,6 @@ class we_shop_view extends we_modules_view{
 	}
 
 	function getProperties(){
-		we_html_tools::protect();
-
 		//$weShopVatRule = weShopVatRule::getShopVatRule();
 
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
@@ -97,14 +95,16 @@ class we_shop_view extends we_modules_view{
 		$da = '%d.%m.%Y';
 		$dateform = '00.00.0000';
 
-		$ret = $this->processCommands(); //imi
+		$jscmd = new we_base_jsCmd();
+		$ret = $this->processCommands($jscmd) . $jscmd->getCmds(); //imi
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		if(we_base_request::_(we_base_request::BOOL, 'deletethisorder')){
 			$this->db->query('DELETE FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
 			$this->db->query('DELETE FROM ' . SHOP_ORDER_ITEM_TABLE . ' WHERE orderID=' . $bid);
 			$this->db->query('DELETE FROM ' . SHOP_ORDER_DATES_TABLE . ' WHERE ID=' . $bid);
-			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ')'), we_html_element::htmlBody(['class' => "weEditorBody",
+			$jscmd->addCmd('deleteTreeEntry', $bid);
+			return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds(), we_html_element::htmlBody(['class' => "weEditorBody",
 						'onunload' => "doUnload()"], '<table style="width:300px">
 			  <tr>
 				<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout('<span class="defaultfont">' . g_l('modules_shop', '[geloscht]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
@@ -118,17 +118,13 @@ class we_shop_view extends we_modules_view{
 				//last item deleted, delete the order itself
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_DATES_TABLE . ' WHERE ID=' . $bid);
+				$jscmd->addCmd('deleteTreeEntry', $bid);
 
-				echo we_html_element::jsElement('
-				top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
-				top.content.treeData.deleteEntry(' . $_REQUEST['bid'] . ');
-			') . '
-		</head>
-		<body bgcolor="#ffffff"></body></html>';
-				return;
+				return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds() .
+						we_html_element::jsElement('top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=' . $bid . '";'), we_html_element::htmlBody());
 			}
 		}
-		echo we_html_tools::getHtmlTop() . $ret;
+		echo we_html_tools::getHtmlTop() . $ret . $jscmd->getCmds();
 
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT customerID FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid, '', $this->db);
@@ -540,25 +536,25 @@ cid =' . $orderData['customerID'] . ';';
 		?>
 
 		</head>
-				<body class="weEditorBody" onload="hot = true" onunload="doUnload()"><?php
-					$parts = [['html' => $orderDataTable,
-				],
-					['html' => $orderTable,
-				]
-			];
+		<body class="weEditorBody" onload="hot = true" onunload="doUnload()"><?php
+		$parts = [['html' => $orderDataTable,
+			],
+				['html' => $orderTable,
+			]
+		];
 
 
-			$parts[] = ['html' => $this->getCustomCartFieldsTable($bid, $customCartFields),
-			];
+		$parts[] = ['html' => $this->getCustomCartFieldsTable($bid, $customCartFields),
+		];
 
 
-			echo we_html_multiIconBox::getHTML('', $parts, 30);
+		echo we_html_multiIconBox::getHTML('', $parts, 30);
 
-			//
-			// "Html output for order with articles"
-			// ********************************************************************************
+		//
+		// "Html output for order with articles"
+		// ********************************************************************************
 
-			$js = '
+		$js = '
 // init the used calendars
 
 function CalendarChanged(calObject) {
@@ -568,9 +564,9 @@ function CalendarChanged(calObject) {
 }
 ';
 
-			foreach(we_shop_statusMails::$StatusFields as $cur){
-				if(!$weShopStatusMails->FieldsHidden[$cur]){
-					$js .= '		Calendar.setup({
+		foreach(we_shop_statusMails::$StatusFields as $cur){
+			if(!$weShopStatusMails->FieldsHidden[$cur]){
+				$js .= '		Calendar.setup({
 				"inputField" : "hidden_Calendar_' . $cur . '",
 				"displayArea" : "div_Calendar_' . $cur . '",
 				"button" : "date_pickerbutton_Calendar_' . $cur . '",
@@ -578,167 +574,168 @@ function CalendarChanged(calObject) {
 				"daFormat" : "' . $da . '",
 				"onUpdate" : CalendarChanged
 				});';
-				}
 			}
-			echo we_html_element::jsElement($js);
-			?>
-				</body>
+		}
+		echo we_html_element::jsElement($js);
+		?>
+		</body>
 		</html>
-		<?php
-	}
+			<?php
+		}
 
-	function processCommands(){
-		$bid = we_base_request::_(we_base_request::INT, 'bid');
-		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
-			case 'add_article':
-				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') == 0){
-					return we_message_reporting::jsMessagePush("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
-				}
+		function processCommands(we_base_jsCmd $jscmd){
+			$bid = we_base_request::_(we_base_request::INT, 'bid');
+			switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+				case 'add_article':
+					if(we_base_request::_(we_base_request::FLOAT, 'anzahl') == 0){
+						$jscmd->addMsg(g_l('modules_shop', '[keinezahl]'), we_message_reporting::WE_MESSAGE_ERROR);
+						return;
+					}
 
-				$tmp = explode('_', we_base_request::_(we_base_request::STRING, 'add_article', ''));
-				$isObj = ($tmp[1] == we_shop_shop::OBJECT);
-				$id = intval($tmp[0]);
+					$tmp = explode('_', we_base_request::_(we_base_request::STRING, 'add_article', ''));
+					$isObj = ($tmp[1] == we_shop_shop::OBJECT);
+					$id = intval($tmp[0]);
 
-				// check for variant or customfields
-				$customFieldsTmp = [];
-				$customField = we_base_request::_(we_base_request::STRING, 'we_customField');
-				if($customField){
-					$fields = explode(';', trim($customField));
-					if(is_array($fields)){
-						foreach($fields as $field){
-							$fieldData = explode('=', $field);
-							if(is_array($fieldData) && count($fieldData) == 2){
-								$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
+					// check for variant or customfields
+					$customFieldsTmp = [];
+					$customField = we_base_request::_(we_base_request::STRING, 'we_customField');
+					if($customField){
+						$fields = explode(';', trim($customField));
+						if(is_array($fields)){
+							foreach($fields as $field){
+								$fieldData = explode('=', $field);
+								if(is_array($fieldData) && count($fieldData) == 2){
+									$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
+								}
 							}
 						}
 					}
-				}
 
-				$variant = strip_tags($_REQUEST[we_base_constants::WE_VARIANT_REQUEST]);
-				$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
+					$variant = strip_tags($_REQUEST[we_base_constants::WE_VARIANT_REQUEST]);
+					$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
 
-				// shop vats must be calculated
-				$orderArray = getHash('SELECT customerData,priceName FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
-				$customer = we_unserialize($orderArray['customerData']);
+					// shop vats must be calculated
+					$orderArray = getHash('SELECT customerData,priceName FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
+					$customer = we_unserialize($orderArray['customerData']);
 
-				$standardVat = we_shop_vats::getStandardShopVat();
+					$standardVat = we_shop_vats::getStandardShopVat();
 
-				if(we_shop_category::isCategoryMode()){
-					$wedocCategory = $serialDoc[we_listview_base::PROPPREFIX . 'CATEGORY'];
-					$stateField = we_shop_vatRule::getStateField();
-					$billingCountry = !empty($customer[$stateField]) ? $customer[$stateField] : we_shop_category::getDefaultCountry();
-					$catId = !empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+					if(we_shop_category::isCategoryMode()){
+						$wedocCategory = $serialDoc[we_listview_base::PROPPREFIX . 'CATEGORY'];
+						$stateField = we_shop_vatRule::getStateField();
+						$billingCountry = !empty($customer[$stateField]) ? $customer[$stateField] : we_shop_category::getDefaultCountry();
+						$catId = !empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
-					$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry);
-				} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
-					$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
-				}
+						$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry);
+					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
+						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
+					}
 
-				$type = ($isObj ? 'object' : 'document');
-				$pub = intval(empty($serialDoc['we_wedoc_Published']) ? $serialDoc['WE_Published'] : $serialDoc['we_wedoc_Published']);
+					$type = ($isObj ? 'object' : 'document');
+					$pub = intval(empty($serialDoc['we_wedoc_Published']) ? $serialDoc['WE_Published'] : $serialDoc['we_wedoc_Published']);
 
-				$orderDocID = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $id . ' AND type="' . $type . '" AND variant="' . $this->db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
-				if(!$orderDocID){
-					$data = $serialDoc;
-					unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
-					//add document first
-					$this->db->query('INSERT INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
-							'DocID' => $id,
-							'type' => $type,
-							'variant' => $variant,
-							'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
-							'title' => strip_tags($serialDoc['we_shoptitle']),
-							'description' => strip_tags($serialDoc['we_shopdescription']),
-							'CategoryID' => $catId,
-							'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
-					]));
-					$orderDocID = $this->db->getInsertId();
-				}
+					$orderDocID = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $id . ' AND type="' . $type . '" AND variant="' . $this->db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
+					if(!$orderDocID){
+						$data = $serialDoc;
+						unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
+						//add document first
+						$this->db->query('INSERT INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
+								'DocID' => $id,
+								'type' => $type,
+								'variant' => $variant,
+								'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
+								'title' => strip_tags($serialDoc['we_shoptitle']),
+								'description' => strip_tags($serialDoc['we_shopdescription']),
+								'CategoryID' => $catId,
+								'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
+						]));
+						$orderDocID = $this->db->getInsertId();
+					}
 
-				//need pricefield:
-				$pricename = ($orderArray['priceName'] ?: 'shopprice');
-				// now insert article to order:
+					//need pricefield:
+					$pricename = ($orderArray['priceName'] ?: 'shopprice');
+					// now insert article to order:
 
-				$this->db->query('INSERT INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' .
-					we_database_base::arraySetter(([
-						'orderID' => $bid,
-						'orderDocID' => $orderDocID,
-						'quantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
-						'Price' => $serialDoc[$pricename],
-						'Vat' => ($shopVat !== false ? $shopVat : ($standardVat ?: sql_function('NULL'))),
-						'customFields' => $serialDoc[WE_SHOP_ARTICLE_CUSTOM_FIELD] ? we_serialize($serialDoc[WE_SHOP_ARTICLE_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
-				])));
+					$this->db->query('INSERT INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' .
+						we_database_base::arraySetter(([
+							'orderID' => $bid,
+							'orderDocID' => $orderDocID,
+							'quantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
+							'Price' => $serialDoc[$pricename],
+							'Vat' => ($shopVat !== false ? $shopVat : ($standardVat ?: sql_function('NULL'))),
+							'customFields' => $serialDoc[WE_SHOP_ARTICLE_CUSTOM_FIELD] ? we_serialize($serialDoc[WE_SHOP_ARTICLE_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+					])));
 
-				break;
+					break;
 
-			case 'add_new_article':
-				$shopArticles = [];
+				case 'add_new_article':
+					$shopArticles = [];
 
-				$saveBut = '';
-				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:window.close();');
-				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
+					$saveBut = '';
+					$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:window.close();');
+					$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
-				// first get all shop documents
-				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND l.DocumentTable!="tblTemplates" ' .
-					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
-						'')
-				);
+					// first get all shop documents
+					$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND l.DocumentTable!="tblTemplates" ' .
+						(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+							' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
+							'')
+					);
 
-				while($this->db->next_record()){
-					$shopArticles[$this->db->f('documentId') . '_' . we_shop_shop::DOCUMENT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isDoc]') . ': ' . $this->db->f('documentId') . ']';
-				}
+					while($this->db->next_record()){
+						$shopArticles[$this->db->f('documentId') . '_' . we_shop_shop::DOCUMENT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isDoc]') . ': ' . $this->db->f('documentId') . ']';
+					}
 
-				if(defined('OBJECT_TABLE')){
-					$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
-					// now get all shop objects
-					foreach($this->classIds as $classId){
-						$classId = intval($classId);
-						$this->db->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle,of.ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID ' .
-							($searchArticle ?
-								' WHERE obx.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
-								'')
-						);
+					if(defined('OBJECT_TABLE')){
+						$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
+						// now get all shop objects
+						foreach($this->classIds as $classId){
+							$classId = intval($classId);
+							$this->db->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle,of.ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID ' .
+								($searchArticle ?
+									' WHERE obx.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+									'')
+							);
 
-						while($this->db->next_record()){
-							$shopArticles[$this->db->f('objectId') . '_' . we_shop_shop::OBJECT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isObj]') . ': ' . $this->db->f('objectId') . ']';
+							while($this->db->next_record()){
+								$shopArticles[$this->db->f('objectId') . '_' . we_shop_shop::OBJECT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isObj]') . ': ' . $this->db->f('objectId') . ']';
+							}
 						}
 					}
-				}
 
-				//  determine which articles should be shown ...
+					//  determine which articles should be shown ...
 
-				asort($shopArticles);
-				$MAX_PER_PAGE = 10;
-				$AMOUNT_ARTICLES = count($shopArticles);
+					asort($shopArticles);
+					$MAX_PER_PAGE = 10;
+					$AMOUNT_ARTICLES = count($shopArticles);
 
-				$page = we_base_request::_(we_base_request::INT, 'page', 0);
+					$page = we_base_request::_(we_base_request::INT, 'page', 0);
 
-				$shopArticlesParts = array_chunk($shopArticles, $MAX_PER_PAGE, true);
+					$shopArticlesParts = array_chunk($shopArticles, $MAX_PER_PAGE, true);
 
-				$start_entry = $page * $MAX_PER_PAGE + 1;
-				$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
+					$start_entry = $page * $MAX_PER_PAGE + 1;
+					$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
-				$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-					we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-					we_html_button::create_button(we_html_button::BACK, '#', '', 0, 0, '', '', true));
+					$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
+						we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+						we_html_button::create_button(we_html_button::BACK, '#', '', 0, 0, '', '', true));
 
-				$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-					we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-					we_html_button::create_button(we_html_button::NEXT, '#', '', 0, 0, '', '', true));
+					$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
+						we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+						we_html_button::create_button(we_html_button::NEXT, '#', '', 0, 0, '', '', true));
 
 
-				$shopArticlesSelect = $shopArticlesParts[$page];
-				asort($shopArticlesSelect);
+					$shopArticlesSelect = $shopArticlesParts[$page];
+					asort($shopArticlesSelect);
 
-				// determine which articles should be shown >>>
+					// determine which articles should be shown >>>
 
-				$parts = [($AMOUNT_ARTICLES > 0 ?
-					['headline' => g_l('modules_shop', '[Artikel]'),
-					'space' => we_html_multiIconBox::SPACE_MED,
-					'html' => '
+					$parts = [($AMOUNT_ARTICLES > 0 ?
+						['headline' => g_l('modules_shop', '[Artikel]'),
+						'space' => we_html_multiIconBox::SPACE_MED,
+						'html' => '
 		<form name="we_intern_form">' . we_html_element::htmlHiddens(['bid' => $_REQUEST['bid'],
-						'we_cmd[]' => 'add_new_article'
+							'we_cmd[]' => 'add_new_article'
 						]) . '
 			<table class="default">
 			<tr>
@@ -750,19 +747,19 @@ function CalendarChanged(calObject) {
 				<td class="small">' . sprintf(g_l('modules_shop', '[add_article][entry_x_to_y_from_z]'), $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>
 			</tr>
 			</table>',
-					'noline' => 1
-					] :
-					['headline' => g_l('modules_shop', '[Artikel]'),
-					'space' => we_html_multiIconBox::SPACE_MED,
-					'html' => g_l('modules_shop', '[add_article][empty_articles]')
-					]
-					)
-				];
-
-				if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
-					$parts[] = ['headline' => g_l('global', '[search]'),
+						'noline' => 1
+						] :
+						['headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => '
+						'html' => g_l('modules_shop', '[add_article][empty_articles]')
+						]
+						)
+					];
+
+					if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
+						$parts[] = ['headline' => g_l('global', '[search]'),
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'html' => '
 			<table class="default">
 				<tr><td>' . we_html_tools::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
 					<td></td>
@@ -770,64 +767,64 @@ function CalendarChanged(calObject) {
 				</tr>
 			</table>
 		</form>'
-					];
-				}
-
-				if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
-					$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();window.close();");
-					list($id, $type) = explode('_', $_REQUEST['add_article']);
-
-					$variantOptions = [
-						'' => '-'//Fix #11087 we need an empty key for default: non variant
 						];
-
-					$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
-
-					$model->initByID($id);
-					$variantData = we_base_variants::getVariantData($model, '-');
-
-					if(count($variantData) > 1){
-						foreach($variantData as $cur){
-							list($key) = each($cur);
-							if($key != '-'){
-								$variantOptions[$key] = $key;
-							}
-						}
 					}
 
-					$parts[] = ['headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => '
+					if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
+						$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();window.close();");
+						list($id, $type) = explode('_', $_REQUEST['add_article']);
+
+						$variantOptions = [
+							'' => '-'//Fix #11087 we need an empty key for default: non variant
+						];
+
+						$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
+
+						$model->initByID($id);
+						$variantData = we_base_variants::getVariantData($model, '-');
+
+						if(count($variantData) > 1){
+							foreach($variantData as $cur){
+								list($key) = each($cur);
+								if($key != '-'){
+									$variantOptions[$key] = $key;
+								}
+							}
+						}
+
+						$parts[] = ['headline' => g_l('modules_shop', '[Artikel]'),
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'html' => '
 							<form name="we_form" target="edbody">' .
-						we_html_element::htmlHiddens(['bid' => $_REQUEST['bid'],
-							'we_cmd[]' => 'add_article',
-							'add_article' => $_REQUEST['add_article']
-						]) .
-						'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
-						'noline' => 1
-					];
+							we_html_element::htmlHiddens(['bid' => $_REQUEST['bid'],
+								'we_cmd[]' => 'add_article',
+								'add_article' => $_REQUEST['add_article']
+							]) .
+							'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
+							'noline' => 1
+						];
 
-					$parts[] = ['headline' => g_l('modules_shop', '[anzahl]'),
-						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_html_tools::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
-						'noline' => 1
-					];
+						$parts[] = ['headline' => g_l('modules_shop', '[anzahl]'),
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'html' => we_html_tools::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
+							'noline' => 1
+						];
 
-					$parts[] = ['headline' => g_l('modules_shop', '[variant]'),
-						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_html_tools::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
-						'noline' => 1
-					];
+						$parts[] = ['headline' => g_l('modules_shop', '[variant]'),
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'html' => we_html_tools::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
+							'noline' => 1
+						];
 
-					$parts[] = ['headline' => g_l('modules_shop', '[customField]'),
-						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_html_tools::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
-						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
-						'noline' => 1
-					];
-				}
+						$parts[] = ['headline' => g_l('modules_shop', '[customField]'),
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'html' => we_html_tools::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
+							'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
+							'noline' => 1
+						];
+					}
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
+					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 		self.focus();
 
 		function selectArticle(articleInfo) {
@@ -842,66 +839,70 @@ function CalendarChanged(calObject) {
 			field = document.getElementById("searchArticle");
 			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
 		}'), '<body class="weDialogBody">' .
-					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
-					'</form>');
-				exit;
+						we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+						'</form>');
+					exit;
 
-			case 'payVat':
-				$calcVat = we_base_request::_(we_base_request::INT, 'pay', 0);
-
-				// update all orders with this orderId
-				if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET calcVat=' . $calcVat . ' WHERE ID=' . $bid)){
-					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				}
-				return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]'), we_message_reporting::WE_MESSAGE_ERROR);
-
-			case 'delete_shop_cart_custom_field':
-				$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
-				if($cartfield){
-					$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
-					unset($customFields[$cartfield]);
+				case 'payVat':
+					$calcVat = we_base_request::_(we_base_request::INT, 'pay', 0);
 
 					// update all orders with this orderId
-					if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-								'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
-							]) . ' WHERE ID=' . $bid)
-					){
-						return we_message_reporting::jsMessagePush(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+					if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET calcVat=' . $calcVat . ' WHERE ID=' . $bid)){
+						$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+						return;
 					}
-					return we_message_reporting::jsMessagePush(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
-				}
-				break;
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+					return;
 
-			case 'edit_shop_cart_custom_field':
-				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_submit();');
-				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
+				case 'delete_shop_cart_custom_field':
+					$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
+					if($cartfield){
+						$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
+						unset($customFields[$cartfield]);
+
+						// update all orders with this orderId
+						if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+									'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+								]) . ' WHERE ID=' . $bid)
+						){
+							$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+							return;
+						}
+						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+						return;
+					}
+					break;
+
+				case 'edit_shop_cart_custom_field':
+					$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_submit();');
+					$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
 
-				$val = '';
-				$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
-				if($cartfield){
-					$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
-					$val = $customFields[$cartfield] ?: '';
-					$fieldHtml = $cartfield . '<input type="hidden" name="cartfieldname" id="cartfieldname" value="' . $cartfield . '" />';
-				} else {
-					$fieldHtml = we_html_tools::htmlTextInput('cartfieldname', 24, '', '', 'id="cartfieldname"');
 					$val = '';
-				}
+					$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
+					if($cartfield){
+						$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
+						$val = $customFields[$cartfield] ?: '';
+						$fieldHtml = $cartfield . '<input type="hidden" name="cartfieldname" id="cartfieldname" value="' . $cartfield . '" />';
+					} else {
+						$fieldHtml = we_html_tools::htmlTextInput('cartfieldname', 24, '', '', 'id="cartfieldname"');
+						$val = '';
+					}
 
-				// make input field, for name or textfield
-				$parts = [
-						['headline' => g_l('modules_shop', '[field_name]'),
-						'html' => $fieldHtml,
-						'space' => we_html_multiIconBox::SPACE_MED,
-						'noline' => 1
-					],
-						['headline' => g_l('modules_shop', '[field_value]'),
-						'html' => '<textarea name="cartfieldvalue" style="width: 350px; height: 150px">' . $val . '</textarea>',
-						'space' => we_html_multiIconBox::SPACE_MED
-					]
-				];
+					// make input field, for name or textfield
+					$parts = [
+							['headline' => g_l('modules_shop', '[field_name]'),
+							'html' => $fieldHtml,
+							'space' => we_html_multiIconBox::SPACE_MED,
+							'noline' => 1
+						],
+							['headline' => g_l('modules_shop', '[field_value]'),
+							'html' => '<textarea name="cartfieldvalue" style="width: 350px; height: 150px">' . $val . '</textarea>',
+							'space' => we_html_multiIconBox::SPACE_MED
+						]
+					];
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('function we_submit() {
+					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('function we_submit() {
 	var elem = document.getElementById("cartfieldname");
 
 	if (elem && elem.value) {
@@ -914,290 +915,294 @@ function CalendarChanged(calObject) {
 		<form name="we_form">
 		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />' .
-					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
-					'</form>');
-				exit;
+						we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
+						'</form>');
+					exit;
 
-			case 'save_shop_cart_custom_field':
-				$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
-				if($cartfield){
-					$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
-					$customFields[$cartfield] = we_base_request::_(we_base_request::STRING, 'cartfieldvalue', '');
+				case 'save_shop_cart_custom_field':
+					$cartfield = we_base_request::_(we_base_request::STRING, 'cartfieldname');
+					if($cartfield){
+						$customFields = we_unserialize(f('SELECT customFields FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid));
+						$customFields[$cartfield] = we_base_request::_(we_base_request::STRING, 'cartfieldvalue', '');
 
-					// update all orders with this orderId
+						// update all orders with this orderId
+						if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+									'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+								]) . ' WHERE ID=' . $bid)
+						){
+							$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_ORDER_TABLE . '");
+top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+						} else {
+							$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+						}
+					} else {
+						$jsCmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
+					}
+
+					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsCmd . 'window.close();'), we_html_element::htmlBody());
+					exit;
+
+				case 'edit_shipping_cost':
+					$shopVats = we_shop_vats::getAllShopVATs();
+					$shippingVats = [];
+
+					foreach($shopVats as $k => $shopVat){
+						$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
+					}
+
+					$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
+					$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
+
+					$shipping = getHash('SELECT shippingCost,shippingNet,shippingVat FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
+
+					$parts = [
+							['headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
+							'space' => we_html_multiIconBox::SPACE_MED2,
+							'html' => we_html_tools::htmlTextInput('weShipping_costs', 24, $shipping['shippingCost']),
+							'noline' => 1
+						],
+							['headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
+							'space' => we_html_multiIconBox::SPACE_MED2,
+							'html' => we_html_tools::htmlSelect('weShipping_isNet', [1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')], 1, $shipping['shippingNet']),
+							'noline' => 1
+						],
+							['headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
+							'space' => we_html_multiIconBox::SPACE_MED2,
+							'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shipping['shippingVat'], $shippingVats, [], '', true),
+							'noline' => 1
+						]
+					];
+
+					echo we_html_tools::getHtmlTop('', '', '', '', '
+						<body class="weDialogBody">
+						<form name="we_form" target="edbody">' .
+						we_html_element::htmlHiddens([
+							'bid' => $_REQUEST['bid'],
+							"we_cmd[]" => 'save_shipping_cost'
+						]) .
+						we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+						'</form>');
+					exit;
+
+				case 'save_shipping_cost':
 					if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-								'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+								'shippingCost' => we_base_request::_(we_base_request::FLOAT, 'weShipping_costs'),
+								'shippingNet' => we_base_request::_(we_base_request::INT, 'weShipping_isNet'),
+								'shippingVat' => we_base_request::_(we_base_request::FLOAT, 'weShipping_vatRate'),
 							]) . ' WHERE ID=' . $bid)
 					){
-						$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_ORDER_TABLE . '");
-top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
-					} else {
-						$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+						return;
 					}
-				} else {
-					$jsCmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
-				}
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+					return;
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsCmd . 'window.close();'), we_html_element::htmlBody());
-				exit;
+				case 'edit_order_customer'; // edit data of the saved customer.
+					$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
+					$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
+					// 1st get the customer for this order
+					$customer = $this->getOrderCustomerData($_REQUEST['bid']);
+					ksort($customer);
 
-			case 'edit_shipping_cost':
-				$shopVats = we_shop_vats::getAllShopVATs();
-				$shippingVats = [];
+					$dontEdit = explode(',', we_shop_shop::ignoredEditFields);
 
-				foreach($shopVats as $k => $shopVat){
-					$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
-				}
+					$parts = [
+							['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
+						],
+							['headline' => g_l('modules_customer', '[Forname]') . ': ',
+							'space' => we_html_multiIconBox::SPACE_MED2,
+							'html' => we_html_tools::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
+							'noline' => 1
+						],
+							['headline' => g_l('modules_customer', '[Surname]') . ': ',
+							'space' => we_html_multiIconBox::SPACE_MED2,
+							'html' => we_html_tools::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
+							'noline' => 1
+						]
+					];
+					$editFields = ['Forename', 'Surname'];
 
-				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
-				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
+					foreach($customer as $k => $v){
+						if(!in_array($k, $dontEdit) && !is_numeric($k)){
+							if(isset($this->CLFields['stateField']) && !empty($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField']){
+								$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+								$langcode = array_search($lang[0], getWELangs());
+								$countrycode = array_search($langcode, getWECountries());
+								$countryselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
 
-				$shipping = getHash('SELECT shippingCost,shippingNet,shippingVat FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
-
-				$parts = [
-						['headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
-						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlTextInput('weShipping_costs', 24, $shipping['shippingCost']),
-						'noline' => 1
-					],
-						['headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
-						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlSelect('weShipping_isNet', [1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')], 1, $shipping['shippingNet']),
-						'noline' => 1
-					],
-						['headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
-						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shipping['shippingVat'], $shippingVats, [], '', true),
-						'noline' => 1
-					]
-				];
-
-				echo we_html_tools::getHtmlTop('', '', '', '', '
-						<body class="weDialogBody">
-						<form name="we_form" target="edbody">' .
-					we_html_element::htmlHiddens([
-						'bid' => $_REQUEST['bid'],
-						"we_cmd[]" => 'save_shipping_cost'
-					]) .
-					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
-					'</form>');
-				exit;
-
-			case 'save_shipping_cost':
-				if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-							'shippingCost' => we_base_request::_(we_base_request::FLOAT, 'weShipping_costs'),
-							'shippingNet' => we_base_request::_(we_base_request::INT, 'weShipping_isNet'),
-							'shippingVat' => we_base_request::_(we_base_request::FLOAT, 'weShipping_vatRate'),
-						]) . ' WHERE ID=' . $bid)
-				){
-					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_shipping_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				}
-				return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_shipping_error]'), we_message_reporting::WE_MESSAGE_ERROR);
-
-			case 'edit_order_customer'; // edit data of the saved customer.
-				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
-				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
-				// 1st get the customer for this order
-				$customer = $this->getOrderCustomerData($_REQUEST['bid']);
-				ksort($customer);
-
-				$dontEdit = explode(',', we_shop_shop::ignoredEditFields);
-
-				$parts = [
-						['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
-					],
-						['headline' => g_l('modules_customer', '[Forname]') . ': ',
-						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
-						'noline' => 1
-					],
-						['headline' => g_l('modules_customer', '[Surname]') . ': ',
-						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
-						'noline' => 1
-					]
-				];
-				$editFields = ['Forename', 'Surname'];
-
-				foreach($customer as $k => $v){
-					if(!in_array($k, $dontEdit) && !is_numeric($k)){
-						if(isset($this->CLFields['stateField']) && !empty($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField']){
-							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-							$langcode = array_search($lang[0], getWELangs());
-							$countrycode = array_search($langcode, getWECountries());
-							$countryselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
-
-							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-							foreach($topCountries as $countrykey => &$countryvalue){
-								$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
-							}
-							unset($countryvalue);
-							$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
-							foreach($shownCountries as $countrykey => &$countryvalue){
-								$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
-							}
-							unset($countryvalue);
-							$oldLocale = setlocale(LC_ALL, NULL);
-							setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
-							asort($topCountries, SORT_LOCALE_STRING);
-							asort($shownCountries, SORT_LOCALE_STRING);
-							setlocale(LC_ALL, $oldLocale);
-
-							if(WE_COUNTRIES_DEFAULT != ''){
-								$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
-							}
-							foreach($topCountries as $countrykey => &$countryvalue){
-								$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-							}
-							unset($countryvalue);
-							$countryselect->addOption('-', '----', ['disabled' => 'disabled']);
-							foreach($shownCountries as $countrykey => &$countryvalue){
-								$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-							}
-							unset($countryvalue);
-							$countryselect->selectOption($v);
-
-							$parts[] = ['headline' => $k . ': ',
-								'space' => we_html_multiIconBox::SPACE_MED2,
-								'html' => $countryselect->getHtml(),
-								'noline' => 1
-							];
-						} elseif((isset($this->CLFields['languageField']) && !empty($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'])){
-							$frontendL = $GLOBALS['weFrontendLanguages'];
-							foreach($frontendL as &$lcvalue){
-								list($lcvalue) = explode('_', $lcvalue);
-							}
-							unset($countryvalue);
-							$languageselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
-							foreach(g_l('languages', '') as $languagekey => $languagevalue){
-								if(in_array($languagekey, $frontendL)){
-									$languageselect->addOption($languagekey, $languagevalue);
+								$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+								foreach($topCountries as $countrykey => &$countryvalue){
+									$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 								}
+								unset($countryvalue);
+								$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+								foreach($shownCountries as $countrykey => &$countryvalue){
+									$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
+								}
+								unset($countryvalue);
+								$oldLocale = setlocale(LC_ALL, NULL);
+								setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
+								asort($topCountries, SORT_LOCALE_STRING);
+								asort($shownCountries, SORT_LOCALE_STRING);
+								setlocale(LC_ALL, $oldLocale);
+
+								if(WE_COUNTRIES_DEFAULT != ''){
+									$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+								}
+								foreach($topCountries as $countrykey => &$countryvalue){
+									$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+								}
+								unset($countryvalue);
+								$countryselect->addOption('-', '----', ['disabled' => 'disabled']);
+								foreach($shownCountries as $countrykey => &$countryvalue){
+									$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+								}
+								unset($countryvalue);
+								$countryselect->selectOption($v);
+
+								$parts[] = ['headline' => $k . ': ',
+									'space' => we_html_multiIconBox::SPACE_MED2,
+									'html' => $countryselect->getHtml(),
+									'noline' => 1
+								];
+							} elseif((isset($this->CLFields['languageField']) && !empty($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'])){
+								$frontendL = $GLOBALS['weFrontendLanguages'];
+								foreach($frontendL as &$lcvalue){
+									list($lcvalue) = explode('_', $lcvalue);
+								}
+								unset($countryvalue);
+								$languageselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
+								foreach(g_l('languages', '') as $languagekey => $languagevalue){
+									if(in_array($languagekey, $frontendL)){
+										$languageselect->addOption($languagekey, $languagevalue);
+									}
+								}
+								$languageselect->selectOption($v);
+
+								$parts[] = ['headline' => $k . ': ',
+									'space' => we_html_multiIconBox::SPACE_MED2,
+									'html' => $languageselect->getHtml(),
+									'noline' => 1
+								];
+							} else {
+								$parts[] = ['headline' => $k . ': ',
+									'space' => we_html_multiIconBox::SPACE_MED2,
+									'html' => we_html_tools::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
+									'noline' => 1
+								];
 							}
-							$languageselect->selectOption($v);
-
-							$parts[] = ['headline' => $k . ': ',
-								'space' => we_html_multiIconBox::SPACE_MED2,
-								'html' => $languageselect->getHtml(),
-								'noline' => 1
-							];
-						} else {
-							$parts[] = ['headline' => $k . ': ',
-								'space' => we_html_multiIconBox::SPACE_MED2,
-								'html' => we_html_tools::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
-								'noline' => 1
-							];
+							$editFields[] = $k;
 						}
-						$editFields[] = $k;
 					}
-				}
 
-				echo we_html_tools::getHtmlTop('', '', '', '', '
+					echo we_html_tools::getHtmlTop('', '', '', '', '
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-					we_html_element::htmlHiddens([
-						'bid' => $_REQUEST['bid'],
-						'we_cmd[]' => 'save_order_customer'
-					]) .
-					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]')) .
-					'</form>
+						we_html_element::htmlHiddens([
+							'bid' => $_REQUEST['bid'],
+							'we_cmd[]' => 'save_order_customer'
+						]) .
+						we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]')) .
+						'</form>
 						</body>');
-				exit;
+					exit;
 
-			case 'save_order_customer':
-				// just get this order and save this userdata in there.
-				$customer = we_base_request::_(we_base_request::STRING, 'weCustomerOrder');
+				case 'save_order_customer':
+					// just get this order and save this userdata in there.
+					$customer = we_base_request::_(we_base_request::STRING, 'weCustomerOrder');
 
-				if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-							'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
-						]) . ' WHERE ID=' . $bid)){
-					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_customer_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				}
-				return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_customer_error]'), we_message_reporting::WE_MESSAGE_ERROR);
-		}
-	}
-
-	function processVariables(){
-		if(isset($_SESSION['weS']['raw_session'])){
-			$this->raw = we_unserialize($_SESSION['weS']['raw_session']);
-		}
-
-		if(is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $val){
-				$varname = $val;
-				if(isset($_REQUEST[$varname])){
-					$this->raw->{$val} = $_REQUEST[$varname];
-				}
+					if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+								'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
+							]) . ' WHERE ID=' . $bid)){
+						$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+						return;
+					}
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+					return;
 			}
 		}
 
-		if(isset($_REQUEST['page'])){
+		function processVariables(){
+			if(isset($_SESSION['weS']['raw_session'])){
+				$this->raw = we_unserialize($_SESSION['weS']['raw_session']);
+			}
+
+			if(is_array($this->raw->persistent_slots)){
+				foreach($this->raw->persistent_slots as $val){
+					$varname = $val;
+					if(isset($_REQUEST[$varname])){
+						$this->raw->{$val} = $_REQUEST[$varname];
+					}
+				}
+			}
+
 			if(isset($_REQUEST['page'])){
-				$this->page = $_REQUEST['page'];
+				if(isset($_REQUEST['page'])){
+					$this->page = $_REQUEST['page'];
+				}
 			}
 		}
-	}
 
-	//some functions from edit_shop_properties
+		//some functions from edit_shop_properties
 
-	private static function cutText($val, $length = 0){
-		return $length && strlen($val) > $length ?
-			'<span ' . ($length ? 'class="cutText" title="' . $val . '" style="max-width: ' . $length . 'em;"' : '') . '>' . $val . '</span>' :
-			$val;
-	}
-
-	private function getOrderCustomerData($orderId, array $felder = []){
-		// get Customer
-		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=(SELECT customerID FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId . ')', $this->db, MYSQL_ASSOC);
-
-		$customerOrder = we_unserialize(f('SELECT customerData FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId));
-
-		//used only if edit customer data is selected!!!
-		//only data from order - return all fields, fill in unknown fields from customer-db
-		// default values are fields saved with order
-		$ret = array_merge($customerDb, $customerOrder);
-		return ($felder ? //return only selected fields
-			array_intersect_key($ret, array_flip($felder)) :
-			$ret);
-	}
-
-	public function getHomeScreen(){
-
-		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
-		for($i = 0; $i <= 3; $i++){
-			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
-		}
-		$fe = explode(',', $feldnamen[3]);
-		$classid = $fe[0];
-
-		$resultO = array_shift($fe);
-
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');
-
-
-		$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
-			we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
-		if(($resultD) && $resultO){ //docs and objects
-			$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
-		} elseif((!$resultD) && $resultO){ // no docs but objects
-			$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=object&ViewClass=$classid '") . '<br/>';
-		} elseif(($resultD) && !$resultO){ // docs but no objects
-			$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
+		private static function cutText($val, $length = 0){
+			return $length && strlen($val) > $length ?
+				'<span ' . ($length ? 'class="cutText" title="' . $val . '" style="max-width: ' . $length . 'em;"' : '') . '>' . $val . '</span>' :
+				$val;
 		}
 
-		return parent::getActualHomeScreen('shop', "shop.gif", $content);
-	}
+		private function getOrderCustomerData($orderId, array $felder = []){
+			// get Customer
+			$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=(SELECT customerID FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId . ')', $this->db, MYSQL_ASSOC);
 
-	private function getCustomCartFieldsTable($bid, $customCartFields){
-		$customCartFieldsTable = '<table class="default" width="99%">
+			$customerOrder = we_unserialize(f('SELECT customerData FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId));
+
+			//used only if edit customer data is selected!!!
+			//only data from order - return all fields, fill in unknown fields from customer-db
+			// default values are fields saved with order
+			$ret = array_merge($customerDb, $customerOrder);
+			return ($felder ? //return only selected fields
+				array_intersect_key($ret, array_flip($felder)) :
+				$ret);
+		}
+
+		public function getHomeScreen(){
+
+			$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
+			for($i = 0; $i <= 3; $i++){
+				$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
+			}
+			$fe = explode(',', $feldnamen[3]);
+			$classid = $fe[0];
+
+			$resultO = array_shift($fe);
+
+			$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');
+
+
+			$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
+				we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
+			if(($resultD) && $resultO){ //docs and objects
+				$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
+			} elseif((!$resultD) && $resultO){ // no docs but objects
+				$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=object&ViewClass=$classid '") . '<br/>';
+			} elseif(($resultD) && !$resultO){ // docs but no objects
+				$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
+			}
+
+			return parent::getActualHomeScreen('shop', "shop.gif", $content);
+		}
+
+		private function getCustomCartFieldsTable($bid, $customCartFields){
+			$customCartFieldsTable = '<table class="default" width="99%">
 					<tr>
 						<th colspan="3" class="defaultfont lowContrast" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
 					</tr>
 					<tr>
 						<td height="10"></td>
 					</tr>';
-		foreach($customCartFields as $key => $value){
-			$customCartFieldsTable .= '<tr>
+			foreach($customCartFields as $key => $value){
+				$customCartFieldsTable .= '<tr>
 						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
 						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
 						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
@@ -1206,24 +1211,24 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 					<tr>
 						<td height="10"></td>
 					</tr>';
-		}
-		$customCartFieldsTable .= '<tr>
+			}
+			$customCartFieldsTable .= '<tr>
 						<td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
 					</tr>
 					</table>';
-		return $customCartFieldsTable;
-	}
+			return $customCartFieldsTable;
+		}
 
-	private function getCustomerFieldTable(array $customer, array $customerFields){
-		$customerFieldTable = // first show fields Forename and surname
-			(empty($customer['Forename']) ? '' : '
+		private function getCustomerFieldTable(array $customer, array $customerFields){
+			$customerFieldTable = // first show fields Forename and surname
+				(empty($customer['Forename']) ? '' : '
 		<tr style="height:25px">
 			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px">' . g_l('modules_customer', '[Forname]') . ':</td>
 			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
 			<td style="width:20px;height:25px;"></td>
 			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $customer['Forename'] . '</td>
 		</tr>') .
-			(empty($customer['Surname']) ? '' : '
+				(empty($customer['Surname']) ? '' : '
 		<tr style="height:25px">
 			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . g_l('modules_customer', '[Surname]') . ':</td>
 			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
@@ -1231,30 +1236,30 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $customer['Surname'] . '</td>
 		</tr>');
 
-		$customer = array_intersect_key($customer, array_flip($customerFields));
-		unset($customer['Surname'], $customer['Forename']);
-		foreach($customer as $key => $value){
-			switch($key){
-				case $this->CLFields['stateField']:
-					if($this->CLFields['stateFieldIsISO']){
-						$value = g_l('countries', '[' . strtoupper($value) . ']');
-					}
-					break;
-				case $this->CLFields['languageField']:
-					if($this->CLFields['languageFieldIsISO']){
-						$value = g_l('languages', '[' . strtolower($value) . ']');
-					}
-					break;
-			}
-			$customerFieldTable .= '
+			$customer = array_intersect_key($customer, array_flip($customerFields));
+			unset($customer['Surname'], $customer['Forename']);
+			foreach($customer as $key => $value){
+				switch($key){
+					case $this->CLFields['stateField']:
+						if($this->CLFields['stateFieldIsISO']){
+							$value = g_l('countries', '[' . strtoupper($value) . ']');
+						}
+						break;
+					case $this->CLFields['languageField']:
+						if($this->CLFields['languageFieldIsISO']){
+							$value = g_l('languages', '[' . strtolower($value) . ']');
+						}
+						break;
+				}
+				$customerFieldTable .= '
 		<tr height="25">
 			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . $key . ':</td>
 			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px;"></td>
 			<td style="width:20px;height:25px;"></td>
 			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $value . '</td>
 		</tr>';
+			}
+			return $customerFieldTable;
 		}
-		return $customerFieldTable;
-	}
 
-}
+	}

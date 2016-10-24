@@ -100,7 +100,8 @@ switch($mod){
 		break;
 	case 'shop':
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->View->processCommands();
+		$jscmd = new we_base_jsCmd();
+		$weFrame->View->processCommands($jscmd) . $jscmd->getCmds();
 		break;
 	case 'customer':
 		switch($what){
@@ -148,8 +149,9 @@ switch($mod){
 				$weFrame = new we_navigation_ruleFrames();
 				ob_start();
 				$weFrame->Controller->processVariables();
-				$weFrame->Controller->processCommands();
-				$GLOBALS['extraJS'] = ob_get_clean();
+				$jscmd = new we_base_jsCmd();
+				$weFrame->Controller->processCommands($jscmd);
+				$GLOBALS['extraJS'] = $jscmd->getCmds . ob_get_clean();
 				break;
 			default:
 				$weFrame = new we_navigation_frames('');
@@ -217,9 +219,10 @@ switch($mod){
 				break;
 			default:
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
+				$jscmd = new we_base_jsCmd();
 				ob_start();
-				$weFrame->View->processCommands();
-				$GLOBALS['extraJS'] = ob_get_clean();
+				$weFrame->View->processCommands($jscmd);
+				$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
 		}
 
 		break;

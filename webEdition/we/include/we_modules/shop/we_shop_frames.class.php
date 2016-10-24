@@ -975,7 +975,7 @@ function setTab(tab) {
 
 		$jsCmd = new we_base_jsCmd();
 		if(isset($jsMessage)){
-			$jsCmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
+			$jsCmd->addMsg($jsMessage, $jsMessageType);
 			if($saveSuccess && $onsaveClose){
 				$jsCmd->addCmd('close');
 			}
@@ -1263,7 +1263,7 @@ function setTab(tab) {
 
 		$jscmd = new we_base_jsCmd();
 		if(isset($jsMessage)){
-			$jscmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
+			$jscmd->addMsg($jsMessage, $jsMessageType);
 		}
 		if($saveSuccess && $onsaveClose){
 			$jscmd->addCmd('close');

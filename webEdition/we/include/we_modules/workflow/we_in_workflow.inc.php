@@ -60,7 +60,7 @@ if($cmd === 'ok'){
 		}
 	}
 	$cmd = new we_base_jsCmd();
-	$cmd->addCmd('msg', ['msg' => $msg, 'prio' => $msgType]);
+	$cmd->addMsg($msg, $msgType);
 	$cmd->addCmd('close');
 	echo we_html_element::jsElement($script) . $cmd->getCmds();
 }
@@ -117,7 +117,7 @@ if($cmd === 'ok'){
 				<?php
 			} else {
 				$cmd = new we_base_jsCmd();
-				$cmd->addCmd('msg', ['msg' => g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$cmd->addMsg(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR);
 				$cmd->addCmd('close');
 				echo $cmd->getCmds();
 			}

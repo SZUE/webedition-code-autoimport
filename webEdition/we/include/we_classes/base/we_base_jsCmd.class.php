@@ -42,6 +42,11 @@ class we_base_jsCmd{
 		$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
 	}
 
+	public function addMsg($message, $priority){
+		$this->cmd[] = 'msg';
+		$this->cmdData[] = setDynamicVar(['msg' => $message, 'prio' => $priority]);
+	}
+
 	public function getCmds(){
 		if(empty($this->cmds)){
 			return '';

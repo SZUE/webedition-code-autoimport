@@ -435,7 +435,9 @@ var fieldDate = new weDate(date_format_dateonly);
 
 	function getHTMLSettings(){
 		if(we_base_request::_(we_base_request::STRING, "cmd") === "save_settings"){
-			$this->View->processCommands();
+			$jscmd = new we_base_jsCmd();
+			$this->View->processCommands($jscmd);
+			echo $jscmd->getCmds();
 			$closeflag = true;
 		} else {
 			$closeflag = false;

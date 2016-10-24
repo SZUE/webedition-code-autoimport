@@ -254,7 +254,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$cmd = new we_base_jsCmd();
 
 		if($upload_error){
-			$cmd->addCmd('msg', ['msg' => $upload_error, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$cmd->addMsg($upload_error, we_message_reporting::WE_MESSAGE_ERROR);
 			$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 			$return[1] = $hdnsBtnStates. $cmd->getCmds();
 			return $return;
@@ -262,7 +262,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(we_backup_util::getFormat($import_file) != 'xml'){
-			$cmd->addCmd('msg', ['msg' => g_l('import', '[format_unknown]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$cmd->addMsg(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR);
 			$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 			$return[1] = $hdnsBtnStates. $cmd->getCmds();
 			return $return;
@@ -275,23 +275,23 @@ class we_import_wizard extends we_import_wizardBase{
 					$cmd->addCmd('confirm_start_recoverBackup');
 					$return[1] = $cmd->getCmds();
 				} else {
-					$cmd->addCmd('msg', ['msg' => g_l('import', '[backup_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+					$cmd->addMsg(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 					$return[1] = $hdnsBtnStates. $cmd->getCmds();
 				}
 				return $return;
 			case 'customer':
-				$cmd->addCmd('msg', ['msg' => g_l('import', '[customer_import_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$cmd->addMsg(g_l('import', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates. $cmd->getCmds();
 				return $return;
 			case 'unreadble':
-				$cmd->addCmd('msg', ['msg' => g_l('backup', '[file_not_readable]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$cmd->addMsg(g_l('backup', '[file_not_readable]'), we_message_reporting::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates. $cmd->getCmds();
 				return $return;
 			case 'unknown':
-				$cmd->addCmd('msg', ['msg' => g_l('import', '[format_unknown]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$cmd->addMsg(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates. $cmd->getCmds();
 				return $return;
