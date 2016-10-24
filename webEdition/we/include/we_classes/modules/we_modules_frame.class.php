@@ -87,7 +87,7 @@ abstract class we_modules_frame{
 			default:
 				$ret = (empty($GLOBALS['extraJS']) ?
 					'' :
-					$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
+					$this->getHTMLDocument(we_html_element::htmlBody(), $GLOBALS['extraJS'])
 					);
 				unset($GLOBALS['extraJS']);
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
@@ -231,8 +231,8 @@ abstract class we_modules_frame{
 
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
-			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd(\'module_' . $this->module . '_save\');self.close();';
-			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
+			$yes = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'module_' . $this->module . '_save\');self.close();';
+			$no = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
@@ -263,7 +263,7 @@ abstract class we_modules_frame{
 		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands($jscmd);
-		$GLOBALS['extraJS'] = $jscmd->getCmds . ob_get_clean();
+		$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
 	}
 
 }

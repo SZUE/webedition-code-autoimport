@@ -150,8 +150,8 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
-			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd(\'tool_' . $this->toolName . '_save\');self.close();';
-			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
+			$yes = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'tool_' . $this->toolName . '_save\');self.close();';
+			$no = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .

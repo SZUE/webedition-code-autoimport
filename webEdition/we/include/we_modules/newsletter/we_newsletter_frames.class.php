@@ -655,17 +655,17 @@ function setTab(tab) {
 				}
 
 				$table->addRow();
-				$table->setCol($c, 0, [], we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, ['onchange' => 'top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');'], "value", 170));
-				$table->setCol($c, 1, [], we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, ['onchange' => "top.content.hot=1;"], "value", 80));
+				$table->setCol($c, 0, [], we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, ['onchange' => 'top.content.hot=true;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');'], "value", 170));
+				$table->setCol($c, 1, [], we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, ['onchange' => "top.content.hot=true;"], "value", 80));
 				if($v['fieldname'] === "MemberSince" || $v['fieldname'] === "LastLogin" || $v['fieldname'] === "LastAccess"){
 					$table->setCol($c, 2, ["id" => "td_value_fields_" . $group . "_" . $k], we_html_tools::getDateSelector("filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, !empty($v["fieldvalue"]) ? !stristr($v["fieldvalue"], ".") ? date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
-					$table->setCol($c, 3, [], we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, ['onchange' => 'top.content.hot=1;']));
+					$table->setCol($c, 3, [], we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, ['onchange' => 'top.content.hot=true;']));
 					$table->setCol($c, 4, ['class' => 'defaultfont'], "&nbsp;h :");
 					$table->setCol($c, 5, [], we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, [
-							'onchange' => "top.content.hot=1;"]));
+							'onchange' => "top.content.hot=true;"]));
 					$table->setCol($c, 6, ['class' => 'defaultfont'], "&nbsp;m");
 				} else {
-					$table->setCol($c, 2, ["colspan" => $colspan, "id" => "td_value_fields_" . $group . "_" . $k], we_html_tools::htmlTextInput("filter_fieldvalue_" . $group . "_" . $k, 16, isset($v["fieldvalue"]) ? $v["fieldvalue"] : "", "", 'onKeyUp="top.content.hot=1;"', "text", 200));
+					$table->setCol($c, 2, ["colspan" => $colspan, "id" => "td_value_fields_" . $group . "_" . $k], we_html_tools::htmlTextInput("filter_fieldvalue_" . $group . "_" . $k, 16, isset($v["fieldvalue"]) ? $v["fieldvalue"] : "", "", 'onKeyUp="top.content.hot=true;"', "text", 200));
 				}
 
 				$c++;
@@ -797,7 +797,7 @@ function setTab(tab) {
 			$yuiSuggest->setSelectButton($button);
 			return $yuiSuggest->getHTML();
 		}
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=true; readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
 	}
 
 	private function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $acObject = null){
@@ -819,7 +819,7 @@ function setTab(tab) {
 			$yuiSuggest->setSelectButton($button);
 			return $yuiSuggest->getHTML();
 		}
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=1; readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=true; readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
 	}
 
 	function getHTMLNewsletterBlocks(){
@@ -843,42 +843,42 @@ function setTab(tab) {
 			$content .= we_html_element::htmlHiddens(['block' . $counter . '_Groups' => $selected,
 					'block' . $counter . '_Pack' => $block->Pack]) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'newSelect', "style" => 'width:440px;',
-						"onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1"]), g_l('modules_newsletter', '[block_lists]'));
+						"onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=true"]), g_l('modules_newsletter', '[block_lists]'));
 
 			switch($block->Type){
 				case we_newsletter_block::DOCUMENT:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", we_base_ContentTypes::WEDOCUMENT, $this->weAutoCompleter), g_l('modules_newsletter', '[block_document]')) .
-						we_html_tools::htmlFormElementTable(we_html_forms::checkbox((($block->Field) ? 0 : 1), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
-						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
+					$content .= we_html_tools::htmlFormElementTable($this->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=true;", we_base_ContentTypes::WEDOCUMENT, $this->weAutoCompleter), g_l('modules_newsletter', '[block_document]')) .
+						we_html_tools::htmlFormElementTable(we_html_forms::checkbox((($block->Field) ? 0 : 1), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=true;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
+						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=true;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case we_newsletter_block::DOCUMENT_FIELD:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoCompleter, "folder," . we_base_ContentTypes::WEDOCUMENT), g_l('modules_newsletter', '[block_document]'));
+					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=true;", "", $this->weAutoCompleter, "folder," . we_base_ContentTypes::WEDOCUMENT), g_l('modules_newsletter', '[block_document]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, FILE_TABLE);
 
 						$content .= (!empty($values) ?
 							we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", ["style" => 'width:440px;',
-									"onkeyup" => 'top.content.hot=1;']), g_l('modules_newsletter', '[block_document_field]')) :
+									"onkeyup" => 'top.content.hot=true;']), g_l('modules_newsletter', '[block_document_field]')) :
 							we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => "defaultfont lowContrast"], g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
 					}
 					break;
 
 				case we_newsletter_block::OBJECT:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
-						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
+					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=true;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
+						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=true;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case we_newsletter_block::OBJECT_FIELD:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
+					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=true;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);
 
 						$content .= (!empty($values) ?
-							we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, ['OnChange' => "top.content.hot=1;"]), g_l('modules_newsletter', '[block_object_field]')) :
+							we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, ['OnChange' => "top.content.hot=true;"]), g_l('modules_newsletter', '[block_object_field]')) :
 							we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => "defaultfont lowContrast"], g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
 					}
@@ -905,7 +905,7 @@ function setTab(tab) {
 						], '${1}${3}${5}', stripslashes($block->Html));
 
 
-					$content .= we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(["cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=1;",
+					$content .= we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(["cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=true;",
 								"style" => "width:440px;"], oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
@@ -998,34 +998,34 @@ window.onload=extraInit;');
 
 	function getHTMLNewsletterHeader(){
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
-		$table->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", 37, stripslashes($this->View->newsletter->Text), "", 'onKeyUp="top.content.hot=1;" id="yuiAcInputPathName" onblur="parent.edheader.weTabs.setTitlePath(this.value);"', 'text', self::def_width), g_l('modules_newsletter', '[name]')));
-		$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable($this->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=1;", $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
+		$table->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", 37, stripslashes($this->View->newsletter->Text), "", 'onKeyUp="top.content.hot=true;" id="yuiAcInputPathName" onblur="parent.edheader.weTabs.setTitlePath(this.value);"', 'text', self::def_width), g_l('modules_newsletter', '[name]')));
+		$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable($this->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=true;", $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
 
-		//$table->setCol(2,0,[],we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
+		//$table->setCol(2,0,[],we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=true;","folder"),g_l('modules_newsletter','[dir]')));
 		$parts = [["headline" => "", "html" => "", 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1],
 				["headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2],
 		];
 
 		if(!$this->View->newsletter->IsFolder){
 			$table = new we_html_table(['class' => 'default withSpace'], 4, 1);
-			$table->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Subject", 37, stripslashes($this->View->newsletter->Subject), "", "onKeyUp='top.content.hot=1;'", 'text', self::def_width), g_l('modules_newsletter', '[subject]')));
-			$table->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Sender", 37, $this->View->newsletter->Sender, "", "onKeyUp='top.content.hot=1;'", 'text', self::def_width), g_l('modules_newsletter', '[sender]')));
+			$table->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Subject", 37, stripslashes($this->View->newsletter->Subject), "", "onKeyUp='top.content.hot=true;'", 'text', self::def_width), g_l('modules_newsletter', '[subject]')));
+			$table->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Sender", 37, $this->View->newsletter->Sender, "", "onKeyUp='top.content.hot=true;'", 'text', self::def_width), g_l('modules_newsletter', '[sender]')));
 
 			$chk = ($this->View->newsletter->Sender == $this->View->newsletter->Reply ?
-				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "checked" => null, "name" => "reply_same", "onclick" => "top.content.hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"]) :
-				we_html_element::htmlInput(["type" => "checkbox", "value" => 0, "name" => "reply_same", "onclick" => "top.content.hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"])
+				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "checked" => null, "name" => "reply_same", "onclick" => "top.content.hot=true;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"]) :
+				we_html_element::htmlInput(["type" => "checkbox", "value" => 0, "name" => "reply_same", "onclick" => "top.content.hot=true;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"])
 				);
-			$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel([
-						'class' => 'defaultfont', "onclick" => "top.content.hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"], g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
-			$table->setCol(3, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Test", 37, $this->View->newsletter->Test, "", "onKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[test_email]')));
+			$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=true;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel([
+						'class' => 'defaultfont', "onclick" => "top.content.hot=true;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"], g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
+			$table->setCol(3, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Test", 37, $this->View->newsletter->Test, "", "onKeyUp='top.content.hot=true;'"), g_l('modules_newsletter', '[test_email]')));
 
 			$embedImagesChk = ($this->View->newsletter->isEmbedImages ?
-				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}",
+				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=true;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}",
 					"checked" => null], g_l('modules_newsletter', '[isEmbedImages]')) :
-				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"], g_l('modules_newsletter', '[isEmbedImages]'))
+				we_html_element::htmlInput(["type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=true;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"], g_l('modules_newsletter', '[isEmbedImages]'))
 				);
 			$embedImagesHid = we_html_element::htmlHidden("isEmbedImages", $this->View->newsletter->isEmbedImages);
-			$embedImagesLab = we_html_element::htmlLabel(['class' => 'defaultfont', "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"], g_l('modules_newsletter', '[isEmbedImages]'));
+			$embedImagesLab = we_html_element::htmlLabel(['class' => 'defaultfont', "onclick" => "top.content.hot=true;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"], g_l('modules_newsletter', '[isEmbedImages]'));
 
 			$table->setCol(4, 0, [], we_html_tools::htmlFormElementTable($embedImagesHid . $embedImagesChk . "&nbsp;" . $embedImagesLab, ""));
 

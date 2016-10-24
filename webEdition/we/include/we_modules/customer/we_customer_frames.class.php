@@ -330,7 +330,7 @@ function setTab(tab) {
 
 	protected function getHTMLCmd(){
 		if(($p = we_base_request::_(we_base_request::RAW, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody());
+			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
 			utf8_encode($p) :
@@ -347,16 +347,19 @@ function setTab(tab) {
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
+		$jscmd = new we_base_jsCmd();
+		if(we_base_request::_(we_base_request::STRING, 'error')){
+			$jscmd->addMsg(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR);
+		}
+
+		$jscmd->addCmd('loadTree', ['pid' => $pid, 'items' => we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))]);
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
 							'pnt' => 'cmd',
 							'cmd' => 'no_cmd'])
 					)
-				), we_html_element::jsElement(
-					(we_base_request::_(we_base_request::STRING, 'error') ?
-					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '')).
-					we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment,($sort ? $sortField : ''))])
+				), $jscmd->getCmds()
 		);
 	}
 
@@ -486,7 +489,7 @@ var fieldDate = new weDate(date_format_dateonly);
 						$table->getHtml(), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)
 				)
-				. ($closeflag ? we_html_element::jsElement('top.close();') : '')
+				. ($closeflag ? we_base_jsCmd::singleCmd('close') : '')
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/settings.js'));

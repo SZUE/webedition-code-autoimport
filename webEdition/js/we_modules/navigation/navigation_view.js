@@ -185,6 +185,24 @@ function we_cmd() {
 			top.content.editor.edbody.document.we_form.pnt.value = "cmd";
 			top.content.editor.edbody.submitForm("cmd");
 			break;
+		case "doPopulateFolderWs":
+			populateFolderWs(args[1]);
+			if (args[1] === "values") {
+				var el = top.content.editor.edbody.document.we_form.WorkspaceID;
+				for (var id in args[2]) {
+					el.options.add(new Option(args[2][id], id));
+				}
+			}
+			break;
+		case "doPopulateWs":
+			populateWorkspaces(args[1], args[2]);
+			if (args[1] === "values") {
+				var el = top.content.editor.edbody.document.we_form['WorkspaceID' + args[2]];
+				for (var id in args[3]) {
+					el.options.add(new Option(args[3][id], id));
+				}
+			}
+			break;
 		case "del_mode":
 			top.content.treeData.setState(treeData.tree_states.select);
 			top.content.treeData.unselectNode();
@@ -216,6 +234,15 @@ function we_cmd() {
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
+			break;
+		case 'moveAbs':
+			moveAbs(args[1], args[2], args[3]);
+			break;
+		case 'moveUp':
+			moveUp(args[1], args[2], args[3]);
+			break;
+		case 'moveDown':
+			moveDown(args[1], args[2], args[3]);
 			break;
 
 		default:

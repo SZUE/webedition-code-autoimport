@@ -466,7 +466,7 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 						}
 						$jscmd->addCmd('drawTree');
 
-						echo we_html_element::jsElement('top.content.hot=0;');
+						echo we_html_element::jsElement('top.content.hot=false;');
 						$jscmd->addMsg(g_l('modules_newsletter', ($this->newsletter->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 						break;
 				}

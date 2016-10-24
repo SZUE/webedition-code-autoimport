@@ -930,16 +930,16 @@ function CalendarChanged(calObject) {
 									'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
 								]) . ' WHERE ID=' . $bid)
 						){
-							$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_ORDER_TABLE . '");
+							$jscmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_ORDER_TABLE . '");
 top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 						} else {
-							$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+							$jscmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 						}
 					} else {
-						$jsCmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 
-					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsCmd . 'window.close();'), we_html_element::htmlBody());
+					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jscmd . 'window.close();'), we_html_element::htmlBody());
 					exit;
 
 				case 'edit_shipping_cost':

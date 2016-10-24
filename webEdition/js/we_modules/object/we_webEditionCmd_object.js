@@ -82,7 +82,7 @@ we_cmd_modules.object = function (args, url) {
 			break;
 		case "object_add_workspace":
 		case "object_add_css":
-			_EditorFrame.setEditorIsHot(true);
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			if (typeof (args[1]) === "object") {
 				url += "&we_cmd[1]=" + args[1].allIDs.join(",");
 			}

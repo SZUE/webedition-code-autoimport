@@ -150,6 +150,15 @@ function we_cmd() {
 		case "load":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
+		case "doPopulateWorkspaces":
+			populateWorkspaces(args[1]);
+			if (args[1] === "values") {
+				var el = top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'];
+				for (var id in args[2]) {
+					el.options.add(new Option(args[2][id], id));
+				}
+			}
+			break;
 		case "home":
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=editor";
 			/* falls through */
@@ -167,13 +176,13 @@ function populateWorkspaces(type) {
 		case 'workspace':
 			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "block");
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
-			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.add(new Option("/", 0));
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].selectedIndex = 0;
 			return;
 		case 'noWorkspace':
 			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "none");
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
-			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.add(new Option("-1", -1));
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkID]'].value = "";
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkPath]'].value = "";
 			WE().util.showMessage(WE().consts.g_l.glossary.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
