@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -10,8 +9,6 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Attributes[] = new weTagData_textAttribute('width', true, '');
 $this->Attributes[] = new weTagData_textAttribute('height', true, '');
 $this->Attributes[] = new weTagData_textAttribute('maxlength', false, '');
-$this->Attributes[] = //new weTagData_textAttribute('path', false, '');
-	new weTagData_selectorAttribute('path', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '', true);
 
 $this->Attributes[] = new weTagData_selectAttribute('subset', array(new weTagDataOption('alphanum'),
 	new weTagDataOption('alpha'),
@@ -61,8 +58,7 @@ $this->Attributes[] = new weTagData_selectAttribute('valign', array(new weTagDat
 	new weTagDataOption('bottom'),
 	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('font', false, '');
-$this->Attributes[] = //new weTagData_textAttribute('fontpath', false, '');
-	new weTagData_selectorAttribute('fontpath', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '', true);
+$this->Attributes[] = new weTagData_selectorAttribute('fontpath', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '', true);
 
 $this->Attributes[] = new weTagData_selectAttribute('case', array(new weTagDataOption('mix'),
 	new weTagDataOption('upper'),
