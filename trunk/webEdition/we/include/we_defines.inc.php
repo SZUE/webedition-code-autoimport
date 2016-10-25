@@ -72,6 +72,7 @@ include_once (WE_INCLUDES_PATH . 'we_version.php');
 
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
 define('CAPTCHA_TABLE', TBL_PREFIX . 'tblCaptcha');
+define('CAPTCHADEF_TABLE', TBL_PREFIX . 'tblCaptchaDef');
 define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');
 define('CONTENT_TABLE', TBL_PREFIX . 'tblContent');
 define('DOC_TYPES_TABLE', TBL_PREFIX . 'tblDocTypes');

@@ -29,35 +29,43 @@ abstract class we_captcha_captcha{
 	 *
 	 * @return void
 	 */
-	static function display($image, $type = "gif"){
+	static function display(we_captcha_image $image, $type = "gif"){
+		list($type, $data) = self::get($image, $type);
 
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header('Cache-Control: no-cache, must-revalidate, max-age=0');
+		header('Pragma: no-cache');
+		header('Content-type: ' . $type);
+		echo $data;
+	}
+
+	static function get(we_captcha_image $image, $type = "gif"){
 		$code = '';
 		$im = $image->get($code);
 		// save the code to the memory
 		self::save($code);
 
-		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		header('Cache-Control: no-cache, must-revalidate, max-age=0');
-		header('Pragma: no-cache');
-
+		ob_start();
+		$type = '';
 		switch($type){
 			case 'jpg':
-				header('Content-type: image/jpeg');
+				$type = 'image/jpeg';
 				imagejpeg($im);
 				imagedestroy($im);
-				return;
+				break;
 			case 'png':
-				header('Content-type: image/png');
+				$type = 'image/png';
 				imagepng($im);
 				imagedestroy($im);
-				return;
+				break;
 			case 'gif':
 			default:
-				header('Content-type: image/gif');
+				$type = 'image/gif';
 				imagegif($im);
 				imagedestroy($im);
-				return;
+				break;
 		}
+		return array($type, ob_get_clean());
 	}
 
 	static function check($captcha, $type = 'captcha'){
