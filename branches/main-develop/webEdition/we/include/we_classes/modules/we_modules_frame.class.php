@@ -258,8 +258,7 @@ abstract class we_modules_frame{
 	/* process vars & commands
 	 */
 
-	public function process(){
-		$jscmd = new we_base_jsCmd();
+	public function process(we_base_jsCmd $jscmd){
 		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands($jscmd);
