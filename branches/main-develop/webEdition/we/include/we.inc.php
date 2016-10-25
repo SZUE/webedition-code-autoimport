@@ -66,6 +66,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc
 we_base_request::registerTables([
 	'CATEGORY_TABLE' => CATEGORY_TABLE,
 	'CAPTCHA_TABLE' => CAPTCHA_TABLE,
+	'CAPTCHADEF_TABLE' => CAPTCHADEF_TABLE,
 	'CLEAN_UP_TABLE' => CLEAN_UP_TABLE,
 	'CONTENT_TABLE' => CONTENT_TABLE,
 	'DOC_TYPES_TABLE' => DOC_TYPES_TABLE,
