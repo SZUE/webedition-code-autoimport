@@ -1393,26 +1393,6 @@ function formFileChooser() {
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
-	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
-
-		$js = we_html_element::jsElement('
-function formDirChooser() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	switch (args[0]) {
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
-		break;
-	}
-}');
-
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formDirChooser('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
-	}
-
 	function getHTMLCustomer(){
 
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
@@ -1453,9 +1433,6 @@ top.customers="' . implode(',', $customers) . '";');
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){
-
-		$input_size = 5;
-
 		$select = new we_html_select(['name' => $name . "_select", 'onchange' => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0",
 			"style" => "width:200px;"]);
 		$select->addOption("", "");
@@ -1464,7 +1441,7 @@ top.customers="' . implode(',', $customers) . '";');
 		}
 		$table = new we_html_table(['class' => 'default', "width" => 250], 1, 3);
 
-		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
+		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, 5, $value));
 		$table->setCol(0, 1, ['style' => 'padding-left:10px;'], $select->getHtml());
 
 		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);

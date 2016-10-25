@@ -271,7 +271,7 @@ abstract class we_root extends we_class{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $label = true, $disabled = false){
+	protected function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $label = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
 		$label = ($label === true ? g_l('weClass', '[dir]') : $label);
 

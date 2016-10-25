@@ -2104,7 +2104,7 @@ class we_object extends we_document{
 
 	/* creates the DirectoryChoooser field with the 'browse'-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = '', $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $pathID = 0, $identifier = ''){
+	protected function formDirChooser($width = '', $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $pathID = 0, $identifier = ''){
 		$path = id_to_path($pathID);
 
 		if(!$table){
