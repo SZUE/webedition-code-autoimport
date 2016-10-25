@@ -167,7 +167,6 @@ switch($mod){
 		echo $weFrame->getHTML($what, $mode, $type);
 		return;
 	case 'messaging':
-
 		if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
 			$we_transaction = 0;
 		}

@@ -132,6 +132,7 @@ abstract class we_base_delete{
 			//no break
 			case TEMPLATES_TABLE:
 				we_base_file::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
+				$DB_WE->query('DELETE FROM ' . CAPTCHADEF_TABLE . ' WHERE ID=' . $id);
 				break;
 		}
 

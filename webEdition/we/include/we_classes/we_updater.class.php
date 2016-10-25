@@ -372,6 +372,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
 			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
 		}
+
+		$db->query('DELETE FROM ' . CAPTCHADEF_TABLE . ' WHERE ID NOT IN (SELECT ID FROM ' . TEMPLATES_TABLE . ')');
 		//FIXME: clean inconsistent objects
 	}
 
