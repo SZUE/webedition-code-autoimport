@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -67,6 +66,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc
 we_base_request::registerTables(array(
 	'CATEGORY_TABLE' => CATEGORY_TABLE,
 	'CAPTCHA_TABLE' => CAPTCHA_TABLE,
+	'CAPTCHADEF_TABLE' => CAPTCHADEF_TABLE,
 	'CLEAN_UP_TABLE' => CLEAN_UP_TABLE,
 	'CONTENT_TABLE' => CONTENT_TABLE,
 	'DOC_TYPES_TABLE' => DOC_TYPES_TABLE,
@@ -121,7 +121,7 @@ $GLOBALS['_we_active_integrated_modules'] = array_unique(array_merge($GLOBALS['_
 	we_base_moduleInfo::EDITOR,
 	we_base_moduleInfo::NAVIGATION,
 	we_base_moduleInfo::EXPORT
-		)));
+	)));
 
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
@@ -144,27 +144,27 @@ if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 }
 
 $GLOBALS['WE_LANGUAGE'] = (!empty($_SESSION['prefs']['Language']) ?
-				(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
-						$_SESSION['prefs']['Language'] :
-						//  bugfix #4229
-						($_SESSION['prefs']['Language'] = WE_LANGUAGE)) :
-				WE_LANGUAGE);
+	(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
+	$_SESSION['prefs']['Language'] :
+	//  bugfix #4229
+	($_SESSION['prefs']['Language'] = WE_LANGUAGE)) :
+	WE_LANGUAGE);
 
 define('STYLESHEET_MINIMAL', we_html_element::cssLink(LIB_DIR . 'additional/fontLiberation/stylesheet.css') .
-		we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
+	we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
 define('STYLESHEET', //we_html_element::cssLink(CSS_DIR . 'global.php') .
-		STYLESHEET_MINIMAL .
-		we_html_element::cssLink(CSS_DIR . 'webEdition.css')
+			 STYLESHEET_MINIMAL .
+	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
 );
 
 define('YAHOO_FILES', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset']) ?
-					$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+		$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){
@@ -179,14 +179,15 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$header = (!in_array($_SESSION['weS']['EditPageNr'], array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'switch_edit_page':
-			$header = (!in_array(we_base_request::_(we_base_request::INT, 'we_cmd', -1, 1), array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PROPERTIES)));
+			$header = (!in_array(we_base_request::_(we_base_request::INT, 'we_cmd', -1, 1), array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW,
+					we_base_constants::WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'load_editor':
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '__NO_TRANS__');
 			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
-					$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
-					$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
-					));
+				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
+				$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
+				));
 			break;
 		case '__default__':
 			$header = empty($GLOBALS['show_stylesheet']);

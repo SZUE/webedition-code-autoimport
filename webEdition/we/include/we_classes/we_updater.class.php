@@ -48,7 +48,7 @@ abstract class we_updater{
 	}
 
 	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
-		$db = $db? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$db->delTable(PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
@@ -106,7 +106,7 @@ abstract class we_updater{
 		//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
 			//this is from 6.3.9
-			$db = $db? : new DB_WE();
+			$db = $db ?: new DB_WE();
 
 			//change old tables to have different prim key
 			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
@@ -202,7 +202,7 @@ abstract class we_updater{
 	 */
 
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
-		$db = $db? : $GLOBALS['DB_WE'];
+		$db = $db ?: $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
@@ -235,11 +235,13 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
 			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
 		}
+
+		$db->query('DELETE FROM ' . CAPTCHADEF_TABLE . ' WHERE ID NOT IN (SELECT ID FROM ' . TEMPLATES_TABLE . ')');
 		//FIXME: clean inconsistent objects
 	}
 
 	private static function updateCats(we_database_base $db = null){
-		$db = $db? : $GLOBALS['DB_WE'];
+		$db = $db ?: $GLOBALS['DB_WE'];
 
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
 			if(f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
@@ -261,7 +263,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function fixHistory(we_database_base $db = null){ //called from 6370/update6370.php
-		$db = $db? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
 			$tmp = $db->getAll(true);
@@ -292,7 +294,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	public static function meassure($name){
 		static $last = 0;
 		static $times = array();
-		$last = $last? : microtime(true);
+		$last = $last ?: microtime(true);
 		if($name == -1){
 			t_e('notice', 'time for updates', $times);
 			return;
@@ -303,7 +305,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function removeObsoleteFiles($path = ''){
-		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
+		$path = $path ?: WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(!is_file($path . 'del.files')){
 			return true;
 		}
