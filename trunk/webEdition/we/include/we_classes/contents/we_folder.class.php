@@ -563,8 +563,12 @@ class we_folder extends we_root{
 		return true;
 	}
 
-	/* for internal use */
-
+	/**
+	 * Create the folders on the server in the public and the site directory.
+	 * Note: for internal use
+	 * 
+	 * @return boolean true on success, false in case of failure
+	 */
 	private function saveToServer(){
 		$isTemplFolder = false;
 		switch($this->Table){
