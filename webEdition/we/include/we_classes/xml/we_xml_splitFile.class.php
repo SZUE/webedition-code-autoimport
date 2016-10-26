@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@
  * The xml document will be split into self-contained XML files.
  */
 class we_xml_splitFile extends we_xml_parser{
-
 	/**
 	 * Number of exported XML files.
 	 * @var        int
@@ -125,10 +123,9 @@ class we_xml_splitFile extends we_xml_parser{
 	function exportAsXML($node, $dpth, $lvl = 1){
 		// Calculate the indentation.
 		//$indent = str_repeat(' ', ($lvl * $this->indent));
-
 		// Add the start tag of the new root element.
 		$root = $this->nodes[$node];
-		$xml =  '<' . $root['name'] . $this->getAttributeString($root) . ">\n";
+		$xml = '<' . $root['name'] . $this->getAttributeString($root) . ">\n";
 
 		// Run through the child nodes.
 		foreach($this->nodes[$node]["children"] as $tagname => $id){
@@ -144,9 +141,9 @@ class we_xml_splitFile extends we_xml_parser{
 				if(!$this->hasChildNodes($absoluteXPath)){
 
 					// Add the additional indentation.
-					/*for($i = 0; $i < $this->indent; $i++){
-						$xml .= ' ';
-					}*/
+					/* for($i = 0; $i < $this->indent; $i++){
+					  $xml .= ' ';
+					  } */
 					// Add the start tag of the element.
 					$xml .= '<' . $tagname . $this->getAttributeString($sibling);
 					$hasText = $this->hasCdata($absoluteXPath);
@@ -172,7 +169,7 @@ class we_xml_splitFile extends we_xml_parser{
 			}
 		}
 		// Add the end tag of the new root element.
-		$xml .=  '</' . $root["name"] . '>';
+		$xml .= '</' . $root["name"] . '>';
 
 		return $xml;
 	}
@@ -237,7 +234,7 @@ class we_xml_splitFile extends we_xml_parser{
 	 * @return     string
 	 */
 	function replaceEntities($text){
-		return strtr($text, array('<' => '&lt;', '>' => '&gt;', '&nbsp;' => '&amp;nbsp;'));
+		return strtr($text, array('<' => '&lt;', '>' => '&gt;', '&nbsp;' => '&amp;nbsp;', '&' => '&amp;'));
 	}
 
 }
