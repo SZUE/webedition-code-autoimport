@@ -689,7 +689,7 @@ abstract class we_base_imageEdit{
 		}
 		$imgSrc = '/' . ltrim($imgSrc, '/');
 
-		$imgPath = $_SERVER ['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $imgSrc;
+		$imgPath = WEBEDITION_PATH . '..' . $imgSrc;
 		$path_parts = pathinfo($imgPath);
 		if(isset($path_parts['extension']) && ( $path_parts ['extension'] === 'svg' || $path_parts['extension'] === 'svgz')){
 			if(file_exists($imgPath)){

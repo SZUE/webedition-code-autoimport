@@ -1262,7 +1262,7 @@ function handle_event(evt) {
 			//$hdns .= ' => 'v[cid]', 'value' => -2));
 			we_html_element::htmlHiddens(array(
 				'v[pfx_fn]' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']),
-				(isset($v['rdo_timestamp']) ? 'v[sTimeStamp]' : '') => $v['rdo_timestamp']));
+				(isset($v['rdo_timestamp']) ? 'v[sTimeStamp]' : '') => (isset($v['rdo_timestamp']) ? $v['rdo_timestamp']:'')));
 
 		$functions = "
 function set_button_state() {
