@@ -76,11 +76,7 @@ class we_navigation_items{
 	}
 
 	private function initRulesFromDB(){
-		$newRules = we_navigation_ruleControl::getAllNavigationRules();
-
-		foreach($newRules as $rule){
-			$this->currentRules[] = $rule;
-		}
+		$this->currentRules = we_navigation_ruleControl::getAllNavigationRules();
 		we_navigation_cache::saveRules($this->currentRules);
 	}
 

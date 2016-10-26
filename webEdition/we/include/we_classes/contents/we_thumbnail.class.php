@@ -401,7 +401,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	public static function getThumbDirectory($realpath = false){
-		return ($realpath ? WEBEDITION_PATH . '../' : '') . '/' . ltrim(preg_replace('#^\.?(.*)$#', '${1}', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
+		return ($realpath ? realpath(WEBEDITION_PATH . '..') : '') . '/' . ltrim(preg_replace('#^\.?(.*)$#', '${1}', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
 	}
 
 	/**
@@ -433,9 +433,9 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? WEBEDITION_PATH . '../' : '') .
+		return ($withDocumentRoot ? realpath(WEBEDITION_PATH . '..') : '') .
 			$this->outputPath .
-			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '../' . $this->outputPath) : time()) :
+			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '..' . $this->outputPath) : time()) :
 				'');
 	}
 

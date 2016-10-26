@@ -87,6 +87,7 @@ class we_navigation_rule extends we_base_model{
 
 	function we_save(){
 		parent::save($this->ID ? false : true);
+		we_navigation_cache::saveRules(we_navigation_ruleControl::getAllNavigationRules());
 	}
 
 	function processVariables(){

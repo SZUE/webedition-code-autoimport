@@ -864,7 +864,7 @@ class we_import_wizard extends we_import_wizardBase{
 			($attrs ? $this->getHdns('attributes', $attrs) : '') .
 			//$hdns .= ' => 'v[cid]', 'value' => -2));
 			we_html_element::htmlHiddens(['v[pfx_fn]' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']),
-					(isset($v['rdo_timestamp']) ? 'v[sTimeStamp]' : '') => $v['rdo_timestamp'],
+					(isset($v['rdo_timestamp']) ? 'v[sTimeStamp]' : '') => (isset($v['rdo_timestamp']) ? $v['rdo_timestamp']:''),
 					'v[btnState_next]' => ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? 'enabled' : 'disabled'),
 					'v[btnState_back]' => 'enabled'
 				]);
