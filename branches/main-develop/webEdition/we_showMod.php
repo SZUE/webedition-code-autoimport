@@ -146,12 +146,8 @@ switch($mod){
 			case 'ruleContent':
 			case 'ruleFrameset':
 				we_html_tools::protect(['EDIT_NAVIAGTION_RULES']);
-
 				$weFrame = new we_navigation_ruleFrames();
-				ob_start();
-				$weFrame->Controller->processVariables();
-				$weFrame->Controller->processCommands($jscmd);
-				$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
+				$weFrame->process($jscmd);
 				break;
 			default:
 				$weFrame = new we_navigation_frames('');

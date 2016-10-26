@@ -68,7 +68,7 @@ class we_navigation_ruleFrames{
 		asort($rules);
 
 		$parts = [
-			[
+				[
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
@@ -163,8 +163,7 @@ class we_navigation_ruleFrames{
 
 			$weAcSelector = $yuiSuggest->getHTML();
 
-			$formTable .=
-				'<tr id="trClassID">
+			$formTable .= '<tr id="trClassID">
 	<td class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_class]') . '</td>
 	<td colspan="3">' . $weAcSelector . '</td>
 </tr>
@@ -195,7 +194,8 @@ var dependencies = {
 	' . we_navigation_navigation::DYN_DOCTYPE . ': ["FolderID", "DoctypeID", "Categories"]
 };
 ') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)", 'class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)",
+					'class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
 							'cmd' => '',
 							'ID' => '0'
 						]) .
@@ -209,7 +209,7 @@ var dependencies = {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 
-		$table = new we_html_table([ 'id' => 'CategoriesBlock', 'style' => 'display: block;', 'class' => 'default withSpace'], 2, 1);
+		$table = new we_html_table(['id' => 'CategoriesBlock', 'style' => 'display: block;', 'class' => 'default withSpace'], 2, 1);
 
 		$table->setColContent(0, 0, we_html_element::htmlDiv([
 				'id' => 'categories',
@@ -230,6 +230,13 @@ categories_edit.addVariant();
 document.we_form.CategoriesControl.value = categories_edit.name;
 categories_edit.showVariant(0);
 		');
+	}
+
+	public function process(we_base_jsCmd $jscmd){
+		ob_start();
+		$this->Controller->processVariables();
+		$this->Controller->processCommands($jscmd);
+		$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
 	}
 
 }

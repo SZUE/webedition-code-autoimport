@@ -793,7 +793,7 @@ abstract class we_root extends we_class{
 	 */
 
 	public function getRealPath($old = false){
-		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' : TEMPLATES_PATH) .
+		return (($this->Table == FILE_TABLE) ? realpath(WEBEDITION_PATH . '..') : TEMPLATES_PATH) .
 			($old ? $this->OldPath : $this->getPath());
 	}
 

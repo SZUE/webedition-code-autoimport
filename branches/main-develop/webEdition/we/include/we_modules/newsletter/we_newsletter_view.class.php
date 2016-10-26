@@ -192,7 +192,6 @@ var frameSet="' . $this->frameset . '";
 	}
 
 	function getJSProperty($load = ''){
-
 		return
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load, ['loadVarNewsletter_property', 'data-nlView' => setDynamicVar([
@@ -742,6 +741,73 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		}
 	}
 
+	private function processVariablesGroups($groups){
+		$this->newsletter->groups = [];
+
+		if($groups == 0){
+			$this->newsletter->addGroup();
+		}
+
+		for($i = 0; $i < $groups; $i++){
+			$this->newsletter->addGroup();
+		}
+
+		$fields_names = ['fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes'];
+
+		foreach($this->newsletter->groups as $gkey => &$gval){
+			// persistens
+			$gval->NewsletterID = $this->newsletter->ID;
+
+			foreach($gval->persistents as $per => $type){
+				$varname = 'group' . $gkey . '_' . $per;
+				$gval->$per = we_base_request::_($type, $varname, $gval->$per);
+			}
+
+			// Filter
+			$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey] ++ : 0);
+			if($count){
+				for($i = 0; $i < $count; $i++){
+					$new = [];
+
+					foreach($fields_names as $field){
+						$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
+
+						if(($tmp = we_base_request::_(we_base_request::RAW_CHECKED, $varname)) !== false){
+							$new[$field] = $tmp;
+						}
+					}
+
+					if($new){
+						$gval->appendFilter($new);
+						$gval->preserveFilter();
+					}
+				}
+			}
+		}
+		unset($gval);
+	}
+
+	private function processVariablesBlocks($blocks){
+		$this->newsletter->blocks = [];
+
+		if($blocks == 0){
+			$this->newsletter->addBlock();
+		}
+
+		for($i = 0; $i < $blocks; $i++){
+			$this->newsletter->addBlock();
+		}
+
+		foreach($this->newsletter->blocks as $skey => &$sval){
+			$sval->NewsletterID = $this->newsletter->ID;
+
+			foreach($sval->persistents as $per => $type){
+				$varname = 'block' . $skey . '_' . $per;
+				$sval->$per = we_base_request::_($type, $varname, $sval->$per);
+			}
+		}
+	}
+
 	function processVariables(){
 		if(($uid = we_base_request::_(we_base_request::STRING, 'wname'))){
 			$this->uid = $uid;
@@ -759,72 +825,10 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 		if(($groups = we_base_request::_(we_base_request::INT, 'groups')) !== false){
-
-			$this->newsletter->groups = [];
-
-			if($groups == 0){
-				$this->newsletter->addGroup();
-			}
-
-			for($i = 0; $i < $groups; $i++){
-				$this->newsletter->addGroup();
-			}
-
-			$fields_names = ['fieldname', 'operator', 'fieldvalue', 'logic', 'hours', 'minutes'];
-
-			foreach($this->newsletter->groups as $gkey => &$gval){
-				// persistens
-				$gval->NewsletterID = $this->newsletter->ID;
-
-				foreach($gval->persistents as $per => $type){
-					$varname = 'group' . $gkey . '_' . $per;
-					$gval->$per = we_base_request::_($type, $varname, $gval->$per);
-				}
-
-				// Filter
-				$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey] ++ : 0);
-				if($count){
-					for($i = 0; $i < $count; $i++){
-						$new = [];
-
-						foreach($fields_names as $field){
-							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
-
-							if(($tmp = we_base_request::_(we_base_request::RAW_CHECKED, $varname)) !== false){
-								$new[$field] = $tmp;
-							}
-						}
-
-						if($new){
-							$gval->appendFilter($new);
-							$gval->preserveFilter();
-						}
-					}
-				}
-			}
-			unset($gval);
+			$this->processVariablesGroups($groups);
 		}
 		if(($blocks = we_base_request::_(we_base_request::INT, 'blocks')) !== false){
-
-			$this->newsletter->blocks = [];
-
-			if($blocks == 0){
-				$this->newsletter->addBlock();
-			}
-
-			for($i = 0; $i < $blocks; $i++){
-				$this->newsletter->addBlock();
-			}
-
-			foreach($this->newsletter->blocks as $skey => &$sval){
-				$sval->NewsletterID = $this->newsletter->ID;
-
-				foreach($sval->persistents as $per => $type){
-					$varname = 'block' . $skey . '_' . $per;
-					$sval->$per = we_base_request::_($type, $varname, $sval->$per);
-				}
-			}
-			unset($gval);
+			$this->processVariablesBlocks($blocks);
 		}
 	}
 
