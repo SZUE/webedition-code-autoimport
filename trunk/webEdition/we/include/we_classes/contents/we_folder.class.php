@@ -190,7 +190,7 @@ class we_folder extends we_root{
 					}
 				}
 			}
-			
+
 			// Eventually initialize the folder object
 			$this->we_new($tblName, $last_pid, $folderName);
 			$this->IsClassFolder = $last_pid == 0;
@@ -573,7 +573,7 @@ class we_folder extends we_root{
 			case FILE_TABLE:
 				$path = $this->getPath();
 				// creates the folder on the local machine in the root-dir
-				if(!we_base_file::createLocalFolderByPath(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..') . $path)){
+				if(!we_base_file::createLocalFolderByPath(($isTemplFolder ? TEMPLATES_PATH : realpath(WEBEDITION_PATH . '..')) . $path)){
 					return false;
 				}
 				if(!$isTemplFolder && $this->urlMap){
@@ -661,7 +661,7 @@ class we_folder extends we_root{
 						preg_replace($replace, array_keys($replace), $path, 1, $cnt) :
 						$path;
 			return ($cnt ? getServerProtocol() . ':' : '') . $ret;
-	}	
+	}
 
 	public function getPropertyPage(){
 		$parts = array(
