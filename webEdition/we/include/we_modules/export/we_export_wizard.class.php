@@ -835,8 +835,8 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, 'javascript:top.load.location=\'' . $this->frameset . '?pnt=load&cmd=back&step=' . $step . '\';') .
-						we_html_button::create_button(we_html_button::NEXT, 'javascript:top.load.location=\'' . $this->frameset . '?pnt=load&cmd=next&step=' . $step . '\';'), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
+						we_html_button::create_button(we_html_button::BACK, "javascript:top.load.location='" . $this->frameset . '?pnt=load&cmd=back&step=' . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location='" . $this->frameset . '?pnt=load&cmd=next&step=' . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 		}
 

@@ -82,7 +82,7 @@ if($csv){
 		$mdc .= '<table class="default">';
 		while($DB_WE->next_record()){
 			$mdc .= '<tr><td class="mdcIcon" data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA([
-					"href" => 'javascript:WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
+					"href" => "javascript:WE().layout.weEditorFrameController.openDocument('" . $table . "','" . $DB_WE->f('ID') . "','" . $DB_WE->f('ContentType') . "');",
 					"title" => $DB_WE->f("Path"),
 					"style" => "color:#000000;text-decoration:none;"
 					], $DB_WE->f("Path")) . '</td></tr>';

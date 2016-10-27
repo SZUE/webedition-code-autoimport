@@ -998,7 +998,7 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
 			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')");
-			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value=\'\'');
+			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value = 0;document.forms[0].elements.imagestartid_default_text.value=''");
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -1403,7 +1403,7 @@ function build_dialog($selected_setting = 'ui'){
 				$html = '<table class="default">
 							<tr>
 								<td>' . $formmail_log->getHtml() . '</td>
-								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', "javascript:we_cmd('show_formmail_log')") . '</td>
 							</tr>
 						</table>';
 				$settings[] = ['html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1];
@@ -1451,7 +1451,7 @@ function build_dialog($selected_setting = 'ui'){
 				$html = '<table class="default">
 							<tr>
 								<td>' . $formmail_block->getHtml() . '</td>
-								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', "javascript:we_cmd('show_formmail_block_log')") . '</td>
 							</tr>
 						</table>';
 
@@ -1822,7 +1822,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
 			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)");
-			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = \'\'');
+			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = ''");
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -1939,7 +1939,7 @@ function build_dialog($selected_setting = 'ui'){
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
 			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', 'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]','SECURITY_LIMIT_CUSTOMER_REDIRECT_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
-			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
+			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value = 0;document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value = ''"), 4);
 
 			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $yuiSuggest->getHTML());
 

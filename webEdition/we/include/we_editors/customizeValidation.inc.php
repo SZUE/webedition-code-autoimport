@@ -83,9 +83,9 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
 	$table = '<table>
     <tr><td style="padding-right:10px;">' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, [
 		'onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'], "value", 320) . '</td>
-        <td style="vertical-align:top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
+        <td style="vertical-align:top">' . we_html_button::create_button('new_service', "javascript:we_cmd('customValidationService','newService');")
 		. '<div style="height:10px;"></div>'
-		. we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', '', 0, 0, '', '', (empty($services))) . '
+		. we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('customValidationService','deleteService');", '', 0, 0, '', '', (empty($services))) . '
         </td>
     </tr>
     </table>' .

@@ -811,7 +811,7 @@ function setTab(tab) {
 					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
 					we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
 					) .
 					'</form>'));
@@ -905,8 +905,8 @@ function setTab(tab) {
 			<td>' . $shopVat->textTerritory . '</td>
 			<td>' . $shopVat->territory . '</td>
 			<td>' . g_l('global', ($shopVat->standard ? '[yes]' : '[no]')) . '</td>
-			<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'edit\',\'' . $shopVat->id . '\');') . '</td>
-			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $shopVat->id . '\');') . '</td>
+			<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit','" . $shopVat->id . "');") . '</td>
+			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delete','" . $shopVat->id . "');") . '</td>
 		</tr>';
 				unset($shopVat);
 			}
@@ -917,7 +917,7 @@ function setTab(tab) {
 			$vatTable = '';
 		}
 
-		$plusBut = we_html_button::create_button(we_html_button::PLUS, 'javascript:we_cmd(\'addVat\')');
+		$plusBut = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addVat')");
 
 // formular to edit the vats
 		$selPredefinedNames = we_html_tools::htmlSelect(
@@ -962,7 +962,7 @@ function setTab(tab) {
 </tr>
 <tr>
 	<td></td>
-	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') . ' ' . we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'cancel_notclose\');') . '</td>
+	<td>' . we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_notclose');") . ' ' . we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('cancel_notclose');") . '</td>
 </tr>
 </table>
 </form>';
@@ -983,7 +983,7 @@ function setTab(tab) {
 
 		return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds() .
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody([
-					'class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+					'class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));
 	}
 
@@ -1081,7 +1081,7 @@ function setTab(tab) {
 					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />' .
 					we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
 					) . '</form>'));
 	}
@@ -1307,7 +1307,7 @@ function setTab(tab) {
 					'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
 					we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_notclose');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[shopcats][title_editorShopCats]'), '', '', 'scroll'
 					) . '</form>'));
 	}
@@ -1386,9 +1386,9 @@ function setTab(tab) {
 		<td>' . we_html_tools::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, ['onchange' => 'document.location=WE().consts.dirs.WEBEDITION_DIR + \'we_showMod.php?mod=shop&pnt=edit_shop_shipping&we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'], 'value', 280) . '</td>
 		<td style="width:10px;"></td>
 		<td style="vertical-align:top">'
-				. we_html_button::create_button('new_entry', 'javascript:we_cmd(\'newEntry\');') .
+				. we_html_button::create_button('new_entry', "javascript:we_cmd('newEntry');") .
 				'<div style="margin:5px;"></div>' .
-				we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete\')') .
+				we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete')") .
 				'</td>
 	</tr>
 	</table>'
@@ -1443,7 +1443,7 @@ function setTab(tab) {
 	' . $tblPart . '
 		</tbody>
 	</table>' .
-				we_html_button::create_button(we_html_button::PLUS, 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
+				we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addShippingCostTableRow','12');"),
 				'noline' => 1
 			];
 			$parts[] = ['headline' => 'Standard',
@@ -1486,7 +1486,7 @@ cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 ') . (isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
 		<input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />' .
 					we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
 					) . '</form>'));
 	}

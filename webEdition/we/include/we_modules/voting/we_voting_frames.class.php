@@ -435,7 +435,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 		$table->setCol(7, 1, ['id' => 'delete_ip_data', 'style' => 'display: ' . ($datasize > 0 ? 'block' : 'none')], we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting', '[delete_ipdata_text]'), we_html_element::htmlSpan([
 						'id' => 'ip_mem_size'], $datasize)), we_html_tools::TYPE_INFO, 500, false, 100) .
-			we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'reset_ipdata\')')
+			we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('reset_ipdata')")
 		);
 		$table->setCol(9, 0, ['colspan' => 2, 'style' => 'padding-top:10px;'], we_html_forms::radiobutton(2, ($this->View->voting->RevoteControl == 2 ? true : false), 'RevoteControl', g_l('modules_voting', '[userid_method]'), true, "defaultfont", "top.content.setHot();"));
 
@@ -449,7 +449,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
-		$table = we_html_element::htmlDiv(['id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'], we_html_button::formatButtons(we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')') . we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'))
+		$table = we_html_element::htmlDiv(['id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'], we_html_button::formatButtons(we_html_button::create_button('logbook', "javascript:we_cmd('show_log')") . we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_log')"))
 		);
 
 		$parts[] = ['headline' => g_l('modules_voting', '[control]'),

@@ -183,7 +183,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 		$width_size = 378;
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);opener.selectCategories();')");
-		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;if(typeof 'selectCategories' !== 'undefined'){selectCategories()};"));
 
 		$cats = makeArrayFromCSV($this->imageEditProps['categories']) ?
 			id_to_path($cats, CATEGORY_TABLE) : [];

@@ -312,7 +312,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$tlist = array_unique($temps);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, "javascript:goTemplate(document.we_form.elements." . $fieldname . ".options[document.we_form.elements." . $fieldname . ".selectedIndex].value)") : '');
 
 		if($tlist){
 			$foo = [];
