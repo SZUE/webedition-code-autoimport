@@ -200,7 +200,7 @@ class we_schedpro{
 					$rootDirID = 0;
 				}
 
-				$button = we_html_button::create_button(we_html_button::SELECT, 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $idname . '\',\'' . $textname . '\',\'setHot\',\'\',\'' . $rootDirID . '\')');
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $GLOBALS['we_doc']->Table . "','" . $idname . "','" . $textname . "','setHot',''," . $rootDirID . ")");
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');

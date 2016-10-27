@@ -71,7 +71,7 @@ function we_tag_linkToSeeMode(array $attribs){
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml]) .
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml])
 					) .
-					getHtmlTag('a', ['href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
+					getHtmlTag('a', ['href' => "javascript:document.forms['startSeeMode_" . $type . '_' . $id . "'].submit();",
 						'xml' => $xml
 						], $value);
 			} else { //	customer is no user
