@@ -1262,8 +1262,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				case 'Charset':
 					break;
 				default:
-					switch($element["type"]){
-						case "txt" :
+					switch($element['type']){
+						case 'txt' :
 							$GLOBALS['we_doc']->elements[$fieldname]['dat'] = self::_external_to_internal($element['dat']);
 							break;
 					}
@@ -1328,10 +1328,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$we_doc = we_document::initDoc([], $contentType);
 
 		// initialize Path Information
-		$GLOBALS["we_doc"]->we_new();
-		$GLOBALS["we_doc"]->ContentType = $contentType;
-		$GLOBALS["we_doc"]->Text = we_import_functions::correctFilename(basename($path));
-		$GLOBALS["we_doc"]->Path = $destinationPath;
+		$GLOBALS['we_doc']->we_new();
+		$GLOBALS['we_doc']->ContentType = $contentType;
+		$GLOBALS['we_doc']->Text = we_import_functions::correctFilename(basename($path));
+		$GLOBALS['we_doc']->Path = $destinationPath;
 		// get Data of File
 		switch($contentType){
 			case we_base_ContentTypes::IMAGE:
@@ -1348,67 +1348,67 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		}
 		$regs = [];
 		if($contentType === we_base_ContentTypes::FOLDER){
-			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
+			$GLOBALS['we_doc']->Filename = $GLOBALS['we_doc']->Text;
 		} elseif(preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)){
-			$GLOBALS["we_doc"]->Extension = $regs[2];
-			$GLOBALS["we_doc"]->Filename = $regs[1];
+			$GLOBALS['we_doc']->Extension = $regs[2];
+			$GLOBALS['we_doc']->Filename = $regs[1];
 		} else {
-			$GLOBALS["we_doc"]->Extension = '';
-			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
+			$GLOBALS['we_doc']->Extension = '';
+			$GLOBALS['we_doc']->Filename = $GLOBALS['we_doc']->Text;
 		}
 
-		$GLOBALS["we_doc"]->ParentID = $parentID;
-		$GLOBALS["we_doc"]->ParentPath = $GLOBALS["we_doc"]->getParentPath();
-		$id = path_to_id($GLOBALS["we_doc"]->Path);
+		$GLOBALS['we_doc']->ParentID = $parentID;
+		$GLOBALS['we_doc']->ParentPath = $GLOBALS['we_doc']->getParentPath();
+		$id = path_to_id($GLOBALS['we_doc']->Path);
 
 		if($id){
 			if($sameName === 'overwrite' || $contentType === we_base_ContentTypes::FOLDER){ // folders we dont have to rename => we can use the existing folder
-				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
-			} elseif($sameName === "rename"){
+				$GLOBALS['we_doc']->initByID($id, FILE_TABLE);
+			} elseif($sameName === 'rename'){
 				$z = 0;
-				$footext = $GLOBALS["we_doc"]->Filename . '_' . $z . $GLOBALS["we_doc"]->Extension;
+				$footext = $GLOBALS['we_doc']->Filename . '_' . $z . $GLOBALS['we_doc']->Extension;
 				while(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($parentID))){
 					$z++;
-					$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
+					$footext = $GLOBALS['we_doc']->Filename . '_' . $z . $GLOBALS['we_doc']->Extension;
 				}
-				$GLOBALS["we_doc"]->Text = $footext;
-				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename . '_' . $z;
-				$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getParentPath() . (($GLOBALS["we_doc"]->getParentPath() != '/') ? '/' : '') . $GLOBALS["we_doc"]->Text;
+				$GLOBALS['we_doc']->Text = $footext;
+				$GLOBALS['we_doc']->Filename = $GLOBALS['we_doc']->Filename . '_' . $z;
+				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != '/') ? '/' : '') . $GLOBALS['we_doc']->Text;
 			} else {
-				return ["filename" => $GLOBALS["we_doc"]->Path,
-					"error" => "same_name"
+				return ['filename' => $GLOBALS['we_doc']->Path,
+					'error' => 'same_name'
 				];
 			}
 		}
 
-		$GLOBALS["we_doc"]->IsSearchable = 0;
+		$GLOBALS['we_doc']->IsSearchable = 0;
 
 		// initialize Content
 		switch($contentType){
 			case we_base_ContentTypes::WEDOCUMENT :
-				self::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
-				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
+				self::_importWebEditionPage($data, $GLOBALS['we_doc'], $sourcePath);
+				$GLOBALS['we_doc']->IsSearchable = $isSearchable;
 				break;
 			case we_base_ContentTypes::FOLDER:
 				break;
 			case we_base_ContentTypes::IMAGE :
 				// getting attributes of image
-				$foo = $GLOBALS["we_doc"]->getimagesize($path);
-				$GLOBALS["we_doc"]->setElement('width', $foo[0], 'attrib', 'bdid');
-				$GLOBALS["we_doc"]->setElement('height', $foo[1], 'attrib', 'bdid');
-				$GLOBALS["we_doc"]->setElement('origwidth', $foo[0], 'attrib', 'bdid');
-				$GLOBALS["we_doc"]->setElement('origheight', $foo[1], 'attrib', 'bdid');
-				$GLOBALS["we_doc"]->Thumbs = $thumbs;
-				$newWidth = ($width && $widthSelect === "percent" ?
-					round(($GLOBALS["we_doc"]->getElement('origwidth', 'bdid') / 100) * $width) :
+				$foo = $GLOBALS['we_doc']->getimagesize($path);
+				$GLOBALS['we_doc']->setElement('width', $foo[0], 'attrib', 'bdid');
+				$GLOBALS['we_doc']->setElement('height', $foo[1], 'attrib', 'bdid');
+				$GLOBALS['we_doc']->setElement('origwidth', $foo[0], 'attrib', 'bdid');
+				$GLOBALS['we_doc']->setElement('origheight', $foo[1], 'attrib', 'bdid');
+				$GLOBALS['we_doc']->Thumbs = $thumbs;
+				$newWidth = ($width && $widthSelect === 'percent' ?
+					round(($GLOBALS['we_doc']->getElement('origwidth', 'bdid') / 100) * $width) :
 					$width);
 
-				$newHeight = ($height && $widthSelect === "percent" ?
-					round(($GLOBALS["we_doc"]->getElement('origheight', 'bdid') / 100) * $height) :
+				$newHeight = ($height && $widthSelect === 'percent' ?
+					round(($GLOBALS['we_doc']->getElement('origheight', 'bdid') / 100) * $height) :
 					$height);
 
-				if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement('origheight', 'bdid')))){
-					$GLOBALS["we_doc"]->resizeImage($newWidth, $newHeight, $quality, $keepRatio);
+				if(($newWidth && ($newWidth != $GLOBALS['we_doc']->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $GLOBALS['we_doc']->getElement('origheight', 'bdid')))){
+					$GLOBALS['we_doc']->resizeImage($newWidth, $newHeight, $quality, $keepRatio);
 					$width = $newWidth;
 					$height = $newHeight;
 				}
@@ -1479,20 +1479,19 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$this->_fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
 
-
 		$tmp = [];
 		foreach($this->files as $e){
-			if($e["contentType"] === we_base_ContentTypes::FOLDER){
+			if($e['contentType'] === we_base_ContentTypes::FOLDER){
 				$tmp[] = $e;
 			}
 		}
 		foreach($this->files as $e){
-			if($e["contentType"] != we_base_ContentTypes::FOLDER && $e["contentType"] != we_base_ContentTypes::WEDOCUMENT){
+			if($e['contentType'] != we_base_ContentTypes::FOLDER && $e['contentType'] != we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
 		foreach($this->files as $e){
-			if($e["contentType"] == we_base_ContentTypes::WEDOCUMENT){
+			if($e['contentType'] == we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
@@ -1519,15 +1518,17 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// go throuh all files of the directory
 		$d = dir($importDirectory);
+		$thumbdir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 		while(false !== ($entry = $d->read())){
 			switch($entry){
+				case $thumbdir:
+				case '.':
+				case '..':
+					continue 2;
 				default:
 					if(!((strlen($entry) >= 2) && substr($entry, 0, 2) === "._")){
 						break;
 					}
-				case '.':
-				case '..':
-					continue 2;
 			}
 			// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR . $entry;
@@ -1550,10 +1551,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						if($this->createWePages){
 							$contentType = we_base_ContentTypes::WEDOCUMENT;
 							// webEdition files needs to be post processed (external links => internal links)
-							$this->postProcess[] = ["path" => $PathOfEntry,
-								"contentType" => "post/process",
-								"sourceDir" => $this->from,
-								"destDirID" => $this->to
+							$this->postProcess[] = [
+								'path' => $PathOfEntry,
+								'contentType' => "post/process",
+								'sourceDir' => $this->from,
+								'destDirID' => $this->to
 							];
 						}
 						$importIt = true;
@@ -1600,41 +1602,42 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			}
 
 			if($importIt){
-				$this->files[] = ["path" => $PathOfEntry,
-					"contentType" => $contentType,
-					"sourceDir" => $this->from,
-					"destDirID" => $this->to,
-					"sameName" => $this->sameName,
-					"thumbs" => $this->thumbs,
-					"width" => $this->width,
-					"height" => $this->height,
-					"widthSelect" => $this->widthSelect,
-					"heightSelect" => $this->heightSelect,
-					"keepRatio" => $this->keepRatio,
-					"quality" => $this->quality,
-					"degrees" => $this->degrees,
-					"isSearchable" => $this->isSearchable,
-					"importMetadata" => $this->importMetadata
+				$this->files[] = [
+					'path' => $PathOfEntry,
+					'contentType' => $contentType,
+					'sourceDir' => $this->from,
+					'destDirID' => $this->to,
+					'sameName' => $this->sameName,
+					'thumbs' => $this->thumbs,
+					'width' => $this->width,
+					'height' => $this->height,
+					'widthSelect' => $this->widthSelect,
+					'heightSelect' => $this->heightSelect,
+					'keepRatio' => $this->keepRatio,
+					'quality' => $this->quality,
+					'degrees' => $this->degrees,
+					'isSearchable' => $this->isSearchable,
+					'importMetadata' => $this->importMetadata
 				];
 			}
 			if($contentType === we_base_ContentTypes::FOLDER){
 				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
 					$this->files[] = [
-						"path" => $PathOfEntry,
-						"contentType" => $contentType,
-						"sourceDir" => $this->from,
-						"destDirID" => $this->to,
-						"sameName" => $this->sameName,
-						"thumbs" => '',
-						"width" => '',
-						"height" => '',
-						"widthSelect" => '',
-						"heightSelect" => '',
-						"keepRatio" => '',
-						"quality" => '',
-						"degrees" => '',
-						"isSearchable" => false,
-						"importMetadata" => 0
+						'path' => $PathOfEntry,
+						'contentType' => $contentType,
+						'sourceDir' => $this->from,
+						'destDirID' => $this->to,
+						'sameName' => $this->sameName,
+						'thumbs' => '',
+						'width' => '',
+						'height' => '',
+						'widthSelect' => '',
+						'heightSelect' => '',
+						'keepRatio' => '',
+						'quality' => '',
+						'degrees' => '',
+						'isSearchable' => false,
+						'importMetadata' => 0
 					];
 					$this->depth++;
 					$this->_fillDirectories($PathOfEntry);
@@ -1651,9 +1654,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private function _getHiddensHTML(){
 		return
-			we_html_element::htmlHiddens(["we_cmd[0]" => "siteImport",
-				"cmd" => "buttons",
-				"step" => 1]);
+			we_html_element::htmlHiddens([
+				'we_cmd[0]' => 'siteImport',
+				'cmd' => 'buttons',
+				'step' => 1]);
 	}
 
 	private function _getFrameset(){

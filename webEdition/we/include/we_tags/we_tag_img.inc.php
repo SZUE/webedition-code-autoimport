@@ -122,7 +122,6 @@ function we_tag_img(array $attribs){
 	}
 
 	// TODO: we can use the same cmd for inserting image selected by d&d or selector!
-	$btnSelectWecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
 	$btnSelectCallback = "var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); top.we_cmd('reload_editpage','" . $name . "','change_image');";
 	$btnSelectWecmdenc3 = we_base_request::encCmd($btnSelectCallback);
 
@@ -191,7 +190,7 @@ function we_tag_img(array $attribs){
 				// disable edit_image_button
 				we_html_button::create_button(we_html_button::EDIT, "#", '', 0, 0, "", "", true)
 			) .
-			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $btnSelectWecmdenc1 . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")") .
+			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $fname . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')") .
 			'</td></tr></table>';
 	}
