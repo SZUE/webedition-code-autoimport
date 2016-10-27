@@ -78,7 +78,7 @@ class weSuggest{
 	var $checkFieldValue = true;
 	var $containerWidth = '';
 	var $containerWidthForAll = 0;
-	var $contentType = "folder";
+	var $contentType = we_base_ContentTypes::FOLDER;
 	var $inputAttribs = 0;
 	var $inputDisabled = 0;
 	var $inputId = '';
@@ -557,7 +557,7 @@ class weSuggest{
 		$this->inputMayBeEmpty[] = $inputMayBeEmpty;
 		switch($contentType){
 			case self::DirSelector:
-				[$this->ct, "folder"];
+				[$this->ct, we_base_ContentTypes::FOLDER];
 				break;
 			case self::DocSelector:
 				[$this->ct, "doc"];

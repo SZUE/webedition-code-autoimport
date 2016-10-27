@@ -31,13 +31,13 @@ function doClick(id, ct, indb) {
 	if (ct === 1) {
 		if (wasdblclick) {
 			top.fscmd.selectDir(id);
-			if (top.fileSelect.data.filter !== "folder" && top.fileSelect.data.filter !== "filefolder")
+			if (top.fileSelect.data.filter !== WE().consts.contentTypes.FOLDER && top.fileSelect.data.filter !== "filefolder")
 				top.fscmd.selectFile("");
 			setTimeout(function () {
 				wasdblclick = false;
 			}, 400);
 		} else {
-			if ((top.fileSelect.data.filter === "folder" || top.fileSelect.data.filter === "filefolder") && (!indb)) {
+			if ((top.fileSelect.data.filter === WE().consts.contentTypes.FOLDER || top.fileSelect.data.filter === "filefolder") && (!indb)) {
 				top.fscmd.selectFile(id);
 			}
 		}

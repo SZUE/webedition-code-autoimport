@@ -203,7 +203,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($owner), '', $this->db);
 
 				$variant_js .= 'owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
+					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? we_base_ContentTypes::FOLDER : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
 			}
 		}
 		$variant_js .= ' owners_label.showVariant(0);
@@ -677,7 +677,7 @@ function setVisible(id,visible){
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('ParentPath', $path, 'onchange=top.content.setHot();');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);

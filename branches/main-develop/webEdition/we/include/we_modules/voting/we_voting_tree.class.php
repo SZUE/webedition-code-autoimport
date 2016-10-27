@@ -62,7 +62,7 @@ class we_voting_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
-				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
+				'contenttype' => ($db->f('IsFolder') == 1 ? we_base_ContentTypes::FOLDER : 'we/voting'),
 			];
 
 			if($db->f('IsFolder') == 0){

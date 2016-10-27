@@ -841,7 +841,7 @@ weCollectionEdit = {
 							}
 							break;
 					}
-					if (data[0] === 'dragFolder' || (!this.we_doc.docRemCT || data[3] === 'folder' || this.we_doc.docRemCT.search(',' + data[3]) !== -1)) {
+					if (data[0] === 'dragFolder' || (!this.we_doc.docRemCT || data[3] === WE().consts.contentTypes.FOLDER || this.we_doc.docRemCT.search(',' + data[3]) !== -1)) {
 						this.resetItemColors(el, 'okPrev', type);
 					} else {
 						this.resetItemColors(el, 'nokPrev', type);
@@ -982,7 +982,7 @@ weCollectionEdit = {
 				}
 
 				if (WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable == data[1]) {
-					if (!this.we_doc.docRemCT || data[3] === 'folder' || this.we_doc.docRemCT.search(',' + data[3]) != -1) {
+					if (!this.we_doc.docRemCT || data[3] === WE().consts.contentTypes.FOLDER || this.we_doc.docRemCT.search(',' + data[3]) != -1) {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
 					} else {

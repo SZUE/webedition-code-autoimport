@@ -179,7 +179,7 @@ if(top.content.treeData){
 						'parentid' => $this->Model->ParentID,
 						'text' => $this->Model->Text,
 						'open' => false,
-						'contenttype' => ($this->Model->IsFolder ? 'folder' : 'we/navigation'),
+						'contenttype' => ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'we/navigation'),
 						'table' => NAVIGATION_TABLE,
 						'published' => 1,
 						'order' => $this->Model->Ordn

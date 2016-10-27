@@ -240,7 +240,7 @@ class we_banner_banner extends we_banner_base{
 	static function getBannerData($did, $paths, $dt, $cats, $bannername, we_database_base $db){
 		$parents = [];
 
-		we_readParents($did, $parents, FILE_TABLE, 'ContentType', 'folder', $db);
+		we_readParents($did, $parents, FILE_TABLE, 'ContentType', we_base_ContentTypes::FOLDER, $db);
 
 		$foo = '';
 		foreach($parents as $p){

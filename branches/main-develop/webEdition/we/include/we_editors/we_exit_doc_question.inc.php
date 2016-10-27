@@ -62,7 +62,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 			$documentTable = OBJECT_FILES_TABLE;
 		}
 		break;
-	case "folder":
+	case we_base_ContentTypes::FOLDER:
 	case we_base_ContentTypes::WEDOCUMENT:
 	case we_base_ContentTypes::HTML:
 	case we_base_ContentTypes::CSS:

@@ -80,7 +80,7 @@ function doClick(id) {
 
 	switch (table) {
 		case WE().consts.tables.FILE_TABLE:
-			if (wasdblclick && ct !== "folder") {
+			if (wasdblclick && ct !== WE().consts.contentTypes.FOLDER) {
 				WE().layout.openBrowser(id);
 				setTimeout(function () {
 					wasdblclick = false;

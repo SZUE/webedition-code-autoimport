@@ -81,7 +81,7 @@ class we_selector_file{
 		}
 
 		$this->db = new DB_WE();
-		$this->order = ($order ? : $this->order);
+		$this->order = ($order ?: $this->order);
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 //check table
@@ -101,7 +101,7 @@ class we_selector_file{
 				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder,IF(EXISTS(SELECT * FROM ' . CATEGORY_TABLE . ' cc WHERE cc.ParentID=' . CATEGORY_TABLE . '.ID),"we/categories","we/category") AS ContentType';
 				break;
 			case NAVIGATION_TABLE:
-				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/navigation") AS ContentType';
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"' . we_base_ContentTypes::FOLDER . '","we/navigation") AS ContentType';
 				break;
 			case USER_TABLE:
 				$this->fields = 'ID,ParentID,CONCAT(First," ", Second," (",Text,")") AS Text,Path,IsFolder,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
@@ -133,8 +133,8 @@ class we_selector_file{
 			$this->values = $data;
 
 			$this->dir = ($this->values['IsFolder'] ?
-					$this->id :
-					$this->values['ParentID']);
+				$this->id :
+				$this->values['ParentID']);
 
 			$this->path = $this->values['Path'];
 			return;
@@ -146,7 +146,7 @@ class we_selector_file{
 	protected function setDefaultDirAndID($setLastDir){
 		$rootDirID = (($ws = get_ws($this->table, true)) ? reset($ws) : 0);
 
-		$this->dir = $this->startID ? : ($setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID ) : $rootDirID);
+		$this->dir = $this->startID ?: ($setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID ) : $rootDirID);
 		$this->id = $this->dir;
 		$this->path = '';
 
@@ -224,7 +224,7 @@ class we_selector_file{
 		$this->jsoptions['data']['currentDir'] = $this->dir;
 		$this->jsoptions['data']['currentText'] = (isset($this->values["Text"]) ? $this->values["Text"] : '');
 		$this->jsoptions['data']['currentID'] = $this->id;
-		$this->jsoptions['data']['startPath'] = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
+		$this->jsoptions['data']['startPath'] = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir)) ?: '/';
 		$this->jsoptions['data']['currentPath'] = $this->path;
 		$this->jsoptions['data']['order'] = $this->order;
 		$this->jsoptions['data']['rootDirButsState'] = (($this->dir != 0));

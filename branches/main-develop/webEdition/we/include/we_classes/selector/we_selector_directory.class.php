@@ -131,7 +131,7 @@ class we_selector_directory extends we_selector_file{
 				intval($this->db->f("IsFolder")),
 				$this->db->f("Path"),
 				date(g_l('date', '[format][default]'), (is_numeric($this->db->f("ModDate")) ? $this->db->f("ModDate") : 0)),
-				"folder"
+				we_base_ContentTypes::FOLDER
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
@@ -536,7 +536,7 @@ class we_selector_directory extends we_selector_file{
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
 					}
 					break;
-				case "folder":
+				case we_base_ContentTypes::FOLDER:
 					$out .= $previewDefauts;
 					if(isset($folderFolders) && is_array($folderFolders) && !empty($folderFolders)){
 						$next = 0;

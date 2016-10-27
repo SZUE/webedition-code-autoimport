@@ -91,7 +91,7 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST, 'title' => g_l('weClass', '[docList]')]);
 			}
 
-			if(permissionhandler::hasPerm('CAN_SEE_SCHEDULER') && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != 'folder'){
+			if(permissionhandler::hasPerm('CAN_SEE_SCHEDULER') && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType !== we_base_ContentTypes::FOLDER){
 				$we_tabs->addTab('<i class="fa fa-lg fa-clock-o"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_SCHEDULER, 'title' => g_l('weClass', '[scheduler]')]);
 			}
 			if((in_array(we_base_constants::WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->ContentType == we_base_ContentTypes::HTML )) && permissionhandler::hasPerm("CAN_SEE_VALIDATION")){

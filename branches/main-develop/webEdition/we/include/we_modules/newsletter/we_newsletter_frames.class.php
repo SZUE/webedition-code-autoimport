@@ -769,7 +769,7 @@ function setTab(tab) {
 
 			$export_box = new we_html_table(['class' => 'default withSpace', 'style' => 'margin-top:10px;'], 2, 1);
 
-			$export_box->setCol(1, 0, [], $this->formFileChooser(200, "csv_dir" . $group, "/", "", "folder"));
+			$export_box->setCol(1, 0, [], $this->formFileChooser(200, "csv_dir" . $group, "/", "", we_base_ContentTypes::FOLDER));
 			$export_box->setCol(2, 0, [], $ok . $cancel);
 
 			$table->setCol(5, 0, ["colspan" => 3], we_html_element::htmlHiddens(["csv_export" => $group]) . $export_box->getHtml());
@@ -1001,7 +1001,7 @@ window.onload=extraInit;');
 		$table->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", 37, stripslashes($this->View->newsletter->Text), "", 'onKeyUp="top.content.hot=true;" id="yuiAcInputPathName" onblur="parent.edheader.weTabs.setTitlePath(this.value);"', 'text', self::def_width), g_l('modules_newsletter', '[name]')));
 		$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable($this->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=true;", $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
 
-		//$table->setCol(2,0,[],we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=true;","folder"),g_l('modules_newsletter','[dir]')));
+		//$table->setCol(2,0,[],we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=true;",we_base_ContentTypes::FOLDER),g_l('modules_newsletter','[dir]')));
 		$parts = [["headline" => "", "html" => "", 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1],
 				["headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2],
 		];
@@ -1313,7 +1313,7 @@ window.onload=extraInit;');
 			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:set_export(0);");
 
 			$export_box = new we_html_table(['class' => 'default withSpace', 'style' => 'padding-top:10px;'], 2, 1);
-			$export_box->setCol(0, 0, [], $this->formFileChooser(200, "csv_dir", "/", "", "folder"));
+			$export_box->setCol(0, 0, [], $this->formFileChooser(200, "csv_dir", "/", "", we_base_ContentTypes::FOLDER));
 			$export_box->setCol(1, 0, [], $ok . $cancel);
 
 			$table->setCol(3, 0, ["colspan" => 3], we_html_element::htmlHiddens(["csv_export" => 1]) .

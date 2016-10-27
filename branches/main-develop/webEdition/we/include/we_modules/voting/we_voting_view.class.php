@@ -190,7 +190,7 @@ class we_voting_view extends we_modules_view{
 							'parentid' => $this->voting->ParentID,
 							'text' => $this->voting->Text,
 							'open' => false,
-							'contenttype' => ($this->voting->IsFolder ? 'folder' : 'we/voting'),
+							'contenttype' => ($this->voting->IsFolder ? we_base_ContentTypes::FOLDER : 'we/voting'),
 							'table' => VOTING_TABLE,
 							'published' => ($this->voting->isActive() ? 1 : 0)
 						]);

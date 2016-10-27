@@ -69,7 +69,7 @@ function startTree(){
 		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
-				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/export'),
+				'contenttype' => ($db->f('IsFolder') == 1 ? we_base_ContentTypes::FOLDER : 'we/export'),
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,

@@ -227,7 +227,7 @@ class we_docTypes extends we_class{
 		$idname = 'we_' . $this->Name . '_ParentID';
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $idname . "', '" . $textname . "', '', '')");
 		$yuiSuggest->setAcId("Path");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($textname, $this->ParentPath);
 		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMayBeEmpty(true);

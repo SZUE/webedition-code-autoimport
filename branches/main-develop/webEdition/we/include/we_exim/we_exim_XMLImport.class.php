@@ -206,13 +206,13 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					foreach($pathids as $pid){
 
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
-						if(!$this->RefTable->exists(['ID' => $pid, 'ContentType' => 'folder'])){
+						if(!$this->RefTable->exists(['ID' => $pid, 'ContentType' => we_base_ContentTypes::FOLDER])){
 							$this->RefTable->add2(
 								['ID' => $pid,
 									'ParentID' => $h['ParentID'],
 									'Path' => $h['Path'],
 									'Table' => $object->Table,
-									'ContentType' => 'folder',
+									'ContentType' => we_base_ContentTypes::FOLDER,
 									'OldID' => ($pid == $object->ParentID) ? $old_pid : null,
 									'OldParentID' => null,
 									'OldPath' => null,

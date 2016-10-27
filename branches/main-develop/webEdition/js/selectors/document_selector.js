@@ -34,7 +34,7 @@ function doClick(id, ct) {
 				wasdblclick = false;
 			}, 400);
 		}
-	} else if (getEntry(id).contentType != "folder" || (top.fileSelect.options.canSelectDir)) {
+	} else if (getEntry(id).contentType != WE().consts.contentTypes.FOLDER || (top.fileSelect.options.canSelectDir)) {
 		if (top.fileSelect.options.multiple) {
 			if (top.shiftpressed) {
 				var oldid = top.fileSelect.data.currentID;
@@ -167,7 +167,7 @@ function writeBodyDocument(d) {
 					'<table class="selector">' +
 					(top.fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
-									'<td class="treeIcon selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
+									'<td class="treeIcon selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
 									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
 									'<td class="selector title">' + WE().consts.g_l.fileselector.folder + '</td>' +
 									'<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' +

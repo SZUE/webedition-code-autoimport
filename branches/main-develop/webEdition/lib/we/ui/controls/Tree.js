@@ -90,7 +90,7 @@ this.id = treeId;
 								title: id
 				};
 								var childNode = new YAHOO.widget.TextNode(myobj, mParentNode, false);
-								if (contentType != "folder") {
+								if (contentType != WE().consts.contentTypes.FOLDER) {
 				childNode.isLeaf = true;
 				}
 				childNode.labelStyle = contentType;

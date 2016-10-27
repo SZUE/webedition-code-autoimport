@@ -99,25 +99,25 @@ foreach($shortcuts as $sctCol){
 			$icon = '';
 			switch($label){
 				case 'new_directory':
-					$icon = 'folder';
+					$icon = we_base_ContentTypes::FOLDER;
 					break;
 				case 'unpublished_pages':
 				case 'open_document':
 				case 'new_document':
-					$icon = 'text/webedition';
+					$icon = we_base_ContentTypes::WEDOCUMENT;
 					break;
 				case 'unpublished_objects':
 				case 'new_object':
-					$icon = 'objectFile';
+					$icon = we_base_ContentTypes::OBJECT_FILE;
 					break;
 				case 'new_template':
-					$icon = 'text/weTmpl';
+					$icon = we_base_ContentTypes::TEMPLATE;
 					break;
 				case 'new_class':
-					$icon = 'object';
+					$icon = we_base_ContentTypes::OBJECT;
 					break;
 				case 'btn_add_image':
-					$icon = 'image/*';
+					$icon = we_base_ContentTypes::IMAGE;
 					break;
 				case 'preferences':
 					$icon = 'settings';

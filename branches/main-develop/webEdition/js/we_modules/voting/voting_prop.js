@@ -63,7 +63,7 @@ function we_cmd() {
 			for (i = 0; i < owners.length; i++) {
 				if (owners[i] !== "") {
 					owners_label.addItem();
-					owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(isfolders[i] == 1 ? "folder" : "we/user") + " " + owners[i]);
+					owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(isfolders[i] == 1 ? WE().consts.contentTypes.FOLDER : "we/user") + " " + owners[i]);
 					owners_label.showVariant(0);
 				}
 			}

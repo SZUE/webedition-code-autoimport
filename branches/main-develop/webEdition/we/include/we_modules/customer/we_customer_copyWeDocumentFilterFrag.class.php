@@ -45,7 +45,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$db = new DB_WE();
 		// now get all childs of this folder
 
-		$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $theFolder->Path . '/%"');
+		$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE	ContentType IN("' . we_base_ContentTypes::FOLDER . '","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $theFolder->Path . '/%"');
 
 		$this->alldata = [];
 
@@ -56,7 +56,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 				"idForFilter" => $idForFilter,
 				"id" => $db->f("ID"),
 				"contenttype" => $db->f("ContentType"),
-				];
+			];
 		}
 	}
 
@@ -68,7 +68,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		// getTarget-Document
 		$targetDoc = null;
 		switch($this->data["contenttype"]){
-			case "folder":
+			case we_base_ContentTypes::FOLDER:
 				$targetDoc = new we_folder();
 				break;
 			case we_base_ContentTypes::WEDOCUMENT:
@@ -81,8 +81,8 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$targetDoc->initById($this->data["id"], $this->data["table"]);
 
 		$targetDoc->documentCustomerFilter = ($theFolder->documentCustomerFilter ?
-				$theFolder->documentCustomerFilter :
-				we_customer_documentFilter::getEmptyDocumentCustomerFilter());
+			$theFolder->documentCustomerFilter :
+			we_customer_documentFilter::getEmptyDocumentCustomerFilter());
 
 		// write filter to target document
 		// save filter

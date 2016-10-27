@@ -1154,7 +1154,7 @@ var we_cmd_modules = {
 				var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
 
 				if (ctrl.getActiveDocumentReference()) {
-					if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
+					if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
 						top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 					} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 						url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
@@ -1170,7 +1170,7 @@ var we_cmd_modules = {
 				eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
 
 				if (ctrl.getActiveDocumentReference()) {
-					if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
+					if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
 						top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 					} else {
 						WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
@@ -2039,13 +2039,13 @@ var we_cmd_modules = {
 				top.we_cmd("new", WE().consts.tables.TEMPLATES_TABLE, "", WE().consts.contentTypes.TEMPLATE);
 				break;
 			case 'new_document_folder':
-				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", "folder");
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.FOLDER);
 				break;
 			case 'new_template_folder':
-				top.we_cmd("new", WE().consts.tables.TEMPLATES_TABLE, "", "folder");
+				top.we_cmd("new", WE().consts.tables.TEMPLATES_TABLE, "", WE().consts.contentTypes.FOLDER);
 				break;
 			case 'new_collection_folder':
-				top.we_cmd("new", WE().consts.tables.VFILE_TABLE, "", "folder");
+				top.we_cmd("new", WE().consts.tables.VFILE_TABLE, "", WE().consts.contentTypes.FOLDER);
 				break;
 			case 'new_collection':
 				top.we_cmd("new", WE().consts.tables.VFILE_TABLE, "", WE().consts.contentTypes.COLLECTION);

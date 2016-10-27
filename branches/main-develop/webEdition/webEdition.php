@@ -125,6 +125,7 @@ $const = [
 		'CSS' => we_base_ContentTypes::CSS,
 		'APPLICATION' => we_base_ContentTypes::APPLICATION,
 		'COLLECTION' => we_base_ContentTypes::COLLECTION,
+		'FOLDER' => we_base_ContentTypes::FOLDER
 	],
 	'dirs' => [
 		'WEBEDITION_DIR' => WEBEDITION_DIR,

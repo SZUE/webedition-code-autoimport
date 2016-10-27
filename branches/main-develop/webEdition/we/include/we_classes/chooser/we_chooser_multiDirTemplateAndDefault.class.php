@@ -58,7 +58,7 @@ class we_chooser_multiDirTemplateAndDefault extends we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td class="chooserFileIcon" data-contenttype="folder"></td>
+	<td class="chooserFileIcon" data-contenttype="' . we_base_ContentTypes::FOLDER . '"></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable && $this->cmd_del) || $this->CanDelete) ?
 					we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ?: "") . ";we_cmd('" . $this->cmd_del . "','0');") :

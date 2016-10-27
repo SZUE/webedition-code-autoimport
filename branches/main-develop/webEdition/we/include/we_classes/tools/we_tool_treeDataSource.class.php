@@ -108,7 +108,7 @@ class we_tool_treeDataSource{
 				'order' => $db->f('Ordn'),
 				'published' => 1,
 				'disabled' => 0,
-				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
+				'contentType' => ($db->f('IsFolder') == 1 ? we_base_ContentTypes::FOLDER : 'item'),
 			];
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);

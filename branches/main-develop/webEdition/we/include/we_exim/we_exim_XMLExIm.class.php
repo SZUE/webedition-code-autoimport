@@ -160,7 +160,7 @@ class we_exim_XMLExIm{
 				return NAVIGATION_RULE_TABLE;
 			case 'weThumbnail':
 				return THUMBNAILS_TABLE;
-			case 'folder':
+			case we_base_ContentTypes::FOLDER:
 				if(!empty($table)){
 					return $table;
 				}

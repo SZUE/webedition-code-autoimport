@@ -200,7 +200,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						'parentid' => $this->export->ParentID,
 						'text' => $this->export->Text,
 						'open' => false,
-						'contenttype' => ($this->export->IsFolder ? 'folder' : 'we/export'),
+						'contenttype' => ($this->export->IsFolder ? we_base_ContentTypes::FOLDER : 'we/export'),
 						'table' => EXPORT_TABLE
 					]);
 					$jscmd->addCmd('drawTree');
