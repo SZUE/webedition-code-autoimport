@@ -63,7 +63,7 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 			'published' => 1,
 				'cmd' => "glossary_view_folder",
-				'contenttype' => 'folder'
+				'contenttype' => we_base_ContentTypes::FOLDER
 			];
 		}
 
@@ -92,7 +92,7 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => 'glossary_view_type',
-				'contenttype' => 'folder'
+				'contenttype' => we_base_ContentTypes::FOLDER
 			];
 		}
 
@@ -149,7 +149,7 @@ class we_glossary_tree extends we_tree_base{
 				'tooltip' => intval($Db->f('ID')),
 				'offset' => $Offset,
 				'published' => ($Db->f('Published') > 0 ? 1 : 0),
-				'contenttype' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
+				'contenttype' => ($Db->f('IsFolder') ? we_base_ContentTypes::FOLDER : 'we/glossar'),
 				];
 
 			switch($Type){

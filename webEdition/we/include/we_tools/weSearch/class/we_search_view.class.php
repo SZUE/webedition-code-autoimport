@@ -180,7 +180,7 @@ if(top.content.treeData){
 							'parentid' => $this->Model->ParentID,
 							'text' => $this->Model->Text,
 							'open' => false,
-							'contenttype' => ($this->Model->IsFolder ? 'folder' : 'we/search'),
+							'contenttype' => ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'we/search'),
 							'table' => SUCHE_TABLE,
 							'published' => 0
 						]);
@@ -1347,7 +1347,7 @@ top.content.hot=false;');
 
 
 		$yuiSuggest->setAcId($ACname);
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($nameFolderPath, $path);
 		$yuiSuggest->setLabel("");
 		$yuiSuggest->setMaxResults(20);

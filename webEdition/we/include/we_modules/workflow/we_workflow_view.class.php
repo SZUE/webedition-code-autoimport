@@ -548,7 +548,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 							'parentid' => 0,
 							'text' => $this->workflowDef->Text,
 							'open' => true,
-							'contenttype' => "folder",
+							'contenttype' => we_base_ContentTypes::FOLDER,
 							'table' => "we_workflow_workflowDef",
 							'published' => $this->workflowDef->Status
 						]);
@@ -584,7 +584,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->workflowDef = new we_workflow_workflow($id);
 					if($this->workflowDef->delete()){
 						$this->workflowDef = new we_workflow_workflow();
-						$jscmd->addCmd('deleteTreeEntry', [$id, "folder"]);
+						$jscmd->addCmd('deleteTreeEntry', [$id, we_base_ContentTypes::FOLDER]);
 						$jscmd->addMsg(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
 						$jscmd->addMsg(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);

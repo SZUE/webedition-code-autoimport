@@ -87,7 +87,7 @@ class we_search_tree extends we_tree_base{
 
 					$typ = [
 						'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
-						'contenttype' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
+						'contenttype' => ($db->f('IsFolder') ? we_base_ContentTypes::FOLDER : 'we/search'),
 						'open' => $OpenCloseStatus,
 						'disabled' => 0,
 						'tooltip' => $db->f('ID'),

@@ -237,7 +237,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(0,"root","root"));
 									'text' => $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')',
 									'typ' => "group",
 									'open' => false,
-									'contenttype' => "folder",
+									'contenttype' => we_base_ContentTypes::FOLDER,
 									'leaf_count' => $sf_cnt,
 									'table' => MESSAGES_TABLE,
 									'loaded' => false,
@@ -251,7 +251,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(0,"root","root"));
 									'text' => $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')',
 									'typ' => "item",
 									'checked' => false,
-									'contenttype' => "folder",
+									'contenttype' => we_base_ContentTypes::FOLDER,
 									'table' => MESSAGES_TABLE,
 									'viewclass' => ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder')
 								]);

@@ -363,7 +363,7 @@ var tree_' . $this->_id . '_activEl = 0;
 						success: function(oResponse) {
 							var _node = document.getElementById(node.labelElId);
 							if(_node) {
-						_node.className = "' . $this->getTreeIconClass('folder') . '";
+						_node.className = "' . $this->getTreeIconClass(WE().consts.contentTypes.FOLDER) . '";
 					}
 						},
 						failure: function(oResponse) {

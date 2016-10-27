@@ -260,7 +260,7 @@ class we_banner_view extends we_modules_view{
 					'parentid' => $this->banner->ParentID,
 					'text' => $this->banner->Text,
 					'open' => true,
-					'contenttype' => ($this->banner->IsFolder ? 'folder' : 'file'),
+					'contenttype' => ($this->banner->IsFolder ? we_base_ContentTypes::FOLDER : 'file'),
 					'table' => "weBanner"]);
 			} else {
 				$jscmd->addCmd('updateEntry', [
@@ -427,7 +427,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->banner = new we_banner_banner($bid);
 					if($this->banner->delete()){
 						$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
-						$jscmd->addCmd('deleteTreeEntry', [$bid, ($this->banner->IsFolder ? 'folder' : 'file')]);
+						$jscmd->addCmd('deleteTreeEntry', [$bid, ($this->banner->IsFolder ? we_base_ContentTypes::FOLDER : 'file')]);
 						$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 						$jscmd->addCmd('new_banner');
 					} else {
@@ -704,7 +704,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$yuiSuggest->setAcId($acID);
 		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($textname, $path, "onchange=\"top.content.setHot();\"", true);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);

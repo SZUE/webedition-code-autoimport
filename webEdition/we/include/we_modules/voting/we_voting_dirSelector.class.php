@@ -113,7 +113,7 @@ class we_voting_dirSelector extends we_selector_directory{
 					'parentid' => $folder->ParentID,
 					'text' => $txt,
 					'open' => 1,
-					'contenttype' => "folder",
+					'contenttype' => we_base_ContentTypes::FOLDER,
 					'table' => $this->table,
 					'published' => 1
 				]);

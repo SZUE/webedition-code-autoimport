@@ -111,7 +111,7 @@ function delaySubcriptionForIE9(){
 		if (data.model.ID) {
 			if (data.newBeforeSaving) {
 				if (data.model.IsFolder) {
-					weTree.addNode(data.model.ID, data.model.Text, "folder", data.model.ParentID);
+					weTree.addNode(data.model.ID, data.model.Text, WE().consts.contentTypes.FOLDER, data.model.ParentID);
 				} else {
 					weTree.addNode(data.model.ID, data.model.Text, "' . $tree->getTreeIconClass($appName . '/item') . '", data.model.ParentID);
 				}

@@ -57,7 +57,7 @@ class rpcSelectorGetFilesOfDirCmd extends we_rpc_cmd{
 
 		$data = "_files = {};";
 		// 1st step, select this folder if folders are selectable
-		if(in_array('folder', $types)){
+		if(in_array(we_base_ContentTypes::FOLDER, $types)){
 			$data .= '_files["id_' . $id . '"] = {"type":"folder","text":".","id":"' . $id . '"};';
 		}
 		// one folder, or up to root

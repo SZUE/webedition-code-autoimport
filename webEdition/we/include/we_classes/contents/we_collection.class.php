@@ -759,7 +759,7 @@ class we_collection extends we_root{
 		if(!permissionhandler::hasPerm('NEW_COLLECTION')){
 			unset($_REQUEST['we_' . $this->Name . '_remTable'], $_REQUEST['we_' . $this->Name . '_remCT'], $_REQUEST['we_' . $this->Name . '_remClass'], $_REQUEST['we_' . $this->Name . '_IsDuplicates'], $_REQUEST['we_' . $this->Name . '_DefaultDir'], $_REQUEST['we_' . $this->Name . '_DefaultPath']);
 		} elseif(isset($_REQUEST['we_' . $this->Name . '_remCT'])){
-			$_REQUEST['we_' . $this->Name . '_remCT'] = implode(',', we_base_request::_(we_base_request::STRING,'we_' . $this->Name . '_remCT'));
+			$_REQUEST['we_' . $this->Name . '_remCT'] = implode(',', we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_remCT'));
 		}
 
 		if(!permissionhandler::hasPerm('MOVE_COLLECTION')){
@@ -874,7 +874,7 @@ class we_collection extends we_root{
 		} else {
 			$typeField = 'ContentType';
 			$typeProp = 'remCT';
-			$whereType = trim($this->remCT, "',") ? 'AND ContentType IN ("' . (str_replace(',', '","', trim($this->remCT, ','))) . '","folder") ' : '';
+			$whereType = trim($this->remCT, "',") ? 'AND ContentType IN ("' . (str_replace(',', '","', trim($this->remCT, ','))) . '","' . we_base_ContentTypes::FOLDER . '") ' : '';
 			$classField = '';
 			$nameField = 'Filename';
 		}
@@ -884,13 +884,13 @@ class we_collection extends we_root{
 		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' . $nameField . ' FROM ' . addTblPrefix($this->getRemTable()) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
-			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
+			if(($recursive || $recursion === 0) && $data['ContentType'] === we_base_ContentTypes::FOLDER && !isset($foldersDone[$data['ID']])){
 				$todo[] = $data['ID'];
 				$foldersDone[] = $data['ID'];
 			}
 
-			if($data['ContentType'] !== 'folder'){
-				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
+			if($data['ContentType'] !== we_base_ContentTypes::FOLDER){
+				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== we_base_ContentTypes::FOLDER){
 				//IMI:TEST ==> get icon from some fn!
 				if($data['ID'] !== -1 && $data[$typeField] === 'image/*'){
 					$file = ['docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']];

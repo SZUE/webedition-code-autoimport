@@ -40,7 +40,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	// now get all childs of this folder
 	$db = new DB_WE();
 
-	$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $theFolder->Path . '/%"');
+	$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE ContentType IN("' . we_base_ContentTypes::FOLDER . '","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $theFolder->Path . '/%"');
 
 	$allChildsJS = 'var _allChilds = {};';
 

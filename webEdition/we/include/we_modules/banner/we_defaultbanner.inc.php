@@ -41,7 +41,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')");
 
 	$yuiSuggest->setAcId("Path");
-	$yuiSuggest->setContentType("folder");
+	$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 	$yuiSuggest->setInput($textname, $path);
 	$yuiSuggest->setMaxResults(10);
 	$yuiSuggest->setMayBeEmpty(false);

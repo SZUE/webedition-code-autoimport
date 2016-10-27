@@ -29,7 +29,7 @@ function addEntry(ID, text, isFolder, path) {
 		"text": text,
 		"isFolder": isFolder,
 		"path": path,
-		contentType: (isFolder ? 'folder' : 'we/export')
+		contentType: (isFolder ? WE().consts.contentTypes.FOLDER : 'we/export')
 	});
 }
 
@@ -46,7 +46,7 @@ function writeBody(d) {
 					'<table class="selector">' +
 					(top.fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
-									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
+									'<td class="selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.newFolderExport + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.newFolderExport + '"  class="wetextinput" /></td>' +
 									'</tr>' :
 									'');
@@ -55,7 +55,7 @@ function writeBody(d) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID && (!top.fileSelect.data.makeNewFolder)) ? 'selected' : '') + '"' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
-						'<td class="selector selectoricon">' + WE().util.getTreeIcon((entries[i].isFolder ? 'folder' : 'we/export'), false) + '</td>' +
+						'<td class="selector selectoricon">' + WE().util.getTreeIcon((entries[i].isFolder ? WE().consts.contentTypes.FOLDER : 'we/export'), false) + '</td>' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text

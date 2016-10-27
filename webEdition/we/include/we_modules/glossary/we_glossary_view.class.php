@@ -188,7 +188,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 							'parentid' => $this->Glossary->Language . '_' . $this->Glossary->Type,
 							'text' => $this->Glossary->Text,
 							'open' => false,
-							'contenttype' => ($this->Glossary->IsFolder ? 'folder' : 'we/glossary'),
+							'contenttype' => ($this->Glossary->IsFolder ? we_base_ContentTypes::FOLDER : 'we/glossary'),
 							'table' => GLOSSARY_TABLE,
 							'published' => ($this->Glossary->Published > 0 ? 1 : 0)
 						]);

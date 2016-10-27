@@ -302,14 +302,14 @@ class we_folder extends we_root{
 		}
 
 		// Adapt tblLangLink-entries of folders to the new language
-		$ids = implode(',', $DB_WE->getAllq('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="folder"', true));
+		$ids = implode(',', $DB_WE->getAllq('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="' . we_base_ContentTypes::FOLDER . '"', true));
 		if($ids){
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1 AND Locale="' . $DB_WE->escape($language) . '"');
 			$DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $DB_WE->escape($language) . '" WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1');
 		}
 
 		// Change language of published documents, objects
-		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language="' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="folder") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
+		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language="' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="' . we_base_ContentTypes::FOLDER . '") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
 
 		return true;
 	}
@@ -319,7 +319,7 @@ class we_folder extends we_root{
 		$DB_WE2 = new DB_WE();
 
 		// Change TriggerID of published documents first
-		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET TriggerID = ' . intval($this->TriggerID) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="folder") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
+		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET TriggerID = ' . intval($this->TriggerID) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="' . we_base_ContentTypes::FOLDER . '") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
 
 		// Change Language of unpublished documents
 

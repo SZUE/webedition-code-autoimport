@@ -155,7 +155,7 @@ if($doctable){
 }
 
 if($mode == we_base_constants::MODE_SEE){
-	$where[] = ' ContentType!="folder" ';
+	$where[] = ' ContentType!="' . we_base_ContentTypes::FOLDER . '" ';
 }
 
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');

@@ -493,7 +493,7 @@ class we_selector_document extends we_selector_directory{
 					}
 					break;
 
-				case "folder":
+				case we_base_ContentTypes::FOLDER:
 					if(isset($folderFolders) && is_array($folderFolders) && !empty($folderFolders)){
 						foreach($folderFolders as $fId => $fxVal){
 							$previewFields["folders"]["data"][] = ["caption" => $fId,

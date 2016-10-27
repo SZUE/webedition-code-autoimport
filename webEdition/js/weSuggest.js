@@ -78,7 +78,7 @@ YAHOO.autocoml = {
 		var table = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInput' + acId]].table,
 			id = document.we_form.elements['yuiAcResult' + acId].value,
 			type = document.we_form.elements['yuiAcContentType' + acId].value;
-	
+
 		if(table && id && type){
 			WE().layout.openToEdit(table, id, type);
 		}
@@ -148,7 +148,7 @@ YAHOO.autocoml = {
 						}
 					}
 					break;
-				case ((YAHOO.autocoml.yuiAcFields[i].selector == 'docSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Docselector') && YAHOO.autocoml.yuiAcFields[i].cType == 'folder') :   // ERROR: Wrong type
+				case ((YAHOO.autocoml.yuiAcFields[i].selector == 'docSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Docselector') && YAHOO.autocoml.yuiAcFields[i].cType === WE().consts.contentTypes.FOLDER) :   // ERROR: Wrong type
 					YAHOO.autocoml.markNotValid(i);
 					break;
 				default:
@@ -193,7 +193,7 @@ YAHOO.autocoml = {
 		if (o.responseText !== undefined && o.responseText) {
 			var weResponse = JSON.parse(o.responseText);
 			if (weResponse.Success) {
-				if (weResponse.DataArray.data.contentType === 'folder' && (YAHOO.autocoml.yuiAcFields[id].selector === 'docSelector' || YAHOO.autocoml.yuiAcFields[id].selector === 'Docselector')) {
+				if (weResponse.DataArray.data.contentType === WE().consts.contentTypes.FOLDER && (YAHOO.autocoml.yuiAcFields[id].selector === 'docSelector' || YAHOO.autocoml.yuiAcFields[id].selector === 'Docselector')) {
 					document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = '';
 					YAHOO.autocoml.markNotValid(id);
 					YAHOO.autocoml.yuiAcFields[id].newval = '';
@@ -292,8 +292,8 @@ YAHOO.autocoml = {
 			if(params[2] && params[3], params[4]){
 				result = {
 						id: parseInt(params[3]),
-						path: params[2], 
-						ct: params[4], 
+						path: params[2],
+						ct: params[4],
 						currentID: parseInt(params[3]),
 						currentPath: params[2],
 						currentType: params[4]

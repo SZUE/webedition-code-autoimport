@@ -1030,7 +1030,7 @@ function showPreview() {
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('FolderPath', $path, $attribs);
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);

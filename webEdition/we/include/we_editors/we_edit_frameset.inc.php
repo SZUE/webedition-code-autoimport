@@ -147,7 +147,7 @@ if($we_doc->ID){
 		if(!(we_users_util::in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
-					$we_message = g_l('alert', '[' . ($we_ContentType === we_base_ContentTypes::FOLDER) ? 'folder' : $we_Table . '][not_im_ws]');
+					$we_message = g_l('alert', '[' . ($we_ContentType === we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : $we_Table . '][not_im_ws]');
 					include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 					exit();
 				case FILE_TABLE: //	only preview mode allowed for docs

@@ -53,7 +53,7 @@ abstract class we_ui_layout_Image{
 			case we_base_ContentTypes::HTML:
 				return "text_html";
 			case we_base_ContentTypes::FOLDER:
-				return "folder";
+				return 'folder';
 			case "folderOpen" :
 				return "folderOpen";
 			case we_base_ContentTypes::CSS:

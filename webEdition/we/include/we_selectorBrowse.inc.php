@@ -41,7 +41,7 @@ $curID = we_base_request::_(we_base_request::FILE, 'curID');
 function getDataType($dat){
 	$ct = getContentTypeFromFile($dat);
 	return (($ct = g_l('contentTypes', '[' . $ct . ']', true)) !== false ?
-			$ct : '');
+		$ct : '');
 }
 
 function readFiles($dir){
@@ -142,10 +142,10 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 <body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
 		<table class="default"><?php
-if($nf === 'new_folder'){
-	?>
+			if($nf === 'new_folder'){
+				?>
 				<tr class="selected">
-					<td class="selector treeIcon" data-contenttype="folder" data-extension=""></td>
+					<td class="selector treeIcon" data-contenttype="<?= we_base_ContentTypes::FOLDER; ?>" data-extension=""></td>
 					<td class="selector filename"><?= we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector filetype"><?= g_l('fileselector', '[folder]') ?></td>
 					<td class="selector moddate"><?= date("d.m.Y H:i:s") ?></td>
@@ -240,13 +240,13 @@ if($nf === 'new_folder'){
 					$filesize = $isfolder || $islink ? 0 : (file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0);
 
 					$size = ($isfolder ?
-							'' :
-							($islink ?
-								'-> ' . readlink($dir . '/' . $entry) :
-								'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
+						'' :
+						($islink ?
+						'-> ' . readlink($dir . '/' . $entry) :
+						'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
 					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' class="' . $bgcol . '" style="' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector treeIcon" data-contenttype="' . ($indb? : ($islink ? 'symlink' : ($isfolder ? 'folder' : 'application/*'))) . '" data-extension="' . $ext . '"></td>
+	<td class="selector treeIcon" data-contenttype="' . ($indb ?: ($islink ? 'symlink' : ($isfolder ? we_base_ContentTypes::FOLDER : 'application/*'))) . '" data-extension="' . $ext . '"></td>
 	<td class="selector filename">' . $text_to_show . '</td>
 	<td class="selector filetype">' . $type . '</td>
 	<td class="selector moddate">' . $date . '</td>
@@ -263,7 +263,7 @@ if($nf === 'new_folder'){
 				'pat' => we_base_request::_(we_base_request::RAW, "pat", ""),
 				($isRename ? 'sid' : '') => $sid,
 				($isRename ? 'oldtxt' : '') => ''
-				]);
+			]);
 		}
 		?>
 	</form>

@@ -330,7 +330,7 @@ for ( frameId in _usedEditors ) {
 							$_SESSION['weS']['delete_files_nok'] = [];
 							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = ['ContentType' => 'folder',
+								$_SESSION['weS']['delete_files_nok'][] = ['ContentType' => we_base_ContentTypes::FOLDER,
 									"path" => $datafile
 									];
 							}

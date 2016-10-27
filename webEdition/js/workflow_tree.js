@@ -31,7 +31,7 @@ function doClick(id) {
 	ct = item.contenttype;
 	table = item.table;
 	switch (ct) {
-		case 'folder':
+		case WE().consts.contentTypes.FOLDER:
 			top.content.we_cmd('workflow_edit', id, ct, table);
 			break;
 		case 'file':

@@ -646,7 +646,7 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 
 							if($wasNew || (!$wasPubl)){
 
-								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");' : '') .
+								$we_JavaScript .= ($we_doc->ContentType === we_base_ContentTypes::FOLDER ? 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");' : '') .
 									'_EditorFrame.getDocumentReference().frames.editFooter.location.reload();';
 							}
 							$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";

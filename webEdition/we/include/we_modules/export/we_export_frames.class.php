@@ -207,7 +207,7 @@ function addLog(text){
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', ['local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')], 1, $this->View->export->ExportTo, false, [
 				'onchange' => 'toggle(\'save_to\');top.content.hot=true;'], 'value', 520));
-		$table->setCol(1, 0, ["id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', '[save_to]')));
+		$table->setCol(1, 0, ["id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", we_base_ContentTypes::FOLDER), g_l('export', '[save_to]')));
 
 
 		$parts[] = ["headline" => "",
@@ -362,7 +362,7 @@ function closeAllType(){
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=true;']);
 		$yuiSuggest->setLabel(g_l('export', '[group]'));
 		$yuiSuggest->setMaxResults(10);

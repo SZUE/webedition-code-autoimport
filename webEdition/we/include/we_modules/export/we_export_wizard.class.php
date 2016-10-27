@@ -652,7 +652,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 		$table = new we_html_table(['class' => 'default'], 2, 1);
 
 		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont", "top.export_to='local'"));
-		$table->setCol(1, 0, ['style' => 'padding-top:20px;'], we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, "folder"), we_html_forms::radiobutton("server", ($export_to === "server" ? true : false), "export_to", g_l('export', '[export_to_server]'), true, "defaultfont", "top.export_to='server'")));
+		$table->setCol(1, 0, ['style' => 'padding-top:20px;'], we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, we_base_ContentTypes::FOLDER), we_html_forms::radiobutton("server", ($export_to === "server" ? true : false), "export_to", g_l('export', '[export_to_server]'), true, "defaultfont", "top.export_to='server'")));
 
 		$parts[] = ["headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED];
 
@@ -1253,7 +1253,7 @@ switch (args[0]) {
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId("Dir");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($Pathname, $Pathvalue);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);

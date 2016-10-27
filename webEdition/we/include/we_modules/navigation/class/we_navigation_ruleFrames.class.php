@@ -126,7 +126,7 @@ class we_navigation_ruleFrames{
 		}
 
 		$yuiSuggest->setAcId("FolderIDPath");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('FolderIDPath');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);

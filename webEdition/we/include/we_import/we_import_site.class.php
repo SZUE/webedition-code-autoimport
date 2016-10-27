@@ -356,10 +356,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')
 		];
-		$dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
-				g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"dateFormat", $dateformatvals, 1, $valueDateFormat, false, ['onchange' => "dateFormatChanged(this);"]) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
-				"dateformatField", 20, $valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
+		$dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect("dateFormat", $dateformatvals, 1, $valueDateFormat, false, [
+				'onchange' => "dateFormatChanged(this);"]) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput("dateformatField", 20, $valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($templateFields, $valueFieldValues) . '</div></div>';
 
@@ -371,14 +369,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			"specify" => oldHtmlspecialchars(g_l('siteimport', '[useSpecifiedTemplate]'), ENT_QUOTES)
 		];
 
-		$html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
-				g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"createType", $vals, 1, $valueCreateType, false, ['onchange' => "createTypeChanged(this);"]) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
-				g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+		$html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect("createType", $vals, 1, $valueCreateType, false, [
+				'onchange' => "createTypeChanged(this);"]) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$html = '<div style="height:480px">' . $html . '</div>';
 
-		$parts = [["headline" => "", "html" => $html,
+		$parts = [["headline" => '', "html" => $html,
 		]];
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
@@ -388,7 +384,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			we_html_element::htmlHiddens([
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
 				"ok" => 1]) . we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]')) .
+			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('siteimport', '[importSettingsWePages]')) .
 			'</form></body>';
 
 		return $this->_getHtmlPage($bodyhtml, we_html_element::jsScript(JS_DIR . 'import_site.js'));
@@ -406,9 +402,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','templateID','templateDummy','displayTable','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
-		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
-		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_element::htmlHidden('templateID', intval($tid)), $button);
+		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, '', ' readonly', "text", 320, 0);
+		return we_html_tools::htmlFormElementTable($foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_element::htmlHidden('templateID', intval($tid)), $button);
 	}
 
 	/**
@@ -421,22 +416,22 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'from','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
-			"";
+			'';
 
-		$input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
-		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', "", "", "", 0);
+		$input = we_html_tools::htmlTextInput("from", 30, $this->from, '', "readonly", "text", 300);
+		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', '', '', '', 0);
 
 		// Destination Directory
 		$to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','to','toPath','','','0')");
 
 		//$hidden = we_html_element::htmlHidden("to",$this->to);
-		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
-		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, "", "", 0);
+		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),'','readonly="readonly"',"text",300);
+		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, '', '', 0);
 
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("DirPath");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput("toPath", id_to_path($this->to));
 		$yuiSuggest->setLabel(g_l('siteimport', '[importTo]'));
 		$yuiSuggest->setMaxResults(10);
@@ -450,20 +445,20 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// Checkboxes
 		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
-		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : "";
+		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : '';
 
-		$images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
+		$images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_GRAFIK"));
 
 		$htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
 		$createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
-		$flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
-		$jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
-		$css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
-		$text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
-		$htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
-		$others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
+		$flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_FLASH"));
+		$jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_JS"));
+		$css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_CSS"));
+		$text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_TEXT"));
+		$htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_HTACCESS"));
+		$others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
-		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, "", "", false, true, "", true);
+		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, '', '', false, true, '', true);
 		// Depth
 
 		$select = we_html_tools::htmlSelect("depth", array_merge([-1 => g_l('siteimport', '[nolimit]')], range(0, 30)), 1, $this->depth, false, [], "value", 150);
@@ -492,7 +487,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$tableObj->setCol(1, 2, null, $css);
 		$tableObj->setCol(2, 0, ["colspan" => 2], $htmlPages);
 		$tableObj->setCol(2, 2, null, $text);
-		$tableObj->setCol(3, 0, ['style' => 'width:20px;'], "");
+		$tableObj->setCol(3, 0, ['style' => 'width:20px;'], '');
 		$tableObj->setCol(3, 1, ['style' => 'width:200px;'], $createWePages);
 		$tableObj->setCol(3, 2, ['style' => 'width:180px;'], $others);
 		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
@@ -545,14 +540,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					'space' => we_html_multiIconBox::SPACE_MED
 				];
 
-				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
-				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
+				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, '', '', "text", 60);
+				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, '', '', "text", 60);
 
 				$widthSelect = '<select class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 				$heightSelect = '<select class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 
-				$ratio_checkbox = we_html_forms::checkbox(
-						1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
+				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
 
 				$resize = '<table>
 				<tr>
@@ -588,9 +582,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					'space' => we_html_multiIconBox::SPACE_MED
 				];
 			} else {
-				$parts[] = ["headline" => "",
-					"html" => we_html_tools::htmlAlertAttentionBox(
-						g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
+				$parts[] = ["headline" => '',
+					"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ''),
 				];
 			}
 			$foldAT = 5;
@@ -600,13 +593,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$wepos = weGetCookieVariable("but_wesiteimport");
 
-		$content = we_html_element::htmlForm(
-				["action" => WEBEDITION_DIR . "we_cmd.php",
+		$content = we_html_element::htmlForm([
+				"action" => WEBEDITION_DIR . "we_cmd.php",
 				"name" => "we_form",
 				"method" => "post",
 				"target" => "siteimportcmd"
 				], we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, "", $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
+				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
 
 		$body = we_html_element::htmlBody(["class" => "weDialogBody", "onunload" => "doUnload();"
 				], $content);
@@ -631,7 +624,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$jscmd->addMsg((count(scandir($importDirectory)) <= 2 ?
 						g_l('importFiles', '[emptyDir]') :
 						g_l('importFiles', '[noFiles]'))
-					,we_message_reporting::WE_MESSAGE_INFO);
+					, we_message_reporting::WE_MESSAGE_INFO);
 
 				$jscmd->addCmd('close');
 				return $jscmd->getCmds();
@@ -644,18 +637,17 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			'style' => 'overflow:hidden;'
 		];
 
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", '', 0, 0, "", "", false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", '', 0, 0, '', '', false, false);
 
-		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, "", "", false, false) .
-			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, "", "", false, false);
+		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, '', '', false, false) .
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, '', '', false, false);
 
 		$pb = new we_progressBar(0, 200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
-		$table->setCol(0, 1, ["style" => "text-align:right"
-			], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
+		$table->setCol(0, 1, ["style" => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
 		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_progressBar::getJSCode());
@@ -679,7 +671,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
 		$valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : "d.m.Y";
 		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : g_l('siteimport', '[newTemplate]');
-		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "";
+		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : '';
 
 		$content = self::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
 
@@ -758,7 +750,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('templateDirName', $path);
 		$yuiSuggest->setResult('templateParentID', 0);
 		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
@@ -772,7 +764,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		/*
 
-		  $dirChooser = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname,30,$path,"",' readonly',"text",320,0),
+		  $dirChooser = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname,30,$path,'',' readonly',"text",320,0),
 		  g_l('weClass',"[dir]"),
 		  "left",
 		  "defaultfont",
@@ -783,11 +775,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		return '
 <table class="default" style="margin-top:10px;">
 	<tr>
-		<td style="width:20px;">' . we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', '[nameOfTemplate]')) . '</td>
+		<td style="width:20px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, '', "text", 320), g_l('siteimport', '[nameOfTemplate]')) . '</td>
 		<td style="width:20px;"></td>
-		<td style="width:100px;">' . we_html_tools::htmlFormElementTable(
-				'<span class="defaultfont"><b>.tmpl</b></span>', g_l('weClass', '[extension]')) . '</td>
+		<td style="width:100px;">' . we_html_tools::htmlFormElementTable('<span class="defaultfont"><b>.tmpl</b></span>', g_l('weClass', '[extension]')) . '</td>
 	</tr>
 	<tr>
 		<td colspan="3">' . $dirChooser . '</td>
@@ -812,9 +802,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$regs = $regs2 = [];
 		// replace hrefs
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$orig_href = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $orig_href){
 				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
@@ -824,9 +813,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		}
 		// replace src (same as href!!)
 		preg_match_all('/(<[^>]+src=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$orig_href = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $orig_href){
 				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
@@ -834,16 +822,14 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				}
 			}
 		}
-		// url() in styles with style=""
+		// url() in styles with style=''
 		preg_match_all('/(<[^>]+style=")([^"]+)("[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				preg_match_all('/(url\(\'?)([^\'\)]+)(\'?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
@@ -859,14 +845,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// url() in styles with style=''
 		preg_match_all('/(<[^>]+style=\')([^\']+)(\'[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				preg_match_all('/(url\("?)([^"\)]+)("?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
@@ -882,20 +866,16 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// url() in style tags
 		preg_match_all('/(<style[^>]*>)(.*)(<\/style>)/isU', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				// url() in styles with style=''
-				preg_match_all(
-					'/(url\([\'"]?)([^\'"\)]+)([\'"]?\))/iU', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				preg_match_all('/(url\([\'"]?)([^\'"\)]+)([\'"]?\))/iU', $style, $regs2, PREG_PATTERN_ORDER);
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
-							$newStyle = str_replace(
-								$regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
+							$newStyle = str_replace($regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
 						}
 					}
 				}
@@ -974,15 +954,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// replace external css (link rel=stylesheet)
 		preg_match_all('/<link ([^>]+)>/i', $templateCode, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
+		if($regs){
 			$regs2 = [];
-			for($i = 0; $i < count($regs[1]); $i++){
-				preg_match_all('/([^= ]+)=[\'"]?([^\'" ]+)[\'"]?/is', $regs[1][$i], $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[1]); $z++){
-						$attribs[$regs2[1][$z]] = $regs2[2][$z];
-					}
-					if(isset($attribs['rel']) && $attribs['rel'] === 'stylesheet'){
+			foreach($regs[1] as $i => $tmp){
+				preg_match_all('/([^= ]+)=[\'"]?([^\'" ]+)[\'"]?/is', $tmp, $regs2, PREG_PATTERN_ORDER);
+				if($regs2){
+					$attribs = array_combine($regs2[1], $regs2[2]);
+					if(!empty($attribs['rel']) && $attribs['rel'] === 'stylesheet'){
 						if(!empty($attribs['href'])){
 							$id = path_to_id($attribs['href'], FILE_TABLE, $GLOBALS['DB_WE']);
 							$tag = '<we:css id="' . $id . '" xml="true" ' . ((!empty($attribs["media"])) ? ' pass_media="' . $attribs["media"] . '"' : '') . '/>';
@@ -995,10 +973,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// replace external js scripts
 		preg_match_all('/<script ([^>]+)>.*<\/script>/isU', $templateCode, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[1]); $i++){
-				preg_match('/src=["\']?([^"\']+)["\']?/is', $regs[1][$i], $regs2);
-				if($regs2 != null){
+		if($regs){
+			foreach($regs[1] as $i => $tmp){
+				preg_match('/src=["\']?([^"\']+)["\']?/is', $tmp, $regs2);
+				if($regs2){
 					$id = path_to_id($regs2[1]);
 					$tag = '<we:js id="' . $id . '" xml="true" />';
 					$templateCode = str_replace($regs[0][$i], $tag, $templateCode);
@@ -1009,8 +987,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// check if there is allready a template with the same content
 
 
-		$newTemplateID = f('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE c.Dat="' . $GLOBALS['DB_WE']->escape(
-				$templateCode) . '" AND l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
+		$newTemplateID = f('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE c.Dat="' . $GLOBALS['DB_WE']->escape($templateCode) . '" AND l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
 
 		if(!$newTemplateID){
 			// create Template
@@ -1033,12 +1010,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			$templateObject->we_new();
 			$templateObject->CreationDate = time();
 			$templateObject->ID = 0;
-			$templateObject->OldPath = "";
+			$templateObject->OldPath = '';
 			$templateObject->Extension = ".tmpl";
 			$templateObject->Filename = $newTemplateFilename;
 			$templateObject->Text = $templateObject->Filename . $templateObject->Extension;
 			$templateObject->setParentID($templateParentID);
-			$templateObject->Path = $templateObject->ParentPath . ($templateParentID ? "/" : "") . $templateObject->Text;
+			$templateObject->Path = $templateObject->ParentPath . ($templateParentID ? "/" : '') . $templateObject->Text;
 			$templateObject->OldPath = $templateObject->Path;
 			$templateObject->setElement('data', $templateCode, "txt");
 			$templateObject->we_save();
@@ -1100,7 +1077,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 								break;
 
 							case "gmt" :
-								$fieldval = we_import_functions::date2Timestamp(trim($fieldval), "");
+								$fieldval = we_import_functions::date2Timestamp(trim($fieldval), '');
 								break;
 
 							case "own" :
@@ -1108,12 +1085,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 								break;
 						}
 						$we_doc->setElement($field['name'], abs($fieldval), "date");
-					} elseif($templateFields[$field['name']] === "img"){ // import image fields
+					} elseif($templateFields[$field['name']] === 'img'){ // import image fields
 						if(preg_match('/<[^>]+src=["\']?([^"\' >]+)[^"\'>]?[^>]*>/i', $fieldval, $regs)){ // only if image tag has a src attribute
 							$src = $regs[1];
 							$imgId = path_to_id($src);
-							$we_doc->elements[$field['name']] = ["type" => "img",
-								"bdid" => $imgId
+							$we_doc->elements[$field['name']] = [
+								'type' => 'img',
+								'bdid' => $imgId
 							];
 						}
 					} else {
@@ -1161,9 +1139,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// replace hrefs
 		$regs = $regs2 = [];
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$orig_href = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $orig_href){
 				$new_href = self::_makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
@@ -1173,9 +1150,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		}
 		// replace src (same as href!!)
 		preg_match_all('/(<[^>]+src=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$orig_href = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $orig_href){
 				$new_href = self::_makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
@@ -1183,16 +1159,14 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				}
 			}
 		}
-		// url() in styles with style=""
+		// url() in styles with style=''
 		preg_match_all('/(<[^>]+style=")([^"]+)("[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				preg_match_all('/(url\(\'?)([^\'\)]+)(\'?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
@@ -1208,14 +1182,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// url() in styles with style=''
 		preg_match_all('/(<[^>]+style=\')([^\']+)(\'[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				preg_match_all('/(url\("?)([^"\)]+)("?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
@@ -1231,19 +1203,16 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// url() in style tags
 		preg_match_all('/(<style[^>]*>)(.*)(<\/style>)/isU', $content, $regs, PREG_PATTERN_ORDER);
-		if($regs != null){
-			for($i = 0; $i < count($regs[2]); $i++){
-				$style = $regs[2][$i];
+		if($regs){
+			foreach($regs[2] as $i => $style){
 				$newStyle = $style;
 				// url() in styles with style=''
 				preg_match_all('/(url\([\'"]?)([^\'"\)]+)([\'"]?\))/iU', $style, $regs2, PREG_PATTERN_ORDER);
-				if($regs2 != null){
-					for($z = 0; $z < count($regs2[2]); $z++){
-						$orig_url = $regs2[2][$z];
+				if($regs2){
+					foreach($regs2[2] as $z => $orig_url){
 						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
-							$newStyle = str_replace(
-								$regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
+							$newStyle = str_replace($regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
 						}
 					}
 				}
@@ -1295,7 +1264,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				default:
 					switch($element["type"]){
 						case "txt" :
-							$GLOBALS['we_doc']->elements[$fieldname]["dat"] = self::_external_to_internal($element['dat']);
+							$GLOBALS['we_doc']->elements[$fieldname]['dat'] = self::_external_to_internal($element['dat']);
 							break;
 					}
 			}
@@ -1353,12 +1322,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
-		$data = "";
-
-		$we_ContentType = $contentType;
+		$data = '';
 
 		// initializing $we_doc
-		$we_doc = we_document::initDoc([], $we_ContentType);
+		$we_doc = we_document::initDoc([], $contentType);
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();
@@ -1380,7 +1347,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				}
 		}
 		$regs = [];
-		if($contentType === "folder"){
+		if($contentType === we_base_ContentTypes::FOLDER){
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 		} elseif(preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)){
 			$GLOBALS["we_doc"]->Extension = $regs[2];
@@ -1395,7 +1362,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$id = path_to_id($GLOBALS["we_doc"]->Path);
 
 		if($id){
-			if($sameName === "overwrite" || $contentType === "folder"){ // folders we dont have to rename => we can use the existing folder
+			if($sameName === 'overwrite' || $contentType === we_base_ContentTypes::FOLDER){ // folders we dont have to rename => we can use the existing folder
 				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
 			} elseif($sameName === "rename"){
 				$z = 0;
@@ -1405,8 +1372,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 				}
 				$GLOBALS["we_doc"]->Text = $footext;
-				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename . "_" . $z;
-				$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getParentPath() . (($GLOBALS["we_doc"]->getParentPath() != "/") ? "/" : "") . $GLOBALS["we_doc"]->Text;
+				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename . '_' . $z;
+				$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getParentPath() . (($GLOBALS["we_doc"]->getParentPath() != '/') ? '/' : '') . $GLOBALS["we_doc"]->Text;
 			} else {
 				return ["filename" => $GLOBALS["we_doc"]->Path,
 					"error" => "same_name"
@@ -1422,7 +1389,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				self::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
 				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
-			case "folder" :
+			case we_base_ContentTypes::FOLDER:
 				break;
 			case we_base_ContentTypes::IMAGE :
 				// getting attributes of image
@@ -1431,6 +1398,29 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$GLOBALS["we_doc"]->setElement('height', $foo[1], 'attrib', 'bdid');
 				$GLOBALS["we_doc"]->setElement('origwidth', $foo[0], 'attrib', 'bdid');
 				$GLOBALS["we_doc"]->setElement('origheight', $foo[1], 'attrib', 'bdid');
+				$GLOBALS["we_doc"]->Thumbs = $thumbs;
+				$newWidth = ($width && $widthSelect === "percent" ?
+					round(($GLOBALS["we_doc"]->getElement('origwidth', 'bdid') / 100) * $width) :
+					$width);
+
+				$newHeight = ($height && $widthSelect === "percent" ?
+					round(($GLOBALS["we_doc"]->getElement('origheight', 'bdid') / 100) * $height) :
+					$height);
+
+				if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement('origheight', 'bdid')))){
+					$GLOBALS["we_doc"]->resizeImage($newWidth, $newHeight, $quality, $keepRatio);
+					$width = $newWidth;
+					$height = $newHeight;
+				}
+
+				if($degrees){
+					$GLOBALS["we_doc"]->rotateImage(($degrees % 180 == 0) ?
+							$GLOBALS["we_doc"]->getElement('origwidth', 'bdid') :
+							$GLOBALS["we_doc"]->getElement("origheight"), ($degrees % 180 == 0) ?
+							$GLOBALS["we_doc"]->getElement('origheight', 'bdid') :
+							$GLOBALS["we_doc"]->getElement("origwidth"), $degrees, $quality);
+				}
+				$GLOBALS["we_doc"]->DocChanged = true;
 			// no break!! because we need to do the same after the following case
 			case we_base_ContentTypes::APPLICATION:
 			case we_base_ContentTypes::FLASH:
@@ -1454,30 +1444,6 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$GLOBALS["we_doc"]->setElement('data', $data, 'txt');
 		}
 
-		if($contentType == we_base_ContentTypes::IMAGE){
-			$GLOBALS["we_doc"]->Thumbs = $thumbs;
-			$newWidth = ($width && $widthSelect === "percent" ?
-				round(($GLOBALS["we_doc"]->getElement('origwidth', 'bdid') / 100) * $width) :
-				$width);
-
-			$newHeight = ($height && $widthSelect === "percent" ?
-				round(($GLOBALS["we_doc"]->getElement('origheight', 'bdid') / 100) * $height) :
-				$height);
-
-			if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement('origheight', 'bdid')))){
-				$GLOBALS["we_doc"]->resizeImage($newWidth, $newHeight, $quality, $keepRatio);
-				$width = $newWidth;
-				$height = $newHeight;
-			}
-
-			if($degrees){
-				$GLOBALS["we_doc"]->rotateImage(
-					($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement('origwidth', 'bdid') : $GLOBALS["we_doc"]->getElement(
-							"origheight"), ($degrees % 180 == 0) ? $GLOBALS["we_doc"]->getElement('origheight', 'bdid') : $GLOBALS["we_doc"]->getElement(
-							"origwidth"), $degrees, $quality);
-			}
-			$GLOBALS["we_doc"]->DocChanged = true;
-		}
 		//save and publish
 		if(!$GLOBALS["we_doc"]->we_save()){
 			$GLOBALS["we_doc"] = $we_docSave;
@@ -1516,12 +1482,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$tmp = [];
 		foreach($this->files as $e){
-			if($e["contentType"] === "folder"){
+			if($e["contentType"] === we_base_ContentTypes::FOLDER){
 				$tmp[] = $e;
 			}
 		}
 		foreach($this->files as $e){
-			if($e["contentType"] != "folder" && $e["contentType"] != we_base_ContentTypes::WEDOCUMENT){
+			if($e["contentType"] != we_base_ContentTypes::FOLDER && $e["contentType"] != we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
@@ -1623,7 +1589,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						$importIt = true;
 					}
 					break;
-				case "folder" :
+				case we_base_ContentTypes::FOLDER :
 					$importIt = false;
 					break;
 				default :
@@ -1651,21 +1617,22 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					"importMetadata" => $this->importMetadata
 				];
 			}
-			if($contentType === "folder"){
+			if($contentType === we_base_ContentTypes::FOLDER){
 				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
-					$this->files[] = ["path" => $PathOfEntry,
+					$this->files[] = [
+						"path" => $PathOfEntry,
 						"contentType" => $contentType,
 						"sourceDir" => $this->from,
 						"destDirID" => $this->to,
 						"sameName" => $this->sameName,
-						"thumbs" => "",
-						"width" => "",
-						"height" => "",
-						"widthSelect" => "",
-						"heightSelect" => "",
-						"keepRatio" => "",
-						"quality" => "",
-						"degrees" => "",
+						"thumbs" => '',
+						"width" => '',
+						"height" => '',
+						"widthSelect" => '',
+						"heightSelect" => '',
+						"keepRatio" => '',
+						"quality" => '',
+						"degrees" => '',
 						"isSearchable" => false,
 						"importMetadata" => 0
 					];
@@ -1699,7 +1666,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		return $this->_getHtmlPage($body);
 	}
 
-	private function _getHtmlPage($body, $js = ""){
+	private function _getHtmlPage($body, $js = ''){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, $body);
 	}
 

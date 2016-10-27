@@ -51,7 +51,7 @@ container.prototype.drawFolder = function (nf, ai, zweigEintrag) {
 					"<span " +
 					(perm ? "onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") +
 					">" +
-					WE().util.getTreeIcon('folder', nf[ai].open) +
+					WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, nf[ai].open) +
 					(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
 					"</span>" +
 					"<br/>" +

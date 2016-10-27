@@ -191,7 +191,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', 'folder', 'we/navigation');
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', we_base_ContentTypes::FOLDER, 'we/navigation');
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $path){
@@ -1676,7 +1676,7 @@ class we_document extends we_root{
 			case 'nested_class_folder':
 				$we_doc = new we_class_folder();
 				$we_doc->IsClassFolder = 0;
-				$we_ContentType = 'folder';
+				$we_ContentType = we_base_ContentTypes::FOLDER;
 				break;
 			case '':
 				$we_doc = (!empty($we_dt[0]['ClassName']) && ($classname = $we_dt[0]['ClassName']) ?

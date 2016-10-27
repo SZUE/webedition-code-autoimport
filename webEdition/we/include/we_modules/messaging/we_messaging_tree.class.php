@@ -83,7 +83,7 @@ function startTree(){
 				'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 				'typ' => 'group',
 				'open' => 0,
-				'contenttype' => 'folder',
+				'contenttype' => we_base_ContentTypes::FOLDER,
 				'table' => MESSAGES_TABLE,
 				'loaded' => 0,
 				'checked' => false,
@@ -95,7 +95,7 @@ function startTree(){
 				'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 				'typ' => 'item',
 				'open' => 0,
-				'contenttype' => 'folder',
+				'contenttype' => we_base_ContentTypes::FOLDER,
 				'table' => MESSAGES_TABLE,
 				'viewclass' => $folder['view_class']
 				]

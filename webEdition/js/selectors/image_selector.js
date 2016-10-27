@@ -39,7 +39,7 @@ function writeBody(d) {
 							'<input type="hidden" name="table" value="' + top.fileSelect.options.table + '" />' +
 							'<input type="hidden" name="id" value="' + top.fileSelect.data.currentDir + '" />' +
 							(top.fileSelect.data.makeNewFolder ?
-											'<div class="imgDiv">' + WE().util.getTreeIcon('folder', false) + '<br/>' +
+											'<div class="imgDiv">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '<br/>' +
 											'<input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" style="width:100%" />' +
 											'</div>' :
 											'');
@@ -47,7 +47,7 @@ function writeBody(d) {
 				var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 				var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 				body += '<div class="imgDiv ' + ((entries[i].ID == top.fileSelect.data.currentID) ? "selected" : "") + '" id="line_' + entries[i].ID + '" title="' + entries[i].text + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-								(entries[i].isFolder ? WE().util.getTreeIcon("folder") : '<img src="' + WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size[width]=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size[height]=200" + '" class="icon"/>') +
+								(entries[i].isFolder ? WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER) : '<img src="' + WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size[width]=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size[height]=200" + '" class="icon"/>') +
 								'<div class="imgText selector">' +
 								(top.fileSelect.data.we_editDirID == entries[i].ID ?
 												'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onmousedown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
