@@ -533,8 +533,10 @@ class we_users_user{
 		if($isAdmin){
 			$permissions = array('ADMINISTRATOR' => true);
 		}
+		$permissions=array_filter($permissions);
+		ksort($permissions);
 
-		$this->Permissions = we_serialize(array_filter($permissions), SERIALIZE_JSON);
+		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
 	}
 
 	function loadWorkspaces(){
