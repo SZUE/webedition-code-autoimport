@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', we_html
 	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
 ?>
 <body class="weDialogBody"><?php
-echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . (isset($we_message) ? $we_message : sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))) . '</p>', g_l('alert', '[no_perms_title]'));
+echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . (isset($we_message) ? $we_message : sprintf(g_l('alert', '[no_perms]'), f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))) . '</p>', g_l('alert', '[no_perms_title]'));
 ?>
 </body>
 </html>

@@ -40,7 +40,7 @@ function we_tag_author(array $attribs){
 			break;
 	}
 
-	$foo = $authorID ? getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID)) : 0;
+	$foo = $authorID ? getHash('SELECT username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID)) : 0;
 	if(!$foo){
 		return '';
 	}

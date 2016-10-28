@@ -25,7 +25,7 @@
 class we_users_selector extends we_selector_file{
 
 	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
-		$this->order = 'Second,First,Text';
+		$this->order = 'Second,First,username';
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
@@ -33,17 +33,19 @@ class we_users_selector extends we_selector_file{
 
 	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
-		$foo = getHash('SELECT IsFolder,Text,Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), $this->db);
+		$foo = getHash('SELECT IsFolder,username,Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), $this->db);
 		if(!empty($foo['IsFolder']) && $this->dir){
-			$this->values = ['ParentID' => $this->dir,
-				'Text' => $foo['Text'],
+			$this->values = [
+				'ParentID' => $this->dir,
+				'Text' => $foo['username'],
 				'Path' => $foo['Path'],
 				'IsFolder' => 1];
 			$this->path = $foo['Path'];
 			$this->id = $this->dir;
 		} else {
 			$this->dir = 0;
-			$this->values = ['ParentID' => 0,
+			$this->values = [
+				'ParentID' => 0,
 				'Text' => '',
 				'Path' => '',
 				'IsFolder' => 1];
@@ -104,7 +106,7 @@ class we_users_selector extends we_selector_file{
 			$weCmd->addCmd('updateSelectData', [
 				'currentPath' => $this->path,
 				'currentID' => $this->id,
-				'currentText' => $this->values["Text"]
+				'currentText' => $this->values['Text']
 			]);
 		}
 		$weCmd->addCmd('updateSelectData', [

@@ -66,8 +66,8 @@ class we_selector_query{
 
 		switch($table){
 			case USER_TABLE:
-				$this->addQueryField("IsFolder");
-				$typeField = "Type";
+				$this->addQueryField('IsFolder');
+				$typeField = 'Type';
 				break;
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				$typeField = 'ContentType';
@@ -134,8 +134,8 @@ class we_selector_query{
 		$userExtraSQL = $this->getUserExtraQuery($table);
 		switch($table){
 			case USER_TABLE:
-				$this->addQueryField("IsFolder");
-				$typeField = "Type";
+				$this->addQueryField('IsFolder');
+				$typeField = 'Type';
 				break;
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				$typeField = "ContentType";

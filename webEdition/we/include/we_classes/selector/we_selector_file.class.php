@@ -74,6 +74,7 @@ class we_selector_file{
 	protected $startID = 0;
 	protected $multiple = true;
 	protected $open_doc = 0;
+	protected $textField = 'Text';
 
 	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $multiple = true, $filter = '', $startID = 0){
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
@@ -104,7 +105,8 @@ class we_selector_file{
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"' . we_base_ContentTypes::FOLDER . '","we/navigation") AS ContentType';
 				break;
 			case USER_TABLE:
-				$this->fields = 'ID,ParentID,CONCAT(First," ", Second," (",Text,")") AS Text,Path,IsFolder,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
+				$this->fields = 'ID,ParentID,CONCAT(First," ", Second," (",username,")") AS Text,Path,IsFolder,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
+				$this->textField = 'username';
 				break;
 			case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"we/folder","we/newsletter") AS ContentType';
@@ -304,7 +306,7 @@ class we_selector_file{
 		while($this->db->next_record()){
 			$entries[] = [
 				intval($this->db->f("ID")),
-				str_replace(["\n", "\r"], "", $this->db->f("Text")),
+				str_replace(["\n", "\r"], "", $this->db->f('Text')),
 				intval($this->db->f("IsFolder")),
 				str_replace(["\n", "\r"], "", $this->db->f("Path")),
 				$this->db->f("ContentType")
@@ -320,11 +322,11 @@ class we_selector_file{
 		$c = 0;
 		while($pid != 0){
 			$c++;
-			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
-			if($this->db->next_record()){
-				$options[] = [$this->db->f('Text'), $this->db->f('ID')];
+			$hash = getHash('SELECT ID,`' . $this->textField . '` AS Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
+			if($hash){
+				$options[] = [$hash['Text'], $hash['ID']];
 			}
-			$pid = $this->db->f('ParentID');
+			$pid = $hash['ParentID'];
 			if($c > 500){
 				$pid = 0;
 			}

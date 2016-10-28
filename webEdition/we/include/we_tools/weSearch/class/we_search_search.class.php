@@ -284,7 +284,7 @@ class we_search_search extends we_search_base{
 
 	function getUsers(){
 		$db = new DB_WE();
-		return $db->getAllFirstq('SELECT ID, Text FROM ' . USER_TABLE, false);
+		return $db->getAllFirstq('SELECT ID, username FROM ' . USER_TABLE, false);
 	}
 
 	function getFields($row = 0, $whichSearch = ''){
@@ -553,7 +553,7 @@ class we_search_search extends we_search_base{
 		switch($searchFields){
 			case 'CreatorName':
 				$table = USER_TABLE;
-				$field = 'Text';
+				$field = 'username';
 				$fieldFileTable = 'CreatorID';
 				break;
 			case 'WebUserName':

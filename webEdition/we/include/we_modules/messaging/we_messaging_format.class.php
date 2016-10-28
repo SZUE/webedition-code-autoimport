@@ -124,12 +124,12 @@ class we_messaging_format extends we_class{
 	static function get_nameline($id, $addr = 'username'){
 		$db2 = new DB_WE();
 		if($addr === 'username'){
-			$data = getHash('SELECT First, Second, Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+			$data = getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
 			if($data){
 				return $data['Username'] . (($data['First'] || $data['Second']) ? ' (' . $data['First'] . ' ' . $data['Second'] . ')' : '');
 			}
 		} else {
-			$data = getHash('SELECT First, Second, Username, Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+			$data = getHash('SELECT First, Second, username, Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
 			if($data){
 				return $data['Email'] . ' (' . (($data['First'] || $data['Second']) ? $data['First'] . ' ' . $data['Second'] : $data['Username'] ) . ')';
 			}

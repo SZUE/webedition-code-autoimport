@@ -60,7 +60,7 @@ abstract class we_editor_footer{
 		$messageTbl = new we_html_table(['class' => 'default footertable'], 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
+		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
 
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['id' => 'footerBody'], $messageTbl->getHtml()));
 	}
