@@ -524,7 +524,7 @@ class we_users_user{
 			foreach($val as $k => $v){
 				switch($k){
 					case 'ADMINISTRATOR':
-						$isAdmin = true;
+						$isAdmin = $v;
 					default:
 						$permissions[$k] = $v;
 				}
