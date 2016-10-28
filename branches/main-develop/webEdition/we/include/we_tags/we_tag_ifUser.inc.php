@@ -25,7 +25,7 @@
  * @return	boolean
  *
  */
-function we_tag_ifUser($attribs = []){
+/*function we_tag_ifUser($attribs = []){
 	if(empty($GLOBALS['we_editmode']) || !isset($_SESSION['user'])){
 		return false;
 	}
@@ -46,9 +46,7 @@ function we_tag_ifUser($attribs = []){
 		$size = count($matchArray);
 	}
 
-	/**
-	 * values: Username, groups = array()
-	 */
+	 // values: Username, groups = array()
 	switch(($name = weTag_getAttribute('name', $attribs, 'Username', we_base_request::STRING))){
 		default:
 		case (stripos($name, 'username') === 0): //we need this for <we:block>
@@ -61,7 +59,7 @@ function we_tag_ifUser($attribs = []){
 				return false;
 			}
 			// get paths for actual users userGroups and check, if paths match with specified userGroups
-			$query = "SELECT Path FROM " . USER_TABLE . " WHERE ID IN (" . implode(",", $userGroups) . ") AND `IsFolder` = 1";
+			$query = 'SELECT Path FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $userGroups) . ') AND IsFolder=1';
 			$db = new DB_WE();
 			$db->query($query);
 			while($db->next_record()){
@@ -71,14 +69,14 @@ function we_tag_ifUser($attribs = []){
 			}
 			return false;
 	}
-}
+}*/
 
 /**
  * @param $operator
  * @param $first
  * @param $match
  * @return bool
- */
+
 function _we_tag_ifUser_op($operator, $first, $match){
 	switch($operator){
 		default:
@@ -90,3 +88,4 @@ function _we_tag_ifUser_op($operator, $first, $match){
 			return (strpos($match, $first) !== false);
 	}
 }
+*/
