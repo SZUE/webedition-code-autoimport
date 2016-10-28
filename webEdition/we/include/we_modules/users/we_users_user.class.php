@@ -208,7 +208,9 @@ class we_users_user{
 	var $extensions_slots = array();
 	private $permissions_defaults = array();
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file',
+		'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */
+		'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
 
 	// Constructor
 	public function __construct(){
@@ -292,7 +294,7 @@ class we_users_user{
 			}
 		}
 		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
-		$this->ID = $this->ID ? : $this->DB_WE->getInsertId();
+		$this->ID = $this->ID ?: $this->DB_WE->getInsertId();
 	}
 
 	function createAccount(){
@@ -402,39 +404,33 @@ class we_users_user{
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case 'cockpit':
-					$save_javascript .=
-						$this->rememberPreference(0, 'seem_start_file') .
+					$save_javascript .= $this->rememberPreference(0, 'seem_start_file') .
 						$this->rememberPreference("cockpit", 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case 'object':
-					$save_javascript .=
-						$this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
+					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
 						$this->rememberPreference('object', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case 'weapp':
-					$save_javascript .=
-						$this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
+					$save_javascript .= $this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
 						$this->rememberPreference('weapp', 'seem_start_type') .
 						$this->rememberPreference(0, 'seem_start_file');
 					break;
 				case 'document':
-					$save_javascript .=
-						$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
+					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
 						$this->rememberPreference('document', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				default:
-					$save_javascript .=
-						$this->rememberPreference('0', 'seem_start_type') .
+					$save_javascript .= $this->rememberPreference('0', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp') .
 						$this->rememberPreference(0, 'seem_start_file');
 			}
 		}
 
-		$save_javascript .=
-			$this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
+		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
 			$this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth') .
 			$this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight') .
 			$this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode') .
@@ -487,8 +483,8 @@ class we_users_user{
 					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : array();
 					foreach($perm_values[$perm_group_name] as $v){
 						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
-								$permissions[$v] :
-								0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
+							$permissions[$v] :
+							0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
 					}
 				}
 
@@ -523,12 +519,22 @@ class we_users_user{
 
 	function savePermissions(){
 		$permissions = array();
+		$isAdmin = false;
 		foreach($this->permissions_slots as $val){
 			foreach($val as $k => $v){
-				$permissions[$k] = $v;
+				switch($k){
+					case 'ADMINISTRATOR':
+						$isAdmin = true;
+					default:
+						$permissions[$k] = $v;
+				}
 			}
 		}
-		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
+		if($isAdmin){
+			$permissions = array('ADMINISTRATOR' => true);
+		}
+
+		$this->Permissions = we_serialize(array_filter($permissions), SERIALIZE_JSON);
 	}
 
 	function loadWorkspaces(){
@@ -1144,7 +1150,7 @@ _multiEditorreload = true;';
 		if(f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";%') AND ID!=" . $this->ID . ' LIMIT 1', '', $this->DB_WE)){
 			return false;
 		}
-		if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, '', $this->DB_WE)))){
+		if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE (Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') OR Permissions LIKE ('%\"ADMINISTRATOR\":\"1\"%') OR Permissions LIKE ('%\"ADMINISTRATOR\":true%')) AND ID!=" . $this->ID, '', $this->DB_WE)))){
 			echo $id . we_html_element::htmlBr();
 			return false;
 		}
@@ -1266,7 +1272,7 @@ function comparePwd(f1,f2){
 
 		$username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
-		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
+		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
@@ -1290,11 +1296,11 @@ function comparePwd(f1,f2){
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){
-				$content.='<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2) ? "]" : "");
+				$content .= '<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2) ? "]" : "");
 			}
 		}
 
-		$content.='</select><br/><br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
+		$content .= '</select><br/><br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
 
 		$parts = array(
 			array(
@@ -1371,10 +1377,10 @@ function comparePwd(f1,f2){
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
 			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
-				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
+			'****************' :
+			'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
 
-		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
+		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
@@ -1390,19 +1396,19 @@ function comparePwd(f1,f2){
 
 
 		$CreatorIDtext = ($this->CreatorID ?
-				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
-					$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-					g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
-				'-');
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
+			'-');
 
 		$ModifierIDtext = ($this->ModifierID ?
-				($this->ModifierID == $this->ID ?
-					$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
-					(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
-						$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
-				) :
-				'-');
+			($this->ModifierID == $this->ID ?
+			$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
+			) :
+			'-');
 		$tableObj = new we_html_table(array(), 5, 2, array(
 			array(
 				array(array('style' => 'padding-bottom:10px;width:280px;'), $username),
@@ -1410,7 +1416,7 @@ function comparePwd(f1,f2){
 			),
 			array(
 				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
-				array(array("class" => "defaultfont"), g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ? : '-'))
+				array(array("class" => "defaultfont"), g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-'))
 			),
 			array(
 				array(array("colspan" => 2, 'style' => 'padding-bottom:10px;'), we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]')))
@@ -1448,7 +1454,8 @@ function comparePwd(f1,f2){
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$parentPerm = $this->ParentID ? self::getAllPermissions($this->ID, true) : false;
-		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
+		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array(
+			'administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
 function rebuildCheckboxClicked() {
@@ -1505,7 +1512,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				if($pname != 'ADMINISTRATOR'){
 					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;top.content.setHot();';
 					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;top.content.setHot();';
-					$defaultjs.='document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (!empty($this->permissions_defaults[$gname][$pname]) ? 'true' : 'false') . ';top.content.setHot();';
+					$defaultjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (!empty($this->permissions_defaults[$gname][$pname]) ? 'true' : 'false') . ';top.content.setHot();';
 				}
 			}
 		}
@@ -1605,7 +1612,7 @@ function delElement(elvalues,elem) {
 			//$obj_def_names = $this->Name . '_defWorkspace_' . $k;
 			//$content .= '<p>';
 
-			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table style="width:520px">';
+			$content1 .= '<input type="hidden" name="' . $obj_values . '" value="" /><table style="width:520px">';
 			foreach($v as $key => $val){
 				$value = $val;
 				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, '', $this->DB_WE);
@@ -1646,13 +1653,13 @@ function delElement(elvalues,elem) {
 
 				$weAcSelector = $yuiSuggest->getHTML();
 
-				$content1.='
+				$content1 .= '
 <tr><td colspan="2">' . $weAcSelector . '</td>
 	<td><div style="position:relative; top:-1px">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' . '
 </tr>';
 			}
 
-			$content1.= '<colgroup><col style="width:300px"/><col style="width:110px"/><col style="width:40px"/><col style="width:90px"/></colgroup>
+			$content1 .= '<colgroup><col style="width:300px"/><col style="width:110px"/><col style="width:40px"/><col style="width:90px"/></colgroup>
 	<tr><td colspan="4">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addElement(document.we_form." . $obj_values . ");", true) . '</td></tr>
 </table>';
 
@@ -1679,7 +1686,7 @@ function delElement(elvalues,elem) {
 				foreach($parentWsp[CUSTOMER_TABLE] as $setting){
 					$setting = we_unserialize($setting);
 					foreach($setting as $cur){
-						$parent.=($parent ? ' ' . $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
+						$parent .= ($parent ? ' ' . $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
 					}
 				}
 			} else {
@@ -1688,8 +1695,8 @@ function delElement(elvalues,elem) {
 			$parts[] = array(
 				'headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
-					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
-					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
+				'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
+				$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
 				$view->getFilterCustomers(),
 				'space' => we_html_multiIconBox::SPACE_BIG
 			);
@@ -1921,7 +1928,8 @@ function show_seem_chooser(val) {
 		// Build SEEM select start document chooser
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
+			we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput('seem_start_document_name', $document_path);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -1976,7 +1984,7 @@ function show_seem_chooser(val) {
 			$value_selected = true;
 		}
 
-		for($i = 10; $i < 51; $i+=10){
+		for($i = 10; $i < 51; $i += 10){
 			$file_tree_count->addOption($i, $i);
 
 			// Set selected extension
@@ -1986,7 +1994,7 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		for($i = 100; $i < 501; $i+=100){
+		for($i = 100; $i < 501; $i += 100){
 			$file_tree_count->addOption($i, $i);
 
 			// Set selected extension
@@ -2002,7 +2010,8 @@ function show_seem_chooser(val) {
 			$file_tree_count->selectOption($tree_count);
 		}
 
-		$settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+		$settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_BIG);
 
 		// WINDOW DIMENSIONS
 
@@ -2083,7 +2092,8 @@ function show_seem_chooser(val) {
 		// Build specify font
 		$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;", ($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;",
+			($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($template_fonts as $tf){
 			$template_editor_font_select_box->addOption($tf, $tf);
@@ -2099,7 +2109,8 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;", ($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;",
+			($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($template_font_sizes as $tf){
 			$template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2265,18 +2276,18 @@ function resetTabs(){
 		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
 		top.content.editor.edheader.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
-			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
+			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), '', $db);
-		return $user ? : g_l('modules_messaging', '[userid_not_found]');
+		return $user ?: g_l('modules_messaging', '[userid_not_found]');
 	}
 
 	public static function getUserID($username, we_database_base $db){
 		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', '', $db);
-		return $uid ? : -1;
+		return $uid ?: -1;
 	}
 
 	static function filenameNotValid($username){
@@ -2389,9 +2400,9 @@ function resetTabs(){
 	static function comparePasswords($username, $storedPassword, $clearPassword){
 		$matches = array();
 		$useSalt = (!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches) ?
-				//old md5
-				self::SALT_MD5 :
-				$matches[1]);
+			//old md5
+			self::SALT_MD5 :
+			$matches[1]);
 
 		switch($useSalt){
 			default:
