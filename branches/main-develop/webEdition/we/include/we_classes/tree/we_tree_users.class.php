@@ -49,7 +49,7 @@ class we_tree_users extends we_tree_base{
 				'/' :
 				str_replace("\\", "/", dirname(f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', $db))));
 
-			$db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . ' WHERE Path LIKE "' . $db->escape($parent_path) . '%" AND ParentID=' . $ParentId . ' ORDER BY Text ASC');
+			$db->query('SELECT ID,ParentID,username,Type,Permissions,LoginDenied FROM ' . USER_TABLE . ' WHERE Path LIKE "' . $db->escape($parent_path) . '%" AND ParentID=' . $ParentId . ' ORDER BY username ASC');
 
 			while($db->next_record()){
 				switch(($type = $db->f('Type'))){
@@ -57,7 +57,7 @@ class we_tree_users extends we_tree_base{
 						$items[] = [
 							'id' => intval($db->f('ID')),
 							'parentid' => intval($db->f('ParentID')),
-							'text' => addslashes($db->f('Text')),
+							'text' => addslashes($db->f('username')),
 							'typ' => 'group',
 							'open' => 0,
 							'contenttype' => 'we/userGroup',
@@ -72,7 +72,7 @@ class we_tree_users extends we_tree_base{
 						$items[] = [
 							'id' => intval($db->f('ID')),
 							'parentid' => intval($db->f('ParentID')),
-							'text' => addslashes($db->f('Text')),
+							'text' => addslashes($db->f('username')),
 							'typ' => 'item',
 							'open' => 0,
 							'contenttype' => ($db->f('Type') == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),

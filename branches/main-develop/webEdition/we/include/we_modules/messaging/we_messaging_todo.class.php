@@ -445,7 +445,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$this->selected_set = [];
 		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username
-		FROM ' . $this->table . ' as m, ' . USER_TABLE . ' as u
+		FROM ' . $this->table . ' AS m, ' . USER_TABLE . ' AS u
 		WHERE ((m.msg_type=' . intval($this->sql_class_nr) . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( (!isset($message_ids_cond) || !$message_ids_cond ) ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder]);
 

@@ -267,7 +267,7 @@ class we_messaging_message extends we_messaging_proto{
 			$id_str .= 'm.ID = ' . escape_sql_query($ih['_ID']);
 		}
 
-		$this->DB_WE->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB_WE->escape($this->table) . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . intval($this->userid));
+		$this->DB_WE->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB_WE->escape($this->table) . " as m, " . USER_TABLE . " AS u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . intval($this->userid));
 
 		$read_ids = [];
 

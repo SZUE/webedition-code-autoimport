@@ -4,13 +4,14 @@
 /* query separator */
 ###UPDATEDROPCOL(Portal,###TBLPREFIX###tblUser)###
 /* query separator */
+###UPDATEDROPCOL(Text,###TBLPREFIX###tblUser)###
+/* query separator */
 ###ONCOL(UseSalt,###TBLPREFIX###tblUser) ALTER TABLE ###TBLPREFIX###tblUser CHANGE COLUMN `Type` `Typeold` tinyint NOT NULL;###
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblUser (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
-  `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
   `Type` enum('user','group','alias') NOT NULL default 'user',

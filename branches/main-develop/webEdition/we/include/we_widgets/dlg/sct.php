@@ -68,7 +68,7 @@ $shortcuts = array_filter([
 $oSctPool = new we_html_select([
 	"name" => "sct_pool",
 	'class' => 'defaultfont',
-	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
+	"onchange" => "addBtn(_fo.list11,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	]
 );
 $oSctPool->insertOption(0, " ", "", true);
@@ -83,35 +83,35 @@ $oSctList11 = new we_html_select(["multiple" => "multiple",
 	"size" => 10,
 	"style" => "width:200px;",
 	'class' => 'defaultfont',
-	"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
+	"onDblClick" => "moveSelectedOptions(this.form.list11,this.form.list21,false);"
 	]);
 $oSctList21 = new we_html_select(["multiple" => "multiple",
 	"name" => "list21",
 	"size" => 10,
 	"style" => "width:200px;",
 	'class' => 'defaultfont',
-	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
+	"onDblClick" => "moveSelectedOptions(this.form.list21,this.form.list11,false);"
 	]);
 
-$oBtnDelete = we_html_button::create_button(we_html_button::DELETE, "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
+$oBtnDelete = we_html_button::create_button(we_html_button::DELETE, "javascript:removeOption(document.forms[0].list11);removeOption(document.forms[0].list21);", false, -1, -1, "", "", false, false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
 $oPool = new we_html_table(["width" => 420, 'class' => 'default'], 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle;'], we_html_element::htmlA(["href" => "#",
-		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
+		"onclick" => "moveOptionUp(document.forms[0].list11);moveOptionUp(document.forms[0].list21);return false;"
 	 ], '<i class="fa fa-lg fa-caret-up"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(["href" => "#",
-		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
+		"onclick" => "moveSelectedOptions(document.forms[0].list11,document.forms[0].list21,false);return false;"
 		], '<i class="fa fa-lg fa-caret-right"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(["href" => "#",
-		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
+		"onclick" => "moveSelectedOptions(document.forms[0].list21,document.forms[0].list11,false);return false;"
 		], '<i class="fa fa-lg fa-caret-left"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(["href" => "#",
-		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
+		"onclick" => "moveOptionDown(document.forms[0].list11);moveOptionDown(document.forms[0].list21);return false;"
 		], '<i class="fa fa-lg fa-caret-down"></i>'
 ));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());

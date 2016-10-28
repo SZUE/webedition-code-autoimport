@@ -199,7 +199,7 @@ class we_versions_search{
 	function getUsers(){
 		$db = new DB_WE();
 
-		$db->query('SELECT ID, Text FROM ' . USER_TABLE);
+		$db->query('SELECT ID,username FROM ' . USER_TABLE);
 		return $db->getAllFirst(false);
 	}
 

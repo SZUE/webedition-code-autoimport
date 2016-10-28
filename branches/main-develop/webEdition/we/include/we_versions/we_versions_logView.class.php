@@ -71,7 +71,7 @@ class we_versions_logView{
 					'<td width="auto"></td></tr>' .
 					'<tr><td class="bold" style="width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[user]') . ':</td><td width="auto">' .
-					f('SELECT Text FROM `' . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE()) .
+					f('SELECT username FROM `' . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID'])) .
 					'</td></tr>' .
 					'<tr><td class="bold" style="width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[logEntry]') . ':</td><td width="auto">' .

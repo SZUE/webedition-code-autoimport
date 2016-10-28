@@ -63,7 +63,6 @@ class we_users_user{
 		'username' => we_base_request::STRING,
 		'passwd' => we_base_request::STRING,
 		'clearpasswd' => we_base_request::STRING,
-		'Text' => we_base_request::STRING,
 		'Path' => we_base_request::FILE,
 		'Permissions' => we_base_request::RAW,
 		'ParentPerms' => we_base_request::BOOL,
@@ -148,7 +147,6 @@ class we_users_user{
 	var $Description = '';
 	// User Prefrences
 	var $Preferences = [];
-	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
 	var $CreatorID = 0;
@@ -359,9 +357,6 @@ class we_users_user{
 				}
 			}
 			$this->username = $try_name;
-			$this->Text = $try_text;
-		} else {
-			$this->Text = $this->username;
 		}
 		$this->IsFolder = ($this->Type == self::TYPE_USER_GROUP ? 1 : 0);
 		$this->Path = $this->getPath($this->ID);
@@ -1266,9 +1261,9 @@ _multiEditorreload = true;';
 
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){WE().layout.button.switch_button_state(document, \'edit\', \'enabled\');}else{WE().layout.button.switch_button_state(document, \'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
-			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
+			$this->DB_WE->query('SELECT ID,username,username,Type FROM ' . USER_TABLE . ' WHERE Type IN ("' . self::TYPE_USER . '","' . self::TYPE_ALIAS . '") AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){
-				$content .= '<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2) ? "]" : "");
+				$content .= '<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f('Type') == self::TYPE_ALIAS) ? '[' : '') . $this->DB_WE->f('username') . (($this->DB_WE->f('Type') == self::TYPE_ALIAS) ? ']' : '');
 			}
 		}
 

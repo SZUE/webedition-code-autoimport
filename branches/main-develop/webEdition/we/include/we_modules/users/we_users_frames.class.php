@@ -157,7 +157,7 @@ class we_users_frames extends we_modules_frame{
 				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 
-		$DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Text');
+		$DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY username');
 
 		$select = '<div style="background-color:white;width:520px;height:220px;"/>';
 		if($DB_WE->num_rows()){

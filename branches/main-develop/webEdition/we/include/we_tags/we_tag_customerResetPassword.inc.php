@@ -53,7 +53,7 @@ function checkRequired(array $required, array $loadFields, $emailfield = '', $in
 	$table = ($internal ? USER_TABLE : CUSTOMER_TABLE);
 	$loadFields[] = 'ID';
 	if(!$internal){
-		$loadFields[] = 'Username';
+		$loadFields[] = 'username';
 	}
 	if($emailfield){
 		$loadFields[] = $emailfield;
