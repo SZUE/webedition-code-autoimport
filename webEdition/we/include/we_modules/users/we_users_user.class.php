@@ -512,11 +512,23 @@ class we_users_user{
 
 	function savePermissions(){
 		$permissions = [];
+		$isAdmin = false;
 		foreach($this->permissions_slots as $val){
 			foreach($val as $k => $v){
-				$permissions[$k] = $v;
+				switch($k){
+					case 'ADMINISTRATOR':
+						$isAdmin = $v;
+					default:
+						$permissions[$k] = $v;
+				}
 			}
 		}
+		if($isAdmin){
+			$permissions = ['ADMINISTRATOR' => true];
+		}
+		$permissions=array_filter($permissions);
+		ksort($permissions);
+
 		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
 	}
 
@@ -1134,7 +1146,7 @@ _multiEditorreload = true;';
 		if(f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";%') AND ID!=" . $this->ID . ' LIMIT 1', '', $this->DB_WE)){
 			return false;
 		}
-		if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, '', $this->DB_WE)))){
+		if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE (Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') OR Permissions LIKE ('%\"ADMINISTRATOR\":\"1\"%') OR Permissions LIKE ('%\"ADMINISTRATOR\":true%')) AND ID!=" . $this->ID, '', $this->DB_WE)))){
 			echo $id . we_html_element::htmlBr();
 			return false;
 		}

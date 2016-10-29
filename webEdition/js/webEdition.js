@@ -240,16 +240,6 @@ var WebEdition = {
 				top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		},
-		setIFrame: function (frame, scroll) {
-			try {
-				if (scroll) {
-					frame.contentDocument.body.classList.add(WE().session.isApple ? 'iframeScrollIpad' : 'iframeScroll');
-				} else {
-					frame.contentDocument.body.classList.add('iframeNoScroll');
-				}
-			} catch (e) {
-			}
-		},
 		pushCmdToModule: function (args) {
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
