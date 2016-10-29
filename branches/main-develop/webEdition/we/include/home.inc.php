@@ -103,18 +103,42 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			$iWidth = ((!$aProps[2]) ? $small : $large);
 			if(!in_array($aProps[0], $aDiscard)){
 				switch($aProps[0]){
-					case 'upb':
-						if($aProps[3] === ''){
-							$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
+					case 'usr':
+						if(!defined('USER_TABLE')){
+							continue;
 						}
 						break;
-					case 'usr':
 					case 'msg':
-						$aDiscard[] = $aProps[0];
+						if(!defined('MESSAGING_SYSTEM') || !defined('USER_TABLE')){
+							continue;
+						}
 						break;
 				}
-				$newSCurrId = 'm_' . $iCurrId;
-				include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
+
+				$iWidth = ((!$aProps[2]) ? $small : $large);
+				if(!in_array($aProps[0], $aDiscard)){
+					switch($aProps[0]){
+						case 'upb':
+							if($aProps[3] === ''){
+								$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
+							}
+							break;
+						case 'usr':
+						case 'msg':
+							$aDiscard[] = $aProps[0];
+							break;
+					}
+					$newSCurrId = 'm_' . $iCurrId;
+					include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
+				}
+				if($aProps[2]){
+					$bExtendedCol = true;
+				}
+				if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
+					include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
+					$widget = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+					$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
+				}
 			}
 			if($aProps[2]){
 				$bExtendedCol = true;
@@ -172,5 +196,5 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false)))));
 }
 //FIXME: remove iframe
-?>
-<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>
+	?>
+	<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>

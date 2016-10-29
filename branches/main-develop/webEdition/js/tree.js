@@ -123,7 +123,7 @@ container.prototype = {
 		}
 	},
 	clear: function () {
-		for(var i=0;i<this.len;i++){
+		for (var i = 0; i < this.len; i++) {
 			delete this[i];
 		}
 		this.len = 0;
@@ -173,17 +173,17 @@ container.prototype = {
 	},
 	drawThreeDots: function (nf, ai) {
 		return '<span class="treeKreuz kreuzungend"></span>' +
-						'<span name="_' + nf[ai].id + '" onclick="' + this.topFrame + ".treeData.setSegment('" + nf[ai].id + '\');" class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span><br/>';
+			'<span name="_' + nf[ai].id + '" onclick="' + this.topFrame + ".treeData.setSegment('" + nf[ai].id + '\');" class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span><br/>';
 	},
 	drawItem: function (nf, ai) {
 		return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + this.clickHandler(nf[ai]);
 	},
 	drawGroup: function (nf, ai, zweigEintrag) {
 		return  "<span onclick=\"" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
-						this.clickHandler(nf[ai]) +
-						(nf[ai].open ?
-										this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
-										"");
+			this.clickHandler(nf[ai]) +
+			(nf[ai].open ?
+				this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
+				"");
 	},
 	drawSort: function (nf, ai, zweigEintrag) {
 		//overwritten
@@ -252,7 +252,7 @@ container.prototype = {
 			cur.selected = 1;
 		}
 		switch (cur.disabled ? -1 : this.state) {
-			case -1:
+			case - 1:
 				href = false;
 				break;
 			case this.tree_states.selectitem:
@@ -269,16 +269,16 @@ container.prototype = {
 				break;
 			default:
 				href = true;
-				row += "draggable=\"true\" ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\"";
+				row += "draggable=\"true\" ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\"" + (WE().session.isApple ? "" : " onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\"");
 		}
 		row += (select && href ? 'onclick="' + this.topFrame + ".treeData.checkNode('img_" + cur.id + "')\"" : '') +
-						//close open span tag
-						">" +
-						WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
-						(cur.inschedule > 0 ? '<i class="inscheduler fa fa-clock-o"></i>' : '') +
-						(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
-						'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
-						"</span><br/>";
+			//close open span tag
+			">" +
+			WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
+			(cur.inschedule > 0 ? '<i class="inscheduler fa fa-clock-o"></i>' : '') +
+			(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
+			'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
+			"</span><br/>";
 		return row;
 	},
 	draw: function (startEntry, zweigEintrag) {
@@ -423,7 +423,7 @@ node.prototype = {
 	},
 	getLayout: function () {
 		var layout_key = (this.typ === "group" ? "group" : "item") +
-						(this.typ === "item" && this.published === 0 ? "Notpublished" : "");
+			(this.typ === "item" && this.published === 0 ? "Notpublished" : "");
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
@@ -487,6 +487,6 @@ function usetHot() {
 function drawTree() {
 	var tree = (top.content ? top.content : top);
 	tree.document.getElementById("treetable").innerHTML = "<div class=\"" + treeData.getLayout() + "\">" +
-					treeData.draw(treeData.startloc, "") +
-					"</div>";
+		treeData.draw(treeData.startloc, "") +
+		"</div>";
 }
