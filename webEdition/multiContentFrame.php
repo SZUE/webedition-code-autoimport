@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$isApple = (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE);
 
 we_html_tools::protect();
 
@@ -35,7 +36,7 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 }
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-		we_html_element::cssLink(CSS_DIR . 'multiEditor.css') .
+	we_html_element::cssLink(CSS_DIR . 'multiEditor.css') .
 	we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js', '')
 );
 ?>
@@ -54,14 +55,14 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 			</div>
 		</div>
 	</div>
-	<div id="multiEditorEditorFramesetsDiv"><?php
-$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
+	<div id="multiEditorEditorFramesetsDiv" class="<?php echo ($isApple ? 'iframeScrollIpad' : ''); ?>"><?php
+		$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
-for($i = 0; $i < $count; $i++){
-	//'overflow:hidden;' removed to fix bug #6540
-	echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
-}
-?>
+		for($i = 0; $i < $count; $i++){
+			//'overflow:hidden;' removed to fix bug #6540
+			echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '" noresize ></iframe>';
+		}
+		?>
 	</div>
 </body>
 </html>
