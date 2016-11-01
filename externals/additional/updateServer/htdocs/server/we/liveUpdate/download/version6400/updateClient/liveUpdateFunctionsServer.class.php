@@ -813,7 +813,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 *
 	 * @return array
 	 */
-	function getInstalledLanguages(){
+	public static function getInstalledLanguages(){
 
 		clearstatcache();
 
