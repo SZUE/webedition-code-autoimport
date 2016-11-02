@@ -808,32 +808,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		}
 	}
 
-	/**
-	 * returns array with all installed languages
-	 *
-	 * @return array
-	 */
-	public static function getInstalledLanguages(){
-
-		clearstatcache();
-
-		//	Get all installed Languages
-		$_installedLanguages = array();
-		//	Look which languages are installed
-		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
-
-		while(false !== ($entry = $_language_directory->read())){
-			if($entry != '.' && $entry != '..'){
-				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
-					$_installedLanguages[] = $entry;
-				}
-			}
-		}
-		$_language_directory->close();
-
-		return $_installedLanguages;
-	}
-
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
