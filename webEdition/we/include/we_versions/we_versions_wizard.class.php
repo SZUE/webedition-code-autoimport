@@ -86,7 +86,7 @@ abstract class we_versions_wizard{
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(
-								array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
+								array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 
 								), ($dc ? $pb : $content->getHtml()))
 		);
 	}

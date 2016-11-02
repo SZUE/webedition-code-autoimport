@@ -385,7 +385,7 @@ if($ok){
 <?php echo STYLESHEET; ?>
 </head>
 
-<body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
+<body class="weDialogBody" onload="self.focus();">
 	<?php
 	if(!$ok){
 
