@@ -110,7 +110,6 @@ function we_parse_tag_captcha($a, $c, array $attribs){
 }
 
 function we_tag_captcha(array $attribs){
-	t_e($attribs);
 	static $captcha = [];
 	$tid = empty($GLOBALS['we_doc']) ? (empty($attribs['src']) ? 0 : intval($attribs['src'])) : $GLOBALS['we_doc']->TemplateID;
 
