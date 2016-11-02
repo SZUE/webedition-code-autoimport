@@ -251,7 +251,7 @@ echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '',
 ') .
 	STYLESHEET);
 ?>
-<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
+<body class="weDialogBody" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .

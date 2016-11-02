@@ -231,7 +231,7 @@ function setTab(tab) {
 		$table->setCol(3, 2, array('style' => 'vertical-align:top;'), $buttons_table);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'), $this->View->getJSAdmin() .
+				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), $this->View->getJSAdmin() .
 					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"cmd" => "switchBranch",
 							"pnt" => "customer_admin")) .

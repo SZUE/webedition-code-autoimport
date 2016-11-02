@@ -55,7 +55,7 @@ echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
  STYLESHEET;
 ?>
 </head>
-<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
+<body class="weDialogBody" onload="self.focus();">
 	<div id="info"><?php
 		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
