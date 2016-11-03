@@ -93,13 +93,13 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 		}
 
 
-		$table2 = new we_html_table(['class' => 'default', 'width' => $this->width], 1, 1);
+		$table2 = new we_html_table(['class' => 'default multichooser', 'width' => $this->width], 1, 1);
 
-		$table2->setCol(0, 0, [], we_html_element::htmlDiv(['style' => 'background-color:white;', 'class' => "multichooser", 'id' => 'multi_selector'], $table->getHtml()));
+		$table2->setCol(0, 0, [], we_html_element::htmlDiv(['class' => 'multichooser', 'id' => 'multi_selector'], $table->getHtml()));
 
 		if($this->addbut){
 			$table2->addRow(1);
-			$table2->setCol(1, 0, ['style' => "text-align:right;padding-top:2px;"], $this->addbut);
+			$table2->setCol(1, 0, ['class' => 'addButton'], $this->addbut);
 		}
 
 		return $table2->getHtml() . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"chooserFileIcon");');
