@@ -283,6 +283,27 @@ function we_cmd() {
 		case "add_thumbnail":
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
+		case "check_radio_option":
+			// to be callable from selectors we skip args[1]
+			document.we_form.elements[args[2]][args[3]].checked = true;
+			if(args[4]){
+				we_cmd('setHot');
+			}
+			break
+		case "toggle_checkbox_with_hidden":
+			// to be callable from selectors we skip args[1]
+			document.we_form.elements[args[2]].value = args[3];
+			document.we_form.elements['check_' + args[2]].checked = args[3];
+			if(args[4]){
+				we_cmd('setHot');
+			}
+			break;
+		case "imageDocument_emptyLongdesk":
+			document.we_form.elements[args[2]].value='-1';
+			document.we_form.elements[args[3]].value='';
+			we_cmd('setHot');
+			YAHOO.autocoml.setValidById(args[4]);
+			break;
 		case "image_resize":
 			if (WE().consts.graphic.gdSupportedTypes[doc.gdType]) {
 				ImageEditTools.Resize.start(url, doc.gdType);
