@@ -30,8 +30,6 @@
 abstract class we_base_widget{
 	static $json = [];
 
-	const w_icon = 20;
-
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
 	 * Last modified (mfd), ToDo/Messaging (msg), Users Online (usr), and Unpublished docs and objs (ubp).
@@ -58,14 +56,14 @@ abstract class we_base_widget{
 		  <i class="fa fa-expand"></i>
 		  </span>'
 		);
-		$oIco_prc->setCol(0, 2, [], '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		$oIco_prc->setCol(0, 2, [], '<span title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-close"></i>
 		  </span>');
 		$oIco_pc = new we_html_table([], 1, 2);
-		$oIco_pc->setCol(0, 0, [], '<span class="" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_pc->setCol(0, 0, [], '<span title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-align-justify"></i>
 		  </span>');
-		$oIco_pc->setCol(0, 1, [], '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		$oIco_pc->setCol(0, 1, [], '<span title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-close"></i>
 		  </span>');
 
@@ -74,8 +72,8 @@ abstract class we_base_widget{
 			we_html_element::htmlDiv(["id" => $iId . "_ico_pc", 'style' => "display:none;"], $oIco_pc->getHtml());
 
 		$oTb = new we_html_table(["id" => $iId . "_tb", 'class' => 'widget_controls'], 1, 2);
-		$oTb->setCol(0, 0, ["id" => $iId . "_h", 'style' => "width:100%"], '');
-		$oTb->setCol(0, 1, ["width" => self::w_icon], $sIco);
+		$oTb->setCol(0, 0, ['id' => $iId . "_h", 'class' => 'dragBar'], '');
+		$oTb->setColContent(0, 1, $sIco);
 
 		if($iId != 'clone'){
 			self::$json[] = [

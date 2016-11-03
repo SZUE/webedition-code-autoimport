@@ -622,7 +622,7 @@ td.boxHeader{
 	}
 }
 
-.multichooser {
+div.multichooser {
 	background-color: white;
 	border: 1px grey solid;
 	min-height: 30px;
@@ -637,6 +637,10 @@ td.boxHeader{
 	td.buttonsObjectFile{
 		width:8em;
 	}
+}
+table.multichooser td.addButton{
+	text-align:right;
+	padding-top:2px;
 }
 
 input[type="checkbox"]{

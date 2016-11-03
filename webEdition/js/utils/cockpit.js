@@ -237,7 +237,6 @@ function setHandler(oDiv) {
 	this.node = oDiv;
 	this.oDragTb = document.getElementById(oDiv.id + '_h');
 	if (this.oDragTb) {
-		this.oDragTb.style.cursor = 'move';
 		oEvt.init(this.oDragTb, this.node);
 		this.node.onDragStart = oWidget.applyEvt(this, '_dragStart');
 		this.node.onDrag = oWidget.applyEvt(this, '_drag');
