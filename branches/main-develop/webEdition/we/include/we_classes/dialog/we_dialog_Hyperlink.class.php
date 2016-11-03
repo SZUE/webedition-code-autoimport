@@ -388,7 +388,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
-				$yuiSuggest->setResult('we_dialog_args[objID]', ($this->args["objID"] == 0 ? "" : $this->args["objID"]));
+				$yuiSuggest->setResult('we_dialog_args[objID]', ($this->args['objID'] == 0 ? '' : $this->args['objID']));
 				$yuiSuggest->setSelector(weSuggest::DocSelector);
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);

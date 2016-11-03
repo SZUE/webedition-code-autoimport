@@ -270,7 +270,7 @@ $parts[] = ['headline' => '',
 ];
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', we_html_element::jsScript(JS_DIR . 'sysinfo.js'));
 ?>
-<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
+<body class="weDialogBody" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?=
 		we_html_multiIconBox::getJS() .

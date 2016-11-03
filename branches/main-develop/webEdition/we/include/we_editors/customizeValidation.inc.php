@@ -24,7 +24,7 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
 ?>
-<body class="weDialogBody" style="overflow:hidden;">
+<body class="weDialogBody">
 	<?php
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		case 'saveService':

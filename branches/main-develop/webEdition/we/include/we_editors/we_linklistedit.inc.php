@@ -369,7 +369,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 );
 ?>
 
-<body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
+<body class="weDialogBody" onload="self.focus();">
 	<?php
 	if(!$ok){
 
