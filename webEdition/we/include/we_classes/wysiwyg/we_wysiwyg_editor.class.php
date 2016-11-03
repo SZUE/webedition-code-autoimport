@@ -104,7 +104,7 @@ class we_wysiwyg_editor{
 
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
-		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
+		$this->restrictContextmenu = $contextmenu ? ',' . urldecode($contextmenu) . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
@@ -118,7 +118,7 @@ class we_wysiwyg_editor{
 		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
 			$this->bgcol = '';
 		}
-		$this->tinyParams = str_replace(['\'', '&#34;', '&#8216;', '&#8217;'], '"', trim($tinyParams, ' ,'));
+		$this->tinyParams = str_replace(['\'', '&#34;', '&#8216;', '&#8217;'], '"', trim(urldecode($tinyParams), ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml ? "xhtml" : "html";
 		$this->removeFirstParagraph = $removeFirstParagraph;
@@ -565,12 +565,14 @@ return {
 
 	private function getEditButtonHTML(){
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
-		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
+
+		$param4 = !$this->isFrontendEdit ? '' : 'frontend';
 		$width = we_base_util::convertUnits($this->width);
 		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . "'+getDocumentCss(" . ($this->contentCss ? 'true' : '') . "),'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');");
+
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . "'+getDocumentCss(" . ($this->contentCss ? 'true' : '') . "),'" . $this->origName . "','" . urlencode($this->tinyParams) . "','" . urlencode($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');");
 	}
 
 	static function parseInternalImageSrc($value){
