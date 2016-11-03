@@ -77,8 +77,7 @@ abstract class we_versions_wizard{
 
 		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
 				we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(
-					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
-					], ($dc ? $pb : $content->getHtml()))
+					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"),					], ($dc ? $pb : $content->getHtml()))
 		);
 	}
 

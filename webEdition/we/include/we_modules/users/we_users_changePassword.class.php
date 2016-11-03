@@ -76,7 +76,7 @@ top.document.forms[0].elements.newpasswd2.select();';
 	public static function showDialog(){
 		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
 					'pwdCheck' => SECURITY_USER_PASS_REGEX
-			])]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+			])]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;') .
 				self::getLoad()
 		));
 	}

@@ -30,7 +30,7 @@ echo we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCo
 ?>
 
 </head>
-<body class="weEditorBody" style="height:100%;overflow:hidden;" onload="weCollectionEdit.init();">
+<body class="weEditorBody" onload="weCollectionEdit.init();">
 	<form name="we_form"><?=
 		we_class::hiddenTrans() .
 		$GLOBALS['we_doc']->formCollection() .

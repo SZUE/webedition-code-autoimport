@@ -232,7 +232,7 @@ function setTab(tab) {
 		$table->setCol(3, 2, ['style' => 'vertical-align:top;'], $buttons_table);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'], we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js') .
+				we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js') .
 					we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
 							"cmd" => "switchBranch",
 							"pnt" => "customer_admin"]) .

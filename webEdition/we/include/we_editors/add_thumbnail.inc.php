@@ -36,13 +36,13 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '',
-	we_html_element::jsScript(JS_DIR . 'add_thumb.js', '', ['id' => 'loadVarAdd_thumb', 'data-thumbData' => setDynamicVar([
+echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_element::jsScript(JS_DIR . 'add_thumb.js', '', ['id' => 'loadVarAdd_thumb', 'data-thumbData' => setDynamicVar([
 			'transaction' => $we_transaction
 ])]));
 
 // SELECT Box with thumbnails
-$thumbnails = new we_html_select(["multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"]);
+$thumbnails = new we_html_select(["multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;",
+	"onchange" => "select_thumbnails(this);"]);
 $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 $thumbnail_counter_firsttime = true;
@@ -82,4 +82,4 @@ $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:t
 $buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
 
 $dialog = we_html_multiIconBox::getHTML("", $thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', '[thumbnails]'));
-echo we_html_element::htmlBody(['class' => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"], $dialog) . "</html>";
+echo we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "top.focus();"], $dialog) . "</html>";
