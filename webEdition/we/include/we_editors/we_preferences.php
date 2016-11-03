@@ -1359,7 +1359,7 @@ function build_dialog($selected_setting = 'ui'){
 				/**
 				 * Recipients list
 				 */
-				$select_box = new we_html_select(['class' => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"]);
+				$select_box = new we_html_select(['class' => "weSelect", "name" => "we_recipient", 'size' => 10, 'style' => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"]);
 
 				$enabled_buttons = false;
 
@@ -1388,14 +1388,14 @@ function build_dialog($selected_setting = 'ui'){
 
 
 			if(we_base_preferences::userIsAllowed("FORMMAIL_CONFIRM")){
-				$formmail_confirm = new we_html_select(['name' => "newconf[FORMMAIL_CONFIRM]", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_confirm = new we_html_select(['name' => "newconf[FORMMAIL_CONFIRM]", 'style' => "width:88px;", "class" => "weSelect"]);
 				$formmail_confirm->addOption(1, g_l('prefs', '[on]'));
 				$formmail_confirm->addOption(0, g_l('prefs', '[off]'));
 				$formmail_confirm->selectOption(get_value("FORMMAIL_CONFIRM") ? 1 : 0);
 
 				$settings[] = ['html' => $formmail_confirm->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailConfirm]')];
 
-				$formmail_log = new we_html_select(['name' => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_log = new we_html_select(['name' => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", 'style' => "width:88px;", "class" => "weSelect"]);
 				$formmail_log->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_log->addOption(0, g_l('prefs', '[no]'));
 				$formmail_log->selectOption(get_value("FORMMAIL_LOG") ? 1 : 0);
@@ -1411,7 +1411,7 @@ function build_dialog($selected_setting = 'ui'){
 				$isDisabled = (get_value("FORMMAIL_LOG") == 0);
 
 
-				$formmail_emptylog = new we_html_select(['name' => "newconf[FORMMAIL_EMPTYLOG]", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_emptylog = new we_html_select(['name' => "newconf[FORMMAIL_EMPTYLOG]", 'style' => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_emptylog->setAttribute("disabled", "disabled");
 				}
@@ -1432,7 +1432,7 @@ function build_dialog($selected_setting = 'ui'){
 				$settings[] = ['html' => $formmail_emptylog->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[deleteEntriesOlder]')];
 
 				// formmail only via we doc //
-				$formmail_ViaWeDoc = new we_html_select(['name' => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_ViaWeDoc = new we_html_select(['name' => "newconf[FORMMAIL_VIAWEDOC]", 'style' => "width:88px;", "class" => "weSelect"]);
 				$formmail_ViaWeDoc->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
 				$formmail_ViaWeDoc->selectOption((get_value("FORMMAIL_VIAWEDOC") ? 1 : 0));
@@ -1440,7 +1440,7 @@ function build_dialog($selected_setting = 'ui'){
 				$settings[] = ['html' => $formmail_ViaWeDoc->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailViaWeDoc]')];
 
 				// limit formmail requests //
-				$formmail_block = new we_html_select(['name' => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_block = new we_html_select(['name' => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", 'style' => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_block->setAttribute("disabled", "disabled");
 				}
@@ -1470,7 +1470,7 @@ function build_dialog($selected_setting = 'ui'){
 					$isDisabled = (get_value("FORMMAIL_BLOCK") == 0);
 				}
 
-				$formmail_span = new we_html_select(['name' => "newconf[FORMMAIL_SPAN]", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_span = new we_html_select(['name' => "newconf[FORMMAIL_SPAN]", 'style' => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_span->setAttribute("disabled", "disabled");
 				}
@@ -1492,7 +1492,7 @@ function build_dialog($selected_setting = 'ui'){
 
 
 				$settings[] = ['html' => $formmail_span->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1];
-				$formmail_blocktime = new we_html_select(['name' => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"]);
+				$formmail_blocktime = new we_html_select(['name' => "newconf[FORMMAIL_BLOCKTIME]", 'style' => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_blocktime->setAttribute("disabled", "disabled");
 				}

@@ -415,12 +415,13 @@ EditorFrameController.prototype = {
 				case "cockpit":
 					docRef = this.EditorFrames[frameId].getDocumentReference();
 					// close all modal dialogs
+					if(docRef.closeAllModalWindows){
 					docRef.closeAllModalWindows();
-
 					if (docRef.isHot()) {
 						// save changes, in cockpit
 						docRef.saveSettings();
 					}
+				}
 					break;
 				case "model":
 					docRef = this.EditorFrames[frameId].getDocumentReference();

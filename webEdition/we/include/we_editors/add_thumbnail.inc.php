@@ -41,7 +41,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_e
 ])]));
 
 // SELECT Box with thumbnails
-$thumbnails = new we_html_select(["multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;",
+$thumbnails = new we_html_select(["multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, 'style' => "width: 340px;",
 	"onchange" => "select_thumbnails(this);"]);
 $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 

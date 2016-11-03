@@ -222,7 +222,7 @@ function setTab(tab) {
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_tools::htmlDialogLayout(
-							we_html_element::htmlDiv(['class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;margin:5px 10px 15px 10px;"], $content)
+							we_html_element::htmlDiv(['class' => "blockWrapper", 'style' => "width: 588px; height: 500px; border:1px #dce6f2 solid;margin:5px 10px 15px 10px;"], $content)
 							, g_l('modules_newsletter', '[show_log]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 						)
 					)
@@ -267,8 +267,8 @@ function setTab(tab) {
 			$table->addRow();
 			$table->setColContent(1, 0, we_html_element::htmlSpan(['id' => 'blacklist_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
 			$table->setColContent(1, 1, $pbByB->getHTML());
-			$table->setCol(1, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'], $allBlockedByBlacklist));
-			$table->setCol(1, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByBlacklist == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
+			$table->setCol(1, 2, ['style' => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'], $allBlockedByBlacklist));
+			$table->setCol(1, 3, ['style' => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByBlacklist == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
 			$table->setCol(1, 4, ['style' => 'width: 35px'], (($allBlockedByBlacklist == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('black_list');"))));
 
@@ -281,8 +281,8 @@ function setTab(tab) {
 			$table->addRow();
 			$table->setColContent(2, 0, we_html_element::htmlSpan(['id' => 'domain_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
 			$table->setColContent(2, 1, $pbBbD->getHTML());
-			$table->setCol(2, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'], $allBlockedByDomainCheck));
-			$table->setCol(2, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
+			$table->setCol(2, 2, ['style' => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'], $allBlockedByDomainCheck));
+			$table->setCol(2, 3, ['style' => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
 			$table->setCol(2, 4, ['style' => 'width: 35px'], (($allBlockedByDomainCheck == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
 
@@ -295,15 +295,15 @@ function setTab(tab) {
 			$table->addRow();
 			$table->setColContent(3, 0, we_html_element::htmlSpan(['id' => 'recipients_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
 			$table->setColContent(3, 1, $pbCR->getHTML());
-			$table->setCol(3, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'], $allClearRecipients));
-			$table->setCol(3, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
+			$table->setCol(3, 2, ['style' => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'], $allClearRecipients));
+			$table->setCol(3, 3, ['style' => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
 			$table->setCol(3, 4, ['style' => 'width: 35px'], we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
 			$table->setColContent(4, 0, we_html_element::htmlB(g_l('modules_newsletter', '[reporting][mailing_all_emails]')));
-			$table->setCol(4, 2, ['colspan' => 2, "style" => "padding: 0 5px 0 5px;"], we_html_element::htmlB($allRecipients));
+			$table->setCol(4, 2, ['colspan' => 2, 'style' => "padding: 0 5px 0 5px;"], we_html_element::htmlB($allRecipients));
 
 			$parts[] = [
 				'headline' => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . $newsletterMailOrder['startTime'],
@@ -391,7 +391,7 @@ function setTab(tab) {
 			we_html_element::htmlBr();
 		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
-						we_html_element::htmlDiv(['class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
+						we_html_element::htmlDiv(['class' => "blockWrapper", 'style' => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
@@ -433,7 +433,7 @@ function setTab(tab) {
 			we_html_element::htmlBr();
 		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
-						we_html_element::htmlDiv(['class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
+						we_html_element::htmlDiv(['class' => "blockWrapper", 'style' => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
@@ -525,7 +525,7 @@ function setTab(tab) {
 
 		$deselect = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.global_mailing_list.value=''");
 
-		$gml_table = new we_html_table(['class' => 'default withSpace', "style" => 'width:538px;margin:10px;'], 4, 2);
+		$gml_table = new we_html_table(['class' => 'default withSpace', 'style' => 'width:538px;margin:10px;'], 4, 2);
 		$gml_table->setCol(0, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(2, 0, [], $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, ['style' => 'text-align:right'], $deselect);
@@ -842,7 +842,7 @@ function setTab(tab) {
 			$selected = $block->Groups ?: "1";
 			$content .= we_html_element::htmlHiddens(['block' . $counter . '_Groups' => $selected,
 					'block' . $counter . '_Pack' => $block->Pack]) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'newSelect', "style" => 'width:440px;',
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'newSelect', 'style' => 'width:440px;',
 						"onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=true"]), g_l('modules_newsletter', '[block_lists]'));
 
 			switch($block->Type){
@@ -859,7 +859,7 @@ function setTab(tab) {
 						$values = $this->View->getFields($block->LinkID, FILE_TABLE);
 
 						$content .= (!empty($values) ?
-							we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", ["style" => 'width:440px;',
+							we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", ['style' => 'width:440px;',
 									"onkeyup" => 'top.content.hot=true;']), g_l('modules_newsletter', '[block_document_field]')) :
 							we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => "defaultfont lowContrast"], g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
@@ -895,7 +895,7 @@ function setTab(tab) {
 						"rows" => 10,
 						"cols" => 40,
 						"cols" => 40,
-						"style" => "width:440px;",
+						'style' => "width:440px;",
 						"inlineedit" => "true",
 						"bgcolor" => "white",
 					];
@@ -906,7 +906,7 @@ function setTab(tab) {
 
 
 					$content .= we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(["cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=true;",
-								"style" => "width:440px;"], oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
+								'style' => "width:440px;"], oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
@@ -1139,7 +1139,7 @@ window.onload=extraInit;');
 
 		$table->setCol($row++, 1, ['style' => "padding-bottom:2px;"], we_html_forms::checkbox($htmlmail, (($htmlmail) ? true : false), "htmlmail", g_l('modules_newsletter', '[edit_htmlmail]'), false, "defaultfont", "if(document.we_form.htmlmail.checked) document.we_form.htmlmail.value=1; else document.we_form.htmlmail.value=0;"));
 
-		$salut_select = new we_html_select(['name' => "salutation", "style" => "width: 310px"]);
+		$salut_select = new we_html_select(['name' => "salutation", 'style' => "width: 310px"]);
 		$salut_select->addOption("", "");
 		if(!empty($this->View->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD])){
 			$salut_select->addOption($this->View->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], $this->View->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD]);
@@ -1359,7 +1359,7 @@ window.onload=extraInit;');
 		$js = $this->View->getJSProperty() . $weFileupload->getJs() . we_progressBar::getJSCode();
 
 		$table = new we_html_table(['class' => 'default withBigSpace'], 2, 1);
-		$table->setCol(0, 0, ["style" => "padding-right:30px"], $weFileupload->getHtmlAlertBoxes());
+		$table->setCol(0, 0, ['style' => "padding-right:30px"], $weFileupload->getHtmlAlertBoxes());
 		$table->setCol(1, 0, ['style' => 'vertical-align:middle;'], $weFileupload->getHTML());
 
 		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post",
@@ -1750,7 +1750,7 @@ self.focus();
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea([
-								'name' => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;"]), g_l('modules_newsletter', '[details]'), $footer)
+								'name' => "details", "cols" => 60, "rows" => 15, 'style' => "width:530px;height:280px;"]), g_l('modules_newsletter', '[details]'), $footer)
 					) .
 					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
@@ -2114,7 +2114,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 
 		$to = (is_numeric($this->View->settings["send_wait"]) ? $this->View->settings["send_wait"] : 0) + 40000;
 
-		echo $this->getHTMLDocument(we_html_element::htmlBody(["style" => 'margin:10px', "onload" => "startTimeout();"], we_html_element::htmlForm(['name' => 'we_form',
+		echo $this->getHTMLDocument(we_html_element::htmlBody(['style' => 'margin:10px', "onload" => "startTimeout();"], we_html_element::htmlForm(['name' => 'we_form',
 					"method" => "post", "target" => "send_cmd", "action" => $this->frameset], we_html_element::htmlHiddens(['mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",

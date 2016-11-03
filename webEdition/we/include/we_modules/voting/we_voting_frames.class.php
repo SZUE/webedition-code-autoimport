@@ -376,7 +376,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$table->setColContent(0, 0, $select->getHtml());
 		$table->setColContent(0, 1, we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting', '[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
 		$table->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
-		$table->setColAttributes(0, 1, ["style" => "padding:0 5px;"]);
+		$table->setColAttributes(0, 1, ['style' => "padding:0 5px;"]);
 		$selectCode = $table->getHtml();
 
 		$table = new we_html_table(['class' => 'default'], 5, 1);

@@ -600,7 +600,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$rows = [[['dat' => g_l('modules_banner', '[all]')],
 				['dat' => $GLOBALS["lv"]->getAllviews()],
 				['dat' => $GLOBALS["lv"]->getAllclicks()],
-				['dat' => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right"]
+				['dat' => $GLOBALS["lv"]->getAllrate() . "%", 'style' => "text-align:right"]
 			]
 		];
 		while($GLOBALS["lv"]->next_record()){
@@ -608,7 +608,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				FILE_TABLE],
 					['dat' => $GLOBALS["lv"]->f("views")],
 					['dat' => $GLOBALS["lv"]->f("clicks")],
-					['dat' => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right"]
+					['dat' => $GLOBALS["lv"]->f("rate") . "%", 'style' => "text-align:right"]
 			];
 		}
 

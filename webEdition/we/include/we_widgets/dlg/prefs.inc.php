@@ -28,7 +28,7 @@ $jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js', '', ['id' =
 $oSctCls = new we_html_select([
 	"name" => "sct_cls",
 	'class' => 'defaultfont',
-	"style" => "width:120px;border:#AAAAAA solid 1px"
+	'style' => "width:120px;border:#AAAAAA solid 1px"
 	]);
 $oSctCls->insertOption(0, "white", g_l('cockpit', '[white]'));
 $oSctCls->insertOption(1, "lightCyan", g_l('cockpit', '[lightcyan]'));

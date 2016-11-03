@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $oTblDiv = we_html_element::htmlDiv(["id" => "m_" . $iCurrId . "_inline",
-		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+		'style' => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 		], $ct) . we_html_element::jsElement("WE().util.setIconOfDocClass(document,'upbIcon');");
 $bTypeDoc = (bool) $aProps[3]{0};
 $bTypeObj = (bool) $aProps[3]{1};

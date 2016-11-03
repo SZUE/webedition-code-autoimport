@@ -23,7 +23,7 @@
  */
 $oTblDiv = we_html_element::htmlDiv(
 		['id' => 'm_' . $iCurrId . '_inline',
-		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+		'style' => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 		], we_html_element::htmlDiv(['id' => 'shp_data'], $shopDashboard)
 );
 $aLang = [g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, ""];

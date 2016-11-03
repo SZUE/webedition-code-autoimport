@@ -63,14 +63,14 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = we_html_element::htmlSpan(["id" => "prev", "style" => "padding-left:10px;text-align:right"], $prevButton) .
-				we_html_element::htmlSpan(["id" => "next", "style" => "padding-left:10px;text-align:right"], $nextButton) .
-				we_html_element::htmlSpan(["id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
-				we_html_element::htmlSpan(["id" => "cancel", "style" => "padding-left:10px;text-align:right"], $cancelButton);
+			$content2 = we_html_element::htmlSpan(["id" => "prev", 'style' => "padding-left:10px;text-align:right"], $prevButton) .
+				we_html_element::htmlSpan(["id" => "next", 'style' => "padding-left:10px;text-align:right"], $nextButton) .
+				we_html_element::htmlSpan(["id" => "refresh", 'style' => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
+				we_html_element::htmlSpan(["id" => "cancel", 'style' => "padding-left:10px;text-align:right"], $cancelButton);
 
 			$content = new we_html_table(["width" => "100%"], 1, 2);
-			$content->setCol(0, 0, ["id" => "progr", "style" => "display:none;padding-left:1em;text-align:left"], $pb);
-			$content->setCol(0, 1, ["style" => "text-align:right"], $content2);
+			$content->setCol(0, 0, ["id" => "progr", 'style' => "display:none;padding-left:1em;text-align:left"], $pb);
+			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 
 		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody([

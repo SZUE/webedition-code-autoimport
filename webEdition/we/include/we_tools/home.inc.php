@@ -25,7 +25,7 @@ $row = 0;
 $starttable = new we_html_table(["cellpadding" => 7], 3, 1);
 $starttable->setCol($row++, 0, ['class' => "defaultfont titleline", "colspan" => 3], $title);
 $starttable->setCol($row++, 0, ['class' => 'defaultfont', "colspan" => 3], "");
-$starttable->setCol($row++, 0, ["style" => "text-align:center"], $content);
+$starttable->setCol($row++, 0, ['style' => "text-align:center"], $content);
 
 $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 

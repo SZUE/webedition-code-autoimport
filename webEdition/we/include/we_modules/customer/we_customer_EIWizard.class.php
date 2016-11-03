@@ -111,7 +111,7 @@ class we_customer_EIWizard{
 						return $this->getHTMLStep0();
 				}
 			default:
-				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(["style" => 'margin:10px'], "aba")
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(['style' => 'margin:10px'], "aba")
 				);
 		}
 	}
@@ -224,7 +224,7 @@ switch (args[0]){
 				case self::TYPE_CSV:
 					$fileformattable = new we_html_table(['style' => 'margin-top:10px;'], 4, 1);
 
-					$file_encoding = new we_html_select(['name' => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"]);
+					$file_encoding = new we_html_select(['name' => "csv_lineend", 'class' => 'defaultfont', 'style' => "width: 254px;"]);
 					$file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 					$file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 					$file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
@@ -649,7 +649,7 @@ function callBack(){
 
 					$fileformattable = new we_html_table(['style' => 'margin-top:10px;'], 5, 1);
 
-					$file_encoding = new we_html_select(['name' => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"]);
+					$file_encoding = new we_html_select(['name' => "csv_lineend", 'class' => 'defaultfont', 'style' => "width: 254px;"]);
 					$file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
 					$file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
 					$file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
@@ -795,7 +795,7 @@ function callBack(){
 			$we_fields = new we_html_select(["name" => "field_mappings[$record]",
 				'class' => 'defaultfont',
 				"onclick" => "",
-				"style" => ""]
+				'style' => ""]
 			);
 
 			$we_fields->addOption("", g_l('modules_customer', '[any]'));
@@ -859,7 +859,7 @@ function callBack(){
 			if($log){
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), we_html_tools::TYPE_ALERT, 550));
-				$table->setColContent(2, 0, we_html_element::htmlTextArea(['name' => "log", "rows" => 15, "cols" => 15, "style" => "width: 550px; height: 200px;"], oldHtmlspecialchars($log)));
+				$table->setColContent(2, 0, we_html_element::htmlTextArea(['name' => "log", "rows" => 15, "cols" => 15, 'style' => "width: 550px; height: 200px;"], oldHtmlspecialchars($log)));
 				unlink(TEMP_PATH . "$tmpdir/$tmpdir.log");
 			}
 		}
@@ -888,7 +888,7 @@ function callBack(){
 	}
 
 	function getHTMLExportFooter($step = 1){
-		$content = new we_html_table(['class' => 'default', "width" => 575, "style" => "text-align:right"], 1, 2);
+		$content = new we_html_table(['class' => 'default', "width" => 575, 'style' => "text-align:right"], 1, 2);
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
@@ -916,7 +916,7 @@ function callBack(){
 					we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
-		$content->setCol(0, 1, ["style" => "text-align:right"], $buttons);
+		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
 
 		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ''), we_html_element::htmlBody(['class' => "weDialogButtonsBody"], we_html_element::htmlForm([
 						"name" => "we_form",
@@ -930,7 +930,7 @@ function callBack(){
 	}
 
 	function getHTMLImportFooter($step = 1){
-		$content = new we_html_table(['class' => 'default', "width" => 575, "style" => "text-align:right"], 1, 2);
+		$content = new we_html_table(['class' => 'default', "width" => 575, 'style' => "text-align:right"], 1, 2);
 
 		switch($step){
 			case "1":
@@ -974,7 +974,7 @@ function callBack(){
 						we_html_button::create_button(we_html_button::NEXT, "javascript:top.load.location='" . $this->frameset . "&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
-		$content->setCol(0, 1, ["style" => "text-align:right"], $buttons);
+		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
 
 		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody"], we_html_element::htmlForm([
 						"name" => "we_form",
@@ -1003,7 +1003,7 @@ function callBack(){
 				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
 							'data-wizzard' => setDynamicVar([
 								'art' => self::ART_EXPORT,
-						])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px;', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
+						])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px;', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
 								"method" => "post", "target" => "body", "action" => $this->frameset], "")
 						)
 				);
@@ -1017,7 +1017,7 @@ function callBack(){
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
 					'data-wizzard' => setDynamicVar([
 						'art' => self::ART_EXPORT,
-				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form',
+				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form',
 						"method" => "post", "target" => "body", "action" => $this->frameset], "")
 				)
 		);
@@ -1177,7 +1177,7 @@ function callBack(){
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
 						'data-wizzard' => setDynamicVar([
 							'art' => self::ART_IMPORT,
-					])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
+					])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form',
 							"method" => "post", "target" => "body", "action" => $this->frameset], "")
 					)
 			);
@@ -1189,7 +1189,7 @@ function callBack(){
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard',
 					'data-wizzard' => setDynamicVar([
 						'art' => self::ART_IMPORT,
-				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form',
+				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin: 5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form',
 						"method" => "post", "target" => "body", "action" => $this->frameset], "")
 				)
 		);
@@ -1254,7 +1254,7 @@ function doNext(){
 	document.we_form.submit();
 }');
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px',
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px',
 					"onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens)
 				)
 		);
@@ -1307,7 +1307,7 @@ function doNext(){
 	document.we_form.submit();
 }');
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px',
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px',
 					"onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens
 					)
 				)
@@ -1325,7 +1325,7 @@ function doNext(){
 		document.we_form.submit();
 }');
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px',
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px',
 					"onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], we_html_element::htmlHiddens([
 							"tmpdir" => $tmpdir,
 							"impno" => $impno,
@@ -1434,7 +1434,7 @@ top.customers="' . implode(',', $customers) . '";');
 
 	private function getHTMLChooser($name, $value, $values, $title){
 		$select = new we_html_select(['name' => $name . "_select", 'onchange' => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0",
-			"style" => "width:200px;"]);
+			'style' => "width:200px;"]);
 		$select->addOption("", "");
 		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));

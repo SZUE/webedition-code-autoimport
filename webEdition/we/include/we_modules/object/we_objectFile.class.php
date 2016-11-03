@@ -1148,7 +1148,7 @@ class we_objectFile extends we_document{
 		}
 
 		$countrycode = array_search($langcode, getWECountries());
-		$countryselect = new we_html_select(['name' => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"]);
+		$countryselect = new we_html_select(['name' => "we_" . $this->Name . "_language[$name]", 'style' => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"]);
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -1199,7 +1199,7 @@ class we_objectFile extends we_document{
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
-		$languageselect = new we_html_select(['name' => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"]);
+		$languageselect = new we_html_select(['name' => "we_" . $this->Name . "_language[$name]", 'style' => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"]);
 		if(!$this->DefArray["language_" . $name]["required"]){
 			$languageselect->addOption('--', '');
 		}

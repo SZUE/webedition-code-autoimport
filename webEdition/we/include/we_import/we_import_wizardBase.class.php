@@ -126,7 +126,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$content->setCol(0, 0, null, $pb);
-		$content->setCol(0, 1, ["style" => "text-align:right"], '
+		$content->setCol(0, 1, ['style' => "text-align:right"], '
 <div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10) . '</div>
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);

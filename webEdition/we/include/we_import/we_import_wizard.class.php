@@ -1089,7 +1089,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$iptDel = we_html_tools::htmlTextInput('v[csv_seperator]', 2, (isset($v['csv_seperator']) ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : ';'), 2, '', 'text', 30);
 		$fldDel = new we_html_select(['name' => 'v[sct_csv_seperator]', 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];",
-			"style" => "width: 130px"]); // FIXME: register change listener
+			'style' => "width: 130px"]); // FIXME: register change listener
 		$fldDel->addOption('', '');
 		$fldDel->addOption('semicolon', g_l('import', '[semicolon]'));
 		$fldDel->addOption('comma', g_l('import', '[comma]'));
@@ -1241,7 +1241,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$TPLselect = new we_html_select(["name" => "docTypeTemplateId",
 			"class" => "weSelect",
 			"onclick" => "top.setFormField('v[import_type]', true, 'radio', 0);",
-			"style" => "width: 300px"
+			'style' => "width: 300px"
 		]);
 
 		if($v["docType"] != -1){
@@ -1310,7 +1310,7 @@ class we_import_wizard extends we_import_wizardBase{
 				"class" => "weSelect",
 				"onclick" => "top.setFormField('v[import_type]', true, 'radio', 1);",
 				'onchange' => "top.onChangeSelectObject(this);",
-				"style" => "width: 150px"
+				'style' => "width: 150px"
 			]);
 			$ac = implode(',', we_users_util::getAllowedClasses($DB_WE));
 			if($ac){
@@ -1550,7 +1550,7 @@ class we_import_wizard extends we_import_wizardBase{
 			$sct_we_fields = new we_html_select(["name" => 'we_flds[' . $record . ']',
 				"class" => "weSelect",
 				"onclick" => "",
-				"style" => ""
+				'style' => ""
 			]);
 			$sct_we_fields->addOption("", g_l('import', '[any]'));
 			foreach($val_nodes as $value => $text){
@@ -1591,7 +1591,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$rcdPfxSelect = new we_html_select(["name" => "v[rcd_pfx]",
 			"class" => "weSelect",
 			"onclick" => "top.setFormField('v[pfx_fn]', 1, 'hidden'); top.setFormField('v[rdo_filename]', true, 'radio', 1);",
-			"style" => "width: 150px"
+			'style' => "width: 150px"
 		]);
 
 		foreach($val_nodes as $value => $text){

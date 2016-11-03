@@ -81,14 +81,14 @@ foreach($shortcuts as $key => $value){
 $oSctList11 = new we_html_select(["multiple" => "multiple",
 	"name" => "list11",
 	"size" => 10,
-	"style" => "width:200px;",
+	'style' => "width:200px;",
 	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form.list11,this.form.list21,false);"
 	]);
 $oSctList21 = new we_html_select(["multiple" => "multiple",
 	"name" => "list21",
 	"size" => 10,
-	"style" => "width:200px;",
+	'style' => "width:200px;",
 	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form.list21,this.form.list11,false);"
 	]);

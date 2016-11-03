@@ -72,7 +72,7 @@ $parts = [["headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
 	'space' => we_html_multiIconBox::SPACE_MED
 	],
 	["headline" => g_l('cockpit', '[shop_dashboard][revenue_target]'),
-		"html" => we_html_element::htmlDiv(["style" => "display:block;"], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
+		"html" => we_html_element::htmlDiv(['style' => "display:block;"], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
 		'space' => we_html_multiIconBox::SPACE_MED
 	],
 	["headline" => g_l('cockpit', '[date]'),

@@ -23,7 +23,7 @@
  */
 $oTblCont = new we_html_table(
 	["id" => "m_" . $iCurrId . "_inline",
-	"style" => "width:" . $iWidth . "px;",
+	'style' => "width:" . $iWidth . "px;",
 	], 1, 1);
 $oTblCont->setCol(0, 0, null, $inline);
 $aLang = [g_l('cockpit', '[users_online]'), ' (<span id="num_users">' . $UO->getNumUsers() . '</span>)'];
