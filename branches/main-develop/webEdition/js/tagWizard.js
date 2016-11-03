@@ -302,6 +302,19 @@ function we_cmd() {
 		case "we_users_selector":
 			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
+		case "we_multiSelector_writeback":
+			if(args[1][args[2]] && args[1][args[2]].length){
+				var sel = args[1][args[2]];
+				var values = this.document.getElementById(args[3]).value ? this.document.getElementById(args[3]).value.split(',') : [];
+
+				for(var i = 0; i < sel.length; i++){
+					if(!WE().util.in_array(sel[i], values)){
+						values.push(sel[i]);
+					}
+				}
+				this.document.getElementById(args[3]).value = values.join();
+			}
+			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
