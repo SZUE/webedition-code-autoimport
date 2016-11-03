@@ -646,9 +646,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(332);
-
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $longdesc_id_name . "'].value,'" . FILE_TABLE . "','" . $longdesc_id_name . "','" . $longdesc_text_name . "','reload_hot_editpage','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('imageDocument_emptyLongdesk','" . $longdesc_id_name . "','" . $longdesc_text_name . "','" . $yuiSuggest->getInputId() . "')"));
 		$content->setCol($row, 0, ['style' => 'vertical-align:bottom', 'colspan' => 5], $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
 
 		// Return HTML
@@ -781,89 +780,66 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 	function formLink(){
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$textname = 'we_' . $this->Name . '_vars[LinkPath]';
-		$idname = 'we_' . $this->Name . '_link[LinkID#bdid]';
-		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
 		$linkType = $this->getElement('LinkType') ?: 'no';
-		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID', 'bdid')), '', $this->DB_WE);
-
-		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
-		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
-		$RollOverIDName = 'we_' . $this->Name . '_link[RollOverID#bdid]';
-		$RollOverID = $this->getElement('RollOverID', 'bdid') ?: '';
-		$RollOverPathname = 'we_' . $this->Name . '_vars[RollOverPath]';
-		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
-
-		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
-		$but1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;") . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-
-		$but2 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image', document.we_form.elements['" . $RollOverIDName . "'].value,'" . FILE_TABLE . "','" . $RollOverIDName . "','" . $RollOverPathname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;") . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-
-
-		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $extname . "','',document.we_form.elements['" . $extname . "'].value,'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
-
-		if(defined('OBJECT_TABLE')){
-			$objidname = 'we_' . $this->Name . '_object[ObjID#bdid]';
-			$objtextname = 'we_' . $this->Name . '_vars[ObjPath]';
-			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID', 'bdid')), '', $this->DB_WE);
-
-			$butObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;") . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
-		}
+		$checkLinkname = 'we_' . $this->Name . '_txt[LinkType]';
 
 		// Create table
 		$content = new we_html_table(['class' => 'default'], (defined('OBJECT_TABLE') ? 11 : 9), 2);
 		$row = 0;
+
 		// No link
-		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton('no', ($linkType === 'no'), $checkLinkname, g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$content->setCol($row++, 1, null, '');
 
 		// External link
+		$textname = 'we_' . $this->Name . '_txt[LinkHref]';
+		$btnHrefExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $textname . "','',document.we_form.elements['" . $textname . "'].value,'check_radio_option," . $checkLinkname . ",1,1')") : '';
 		$ext_link_table = new we_html_table(['class' => 'default'], 1, 2);
-
 		$ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
-		$ext_link_table->setCol(0, 1, null, $butExt);
-
+		$ext_link_table->setCol(0, 1, null, $btnHrefExt);
 		$ext_link = "href" . we_html_element::htmlBr() . $ext_link_table->getHtml();
-
-		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), $checkLinkname, g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
 		$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $ext_link);
 
-
 		// Internal link
+		$textname = 'we_' . $this->Name . '_vars[LinkPath]';
+		$idname = 'we_' . $this->Name . '_link[LinkID#bdid]';
+		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID', 'bdid')), '', $this->DB_WE);
+		$btnHrefInt = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $textname . "','check_radio_option," . $checkLinkname . ",2,1','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 		$yuiSuggest->setAcId('internalPath');
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
 			we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput($textname, $linkPath);
 		$yuiSuggest->setResult($idname, $this->getElement('LinkID', 'bdid'));
 		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setSelectButton($but1);
+		$yuiSuggest->setSelectButton($btnHrefInt);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setWidth(280);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setLabel('href');
 		$int_link = $yuiSuggest->getHTML();
-
-		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), $checkLinkname, g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $int_link);
 
 		// Object link
 		if(defined('OBJECT_TABLE')){
+			$objidname = 'we_' . $this->Name . '_object[ObjID#bdid]';
+			$objtextname = 'we_' . $this->Name . '_vars[ObjPath]';
+			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID', 'bdid')), '', $this->DB_WE);
+			$btnHrefObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','check_radio_option," . $checkLinkname . ",3,1','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId('objPathLink');
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($objtextname, $objPath);
 			$yuiSuggest->setResult($objidname, $this->getElement('ObjID', 'bdid'));
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-			$yuiSuggest->setSelectButton($butObj);
+			$yuiSuggest->setSelectButton($btnHrefObj);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setLabel('href');
 			$obj_link = $yuiSuggest->getHTML();
-
-
 			$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-top:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 			$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $obj_link);
 		}
@@ -871,15 +847,22 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		// Target
 		$content->setCol($row++, 0, ['colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'], g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
 
-
 		// Rollover image
+		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
+		$RollOverFlag = $this->getElement('RollOverFlag') ? true : false;
+		$RollOverIDName = 'we_' . $this->Name . '_link[RollOverID#bdid]';
+		$RollOverID = $this->getElement('RollOverID', 'bdid') ?: '';
+		$RollOverPathname = 'we_' . $this->Name . '_vars[RollOverPath]';
+		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
+		$btnRollover = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image', document.we_form.elements['" . $RollOverIDName . "'].value,'" . FILE_TABLE . "','" . $RollOverIDName . "','" . $RollOverPathname . "','toggle_checkbox_with_hidden," . $RollOverFlagName . ",1,1','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+
 		$yuiSuggest->setAcId('rollOverPath');
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
 			we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput($RollOverPathname, $RollOverPath);
 		$yuiSuggest->setResult($RollOverIDName, $RollOverID);
 		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setSelectButton($but2);
+		$yuiSuggest->setSelectButton($btnRollover);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setWidth(280);
@@ -887,7 +870,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$rollover = $yuiSuggest->getHTML();
 
-		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
+		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::checkboxWithHidden($RollOverFlag, $RollOverFlagName, 'Roll Over', false, 'defaultfont', $onClick = "we_cmd()"));
 		$content->setCol($row, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $rollover);
 
 		return $content->getHtml();
