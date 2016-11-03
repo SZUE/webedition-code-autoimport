@@ -180,6 +180,7 @@ class we_class_folder extends we_folder{
 			$disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
 
+		// IMI: replace enc (js instead of enc: fire of msg)
 		$but = we_html_button::create_button(we_html_button::SELECT, $this->ID ? "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', ' 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR), '', 0, 0, "", "", $disabled);
 
 		return '<table class="default" style="margin-bottom:2px;"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
@@ -538,7 +539,7 @@ class we_class_folder extends we_folder{
 <table class="default" style="margin-bottom:20px;">
 	<tr>
 		<td class="defaultfont lowContrast" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
-		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
+		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "reload_editpage", false) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>

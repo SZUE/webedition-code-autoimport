@@ -245,6 +245,16 @@ function we_cmd() {
 				contentEditor.we_submitForm("we_colorChooser", url);
 			}
 			break;
+		case "dirChooser_callback":
+			// to be callable from selectors we skip args[1]
+			we_cmd('setHot');
+			if(args[2] === 'ParentPath' && pathOfDocumentChanged){
+				pathOfDocumentChanged();
+			}
+			if(args[3]){
+				we_cmd(args[3]);
+			}
+			break;
 		case "we_selector_directory":
 		case "we_selector_document":
 		case "we_selector_image":
@@ -282,21 +292,6 @@ function we_cmd() {
 			break;
 		case "add_thumbnail":
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
-			break;
-		case "check_radio_option":
-			// to be callable from selectors we skip args[1]
-			document.we_form.elements[args[2]][args[3]].checked = true;
-			if(args[4]){
-				we_cmd('setHot');
-			}
-			break
-		case "toggle_checkbox_with_hidden":
-			// to be callable from selectors we skip args[1]
-			document.we_form.elements[args[2]].value = args[3];
-			document.we_form.elements['check_' + args[2]].checked = args[3];
-			if(args[4]){
-				we_cmd('setHot');
-			}
 			break;
 		case "imageDocument_emptyLongdesk":
 			document.we_form.elements[args[2]].value='-1';
