@@ -276,7 +276,7 @@ function onInsertNode() {
 	oWidget.hide();
 	oNodeInsert.style.height = '1px';
 	// set height, if it is narrow
-	oNodeInsert.style.width = (iOffsetW <= 300 ? iOffsetW + "px" : "100%");
+	oNodeInsert.style.width = iOffsetW + "px";
 
 	this.node.parentNode.insertBefore(oNodeInsert, this.node.nextSibling);
 	this.node.style.position = 'absolute';

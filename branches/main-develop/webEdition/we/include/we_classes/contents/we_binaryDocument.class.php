@@ -255,7 +255,7 @@ class we_binaryDocument extends we_document{
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
 		$fieldcount = count($defined_fields);
-		$content = new we_html_table(['class' => 'default', "style" => "margin-top:4px;"], $fieldcount, 5);
+		$content = new we_html_table(['class' => 'default', 'style' => "margin-top:4px;"], $fieldcount, 5);
 		$mdcontent = '';
 		for($i = 0; $i < $fieldcount; $i++){
 			$tagName = $defined_fields[$i]["tag"];

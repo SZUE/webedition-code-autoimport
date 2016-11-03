@@ -428,13 +428,13 @@ class we_selector_category extends we_selector_file{
 			$table->setCol(1, 0, ['style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], "<b>ID</b>");
 			$table->setCol(1, 1, ['colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], $catID);
 
-			$table->setCol(2, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], '<b>' . g_l('weClass', '[dir]') . '</b>');
-			$table->setCol(2, 1, ["style" => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], $yuiSuggest->getHTML());
+			$table->setCol(2, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], '<b>' . g_l('weClass', '[dir]') . '</b>');
+			$table->setCol(2, 1, ['style' => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], $yuiSuggest->getHTML());
 
-			$table->setCol(3, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[title]') . "</b>");
-			$table->setCol(3, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
-			$table->setCol(4, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[description]') . "</b>");
-			$table->setCol(4, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, [
+			$table->setCol(3, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[title]') . "</b>");
+			$table->setCol(3, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
+			$table->setCol(4, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[description]') . "</b>");
+			$table->setCol(4, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, [
 					"bgcolor" => "white",
 					"inlineedit" => "true",
 					"wysiwyg" => "true",
@@ -442,7 +442,7 @@ class we_selector_category extends we_selector_file{
 					"height" => 130,
 					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
 					], true, 'autobr', true, true, true, true, true, ""));
-			$table->setCol(5, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
+			$table->setCol(5, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .

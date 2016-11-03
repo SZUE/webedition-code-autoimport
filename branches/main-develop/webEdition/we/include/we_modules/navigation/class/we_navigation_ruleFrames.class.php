@@ -145,7 +145,7 @@ class we_navigation_ruleFrames{
 </tr>
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
-	<td>' . we_html_tools::htmlSelect('DoctypeID', $docTypes, 1, 0, false, ["style" => "width: 275px;"]) . '</td>
+	<td>' . we_html_tools::htmlSelect('DoctypeID', $docTypes, 1, 0, false, ['style' => "width: 275px;"]) . '</td>
 </tr>';
 
 		if(defined('OBJECT_TABLE')){

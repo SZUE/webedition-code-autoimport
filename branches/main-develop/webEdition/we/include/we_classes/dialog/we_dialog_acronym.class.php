@@ -49,7 +49,7 @@ top.close();
 		$this->args = ["title" => "",
 			"lang" => "",
 			"class" => "",
-			"style" => ""
+			'style' => ""
 			];
 	}
 

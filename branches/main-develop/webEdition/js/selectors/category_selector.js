@@ -241,7 +241,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((top.fileSelect.data.we_editCatID != entries[i].ID) ? '' : '') + '"' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
+		body += '<tr id="line_' + entries[i].ID + '" ' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + ondblclick+ ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
 						((top.fileSelect.data.we_editCatID === entries[i].ID) ?
 										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

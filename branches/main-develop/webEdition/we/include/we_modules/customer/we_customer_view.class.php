@@ -621,7 +621,7 @@ self.close();');
 			case 'input':
 				return we_html_tools::htmlTextInput($field, 32, ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value), '', "onchange=\"top.content.setHot();\" style='width:240px;'");
 			case 'textarea':
-				return we_html_element::htmlTextArea(['name' => $field, "style" => "width:240px;", "class" => "wetextarea"], ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value));
+				return we_html_element::htmlTextArea(['name' => $field, 'style' => "width:240px;", "class" => "wetextarea"], ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value));
 			case 'number':
 				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
@@ -714,7 +714,7 @@ self.close();');
 					$defs = array_merge([$value], $defs);
 				}
 
-				$select = new we_html_select(['name' => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''),
+				$select = new we_html_select(['name' => $field, 'style' => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''),
 					"onchange" => "top.content.setHot();"]);
 				foreach($defs as $def){
 					$select->addOption($def, $def);

@@ -472,7 +472,7 @@ function we_submit(){
 			'noline' => 1
 			],
 				["headline" => "",
-				"html" => $header->getHtml() . we_html_element::htmlDiv(["id" => "treetable", "class" => "blockWrapper", "style" => "position: relative;width: 540px; height: 250px; border:1px #dce6f2 solid;"], ""),
+				"html" => $header->getHtml() . we_html_element::htmlDiv(["id" => "treetable", "class" => "blockWrapper", 'style' => "position: relative;width: 540px; height: 250px; border:1px #dce6f2 solid;"], ""),
 			]
 		];
 
@@ -623,7 +623,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 				$fileformattable = new we_html_table([], 4, 1);
 
-				$file_encoding = new we_html_select(['name' => "csv_lineend", "class" => "weSelect", "style" => "width: 254px"]);
+				$file_encoding = new we_html_select(['name' => "csv_lineend", "class" => "weSelect", 'style' => "width: 254px"]);
 				$file_encoding->addOption("windows", g_l('export', '[windows]'));
 				$file_encoding->addOption("unix", g_l('export', '[unix]'));
 				$file_encoding->addOption("mac", g_l('export', '[mac]'));
@@ -850,7 +850,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
-		$content->setCol(0, 1, ["style" => "text-align:right"], $buttons);
+		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody",
 					'style' => 'overflow:hidden;'], we_html_element::htmlForm(["name" => "we_form",
@@ -951,7 +951,7 @@ if (top.footer.setProgress){
 ');
 				}
 
-				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => ($start_export ? ("top.footer.location='" . $this->frameset . "?x=y&pnt=footer&mode=progress&step=4';document.we_form.submit()") : ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=99&error=" . $export_error . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=99';"))], we_html_element::htmlForm([
+				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => ($start_export ? ("top.footer.location='" . $this->frameset . "?x=y&pnt=footer&mode=progress&step=4';document.we_form.submit()") : ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=99&error=" . $export_error . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=99';"))], we_html_element::htmlForm([
 								'name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens)
 						)
 				);
@@ -1006,7 +1006,7 @@ if (top.footer.setProgress){
 						"all" => $all,
 						"cmd" => "do_export"]);
 				if(($remaining_docs) || ($remaining_objs)){
-					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 									'name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens) . $progress_update
 							)
 					);
@@ -1098,7 +1098,7 @@ if (top.footer.setProgress){
 						"cmd" => "do_wexport"]);
 
 				if($all > $exports){
-					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 									'name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens) .
 								we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');')
 							)
@@ -1138,7 +1138,7 @@ switch (args[0]) {
 	private function getHTMLDocType($width = 350){
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
 		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
-		$select = new we_html_select(['name' => "doctype", "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""]);
+		$select = new we_html_select(['name' => "doctype", "class" => "weSelect", 'style' => "{width: $width;}", "onchange" => ""]);
 		$first = "";
 		while($this->db->next_record()){
 			if(!$first){
@@ -1173,7 +1173,7 @@ switch (args[0]) {
 	private function getHTMLObjectType($width = 350, $showdocs = false){
 		if(defined('OBJECT_FILES_TABLE')){
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			$select = new we_html_select(['name' => "classname", "class" => "weSelect", "style" => "{width: $width}", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"]);
+			$select = new we_html_select(['name' => "classname", "class" => "weSelect", 'style' => "{width: $width}", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"]);
 			$first = "";
 			while($this->db->next_record()){
 				if(!$first){

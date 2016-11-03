@@ -741,13 +741,13 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			}
 
 			$parts[] = ['headline' => g_l('weEditorInfo', '[local_path]'),
-				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onmouseover="showtip(this,event,\'' . $rp . '\')" onmouseout="hidetip()"  onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
+				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" title="' . $rp . '" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			];
 
 			$parts[] = ['headline' => g_l('weEditorInfo', '[http_path]'),
-				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onmouseover="showtip(this,event,\'' . $http . '\')" onmouseout="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
+				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" title="' . $http . '">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
 				'space' => we_html_multiIconBox::SPACE_MED
 			];
 			$parts[] = ['headline' => '',

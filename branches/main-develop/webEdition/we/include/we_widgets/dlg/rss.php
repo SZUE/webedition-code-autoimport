@@ -55,11 +55,11 @@ function clip_' . $unique . '(){
 	$oClip->setCol(0, 1, ["width" => 10]);
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(["id" => $unique,
 			'class' => 'defaultfont',
-			"style" => "cursor:pointer;",
+			'style' => "cursor:pointer;",
 			"onclick" => "clip_" . $unique . "();"
 			], addslashes($smalltext)));
 
-	return $js . $oClip->getHTML() . we_html_element::htmlDiv(["id" => "div_" . $unique, "style" => "display:none;"], we_html_element::htmlBr() . $content);
+	return $js . $oClip->getHTML() . we_html_element::htmlDiv(["id" => "div_" . $unique, 'style' => "display:none;"], we_html_element::htmlBr() . $content);
 }
 
 $oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
@@ -85,7 +85,7 @@ $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 $oNewFeed = new we_html_table(["width" => 390, 'class' => 'default'], 3, 1);
 $oNewFeed->setCol(0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
 $oNewFeed->setCol(1, 0, ['style' => 'width:5px;']);
-$oNewFeed->setCol(2, 0, ["style" => "text-align:right"], $oBtnNewFeed->getHTML());
+$oNewFeed->setCol(2, 0, ['style' => "text-align:right"], $oBtnNewFeed->getHTML());
 
 $rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss .
 	we_html_element::htmlBr() .

@@ -60,11 +60,11 @@ abstract class we_customer_add{
 							g_l('modules_customer', '[common]'));
 				}
 
-				$branch->setAttributes(['name' => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"]);
+				$branch->setAttributes(['name' => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", 'style' => "width:180px;"]);
 				$branch->selectOption($sort["branch"]);
 
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
-				$field->setAttributes(['name' => "field_" . $counter . '_' . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"]);
+				$field->setAttributes(['name' => "field_" . $counter . '_' . $fcounter, 'style' => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"]);
 
 				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
@@ -202,8 +202,8 @@ abstract class we_customer_add{
 				$field->selectOption($search_arr["field_" . $i]);
 			}
 
-			$branch->setAttributes(['name' => "branch_" . $i, "class" => 'weSelect', "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"]);
-			$field->setAttributes(['name' => "field_" . $i, "style" => "width:145px", "class" => 'weSelect', "onchange" => "isDateField($i)"]);
+			$branch->setAttributes(['name' => "branch_" . $i, "class" => 'weSelect', "onchange" => "we_cmd('selectBranch')", 'style' => "width:145px"]);
+			$field->setAttributes(['name' => "field_" . $i, 'style' => "width:145px", "class" => 'weSelect', "onchange" => "isDateField($i)"]);
 
 			if($i != 0){
 				$advsearch->addRow();

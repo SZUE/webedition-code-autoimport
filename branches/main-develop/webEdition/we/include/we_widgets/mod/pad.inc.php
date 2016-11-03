@@ -215,7 +215,7 @@ $sctValid = we_html_tools::htmlSelect("sct_valid", [g_l('cockpit', '[always]'), 
 $oTblValidity = getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from") . ' ' . getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until");
 $oTblPeriod = new we_html_table(["width" => "100%", 'class' => 'default'], 1, 2);
 $oTblPeriod->setCol(0, 0, ['class' => "middlefont"], $sctValid);
-$oTblPeriod->setCol(0, 1, ["style" => "text-align:right"], $oTblValidity);
+$oTblPeriod->setCol(0, 1, ['style' => "text-align:right"], $oTblValidity);
 
 // Edit note prio settings
 $rdoPrio = [we_html_forms::radiobutton(0, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;" title="' . g_l('cockpit', '[high]') . '" ></i>', true, "middlefont", "", false, "", 0, ""),
@@ -236,7 +236,7 @@ $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button
 // Edit note dialog
 $oTblProps = new we_html_table(["width" => "100%", 'class' => 'default'], 9, 2);
 $oTblProps->setCol(0, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[valid]') . '&nbsp;');
-$oTblProps->setCol(0, 1, ["colspan" => 2, "style" => "text-align:right"], $oTblPeriod->getHTML());
+$oTblProps->setCol(0, 1, ["colspan" => 2, 'style' => "text-align:right"], $oTblPeriod->getHTML());
 $oTblProps->setCol(2, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
 $oTblProps->setCol(4, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[title]'));
@@ -255,7 +255,7 @@ $oTblBtnProps = we_html_button::create_button('fa:btn_add_note,fa-plus,fa-lg fa-
 
 // Table with the note list
 $oPad = new we_html_table([
-	"style" => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
+	'style' => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
 	'class' => 'default'
 	], 1, 1);
 
@@ -283,7 +283,7 @@ var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		[
 		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
-		], we_html_element::htmlForm(["style" => "display:inline;"], we_html_element::htmlDiv(
+		], we_html_element::htmlForm(['style' => "display:inline;"], we_html_element::htmlDiv(
 				["id" => "pad"], $notepad .
 				we_html_element::htmlHidden("mark", "")
 ))));

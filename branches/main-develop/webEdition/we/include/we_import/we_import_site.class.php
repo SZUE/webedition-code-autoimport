@@ -647,7 +647,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
-		$table->setCol(0, 1, ["style" => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
+		$table->setCol(0, 1, ['style' => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
 		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_progressBar::getJSCode());

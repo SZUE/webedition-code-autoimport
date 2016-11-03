@@ -28,7 +28,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'phpinfo'){
 
 function getInfoTable($infoArr, $name){
 
-	$table = new we_html_table(["style" => "width: 500px;"], 1, 2);
+	$table = new we_html_table(['style' => "width: 500px;"], 1, 2);
 	$i = 0;
 
 	foreach($infoArr as $k => $v){
@@ -36,21 +36,21 @@ function getInfoTable($infoArr, $name){
 		$style = ($i % 2 ? '' : "background: #D4DBFA;");
 
 		$table->addRow(1);
-		$table->setRow($i, ['class' => 'defaultfont', "style" => $style . "height:20px;"]);
-		$table->setCol($i, 0, ["style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'], $k);
-		$table->setCol($i, 1, ["style" => "width: 250px; height: 20px; padding-left: 10px;"], parseValue($k, $v));
+		$table->setRow($i, ['class' => 'defaultfont', 'style' => $style . "height:20px;"]);
+		$table->setCol($i, 0, ['style' => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'], $k);
+		$table->setCol($i, 1, ['style' => "width: 250px; height: 20px; padding-left: 10px;"], parseValue($k, $v));
 		$i++;
 
 		// highlight some values:
 		if($name === 'PHP'){
 			if($i == 3 && ini_get_bool('register_globals')){
-				$table->setColAttributes(2, 1, ["style" => "border:1px solid red;"]);
+				$table->setColAttributes(2, 1, ['style' => "border:1px solid red;"]);
 			}
 			if($i == 6 && ini_get_bool('short_open_tag')){
-				$table->setColAttributes(5, 1, ["style" => "border:1px solid red;"]);
+				$table->setColAttributes(5, 1, ['style' => "border:1px solid red;"]);
 			}
 			if($i == 9 && ini_get_bool('safe_mode')){
-				$table->setColAttributes(8, 1, ["style" => "border:1px solid grey;"]);
+				$table->setColAttributes(8, 1, ['style' => "border:1px solid grey;"]);
 			}
 		}
 	}

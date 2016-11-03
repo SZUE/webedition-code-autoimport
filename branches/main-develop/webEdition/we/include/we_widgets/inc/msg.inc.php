@@ -21,17 +21,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblCont = new we_html_table(["id" => "m_" . $iCurrId . "_inline", "style" => "width:100%;",], 2, 2);
+$oTblCont = new we_html_table(["id" => "m_" . $iCurrId . "_inline", 'style' => "width:100%;",], 2, 2);
 $oTblCont->setCol(0, 0, ["width" => 34, 'style' => 'vertical-align:middle;', "class" => "middlefont"], $msg_button);
 $oTblCont->setCol(0, 1, ['style' => 'vertical-align:middle;'], we_html_element::htmlA(["href" => $msg_cmd,
 		"class" => "middlefont bold",
-		"style" => "text-decoration:none;"
+		'style' => "text-decoration:none;"
 		], $new_messages . " (" . we_html_element::htmlSpan(["id" => "msg_count"
 			], $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, ["width" => 34, 'style' => 'vertical-align:middle;', "class" => "middlefont"], $todo_button);
 $oTblCont->setCol(1, 1, ['style' => 'vertical-align:middle;'], we_html_element::htmlA(["href" => $msg_cmd,
 		"class" => "middlefont bold",
-		"style" => "text-decoration:none;"
+		'style' => "text-decoration:none;"
 		], $new_tasks . " (" . we_html_element::htmlSpan(["id" => "task_count"
 			], $newtodo_count) . ")"));
 $aLang = [g_l('cockpit', '[messaging]'), ""];

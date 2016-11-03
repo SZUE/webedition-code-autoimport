@@ -1968,7 +1968,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		// Build specify font
 		$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$template_editor_font_select_box = new we_html_select(['class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;",
+		$template_editor_font_select_box = new we_html_select(['class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", 'style' => "width: 90px;",
 			($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"]);
 
 		foreach($template_fonts as $tf){
@@ -1985,7 +1985,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			}
 		}
 
-		$template_editor_font_sizes_select_box = new we_html_select(['class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;",
+		$template_editor_font_sizes_select_box = new we_html_select(['class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', 'style' => "width: 90px;",
 			($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"]);
 
 		foreach($template_font_sizes as $tf){

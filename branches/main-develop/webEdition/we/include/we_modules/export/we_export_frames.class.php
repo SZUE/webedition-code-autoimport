@@ -78,7 +78,7 @@ function setTab(tab) {
 				($this->View->export->ID ? '' : 'top.content.activ_tab=1;') .
 				($this->View->export->IsFolder == 1 ? 'top.content.activ_tab=1;' : ''));
 
-		$table = new we_html_table(["style" => 'width:100%;margin-top:3px', 'class' => 'default'], 1, 1);
+		$table = new we_html_table(['style' => 'width:100%;margin-top:3px', 'class' => 'default'], 1, 1);
 
 		$table->setCol(0, 0, ['class' => "small", 'style' => 'vertical-align:top;padding-left:15px;'], we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
@@ -150,7 +150,7 @@ function hideProgress() {
 		$progressbar = new we_progressBar($progress, 200);
 		$progressbar->addText($text, 0, "current_description");
 
-		$table2->setCol(0, 4, ["id" => "progress", "style" => "display: none"], $progressbar->getHtml());
+		$table2->setCol(0, 4, ["id" => "progress", 'style' => "display: none"], $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())
@@ -207,7 +207,7 @@ function addLog(text){
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', ['local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')], 1, $this->View->export->ExportTo, false, [
 				'onchange' => 'toggle(\'save_to\');top.content.hot=true;'], 'value', 520));
-		$table->setCol(1, 0, ["id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", we_base_ContentTypes::FOLDER), g_l('export', '[save_to]')));
+		$table->setCol(1, 0, ["id" => "save_to", 'style' => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", we_base_ContentTypes::FOLDER), g_l('export', '[save_to]')));
 
 
 		$parts[] = ["headline" => "",
@@ -260,12 +260,12 @@ function closeAllType(){
 		}
 
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, ['onchange' => "closeAllType();toggle(this.value);top.content.hot=true;"], 'value', 520));
-		$table->setCol(1, 0, ["id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
+		$table->setCol(1, 0, ["id" => "doctype", 'style' => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
 				'onchange' => 'top.content.hot=true;'], 'value', 520) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined('OBJECT_TABLE')){
-			$table->setCol(2, 0, ["id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
+			$table->setCol(2, 0, ["id" => "classname", 'style' => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
 					'onchange' => 'top.content.hot=true;'], 'value', 520)
 			);
 		}
@@ -281,7 +281,7 @@ function closeAllType(){
 			$selectionTypeHtml
 		);
 
-		$table->setCol(2, 0, ['id' => 'manual', "style" => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 520) .
+		$table->setCol(2, 0, ['id' => 'manual', 'style' => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 520) .
 			$this->SelectionTree->getHTMLMultiExplorer(520, 200)
 		);
 
@@ -446,7 +446,7 @@ function closeAllType(){
 					"all" => $all,
 					"cmd" => "do_export"]);
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens)
 					)
 			);
@@ -496,7 +496,7 @@ if(top.content.editor.edbody.addLog){
 					"all" => $all,
 					"cmd" => "do_export"]);
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens) . $progress_update
 					)
 			);
@@ -570,7 +570,7 @@ if (top.content.editor.edfooter.doProgress){
 				"cmd" => "do_export"]);
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens) . $progress_update
 					)
 			);

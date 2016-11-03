@@ -208,7 +208,7 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditorFooter(array $btn_cmd, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(["style" => "background-color:#EFF0EF"], ""), $extraHead);
+			return $this->getHTMLDocument(we_html_element::htmlBody(['style' => "background-color:#EFF0EF"], ""), $extraHead);
 		}
 
 		$table2 = new we_html_table(['class' => 'default'], 1, count($btn_cmd));

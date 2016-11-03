@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $oTblDiv = we_html_element::htmlDiv(['id' => 'm_' . $iCurrId . '_inline',
-		"style" => 'width:100%;height:' . ($aPrefs[$aProps[0]]["height"]) . 'px;overflow:auto;',
+		'style' => 'width:100%;height:' . ($aPrefs[$aProps[0]]["height"]) . 'px;overflow:auto;',
 	 ], we_html_element::htmlDiv(['id' => 'mfd_data'], $lastModified)
 	) . we_html_element::jsElement("WE().util.setIconOfDocClass(document,'mfdIcon');");
 $aLang = [g_l('cockpit', '[last_modified]'), ""];

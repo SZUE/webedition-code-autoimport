@@ -87,7 +87,7 @@ function submitForm(target,action,method,form) {
 		$starttable = new we_html_table(["cellpadding" => 7], 3, 1);
 		$starttable->setCol($row++, 0, ['class' => "defaultfont titleline", "colspan" => 3], $title);
 		$starttable->setCol($row++, 0, ['class' => 'defaultfont', "colspan" => 3], "");
-		$starttable->setCol($row++, 0, ["style" => "text-align:center"], $content);
+		$starttable->setCol($row++, 0, ['style' => "text-align:center"], $content);
 
 		ob_start();
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));

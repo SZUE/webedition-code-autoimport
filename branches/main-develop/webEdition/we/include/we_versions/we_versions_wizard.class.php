@@ -65,14 +65,14 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = we_html_element::htmlSpan(["id" => "prev", "style" => "padding-left:10px;text-align:right"], $prevButton) .
-				we_html_element::htmlSpan(["id" => "next", "style" => "padding-left:10px;text-align:right"], $nextButton) .
-				we_html_element::htmlSpan(["id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
-				we_html_element::htmlSpan(["id" => "cancel", "style" => "padding-left:10px;text-align:right"], $cancelButton);
+			$content2 = we_html_element::htmlSpan(["id" => "prev", 'style' => "padding-left:10px;text-align:right"], $prevButton) .
+				we_html_element::htmlSpan(["id" => "next", 'style' => "padding-left:10px;text-align:right"], $nextButton) .
+				we_html_element::htmlSpan(["id" => "refresh", 'style' => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
+				we_html_element::htmlSpan(["id" => "cancel", 'style' => "padding-left:10px;text-align:right"], $cancelButton);
 
 			$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
-			$content->setCol(0, 0, ["id" => "progr", "style" => "display:none;text-align:left"], $pb);
-			$content->setCol(0, 1, ["style" => "text-align:right"], $content2);
+			$content->setCol(0, 0, ["id" => "progr", 'style' => "display:none;text-align:left"], $pb);
+			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
@@ -243,7 +243,7 @@ set_button_state(false);';
 
 		$reset_hours = new we_html_select(["id" => "delete_hours",
 			"name" => "delete_hours",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 		]);
@@ -260,7 +260,7 @@ set_button_state(false);';
 
 		$reset_minutes = new we_html_select(["id" => "delete_minutes",
 			"name" => "delete_minutes",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 		]);
@@ -277,7 +277,7 @@ set_button_state(false);';
 
 		$reset_seconds = new we_html_select(["id" => "delete_seconds",
 			"name" => "delete_seconds",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 			]);
@@ -462,7 +462,7 @@ set_button_state(false);';
 
 		$reset_hours = new we_html_select(["id" => "reset_hours",
 			"name" => "reset_hours",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 		]);
@@ -479,7 +479,7 @@ set_button_state(false);';
 
 		$reset_minutes = new we_html_select(["id" => "reset_minutes",
 			"name" => "reset_minutes",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 		]);
@@ -496,7 +496,7 @@ set_button_state(false);';
 
 		$reset_seconds = new we_html_select(["id" => "reset_seconds",
 			"name" => "reset_seconds",
-			"style" => "",
+			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
 		]);

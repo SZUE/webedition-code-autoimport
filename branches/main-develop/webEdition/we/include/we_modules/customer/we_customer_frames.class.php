@@ -206,11 +206,11 @@ function setTab(tab) {
 		$branch_select = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
 		$select = $this->View->getHTMLBranchSelect(false);
-		$select->setAttributes(['name' => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"]);
+		$select->setAttributes(['name' => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", 'style' => "width:150px;"]);
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
-		$fields->setAttributes(['name' => "fields_select", "size" => 15, "onchange" => 'setFieldsButtons(this.selectedIndex,this.length);', "style" => "width:350px;height:250px;"]);
+		$fields->setAttributes(['name' => "fields_select", "size" => 15, "onchange" => 'setFieldsButtons(this.selectedIndex,this.length);', 'style' => "width:350px;height:250px;"]);
 		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('open_add_field')") .
@@ -268,7 +268,7 @@ function setTab(tab) {
 				$hiddens .= we_html_element::htmlHidden("pnt", "field_editor");
 				$field_props = $this->View->getFieldProperties($field);
 
-				$types = new we_html_select(['name' => "field_type", "class" => "weSelect", "style" => "width:200px;", 'onchange' => 'setStatusEncryption(this.value);']);
+				$types = new we_html_select(['name' => "field_type", "class" => "weSelect", 'style' => "width:200px;", 'onchange' => 'setStatusEncryption(this.value);']);
 				$types->addOptions(array_combine(array_keys($this->View->settings->field_types), array_keys($this->View->settings->field_types)));
 				if(isset($field_props["type"])){
 					$types->selectOption($field_props["type"]);
@@ -277,7 +277,7 @@ function setTab(tab) {
 					$curType = 'input';
 				}
 
-				$enc = new we_html_select(['name' => "field_encrypt", "class" => "weSelect", "style" => "width:200px;"]);
+				$enc = new we_html_select(['name' => "field_encrypt", "class" => "weSelect", 'style' => "width:200px;"]);
 				$enc->addOptions([0 => g_l('global', '[no]'), 1 => g_l('global', '[yes]')]);
 
 				if(!empty($field_props['encrypt'])){
@@ -323,8 +323,8 @@ function setTab(tab) {
 	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
 		$table = new we_html_table(["width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'], 1, 2);
 
-		$table->setCol(0, 0, ["style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"], str_replace(" ", "&nbsp;", $headline));
-		$table->setCol(0, 1, ["style" => 'vertical-align:middle;text-align:' . $content_align], $content);
+		$table->setCol(0, 0, ['style' => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"], str_replace(" ", "&nbsp;", $headline));
+		$table->setCol(0, 1, ['style' => 'vertical-align:middle;text-align:' . $content_align], $content);
 		return $table->getHtml();
 	}
 

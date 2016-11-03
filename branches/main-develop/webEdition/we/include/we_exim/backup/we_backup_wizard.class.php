@@ -139,7 +139,7 @@ class we_backup_wizard{
 				];
 			}
 		} else {
-			$select = new we_html_select(['name' => "backup_select", "size" => 7, "style" => "width: 600px;"]);
+			$select = new we_html_select(['name' => "backup_select", "size" => 7, 'style' => "width: 600px;"]);
 			$files = [];
 			$extra_files = [];
 			$dateformat = g_l('date', '[format][default]');
@@ -579,7 +579,7 @@ class we_backup_wizard{
 	function getHTMLBusy(){
 		$head = $body = '';
 
-		$table = new we_html_table(['class' => 'default', "style" => "width:100%;text-align:right"], 1, 3);
+		$table = new we_html_table(['class' => 'default', 'style' => "width:100%;text-align:right"], 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
