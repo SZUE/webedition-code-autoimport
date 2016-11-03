@@ -2125,6 +2125,21 @@ var we_cmd_modules = {
 					WE().t_e('suggest_writeBack: no autocompleter found on this frame');
 				}
 				break;
+			case "check_radio_option":
+				// to be callable from selectors we skip args[1]
+				this.we_form.elements[args[2]][args[3]].checked = true;
+				if(args[4]){
+					this.we_cmd('setHot');
+				}
+				break
+			case "toggle_checkbox_with_hidden":
+				// to be callable from selectors we skip args[1]
+				this.we_form.elements[args[2]].value = args[3];
+				this.we_form.elements['check_' + args[2]].checked = args[3];
+				if(args[4]){
+					this.we_cmd('setHot');
+				}
+				break;
 			default:
 				//WE().t_e('no command matched to request', args[0]);
 				return false;

@@ -290,18 +290,10 @@ abstract class we_root extends we_class{
 			);
 		}
 
-		if($Pathname === 'ParentPath'){
-			$parentPathChanged = 'if(opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
-			$parentPathChangedBlur = 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }';
-		} else {
-			$parentPathChanged = $parentPathChangedBlur = '';
-		}
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
-
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','dirChooser_callback," . $Pathname . ($cmd ? ',' . $cmd : '') . "','" . $rootDirID . "')");
 		$yuiSuggest->setAcId('Path', id_to_path([$rootDirID], $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
-		$yuiSuggest->setInput($textname, $path, ['onblur' => $parentPathChangedBlur]);
+		$yuiSuggest->setInput($textname, $path, ['onblur' => ($Pathname === 'ParentPath' ? 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }' : '')]);
 		$yuiSuggest->setLabel($label ?: '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
