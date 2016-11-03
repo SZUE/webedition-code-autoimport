@@ -88,12 +88,15 @@ function printFrameSet(){
 	$docroot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
 	$cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 
-
 	$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
 	$url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
+
+	$parsedUrl = parse_url($url);
+	$url = ($parsedUrl !== false) && $parsedUrl['host'] === $_SERVER['SERVER_NAME'] ? $parsedUrl['path'] : $url;
+
 	$currentDir = str_replace('\\', '/', ( $url ?
 			($url === '/' ? '' :
-				( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+				( parse_url($url) === false && is_dir($docroot . $url) ?
 					$url :
 					dirname($url))) :
 			''));
