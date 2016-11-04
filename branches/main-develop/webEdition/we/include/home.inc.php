@@ -81,7 +81,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$aDiscard = ['rss', 'pad'];
 	$s1 = '';
 	$iCurrCol = $iCurrId = 0;
-	t_e($aDat);
+	
 	foreach($aDat as $d){
 		$bExtendedCol = false;
 		$s2 = '';
