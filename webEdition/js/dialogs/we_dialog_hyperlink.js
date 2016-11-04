@@ -57,9 +57,16 @@ function we_cmd() {
 		case "we_selector_document":
 			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
 			break;
-
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 800, 400, true, false, true);
+			break;
+		case "selector_writeback":
+			if(args[1].currentID){
+				this.document.getElementById(args[2]).disabled = false;
+				if(args[2] === 'btn_edit_int'){
+					this.document.we_form.yuiAcResultCT.value = args[1].currentType;
+				}
+			}
 			break;
 		default :
 			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
