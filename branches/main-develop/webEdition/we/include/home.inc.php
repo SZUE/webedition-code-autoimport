@@ -81,6 +81,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$aDiscard = ['rss', 'pad'];
 	$s1 = '';
 	$iCurrCol = $iCurrId = 0;
+	t_e($aDat);
 	foreach($aDat as $d){
 		$bExtendedCol = false;
 		$s2 = '';
@@ -130,14 +131,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					}
 					$newSCurrId = 'm_' . $iCurrId;
 					include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
-				}
-				if($aProps[2]){
-					$bExtendedCol = true;
-				}
-				if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
-					include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-					$widget = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
-					$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
 				}
 			}
 			if($aProps[2]){
