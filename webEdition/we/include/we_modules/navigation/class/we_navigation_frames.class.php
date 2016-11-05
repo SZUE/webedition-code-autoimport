@@ -1214,7 +1214,7 @@ function showPreview() {
 				we_html_tools::htmlTextInput('Attributes[title]', 30, $this->Model->getAttribute('title'), '', 'onchange="top.content.mark();"', 'text', 520), g_l('navigation', '[title]'));
 
 		$anchor = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="top.content.mark();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');}"', 'text', 520) . '<br/>' .
+				we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="top.content.mark();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){top.we_showMessage(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\', WE().consts.message.WE_MESSAGE_ERROR);}"', 'text', 520) . '<br/>' .
 				we_html_forms::checkboxWithHidden($this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", 'top.content.mark();"'), g_l('navigation', '[anchor]'));
 
 		$target = we_html_tools::htmlFormElementTable(

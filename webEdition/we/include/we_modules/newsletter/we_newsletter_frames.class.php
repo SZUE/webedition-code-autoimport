@@ -1627,7 +1627,7 @@ window.onload=extraInit;');
 						"etyp" => "",
 						"eid" => ""]) .
 					we_html_tools::htmlDialogLayout(
-						we_html_element::htmlDiv(['style' => 'margin-top:10px;'], $this->formFileChooser(420, "csv_file", ($open_file ?: ($csv_file ?: "/")), "opener.postSelectorSelect('selectFile')", "", 'readonly="readonly" onchange="alert(100)"'))
+						we_html_element::htmlDiv(['style' => 'margin-top:10px;'], $this->formFileChooser(420, "csv_file", ($open_file ?: ($csv_file ?: "/")), "opener.postSelectorSelect('selectFile')", "", 'readonly="readonly"'))
 						. '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close . $edit, "100%", 30, 597)
 				)
 		);

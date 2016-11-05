@@ -273,7 +273,6 @@ function YUIdoAjax(value) {
 			}
 		},
 		failure: function (o) {
-			alert("Failure");
 		}
 	}, 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value);
 }

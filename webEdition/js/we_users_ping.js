@@ -86,7 +86,7 @@ window.setInterval(function () {
 		failure: function (o) {
 			if (weRpcFailedCnt++ > 5) {
 				//in this case, rpc failed 5 times, this is severe, user should be in informed!
-				alert(WE().consts.g_l.main.unable_to_call_ping);
+				top.we_showMessage(WE().consts.g_l.main.unable_to_call_ping, WE().consts.message.WE_MESSAGE_ERROR,20000);
 			}
 		}
 	}, 'protocol=json&cmd=Ping');

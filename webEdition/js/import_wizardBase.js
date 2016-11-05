@@ -40,7 +40,7 @@ var weGetCategoriesCallback = {
 		WE().util.setIconOfDocClass(document, "chooserFileIcon");
 	},
 	failure: function (o) {
-		alert("failure");
+		top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 	},
 	scope: window.frame,
 	timeout: 1500

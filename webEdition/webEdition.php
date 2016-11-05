@@ -106,7 +106,6 @@ $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false);
 $const = [
 	'g_l' => [],
 	'contentTypes' => [
@@ -236,7 +235,7 @@ foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
 }
 
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEData',
+$head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEData',
 	'data-session' => setDynamicVar($session),
 	'data-consts' => setDynamicVar($const),
 ]) .
@@ -258,39 +257,38 @@ echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEDat
  we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
  we_main_headermenu::css() .
- we_html_element::cssLink(CSS_DIR . 'sidebar.css');
+ we_html_element::cssLink(CSS_DIR . 'sidebar.css').
+	JQUERY;
 
 foreach($jsCmd as $cur){
-	echo we_html_element::jsScript($cur);
+	$head.= we_html_element::jsScript($cur);
 }
-?>
-	<script><!--
-<?php
-if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
-	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
-	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
-}
-?>
-
-function startMsg() {
-<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
-}
-function updateCheck() {
-<?php
-if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
-	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
-<?php }
-?>
+$head .= we_html_element::jsElement('
+function checkPwd(){' .
+		(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
+		'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
+		) . '
 }
 
-//-->
-	</script>
-	</head>
+function startMsg() {' .
+		we_main_headermenu::createMessageConsole('mainWindow', true) . '
+}
+function updateCheck() {' .
+		(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
+		'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
+		'') . '
+}');
+
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
+unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
+?>
 	<body id="weMainBody" onload="initWE();
 			top.start('<?= $table_to_load; ?>');
 			startMsg();
+			checkPwd();
 			updateCheck();
 			self.focus();" onbeforeunload ="return doUnload();">
+		<div id="alertBox" style="display: none"></div>
 		<div id="headerDiv"><?php
 			$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 			$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);

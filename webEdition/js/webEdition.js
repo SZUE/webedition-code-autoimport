@@ -536,24 +536,47 @@ var WebEdition = {
 			WE().layout.messageConsole.addMessage(prio, message);
 
 			if (prio & WE().session.messageSettings) { // show it, if you should
-
-				// the used vars are in file JS_DIR . "weJsStrings.php";
+				var title = "";
+				var icon = "";
 				switch (prio) {
 					// Notice
 					case WE().consts.message.WE_MESSAGE_INFO:
 					case WE().consts.message.WE_MESSAGE_NOTICE:
-						win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
+						title = WE().consts.g_l.message_reporting.notice;
 						break;
 
 						// Warning
 					case WE().consts.message.WE_MESSAGE_WARNING:
-						win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
+						title = WE().consts.g_l.message_reporting.warning;
+						icon = '<span class="fa-stack fa-lg alertIcon" style="color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
 						break;
 
 						// Error
 					case WE().consts.message.WE_MESSAGE_ERROR:
-						win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
+						title = WE().consts.g_l.message_reporting.error;
+						icon = '<span class="fa-stack fa-lg alertIcon"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>';
 						break;
+				}
+				//try Jquery
+				if (win.$ && win.$("#alertBox").length) {
+					win.$("#alertBox").html(icon + message.replace(/\n/, "<br/>"));
+					win.$("#alertBox").dialog({
+						modal: true,
+						title: title,
+						buttons: {
+							Ok: function () {
+								$(this).dialog("close");
+							}
+						}
+					});
+					if (timeout) {
+						win.setTimeout(function (win) {
+							win.$("#alertBox").dialog("close");
+						}, timeout, win);
+					}
+				} else {
+					message = title + ":\n" + message;
+					win.alert(message);
 				}
 			}
 		},
@@ -1293,9 +1316,6 @@ var we_cmd_modules = {
 			case "webEdition_online":
 				new (WE().util.jsWindow)(this, "http://www.webedition.org/", "webEditionOnline", -1, -1, 960, 700, true, true, true, true);
 				break;
-			case "snippet_shop":
-				alert("Es gibt noch keine URL für die Snippets Seite");
-				break;
 			case "help_modules":
 				WE().util.jsWindow.prototype.focus('edit_module');
 				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
@@ -1475,7 +1495,7 @@ var we_cmd_modules = {
 						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 					}
 				} else {
-					alert(WE().consts.g_l.main.no_editor_left);
+					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 				}
 				break;
 			case "open_extern_document":
@@ -1493,7 +1513,7 @@ var we_cmd_modules = {
 					// load new document editor
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 				} else {
-					alert(WE().consts.g_l.main.no_editor_left);
+					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 				}
 				break;
 			case "close_document":
@@ -1857,12 +1877,12 @@ var we_cmd_modules = {
 				break;
 			case 'collection_insertFiles_rpc':
 				// TODO: make some tests and return with alert when not ok
-				postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '');
-				postData += '&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0);
-				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '');
-				postData += '&we_cmd[full]=0';
-				postData += '&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+				postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '') +
+					'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
+					'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
+					'&we_cmd[full]=0' +
+					'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
+					'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
 
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					// make optional use of nextCmd possible here!
@@ -1870,7 +1890,6 @@ var we_cmd_modules = {
 						//
 					},
 					failure: function (o) {
-						//alert(WE().consts.g_l.main.unable_to_call_setpagenr);
 					}
 				}, 'protocol=json&cmd=InsertValidItemsByID&cns=collection' + postData);
 				break;
@@ -1948,7 +1967,7 @@ var we_cmd_modules = {
 						success: function (o) {
 						},
 						failure: function (o) {
-							alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+							top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
 						}
 					}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
 					if (_visibleEditorFrame.reloadContent === false) {
@@ -2107,7 +2126,6 @@ var we_cmd_modules = {
 						//
 					},
 					failure: function (o) {
-						//alert(WE().consts.g_l.main.unable_to_call_setpagenr);
 					}
 				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
 				break;
@@ -2128,7 +2146,7 @@ var we_cmd_modules = {
 			case "check_radio_option":
 				// to be callable from selectors we skip args[1]
 				this.we_form.elements[args[2]][args[3]].checked = true;
-				if(args[4]){
+				if (args[4]) {
 					this.we_cmd('setHot');
 				}
 				break
@@ -2136,7 +2154,7 @@ var we_cmd_modules = {
 				// to be callable from selectors we skip args[1]
 				this.we_form.elements[args[2]].value = args[3];
 				this.we_form.elements['check_' + args[2]].checked = args[3];
-				if(args[4]){
+				if (args[4]) {
 					this.we_cmd('setHot');
 				}
 				break;

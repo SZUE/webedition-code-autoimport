@@ -58,10 +58,10 @@ function WE(retBool) {
 	throw new Error("webedition (final) not found");
 }
 
-function we_showMessage(message, prio, win) {
+function we_showMessage(message, prio, win, timeout) {
 	win = (win ? win : this.window);
 	if (WE(true)) {
-		WE().util.showMessage(message, prio, win);
+		WE().util.showMessage(message, prio, win, timeout);
 	} else { // there is no webEdition window open, just show the alert
 		win.alert(message);
 	}

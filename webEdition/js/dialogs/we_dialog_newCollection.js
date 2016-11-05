@@ -63,7 +63,7 @@ function we_cmd() {
 				document.we_form.dosave.value = 1;
 				we_submitForm(top.dialog.scriptName);
 			} else {
-				alert("no name set");
+				top.we_showMessage('no name set', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 			}
 			break;
 		case "do_onSuccess":

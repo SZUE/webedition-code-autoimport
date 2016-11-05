@@ -29,7 +29,7 @@ var weAcCheckLoop = 0;
 
 function checkAnchor(el) {
 	if (el.value && !new RegExp('#?[a-z]+[a-z0-9_:.-=]*$', 'i').test(el.value)) {
-		alert(WE().consts.g_l.alert.anchor_invalid);
+		top.we_showMessage(WE().consts.g_l.alert.anchor_invalid, WE().consts.message.WE_MESSAGE_ERROR);
 		window.setTimeout(function () {
 			el.focus();
 		}, 10);
