@@ -50,9 +50,10 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 	echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 		we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
 				'mod' => $mod,
-	])]));
+		])]) . JQUERY);
 	?>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
+<div id="alertBox" style="display: none"></div>
 		<?php
 		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
 

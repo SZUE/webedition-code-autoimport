@@ -558,21 +558,22 @@ var WebEdition = {
 						break;
 				}
 				//try Jquery
-				if (win.$ && win.$("#alertBox").length) {
-					win.$("#alertBox").html(icon + message.replace(/\n/, "<br/>"));
-					win.$("#alertBox").dialog({
+				if (win.top.top.$ && win.top.top.$("#alertBox").length) {
+					win.top.top.$("#alertBox").html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
+					win.top.top.$("#alertBox").dialog({
 						modal: true,
 						title: title,
+						height: "auto",
 						buttons: {
 							Ok: function () {
-								$(this).dialog("close");
+								this.ownerDocument.defaultView.$("#alertBox").dialog("close");
 							}
 						}
 					});
 					if (timeout) {
-						win.setTimeout(function (win) {
+						win.top.top.setTimeout(function (win) {
 							win.$("#alertBox").dialog("close");
-						}, timeout, win);
+						}, timeout, win.top.top);
 					}
 				} else {
 					message = title + ":\n" + message;
