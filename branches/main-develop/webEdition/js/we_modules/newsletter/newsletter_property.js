@@ -629,7 +629,6 @@ function weShowMailsByStatus(status, group) {
 			}
 			break;
 		default :
-		//alert(status);
 	}
 }
 

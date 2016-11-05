@@ -137,7 +137,6 @@ weSearch = {
 			}
 		},
 		failure: function (o) {
-			//alert("Failure");
 		}
 	},
 	ajaxCallbackParametersTop: {
@@ -147,7 +146,6 @@ weSearch = {
 			}
 		},
 		failure: function (o) {
-			//alert("Failure");
 		}
 	},
 	ajaxCallbackParametersBottom: {
@@ -157,7 +155,6 @@ weSearch = {
 			}
 		},
 		failure: function (o) {
-			//alert("Failure");
 		}
 	},
 	ajaxCallbackgetMouseOverDivs: {
@@ -167,7 +164,6 @@ weSearch = {
 			}
 		},
 		failure: function (o) {
-			//alert("Failure");
 		}
 	},
 	search: function (newSearch, sameRange) {
@@ -938,7 +934,6 @@ weSearch = {
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		},
 		failure: function (o) {
-			//alert("Failure");
 		}
 	},
 	publishDocsAjax: function (whichSearch) {

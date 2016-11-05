@@ -28,7 +28,7 @@ function weCombobox() {
 
 		selectObj = document.getElementById(id);
 		if (selectObj === undefined) {
-			alert('weCombobox: Unkown id \'' + id + '\'');
+			WE().t_e('weCombobox: Unkown id \'' + id + '\'');
 			return false;
 		}
 

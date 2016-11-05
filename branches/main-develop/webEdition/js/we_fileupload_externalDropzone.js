@@ -62,13 +62,13 @@ handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, 
 					// more cases to come
 			}
 		} else {
-			alert("no drag from tree here");
+			top.we_showMessage('no drag from tree here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 		}
 	} else if(e.dataTransfer.files){
 		if(dragFromExt){
 			doDragFromExternal(e.dataTransfer.files, cmdExt, cts);
 		} else {
-			alert("no drag from external here");
+			top.we_showMessage('no drag from external here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 		}
 	}
 };

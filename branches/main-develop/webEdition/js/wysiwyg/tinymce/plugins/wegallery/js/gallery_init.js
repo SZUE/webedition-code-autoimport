@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -78,7 +80,7 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 				inst.execCommand('mceInsertContent', false, content);
 				top.close();
 			} else {
-				alert(WE().consts.g_l.tinyMceTranslationObject[inst.getParam('language')].we.plugin_wegallery_values_nok);
+				top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[inst.getParam('language')].we.plugin_wegallery_values_nok, WE().consts.message.WE_MESSAGE_ERROR);
 			}
 		}
 		//tinyMCEPopup.close();

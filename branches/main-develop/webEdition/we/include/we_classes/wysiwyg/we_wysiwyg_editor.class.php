@@ -1036,7 +1036,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
 		if (o.content.match(pattImg)) {
 			o.content = o.content.replace(pattImg, "");
-			alert("' . g_l('wysiwyg', '[removedInlinePictures]') . '");
+			top.we_showMessage("'.g_l('wysiwyg', '[removedInlinePictures]').'", WE().consts.message.WE_MESSAGE_ERROR);
 		}
 		var patScript=/<script[^>]*.*< ?\/script[^>]*>/gi;
 		o.content.replace(patScript, "");

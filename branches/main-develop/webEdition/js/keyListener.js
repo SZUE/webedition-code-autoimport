@@ -40,7 +40,7 @@ function keyBoardListener(_successor) {
 	 * @param {Event} evt
 	 */
 	this.dealEvent = function (evt) {
-		alert("You MUST overwrite the function dealEvent!");
+		WE().t_e("You MUST overwrite the function dealEvent!");
 		return this.next(evt);
 
 	};

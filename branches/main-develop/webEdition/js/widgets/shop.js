@@ -37,7 +37,6 @@ function init() {
 	_oSctDate = _fo.elements.sct_date;
 	_fo.elements.revenueTarget.value = widget.sInitNum;
 	initPrefs();
-	//alert('form: ' + _fo.name);
 }
 
 function getBinary(postfix) {

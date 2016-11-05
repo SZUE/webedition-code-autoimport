@@ -34,38 +34,38 @@ wePropertiesEdit = {
 		return false;
 	},
 	/*moveSelectedOptions: function (from, to, sort, type) {
-		sort = sort || true;
-		type = type || 'document';
+	 sort = sort || true;
+	 type = type || 'document';
 
-		if (!this.hasOptions(from)) {
-			return;
-		}
-		var index, i, o;
-		for (i = 0; i < from.options.length; i++) {
-			o = from.options[i];
-			if (o.selected) {
-				if (!this.hasOptions(to)) {
-					index = 0;
-				} else {
-					index = to.options.length;
-				}
-				to.options[index] = new Option(o.text, o.value, false, false);
-			}
-		}
-		for (i = (from.options.length - 1); i >= 0; i--) {
-			o = from.options[i];
-			if (o.selected) {
-				from.options[i] = null;
-			}
-		}
-		if (sort) {
-			this.sortSelect(from);
-			this.sortSelect(to);
-		}
-		from.selectedIndex = -1;
-		to.selectedIndex = -1;
-		this.retrieveCsv(type);
-	},*/
+	 if (!this.hasOptions(from)) {
+	 return;
+	 }
+	 var index, i, o;
+	 for (i = 0; i < from.options.length; i++) {
+	 o = from.options[i];
+	 if (o.selected) {
+	 if (!this.hasOptions(to)) {
+	 index = 0;
+	 } else {
+	 index = to.options.length;
+	 }
+	 to.options[index] = new Option(o.text, o.value, false, false);
+	 }
+	 }
+	 for (i = (from.options.length - 1); i >= 0; i--) {
+	 o = from.options[i];
+	 if (o.selected) {
+	 from.options[i] = null;
+	 }
+	 }
+	 if (sort) {
+	 this.sortSelect(from);
+	 this.sortSelect(to);
+	 }
+	 from.selectedIndex = -1;
+	 to.selectedIndex = -1;
+	 this.retrieveCsv(type);
+	 },*/
 	sortSelect: function (obj) {
 		var o = [];
 		if (!this.hasOptions(obj)) {
@@ -79,34 +79,34 @@ wePropertiesEdit = {
 			return;
 		}
 		o = o.sort(
-						function (a, b) {
-							if ((a.text + '') < (b.text + '')) {
-								return -1;
-							}
-							if ((a.text + '') > (b.text + '')) {
-								return 1;
-							}
-							return 0;
-						}
+			function (a, b) {
+				if ((a.text + '') < (b.text + '')) {
+					return -1;
+				}
+				if ((a.text + '') > (b.text + '')) {
+					return 1;
+				}
+				return 0;
+			}
 		);
 		for (i = 0; i < o.length; i++) {
 			obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 		}
 	},
 	/*retrieveCsv: function (type) {
-		type = type || 'document';
-		var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'),
-						mimeStr = '';
+	 type = type || 'document';
+	 var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'),
+	 mimeStr = '';
 
-		for (var i = 0; i < mimeListTo.options.length; i++) {
-			mimeStr += mimeListTo.options[i].value + ',';
-		}
-		document.getElementById(type === 'document' ? 'we_remCT' : 'we_remClass').value = mimeStr ? ',' + mimeStr : mimeStr;
-	}*/
+	 for (var i = 0; i < mimeListTo.options.length; i++) {
+	 mimeStr += mimeListTo.options[i].value + ',';
+	 }
+	 document.getElementById(type === 'document' ? 'we_remCT' : 'we_remClass').value = mimeStr ? ',' + mimeStr : mimeStr;
+	 }*/
 };
 
 weCollectionEdit = {
-	styles: { // TODO: use classes!
+	styles: {// TODO: use classes!
 		standard: {
 			border: '1px solid #888888',
 			borderLast: '1px solid #cccccc',
@@ -195,7 +195,7 @@ weCollectionEdit = {
 
 		// set listeners
 		var btnsView = document.getElementsByClassName('collection_btnView');
-		for(var i = 0; i < btnsView.length; i++){
+		for (var i = 0; i < btnsView.length; i++) {
 			btnsView[i].addEventListener('click', function (e) {
 				weCollectionEdit.setView(e.target.nodeName === 'BUTTON' ? e.target.name : e.target.parentNode.name);
 			}, true);
@@ -221,7 +221,7 @@ weCollectionEdit = {
 				this.gui.elements.divSlider.style.display = 'none';
 				break;
 			case 'grid':
-				/* falls through */
+			/* falls through */
 			default:
 				this.gui.view = view;
 				this.gui.elements.container.grid.style.display = 'inline-block';
@@ -248,7 +248,7 @@ weCollectionEdit = {
 	addListenersToItem: function (viewPlusSub, elem, last, index, id, type) {
 		var t = this, input, ctrls, space, view;
 
-		switch(viewPlusSub){
+		switch (viewPlusSub) {
 			case 'grid':
 				view = 'grid';
 				elem = elem.getElementsByClassName('divContent')[0];
@@ -291,7 +291,7 @@ weCollectionEdit = {
 				break;
 			case 'list':
 				view = 'list';
-				if(!last){
+				if (!last) {
 					elem.getElementsByClassName('collectionItem_btnUp')[0].addEventListener('click', function (e) {
 						weCollectionEdit.doClickUp(elem);
 					}, false);
@@ -318,7 +318,7 @@ weCollectionEdit = {
 					weCollectionEdit.doClickAdd(elem);
 				}, false);
 
-				if(id === -1){
+				if (id === -1) {
 					elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', function (e) {
 						we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'we_' + t.we_doc.docName + '_ItemID_' + index, 'we_' + t.we_doc.docName + '_ItemName_' + index, 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
 					}, false);
@@ -326,7 +326,7 @@ weCollectionEdit = {
 				break;
 		}
 
-		if(id !== -1){
+		if (id !== -1) {
 			elem.getElementsByClassName('collectionItem_btnEdit')[0].addEventListener('click', function (e) {
 				weCollectionEdit.doClickOpenToEdit(id, type);
 			}, false);
@@ -392,8 +392,8 @@ weCollectionEdit = {
 	},
 	doClickAddItems: function (elem) {
 		var el = elem ? this.getItem(elem) : null,
-						index = el ? el.id.substr(10) : -1,
-						pos = -1;
+			index = el ? el.id.substr(10) : -1,
+			pos = -1;
 
 		if (el) {
 			for (var i = 0; i < el.parentNode.childNodes.length; i++) {
@@ -510,17 +510,17 @@ weCollectionEdit = {
 		var viewPlusSub = t.gui.view !== 'list' ? 'grid' : (t.gui.viewSub === 'minimal' ? 'listMinimal' : 'list');
 
 		blank = WE().consts.collection.blankItem[viewPlusSub].replace(/##INDEX##/g, t.content.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
-						replace(/##NAME##/g, t.we_doc.docName).
-						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
-						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
-						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
-						replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
+			replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
+			replace(/##NAME##/g, t.we_doc.docName).
+			replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
+			replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
+			replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
+			replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
 
 		if (t.gui.view === 'list') {
 			blank = blank.replace(/##W_ATTRIB_TITLE##/g, item.elements.attrib_title.write).replace(/##W_ATTRIB_ALT##/g, item.elements.attrib_alt.write).
-							replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
-							replace(/##CLASS##/g, (t.gui.viewSub === 'minimal' ? 'minimalListItem' : 'broadListItem'));
+				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
+				replace(/##CLASS##/g, (t.gui.viewSub === 'minimal' ? 'minimalListItem' : 'broadListItem'));
 
 			div.innerHTML = blank;
 
@@ -670,8 +670,8 @@ weCollectionEdit = {
 	},
 	reindexAndRetrieveCollection: function (notSetHot) {
 		var ct = this.gui.elements.container[this.gui.view],
-						val, btns_up, btns_down, btns_edit,
-						labels = document.getElementsByClassName(this.gui.view + '_label');
+			val, btns_up, btns_down, btns_edit,
+			labels = document.getElementsByClassName(this.gui.view + '_label');
 
 		btns_edit = ct.getElementsByClassName('collectionItem_btnEdit');
 		if (this.gui.view === 'list') {
@@ -985,19 +985,18 @@ weCollectionEdit = {
 					if (!this.we_doc.docRemCT || data[3] === WE().consts.contentTypes.FOLDER || this.we_doc.docRemCT.search(',' + data[3]) != -1) {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
-					} else {
-						alert("the item you try to drag doesn't match your collection's contenttypes");
-						this.resetColors();
 					}
+					top.we_showMessage("the item you try to drag doesn't match your collection's contenttypes", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+					this.resetColors();
 				} else {
-					alert("the tree you try to drag from doesn't match your collection's table property"); // FIXME: GL()
+					top.we_showMessage("the tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 				}
 				setTimeout(weCollectionEdit.resetItemColors, 100, el);
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
 				if (this.we_doc.docRealRemCT.search(',' + files[0].type + ',') === -1) {
-					alert('wrong type');
+					top.we_showMessage('wrong type', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 					return;
 				}
 
@@ -1052,7 +1051,7 @@ weCollectionEdit = {
 	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace, recursive) {
 		// FIXME: we need a consize distinction between index and position
 		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) :
-					document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
+			document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
 		notReplace = notReplace !== undefined ? notReplace : false;
 
 		try {

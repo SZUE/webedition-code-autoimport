@@ -423,7 +423,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 		$cc = we_html_tools::htmlTextInput('cc', 30, $cc, '', '', 'text', 300);
 		$subject = we_html_tools::htmlTextInput('subject', 30, $subject, '', '', 'text', 300);
 
-		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', 'onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 300);
+		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', 'onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){top.we_showMessage(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\', WE().consts.message.WE_MESSAGE_ERROR);this.focus();}"', 'text', 300);
 		$accesskey = we_html_tools::htmlTextInput('accesskey', 30, $accesskey, '', '', 'text', 140);
 		$tabindex = we_html_tools::htmlTextInput('tabindex', 30, $tabindex, '', '', 'text', 140);
 		$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);

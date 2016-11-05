@@ -434,9 +434,9 @@ function createWidget(typ, row, col) {
 	} else { // add to empty col - before wildcard!
 		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
-						divClone,
-						_td.childNodes[0]
-						);
+			divClone,
+			_td.childNodes[0]
+			);
 	}
 	if (findInArray(cockpit.oCfg._noResizeTypes, typ) > -1) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
@@ -595,13 +595,12 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
 							}
 						}
 					} catch (exc) {
-						alert("Could not complete the ajax request");
+						top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 					}
 				}
 			},
 			failure: function (o) {
-				alert("Could not complete the ajax request");
-
+				top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 			}
 		});
 	}
@@ -793,8 +792,8 @@ function getDimension(theString, styleClassElement) {
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-						theString + '<\/span>';
+			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+			theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
