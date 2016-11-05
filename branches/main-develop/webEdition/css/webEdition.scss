@@ -2354,3 +2354,10 @@ tr.htmlDialogBorder4Cell{
 		border-left: none;
 	}
 }
+div#alertBox{
+	display: none;
+	span.alertIcon{
+		float:left;
+		margin-right: 1ex;
+	}
+}
