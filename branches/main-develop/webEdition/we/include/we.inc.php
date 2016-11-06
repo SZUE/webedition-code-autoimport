@@ -169,7 +169,8 @@ define('JQUERY', we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery-ui.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery.sumoselect.js') .
-	we_html_element::jsScript(JS_DIR . 'startJquery.js')
+	we_html_element::jsScript(JS_DIR . 'startJquery.js') .
+	we_html_element::cssLink(CSS_DIR . 'weJquery.css')
 );
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages

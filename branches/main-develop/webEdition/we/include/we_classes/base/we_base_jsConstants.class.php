@@ -132,6 +132,10 @@ abstract class we_base_jsConstants{
 		msgNotice:"' . g_l('messageConsole', '[iconBar][notice]') . '",
 		msgWarning:"' . g_l('messageConsole', '[iconBar][warning]') . '",
 		msgError:"' . g_l('messageConsole', '[iconBar][error]') . '",
+		question:"' . g_l('global', '[question]') . '",
+		yes:"' . g_l('global', '[yes]') . '",
+		no:"' . g_l('buttons_global', '[no][value]') . '",
+		ok:"' . g_l('buttons_global', '[ok][value]') . '",
 	},
 	alert:{
 		browser_crashed: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')) . '",

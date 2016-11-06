@@ -514,6 +514,62 @@ var WebEdition = {
 
 			return url;
 		},
+		showConfirm: function (win, title, message, yesCmd, noCmd, yesText, noText) {
+			title = title ? title : WE().consts.g_l.message_reporting.question;
+			yesText = yesText ? yesText : WE().consts.g_l.message_reporting.yes;
+			noText = noText ? noText : WE().consts.g_l.message_reporting.no;
+			var ab;
+
+			if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
+				ab.html("<div>" + message.replace(/\n/, "<br/>") + "</div>");
+				ab.win = win;
+				ab.yesCmd = yesCmd;
+				ab.noCmd = noCmd;
+				ab.dialog({
+					modal: true,
+					title: title,
+					height: "auto",
+					closeOnEscape: false,
+					buttons: [{
+							text: yesText,
+							icons: {
+								primary: "fa fa-lg fa-check fa-ok"
+							},
+							click: function () {
+								var ab = this.ownerDocument.defaultView.$("#alertBox");
+								ab.dialog("close");
+								if (ab.yesCmd) {
+									ab.win.we_cmd(ab.yesCmd);
+								}
+							}
+						}, {
+							text: noText,
+							icons: {
+								primary: "fa fa-lg fa-close fa-cancel"
+							},
+							click: function () {
+								var ab = this.ownerDocument.defaultView.$("#alertBox");
+								ab.dialog("close");
+								if (ab.noCmd) {
+									ab.win.we_cmd(ab.noCmd);
+								}
+							}
+						}]
+				});
+			} else {
+				message = (title ? title + ":\n" : "") + message;
+				if (win.confirm(message)) {
+					if (yesCmd) {
+						win.we_cmd(yesCmd);
+					}
+				} else {
+					if (noCmd) {
+						win.we_cmd(noCmd);
+					}
+				}
+			}
+
+		},
 		/**
 		 * setting is built like the unix file system privileges with the 3 options
 		 * see notices, see warnings, see errors
@@ -531,6 +587,7 @@ var WebEdition = {
 			win = (win ? win : this.window);
 			// default is error, to avoid missing messages
 			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
+			var ab;
 
 			// always show in console !
 			WE().layout.messageConsole.addMessage(prio, message);
@@ -558,17 +615,21 @@ var WebEdition = {
 						break;
 				}
 				//try Jquery
-				if (win.top.top.$ && win.top.top.$("#alertBox").length) {
-					win.top.top.$("#alertBox").html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
-					win.top.top.$("#alertBox").dialog({
+				if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
+					ab.html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
+					ab.dialog({
 						modal: true,
 						title: title,
 						height: "auto",
-						buttons: {
-							Ok: function () {
-								this.ownerDocument.defaultView.$("#alertBox").dialog("close");
-							}
-						}
+						buttons: [{
+								text: WE().consts.g_l.message_reporting.ok,
+								icons: {
+									primary: "fa fa-lg fa-check fa-ok"
+								},
+								click: function () {
+									this.ownerDocument.defaultView.$("#alertBox").dialog("close");
+								}
+							}]
 					});
 					if (timeout) {
 						win.top.top.setTimeout(function (win) {
