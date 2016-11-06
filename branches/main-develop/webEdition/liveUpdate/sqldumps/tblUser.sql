@@ -25,7 +25,7 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   CreateDate int unsigned NOT NULL default '0',
   ModifierID int unsigned NOT NULL default '0',
   ModifyDate int unsigned NOT NULL default '0',
-  Ping timestamp default NULL,
+  Ping timestamp NULL default NULL,
   workSpace TEXT NOT NULL default '',
   workSpaceDef TEXT NOT NULL default '',
   workSpaceTmp TEXT NOT NULL default '',

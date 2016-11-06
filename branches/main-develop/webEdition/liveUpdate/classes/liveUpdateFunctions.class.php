@@ -679,7 +679,7 @@ class liveUpdateFunctions{
 					$origTable = $this->getFieldsOfTable($tableName, $db);
 					$newTable = $this->getFieldsOfTable($tmpName, $db);
 					if(empty($newTable)){
-						$this->QueryLog['error'][] = 'Update of table ' . $tableName . "failed\n-- $query --";
+						$this->QueryLog['error'][] = 'Update of table ' . $tableName . " failed (create temporary table was not successfull)\n-- $query --";
 						break;
 					}
 
