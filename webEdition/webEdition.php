@@ -288,7 +288,7 @@ unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 			checkPwd();
 			updateCheck();
 			self.focus();" onbeforeunload ="return doUnload();">
-		<div id="alertBox" style="display: none"></div>
+		<div id="alertBox"></div>
 		<div id="headerDiv"><?php
 			$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 			$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);

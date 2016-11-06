@@ -513,8 +513,18 @@ var WebEdition = {
 			}
 
 			return url;
-		},
-		showConfirm: function (win, title, message, yesCmd, noCmd, yesText, noText) {
+		},/**
+		 * show a confirm dialog
+		 * @param {window} win window calling
+		 * @param {string} title title of the dialog, if none "question" is set
+		 * @param {string} message the message to display
+		 * @param {array} yesCmd we-command on yes
+		 * @param {array} noCmd we-command on no
+		 * @param {string} yesText text for button yes, if other
+		 * @param {string} noText text for button no, if other
+		 * @returns {undefined}
+		 */
+		showConfirm: function (win, title, message, /*array*/yesCmd, /*array*/noCmd, yesText, noText) {
 			title = title ? title : WE().consts.g_l.message_reporting.question;
 			yesText = yesText ? yesText : WE().consts.g_l.message_reporting.yes;
 			noText = noText ? noText : WE().consts.g_l.message_reporting.no;
@@ -535,11 +545,11 @@ var WebEdition = {
 							icons: {
 								primary: "fa fa-lg fa-check fa-ok"
 							},
-							click: function () {
+							click: function() {
 								var ab = this.ownerDocument.defaultView.$("#alertBox");
 								ab.dialog("close");
 								if (ab.yesCmd) {
-									ab.win.we_cmd(ab.yesCmd);
+									ab.win.we_cmd.apply(ab.win,ab.yesCmd);
 								}
 							}
 						}, {
@@ -547,7 +557,7 @@ var WebEdition = {
 							icons: {
 								primary: "fa fa-lg fa-close fa-cancel"
 							},
-							click: function () {
+							click: function() {
 								var ab = this.ownerDocument.defaultView.$("#alertBox");
 								ab.dialog("close");
 								if (ab.noCmd) {
@@ -683,7 +693,7 @@ var WebEdition = {
 				email = email.replace(/".*"/g, "y");
 				email = email.replace(/\\./g, "z");
 				var parts = email.split("@");
-				if (parts.length != 2) {
+				if (parts.length !== 2) {
 					return false;
 				}
 				if (!WE().util.validate.domain(parts[1])) {
