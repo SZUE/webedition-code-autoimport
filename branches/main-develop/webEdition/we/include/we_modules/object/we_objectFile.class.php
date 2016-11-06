@@ -891,7 +891,7 @@ class we_objectFile extends we_document{
 				}
 				$alerttext = g_l('modules_object', '[multiobject_recursion]');
 
-				$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(top.fileSelect.data.currentID==" . $this->ID . "){top.we_showMessage('".$alerttext."',WE().consts.message.WE_MESSAGE_ERROR, window);opener.document.we_form.elements['" . $idname . "'].value='';opener.document.we_form.elements['" . $textname . "'].value='';}" . $reloadEntry) . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+				$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(top.fileSelect.data.currentID==" . $this->ID . "){top.we_showMessage('" . $alerttext . "',WE().consts.message.WE_MESSAGE_ERROR, window);opener.document.we_form.elements['" . $idname . "'].value='';opener.document.we_form.elements['" . $textname . "'].value='';}" . $reloadEntry) . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 				$upbutDis = we_html_button::create_button(we_html_button::DIRUP, "#", '', 0, 0, "", "", true);
@@ -1408,14 +1408,14 @@ class we_objectFile extends we_document{
 		sort($newArr);
 
 		$this->Workspaces = implode(',', $newArr);
-
+		$newArr = array_flip($newArr);
 		//list only dirs not already selected
 		$values = array_diff_key($values, $newArr);
 
 		if(empty($values)){
 			$addbut = '';
 		} else {
-			$values = array_merge(['' => g_l('global', '[add_workspace]')], $values);
+			$values = ['' => g_l('global', '[add_workspace]')] + $values;
 			$addbut = we_html_tools::htmlSelect(md5(uniqid(__FUNCTION__)), $values, 1, '', false, ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);']);
 		}
 		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, $classWsTmpl);
