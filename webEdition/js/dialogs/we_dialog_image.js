@@ -69,6 +69,47 @@ function checkWidthHeight(field) {
 	return true;
 }
 
+function update_editor(data){
+	document.we_form['we_cmd[0]'].value = '';
+
+	var inputElem;
+
+	for (var arg in data.args) {
+		if(data.args.hasOwnProperty(arg) && arg !== 'cssclass'){
+			if(inputElem = document.we_form.elements['we_dialog_args[' + arg + ']']){
+				inputElem.value = data.args[arg];
+			}
+		}
+	}
+	
+	// => buggy!
+	if(inputElem = document.we_form.elements["we_dialog_args[thumbnail]"]){
+		var disabled = (inputElem.value != '');
+		document.we_form.elements["we_dialog_args[height]"].disabled = disabled;
+		document.we_form.elements["we_dialog_args[width]"].disabled = disabled;
+	}
+
+	try{
+		if(data.displayThumbnailSel === 'none'){
+			top.document.getElementById('selectThumbnail').setAttribute('disabled', 'disabled');
+		} else {
+			top.document.getElementById('selectThumbnail').removeAttribute('disabled');
+		}
+	} catch(err){}
+
+	var rh = 0, rw = 0;
+	if(parseInt(data.args['width']) * parseInt(data.args['height'])){
+		rh = data.args['width'] / data.args['height'];
+		rw = data.args['height'] / data.args['width'];
+	}
+	if(document.we_form.tinyMCEInitRatioH !== undefined){
+		document.we_form.tinyMCEInitRatioH.value = rh;
+	}
+	if(document.we_form.tinyMCEInitRatioW !== undefined){
+		document.we_form.tinyMCEInitRatioW.value = rw;
+	}
+}
+
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
@@ -84,6 +125,35 @@ function we_cmd() {
 			break;
 		case "we_fileupload_editor":
 			new (WE().util.jsWindow)(this, url, 'we_fileupload_editor', -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
+		case "dialog_setType":
+			var isInt = this.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
+			this.document.getElementById('imageExt').style.display = isInt ? 'none' :  'block';
+			this.document.getElementById('imageInt').style.display = isInt ? 'block' :  'none';
+			imageChanged();
+			break;
+		case "dialog_extSrcOnchange":
+			switch(args[2]){
+				case WE().consts.linkPrefix.TYPE_EXT:
+					var val = this.document.we_form.elements['we_dialog_args[extSrc]'].value;
+					if(val === '' || val === WE().consts.linkPrefix.EMPTY_EXT){
+						WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
+					} else {
+						WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
+					}
+				break;
+			}
+			imageChanged();
+			break;
+		case "dialog_openExt":
+			var val = this.document.we_form.elements['we_dialog_args[extSrc]'].value;
+			if(val && val !== '" . we_base_link::EMPTY_EXT . "'){
+				window.open(val);
+			}
+			break;
+		case "dialog_emptyLongdesc":
+			this.document.we_form.elements['we_dialog_args[longdescid]'].value='';
+			this.document.we_form.elements['we_dialog_args[longdescsrc]'].value='';
 			break;
 		case "dialog_imageChanged":
 			imageChanged();

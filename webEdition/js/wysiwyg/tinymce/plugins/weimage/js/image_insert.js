@@ -33,13 +33,18 @@ var ImageDialog = {
 			document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 		}
 	},
-	init: function (ed) {
-		this.insert('', '');
-	},
-	insert: function (file, title) {
-		var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
+
+	writeBack: function (attributes) {
+		this.preInit;
+		var ed = tinyMCEPopup.editor, t = this;
+
+		if(!attributes){
+			top.close();
+			return;
+		}
+
 		// remove <img> if src=""
-		if (f.src.value === '' || f.src.value === 'http://') {
+		if (attributes.src === '' || attributes.src === 'http://') {
 			if (ed.selection.getNode().nodeName == 'IMG') {
 				ed.dom.remove(ed.selection.getNode());
 				ed.execCommand('mceRepaint');
@@ -49,7 +54,7 @@ var ImageDialog = {
 		}
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
-			if (!f.alt.value) {
+			if (!attributes.alt) {
 				//tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
 				//if (s){
 				//t.insertAndClose();
@@ -58,10 +63,11 @@ var ImageDialog = {
 				return;
 			}
 		}
-		t.insertAndClose();
+		t.writebackAndClose(attributes);
 	},
-	insertAndClose: function () {
-		var ed = tinyMCEPopup.editor, f = document.forms[0], nl = f.elements, v, args = {}, el;
+	writebackAndClose: function (attributes) {
+		var ed = tinyMCEPopup.editor, attribs = attributes, v, args = {}, el;
+
 
 		tinyMCEPopup.restoreSelection();
 
@@ -72,10 +78,10 @@ var ImageDialog = {
 
 		if (!ed.settings.inline_styles) {
 			args = {
-				vspace: nl.vspace.value,
-				hspace: nl.hspace.value,
-				border: nl.border.value,
-				align: getSelectValue(f, 'align')
+				vspace: attribs.vspace,
+				hspace: attribs.hspace,
+				border: attribs.border,
+				align: attribs.align
 			};
 		} else {
 			// Remove deprecated values
@@ -88,23 +94,23 @@ var ImageDialog = {
 		}
 
 		tinymce.extend(args, {
-			src: nl.src.value.replace(/ /g, '%20'),
-			width: nl.width.value,
-			height: nl.height.value,
-			hspace: nl.hspace.value,
-			vspace: nl.vspace.value,
-			border: nl.border.value,
-			alt: nl.alt.value,
-			align: nl.align.value,
-			name: nl.name.value,
-			'class': nl['class'].value, // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
-			title: nl.title.value,
-			longdesc: nl.longdesc.value
-							//style : nl.style.value,
-							//id : nl.id.value,
-							//dir : nl.dir.value,
-							//lang : nl.lang.value,
-							//usemap : nl.usemap.value,
+			src: attribs.src.replace(/ /g, '%20'),
+			width: attribs.width,
+			height: attribs.height,
+			hspace: attribs.hspace,
+			vspace: attribs.vspace,
+			border: attribs.border,
+			alt: attribs.alt,
+			align: attribs.align,
+			name: attribs.name,
+			'class': attribs['class'], // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
+			title: attribs.title,
+			longdesc: attribs.longdesc
+			//style : attribs.style,
+			//id : attribs.id,
+			//dir : attribs.dir,
+			//lang : attribs.lang,
+			//usemap : attribs.usemap,
 		});
 
 		el = ed.selection.getNode();
@@ -127,6 +133,3 @@ var ImageDialog = {
 
 	// removed lots of original tinyMCE-functions
 };
-
-ImageDialog.preInit();
-tinyMCEPopup.onInit.add(ImageDialog.init, ImageDialog);
