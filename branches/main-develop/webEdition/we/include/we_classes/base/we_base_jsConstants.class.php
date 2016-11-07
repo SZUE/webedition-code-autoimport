@@ -97,6 +97,11 @@ abstract class we_base_jsConstants{
 	}
 
 	private static function getMainJSLangConsts(){
+		$ctLngs = [];
+foreach(g_l('contentTypes', '') as $key => $lng){
+	$ctLngs[$key] = $lng;
+}
+
 		return 'WE().consts.g_l={
 	main:{
 		unable_to_call_setpagenr: "' . g_l('global', '[unable_to_call_setpagenr]') . '",
@@ -161,6 +166,7 @@ abstract class we_base_jsConstants{
 		discard_changed_data:"' . g_l('alert', '[discard_changed_data]') . '",
 		revert_publish_question:"' . we_message_reporting::prepareMsgForJS(g_l('weEditorInfo', '[revert_publish_question]')) . '",
 		same_master_template:"' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[same_master_template]')) . '",
+		exit_multi_doc_question:"'.g_l('alert', '[exit_multi_doc_question]').'",
 	},
 	scheduler:{
 		activeSchedule:{
@@ -209,6 +215,7 @@ abstract class we_base_jsConstants{
 		insert_tagname:"' . g_l('weTagWizard', '[insert_tagname]') . '",
 		insert_tagname_not_exist: "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n",
 	},
+	contentTypes:'.json_encode($ctLngs).',
 	selectors:{
 	},
 	tinyMceTranslationObject: {
