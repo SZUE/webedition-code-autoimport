@@ -37,7 +37,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "save":
@@ -47,12 +47,12 @@ function we_cmd() {
 			window.close();
 			break;
 		case "delete":
-			if (confirm(WE().consts.g_l.shop.delete_shipping)) {
-				var we_cmd_field = document.getElementById("we_cmd_field");
-				we_cmd_field.value = "deleteShipping";
-				we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping");
-
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.shop.delete_shipping, ["delete_shipping"]);
+			break;
+		case "delete_shipping":
+			var we_cmd_field = document.getElementById("we_cmd_field");
+			we_cmd_field.value = "deleteShipping";
+			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping");
 			break;
 		case "newEntry":
 			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping&we_cmd[0]=newShipping";

@@ -30,6 +30,9 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
+		case "submit_form":
+			top.siteimportcontent.document.we_form.submit();
+			break;
 		case "we_selector_image":
 		case "we_selector_document":
 			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
@@ -175,19 +178,16 @@ function next() {
 			top.siteimportcontent.document.we_form.submit();
 			break;
 		case 1:
-			if (confirm(WE().consts.g_l.import.root_dir_1)) {
-				top.siteimportcontent.document.we_form.submit();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.import.root_dir_1, [
+				"submit_form"]);
 			break;
 		case 2:
-			if (confirm(WE().consts.g_l.import.root_dir_2)) {
-				top.siteimportcontent.document.we_form.submit();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.import.root_dir_2, [
+				"submit_form"]);
 			break;
 		case 3:
-			if (confirm(WE().consts.g_l.import.root_dir_3)) {
-				top.siteimportcontent.document.we_form.submit();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.import.root_dir_3, [
+				"submit_form"]);
 			break;
 		default:
 	}

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -48,15 +48,12 @@ function doClick(id, typ) {
 	if (top.content.hot) {
 		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			top.content.we_cmd("save_glossary");
-		} else {
-			top.content.usetHot();
-			node = treeData.get(id);
-			treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
+			return;
 		}
-	} else {
-		node = treeData.get(id);
-		treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 	}
+	top.content.usetHot();
+	node = treeData.get(id);
+	treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 }
 
 function info(text) {

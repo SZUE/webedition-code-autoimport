@@ -93,20 +93,22 @@ function we_cmd() {
 			document.we_form.pnt.value = oldpnt;
 			break;
 
-		case "reset_ipdata":
-			if (confirm(WE().consts.g_l.voting.delete_ipdata_question)) {
-				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-				new (WE().util.jsWindow)(this, url, args[0], -1, -1, 420, 230, true, false, true);
-				var t = document.getElementById("ip_mem_size");
-				setVisible("delete_ip_data", false);
-				t.innerHTML = "0";
-			}
+		case  "reset_ipdata":
+			WE().util.showConfirm(window, "", WE().consts.g_l.voting.delete_ipdata_question, ["reset_ipdata_do"]);
+			break;
+		case "reset_ipdata_do":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=reset_ipdata";
+			new (WE().util.jsWindow)(this, url, "reset_ipdata", -1, -1, 420, 230, true, false, true);
+			var t = document.getElementById("ip_mem_size");
+			setVisible("delete_ip_data", false);
+			t.innerHTML = "0";
 			break;
 		case "delete_log":
-			if (confirm(WE().consts.g_l.voting.delete_log_question)) {
-				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-				new (WE().util.jsWindow)(this, url, args[0], -1, -1, 420, 230, true, false, true);
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.voting.delete_log_question, ["delete_log_do"]);
+			break;
+		case "delete_log_do":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=delete_log";
+			new (WE().util.jsWindow)(this, url, "delete_log", -1, -1, 420, 230, true, false, true);
 			break;
 		case "show_log":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];

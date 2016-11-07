@@ -151,10 +151,11 @@ function we_cmd() {
 			top.handleEvent(args[1]);
 			break;
 		case 'confirm_start_recoverBackup':
-			if (confirm(WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question)) {
-				top.opener.top.we_cmd("recover_backup");
-				top.close();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question, []);
+			break;
+		case "recover_backup":
+			top.close();
+			top.opener.top.we_cmd("recover_backup");
 			break;
 		case 'fileupload_callbackWXMLImport':
 			top.doNext_WXMLImportStep1();

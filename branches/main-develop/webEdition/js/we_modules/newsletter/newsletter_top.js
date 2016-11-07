@@ -88,17 +88,17 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edbody.loaded) {
-				var delQuestion = top.content.editor.edbody.document.we_form.IsFolder.value == 1 ? WE().consts.g_l.newsletter.delete_group_question : WE().consts.g_l.newsletter.delete_question;
-				if (!confirm(delQuestion)) {
-					return;
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
+			WE().util.showConfirm(window, "", (top.content.editor.edbody.document.we_form.IsFolder.value == 1 ? WE().consts.g_l.newsletter.delete_group_question : WE().consts.g_l.newsletter.delete_question), [
+				"delete_newsletter_do"]);
+			break;
+		case "delete_newsletter_do":
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&home=1&pnt=edheader";
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&home=1&pnt=edfooter";
-			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+			top.content.editor.edbody.document.we_form.ncmd.value = "delete_newsletter";
 			top.content.editor.edbody.submitForm();
 
 			break;

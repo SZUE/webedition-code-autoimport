@@ -199,8 +199,8 @@ function deleteEntry() {
 			top.fsvalues.location.replace(top.queryString(WE().consts.selectors.PROPERTIES, 0));
 		top.DelBut(false);
 	}
-
 }
+
 function RenameEntry(id) {
 	top.fileSelect.data.we_editCatID = id;
 	top.writeBody(top.fsbody.document.body);

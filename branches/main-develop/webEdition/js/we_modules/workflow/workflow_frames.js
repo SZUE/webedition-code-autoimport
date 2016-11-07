@@ -46,10 +46,8 @@ function clearLog() {
 
 		var timearr = [day, month, year, hour, min];
 		opener.top.content.cmd.document.we_form.wopt.value = timearr.join();
-	} else {
-		if (!confirm(WE().consts.g_l.workflow.view.emty_log_question)) {
-			return;
-		}
+	} else if (!confirm(WE().consts.g_l.workflow.view.emty_log_question)) {
+		return;
 	}
 	opener.top.content.cmd.submitForm();
 	close();

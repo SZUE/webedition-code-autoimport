@@ -77,15 +77,16 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, this);
 				return;
 			}
-
-			if (top.content.editor.edbody.loaded) {
-				if (confirm(WE().consts.g_l.customer.view.delete_alert)) {
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.submitForm();
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				break;
 			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.customer.view.delete_alert, ["delete_customer_do"]);
+			break;
+		case "delete_customer_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "delete_customer";
+			top.content.editor.edbody.submitForm();
+
 			break;
 		case "save_customer":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {

@@ -50,17 +50,13 @@ function doClick(id, typ) {
 		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			cmd = "save_voting";
 			top.content.we_cmd("save_voting");
-		} else {
-			top.content.usetHot();
-			cmd = "voting_edit";
-			node = treeData.get(id);
-			treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
+			return;
 		}
-	} else {
-		cmd = "voting_edit";
-		node = treeData.get(id);
-		treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 	}
+	top.content.usetHot();
+	cmd = "voting_edit";
+	node = treeData.get(id);
+	treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 }
 
 function info(text) {

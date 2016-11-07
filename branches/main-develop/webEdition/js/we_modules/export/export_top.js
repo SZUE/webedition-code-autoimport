@@ -99,20 +99,21 @@ function we_cmd() {
 				return;
 			}
 
-			if (top.content.editor.edbody.loaded) {
-				var message = WE().consts.g_l.exports.delete_question;
-				if (top.content.editor.edbody.document.we_form.IsFolder.value == 1)
-					message = WE().consts.g_l.exports.delete_group_question;
-
-				if (confirm(message)) {
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.document.we_form.pnt.value = "cmd";
-					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edbody.submitForm("cmd");
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
+
+			var message = (top.content.editor.edbody.document.we_form.IsFolder.value == 1 ?
+				WE().consts.g_l.exports.delete_group_question :
+				WE().consts.g_l.exports.delete_question);
+			WE().util.showConfirm(window, "", message, ["delete_export_do"]);
+			break;
+		case "delete_export_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "delete_export";
+			top.content.editor.edbody.document.we_form.pnt.value = "cmd";
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edbody.submitForm("cmd");
 			break;
 		case "start_export":
 			if (top.content.hot) {

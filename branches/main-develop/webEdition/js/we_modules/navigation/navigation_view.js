@@ -85,46 +85,49 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
-			if (top.content.editor.edbody.loaded) {
-				if (top.content.editor.edbody.document.we_form.presetFolder)
-					top.content.editor.edbody.document.we_form.presetFolder.value = makeNewDoc;
-				var cont = true;
-				if (top.content.editor.edbody.document.we_form.Selection && top.content.editor.edbody.document.we_form.Selection.options) {
-					if (top.content.editor.edbody.document.we_form.Selection.options[top.content.editor.edbody.document.we_form.Selection.selectedIndex].value === WE().consts.navigation.SELECTION_DYNAMIC && top.content.editor.edbody.document.we_form.IsFolder.value == "1") {
-						cont = confirm(WE().consts.g_l.navigation.view.save_populate_question);
-					}
-				}
-				if (cont) {
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edbody.document.we_form.pnt.value = "edbody";
-					top.content.editor.edbody.submitForm();
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
+			if (top.content.editor.edbody.document.we_form.presetFolder) {
+				top.content.editor.edbody.document.we_form.presetFolder.value = makeNewDoc;
+			}
+
+			if (top.content.editor.edbody.document.we_form.Selection && top.content.editor.edbody.document.we_form.Selection.options) {
+				if (top.content.editor.edbody.document.we_form.Selection.options[top.content.editor.edbody.document.we_form.Selection.selectedIndex].value === WE().consts.navigation.SELECTION_DYNAMIC && top.content.editor.edbody.document.we_form.IsFolder.value == "1") {
+					WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.save_populate_question, ["module_navigation_save_do"]);
+					break;
+				}
+			}
+			/*falls through*/
+		case "module_navigation_save_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "module_navigation_save";
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
+			top.content.editor.edbody.submitForm();
 			break;
 		case "populate":
 		case "depopulate":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
-			if (top.content.editor.edbody.loaded) {
-				q = (args[0] === "populate" ?
-					WE().consts.g_l.navigation.view.populate_question :
-					WE().consts.g_l.navigation.view.depopulate_question);
-
-				if (confirm(q)) {
-					top.content.editor.edbody.document.we_form.pnt.value = "edbody";
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					if (top.content.editor.edbody.document.we_form.pnt.value === "previewIframe") {
-						top.content.editor.edbody.document.we_form.pnt.value = "preview";
-					}
-
-					top.content.editor.edbody.submitForm();
-				}
+			if (!top.content.editor.edbody.loaded) {
+				return;
 			}
+			var q = (args[0] === "populate" ?
+				WE().consts.g_l.navigation.view.populate_question :
+				WE().consts.g_l.navigation.view.depopulate_question);
+			WE().util.showConfirm(window, "", q, ["depopulate_do", args[0]]);
+			break;
+		case "depopulate_do":
+			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
+			top.content.editor.edbody.document.we_form.cmd.value = args[1];
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			if (top.content.editor.edbody.document.we_form.pnt.value === "previewIframe") {
+				top.content.editor.edbody.document.we_form.pnt.value = "preview";
+			}
+
+			top.content.editor.edbody.submitForm();
 			break;
 		case "module_navigation_delete":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
@@ -141,18 +144,18 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
-			if (top.content.editor.edbody.loaded) {
-				if (confirm(WE().consts.g_l.navigation.view.delete_alert)) {
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edheader";
-					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edfooter";
-					top.content.editor.edbody.submitForm();
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
-
+			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.delete_alert, ["module_navigation_delete_do"]);
+			break;
+		case "module_navigation_delete_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "module_navigation_delete";
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edheader";
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edfooter";
+			top.content.editor.edbody.submitForm();
 			break;
 		case "move_abs":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
@@ -227,9 +230,7 @@ function we_cmd() {
 			break;
 
 		case "module_navigation_reset_customer_filter":
-			if (confirm(WE().consts.g_l.navigation.view.reset_customerfilter_question)) {
-				we_cmd("module_navigation_do_reset_customer_filter");
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.reset_customerfilter_question, ["module_navigation_do_reset_customer_filter"]);
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;

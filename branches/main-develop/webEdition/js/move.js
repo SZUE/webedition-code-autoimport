@@ -99,39 +99,36 @@ function press_ok_move(type) {
 
 	// no open document can be moved
 	// close all Editors with deleted documents
-	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+	var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
-	var _move_table = top.treeData.table;
+	var move_table = top.treeData.table;
 	//var _move_ids = "," + sel;
 
-	var _open_move_editors = [];
+	var open_move_editors = [];
 
-	for (var frameId in _usedEditors) {
-		if (_move_table == _usedEditors[frameId].getEditorEditorTable()) {
-			_open_move_editors.push(_usedEditors[frameId]);
+	for (var frameId in usedEditors) {
+		if (move_table == usedEditors[frameId].getEditorEditorTable()) {
+			open_move_editors.push(usedEditors[frameId]);
 		}
 	}
-	if (_open_move_editors.length) {
-		_openDocs_Str = "";
+	if (open_move_editors.length) {
+		var openDocs_Str = "";
 
-		for (i = 0; i < _open_move_editors.length; i++) {
-			_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
+		for (i = 0; i < open_move_editors.length; i++) {
+			openDocs_Str += "- " + open_move_editors[i].getEditorDocumentPath() + "\n";
 
 		}
-		if (confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + _openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
+		if (confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
 
-			for (i = 0; i < _open_move_editors.length; i++) {
-				_open_move_editors[i].setEditorIsHot(false);
-				WE().layout.weEditorFrameController.closeDocument(_open_move_editors[i].getFrameId());
+			for (i = 0; i < open_move_editors.length; i++) {
+				open_move_editors[i].setEditorIsHot(false);
+				WE().layout.weEditorFrameController.closeDocument(open_move_editors[i].getFrameId());
 
 			}
-			we_cmd('do_move', '', _move_table);
+			we_cmd('do_move', '', move_table);
 		}
 
 	} else {
-
-		if (confirm(WE().consts.g_l.alert.move)) {
-			we_cmd('do_move', '', _move_table);
-		}
+		WE().util.showConfirm(window, "", WE().consts.g_l.alert.move, ['do_move', '', move_table]);
 	}
 }

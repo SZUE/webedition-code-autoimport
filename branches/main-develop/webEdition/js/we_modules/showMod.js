@@ -76,20 +76,14 @@ function we_cmd() {
 var current = moduleData.mod;
 function openModule(module) {
 	if (top.content.hot) {
-		if (confirm(WE().consts.g_l.alert.discard_changed_data)) {
-			if (typeof "top.content.usetHot" == "function") {
-				top.content.usetHot();
-			}
-			current = module;
-			top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-		} else {
+		if (!confirm(WE().consts.g_l.alert.discard_changed_data)) {
 			weTabs.setActiveTab(current);
+			return;
 		}
-	} else {
-		if (typeof "top.content.usetHot" == "function") {
-			top.content.usetHot();
-		}
-		current = module;
-		top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
 	}
+	if (typeof "top.content.usetHot" == "function") {
+		top.content.usetHot();
+	}
+	current = module;
+	top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
 }

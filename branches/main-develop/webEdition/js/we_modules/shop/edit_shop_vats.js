@@ -124,11 +124,11 @@ function we_cmd() {
 			break;
 
 		case "delete":
-			if (confirm(WE().consts.g_l.shop.vat_confirm_delete)) {
-				document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats&we_cmd[0]=deleteVat&weShopVatId=" + args[1];
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.shop.vat_confirm_delete, ["delete_vats", args[1]]);
 			break;
-
+		case "delete_vats":
+			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats&we_cmd[0]=deleteVat&weShopVatId=" + args[1];
+			break;
 		case 'cancel_notclose':
 			elem = document.getElementById("editShopVatForm");
 			elem.style.display = "none";
