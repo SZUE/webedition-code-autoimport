@@ -580,7 +580,10 @@ var WebEdition = {
 					title: title,
 					height: "auto",
 					closeOnEscape: false,
-					buttons: (WE().session.isMac ? [noBut, cancelBut, yesBut] : [yesBut, noBut, cancelBut])
+					buttons: (WE().session.isMac ?
+						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
+						(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
+						)
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;
