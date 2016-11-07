@@ -433,12 +433,12 @@ abstract class we_html_element{
 	}
 
 	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true, $class = ''){
-		static $isApple = -1;
-		$isApple = ($isApple !== -1 ? $isApple : (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
+		static $isAppleTouch = -1;
+		$isAppleTouch = ($isAppleTouch !== -1 ? $isAppleTouch : (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
 		$iframestyle = $iframestyle ?: 'border:0px;width:100%;height:100%;overflow:hidden;';
 
-		return self::htmlDiv(['style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class.($isApple?' iframeScrollIpad':'')]
-		, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle,'class'=>($isApple ? 'iframeScrollIpad':''), 'onload' =>  $onload])
+		return self::htmlDiv(['style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class.($isAppleTouch?' iframeScrollIpad':'')]
+		, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle,'class'=>($isAppleTouch ? 'iframeScrollIpad':''), 'onload' =>  $onload])
 		));
 	}
 

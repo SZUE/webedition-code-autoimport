@@ -524,10 +524,8 @@ var WebEdition = {
 		 * @param {string} noText text for button no, if other
 		 * @returns {undefined}
 		 */
-		showConfirm: function (win, title, message, /*array*/yesCmd, /*array*/noCmd, yesText, noText) {
+		showConfirm: function (win, title, message, yesCmd, noCmd, yesText, noText) {
 			title = title ? title : WE().consts.g_l.message_reporting.question;
-			yesText = yesText ? yesText : WE().consts.g_l.message_reporting.yes;
-			noText = noText ? noText : WE().consts.g_l.message_reporting.no;
 			var ab;
 
 			if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
@@ -536,39 +534,53 @@ var WebEdition = {
 					yesCmd: yesCmd,
 					noCmd: noCmd,
 				};
-				ab.html("<div>" + message.replace(/\n/, "<br/>") + "</div>");
+				var yesBut = {
+					text: (yesText ? yesText : WE().consts.g_l.message_reporting.yes),
+					icons: {
+						primary: "fa fa-lg fa-check fa-ok"
+					},
+					click: function () {
+						var ab = this.ownerDocument.defaultView.$("#alertBox");
+						if (ab[0].data.yesCmd) {
+							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
+						}
+						ab[0].data = null;
+						ab.dialog("close");
+					}
+				};
+				var noBut = {
+					text: (noText ? noText : WE().consts.g_l.message_reporting.no),
+					icons: {
+						primary: "fa fa-lg fa-close fa-cancel"
+					},
+					click: function () {
+						var ab = this.ownerDocument.defaultView.$("#alertBox");
+						if (ab[0].data.noCmd) {
+							ab[0].data.win.we_cmd(ab[0].noCmd);
+						}
+						ab[0].data = null;
+						ab.dialog("close");
+					}
+				};
+				var cancelBut = {
+					text: WE().consts.g_l.message_reporting.cancel,
+					icons: {
+						primary: "fa fa-lg fa-close fa-cancel"
+					},
+					click: function () {
+						var ab = this.ownerDocument.defaultView.$("#alertBox");
+						ab[0].data = null;
+						ab.dialog("close");
+					}
+				};
+
+				ab.html('<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
 				ab.dialog({
 					modal: true,
 					title: title,
 					height: "auto",
 					closeOnEscape: false,
-					buttons: [{
-							text: yesText,
-							icons: {
-								primary: "fa fa-lg fa-check fa-ok"
-							},
-							click: function () {
-								var ab = this.ownerDocument.defaultView.$("#alertBox");
-								if (ab[0].data.yesCmd) {
-									ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
-								}
-								ab[0].data = null;
-								ab.dialog("close");
-							}
-						}, {
-							text: noText,
-							icons: {
-								primary: "fa fa-lg fa-close fa-cancel"
-							},
-							click: function () {
-								var ab = this.ownerDocument.defaultView.$("#alertBox");
-								if (ab[0].data.noCmd) {
-									ab[0].data.win.we_cmd(ab[0].noCmd);
-								}
-								ab[0].data = null;
-								ab.dialog("close");
-							}
-						}]
+					buttons: (WE().session.isMac ? [noBut, cancelBut, yesBut] : [yesBut, noBut, cancelBut])
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;

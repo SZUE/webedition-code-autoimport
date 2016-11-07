@@ -135,6 +135,7 @@ abstract class we_base_jsConstants{
 		question:"' . g_l('global', '[question]') . '",
 		yes:"' . g_l('global', '[yes]') . '",
 		no:"' . g_l('buttons_global', '[no][value]') . '",
+		cancel:"'.g_l('buttons_global', '[cancel][value]') .'",
 		ok:"' . g_l('buttons_global', '[ok][value]') . '",
 	},
 	alert:{
