@@ -1105,12 +1105,88 @@ function doUnloadNormal(whichWindow) {
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if (!WE().layout.weEditorFrameController.closeAllDocuments()) {
-		return WE().consts.g_l.alert.exit_multi_doc_question;
+		return "x";
 	}
 	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
 	} else {
 		doUnloadNormal(whichWindow);
+	}
+}
+
+function loadCloseFolder(args) {
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
+	YAHOO.util.Connect.asyncRequest("GET", url, {
+		success: function (o) {
+			if (o.responseText !== undefined && o.responseText !== "") {
+				var weResponse = JSON.parse(o.responseText);
+				if (weResponse && weResponse.Success) {
+					if (weResponse.DataArray.treeName) {
+						top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
+					}
+					if (weResponse.DataArray.items) {
+						if (!weResponse.DataArray.parentFolder) {
+							top.treeData.clear();
+							top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
+						}
+						for (var i = 0; i < weResponse.DataArray.items.length; i++) {
+							if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
+								top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+							}
+						}
+					}
+					top.drawTree();
+				}
+			}
+			top.scrollToY();
+		}
+	});
+}
+
+function wecmd_editDocument(args, url) {
+		try {
+		if ((window.treeData !== undefined) && treeData) {
+			treeData.unselectNode();
+			if (args[1]) {
+				treeData.selection_table = args[1];
+			}
+			if (args[2]) {
+				treeData.selection = args[2];
+			}
+			if (treeData.selection_table === treeData.table) {
+				treeData.selectNode(treeData.selection);
+			}
+		}
+	} catch (e) {
+	}
+
+	var ctrl = WE().layout.weEditorFrameController;
+	var nextWindow,nextContent;
+	if ((nextWindow = ctrl.getFreeWindow())) {
+		nextContent = nextWindow.getDocumentReference();
+		// activate tab and set state to loading
+		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+		// use Editor Frame
+		nextWindow.initEditorFrameData(
+			{
+				"EditorType": "model",
+				"EditorEditorTable": args[1],
+				"EditorDocumentId": args[2],
+				"EditorContentType": args[3]
+			}
+		);
+		// set Window Active and show it
+		ctrl.setActiveEditorFrame(nextWindow.FrameId);
+		ctrl.toggleFrames();
+		if (nextContent.frames && nextContent.frames[1]) {
+			if (!WE().util.we_sbmtFrm(nextContent, url)) {
+				we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
+			}
+		} else {
+			we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
+		}
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 	}
 }
 
@@ -1215,7 +1291,7 @@ function we_cmd() {
 
 var we_cmd_modules = {
 	base: function (args, url) {
-		var ctrl, cType, eTable, nextWindow, width, widthSidebar, postData, table;
+		var ctrl, cType, eTable, nextWindow, width, widthSidebar, postData, table, url2;
 		switch (args[0]) {
 			case "loadVTab":
 				var op = top.treeData.makeFoldersOpenString();
@@ -1337,7 +1413,17 @@ var we_cmd_modules = {
 				}
 				break;
 			case "exit_multi_doc_question":
-				new (WE().util.jsWindow)(this, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
+				WE().util.showConfirm(window, "", '<div>' + WE().consts.g_l.alert.exit_multi_doc_question + '<br /><br /><div style="height: 150px; overflow: auto;"><ul id="ulHotDocuments">' + getHotDocumentsString() + '</ul></div></div>', [
+					"exit_multi_doc_question_yes", args[1]]);
+				break;
+			case "exit_multi_doc_question_yes":
+				var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
+				for (var frameId in allHotDocuments) {
+					if (allHotDocuments[frameId].getEditorIsHot()) {
+						allHotDocuments[frameId].setEditorIsHot(false);
+					}
+				}
+				we_cmd(args[1]);
 				break;
 			case "load":
 				if (WE().session.seemode) {
@@ -1349,33 +1435,7 @@ var we_cmd_modules = {
 				/* falls through */
 			case "loadFolder":
 			case "closeFolder":
-				url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
-				YAHOO.util.Connect.asyncRequest("GET", url, {
-					success: function (o) {
-						if (o.responseText !== undefined && o.responseText !== "") {
-							var weResponse = JSON.parse(o.responseText);
-							if (weResponse && weResponse.Success) {
-								if (weResponse.DataArray.treeName) {
-									top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
-								}
-								if (weResponse.DataArray.items) {
-									if (!weResponse.DataArray.parentFolder) {
-										top.treeData.clear();
-										top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
-									}
-									for (var i = 0; i < weResponse.DataArray.items.length; i++) {
-										if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-											top.treeData.add(new top.node(weResponse.DataArray.items[i]));
-										}
-									}
-								}
-								top.drawTree();
-							}
-						}
-						top.scrollToY();
-					}
-				});
-
+				loadCloseFolder(args);
 				break;
 			case "reload_editfooter":
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
@@ -1540,49 +1600,7 @@ var we_cmd_modules = {
 				break;
 			case "edit_document_with_parameters":
 			case "edit_document":
-				try {
-					if ((window.treeData !== undefined) && treeData) {
-						treeData.unselectNode();
-						if (args[1]) {
-							treeData.selection_table = args[1];
-						}
-						if (args[2]) {
-							treeData.selection = args[2];
-						}
-						if (treeData.selection_table === treeData.table) {
-							treeData.selectNode(treeData.selection);
-						}
-					}
-				} catch (e) {
-				}
-
-				ctrl = WE().layout.weEditorFrameController;
-				if ((nextWindow = ctrl.getFreeWindow())) {
-					_nextContent = nextWindow.getDocumentReference();
-					// activate tab and set state to loading
-					WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
-					// use Editor Frame
-					nextWindow.initEditorFrameData(
-						{
-							"EditorType": "model",
-							"EditorEditorTable": args[1],
-							"EditorDocumentId": args[2],
-							"EditorContentType": args[3]
-						}
-					);
-					// set Window Active and show it
-					ctrl.setActiveEditorFrame(nextWindow.FrameId);
-					ctrl.toggleFrames();
-					if (_nextContent.frames && _nextContent.frames[1]) {
-						if (!WE().util.we_sbmtFrm(_nextContent, url)) {
-							we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
-						}
-					} else {
-						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
-					}
-				} else {
-					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
-				}
+				wecmd_editDocument(args, url);
 				break;
 			case "open_extern_document":
 			case "new_document":
@@ -2251,6 +2269,34 @@ var we_cmd_modules = {
 		return true;
 	}
 };
+
+function getHotDocumentsString() {
+	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
+	var ct, ulCtElem, i;
+	var ret = "";
+	var hotDocumentsOfCt = {};
+	for (var frameId in allHotDocuments) {
+		ct = allHotDocuments[frameId].getEditorContentType();
+		if (!hotDocumentsOfCt[ct]) {
+			hotDocumentsOfCt[ct] = [];
+		}
+		hotDocumentsOfCt[ct].push(allHotDocuments[frameId]);
+	}
+
+	for (ct in hotDocumentsOfCt) {
+		ulCtElem = "";
+
+		for (i = 0; i < hotDocumentsOfCt[ct].length; i++) {
+			ulCtElem += "<li>" + (hotDocumentsOfCt[ct][i].getEditorDocumentText() ?
+				hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
+				"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
+		}
+
+		ret += "<li>" + WE().consts.g_l.contentTypes[ct] + "<ul>" + ulCtElem + "</ul></li>";
+	}
+	return ret;
+}
+
 
 function doReloadCmd(args, url, hot) {
 	if (hot) {
