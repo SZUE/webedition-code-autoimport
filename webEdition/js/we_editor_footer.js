@@ -41,9 +41,7 @@ function we_submitForm(target, url) {
 
 function put_in_workflow(table) {
 	if (_EditorFrame.getEditorIsHot()) {
-		if (confirm(WE().consts.g_l.alert.in_wf_warning[table])) {
-			we_cmd('save_document', '', '', '', '', 0, 0, 1);
-		}
+		WE().util.showConfirm(window, "", WE().consts.g_l.alert.in_wf_warning[table], ['save_document', '', '', '', '', 0, 0, 1]);
 	} else {
 		top.we_cmd('workflow_isIn', doc.we_transaction, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0));
 	}

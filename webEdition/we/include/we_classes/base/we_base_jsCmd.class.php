@@ -30,11 +30,12 @@ class we_base_jsCmd{
 	private $cmds = [];
 	private $cmdData = [];
 	private static $count = 0;
+	//for debug only
+	private static $traces = [];
 
 	public function __construct(){
-		if(self::$count++){
-			t_e('possible JS error will arrise');
-		}
+		self::$traces[] = getBacktrace(['getBacktrace'])[0];
+		self::$count++;
 	}
 
 	public function addCmd($cmd, $data = ''){
@@ -59,6 +60,11 @@ class we_base_jsCmd{
 		}
 
 		$this->cmds = $this->cmdData = [];
+		self::$traces[] = getBacktrace(['getBacktrace'])[0];
+		if(self::$count){
+			t_e('possible JS error will arrise', self::$traces);
+		}
+
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 

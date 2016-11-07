@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -48,15 +50,11 @@ function doClick(id, typ) {
 		if (confirm(WE().consts.g_l.exports.save_changed_export)) {
 			cmd = "save_export";
 			top.content.we_cmd("save_export");
-		} else {
-			top.content.usetHot();
-			cmd = "export_edit";
-			node = treeData.get(id);
-			treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
+			return;
 		}
-	} else {
-		cmd = "export_edit";
-		node = treeData.get(id);
-		treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 	}
+	top.content.usetHot();
+	cmd = "export_edit";
+	node = treeData.get(id);
+	treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 }

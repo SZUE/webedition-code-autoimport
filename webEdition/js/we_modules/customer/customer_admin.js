@@ -68,10 +68,11 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
-			if (confirm(WE().consts.g_l.customer.admin.del_fild_question)) {
-				document.we_form.cmd.value = args[0];
-				submitForm();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.customer.admin.del_fild_question, ["delete_field_do"]);
+			break;
+		case "delete_field_do":
+			document.we_form.cmd.value = "delete_field";
+			submitForm();
 			break;
 		case "move_field_up":
 		case "move_field_down":

@@ -312,39 +312,50 @@ function we_cmd() {
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (document.we_form.IsFolder.value === 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-
-				message_text = (args[1] ? WE().consts.g_l.newsletter.send_test_question : WE().consts.g_l.newsletter.send_question);
-
-				if (confirm(message_text)) {
-					document.we_form.ncmd.value = args[0];
-					if (args[1])
-						document.we_form.test.value = args[1];
-					submitForm();
-				}
+				break;
 			}
+			if (top.content.hot) {
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			if (document.we_form.IsFolder.value === 1) {
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			args[0] = "popSend_do";
+			WE().util.showConfirm(window, "", (args[1] ? WE().consts.g_l.newsletter.send_test_question : WE().consts.g_l.newsletter.send_question), args);
 			break;
-
-		case "send_test":
-			if (document.we_form.ncmd.value == "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				//FIXME: check where we get the test-email adress, this has to be set in the stored data.
-				if (confirm(WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */))) {
-					document.we_form.ncmd.value = args[0];
-					document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
-					document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
-					submitForm();
-				}
+		case "popSend_do":
+			document.we_form.ncmd.value = "popSend";
+			if (args[1]) {
+				document.we_form.test.value = args[1];
 			}
+			submitForm();
+
+			break;
+		case "send_test":
+			if (document.we_form.ncmd.value === "home") {
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			if (top.content.hot) {
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			if (document.we_form.IsFolder.value == 1) {
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */), ["send_test_do"]);
+			//FIXME: check where we get the test-email adress, this has to be set in the stored data.
+			break;
+		case  "send_test_do":
+			document.we_form.ncmd.value = "send_test";
+			document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
+			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+			submitForm();
+
+
 			break;
 		case "print_lists":
 		case "domain_check":

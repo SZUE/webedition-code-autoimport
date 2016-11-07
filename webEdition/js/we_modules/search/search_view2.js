@@ -117,14 +117,17 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edbody.loaded && confirm(WE().consts.g_l.weSearch.confirmDel)) {
-				top.content.editor.edbody.document.we_form.cmd.value = args[0];
-				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-				top.content.editor.edheader.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edheader";
-				top.content.editor.edfooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edfooter";
-				top.content.editor.edbody.submitForm();
-
+			if (!top.content.editor.edbody.loaded) {
+				break;
 			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.weSearch.confirmDel, ["tool_weSearch_delete_do"]);
+			break;
+		case "tool_weSearch_delete_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "tool_weSearch_delete";
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edheader.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edheader";
+			top.content.editor.edfooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edfooter";
+			top.content.editor.edbody.submitForm();
 			break;
 		case "tool_weSearch_new_forDocuments":
 			if (top.content.editor.edbody.loaded) {

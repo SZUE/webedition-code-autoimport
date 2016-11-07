@@ -60,41 +60,45 @@ function we_cmd() {
 		case "delete_workflow":
 			if (!WE().util.hasPerm("DELETE_WORKFLOW")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				if (top.content.editor.edbody.loaded) {
-					if (!confirm(WE().consts.g_l.workflow.view.delete_question))
-						return;
-				} else {
-					top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
-				}
-
-				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
-				top.content.editor.edbody.submitForm();
+				break;
 			}
+			if (!top.content.editor.edbody.loaded) {
+				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+			} else {
+				WE().util.showConfirm(window, "", WE().consts.g_l.workflow.view.delete_question, [
+					"delete_workflow_do"]);
+			}
+			break;
+		case "delete_workflow_do":
+			top.content.editor.edbody.document.we_form.wcmd.value = "delete_workflow";
+			top.content.editor.edbody.submitForm();
+
 			break;
 		case "save_workflow":
 			if (!WE().util.hasPerm("EDIT_WORKFLOW") && !WE().util.hasPerm("NEW_WORKFLOW")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				if (top.content.editor.edbody.loaded) {
-					top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
-					chk = top.content.editor.edbody.checkData();
-					if (!chk) {
-						return;
-					}
-					num = top.content.editor.edbody.getNumOfDocs();
-					if (num > 0) {
-						if (!confirm(WE().consts.g_l.workflow.view.save_question)) {
-							return;
-						}
-					}
-				} else {
-					top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
-				}
-				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
-				top.content.editor.edbody.submitForm();
-				top.content.usetHot();
+				break;
 			}
+			if (!top.content.editor.edbody.loaded) {
+				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
+			chk = top.content.editor.edbody.checkData();
+			if (!chk) {
+				return;
+			}
+			num = top.content.editor.edbody.getNumOfDocs();
+			if (num > 0) {
+				WE().util.showConfirm(window, "", WE().consts.g_l.workflow.view.save_question, [
+					"save_workflow_do"]);
+				return;
+			}
+		case "save_workflow_do":
+			/*falls through*/
+			top.content.editor.edbody.document.we_form.wcmd.value = "save_workflow";
+			top.content.editor.edbody.submitForm();
+			top.content.usetHot();
 			break;
 		case "workflow_edit":
 		case "show_document":

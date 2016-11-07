@@ -156,9 +156,7 @@ function updateCustomerFilterIfNeeded() {
 						if (weResponse) {
 							if (weResponse.DataArray.data === true) {
 								_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
-								if (confirm(_question)) {
-									top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
-								}
+								WE().util.showConfirm(window, "",_question,["customer_applyWeDocumentCustomerFilterFromFolder"]);
 							}
 						}
 					}

@@ -80,15 +80,14 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
-				if (!confirm(WE().consts.g_l.banner.view.delete_question)) {
-					return;
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
 				top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
 				return;
 			}
-			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+			WE().util.showConfirm(window, "", WE().consts.g_l.banner.view.delete_question, ["delete_banner_do"]);
+			break;
+		case "delete_banner_do":
+			top.content.editor.edbody.document.we_form.ncmd.value = "delete_banner";
 			top.content.editor.edbody.submitForm();
 
 			break;

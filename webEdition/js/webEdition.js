@@ -513,7 +513,7 @@ var WebEdition = {
 			}
 
 			return url;
-		},/**
+		}, /**
 		 * show a confirm dialog
 		 * @param {window} win window calling
 		 * @param {string} title title of the dialog, if none "question" is set
@@ -531,10 +531,12 @@ var WebEdition = {
 			var ab;
 
 			if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
+				ab[0].data = {
+					win: win,
+					yesCmd: yesCmd,
+					noCmd: noCmd,
+				};
 				ab.html("<div>" + message.replace(/\n/, "<br/>") + "</div>");
-				ab.win = win;
-				ab.yesCmd = yesCmd;
-				ab.noCmd = noCmd;
 				ab.dialog({
 					modal: true,
 					title: title,
@@ -545,24 +547,26 @@ var WebEdition = {
 							icons: {
 								primary: "fa fa-lg fa-check fa-ok"
 							},
-							click: function() {
+							click: function () {
 								var ab = this.ownerDocument.defaultView.$("#alertBox");
-								ab.dialog("close");
-								if (ab.yesCmd) {
-									ab.win.we_cmd.apply(ab.win,ab.yesCmd);
+								if (ab[0].data.yesCmd) {
+									ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
 								}
+								ab[0].data = null;
+								ab.dialog("close");
 							}
 						}, {
 							text: noText,
 							icons: {
 								primary: "fa fa-lg fa-close fa-cancel"
 							},
-							click: function() {
+							click: function () {
 								var ab = this.ownerDocument.defaultView.$("#alertBox");
-								ab.dialog("close");
-								if (ab.noCmd) {
-									ab.win.we_cmd(ab.noCmd);
+								if (ab[0].data.noCmd) {
+									ab[0].data.win.we_cmd(ab[0].noCmd);
 								}
+								ab[0].data = null;
+								ab.dialog("close");
 							}
 						}]
 				});
@@ -1454,9 +1458,7 @@ var we_cmd_modules = {
 				}
 				break;
 			case "revert_published_question":
-				if (confirm(WE().consts.g_l.alert.revert_publish_question)) {
-					top.we_cmd("revert_published");
-				}
+				WE().util.showConfirm(window, "", WE().consts.g_l.alert.revert_publish_question, ["revert_published"]);
 				break;
 			case "checkSameMaster":
 				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
@@ -1876,18 +1878,18 @@ var we_cmd_modules = {
 			case "reset_home":
 				var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
 				if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-					if (confirm(WE().consts.g_l.cockpit.reset_settings)) {
-						//FIXME: currently this doesn't work
-						WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
-						if ((window.treeData !== undefined) && window.treeData) {
-							window.treeData.unselectNode();
-						}
-					}
+					WE().util.showConfirm(window, "", WE().consts.g_l.cockpit.reset_settings, ["reset_home_do"])
 				} else {
 					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
-
+			case "reset_home_do":
+//FIXME: currently this doesn't work
+				WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
+				if ((window.treeData !== undefined) && window.treeData) {
+					window.treeData.unselectNode();
+				}
+				break;
 			case "new_widget":
 				if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 					WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);

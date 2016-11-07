@@ -85,10 +85,11 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "delete_stat":
-			if (confirm(WE().consts.g_l.banner.view.deleteStatConfirm)) {
-				document.we_form.ncmd.value = args[0];
-				submitForm();
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.banner.view.deleteStatConfirm, ["delete_stat_do"]);
+			break;
+		case "delete_stat_do":
+			document.we_form.ncmd.value = "delete_stat";
+			submitForm();
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

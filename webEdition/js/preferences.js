@@ -332,9 +332,7 @@ function addLocale() {
 		}
 		if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
 // Wörterbuch hinzufügen
-			if (confirm(WE().consts.g_l.prefs.add_dictionary_question)) {
-				top.opener.top.we_cmd('spellchecker_edit_ifthere');
-			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.prefs.add_dictionary_question, ['spellchecker_edit_ifthere']);
 		}
 
 	}
@@ -357,14 +355,17 @@ function deleteLocale() {
 function delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	if (p.selectedIndex >= 0) {
-		if (confirm(WE().consts.g_l.prefs.delete_recipient)) {
-			hot = true;
-			var d = document.forms[0].elements["newconf[formmail_deleted]"];
-			d.value += ((d.value) ? "," : "") + p.options[p.selectedIndex].value;
-			p.options[p.selectedIndex] = null;
-			set_state_edit_delete_recipient();
-		}
+		WE().util.showConfirm(window, "", WE().consts.g_l.prefs.delete_recipient, ["delete_recipient"]);
 	}
+}
+
+function doDelete_recipient() {
+	var p = document.forms[0].elements.we_recipient;
+	hot = true;
+	var d = document.forms[0].elements["newconf[formmail_deleted]"];
+	d.value += ((d.value) ? "," : "") + p.options[p.selectedIndex].value;
+	p.options[p.selectedIndex] = null;
+	set_state_edit_delete_recipient();
 }
 
 function add_recipient() {
@@ -511,6 +512,9 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
+		case "delete_recipient":
+			doDelete_recipient();
+			break;
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;

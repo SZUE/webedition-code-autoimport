@@ -46,13 +46,14 @@ function we_cmd() {
 			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor";
 			break;
 		case "delete_shop":
-			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
-				if (confirm(WE().consts.g_l.shop.del_shop)) {
-					top.content.editor.edbody.deleteorder();
-				}
-			} else {
+			if (!top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
 				top.we_showMessage(WE().consts.g_l.shop.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.shop.del_shop, ["delete_shop_order"]);
+			break;
+		case "delete_shop_order":
+			top.content.editor.edbody.deleteorder();
 			break;
 		case "new_article":
 			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {

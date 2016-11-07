@@ -979,7 +979,7 @@ weSearch = {
 		if (!check) {
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
-			var conf = confirm("you really want to delete them?");
+			var conf = confirm("you really want to delete them?");//FIXME: G_L
 			if (conf) {
 				this.deleteMediaDocsAjax(whichSearch);
 			}

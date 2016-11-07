@@ -95,17 +95,19 @@ function we_cmd() {
 				break;
 
 			}
-			if (top.content.editor.edbody.loaded) {
-				if (confirm(WE().consts.g_l.glossary.view.delete_alert)) {
-					top.content.editor.edbody.document.we_form.cmd.value = args[0];
-					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edheader";
-					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edfooter";
-					top.content.editor.edbody.submitForm();
-				}
-			} else {
+			if (!top.content.editor.edbody.loaded) {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
 			}
+			WE().util.showConfirm(window, "", WE().consts.g_l.glossary.view.delete_alert, ["delete_glossary_do"]);
+			break;
+		case "delete_glossary_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "delete_glossary";
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edheader";
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edfooter";
+			top.content.editor.edbody.submitForm();
+
 			break;
 		case "save_exception":
 		case "save_glossary":
