@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$isApple = (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE);
+$isAppleTouch = (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE);
 
 we_html_tools::protect();
 
@@ -54,7 +54,7 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'm
 			</div>
 		</div>
 	</div>
-	<div id="multiEditorEditorFramesetsDiv" class="<?= ($isApple ? 'iframeScrollIpad' : ''); ?>"><?php
+	<div id="multiEditorEditorFramesetsDiv" class="<?= ($isAppleTouch ? 'iframeScrollIpad' : ''); ?>"><?php
 		$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
 		for($i = 0; $i < $count; $i++){

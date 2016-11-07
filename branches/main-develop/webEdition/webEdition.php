@@ -229,7 +229,8 @@ $session = [
 	'helpLang' => $GLOBALS["WE_LANGUAGE"],
 	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
 	'isChrome' => we_base_browserDetect::isChrome(),
-	'isApple' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE))
+	'isAppleTouch' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)),
+	'isMac' => we_base_browserDetect::isMAC(),
 ];
 foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
