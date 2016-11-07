@@ -60,7 +60,7 @@ function we_cmd() {
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 800, 400, true, false, true);
 			break;
-		case "selector_writeback":
+		case "selector_callback":
 			if(args[1].currentID){
 				this.document.getElementById(args[2]).disabled = false;
 				if(args[2] === 'btn_edit_int'){
