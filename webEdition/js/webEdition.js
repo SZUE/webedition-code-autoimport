@@ -556,7 +556,7 @@ var WebEdition = {
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
 						if (ab[0].data.noCmd) {
-							ab[0].data.win.we_cmd(ab[0].noCmd);
+							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.noCmd);
 						}
 						ab[0].data = null;
 						ab.dialog("close");
@@ -574,11 +574,14 @@ var WebEdition = {
 					}
 				};
 
-				ab.html('<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
+				ab.html('<span class="alertIcon fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
 				ab.dialog({
 					modal: true,
 					title: title,
 					height: "auto",
+					maxHeight: "400px",
+					width: "auto",
+					maxWidth: "400px",
 					closeOnEscape: false,
 					buttons: (WE().session.isMac ?
 						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
@@ -634,13 +637,13 @@ var WebEdition = {
 						// Warning
 					case WE().consts.message.WE_MESSAGE_WARNING:
 						title = WE().consts.g_l.message_reporting.warning;
-						icon = '<span class="fa-stack fa-lg alertIcon" style="color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
+						icon = '<span class="alertIcon fa-stack fa-lg alertIcon" style="color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
 						break;
 
 						// Error
 					case WE().consts.message.WE_MESSAGE_ERROR:
 						title = WE().consts.g_l.message_reporting.error;
-						icon = '<span class="fa-stack fa-lg alertIcon"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>';
+						icon = '<span class="alertIcon fa-stack fa-lg alertIcon"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>';
 						break;
 				}
 				//try Jquery
@@ -650,6 +653,10 @@ var WebEdition = {
 						modal: true,
 						title: title,
 						height: "auto",
+						maxHeight: "400px",
+						width: "auto",
+						maxWidth: "400px",
+						closeOnEscape: true,
 						buttons: [{
 								text: WE().consts.g_l.message_reporting.ok,
 								icons: {
@@ -1251,10 +1258,26 @@ function we_cmd() {
 		}
 
 	}
+	var EditorFrame;
 	switch (args[0]) {
 		case "exit_doc_question":
-			// return !! important for multiEditor
-			return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
+			//return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
+			//next args editorFrameId, table, next_cmd
+			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question[args[2]], ["exit_doc_question_yes", args[1], args[2], args[3]],["exit_doc_question_no", args[1], args[2], args[3]]);
+			break;
+		case "exit_doc_question_yes":
+			EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(args[1]);
+			EditorFrame.getDocumentReference().frames.editFooter.we_save_document("WE().layout.weEditorFrameController.closeDocument('" + args[1] + "');" + (args[3] ? "top.setTimeout('" + args[3] + "', 1000);" : ""));
+			break;
+		case "exit_doc_question_no":
+			EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(args[1]);
+			EditorFrame.setEditorIsHot(false);
+			WE().layout.weEditorFrameController.closeDocument(args[1]);
+			if (args[3]) {
+				//FIXME: eval
+				setTimeout(args[3], 1000);
+			}
+			break;
 		case "eplugin_exit_doc" :
 			if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 				if (top.plugin.isInEditor(args[1])) {
