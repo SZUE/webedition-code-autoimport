@@ -249,12 +249,7 @@ EditorFrameController.prototype = {
 				// check if there are unsaved changes
 				if (this.getEditorFrame(editorId).getEditorIsHot()) {
 					this.showEditor(editorId);
-
-					if (!this.getEditorFrame(editorId).EditorExitDocQuestionDialog) { // open exit_doc_question if not already open
-						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorContentType(), nextCommand);
-					} else {
-						this.getEditorFrame(editorId).EditorExitDocQuestionDialog.open();
-					}
+					top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorEditorTable(), nextCommand);
 				} else {
 					// free frame select next active frame
 					this.closeEditorFrame(editorId);
@@ -301,7 +296,7 @@ EditorFrameController.prototype = {
 
 		// if all Editors are closed,
 		if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
-						this.getAllHotEditors().length === 0) {
+			this.getAllHotEditors().length === 0) {
 			return true;
 		}
 		if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
@@ -350,7 +345,7 @@ EditorFrameController.prototype = {
 
 			// if all Editors are closed,
 			if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
-							this.getAllHotEditors().length === 0) {
+				this.getAllHotEditors().length === 0) {
 				return true;
 			}
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
@@ -415,13 +410,13 @@ EditorFrameController.prototype = {
 				case "cockpit":
 					docRef = this.EditorFrames[frameId].getDocumentReference();
 					// close all modal dialogs
-					if(docRef.closeAllModalWindows){
-					docRef.closeAllModalWindows();
-					if (docRef.isHot()) {
-						// save changes, in cockpit
-						docRef.saveSettings();
+					if (docRef.closeAllModalWindows) {
+						docRef.closeAllModalWindows();
+						if (docRef.isHot()) {
+							// save changes, in cockpit
+							docRef.saveSettings();
+						}
 					}
-				}
 					break;
 				case "model":
 					docRef = this.EditorFrames[frameId].getDocumentReference();
@@ -435,10 +430,6 @@ EditorFrameController.prototype = {
 						top.we_cmd("remove_from_editor_plugin", trans);
 					}
 
-					if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
-						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
-						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
-					}
 					break;
 			}
 
@@ -504,13 +495,13 @@ EditorFrameController.prototype = {
 			if (_currentEditor.getEditorIsInUse()) {
 
 				WE().layout.weNavigationHistory.addDocToHistory(
-								_currentEditor.getEditorEditorTable(),
-								_currentEditor.getEditorDocumentId(),
-								_currentEditor.getEditorContentType(),
-								_currentEditor.getEditorEditCmd(),
-								_currentEditor.getEditorUrl(),
-								_currentEditor.getEditorDocumentParameters()
-								);
+					_currentEditor.getEditorEditorTable(),
+					_currentEditor.getEditorDocumentId(),
+					_currentEditor.getEditorContentType(),
+					_currentEditor.getEditorEditCmd(),
+					_currentEditor.getEditorUrl(),
+					_currentEditor.getEditorDocumentParameters()
+					);
 
 				// activate tab
 				WE().layout.multiTabs.openTab(editorId);
@@ -584,29 +575,25 @@ EditorFrameController.prototype = {
 					}
 				}
 			}
-		} else {
-			for (frameId in this.EditorFrames) {
-				if (this.ActiveEditorFrameId === frameId) {
-					if (WE().session.isChrome) {
-						this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";
-					} else {
-						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
-					}
+			return;
+		}
+		for (frameId in this.EditorFrames) {
+			if (this.ActiveEditorFrameId === frameId) {
+				if (WE().session.isChrome) {
+					this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";
 				} else {
-					if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
-						this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
-					}
-					if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
-						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
-						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
-					}
-					if (WE().session.isChrome) {
-						this.getEditorFrame(frameId).EditorFrameReference.style.display = "none";
-					} else {
-						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
-						this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
-					}
+					this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+					this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
+				}
+			} else {
+				if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
+					this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
+				}
+				if (WE().session.isChrome) {
+					this.getEditorFrame(frameId).EditorFrameReference.style.display = "none";
+				} else {
+					this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+					this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";
 				}
 			}
 		}
@@ -670,8 +657,8 @@ EditorFrameController.prototype = {
 		}
 		return null;
 	},
-	getEditorFrameByExactParams: function(id, table, tab, transaction) {
-		if(!id || !table || !tab || !transaction){
+	getEditorFrameByExactParams: function (id, table, tab, transaction) {
+		if (!id || !table || !tab || !transaction) {
 			return null;
 		}
 
@@ -681,7 +668,7 @@ EditorFrameController.prototype = {
 		for (frameId in this.getEditorsInUse()) {
 			editor = usedEditors[frameId];
 			if (editor.getEditorEditorTable() === table && parseInt(editor.getEditorDocumentId()) === parseInt(id) &&
-					editor.getEditorEditPageNr() === tab && editor.getEditorTransaction() === transaction) {
+				editor.getEditorEditPageNr() === tab && editor.getEditorTransaction() === transaction) {
 
 				return this.getEditorFrame(frameId);
 			}
@@ -689,8 +676,8 @@ EditorFrameController.prototype = {
 
 		return null;
 	},
-	getEditorTransactionByIdTable: function(id, table){
-		if(!id || !table){
+	getEditorTransactionByIdTable: function (id, table) {
+		if (!id || !table) {
 			return '';
 		}
 
@@ -893,11 +880,6 @@ function EditorFrame(ref, elementId) {
 	// reload needed?
 	this.EditorReloadNeeded = false;
 	this.EditorReloadAllNeeded = false;
-
-	// exit_doc_question for this document
-	// used in: closeDocument, closeEditorFrame, toggleFrames !
-	this.EditorExitDocQuestionDialog = false;
-
 }
 
 EditorFrame.prototype = {
@@ -1299,8 +1281,8 @@ TabView.prototype = {
 	 */
 	setModified: function (frameId, modified) {
 		this.myDoc.getElementById('mod_' + frameId).style.visibility = (modified ?
-						"visible" :
-						"hidden");
+			"visible" :
+			"hidden");
 	},
 	/**
 	 * displays the loading loading icon

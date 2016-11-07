@@ -250,8 +250,6 @@ function findInclude($cmd){
 		case 'show_binaryDoc':
 			we_binaryDocument::showBinaryDoc();
 			return true;
-		case 'exit_doc_question':
-			return 'we_editors/we_exit_doc_question.inc.php';
 		case 'browse_server':
 			return 'we_editors/we_sfileselector_frameset.inc.php';
 		case 'make_backup':

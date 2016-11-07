@@ -98,9 +98,9 @@ abstract class we_base_jsConstants{
 
 	private static function getMainJSLangConsts(){
 		$ctLngs = [];
-foreach(g_l('contentTypes', '') as $key => $lng){
-	$ctLngs[$key] = $lng;
-}
+		foreach(g_l('contentTypes', '') as $key => $lng){
+			$ctLngs[$key] = $lng;
+		}
 
 		return 'WE().consts.g_l={
 	main:{
@@ -140,7 +140,7 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 		question:"' . g_l('global', '[question]') . '",
 		yes:"' . g_l('global', '[yes]') . '",
 		no:"' . g_l('buttons_global', '[no][value]') . '",
-		cancel:"'.g_l('buttons_global', '[cancel][value]') .'",
+		cancel:"' . g_l('buttons_global', '[cancel][value]') . '",
 		ok:"' . g_l('buttons_global', '[ok][value]') . '",
 	},
 	alert:{
@@ -166,7 +166,14 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 		discard_changed_data:"' . g_l('alert', '[discard_changed_data]') . '",
 		revert_publish_question:"' . we_message_reporting::prepareMsgForJS(g_l('weEditorInfo', '[revert_publish_question]')) . '",
 		same_master_template:"' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[same_master_template]')) . '",
-		exit_multi_doc_question:"'.g_l('alert', '[exit_multi_doc_question]').'",
+		exit_multi_doc_question:"' . g_l('alert', '[exit_multi_doc_question]') . '",
+		exit_doc_question:{
+			"' . FILE_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(FILE_TABLE) . '][exit_doc_question]') . '",
+			"' . TEMPLATES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(TEMPLATES_TABLE) . '][exit_doc_question]') . '",
+			' . (defined('OBJECT_TABLE') ? '"' . OBJECT_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_TABLE) . '][exit_doc_question]') . '",' : '') .
+			(defined('OBJECT_FILES_TABLE') ? '"' . OBJECT_FILES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_FILES_TABLE) . '][exit_doc_question]') . '",' : '') . '
+
+		}
 	},
 	scheduler:{
 		activeSchedule:{
@@ -215,7 +222,7 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 		insert_tagname:"' . g_l('weTagWizard', '[insert_tagname]') . '",
 		insert_tagname_not_exist: "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n",
 	},
-	contentTypes:'.json_encode($ctLngs).',
+	contentTypes:' . json_encode($ctLngs) . ',
 	selectors:{
 	},
 	tinyMceTranslationObject: {
