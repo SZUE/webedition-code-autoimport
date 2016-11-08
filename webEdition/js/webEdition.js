@@ -1867,75 +1867,16 @@ var we_cmd_modules = {
 				}
 				break;
 			case "move":
-				if (WE().session.seemode) {
-					if (top.deleteMode != args[1]) {
-						top.deleteMode = args[1];
-					}
-					if (args[2] != 1) {
-						we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
-					}
-				} else {
-					if (top.deleteMode != args[1]) {
-						top.deleteMode = args[1];
-					}
-					if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
-						treeData.setState(treeData.tree_states.edit);
-						drawTree();
-					}
-					window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
-					window.document.getElementById("treetable").classList.add('moveSelector');
-					WE().layout.tree.toggle(true);
-					width = WE().layout.tree.getWidth();
+				we_cmd_move(args,url);
 
-					WE().layout.tree.widthBeforeDeleteMode = width;
-
-					if (width < WE().consts.size.tree.moveWidth) {
-						WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
-					}
-					WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
-
-					widthSidebar = WE().layout.sidebar.getWidth();
-
-					WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
-
-					if (args[2] != 1) {
-						we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
-					}
-				}
 				break;
 			case "addToCollection":
-				if (WE().session.seemode) {
-					//
-				} else {
-					if (top.deleteMode != args[1]) {
-						top.deleteMode = args[1];
-					}
-					if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-						treeData.setState(treeData.tree_states.edit);
-						drawTree();
-					}
-					window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
-					window.document.getElementById("treetable").classList.add('collectionSelector');
-					WE().layout.tree.toggle(true);
-					width = WE().layout.tree.getWidth();
-					WE().layout.tree.widthBeforeDeleteMode = width;
-					if (width < WE().consts.size.tree.moveWidth) {
-						WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
-					}
-					WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
-
-					widthSidebar = WE().layout.sidebar.getWidth();
-					WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
-
-					if (args[2] != 1) {
-						we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
-					}
-				}
+				addToCollection(args, url);
 				break;
 			case "reset_home":
 				var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
 				if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-					WE().util.showConfirm(window, "", WE().consts.g_l.cockpit.reset_settings, ["reset_home_do"])
+					WE().util.showConfirm(window, "", WE().consts.g_l.cockpit.reset_settings, ["reset_home_do"]);
 				} else {
 					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
@@ -1969,42 +1910,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
 			case 'collection_insertFiles':
-				if (args[1] === undefined || args[2] === undefined) {
-					break;
-				}
-
-				var collection = parseInt(args[2]);
-				var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
-					args[1].currentID] : args[1]));
-
-				if (collection && ids) {
-					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						editor = null,
-						index = args[3] !== undefined ? args[3] : -1,
-						recursive = args[5] !== undefined ? args[5] : false,
-						transaction, frameId, candidate;
-
-					for (frameId in usedEditors) {
-						candidate = usedEditors[frameId];
-						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection) {
-							if (candidate.getEditorEditPageNr() == 1) {
-								editor = candidate;
-							} else {
-								transaction = candidate.getEditorTransaction();
-							}
-							break;
-						}
-					}
-
-					if (editor) {
-						// FIXME: we need a consize distinction between index and position
-						//var index = editor.getContentEditor().weCollectionEdit.getItemId(editor.getContentEditor().document.getElementById('collectionItem_staticIndex_' + index))
-						editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
-					} else {
-						var position = args[4] !== undefined ? args[4] : index;
-						we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);
-					}
-				}
+				collection_insertFiles(args);
 				break;
 			case 'collection_insertFiles_rpc':
 				// TODO: make some tests and return with alert when not ok
@@ -2041,83 +1947,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 				break;
 			case "switch_edit_page":
-				// get editor root frame of active tab
-				var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-				// get visible frame for displaying editor page
-				var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-				// frame where the form should be sent from
-				var _sendFromFrame = _visibleEditorFrame;
-				// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-				var _isEditpageContent = (_visibleEditorFrame === _currentEditorRootFrame.frames[2]);
-				//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-
-				// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
-				if (_isEditpageContent && args[1] !== WE().consts.global.WE_EDITPAGE_CONTENT) {
-					// clean body to avoid flickering
-					try {
-						_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
-					} catch (e) {
-						//can be caused by not loaded content
-					}
-					// switch to normal frame
-					WE().layout.weEditorFrameController.switchToNonContentEditor();
-					// set var to new active editor frame
-					_visibleEditorFrame = _currentEditorRootFrame.frames[1];
-					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
-
-					// set flag to false
-					_isEditpageContent = false;
-					// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
-				} else if (!_isEditpageContent && args[1] === WE().consts.global.WE_EDITPAGE_CONTENT) {
-					// switch to content editor frame
-					WE().layout.weEditorFrameController.switchToContentEditor();
-					// set var to new active editor frame
-					_visibleEditorFrame = _currentEditorRootFrame.frames[2];
-					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-					// set flag to false
-					_isEditpageContent = true;
-				}
-
-				// frame where the form should be sent to
-				var _sendToFrame = _visibleEditorFrame;
-				// get active transaction
-				var _we_activeTransaction = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
-				// if there are parameters, attach them to the url
-				if (_currentEditorRootFrame.parameters) {
-					url += _currentEditorRootFrame.parameters;
-				}
-
-				// focus the frame
-				if (_sendToFrame) {
-					_sendToFrame.focus();
-				}
-				// if visible frame equals to editpage content and there is already content loaded
-				if (_isEditpageContent && _visibleEditorFrame && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
-					// tell the backend the right edit page nr and break (don't send the form)
-					YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-						success: function (o) {
-						},
-						failure: function (o) {
-							top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
-						}
-					}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
-					if (_visibleEditorFrame.reloadContent === false) {
-						break;
-					}
-					_visibleEditorFrame.reloadContent = false;
-				}
-
-				if (_currentEditorRootFrame) {
-					if (!WE().util.we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
-						// add we_transaction, if not set
-						if (!args[2]) {
-							args[2] = _we_activeTransaction;
-						}
-						url += "&we_transaction=" + args[2];
-						we_repl(_sendToFrame, url, args[0]);
-					}
-				}
-
+				switchEditPage(args,url);
 				break;
 			case "insert_variant":
 			case "move_variant_up":
@@ -2220,6 +2050,13 @@ var we_cmd_modules = {
 			case 'we_selector_delete':
 				top.we_cmd('we_selector_delete', '', -1, '', '', '', '', '', '', 1);
 				break;
+			case 'doExtClick':
+				WE().util.showConfirm(window, "", WE().consts.g_l.alert.ext_doc_selected, ['doExtClick_yes', args[1]]);
+				break;
+			case 'doExtClick_yes':
+				top.info(' ');
+				doExtClick(args[1]);
+				break;
 			case 'tag_weimg_insertImage':
 				var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], WE().consts.tables.FILE_TABLE, 1, args[5]);
 
@@ -2280,7 +2117,7 @@ var we_cmd_modules = {
 				if (args[4]) {
 					this.we_cmd('setHot');
 				}
-				break
+				break;
 			case "toggle_checkbox_with_hidden":
 				// to be callable from selectors we skip args[1]
 				this.we_form.elements[args[2]].value = args[3];
@@ -2324,6 +2161,188 @@ function getHotDocumentsString() {
 	return ret;
 }
 
+function switchEditPage(args, url){
+	// get editor root frame of active tab
+	var currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+	// get visible frame for displaying editor page
+	var visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+	// frame where the form should be sent from
+	var sendFromFrame = visibleEditorFrame;
+	// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
+	var isEditpageContent = (visibleEditorFrame === currentEditorRootFrame.frames[2]);
+	//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+
+	// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
+	if (isEditpageContent && args[1] !== WE().consts.global.WE_EDITPAGE_CONTENT) {
+		// clean body to avoid flickering
+		try {
+			currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+		} catch (e) {
+			//can be caused by not loaded content
+		}
+		// switch to normal frame
+		WE().layout.weEditorFrameController.switchToNonContentEditor();
+		// set var to new active editor frame
+		visibleEditorFrame = currentEditorRootFrame.frames[1];
+		//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
+
+		// set flag to false
+		isEditpageContent = false;
+		// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
+	} else if (!isEditpageContent && args[1] === WE().consts.global.WE_EDITPAGE_CONTENT) {
+		// switch to content editor frame
+		WE().layout.weEditorFrameController.switchToContentEditor();
+		// set var to new active editor frame
+		visibleEditorFrame = currentEditorRootFrame.frames[2];
+		//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+		// set flag to false
+		isEditpageContent = true;
+	}
+
+	// frame where the form should be sent to
+	var _sendToFrame = visibleEditorFrame;
+	// get active transaction
+	var _we_activeTransaction = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
+	// if there are parameters, attach them to the url
+	if (currentEditorRootFrame.parameters) {
+		url += currentEditorRootFrame.parameters;
+	}
+
+	// focus the frame
+	if (_sendToFrame) {
+		_sendToFrame.focus();
+	}
+	// if visible frame equals to editpage content and there is already content loaded
+	if (isEditpageContent && visibleEditorFrame && visibleEditorFrame.weIsTextEditor !== undefined && currentEditorRootFrame.frames[2].location !== "about:blank") {
+		// tell the backend the right edit page nr and break (don't send the form)
+		YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+			success: function (o) {
+			},
+			failure: function (o) {
+				top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
+			}
+		}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+		if (visibleEditorFrame.reloadContent === false) {
+			return;
+		}
+		visibleEditorFrame.reloadContent = false;
+	}
+
+	if (currentEditorRootFrame) {
+		if (!WE().util.we_sbmtFrm(_sendToFrame, url, sendFromFrame)) {
+			// add we_transaction, if not set
+			if (!args[2]) {
+				args[2] = _we_activeTransaction;
+			}
+			url += "&we_transaction=" + args[2];
+			we_repl(_sendToFrame, url, args[0]);
+		}
+	}
+}
+
+function collection_insertFiles(args) {
+	if (args[1] === undefined || args[2] === undefined) {
+		return;
+	}
+
+	var collection = parseInt(args[2]);
+	var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
+		args[1].currentID] : args[1]));
+
+	if (collection && ids) {
+		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+			editor = null,
+			index = args[3] !== undefined ? args[3] : -1,
+			recursive = args[5] !== undefined ? args[5] : false,
+			transaction, frameId, candidate;
+
+		for (frameId in usedEditors) {
+			candidate = usedEditors[frameId];
+			if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection) {
+				if (candidate.getEditorEditPageNr() == 1) {
+					editor = candidate;
+				} else {
+					transaction = candidate.getEditorTransaction();
+				}
+				break;
+			}
+		}
+
+		if (editor) {
+			// FIXME: we need a consize distinction between index and position
+			//var index = editor.getContentEditor().weCollectionEdit.getItemId(editor.getContentEditor().document.getElementById('collectionItem_staticIndex_' + index))
+			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
+		} else {
+			var position = args[4] !== undefined ? args[4] : index;
+			we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);
+		}
+	}
+}
+
+function addToCollection(args, url){
+	if (WE().session.seemode) {
+		//
+	} else {
+		if (top.deleteMode != args[1]) {
+			top.deleteMode = args[1];
+		}
+		if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
+			treeData.setState(treeData.tree_states.edit);
+			drawTree();
+		}
+		window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+		window.document.getElementById("treetable").classList.add('collectionSelector');
+		WE().layout.tree.toggle(true);
+		width = WE().layout.tree.getWidth();
+		WE().layout.tree.widthBeforeDeleteMode = width;
+		if (width < WE().consts.size.tree.moveWidth) {
+			WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+		}
+		WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
+
+		if (args[2] != 1) {
+			we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+		}
+	}
+}
+
+function we_cmd_move(args, url) {
+	if (WE().session.seemode) {
+		if (top.deleteMode != args[1]) {
+			top.deleteMode = args[1];
+		}
+		if (args[2] != 1) {
+			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+		}
+	} else {
+		if (top.deleteMode != args[1]) {
+			top.deleteMode = args[1];
+		}
+		if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
+			treeData.setState(treeData.tree_states.edit);
+			drawTree();
+		}
+		window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+		window.document.getElementById("treetable").classList.add('moveSelector');
+		WE().layout.tree.toggle(true);
+		width = WE().layout.tree.getWidth();
+
+		WE().layout.tree.widthBeforeDeleteMode = width;
+
+		if (width < WE().consts.size.tree.moveWidth) {
+			WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+		}
+		WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
+
+		if (args[2] != 1) {
+			we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+		}
+	}
+}
 
 function doReloadCmd(args, url, hot) {
 	if (hot) {

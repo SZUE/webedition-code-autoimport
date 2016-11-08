@@ -39,30 +39,30 @@ function WE_checkDate(name) {
 	var second = 30;
 
 	for (i = 0; i < document.getElementById(name + '_month').length; ++i) {
-		if (document.getElementById(name + '_month').options[i].selected == true) {
+		if (document.getElementById(name + '_month').options[i].selected ) {
 			month = document.getElementById(name + '_month').options[i].value - 1;
 		}
 	}
 	for (i = 0; i < document.getElementById(name + '_year').length; ++i) {
-		if (document.getElementById(name + '_year').options[i].selected == true) {
+		if (document.getElementById(name + '_year').options[i].selected) {
 			year = document.getElementById(name + '_year').options[i].value;
 		}
 	}
 	for (i = 0; i < document.getElementById(name + '_day').length; ++i) {
-		if (document.getElementById(name + '_day').options[i].selected == true) {
+		if (document.getElementById(name + '_day').options[i].selected) {
 			day = document.getElementById(name + '_day').options[i].value;
 		}
 	}
 	if (document.getElementById(name + '_hour').type == 'select-one') {
 		for (i = 0; i < document.getElementById(name + '_hour').length; ++i) {
-			if (document.getElementById(name + '_hour').options[i].selected == true) {
+			if (document.getElementById(name + '_hour').options[i].selected) {
 				hour = document.getElementById(name + '_hour').options[i].value;
 			}
 		}
 	}
 	if (document.getElementById(name + '_minute').type == 'select-one') {
 		for (i = 0; i < document.getElementById(name + '_minute').length; ++i) {
-			if (document.getElementById(name + '_minute').options[i].selected == true) {
+			if (document.getElementById(name + '_minute').options[i].selected) {
 				minute = document.getElementById(name + '_minute').options[i].value;
 			}
 		}

@@ -171,8 +171,9 @@ abstract class we_base_jsConstants{
 			"' . FILE_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(FILE_TABLE) . '][exit_doc_question]') . '",
 			"' . TEMPLATES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(TEMPLATES_TABLE) . '][exit_doc_question]') . '",
 			' . (defined('OBJECT_TABLE') ? '"' . OBJECT_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_TABLE) . '][exit_doc_question]') . '",' : '') .
-			(defined('OBJECT_FILES_TABLE') ? '"' . OBJECT_FILES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_FILES_TABLE) . '][exit_doc_question]') . '",' : '') . '
-
+			(defined('OBJECT_FILES_TABLE') ? '"' . OBJECT_FILES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_FILES_TABLE) . '][exit_doc_question]') . '",' : '') . ',
+		ext_doc_selected:"' . g_l('SEEM', '[ext_doc_selected]') . '",
+		link_does_not_work:"' . g_l('SEEM', '[link_does_not_work]') . '",
 		}
 	},
 	scheduler:{

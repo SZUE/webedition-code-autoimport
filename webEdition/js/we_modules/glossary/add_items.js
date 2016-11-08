@@ -348,7 +348,6 @@ function checkForm() {
 				document.getElementById('type_' + i).focus();
 				WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
-				break;
 		}
 	}
 	document.forms[0].submit();
