@@ -237,7 +237,17 @@ function getVariableMax($var){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
-			$ret = (isset($_REQUEST) ? we_NiceArray(print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '', 'WE_LOGIN_password', 'WE_LOGIN_username', 'Password', 'Password2')), true), 1) : ' - ');
+			$ret = (isset($_REQUEST) ? we_NiceArray(print_r(array_diff_key($_REQUEST, array(
+					'user' => '',
+					'username' => '',
+					'pass' => '',
+					'password' => '',
+					's' => '',
+					'WE_LOGIN_password' => '',
+					'WE_LOGIN_username' => '',
+					'Password' => '',
+					'Password2' => '',
+						)), true), 1) : ' - ');
 			break;
 		case 'Session':
 			if(!isset($_SESSION)){
