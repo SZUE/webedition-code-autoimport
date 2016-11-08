@@ -270,8 +270,8 @@ function setFormField(name, value, type, index, frame) {
 }
 
 function handleEvent(evt) {
-	var step = parseInt(top.wizbody.document.we_form.elements['step'].value),
-		type = top.wizbody.document.we_form.elements['type'].value,
+	var step = parseInt(top.wizbody.document.we_form.elements.step.value),
+		type = top.wizbody.document.we_form.elements.type.value,
 		task = 'get' + type + '_step_' + step;
 
 	switch (task) {
@@ -352,7 +352,7 @@ function handleEvent_step_1(evt, type) {
 
 	if (type === 'GXMLImport') {
 		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value :
-			f.elements.docTypeTemplateId.value)
+			f.elements.docTypeTemplateId.value);
 	}
 
 	switch (evt) {
@@ -505,7 +505,7 @@ function doNext_WXMLImportStep1() {
 		ext = '',
 		fl = 'placeholder.xml';
 
-	if (f.elements['v[rdofloc]'][0].checked == true && fs !== '/') {
+	if (f.elements['v[rdofloc]'][0].checked && fs !== '/') {
 		if (fs.match(/\.\./) == '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
@@ -513,10 +513,10 @@ function doNext_WXMLImportStep1() {
 		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 
-	} else if (f.elements['v[rdofloc]'][1].checked == true && fl !== '') {
+	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
 		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
-	} else if (fs === '/' || fl == '') {
+	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
@@ -533,17 +533,17 @@ function doNext_GXMLImportStep1() {
 	var fl = top.wizbody.weFileUpload_instance !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 	var ext = '';
 
-	if ((f.elements['v[rdofloc]'][0].checked == true) && fs != '/') {
-		if (fs.match(/\.\./) == '..') {
+	if ((f.elements['v[rdofloc]'][0].checked ) && fs !== '/') {
+		if (fs.match(/\.\./) === '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
-	} else if (f.elements['v[rdofloc]'][1].checked == true && fl != '') {
+	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
 		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
-	} else if (fs == '/' || fl == '') {
+	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
@@ -552,14 +552,14 @@ function doNext_GXMLImportStep1() {
 	}
 
 	if (WE().consts.tables.OBJECT_TABLE) {
-		if ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {
+		if ((f.elements['v[import_type]'][0].checked && f.elements['v[we_TemplateID]'].value !== "0") || (f.elements['v[import_type]'][1].checked)) {
 			f.step.value = 2;
 			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
-		} else if (f.elements['v[import_type]'][0].checked == true) {
+		} else if (f.elements['v[import_type]'][0].checked) {
 			top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	} else {
-		if (f.elements['v[we_TemplateID]'].value != 0) {
+		if (f.elements['v[we_TemplateID]'].value !== "0") {
 			f.step.value = 2;
 			top.wizbody.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 		} else {
@@ -575,23 +575,23 @@ function doNext_CSVImportStep1() {
 		fl = 'placeholder.xml',
 		ext = '';
 
-	if ((f.elements['v[rdofloc]'][0].checked == true) && fs != '/') {
+	if ((f.elements['v[rdofloc]'][0].checked) && fs != '/') {
 		if (fs.match(/\.\./) === '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
-	} else if (f.elements['v[rdofloc]'][1].checked == true && fl != '') {
+	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
 		ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
-	} else if (fs == '/' || fl == '') {
+	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
 	if (fvalid) {
-		if (f.elements['v[csv_seperator]'].value == '') {
+		if (f.elements['v[csv_seperator]'].value === '') {
 			fvalid = false;
 			top.we_showMessage(WE().consts.g_l.import.select_seperator, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
@@ -619,18 +619,18 @@ function handleEvent_CSVImportStep_2(evt) {
 				}
 			}
 			if (WE().consts.tables.OBJECT_TABLE) {
-				if (f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {
+				if (f.elements['v[import_from]'].value !== '/' && ((f.elements['v[import_type]'][0].checked && f.elements['v[we_TemplateID]'].value !== "0") || (f.elements['v[import_type]'][1].checked))) {
 					f.step.value = 3;
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {
 					if (f.elements['v[import_from]'].value == '/') {
 						top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
-					} else if (f.elements['v[import_type]'][0].checked == true) {
+					} else if (f.elements['v[import_type]'][0].checked) {
 						top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 					}
 				}
 			} else {
-				if (f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {
+				if (f.elements['v[import_from]'].value !== '/' && f.elements['v[we_TemplateID]'].value !== "0") {
 					f.step.value = 3;
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {

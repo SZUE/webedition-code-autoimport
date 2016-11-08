@@ -41,7 +41,7 @@ function doNext() {
 			if (top.body.document.we_form.step.value === "2" &&
 				top.body.weFileUpload_instance !== undefined &&
 				top.body.document.we_form.import_from[1].checked) {
-				top.body.weFileUpload_instance.startUpload()
+				top.body.weFileUpload_instance.startUpload();
 				return;
 			}
 			doNextAction();

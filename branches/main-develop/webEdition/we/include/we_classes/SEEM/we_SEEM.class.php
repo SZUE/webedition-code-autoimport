@@ -481,9 +481,9 @@ abstract class we_SEEM{
 			} else {
 				//	This is a javascript:history link, to get back to the last document.
 				$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
-						' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onmouseover=\"top.info('" . g_l('SEEM', '[info_link_does_not_work]') . "')\"" :
+						' onclick="top.we_showMessage(WE().consts.g_l.alert.link_does_not_work,WE().consts.message.WE_MESSAGE_NOTICE,window);" onmouseover="top.info(\'' . g_l('SEEM', '[info_link_does_not_work]') . '\')"' :
 						//  Check, if the current document was changed
-						" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
+						' onclick="we_cmd(\'doExtClick\',\'' . $linkArray[5][$i] . $linkArray[3][$i] . "');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
 					);
 			}
 			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . ($javascriptCode ? 'javascript://' : '') . $linkArray[4][$i] . ' ' . ($javascriptCode? : '') . ' onmouseout="top.info(\' \')">', $destCode);

@@ -2126,7 +2126,7 @@ WE().layout.weFileUpload = (function () {
 
 			if(!_.onload_abstract(that)){
 				return false;
-			};
+			}
 
 			//get references to some include-specific html elements
 			_.view.elems.message = _.document.getElementById('div_' + _.fieldName + '_message');
@@ -2272,7 +2272,7 @@ WE().layout.weFileUpload = (function () {
 							this.setInternalProgressCompleted(true);
 						}
 						if (this.extProgress.isExtProgress) {
-							this.elems.footer.setProgress(this.extProgress.name, 100)
+							this.elems.footer.setProgress(this.extProgress.name, 100);
 						}
 						return;
 					case 'fileNOK' :
@@ -2289,7 +2289,7 @@ WE().layout.weFileUpload = (function () {
 							this.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + _.utils.computeSize(_.sender.currentFile.size);
 						}
 						if (this.extProgress.isExtProgress) {
-							this.elems.footer.setProgress(this.extProgress.name, 0)
+							this.elems.footer.setProgress(this.extProgress.name, 0);
 							this.elems.extProgressDiv.style.display = '';
 						}
 						_.controller.setWeButtonState('reset_btn', false);
@@ -2374,7 +2374,7 @@ WE().layout.weFileUpload = (function () {
 
 			if(!_.onload_abstract(that)){
 				return false;
-			};
+			}
 
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
@@ -3196,10 +3196,10 @@ WE().layout.weFileUpload = (function () {
 			var that = scope,
 				v = _.view,
 				i;
-		
+
 			if(!_.onload_abstract(that)){
 				return false;
-			};
+			}
 
 			for (i = 0; i < _.document.forms.length; i++) {
 				_.document.forms[i].addEventListener('submit', _.controller.formHandler, false);
@@ -3280,7 +3280,7 @@ WE().layout.weFileUpload = (function () {
 			v.spinner.className = "fa fa-2x fa-spinner fa-pulse";
 
 			_.controller.checkIsPresetFiles();
-			
+
 			return true;
 		};
 
