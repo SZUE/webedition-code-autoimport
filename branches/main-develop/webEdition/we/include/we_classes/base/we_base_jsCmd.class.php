@@ -51,7 +51,9 @@ class we_base_jsCmd{
 	}
 
 	public function getCmds(){
+		self::$active = null;
 		if(empty($this->cmds)){
+			self::$count--;
 			return '';
 		}
 		$attrs = ['id' => 'loadVarCmd', 'data-cmds' => implode(',', $this->cmds)];
@@ -66,7 +68,7 @@ class we_base_jsCmd{
 		if(self::$count > 1){
 			t_e('possible JS error will arrise', self::$traces);
 		}
-		self::$active = null;
+
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 
