@@ -326,7 +326,7 @@ function setTab(tab) {
 		$cancel = 'self.close();';
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '
-<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
 			we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) . //GL
 			'</body>');
 	}

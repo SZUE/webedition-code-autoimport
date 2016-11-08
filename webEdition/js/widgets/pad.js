@@ -315,7 +315,7 @@ function initDlg() {
 		oSctTitle.options[i].selected = (oSctTitle.options[i].text == _sInitTitle) ? true : false;
 	}
 	initPrefs();
-	ComboBox = new weCombobox();
+	var ComboBox = new weCombobox();
 	ComboBox.init('title');
 }
 

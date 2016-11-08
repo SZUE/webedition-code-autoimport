@@ -215,7 +215,6 @@ switch($mod){
 				break;
 			default:
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
-				$jscmd = new we_base_jsCmd();
 				ob_start();
 				$weFrame->View->processCommands($jscmd);
 				$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();

@@ -52,7 +52,6 @@ class we_newsletter_frames extends we_modules_frame{
 			case 'clear_log':
 			case 'export_csv_mes':
 			case 'qsend':
-			case 'qsave1':
 				return;
 			default:
 				return parent::getHTMLDocumentHeader();
@@ -73,8 +72,6 @@ class we_newsletter_frames extends we_modules_frame{
 				return $this->getHTMLPrintLists();
 			case 'qsend':
 				return $this->getHTMLSendQuestion();
-			case 'qsave1':
-				return $this->getHTMLSaveQuestion1();
 			case 'eemail':
 				return $this->getHTMLEmailEdit();
 			case 'preview':
@@ -332,13 +329,6 @@ function setTab(tab) {
 
 	private function getHTMLSendQuestion(){
 		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
-		);
-
-		return $this->getHTMLDocument($body);
-	}
-
-	private function getHTMLSaveQuestion1(){
-		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
@@ -1722,6 +1712,7 @@ function cancel(){
 }
 
 function ask(start,group){
+	//WE().util.showConfirm(window,"","'.g_l('modules_newsletter', '[continue_camp]').'");
 	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '&pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
 }
 
@@ -2127,7 +2118,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 						"ecs" => $ecs,
 						"reload" => 0])
 				)
-			), we_html_element::jsScript(WE_JS_MODULES_DIR . 'sendControl.js', 'self.focus();', ['id' => 'loadVarSendControl', 'data-control' => setDynamicVar([
+			), we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/sendControl.js', 'self.focus();', ['id' => 'loadVarSendControl', 'data-control' => setDynamicVar([
 					'to' => $to
 		])]));
 		flush();
