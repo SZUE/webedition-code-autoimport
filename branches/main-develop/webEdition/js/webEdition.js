@@ -576,6 +576,7 @@ var WebEdition = {
 
 				ab.html('<span class="alertIcon fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
 				ab.dialog({
+					dialogClass: "no-close",
 					modal: true,
 					title: title,
 					height: "auto",
@@ -650,6 +651,7 @@ var WebEdition = {
 				if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
 					ab.html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
 					ab.dialog({
+						dialogClass: "no-close",
 						modal: true,
 						title: title,
 						height: "auto",

@@ -2361,3 +2361,7 @@ div#alertBox{
 		margin-right: 1ex;
 	}
 }
+/*jquery dialog close button remove*/
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
