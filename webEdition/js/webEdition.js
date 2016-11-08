@@ -565,7 +565,7 @@ var WebEdition = {
 				var cancelBut = {
 					text: WE().consts.g_l.message_reporting.cancel,
 					icons: {
-						primary: "fa fa-lg fa-close fa-cancel"
+						primary: "fa fa-lg fa-close fa-ban"
 					},
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
