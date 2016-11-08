@@ -231,6 +231,7 @@ $session = [
 	'isChrome' => we_base_browserDetect::isChrome(),
 	'isAppleTouch' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)),
 	'isMac' => we_base_browserDetect::isMAC(),
+	'deleteMode' => 0,
 ];
 foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
