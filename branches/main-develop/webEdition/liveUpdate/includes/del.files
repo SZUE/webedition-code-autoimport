@@ -468,6 +468,7 @@ we/include/we_editors/we_exit_multi_doc_question.inc.php
 we/include/we_editors/we_exit_doc_question.inc.php
 we/include/we_editors/we_editor_publish.inc.php
 we/include/we_editors/we_editPasswd.inc.php
+we/include/we_editors/we_document_move_question.inc.php
 we/include/we_editors/weFormmailLog.php
 we/include/we_editors/weFormmailBlockLog.php
 we/include/we_editors/file_restricted_footer.inc.php

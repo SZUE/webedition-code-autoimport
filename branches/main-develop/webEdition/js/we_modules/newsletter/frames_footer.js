@@ -70,7 +70,7 @@ function populateGroups() {
 }
 
 function we_save() {
-	setTimeout(top.content.we_cmd, 100, "save_newsletter");
+	top.content.we_cmd("save_newsletter");
 }
 
 function afterLoad() {

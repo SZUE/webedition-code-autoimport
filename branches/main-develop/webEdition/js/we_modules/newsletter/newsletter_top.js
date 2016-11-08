@@ -106,25 +106,33 @@ function we_cmd() {
 		case "save_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				if (!WE().util.hasPerm("EDIT_NEWSLETTER") && !WE().util.hasPerm("NEW_NEWSLETTER")) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				return;
+			}
+			if (!WE().util.hasPerm("EDIT_NEWSLETTER") && !WE().util.hasPerm("NEW_NEWSLETTER")) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				return;
+			}
+			if (top.content.editor.edbody.loaded) {
+				if (!top.content.editor.edbody.checkData()) {
 					return;
 				}
-				if (top.content.editor.edbody.loaded) {
-					if (!top.content.editor.edbody.checkData()) {
-						return;
-					}
-					top.content.editor.edbody.document.we_form.ncmd.value = args[0];
-					top.content.editor.edbody.submitForm();
+				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+				top.content.editor.edbody.submitForm();
 
-				} else {
-					top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
-				}
-				top.content.usetHot();
+			} else {
+				top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
+			top.content.usetHot();
 			break;
-
+		case "save_newsletter_question":
+			self.focus();
+			top.content.get_focus = 0;
+			WE().util.showConfirm(window, "", WE().consts.g_l.newsletter.ask_to_preserve, ["save_newsletter_question_yes"]);
+			break;
+		case "save_newsletter_question_yes":
+			document.we_form.ask.value = 0;
+			we_cmd('save_newsletter');
+			break;
 		case "newsletter_edit":
 			top.content.hot = false;
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];

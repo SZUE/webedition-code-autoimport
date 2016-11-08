@@ -297,16 +297,17 @@ function we_cmd() {
 			break;
 
 		case "popPreview":
-			if (document.we_form.ncmd.value == "home")
+			if (document.we_form.ncmd.value == "home"){
 				return;
+			}
 			if (top.content.hot) {
 				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
-				document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
-				document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
-				popAndSubmit("newsletter_preview", "preview", 800, 800);
+				return;
 			}
+			document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
+			document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
+			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+			popAndSubmit("newsletter_preview", "preview", 800, 800);
 			break;
 
 		case "popSend":
@@ -332,6 +333,16 @@ function we_cmd() {
 			}
 			submitForm();
 
+			break;
+		case "popSend_do_cont":
+			if (args[2]) {
+				WE().util.showConfirm(window, "", WE().consts.g_l.newsletter.no_subject, ["popSend_do_cont_yes", args[1], args[2], args[3]]);
+				break;
+			}
+	/*falls through*/
+		case "popSend_do_cont_yes":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send&nid=" + args[1] + (args[3] ? '&test=1' : '');
+			new (WE().util.jsWindow)(window, url, "newsletter_send", -1, -1, 600, 400, true, true, true, false);
 			break;
 		case "send_test":
 			if (document.we_form.ncmd.value === "home") {

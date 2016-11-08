@@ -329,26 +329,26 @@ function openTagWizWithReturn(Ereignis) {
 	//return false;
 }
 
-function openTagWizardPrompt(_wrongTag) {
-	var _prompttext = WE().consts.g_l.weTagWizard.insert_tagname;
-	if (_wrongTag) {
-		_prompttext = WE().consts.g_l.weTagWizard.insert_tagname_not_exist.replace(/_wrongTag/, _wrongTag) + _prompttext;
+function openTagWizardPrompt(wrongTag) {
+	var prompttext = WE().consts.g_l.weTagWizard.insert_tagname;
+	if (wrongTag) {
+		prompttext = WE().consts.g_l.weTagWizard.insert_tagname_not_exist.replace(/_wrongTag/, wrongTag) + prompttext;
 	}
 
-	var _tagName = prompt(_prompttext);
-	var _tagExists = false;
+	var tagName = prompt(prompttext);
+	var tagExists = false;
 
-	if (typeof (_tagName) == "string") {
-		for (i = 0; i < WE().consts.tagWizzard.groups.alltags.length && !_tagExists; i++) {
-			if (WE().consts.tagWizzard.groups.alltags[i] == _tagName) {
-				_tagExists = true;
+	if (typeof (tagName) == "string") {
+		for (i = 0; i < WE().consts.tagWizzard.groups.alltags.length && !tagExists; i++) {
+			if (WE().consts.tagWizzard.groups.alltags[i] == tagName) {
+				tagExists = true;
 			}
 		}
 
-		if (_tagExists) {
-			edit_wetag(_tagName, 1);
+		if (tagExists) {
+			edit_wetag(tagName, 1);
 		} else {
-			openTagWizardPrompt(_tagName);
+			openTagWizardPrompt(tagName);
 
 		}
 	}

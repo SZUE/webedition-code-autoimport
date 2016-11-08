@@ -206,7 +206,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					$Modes[''] = g_l('modules_glossary', '[please_choose]');
 				}
 				$Modes['ignore'] = g_l('modules_glossary', '[ignore]');
-				if(permissionhandler::hasPerm("NEW_GLOSSARY")){
+				if(permissionhandler::hasPerm('NEW_GLOSSARY')){
 					$Modes[we_glossary_glossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
 					$Modes[we_glossary_glossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
 					$Modes[we_glossary_glossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
@@ -218,14 +218,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
-				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
+				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js')					; ?>
 					<script><!--
-				Combobox = new weCombobox();
-
-						function init() {
-							table = document.getElementById('unknown');
-							top.setDialog();
-						}
+				var Combobox = new weCombobox();
 
 						function getActionColumn(word, type) {
 							var td = document.createElement('td');
@@ -243,8 +238,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							return td;
 						}
 
-
-
 						function getLanguageColumn(word, lang) {
 							var td = document.createElement('td');
 							td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
@@ -255,7 +248,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								'<optgroup label="' + WE().consts.g_l.glossary.languages + '">' +
 							<?php
 							foreach($Languages as $Key => $Value){
-								echo "			'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
+								echo "'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
 							}
 							?>
 							'</optgroup>' +
@@ -263,8 +256,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 							return td;
 						}
-
-
 
 						function activateButtons() {
 							if (counter === 0) {
@@ -304,54 +295,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							?>
 						}
 
-						function checkForm() {
-							for (i = 0; i < counter; i++) {
-								type = document.getElementById('type_' + i).value;
-								title = document.getElementById('title_' + i).value;
-								lang = document.getElementById('lang_' + i).value;
-								switch (type) {
-									case WE().consts.glossary.TYPE_ABBREVATION:
-									case WE().consts.glossary.TYPE_ACRONYM:
-										if (title === '') {
-											document.getElementById('title_' + i).focus();
-											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_title, WE().consts.message.WE_MESSAGE_ERROR, window);
-											return false;
-										}
-										if (lang === '') {
-											document.getElementById('lang_' + i).focus();
-											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
-											return false;
-										}
-										break;
-									case WE().consts.glossary.TYPE_FOREIGNWORD:
-										if (lang === '') {
-											document.getElementById('lang_' + i).focus();
-											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
-											return false;
-										}
-										break;
-									case 'ignore':
-									case 'exception':
-									case 'dictionary':
-										break;
-									case 'correct':
-										document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
-										title = document.getElementById('title_' + i).value;
-										if (title === '') {
-											document.getElementById('title_' + i).focus();
-											WE().util.showMessage(WE().consts.g_l.glossary.please_insert_correct_word, WE().consts.message.WE_MESSAGE_ERROR, window);
-											return false;
-										}
-										break;
-									default:
-										document.getElementById('type_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
-										return false;
-										break;
-								}
-							}
-							document.forms[0].submit();
-						}
 						//-->
 						</script>
 					</head>

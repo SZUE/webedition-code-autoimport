@@ -383,11 +383,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$h = getHash('SELECT Step,Offset FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->newsletter->ID), $this->db);
 
 					if($h['Step'] != 0 || $h['Offset'] != 0){
-						echo we_html_element::jsElement('
-self.focus();
-top.content.get_focus=0;
-new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
-');
+						$jscmd->addCmd("save_newsletter_question");
 						break;
 					}
 				}
@@ -729,13 +725,7 @@ self.close();');
 				}
 				break;
 			case "popSend":
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement(
-					((!trim($this->newsletter->Subject)) ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
-url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
-new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,true,false);
-						' . (!(trim($this->newsletter->Subject)) ? '}' : '')
-				);
+				$jscmd->addCmd("popSend_do_cont", [$this->newsletter->ID, empty(trim($this->newsletter->Subject)), we_base_request::_(we_base_request::BOOL, "test")]);
 				break;
 			default:
 		}

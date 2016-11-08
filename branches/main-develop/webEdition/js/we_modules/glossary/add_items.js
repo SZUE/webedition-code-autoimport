@@ -196,11 +196,11 @@ function getTitleColumn(word, suggestions, title) {
 	var html;
 
 	html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
-					'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
-					'<option value="' + word + '">' + word + '</option>' +
-					'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
-					'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
-					'</optgroup>';
+		'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
+		'<option value="' + word + '">' + word + '</option>' +
+		'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
+		'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
+		'</optgroup>';
 	if (suggestions.length > 1) {
 		html += '<optgroup label="' + WE().consts.g_l.glossary.suggestions + '">';
 		for (i = 0; i < suggestions.length; i++) {
@@ -300,3 +300,56 @@ function disableItem(id, value) {
 	}
 }
 
+function init() {
+	table = document.getElementById('unknown');
+	top.setDialog();
+}
+
+function checkForm() {
+	for (i = 0; i < counter; i++) {
+		type = document.getElementById('type_' + i).value;
+		title = document.getElementById('title_' + i).value;
+		lang = document.getElementById('lang_' + i).value;
+		switch (type) {
+			case WE().consts.glossary.TYPE_ABBREVATION:
+			case WE().consts.glossary.TYPE_ACRONYM:
+				if (title === '') {
+					document.getElementById('title_' + i).focus();
+					WE().util.showMessage(WE().consts.g_l.glossary.please_insert_title, WE().consts.message.WE_MESSAGE_ERROR, window);
+					return false;
+				}
+				if (lang === '') {
+					document.getElementById('lang_' + i).focus();
+					WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
+					return false;
+				}
+				break;
+			case WE().consts.glossary.TYPE_FOREIGNWORD:
+				if (lang === '') {
+					document.getElementById('lang_' + i).focus();
+					WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);
+					return false;
+				}
+				break;
+			case 'ignore':
+			case 'exception':
+			case 'dictionary':
+				break;
+			case 'correct':
+				document.getElementById('title_' + i).value = document.getElementById('suggest_' + i).value;
+				title = document.getElementById('title_' + i).value;
+				if (title === '') {
+					document.getElementById('title_' + i).focus();
+					WE().util.showMessage(WE().consts.g_l.glossary.please_insert_correct_word, WE().consts.message.WE_MESSAGE_ERROR, window);
+					return false;
+				}
+				break;
+			default:
+				document.getElementById('type_' + i).focus();
+				WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+				return false;
+				break;
+		}
+	}
+	document.forms[0].submit();
+}
