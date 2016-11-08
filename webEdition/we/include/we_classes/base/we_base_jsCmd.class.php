@@ -32,10 +32,12 @@ class we_base_jsCmd{
 	private static $count = 0;
 	//for debug only
 	private static $traces = [];
+	private static $active = null;
 
 	public function __construct(){
 		self::$traces[] = getBacktrace(['getBacktrace'])[0];
 		self::$count++;
+		self::$active = $this;
 	}
 
 	public function addCmd($cmd, $data = ''){
@@ -61,16 +63,22 @@ class we_base_jsCmd{
 
 		$this->cmds = $this->cmdData = [];
 		self::$traces[] = getBacktrace(['getBacktrace'])[0];
-		if(self::$count){
+		if(self::$count > 1){
 			t_e('possible JS error will arrise', self::$traces);
 		}
-
+		self::$active = null;
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 
 	public static function singleCmd($cmd, $data = ''){
-		$tmp = new self();
+		//FIXME: active is temporary
+		if(self::$active){
+			//make sure we change this!
+			self::$count++;
+		}
+		$tmp = self::$active ?: new self();
 		$tmp->addCmd($cmd, $data);
+		//FIXME: this is not safe at all!
 		return $tmp->getCmds();
 	}
 

@@ -1261,7 +1261,6 @@ function we_cmd() {
 	var EditorFrame;
 	switch (args[0]) {
 		case "exit_doc_question":
-			//return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
 			//next args editorFrameId, table, next_cmd
 			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question[args[2]], ["exit_doc_question_yes", args[1], args[2], args[3]],["exit_doc_question_no", args[1], args[2], args[3]]);
 			break;
