@@ -60,6 +60,15 @@ function addKeyListener() {
 	}
 }
 
+function openExtSource(argName){
+	if(argName && this.document.we_form.elements['we_dialog_args[' + argName + ']']){
+		var val = this.document.we_form.elements['we_dialog_args[' + argName + ']'].value;
+		if(val && val !== '" . we_base_link::EMPTY_EXT . "'){
+			window.open(val);
+		}
+	}
+}
+
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);

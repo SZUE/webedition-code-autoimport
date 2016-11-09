@@ -42,6 +42,15 @@ function imageChanged(wasThumbnailChange) {
 	document.we_form.submit();
 }
 
+function extSrc_doOnchange(input) {
+	if(input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT){
+		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
+	} else {
+		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
+	}
+	imageChanged();
+}
+
 function checkWidthHeight(field) {
 	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]'),
 					v = parseInt(field.value);
@@ -132,25 +141,6 @@ function we_cmd() {
 			this.document.getElementById('imageExt').style.display = isInt ? 'none' :  'block';
 			this.document.getElementById('imageInt').style.display = isInt ? 'block' :  'none';
 			imageChanged();
-			break;
-		case "dialog_extSrcOnchange":
-			switch(args[2]){
-				case WE().consts.linkPrefix.TYPE_EXT:
-					val = this.document.we_form.elements['we_dialog_args[extSrc]'].value;
-					if(val === '' || val === WE().consts.linkPrefix.EMPTY_EXT){
-						WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
-					} else {
-						WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
-					}
-				break;
-			}
-			imageChanged();
-			break;
-		case "dialog_openExt":
-			val = this.document.we_form.elements['we_dialog_args[extSrc]'].value;
-			if(val && val !== '" . we_base_link::EMPTY_EXT . "'){
-				window.open(val);
-			}
 			break;
 		case "dialog_emptyLongdesc":
 			this.document.we_form.elements['we_dialog_args[longdescid]'].value='';

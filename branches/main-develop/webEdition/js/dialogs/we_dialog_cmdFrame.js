@@ -39,6 +39,9 @@ function we_cmd() {
 		case 'image_writeback':
 			ImageDialog.writeBack(payload.attributes);
 			break;
+		case 'link_writeback':
+			LinkDialog.writeBack(payload.attributes);
+			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

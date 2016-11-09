@@ -159,8 +159,9 @@ $const = [
 		'TYPE_INT_PREFIX' => we_base_link::TYPE_INT_PREFIX,
 		'TYPE_MAIL_PREFIX' => we_base_link::TYPE_MAIL_PREFIX,
 		'TYPE_THUMB_PREFIX' => we_base_link::TYPE_THUMB_PREFIX,
-		'EMPTY_EXT' => we_base_link::EMPTY_EXT,
 		'TYPE_INT' => we_base_link::TYPE_INT,
+		'TYPE_EXT' => we_base_link::TYPE_EXT,
+		'EMPTY_EXT' => we_base_link::EMPTY_EXT,
 	],
 	'size' => [
 		'tree' => [

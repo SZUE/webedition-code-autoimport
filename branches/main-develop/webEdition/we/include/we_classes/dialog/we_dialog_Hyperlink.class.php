@@ -330,7 +330,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
-			$external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'placeholder="http://"', 'url', 300);
+			$external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'placeholder="' . we_base_link::EMPTY_EXT . '"', 'url', 300);
 			// E-MAIL LINK
 			$email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
@@ -343,23 +343,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				);
 
 			// EXTERNAL LINK
-			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
-			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", '', 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
+			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : '';
+			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:top.openExtSource('extHref');", '', 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
-			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? WE().consts.linkPrefix.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
-if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
-	document.getElementById(\'btn_edit_ext\').disabled=true;
-	checkMakeEmptyHrefExt();
-}else{
-	document.getElementById(\'btn_edit_ext\').disabled=false;
-	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
-	this.value=x[1];
-	if(x[3]!=undefined){
-		document.getElementsByName(\'we_dialog_args[param]\')[0].value=x[3];
-	}
-	if(x[5]!=undefined){
-		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
-	}}"', "url", 300), "", "left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
+			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="extHref_doOnFocus(this)" onblur="checkMakeEmptyHrefExt();" onchange="extHref_doOnchange(this)"', "url", 300), "",
+					"left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
 			$internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
@@ -372,7 +360,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($internal_select_button, 10);
-			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value);", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
 			$internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
 			// E-MAIL LINK
@@ -391,7 +379,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($object_select_button, 10);
-				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultObj'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "'); }", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
+				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "');", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
 				$object_link = $yuiSuggest->getHTML();
 				/*
 				  $object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
@@ -401,7 +389,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 		}
 
 		$anchorSel = '<div id="anchorlistcontainer"></div>';
-		$anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();checkAnchor(this)"', "text", 300);
+		$anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt(); checkAnchor(this)"', "text", 300);
 
 		$anchor = we_html_tools::htmlFormElementTable($anchorInput, "", "left", "defaultfont", $anchorSel, '', "", "", "", 0);
 
@@ -527,16 +515,19 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 </select>';
 	}
 
-	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
+	function getJs(){
+		return parent::getJs() . 
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js', '', [
+				'id' => 'loadVarDialog_Hyperlink',
+				'data-vars' => setDynamicVar($this->getJSDynamic())
+			]);
 	}
 
-	function getJs(){
-		return parent::getJs() . we_html_element::jsElement('
-var editname="' . (isset($this->args["editname"]) ? $this->args["editname"] : '') . '";
-var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['cssClasses'] . '".split(/,/)' : 'top.opener.weclassNames_tinyMce;') . ';
-') . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
+	function getJSDynamic(){
+		return ['editname' => (isset($this->args["editname"]) ? $this->args["editname"] : ''),
+			'classNames' => (!empty($this->args["cssClasses"]) ? implode(',', $this->args['cssClasses']) : 'getFromTiny')
+		];
 	}
 
 	function cmdFunction(array $args){
@@ -575,19 +566,18 @@ var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['css
 			$args['class'] = $tmpClass;
 		}
 
-		return we_dialog_base::getTinyMceJS() .
+		$attribs = $args;
+		$attribs['href'] = $href;
+		$payload = ['attributes' => $attribs];
+
+		$js = we_dialog_base::getTinyMceJS() . 
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-			'<form name="tiny_form">' . we_html_element::htmlHiddens([
-				"href" => $href,
-				"target" => $args["target"],
-				"class" => $args["cssclass"],
-				"lang" => $args["lang"],
-				"hreflang" => $args["hreflang"],
-				"title" => $args["title"],
-				"accesskey" => $args["accesskey"],
-				"tabindex" => $args["tabindex"],
-				"rel" => $args["rel"],
-				"rev" => $args["rev"]]) . '</form>';
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
+				'id' => 'loadVarDialog_cmdFrame',
+				'data-payload' => setDynamicVar($payload)
+			]);
+
+		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
 	}
 
 }

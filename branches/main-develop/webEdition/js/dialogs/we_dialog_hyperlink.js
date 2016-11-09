@@ -25,6 +25,10 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+var vars = WE().util.getDynamicVar(document, 'loadVarDialog_Hyperlink','data-vars');
+var editname = vars.editname;
+var classNames = vars.classNames === 'getFromTiny' ? top.opener.weclassNames_tinyMce : vars.classNames;
+
 var weAcCheckLoop = 0;
 
 function checkAnchor(el) {
@@ -72,6 +76,36 @@ function we_cmd() {
 			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			break;
 	}
+}
+
+function extHref_doOnchange(input) {
+	if(input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT){
+		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
+		checkMakeEmptyHrefExt();
+	}else{
+		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
+		var x = input.value.match(/((.*:\/)?\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);top.console.log('x', x);
+		input.value = x[1];
+		if(x[4] !== undefined){
+			document.getElementsByName('we_dialog_args[param]')[0].value = x[4];
+		}
+		if(x[6] !== undefined){
+			document.getElementsByName('we_dialog_args[anchor]')[0].value = x[6];
+		}
+	}
+}
+
+function extHref_doOnFocus(input) {
+	input.value = this.value === '' ? WE().consts.linkPrefix.EMPTY_EXT : input.value;
+}
+
+function openToEdit(id, ct, table){
+	if(!id || !ct){
+		return;
+	}
+
+	table = table ? table : WE().consts.tables.FILE_TABLE;
+	WE().layout.weEditorFrameController.openDocument(table, id, ct);
 }
 
 function showanchors(name, val, onCh) {

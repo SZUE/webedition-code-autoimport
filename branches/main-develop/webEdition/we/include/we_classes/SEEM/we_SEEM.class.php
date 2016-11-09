@@ -341,7 +341,7 @@ abstract class we_SEEM{
 						break;
 
 					case 'object':
-						$handler = "top.doClickDirect('" . $SEEM_LinkArray[1][$i] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
+						$handler = "WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "','" . $SEEM_LinkArray[1][$i] . "','objectFile');";
 						$code = str_replace($link . '</a>', we_html_button::create_button('fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin', 'javascript:' . $handler) . '</a>', $code);
 						break;
 
@@ -413,7 +413,7 @@ abstract class we_SEEM{
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 					$isObj = array_key_exists("we_objectID", $theParameterArray);
-					$linkArray[2][$i] = 'javascript:' . self::getClassVars(($isObj ? 'vtabSrcObjs' : 'vtabSrcDocs')) . "WE().layout.sidebar.load('" . $linkArray[2][$i] . "');";
+					$linkArray[2][$i] = "javascript:WE().layout.sidebar.load('" . $linkArray[2][$i] . "');";
 					$javascriptCode = "onmouseover=\"top.info('ID: " . ($isObj ?
 							//	target is a object
 							$theParameterArray['we_objectID'] . "');\" " :
@@ -421,7 +421,7 @@ abstract class we_SEEM{
 							$linkArray[6][$i] . "');\" " . $linkArray[4][$i] . ' ');
 				} else { //  without parameters
 					$javascriptCode = " onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"" . $linkArray[4][$i] . " ";
-					$linkArray[2][$i] = 'javascript:' . self::getClassVars("vtabSrcDocs") . "WE().layout.sidebar.load('" . $linkArray[2][$i] . "')";
+					$linkArray[2][$i] = "javascript:WE().layout.sidebar.load('" . $linkArray[2][$i] . "')";
 				}
 				$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . $linkArray[2][$i] . '"' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
 			}
@@ -446,16 +446,16 @@ abstract class we_SEEM{
 		foreach($linkArray[0] as $i => $curLink){
 
 			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
-				$javascriptCode = ' onclick="' . self::getClassVars('vtabSrcObjs');
+				$javascriptCode = ' onclick="';
 				if($linkArray[3][$i]){ //  we have several parameters, deal with them
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 					$javascriptCode .= (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-							"top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+							"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 							//	target is a normal file.
-							"top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", ['we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
+							"top.doClickWithParameters('" . $linkArray[6][$i] . "'," . intval($linkArray[7][$i]) . ",'" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", ['we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
 				} else { //  without parameters
-					$javascriptCode .= "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');return true;\" onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"";
+					$javascriptCode .= "WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . intval($linkArray[6][$i]) . ",'" . $linkArray[7][$i] . "');return true;\" onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"";
 				}
 
 				//  Target document is on another Web-Server - leave webEdition !
@@ -473,7 +473,7 @@ abstract class we_SEEM{
 				}
 
 				$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-						' onclick="' . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+						" onclick=\"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . "','objectFile')\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 						" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
 					);
 			} elseif(!trim($linkArray[5][$i])){
@@ -880,12 +880,12 @@ abstract class we_SEEM{
 				$theParameterArray = self::getAttributesFromGet($linkArray[3][0], 'we_cmd');
 
 				if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
-					return self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
+					return "top.doClickWithParameters('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');";
 				} //	target is a normal file.
 				$theParameters = self::arrayToParameters($theParameterArray, "", ['we_cmd']);
-				return self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][0] . "','" . $linkArray[7][0] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
+				return "top.doClickWithParameters('" . $linkArray[6][0] . "','" . $linkArray[7][0] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
 			} //	No Parameters
-			return self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][0] . ",'" . $linkArray[7][0] . "','" . FILE_TABLE . "');";
+			return "WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . intval($linkArray[6][0]) . ",'" . $linkArray[7][0] . "');";
 
 
 			//  The target is NO webEdition - Document
@@ -914,7 +914,7 @@ abstract class we_SEEM{
 			}
 
 			return (isset($theParameterArray) && is_array($theParameterArray) && array_key_exists("we_objectID", $theParameterArray) ? //	target is a object
-					"top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "')" :
+					"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile')" :
 					"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "')");
 		}
 		//  we cant save data so we neednt make object

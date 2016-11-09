@@ -251,8 +251,8 @@ class we_dialog_image extends we_dialog_base{
 			$btnExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','we_dialog_args[extSrc]','',document.we_form.elements['we_dialog_args[extSrc]'].value,'dialog_extSrcOnchange')") : '';
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "top.we_cmd('dialog_setType')");
-			$btnOpen = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('dialog_openExt');", '', 0, 0, '', '', (empty($this->args['extSrc']) || $this->args['extSrc'] === we_base_link::EMPTY_EXT ? true : false), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
-			$textInput = we_html_tools::htmlTextInput('we_dialog_args[extSrc]', 30, (isset($this->args['extSrc']) ? $this->args['extSrc'] : ''), '', "onchange=\"we_cmd('dialog_extSrcOnchange');\"", 'text', 315);
+			$btnOpen = we_html_button::create_button(we_html_button::EDIT, "javascript:top.openExtSource('extHref');", '', 0, 0, '', '', (empty($this->args['extSrc']) || $this->args['extSrc'] === we_base_link::EMPTY_EXT ? true : false), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
+			$textInput = we_html_tools::htmlTextInput('we_dialog_args[extSrc]', 30, (isset($this->args['extSrc']) ? $this->args['extSrc'] : ''), '', 'onchange="top.extSrc_doOnchange;"', 'text', 315);
 			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $btnExt, $btnOpen, '', '', '', 0);
 
 			/**
