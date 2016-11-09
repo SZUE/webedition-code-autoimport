@@ -27,7 +27,8 @@ we_html_tools::protect();
 
 $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $weFrame = new we_search_frames();
-$weFrame->process();
+$cmd = new we_base_jsCmd();
+$weFrame->process($cmd);
 echo $weFrame->getHTML($what);
 
 //FIXME: check to replace this by we_showMod.php

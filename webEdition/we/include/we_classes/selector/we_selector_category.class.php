@@ -405,8 +405,7 @@ class we_selector_category extends we_selector_file{
 			$title = $result ? $result['Title'] : '';
 			$description = $result ? $result['Description'] : '';
 
-			$dir_chooser = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'document.we_form.elements.FolderID.value', 'document.we_form.elements.FolderIDPath.value', '', '', '', '1', '', 'false', 1)");
-
+			$dir_chooser = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'FolderID', 'FolderIDPath', '', '', '', '1', '', 'false', 1)");
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId('Doc');
 			$yuiSuggest->setTable(CATEGORY_TABLE);

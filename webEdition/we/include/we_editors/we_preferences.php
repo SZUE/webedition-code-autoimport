@@ -1757,7 +1757,7 @@ function build_dialog($selected_setting = 'ui'){
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
-				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'newconf[WE_THUMBNAIL_DIRECTORY]'].value', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'newconf[WE_THUMBNAIL_DIRECTORY]']', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$thumbnail_dir = $inp . $but;
 			} else { //  gd lib ist nicht installiert

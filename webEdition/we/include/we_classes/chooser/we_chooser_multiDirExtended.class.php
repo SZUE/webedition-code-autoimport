@@ -41,7 +41,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->Record["ID"] . '">
 	<td class="chooserFileIcon" data-contenttype="' . $this->Record['ContentType'] . '"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
-	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable && $this->cmd_del) || $this->CanDelete) ?
 					we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ?: "") . "; " . $catFieldJS) :
 					"") . '</td>
 </tr>';

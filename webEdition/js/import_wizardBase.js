@@ -47,7 +47,7 @@ var weGetCategoriesCallback = {
 };
 
 function weGetCategories(obj, cats, part) {
-	ajaxData = 'protocol=json&cmd=GetCategory&obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]';
+	var ajaxData = 'protocol=json&cmd=GetCategory&obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]';
 	_executeAjaxRequest('POST', weGetCategoriesCallback, ajaxData);
 }
 
@@ -103,16 +103,7 @@ function we_cmd() {
 			}
 			break;
 		case 'delete_docCat':
-			if (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') !== -1) {
-				if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
-					re = new RegExp(',' + args[1] + ',');
-					this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value.replace(re, ',');
-					if (this.wizbody.document.we_form.elements['v[docCategories]'].value === ',') {
-						this.wizbody.document.we_form.elements['v[docCategories]'].value = '';
-					}
-				}
-				this.wizbody.we_submit_form(top.wizbody.document.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=import");
-			}
+			this.we_cmd('delete_Cat', 'doc', args[1], false);
 			break;
 		case 'add_objCat':
 			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
@@ -127,22 +118,43 @@ function we_cmd() {
 						this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
+
 				if (found) {
 					setTimeout(weGetCategories, 100, 'obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 				}
 			}
 			break;
 		case 'delete_objCat':
-			if (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') !== -1) {
-				if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
-					re = new RegExp(',' + args[1] + ',');
-					this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value.replace(re, ',');
-					if (this.wizbody.document.we_form.elements['v[objCategories]'].value === ',') {
-						this.wizbody.document.we_form.elements['v[objCategories]'].value = '';
+			this.we_cmd('delete_Cat', 'obj', args[1], false);
+			break;
+		case 'delete_Cat':
+			var obj = args[1],
+				cat = args[2],
+				reload = !args[3];
+
+			if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
+				if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
+					var re = new RegExp(',' + cat + ',');
+					this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
+					if(!reload){
+						this.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(this.wizbody.document.getElementById(obj + 'Cat' + cat));
+					}
+					if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
+						this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
+						if(!reload){
+							this.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
+						}
 					}
 				}
-				this.wizbody.we_submit_form(this.wizbody.document.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=import");
+
+				if(reload){
+					we_submit_form(top.wizbody.document.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
+				}
 			}
+			break;
+		case 'setFormField':
+			// args[1] is not used so we can use this command as selector callback
+			setFormField(args[2], args[3], args[4], args[5], args[6]);
 			break;
 		case 'reload_hot_editpage':
 		case 'reload_editpage':
@@ -175,15 +187,7 @@ function we_cmd() {
 }
 
 function deleteCategory(obj, cat) {
-	if (document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') != -1) {
-		re = new RegExp(',' + cat + ',');
-		document.we_form.elements['v[' + obj + 'Categories]'].value = document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
-		document.getElementById(obj + "Cat" + cat).parentNode.removeChild(document.getElementById(obj + "Cat" + cat));
-		if (document.we_form.elements['v[' + obj + 'Categories]'].value == ',') {
-			document.we_form.elements['v[' + obj + 'Categories]'].value = '';
-			document.getElementById(obj + "CatTable").innerHTML = "<tr><td style='font-size:8px'>&nbsp;</td></tr>";
-		}
-	}
+	top.we_cmd('delete_Cat', obj, cat, false);
 }
 
 function we_submit_form(f, target, url) {
@@ -265,8 +269,6 @@ function setFormField(name, value, type, index, frame) {
 	} else {
 		field.value = value;
 	}
-
-
 }
 
 function handleEvent(evt) {
@@ -398,7 +400,6 @@ function handleEvent_FileImport_step_2(evt) {
 			break;
 		case "next":
 			if (frame.weFileUpload_instance !== undefined) {
-				top.console.log('jap');
 				frame.weFileUpload_instance.startUpload();
 			} else {
 				WE().t_e('fileupload instance missing');

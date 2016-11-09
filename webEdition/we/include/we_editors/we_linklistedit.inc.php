@@ -381,7 +381,6 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 <option value="' . we_base_link::TYPE_OBJ . '"' . (($type == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' : '') . '
 </select>';
 
-
 		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'href', '', document.we_form.href.value, '')") : "";
 
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
@@ -480,7 +479,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'img_src', '', document.we_form.img_src.value, '')") : "";
+		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'img_src', '', document.we_form.img_src.value, '')") : '';
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
 		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements.img_id.value,'" . FILE_TABLE . "','id','src_int','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");

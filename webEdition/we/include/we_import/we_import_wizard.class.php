@@ -29,7 +29,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_" . $obj . "Cat')", '', 0, 0, '', '', (!permissionhandler::hasPerm('EDIT_KATEGORIE')));
 		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', '"we/category"', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
-		$cats->setCatField("self.document.we_form.elements['v[" . $obj . "Categories]']");
+		$cats->setCatField('v[" . $obj . "Categories]');
 		return $cats->get();
 	}
 
@@ -190,7 +190,7 @@ class we_import_wizard extends we_import_wizardBase{
 				'v[btnState_back]' => 'enabled'
 		]);
 
-		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: top.setFormField('v[rdofloc]', true, 'radio', 0); we_cmd('browse_server', 'v[fserver]', '', top.wizbody.document.we_form.elements['v[fserver]'].value)") : '';
+		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: we_cmd('browse_server', 'v[fserver]', '', top.wizbody.document.we_form.elements['v[fserver]'].value, 'setFormField,v[rdofloc],1,radio,0')") : '';
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', '', '', '', 0);
 
@@ -547,7 +547,8 @@ class we_import_wizard extends we_import_wizardBase{
 		}
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: top.setFormField('v[rdofloc]', true, 'radio', 0); we_cmd('browse_server', 'v[fserver]', '', document.we_form.elements['v[fserver]'].value);") : "";
+
+		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: we_cmd('browse_server', 'v[fserver]', '', document.we_form.elements['v[fserver]'].value, 'setFormField,v[rdofloc],1,radio,0');") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', '', '', '', 0);
 
@@ -1070,7 +1071,8 @@ class we_import_wizard extends we_import_wizardBase{
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'v[fserver]', '', document.we_form.elements['v[fserver]'].value)") : "";
+
+		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'v[fserver]', '', document.we_form.elements['v[fserver]'].value)") : '';
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onclick=\"top.setFormField('v[rdofloc]', true, 'radio', 0);\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', "", "", "", 0);
 
@@ -1660,7 +1662,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), '', new DB_WE()) : $Pathvalue);
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
