@@ -75,7 +75,7 @@ WegalleryDialog.insert();
 		$yuiSuggest->setContainerWidth(300);
 		$cmd1 = 'top.document.we_form.elements["' . $idname . '"].value';
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 4);
-		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(" . $cmd1 . "){opener.top.doClickDirect(" . $cmd1 . ",'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
+		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(" . $cmd1 . "){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "'," . $cmd1 . ",'" . we_base_ContentTypes::COLLECTION . "'); return false}"));
 		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", '', 0, 0, "", "", false, false), 4);
 
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "=0;document.we_form.elements['" . $textname . "'].value='';document.we_form.elements['we_dialog_args[tmpl]'].value='0'");

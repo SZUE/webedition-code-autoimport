@@ -122,6 +122,7 @@ function we_tag_img(array $attribs){
 	}
 
 	// TODO: we can use the same cmd for inserting image selected by d&d or selector!
+	// IMI: replace enc
 	$btnSelectCallback = "var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); top.we_cmd('reload_editpage','" . $name . "','change_image');";
 	$btnSelectWecmdenc3 = we_base_request::encCmd($btnSelectCallback);
 
@@ -186,7 +187,7 @@ function we_tag_img(array $attribs){
 			($id ?
 				//	show edit_image_button
 				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-				we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )") :
+				we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "',$id,'" . we_base_ContentTypes::IMAGE . "')") :
 				// disable edit_image_button
 				we_html_button::create_button(we_html_button::EDIT, "#", '', 0, 0, "", "", true)
 			) .
