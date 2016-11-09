@@ -21,6 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+function deleteCategory(obj, cat) {
+	top.we_cmd('delete_Cat', obj, cat, true);
+}
+
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 

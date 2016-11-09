@@ -260,7 +260,7 @@ top.content.hot=false;');
 					],
 					'elems' => [
 						'btnTrash' => we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)"),
-						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value', '', 0, '', '__we_content_types__');"),
+						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'search" . $whichSearch . "ParentID[__we_new_id__]', 'search" . $whichSearch . "[__we_new_id__]', '', 0, '', '__we_content_types__');"),
 						'fieldSearch' => we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170),
 						'selStatus' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont",
 							'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
@@ -1040,7 +1040,7 @@ top.content.hot=false;');
 					case 'temp_category':
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 						$rootDirID = 0;
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $rootDirID . "','','')", '', 0, 0, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','')", '', 0, 0, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
