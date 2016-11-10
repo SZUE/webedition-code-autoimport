@@ -11,7 +11,7 @@ class languages extends languagesBase{
 		$installAbleLanguages = $_SESSION['clientInstalledLanguages'];
 
 		// get all possible languages
-		$vers = substr($_SESSION['clientVersionNumber'], 0, -1) . '0';
+		$vers = $_SESSION['clientVersionNumber'];
 		$versionLngs = update::getVersionsLanguageArray(false, $vers);
 		if(!is_array($installAbleLanguages)){
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
@@ -26,7 +26,7 @@ class languages extends languagesBase{
 
 		// languages not existing for this version
 		$missingLanguages = array();
-		$allLanguages = languages::getExistingLanguages();
+		$allLanguages = languages::getExistingLanguages($vers >= LANGUAGELIMIT);
 		foreach($allLanguages as $lang){
 			if(!in_array($lang, $installAbleLanguages)){
 				$missingLanguages[] = $lang;

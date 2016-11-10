@@ -9,6 +9,9 @@
  * @return string
  */
 function getCheckBox($name, $value, $text, $beta = false){
+	// FIXME: eliminate [beta] or re-implement beta in db
+	$betas = defined('LANGUAGES_BETA') ? explode(',', LANGUAGES_BETA) : array();
+	$beta = in_array($text, $betas) ? true : $beta;
 
 	if(!is_array($_SESSION['clientInstalledLanguages'])){
 		$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
@@ -41,7 +44,7 @@ if($_SESSION['clientVersionNumber'] >= LANGUAGELIMIT){
 }
 $installLanguages = '';
 for($i = 0; $i < count($newinstallAbleLanguages); $i++){
-	$installLanguages .= getCheckBox('lng_' . $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false);
+	$installLanguages .= '<div>' . getCheckBox('lng_' . $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false) . '</div>';
 }
 
 // missingLanguages

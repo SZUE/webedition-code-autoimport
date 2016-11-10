@@ -151,9 +151,16 @@ abstract class updateBase{
 			}
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT v.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.type="release"') . ($vers ? ' AND v.version=' . $vers : '') . ' ORDER BY v.version DESC,l.language');
+		$GLOBALS['DB_WE']->query('SELECT version,language FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE 1 ' . ($installedLanguagesOnly ? ' AND language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND version=' . $vers : '') . ' ORDER BY version DESC,language');
+		$langs = array();
+		foreach($GLOBALS['DB_WE']->getAll(false) as $rec){
+			$langs[$rec['version']] = isset($langs[$rec['version']]) ? $langs[$rec['version']] : array();
+			if(!in_array($rec['language'], $langs[$rec['version']])){
+				$langs[$rec['version']][] = $rec['language'];
+			}
+		}
 
-		return $GLOBALS['DB_WE']->getAllFirst(false);
+		return $langs;
 	}
 
 }

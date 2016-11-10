@@ -4,6 +4,9 @@
  */
 define('LANGUAGELIMIT', '6300');
 
+// FIXME: eliminate [beta] or re-implement beta in db
+define('LANGUAGES_BETA', 'Polish,Polish_UTF-8,Russian,Russian_UTF-8,Finnish,Finnish_UTF-8,Spanish,Spanish_UTF-8,Dutch,Dutch_UTF-8,French,French_UTF-8');
+
 if(defined('SHARED_DIR')){
 // set the shared template dir
 	define("SHARED_TEMPLATE_DIR", SHARED_DIR . '/includes/templates');
