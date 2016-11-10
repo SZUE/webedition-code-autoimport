@@ -42,8 +42,7 @@ foreach($languages as $lng){
 	} else {
 		$lngBox = we_html_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
 	}
-	$languagesStr .= "
-	$lngBox";
+	$languagesStr .= '<div>' . $lngBox . '</div>';
 }
 
 $deletedLngs = $this->getData('deletedLngs');
