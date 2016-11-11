@@ -114,6 +114,10 @@ function we_cmd() {
 			top.content.editor.edbody.document.we_form.bid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
+		case "banner_load":
+			top.content.editor.edheader.location  =WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edheader&page=' + args[1] + '&txt=' + args[2] + '&isFolder=' + args[3];
+			top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
+			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 

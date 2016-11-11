@@ -98,7 +98,7 @@ $jscmd = new we_base_jsCmd();
 switch($mod){
 	case 'banner':
 		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
+		$weFrame->process($jscmd);
 		break;
 	case 'shop':
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);

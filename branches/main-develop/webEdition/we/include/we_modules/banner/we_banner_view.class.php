@@ -285,21 +285,15 @@ class we_banner_view extends we_modules_view{
 			case "new_banner":
 				$this->page = 0;
 				$this->banner = new we_banner_banner();
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edfooter";');
+				$jscmd->addCmd('banner_load', [$this->page, $this->banner->Path, $this->banner->IsFolder]);
 				break;
 			case "new_bannergroup":
 				$this->page = 0;
 				$this->banner = new we_banner_banner(0, 1);
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edfooter";');
+				$jscmd->addCmd('banner_load', [$this->page, $this->banner->Path, $this->banner->IsFolder]);
 				break;
 			case "reload":
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner&pnt=edfooter";');
+				$jscmd->addCmd('banner_load', [$this->page, $this->banner->Path, $this->banner->IsFolder]);
 				break;
 			case "banner_edit":
 				if(($id = we_base_request::_(we_base_request::INT, "bid"))){
@@ -415,7 +409,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "save_banner":
 				return $this->saveBanner($jscmd);
-
 			case "delete_banner":
 				$bid = we_base_request::_(we_base_request::INT, 'bid');
 				if($bid){
@@ -516,9 +509,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		sort($tagnames);
 
 		$code = '<table class="default"><tr><td class="defaultfont">' .
-			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
+			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="we_cmd(\'setHot\');"') .
 			'</td>
-<td class="defaultfont" style="padding-left:10px;"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
+<td class="defaultfont" style="padding-left:10px;"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" onchange="we_cmd(\'setHot\'); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
 			'<option value=""></option>';
 		foreach($tagnames as $tagname){
 			$code .= '<option value="' . $tagname . '">' . $tagname . '</option>' . "\n";
@@ -528,8 +521,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function formFiles(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_files')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_document',0,'" . FILE_TABLE . "','','','add_file','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_files')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document',0,'" . FILE_TABLE . "','','','add_file','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
 		$dirs = new we_chooser_multiDir(495, $this->banner->FileIDs, "del_file", $delallbut . $addbut, "", 'ContentType', FILE_TABLE);
 
@@ -537,8 +530,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function formFolders(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_folders')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_folders')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
 
 		$dirs = new we_chooser_multiDir(495, $this->banner->FolderIDs, "del_folder", $delallbut . $addbut, "", "ContentType", FILE_TABLE);
 
@@ -546,16 +539,15 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function formCategories(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
-
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		return $cats->get();
 	}
 
 	function formDoctypes(){
-		$dt = '<select name="DoctypeIDs[]" size="10" multiple="multiple" style="width:495" onchange="top.content.setHot();">';
+		$dt = '<select name="DoctypeIDs[]" size="10" multiple="multiple" style="width:495" onchange="we_cmd(\'setHot\');">';
 		$this->db->query('SELECT dt.DocType,dt.ID FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 
 		$doctypesArr = makeArrayFromCSV($this->banner->DoctypeIDs);
@@ -568,9 +560,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function formStat($class = "middlefont"){
-		$datefilterCheck = we_html_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "')");
-		$datefilter = we_html_tools::getDateInput("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
-		$datefilter2 = we_html_tools::getDateInput("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
+		$datefilterCheck = we_html_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "we_cmd('switchPage','" . $this->page . "')");
+		$datefilter = we_html_tools::getDateInput("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "we_cmd('switchPage','" . $this->page . "');", $class);
+		$datefilter2 = we_html_tools::getDateInput("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "we_cmd('switchPage','" . $this->page . "');", $class);
 
 		$content = '
 <table class="default" style="padding-bottom:10px;">
@@ -588,10 +580,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 </table>';
 
 		$GLOBALS["lv"] = new we_listview_banner(0, 99999999, $this->Order, $this->banner->ID, $this->UseFilter, $this->FilterDate, $this->FilterDateEnd + 86399);
-		$pathlink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'path\'){this.document.we_form.elements.order.value=\'path desc\';}else{this.document.we_form.elements.order.value=\'path\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[page]') . '</a>';
-		$viewslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'views desc\'){this.document.we_form.elements.order.value=\'views\';}else{this.document.we_form.elements.order.value=\'views desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[views]') . '</a>';
-		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'clicks desc\'){this.document.we_form.elements.order.value=\'clicks\';}else{this.document.we_form.elements.order.value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';
-		$ratelink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'rate desc\'){this.document.we_form.elements.order.value=\'rate\';}else{this.document.we_form.elements.order.value=\'rate desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[rate]') . '</a>';
+		$pathlink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'path\'){this.document.we_form.elements.order.value=\'path desc\';}else{this.document.we_form.elements.order.value=\'path\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[page]') . '</a>';
+		$viewslink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'views desc\'){this.document.we_form.elements.order.value=\'views\';}else{this.document.we_form.elements.order.value=\'views desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[views]') . '</a>';
+		$clickslink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'clicks desc\'){this.document.we_form.elements.order.value=\'clicks\';}else{this.document.we_form.elements.order.value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';
+		$ratelink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'rate desc\'){this.document.we_form.elements.order.value=\'rate\';}else{this.document.we_form.elements.order.value=\'rate desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[rate]') . '</a>';
 		$headline = [['dat' => $pathlink],
 				['dat' => $viewslink],
 				['dat' => $clickslink],
@@ -613,7 +605,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		$table = we_html_tools::htmlDialogBorder3(650, $rows, $headline, $class);
-		$delbut = we_html_button::create_button(we_html_button::DELETE, "javascript:top.content.setHot();we_cmd('delete_stat')");
+		$delbut = we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_stat')");
 
 		return $content . $table . "<br/>" . $delbut;
 	}
@@ -635,8 +627,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$from = $this->banner->StartOk ? $this->banner->StartDate : $now;
 		$to = $this->banner->EndOk ? $this->banner->EndDate : $now + 3600;
 
-		$checkStart = we_html_forms::checkboxWithHidden($this->banner->StartOk, $this->uid . '_StartOk', g_l('modules_banner', '[from]'), false, "defaultfont", "top.content.setHot();");
-		$checkEnd = we_html_forms::checkboxWithHidden($this->banner->EndOk, $this->uid . '_EndOk', g_l('modules_banner', '[to]'), false, "defaultfont", "top.content.setHot();");
+		$checkStart = we_html_forms::checkboxWithHidden($this->banner->StartOk, $this->uid . '_StartOk', g_l('modules_banner', '[from]'), false, "defaultfont", "we_cmd('setHot');");
+		$checkEnd = we_html_forms::checkboxWithHidden($this->banner->EndOk, $this->uid . '_EndOk', g_l('modules_banner', '[to]'), false, "defaultfont", "we_cmd('setHot');");
 
 		return '<table class="default">
 	<tr>
@@ -644,22 +636,22 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		<td>' . $checkEnd . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getDateInput("we__From%s", $from, false, "", "top.content.setHot();") . '</td>
-		<td>' . we_html_tools::getDateInput("we__To%s", $to, false, "", "top.content.setHot();") . '</td>
+		<td>' . we_html_tools::getDateInput("we__From%s", $from, false, "", "we_cmd('setHot');") . '</td>
+		<td>' . we_html_tools::getDateInput("we__To%s", $to, false, "", "we_cmd('setHot');") . '</td>
 	</tr>
 </table>';
 	}
 
 	function formCustomer(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_customers')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer','','','',1)");
-		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer','','','',1)");
+		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "setHot", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 		return $obj->get();
 	}
 
 	function formPath($leftsize = 120){
 		return '<table class="default">
-	<tr><td style="padding-bottom:10px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);"'), g_l('modules_banner', '[name]')) . '</td></tr>
+	<tr><td style="padding-bottom:10px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="we_cmd(\'setHot\');" onblur="parent.edheader.weTabs.setTitlePath(this.value);"'), g_l('modules_banner', '[name]')) . '</td></tr>
 	<tr><td>' . $this->formDirChooser($this->banner->ParentID, $this->uid . "_ParentID", g_l('modules_banner', '[group]'), "PathGroup") . '</td></tr>
 </table>';
 	}
@@ -670,7 +662,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		return we_html_element::htmlHiddens([$IDName => 0,
 				$Pathname => ""]) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','" . $IDName . "','" . $Pathname . "','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','" . $IDName . "','" . $Pathname . "','copy_banner','','" . $rootDirID . "')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -679,12 +671,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="top.content.setHot();"', true);
+		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="we_cmd(\'setHot\');"', true);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);
@@ -699,13 +691,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, BANNER_TABLE, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','setHot')");
 
 		$yuiSuggest->setAcId($acID);
 		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($textname, $path, "onchange=\"top.content.setHot();\"", true);
+		$yuiSuggest->setInput($textname, $path, 'onchange="we_cmd(\'setHot\');"', true);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($idname, $idvalue);
@@ -719,9 +710,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function formBannerNumbers(){
 		$cn = md5(uniqid(__FUNCTION__, true));
-		$activeCheckbox = we_html_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "top.content.setHot();");
-		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
-		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
+		$activeCheckbox = we_html_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "we_cmd('setHot');");
+		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", 'onchange="we_cmd(\'setHot\');"', "text", 100, 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
+		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", 'onchange="we_cmd(\'setHot\');"', "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
 		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", [8 => '1 (' . g_l('modules_banner', '[infrequent]') . ")",
 					7 => 2,
 					6 => 3,
@@ -765,12 +756,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	</tr>
 </table>';
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','" . we_base_request::encCmd(str_replace('\\', '', "opener.document.we_form.elements[\\'" . $this->uid . "_IntHref\\'][1].checked=true")) . "','',0,'')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','selector_intHrefCallback," . $this->uid . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, "onchange=\"top.content.setHot();\"", true);
+		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="we_cmd(\'setHot\');"', true);
 		$yuiSuggest->setLabel($title2);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
