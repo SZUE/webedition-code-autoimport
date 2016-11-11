@@ -56,18 +56,21 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "switchPage":
+			top.content.setHot();
 			document.we_form.ncmd.value = args[0];
 			document.we_form.page.value = args[1];
 			submitForm();
 			break;
 		case "add_file":
 		case "add_folder":
+			top.content.setHot();
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncmdvalue.value = args[1].allIDs.join(",");
 			submitForm();
 			break;
 		case "add_cat":
 		case "add_customer":
+			top.content.setHot();
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncmdvalue.value = args[1].allIDs.join(",");
 			submitForm();
@@ -80,16 +83,25 @@ function we_cmd() {
 		case "del_customer":
 		case "del_all_customers":
 		case "del_all_folders":
+			top.content.setHot();
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncmdvalue.value = args[1];
 			submitForm();
 			break;
 		case "delete_stat":
+			top.content.setHot();
 			WE().util.showConfirm(window, "", WE().consts.g_l.banner.view.deleteStatConfirm, ["delete_stat_do"]);
 			break;
 		case "delete_stat_do":
 			document.we_form.ncmd.value = "delete_stat";
 			submitForm();
+			break;
+		case "setHot":
+			top.content.setHot();
+			break;
+		case "selector_intHrefCallback":
+			// used as selector callback: args[1] is selector result
+			this.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
