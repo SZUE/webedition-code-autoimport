@@ -71,7 +71,7 @@ class we_banner_frames extends we_modules_frame{
 		$extraHead = we_tabs::getHeader('
 function setTab(tab){
 	top.content.editor.edbody.we_cmd("switchPage",tab);
-}');
+}') . parent::getHeaderJs();
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([

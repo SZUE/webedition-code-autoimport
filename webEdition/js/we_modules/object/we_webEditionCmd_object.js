@@ -48,6 +48,17 @@ we_cmd_modules.object = function (args, url) {
 		case "object_change_link_at_class":
 			top.load.location = url;
 			break;
+
+		case "object_add_user_to_field":
+			args[4] = args[1].allIDs.join(',');
+			/* FALLTHROUGH */
+		case "object_reload_entry_at_class":
+			// modified for use as selector callback: args[1] is reserved now for selector results
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			// splice args[1]
+			args = args.splice(1, 1);
+			url = WE().util.getWe_cmdArgsUrl(args);
+			/* FALLTHROUGH */
 		case "object_insert_entry_at_class":
 		case "object_delete_entry_at_class":
 		case "object_up_entry_at_class":
@@ -56,9 +67,7 @@ we_cmd_modules.object = function (args, url) {
 		case "object_down_meta_at_class":
 		case "object_insert_meta_at_class":
 		case "object_delete_meta_class":
-		case "object_reload_entry_at_class":
 		case "object_change_entry_at_class":
-		case "object_add_user_to_field":
 		case "object_del_user_from_field":
 		case "object_del_all_users":
 		case "object_remove_image_at_class":
@@ -69,17 +78,30 @@ we_cmd_modules.object = function (args, url) {
 		case "object_change_link_at_object":
 			top.load.location = url;
 			break;
+
+		case "object_reload_entry_at_object":
+			if(args[4] === 'setScrollTo'){
+				 this.setScrollTo();
+			}
+			/* FALLTHROUGH */
+		case "object_change_objectlink":
+			// modified for use as selector callback: args[1] is reserved now for selector results
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			// splice args[1]
+			args = args.splice(1, 1);
+			url = WE().util.getWe_cmdArgsUrl(args);
+			/* FALLTHROUGH */
 		case "object_remove_image_at_object":
 		case "object_up_meta_at_object":
 		case "object_down_meta_at_object":
 		case "object_insert_meta_at_object":
 		case "object_delete_meta_at_object":
 		case "object_reload_entry_at_object":
-		case "object_change_objectlink":
 		case "object_delete_link_at_object":
 			url += "#f" + (parseInt(args[1]) - 1);
 			WE().util.we_sbmtFrm(top.load, url);
 			break;
+
 		case "object_add_workspace":
 		case "object_add_css":
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
@@ -103,6 +125,32 @@ we_cmd_modules.object = function (args, url) {
 			break;
 		case "object_obj_search":
 			we_repl(window.load, url, args[0]);
+			break;
+		case "object_selectDirectory_callback":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			this.pathOfDocumentChanged();
+			break;
+		case 'fieldHref_selectIntHref_callback':
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			if(args[2]){
+				this.document.we_form.elements[args[3]][0].checked = true;
+			}
+			break;
+		case 'fieldHref_selectExtHref_callback':
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			if(args[2] === 'showRadio'){
+				this.document.we_form.elements[args[3]][1].checked = true;
+			}
+			break;
+		case 'fieldMultiobject_selectMultiobject_callback':
+			if(parseInt(args[1].currentID) === this.doc.docId){
+				top.we_showMessage(WE().consts.g_l.object.multiobject_recursion, WE().consts.message.WE_MESSAGE_ERROR, window);
+				this.document.we_form.elements[args[1].JSIDName].value = '';
+				this.document.we_form.elements[args[1].JSTextName].value = '';
+			}
+			if(args[2] === 'isSEEM'){
+				we_cmd('object_change_objectlink', '', this.doc.we_transaction, args[3]);
+			}
 			break;
 		case "delete_object":
 			top.we_cmd("del", 1, WE().consts.tables.OBJECT_TABLE);
