@@ -213,9 +213,22 @@ function we_cmd() {
 		case "home":
 			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=editor";
 			break;
-
+		case "switchPage":
+			// modified for use as selector callback: args[1] is reserved for selector results
+			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+			top.content.editor.edbody.document.we_form.page.value = args[2];
+			if(args[3] === 'setHot'){
+				top.content.hot = true;
+			}
+			top.content.editor.edbody.submitForm();
+			break;
+		case "setHot":top.console.log('set hot');
+			top.content.hot = true;
+			break;
+		case "syncNewsletterTitle":
+			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements['Text'].value);
+			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
 	}
 }

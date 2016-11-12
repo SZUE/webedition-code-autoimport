@@ -211,24 +211,19 @@ function we_cmd() {
 		case "we_users_selector":
 			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
-
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
-
 		case "we_selector_image":
 		case "we_selector_document":
 			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
-
 		case "we_selector_file":
 			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
-
 		case "we_newsletter_dirSelector":
 			new (WE().util.jsWindow)(this, url, "we_newsletter_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
-
 		case "add_customer":
 			document.we_form.ngroup.value = args[2];
 			document.we_form.ncmd.value = args[0];
@@ -242,7 +237,6 @@ function we_cmd() {
 			top.content.hot = true;
 			submitForm();
 			break;
-
 		case "del_all_customers":
 		case "del_all_files":
 			top.content.hot = true;
@@ -250,7 +244,6 @@ function we_cmd() {
 			document.we_form.ngroup.value = args[1];
 			submitForm();
 			break;
-
 		case "add_file":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.nfile.value = args[1].add_file;
@@ -264,13 +257,11 @@ function we_cmd() {
 			top.content.hot = true;
 			submitForm();
 			break;
-
-		case "switchPage":
+		case "_switchPage":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.page.value = args[1];
 			submitForm();
 			break;
-
 		case "set_import":
 		case "reset_import":
 		case "set_export":
@@ -279,7 +270,6 @@ function we_cmd() {
 			document.we_form.ngroup.value = args[1];
 			submitForm();
 			break;
-
 		case "addBlock":
 		case "delBlock":
 			document.we_form.ncmd.value = args[0];
@@ -287,7 +277,6 @@ function we_cmd() {
 			top.content.hot = true;
 			submitForm();
 			break;
-
 		case "addGroup":
 		case "delGroup":
 			document.we_form.ncmd.value = args[0];
@@ -295,7 +284,6 @@ function we_cmd() {
 			top.content.hot = true;
 			submitForm();
 			break;
-
 		case "popPreview":
 			if (document.we_form.ncmd.value == "home"){
 				return;
@@ -309,7 +297,6 @@ function we_cmd() {
 			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
 			popAndSubmit("newsletter_preview", "preview", 800, 800);
 			break;
-
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -360,13 +347,11 @@ function we_cmd() {
 			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */), ["send_test_do"]);
 			//FIXME: check where we get the test-email adress, this has to be set in the stored data.
 			break;
-		case  "send_test_do":
+		case "send_test_do":
 			document.we_form.ncmd.value = "send_test";
 			document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
 			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
 			submitForm();
-
-
 			break;
 		case "print_lists":
 		case "domain_check":
@@ -377,11 +362,9 @@ function we_cmd() {
 		case "newsletter_settings":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
 			break;
-
 		case "black_list":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
 			break;
-
 		case "edit_file":
 			if (args[1]) {
 				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
@@ -389,14 +372,12 @@ function we_cmd() {
 				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
 			}
 			break;
-
 		case "reload_table":
 		case "copy_newsletter":
 			top.content.hot = true;
 			document.we_form.ncmd.value = args[0];
 			submitForm();
 			break;
-
 		case "add_filter":
 		case "del_filter":
 		case "del_all_filters":
@@ -405,7 +386,6 @@ function we_cmd() {
 			document.we_form.ngroup.value = args[1];
 			submitForm();
 			break;
-
 		case "switch_sendall":
 			document.we_form.ncmd.value = args[0];
 			top.content.hot = true;
@@ -416,38 +396,31 @@ function we_cmd() {
 			}
 			submitForm();
 			break;
-
 		case "save_settings":
 			document.we_form.ncmd.value = args[0];
 			submitForm("newsletter_settings");
 			break;
-
 		case "import_csv":
 		case "export_csv":
 			document.we_form.ncmd.value = args[0];
 			submitForm();
 			break;
-
 		case "do_upload_csv":
 			document.we_form.ncmd.value = args[0];
 			submitForm("upload_csv");
 			break;
-
 		case "do_upload_black":
 			document.we_form.ncmd.value = args[0];
 			submitForm("upload_black");
 			break;
-
 		case "upload_csv":
 		case "upload_black":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
 			break;
-
 		case "add_email":
 			var email = document.we_form.group = args[1];
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
-
 		case "edit_email":
 			var p = document.we_form["we_recipient" + args[1]];
 			if (p.selectedIndex < 0) {
@@ -477,7 +450,6 @@ function we_cmd() {
 			emailx = encodeURIComponent(emailx);
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
-
 		case "save_black":
 		case "import_black":
 		case "export_black":
@@ -494,13 +466,16 @@ function we_cmd() {
 			if (searchname !== null) {
 				searchEmail(searchname);
 			}
-
 			break;
 		case "clear_log":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
 			break;
-
+		case "blocks_selectTemplateCallback": 
+			document.we_form.elements['block' + args[2] + '_use_def_template'].checked = false;
+			we_cmd('setHot');
+			break;
 		default:
+			// go to newsletter_top.js
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
