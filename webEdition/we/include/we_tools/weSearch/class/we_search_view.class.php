@@ -894,7 +894,7 @@ WE().consts.weSearch= {
 			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
 				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
 			}
-			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", true, 50, '', '', '', false);
+			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . $currentSearchTables[0] . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", true, 50, '', '', '', false);
 			$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), $btnNewdir);
 
 			$moreHiddens = we_html_element::htmlHiddens(array(
