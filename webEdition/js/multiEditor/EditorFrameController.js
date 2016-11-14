@@ -668,7 +668,7 @@ EditorFrameController.prototype = {
 		for (frameId in this.getEditorsInUse()) {
 			editor = usedEditors[frameId];
 			if (editor.getEditorEditorTable() === table && parseInt(editor.getEditorDocumentId()) === parseInt(id) &&
-				editor.getEditorEditPageNr() === tab && editor.getEditorTransaction() === transaction) {
+				parseInt(editor.getEditorEditPageNr()) === parseInt(tab) && editor.getEditorTransaction() === transaction) {
 
 				return this.getEditorFrame(frameId);
 			}
