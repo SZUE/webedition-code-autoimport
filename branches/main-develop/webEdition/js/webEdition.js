@@ -1933,21 +1933,22 @@ var we_cmd_modules = {
 				doExtClick(args[1]);
 				break;
 			case 'tag_weimg_insertImage':
-				var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], WE().consts.tables.FILE_TABLE, 1, args[5]);
+				var table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE,
+					tab = args[7] ? args[7] : 1,
+					editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
 
 				if (editorFrame) {
 					editorFrame.getContentEditor().setScrollTo();
 					editorFrame.setEditorIsHot(true);
-					editorFrame.getContentEditor().document.we_form.elements[args[3]].value = args[1].id;
+					editorFrame.getContentEditor().document.we_form.elements[args[3]].value = args[1].id ? args[1].id : args[1].currentID;
 					if (editorFrame.getEditorIsActive()) {
 						we_cmd('reload_editpage', args[3], 'change_image');
 					} else {
 						editorFrame.setEditorReloadNeeded(true);
 					}
-
 				} else {
-					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], WE().consts.tables.FILE_TABLE);
-					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: WE().consts.tables.FILE_TABLE, transaction: verifiedTransaction},
+					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], table);
+					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: table, transaction: verifiedTransaction},
 						{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 				}
 				break;
