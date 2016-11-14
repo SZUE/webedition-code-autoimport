@@ -10,8 +10,8 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblUser (
-  ID int unsigned NOT NULL auto_increment,
-  ParentID int unsigned NOT NULL default '0',
+  ID smallint unsigned NOT NULL auto_increment,
+  ParentID smallint unsigned NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
   `Type` enum('user','group','alias') NOT NULL default 'user',
@@ -20,10 +20,10 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   LoginDenied tinyint unsigned NOT NULL default '0',
   Permissions text NOT NULL,
   ParentPerms tinyint unsigned NOT NULL default '0',
-  Alias int unsigned NOT NULL default '0',
-  CreatorID int unsigned NOT NULL default '0',
+  Alias smallint unsigned NOT NULL default '0',
+  CreatorID smallint unsigned NOT NULL default '0',
   CreateDate int unsigned NOT NULL default '0',
-  ModifierID int unsigned NOT NULL default '0',
+  ModifierID smallint unsigned NOT NULL default '0',
   ModifyDate int unsigned NOT NULL default '0',
   Ping timestamp NULL default NULL,
   workSpace TEXT NOT NULL default '',

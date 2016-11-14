@@ -145,11 +145,11 @@ function setTab(tab) {
 			$variant_js .= '}';
 			return $js . we_html_element::jsElement($variant_js);
 		}
-		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",document.we_form,1,"",' . 520 . ',true);
-				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
-				answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
-				answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
-				answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);';
+		$variant_js .= 'var question_edit = new (WE().util.multi_edit)("question",document.we_form,1,"",' . 520 . ',true);
+var answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
+answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
+answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
+answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);';
 
 		for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
 			$variant_js .= 'answers_edit.addItem("2");';
@@ -193,10 +193,8 @@ answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images(
 answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
 answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
 
-
-
-		$variant_js .= ' owners_label = new (WE().util.multi_edit)("owners",document.we_form,0,"' . $del_but . '",510,false);
-			owners_label.addVariant();';
+		$variant_js .= 'var owners_label = new (WE().util.multi_edit)("owners",document.we_form,0,"' . $del_but . '",510,false);
+owners_label.addVariant();';
 		if(is_array($this->View->voting->Owners)){
 			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
 			foreach($this->View->voting->Owners as $owner){
@@ -207,8 +205,8 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			}
 		}
 		$variant_js .= ' owners_label.showVariant(0);
-			iptable_label = new (WE().util.multi_edit)("iptable",document.we_form,0,"' . $del_but . '",510,false);
-			iptable_label.addVariant();';
+var iptable_label = new (WE().util.multi_edit)("iptable",document.we_form,0,"' . $del_but . '",510,false);
+iptable_label.addVariant();';
 
 		if(is_array($this->View->voting->BlackList)){
 			foreach($this->View->voting->BlackList as $ip){
