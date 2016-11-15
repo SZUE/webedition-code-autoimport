@@ -42,10 +42,10 @@ class rpcPingCmd extends we_rpc_cmd{
 			$resp->setData('newtodo_count', $messaging->used_msgobjs['we_todo']->get_newmsg_count());
 		}
 
-		$users_online = new we_users_online();
+		list($num, $usr) = we_users_online::getUsers();
 
-		$resp->setData('users', $users_online->getUsers());
-		$resp->setData('num_users', $users_online->getNumUsers());
+		$resp->setData('users', $usr);
+		$resp->setData('num_users', $num);
 
 		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat')); // array as saved in the prefs
 		foreach($aDat as $d){
