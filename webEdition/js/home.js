@@ -768,11 +768,11 @@ function removeWidget(wizId) {
 	saveSettings();
 }
 
-function newMessage(username) {
+/*function newMessage(username) {
 	if (WE().consts.tables.MESSAGES_TABLE) {
 		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
-}
+}*/
 
 function getDimension(theString, styleClassElement) {
 	var dim = {};
