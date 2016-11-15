@@ -209,7 +209,12 @@ WE().layout.weFileUpload = (function () {
 
 			this.fileselectOnclick = function () {
 				if(_.controller.cmdFileselectOnclick){
-					_.window.we_cmd(_.controller.cmdFileselectOnclick);
+					var tmp = _.controller.cmdFileselectOnclick.split(',');
+					if(_.window.we_cmd){
+						_.window.we_cmd.apply(_.window, tmp);
+					} else { // FIXME: make sure have a function we_cmd on every opener!
+						_.window.top.we_cmd.apply(_.window, tmp);
+					}
 				} else {
 					return;
 				}
@@ -2174,7 +2179,11 @@ WE().layout.weFileUpload = (function () {
 					setTimeout(function () {
 						var tmp = _.sender.nextCmd.split(',');
 						tmp.splice(1, 0, _.sender.resp);
-						_.window.we_cmd.apply(_.window, tmp);
+						if(_.window.we_cmd){
+							_.window.we_cmd.apply(_.window, tmp);
+						} else { // FIXME: make sure have a function we_cmd on every opener!
+							_.window.top.we_cmd.apply(_.window, tmp);
+						}
 					}, 100);
 				}
 			};
