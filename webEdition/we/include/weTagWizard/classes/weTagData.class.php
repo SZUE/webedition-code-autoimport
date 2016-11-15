@@ -66,11 +66,11 @@ class weTagData{
 		try{
 			// include the selected tag, its either normal, or custom tag
 			if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
+				$this->Exists = true;
 				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
-				$this->Exists = true;
 			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
-				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 				$this->Exists = true;
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 				$this->Groups[] = 'custom';
 				$this->noDocuLink = true;
 			} else {

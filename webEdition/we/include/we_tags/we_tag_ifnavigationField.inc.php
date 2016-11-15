@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+/* TODO
 function we_tag_ifnavigationField(array $attribs){
 	if(!empty($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
 		$element = end($GLOBALS['weNavigationItemArray']);
@@ -50,3 +51,4 @@ function we_tag_ifnavigationField(array $attribs){
 			return (strpos(',' . $match . ',', ',' . $realvalue . ',') !== false);
 	}
 }
+*/

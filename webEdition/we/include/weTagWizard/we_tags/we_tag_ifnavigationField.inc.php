@@ -1,6 +1,7 @@
 <?php
 //NOTE you are inside the constructor of weTagData.class.php
-
+$this->Exists =false;
+/* TODO
 $this->NeedsEndTag = true;
 $this->Groups[] = 'if_tags';
 $this->Module = 'navigation';
@@ -77,3 +78,4 @@ $this->Attributes = array(
 		new weTagDataOption('isin'),
 		), false, ''),
 );
+*/
