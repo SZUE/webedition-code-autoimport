@@ -10,6 +10,8 @@
 /* query separator */
 ###UPDATEDROPKEY(DID,###TBLPREFIX###tblLink)###
 /* query separator */
+###UPDATEDROPKEY(Name,###TBLPREFIX###tblLink)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblLink (
   DID int unsigned NOT NULL default '0',
@@ -19,7 +21,6 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
 	nHash binary(16) NOT NULL,
  	KEY CID (CID),
-  KEY Name (Name(4)),
 	KEY nHash(nHash,DocumentTable)
 ) ENGINE=MyISAM;
 /* primary key is added in update*/
