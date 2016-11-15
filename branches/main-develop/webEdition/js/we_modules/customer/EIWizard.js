@@ -24,6 +24,7 @@
  */
 
 var wizzard = WE().util.getDynamicVar(document, 'loadVarEIWizard', 'data-wizzard');
+var table = WE().consts.tables.FILE_TABLE;
 
 function doNext() {
 	switch (wizzard.art) {
@@ -38,7 +39,7 @@ function doNext() {
 			top.body.document.we_form.submit();
 			break;
 		case 'import':
-			if (top.body.document.we_form.step.value === "2" &&
+			if (parseInt(top.body.document.we_form.step.value) === 2 &&
 				top.body.weFileUpload_instance !== undefined &&
 				top.body.document.we_form.import_from[1].checked) {
 				top.body.weFileUpload_instance.startUpload();
@@ -58,17 +59,24 @@ function doNextBack() {
 function doNextAction() {
 	top.body.document.we_form.step.value++;
 	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.art + "&step=" + top.body.document.we_form.step.value;
-	if (top.body.document.we_form.step.value > 4) {
+	if (parseInt(top.body.document.we_form.step.value) > 4) {
 		top.body.document.we_form.target = "load";
 		top.body.document.we_form.pnt.value = "eiload";
 	}
 	top.body.document.we_form.submit();
 }
 
-function selector_cmd() {
+function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]) {
+		case "uploader_callback":
+			we_cmd('set_radio_importFrom',1);
+			doNextAction();
+			break;
+		case "set_radio_importFrom":
+			top.body.document.we_form.import_from[args[2]].checked = true;
+			break;
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
@@ -83,5 +91,7 @@ function selector_cmd() {
 			document.we_form.cus.value = args[1];
 			document.we_form.submit();
 			break;
+		default:
+			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
