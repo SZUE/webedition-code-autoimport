@@ -180,28 +180,28 @@ class we_base_browserDetect{
 		}
 	}
 
-	private function _getSys($bracket){
-		switch($bracket){
-			case (stristr($bracket, self::SYS_MAC)):
-				self::$sys = self::SYS_MAC;
-				break;
-			case (stristr($bracket, self::SYS_WIN)):
-				self::$sys = self::SYS_WIN;
-				break;
-			case (stristr($bracket, self::SYS_ANDROID)):
-				self::$sys = self::SYS_ANDROID;
-				break;
-			case (stristr($bracket, self::SYS_IPHONE)):
-				self::$sys = self::SYS_IPHONE;
-				break;
-			case (stristr($bracket, self::SYS_IPAD)):
-				self::$sys = self::SYS_IPAD;
-				break;
-			case (stristr($bracket, self::SYS_UNIX) || stristr($bracket, 'x11') || stristr($bracket, 'sun')):
-				self::$sys = self::SYS_UNIX;
-				break;
-		}
-	}
+    private function _getSys($bracket){
+        switch($bracket){
+            case (stristr($bracket, self::SYS_MAC) !== false):
+                self::$sys = self::SYS_MAC;
+                break;
+            case (stristr($bracket, self::SYS_WIN) !== false):
+                self::$sys = self::SYS_WIN;
+                break;
+            case (stristr($bracket, self::SYS_ANDROID) !== false):
+                self::$sys = self::SYS_ANDROID;
+                break;
+            case (stristr($bracket, self::SYS_IPHONE) !== false):
+                self::$sys = self::SYS_IPHONE;
+                break;
+            case (stristr($bracket, self::SYS_IPAD) !== false):
+                self::$sys = self::SYS_IPAD;
+                break;
+            case (stristr($bracket, self::SYS_UNIX) !== false || stristr($bracket, 'x11') !== false || stristr($bracket, 'sun') !== false):
+                self::$sys = self::SYS_UNIX;
+                break;
+        }
+    }
 
 	public static function inst(){
 		static $ref = 0;
