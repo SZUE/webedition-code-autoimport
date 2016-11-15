@@ -1338,7 +1338,7 @@ _multiEditorreload = true;';
 		];
 
 
-		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);" required="required"');
+		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\''.$this->Name . '_ParentID_Text\')[0].value,this.value);" required="required"');
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
 			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
@@ -1405,7 +1405,7 @@ _multiEditorreload = true;';
 	 *
 	 * @return     string
 	 */
-	function formPermissions($branch){
+	private function formPermissions($branch){
 		// Set output text
 		// Create a object of the class dynamicControls
 		//FIXME: change we_html_dynamicControls
@@ -1500,7 +1500,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		return we_html_multiIconBox::getHTML('', $parts, 30) . we_html_element::jsElement($javascript);
 	}
 
-	function formWorkspace(){
+	private function formWorkspace(){
 		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
 		$parts = [];
 
