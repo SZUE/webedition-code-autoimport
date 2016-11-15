@@ -649,7 +649,7 @@ edf.populateGroups();');
 							foreach($mailListArray as $line){
 								$mailListArray[] = substr($line, 0, strpos($line, ','));
 							}
-							unset($mailListArray);
+
 							while($dat = fgetcsv($fh, 1000, $delimiter)){
 								if(!isset($control[$dat[$col]])){
 									$alldat = implode('', $dat);
