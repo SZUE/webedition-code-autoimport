@@ -96,7 +96,7 @@ class we_versions_version{
 		'Templates' => 23,
 		'Charset' => 25,
 		'InGlossar' => 26
-	 ];
+	];
 
 	/**
 	 *  Constructor for class 'weVersions'
@@ -1300,7 +1300,7 @@ class we_versions_version{
 			'trans' => empty($GLOBALS['we_transaction']) ? false : $GLOBALS['we_transaction'],
 			'doc' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false,
 			'dyn' => isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
-			];
+		];
 		$GLOBALS['getDocContentVersioning'] = true;
 		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
@@ -1367,7 +1367,7 @@ class we_versions_version{
 			'modifierID' => isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '',
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
-			]);
+		]);
 		$lastEntry['version'] = (isset($lastEntry['version'])) ? $lastEntry['version'] + 1 : 1;
 
 		unset($lastEntry['ID']);
@@ -1404,7 +1404,7 @@ class we_versions_version{
 				'Path' => $data['Path'],
 				'Version' => $data['version'],
 				'documentID' => $data['documentID'],
-				];
+			];
 		}
 
 		$filePath = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
@@ -1592,7 +1592,7 @@ class we_versions_version{
 				'Path' => $resetArray['Path'],
 				'Version' => $resetArray['version'],
 				'documentID' => $resetArray['documentID'],
-				];
+			];
 
 //update versions if id or path were changed
 			if(!$existsInFileTable){
@@ -1925,13 +1925,13 @@ class we_versions_version{
 		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
 	}
 
-	public static function updateLastVersionPath($docID, $docTable, $parentId, $path){
-		$db = new DB_WE();
-		$fields = self::getLastEntry($docID, $docTable, $db);
-		if($fields){
+	public static function updateLastVersionPath(we_database_base $db, $docID, $docTable, $parentId, $path){
+		$id = f('SELECT MAX(ID) FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted")', '', $db);
+		if($id){
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => $parentId,
 					'Path' => $path
-			]));
+				]) .
+				' WHERE ID=' . $id);
 		}
 	}
 
@@ -1973,7 +1973,7 @@ class we_versions_version{
 					'Path' => $data["path"],
 					'Version' => $data["version"],
 					'documentID' => $data["documentID"],
-					];
+				];
 
 				break;
 
