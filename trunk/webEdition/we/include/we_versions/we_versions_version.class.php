@@ -2039,7 +2039,7 @@ class we_versions_version{
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ParentID' => $parentId,
 					'Path' => $path
-			)));
+			)).' WHERE ID='.$fields['ID']);
 		}
 	}
 
