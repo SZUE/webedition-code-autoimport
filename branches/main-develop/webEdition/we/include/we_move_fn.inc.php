@@ -115,8 +115,8 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 	$ids = $DB_WE->getAll(true);
 	foreach($ids as $id){
 		$folder = (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? //4076
-				new we_class_folder() :
-				new we_folder());
+			new we_class_folder() :
+			new we_folder());
 		$folder->initByID($id, $table);
 		$folder->ParentID = $targetDirectoryID;
 		$folder->Path = $folder->getPath();
@@ -125,7 +125,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				'Text' => $folder->Text,
 				'Path' => $folder->Path,
 				'ContentType' => $folder->ContentType
-				];
+			];
 		}
 	}
 	//if folders are unable to move, we must stop here.
@@ -151,7 +151,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 						'Text' => $template->Text,
 						'Path' => $template->Path,
 						'ContentType' => $template->ContentType
-						];
+					];
 				}
 			}
 			break;
@@ -171,7 +171,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 						'Text' => $fileName,
 						'Path' => $oldPath,
 						'ContentType' => $row['ContentType']
-						];
+					];
 					continue;
 				}
 
@@ -183,14 +183,14 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 						$object->ParentID = $parentID;
 						$version->saveVersion($object);
 					} else {
-						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
+						we_versions_version::updateLastVersionPath($DB_WE, $id, $table, $parentID, $newPath . '/' . $fileName);
 					}
 				}
 
 				// update table
 				$DB_WE->query('UPDATE ' . FILE_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => intval($parentID),
 						'Path' => $newPath . '/' . $fileName
-						]) . ' WHERE ID=' . intval($id));
+					]) . ' WHERE ID=' . intval($id));
 			}
 			break;
 
@@ -214,7 +214,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 						$object->ParentID = $parentID;
 						$version->saveVersion($object);
 					} else {
-						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
+						we_versions_version::updateLastVersionPath($DB_WE, $id, $table, $parentID, $newPath . '/' . $fileName);
 					}
 				}
 
