@@ -183,16 +183,17 @@ class we_shop_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if(!empty($_REQUEST["mid"]) && $_REQUEST["mid"] != '00'){
-			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, 0);
+			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, self::TAB_OVERVIEW);
 		} else {
-			$we_tabs->addTab(g_l('tabs', '[module][orderdata]'), true, "setTab(" . self::TAB_OVERVIEW . ");");
-			$we_tabs->addTab(g_l('tabs', '[module][orderlist]'), false, "setTab(" . self::TAB_ORDERLIST . ");");
+			$we_tabs->addTab(g_l('tabs', '[module][orderdata]'), true, self::TAB_OVERVIEW);
+			$we_tabs->addTab(g_l('tabs', '[module][orderlist]'), false, self::TAB_ORDERLIST);
 		}
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
 		$textPost = !empty($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
 
-		$tab_head = we_tabs::getHeader('
+		$tab_head = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	switch (tab) {
 		case ' . self::TAB_OVERVIEW . ':
@@ -234,21 +235,22 @@ function setTab(tab) {
 
 		$we_tabs = new we_tabs();
 		if(!empty($_REQUEST["mid"])){
-			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, "//");
+			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, 0);
 		} else {
 			switch(true){
 				default:
 				case ($resultD):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_1]'), true, "setTab(" . self::TAB_ADMIN1 . ");");
+					$we_tabs->addTab(g_l('tabs', '[module][admin_1]'), true, self::TAB_ADMIN1);
 				case ($resultO):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_2]'), (!$resultD), "setTab(" . self::TAB_ADMIN2 . ");");
+					$we_tabs->addTab(g_l('tabs', '[module][admin_2]'), (!$resultD), self::TAB_ADMIN2);
 				case (isset($yearTrans) && $yearTrans != 0):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_3]'), false, "setTab(" . self::TAB_ADMIN3 . ");");
+					$we_tabs->addTab(g_l('tabs', '[module][admin_3]'), false, self::TAB_ADMIN3);
 					break;
 			}
 		}
 
-		$tab_head = we_tabs::getHeader('
+		$tab_head = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	switch (tab) {
 		case ' . self::TAB_ADMIN1 . ':
@@ -459,7 +461,7 @@ function setTab(tab) {
 		 */
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], g_l('modules_shop', '[preferences][LanguageField]'));
-		$languageSelect = we_html_tools::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField'],false,['class' => 'searchSelectUp']);
+		$languageSelect = we_html_tools::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField'], false, ['class' => 'searchSelectUp']);
 		$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 		$htmlTable->setColContent($row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 
@@ -483,7 +485,7 @@ function setTab(tab) {
 				$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => "shop",
 						'pref_name' => $dbField,
 						'pref_value' => $value
-						]));
+				]));
 			}
 
 			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'shop',

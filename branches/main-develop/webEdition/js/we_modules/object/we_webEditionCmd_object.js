@@ -56,7 +56,7 @@ we_cmd_modules.object = function (args, url) {
 			// modified for use as selector callback: args[1] is reserved now for selector results
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			// splice args[1]
-			args = args.splice(1, 1);
+			args.splice(1, 1);
 			url = WE().util.getWe_cmdArgsUrl(args);
 			/* FALLTHROUGH */
 		case "object_insert_entry_at_class":
@@ -88,7 +88,7 @@ we_cmd_modules.object = function (args, url) {
 			// modified for use as selector callback: args[1] is reserved now for selector results
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			// splice args[1]
-			args = args.splice(1, 1);
+			args.splice(1, 1);
 			url = WE().util.getWe_cmdArgsUrl(args);
 			/* FALLTHROUGH */
 		case "object_remove_image_at_object":

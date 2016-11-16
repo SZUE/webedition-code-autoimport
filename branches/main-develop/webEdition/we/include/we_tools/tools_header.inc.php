@@ -37,13 +37,14 @@ foreach($menuItems as $menuItem){
 			break;
 	}
 	if(permissionhandler::hasPerm($menuItem['startpermission'])){
-		$we_tabs->addTab($menuItem["text"], ($tool == $menuItem['name']), "openTool('" . $menuItem['name'] . "');", ["id" => $menuItem['name']]);
+		$we_tabs->addTab($menuItem["text"], ($tool == $menuItem['name']), "'" . $menuItem['name'] . "'", ["id" => $menuItem['name']]);
 	}
 }
 
-echo we_tabs::getHeader('
+echo we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 var current = "' . $tool . '";
-function openTool(tool) {
+function setTab(tool) {
 	if (top.content.hot) {
 		if (confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 			top.content.hot = false;
@@ -57,6 +58,7 @@ function openTool(tool) {
 		current = tool;
 		top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 	}
-}');
+}
+');
 ?>
 <div id="main" ><?= $we_tabs->getHTML(); ?></div>

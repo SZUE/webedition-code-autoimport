@@ -73,7 +73,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 						$we_tabs->addTab(
 							($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
 							$menuItem['text']
-							, ( $mod == $menuItem['name']), "openModule('" . $menuItem['name'] . "');", ['id' => $menuItem['name']]);
+							, ( $mod == $menuItem['name']), "'" . $menuItem['name'] . "'", ['id' => $menuItem['name']]);
 					}
 				}
 			}

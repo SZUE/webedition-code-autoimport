@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -104,6 +104,14 @@ WE().layout.we_tabs.prototype = {
 				console.log('no parent');
 				console.log(this.doc);
 			}
+		}
+	},
+	clickHandler: function (win, elem, cmd) {
+		if (this.allowed_change_edit_page()) {
+			this.setTabClass(elem);
+			win.setTab(cmd);
+		} else {
+			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 };

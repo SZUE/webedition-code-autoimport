@@ -26,10 +26,10 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 ?>
 <script><!--
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
-		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?= $we_transaction; ?>");
-		_EditorFrame.setEditorIsHot(false);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?= $we_transaction; ?>");
+	_EditorFrame.setEditorIsHot(false);
 	<?= $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
-		_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
+	_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
 <?php } ?>
 //-->
 </script>
@@ -41,13 +41,13 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 		}
 		$html = '
 <div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
-<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ?: '-') . '</div>
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ContentType ? g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') : '') . '</div>' .
 			(isset($fs) ?
-				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>
+			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>
 <div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>' :
-				'');
+			'');
 
 		$parts = [['headline' => '',
 			'html' => $html,
@@ -60,32 +60,32 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>
 <div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->CreationDate) . '</div>' .
 			($GLOBALS['we_doc']->CreatorID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->CreatorID))) ?
-				'
+			'
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>' :
-				'') .
+			'') .
 			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>
 <div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>' .
 			($GLOBALS['we_doc']->ModifierID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID))) ?
-				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
+			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>' .
-				(in_array($GLOBALS['we_doc']->ContentType, [we_base_ContentTypes::HTML, we_base_ContentTypes::WEDOCUMENT]) ?
-					'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
-					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
-					'') .
-				(!in_array($we_doc->Table, [TEMPLATES_TABLE, VFILE_TABLE]) && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER && $GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
-					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', "javascript:top.we_cmd('revert_published_question');") . '</div>' :
-					'') :
-				'');
+			(in_array($GLOBALS['we_doc']->ContentType, [we_base_ContentTypes::HTML, we_base_ContentTypes::WEDOCUMENT]) ?
+			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
+			'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
+			'') .
+			(!in_array($we_doc->Table, [TEMPLATES_TABLE, VFILE_TABLE]) && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER && $GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
+			'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', "javascript:top.we_cmd('revert_published_question');") . '</div>' :
+			'') :
+			'');
 
 
 		$parts[] = ['headline' => '',
-	'html' => $html,
+			'html' => $html,
 			'space' => we_html_multiIconBox::SPACE_MED2,
 			'icon' => 'cal.gif'
-		 ];
+		];
 
-if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
+		if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
 			switch($GLOBALS['we_doc']->Table){
 				case TEMPLATES_TABLE:
 				case VFILE_TABLE:
@@ -102,8 +102,8 @@ if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
 							$showlink = true;
 							if(defined('WORKFLOW_TABLE')){
 								$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
-										we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
-										we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+									we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+									we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 							}
 							break;
 
@@ -206,22 +206,24 @@ if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
 
 			if($GLOBALS['we_doc']->isBinary()){
 				$formReference = $GLOBALS['we_doc']->formReferences();
-				$parts[] = ['headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
-			'html' => $formReference['form'],
+				$parts[] = [
+					'headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
+					'html' => $formReference['form'],
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'references.gif'
-					];
-	}
+				];
+			}
 
 			if(isset($metaDataTable)){
-				$parts[] = ['headline' => '',
-			'html' => $metaDataTable,
+				$parts[] = [
+					'headline' => '',
+					'html' => $metaDataTable,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'meta.gif'
-					];
-	}
+				];
+			}
 		}
 
 		echo we_html_multiIconBox::getHTML('', $parts, 20);

@@ -40,7 +40,7 @@ $l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 	'upload_size' => getUploadMaxFilesize(),
 	'upload_url' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php',
 	'scid' => ''
- ];
+];
 
 $l_params = '';
 
@@ -52,11 +52,11 @@ foreach($l_param as $key => $value){
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, "setTab(1);", ["id" => "tab_1"]);
-$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, "setTab(2);", ["id" => "tab_2"]);
+$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, 1, ["id" => "tab_1"]);
+$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, 2, ["id" => "tab_2"]);
 
 
-$js = we_tabs::getHeader();
+$js = we_tabs::CSS . we_html_element::jsElement(we_tabs::JS_LOAD);
 
 $table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 3, 5);
 
@@ -121,7 +121,7 @@ $_applet_code = we_html_element::htmlApplet(['name' => 'spellchecker',
 		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 		'width' => 400,
 		'height' => 220,
-	 ], '
+		], '
 <param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -147,39 +147,39 @@ $_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
 ?>
 
-<script><!--
-	var activ_tab = 1;
-	var appletActiv = false;
-	var g_l = {
-		dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
-		ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
-	};
+	<script><!--
+		var activ_tab = 1;
+		var appletActiv = false;
+		var g_l = {
+			dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+			ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
+		};
 
-	function setAppletCode() {
-		if (!appletActiv) {
-			document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
+		function setAppletCode() {
+			if (!appletActiv) {
+				document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
+			}
+			appletActiv = true;
+			setTimeout(checkApplet, 2000);
 		}
-		appletActiv = true;
-		setTimeout(checkApplet, 2000);
-	}
 
 
-	function updateDict(dict) {
+		function updateDict(dict) {
 
-		setVisible("updateBut_" + dict, false);
-		setVisible("updateIcon_" + dict, true);
-		document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-		setTimeout(selectDict, 1000, dict);
+			setVisible("updateBut_" + dict, false);
+			setVisible("updateIcon_" + dict, true);
+			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+			setTimeout(selectDict, 1000, dict);
 	}
 
 	function updateDict(dict) {
 
-		setVisible("updateBut_" + dict, false);
-		setVisible("updateIcon_" + dict, true);
-		document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-		setTimeout(selectDict, 1000, dict);
-	}
-//-->
+			setVisible("updateBut_" + dict, false);
+			setVisible("updateIcon_" + dict, true);
+			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+			setTimeout(selectDict, 1000, dict);
+		}
+	//-->
 </script>
 <?=
 $js .
@@ -187,21 +187,21 @@ $js .
 ?>
 </head>
 
-<body onload="loadTable();
+			<body onload="loadTable();
 		if (!activ_tab) {
 			activ_tab = 1;
 		}
 		document.getElementById('tab_' + activ_tab).className = 'tabActive';" class="weDialogBody">
 
-<?= $tabsBody; ?>
+			<?= $tabsBody; ?>
 
-	<div id="content" style="margin: 10px; width: 450px;">
+			<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-<?= $tab_1 ?>
+			<?= $tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-<?= $tab_2 ?>
+			<?= $tab_2 ?>
 		</div>
 
 	</div>

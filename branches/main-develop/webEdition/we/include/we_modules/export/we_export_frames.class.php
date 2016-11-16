@@ -26,6 +26,10 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 class we_export_frames extends we_modules_frame{
 	var $SelectionTree;
 
+	const TAB_PROPERTIES = 1;
+	const TAB_OPTIONS = 2;
+	const TAB_LOG = 3;
+
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->treeDefaultWidth = 220;
@@ -63,13 +67,14 @@ class we_export_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
 		if($this->View->export->IsFolder == 0){
-			$we_tabs->addTab(g_l('export', '[options]'), false, "setTab(2);", ["id" => "tab_2"]);
-			$we_tabs->addTab(g_l('export', '[log]'), false, "setTab(3);", ["id" => "tab_3"]);
+			$we_tabs->addTab(g_l('export', '[options]'), false, self::TAB_OPTIONS, ["id" => "tab_2"]);
+			$we_tabs->addTab(g_l('export', '[log]'), false, self::TAB_LOG, ["id" => "tab_3"]);
 		}
 
-		$tabsHead = we_tabs::getHeader('
+		$tabsHead = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	parent.edbody.toggle("tab"+top.content.activ_tab);
 	parent.edbody.toggle("tab"+tab);
@@ -179,9 +184,9 @@ function addLog(text){
 	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
 }
 ') .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_LOG ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 	}
 
 	function getHTMLTab1(){
@@ -288,7 +293,7 @@ function closeAllType(){
 		$parts[] = ["headline" => g_l('export', '[selection]'),
 			"html" => $js . $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-			];
+		];
 
 		return $parts;
 	}
@@ -315,7 +320,7 @@ function closeAllType(){
 			$parts[] = ["headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
-				];
+			];
 		}
 
 		$formattable = new we_html_table([], 3, 1);
@@ -436,7 +441,7 @@ function closeAllType(){
 				"handle_objects" => 1,
 				"handle_navigation" => $this->View->export->HandleNavigation,
 				"handle_thumbnails" => $this->View->export->HandleThumbnails
-				]);
+			]);
 
 			$xmlExIm->RefTable->reset();
 			$xmlExIm->savePerserves();
@@ -608,8 +613,8 @@ if (top.content.editor.edbody.addLog){
 						($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 						'showEndStatus();') .
 						"top.content.editor.edfooter.hideProgress();"
-						]
-		), null
+					]
+				), null
 		);
 		$xmlExIm->unsetPerserves();
 		return $out;

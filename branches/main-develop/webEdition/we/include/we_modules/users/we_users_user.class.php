@@ -526,7 +526,7 @@ class we_users_user{
 		if($isAdmin){
 			$permissions = ['ADMINISTRATOR' => true];
 		}
-		$permissions=array_filter($permissions);
+		$permissions = array_filter($permissions);
 		ksort($permissions);
 
 		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
@@ -1338,7 +1338,7 @@ _multiEditorreload = true;';
 		];
 
 
-		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\''.$this->Name . '_ParentID_Text\')[0].value,this.value);" required="required"');
+		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\'' . $this->Name . '_ParentID_Text\')[0].value,this.value);" required="required"');
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
 			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
@@ -2122,11 +2122,12 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		$we_tabs = new we_tabs();
 		foreach($tabs as $key => $val){
-			$we_tabs->addTab($val[1], ($tab == $key), 'self.setTab(' . $key . ');', ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
+			$we_tabs->addTab($val[1], ($tab == $key), $key, ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
 		}
 
 
-		return we_tabs::getHeader('
+		return we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 var activeTab = ' . self::TAB_DATA . ';
 function setTab(tab) {
 	switch(tab) {

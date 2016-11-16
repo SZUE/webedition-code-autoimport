@@ -94,31 +94,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
 		we_html_element::jsElement('
-var target = _EditorFrame.getContentEditor(),
-	confName = "tinyMceConfObject__' . $wholename . 'default";
-
-/* if tinyMCE-field: re-write confObject on visible field and re-init editor
- * ff and chrome only: on ie and opera we reload edit tab when saving properties
- */
-if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? tinyMceConfObject__' . $wholename . 'default : false){
-	' . (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? '
-	if(typeof target[confName] === \'object\'){
-		for(prop in confObject){
-			if(prop !== "setup"){
-				target[confName][prop] = confObject[prop];
-			};
-		}
-		target.tinyMceInitialize(target[confName]);
-	} else {
-		setScrollTo();
-		top.we_cmd("switch_edit_page",1,"' . $we_transaction . '");
-	}' : '
-		target[confName] = confObject;
-		target.tinyMceInitialize(target[confName]);
-	') . '
-} else if(typeof target[confName] === \'object\'){
-	target[confName] = undefined;
-}
+			reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');
 ');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

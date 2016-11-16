@@ -41,8 +41,15 @@ class we_base_jsCmd{
 	}
 
 	public function addCmd($cmd, $data = ''){
-		$this->cmds[] = $cmd;
-		$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
+		$values = func_get_args();
+		if(count($values) <= 2){
+			$this->cmds[] = $cmd;
+			$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
+		} else {
+			//all data is called as we_cmd(cmd,p1,p2,p3)
+			$this->cmds[] = 'we_cmd';
+			$this->cmdData[] = setDynamicVar($values);
+		}
 	}
 
 	public function addMsg($message, $priority){
@@ -72,14 +79,18 @@ class we_base_jsCmd{
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 
-	public static function singleCmd($cmd, $data = ''){
+	/* all args passed to addCmd
+	 */
+
+	public static function singleCmd(){
 		//FIXME: active is temporary
 		if(self::$active){
 			//make sure we change this!
 			self::$count++;
 		}
 		$tmp = self::$active ?: new self();
-		$tmp->addCmd($cmd, $data);
+		$values = func_get_args();
+		call_user_func_array([$tmp, 'addCmd'], $values);
 		//FIXME: this is not safe at all!
 		return $tmp->getCmds();
 	}

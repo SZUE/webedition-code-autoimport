@@ -71,3 +71,12 @@ if (WE().session.seemode) {
 	top.setFrameSize = function () {
 	};
 }
+
+function setTab(we_cmd_args){
+	//first arg is always switch_edit_page
+	if(parent.editFooter.doc.isBinary){
+		WE().layout.checkFileUpload(we_cmd_args);
+	}else{
+		we_cmd.apply(this, we_cmd_args);
+	}
+}
