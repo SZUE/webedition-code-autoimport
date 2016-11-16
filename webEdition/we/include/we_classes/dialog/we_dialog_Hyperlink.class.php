@@ -516,7 +516,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	}
 
 	function getJs(){
-		return parent::getJs() . 
+		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js', '', [
 				'id' => 'loadVarDialog_Hyperlink',
@@ -570,7 +570,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$attribs['href'] = $href;
 		$payload = ['attributes' => $attribs];
 
-		$js = we_dialog_base::getTinyMceJS() . 
+		$js = parent::getTinyMceJS() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
 				'id' => 'loadVarDialog_cmdFrame',

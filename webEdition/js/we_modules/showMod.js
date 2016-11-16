@@ -74,7 +74,7 @@ function we_cmd() {
 }
 
 var current = moduleData.mod;
-function openModule(module) {
+function setTab(module) {
 	if (top.content.hot) {
 		if (!confirm(WE().consts.g_l.alert.discard_changed_data)) {
 			weTabs.setActiveTab(current);

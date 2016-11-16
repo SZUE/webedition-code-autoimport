@@ -89,19 +89,18 @@ if($tool === "weSearch"){
 	$tab = $modelid = false;
 }
 
-echo we_html_tools::getHtmlTop($title, '', 'frameset',
- we_html_element::jsScript(JS_DIR . 'toolframe.js') .
+echo we_html_tools::getHtmlTop($title, '', 'frameset', we_html_element::jsScript(JS_DIR . 'toolframe.js') .
 	we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
 			'mod' => $tool,
 	])]) .
 	YAHOO_FILES .
- we_tabs::getHeader());
+	we_tabs::CSS . we_html_element::jsElement(we_tabs::JS_LOAD));
 ?>
 <body style="overflow:hidden;" onload="<?= ($showHeader ? 'weTabs.setFrameSize();' : ''); ?>"><?php
-	$_REQUEST['tool'] = $tool;
-	echo ($showHeader ?
-			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .
-	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
-	?>
+$_REQUEST['tool'] = $tool;
+echo ($showHeader ?
+	we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .
+ we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
+?>
 </body>
 </html>

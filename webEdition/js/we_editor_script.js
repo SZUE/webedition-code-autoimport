@@ -31,8 +31,8 @@ var _controller = WE().layout.weEditorFrameController;
 var _EditorFrame = _controller.getEditorFrame(parent.name);
 if (!_EditorFrame) {
 	_EditorFrame = (doc.we_transaction ?
-					_controller.getEditorFrameByTransaction(doc.we_transaction) :
-					_controller.getEditorFrame());
+		_controller.getEditorFrameByTransaction(doc.we_transaction) :
+		_controller.getEditorFrame());
 
 }
 
@@ -53,15 +53,15 @@ function seeMode_dealWithLinks() {
 		var _href = _aTags[i].href;
 
 		if (!(_href.indexOf("javascript:") === 0 ||
-						_href.indexOf("#") === 0 ||
-						(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
-						_href.indexOf(WE().consts.linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
-						_href.indexOf(WE().consts.linkPrefix.TYPE_INT_PREFIX) === 0 ||
-						_href.indexOf(WE().consts.linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
-						_href.indexOf("?") === 0 ||
-						_href === ""
-						)
-						) {
+			_href.indexOf("#") === 0 ||
+			(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
+			_href.indexOf(WE().consts.linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
+			_href.indexOf(WE().consts.linkPrefix.TYPE_INT_PREFIX) === 0 ||
+			_href.indexOf(WE().consts.linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
+			_href.indexOf("?") === 0 ||
+			_href === ""
+			)
+			) {
 			_aTags[i].href = "javascript:seeMode_clickLink(\'" + _aTags[i].href + "\')";
 
 		}
@@ -90,9 +90,9 @@ function showhideLangLink(allnames, allvalues, deselect) {
 function weDelCookie(name, path, domain) {
 	if (getCookie(name)) {
 		document.cookie = name + "=" +
-						((path === null) ? "" : "; path=" + path) +
-						((domain === null) ? "" : "; domain=" + domain) +
-						"; expires=Thu, 01-Jan-70 00:00:01 GMT";
+			((path === null) ? "" : "; path=" + path) +
+			((domain === null) ? "" : "; domain=" + domain) +
+			"; expires=Thu, 01-Jan-70 00:00:01 GMT";
 	}
 }
 
@@ -156,7 +156,7 @@ function updateCustomerFilterIfNeeded() {
 						if (weResponse) {
 							if (weResponse.DataArray.data === true) {
 								_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
-								WE().util.showConfirm(window, "",_question,["customer_applyWeDocumentCustomerFilterFromFolder"]);
+								WE().util.showConfirm(window, "", _question, ["customer_applyWeDocumentCustomerFilterFromFolder"]);
 							}
 						}
 					}
@@ -246,10 +246,10 @@ function we_cmd() {
 		case "dirChooser_callback":
 			// to be callable from selectors we skip args[1]
 			we_cmd('setHot');
-			if(args[2] === 'ParentPath' && pathOfDocumentChanged){
+			if (args[2] === 'ParentPath' && pathOfDocumentChanged) {
 				pathOfDocumentChanged();
 			}
-			if(args[3]){
+			if (args[3]) {
 				we_cmd(args[3]);
 			}
 			break;
@@ -292,8 +292,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "imageDocument_emptyLongdesk":
-			document.we_form.elements[args[2]].value='-1';
-			document.we_form.elements[args[3]].value='';
+			document.we_form.elements[args[2]].value = '-1';
+			document.we_form.elements[args[3]].value = '';
 			we_cmd('setHot');
 			YAHOO.autocoml.setValidById(args[4]);
 			break;
@@ -443,8 +443,8 @@ function metaFieldSelectProposal(sel, inputName, isCsv) {
 	_EditorFrame.setEditorIsHot(true);
 
 	var valInput = document.forms[0].elements[inputName].value,
-					newVal = valInput,
-					valSel = sel.options[sel.selectedIndex].value;
+		newVal = valInput,
+		valSel = sel.options[sel.selectedIndex].value;
 
 	if (isCsv) {
 		switch (valSel) {
@@ -509,4 +509,35 @@ if (doc.isDW) {
 } else if (doc.useSEE_MODE) {
 	// add event-Handler, replace links after load
 	window.addEventListener("load", seeMode_dealWithLinks, false);
+}
+
+
+function reinitTiny(confName, transaction, isIEOpera) {
+	var target = _EditorFrame.getContentEditor();
+var confObject;
+	/* if tinyMCE-field: re-write confObject on visible field and re-init editor
+	 * ff and chrome only: on ie and opera we reload edit tab when saving properties
+	 */
+	if (confObject = typeof target[confName] === 'object' ? target[confName] : false) {
+		if (isIEOpera) {
+			if (typeof target[confName] === 'object') {
+				for (prop in confObject) {
+					if (prop !== "setup") {
+						target[confName][prop] = confObject[prop];
+					}
+					;
+				}
+				target.tinyMceInitialize(target[confName]);
+			} else {
+				setScrollTo();
+				top.we_cmd("switch_edit_page", 1, transaction);
+			}
+		} else {
+			target[confName] = confObject;
+			target.tinyMceInitialize(target[confName]);
+		}
+	} else if (typeof target[confName] === 'object') {
+		target[confName] = undefined;
+	}
+
 }

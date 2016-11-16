@@ -30,16 +30,17 @@ function we_parse_tag_metadata($attribs, $content, array $arr){
 }
 
 function we_tag_metadata(array $attribs){
-	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
-	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 
 	if(!$id && $name){
 		$unique = md5(uniqid(__FILE__, true));
-		$value = (isset($GLOBALS["lv"]) ?
+		$value = (isset($GLOBALS['lv']) ?
 						$GLOBALS['lv']->f($name) :
 						// determine the id of the element
-						($GLOBALS['we_doc']->getElement($name, 'bdid')? :
-								$GLOBALS['we_doc']->getElement($name)
+						($GLOBALS['we_doc']->getElement($name)?:
+							//can be href
+							$GLOBALS['we_doc']->getElement($name . we_base_link::MAGIC_INT_LINK_ID, 'bdid')
 						)
 				);
 
@@ -48,7 +49,7 @@ function we_tag_metadata(array $attribs){
 	}
 
 	if($id){
-		$GLOBALS['lv'] = new we_listview_document($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $id, '', false, false, 0);
+		$GLOBALS['lv'] = new we_listview_document($unique, 1, 0, '', false, '', '', false, false, 0, '', '', false, '', '', '', '', '', '', 'off', true, '', $id, '', false, false, 0);
 		$avail = ($GLOBALS['lv']->next_record());
 	} else {
 		$GLOBALS['lv'] = new stdClass();

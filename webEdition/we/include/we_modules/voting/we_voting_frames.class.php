@@ -23,6 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_frames extends we_modules_frame{
+	const TAB_PROPERTIES = 1;
+	const TAB_INQUIRY = 2;
+	const TAB_OPTIONS = 3;
+	const TAB_RESULT = 4;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
@@ -68,17 +72,18 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1", 'title' => g_l('modules_voting', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), false, "setTab(2);", ["id" => "tab_2"]);
-			$we_tabs->addTab(g_l('modules_voting', '[options]'), false, "setTab(3);", ["id" => "tab_3"]);
+			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), false, self::TAB_INQUIRY, ["id" => "tab_" . self::TAB_INQUIRY]);
+			$we_tabs->addTab(g_l('modules_voting', '[options]'), false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(g_l('modules_voting', '[result]'), false, "setTab(4);", ["id" => "tab_4"]);
+				$we_tabs->addTab(g_l('modules_voting', '[result]'), false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
 			}
 		}
 
-		$tabsHead = we_tabs::getHeader('
+		$tabsHead = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	parent.edbody.toggle("tab"+top.content.activ_tab);
 	parent.edbody.toggle("tab"+tab);

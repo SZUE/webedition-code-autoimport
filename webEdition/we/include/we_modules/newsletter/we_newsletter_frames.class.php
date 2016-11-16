@@ -125,13 +125,13 @@ class we_newsletter_frames extends we_modules_frame{
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), "self.setTab(" . self::TAB_PROPERTIES . ");", ['title' => g_l('modules_newsletter', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), self::TAB_PROPERTIES, ['title' => g_l('modules_newsletter', '[property]')]);
 
 		if(!$group){
-			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', ($page == self::TAB_MAILING), "self.setTab(" . self::TAB_MAILING . ");", ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
-			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, ($page == self::TAB_EDIT), "self.setTab(" . self::TAB_EDIT . ");", ['title' => g_l('modules_newsletter', '[edit]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', ($page == self::TAB_MAILING), self::TAB_MAILING, ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, ($page == self::TAB_EDIT), self::TAB_EDIT, ['title' => g_l('modules_newsletter', '[edit]')]);
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == self::TAB_REPORTING), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == self::TAB_REPORTING), self::TAB_REPORTING, ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
 			//}
 		}
 
@@ -139,7 +139,8 @@ class we_newsletter_frames extends we_modules_frame{
 				$we_tabs->getHTML() .
 				'</div>'
 		);
-		return $this->getHTMLDocument($body, we_tabs::getHeader() . $this->getJSEditorHeader());
+		return $this->getHTMLDocument($body, we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD ). $this->getJSEditorHeader());
 	}
 
 	/**
@@ -469,19 +470,19 @@ class we_newsletter_frames extends we_modules_frame{
 			$table->setCol($c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_email_field]') . ":&nbsp;");
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [], "value", 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [], 'value', 308));
 		}
 
@@ -1202,7 +1203,7 @@ window.onload=extraInit;');
 			}
 		}
 
-		$js =  $this->View->getJSProperty() .
+		$js = $this->View->getJSProperty() .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js', 'self.focus();');
 
 		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
@@ -1320,7 +1321,7 @@ window.onload=extraInit;');
 				)
 		);
 
-		return $this->getHTMLDocument($body, $js.$jscmd->getCmds());
+		return $this->getHTMLDocument($body, $js . $jscmd->getCmds());
 	}
 
 	private function getHTMLUploadCsv($what){
@@ -1706,7 +1707,7 @@ function cancel(){
 }
 
 function ask(start,group){
-	//WE().util.showConfirm(window,"","'.g_l('modules_newsletter', '[continue_camp]').'");
+	//WE().util.showConfirm(window,"","' . g_l('modules_newsletter', '[continue_camp]') . '");
 	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '&pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
 }
 

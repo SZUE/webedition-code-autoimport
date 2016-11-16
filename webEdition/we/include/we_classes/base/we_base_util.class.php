@@ -416,7 +416,7 @@ abstract class we_base_util{
 			case self::MIME_BY_DATA:
 				if(function_exists('finfo_open')){
 					$finfo = finfo_open(FILEINFO_MIME_TYPE);
-					$mime = finfo_buffer($finfo, we_base_file::loadPart($filepath, 0, 8192, $isCompressed));
+					$mime = finfo_buffer($finfo, we_base_file::loadPart($filepath, 0, 512, $isCompressed));
 					finfo_close($finfo);
 					if($mime){
 						return $mime;

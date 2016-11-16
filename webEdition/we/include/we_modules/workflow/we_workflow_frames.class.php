@@ -63,16 +63,17 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(" . self::TAB_PROPERTIES . ");", ['id' => 'tab_0', 'title' => g_l('tabs', '[module][properties]')]);
-			$we_tabs->addTab(we_base_constants::WE_ICON_CONTENT, false, "setTab(" . self::TAB_OVERVIEW . ");", ['id' => 'tab_1', 'title' => g_l('tabs', '[module][overview]')]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ['id' => 'tab_' . self::TAB_PROPERTIES, 'title' => g_l('tabs', '[module][properties]')]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_CONTENT, false, self::TAB_OVERVIEW, ['id' => 'tab_' . self::TAB_OVERVIEW, 'title' => g_l('tabs', '[module][overview]')]);
 		} else {
-			$we_tabs->addTab(we_base_constants::WE_ICON_INFO, true, '//', ['id' => "tab_0", 'title' => g_l('tabs', '[editor][information]')]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_INFO, true, self::TAB_PROPERTIES, ['id' => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('tabs', '[editor][information]')]);
 		}
 
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 
-		$extraHead = we_tabs::getHeader('
+		$extraHead = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab){
 	top.content.editor.edbody.we_cmd("switchPage",tab);
 }');

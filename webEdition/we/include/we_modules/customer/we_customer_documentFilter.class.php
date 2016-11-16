@@ -32,6 +32,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	const NO_ACCESS = 'f_3';
 	const NO_LOGIN = 'f_4';
 
+
 	/**
 	 * Id of model (document or object)
 	 *
@@ -357,7 +358,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_listview_document $listview
 	 * @return array
 	 */
-	private static function _getFilesWithRestrictionsOfCustomer(we_listview_base $obj, $filter, $classID, $ids){
+	private static function _getFilesWithRestrictionsOfCustomer(we_listview_base $obj, $queryfilter, $classID, $ids){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$cid = !empty($_SESSION['webuser']['registered']) && $_SESSION['webuser']['ID'] ? $_SESSION['webuser']['ID'] : 0;
 		//cache result
@@ -396,7 +397,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 					$filesWithRestrictionsForCustomer[$key][$filter->getModelTable()][] = $filter->getModelId();
 					break;
 				case self::CONTROLONTEMPLATE:
-					if($filter === 'all' || $filter === 'true' || $filter === true){
+					if($queryfilter === 'all' || $queryfilter === 'true' || $queryfilter === true){
 						$filesWithRestrictionsForCustomer[$key][$filter->getModelTable()][] = $filter->getModelId();
 					}
 					break;

@@ -75,3 +75,7 @@ function we_cmd() {
 	} catch (e) {
 	}
 }
+
+function setTab(tab){
+	we_cmd(tab);
+}

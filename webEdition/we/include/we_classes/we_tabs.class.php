@@ -25,6 +25,9 @@
 class we_tabs{
 	private $container = '';
 
+	const CSS = CSS_DIR . 'we_tab.css';
+	const JS_LOAD = 'var weTabs = new (WE().layout.we_tabs)(document, window);';
+
 	public function addTab($text, $isActive = false, $jscmd = '', $attribs = []){
 		$class = ($isActive ? 'tabActive' : 'tabNormal');
 		$att = '';
@@ -34,17 +37,7 @@ class we_tabs{
 			}
 		}
 
-		$this->container .= '<div ' . $att . ' onclick="if(weTabs.allowed_change_edit_page()){weTabs.setTabClass(this); ' . $jscmd . '}else{top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);}" class="' . $class . '"><span class="text">' . $text . '</span></div>';
-	}
-
-	/**
-	 * @deprecated since version 7.1
-	 * @param type $js
-	 * @return type
-	 */
-	static function getHeader($js = ''){
-		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			we_html_element::jsElement('var weTabs=new (WE().layout.we_tabs)(document,window);' . $js);
+		$this->container .= '<div ' . $att . ' onclick="weTabs.clickHandler(window,this,' . $jscmd . ');" class="' . $class . '"><span class="text">' . $text . '</span></div>';
 	}
 
 	function getHTML(){

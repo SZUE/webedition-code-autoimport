@@ -60,18 +60,19 @@ class we_banner_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");", [
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), we_banner_banner::PAGE_PROPERTY, [
 			'title' => g_l('tabs', '[module][properties]')]);
 		if(!$isFolder){
-			$we_tabs->addTab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");");
-			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");", [
+			$we_tabs->addTab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), we_banner_banner::PAGE_PLACEMENT);
+			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == we_banner_banner::PAGE_STATISTICS), we_banner_banner::PAGE_STATISTICS, [
 				'title' => g_l('tabs', '[module][statistics]')]);
 		}
 
-		$extraHead = we_tabs::getHeader('
+		$extraHead = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab){
 	top.content.editor.edbody.we_cmd("switchPage",tab);
-}') . parent::getHeaderJs();
+}');
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([

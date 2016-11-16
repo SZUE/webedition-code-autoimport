@@ -145,7 +145,7 @@ function processEditorCmd($we_doc, $cmd0){
 			$_SESSION['weS']['EditPageNr'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$we_doc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-				return STYLESHEET . we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};');
+				return we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};');
 			}
 			break;
 		case 'delete_link':

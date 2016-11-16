@@ -35,7 +35,7 @@ class we_versions_preview{
 	private $contentOld = '';
 	private static $notmark = ['timestamp',
 		'version'
-	 ];
+	];
 	private static $notshow = ['ID',
 		'documentElements',
 		'documentScheduler',
@@ -54,7 +54,11 @@ class we_versions_preview{
 		'IsClassFolder',
 		'IsNotEditable',
 		'active'
-	 ];
+	];
+
+	const TAB_DIFF = 1;
+	const TAB_NEW = 2;
+	const TAB_OLD = 3;
 
 	public function __construct(){
 		$this->db = $GLOBALS['DB_WE'];
@@ -70,8 +74,8 @@ class we_versions_preview{
 		$this->oldDoc = we_versions_version::loadVersion(
 				' WHERE documentTable="' . $this->db->escape($this->newDoc['documentTable']) . '" AND documentID=' . intval($this->newDoc['documentID']) .
 				($this->compareID ?
-					' AND version=' . $this->compareID :
-					' AND version<' . intval($this->newDoc['version']) . ' ORDER BY version DESC LIMIT 1'));
+				' AND version=' . $this->compareID :
+				' AND version<' . intval($this->newDoc['version']) . ' ORDER BY version DESC LIMIT 1'));
 
 
 		switch($this->newDoc['ContentType']){
@@ -90,12 +94,12 @@ class we_versions_preview{
 
 	private function getTabsBody(){
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(g_l('versions', '[versionDiffs]'), false, "setTab(1);", ["id" => "tab_1"]);
+		$we_tabs->addTab(g_l('versions', '[versionDiffs]'), false, self::TAB_DIFF, ["id" => "tab_" . self::TAB_DIFF]);
 		if(!$this->isObj){
-			$we_tabs->addTab(g_l('versions', '[previewVersionNew]'), false, "setTab(2);", ["id" => "tab_2"]);
+			$we_tabs->addTab(g_l('versions', '[previewVersionNew]'), false, self::TAB_NEW, ["id" => "tab_" . self::TAB_NEW]);
 		}
 		if(!empty($this->oldDoc) && !$this->isObj){
-			$we_tabs->addTab(g_l('versions', '[previewVersionOld]'), false, "setTab(3);", ["id" => "tab_3"]);
+			$we_tabs->addTab(g_l('versions', '[previewVersionOld]'), false, self::TAB_OLD, ["id" => "tab_" . self::TAB_OLD]);
 		}
 
 		return $we_tabs->getHTML() . we_html_element::jsElement('
@@ -113,8 +117,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 		if($this->newDoc['documentCustomFilter']){
 			$newCustomFilter = we_unserialize((substr_compare($this->newDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
-					html_entity_decode(urldecode($this->newDoc['documentCustomFilter']), ENT_QUOTES) :
-					$this->newDoc['documentCustomFilter'])
+				html_entity_decode(urldecode($this->newDoc['documentCustomFilter']), ENT_QUOTES) :
+				$this->newDoc['documentCustomFilter'])
 			);
 		} else {
 			$newCustomFilter = [];
@@ -122,8 +126,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		if(isset($this->oldDoc['documentCustomFilter'])){
 			if($this->oldDoc['documentCustomFilter']){
 				$oldCustomFilter = we_unserialize((substr_compare($this->oldDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($this->oldDoc['documentCustomFilter']), ENT_QUOTES) :
-						$this->oldDoc['documentCustomFilter'])
+					html_entity_decode(urldecode($this->oldDoc['documentCustomFilter']), ENT_QUOTES) :
+					$this->oldDoc['documentCustomFilter'])
 				);
 			} else {
 				$oldCustomFilter = [];
@@ -144,8 +148,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 					$oldVal = we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']);
 				} else {
 					$oldVal = (is_array($val) ?
-							we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']) :
-							'');
+						we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']) :
+						'');
 				}
 
 				$contentDiff .= '<tr>
@@ -165,8 +169,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 					$newVal = we_versions_version::showValue($key, $val, $this->newDoc['documentTable']);
 					if(!empty($oldCustomFilter)){
 						$oldVal = (!is_array($oldCustomFilter[$key]) ?
-								we_versions_version::showValue($key, $oldCustomFilter[$key], $this->oldDoc['documentTable']) :
-								'');
+							we_versions_version::showValue($key, $oldCustomFilter[$key], $this->oldDoc['documentTable']) :
+							'');
 
 						if($newVal != $oldVal){
 							$mark = true;
@@ -178,8 +182,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 					$newVal = we_versions_version::showValue($key, $val, $this->newDoc['documentTable']);
 					if(!empty($oldCustomFilter)){
 						$oldVal = (isset($oldCustomFilter[$key]) && is_array($oldCustomFilter[$key]) ?
-								we_versions_version::showValue($key, $oldCustomFilter[$key], $this->oldDoc['documentTable']) :
-								'');
+							we_versions_version::showValue($key, $oldCustomFilter[$key], $this->oldDoc['documentTable']) :
+							'');
 
 						if($newVal != $oldVal){
 							$mark = true;
@@ -209,8 +213,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 		if($this->newDoc['documentScheduler']){
 			$newDocScheduler = $this->newDoc['documentScheduler'] ? we_unserialize((substr_compare($this->newDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($this->newDoc['documentScheduler']), ENT_QUOTES) :
-						$this->newDoc['documentScheduler'])
+					html_entity_decode(urldecode($this->newDoc['documentScheduler']), ENT_QUOTES) :
+					$this->newDoc['documentScheduler'])
 				) :
 				[];
 		} else {
@@ -219,8 +223,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		if(isset($this->oldDoc['documentScheduler'])){
 			if($this->oldDoc['documentScheduler']){
 				$oldDocScheduler = $this->oldDoc['documentScheduler'] ? we_unserialize((substr_compare($this->oldDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
-							html_entity_decode(urldecode($this->oldDoc['documentScheduler']), ENT_QUOTES) :
-							$this->oldDoc['documentScheduler'])
+						html_entity_decode(urldecode($this->oldDoc['documentScheduler']), ENT_QUOTES) :
+						$this->oldDoc['documentScheduler'])
 					) :
 					[];
 			} else {
@@ -247,8 +251,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 						$oldVal = we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']);
 					} else {
 						$oldVal = (is_array($val) ?
-								we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']) :
-								'');
+							we_versions_version::showValue($key, $val, $this->oldDoc['documentTable']) :
+							'');
 					}
 
 
@@ -279,8 +283,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 						if(!empty($oldDocScheduler)){
 							$oldVal = (isset($oldDocScheduler[$k][$key]) && !is_array($oldDocScheduler[$k][$key]) ?
-									we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $this->oldDoc['documentTable']) :
-									'');
+								we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $this->oldDoc['documentTable']) :
+								'');
 
 							if($newVal != $oldVal){
 								$mark = true;
@@ -292,8 +296,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 						$newVal = we_versions_version::showValue($key, $val, $this->newDoc['documentTable']);
 						if(!empty($oldDocScheduler)){
 							$oldVal = (isset($oldDocScheduler[$k][$key]) && is_array($oldDocScheduler[$k][$key]) ?
-									we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $this->oldDoc['documentTable']) :
-									'');
+								we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $this->oldDoc['documentTable']) :
+								'');
 
 							if($newVal != $oldVal){
 								$mark = true;
@@ -322,8 +326,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 			'</td></tr></thead>';
 		if($this->newDoc['documentElements']){
 			$newDocElements = we_unserialize((substr_compare($this->newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-					html_entity_decode(urldecode($this->newDoc['documentElements']), ENT_QUOTES) :
-					$this->newDoc['documentElements'])
+				html_entity_decode(urldecode($this->newDoc['documentElements']), ENT_QUOTES) :
+				$this->newDoc['documentElements'])
 			);
 		} else {
 			$newDocElements = [];
@@ -332,8 +336,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		if(isset($this->oldDoc['documentElements'])){
 			if($this->oldDoc['documentElements']){
 				$oldDocElements = we_unserialize((substr_compare($this->oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($this->oldDoc['documentElements']), ENT_QUOTES) :
-						$this->oldDoc['documentElements'])
+					html_entity_decode(urldecode($this->oldDoc['documentElements']), ENT_QUOTES) :
+					$this->oldDoc['documentElements'])
 				);
 			} else {
 				$oldDocElements = [];
@@ -349,8 +353,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 				}
 
 				$newVal = ($k == we_base_constants::WE_VARIANTS_ELEMENT_NAME ?
-						we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
-						(!empty($v['dat']) ? $v['dat'] : '')
+					we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
+					(!empty($v['dat']) ? $v['dat'] : '')
 					);
 
 				$mark = false;
@@ -431,11 +435,11 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 		if(!($this->isObj || $this->isTempl)){
 			//get path of preview-file
-			$binaryPathNew = $this->newDoc['binaryPath']? :
+			$binaryPathNew = $this->newDoc['binaryPath'] ?:
 				f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->newDoc['version']) . ' AND documentTable="' . $this->db->escape($this->newDoc['documentTable']) . '" AND documentID=' . intval($this->newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 
 			if($this->oldDoc){
-				$binaryPathOld = $this->oldDoc['binaryPath']? :
+				$binaryPathOld = $this->oldDoc['binaryPath'] ?:
 					f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->oldDoc['version']) . ' AND documentTable="' . $this->db->escape($this->oldDoc['documentTable']) . '" AND documentID=' . intval($this->oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 			}
 
@@ -455,11 +459,11 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		}
 		if($this->isTempl){
 			$nDocElements = ($this->newDoc['documentElements'] ?
-					we_unserialize((substr_compare($this->newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-							html_entity_decode(urldecode($this->newDoc['documentElements']), ENT_QUOTES) :
-							$this->newDoc['documentElements'])
-					) :
-					[]);
+				we_unserialize((substr_compare($this->newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+					html_entity_decode(urldecode($this->newDoc['documentElements']), ENT_QUOTES) :
+					$this->newDoc['documentElements'])
+				) :
+				[]);
 			$this->contentNew = '<textarea style="width:99%;height:99%">' . ($nDocElements ? $nDocElements['data']['dat'] : '') . '</textarea>';
 		}
 
@@ -469,11 +473,11 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 		if(!empty($this->oldDoc) && $this->isTempl){
 			$oDocElements = ($this->oldDoc['documentElements'] ?
-					we_unserialize((substr_compare($this->oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-							html_entity_decode(urldecode($this->oldDoc['documentElements']), ENT_QUOTES) :
-							$this->oldDoc['documentElements'])
-					) :
-					[]);
+				we_unserialize((substr_compare($this->oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+					html_entity_decode(urldecode($this->oldDoc['documentElements']), ENT_QUOTES) :
+					$this->oldDoc['documentElements'])
+				) :
+				[]);
 			$this->contentOld = '<textarea style="width:99%;height:99%">' . ($oDocElements ? $oDocElements['data']['dat'] : '') . '</textarea>';
 		}
 
@@ -512,7 +516,7 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 			<td></td>
 	  		<td class="defaultfont bold">' . g_l('versions', '[VersionNew]') . '</td>' .
 			(empty($this->oldDoc) ? '' :
-				'<td class="defaultfont bold">' . g_l('versions', '[VersionOld]') . '</td>') .
+			'<td class="defaultfont bold">' . g_l('versions', '[VersionOld]') . '</td>') .
 			'</tr></thead>';
 
 		foreach($this->newDoc as $k => $v){
@@ -523,8 +527,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 			$oldVersion = true;
 			$newVal = ($k === "ParentID" ?
-					$this->newDoc['Path'] :
-					we_versions_version::showValue($k, $this->newDoc[$k], $this->newDoc['documentTable'])
+				$this->newDoc['Path'] :
+				we_versions_version::showValue($k, $this->newDoc[$k], $this->newDoc['documentTable'])
 				);
 
 			if($k === "Owners" && $this->newDoc[$k] == ""){
@@ -534,8 +538,8 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 			$mark = false;
 			if(!empty($this->oldDoc)){
 				$oldVal = ($k === "ParentID" ?
-						$this->oldDoc['Path'] :
-						we_versions_version::showValue($k, $this->oldDoc[$k], $this->oldDoc['documentTable']));
+					$this->oldDoc['Path'] :
+					we_versions_version::showValue($k, $this->oldDoc[$k], $this->oldDoc['documentTable']));
 
 				if($k === "Owners" && $this->oldDoc[$k] == ""){
 					$oldVal = g_l('versions', '[CreatorID]');
@@ -560,8 +564,9 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 	}
 
 	public function showHtml(){
-		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ? : DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
-			we_tabs::getHeader('
+		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ?: DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
+			we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 var activ_tab = 1;
 
 function toggle(id) {

@@ -101,30 +101,30 @@ class we_customer_frames extends we_modules_frame{
 
 		$branches_names = $this->View->customer->getBranchesNames();
 
-		$tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab('" . g_l('modules_customer', '[common]') . "');", ["id" => "common", 'title' => g_l('modules_customer', '[common]')]);
+		$tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, '\'' . g_l('modules_customer', '[common]') . '\'', ["id" => "common", 'title' => g_l('modules_customer', '[common]')]);
 		$extraJS = 'var aTabs={' .
 			"'" . g_l('modules_customer', '[common]') . "':'common',";
 		$branchCount = 0;
 		foreach($branches_names as $branch){
-			$tabs->addTab('<i class="fa fa-lg fa-object-group"></i>', false, "setTab('" . $branch . "');", ['id' => 'branch_' . $branchCount, 'title' => $branch]);
+			$tabs->addTab('<i class="fa fa-lg fa-object-group"></i>', false, '\'' . $branch . '\'', ['id' => 'branch_' . $branchCount, 'title' => $branch]);
 			$extraJS .= "'" . $branch . "':'branch_" . $branchCount . "',";
 			$branchCount++;
 		}
-		$tabs->addTab('<i class="fa fa-lg fa-object-ungroup"></i>', false, "setTab('" . g_l('modules_customer', '[other]') . "');", ['id' => 'other', 'title' => g_l('modules_customer', '[other]')]);
-		$tabs->addTab('<i class="fa fa-lg fa-list"></i>', false, "setTab('" . g_l('modules_customer', '[all]') . "');", ['id' => 'all', 'title' => g_l('modules_customer', '[all]')]);
+		$tabs->addTab('<i class="fa fa-lg fa-object-ungroup"></i>', false, '\'' . g_l('modules_customer', '[other]') . '\'', ['id' => 'other', 'title' => g_l('modules_customer', '[other]')]);
+		$tabs->addTab('<i class="fa fa-lg fa-list"></i>', false, '\'' . g_l('modules_customer', '[all]') . '\'', ['id' => 'all', 'title' => g_l('modules_customer', '[all]')]);
 		$extraJS .= "'" . g_l('modules_customer', '[other]') . "':'other'," .
 			"'" . g_l('modules_customer', '[all]') . "':'all',";
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") )
 
 		if(defined('SHOP_ORDER_TABLE')){
-			$tabs->addTab('<i class="fa fa-lg fa-shopping-cart"></i>', false, "setTab('" . g_l('modules_customer', '[orderTab]') . "');", ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
+			$tabs->addTab('<i class="fa fa-lg fa-shopping-cart"></i>', false, '\'' . g_l('modules_customer', '[orderTab]') . '\'', ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
 			$extraJS .= "'" . g_l('modules_customer', '[orderTab]') . "':'orderTab',";
 		}
 		if(defined('OBJECT_FILES_TABLE')){
-			$tabs->addTab('<i class="fa fa-lg fa-file-o"></i>', false, "setTab('" . g_l('modules_customer', '[objectTab]') . "');", ['id' => 'objectTab', 'title' => g_l('modules_customer', '[objectTab]')]);
+			$tabs->addTab('<i class="fa fa-lg fa-file-o"></i>', false, '\'' . g_l('modules_customer', '[objectTab]') . '\'', ['id' => 'objectTab', 'title' => g_l('modules_customer', '[objectTab]')]);
 			$extraJS .= "'" . g_l('modules_customer', '[objectTab]') . "':'objectTab',";
 		}
-		$tabs->addTab('<i class="fa fa-lg fa-file"></i>', false, "setTab('" . g_l('modules_customer', '[documentTab]') . "');", ['id' => 'documentTab', 'title' => g_l('modules_customer', '[documentTab]')]);
+		$tabs->addTab('<i class="fa fa-lg fa-file"></i>', false, '\'' . g_l('modules_customer', '[documentTab]') . '\'', ['id' => 'documentTab', 'title' => g_l('modules_customer', '[documentTab]')]);
 		$extraJS .= "'" . g_l('modules_customer', '[documentTab]') . "':'documentTab'"
 			. '};';
 
@@ -135,14 +135,6 @@ class we_customer_frames extends we_modules_frame{
 		  )
 		  );
 		 */
-		$extraJS .= 'function loaded(){
-	weTabs.setFrameSize()
-	if(top.content.activ_tab){
-		document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
-	}else{
-		document.getElementById("common").className="tabActive";
-	}
-}';
 
 		$text = $this->View->customer->Username;
 
@@ -158,11 +150,22 @@ class we_customer_frames extends we_modules_frame{
 				)
 		);
 
-		return $this->getHTMLDocument($body, we_tabs::getHeader('
+		return $this->getHTMLDocument($body, we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	top.content.activ_tab=tab;
 	parent.edbody.we_cmd("switchPage",tab);
-}' .
+}
+
+function loaded(){
+	weTabs.setFrameSize()
+	if(top.content.activ_tab){
+		document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
+	}else{
+		document.getElementById("common").className="tabActive";
+	}
+}
+' .
 					$extraJS));
 	}
 

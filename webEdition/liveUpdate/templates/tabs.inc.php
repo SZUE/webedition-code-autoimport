@@ -30,19 +30,22 @@
 // initialise tabs
 $tabs = new we_tabs();
 foreach($this->Data['allTabs'] as $tabname){
-	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname), "top.updatecontent.location='?section=$tabname';");
+	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname), $tabname);
 }
 
 
 // get output
 
-$bodyContent = '<div id="main">' .
-	$tabs->getHTML() .
-	'</div>';
+$bodyContent = '<div id="main">' . $tabs->getHTML() . '</div>';
 
 $body = we_html_element::htmlBody([
 		'id' => 'eHeaderBody',
 		'onload' => 'weTabs.setFrameSize();',
 		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader(), $body);
+echo we_html_tools::getHtmlTop('', '', '', we_tabs::CSS .
+	we_html_element::jsElement('
+function setTab(tab){
+	top.updatecontent.location="?section="+tab;
+}
+' . we_tabs::JS_LOAD), $body);

@@ -73,23 +73,24 @@ class we_search_frames extends we_modules_frame{
 
 		//tabs for entries
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), false, "setTab(" . self::TAB_DOCUMENTS . ");", ['id' => 'tab_1', 'style' => 'display:' . $displayEntry]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), false, self::TAB_DOCUMENTS, ['id' => 'tab_1', 'style' => 'display:' . $displayEntry]);
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), false, "setTab(" . self::TAB_TEMPLATES . ");", ['id' => 'tab_2',
+			$we_tabs->addTab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), false, self::TAB_TEMPLATES, ['id' => 'tab_2',
 				'style' => 'display:' . $displayEntry]);
 		}
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
-			$we_tabs->addTab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), false, "setTab(" . self::TAB_MEDIA . ");", ['id' => 'tab_5', 'style' => 'display:' . $displayEntry]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), false, self::TAB_MEDIA, ['id' => 'tab_5', 'style' => 'display:' . $displayEntry]);
 		}
-		$we_tabs->addTab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), false, "setTab(" . self::TAB_ADVANCED . ");", ['id' => 'tab_3',
+		$we_tabs->addTab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), false, self::TAB_ADVANCED, ['id' => 'tab_3',
 			'style' => 'display:' . $displayEntry]);
 
 		//tabs for folders
-		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
+		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, self::TAB_PROPERTIES, ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
 
 		$tabNr = $this->getTab();
-		$tabsHead = we_tabs::getHeader('top.content.activ_tab = ' . $tabNr . ';
+		$tabsHead = we_tabs::CSS . we_html_element::jsElement(
+				we_tabs::JS_LOAD . 'top.content.activ_tab = ' . $tabNr . ';
 function setTab(tab) {
 	switch (tab) {
 		default: // just toggle content to show
