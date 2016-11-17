@@ -174,7 +174,7 @@ function init(tab, title, sBinary, _sCsv) {
 	_sInitTitle_ = title;
 	_fo = document.forms[0];
 	initPrefs();
-	categories_edit = new (WE().util.multi_edit)("categories", document.we_form, 0, widget.cats.del, 390, false);
+	categories_edit = new (WE().util.multi_edit)("categories", window, 0, widget.cats.del, 390, false);
 	categories_edit.addVariant();
 	document.we_form.CategoriesControl.value = categories_edit.name;
 	categories_edit.showVariant(0);
