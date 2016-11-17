@@ -24,15 +24,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.multi_edit = function (parentId, form, itemNum, but, width, editable) {
+WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 	this.variantCount = 0;
 	this.itemCount = 0;
 	this.currentVariant = 0;
 	this.button = "";
 	this.defWidth = width;
+	this.win = win;
 	this.name = "me" + Math.round(Math.random() * 10000);
-	this.parent = document.getElementById(parentId);
-	this.form = form;
+	this.parent = this.win.document.getElementById(parentId);
+	this.form = this.win.document.we_form;
 	this.editable = editable;
 	this.relatedItems = [];
 
@@ -67,7 +68,7 @@ WE().util.multi_edit = function (parentId, form, itemNum, but, width, editable) 
 
 		this.variantCount--;
 		for (var z = 0; z < this.itemCount; z++) {
-			var item = document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + z);
+			var item = this.win.document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + z);
 			this.parent.removeChild(item);
 		}
 		this.currentVariant = (variant < (this.variantCount - 1) ?
@@ -112,11 +113,11 @@ WE().util.multi_edit = function (parentId, form, itemNum, but, width, editable) 
 					this.form.elements[this.name + "_variant" + i + "_" + this.name + "_item" + (j - 1)].value = this.form.elements[this.name + "_variant" + i + "_" + this.name + "_item" + j].value;
 				}
 			}
-			var item = document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
+			var item = this.win.document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
 			this.parent.removeChild(item);
 		}
 
-		var item1 = document.getElementById(this.name + "_item" + this.itemCount);
+		var item1 = this.win.document.getElementById(this.name + "_item" + this.itemCount);
 		this.parent.removeChild(item1);
 		if (this.relatedItems[child]) {
 			this.parent.removeChild(this.relatedItems[child]);
@@ -143,7 +144,7 @@ WE().util.multi_edit = function (parentId, form, itemNum, but, width, editable) 
 				if (this.editable) {
 					this.form.elements[this.name + "_item" + i].value = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
 				} else {
-					var item = document.getElementById(this.name + "_item_label_" + i);
+					var item = this.win.document.getElementById(this.name + "_item_label_" + i);
 					item.innerHTML = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
 				}
 			}
