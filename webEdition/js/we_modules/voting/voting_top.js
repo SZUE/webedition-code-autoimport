@@ -112,26 +112,25 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
-			if (top.content.editor.edbody.loaded) {
-				top.content.editor.edbody.document.we_form.cmd.value = args[0];
-				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			if (!top.content.editor.edbody.loaded) {
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				break;
+			}
+			top.content.editor.edbody.document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			if (top.content.editor.edbody.document.we_form.IsFolder.value !== '1') {
 				top.content.editor.edbody.document.we_form.owners_name.value = top.content.editor.edbody.owners_label.name;
 				top.content.editor.edbody.document.we_form.owners_count.value = top.content.editor.edbody.owners_label.itemCount;
-				if (top.content.editor.edbody.document.we_form.IsFolder.value !== '1') {
-					top.content.editor.edbody.document.we_form.question_name.value = top.content.editor.edbody.question_edit.name;
-					top.content.editor.edbody.document.we_form.answers_name.value = top.content.editor.edbody.answers_edit.name;
-					top.content.editor.edbody.document.we_form.variant_count.value = top.content.editor.edbody.answers_edit.variantCount;
-					top.content.editor.edbody.document.we_form.item_count.value = top.content.editor.edbody.answers_edit.itemCount;
-					top.content.editor.edbody.document.we_form.iptable_name.value = top.content.editor.edbody.iptable_label.name;
-					top.content.editor.edbody.document.we_form.iptable_count.value = top.content.editor.edbody.iptable_label.itemCount;
-				}
-
-				top.content.editor.edbody.submitForm();
-				top.content.usetHot();
-			} else {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.content.editor.edbody.document.we_form.question_name.value = top.content.editor.edbody.question_edit.name;
+				top.content.editor.edbody.document.we_form.answers_name.value = top.content.editor.edbody.answers_edit.name;
+				top.content.editor.edbody.document.we_form.variant_count.value = top.content.editor.edbody.answers_edit.variantCount;
+				top.content.editor.edbody.document.we_form.item_count.value = top.content.editor.edbody.answers_edit.itemCount;
+				top.content.editor.edbody.document.we_form.iptable_name.value = top.content.editor.edbody.iptable_label.name;
+				top.content.editor.edbody.document.we_form.iptable_count.value = top.content.editor.edbody.iptable_label.itemCount;
 			}
 
+			top.content.editor.edbody.submitForm();
+			top.content.usetHot();
 			break;
 
 		case "voting_edit":
