@@ -203,7 +203,7 @@ parent.document.title = "' . $title . '";
 					}
 
 					$js = ($newone ?
-							'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
+							'top.content.treeData.makeNewEntry({id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
 							'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
 						);
 					echo we_html_element::jsElement($js .

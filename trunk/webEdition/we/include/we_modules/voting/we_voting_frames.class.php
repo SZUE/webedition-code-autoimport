@@ -149,15 +149,14 @@ function setTab(tab) {
 			function setMultiEdits() {';
 
 		if($this->View->voting->IsFolder == 1){
-			$variant_js .='}';
-			return $js . we_html_element::jsElement($variant_js);
+			return $js . we_html_element::jsElement($variant_js . '}');
 		}
 		$variant_js .=
 			'question_edit = new multi_edit("question",document.we_form,1,"",' . 520 . ',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
-				answers_edit.SetImageIDText("' . g_l('modules_voting', '[imageID_text]') . '");
-				answers_edit.SetMediaIDText("' . g_l('modules_voting', '[mediaID_text]') . '");
-				answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");';
+answers_edit.SetImageIDText("' . g_l('modules_voting', '[imageID_text]') . '");
+answers_edit.SetMediaIDText("' . g_l('modules_voting', '[mediaID_text]') . '");
+answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");';
 
 		for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
 			$variant_js .= 'answers_edit.addItem("2");';
@@ -205,7 +204,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 
 
-		$variant_js .= ' owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);
+		$variant_js .= 'var owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);
 			owners_label.addVariant();';
 		if(is_array($this->View->voting->Owners)){
 			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
@@ -375,14 +374,13 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			array(
 				'headline' => g_l('modules_voting', '[headline_datatype]'),
 				'html' =>
-				we_html_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') .
-				we_html_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') .
-				we_html_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting', '[AllowImages]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleImages();') .
-				we_html_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting', '[AllowMedia]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMedia();') .
-				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting', '[AllowSuccessor]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'Successor\')') .
+				we_html_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') . we_html_element::htmlBr() .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') . we_html_element::htmlBr() .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting', '[AllowImages]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleImages();') . we_html_element::htmlBr() .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting', '[AllowMedia]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMedia();') . we_html_element::htmlBr() .
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting', '[AllowSuccessor]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'Successor\')') . we_html_element::htmlBr() .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor', '', $this->View->voting->Successor, '', 'style="width: 520px;display:' . $displaySuccessor . '" id="Successor" onchange="top.content.setHot();" '), '') .
-				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
-				,
+				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();'),
 				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
@@ -675,7 +673,7 @@ function refreshTexts(){
 		$t = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
-		$out = we_html_element::jsElement('
+		return we_html_element::jsElement('
 var table = "' . FILE_TABLE . '";
 function toggle(id){
 	var elem = document.getElementById(id);
@@ -686,9 +684,8 @@ function setVisible(id,visible){
 	var elem = document.getElementById(id);
 	if(visible==true) elem.style.display = "block";
 	else elem.style.display = "none";
-}');
-
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+}').
+			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			(!$this->View->voting->IsFolder ?
 				(
 				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
@@ -696,8 +693,6 @@ function setVisible(id,visible){
 				we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
 				) : '') .
 			$this->getHTMLVariant();
-
-		return $out;
 	}
 
 	function getHTMLDirChooser(){
