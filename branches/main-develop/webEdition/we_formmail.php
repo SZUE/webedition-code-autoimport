@@ -138,7 +138,9 @@ function ok_page(){
 	if(($ok_page = we_base_request::_(we_base_request::URL, 'ok_page'))){
 		redirect($ok_page);
 	} else {
-		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
+			echo we_html_tools::getHtmlTop('', '', '', '', getHtmlTag('body', ['class' => 'weEditorBody'], '', false, true) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!'), '') .
+		'</body>');
 		exit();
 	}
 }
