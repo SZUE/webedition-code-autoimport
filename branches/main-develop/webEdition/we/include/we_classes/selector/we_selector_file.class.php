@@ -111,6 +111,13 @@ class we_selector_file{
 			case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"we/folder","we/newsletter") AS ContentType';
 				break;
+			case defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE':
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/banner") AS ContentType';
+				break;
+			case defined('VOTING_TABLE') ? VOTING_TABLE : 'VOTING_TABLE':
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/voting") AS ContentType';
+				break;
+
 			default:
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 		}
