@@ -68,7 +68,7 @@ function we_parse_tag_listview($attribs, $content, array $arr){
 function we_tag_listview(array $attribs){
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
-	$class = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
+	$classid = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
 	$we_lv_cats = we_base_request::_(we_base_request::WEFILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs, '', we_base_request::WEFILELIST));
 	$categoryids = weTag_getAttribute('categoryids', $attribs, '', we_base_request::INTLIST);
 	$we_lv_categoryids = we_base_request::_(we_base_request::INTLIST, 'we_lv_categoryids_' . $name, $categoryids);
@@ -152,7 +152,7 @@ function we_tag_listview(array $attribs){
 			$GLOBALS['lv'] = new we_listview_document($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 		case 'search':
-			$GLOBALS['lv'] = new we_listview_search($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_listview_search($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $classid, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'object':
 			if(!defined('OBJECT_TABLE')){
@@ -163,10 +163,10 @@ function we_tag_listview(array $attribs){
 			if($id === 0 || $id === '0'){
 				return '';
 			}
-			if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class))){
-				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
+			if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid))){
+				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $classid, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else {
-				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
+				t_e('warning', 'Class with id=' . intval($classid) . ' does not exist');
 				unset($GLOBALS['lv']);
 				return false;
 			}
