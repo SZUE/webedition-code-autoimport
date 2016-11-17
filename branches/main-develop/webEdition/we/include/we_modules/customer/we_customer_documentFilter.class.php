@@ -272,7 +272,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * param webeditionDocument or objectFile
 	 * @param mixed $model
 	 */
-	public static function saveForModel(&$model){
+	public static function saveForModel($model){
 		$db = new DB_WE();
 
 		// check if there were any changes?
@@ -315,7 +315,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * param webeditionDocument or objectFile
 	 * @param mixed $model
 	 */
-	function deleteForModel(&$model, we_database_base $db = null){
+	function deleteForModel($model, we_database_base $db = null){
 		if($model->ID){
 			$db = ($db ? : new DB_WE());
 			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelTable="' . stripTblPrefix($model->Table) . '"');
