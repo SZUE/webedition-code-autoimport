@@ -883,9 +883,6 @@ var WebEdition = {
 				return string;
 			}
 		},
-		weCmdEnc: function (inp) {//FIXME: deprecated
-			return 'WECMDENC_' + this.Base64.encode(inp);
-		},
 		loadConsts: function (doc, check) {
 			var cur = WE().consts;
 			var found = true;

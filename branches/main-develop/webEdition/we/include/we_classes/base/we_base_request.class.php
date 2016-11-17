@@ -97,9 +97,8 @@ class we_base_request{
 				//$var = serialize(we_unserialize($var));
 				return;
 			case self::CMD:
-				$var = strpos($var, 'WECMDENC_') !== false ?
-					base64_decode(urldecode(substr($var, 9))) :
-					$var;
+				//FIXME: remove?!
+				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
 			case self::UNIT:
 				$regs = []; //FIMXE: check for %d[em,ex,pt,%...]?
@@ -393,15 +392,6 @@ class we_base_request{
 
 	public static function getAllTables(){
 		return self::$allTables;
-	}
-
-	/**
-	 * @internal
-	 * @param type $str
-	 * @return type
-	 */
-	public static function encCmd($str){
-		return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
 	}
 
 	private static function unparse_url($parsed_url){

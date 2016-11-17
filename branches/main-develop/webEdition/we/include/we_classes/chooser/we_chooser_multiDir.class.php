@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_chooser_multiDir{
-	var $width = 388;
-	var $table = FILE_TABLE;
+	protected $width = 388;
+	protected $table = FILE_TABLE;
 	protected $db;
 	var $ids = '';
 	var $ws = '';
