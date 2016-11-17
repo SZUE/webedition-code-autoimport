@@ -39,13 +39,22 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 
 	// now get all childs of this folder
 	$db = new DB_WE();
+	$ct = array(
+		we_base_ContentTypes::FOLDER,
+		we_base_ContentTypes::WEDOCUMENT,
+		we_base_ContentTypes::OBJECT_FILE,
+		we_base_ContentTypes::APPLICATION,
+		we_base_ContentTypes::AUDIO,
+		we_base_ContentTypes::VIDEO,
+		we_base_ContentTypes::FLASH,
+	);
 
-	$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $theFolder->Path . '/%"');
+	$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE ContentType IN("' . implode('","', $ct) . '" ) AND Path LIKE "' . $theFolder->Path . '/%"');
 
 	$allChildsJS = 'var _allChilds = {};';
 
 	while($db->next_record()){
-		$allChildsJS .= "_allChilds['id_" . $db->f("ID") . "'] = '" . $db->f("ContentType") . "';";
+		$allChildsJS .= "_allChilds['id_" . $db->f('ID') . "'] = '" . $db->f('ContentType') . "';";
 	}
 
 	$pb = new we_progressBar(0, true);
