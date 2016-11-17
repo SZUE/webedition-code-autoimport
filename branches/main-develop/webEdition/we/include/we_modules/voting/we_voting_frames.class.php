@@ -133,6 +133,7 @@ function setTab(tab) {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
 		$del_but1 = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
+		// IMI: replace inline js
 		$Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
@@ -149,7 +150,7 @@ function setTab(tab) {
 		if($this->View->voting->IsFolder == 1){
 			return $js . we_html_element::jsElement($variant_js . '}');
 		}
-		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",document.we_form,1,"",' . 520 . ',true);
+		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",window,1,"",' . 520 . ',true);
 answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
 answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
 answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
@@ -197,7 +198,7 @@ answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images(
 answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
 answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
 
-		$variant_js .= 'owners_label = new (WE().util.multi_edit)("owners",document.we_form,0,"' . $del_but . '",510,false);
+		$variant_js .= 'owners_label = new (WE().util.multi_edit)("owners",window,0,"' . $del_but . '",510,false);
 owners_label.addVariant();';
 		if(is_array($this->View->voting->Owners)){
 			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
@@ -209,7 +210,7 @@ owners_label.addVariant();';
 			}
 		}
 		$variant_js .= ' owners_label.showVariant(0);
-iptable_label = new (WE().util.multi_edit)("iptable",document.we_form,0,"' . $del_but . '",510,false);
+iptable_label = new (WE().util.multi_edit)("iptable",window,0,"' . $del_but . '",510,false);
 iptable_label.addVariant();';
 
 		if(is_array($this->View->voting->BlackList)){
@@ -233,6 +234,8 @@ iptable_label.addVariant();';
 		$table->setColContent(1, 1, we_html_element::htmlDiv(['id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;']));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
+
+		// IMI: replace inline js
 		$table->setCol(2, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_element::htmlHiddens([$idname => '',
 				$textname => '']) .
 			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . $idname . "','" . $textname . "','',document.forms[0].elements['" . $idname . "'].value,'users_add_owner','','',1);")

@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
+WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, formName) {
 	this.variantCount = 0;
 	this.itemCount = 0;
 	this.currentVariant = 0;
@@ -33,7 +33,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 	this.win = win;
 	this.name = "me" + Math.round(Math.random() * 10000);
 	this.parentId = parentId;
-	this.form = this.win.document.we_form;
+	this.form = this.win.document.forms[(formName ? formName : 'we_form')];
 	this.editable = editable;
 	this.relatedItems = [];
 

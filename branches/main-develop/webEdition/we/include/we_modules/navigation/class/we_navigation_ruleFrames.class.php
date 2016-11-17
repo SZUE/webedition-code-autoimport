@@ -95,6 +95,7 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(275);
 		$yuiSuggest->setSelectButton(
+			// IMI: replace enc (eval)
 			we_html_button::create_button('select', "javascript:we_cmd('we_selector_file', document.we_form.elements.NavigationID.value, '" . NAVIGATION_TABLE . "', 'document.we_form.elements.NavigationID.value', 'document.we_form.elements.NavigationIDPath.value')"), 10);
 
 		$weAcSelector = $yuiSuggest->getHTML();
@@ -205,6 +206,7 @@ var dependencies = {
 	}
 
 	function getHTMLCategory(){
+		// IMI: replace inline js
 		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths, top.fileSelect.data.allIDs);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
@@ -225,7 +227,7 @@ var dependencies = {
 				'CategoriesCount' => 0
 			]) .
 			we_html_element::jsElement('
-var categories_edit = new (WE().util.multi_edit)("categories",document.we_form,0,"' . $del_but . '",400,false);
+var categories_edit = new (WE().util.multi_edit)("categories",window,0,"' . $del_but . '",400,false);
 categories_edit.addVariant();
 document.we_form.CategoriesControl.value = categories_edit.name;
 categories_edit.showVariant(0);
