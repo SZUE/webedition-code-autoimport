@@ -1076,7 +1076,7 @@ class we_document extends we_root{
 			);
 	}
 
-	static function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
+	protected static function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
 		$db = ($db ?: new DB_WE());
 
 // Bug Fix 8170&& 8166
@@ -1120,7 +1120,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
+	public static function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 		//$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(!empty($GLOBALS['we_link_not_published'])){
@@ -1172,7 +1172,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $useName = '', $hidedirindex = false, $objectseourls = false){
+	public static function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 //    define some arrays to order the attribs to image, link or js-window ...
 			$popUpAtts = ['jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation'];

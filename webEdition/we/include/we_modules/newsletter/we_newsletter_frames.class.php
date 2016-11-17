@@ -682,7 +682,7 @@ class we_newsletter_frames extends we_modules_frame{
 	 * @return unknown
 	 */
 	function getHTMLEmails($group){
-		$arr = $this->View->newsletter->getEmailsFromList(oldHtmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
+		$arr = we_newsletter_base::getEmailsFromList(oldHtmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
 		// Buttons to handle the emails in  the email list
 		$buttons_table = new we_html_table(['class' => 'default withSpace'], 4, 1);
 		$buttons_table->setCol(0, 0, [], we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('add_email', " . $group . ");"));

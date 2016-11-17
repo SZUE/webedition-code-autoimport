@@ -1063,9 +1063,9 @@ class we_object extends we_document{
 			["ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]')];
 
 		$img = new we_imageDocument();
-		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+		$content = self::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
-		$startTag = $this->getLinkStartTag($link, $attribs, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+		$startTag = self::getLinkStartTag($link, $attribs, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 		$editbut = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_link_at_class','" . $n . "','','" . $i . "');");
 		$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();we_cmd('object_delete_link_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $n . "')");
 		if(!$content){
