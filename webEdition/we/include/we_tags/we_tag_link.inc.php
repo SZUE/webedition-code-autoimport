@@ -80,7 +80,7 @@ function we_tag_link(array $attribs, $content){
 		$img = new we_imageDocument();
 		$content = we_document::getLinkContent($link, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $img, $xml);
 
-		$startTag = $GLOBALS['we_doc']->getLinkStartTag($link, $attribs, $GLOBALS['WE_MAIN_DOC']->ParentID, $GLOBALS['WE_MAIN_DOC']->Path, $GLOBALS['DB_WE'], $img);
+		$startTag = we_document::getLinkStartTag($link, $attribs, $GLOBALS['WE_MAIN_DOC']->ParentID, $GLOBALS['WE_MAIN_DOC']->Path, $GLOBALS['DB_WE'], $img);
 
 		$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
 		$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
