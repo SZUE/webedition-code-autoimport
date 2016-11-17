@@ -141,27 +141,28 @@ class we_import_files{
 
 		// create Start Screen ##############################################################################
 		$parts = [
-				[$fileupload->getFormParentID('we_form')],
-				[$fileupload->getFormSameName()],
-				[$fileupload->getFormCategories()],
+				$fileupload->getFormParentID('we_form'),
+				$fileupload->getFormSameName(),
+				$fileupload->getFormCategories(),
 		];
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts = array_merge($parts, [
-					[$fileupload->getFormImportMeta()],
-					[$fileupload->getFormIsSearchable()]
+					$fileupload->getFormImportMeta(),
+					$fileupload->getFormIsSearchable()
 			]);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$parts = array_merge($parts, [
-						[$fileupload->getFormThumbnails()],
-						[$fileupload->getFormImageResize()],
-						[$fileupload->getFormImageRotate()],
-						[$fileupload->getFormImageQuality()]
+						$fileupload->getFormThumbnails(),
+						$fileupload->getFormImageResize(),
+						$fileupload->getFormImageRotate(),
+						$fileupload->getFormImageQuality()
 				]);
 			} else {
-				$parts[] = ["headline" => "",
-					"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
+				$parts[] = [
+					'headline' => '',
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 				];
 			}
 			$foldAt = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? -1 : 3;
