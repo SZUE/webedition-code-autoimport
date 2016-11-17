@@ -56,3 +56,13 @@ function exitPrefs() {
 		opener.setTheme(prefs._sObjId, sTheme);
 	}
 }
+
+function we_cmd(){
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//	var url = WE().util.getWe_cmdArgsUrl(args);
+	switch(args[0]){
+		case 'addUserToField':
+			addUserToField();
+			break;
+	}
+}

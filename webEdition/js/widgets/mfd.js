@@ -52,6 +52,12 @@ function isNoError() {
 	return false;
 }
 
+function getUser() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	new (WE().util.jsWindow)(window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
+}
+
 function delUser(iUsrId) {
 	var sUsers = '';
 	var i;
