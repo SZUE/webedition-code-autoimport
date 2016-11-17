@@ -74,7 +74,7 @@ if (WE().session.seemode) {
 
 function setTab(we_cmd_args){
 	//first arg is always switch_edit_page
-	if(parent.editFooter.doc.isBinary){
+	if(false && parent.editFooter.doc.isBinary){// IMI: checking fileupload.ready is temprarily deactivated
 		WE().layout.checkFileUpload(we_cmd_args);
 	}else{
 		we_cmd.apply(this, we_cmd_args);
