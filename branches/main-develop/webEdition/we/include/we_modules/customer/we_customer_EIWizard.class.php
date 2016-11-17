@@ -875,8 +875,8 @@ class we_customer_EIWizard{
 			);
 		} else {
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "javascript:we_cmd('reload_frame', 'load', 'eiload', '" . self::ART_EXPORT . "', 'export_back', " . $step . ");") .
-					we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', 'load', 'eiload', '" . self::ART_EXPORT . "', 'export_next', " . $step . ");"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_EXPORT . "', cmd: 'export_back', step: " . $step . "});") .
+					we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_EXPORT . "', cmd: 'export_next', step: " . $step . "});"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
 		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
@@ -999,7 +999,7 @@ class we_customer_EIWizard{
 		$customers = $this->getExportCustomers();
 		if(!$customers){
 
-		//FIXME: add code to switch to previous page
+			//FIXME: add code to switch to previous page
 			t_e('noting to export', $customers);
 		}
 
@@ -1439,7 +1439,7 @@ class we_customer_EIWizard{
 			$c++;
 		}
 
-		$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('change_filter', add_filter')");
+		$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('change_filter', 'add_filter')");
 		$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('change_filter', 'del_filter')");
 
 		$c++;

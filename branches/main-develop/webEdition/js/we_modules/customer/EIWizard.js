@@ -72,32 +72,32 @@ function we_cmd() {
 			top.body.document.we_form.import_from[args[2]].checked = true;
 			break;
 		case "set_topVar":
-			top[arg.name] = arg.fromInput ? this.document.we_form.elements[arg.name].value : arg.value;
+			top[arg.name] = arg.fromInput ? top.body.document.we_form.elements[arg.name].value : arg.value;
 			break;
 		case "set_formField":
-			this.document.we_form.elements[arg.name].value = arg.value;
+			top.body.document.we_form.elements[arg.name].value = arg.value;
 			break;
 		case "selectCharset_onchange":
-			this.document.we_form.elements['the_charset'].value = arg.select.options[arg.select.selectedIndex].value;
+			top.body.document.we_form.elements['the_charset'].value = arg.select.options[arg.select.selectedIndex].value;
 			arg.select.selectedIndex=-1;
 			break;
 		case "chooser_onChange":
-			this.document.we_form.elements[args[2]].value = args[1].options[args[1].selectedIndex].value;
+			top.body.document.we_form.elements[args[2]].value = args[1].options[args[1].selectedIndex].value;
 			args[1].selectedIndex=0;
 			break;
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "add_customer":
-			document.we_form.wcmd.value = args[0];
-			document.we_form.cus.value = args[1].allIDs.join(",");
-			document.we_form.submit();
+			top.body.document.we_form.wcmd.value = args[0];
+			top.body.document.we_form.cus.value = args[1].allIDs.join(',');
+			top.body.document.we_form.submit();
 			break;
 		case "del_customer":
 		case "del_all_customers":
-			document.we_form.wcmd.value = args[0];
-			document.we_form.cus.value = args[1];
-			document.we_form.submit();
+			top.body.document.we_form.wcmd.value = args[0];
+			top.body.document.we_form.cus.value = args[1];
+			top.body.document.we_form.submit();
 			break;
 		case "do_back":
 			we_cmd('load_processCmd', 'export_back', args[1]);
