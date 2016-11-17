@@ -161,6 +161,8 @@ function we_cmd() {
 		case 'we_selector_category':
 			new (WE().util.jsWindow)(this, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
+		case 'add_cat':
+			this.addCat(args[1].allPaths);
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
