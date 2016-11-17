@@ -69,7 +69,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record = getHash('SELECT ID,Path,' . $this->ct . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
+			$this->Record = getHash('SELECT ' . $this->fields[0] . ' AS ID,' . $this->fields[1] . ' AS Path,' . $this->fields[2] . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
