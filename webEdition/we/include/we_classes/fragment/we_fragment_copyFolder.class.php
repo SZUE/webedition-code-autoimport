@@ -664,11 +664,12 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	static function formCreateCategoryChooser(){
+		// IMI: replace inline js
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsElement('
-var categories_edit = new (WE().util.multi_edit)("categories",document.we_form,0,"' . $del_but . '",478,false);
+var categories_edit = new (WE().util.multi_edit)("categories",window,0,"' . $del_but . '",478,false);
 categories_edit.addVariant();
 categories_edit.showVariant(0);
 ');
