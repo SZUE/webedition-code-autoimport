@@ -32,7 +32,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 	this.defWidth = width;
 	this.win = win;
 	this.name = "me" + Math.round(Math.random() * 10000);
-	this.parent = this.win.document.getElementById(parentId);
+	this.parentId = parentId;
 	this.form = this.win.document.we_form;
 	this.editable = editable;
 	this.relatedItems = [];
@@ -43,7 +43,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 		item.setAttribute("id", name);
 		item.setAttribute("type", "hidden");
 
-		this.parent.appendChild(item);
+		this.win.document.getElementById(this.parentId).appendChild(item);
 	};
 
 	this.updateHidden = function (item, value) {
@@ -69,7 +69,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 		this.variantCount--;
 		for (var z = 0; z < this.itemCount; z++) {
 			var item = this.win.document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + z);
-			this.parent.removeChild(item);
+			this.win.document.getElementById(this.parentId).removeChild(item);
 		}
 		this.currentVariant = (variant < (this.variantCount - 1) ?
 						variant :
@@ -95,7 +95,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 										'<label id="' + this.name + "_item_label_" + this.itemCount + '" class="defaultfont"></td>'
 										) + "<td>&nbsp;</td><td>" + butt + "</td></tr></table>";
 
-		this.parent.appendChild(set);
+		this.win.document.getElementById(this.parentId).appendChild(set);
 
 		set = null;
 		for (var j = 0; j < this.variantCount; j++) {
@@ -107,6 +107,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 
 	this.delItem = function (child) {
 		this.itemCount--;
+		var parent=this.win.document.getElementById(this.parentId);
 		for (var i = 0; i < this.variantCount; i++) {
 			if (child < this.itemCount) {
 				for (var j = child + 1; j < (this.itemCount + 1); j++) {
@@ -114,13 +115,13 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 				}
 			}
 			var item = this.win.document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
-			this.parent.removeChild(item);
+			parent.removeChild(item);
 		}
 
 		var item1 = this.win.document.getElementById(this.name + "_item" + this.itemCount);
-		this.parent.removeChild(item1);
+		parent.removeChild(item1);
 		if (this.relatedItems[child]) {
-			this.parent.removeChild(this.relatedItems[child]);
+			parent.removeChild(this.relatedItems[child]);
 			//remove from list
 			this.relatedItems.splice(child, 1);
 		}
@@ -138,7 +139,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable) {
 	this.showVariant = function (variant) {
 		for (var i = 0; i < this.itemCount; i++) {
 			if (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i] !== undefined) {
-				if (variant != this.currentVariant && this.editable) {
+				if (variant !== this.currentVariant && this.editable) {
 					this.setItem(this.currentVariant, i, this.form.elements[this.name + "_item" + i].value);
 				}
 				if (this.editable) {
