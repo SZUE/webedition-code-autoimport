@@ -32,7 +32,6 @@ class we_chooser_multiDir{
 	var $cmd_del = '';
 	var $addbut = '';
 	var $css = '';
-	protected $ct = 'ContentType';
 	var $nr = 0;
 	protected $lines = 1;
 	var $CanDelete = false;
@@ -41,6 +40,7 @@ class we_chooser_multiDir{
 	var $thirdDelPar = '';
 	protected $Record = [];
 	protected $onchangeSetHot = true;
+	protected $fields = ['ID', 'Path'];
 
 	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $ct = 'ContentType', $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 		$this->db = new DB_WE();
@@ -50,9 +50,13 @@ class we_chooser_multiDir{
 		$this->cmd_del = $cmd_del;
 		$this->addbut = $addbut;
 		$this->css = $css;
-		$this->ct = $ct;
 		$this->extraDelFn = $extraDelFn;
 		$this->thirdDelPar = $thirdDelPar;
+		switch($table){
+			case defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE':
+				$this->fields = ['ID', 'Username'];
+		}
+		$this->fields[] = $ct;
 	}
 
 	function printIt(){
@@ -100,7 +104,7 @@ class we_chooser_multiDir{
 		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? [] : explode(',', trim($this->ids, ',')));
 
 		foreach($idArr as $id){
-			$this->Record = getHash('SELECT ID,Path,' . $this->ct . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
+			$this->Record = getHash('SELECT ' . $this->fields[0] . ' AS ID,' . $this->fields[1] . ' AS Path,' . $this->fields[2] . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
 			if($this->Record){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
