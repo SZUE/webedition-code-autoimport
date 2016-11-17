@@ -151,7 +151,7 @@ class we_newsletter_group extends we_newsletter_base{
 			}
 		}
 
-		$emails = array_merge($this->getEmailsFromList($this->Emails, 1), $this->getEmailsFromExtern($this->Extern, 1));
+		$emails = array_merge(we_newsletter_base::getEmailsFromList($this->Emails, 1), we_newsletter_newsletter::getEmailsFromExtern($this->Extern, 1));
 
 		foreach($emails as $email){
 			if(!$this->check_email($email)){
