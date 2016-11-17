@@ -118,21 +118,22 @@ function we_tag_href(array $attribs){
 	$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintID . '#bdid]';
 	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
-	$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''));
 	$span = '<span class="defaultfont" style="color: black;">';
-
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20, we_base_request::INT));
+
 	$cmd1 = "document.we_form.elements['" . $intID_elem_Name . "'].value";
-	$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked = true;" : '') . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
+	$cmdInt = 'tag_weHref_selectorCallback,' . we_base_link::TYPE_INT . ',' . $type . ',' . $int_elem_Name . ',' . ($include || $reload ? 1 : 0);
+	$cmdExt = 'tag_weHref_selectorCallback,' . we_base_link::TYPE_EXT . ',' . $type . ',' . $int_elem_Name . ',0';
 	if(($directory && $file) || $file){
-		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $intPath_elem_Name . "','" . $wecmdenc3 . "','', '" . $rootdirid . "', '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
-		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', " . $ext_elem_Name . " , '" . (($directory && $file) ? "filefolder" : '') . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? "opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
+		$btnInt = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $intPath_elem_Name . "','" . $cmdInt . "','', '" . $rootdirid . "', '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
+		$btnExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', " . $ext_elem_Name . " , '" . (($directory && $file) ? "filefolder" : '') . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, '" . $cmdExt . "','" . $rootdir . "')") : '';
 	} else {
-		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $intPath_elem_Name . "','" . $wecmdenc3 . "','', '" . $rootdirid . "');");
-		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', " . $ext_elem_Name . ", '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? " opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
+		$btnInt = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $intPath_elem_Name . "','" . $cmdInt . "','', '" . $rootdirid . "');");
+		$btnExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', " . $ext_elem_Name . ", '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, '" . $cmdExt . "','" . $rootdir . "')") : '';
 	}
-	$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(" . $cmd1 . "){WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', " . $cmd1 . ",'');}");
-	$trashbut2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);");
+	$btnEdit = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd(tag_weHref_openDocument,'" . $intID_elem_Name . "');");
+	$btnTrashInt = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd(tag_weHref_Trash,'" . we_base_link::TYPE_INT . "','" . $intID_elem_Name . "','" . $intPath_elem_Name . "'," . ($include || $reload ? 1 : 0) . ");");
+	$btnTrashExt = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd(tag_weHref_Trash,'" . we_base_link::TYPE_EXT . "','" . $ext_elem_Name . "');");
 
 	switch($type){
 		case we_base_link::TYPE_ALL:
@@ -160,9 +161,9 @@ function we_tag_href(array $attribs){
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
-	<td class="weEditmodeStyle">' . $but . '</td>
-	<td class="weEditmodeStyle">' . $open . '</td>
-	<td class="weEditmodeStyle">' . $trashbut . '</td>
+	<td class="weEditmodeStyle">' . $btnInt . '</td>
+	<td class="weEditmodeStyle">' . $btnEdit . '</td>
+	<td class="weEditmodeStyle">' . $btnTrashInt . '</td>
 	</tr>' : '') .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
@@ -176,8 +177,8 @@ function we_tag_href(array $attribs){
 				'value' => $extPath
 			]))
 			. '</td>
-	<td class="weEditmodeStyle">' . $but2 . '</td>
-	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
+	<td class="weEditmodeStyle">' . $btnExt . '</td>
+	<td class="weEditmodeStyle">' . $btnTrashExt . '</td>
 </tr>' : '') . '
 </table>' . ob_get_clean();
 }
