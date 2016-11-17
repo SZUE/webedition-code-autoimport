@@ -1533,6 +1533,7 @@ abstract class we_root extends we_class{
 	 *
 	 */
 	function rewriteNavigation(){
+		//FIXME: make this more efficient!
 		// rewrite filter
 		if(defined('CUSTOMER_TABLE') && !empty($this->documentCustomerFilter)){
 			we_navigation_customerFilter::updateByFilter($this->documentCustomerFilter, $this->ID, $this->Table);
