@@ -1176,7 +1176,7 @@ class we_objectFile extends we_document{
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
-		$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+		$startTag = self::getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
 		$editbut = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_link_at_object','" . $n . "')");
 		$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
@@ -1783,10 +1783,9 @@ class we_objectFile extends we_document{
 				$link = we_unserialize($elem);
 				if(is_array($link)){
 					$img = new we_imageDocument();
-					return parent::getLinkContent($link, 0, '', $this->DB_WE, $img);
-				} else {
-					return '';
+					return self::getLinkContent($link, 0, '', $this->DB_WE, $img);
 				}
+				return '';
 			case self::TYPE_META:
 				if(!$this->DefArray || !is_array($this->DefArray)){
 					$this->DefArray = $this->getDefaultValueArray();
