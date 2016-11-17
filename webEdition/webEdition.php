@@ -161,6 +161,7 @@ $const = [
 		'TYPE_THUMB_PREFIX' => we_base_link::TYPE_THUMB_PREFIX,
 		'TYPE_INT' => we_base_link::TYPE_INT,
 		'TYPE_EXT' => we_base_link::TYPE_EXT,
+		'TYPE_ALL' => we_base_link::TYPE_ALL,
 		'EMPTY_EXT' => we_base_link::EMPTY_EXT,
 	],
 	'size' => [

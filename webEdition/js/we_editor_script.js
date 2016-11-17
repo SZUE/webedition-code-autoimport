@@ -353,6 +353,35 @@ function we_cmd() {
 		case "import_files":
 			new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
 			break;
+		case 'tag_weHref_selectorCallback':
+			_EditorFrame.setEditorIsHot(true);
+			if(args[3] === WE().consts.linkPrefix.TYPE_ALL){
+				this.document.we_form.elements[args[4]][(args[2] === WE().consts.linkPrefix.TYPE_INT ? 0 : 1)].checked = true;
+			}
+			if(args[5]){
+				this.setScrollTo();
+				top.we_cmd('reload_editpage');
+			}
+			break;
+		case 'tag_weHref_openDocument':
+			var value;
+			if(value = this.document.we_form.elements[args[1]].value){
+				WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, value,'');
+			}
+			break;
+		case 'tag_weHref_trash':
+			_EditorFrame.setEditorIsHot(true);
+			if(args[1] === WE().consts.linkPrefix.TYPE_INT){
+				this.document.we_form.elements[args[2]].value = '';
+				this.document.we_form.elements[args[3]].value = '';
+				if(args[4]){
+					this.setScrollTo();
+					top.we_cmd('reload_editpage');
+				}
+			} else {
+				this.document.we_form.elements[args[2]].value = '';
+			}
+			break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
