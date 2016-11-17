@@ -163,6 +163,7 @@ function we_cmd() {
 			break;
 		case 'add_cat':
 			this.addCat(args[1].allPaths);
+			break;
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
