@@ -1416,7 +1416,7 @@ abstract class we_root extends we_class{
 					), ',', true);
 		}
 		if($sets){
-			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' VALUES ' . implode(',', $sets));
+			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' (ID,DocumentTable,type,remObj,remTable,element,position,isTemp) VALUES ' . implode(',', $sets));
 		}
 
 		return true;
