@@ -962,9 +962,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		btnOk: {text: "' . g_l('button', '[ok][value]') . '", alt: "' . g_l('button', '[ok][alt]') . '"},
 		btnCancel: {text: "' . g_l('button', '[cancel][value]') . '", alt: "' . g_l('button', '[cancel][alt]') . '"},
 		btnDelete: {text: "' . g_l('button', '[delete][value]') . '", alt: "' . g_l('button', '[delete][alt]') . '"},
-		btnSearchNext: {text: "Weitersuchen", alt: "Weitersuchen"},//FIXME: G_L()
-		btnReplace: {text: "Ersetzen", alt: "Ersetzen"},//FIXME: G_L()
-		btnReplaceAll: {text: "Alle Ersetzen", alt: "Alle Ersetzen"}//FIXME: G_L()
+		btnSearchNext: {text: "' . g_l('buttons_global', '[searchContinue][value]') . '", alt: "' . g_l('buttons_global', '[searchContinue][value]') . '"},
+		btnReplace: {text: "' . g_l('buttons_global', '[replace][value]') . '", alt: "' . g_l('buttons_global', '[replace][value]') . '"},
+		btnReplaceAll: {text: "' . g_l('buttons_global', '[replaceAll][value]') . '", alt: "' . g_l('buttons_global', '[replaceAll][value]') . '"}
 	},
 	language: "' . $lang . '",
 	mode: "exact",
