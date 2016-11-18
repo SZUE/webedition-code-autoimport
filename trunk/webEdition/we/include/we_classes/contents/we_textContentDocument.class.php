@@ -67,7 +67,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		if($only){
 			foreach($only as $cur){
-				if($this->getElementType($name) === 'txt'){
+				if($this->getElementType($cur) === 'txt'){
 					$dat = $this->getElement($cur, 'dat');
 					//skip vars + serialized data
 					if($dat && $dat[0] !== '{' && $dat[0] !== '[' && $dat[0] !== '$' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $dat)){
