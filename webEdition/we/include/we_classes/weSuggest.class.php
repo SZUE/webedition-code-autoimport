@@ -243,13 +243,7 @@ class weSuggest{
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
-			$texts = [// FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
-				'[something is wrong]',
-				'Dateien aus dem Dateibaum hierher ziehen',
-				'Dateien zum Upload von der Festplatte hierher ziehen',
-				'Dateien aus dem Dateibaum oder <br>zum Upload von der Festplatte hierher ziehen'
-				];
-			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
+			$dropzoneContent = g_('global', '[dragndrop][selection]') . '<br>' . g_l('global', '[dragndrop][dnd_text][' . (($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0)) . ']');
 			$dropzoneStyle = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';

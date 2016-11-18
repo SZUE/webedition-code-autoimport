@@ -32,7 +32,7 @@ class we_dialog_gallery extends we_dialog_base{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', '[addGallery]'); // FIXME: G_L();
+		$this->dialogTitle = g_l('wysiwyg', '[addGallery]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
