@@ -84,7 +84,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 			this.button = buttname;
 		}
 
-		var butt = this.button.replace("#####placeHolder#####", this.name + ".delItem(" + this.itemCount + ")");
+		var butt = this.button.replace("#####placeHolder#####", "window['" + this.name + "'].delItem(" + this.itemCount + ")");
 
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
@@ -157,6 +157,6 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 	for (i = 0; i < itemNum; i++) {
 		this.addItem();
 	}
-//FIXME: do we need this as a global var?
-	window[this.name] = this;
+
+	win[this.name] = this;
 };
