@@ -38,6 +38,16 @@ $l_global=array(
 	'docs_saved'=>'Documenten succesvol bewaard!',
 	'doctypes'=>'Document types',
 	'documents'=>'Documenten',
+	
+	'dragndrop'=>array(
+		'dnd_text'=>array(
+			'0'=>'Error during D&D',
+			'1'=>'Drag files here from tree',
+			'2'=>'Drag files here from harddisk',
+			'3'=>'Drag files here from tree or from harddisk',
+		),
+		'selection'=>'Drag & Drop Selection',
+	),
 	'edit_file'=>'Wijzig bestand',
 	'email_ban'=>'U heeft niet de juiste rechten om dit script te gebruiken!',
 	'email_invalid'=>'Uw <b>E-mail adres</b> is ongeldig!',

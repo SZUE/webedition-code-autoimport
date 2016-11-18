@@ -38,6 +38,16 @@ $l_global=array(
 	'docs_saved'=>'Документы успешно сохранены!',
 	'doctypes'=>'Типы документов',
 	'documents'=>'Документы',
+	
+	'dragndrop'=>array(
+		'dnd_text'=>array(
+			'0'=>'Error during D&D',
+			'1'=>'Drag files here from tree',
+			'2'=>'Drag files here from harddisk',
+			'3'=>'Drag files here from tree or from harddisk',
+		),
+		'selection'=>'Drag & Drop Selection',
+	),
 	'edit_file'=>'Редактировать файл',
 	'email_ban'=>'Вы не уполномочены использовать данный Script!',
 	'email_invalid'=>'Ваш электронный <b>адрес</b> недействителен!',

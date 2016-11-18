@@ -38,6 +38,16 @@ $l_global=array(
 	'docs_saved'=>'Dokumente erfolgreich gesichert!',
 	'doctypes'=>'Dokument-Typen',
 	'documents'=>'Dokumente',
+	
+	'dragndrop'=>array(
+		'dnd_text'=>array(
+			'0'=>'FEHLER beim D&D',
+			'1'=>'Dateien aus dem Dateibaum hierher ziehen',
+			'2'=>'Dateien zum Upload von der Festplatte hierher ziehen',
+			'3'=>'Dateien aus dem Dateibaum oder <br>zum Upload von der Festplatte hierher ziehen',
+		),
+		'selection'=>'Drag & Drop Auswahl',
+	),
 	'edit_file'=>'Datei bearbeiten',
 	'email_ban'=>'Sie sind nicht berechtigt dieses Script zu benutzen!',
 	'email_invalid'=>'Ihre <b>E-Mail Adresse</b> ist nicht gültig!',

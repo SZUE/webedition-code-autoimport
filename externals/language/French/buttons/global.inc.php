@@ -487,6 +487,9 @@ $l_buttons_global=array(
 		'alt'=>'Reindent code',
 		'value'=>'Reindent code',
 	),
+	'replaceAll'=>array(
+		'value'=>'Replace all',
+	),
 	'replace'=>array(
 		'alt'=>'remplacer',
 		'value'=>'Remplacer',
@@ -546,6 +549,9 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Enregistre est crée nouvelle version',
 		'value'=>'Enregistrer la version',
+	),
+	'searchContinue'=>array(
+		'value'=>'Search next',
 	),
 	'search'=>array(
 		'alt'=>'Recherche',

@@ -38,6 +38,16 @@ $l_global=array(
 	'docs_saved'=>'Dokumentit tallennettu!',
 	'doctypes'=>'Dokumenttityypit',
 	'documents'=>'Dokumentit',
+	
+	'dragndrop'=>array(
+		'dnd_text'=>array(
+			'0'=>'Error during D&D',
+			'1'=>'Drag files here from tree',
+			'2'=>'Drag files here from harddisk',
+			'3'=>'Drag files here from tree or from harddisk',
+		),
+		'selection'=>'Drag & Drop Selection',
+	),
 	'edit_file'=>'Muokkaa tiedostoa',
 	'email_ban'=>'Sinulla ei ole oikeuksia käyttää tätä skriptiä!',
 	'email_invalid'=>'<b>Sähköpostiosoitteesi</b> on virheellinen!',

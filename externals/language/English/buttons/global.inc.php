@@ -487,6 +487,9 @@ $l_buttons_global=array(
 		'alt'=>'Reindent code',
 		'value'=>'Reindent code',
 	),
+	'replaceAll'=>array(
+		'value'=>'Replace all',
+	),
 	'replace'=>array(
 		'alt'=>'Replace',
 		'value'=>'Replace',
@@ -546,6 +549,9 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Saves the template and creates a new version',
 		'value'=>'Save Version',
+	),
+	'searchContinue'=>array(
+		'value'=>'Search next',
 	),
 	'search'=>array(
 		'alt'=>'Search',

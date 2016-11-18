@@ -487,6 +487,9 @@ $l_buttons_global=array(
 		'alt'=>'Code neu einrücken',
 		'value'=>'Code neu einrücken',
 	),
+	'replaceAll'=>array(
+		'value'=>'Alle Ersetzen',
+	),
 	'replace'=>array(
 		'alt'=>'ersetzen',
 		'value'=>'Ersetzen',
@@ -546,6 +549,9 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Speichert und legt eine neue Version an',
 		'value'=>'Speichere Version',
+	),
+	'searchContinue'=>array(
+		'value'=>'Weitersuchen',
 	),
 	'search'=>array(
 		'alt'=>'Suchen',
