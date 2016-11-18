@@ -263,7 +263,7 @@ class we_banner_view extends we_modules_view{
 					'contenttype' => ($this->banner->IsFolder ? we_base_ContentTypes::FOLDER : 'file'),
 					'table' => "weBanner"]);
 			} else {
-				$jscmd->addCmd('updateEntry', [
+				$jscmd->addCmd('updateTreeEntry', [
 					'id' => $this->banner->ID,
 					'parentid' => $this->banner->ParentID,
 					'text' => $this->banner->Text,

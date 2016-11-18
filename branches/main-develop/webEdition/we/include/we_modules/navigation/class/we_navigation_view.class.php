@@ -185,7 +185,7 @@ if(top.content.treeData){
 						'order' => $this->Model->Ordn
 					]);
 				} else {
-					$jscmd->addCmd('updateEntry', [
+					$jscmd->addCmd('updateTreeEntry', [
 						'id' => $this->Model->ID,
 						'parentid' => $this->Model->ParentID,
 						'text' => $this->Model->Text,

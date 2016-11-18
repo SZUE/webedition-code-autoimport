@@ -82,7 +82,7 @@ class we_voting_frames extends we_modules_frame{
 			}
 		}
 
-		$tabsHead = we_tabs::CSS . we_html_element::jsElement(
+		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	parent.edbody.toggle("tab"+top.content.activ_tab);
