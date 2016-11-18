@@ -150,7 +150,7 @@ class we_customer_frames extends we_modules_frame{
 				)
 		);
 
-		return $this->getHTMLDocument($body, we_tabs::CSS . we_html_element::jsElement(
+		return $this->getHTMLDocument($body, we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 function setTab(tab) {
 	top.content.activ_tab=tab;

@@ -205,7 +205,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					]);
 					$jscmd->addCmd('drawTree');
 				} else {
-					$jscmd->addCmd('updateEntry', [
+					$jscmd->addCmd('updateTreeEntry', [
 						'id' => $this->export->ID,
 						'parentid' => $this->export->ParentID,
 						'text' => $this->export->Text,

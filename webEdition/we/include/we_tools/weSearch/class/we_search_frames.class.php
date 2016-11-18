@@ -89,7 +89,7 @@ class we_search_frames extends we_modules_frame{
 		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, self::TAB_PROPERTIES, ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
 
 		$tabNr = $this->getTab();
-		$tabsHead = we_tabs::CSS . we_html_element::jsElement(
+		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . 'top.content.activ_tab = ' . $tabNr . ';
 function setTab(tab) {
 	switch (tab) {

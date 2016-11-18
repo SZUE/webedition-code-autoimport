@@ -72,7 +72,7 @@ class we_workflow_frames extends we_modules_frame{
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 
-		$extraHead = we_tabs::CSS . we_html_element::jsElement(
+		$extraHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 function setTab(tab){
 	top.content.editor.edbody.we_cmd("switchPage",tab);

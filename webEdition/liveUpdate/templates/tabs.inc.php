@@ -43,7 +43,7 @@ $body = we_html_element::htmlBody([
 		'onload' => 'weTabs.setFrameSize();',
 		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '', we_tabs::CSS .
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(we_tabs::CSS) .
 	we_html_element::jsElement('
 function setTab(tab){
 	top.updatecontent.location="?section="+tab;

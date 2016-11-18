@@ -41,7 +41,7 @@ foreach($menuItems as $menuItem){
 	}
 }
 
-echo we_tabs::CSS . we_html_element::jsElement(
+echo we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 var current = "' . $tool . '";
 function setTab(tool) {

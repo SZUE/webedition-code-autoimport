@@ -2126,7 +2126,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		}
 
 
-		return we_tabs::CSS . we_html_element::jsElement(
+		return we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 var activeTab = ' . self::TAB_DATA . ';
 function setTab(tab) {

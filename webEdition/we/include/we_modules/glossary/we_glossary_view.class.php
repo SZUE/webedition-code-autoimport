@@ -194,7 +194,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						]);
 						$jscmd->addCmd('drawTree');
 					} else {
-						$jscmd->addCmd('updateEntry', [
+						$jscmd->addCmd('updateTreeEntry', [
 							'id' => $this->Glossary->ID,
 							'parentid' => $this->Glossary->Language . '_' . $this->Glossary->Type,
 							'text' => $this->Glossary->Text,

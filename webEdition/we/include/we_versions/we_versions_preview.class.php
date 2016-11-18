@@ -565,7 +565,7 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 	public function showHtml(){
 		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ?: DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
-			we_tabs::CSS . we_html_element::jsElement(
+			we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
 				we_tabs::JS_LOAD . '
 var activ_tab = 1;
 
