@@ -571,5 +571,6 @@ YAHOO.autocoml = {
 		}
 	}
 };
-
-YAHOO.util.Event.addListener(window, "load", YAHOO.autocoml.initFromLoad);
+$(function(){
+	YAHOO.autocoml.initFromLoad();
+});
