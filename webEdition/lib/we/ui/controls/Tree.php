@@ -369,7 +369,7 @@ var tree_' . $this->_id . '_activEl = 0;
 						failure: function(oResponse) {
 						}
 				};
-				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+					WE().util.rpc(sUrl, null,callback);
 		});
 
 		tree_' . $this->_id . '.subscribe("expand", function(node) {
@@ -382,7 +382,7 @@ var tree_' . $this->_id . '_activEl = 0;
 						failure: function(oResponse) {
 						}
 				};
-				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+					WE().util.rpc(sUrl, null,callback);
 		});
 
 		tree_' . $this->_id . '.draw();
@@ -448,7 +448,7 @@ var tree_' . $this->_id . '_activEl = 0;
 					timeout: 7000
 			};
 
-			YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+				WE().util.rpc(sUrl, null,callback);
 	}
 
 	YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);

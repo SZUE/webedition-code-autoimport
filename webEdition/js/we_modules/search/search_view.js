@@ -79,14 +79,14 @@ weSearch = {
 	},
 	setNextPrevData: function () {
 		var dataElem = this.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData')[0],
-						spanText = this.conf.editorBodyFrame.document.getElementsByClassName('spanSearchText'),
-						btnBack = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchBack'),
-						btnNext = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchNext'),
-						selPages = this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchPages'),
-						selPagesVals = dataElem.getAttribute('data-pagevalue').split(','),
-						selPagesTexts = dataElem.getAttribute('data-pagetext').split(','),
-						selPagesPage = dataElem.getAttribute('data-page'),
-						opt, i, j;
+			spanText = this.conf.editorBodyFrame.document.getElementsByClassName('spanSearchText'),
+			btnBack = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchBack'),
+			btnNext = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchNext'),
+			selPages = this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchPages'),
+			selPagesVals = dataElem.getAttribute('data-pagevalue').split(','),
+			selPagesTexts = dataElem.getAttribute('data-pagetext').split(','),
+			selPagesPage = dataElem.getAttribute('data-page'),
+			opt, i, j;
 
 		spanText[0].innerHTML = spanText[1].innerHTML = dataElem.getAttribute('data-text');
 		btnBack[0].disabled = btnBack[1].disabled = dataElem.getAttribute('data-disableback') === 'true' ? true : false;
@@ -109,34 +109,30 @@ weSearch = {
 		this.conf.editorBodyFrame.document.we_form.elements['Order' + this.conf.whichsearch].value = dataElem.getAttribute('data-order');
 		this.conf.editorBodyFrame.document.we_form.elements.mode.value = dataElem.getAttribute('data-mode');
 	},
-	ajaxCallbackResultList: {
-		success: function (o) {
-			if (o.responseText !== undefined && o.responseText !== '') {
-				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
-				WE().util.setIconOfDocClass(document, 'resultIcon');
+	ajaxCallbackResultList: function (responseText) {
+		if (responseText !== '') {
+			weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = responseText;
+			WE().util.setIconOfDocClass(document, 'resultIcon');
 
-				if (weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData') && weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData')[0]) {
-					weSearch.setNextPrevData();
-				} else {
-					//weSearch.makeAjaxRequestParametersTop();
-					//weSearch.makeAjaxRequestParametersBottom();
-				}
-
-				// IMPORTANT: we must move mouseoverdivs because of scrolling. FIXME: use display:none to avoid this
-				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
-				weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
-
-				if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA || weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
-					window.scrollTo(0, document.body.scrollHeight);
-
-					// correct result header when result list has vertical scrollbar
-					var sc = document.getElementById('scrollContent_' + weSearch.conf.whichsearch);
-					document.getElementById('headerLast').style.width = weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA ? ((sc.firstChild.offsetHeight > sc.offsetHeight ? 78 : 64) + 'px') :
-									((sc.firstChild.offsetHeight > sc.offsetHeight ? 20 : 18) + '%');
-				}
+			if (weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData') && weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData')[0]) {
+				weSearch.setNextPrevData();
+			} else {
+				//weSearch.makeAjaxRequestParametersTop();
+				//weSearch.makeAjaxRequestParametersBottom();
 			}
-		},
-		failure: function (o) {
+
+			// IMPORTANT: we must move mouseoverdivs because of scrolling. FIXME: use display:none to avoid this
+			weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
+			weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
+
+			if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA || weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
+				window.scrollTo(0, document.body.scrollHeight);
+
+				// correct result header when result list has vertical scrollbar
+				var sc = document.getElementById('scrollContent_' + weSearch.conf.whichsearch);
+				document.getElementById('headerLast').style.width = weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA ? ((sc.firstChild.offsetHeight > sc.offsetHeight ? 78 : 64) + 'px') :
+					((sc.firstChild.offsetHeight > sc.offsetHeight ? 20 : 18) + '%');
+			}
 		}
 	},
 	ajaxCallbackParametersTop: {
@@ -157,13 +153,9 @@ weSearch = {
 		failure: function (o) {
 		}
 	},
-	ajaxCallbackgetMouseOverDivs: {
-		success: function (o) {
-			if (o.responseText !== undefined && o.responseText !== "") {
-				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
-			}
-		},
-		failure: function (o) {
+	ajaxCallbackgetMouseOverDivs: function (responseText) {
+		if (responseText !== "") {
+			weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = responseText;
 		}
 	},
 	search: function (newSearch, sameRange) {
@@ -252,32 +244,32 @@ weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackResultList, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackResultList, "html");
 	},
 	/*makeAjaxRequestParametersTop: function () {
-		var args = '', newString = '';
+	 var args = '', newString = '';
 
-		for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
-			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
-			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
-		}
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersTop, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
-	},
-	makeAjaxRequestParametersBottom: function () {
-		var args = '', newString = '';
-		for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
-			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
-			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
-		}
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersBottom, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
-	},*/
+	 for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
+	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
+	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
+	 }
+	 top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersTop, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+	 },
+	 makeAjaxRequestParametersBottom: function () {
+	 var args = '', newString = '';
+	 for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
+	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
+	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
+	 }
+	 top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersBottom, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+	 },*/
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
 		for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackgetMouseOverDivs, "html");
 	},
 	setView: function (value) {
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = value;
@@ -297,13 +289,13 @@ weSearch = {
 	updateElem: function (e) {
 		if (weSearch.rolloverElem && weSearch.rolloverElem.style.visibility === 'visible') {
 			var elem = weSearch.rolloverElem,
-							elemW = elem.offsetWidth,
-							elemH = elem.offsetHeight,
-							frameW = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
-							frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-							posX = e.pageX,
-							posY = e.pageY,
-							scrollY = window.scrollY;
+				elemW = elem.offsetWidth,
+				elemH = elem.offsetHeight,
+				frameW = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
+				frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+				posX = e.pageX,
+				posY = e.pageY,
+				scrollY = window.scrollY;
 
 			elem.style.left = (((frameW - posX) < elemW + 10) ? (posX - elemW - 10) : (posX + 10)) + 'px';
 			elem.style.top = (Math.max((scrollY + 4), (Math.min((scrollY + frameH - elemH - 4), (posY - Math.round(elemH / 5 * 3)))))) + 'px';
@@ -346,7 +338,7 @@ weSearch = {
 	},
 	setOrder: function (order, whichSearch) {
 		var columns = whichSearch === 'MediaSearch' ? ['Text', 'media_filesize', 'IsUsed', 'media_alt', 'media_title', 'CreationDate', 'ModDate'] :
-						['Text', 'SiteTitle', 'CreationDate', 'ModDate'];
+			['Text', 'SiteTitle', 'CreationDate', 'ModDate'];
 		var deleteArrow, arrow, foo;
 
 		for (var i = 0; i < columns.length; i++) {
@@ -409,9 +401,9 @@ weSearch = {
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-						//c = elem.rows.length - 1,
-						//scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						newRow, cell;
+			//c = elem.rows.length - 1,
+			//scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+			newRow, cell;
 
 		this.conf.rows++;
 
@@ -438,7 +430,7 @@ weSearch = {
 	},
 	getCell: function (type, rowID, replacement, value) { // FIXME: use this-whichsearch to reduce cases
 		var cell = document.createElement('TD'),
-						locationType;
+			locationType;
 
 		switch (type) {
 			case 'delButton':
@@ -526,11 +518,11 @@ weSearch = {
 	},
 	delRow: function (id) {
 		var //scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						elem = document.getElementById('filterTable' + this.conf.whichsearch);
+			elem = document.getElementById('filterTable' + this.conf.whichsearch);
 
 		if (elem) {
 			var trows = elem.rows,
-							rowID = 'filterRow_' + id;
+				rowID = 'filterRow_' + id;
 
 			for (var i = 0; i < trows.length; i++) {
 				if (rowID == trows[i].id) {
@@ -586,10 +578,10 @@ weSearch = {
 				location.disabled = true;
 
 				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category').replace(/__we_content_types__/, '') + '</td>' +
-								'</tr></tbody></table>';
+					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+					'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+					'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category').replace(/__we_content_types__/, '') + '</td>' +
+					'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -607,10 +599,10 @@ weSearch = {
 				location.disabled = true;
 
 				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, '') + '</td>' +
-								'</tr></tbody></table>';
+					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+					'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+					'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, '') + '</td>' +
+					'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -630,10 +622,10 @@ weSearch = {
 
 				table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory').replace(/__we_content_types__/, '') + '</td>' +
-								'</tr></tbody></table>';
+					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+					'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+					'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory').replace(/__we_content_types__/, '') + '</td>' +
+					'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -651,10 +643,10 @@ weSearch = {
 
 				table = WE().consts.tables.FILE_TABLE;
 				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, WE().consts.weSearch.MEDIA_CONTENTTYPES_CSV) + '</td>' +
-								'</tr></tbody></table>';
+					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+					'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+					'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, WE().consts.weSearch.MEDIA_CONTENTTYPES_CSV) + '</td>' +
+					'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -699,12 +691,12 @@ weSearch = {
 
 				// FIXME: move datepicker-button to search_view
 				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
-								'<td></td>' +
-								'<td></td>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td></td>' +
-								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
-								'</tr></tbody></table>';
+					'<td></td>' +
+					'<td></td>' +
+					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+					'<td></td>' +
+					'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
+					'</tr></tbody></table>';
 
 
 				cell = document.createElement('TD');
@@ -799,36 +791,31 @@ weSearch = {
 		document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value = value;
 
 	},
-	ajaxCallbackResetVersion: {
-		success: function (o) {
-			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-			top.we_showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	ajaxCallbackResetVersion: function (response) {
+		//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
+		top.we_showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
-			// reload current document => reload all open Editors on demand
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (var frameId in _usedEditors) {
-				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
+		// reload current document => reload all open Editors on demand
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+		for (var frameId in _usedEditors) {
+			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				_usedEditors[frameId].setEditorIsActive(true);
+			} else {
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
-			_multiEditorreload = true;
-
-			//reload tree
-			if (top.opener.top.treeData) {
-				top.opener.we_cmd('load', top.opener.top.treeData.table, 0);
-			}
-			document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = '';
-		},
-		failure: function (o) {
 		}
+		_multiEditorreload = true;
+
+		//reload tree
+		if (top.opener.top.treeData) {
+			top.opener.we_cmd('load', top.opener.top.treeData.table, 0);
+		}
+		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = '';
 	},
 	resetVersionAjax: function (id, documentID, version, table) {
 		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
-
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '", this.ajaxCallbackResetVersion, "html");
 	},
 	resetVersions: function () {
 		var checkboxes = [];
@@ -904,37 +891,32 @@ weSearch = {
 			}
 		}
 	},
-	ajaxCallbackPublishDocs: {
-		success: function (o) {
+	ajaxCallbackPublishDocs: function (weResponse) {
+		// reload current document => reload all open Editors on demand
 
-			// reload current document => reload all open Editors on demand
-
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (var frameId in _usedEditors) {
-				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
-			}
-			_multiEditorreload = true;
-
-			//reload tree
-			if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
-				top.we_cmd("load", top.treeData.table, 0);
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+		for (var frameId in _usedEditors) {
+			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				_usedEditors[frameId].setEditorIsActive(true);
 			} else {
-				if (top.opener.top.treeData) {
-					top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
-				}
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
-
-			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
-			//document.getElementById("resetBusyDocSearch").innerHTML = "";
-			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		},
-		failure: function (o) {
 		}
+		_multiEditorreload = true;
+
+		//reload tree
+		if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
+			top.we_cmd("load", top.treeData.table, 0);
+		} else {
+			if (top.opener.top.treeData) {
+				top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
+			}
+		}
+
+		document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
+		//document.getElementById("resetBusyDocSearch").innerHTML = "";
+		top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	},
 	publishDocsAjax: function (whichSearch) {
 		var args = '';
@@ -951,8 +933,7 @@ weSearch = {
 		args += "&we_cmd[0]=" + encodeURI(check);
 		var scroll = document.getElementById("resetBusy" + whichSearch);
 		scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
-
-		top.YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args, this.ajaxCallbackPublishDocs);
 
 	},
 	previewVersion: function (table, ID, version) {
@@ -987,8 +968,8 @@ weSearch = {
 	},
 	deleteMediaDocsAjax: function (whichSearch) {
 		var args = '',
-						check = '',
-						checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+			check = '',
+			checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
 
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (checkboxes[i].checked) {
@@ -999,40 +980,32 @@ weSearch = {
 
 		var scroll = document.getElementById('resetBusy' + whichSearch);
 		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
-
-		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackDeleteMediaDocs, 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args + '');
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args, this.ajaxCallbackDeleteMediaDocs);
 	},
-	ajaxCallbackDeleteMediaDocs: {
-		success: function (o) {
-			var response = JSON.parse(o.responseText);
+	ajaxCallbackDeleteMediaDocs: function (response) {
+		top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
-			top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		// close all Editors with deleted documents
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+			_delete_table = WE().consts.tables.FILE_TABLE,
+			_delete_Ids = ',' + response.deletedItems.join() + ',',
+			frameId;
 
-			// close all Editors with deleted documents
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-							_delete_table = WE().consts.tables.FILE_TABLE,
-							_delete_Ids = ',' + response.deletedItems.join() + ',',
-							frameId;
-
-			for (frameId in _usedEditors) {
-				if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
-					_usedEditors[frameId].setEditorIsHot(false);
-					WE().layout.weEditorFrameController.closeDocument(frameId);
-				}
+		for (frameId in _usedEditors) {
+			if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
+				_usedEditors[frameId].setEditorIsHot(false);
+				WE().layout.weEditorFrameController.closeDocument(frameId);
 			}
-
-			//reload tree
-			if (top.opener.top.treeData) {
-				top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
-			}
-
-			// reset busy
-			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = '';
-
-			weSearch.search(true, true);
-		},
-		failure: function (o) {
-			top.console.log("callback failure");
 		}
+
+		//reload tree
+		if (top.opener.top.treeData) {
+			top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
+		}
+
+		// reset busy
+		document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = '';
+
+		weSearch.search(true, true);
 	}
 };

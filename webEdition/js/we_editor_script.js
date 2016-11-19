@@ -148,23 +148,14 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + doc.docName + "_ParentID"])) {
 		var parentid = _elem.value;
 		if (parentid !== doc.oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + parentid + '&we_transaction=' + doc.we_transaction + '&table=' + doc.docTable + '&classname=' + doc.docClass, {
-				// check if parentId was changed
-				success: function (o) {
-					if (o.responseText !== undefined && o.responseText) {
-						var weResponse = JSON.parse(o.responseText);
-						if (weResponse) {
+			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion','cns=customer&folderId=' + parentid + '&we_transaction=' + doc.we_transaction + '&table=' + doc.docTable + '&classname=' + doc.docClass, function (weResponse) {
+				if (weResponse) {
 							if (weResponse.DataArray.data === true) {
 								_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
 								WE().util.showConfirm(window, "", _question, ["customer_applyWeDocumentCustomerFilterFromFolder"]);
 							}
 						}
-					}
-				},
-				failure: function (o) {
-				}
-			}
-			);
+			});
 			doc.oldparentid = parentid;
 		}
 	}

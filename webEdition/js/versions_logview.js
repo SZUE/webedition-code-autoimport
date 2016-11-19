@@ -28,16 +28,6 @@ var logView = WE().util.getDynamicVar(document, 'loadVarVersions_logview', 'data
 
 var currentId = 0;
 
-var ajaxCallbackDetails = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("dataContent_" + currentId + "").innerHTML = o.responseText;
-		}
-	},
-	failure: function (o) {
-	}
-};
-
 function openDetails(id) {
 	currentId = id;
 	var dataContent = document.getElementById("dataContent_" + id + "");
@@ -48,9 +38,9 @@ function openDetails(id) {
 			otherdataContents[i].innerHTML = "";
 		}
 	}
-
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id=" + id + "");
-
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetLogVersionDetails", "protocol=json&cns=logging/versions&id=" + id, function (weResponse) {
+		document.getElementById("dataContent_" + currentId + "").innerHTML = weResponse;
+	}, "html");
 }
 
 function showAll(id) {
