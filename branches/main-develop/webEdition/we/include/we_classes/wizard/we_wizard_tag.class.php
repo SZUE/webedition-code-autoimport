@@ -104,6 +104,9 @@ abstract class we_wizard_tag{
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
 				$tag = weTagData::getTagData($tagname);
+				if(!$tag){
+					continue;
+				}
 				if($useDeprecated || !$tag->isDeprecated()){
 					$main[$tag->getModule()][] = $tagname;
 				}
