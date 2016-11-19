@@ -1117,6 +1117,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/samples
 !lib/phpMailer/language
 !lib/phpMailer
+!lib/additional/yui/treeview
 !lib/additional/tinymce/plugins/table
 !lib/additional/tinymce/plugins/paste
 !jupload
@@ -1150,6 +1151,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !fragments
 !eplugin
 !editors/template/editor
+!editors/template/CodeMirror2
 !editors/template/CodeMirror/theme
 !editors/template/CodeMirror/mode/xml
 !editors/template/CodeMirror/mode/sql
