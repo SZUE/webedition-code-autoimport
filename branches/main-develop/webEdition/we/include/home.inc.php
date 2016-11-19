@@ -81,7 +81,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$aDiscard = ['rss', 'pad'];
 	$s1 = '';
 	$iCurrCol = $iCurrId = 0;
-	
+
 	foreach($aDat as $d){
 		$bExtendedCol = false;
 		$s2 = '';
@@ -164,14 +164,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
 		we_html_element::cssLink(CSS_DIR . 'home.css') .
 		we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)])
-		, we_html_element::htmlBody(['onload' => "startCockpit();",], we_html_element::htmlForm(
-				['name' => 'we_form'
-				], we_html_element::htmlHiddens([
-					'we_cmd[0]' => 'widget_cmd',
-					'we_cmd[1]' => 'save',
-					'we_cmd[2]' => '',
-					'we_cmd[3]' => ''])
-			) .
+		, we_html_element::htmlBody(['onload' => "startCockpit();",], 
 			we_html_element::htmlDiv(["id" => "rpcBusy", 'style' => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
 			) . we_html_element::htmlDiv(["id" => "widgets"], "") .
 			$oTblWidgets->getHtml() .

@@ -116,22 +116,12 @@ function we_cmd() {
 }
 
 function resetLogins(id) {
-	YAHOO.util.Connect.asyncRequest("GET", WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, {
-		success: function (o) {
-			if (o.responseText !== undefined && o.responseText !== "") {
-				try {
-					var weResponse = JSON.parse(o.responseText);
-					if (weResponse) {
-						if (weResponse.DataArray.data === "true") {
-							document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
-						}
-						top.we_showMessage(WE().consts.g_l.customer.view.reset_failed_login_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-					}
-				} catch (exc) {
-				}
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetFailedCustomerLogins&cns=customer","custid=" + id, function (weResponse) {
+		if (weResponse) {
+			if (weResponse.DataArray.data === "true") {
+				document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
 			}
-		},
-		failure: function (o) {
+			top.we_showMessage(WE().consts.g_l.customer.view.reset_failed_login_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 	});
 }

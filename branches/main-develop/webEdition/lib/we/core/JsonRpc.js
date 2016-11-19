@@ -113,7 +113,7 @@ function we_core_JsonRpc(url, callback) {
 		// set content type
 		YAHOO.util.Connect.initHeader("content-type", "application/json");
 		// send request
-		var cObj = YAHOO.util.Connect.asyncRequest('POST', this.url, this.callback, jsonString);
+		WE().util.rpc(this.url,jsonString, this.callback);
 	};
 
 }

@@ -50,51 +50,12 @@ function setCrollContent(hScrollContent) {
 	scrollContent.style.height = hScrollContent + "px";
 }
 
-
-var ajaxCallbackResultList = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("scrollContent").innerHTML = o.responseText;
-			makeAjaxRequestParametersTop();
-			makeAjaxRequestParametersBottom();
-		}
-	},
-	failure: function (o) {
-	}
-};
-
-var ajaxCallbackParametersTop = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("parametersTop").innerHTML = o.responseText;
-		}
-	},
-	failure: function (o) {
-	}
-};
-var ajaxCallbackParametersBottom = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("parametersBottom").innerHTML = o.responseText;
-		}
-	},
-	failure: function (o) {
-	}
-};
-
 function search(newSearch) {
 	if (newSearch) {
 		document.we_form.searchstart.value = 0;
 	}
 	makeAjaxRequestDoclist();
 }
-
-var ajaxCallbackDeleteVersion = {
-	success: function (o) {
-	},
-	failure: function (o) {
-	}
-};
 
 function deleteVersionAjax() {
 	var args = "";
@@ -114,7 +75,7 @@ function deleteVersionAjax() {
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&" + args + "");
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersion", "protocol=json&cns=versionlist&" + args);
 }
 
 function previewVersion(table, ID, version) {
@@ -271,7 +232,14 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackResultList, "protocol=json&cns=versionlist&cmd=GetSearchResult&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "protocol=json&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args, function (responseText) {
+		if (responseText !== "") {
+			document.getElementById("scrollContent").innerHTML = responseText;
+			makeAjaxRequestParametersTop();
+			makeAjaxRequestParametersBottom();
+		}
+	}
+	, "html");
 }
 
 function makeAjaxRequestParametersTop() {
@@ -281,7 +249,12 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackParametersTop, "protocol=json&position=top&cns=versionlist&cmd=GetSearchParameters&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args, function (responseText) {
+		if (responseText !== "") {
+			document.getElementById("parametersTop").innerHTML = responseText;
+		}
+	}
+	, "html");
 }
 
 function makeAjaxRequestParametersBottom() {
@@ -291,44 +264,44 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args, function (responseText) {
+		if (responseText !== "") {
+			document.getElementById("parametersBottom").innerHTML = responseText;
+		}
+	}
+	, "html");
 }
 
+function ajaxCallbackResetVersion(response) {
+	if (response !== undefined) {
+		//top.we_cmd("save_document",transaction,"0","1","0", "","");
+		setTimeout(search, 500, false);
+		// reload current document => reload all open Editors on demand
 
-var ajaxCallbackResetVersion = {
-	success: function (o) {
-		if (o.responseText !== undefined) {
-			//top.we_cmd("save_document",transaction,"0","1","0", "","");
-			setTimeout(search, 500, false);
-			// reload current document => reload all open Editors on demand
+		//reset content of editor
+		WE().layout.weEditorFrameController.getActiveDocumentReference().frames[2].location = "about:blank";
 
-			//reset content of editor
-			WE().layout.weEditorFrameController.getActiveDocumentReference().frames[2].location = "about:blank";
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+		for (var frameId in _usedEditors) {
 
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (var frameId in _usedEditors) {
+			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 
-				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
-
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				_usedEditors[frameId].setEditorIsActive(true);
+			} else {
 //					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
 			}
-			_multiEditorreload = true;
-
-			//reload tree
-			top.we_cmd("load", doc.Table, 0);
-
 		}
-	},
-	failure: function (o) {
+		_multiEditorreload = true;
+
+		//reload tree
+		top.we_cmd("load", doc.Table, 0);
+
 	}
-};
+}
 
 function resetVersionAjax(id, documentID, version, table) {
-	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "protocol=json&cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction, ajaxCallbackResetVersion);
 }
 
 
@@ -495,10 +468,10 @@ function changeit(value, rowNr) {
 			location.disabled = false;
 
 			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
-							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />" +
-							"</td><td>&nbsp;</td><td><a href=\"#\">" +
-							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>" +
-							"</button></a></td></tr></tbody></table>";
+				"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />" +
+				"</td><td>&nbsp;</td><td><a href=\"#\">" +
+				"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>" +
+				"</button></a></td></tr></tbody></table>";
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");

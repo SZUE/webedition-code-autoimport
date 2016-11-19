@@ -261,8 +261,7 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
  we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
  we_main_headermenu::css() .
- we_html_element::cssLink(CSS_DIR . 'sidebar.css').
-	JQUERY;
+ we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
 	$head.= we_html_element::jsScript($cur);

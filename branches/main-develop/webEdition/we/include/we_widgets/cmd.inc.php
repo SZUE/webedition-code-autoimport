@@ -26,7 +26,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case 'save' :
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
 		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 3));
-		break;
+		//prevent js output
+		exit();
 	case 'reload':
 		$mod = we_base_request::_(we_base_request::STRING, 'mod');
 		array_shift($_REQUEST['we_cmd']);

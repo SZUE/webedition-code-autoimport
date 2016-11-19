@@ -729,6 +729,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$znr = -1;
 
 		$content = YAHOO_FILES .
+			JQUERY .
 			$hdns .
 			we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
@@ -1420,6 +1421,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 
 		$content = YAHOO_FILES .
+			JQUERY .
 			$hdns . we_html_element::htmlHiddens(['v[btnState_next]' => $btnStateNext, 'v[btnState_back]' => $btnStateBack]) .
 			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 

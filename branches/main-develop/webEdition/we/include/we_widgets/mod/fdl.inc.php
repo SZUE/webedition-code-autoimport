@@ -50,7 +50,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 		$failedLoginsTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:left"], $db->f('Username'));
 		$failedLoginsTable->setCol($i, 2, ['class' => "middlefont", 'style' => "text-align:left"], intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS));
 
-		$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", WE().consts.dirs.WEBEDITION_DIR+"rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
+		$buttonJSFunction = 'WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR+"rpc.php?cmd=ResetFailedCustomerLogins&cns=customer","custid=' . $webUserID . '", ajaxCallbackResetLogins );';
 		$failedLoginsTable->setCol($i, 3, ['class' => "middlefont", 'style' => "text-align:right"], ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button('reset', "javascript:" . $buttonJSFunction) : ''));
 		$i++;
 	}
@@ -65,25 +65,16 @@ if(!isset($aProps)){
 	$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 }
 
-$failedLoginHTML = YAHOO_FILES .
-	we_html_element::jsElement('var ajaxCallbackResetLogins = {
-success: function(o) {
-	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		try {
-			var weResponse =JSON.parse(o.responseText);
-			if ( weResponse ) {
-				if (weResponse.DataArray.data == "true") {
-					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '");' : '' ) .
-		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
-				}
-			}
-		} catch (exc){}
+$failedLoginHTML =
+	we_html_element::jsElement('function ajaxCallbackResetLogins(weResponse){
+	if ( weResponse ) {
+		if (weResponse.DataArray.data == "true") {
+			' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '");' : '' ) .
+we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+			self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
+		}
 	}
-},
-failure: function(o) {
-
-}}') .
+}') .
 	$failedLoginsTable->getHtml();
 
 if(!isset($aProps)){//preview requested

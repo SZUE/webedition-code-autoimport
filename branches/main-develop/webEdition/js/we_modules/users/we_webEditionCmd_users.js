@@ -82,9 +82,7 @@ we_cmd_modules.users = function (args, url) {
 			new (WE().util.jsWindow)(this, url, "doctypes", -1, -1, 720, 670, true, true, true);
 			break;
 		case "users_unlock":
-			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: function () {
-				}, failure: function () {
-				}});
+			WE().util.rpc(url);
 			break;
 		case "users_add_owner":
 			top._EditorFrame.setEditorIsHot(true);

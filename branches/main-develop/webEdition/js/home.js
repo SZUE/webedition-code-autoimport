@@ -217,13 +217,8 @@ function saveSettings() {
 	for (i = 0; i < topRssFeedsLen; i++) {
 		rss[i] = [cockpit._trf[i][0], cockpit._trf[i][1]];
 	}
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=save', "we_cmd[2]=" + JSON.stringify(aDat) + "&we_cmd[3]" + JSON.stringify(rss));
 
-	fo = window.document.forms.we_form;
-	fo.elements['we_cmd[2]'].value = JSON.stringify(aDat);
-	fo.elements['we_cmd[3]'].value = JSON.stringify(rss);
-	top.YAHOO.util.Connect.setForm(fo);
-	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php', function () {
-	});
 }
 
 function hasExpandedWidget(node) {
@@ -581,26 +576,14 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
 		default:
 			_cmdName = "Widget";
 	}
-	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&');
 
 	if (_cmdName) {
-		top.YAHOO.util.Connect.asyncRequest('GET', url, {
-			success: function (o) {
-				if (o.responseText !== undefined && o.responseText) {
-					try {
-						var weResponse = JSON.parse(o.responseText);
-						if (weResponse.Success) {
-							if (weResponse.DataArray.titel) {
-								updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
-							}
-						}
-					} catch (exc) {
-						top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
-					}
+		var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&');
+		WE().util.rpc(url, null, function (weResponse) {
+			if (weResponse.Success) {
+				if (weResponse.DataArray.titel) {
+					updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
 				}
-			},
-			failure: function (o) {
-				top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 			}
 		});
 	}
@@ -763,10 +746,10 @@ function removeWidget(wizId) {
 }
 
 /*function newMessage(username) {
-	if (WE().consts.tables.MESSAGES_TABLE) {
-		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
-	}
-}*/
+ if (WE().consts.tables.MESSAGES_TABLE) {
+ new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+ }
+ }*/
 
 function getDimension(theString, styleClassElement) {
 	var dim = {};

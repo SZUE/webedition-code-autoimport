@@ -39,35 +39,14 @@ function changeOrder(elem) {
 	document.we_form.Ordn.value = elem.value;
 }
 
-var ajaxObj = {
-	handleSuccess: function (o) {
-		this.processResult(o);
-		if (o.responseText) {
-			document.getElementById("details").innerHTML = "";
-			var weResponse = JSON.parse(o.responseText);
-			if (weResponse.Success) {
+function queryEntries(id) {
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetNaviItems","nid=" + id, function (weResponse) {
+		document.getElementById("details").innerHTML = "";
+		if (weResponse.Success) {
 				var items = weResponse.DataArray.data;
 				for (var s in items) {
 					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + s + '</div><div style="width: 220px;">' + items[s][1] + "</div>";
 				}
 			}
-		}
-	},
-	handleFailure: function (o) {
-		// Failure handler
-	},
-	processResult: function (o) {
-		// This member is called by handleSuccess
-	},
-	startRequest: function (id) {
-		YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-			success: this.handleSuccess,
-			failure: this.handleFailure,
-			scope: this
-		}, "cmd=GetNaviItems&nid=" + id);
-	}
-};
-
-function queryEntries(id) {
-	ajaxObj.startRequest(id);
+	});
 }

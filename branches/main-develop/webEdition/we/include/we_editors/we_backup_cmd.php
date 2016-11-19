@@ -376,7 +376,7 @@ top.busy.location=WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?we_cmd[0]=recover
 
 	case 'rebuild':
 		echo we_html_element::jsElement('
-top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", -1, -1, 600, 130, 0, true);
+new (WE().util.jsWindow)(top.opener, top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", -1, -1, 600, 130,true, 0, true);
 top.close();
 ');
 		break;

@@ -597,7 +597,8 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(['http-equiv' => 'imagetoolbar', 'content' => 'no']) .
 			we_html_element::htmlMeta(['name' => 'generator', 'content' => 'webEdition']) .
 			we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
-			STYLESHEET;
+			STYLESHEET .
+			JQUERY;
 	}
 
 	static function htmlMetaCtCharset($charset){

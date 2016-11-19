@@ -24,35 +24,17 @@
  */
 WE().util.loadConsts(document, 'g_l.import');
 
-var weGetCategoriesCallback = {
-	success: function (o) {
-		if (o.responseText !== undefined) {
-			var obj = JSON.parse(o.responseText);
-
-
-			for (var property in obj) {
-				if (obj.hasOwnProperty(property)) {
-					top.wizbody.document.getElementById(property).innerHTML = obj[property].innerHTML;
-				}
+function weGetCategories(obj, cats, part) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetCategory','obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]', function (weResponse) {
+		for (var property in weResponse) {
+			if (obj.hasOwnProperty(property)) {
+				top.wizbody.document.getElementById(property).innerHTML = obj[property].innerHTML;
 			}
 		}
 
+
 		WE().util.setIconOfDocClass(document, "chooserFileIcon");
-	},
-	failure: function (o) {
-		top.we_showMessage('Could not complete the ajax request', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
-	},
-	scope: window.frame,
-	timeout: 1500
-};
-
-function weGetCategories(obj, cats, part) {
-	var ajaxData = 'protocol=json&cmd=GetCategory&obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]';
-	_executeAjaxRequest('POST', weGetCategoriesCallback, ajaxData);
-}
-
-function _executeAjaxRequest(method, callback, ajaxData) {
-	return YAHOO.util.Connect.asyncRequest(method, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php', callback, ajaxData);
+	});
 }
 
 function wiz_next(frm, url) {
@@ -136,18 +118,18 @@ function we_cmd() {
 				if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
 					var re = new RegExp(',' + cat + ',');
 					this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
-					if(!reload){
+					if (!reload) {
 						this.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(this.wizbody.document.getElementById(obj + 'Cat' + cat));
 					}
 					if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
 						this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
-						if(!reload){
+						if (!reload) {
 							this.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 						}
 					}
 				}
 
-				if(reload){
+				if (reload) {
 					we_submit_form(top.wizbody.document.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				}
 			}
@@ -216,38 +198,28 @@ function set_button_state() {
 }
 
 function weChangeDocType(f) {
-	ajaxData = 'protocol=json&cmd=ChangeDocType&cns=importExport&docType=' + f.value;
-	_executeAjaxRequest('POST', {
-		success: function (o) {
-			if (o.responseText !== undefined) {
-				var elems = JSON.parse(o.responseText).elems;
-				var node, prop;
-				for (var i = 0; i < elems.length; i++) {
-					if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
-						for (var j = 0; j < elems[i].props.length; j++) {
-							prop = elems[i].props[j];
-							switch (prop.type) {
-								case 'attrib':
-									node.setAttribute(prop.name, prop.val);
-									break;
-								case 'style':
-									node.style[prop.name] = prop.val;
-									break;
-								case 'innerHTML':
-									node.innerHTML = prop.val;
-									break;
-							}
-						}
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=ChangeDocType','cns=importExport&docType=' + f.value, function (elems) {
+		var node, prop;
+		for (var i = 0; i < elems.length; i++) {
+			if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
+				for (var j = 0; j < elems[i].props.length; j++) {
+					prop = elems[i].props[j];
+					switch (prop.type) {
+						case 'attrib':
+							node.setAttribute(prop.name, prop.val);
+							break;
+						case 'style':
+							node.style[prop.name] = prop.val;
+							break;
+						case 'innerHTML':
+							node.innerHTML = prop.val;
+							break;
 					}
 				}
-				switchExt();
 			}
-		},
-		failure: function (o) {
-
-		},
-		timeout: 1500
-	}, ajaxData);
+		}
+		switchExt();
+	});
 }
 
 function switchExt() {
@@ -534,7 +506,7 @@ function doNext_GXMLImportStep1() {
 	var fl = top.wizbody.weFileUpload_instance !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 	var ext = '';
 
-	if ((f.elements['v[rdofloc]'][0].checked ) && fs !== '/') {
+	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) === '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;

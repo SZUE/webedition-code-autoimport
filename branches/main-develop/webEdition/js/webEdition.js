@@ -913,6 +913,18 @@ var WebEdition = {
 			var data = el.getAttribute(dataname);
 			return data ? JSON.parse(this.Base64.decode(data)) : null;
 		},
+		rpc: function (url, data, success, dataType) {
+			return $.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				success: success,
+				dataType: (dataType === undefined ? "json" : dataType),
+				//timeout: 2000
+			}).fail(function (jqxhr, textStatus, error) {
+				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText);
+			});
+		}
 	},
 	session: {},
 	consts: {},
@@ -978,10 +990,6 @@ function doPublish(url, trans, cmd) {
 		url += "&we_transaction=" + trans;
 		we_repl(window.load, url, cmd);
 	}
-}
-
-function openWindow(url, ref, x, y, w, h, scrollbars, menues) {
-	new (WE().util.jsWindow)(window, url, ref, x, y, w, h, true, scrollbars, menues);
 }
 
 function start(table_to_load) {
@@ -1097,36 +1105,30 @@ function doUnload(whichWindow) { // triggered when webEdition-window is closed
 }
 
 function loadCloseFolder(args) {
-	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
-	YAHOO.util.Connect.asyncRequest("GET", url, {
-		success: function (o) {
-			if (o.responseText !== undefined && o.responseText !== "") {
-				var weResponse = JSON.parse(o.responseText);
-				if (weResponse && weResponse.Success) {
-					if (weResponse.DataArray.treeName) {
-						top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
+	WE().util.rpc(WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&'), null, function (weResponse) {
+		if (weResponse && weResponse.Success) {
+			if (weResponse.DataArray.treeName) {
+				top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
+			}
+			if (weResponse.DataArray.items) {
+				if (!weResponse.DataArray.parentFolder) {
+					top.treeData.clear();
+					top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
+				}
+				for (var i = 0; i < weResponse.DataArray.items.length; i++) {
+					if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
+						top.treeData.add(new top.node(weResponse.DataArray.items[i]));
 					}
-					if (weResponse.DataArray.items) {
-						if (!weResponse.DataArray.parentFolder) {
-							top.treeData.clear();
-							top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
-						}
-						for (var i = 0; i < weResponse.DataArray.items.length; i++) {
-							if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-								top.treeData.add(new top.node(weResponse.DataArray.items[i]));
-							}
-						}
-					}
-					top.drawTree();
 				}
 			}
-			top.scrollToY();
+			top.drawTree();
 		}
+		top.scrollToY();
 	});
 }
 
 function wecmd_editDocument(args, url) {
-		try {
+	try {
 		if ((window.treeData !== undefined) && treeData) {
 			treeData.unselectNode();
 			if (args[1]) {
@@ -1143,7 +1145,7 @@ function wecmd_editDocument(args, url) {
 	}
 
 	var ctrl = WE().layout.weEditorFrameController;
-	var nextWindow,nextContent;
+	var nextWindow, nextContent;
 	if ((nextWindow = ctrl.getFreeWindow())) {
 		nextContent = nextWindow.getDocumentReference();
 		// activate tab and set state to loading
@@ -1234,7 +1236,7 @@ function we_cmd() {
 	switch (args[0]) {
 		case "exit_doc_question":
 			//next args editorFrameId, table, next_cmd
-			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question[args[2]], ["exit_doc_question_yes", args[1], args[2], args[3]],["exit_doc_question_no", args[1], args[2], args[3]]);
+			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question[args[2]], ["exit_doc_question_yes", args[1], args[2], args[3]], ["exit_doc_question_no", args[1], args[2], args[3]]);
 			break;
 		case "exit_doc_question_yes":
 			EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(args[1]);
@@ -1740,7 +1742,7 @@ var we_cmd_modules = {
 				we_cmd_delete(args, url);
 				break;
 			case "move":
-				we_cmd_move(args,url);
+				we_cmd_move(args, url);
 				break;
 			case "addToCollection":
 				addToCollection(args, url);
@@ -1792,15 +1794,8 @@ var we_cmd_modules = {
 					'&we_cmd[full]=0' +
 					'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
 					'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=InsertValidItemsByID&cns=collection", postData);
 
-				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-					// make optional use of nextCmd possible here!
-					success: function (o) {
-						//
-					},
-					failure: function (o) {
-					}
-				}, 'protocol=json&cmd=InsertValidItemsByID&cns=collection' + postData);
 				break;
 			case "help_documentation":
 				new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
@@ -1819,7 +1814,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 				break;
 			case "switch_edit_page":
-				switchEditPage(args,url);
+				switchEditPage(args, url);
 				break;
 			case "insert_variant":
 			case "move_variant_up":
@@ -1962,13 +1957,7 @@ var we_cmd_modules = {
 					'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
 					'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
-				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-					success: function (o) {
-						//
-					},
-					failure: function (o) {
-					}
-				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPropertyOrElement&cns=document" + postData);
 				break;
 			case "suggest_openToEdit":
 				if (this.YAHOO.autocoml) {
@@ -2034,7 +2023,7 @@ function getHotDocumentsString() {
 	return ret;
 }
 
-function switchEditPage(args, url){
+function switchEditPage(args, url) {
 	// get editor root frame of active tab
 	var currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 	// get visible frame for displaying editor page
@@ -2088,13 +2077,8 @@ function switchEditPage(args, url){
 	// if visible frame equals to editpage content and there is already content loaded
 	if (isEditpageContent && visibleEditorFrame && visibleEditorFrame.weIsTextEditor !== undefined && currentEditorRootFrame.frames[2].location !== "about:blank") {
 		// tell the backend the right edit page nr and break (don't send the form)
-		YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-			success: function (o) {
-			},
-			failure: function (o) {
-				top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
-			}
-		}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPageNr","transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+			//FAIL: top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
 		if (visibleEditorFrame.reloadContent === false) {
 			return;
 		}
@@ -2152,7 +2136,7 @@ function collection_insertFiles(args) {
 	}
 }
 
-function addToCollection(args, url){
+function addToCollection(args, url) {
 	if (WE().session.seemode) {
 		//
 	} else {
@@ -2254,7 +2238,7 @@ function we_cmd_delete(args, url) {
 
 }
 
-function open_wysiwyg_window(args, url){
+function open_wysiwyg_window(args, url) {
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 	}
@@ -2275,7 +2259,7 @@ function open_wysiwyg_window(args, url){
 	new (WE().util.jsWindow)(this, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
 }
 
-function we_cmd_new_document(url){
+function we_cmd_new_document(url) {
 	var ctrl = WE().layout.weEditorFrameController;
 	if ((nextWindow = ctrl.getFreeWindow())) {
 		_nextContent = nextWindow.getDocumentReference();
@@ -2292,7 +2276,7 @@ function we_cmd_new_document(url){
 	}
 }
 
-function we_cmd_delete_single_document_question(url){
+function we_cmd_delete_single_document_question(url) {
 	var ctrl = WE().layout.weEditorFrameController;
 	var cType = ctrl.getActiveEditorFrame().getEditorContentType();
 	var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
@@ -2310,7 +2294,7 @@ function we_cmd_delete_single_document_question(url){
 	}
 }
 
-function we_cmd_delete_single_document(url){
+function we_cmd_delete_single_document(url) {
 	var ctrl = WE().layout.weEditorFrameController;
 	var cType = ctrl.getActiveEditorFrame().getEditorContentType();
 	var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();

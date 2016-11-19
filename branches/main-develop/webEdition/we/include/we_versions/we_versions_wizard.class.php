@@ -1037,10 +1037,9 @@ function handle_event(what){
 	}
 }
 
-var ajaxCallbackDeleteVersionsWizard = {
-	success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
+function ajaxCallbackDeleteVersionsWizard (responseText){
+	if(responseText != "") {
+		parent.wizbusy.document.getElementById("progr").innerHTML = responseText;
 		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[deleteDateVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 		// reload current document => reload all open Editors on demand
 
@@ -1061,28 +1060,20 @@ var ajaxCallbackDeleteVersionsWizard = {
 		top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
 		top.close();
 	}
-},
-	failure: function(o) {
-	}
 }
 
-var ajaxCallbackResetVersionsWizard = {
-	success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
+function ajaxCallbackResetVersionsWizard(responseText) {
+	if(responseText != "") {
+		parent.wizbusy.document.getElementById("progr").innerHTML = responseText;
 		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[resetAllVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
 		top.close();
-	}
-},
-	failure: function(o) {
 	}
 }
 
 function goTo(where){
 
 	if(' . $act . ') {
-		f = document.we_form;
+	var f = document.we_form;
 		switch(where){
 			case "delete_versions":
 				f.target="wizbody";
@@ -1091,12 +1082,12 @@ function goTo(where){
 		f.submit();
 
 //						parent.wizbusy.document.getElementById("progr").style.display = "block";
-//
-//						YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackResetVersionsWizard, "protocol=json&publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist&cmd=ResetVersionsWizard");
+/*	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersionsWizard","protocol=json&publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist", ajaxCallbackResetVersionsWizard,"html");
+*/
 //
 	}	else {
 		parent.wizbusy.document.getElementById("progr").style.display = "block";
-		YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackDeleteVersionsWizard, "protocol=json&cns=versionlist&cmd=DeleteVersionsWizard");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersionsWizard", "protocol=json&cns=versionlist",ajaxCallbackDeleteVersionsWizard,"html");
 	}
 }
 

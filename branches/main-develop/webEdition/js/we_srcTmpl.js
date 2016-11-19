@@ -142,8 +142,8 @@ function wedoKeyDown(ta, ev) {
 			var selectionStart = ta.selectionStart;
 			var selectionEnd = ta.selectionEnd;
 			ta.value = ta.value.substring(0, selectionStart) +
-							"\t" +
-							ta.value.substring(selectionEnd);
+				"\t" +
+				ta.value.substring(selectionEnd);
 			ta.focus();
 			ta.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 			ta.focus();
@@ -266,15 +266,11 @@ function executeEditButton() {
 }
 
 function YUIdoAjax(value) {
-	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-		success: function (o) {
-			if (o.responseText !== undefined && o.responseText !== '') {
-				document.getElementById('tag_edit_area').value = o.responseText;
-			}
-		},
-		failure: function (o) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value, function (weResponse) {
+		if (weResponse) {
+			document.getElementById('tag_edit_area').value = weResponse;
 		}
-	}, 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value);
+	}, "html");
 }
 
 function edit_wetag(tagname, insertAtCursor) {
