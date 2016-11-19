@@ -11,4 +11,4 @@ CREATE TABLE ###TBLPREFIX###tblCaptcha (
   valid timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (IP,typ,code),
 	KEY valid (valid)
-) ENGINE=MEMORY;
+) ENGINE=MyISAM;

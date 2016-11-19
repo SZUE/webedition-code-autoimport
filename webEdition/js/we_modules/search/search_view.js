@@ -253,7 +253,7 @@ weSearch = {
 	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 	 }
-	 top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersTop, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersTop);
 	 },
 	 makeAjaxRequestParametersBottom: function () {
 	 var args = '', newString = '';
@@ -261,7 +261,7 @@ weSearch = {
 	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 	 }
-	 top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersBottom, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersBottom);
 	 },*/
 	getMouseOverDivs: function () {
 		var args = '', newString = '';

@@ -45,9 +45,6 @@ $InfoFieldId->setId('infoFieldId');
 $InfoFieldId->setStyle('margin:5px 10px;font-size:11px;');
 
 $js = '
-	//var weTree = new we_ui_controls_Tree("' . $tree->getId() . '"); YUI 2.5
-	var weTree; // YUI 2.8
-
 	var weTree;
 
 function subscribeLabelClick(){
@@ -78,8 +75,6 @@ function delaySubcriptionForIE9(){
             showInfoId("");
         }
 	});
-
-
 
 	function showInfoId(text) {
 		var field = document.getElementById("' . $InfoFieldId->getId() . '");

@@ -575,7 +575,6 @@ YAHOO.util.Event.addListener(window, "unload", function(e){
 });
 
 function setClassField(classname) {
-
 	var form = document.we_form;
 	var newClassname = classname.toLowerCase();
 	newClassname = newClassname.replace(/[^a-z0-9]/g, \'\');
@@ -590,7 +589,6 @@ function setClassField(classname) {
 }
 
 function firstCharNum(str) {
-
    var numbers = "0123456789";
    var IsNumber=true;
    var char;

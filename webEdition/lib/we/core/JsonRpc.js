@@ -108,12 +108,8 @@ function we_core_JsonRpc(url, callback) {
 			}
 		}
 
-		// create json string from object
-		var jsonString = YAHOO.lang.JSON.stringify(json);
-		// set content type
-		YAHOO.util.Connect.initHeader("content-type", "application/json");
 		// send request
-		WE().util.rpc(this.url,jsonString, this.callback);
+		WE().util.rpc(this.url,json, this.callback);
 	};
 
 }
