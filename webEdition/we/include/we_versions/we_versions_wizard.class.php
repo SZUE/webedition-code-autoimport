@@ -366,12 +366,6 @@ function checkAllRevert() {//FIXME:unused (box doesnt exist?)
 	checkbox.checked = false;
 }
 
-function calendarSetup(){
-	if(document.getElementById("date_picker_1") != null) {
-		Calendar.setup({inputField:"delete_date",ifFormat:"%d.%m.%Y",button:"date_picker_1",align:"Tl",singleClick:true});
-	}
-}
-
 function goTo(where){
 	f = document.we_form;
 	switch(where){
@@ -401,10 +395,6 @@ function set_button_state(alldis) {
 }
 set_button_state(false);';
 
-
-		$calendar = we_html_element::jsElement("calendarSetup();");
-
-		$parts[] = ['html' => $calendar];
 
 		return [$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
@@ -592,13 +582,6 @@ set_button_state(false);';
 						checkbox.checked = false;
 	            	}
 
-		            function calendarSetup(){
-
-		            	if(document.getElementById("date_picker_1") != null) {
-							Calendar.setup({inputField:"reset_date",ifFormat:"%d.%m.%Y",button:"date_picker_1",align:"Tl",singleClick:true});
-						}
-
-					}
 
 				function goTo(where){
 					f = document.we_form;
@@ -626,11 +609,6 @@ set_button_state(false);';
 					}
 				}
 				set_button_state(false);';
-
-		$calendar = we_html_element::jsElement("calendarSetup();");
-
-		$parts[] = ['html' => $calendar,
-		];
 
 		return [$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
@@ -1120,9 +1098,8 @@ set_button_state(false);';
 		if(!count($contents)){
 			return '';
 		}
-		$headCal = we_html_tools::getCalendarFiles() . YAHOO_FILES;
 
-		return we_html_tools::getHtmlTop('', '', '', $headCal .
+		return we_html_tools::getHtmlTop('', '', '',
 				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
 					['class' => "weDialogBody"]
 					, we_html_element::htmlForm(["name" => "we_form",

@@ -769,20 +769,10 @@ this.selectedIndex = 0;' .
 	 * @return html-code for calendar
 	 */
 	public static function getDateSelector($name, $btn, $value, $selWidth = 100, $btnClass = ''){
-		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", '', 0, 0, '', '', false, false, $btn, false, '', $btnClass);
-		$oSelector = new we_html_table(['class' => 'default', "id" => $name . "_cell"], 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name, 55, $value, 10, 'id="' . $name . '" class="wetextinput" readonly="1"', "text", $selWidth));
-		$oSelector->setCol(0, 3, null, '');
-		$oSelector->setCol(0, 4, null, we_html_element::htmlA(["href" => "#"], $btnDatePicker));
-
-		return $oSelector->getHTML();
-	}
-
-	public static function getCalendarFiles(){
-		return we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
+		static $cnt = 0;
+		return we_html_element::htmlSpan(['class' => 'default', "id" => $name . "_cell"], we_html_tools::htmlTextInput($name, 0, $value, 10, 'id="selectorDate' . $cnt . '" class="wetextinput datepicker" readonly="readonly"', "text", $selWidth) .
+				we_html_button::create_button(we_html_button::CALENDAR, "javascript:$('#selectorDate" . $cnt++ . "').datepicker('show');", '', 0, 0, '', '', false, false, $btn, false, '', $btnClass)
+		);
 	}
 
 }

@@ -470,7 +470,7 @@ function we_cmd() {
 		case "clear_log":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
 			break;
-		case "blocks_selectTemplateCallback": 
+		case "blocks_selectTemplateCallback":
 			document.we_form.elements['block' + args[2] + '_use_def_template'].checked = false;
 			we_cmd('setHot');
 			break;
@@ -626,14 +626,6 @@ function weShowMailsByStatus(status, group) {
 			}
 			break;
 		default :
-	}
-}
-
-function calendarSetup(group, x) {
-	for (i = 0; i <= x; i++) {
-		if (document.getElementById("date_picker_from_" + group + "_" + i + "") !== null) {
-			Calendar.setup({inputField: "filter_fieldvalue_" + group + "_" + i + "", ifFormat: "%d.%m.%Y", button: "date_picker_from_" + group + "_" + i + "", align: "Tl", singleClick: true});
-		}
 	}
 }
 

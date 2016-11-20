@@ -45,11 +45,6 @@ function weChar2entity(weString) {
 	return weString;
 }
 
-function calendarSetup() {
-	Calendar.setup({inputField: 'f_ValidFrom', ifFormat: '%d.%m.%Y', button: 'date_picker_from', align: 'Tl', singleClick: true});
-	Calendar.setup({inputField: 'f_ValidUntil', ifFormat: '%d.%m.%Y', button: 'date_picker_until', align: 'Tl', singleClick: true});
-}
-
 function getCls() {
 	return parent.document.getElementById(_sObjId + '_cls').value;
 }

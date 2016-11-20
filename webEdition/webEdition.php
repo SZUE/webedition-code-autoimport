@@ -227,8 +227,10 @@ $session = [
 	'permissions' => [],
 	'sess_id' => session_id(),
 	'specialUnload' => intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())),
-	'docuLang' => ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'),
-	'helpLang' => $GLOBALS["WE_LANGUAGE"],
+	'lang' => [
+		'short' => array_search($GLOBALS['WE_LANGUAGE'], getWELangs()),
+		'long'=> $GLOBALS["WE_LANGUAGE"]
+	],
 	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
 	'isChrome' => we_base_browserDetect::isChrome(),
 	'isAppleTouch' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)),
@@ -246,6 +248,7 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
  we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
  YAHOO_FILES .
+ JQUERY .
  we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
  we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
  we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .

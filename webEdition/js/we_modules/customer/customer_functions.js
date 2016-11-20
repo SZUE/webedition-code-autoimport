@@ -30,10 +30,10 @@ function showHideDatePickerIcon(fieldNr, show) {
 }
 
 function isDateField(fieldNr) {
-	selBranch = document.getElementsByName('branch_' + fieldNr)[0].value;
-	selField = document.getElementsByName('field_' + fieldNr)[0].value;
+	var selBranch = document.getElementsByName('branch_' + fieldNr)[0].value;
+	var selField = document.getElementsByName('field_' + fieldNr)[0].value;
 	selField = selField.substring(selBranch.length + 1, selField.length);
-	if (fieldTypesByName[selField] === 'date') {
+	if (fieldTypesByName[selField] === 'date'||fieldTypesByName[selField] === 'datetime') {
 		showHideDatePickerIcon(fieldNr, true);
 	} else {
 		showHideDatePickerIcon(fieldNr, false);
@@ -41,18 +41,18 @@ function isDateField(fieldNr) {
 }
 
 function lookForDateFields() {
+	var selBranch,selField;
 	for (i = 0; i < document.getElementsByName('count')[0].value; i++) {
 		selBranch = document.getElementsByName('branch_' + i)[0].value;
 		selField = document.getElementsByName('field_' + i)[0].value;
 		selField = selField.substring(selBranch.length + 1, selField.length);
-		if (fieldTypesByName[selField] === 'date') {
+		if (fieldTypesByName[selField] === 'date'||fieldTypesByName[selField] === 'datetime') {
 			if (document.getElementsByName('value_' + i)[0].value !== '') {
-				document.getElementById('value_date_' + i).value = fieldDate.timestempToDate(document.getElementsByName('value_' + i)[0].value);
+				//document.getElementById('value_date_' + i).value = fieldDate.timestempToDate(document.getElementsByName('value_' + i)[0].value);
 
 			}
 			showHideDatePickerIcon(i, true);
 		}
-		Calendar.setup({inputField: 'value_date_' + i, ifFormat: date_format_dateonly, button: 'date_picker_' + i, align: 'Tl', singleClick: true});
 	}
 }
 
@@ -62,7 +62,7 @@ function transferDateFields() {
 		selField = document.getElementsByName('field_' + i)[0].value;
 		selField = selField.substring(selBranch.length + 1, selField.length);
 		if (fieldTypesByName[selField] === 'date' && document.getElementById('value_date_' + i).value !== '') {
-			document.getElementsByName('value_' + i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_' + i).value);
+			//document.getElementsByName('value_' + i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_' + i).value);
 		}
 	}
 }

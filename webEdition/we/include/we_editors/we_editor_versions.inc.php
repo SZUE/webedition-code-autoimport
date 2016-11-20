@@ -33,8 +33,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 $content = $versionsView->getVersionsOfDoc();
 $foundItems = count($content);
 
-echo we_html_tools::getCalendarFiles() .
- $versionsView->getJS() .
+echo $versionsView->getJS() .
  we_html_element::cssLink(CSS_DIR . 'we_versions.css', ['media' => 'screen']) .
  we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', ['media' => 'print']);
 ?>

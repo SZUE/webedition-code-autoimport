@@ -31,8 +31,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 $doclistView = new $GLOBALS['we_doc']->doclistViewClass($GLOBALS['we_doc']->doclistModel);
 $doclistSearch = $doclistView->searchclass;
 
-echo we_html_tools::getCalendarFiles() .
- $doclistView->getSearchJS();
+echo $doclistView->getSearchJS();
 ?>
 </head>
 
@@ -48,12 +47,12 @@ echo we_html_tools::getCalendarFiles() .
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
 		echo $doclistView->getHTMLforDoclist([
-			['html' => $doclistView->getSearchDialog()],
-			['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
-		 ]) .
+				['html' => $doclistView->getSearchDialog()],
+				['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
+		]) .
 		we_html_element::htmlHiddens(['obj' => 1,
 			'we_complete_request' => 1
-		 ]);
+		]);
 		?>
 	</form>
 </body>

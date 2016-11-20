@@ -544,7 +544,7 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 	var doc = (widgetType === 'pad' ? docIFrm.getElementById(widgetType) : oInline);
 	doc.innerHTML = contentData;
 	if (widgetType === 'pad') {
-		iFrmScr.calendarSetup();
+		iFrmScr.$('.datepicker').datepicker();
 	}
 	setLabel(widgetId, titel, '');
 	initWidget(widgetId);
@@ -672,7 +672,7 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	}
 	doc.innerHTML = oDoc.innerHTML;
 	if (sType === 'pad') {
-		iFrmScr.calendarSetup();
+		iFrmScr.$('.datepicker').datepicker();
 	}
 	setLabel(sObjId, sCsvLabel, '');
 

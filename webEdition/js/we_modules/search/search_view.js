@@ -61,7 +61,6 @@ weSearch = {
 	elem: null,
 	rolloverElem: null,
 	init: function () {
-		weSearch.calendarSetup(searchConf.conf.modelHeight);
 		weSearch.conf.editorBodyFrame = (weSearch.conf.editorBody === "window" ? window : top.content.editor.edbody);
 		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
 			if (weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch)) {
@@ -690,21 +689,15 @@ weSearch = {
 				row.appendChild(this.getCell('locationDate' + this.conf.whichsearch, rowNr));
 
 				// FIXME: move datepicker-button to search_view
-				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
-					'<td></td>' +
-					'<td></td>' +
-					'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-					'<td></td>' +
-					'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
-					'</tr></tbody></table>';
-
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = innerhtml;
+				cell.innerHTML = '<span id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default">' +
+					this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="readonly" ') +
+					'<button class="weBtn" onclick="$(\'#search' + this.conf.whichsearch + "\\\\[" + rowNr + '\\\\]\').datepicker(\'show\')"><i class="fa fa-lg fa-calendar"></i>' +
+					'</span>';
 				row.appendChild(cell);
-
-				Calendar.setup({inputField: 'search' + this.conf.whichsearch + '[' + rowNr + ']', ifFormat: '%d.%m.%Y', button: 'date_picker_from' + rowNr + '', align: 'Tl', singleClick: true});
+				$("#search" + this.conf.whichsearch + "\\[" + rowNr + "\\]").datepicker();
 
 				row.appendChild(this.getCell('delButton', rowNr));
 				row.appendChild(this.getCell('hiddenLocation_empty', rowNr));
@@ -938,13 +931,6 @@ weSearch = {
 	},
 	previewVersion: function (table, ID, version) {
 		top.we_cmd("versions_preview", table, ID, version, 0);
-	},
-	calendarSetup: function (x) {
-		for (i = 0; i < x; i++) {
-			if (document.getElementById("date_picker_from" + i + "") !== null) {
-				//Calendar.setup({inputField:"search" + this.conf.whichsearch + "["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-			}
-		}
 	},
 	deleteMediaDocs: function (whichSearch) {
 		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);

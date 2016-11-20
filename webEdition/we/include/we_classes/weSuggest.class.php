@@ -123,7 +123,6 @@ class weSuggest{
 	static function getYuiFiles(){ //FIXME: make sure all pages include this in head-element
 		return
 			we_html_element::cssLink(CSS_DIR . 'weSuggest.css') .
-			JQUERY .
 			YAHOO_FILES .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .

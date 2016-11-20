@@ -29,7 +29,6 @@ class we_tabs{
 	const JS_LOAD = 'var weTabs = new (WE().layout.we_tabs)(document, window);';
 
 	public function addTab($text, $isActive = false, $jscmd = '', $attribs = []){
-		t_e('caää',$jscmd);
 		$class = ($isActive ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){

@@ -148,7 +148,7 @@ function setTab(tab) {
 				break;
 		}
 
-		return $this->getHTMLDocument($body, we_html_tools::getCalendarFiles() . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
+		return $this->getHTMLDocument($body, $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
 	private function getTab(){

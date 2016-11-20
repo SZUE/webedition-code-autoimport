@@ -169,7 +169,10 @@ define('JQUERY', we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery-ui.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery.sumoselect.js') .
-	we_html_element::jsScript(JS_DIR . 'startJquery.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/jquery/i18n/datepicker-' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '.js') .
+	we_html_element::jsScript(JS_DIR . 'startJquery.js', '', ['id' => 'loadVarJquery', 'data-jquery' => setDynamicVar([
+
+	])]) .
 	we_html_element::cssLink(CSS_DIR . 'weJquery.css')
 );
 
