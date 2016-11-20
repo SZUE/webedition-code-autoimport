@@ -225,20 +225,18 @@ class we_customer_customer extends we_base_model{
 
 	function getFieldDbProperties($field_name){
 		$buff = $this->getFieldsDbProperties();
-
-		foreach($buff as $b){
-			if($b["Field"] == $field_name){
-				return $b;
-			}
-		}
-
-		return [];
+		return (isset($buff[$field_name]) ?
+			$buff[$field_name] :
+			[]);
 	}
 
 	function getFieldsDbProperties(){
-		$ret = [];
+		static $ret = [];
+		if($ret){
+			return $ret;
+		}
 		$this->db->query('SHOW COLUMNS FROM ' . CUSTOMER_TABLE);
-		while($this->db->next_record()){
+		while($this->db->next_record(MYSQL_ASSOC)){
 			$record = $this->db->Record;
 			list($type) = explode('(', $record['Type']);
 			switch($type){

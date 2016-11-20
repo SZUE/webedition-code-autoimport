@@ -133,15 +133,6 @@ function setOrder(order) {
 	search(false);
 }
 
-function calendarSetup(x) {
-	var i;
-	for (i = 0; i < x; i++) {
-		if (document.getElementById("date_picker_from" + i + "") !== null) {
-			Calendar.setup({inputField: "search[" + i + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + i + "", align: "Tl", singleClick: true});
-		}
-	}
-}
-
 function delRow(id) {
 	var scrollContent = document.getElementById("scrollContent");
 	scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
@@ -467,18 +458,14 @@ function changeit(value, rowNr) {
 			location = document.getElementById("location[" + rowNr + "]");
 			location.disabled = false;
 
-			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
-				"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />" +
-				"</td><td>&nbsp;</td><td><a href=\"#\">" +
-				"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>" +
-				"</button></a></td></tr></tbody></table>";
-
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");
-			cell.innerHTML = innerhtml;
+			cell.innerHTML = '<span id="search[' + rowNr + ']_cell" class="default">' +
+				'<input class="wetextinput datepicker" name="search[' + rowNr + ']" value="" id="selectorDate' + rowNr + '" readonly="readonly" style="width: 100px;" type="text" />' +
+				'<button class="weBtn" onclick="$(\'#selectorDate' + rowNr + '\').datepicker(\'show\')"><i class="fa fa-lg fa-calendar"></i>' +
+				'</button></span>';
 			row.appendChild(cell);
-
-			Calendar.setup({inputField: "search[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
+			$('.datepicker').datepicker();
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton[" + rowNr + "]");

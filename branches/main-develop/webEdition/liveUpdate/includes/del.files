@@ -791,6 +791,7 @@ js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
 js/utils/we_cmd_encode.js
+js/utils/weDate.js
 js/utils/rewrite_element.js
 js/utils/prototypes.js
 js/utils/progressBar.js
@@ -1120,6 +1121,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/additional/yui/treeview
 !lib/additional/tinymce/plugins/table
 !lib/additional/tinymce/plugins/paste
+!lib/additional/jscalendar
 !jupload
 !js/libs/yui
 !js/libs/we

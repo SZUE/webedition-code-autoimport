@@ -174,8 +174,7 @@ var searchClass={
 		<td></td>
 	</tr>
 	</table>
-	<div style="border-top: 1px solid #AFB0AF;clear:both;"></div>' .
-			we_html_element::jsElement("calendarSetup(" . $this->Model->height . ");");
+	<div style="border-top: 1px solid #AFB0AF;clear:both;"></div>';
 
 		return $out;
 	}

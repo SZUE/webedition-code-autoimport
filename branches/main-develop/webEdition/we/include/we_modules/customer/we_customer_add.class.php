@@ -211,12 +211,12 @@ abstract class we_customer_add{
 				++$c;
 			}
 			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
-			$value_date_i = we_html_tools::htmlTextInput("value_date_$i", 20, "", "", "id='value_date_$i' style='display:none; width:150' readonly", "text", ""); // empty field to display the timestemp in date formate - handeld on the client in js
-			$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, "_$i");
+			$value_date_i = we_html_tools::htmlTextInput("value_date_$i", 20, "", "", "id='value_date_$i' class='datepicker' style='display:none; width:150px' readonly='readonly'", "text", ""); // empty field to display the timestemp in date formate - handeld on the client in js
+			$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:$('#value_" .$i. "').datepicker('show')", null, null, null, null, null, null, false, "_$i");
 			$advsearch->addRow();
-			$advsearch->setCol($c, 0, [], $branch->getHtml());
-			$advsearch->setCol($c, 1, [], $field->getHtml());
-			$advsearch->setCol($c, 2, [], we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, [], "value", 60));
+			$advsearch->setColContent($c, 0, $branch->getHtml());
+			$advsearch->setColContent($c, 1, $field->getHtml());
+			$advsearch->setColContent($c, 2, we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, [], "value", 60));
 			$advsearch->setCol($c, 3, ["width" => 190], "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;text-align:right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}

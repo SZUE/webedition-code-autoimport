@@ -26,7 +26,21 @@
 
 //FIXME: add text replacements
 $(function () {
-	$('.searchSelect').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false});
-	$('.searchSelectUp').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false, up: true});
-	$('.newSelect').SumoSelect({csvDispCount: 0, selectAll: true, okCancelInMulti: false});
+	if (WE(true)) {
+		//var data = WE().util.getDynamicVar(document, 'loadVarJquery', 'data-jquery');
+
+		$('.searchSelect').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false});
+		$('.searchSelectUp').SumoSelect({search: true, searchText: 'Enter here.', csvDispCount: 0, selectAll: true, okCancelInMulti: false, up: true});
+		$('.newSelect').SumoSelect({csvDispCount: 0, selectAll: true, okCancelInMulti: false});
+		//init datepicker
+		$.datepicker.setDefaults($.datepicker.regional[WE().session.lang.short ]);
+		$.datepicker.setDefaults({
+			changeMonth: true,
+			changeYear: true,
+			showWeek: true,
+			showButtonPanel: true,
+			dateFormat: "dd.mm.yy" //FIXME: we need to check where dates are processed
+		});
+		$('.datepicker').datepicker();
+	}
 });

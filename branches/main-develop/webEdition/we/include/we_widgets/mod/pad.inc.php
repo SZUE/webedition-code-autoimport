@@ -35,10 +35,10 @@ function convertDate($date){
  * @return unknown
  */
 function getDateSelector($label, $name, $btn){
-	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $btn);
+	//FIXME: convert this to we_html_tools::getDateSelector
 	return we_html_element::htmlSpan(['class' => 'default', 'id' => $name . '_cell'], $label .
-			we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" readonly="1"', "text", 70, 0) .
-			we_html_element::htmlA(["href" => "#"], $btnDatePicker)
+			we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" class="wetextinput datepicker" readonly="readonly"', "text", 70, 0) .
+			we_html_button::create_button(we_html_button::CALENDAR, "javascript:$('#" . $name . "').datepicker('show');", null, null, null, null, null, null, false, $btn)
 	);
 }
 
@@ -267,7 +267,6 @@ $notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(["id" => "view"], $oTblBtnProps);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::cssLink(CSS_DIR . 'pad.css') .
-	we_html_tools::getCalendarFiles() .
 	we_html_element::jsElement("
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 " .
@@ -282,7 +281,7 @@ var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
 var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		[
-		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
+		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'toggleTblValidity();'
 		], we_html_element::htmlForm(['style' => "display:inline;"], we_html_element::htmlDiv(
 				["id" => "pad"], $notepad .
 				we_html_element::htmlHidden("mark", "")

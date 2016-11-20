@@ -1067,8 +1067,7 @@ top.content.hot=false;');
 <td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") . '</td>
 <td colspan="8" style="text-align:right"></td>
 </tr>
-</table></div>' .
-			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
+</table></div>';
 
 		return $out;
 	}

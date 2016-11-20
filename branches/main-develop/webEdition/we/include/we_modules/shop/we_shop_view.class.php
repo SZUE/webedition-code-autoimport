@@ -242,7 +242,7 @@ customFields' .
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (empty($advanced[$field]) || ($advanced[$field] == $dateform) ? '-' : $advanced[$field]) . '" />
 				</td>
 				<td style="height:25px;width:10px"></td>
-				<td style="width:102px;vertical-align:top;height:25px">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td style="width:102px;vertical-align:top;height:25px">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:$(this).datepicker('dialog', '". (empty($advanced[$field]) || ($advanced[$field] == $dateform) ? '' : $advanced[$field])."', function(val,ob){CalendarChanged('".$field ."',ob.lastVal,val);},{},event); ", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td style="width:300px;height:25px"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 		}
@@ -530,8 +530,7 @@ WHERE o.ID=' . $bid);
 			$js = '
 bid =' . $bid . ';
 cid =' . $orderData['customerID'] . ';';
-		echo we_html_tools::getCalendarFiles() .
-		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+		echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 		we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', $js);
 		?>
 
@@ -554,29 +553,14 @@ cid =' . $orderData['customerID'] . ';';
 		// "Html output for order with articles"
 		// ********************************************************************************
 
-		$js = '
-// init the used calendars
 
-function CalendarChanged(calObject) {
-	// field:
-	_field = calObject.params.inputField;
-	document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '&" + _field.name + "=" + _field.value;
+		echo we_html_element::jsElement('
+function CalendarChanged(field,oldval,val) {
+	if(oldval!=val){
+		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '&" + field + "=" + val;
+	}
 }
-';
-
-		foreach(we_shop_statusMails::$StatusFields as $cur){
-			if(!$weShopStatusMails->FieldsHidden[$cur]){
-				$js .= '		Calendar.setup({
-				"inputField" : "hidden_Calendar_' . $cur . '",
-				"displayArea" : "div_Calendar_' . $cur . '",
-				"button" : "date_pickerbutton_Calendar_' . $cur . '",
-				"ifFormat" : "' . $da . '",
-				"daFormat" : "' . $da . '",
-				"onUpdate" : CalendarChanged
-				});';
-			}
-		}
-		echo we_html_element::jsElement($js);
+');
 		?>
 		</body>
 		</html>

@@ -1283,6 +1283,9 @@ function we_cmd() {
 					return true;
 				}
 			}
+
+			//log this, as it might be an error
+			//WE().t_e('cmd opens new tab', args, url);
 			//finally open new window
 			we_showInNewTab(args, url);
 	}
@@ -1439,7 +1442,7 @@ var we_cmd_modules = {
 				break;
 			case "help_modules":
 				WE().util.jsWindow.prototype.focus('edit_module');
-				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				url = "http://help.webedition.org/index.php?language=" + WE().session.lang.long;
 				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
 				break;
 			case "info_modules":
@@ -1451,7 +1454,7 @@ var we_cmd_modules = {
 				WE().util.jsWindow.prototype.focus('tool_window') ||
 					WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
 					WE().util.jsWindow.prototype.focus('tool_window_weSearch');
-				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				url = "http://help.webedition.org/index.php?language=" + WE().session.lang.long;
 				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
 				break;
 			case "info_tools":
@@ -1462,7 +1465,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
 				break;
 			case "help":
-				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				url = "http://help.webedition.org/index.php?language=" + WE().session.lang.long;
 				new (WE().util.jsWindow)(this, url, "help", -1, -1, 720, 600, true, false, true, true);
 				break;
 			case "help_forum":
@@ -1802,10 +1805,10 @@ var we_cmd_modules = {
 				break;
 
 			case "help_tagreference":
-				new (WE().util.jsWindow)(this, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+				new (WE().util.jsWindow)(this, "http://tags.webedition.org/de/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "open_tagreference":
-				var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
+				var docupath = "http://tags.webedition.org/de/" + args[1];
 				new (WE().util.jsWindow)(this, docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 				break;
 			case "open_template":
@@ -2077,8 +2080,8 @@ function switchEditPage(args, url) {
 	// if visible frame equals to editpage content and there is already content loaded
 	if (isEditpageContent && visibleEditorFrame && visibleEditorFrame.weIsTextEditor !== undefined && currentEditorRootFrame.frames[2].location !== "about:blank") {
 		// tell the backend the right edit page nr and break (don't send the form)
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPageNr","transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
-			//FAIL: top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPageNr", "transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+		//FAIL: top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
 		if (visibleEditorFrame.reloadContent === false) {
 			return;
 		}
