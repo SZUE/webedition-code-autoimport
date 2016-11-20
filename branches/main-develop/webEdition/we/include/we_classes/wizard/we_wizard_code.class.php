@@ -155,8 +155,7 @@ abstract class we_wizard_code{
 	 * @return string
 	 */
 	public static function getJavascript(){
-		return YAHOO_FILES .
-			JQUERY .
+		return JQUERY .
 			we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 	}
 

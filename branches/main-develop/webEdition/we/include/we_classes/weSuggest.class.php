@@ -123,7 +123,10 @@ class weSuggest{
 	static function getYuiFiles(){ //FIXME: make sure all pages include this in head-element
 		return
 			we_html_element::cssLink(CSS_DIR . 'weSuggest.css') .
-			YAHOO_FILES .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
@@ -164,9 +167,9 @@ class weSuggest{
 					'mayBeEmpty' => ($this->inputMayBeEmpty[$i] ? true : false),
 					'checkField' => intval(!empty($this->checkFieldsValues[$i])),
 					'checkValues' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) ? $this->setOnSelectFields[$i] : []),
-					'blur' => $this->doOnTextfieldBlur[$i] ? : '',
-					'itemSelect' => $this->doOnItemSelect[$i] ? : '',
-					'jsCommandItemSelect' => $this->jsCommandOnItemSelect[$i]? : '',
+					'blur' => $this->doOnTextfieldBlur[$i] ?: '',
+					'itemSelect' => $this->doOnItemSelect[$i] ?: '',
+					'jsCommandItemSelect' => $this->jsCommandOnItemSelect[$i] ?: '',
 					'fields_id' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) && $this->setOnSelectFields[$i] ? $this->setOnSelectFields[$i] : [])
 				];
 //FIXME: set object to $field, needs change in weSuggest.js
@@ -216,9 +219,9 @@ class weSuggest{
 	}
 
 	function getHTML($reset = true){
-		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
-		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
-		$containerWidth = $this->containerWidth ? : $this->width;
+		$inputId = $this->inputId ?: 'yuiAcInput' . $this->acId;
+		$resultId = $this->resultId ?: 'yuiAcResult' . $this->acId;
+		$containerWidth = $this->containerWidth ?: $this->width;
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, [
 			$resultId], $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit, 'yuiAcContentType' . $this->acId, $this->acId);
@@ -229,15 +232,15 @@ class weSuggest{
 
 		$html = we_html_tools::htmlFormElementTable(
 				["text" => $resultField . $autoSuggest], $this->label, 'left', 'defaultfont', (
-				$this->selectButton ? : ''
+				$this->selectButton ?: ''
 				), (
-				$this->additionalButton ? : ''
+				$this->additionalButton ?: ''
 				), (
-				$this->trashButton ? : ''
+				$this->trashButton ?: ''
 				), (
-				$this->openButton ? : ''
+				$this->openButton ?: ''
 				), (
-				$this->createButton ? : '')
+				$this->createButton ?: '')
 		);
 
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
@@ -397,7 +400,7 @@ class weSuggest{
 						break;
 					case "class":
 						$class = 1;
-						$val.=' wetextinput';
+						$val .= ' wetextinput';
 					case "onblur":
 					case "onfocus":
 					default:
@@ -420,7 +423,7 @@ class weSuggest{
 	}
 
 	function setInputId($val = ''){
-		$this->inputId = ($val ? : "yuiAcInput" . $this->acId);
+		$this->inputId = ($val ?: "yuiAcInput" . $this->acId);
 	}
 
 	function setInputName($val){
