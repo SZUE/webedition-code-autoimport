@@ -54,7 +54,6 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocumentHeader() .
 			$extraHead .
 			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
-			YAHOO_FILES .
 			'</head>' . $body . '</html>';
 	}
 

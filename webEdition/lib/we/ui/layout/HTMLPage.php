@@ -302,7 +302,6 @@ EOS;
 		$html .= STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'apps.css') .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			YAHOO_FILES.
 			JQUERY;
 
 		// add javascript tags for external JavaScript files

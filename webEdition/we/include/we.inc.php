@@ -156,11 +156,6 @@ define('STYLESHEET', STYLESHEET_MINIMAL .
 	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
 );
 
-define('YAHOO_FILES', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
-
 define('JQUERY', we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui.css') .
 	we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui.css') .
 	we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui.structure.css') .
@@ -170,9 +165,9 @@ define('JQUERY', we_html_element::cssLink(LIB_DIR . 'additional/jquery/jquery-ui
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery-ui.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/jquery.sumoselect.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jquery/i18n/datepicker-' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '.js') .
-	we_html_element::jsScript(JS_DIR . 'startJquery.js', '', ['id' => 'loadVarJquery', 'data-jquery' => setDynamicVar([
+	we_html_element::jsScript(JS_DIR . 'startJquery.js'/*, '', ['id' => 'loadVarJquery', 'data-jquery' => setDynamicVar([
 
-	])]) .
+	])]*/) .
 	we_html_element::cssLink(CSS_DIR . 'weJquery.css')
 );
 

@@ -93,7 +93,6 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset', we_html_element::jsScript
 	we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
 			'mod' => $tool,
 	])]) .
-	YAHOO_FILES .
 	we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(we_tabs::JS_LOAD));
 ?>
 <body style="overflow:hidden;" onload="<?= ($showHeader ? 'weTabs.setFrameSize();' : ''); ?>"><?php

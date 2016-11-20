@@ -48,8 +48,7 @@ abstract class we_import_wizardBase{
 				we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&pnt=wizcmd', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		);
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', YAHOO_FILES .
-				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js'), $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(JS_DIR . 'import_wizardBase.js'), $body);
 	}
 
 	private function getWizBody($type = '', $step = 0, $mode = 0){
