@@ -24,24 +24,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function weInputAppendClass(inp, cls) {
-	inp.classList.add(cls);
-}
-
-function weInputRemoveClass(inp, cls) {
-	inp.classList.remove(cls);
-}
-
-function weInputInArray(arr, val) {
-	var _l = arr.length;
-	for (var i = 0; i < _l; i++) {
-		if (arr[i] === val) {
-			return true;
-		}
-	}
-	return false;
-}
-
 YAHOO.autocoml = {
 	oACDS: [],
 	selInputVal: [],
@@ -85,9 +67,8 @@ YAHOO.autocoml = {
 	},
 
 	doOnTextfieldBlur: function (x, y, i) {
-		ret = true;
 		//document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).blur();
-		wsValid = true;
+		var wsValid = true;
 		if (YAHOO.autocoml.yuiAcFields[i].workspace.length > 0) {
 			wsValid = false;
 			var wsPathInput = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
@@ -133,9 +114,9 @@ YAHOO.autocoml = {
 					YAHOO.autocoml.newInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
 					if (YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.selInputVal[i] || YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.oldInputVal[i]) {
 						YAHOO.autocoml.yuiAcFields[i].run = true;
-						WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cmd=SelectorGetSelectedId&we_cmd[1]=' + encodeURIComponent(YAHOO.autocoml.newInputVal[i]) + '&we_cmd[2]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].table) + '&we_cmd[3]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].cTypes) + '&we_cmd[4]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].checkValues) + '&we_cmd[5]=' + i, function (json) {
+						WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php&cmd=SelectorGetSelectedId", 'protocol=json&we_cmd[1]=' + encodeURIComponent(YAHOO.autocoml.newInputVal[i]) + '&we_cmd[2]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].table) + '&we_cmd[3]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].cTypes) + '&we_cmd[4]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].checkValues) + '&we_cmd[5]=' + i, function (json) {
 							YAHOO.autocoml.ajaxSuccess(json, i);
-						}).fail(function (jqxhr, textStatus, error) {
+						}).fail(function () {
 							YAHOO.autocoml.ajaxFailure(i);
 						});
 
@@ -380,7 +361,7 @@ YAHOO.autocoml = {
 		set.run = false;
 		var _elem = document.getElementById(set.id);
 		if (_elem !== null) {
-			weInputAppendClass(_elem, 'weMarkInputError');
+			_elem.classList.add('weMarkInputError');
 		}
 		if (parent && parent.weAutoCompetionFields)
 			parent.weAutoCompetionFields[setNr].valid = false;
@@ -392,7 +373,7 @@ YAHOO.autocoml = {
 		set.found = 1;
 		var _elem = document.getElementById(set.id);
 		if (_elem !== null) {
-			weInputRemoveClass(_elem, 'weMarkInputError');
+			_elem.classList.remove('weMarkInputError');
 		}
 		if (parent && parent.weAutoCompetionFields)
 			parent.weAutoCompetionFields[setNr].valid = true;

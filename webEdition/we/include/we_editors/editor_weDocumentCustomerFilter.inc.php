@@ -78,8 +78,6 @@ function formWebuser($canChange){
 	$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
 
 
-	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');");
-	$trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);");
 
 	$yuiSuggest = & weSuggest::getInstance();
 	$yuiSuggest->setAcId("Customer");
@@ -91,9 +89,9 @@ function formWebuser($canChange){
 	$yuiSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
 	$yuiSuggest->setSelector(weSuggest::DocSelector);
 	$yuiSuggest->setWidth(434);
-	$yuiSuggest->setSelectButton($button);
+	$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');"));
 	$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit_ifthere', document.we_form.elements['yuiAcResultCustomer'].value);"));
-	$yuiSuggest->setTrashButton($trashBut);
+	$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);"));
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 
 	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();

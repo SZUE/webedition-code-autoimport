@@ -434,9 +434,6 @@ class we_collection extends we_root{
 		$textname = 'we_' . $item['name'] . '_ItemName_' . $item['index'];
 		$idname = 'we_' . $item['name'] . '_ItemID_' . $item['index'];
 
-		$btnEdit = we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit');
-		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree');
-
 		$yuiSuggest->setTable($item['remTable']);
 		$yuiSuggest->setContentType('folder,' . $item['remCT']);
 		$yuiSuggest->setCheckFieldValue(false);
@@ -448,8 +445,8 @@ class we_collection extends we_root{
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setSelectButton($btnEdit, 0);
-		$yuiSuggest->setAdditionalButton($addFromTreeButton, 0);
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit'), 0);
+		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree'), 0);
 		//$yuiSuggest->setOpenButton($editButton, 4);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 

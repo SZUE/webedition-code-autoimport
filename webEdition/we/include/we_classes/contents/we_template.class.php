@@ -219,7 +219,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			$tmp = explode("\n", $code);
 			$errCode = "\n";
 			for($ln = $error['line'] - 2; $ln <= $error['line'] + 2; $ln++){
-				$errCode.=$ln . ': ' . $tmp[$ln] . "\n";
+				$errCode .= $ln . ': ' . $tmp[$ln] . "\n";
 			}
 
 			//FIXME: this->Path ist bei rebuild nicht gesetzt
@@ -258,7 +258,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				}
 				$errCode = "\n";
 				for($ln = max(0, $error['line'] - 2); $ln <= $error['line'] + 2 && isset($tmp[$ln]); $ln++){
-					$errCode.=$ln . ': ' . $tmp[$ln] . "\n";
+					$errCode .= $ln . ': ' . $tmp[$ln] . "\n";
 				}
 
 				$this->errMsg = "Error: " . $error['message'] . "\nLine: " . $error['line'] . "\nCode: " . $errCode;
@@ -283,7 +283,7 @@ we_templateInit();?>';
 			$repl = ['?>' => '__WE_?__WE__',
 				'=>' => '__WE_=__WE__',
 				'->' => '__WE_-__WE__'
-				];
+			];
 			$code = str_replace(array_keys($repl), $repl, $code);
 			//#### parse base href
 			$code = preg_replace(['%(<body[^>]*)>%i',
@@ -412,7 +412,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		return ($this->getElement('allVariants') ? : []);
+		return ($this->getElement('allVariants') ?: []);
 	}
 
 	/**
@@ -456,7 +456,7 @@ we_templateInit();?>';
 						} else {
 							$out[$name] = ['type' => $tagname,
 								'attributes' => $att
-								];
+							];
 						}
 						//additional parsing for selects
 						if($tagname === 'select'){
@@ -476,7 +476,7 @@ we_templateInit();?>';
 						case 'linklist':
 							$blocks[] = ['name' => $name,
 								'type' => $tagname
-								];
+							];
 							break;
 					}
 				}
@@ -502,12 +502,8 @@ we_templateInit();?>';
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
-		$myid = $this->MasterTemplateID ? : '';
+		$myid = $this->MasterTemplateID ?: '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "", $this->DB_WE);
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
-		$openButton = we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements.we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID.value)');
-		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);");
 
 		$yuiSuggest->setAcId('MasterTemplate');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
@@ -518,9 +514,9 @@ we_templateInit();?>';
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(0);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setTrashButton($trashButton);
-		$yuiSuggest->setOpenButton($openButton);
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);"));
+		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements.we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID.value)'));
 		return $yuiSuggest->getHTML();
 	}
 
@@ -713,7 +709,7 @@ we_templateInit();?>';
 		foreach($regs as $reg){
 			$attribs = we_tag_tagParser::parseAttribs(isset($reg[2]) ? $reg[2] : '', true);
 			if(!empty($attribs['name'])){
-				$masterTags[$attribs['name']] = [ 'content' => isset($reg[3]) ? $reg[3] : '',];
+				$masterTags[$attribs['name']] = ['content' => isset($reg[3]) ? $reg[3] : '',];
 				$code = str_replace($reg[0], '', $code);
 			}
 		}
@@ -741,10 +737,10 @@ we_templateInit();?>';
 					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
-							(isset($masterTags[$name]['content']) ?
-								$masterTags[$name]['content'] :
-								'') :
-							$code), $masterTemplateCode);
+						(isset($masterTags[$name]['content']) ?
+						$masterTags[$name]['content'] :
+						'') :
+						$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -801,7 +797,7 @@ we_templateInit();?>';
 				}
 			}
 		}
-		$this->IncludedTemplates.= ($this->IncludedTemplates ? ',' : '');
+		$this->IncludedTemplates .= ($this->IncludedTemplates ? ',' : '');
 
 		$this->setElement('completeData', $code);
 		--$cnt;
@@ -921,8 +917,8 @@ we_templateInit();?>';
 			}
 		}
 		return (empty($this->MediaLinks) ?
-				true :
-				parent::registerMediaLinks(false, true));
+			true :
+			parent::registerMediaLinks(false, true));
 	}
 
 	// .tmpl mod
@@ -973,7 +969,7 @@ we_templateInit();?>';
 			return '';
 		}
 		//keep we tags in front of ordinal html tags
-		$ret.='CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
+		$ret .= 'CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
 
 		ksort($allTags);
 		foreach($allTags as $tagName => $cur){
@@ -1010,7 +1006,7 @@ we_templateInit();?>';
 			if($attribs){
 				$attribs = array_unique($attribs);
 				sort($attribs);
-				$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+				$ret .= 'CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
 			}
 		}
 		return $ret;
