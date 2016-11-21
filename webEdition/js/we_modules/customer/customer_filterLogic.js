@@ -31,7 +31,7 @@ function getById(id) {
 }
 
 function wecf_logic_changed(s) {
-	wecf_hot();
+	//wecf_hot();
 	var val = s.options[s.selectedIndex].value;
 	var cell = s.parentNode;
 	var row = cell.parentNode;
@@ -56,8 +56,9 @@ function wecf_logic_changed(s) {
 	}
 }
 
+// FIXME:  move this to multiedit!
 function removeFromMultiEdit(_multEdit) {
-	wecf_hot();
+	we_cmd('setHot');
 	if (_multEdit.itemCount > 0) {
 		while (_multEdit.itemCount > 0) {
 			_multEdit.delItem(_multEdit.itemCount);
@@ -65,8 +66,9 @@ function removeFromMultiEdit(_multEdit) {
 	}
 }
 
+// FIXME:  move this to multiedit!
 function addToMultiEdit(_multEdit, paths, ids) {
-	wecf_hot();
+	we_cmd('setHot');
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < ids.length; i++) {
