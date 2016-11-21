@@ -1014,7 +1014,7 @@ function showPreview() {
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','FolderID','FolderPath','setHot','','" . $rootDirID . "')");
 		$countSubDirs = 1;
 		if(defined('OBJECT_FILES_TABLE') && ($this->Model->DynamicSelection == we_navigation_navigation::DYN_CLASS || $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK)){
-			$classDirID = f('SELECT of.ID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON o.Path=of.Path WHERE o.ID=' . $this->Model->ClassID, '', $this->db);
+			$classDirID = f('SELECT of.ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsClassFolder=1 AND of.TableID=' . $this->Model->ClassID, '', $this->db);
 			$countSubDirs = f('SELECT COUNT(1) FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $classDirID . ' AND IsFolder=1', '', $this->db);
 		}
 

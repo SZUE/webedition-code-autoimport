@@ -67,7 +67,7 @@ function we_tag_object(array $attribs){
 						$we_doc->getElement($name) :
 						$we_oid)
 				));
-		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
+		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=1 AND TableID=' . intval($classid)) : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
 		$textname = 'we_' . $we_doc->Name . '_vars[' . $name . '_path]';

@@ -70,7 +70,7 @@ class we_exim_XMLExIm{
 		'xml_encoding' => '',
 		'target_encoding' => '',
 		'rebuild' => 1
-	 ];
+	];
 	var $xmlBrowser;
 
 	function __construct($file = ''){
@@ -104,7 +104,7 @@ class we_exim_XMLExIm{
 			"handle_table" => 1,
 			"handle_tableitems" => 1,
 			"handle_binarys" => 1,
-			];
+		];
 
 		$this->setOptions($options);
 	}
@@ -216,7 +216,7 @@ class we_exim_XMLExIm{
 	}
 
 	static function getHeader($encoding = '', $type = '', $skipWE = false){
-		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
+		return '<?xml version="1.0" encoding="' . ($encoding ?: $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
 			($skipWE ? '' : we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n");
 	}
 
@@ -255,21 +255,19 @@ class we_exim_XMLExIm{
 
 	function queryForAllowed($table){
 		$db = new DB_WE();
-		$parentpaths = $wsQuery = [];
+		$wsQuery = [];
 		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
-				while($path != '/' && $path){
-					$parentpaths[] = $path;
-					$path = dirname($path);
-				}
+				$wsQuery[] = 'Path LIKE "' . $db->escape($path) . '/%"';
+				$wsQuery[] = we_tool_treeDataSource::getQueryParents($path);
 			}
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
+			$paths = id_to_path($ac, OBJECT_TABLE);
+			foreach($paths as $path){
+				$wsQuery[] = 'Path LIKE "' . $db->escape($path) . '/%"';
+				$wsQuery[] = 'Path="' . $db->escape($path) . '"';
 			}
 		}
 
@@ -300,8 +298,8 @@ class we_exim_XMLExIm{
 			case 'doctype':
 				$cat_sql = ($categories ? ' AND ' . we_category::getCatSQLTail('', 'f', true, $db, 'Category', $categories) : '');
 				$ws_where = ($dir ?
-						' AND (f.Path LIKE "' . $db->escape(id_to_path($dir, FILE_TABLE, $db)) . '/%" OR f.ID="' . $dir . '") ' :
-						'');
+					' AND (f.Path LIKE "' . $db->escape(id_to_path($dir, FILE_TABLE, $db)) . '/%" OR f.ID="' . $dir . '") ' :
+					'');
 
 				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' f WHERE 1 ' . $ws_where . '  AND f.IsFolder=0 AND f.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
 				$selDocs = $db->getAll(true);

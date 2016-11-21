@@ -174,39 +174,30 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				$this->RefTable->add2(["ID" => $v,
 					"ContentType" => "object",
 					"level" => 0
-					]);
+				]);
 			}
 		}
 	}
 
 	function queryForAllowed($table){
 		$db = new DB_WE();
-		$parentpaths = [];
-		$wsQuery = '';
+		$wsQuery = [];
 		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				if($wsQuery != ''){
-					$wsQuery .=' OR ';
-				}
-				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
-				while($path != "/" && $path){
-					$parentpaths[] = $path;
-					$path = dirname($path);
-				}
+				$wsQuery [] = 'Path LIKE "' . $db->escape($path) . '/%"';
+				$wsQuery [] = we_tool_treeDataSource::getQueryParents($path);
 			}
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				if($wsQuery != ''){
-					$wsQuery .=' OR ';
-				}
-				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
+			$paths = id_to_path($ac, OBJECT_TABLE);
+			foreach($paths as $path){
+				$wsQuery [] = 'Path LIKE "' . $db->escape($path) . '/%"';
+				$wsQuery[] = 'Path="' . $db->escape($path) . '"';
 			}
 		}
 
-		return we_users_util::makeOwnersSql() . ( $wsQuery ? ' OR (' . $wsQuery . ')' : '');
+		return we_users_util::makeOwnersSql() . ( $wsQuery ? ' OR (' . implode(' OR ' . $wsQuery) . ')' : '');
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
@@ -248,13 +239,13 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 	function exportInfoMap($info){
 		$out = '<we:info>';
 		foreach($info as $inf){
-			$out.='<we:map';
+			$out .= '<we:map';
 			foreach($inf as $key => $value){
-				$out.=' ' . $key . '="' . $value . '"';
+				$out .= ' ' . $key . '="' . $value . '"';
 			}
-			$out.='></we:map>';
+			$out .= '></we:map>';
 		}
-		$out.='</we:info>' .
+		$out .= '</we:info>' .
 			we_backup_util::backupMarker . "\n";
 		return $out;
 	}

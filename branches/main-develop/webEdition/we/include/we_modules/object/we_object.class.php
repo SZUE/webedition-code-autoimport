@@ -1157,7 +1157,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($name . "class");
 
 		$db = new DB_WE();
-		$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($pid), "", $db);
+		$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($pid), "", $db);
 		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 		$idname = 'we_' . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]";
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");
@@ -1168,7 +1168,7 @@ class we_object extends we_document{
 			f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, "", $db) :
 			''
 			) );
-		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', '', $db);
+		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' .$db->escape($classPath) . '"', '', $db);
 
 		$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';document.we_form.elements['" . $textname . "'].value=''");

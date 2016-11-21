@@ -138,14 +138,15 @@ class we_voting_dirSelector extends we_selector_directory{
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-			$wsQuery = "";
+			$wsQuery =[];
 			$ac = we_users_util::getAllowedClasses($this->db);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= ' Path LIKE "' . $path . '/%" OR Path="' . $path . '" OR ';
+			$paths = id_to_path($ac, OBJECT_TABLE);
+			foreach($paths as $path){
+				$wsQuery []= ' Path LIKE "' . $path . '/%"';
+				$wsQuery []= 'Path="' . $path . '" OR ';
 			}
 			if($wsQuery){
-				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
+				$userExtraSQL .= ' AND (' . implode(',',$wsQuery) . ')';
 			}
 		} else {
 			$userExtraSQL .= ' OR RestrictOwners=0 ';

@@ -80,10 +80,9 @@ abstract class we_base_delete{
 
 		// do not delete class folder if class still exists!
 		if(defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE){
-			if(f('SELECT IsClassFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE)){ // it is a class folder
-				if(f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', '', $DB_WE)){ // class still exists
-					return;
-				}
+			if(f('SELECT IsClassFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE) || // it is a class folder
+				f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', '', $DB_WE)){ // class still exists
+				return;
 			}
 		}
 		// Fast Fix for deleting entries from tblLangLink: #5840
