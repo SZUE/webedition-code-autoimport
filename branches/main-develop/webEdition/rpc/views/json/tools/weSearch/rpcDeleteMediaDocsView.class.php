@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcDeleteMediaDocsView extends we_rpc_view{
+class rpcDeleteMediaDocsView extends we_rpc_genericJSONView{
 
 	function getResponse(we_rpc_response $response){
 		// send answer readable for callback

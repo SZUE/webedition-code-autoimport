@@ -36,7 +36,7 @@ class we_rpc_view{
 	}
 
 	function getResponse(we_rpc_response $response){
-		return $response->getData("data");
+		return $response->getData('data');
 	}
 
 }

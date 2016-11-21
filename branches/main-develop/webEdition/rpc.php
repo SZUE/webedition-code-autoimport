@@ -34,7 +34,7 @@ function dieWithError($text, $protocol){
 			$resp = new we_rpc_response();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
-			$errorView = new we_rpc_jsonView('', $protocol);
+			$errorView = new we_rpc_genericJSONView('', $protocol);
 			echo $errorView->getResponse($resp);
 			exit;
 		case 'text':

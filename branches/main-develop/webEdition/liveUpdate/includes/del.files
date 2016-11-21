@@ -577,6 +577,7 @@ we/include/we_classes/taskFragment.class.php
 we/include/we_classes/smtp.class.php
 we/include/we_classes/sidebar/we_sidebar_documentParser.class
 we/include/we_classes/selector/we_selector_multiple.class.php
+we/include/we_classes/rpc/we_rpc_jsonView.class.php
 we/include/we_classes/rebuild/we_rebuild_wizard.inc.php
 we/include/we_classes/rebuild/we_rebuild.class.php
 we/include/we_classes/rebuild/rebuildFragment.inc.php
@@ -1104,8 +1105,10 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/fonts
 !sidebar/img
 !rpc/views/json/widgets
+!rpc/views/json/dw
 !rpc/views/json/customer
 !rpc/cmds/tools/navigation
+!rpc/cmds/dw
 !rpc/base
 !multiEditor
 !menuapplet
@@ -1175,4 +1178,5 @@ apps/toolfactory/hook/custom_hooks/dummy
 !editor
 !css/multiEditor
 !cms
+!apps/toolfactory/service/views
 !apps/toolfactory/pattern

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetValidItemsByIDView extends we_rpc_view{
+class rpcGetValidItemsByIDView extends we_rpc_genericJSONView{
 	function getResponse(we_rpc_response $response){
 		return json_encode($response->getData("itemsArray"));
 	}
