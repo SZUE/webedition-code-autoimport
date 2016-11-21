@@ -1983,6 +1983,28 @@ var we_cmd_modules = {
 					this.we_cmd('setHot');
 				}
 				break;
+			case "multiedit_addItem":
+				switch(args[2]){
+					case 'customer':
+						var win = this;
+						win.addToMultiEdit(win[args[3]], args[1].allTexts,args[1].allIDs);
+						win.we_cmd('setHot');
+						break;
+					case 'category':
+						break;
+				}
+				break;
+			case "multiedit_delAll":
+				switch(args[1]){
+					case 'customer':
+						var win = this;
+						win.removeFromMultiEdit(win[args[2]]);
+						win.we_cmd('setHot');
+						break;
+					case 'category':
+						break;
+				}
+				break;
 			case "toggle_checkbox_with_hidden":
 				// to be callable from selectors we skip args[1]
 				this.we_form.elements[args[2]].value = args[3];

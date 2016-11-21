@@ -190,9 +190,8 @@ EO_SCRIPT;
 
 		$script .= $name . '.showVariant(0);';
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','opener.addToMultiEdit(opener." . $name . ", top.fileSelect.data.allTexts,top.fileSelect.data.allIDs);we_cmd('setHot');','','','',1)");
-
-		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $addbut;
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','multiedit_addItem,customer," . $name . "','','','',1);");
+		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('multiedit_delAll','customer','" . $name . "');") . $addbut;
 
 		$select = we_html_element::htmlHiddens([$name . 'Control' => we_base_request::_(we_base_request::RAW, $name . 'Control', 0),
 				$name . 'Count' => (isset($data) ? count($data) : '0')
