@@ -30,7 +30,7 @@ class rpcSelectorSuggestView extends we_rpc_view{
 		$html = '';
 		if(is_array($suggests)){
 			foreach($suggests as $sug){
-				$html .= $sug['Path'] . '	' . $sug['ID'] . (isset($sug['ContentType']) ? '	' . $sug['ContentType'] : '') . "\n";
+				$html .= $sug['Path'] . '	' . $sug['ID'] . '	' . (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? 'folder' : '')) . "\n";
 			}
 		}
 		return $html;

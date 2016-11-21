@@ -67,12 +67,6 @@ if(isset($GLOBALS['we_doc'])){
 	}
 }
 
-// Dreamweaver RPC Command ShowPreparedPreview
-// disable javascript errors
-if(we_base_request::_(we_base_request::STRING, 'cmd') === 'ShowPreparedPreview'){
-	$doc['isDW'] = true;
-}
-
 echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
  we_html_element::jsScript(JS_DIR . 'we_editor_script.js', '', ['id' => 'loadVarEditor_script', 'data-doc' => setDynamicVar($doc)]);
