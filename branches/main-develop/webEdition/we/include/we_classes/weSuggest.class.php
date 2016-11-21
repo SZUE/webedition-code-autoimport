@@ -52,6 +52,11 @@ class weSuggest{
 	const DirSelector = 'dirSelector';
 	const BTN_EDIT = true;
 	const USE_DRAG_AND_DROP = true;
+	const BTN_SELECT = 0;
+	const BTN_ADDITIONAL = 1;
+	const BTN_TRASH = 2;
+	const BTN_OPEN = 3;
+	const BTN_CREATE = 4;
 
 	private $noautoinit = false;
 	private $noAutoInits = [];
@@ -91,12 +96,14 @@ class weSuggest{
 	var $resultValue = '';
 	var $resultId = '';
 	var $rootDir = '';
-	var $selectButton = '';
 	var $selector = "Dir"; //FIXME: self::DirSelector???
-	var $trashButton = '';
-	var $openButton = '';
-	var $additionalButton = '';
-	var $createButton = '';
+	private $buttons = [
+		self::BTN_SELECT => '',
+		self::BTN_ADDITIONAL => '',
+		self::BTN_TRASH => '',
+		self::BTN_OPEN => '',
+		self::BTN_CREATE => '',
+	];
 	var $table = FILE_TABLE;
 	var $width = 280;
 	var $doOnItemSelectTxt = '';
@@ -225,22 +232,25 @@ class weSuggest{
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, [
 			$resultId], $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit, 'yuiAcContentType' . $this->acId, $this->acId);
-		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
-		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
-		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
-		$this->openButton = $this->openButton === self::BTN_EDIT ? we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('suggest_openToEdit','" . $this->acId . "')") : $this->openButton;
+		if($this->buttons[self::BTN_OPEN] === self::BTN_EDIT){
+			$this->buttons[self::BTN_OPEN] = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('suggest_openToEdit','" . $this->acId . "')");
+		}
 
-		$html = we_html_tools::htmlFormElementTable(
-				["text" => $resultField . $autoSuggest], $this->label, 'left', 'defaultfont', (
-				$this->selectButton ?: ''
+		$html = we_html_tools::htmlFormElementTable([
+				'text' => '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' .
+				$this->htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled) .
+				we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId) .
+				'<div id="yuiAcContainer' . $this->acId . '"></div></div>'
+				], $this->label, 'left', 'defaultfont', (
+				$this->buttons[self::BTN_SELECT]
 				), (
-				$this->additionalButton ?: ''
+				$this->buttons[self::BTN_ADDITIONAL] ?: ''
 				), (
-				$this->trashButton ?: ''
+				$this->buttons[self::BTN_TRASH] ?: ''
 				), (
-				$this->openButton ?: ''
+				$this->buttons[self::BTN_OPEN] ?: ''
 				), (
-				$this->createButton ?: '')
+				$this->buttons[self::BTN_CREATE] ?: '')
 		);
 
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
@@ -297,10 +307,13 @@ class weSuggest{
 		$this->resultName = '';
 		$this->resultValue = '';
 		$this->resultId = '';
-		$this->selectButton = '';
-		$this->trashButton = '';
-		$this->openButton = '';
-		$this->createButton = '';
+		$this->buttons = [
+			self::BTN_SELECT => '',
+			self::BTN_ADDITIONAL => '',
+			self::BTN_TRASH => '',
+			self::BTN_OPEN => '',
+			self::BTN_CREATE => '',
+		];
 		return $html;
 	}
 
@@ -308,7 +321,7 @@ class weSuggest{
 		return $this->inputId;
 	}
 
-	private function _htmlTextInput($name, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
+	private function htmlTextInput($name, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';
 						') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%")) ? "" : "px") . ';
 						') : '') . '"') : '';
@@ -479,10 +492,6 @@ class weSuggest{
 		$this->resultValue = $val;
 	}
 
-	function setSelectButton($val){
-		$this->selectButton = $val;
-	}
-
 	/**
 	 * Set the selector
 	 *
@@ -501,20 +510,24 @@ class weSuggest{
 		$this->table = $val;
 	}
 
+	function setSelectButton($val){
+		$this->buttons[self::BTN_SELECT] = $val;
+	}
+
 	function setTrashButton($val){
-		$this->trashButton = $val;
+		$this->buttons[self::BTN_TRASH] = $val;
 	}
 
 	function setOpenButton($val){
-		$this->openButton = $val;
+		$this->buttons[self::BTN_OPEN] = $val;
 	}
 
 	function setAdditionalButton($val){
-		$this->additionalButton = $val;
+		$this->buttons[self::BTN_ADDITIONAL] = $val;
 	}
 
 	function setCreateButton($val){
-		$this->createButton = $val;
+		$this->buttons[self::BTN_CREATE] = $val;
 	}
 
 	function setWidth($var){

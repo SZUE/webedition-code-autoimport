@@ -259,8 +259,6 @@ class we_dialog_image extends we_dialog_base{
 			 * input for webedition internal image files
 			 */
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
-			$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-			$btnUpload = we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')");
 			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "top.we_cmd('dialog_setType')");
 
 			$yuiSuggest->setAcId("Image");
@@ -273,9 +271,9 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(315);
-			$yuiSuggest->setSelectButton($btnSelect);
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 			$yuiSuggest->setOpenButton(weSuggest::BTN_EDIT);
-			$yuiSuggest->setAdditionalButton($btnUpload);
+			$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')"));
 			$yuiSuggest->setIsDropFromTree(true);
 			$yuiSuggest->setIsDropFromExt(true);
 			$intSrc = $yuiSuggest->getHTML();
@@ -404,8 +402,8 @@ class we_dialog_image extends we_dialog_base{
 	function cmdFunction(array $args){
 		switch(isset($this->we_cmd[0]) ? $this->we_cmd[0] : ''){
 			case 'update_editor':
-				$payload = ['args' => $args, 
-					'thisArgs' => ['width' => $this->args["width"], 'height' => $this->args["height"]], 
+				$payload = ['args' => $args,
+					'thisArgs' => ['width' => $this->args["width"], 'height' => $this->args["height"]],
 					'displayThumbnailSel' => $this->getDisplayThumbsSel(),
 				];
 				$js = we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_update_editor')", [
@@ -431,7 +429,7 @@ class we_dialog_image extends we_dialog_base{
 				$attribs['longdesc'] = intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '';
 				$payload = ['attributes' => $attribs];
 
-				$js = we_dialog_base::getTinyMceJS() . 
+				$js = we_dialog_base::getTinyMceJS() .
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
 					we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
 						'id' => 'loadVarDialog_cmdFrame',

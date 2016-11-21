@@ -30,15 +30,15 @@ var table = WE().consts.tables.FILE_TABLE;
 function setFieldValue(fieldNameTo, fieldFrom) {
 	if (document.we_form.DynamicSelection.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
 		document.we_form[fieldNameTo].value = fieldFrom.value;
-		weInputRemoveClass(fieldFrom, "weMarkInputError");
+		fieldFrom.classList.remove('weMarkInputError');
 	} else if (weNavTitleField[fieldFrom.value] !== undefined) {
 		document.we_form[fieldNameTo].value = weNavTitleField[fieldFrom.value];
-		weInputRemoveClass(fieldFrom, "weMarkInputError");
+		fieldFrom.classList.remove('weMarkInputError');
 	} else if (fieldFrom.value === "") {
 		document.we_form[fieldNameTo].value = '';
-		weInputRemoveClass(fieldFrom, "weMarkInputError");
+		fieldFrom.classList.remove("weMarkInputError");
 	} else {
-		weInputAppendClass(fieldFrom, "weMarkInputError");
+		fieldFrom.classList.add("weMarkInputError");
 	}
 }
 
@@ -162,14 +162,14 @@ function putTitleField(field) {
 	top.content.mark();
 	document.we_form.TitleField.value = field;
 	document.we_form.__TitleField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
-	weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
+	document.we_form.__TitleField.classList.remove('weMarkInputError');
 }
 
 function putSortField(field) {
 	top.content.mark();
 	document.we_form.SortField.value = field;
 	document.we_form.__SortField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
-	weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
+	document.we_form.__SortField.classList.remove('weMarkInputError');
 }
 
 function setFocus() {
@@ -314,8 +314,8 @@ function clearFields() {
 		document.we_form.__TitleField.value = "";
 		document.we_form.SortField.value = "";
 		document.we_form.__SortField.value = "";
-		weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
-		weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
+		document.we_form.__TitleField.classList.remove('weMarkInputError');
+		document.we_form.__SortField.classList.remove('weMarkInputError');
 		document.we_form.dynamic_Parameter.value = "";
 		if (document.we_form.IsFolder.value === 0) {
 			document.we_form.Parameter.value = "";
