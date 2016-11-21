@@ -211,7 +211,7 @@ class we_objectFile extends we_document{
 		$all = [];
 		$slash = PHP_INT_MAX;
 		$ws = get_ws(OBJECT_FILES_TABLE, true);
-		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
+		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (ID=' . $classId . ' OR Path LIKE "' . $db->escape($classDir) . '/%")');
 		while($db->next_record()){
 			$all[$db->f('Path')] = $db->f('ID');
 			if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || we_users_util::in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
@@ -291,9 +291,7 @@ class we_objectFile extends we_document{
 
 	function setRootDirID($doit = false){
 		if($this->TableID && ($this->InWebEdition || $doit)){
-			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE of.IsClassFolder=1 AND of.ParentID=0 AND o.ID=' . intval($this->TableID), $this->DB_WE);
-			$this->RootDirPath = $hash['Path'];
-			$this->rootDirID = $hash['ID'];
+			list($this->RootDirPath, $this->rootDirID) = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE of.IsClassFolder=1 AND of.ParentID=0 AND o.ID=' . intval($this->TableID), $this->DB_WE, MYSQLI_NUM);
 		}
 	}
 
@@ -721,7 +719,7 @@ class we_objectFile extends we_document{
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
 		$db = new DB_WE();
 		//FIXME: this is bad matching text instead of id's
-		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.IsFolder=1 AND of.ParentID=0 AND of.IsClassFolder=1 AND o.ID=' . intval($ObjectID), $db);
+		$foo = getHash('SELECT of.Text,of.ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsClassFolder=1 AND of.TableID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
 		$pid = isset($foo['ID']) ? $foo['ID'] : 0;
 
@@ -855,7 +853,7 @@ class we_objectFile extends we_document{
 
 			$text = $this->getPreviewHeadline(self::TYPE_MULTIOBJECT, $name);
 			$content = we_html_tools::htmlFormElementTable('', $text);
-			list($rootDir, $rootDirPath) = getHash('SELECT of.ID,of.Path FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . OBJECT_TABLE . ' o ON of.Path=o.Path WHERE of.IsClassFolder=1 AND o.ID=' . intval($classid), $db, MYSQL_NUM);
+			list($rootDir, $rootDirPath) = getHash('SELECT of.ID,of.Path FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsClassFolder=1 AND of.TableID=' . intval($classid), $db, MYSQL_NUM);
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
 			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", '', 0, 0, "", "", true);

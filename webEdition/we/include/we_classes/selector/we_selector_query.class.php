@@ -83,10 +83,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 		}
 
-		$where = 'Path="' . $this->db->escape($search) . '"';
-
 		$addCT = 0;
-
 		$types = array_unique(array_filter($types));
 
 		$q = [];
@@ -100,11 +97,13 @@ class we_selector_query{
 				$addCT = 1;
 			}
 		}
-		$where.=($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
+
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
-		$where .= ($userExtraSQL ? : '');
+		$where = 'Path="' . $this->db->escape($search) . '"'.
+			($q ? ' AND (' . implode(' OR ', $q) . ')' : '').
+			($userExtraSQL ? : '');
 
 		if($this->condition){
 			foreach($this->condition as $val){
@@ -277,7 +276,7 @@ class we_selector_query{
 				$this->addQueryField($val);
 			}
 		}
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path="' . $this->db->escape($path) . '" ' . $userExtraSQL);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE Path="' . $this->db->escape($path) . '" ' . $userExtraSQL);
 		return $this->getResult();
 	}
 

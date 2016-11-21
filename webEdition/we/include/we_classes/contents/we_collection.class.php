@@ -843,17 +843,15 @@ class we_collection extends we_root{
 			if(($ws = get_ws($this->getRemTable(), true))){
 				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, true);
 				foreach($wsPathArray as $path){
-					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
-					while($path != '/' && $path != '\\' && $path){
-						$parentpaths[] = $path;
-						$path = dirname($path);
-					}
+					$wspaces[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
+					$wsQuery[] = we_tool_treeDataSource::getQueryParents($path);
 				}
 			} elseif(defined('OBJECT_FILES_TABLE') && $this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
-				foreach($ac as $cid){
-					$path = id_to_path($cid, OBJECT_TABLE);
-					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
+				$paths = id_to_path($ac, OBJECT_TABLE);
+				foreach($paths as $path){
+					$wspaces[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
+					$wsQuery[] = 'Path="' . $this->DB_WE->escape($path) . '"';
 				}
 			}
 			$wspaces = empty($wspaces) ? [false] : $wspaces;
