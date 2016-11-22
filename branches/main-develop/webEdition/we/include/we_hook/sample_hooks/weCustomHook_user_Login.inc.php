@@ -31,29 +31,20 @@
  *
  * @param array $param
  */
-function weCustomHook_user_preLogin($param){
+function weCustomHook_user_Login($param){
+	//user is successfully logged in
 	$hookHandler = $param['hookHandler'];
-	$user = &$param['user']; //contains modifyable Username, password, PLEASE NEVER SAVE plaintext password
-	$pwdCheck = &$param['checkPassword']; //!!IMORTANT if this is set to false, password is not compared with the saved password
+	//full session user
+	$user = &$param['user'];
+	//full user perms, only set perms are shown.
+	$perms = &$param['perms'];
+	//all prefs (user settings editor, ...)
+	$prefs = &$param['prefs'];
 
 	switch($param['type']){
 		case 'login':
-			if($user['Username'] == '__TEST__USER___'){
-				//add a prefix if you want
-				$user['Username'] = 'pre_' . $user['Username'];
-				//check external if user is allowed, but ensure not to submit password unencrypted
-				$userAllowed = ldap_compare();
-				if($userAllowed){
-					//if the user is external allowed, skip local password check
-					//$pwdCheck=false;
-					return;
-				}
-				//if the user is not allowed, set error text
-				$hookHandler->setErrorString('Login denied');
-			}
 			break;
 		case 'resetPassword':
-		//FIXME: not implemented yet
+			//FIXME: not implemented yet
 	}
-	$hookHandler->setErrorString('Login denied');
 }
