@@ -45,22 +45,26 @@ if(!isset($_SESSION['weS']['we_data'])){
 
 $_SESSION['weS']['EditPageNr'] = (isset($_SESSION['weS']['EditPageNr']) && (($_SESSION['weS']['EditPageNr'] != '') || ($_SESSION['weS']['EditPageNr'] == 0))) ? $_SESSION['weS']['EditPageNr'] : 1;
 
-if(!(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
+$checkUserPassword = true;
+$hook = new weHook('user_preLogin', '', [
+	'user' => [
+		'Username' => &$_POST['WE_LOGIN_username'],
+		'password' => &$_POST['WE_LOGIN_password'],
+	],
+	'checkPassword' => &$checkUserPassword,
+	'type' => 'login'
+	]);
+$hookRet = $hook->executeHook();
+
+if(!$hookRet || !(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
 	return;
 }
 
-//check if we have utf-8 -> Login-Screen is always utf-8
-/* if($GLOBALS['WE_BACKENDCHARSET'] !== 'UTF-8'){
-  $_POST['WE_LOGIN_username'] = utf8_decode($_POST['WE_LOGIN_username']);
-  $_POST['WE_LOGIN_password'] = utf8_decode($_POST['WE_LOGIN_password']);
-  } */
-
-$hook = new weHook('user_preLogin', '', [/* 'user' => &$userdata, 'request' => 'management', 'type' => ($this->ID ? 'existing' : 'new') */]);
-
 // only if username exists !!
-if(!$hook->executeHook() ||
+if(
 	!($userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"')) ||
-	(!we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
+	($checkUserPassword && !we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))
+){
 	we_base_sessionHandler::makeNewID(true);
 	return;
 }
@@ -71,7 +75,7 @@ if($userdata['LoginDenied']){ // userlogin is denied
 	return;
 }
 
-if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $userdata['passwd'])){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
+if($checkUserPassword && !preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $userdata['passwd'])){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
 	$salted = we_users_user::makeSaltedPassword($_POST['WE_LOGIN_password']);
 	// UPDATE Password with SALT
 	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '" WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["WE_LOGIN_username"]) . '" AND ID=' . $userdata['ID']);
@@ -97,3 +101,11 @@ if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 $_SESSION['user']['isWeSession'] = true;
 unset($userdata);
 we_base_sessionHandler::makeNewID();
+
+$hook = new weHook('user_Login', '', [
+	'user' => &$_SESSION['user'],
+	'perms' => &$_SESSION['perms'],
+	'prefs' => &$_SESSION['prefs'],
+	'type' => 'login'
+	]);
+$hookRet = $hook->executeHook();

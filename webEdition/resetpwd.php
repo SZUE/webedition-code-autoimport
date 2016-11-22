@@ -23,6 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
+//FIXME: hooks for changing username
+
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement('
 var passwd ={
