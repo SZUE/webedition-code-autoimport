@@ -30,19 +30,12 @@ var doctype = WE().util.getDynamicVar(document, 'loadVarDoctypeEdit', 'data-doct
 
 var countSaveLoop = 0;
 function we_save_docType(doc, url) {
-	var acStatus = '';
-	invalidAcFields = false;
-	if (YAHOO && YAHOO.autocoml) {
-		acStatus = YAHOO.autocoml.checkACFields();
-	} else {
-		we_submitForm(doc, url);
-		return;
-	}
-	acStatusType = typeof acStatus;
+	var acStatus = WE().layout.weSuggest.checkRequired(window);
+
 	if (countSaveLoop > 10) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
-	} else if (acStatusType.toLowerCase() === 'object') {
+	} else{
 		if (acStatus.running) {
 			countSaveLoop++;
 			setTimeout(we_save_docType, 100, doc, url);
@@ -53,8 +46,6 @@ function we_save_docType(doc, url) {
 			countSaveLoop = 0;
 			we_submitForm(doc, url);
 		}
-	} else {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 

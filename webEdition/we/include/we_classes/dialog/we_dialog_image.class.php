@@ -237,7 +237,7 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	function getDialogContentHTML(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", '', "", "", "", "", 0);
 			$intSrc = '';
@@ -261,22 +261,21 @@ class we_dialog_image extends we_dialog_base{
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
 			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "top.we_cmd('dialog_setType')");
 
-			$yuiSuggest->setAcId("Image");
-			$yuiSuggest->setContentType(we_base_ContentTypes::IMAGE);
-			$yuiSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")));
-			$yuiSuggest->setjsCommandOnItemSelect('dialog_imageChanged');
-			$yuiSuggest->setLabel('');
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setWidth(315);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
-			$yuiSuggest->setOpenButton(weSuggest::BTN_EDIT);
-			$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')"));
-			$yuiSuggest->setIsDropFromTree(true);
-			$yuiSuggest->setIsDropFromExt(true);
-			$intSrc = $yuiSuggest->getHTML();
+			$weSuggest->setAcId("Image");
+			$weSuggest->setContentType(we_base_ContentTypes::IMAGE);
+			$weSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")));
+			$weSuggest->setjsCommandOnItemSelect('dialog_imageChanged');
+			$weSuggest->setLabel('');
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setWidth(315);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setOpenButton(weSuggest::BTN_EDIT);
+			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')"));
+			$weSuggest->setIsDropFromTree(true);
+			$weSuggest->setIsDropFromExt(true);
+			$intSrc = $weSuggest->getHTML();
 
 			/**
 			 * thumbnail select list
@@ -297,21 +296,20 @@ class we_dialog_image extends we_dialog_base{
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$but2 = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('dialog_emptyLongdesc');");
 
-			$yuiSuggest->setAcId("Longdesc");
-			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
-			$yuiSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
-			$yuiSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
-			$yuiSuggest->setDoOnItemSelect('');
-			$yuiSuggest->setMaxResults(7);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setWidth(315);
-			$yuiSuggest->setSelectButton($but);
-			$yuiSuggest->setTrashButton($but2);
-			$yuiSuggest->setAdditionalButton('');
+			$weSuggest->setAcId("Longdesc");
+			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
+			$weSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
+			$weSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
+			$weSuggest->setDoOnItemSelect('');
+			$weSuggest->setMaxResults(7);
+			$weSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setWidth(315);
+			$weSuggest->setSelectButton($but);
+			$weSuggest->setTrashButton($but2);
+			$weSuggest->setAdditionalButton('');
 
-			$longdesc = $yuiSuggest->getHTML();
+			$longdesc = $weSuggest->getHTML();
 		}
 
 		$height = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[height]', 5, (isset($this->args["height"]) ? $this->args["height"] : ""), "", ' onkeypress="return WE().util.IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[height]'));
@@ -383,8 +381,6 @@ class we_dialog_image extends we_dialog_base{
 				'tinyMCEInitRatioH' => 0,
 				'tinyMCEInitRatioW' => 0
 				]) .
-			weSuggest::getYuiFiles() .
-			$yuiSuggest->getYuiJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')
 			];
 		return $parts;
@@ -441,12 +437,11 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	function getJs(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		//$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
 
 		return parent::getJs() .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
-			weSuggest::getYuiFiles();
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js');
 	}
 
 }

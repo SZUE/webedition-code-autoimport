@@ -316,7 +316,7 @@ function we_submit(){
 	}
 
 	private function getHTMLStep2a(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$js = we_html_element::jsElement('
 function we_cmd(){
@@ -371,10 +371,10 @@ function we_cmd(){
 		$parts[] = ["headline" => "", "html" => $category, 'space' => we_html_multiIconBox::SPACE_SMALL, 'noline' => 1];
 
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 						'name' => 'we_form'], $hiddens .
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
-					) . $yuiSuggest->getYuiJs()
+					)
 				)
 		);
 	}
@@ -1245,24 +1245,23 @@ switch (args[0]) {
 	}
 
 	private function formWeChooser($width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/"){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		if(!$Pathvalue){
 			$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), "", $this->db);
 		}
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
 
-		$yuiSuggest->setAcId("Dir");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($Pathname, $Pathvalue);
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton($button, 10);
+		$weSuggest->setAcId("Dir");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($Pathname, $Pathvalue);
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult($IDName, $IDValue);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth($width);
+		$weSuggest->setSelectButton($button, 10);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){

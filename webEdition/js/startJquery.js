@@ -42,5 +42,54 @@ $(function () {
 			dateFormat: "dd.mm.yy" //FIXME: we need to check where dates are processed
 		});
 		$('.datepicker').datepicker();
+		$('.weSuggest').autocomplete({
+			delay: 150,
+			minLength: 2,
+			autoFocus: true,
+			source: function (request, response) {
+				var el = this.element[0];
+				var term = request.term;
+				if (term in el.cache) {
+					response(el.cache[ term ]);
+					return;
+				}
+				var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SelectorSuggest" +
+					"&we_cmd[table]=" + el.getAttribute('data-table') +
+					"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
+					"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
+					"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
+					"&we_cmd[max]=" + el.getAttribute('data-max') +
+					"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
+					"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
+					"&we_cmd[query]=" + request.term;
+				$.getJSON(target, request, function (data, status, xhr) {
+					el.cache[term] = data;
+					response(data);
+				});
+			},
+			create: function () {
+				var res = this.getAttribute('data-result');
+				this.result = document.getElementById(res);
+				this.cache = {};
+			},
+			search: function (event, ui) {
+				//FIXME result value -1
+				this.result.value = 0;
+			},
+			select: function (event, ui) {
+				this.result.value = ui.item.ID;
+				this.result.setAttribute('data-contenttype', ui.item.contenttype);
+				this.classList.remove("weMarkInputError");
+			},
+			change: function (event, ui) {
+				if (this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
+					!parseInt(this.result.value) && this.getAttribute("required") //a required field has no value
+					) {
+					this.classList.add("weMarkInputError");
+				} else {
+					this.classList.remove("weMarkInputError");
+				}
+			}
+		});
 	}
 });

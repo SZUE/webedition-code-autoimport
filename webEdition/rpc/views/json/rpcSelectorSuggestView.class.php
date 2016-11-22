@@ -22,18 +22,24 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorSuggestView extends we_rpc_view{
+class rpcSelectorSuggestView extends we_rpc_genericJSONView{
 
 	function getResponse(we_rpc_response $response){
 		header('Content-type: text/plain');
 		$suggests = $response->getData('data');
-		$html = '';
+		$ret = [];
 		if(is_array($suggests)){
 			foreach($suggests as $sug){
-				$html .= $sug['Path'] . '	' . $sug['ID'] . '	' . (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? 'folder' : '')) . "\n";
+				$short = strrchr($sug['Path'], '/');
+				$ret[] = [
+					'ID' => $sug['ID'],
+					'label' => ($short !== $sug['Path'] ? '/...' : '') . $short,
+					'value' => $sug['Path'],
+					'contenttype' => (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? 'folder' : ''))
+				];
 			}
 		}
-		return $html;
+		return parent::getResponse($ret);
 	}
 
 }

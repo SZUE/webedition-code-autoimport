@@ -28,7 +28,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 we_html_tools::protect();
 
-$yuiSuggest = &weSuggest::getInstance();
+$weSuggest = &weSuggest::getInstance();
 
 define('secondsDay', 86400);
 define('secondsWeek', 604800);
@@ -607,7 +607,7 @@ function save_all_values(){
  */
 function build_dialog($selected_setting = 'ui'){
 	global $DB_WE;
-	$yuiSuggest = & weSuggest::getInstance();
+	$weSuggest = & weSuggest::getInstance();
 
 	switch($selected_setting){
 		case 'save':
@@ -778,18 +778,17 @@ function build_dialog($selected_setting = 'ui'){
 					$showStartType = true;
 					// Build SEEM select start document chooser
 
-					$yuiSuggest->setAcId('Doc');
-					$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::IMAGE]);
-					$yuiSuggest->setInput('seem_start_document_name', $document_path, '', get_value('seem_start_file'));
-					$yuiSuggest->setMaxResults(20);
-					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult('seem_start_document', $document_id);
-					$yuiSuggest->setSelector(weSuggest::DocSelector);
-					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
-					$yuiSuggest->setContainerWidth(259);
+					$weSuggest->setAcId('Doc');
+					$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::IMAGE]);
+					$weSuggest->setInput('seem_start_document_name', $document_path, [], get_value('seem_start_file'));
+					$weSuggest->setMaxResults(20);
+					$weSuggest->setRequired(true);
+					$weSuggest->setResult('seem_start_document', $document_id);
+					$weSuggest->setSelector(weSuggest::DocSelector);
+					$weSuggest->setWidth(150);
+					$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
-					$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $yuiSuggest->getHTML());
+					$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $weSuggest->getHTML());
 					$permitedStartTypes[] = 'document';
 				}
 				$seem_object_chooser = '';
@@ -798,19 +797,18 @@ function build_dialog($selected_setting = 'ui'){
 					$showStartType = true;
 					// Build SEEM select start object chooser
 
-					$yuiSuggest->setAcId('Obj');
-					$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
-					$yuiSuggest->setInput('seem_start_object_name', $object_path, '', get_value('seem_start_file'));
-					$yuiSuggest->setMaxResults(20);
-					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult('seem_start_object', $object_id);
-					$yuiSuggest->setSelector(weSuggest::DocSelector);
-					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
-					$yuiSuggest->setContainerWidth(259);
+					$weSuggest->setAcId('Obj');
+					$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+					$weSuggest->setInput('seem_start_object_name', $object_path, [], get_value('seem_start_file'));
+					$weSuggest->setMaxResults(20);
+					$weSuggest->setRequired(true);
+					$weSuggest->setResult('seem_start_object', $object_id);
+					$weSuggest->setSelector(weSuggest::DocSelector);
+					$weSuggest->setTable(OBJECT_FILES_TABLE);
+					$weSuggest->setWidth(150);
+					$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
-					$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $yuiSuggest->getHTML());
+					$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $weSuggest->getHTML());
 					$permitedStartTypes[] = 'object';
 				}
 				$start_weapp = new we_html_select(['name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp']);
@@ -882,16 +880,14 @@ function build_dialog($selected_setting = 'ui'){
 				// Sidebar document
 				$sidebar_document_button = we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()');
 
-				$yuiSuggest->setAcId('SidebarDoc');
-				$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
-				$yuiSuggest->setInput('ui_sidebar_file_name', $sidebar_path);
-				$yuiSuggest->setMaxResults(20);
-				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult('newconf[SIDEBAR_DEFAULT_DOCUMENT]', $sidebar_id);
-				$yuiSuggest->setSelector(weSuggest::DocSelector);
-				$yuiSuggest->setWidth(150);
-				$yuiSuggest->setSelectButton($sidebar_document_button, 10);
-				$yuiSuggest->setContainerWidth(259);
+				$weSuggest->setAcId('SidebarDoc');
+				$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
+				$weSuggest->setInput('ui_sidebar_file_name', $sidebar_path);
+				$weSuggest->setMaxResults(20);
+				$weSuggest->setResult('newconf[SIDEBAR_DEFAULT_DOCUMENT]', $sidebar_id);
+				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setWidth(150);
+				$weSuggest->setSelectButton($sidebar_document_button, 10);
 
 				// build html
 				$sidebar_html1 = new we_html_table(['class' => 'default'], 1, 1);
@@ -909,7 +905,7 @@ function build_dialog($selected_setting = 'ui'){
 				$sidebar_html2->setCol(4, 1, ['style' => 'padding-left:10px;'], $sidebar_width_chooser);
 				$sidebar_html2->setCol(5, 0, ['colspan' => 3, 'height' => 10], '');
 				$sidebar_html2->setCol(6, 0, ['colspan' => 3, 'class' => 'defaultfont'], g_l('prefs', '[sidebar_document]'));
-				$sidebar_html2->setCol(7, 0, ['colspan' => 3], $yuiSuggest->getHTML());
+				$sidebar_html2->setCol(7, 0, ['colspan' => 3], $weSuggest->getHTML());
 
 				// Build dialog if user has permission
 				$settings[] = ['headline' => g_l('prefs', '[sidebar]'), 'html' => $sidebar_html1->getHtml() . $sidebar_html2->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
@@ -1000,22 +996,21 @@ function build_dialog($selected_setting = 'ui'){
 			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')");
 			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value = 0;document.forms[0].elements.imagestartid_default_text.value=''");
 
-			$yuiSuggest->setAcId("doc2");
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ? : 0));
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setWidth(226);
-			$yuiSuggest->setSelectButton($acButton1, 10);
-			$yuiSuggest->setTrashButton($acButton2, 4);
+			$weSuggest->setAcId("doc2");
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ? : 0));
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setWidth(226);
+			$weSuggest->setSelectButton($acButton1, 10);
+			$weSuggest->setTrashButton($acButton2, 4);
 
 			$settings = [
 				['headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[xhtml_default]'), 'html' => getTrueFalseSelect('XHTML_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[inlineedit_default]'), 'html' => getTrueFalseSelect('INLINEEDIT_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
-				['headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $yuiSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG],
+				['headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $weSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => getTrueFalseSelect('REMOVEFIRSTPARAGRAPH_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[showinputs_default]'), 'html' => getTrueFalseSelect('SHOWINPUTS_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
@@ -1824,16 +1819,15 @@ function build_dialog($selected_setting = 'ui'){
 			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)");
 			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = ''");
 
-			$yuiSuggest->setAcId("doc2");
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
-			$yuiSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? : 0));
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setWidth(300);
-			$yuiSuggest->setSelectButton($acButton1, 10);
-			$yuiSuggest->setTrashButton($acButton2, 4);
+			$weSuggest->setAcId("doc2");
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
+			$weSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? : 0));
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setWidth(300);
+			$weSuggest->setSelectButton($acButton1, 10);
+			$weSuggest->setTrashButton($acButton2, 4);
 
 			$settings = [
 				["headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", 'noline' => 1],
@@ -1853,7 +1847,7 @@ function build_dialog($selected_setting = 'ui'){
 				["headline" => g_l('prefs', '[general_seoinside]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_HELP), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				["headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINEDITMODE'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				["headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINWEBEDITION'), 'space' => we_html_multiIconBox::SPACE_BIG],
-				['headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				['headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $weSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				['headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_HELP), 'space' => we_html_multiIconBox::SPACE_BIG],
 			];
@@ -1930,18 +1924,17 @@ function build_dialog($selected_setting = 'ui'){
 
 			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
-			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
-			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
-			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', 'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]','SECURITY_LIMIT_CUSTOMER_REDIRECT_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
-			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value = 0;document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value = ''"), 4);
+			$weSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
+			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
+			$weSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setWidth(250);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', 'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]','SECURITY_LIMIT_CUSTOMER_REDIRECT_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
+			$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value = 0;document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value = ''"), 4);
 
-			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $yuiSuggest->getHTML());
+			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $weSuggest->getHTML());
 
 			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
@@ -2293,8 +2286,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$doSave = true;
 }
 
-echo weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'preferences.js');
+echo  we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
 
@@ -2316,6 +2308,5 @@ function doCloseDyn() {
 		we_message_reporting::jsMessagePush(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
 	'</head>' .
 	we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startPrefs();'], $form) .
-	$yuiSuggest->getYuiJs() .
 	'</html>';
 }

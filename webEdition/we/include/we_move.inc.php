@@ -35,7 +35,7 @@ if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) |
 	exit();
 }
 
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $script = '';
 switch($cmd0){
@@ -144,7 +144,6 @@ switch($table){
 
 echo we_html_tools::getHtmlTop() .
  $script .
- weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');");
 
 if($cmd0 === 'do_move'){
@@ -158,19 +157,18 @@ $ws_path = ($ws_Id ? id_to_path($ws_Id, $table) : '/');
 $textname = 'we_targetname';
 $idname = 'we_target';
 
-$yuiSuggest->setAcId('Dir');
-$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-$yuiSuggest->setInput($textname, $ws_path);
-$yuiSuggest->setMaxResults(4);
-$yuiSuggest->setMayBeEmpty(false);
-$yuiSuggest->setResult(trim($idname), $ws_Id);
-$yuiSuggest->setSelector(weSuggest::DirSelector);
-$yuiSuggest->setTable($table);
-$yuiSuggest->setWidth(250);
-$yuiSuggest->setContainerWidth(360);
-$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements.' . $idname . '.value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);
+$weSuggest->setAcId('Dir');
+$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+$weSuggest->setInput($textname, $ws_path);
+$weSuggest->setMaxResults(4);
+$weSuggest->setRequired(true);
+$weSuggest->setResult(trim($idname), $ws_Id);
+$weSuggest->setSelector(weSuggest::DirSelector);
+$weSuggest->setTable($table);
+$weSuggest->setWidth(250);
+$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements.' . $idname . '.value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);
 
-$weAcSelector = $yuiSuggest->getHTML();
+$weAcSelector = $weSuggest->getHTML();
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move('" . $type . "');"), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
@@ -183,7 +181,6 @@ echo
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $buttons . '</div></div>' . we_html_element::htmlHidden("sel", "") .
- '</form>' .
- $yuiSuggest->getYuiJs() .
- '</body>
+ '</form>
+</body>
 </html>';

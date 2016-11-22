@@ -27,10 +27,6 @@ list($jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs
 we_html_tools::protect();
 $widgetData = [];
 
-$yuiSuggest = new weSuggest();
-$showAC = false;
-$yuiSuggest->setAutocompleteField("yuiAcInputDoc", "yuiAcContainerDoc", FILE_TABLE, "folder," . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML, weSuggest::DocSelector, 14, 1, "yuiAcLayerDoc", ["yuiAcIdDoc"], 1, "296px");
-
 list($sTitle, $selBinary, $sCsv) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', ';;', 1));
 $title = base64_decode($sTitle);
 $selection = (bool) $selBinary{0};
@@ -136,18 +132,19 @@ $divContent = we_html_element::htmlDiv(['style' => "display:block;"
 		], we_html_tools::htmlSelect("Selection", ["dynamic" => g_l('cockpit', '[dyn_selection]'), "static" => g_l('cockpit', '[stat_selection]')
 			], 1, ($selection ? "static" : "dynamic"), false, ['style' => "width:420px;border:#AAAAAA solid 1px;", 'onchange' => "closeAllSelection();we_submit();"], 'value') .
 		we_html_element::htmlBr() .
-		we_html_tools::htmlSelect("headerSwitch", $captions, 1, (!$selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, ['style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"], 'value', 420) .
+		we_html_tools::htmlSelect("headerSwitch", $captions, 1, (!$selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, ['style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;",
+			'onchange' => "setHead(this.value);we_submit();"], 'value', 420) .
 		we_html_element::htmlDiv(["id" => "static", 'style' => ($selection ? "display:block;" : "display:none;")], we_html_element::htmlDiv(["id" => "treeContainer"], $tree->getHTMLMultiExplorer(420, 180, false)) . '<iframe name="cmd" src="about:blank" style="visibility:hidden; width: 0px; height: 0px;"></iframe>') .
 		we_html_element::htmlDiv(["id" => "dynamic", 'style' => (!$selection ? 'display:block;' : 'display:none;')
 			], getHTMLDirSelector($selType) . we_html_element::htmlBr() . ((!$selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-					$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory($widgetData)) .
+				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory($widgetData)) .
 		we_html_element::htmlBr() .
 		we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("title", 55, $title, 255, "", "text", 420, 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
 $parts = [["headline" => "",
 	"html" => $divContent,
 	],
-	["headline" => "",
+		["headline" => "",
 		"html" => $oSelCls->getHTML(),
 	]
 ];
@@ -159,8 +156,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML("mdcProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSuggest::getYuiFiles() .
-	$jsFile .
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', $jsFile .
 	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar($widgetData)]), we_html_element::htmlBody(
 		["class" => "weDialogBody", "onload" => "init('" . $selTable . "','" . $sTitle . "','" . $selBinary . "','" . $sCsv . "');"
 		], we_html_element::htmlForm(
@@ -168,6 +164,4 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSugge
 				"FolderID" => 0,
 				"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
 			]) . $sTblWidget)));
-if($showAC){
-	echo $yuiSuggest->getYuiJs();
-}
+

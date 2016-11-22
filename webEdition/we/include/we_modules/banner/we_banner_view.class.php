@@ -79,10 +79,10 @@ class we_banner_view extends we_modules_view{
 	}
 
 	function getProperties(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$out = '
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">' .
-			$this->getJSProperty() . weSuggest::getYuiFiles() . '
+			$this->getJSProperty() . '
 				<form name="we_form" onsubmit="return false;">' .
 			$this->getHiddens();
 
@@ -167,9 +167,7 @@ class we_banner_view extends we_modules_view{
 
 		$out .= we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, ($wepos === 'down')) .
-			'</form>' .
-			$yuiSuggest->getYuiJs() .
-			'</body></html>';
+			'</form></body></html>';
 
 		return $out;
 	}
@@ -668,44 +666,43 @@ class we_banner_view extends we_modules_view{
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	private function formBannerChooser($width = "", $IDName = "bannerID", $IDValue = 0, $title = "", $cmd = ""){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
-		$yuiSuggest->setAcId("Image");
-		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="we_cmd(\'setHot\');"', true);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest->setAcId("Image");
+		$weSuggest->setLabel($title);
+		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
+		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($IDName, $IDValue);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth($width);
+		$weSuggest->setSelectButton($button);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	private function formDirChooser($idvalue = 0, $idname = '', $title = "", $acID = ""){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, BANNER_TABLE, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','setHot')");
 
-		$yuiSuggest->setAcId($acID);
-		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($textname, $path, 'onchange="we_cmd(\'setHot\');"', true);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(false);
-		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(BANNER_TABLE);
-		//$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest->setAcId($acID);
+		$weSuggest->setLabel($title);
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($textname, $path, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult($idname, $idvalue);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(BANNER_TABLE);
+		//$weSuggest->setWidth($width);
+		$weSuggest->setSelectButton($button);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	function formBannerNumbers(){
@@ -757,20 +754,19 @@ class we_banner_view extends we_modules_view{
 </table>';
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','selector_intHrefCallback," . $this->uid . "','',0,'')");
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("InternalURL");
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("InternalURL");
+		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="we_cmd(\'setHot\');"', true);
-		$yuiSuggest->setLabel($title2);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(388);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setLabel($title2);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($idname, $idvalue);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(388);
+		$weSuggest->setSelectButton($button);
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_bannerUrl", 30, $this->banner->bannerUrl, "", 'id="' . $this->uid . '_bannerUrl" onkeydown="' . $onkeydown . '"', "text", 388, 0), $title1, "left", "defaultfont", "", "", "", "", "", 0) . $yuiSuggest->getHTML();
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_bannerUrl", 30, $this->banner->bannerUrl, "", 'id="' . $this->uid . '_bannerUrl" onkeydown="' . $onkeydown . '"', "text", 388, 0), $title1, "left", "defaultfont", "", "", "", "", "", 0) . $weSuggest->getHTML();
 	}
 
 }

@@ -44,9 +44,7 @@ class we_users_view extends we_modules_view{
 	}
 
 	function getJSProperty(){
-		return
-			weSuggest::getYuiFiles() .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js');
 	}
 
 	private function new_group(we_base_jsCmd $jscmd){

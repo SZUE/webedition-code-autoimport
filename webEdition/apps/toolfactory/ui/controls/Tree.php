@@ -145,7 +145,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 					tree_' . $this->_id . '.draw();
 				}
 
-				YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
+				$(function () {tree_' . $this->_id . '_Init();});
 
 			})();
 		';

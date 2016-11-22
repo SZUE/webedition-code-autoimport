@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO */
+/* global WE, top, YAHOO, errorHandler */
 
 /**
  * webEdition CMS
@@ -248,11 +248,53 @@ var WebEdition = {
 					wind.focus();
 				}
 			}
+		},
+		weSuggest: {
+			selectorInit: {
+				//FILL IN with config
+			},
+			openSelectionToEdit: function (win, elID) {
+				var el = win.document.getElementById(elID);
+				var table = el.getAttribute('data-table'),
+					id = el.result.value,
+					type = el.result.getAttribute('data-contenttype');
+
+				if (table && id && type) {
+					WE().layout.openToEdit(table, id, type);
+				}
+			},
+			checkRequired: function (win) {
+				var isValid = true;
+				win.$('.weSuggest').each(function () {
+					if (!this.getAttribute("disbled") && (
+						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
+						!parseInt(this.result.value) && this.getAttribute("required") //a required field has no value
+						)
+						) {
+						this.classList.add("weMarkInputError");
+						isValid = false;
+					} else {
+						this.classList.remove("weMarkInputError");
+					}
+				});
+				return {'running': false, 'valid': isValid};
+			},
+			writebackExternalSelection: function (win, result, acId) {
+				if (!result || !result.currentID || !result.currentPath || !result.currentType || !acId) {
+					WE().t_e('suggestor function "writebackExternalSelection": parameters missing');
+				}
+
+				win.document.we_form.elements['yuiAcResult' + acId].value = result.currentID;
+				win.document.we_form.elements['yuiAcInput' + acId].value = result.currentPath;
+				win.document.we_form.elements['yuiAcContentType' + acId].value = result.currentType;
+//FIXME:
+				//YAHOO.autocoml.doOnAcResultChange('yuiAcInput' + acId, result);
+			}
 		}
 	},
 	handler: {
 		errorHandler: errorHandler,
-		dealWithKeyboardShortCut: null,
+		dealWithKeyboardShortCut: null
 	},
 	t_e: function () {
 		var msg = '';
@@ -1962,19 +2004,8 @@ var we_cmd_modules = {
 
 				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPropertyOrElement&cns=document" + postData);
 				break;
-			case "suggest_openToEdit":
-				if (this.YAHOO.autocoml) {
-					this.YAHOO.autocoml.openSelectionToEdit(args[1]);
-				} else {
-					WE().t_e('we_cmd "suggest_openToEdit": no autocompleter found on this frame');
-				}
-				break;
 			case "suggest_writeBack":
-				if (this.YAHOO.autocoml) {
-					this.YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
-				} else {
-					WE().t_e('suggest_writeBack: no autocompleter found on this frame');
-				}
+				WE().layout.weSuggest.writebackExternalSelection(window, args[1], args[2]);
 				break;
 			case "check_radio_option":
 				// to be callable from selectors we skip args[1]
@@ -1984,10 +2015,10 @@ var we_cmd_modules = {
 				}
 				break;
 			case "multiedit_addItem":
-				switch(args[2]){
+				switch (args[2]) {
 					case 'customer':
 						var win = this;
-						win.addToMultiEdit(win[args[3]], args[1].allTexts,args[1].allIDs);
+						win.addToMultiEdit(win[args[3]], args[1].allTexts, args[1].allIDs);
 						win.we_cmd('setHot');
 						break;
 					case 'category':
@@ -1995,7 +2026,7 @@ var we_cmd_modules = {
 				}
 				break;
 			case "multiedit_delAll":
-				switch(args[1]){
+				switch (args[1]) {
 					case 'customer':
 						var win = this;
 						win.removeFromMultiEdit(win[args[2]]);

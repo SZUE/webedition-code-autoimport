@@ -647,20 +647,20 @@ class we_fragment_copyFolder extends we_fragment_base{
 		$path = '/';
 		$myid = 0;
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('Template');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('foo', $path, '', 1);
-		$yuiSuggest->setLabel(g_l('copyFolder', '[destdir]'));
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setResult('CreateTemplateInFolderID', $myid);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(TEMPLATES_TABLE);
-		$yuiSuggest->setWidth(370);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','setCreateTemplate')", '', 0, 0, "", "", true, false));
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('Template');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('foo', $path, [], true);
+		$weSuggest->setLabel(g_l('copyFolder', '[destdir]'));
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult('CreateTemplateInFolderID', $myid);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(TEMPLATES_TABLE);
+		$weSuggest->setWidth(370);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','setCreateTemplate')", '', 0, 0, "", "", true, false));
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	static function formCreateCategoryChooser(){

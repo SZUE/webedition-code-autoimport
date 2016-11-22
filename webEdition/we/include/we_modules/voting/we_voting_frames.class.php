@@ -228,7 +228,7 @@ iptable_label.addVariant();';
 	}
 
 	function getHTMLTab1(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$table = new we_html_table(['id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'], 3, 2);
 		$table->setCol(0, 1, ['colspan' => 2, 'class' => 'defaultfont'], g_l('modules_voting', '[limit_access_text]'));
 		$table->setColContent(1, 1, we_html_element::htmlDiv(['id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;']));
@@ -251,7 +251,6 @@ iptable_label.addVariant();';
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->voting->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value)"'), g_l('modules_voting', '[headline_name]')) .
 				we_html_element::htmlBr() .
 				$this->getHTMLDirChooser() .
-				weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs() .
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => we_html_multiIconBox::SPACE_MED,
@@ -677,20 +676,19 @@ function setVisible(id,visible){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')");
 		$width = 416;
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('ParentPath', $path, 'onchange=top.content.setHot();');
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ?: 0));
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(VOTING_TABLE);
-		$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setLabel(g_l('modules_voting', '[group]'));
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('PathGroup');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('ParentPath', $path, ['onchange' => 'top.content.setHot();']);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult('ParentID', ($this->View->voting->ParentID ?: 0));
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(VOTING_TABLE);
+		$weSuggest->setWidth($width);
+		$weSuggest->setSelectButton($button);
+		$weSuggest->setLabel(g_l('modules_voting', '[group]'));
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	protected function getHTMLCmd(){

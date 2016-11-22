@@ -45,8 +45,7 @@ class we_dialog_gallery extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') .
-			weSuggest::getYuiFiles();
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js');
 	}
 
 	function getOkJs(){
@@ -58,29 +57,27 @@ WegalleryDialog.insert();
 	function getDialogContentHTML(){
 		$textname = 'we_targetname';
 		$idname = 'we_dialog_args[collid]';
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('ID');
-		$yuiSuggest->setContentType(we_base_ContentTypes::COLLECTION);
-		$yuiSuggest->setInput($textname, !empty($this->args['collid']) ? id_to_path($this->args['collid'], VFILE_TABLE) : '');
-		$yuiSuggest->setMaxResults(4);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($idname, isset($this->args['collid']) ? $this->args['collid'] : 0);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(VFILE_TABLE);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('ID');
+		$weSuggest->setContentType(we_base_ContentTypes::COLLECTION);
+		$weSuggest->setInput($textname, !empty($this->args['collid']) ? id_to_path($this->args['collid'], VFILE_TABLE) : '');
+		$weSuggest->setMaxResults(4);
+		$weSuggest->setResult($idname, isset($this->args['collid']) ? $this->args['collid'] : 0);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable(VFILE_TABLE);
 
-		$yuiSuggest->setCheckFieldValue(false);
-		$yuiSuggest->setNoAutoInit(true);
+		$weSuggest->setCheckFieldValue(false);
+		$weSuggest->setNoAutoInit(true);
 
-		$yuiSuggest->setWidth(234);
-		$yuiSuggest->setContainerWidth(300);
+		$weSuggest->setWidth(234);
 		$cmd1 = 'top.document.we_form.elements["' . $idname . '"].value';
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 4);
-		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(" . $cmd1 . "){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "'," . $cmd1 . ",'" . we_base_ContentTypes::COLLECTION . "'); return false}"));
-		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", '', 0, 0, "", "", false, false), 4);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 4);
+		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(" . $cmd1 . "){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "'," . $cmd1 . ",'" . we_base_ContentTypes::COLLECTION . "'); return false}"));
+		$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", '', 0, 0, "", "", false, false), 4);
 
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "=0;document.we_form.elements['" . $textname . "'].value='';document.we_form.elements['we_dialog_args[tmpl]'].value='0'");
 
-		$collid = we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), 'Sammlung');
+		$collid = we_html_tools::htmlFormElementTable($weSuggest->getHTML(), 'Sammlung');
 
 		if(($tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, true))){
 			$templatesArr = ['----'];
@@ -108,7 +105,7 @@ WegalleryDialog.insert();
 		 */
 		$trash = '';
 
-		$html = $yuiSuggest->getYuiJs() . '<table class="default">
+		$html = '<table class="default">
 <tr><td style="padding-bottom:10px;">' . $collid . '</td><td>' . $trash . '</td></tr>
 <tr><td style="padding-bottom:24px;">' . $tmpl . '</td></tr>
 <tr><td>' . $btnTrash . ' Gallerie entfernen</td></tr>

@@ -321,7 +321,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		// Initialize we_button class
-		$yuiSuggest = &weSuggest::getInstance();
+		$weSuggest = &weSuggest::getInstance();
 		$noInternals = false;
 
 		$extHref = (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
@@ -350,35 +350,35 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					"left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
-			$yuiSuggest->setAcId("Path");
-			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
-			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setWidth(300);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"), 10);
-			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value);", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
-			$internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
+			$weSuggest->setAcId("Path");
+			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
+			$weSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setWidth(300);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"), 10);
+			$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value);", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
+			$internal_link = $weSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
 			// E-MAIL LINK
 			$email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
-				$yuiSuggest->setAcId("Obj");
-				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
-				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
-				$yuiSuggest->setMaxResults(20);
-				$yuiSuggest->setMayBeEmpty(0);
-				$yuiSuggest->setResult('we_dialog_args[objID]', ($this->args['objID'] == 0 ? '' : $this->args['objID']));
-				$yuiSuggest->setSelector(weSuggest::DocSelector);
-				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-				$yuiSuggest->setWidth(300);
-				$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")), 10);
-				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "');", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
-				$object_link = $yuiSuggest->getHTML();
+				$weSuggest->setAcId("Obj");
+				$weSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
+				$weSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
+				$weSuggest->setMaxResults(20);
+				$weSuggest->setRequired(true);
+				$weSuggest->setResult('we_dialog_args[objID]', ($this->args['objID'] == 0 ? '' : $this->args['objID']));
+				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setTable(OBJECT_FILES_TABLE);
+				$weSuggest->setWidth(300);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")), 10);
+				$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "');", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
+				$object_link = $weSuggest->getHTML();
 				/*
 				  $object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
 				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", $object_select_button, "", "","", "", 0);
@@ -436,10 +436,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:0px;">' . g_l('contentTypes', '[objectFile]') . '</td>
 		<td style="vertical-align:top">' . $object_link . '</td>
 	</tr>' : '') . '
-</table></div>' .
-				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiJs()
-				],
+</table></div>'
+			],
 				['html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[anchor]') . '</td>

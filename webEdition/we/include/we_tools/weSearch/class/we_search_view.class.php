@@ -1319,7 +1319,7 @@ top.content.hot=false;');
 	}
 
 	function getDirSelector($whichSearch){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$nameFolderID = "folderIDDoc";
@@ -1340,26 +1340,22 @@ top.content.hot=false;');
 				$ACname = "Tmpl";
 				break;
 		}
-		$yuiSuggest->setWidth(380);
+		$weSuggest->setWidth(380);
 		$currentFolderID = $this->Model->getProperty('currentFolderID');
 		$path = id_to_path($currentFolderID, $table, $this->db);
 
 
-		$yuiSuggest->setAcId($ACname);
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($nameFolderPath, $path);
-		$yuiSuggest->setLabel("");
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($nameFolderID, $nameFolderPath);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable($table);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $nameFolderID . "','" . $nameFolderPath . "')"));
+		$weSuggest->setAcId($ACname);
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($nameFolderPath, $path);
+		$weSuggest->setLabel("");
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult($nameFolderID, $nameFolderPath);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable($table);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $nameFolderID . "','" . $nameFolderPath . "')"));
 
-		return
-			weSuggest::getYuiFiles() .
-			$yuiSuggest->getHTML() .
-			$yuiSuggest->getYuiJs();
+		return $weSuggest->getHTML();
 	}
 
 	function getCommonHiddens($cmds = []){

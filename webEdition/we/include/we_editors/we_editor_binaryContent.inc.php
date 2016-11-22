@@ -23,8 +23,6 @@
  */
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
-echo weSuggest::getYuiFiles();
 ?></head>
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;"><?php

@@ -42,7 +42,7 @@ class we_document_video extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		return '<table class="default propertydualtable">
 	<tr>
 		<td>' . $this->formInput2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>
@@ -59,9 +59,7 @@ class we_document_video extends we_binaryDocument{
 		<td>' . $this->formSelectElement(155, 'loop', [0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 		<td>' . $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 	</tr>
-</table>' .
-			$yuiSuggest->getYuiJs()
-		;
+</table>';
 	}
 
 	public function getHtml($dyn = false, $preload = false){

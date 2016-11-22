@@ -80,18 +80,14 @@ function press_ok_move(type) {
 	}
 
 	// check if selected target exists
-	var acStatus = '';
-	acStatus = YAHOO.autocoml.checkACFields();
-	acStatusType = typeof acStatus;
-	if (acStatusType.toLowerCase() === 'object') {
-		if (acStatus.running) {
-			setTimeout(press_ok_move, 100, type);
-			return;
-		}
-		if (!acStatus.valid) {
-			top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_ERROR, window);
-			return;
-		}
+	var acStatus = WE().layout.weSuggest.checkRequired(window);
+	if (acStatus.running) {
+		setTimeout(press_ok_move, 100, type);
+		return;
+	}
+	if (!acStatus.valid) {
+		top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return;
 	}
 
 	// close all documents before moving.

@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -39,21 +41,18 @@ function we_cmd() {
 
 function we_save() {
 	var acLoopCount = 0;
-	var acIsRunning = false;
-	if (top.content.editor.edbody.YAHOO !== undefined && top.content.editor.edbody.YAHOO.autocoml !== undefined) {
-		while (acLoopCount < 20 && top.content.editor.edbody.YAHOO.autocoml.isRunnigProcess()) {
-			acLoopCount++;
-			acIsRunning = true;
-			setTimeout(we_save, 100);
-		}
-		if (!acIsRunning) {
-			if (top.content.editor.edbody.YAHOO.autocoml.isValid()) {
-				_we_save();
-			} else {
-				top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-			}
-		}
-	} else {
-		_we_save();
+	var acStatus = WE().layout.weSuggest.checkRequired(window);
+
+	while (acLoopCount < 20 && acStatus.running) {
+		acLoopCount++;
+		setTimeout(we_save, 100);
+		return;
 	}
+
+	if (acStatus.valid) {
+		_we_save();
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+
 }

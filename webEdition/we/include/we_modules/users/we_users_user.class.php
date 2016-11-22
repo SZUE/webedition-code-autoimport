@@ -1213,18 +1213,17 @@ _multiEditorreload = true;';
 	 * LAYOUT FUNCTIONS
 	 */
 	function formDefinition($tab, $perm_branch){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case self::TAB_DATA:
-				return weSuggest::getYuiFiles() . we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
+				return we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
 							'pwdCheck' => SECURITY_USER_PASS_REGEX
 					])]) .
 					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
 			case self::TAB_WORKSPACES:
-				return weSuggest::getYuiFiles() .
-					$this->formWorkspace();
+				return $this->formWorkspace();
 			case self::TAB_SETTINGS:
 				return $this->formPreferences($perm_branch);
 		}
@@ -1253,19 +1252,19 @@ _multiEditorreload = true;';
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(false);
-		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(USER_TABLE);
-		$yuiSuggest->setWidth(450);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('PathGroup');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(USER_TABLE);
+		$weSuggest->setWidth(450);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		$tableObj->setCol(0, 0, null, $username);
 		$tableObj->setCol(1, 0, ['style' => 'padding-top:5px;'], we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')));
@@ -1347,17 +1346,16 @@ _multiEditorreload = true;';
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(USER_TABLE);
-		$yuiSuggest->setWidth(403);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('PathGroup');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(USER_TABLE);
+		$weSuggest->setWidth(403);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
 
 		$CreatorIDtext = ($this->CreatorID ?
@@ -1380,7 +1378,7 @@ _multiEditorreload = true;';
 				[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))],
 				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
 			],
-				[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]'))]
+				[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($weSuggest->getHTML(), g_l('modules_users', '[group]'))]
 			],
 				[[['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext],
 					[['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-')]
@@ -1504,7 +1502,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
 		$parts = [];
 
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		foreach($this->workspaces as $k => $v){
 			switch($k){
@@ -1570,18 +1568,17 @@ function toggleRebuildPerm(disabledOnly) {';
 						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 				}
 
-				$yuiSuggest->setAcId('WS' . $k . $key);
-				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-				$yuiSuggest->setInput($obj_names . '[Text][' . $key . ']', $path);
-				$yuiSuggest->setMaxResults(10);
-				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult($obj_names . '[id][' . $key . ']', $value);
-				$yuiSuggest->setSelector(weSuggest::DirSelector);
-				$yuiSuggest->setTable($k);
-				$yuiSuggest->setWidth(290);
-				$yuiSuggest->setSelectButton($button, 10);
+				$weSuggest->setAcId('WS' . $k . $key);
+				$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+				$weSuggest->setInput($obj_names . '[Text][' . $key . ']', $path);
+				$weSuggest->setMaxResults(10);
+				$weSuggest->setResult($obj_names . '[id][' . $key . ']', $value);
+				$weSuggest->setSelector(weSuggest::DirSelector);
+				$weSuggest->setTable($k);
+				$weSuggest->setWidth(290);
+				$weSuggest->setSelectButton($button, 10);
 
-				$weAcSelector = $yuiSuggest->getHTML();
+				$weAcSelector = $weSuggest->getHTML();
 
 				$content1 .= '
 <tr><td colspan="2">' . $weAcSelector . '</td>
@@ -1804,37 +1801,33 @@ function toggleRebuildPerm(disabledOnly) {';
 
 
 		// Build SEEM select start document chooser
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('Doc');
+		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
 			we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
-		$yuiSuggest->setInput('seem_start_document_name', $document_path);
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('seem_start_document', $document_id);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(191);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
-		$yuiSuggest->setContainerWidth(299);
+		$weSuggest->setInput('seem_start_document_name', $document_path);
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult('seem_start_document', $document_id);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(191);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
-		$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $yuiSuggest->getHTML());
+		$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $weSuggest->getHTML());
 
 		// Build SEEM select start object chooser
-		$yuiSuggest->setAcId('Obj');
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
-		$yuiSuggest->setInput('seem_start_object_name', $object_path);
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('seem_start_object', $object_id);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setAcId('Obj');
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+		$weSuggest->setInput('seem_start_object_name', $object_path);
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult('seem_start_object', $object_id);
+		$weSuggest->setSelector(weSuggest::DocSelector);
 		if(defined('OBJECT_FILES_TABLE')){
-			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$weSuggest->setTable(OBJECT_FILES_TABLE);
 		}
-		$yuiSuggest->setWidth(191);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
-		$yuiSuggest->setContainerWidth(299);
+		$weSuggest->setWidth(191);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
-		$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $yuiSuggest->getHTML());
+		$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $weSuggest->getHTML());
 
 		// Build final HTML code
 		$seem_html = new we_html_table(['class' => 'default'], 2, 1);
@@ -2022,32 +2015,31 @@ function toggleRebuildPerm(disabledOnly) {';
 		$alias_text = ($this->ID ? f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->Alias), 'Path', $this->DB_WE) : '');
 		$parent_text = ($this->ParentID == 0 ? '/' : f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE));
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('PathName');
-		$yuiSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
-		$yuiSuggest->setInput($this->Name . '_Alias_Text', $alias_text, ['onchange' => 'top.content.setHot();']);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(false);
-		$yuiSuggest->setResult($this->Name . '_Alias', $this->Alias);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(USER_TABLE);
-		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('PathName');
+		$weSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
+		$weSuggest->setInput($this->Name . '_Alias_Text', $alias_text, ['onchange' => 'top.content.setHot();']);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult($this->Name . '_Alias', $this->Alias);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable(USER_TABLE);
+		$weSuggest->setWidth(200);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
 
-		$weAcSelectorName = $yuiSuggest->getHTML();
+		$weAcSelectorName = $weSuggest->getHTML();
 
-		$yuiSuggest->setAcId("PathGroup");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, ['onchange' => "top.content.setHot();"]);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(USER_TABLE);
-		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
+		$weSuggest->setAcId("PathGroup");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, ['onchange' => "top.content.setHot();"]);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(USER_TABLE);
+		$weSuggest->setWidth(200);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
 
-		$weAcSelectorGroup = $yuiSuggest->getHTML();
+		$weAcSelectorGroup = $weSuggest->getHTML();
 
 		$content = '
 <table class="default" style="width:530px;">

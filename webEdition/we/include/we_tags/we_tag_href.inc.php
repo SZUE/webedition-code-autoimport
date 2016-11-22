@@ -138,16 +138,15 @@ function we_tag_href(array $attribs){
 	switch($type){
 		case we_base_link::TYPE_ALL:
 		case we_base_link::TYPE_INT:
-			$yuiSuggest = &weSuggest::getInstance();
-			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
-			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
-			$yuiSuggest->setInput($intPath_elem_Name, $intPath);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(1);
-			$yuiSuggest->setResult($intID_elem_Name, $intID);
-			$yuiSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
-			$yuiSuggest->setTable(FILE_TABLE);
-			$yuiSuggest->setWidth($size);
+			$weSuggest = &weSuggest::getInstance();
+			$weSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
+			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
+			$weSuggest->setInput($intPath_elem_Name, $intPath);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult($intID_elem_Name, $intID);
+			$weSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
+			$weSuggest->setTable(FILE_TABLE);
+			$weSuggest->setWidth($size);
 	}
 
 	ob_start();
@@ -160,7 +159,7 @@ function we_tag_href(array $attribs){
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
-	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
+	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $weSuggest->getHTML() . '</td>
 	<td class="weEditmodeStyle">' . $btnInt . '</td>
 	<td class="weEditmodeStyle">' . $btnEdit . '</td>
 	<td class="weEditmodeStyle">' . $btnTrashInt . '</td>

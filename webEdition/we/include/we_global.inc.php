@@ -922,8 +922,7 @@ function we_templateHead($fullHeader = false){
 	}
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
 	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();parent.openedWithWE=true;') .
-	STYLESHEET_MINIMAL .
-	weSuggest::getYuiFiles();
+	STYLESHEET_MINIMAL;
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
 		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
@@ -947,10 +946,9 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		if($force){//never do this again
 			$GLOBALS['we_templatePreContent'] = -10000;
 		}
-		$yuiSuggest = &weSuggest::getInstance();
+		$weSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		echo $yuiSuggest->getYuiJs() .
-		we_html_element::htmlHidden("we_complete_request", 1) .
+		echo we_html_element::htmlHidden("we_complete_request", 1) .
 		'</form>' .
 		($fullPoster ? '</body></html>' : '');
 	}

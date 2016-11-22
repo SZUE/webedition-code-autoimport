@@ -498,26 +498,25 @@ we_templateInit();?>';
 	}
 
 	function formMasterTemplate(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
 		$myid = $this->MasterTemplateID ?: '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "", $this->DB_WE);
 
-		$yuiSuggest->setAcId('MasterTemplate');
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-		$yuiSuggest->setInput($textname, $path);
-		$yuiSuggest->setLabel('');
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(0);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);"));
-		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements.we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID.value)'));
-		return $yuiSuggest->getHTML();
+		$weSuggest->setAcId('MasterTemplate');
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+		$weSuggest->setInput($textname, $path);
+		$weSuggest->setLabel('');
+		$weSuggest->setResult($idname, $myid);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable($table);
+		$weSuggest->setWidth(0);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);"));
+		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements.we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID.value)'));
+		return $weSuggest->getHTML();
 	}
 
 	private function isUsedByDocuments(){

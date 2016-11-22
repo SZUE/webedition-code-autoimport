@@ -334,7 +334,7 @@ function setTab(tab) {
 	}
 
 	private function getHTMLPropertiesGroup(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$cmd1 = "document.we_form.elements.LinkID.value";
 		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','','','0','',0)";
@@ -359,8 +359,8 @@ function setTab(tab) {
 			$seltype[we_navigation_navigation::STYPE_OBJLINK] = g_l('navigation', '[objLink]');
 		}
 
-		$yuiSuggest->setAcId('LinkPath');
-		$yuiSuggest->setContentType(
+		$weSuggest->setAcId('LinkPath');
+		$weSuggest->setContentType(
 			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ?
 				implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 					we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]) :
@@ -369,17 +369,16 @@ function setTab(tab) {
 					implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 						we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH])
 			));
-		$yuiSuggest->setInput('LinkPath', $path, ['onchange' => 'top.content.mark();']);
-		$yuiSuggest->setMaxResults(50);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
-		$yuiSuggest->setWidth(330);
-		$yuiSuggest->setSelectButton($buttons);
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', '', 0, 0));
+		$weSuggest->setInput('LinkPath', $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setMaxResults(50);
+		$weSuggest->setResult('LinkID', $this->Model->LinkID);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
+		$weSuggest->setWidth(330);
+		$weSuggest->setSelectButton($buttons);
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', '', 0, 0));
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		$selection = '<div style="display: block;">' .
 			we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->Model->SelectionType, false, ['onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);top.content.mark();",
@@ -577,23 +576,22 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK ? CATEGORY_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))))
 			);
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("LinkPath", "");
-		$yuiSuggest->setContentType(
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("LinkPath", "");
+		$weSuggest->setContentType(
 			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ?
 				implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 					we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]) :
 				($this->Model->SelectionType === we_navigation_navigation::STYPE_OBJLINK ? we_base_ContentTypes::OBJECT_FILE : ''));
-		$yuiSuggest->setInput('LinkPath', $path, ['onchange' => "top.content.mark();"]);
-		$yuiSuggest->setMaxResults(50);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
-		$yuiSuggest->setWidth(370);
-		$yuiSuggest->setSelectButton($buttons);
+		$weSuggest->setInput('LinkPath', $path, ['onchange' => "top.content.mark();"]);
+		$weSuggest->setMaxResults(50);
+		$weSuggest->setResult('LinkID', $this->Model->LinkID);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
+		$weSuggest->setWidth(370);
+		$weSuggest->setSelectButton($buttons);
 
-		return '<div style="margin-top:5px">' . $yuiSuggest->getHTML() . '</div>' . $this->getHTMLWorkspace();
+		return '<div style="margin-top:5px">' . $weSuggest->getHTML() . '</div>' . $this->getHTMLWorkspace();
 	}
 
 	private function getHTMLTab2(){
@@ -796,14 +794,13 @@ function showPreview() {
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
 		];
 
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		switch($tabNr){
 			case self::TAB_PREVIEW:
 				return $this->getHTMLEditorPreview();
 			default:
 				// Property tab content
-				$out = weSuggest::getYuiFiles() .
-					we_html_element::htmlDiv(
+				$out = we_html_element::htmlDiv(
 						['id' => 'tab1',
 						'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')
 						], $this->View->getCommonHiddens($hiddens) .
@@ -827,7 +824,6 @@ function showPreview() {
 					''
 					);
 		}
-		$out .= $yuiSuggest->getYuiJs();
 		return $out;
 	}
 
@@ -902,20 +898,20 @@ function showPreview() {
 			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled);
 		}
 
-		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setAcId($PathName);
-		$yuiSuggest->setContentType($acCTypes ?: $filter);
-		$yuiSuggest->setInput($PathName, $path, ['onchange' => 'top.content.mark();']);
-		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setMaxResults(50);
-		$yuiSuggest->setMayBeEmpty($mayBeEmpty);
-		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector($selector);
-		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(520 - $width);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest = &weSuggest::getInstance();
+		$weSuggest->setAcId($PathName);
+		$weSuggest->setContentType($acCTypes ?: $filter);
+		$weSuggest->setInput($PathName, $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setLabel($title);
+		$weSuggest->setMaxResults(50);
+		$weSuggest->setMayBeEmpty($mayBeEmpty);
+		$weSuggest->setResult($IDName, $IDValue);
+		$weSuggest->setSelector($selector);
+		$weSuggest->setTable($table);
+		$weSuggest->setWidth(520 - $width);
+		$weSuggest->setSelectButton($button);
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 		return (isset($weAcSelector) ?
 			$weAcSelector :
 			we_html_tools::htmlFormElementTable(
@@ -1029,20 +1025,19 @@ function showPreview() {
 			$attribs['disabled'] = "disabled";
 		}
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('FolderPath', $path, $attribs);
-		$yuiSuggest->setMaxResults(50);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('FolderID', $this->Model->FolderID ?: $rootDirID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setLabel(g_l('navigation', '[dir]'));
-		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(400);
-		$yuiSuggest->setSelectButton($buttons);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('FolderPath', $path, $attribs);
+		$weSuggest->setMaxResults(50);
+		$weSuggest->setResult('FolderID', $this->Model->FolderID ?: $rootDirID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setLabel(g_l('navigation', '[dir]'));
+		$weSuggest->setTable($table);
+		$weSuggest->setWidth(400);
+		$weSuggest->setSelectButton($buttons);
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		return we_html_element::htmlDiv(['style' => 'margin-top:5px;'], $weAcSelector);
 	}
@@ -1123,19 +1118,18 @@ function showPreview() {
 
 		$path = id_to_path($this->Model->UrlID);
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId($prefix . 'UrlIDPath');
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId($prefix . 'UrlIDPath');
+		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($prefix . 'UrlIDPath', $path, ['onchange' => 'top.content.mark();']);
-		$yuiSuggest->setMaxResults(50);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(400);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd));
+		$weSuggest->setInput($prefix . 'UrlIDPath', $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setMaxResults(50);
+		$weSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(400);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd));
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		return '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK || $this->Model->DynamicSelection == we_navigation_navigation::DYN_CATEGORY) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect($prefix . 'LinkSelection', [

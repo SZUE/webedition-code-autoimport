@@ -31,7 +31,7 @@ class we_navigation_ruleFrames{
 		$this->Frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		$this->Controller = new we_navigation_ruleControl();
 		$this->db = new DB_WE();
-		$yuiSuggest = &weSuggest::getInstance();
+		$weSuggest = &weSuggest::getInstance();
 	}
 
 	function getHTML($what){
@@ -56,7 +56,7 @@ class we_navigation_ruleFrames{
 
 	function getHTMLContent(){
 		// content contains textarea with all so far existing rules
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$allRules = we_navigation_ruleControl::getAllNavigationRules();
 
@@ -71,7 +71,7 @@ class we_navigation_ruleFrames{
 				[
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => weSuggest::getYuiFiles() . '<table class="default">
+				'html' => '<table class="default">
 	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $rules, 8, '', false, ['style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)']) . '</td>
 		<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 		</td>
@@ -85,20 +85,19 @@ class we_navigation_ruleFrames{
 			],
 		];
 
-		$yuiSuggest->setAcId("NavigationIDPath");
-		$yuiSuggest->setContentType("folder,weNavigation");
-		$yuiSuggest->setInput('NavigationIDPath');
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setTable(NAVIGATION_TABLE);
-		$yuiSuggest->setResult('NavigationID');
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(275);
-		$yuiSuggest->setSelectButton(
+		$weSuggest->setAcId("NavigationIDPath");
+		$weSuggest->setContentType("folder,weNavigation");
+		$weSuggest->setInput('NavigationIDPath');
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setTable(NAVIGATION_TABLE);
+		$weSuggest->setResult('NavigationID');
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(275);
+		$weSuggest->setSelectButton(
 			// IMI: replace enc (eval)
 			we_html_button::create_button('select', "javascript:we_cmd('we_selector_file', document.we_form.elements.NavigationID.value, '" . NAVIGATION_TABLE . "', 'document.we_form.elements.NavigationID.value', 'document.we_form.elements.NavigationIDPath.value')"), 10);
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		$parts[] = [
 			'headline' => g_l('navigation', '[rules][rule_navigation_link]'),
@@ -126,18 +125,17 @@ class we_navigation_ruleFrames{
 			$docTypes[$this->db->f('ID')] = $this->db->f('DocType');
 		}
 
-		$yuiSuggest->setAcId("FolderIDPath");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('FolderIDPath');
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('FolderID');
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth(275);
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', 'FolderID', 'FolderIDPath')"), 10);
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
+		$weSuggest->setAcId("FolderIDPath");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('FolderIDPath');
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult('FolderID');
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth(275);
+		$weSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', 'FolderID', 'FolderIDPath')"), 10);
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		$formTable = '<table class="default">
 <tr id="trFolderID">
@@ -151,18 +149,17 @@ class we_navigation_ruleFrames{
 
 		if(defined('OBJECT_TABLE')){
 
-			$yuiSuggest->setAcId("ClassIDPath");
-			$yuiSuggest->setContentType("folder,object");
-			$yuiSuggest->setInput("ClassIDPath");
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('ClassID');
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable(OBJECT_TABLE);
-			$yuiSuggest->setWidth(275);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','get_workspaces')"), 10);
+			$weSuggest->setAcId("ClassIDPath");
+			$weSuggest->setContentType("folder,object");
+			$weSuggest->setInput("ClassIDPath");
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult('ClassID');
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setTable(OBJECT_TABLE);
+			$weSuggest->setWidth(275);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','get_workspaces')"), 10);
 
-			$weAcSelector = $yuiSuggest->getHTML();
+			$weAcSelector = $weSuggest->getHTML();
 
 			$formTable .= '<tr id="trClassID">
 	<td class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_class]') . '</td>
@@ -200,8 +197,7 @@ var dependencies = {
 							'cmd' => '',
 							'ID' => '0'
 						]) .
-						we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]'))) .
-					$yuiSuggest->getYuiJs()
+						we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]'))) 
 		));
 	}
 

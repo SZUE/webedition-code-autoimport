@@ -43,17 +43,17 @@ function we_cmd() {
 
 function we_save() {
 	var acLoopCount = 0;
-	var acIsRunning = false;
-	while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
+	var acStatus = WE().layout.weSuggest.checkRequired(window);
+
+	while (acLoopCount < 20 && acStatus.running) {
 		acLoopCount++;
-		acIsRunning = true;
 		setTimeout(we_save, 100);
+		return;
 	}
-	if (!acIsRunning) {
-		if (YAHOO.autocoml.isValid()) {
-			document.we_form.submit();
-		} else {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		}
+
+	if (acStatus.valid) {
+		document.we_form.submit();
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }

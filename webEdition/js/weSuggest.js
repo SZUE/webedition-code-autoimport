@@ -41,30 +41,6 @@ YAHOO.autocoml = {
 	selfID: 0,
 	yuiAcFieldsById: {},
 
-	writebackExternalSelection: function (result, acId) {
-		if (!result || !result.currentID || !result.currentPath || !result.currentType || !acId) {
-			WE().t_e('suggestor function "writebackExternalSelection": parameters missing');
-		}
-
-		document.we_form.elements['yuiAcResult' + acId].value = result.currentID;
-		document.we_form.elements['yuiAcInput' + acId].value = result.currentPath;
-		document.we_form.elements['yuiAcContentType' + acId].value = result.currentType;
-
-		YAHOO.autocoml.doOnAcResultChange('yuiAcInput' + acId, result);
-	},
-	openSelectionToEdit: function (acId) {
-		if (!acId || !document.we_form.elements['yuiAcInput' + acId]) {
-			WE().t_e('suggestor function "openSelectionToEdit": suggestor does not exist on this frame');
-		}
-
-		var table = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInput' + acId]].table,
-			id = document.we_form.elements['yuiAcResult' + acId].value,
-			type = document.we_form.elements['yuiAcContentType' + acId].value;
-
-		if (table && id && type) {
-			WE().layout.openToEdit(table, id, type);
-		}
-	},
 
 	doOnTextfieldBlur: function (x, y, i) {
 		//document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).blur();
@@ -114,6 +90,7 @@ YAHOO.autocoml = {
 					YAHOO.autocoml.newInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
 					if (YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.selInputVal[i] || YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.oldInputVal[i]) {
 						YAHOO.autocoml.yuiAcFields[i].run = true;
+						//FIXME: t6his is old
 						WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php&cmd=SelectorGetSelectedId", 'protocol=json&we_cmd[1]=' + encodeURIComponent(YAHOO.autocoml.newInputVal[i]) + '&we_cmd[2]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].table) + '&we_cmd[3]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].cTypes) + '&we_cmd[4]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].checkValues) + '&we_cmd[5]=' + i, function (json) {
 							YAHOO.autocoml.ajaxSuccess(json, i);
 						}).fail(function () {
@@ -149,24 +126,6 @@ YAHOO.autocoml = {
 
 		YAHOO.autocoml.yuiAcFields[i].changed = false;
 
-	},
-	doOnDataRequestEvent: function (x, y, i) {
-		YAHOO.autocoml.yuiAcFields[i].found = 0;
-		YAHOO.autocoml.yuiAcFields[i].run = true;
-		YAHOO.autocoml.yuiAcFields[i].changed = true;
-	},
-	doOnDataErrorEvent: function (x, y, i) {
-		YAHOO.autocoml.yuiAcFields[i].run = false;
-		YAHOO.autocoml.yuiAcFields[i].valid = false;
-	},
-	doOnUnmatchedItemSelectEvent: function (x, y, i) {
-		YAHOO.autocoml.yuiAcFields[i].run = false;
-	},
-	doOnDataReturnEvent: function (x, y, i) {
-		YAHOO.autocoml.yuiAcFields[i].run = false;
-	},
-	doOnContainerCollapse: function (i) {
-		//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i(0,0," . $i . ")',100);
 	},
 	ajaxSuccess: function (weResponse, id) {
 		if (weResponse.Success) {
@@ -208,8 +167,8 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.oACDS[i].responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
 		YAHOO.autocoml.oACDS[i].maxCacheEntries = 60;
 		YAHOO.autocoml.oACDS[i].queryMatchSubset = false;
-		YAHOO.autocoml.oACDS[i].scriptQueryParam = "we_cmd[1]";
-		YAHOO.autocoml.oACDS[i].scriptQueryAppend = "protocol=text&cmd=SelectorSuggest&we_cmd[2]=" + YAHOO.autocoml.yuiAcFields[i].table + "&we_cmd[3]=" + YAHOO.autocoml.yuiAcFields[i].cTypes + "&we_cmd[4]=" + YAHOO.autocoml.selfType + "&we_cmd[5]=" + YAHOO.autocoml.selfID + "&we_cmd[6]=" + YAHOO.autocoml.yuiAcFields[i].rootDir;
+		YAHOO.autocoml.oACDS[i].scriptQueryParam = "we_cmd[query]";
+		YAHOO.autocoml.oACDS[i].scriptQueryAppend = "protocol=text&cmd=SelectorSuggest&we_cmd[table]=" + YAHOO.autocoml.yuiAcFields[i].table + "&we_cmd[contenttypes]=" + YAHOO.autocoml.yuiAcFields[i].cTypes + "&we_cmd[selectedType]=" + YAHOO.autocoml.selfType + "&we_cmd[selectedID]=" + YAHOO.autocoml.selfID + "&we_cmd[basedir]=" + YAHOO.autocoml.yuiAcFields[i].rootDir;
 
 		if (YAHOO.autocoml.oAutoComp[i] !== undefined) {
 			YAHOO.autocoml.oAutoComp[i].destroy();
@@ -232,7 +191,6 @@ YAHOO.autocoml = {
 		}
 		YAHOO.autocoml.oAutoComp[i].formatResult = function (oResultItem, sQuery) {
 			var sKey = oResultItem[0];
-			var nQuantity = oResultItem[1];
 			var sKeyQuery = sKey.substring(0, sQuery.length);
 			if (sQuery.length > 10) {
 				var path = sKeyQuery.split(' / ');
@@ -332,10 +290,6 @@ YAHOO.autocoml = {
 		}
 		YAHOO.autocoml.yuiAcFields[i].sel = '';
 	},
-	validateForm: function () {
-		// Validate form inputs here
-		return false;
-	},
 	checkFields: function () {
 		for (var i = 0; i < YAHOO.autocoml.yuiAcFields.length; i++) {
 			set = YAHOO.autocoml.yuiAcFields[i];
@@ -345,15 +299,6 @@ YAHOO.autocoml = {
 			}
 		}
 		return true;
-	},
-	checkRunnigProcess: function () {
-		for (var i = 0; i < YAHOO.autocoml.yuiAcFields.length; i++) {
-			set = YAHOO.autocoml.yuiAcFields[i];
-			if (set.run) {
-				return true;
-			}
-		}
-		return false;
 	},
 	markNotValid: function (setNr) {
 		set = YAHOO.autocoml.yuiAcFields[setNr];
@@ -377,17 +322,6 @@ YAHOO.autocoml = {
 		}
 		if (parent && parent.weAutoCompetionFields)
 			parent.weAutoCompetionFields[setNr].valid = true;
-	},
-	checkACFields: function () {
-		if (YAHOO.autocoml.checkRunnigProcess())
-			return {'running': true};
-		for (var i = 0; i < YAHOO.autocoml.yuiAcFields.length; i++) {
-			set = YAHOO.autocoml.yuiAcFields[i];
-			if (!set.valid) {
-				return {'running': false, 'valid': false};
-			}
-		}
-		return {'running': false, 'valid': true};
 	},
 	selectorSetValid: function (setFieldId) {
 		if (YAHOO.autocoml.yuiAcFields === undefined) {
@@ -446,15 +380,6 @@ YAHOO.autocoml = {
 		}
 		return isValid;
 	},
-	isRunnigProcess: function () {
-		var isRunning = false;
-		for (var fId in YAHOO.autocoml.yuiAcFieldsById) {
-			if (document.getElementById(fId).style.display != 'none' && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].run) {
-				isRunning = true;
-			}
-		}
-		return isRunning;
-	},
 	setValidById: function (fId) {
 		YAHOO.autocoml.unmarkNotValid(YAHOO.autocoml.yuiAcFieldsById[fId]);
 		YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].valid = true;
@@ -469,25 +394,10 @@ YAHOO.autocoml = {
 		document.getElementById(fId).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].old;
 		document.getElementById(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].fields_id[0]).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].fields_val[0];
 	},
-	setOldVal: function (set) {
-	},
 	checkSetPreviewById: function (set, result) {
 		var path = result.currentPath,
 			id = result.currentID,
 			ct = result.currentType;
-
-		/* do we still need this? */
-		/*
-		 var specialmode = (name === 'Image' && id === -1);
-		 if (!specialmode && !(name && id && table && ct && path)) {
-		 return;
-		 }
-		 if (specialmode) {
-		 id = document.we_form.elements.yuiAcResultImage.value;
-		 path = document.we_form.elements.yuiAcInputImage.value;
-		 ct = WE().consts.contentTypes.IMAGE;
-		 }
-		 */
 
 		if (ct === WE().consts.contentTypes.IMAGE) {
 			var src, img, preview, imgs;
@@ -537,21 +447,6 @@ YAHOO.autocoml = {
 				}
 			}
 		}
-	},
-	initFromLoad: function () {
-		var yahoo = WE().util.getDynamicVar(document, 'loadVarWeSuggest', 'data-yahoo');
-		try {
-			YAHOO.autocoml.width = yahoo.width;
-			YAHOO.autocoml.selfType = yahoo.selfType;
-			YAHOO.autocoml.selfID = yahoo.selfID;
-			YAHOO.autocoml.yuiAcFieldsById = yahoo.yuiAcFieldsById;
-			YAHOO.autocoml.yuiAcFields = yahoo.yuiAcFields;
-			YAHOO.autocoml.init();
-		} catch (e) {
-			//catch bug in IE
-		}
 	}
+
 };
-$(function(){
-	YAHOO.autocoml.initFromLoad();
-});

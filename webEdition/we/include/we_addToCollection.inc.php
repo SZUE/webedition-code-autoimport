@@ -38,7 +38,7 @@ $insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) 
   }
  *
  */
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 echo we_html_tools::getHtmlTop() .
@@ -46,8 +46,7 @@ echo we_html_tools::getHtmlTop() .
 		'table' => $table,
 		'targetInsertIndex' => $insertIndex,
 		'targetInsertPosition' => $insertPos,
-])]) .
-weSuggest::getYuiFiles();
+])]);
 
 $ws_Id = get_def_ws($table);
 if($ws_Id){
@@ -59,21 +58,20 @@ if($ws_Id){
 
 $textname = 'we_targetname';
 $idname = 'we_target';
-$yuiSuggest->setAcId('Dir');
-$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::COLLECTION);
-$yuiSuggest->setInput($textname, $targetCollectionPath);
-$yuiSuggest->setMaxResults(4);
-$yuiSuggest->setMayBeEmpty(false);
-$yuiSuggest->setResult($idname, $targetCollection);
-$yuiSuggest->setSelector(weSuggest::DocSelector);
-$yuiSuggest->setTable(VFILE_TABLE);
-$yuiSuggest->setWidth(273);
-$yuiSuggest->setContainerWidth(300);
+$weSuggest->setAcId('Dir');
+$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::COLLECTION);
+$weSuggest->setInput($textname, $targetCollectionPath);
+$weSuggest->setMaxResults(4);
+$weSuggest->setRequired(true);
+$weSuggest->setResult($idname, $targetCollection);
+$weSuggest->setSelector(weSuggest::DocSelector);
+$weSuggest->setTable(VFILE_TABLE);
+$weSuggest->setWidth(273);
 $cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
 
-$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements." . $idname . ".value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 6);
-$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", '', 0, 0, "", "", false, false), 0);
-$weAcSelector = $yuiSuggest->getHTML();
+$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements." . $idname . ".value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 6);
+$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", '', 0, 0, "", "", false, false), 0);
+$weAcSelector = $weSuggest->getHTML();
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
 $recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClass', '[collection][insertRecursive]'));
@@ -89,7 +87,5 @@ echo
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('weClass', '[collection][add_help]') . '</span>
 <p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . $recursive . '</p></p>
 <div>' . $buttons . '</div></div>
- </form>' .
- $yuiSuggest->getYuiJs() .
- '</body>
+ </form></body>
 </html>';

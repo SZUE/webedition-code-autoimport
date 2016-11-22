@@ -132,11 +132,10 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 }
 
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 $GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
- weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'doctypeEdit.js', '', ['id' => 'loadVarDoctypeEdit', 'data-doctype' => setDynamicVar([
 		'docTypeNames' => $GLOBALS['DB_WE']->getAll(true)
 ])]);
@@ -206,8 +205,7 @@ switch($wecmd0){
 
 
 			echo we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
-			$yuiSuggest->getYuiJs();
+			we_html_multiIconBox::getHTML("", $parts, 30, $buttons);
 			?>
 		</form>
 	</body>

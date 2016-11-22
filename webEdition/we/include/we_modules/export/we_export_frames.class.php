@@ -111,10 +111,10 @@ function setTab(tab) {
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		//FIXME: folder don't have a tree to start.
-		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"], weSuggest::getYuiFiles() . we_html_element::htmlForm([
-					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"], we_html_element::htmlForm([
+					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties())
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -365,20 +365,19 @@ function closeAllType(){
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','setHot')");
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("PathGroup");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=true;']);
-		$yuiSuggest->setLabel(g_l('export', '[group]'));
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult("ParentID", $this->View->export->ParentID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(EXPORT_TABLE);
-		$yuiSuggest->setWidth(400);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("PathGroup");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=true;']);
+		$weSuggest->setLabel(g_l('export', '[group]'));
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult("ParentID", $this->View->export->ParentID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(EXPORT_TABLE);
+		$weSuggest->setWidth(400);
+		$weSuggest->setSelectButton($button);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	private function getLoadCode(){
@@ -671,19 +670,18 @@ if (top.content.editor.edbody.addLog){
 		$Pathvalue = ($Pathvalue ?: f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('SelPath');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=true;']);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('SelPath');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=true;']);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($IDName, $IDValue);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setTable(FILE_TABLE);
+		$weSuggest->setWidth($width);
+		$weSuggest->setSelectButton($button);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	function getHTMLCategory(){
