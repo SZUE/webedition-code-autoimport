@@ -44,8 +44,7 @@ weAddToCollection = {
 	},
 	press_ok_add: function () {
 		var selection = [];
-		var i;
-		for (i = 1; i <= top.treeData.len; i++) {
+		for (var i = 1; i <= top.treeData.len; i++) {
 			if (top.treeData[i].checked == 1) {
 				selection.push(top.treeData[i].id);
 				top.treeData.checkNode('img_' + top.treeData[i].id);
@@ -58,25 +57,21 @@ weAddToCollection = {
 		}
 
 		// check if selected target exists
-		var acStatus = '';
-		acStatus = YAHOO.autocoml.checkACFields();
-		var acStatusType = typeof acStatus;
-		if (acStatusType.toLowerCase() === 'object') {
-			if (acStatus.running) {
-				setTimeout(press_ok_move, 100, '');
-				return;
-			} else if (!acStatus.valid) {
-				top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
-				return;
-			}
+		var acStatus = WE().layout.weSuggest.checkRequired(window);
+		if (acStatus.running) {
+			setTimeout(press_ok_move, 100, '');
+			return;
+		} else if (!acStatus.valid) {
+			top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			return;
 		}
 
 		we_cmd('collection_insertFiles',
-				selection,
-				document.getElementById('yuiAcResultDir').value,
-				this.conf.targetInsertIndex,
-				this.conf.targetInsertPosition,
-				document.check_InsertRecursive ? document.we_form.check_InsertRecursive.value : 0
+			selection,
+			document.getElementById('yuiAcResultDir').value,
+			this.conf.targetInsertIndex,
+			this.conf.targetInsertPosition,
+			document.check_InsertRecursive ? document.we_form.check_InsertRecursive.value : 0
 			);
 
 		return;

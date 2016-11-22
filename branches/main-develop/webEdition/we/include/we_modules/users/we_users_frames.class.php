@@ -70,7 +70,7 @@ class we_users_frames extends we_modules_frame{
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$user_object = (isset($_SESSION["user_session_data"]) ?
 			$_SESSION["user_session_data"] :
@@ -102,8 +102,6 @@ class we_users_frames extends we_modules_frame{
 			}
 			$content .= $user_object->formDefinition($tab, $permBranch);
 		}
-
-		$content .= $yuiSuggest->getYuiJs();
 
 		$form = we_html_element::htmlForm(['name' => 'we_form',
 				'method' => 'post',

@@ -26,23 +26,23 @@ class rpcSelectorSuggestCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-		$cmd1 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 1);
-		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
-		if(!$cmd1 || !$cmd2){
+		$query = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 'query');
+		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 'table');
+		if(!$query || !$table){
 			exit();
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
-		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
-		$cmd5 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 5);
-		if($cmd4 && $cmd5){
-			if($cmd2 == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $cmd4 == we_base_ContentTypes::TEMPLATE){
-				$selectorSuggest->addCondition(['AND', '!=', 'ID', $cmd5]);
+		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'contenttypes'));
+		$currentDocumentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'currentDocumentType');
+		$currentDocumentID = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'currentDocumentID');
+		if($currentDocumentType && $currentDocumentID){
+			if($table == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $currentDocumentType == we_base_ContentTypes::TEMPLATE){
+				$selectorSuggest->addCondition('AND', '!=', 'ID', $currentDocumentID);
 			}
 		}
-		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", we_base_request::_(we_base_request::FILE, 'we_cmd', '', 6));
-		$resp->setData("data", $selectorSuggest->getResult());
+		$selectorSuggest->search($query, $table, $contentTypes,we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'max'), we_base_request::_(we_base_request::FILE, 'we_cmd', '', 'basedir'));
+		$resp->setData('data', $selectorSuggest->getResult());
 
 		return $resp;
 	}

@@ -46,10 +46,9 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 		}
 	}
 }
-$yuiSuggest = &weSuggest::getInstance();
+$weSuggest = &weSuggest::getInstance();
 
-echo we_html_tools::getHtmlTop('', $charset, 5) .
- weSuggest::getYuiFiles();
+echo we_html_tools::getHtmlTop('', $charset, 5);
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
@@ -92,8 +91,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			  } */
 			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
-		echo we_html_element::htmlHidden("we_complete_request", 1) .
-		$yuiSuggest->getYuiJs();
+		echo we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

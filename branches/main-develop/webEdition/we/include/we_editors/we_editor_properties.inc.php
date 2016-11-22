@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 
 $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
 		//	send charset, if one is set:
@@ -31,7 +31,6 @@ $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
 we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo weSuggest::getYuiFiles();
 ?>
 </head>
 <body class="weEditorBody" onload="doScrollTo()" onunload="doUnload()">
@@ -42,6 +41,5 @@ echo weSuggest::getYuiFiles();
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
-	<?= $yuiSuggest->getYuiJs(); ?>
 </body>
 </html>

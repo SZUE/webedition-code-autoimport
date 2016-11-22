@@ -240,7 +240,7 @@ class we_workflow_view extends we_modules_view{
 		$counter = 0;
 		$counter1 = 0;
 
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		/*		 * *** WORKFLOWSTEPS **** */
 		foreach($this->workflowDef->steps as $sv){
@@ -271,20 +271,19 @@ class we_workflow_view extends we_modules_view{
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
-				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
-				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
-				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, ['onchange' => 'top.content.setHot();']);
-				$yuiSuggest->setMaxResults(10);
-				$yuiSuggest->setMayBeEmpty(false);
-				$yuiSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
-				$yuiSuggest->setSelector(weSuggest::DocSelector);
-				$yuiSuggest->setTable(USER_TABLE);
-				$yuiSuggest->setWidth(200);
-				$yuiSuggest->setContainerWidth(305);
-				$yuiSuggest->setSelectButton($button, 6);
+				$weSuggest->setAcId('User_' . $counter . '_' . $counter1);
+				$weSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
+				$weSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, ['onchange' => 'top.content.setHot();']);
+				$weSuggest->setMaxResults(10);
+				$weSuggest->setRequired(true);
+				$weSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
+				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setTable(USER_TABLE);
+				$weSuggest->setWidth(200);
+				$weSuggest->setSelectButton($button, 6);
 
 				$content[$counter][$counter1 + 3] = ['dat' => '<table class="default" style="margin-top:1ex;">
-						<tr style="vertical-align:middle"><td>' . $yuiSuggest->getHTML() . '</td>
+						<tr style="vertical-align:middle"><td>' . $weSuggest->getHTML() . '</td>
 						</tr></table>
 						<table class="default">
 						<tr style="vertical-align:top">
@@ -298,8 +297,7 @@ class we_workflow_view extends we_modules_view{
 			}
 			++$counter;
 		}
-		return $ids .
-			weSuggest::getYuiFiles() . '
+		return $ids . '
 <table style="margin-right:30px;">
 	<tr style="vertical-align:top">
 		<td>' . we_html_tools::htmlDialogBorder3(400, $content, $headline) . '</td>
@@ -311,7 +309,6 @@ class we_workflow_view extends we_modules_view{
 	<tr style="vertical-align:top">
 		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()") . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()") . '</td></tr>
 </table>' .
-			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(['wsteps' => $counter,
 				'wtasks' => $counter1
 		]);

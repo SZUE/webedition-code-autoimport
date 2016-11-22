@@ -306,20 +306,20 @@ class we_import_wizard extends we_import_wizardBase{
 
 			$rootDirID = get_def_ws();
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.wizbody.document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','v[doc_dir_id]','v[doc_dir]','','','" . $rootDirID . "')");
-			$yuiSuggest = & weSuggest::getInstance();
-			$yuiSuggest->setAcId('DocPath');
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput('v[doc_dir]', (isset($v['doc_dir']) ? $v['doc_dir'] : id_to_path($rootDirID)), ['onfocus' => "top.setFormField('_v[restore_doc_path]', false, 'checkbox');"]);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult("v[doc_dir_id]", (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $rootDirID));
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(FILE_TABLE);
-			$yuiSuggest->setWidth(280);
-			$yuiSuggest->setSelectButton($btnDocDir, 10);
+			$weSuggest = & weSuggest::getInstance();
+			$weSuggest->setAcId('DocPath');
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput('v[doc_dir]', (isset($v['doc_dir']) ? $v['doc_dir'] : id_to_path($rootDirID)), ['onfocus' => "top.setFormField('_v[restore_doc_path]', false, 'checkbox');"]);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult("v[doc_dir_id]", (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $rootDirID));
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setTable(FILE_TABLE);
+			$weSuggest->setWidth(280);
+			$weSuggest->setSelectButton($btnDocDir, 10);
 
 
-			$docPath = weSuggest::getYuiFiles() . $yuiSuggest->getHTML();
+			$docPath = $weSuggest->getHTML();
 
 			$dir_table = new we_html_table(['id' => 'doc_table', 'style' => 'margin-left:20px;'], 3, 2);
 			if((isset($v['import_docs']) && !$v['import_docs'])){
@@ -338,18 +338,18 @@ class we_import_wizard extends we_import_wizardBase{
 
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.wizbody.document.we_form.elements['v[tpl_dir_id]'].value,'" . TEMPLATES_TABLE . "','v[tpl_dir_id]','v[tpl_dir]','','','" . $rootDirID . "')");
 
-			$yuiSuggest->setAcId('TemplPath');
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput('v[tpl_dir]', (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($rootDirID, TEMPLATES_TABLE)), ['onFocus' => "top.setFormField('_v[restore_tpl_path]', false, 'checkbox');"]);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult('v[tpl_dir_id]', (isset($v['tpl_dir_id'])) ? $v['tpl_dir_id'] : $rootDirID);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(TEMPLATES_TABLE);
-			$yuiSuggest->setWidth(280);
-			$yuiSuggest->setSelectButton($btnDocDir, 10);
+			$weSuggest->setAcId('TemplPath');
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput('v[tpl_dir]', (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($rootDirID, TEMPLATES_TABLE)), ['onfocus' => "top.setFormField('_v[restore_tpl_path]', false, 'checkbox');"]);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult('v[tpl_dir_id]', (isset($v['tpl_dir_id'])) ? $v['tpl_dir_id'] : $rootDirID);
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setTable(TEMPLATES_TABLE);
+			$weSuggest->setWidth(280);
+			$weSuggest->setSelectButton($btnDocDir, 10);
 
-			$docPath = $yuiSuggest->getHTML();
+			$docPath = $weSuggest->getHTML();
 
 			$dir_table = new we_html_table(['id' => 'tpl_table', 'style' => 'margin-left:20px;'], 3, 2);
 			if((isset($v['import_templ']) && !$v['import_templ'])){
@@ -391,18 +391,18 @@ class we_import_wizard extends we_import_wizardBase{
 
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.we_form.elements[\"v[navigation_dir_id]\"].value,'v[navigation_dir_id]','v[navigation_dir]');");
 
-			$yuiSuggest->setAcId("NaviPath");
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput("v[navigation_dir]", (isset($v["navigation_dir"]) ? $v["navigation_dir"] : id_to_path($rootDirID)));
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult("v[navigation_dir_id]", (isset($v["navigation_dir_id"])) ? $v["navigation_dir_id"] : $rootDirID);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(NAVIGATION_TABLE);
-			$yuiSuggest->setWidth(280);
-			$yuiSuggest->setSelectButton($btnDocDir, 10);
+			$weSuggest->setAcId("NaviPath");
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput("v[navigation_dir]", (isset($v["navigation_dir"]) ? $v["navigation_dir"] : id_to_path($rootDirID)));
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult("v[navigation_dir_id]", (isset($v["navigation_dir_id"])) ? $v["navigation_dir_id"] : $rootDirID);
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setTable(NAVIGATION_TABLE);
+			$weSuggest->setWidth(280);
+			$weSuggest->setSelectButton($btnDocDir, 10);
 
-			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+			$docPath = $weSuggest->getHTML();
 
 			$dir_table = new we_html_table(["id" => "navigation_table", 'style' => 'margin-left:20px;'], 2, 1);
 			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
@@ -596,7 +596,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','noDocTypeTemplateId','v[we_TemplateName]','reload_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$TPLselect = new we_html_select(['name' => 'docTypeTemplateId',
 			'class' => 'weSelect',
@@ -627,19 +627,18 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$templateElement = "<div id='docTypeLayer' style='" . $displayDocType . "'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>";
 
-		$yuiSuggest->setAcId('TmplPath');
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-		$yuiSuggest->setInput('v[we_TemplateName]', (isset($v['we_TemplateName']) ? $v['we_TemplateName'] : ''), ['onFocus' => "top.setFormField('v[import_type]', true, 'radio', 0);"]);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult('noDocTypeTemplateId', $myid);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(TEMPLATES_TABLE);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($button, 10);
-		$yuiSuggest->setLabel(g_l('import', '[template]'));
+		$weSuggest->setAcId('TmplPath');
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+		$weSuggest->setInput('v[we_TemplateName]', (isset($v['we_TemplateName']) ? $v['we_TemplateName'] : ''), ['onfocus' => "top.setFormField('v[import_type]', true, 'radio', 0);"]);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult('noDocTypeTemplateId', $myid);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable(TEMPLATES_TABLE);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($button, 10);
+		$weSuggest->setLabel(g_l('import', '[template]'));
 
-		$templateElement .= "<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $yuiSuggest->getHTML() . "</div>";
+		$templateElement .= "<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $weSuggest->getHTML() . "</div>";
 
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
@@ -649,18 +648,18 @@ class we_import_wizard extends we_import_wizardBase{
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.wizbody.document.we_form.elements['v[store_to_id]'].value,'" . FILE_TABLE . "','v[store_to_id]','v[store_to_path]','','','0')"
 		);
 
-		$yuiSuggest->setAcId('DirPath');
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('v[store_to_path]', (isset($v['store_to_path']) ? $v['store_to_path'] : '/'), ['onFocus' => "top.setFormField('v[import_type]', true, 'radio', 0);"]);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setResult('v[store_to_id]', (isset($v['store_to_id']) ? $v['store_to_id'] : 0));
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($storeToButton, 10);
-		$yuiSuggest->setLabel(g_l('import', '[import_dir]'));
+		$weSuggest->setAcId('DirPath');
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('v[store_to_path]', (isset($v['store_to_path']) ? $v['store_to_path'] : '/'), ['onfocus' => "top.setFormField('v[import_type]', true, 'radio', 0);"]);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult('v[store_to_id]', (isset($v['store_to_id']) ? $v['store_to_id'] : 0));
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($storeToButton, 10);
+		$weSuggest->setLabel(g_l('import', '[import_dir]'));
 
-		$storeTo = $yuiSuggest->getHTML();
+		$storeTo = $weSuggest->getHTML();
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v['import_type'] === 'documents'), 'v[import_type]', g_l('import', '[documents]'));
 		$radioObjs = we_html_forms::radiobutton('objects', ($v['import_type'] === 'objects'), 'v[import_type]', g_l('import', '[objects]'), true, 'defaultfont', "self.document.we_form.elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[store_to_path]'].id); if(self.document.we_form.elements['v[we_TemplateName]']!==undefined) { self.document.we_form.elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE') ? false : true));
@@ -710,7 +709,7 @@ class we_import_wizard extends we_import_wizardBase{
 				'html' => $importLocs->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED],
 				['headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
-				'html' => weSuggest::getYuiFiles() . $doctypeElement . ' ' . $templateElement . ' ' . $storeTo . $yuiSuggest->getYuiJs() . ' ' . $specifyDoc->getHTML() . ' ' .
+				'html' => $doctypeElement . ' ' . $templateElement . ' ' . $storeTo . ' ' . $specifyDoc->getHTML() . ' ' .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), 'left', 'defaultfont'),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1]
@@ -1238,7 +1237,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','noDocTypeTemplateId','v[we_TemplateName]','reload_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$TPLselect = new we_html_select(["name" => "docTypeTemplateId",
 			"class" => "weSelect",
@@ -1264,33 +1263,32 @@ class we_import_wizard extends we_import_wizardBase{
 			$displayDocType = 'display:none';
 			$displayNoDocType = 'display:block';
 		}
-		$yuiSuggest->setAcId("TmplPath");
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-		$yuiSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"]) ? $v["we_TemplateName"] : ""), ["onFocus" => "self.document.we_form.elements['v[import_type]'][0].checked=true;"]);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult('noDocTypeTemplateId', $myid);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(TEMPLATES_TABLE);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($button, 10);
-		$yuiSuggest->setLabel(g_l('import', '[template]'));
+		$weSuggest->setAcId("TmplPath");
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+		$weSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"]) ? $v["we_TemplateName"] : ""), ["onfocus" => "self.document.we_form.elements['v[import_type]'][0].checked=true;"]);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult('noDocTypeTemplateId', $myid);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable(TEMPLATES_TABLE);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($button, 10);
+		$weSuggest->setLabel(g_l('import', '[template]'));
 
 		$templateElement = "<div id='docTypeLayer' style='" . $displayDocType . "'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>
-<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $yuiSuggest->getHTML() . "</div>";
+<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $weSuggest->getHTML() . "</div>";
 
-		$yuiSuggest->setAcId("DirPath");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput("v[store_to_path]", (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), ["onfocus" => "self.document.we_form.elements['v[import_type]'][0].checked=true;"]);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setResult("v[store_to_id]", (isset($v["store_to_id"]) ? $v["store_to_id"] : 0));
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($storeToButton, 10);
-		$yuiSuggest->setLabel(g_l('import', '[import_dir]'));
+		$weSuggest->setAcId("DirPath");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput("v[store_to_path]", (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), ["onfocus" => "self.document.we_form.elements['v[import_type]'][0].checked=true;"]);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult("v[store_to_id]", (isset($v["store_to_id"]) ? $v["store_to_id"] : 0));
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($storeToButton, 10);
+		$weSuggest->setLabel(g_l('import', '[import_dir]'));
 
-		$storeTo = $yuiSuggest->getHTML();
+		$storeTo = $weSuggest->getHTML();
 
 		$seaPu = new we_html_table(['class' => 'default'], 2, 1);
 		$seaPu->setCol(1, 0, [], we_html_forms::checkboxWithHidden(!empty($v["doc_search"]), 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
@@ -1339,19 +1337,19 @@ class we_import_wizard extends we_import_wizardBase{
 			$objStoreToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[obj_path]'].value,'" . OBJECT_FILES_TABLE . "','v[obj_path_id]','v[obj_path]','','',document.we_form.elements['v[classID]'].value.split('_')[1])");
 
 
-			$yuiSuggest->setAcId('ObjPath');
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput("v[obj_path]", (isset($v["obj_path"]) ? $v["obj_path"] : isset($first) ? $first : '/'), ["onfocus" => "self.document.we_form.elements['v[import_type]'][1].checked=true;"]);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult("v[obj_path_id]", (isset($v["obj_path_id"]) ? $v["obj_path_id"] : (isset($firstID) ? $firstID : 0)));
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-			$yuiSuggest->setWidth(300);
-			$yuiSuggest->setSelectButton($objStoreToButton, 10);
-			$yuiSuggest->setLabel(g_l('import', '[import_dir]'));
+			$weSuggest->setAcId('ObjPath');
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput("v[obj_path]", (isset($v["obj_path"]) ? $v["obj_path"] : isset($first) ? $first : '/'), ["onfocus" => "self.document.we_form.elements['v[import_type]'][1].checked=true;"]);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult("v[obj_path_id]", (isset($v["obj_path_id"]) ? $v["obj_path_id"] : (isset($firstID) ? $firstID : 0)));
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setTable(OBJECT_FILES_TABLE);
+			$weSuggest->setWidth(300);
+			$weSuggest->setSelectButton($objStoreToButton, 10);
+			$weSuggest->setLabel(g_l('import', '[import_dir]'));
 
-			$objStoreTo = $yuiSuggest->getHTML();
+			$objStoreTo = $weSuggest->getHTML();
 
 			$objSeaPu = new we_html_table(['class' => 'default'], 2, 1);
 			$objSeaPu->setCol(1, 0, [], we_html_forms::checkboxWithHidden(!empty($v["obj_search"]), 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
@@ -1374,14 +1372,12 @@ class we_import_wizard extends we_import_wizardBase{
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$parts = [[
 				"headline" => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
-				"html" => weSuggest::getYuiFiles() .
-				$doctypeElement .
+				"html" => $doctypeElement .
 				$templateElement .
 				$storeTo .
 				$specifyDoc->getHTML() .
 				$seaPu->getHtml() .
-				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
-				(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
+				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont"),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 				]
@@ -1391,8 +1387,7 @@ class we_import_wizard extends we_import_wizardBase{
 					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), "left", "defaultfont") .
 					$objStoreTo .
 					$objSeaPu->getHtml() .
-					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
-					. $yuiSuggest->getYuiJs(),
+					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont"),
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'noline' => 1
 				];

@@ -221,22 +221,21 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDirChooser($width = 100){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $idname . "', '" . $textname . "', '', '')");
-		$yuiSuggest->setAcId("Path");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($textname, $this->ParentPath);
-		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($idname, $this->ParentID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth($width - 10);
-		$yuiSuggest->setSelectButton($button);
+		$weSuggest->setAcId("Path");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput($textname, $this->ParentPath);
+		$weSuggest->setLabel(g_l('weClass', '[dir]'));
+		$weSuggest->setResult($idname, $this->ParentID);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth($width - 10);
+		$weSuggest->setSelectButton($button);
 
-		return $yuiSuggest->getHTML();
+		return $weSuggest->getHTML();
 	}
 
 	private function formExtension($width = 100){

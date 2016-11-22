@@ -170,7 +170,7 @@ class we_fragment_base{
 
 	static function printHeader(){
 		//FIXME: missing title
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', weSuggest::getYuiFiles());
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 	protected function updateTaskPerFragment(){

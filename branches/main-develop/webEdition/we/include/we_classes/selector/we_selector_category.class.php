@@ -406,18 +406,17 @@ class we_selector_category extends we_selector_file{
 			$description = $result ? $result['Description'] : '';
 
 			$dir_chooser = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'FolderID', 'FolderIDPath', '', '', '', '1', '', 'false', 1)");
-			$yuiSuggest = &weSuggest::getInstance();
-			$yuiSuggest->setAcId('Doc');
-			$yuiSuggest->setTable(CATEGORY_TABLE);
-			$yuiSuggest->setContentType('');
-			$yuiSuggest->setInput('FolderIDPath', $path);
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(false);
-			$yuiSuggest->setResult('FolderID', $parentId);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton($dir_chooser, 10);
-			$yuiSuggest->setContainerWidth(350);
+			$weSuggest = &weSuggest::getInstance();
+			$weSuggest->setAcId('Doc');
+			$weSuggest->setTable(CATEGORY_TABLE);
+			$weSuggest->setContentType('');
+			$weSuggest->setInput('FolderIDPath', $path);
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setRequired(true);
+			$weSuggest->setResult('FolderID', $parentId);
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setWidth(250);
+			$weSuggest->setSelectButton($dir_chooser, 10);
 
 			$table = new we_html_table(['class' => 'default'], 6, 3);
 
@@ -428,7 +427,7 @@ class we_selector_category extends we_selector_file{
 			$table->setCol(1, 1, ['colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], $catID);
 
 			$table->setCol(2, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], '<b>' . g_l('weClass', '[dir]') . '</b>');
-			$table->setCol(2, 1, ['style' => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], $yuiSuggest->getHTML());
+			$table->setCol(2, 1, ['style' => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], $weSuggest->getHTML());
 
 			$table->setCol(3, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[title]') . "</b>");
 			$table->setCol(3, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
@@ -445,14 +444,11 @@ class we_selector_category extends we_selector_file{
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js') .
-			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
+			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js'), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() .
 				'</div></form>' : '' ) .
-			(isset($yuiSuggest) ?
-				$yuiSuggest->getYuiJs() : '') .
 			'</body>');
 	}
 

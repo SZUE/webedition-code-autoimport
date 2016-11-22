@@ -43,21 +43,20 @@ function we_tag_collectionSelect(array $attribs){
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections
 
-		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $rootDirID));
-		$yuiSuggest->setContentType(we_base_ContentTypes::COLLECTION);
-		$yuiSuggest->setInput($textname, $path);
-		$yuiSuggest->setResult($idname, $intID);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(VFILE_TABLE);
-		$yuiSuggest->setWidth(200);
+		$weSuggest = &weSuggest::getInstance();
+		$weSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $rootDirID));
+		$weSuggest->setContentType(we_base_ContentTypes::COLLECTION);
+		$weSuggest->setInput($textname, $path);
+		$weSuggest->setResult($idname, $intID);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable(VFILE_TABLE);
+		$weSuggest->setWidth(200);
 		?>
 		<table class="weEditTable padding0 spacing0 border0">
 			<tr>
 				<td class="weEditmodeStyle" style="padding:0 6px;"><span class="bold"><?= weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING), we_base_request::STRING); ?></span></td>
-				<td class="weEditmodeStyle" style="width: <?= (200 + 20); ?>px"><?= $yuiSuggest->getHTML(); ?></td>
+				<td class="weEditmodeStyle" style="width: <?= (200 + 20); ?>px"><?= $weSuggest->getHTML(); ?></td>
 				<td class="weEditmodeStyle"><?= $button; ?></td>
 				<td class="weEditmodeStyle"><?= $open; ?></td>
 				<td class="weEditmodeStyle"><?= $delbutton; ?></td>

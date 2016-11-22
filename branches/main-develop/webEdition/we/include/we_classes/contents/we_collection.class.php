@@ -338,7 +338,7 @@ class we_collection extends we_root{
 		$toolbar->setCol(0, 6, ['class' => 'toolbarImport'], $btnImport);
 		$toolbar->setCol(0, 7, ['class' => 'toolbarNum weMultiIconBoxHeadline'], g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
-		$yuiSuggest = &weSuggest::getInstance();
+		$weSuggest = &weSuggest::getInstance();
 
 		$longtext = g_l('weClass', '[collection][long_description]');
 		$ddtext = self::isDragAndDrop() ? g_l('weClass', '[collection][dd_ok]') : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : g_l('weClass', '[collection][dd_nok]'));
@@ -376,12 +376,12 @@ class we_collection extends we_root{
 			]
 		];
 
-		$yuiSuggest = &weSuggest::getInstance();
+		$weSuggest = &weSuggest::getInstance();
 
 		return 'WE().consts.collection = {
 			blankItem : {
-				list : \'' . strtr(self::makeListItem($placeholders, $yuiSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
-				listMinimal : \'' . strtr(self::makeListItemMinimal($placeholders, $yuiSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
+				list : \'' . strtr(self::makeListItem($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
+				listMinimal : \'' . strtr(self::makeListItemMinimal($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
 				grid : \'' . strtr(self::makeGridItem($placeholders), ["'" => "\'", "\r" => '', "\n" => '']) . '\'
 			},
 		};';
@@ -430,25 +430,24 @@ class we_collection extends we_root{
 		return ['doc' => $doc, 'content' => $content, 'gui' => $gui];
 	}
 
-	private static function makeListItem($item, &$yuiSuggest){
+	private static function makeListItem($item, &$weSuggest){
 		$textname = 'we_' . $item['name'] . '_ItemName_' . $item['index'];
 		$idname = 'we_' . $item['name'] . '_ItemID_' . $item['index'];
 
-		$yuiSuggest->setTable($item['remTable']);
-		$yuiSuggest->setContentType('folder,' . $item['remCT']);
-		$yuiSuggest->setCheckFieldValue(false);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setAcId('Item_' . $item['index']);
-		$yuiSuggest->setNoAutoInit(true);
-		$yuiSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
-		$yuiSuggest->setResult($idname, $item['id']);
-		$yuiSuggest->setWidth(240);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit'), 0);
-		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree'), 0);
-		//$yuiSuggest->setOpenButton($editButton, 4);
-		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
+		$weSuggest->setTable($item['remTable']);
+		$weSuggest->setContentType('folder,' . $item['remCT']);
+		$weSuggest->setCheckFieldValue(false);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setAcId('Item_' . $item['index']);
+		$weSuggest->setNoAutoInit(true);
+		$weSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
+		$weSuggest->setResult($idname, $item['id']);
+		$weSuggest->setWidth(240);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit'), 0);
+		$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree'), 0);
+		//$weSuggest->setOpenButton($editButton, 4);
+		$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
 		$btnSelect = we_html_button::create_button(we_html_button::SELECT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnSelect');
 		$btnAdd = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnAdd');
@@ -468,7 +467,7 @@ class we_collection extends we_root{
 		$rowHtml->setCol(0, 1, ['class' => 'colPreview'], $imgDiv);
 
 		$rowInnerTable = new we_html_table(['draggable' => 'false'], 2, 1);
-		$rowInnerTable->setCol(0, 0, ['colspan' => 1], $yuiSuggest->getHTML());
+		$rowInnerTable->setCol(0, 0, ['colspan' => 1], $weSuggest->getHTML());
 
 		$attrTitle = we_html_element::htmlDiv(['class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
 				'title' => ($item['elements']['attrib_title']['Dat'])
@@ -494,24 +493,23 @@ class we_collection extends we_root{
 		);
 	}
 
-	private static function makeListItemMinimal($item, &$yuiSuggest){
+	private static function makeListItemMinimal($item, &$weSuggest){
 		$textname = 'we_' . $item['name'] . '_ItemName_' . $item['index'];
 		$idname = 'we_' . $item['name'] . '_ItemID_' . $item['index'];
-		$yuiSuggest->setTable(addTblPrefix($item['remTable']));
-		$yuiSuggest->setContentType('folder,' . $item['remCT']);
-		$yuiSuggest->setCheckFieldValue(false);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setAcId('Item_' . $item['index']);
-		$yuiSuggest->setNoAutoInit(true);
-		$yuiSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
-		$yuiSuggest->setResult($idname, $item['id']);
-		$yuiSuggest->setWidth(500);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setSelectButton(null, 0);
-		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
-		$yuiSuggest->setAdditionalButton('', 0);
-		$divRowContent = we_html_element::htmlDiv(['class' => 'divContent'], we_html_element::htmlDiv(['class' => 'colContentInput'], $yuiSuggest->getHTML()) .
+		$weSuggest->setTable(addTblPrefix($item['remTable']));
+		$weSuggest->setContentType('folder,' . $item['remCT']);
+		$weSuggest->setCheckFieldValue(false);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setAcId('Item_' . $item['index']);
+		$weSuggest->setNoAutoInit(true);
+		$weSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
+		$weSuggest->setResult($idname, $item['id']);
+		$weSuggest->setWidth(500);
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setSelectButton(null, 0);
+		$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
+		$weSuggest->setAdditionalButton('', 0);
+		$divRowContent = we_html_element::htmlDiv(['class' => 'divContent'], we_html_element::htmlDiv(['class' => 'colContentInput'], $weSuggest->getHTML()) .
 				we_html_element::htmlDiv(['class' => 'colContentTextOnly'])
 		);
 

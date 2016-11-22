@@ -280,7 +280,7 @@ class we_import_files{
 	}
 
 	function _getHtmlPage($body, $js = ""){
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', weSuggest::getYuiFiles() . $js, $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js, $body);
 	}
 
 }

@@ -171,33 +171,14 @@ function we_save_document(nextCmd) {
 	/*if (_EditorFrame.getEditorPublishWhenSave() && doc._showGlossaryCheck) {
 	 we_cmd('glossary_check', '', doc.we_transaction);
 	 } else */{
-		acStatus = '';
-		invalidAcFields = false;
-		try {
-			if (parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
-				acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
-			}
-		} catch (e) {
-			// Nothing
-		}
-		acStatusType = typeof acStatus;
-		if (parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length > 0) {
-			for (i = 0; i < parent.weAutoCompetionFields.length; i++) {
-				if (parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
-					invalidAcFields = true;
-					break;
-				}
-			}
-		}
+		var acStatus = WE().layout.weSuggest.checkRequired(parent.frames[1]);
+
 		if (countSaveLoop > 10) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
-		} else if (acStatusType.toLowerCase() === 'object' && acStatus.running) {
+		} else if (acStatus.running) {
 			countSaveLoop++;
 			setTimeout(we_save_document, 100, nextCmd);
-		} else if (invalidAcFields) {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
 			if (doc.weCanSave) {

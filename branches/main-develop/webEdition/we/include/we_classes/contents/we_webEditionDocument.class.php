@@ -220,7 +220,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function formTemplateWindow(){
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
@@ -237,21 +237,18 @@ class we_webEditionDocument extends we_textContentDocument{
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
-		$yuiSuggest->setAcId('Template');
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-		$yuiSuggest->setInput($textname, $path);
-		$yuiSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschrift . "</span>");
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(0);
-		$yuiSuggest->setSelectButton($button);
-		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
-		$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')){ top.we_cmd('reload_editpage')}");
-		//$yuiSuggest->setIsDropFromTree(true);// deactivated
-		return $yuiSuggest->getHTML();
+		$weSuggest->setAcId('Template');
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+		$weSuggest->setInput($textname, $path);
+		$weSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschrift . "</span>");
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setResult($idname, $myid);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setTable($table);
+		$weSuggest->setWidth(0);
+		$weSuggest->setSelectButton($button);
+		//$weSuggest->setIsDropFromTree(true);// deactivated
+		return $weSuggest->getHTML();
 	}
 
 	// creates the Template PopupMenue

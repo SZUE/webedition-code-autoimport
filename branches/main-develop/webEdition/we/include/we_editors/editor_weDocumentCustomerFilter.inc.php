@@ -46,7 +46,6 @@ $parts[] = ['headline' => g_l('modules_customer', '[one_customer]'),
 
 
 echo we_html_tools::getHtmlTop() .
- weSuggest::getYuiFiles();
 require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
  we_class::hiddenTrans() .
@@ -79,20 +78,19 @@ function formWebuser($canChange){
 
 
 
-	$yuiSuggest = & weSuggest::getInstance();
-	$yuiSuggest->setAcId("Customer");
-	$yuiSuggest->setContentType("");
-	$yuiSuggest->setInput($textname, $webuser, '', '', 1);
-	$yuiSuggest->setLabel(g_l('modules_customer', '[connected_with_customer]'));
-	$yuiSuggest->setMaxResults(20);
-	$yuiSuggest->setMayBeEmpty(true);
-	$yuiSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
-	$yuiSuggest->setSelector(weSuggest::DocSelector);
-	$yuiSuggest->setWidth(434);
-	$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');"));
-	$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit_ifthere', document.we_form.elements['yuiAcResultCustomer'].value);"));
-	$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);"));
-	$yuiSuggest->setTable(CUSTOMER_TABLE);
+	$weSuggest = & weSuggest::getInstance();
+	$weSuggest->setAcId("Customer");
+	$weSuggest->setContentType("");
+	$weSuggest->setInput($textname, $webuser, [], false, true);
+	$weSuggest->setLabel(g_l('modules_customer', '[connected_with_customer]'));
+	$weSuggest->setMaxResults(20);
+	$weSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
+	$weSuggest->setSelector(weSuggest::DocSelector);
+	$weSuggest->setWidth(434);
+	$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');"));
+	$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit_ifthere', document.we_form.elements['yuiAcResultCustomer'].value);"));
+	$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);"));
+	$weSuggest->setTable(CUSTOMER_TABLE);
 
-	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+	return $weSuggest->getHTML();
 }

@@ -1097,20 +1097,20 @@ class we_object extends we_document{
 		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
-		  $yuiSuggest =& weSuggest::getInstance();
-		  $yuiSuggest->setAcId("TypeObject");
-		  $yuiSuggest->setContentType("folder,objectFile");
-		  $yuiSuggest->setInput($textname,$path);
-		  $yuiSuggest->setMaxResults(20);
-		  $yuiSuggest->setMayBeEmpty(false);
-		  $yuiSuggest->setResult($idname,$myid);
-		  $yuiSuggest->setSelector(weSuggest::DocSelector);
-		  $yuiSuggest->setTable($table);
-		  $yuiSuggest->setWidth(246);
-		  $yuiSuggest->setSelectButton($button,10);
-		  $yuiSuggest->setTrashButton($delbutton,5);
+		  $weSuggest =& weSuggest::getInstance();
+		  $weSuggest->setAcId("TypeObject");
+		  $weSuggest->setContentType("folder,objectFile");
+		  $weSuggest->setInput($textname,$path);
+		  $weSuggest->setMaxResults(20);
+		  $weSuggest->setRequired(true);
+		  $weSuggest->setResult($idname,$myid);
+		  $weSuggest->setSelector(weSuggest::DocSelector);
+		  $weSuggest->setTable($table);
+		  $weSuggest->setWidth(246);
+		  $weSuggest->setSelectButton($button,10);
+		  $weSuggest->setTrashButton($delbutton,5);
 
-		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
+		  return $weSuggest->getHTML();
 		 */
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), $button, $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}
@@ -1133,20 +1133,20 @@ class we_object extends we_document{
 
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht...
-		  $yuiSuggest =& weSuggest::getInstance();
-		  $yuiSuggest->setAcId("TypeObject");
-		  $yuiSuggest->setContentType("folder,objectFile");
-		  $yuiSuggest->setInput($textname,$path);
-		  $yuiSuggest->setMaxResults(20);
-		  $yuiSuggest->setMayBeEmpty(false);
-		  $yuiSuggest->setResult($idname,$myid);
-		  $yuiSuggest->setSelector(weSuggest::DocSelector);
-		  $yuiSuggest->setTable($table);
-		  $yuiSuggest->setWidth(246);
-		  $yuiSuggest->setSelectButton($btnSelect,10);
-		  $yuiSuggest->setTrashButton($btnDelete,5);
+		  $weSuggest =& weSuggest::getInstance();
+		  $weSuggest->setAcId("TypeObject");
+		  $weSuggest->setContentType("folder,objectFile");
+		  $weSuggest->setInput($textname,$path);
+		  $weSuggest->setMaxResults(20);
+		  $weSuggest->setRequired(true);
+		  $weSuggest->setResult($idname,$myid);
+		  $weSuggest->setSelector(weSuggest::DocSelector);
+		  $weSuggest->setTable($table);
+		  $weSuggest->setWidth(246);
+		  $weSuggest->setSelectButton($btnSelect,10);
+		  $weSuggest->setTrashButton($btnDelete,5);
 
-		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
+		  return $weSuggest->getHTML();
 		 */
 		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnDelete;
 

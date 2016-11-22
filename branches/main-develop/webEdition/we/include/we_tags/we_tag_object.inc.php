@@ -80,21 +80,20 @@ function we_tag_object(array $attribs){
 			$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
-			$yuiSuggest = &weSuggest::getInstance();
-			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
-			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
-			$yuiSuggest->setInput($textname, $path);
-			$yuiSuggest->setResult($idname, $we_oid);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(1);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-			$yuiSuggest->setWidth($size);
+			$weSuggest = &weSuggest::getInstance();
+			$weSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
+			$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+			$weSuggest->setInput($textname, $path);
+			$weSuggest->setResult($idname, $we_oid);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setTable(OBJECT_FILES_TABLE);
+			$weSuggest->setWidth($size);
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="padding:0 6px;"><span class="bold"><?= weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING), we_base_request::STRING); ?></span></td>
-					<td class="weEditmodeStyle" style="width: <?= ($size + 20); ?>px"><?= $yuiSuggest->getHTML(); ?></td>
+					<td class="weEditmodeStyle" style="width: <?= ($size + 20); ?>px"><?= $weSuggest->getHTML(); ?></td>
 					<td class="weEditmodeStyle"><?= $button; ?></td>
 					<td class="weEditmodeStyle"><?= $open; ?></td>
 					<td class="weEditmodeStyle"><?= $delbutton; ?></td>

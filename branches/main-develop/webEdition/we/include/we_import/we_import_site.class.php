@@ -429,19 +429,19 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, '', '', 0);
 
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("DirPath");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput("toPath", id_to_path($this->to));
-		$yuiSuggest->setLabel(g_l('siteimport', '[importTo]'));
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setResult("to", $this->to);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($to_button, 10);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("DirPath");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput("toPath", id_to_path($this->to));
+		$weSuggest->setLabel(g_l('siteimport', '[importTo]'));
+		$weSuggest->setMaxResults(10);
+		$weSuggest->setRequired(true);
+		$weSuggest->setResult("to", $this->to);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($to_button, 10);
 
-		$importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+		$importTo = $weSuggest->getHTML();
 
 		// Checkboxes
 		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
@@ -748,19 +748,18 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','templateParentID','templateDirName','','')");
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("TplPath");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput('templateDirName', $path);
-		$yuiSuggest->setResult('templateParentID', 0);
-		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setWidth(320);
-		$yuiSuggest->setTable(TEMPLATES_TABLE);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setSelectButton($button);
-		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId("TplPath");
+		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+		$weSuggest->setInput('templateDirName', $path);
+		$weSuggest->setResult('templateParentID', 0);
+		$weSuggest->setLabel(g_l('weClass', '[dir]'));
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setWidth(320);
+		$weSuggest->setTable(TEMPLATES_TABLE);
+		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelectButton($button);
+		$dirChooser = $weSuggest->getHTML();
 
 		/*
 

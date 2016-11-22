@@ -356,8 +356,7 @@ if($ok){
 	}
 }
 
-echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset'), '', weSuggest::getYuiFiles() .
-	we_html_element::jsScript(JS_DIR . 'linklistedit.js', '', ['id' => 'loadVarLinklistedit', 'data-linklist' => setDynamicVar([
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset'), '', we_html_element::jsScript(JS_DIR . 'linklistedit.js', '', ['id' => 'loadVarLinklistedit', 'data-linklist' => setDynamicVar([
 			'ok' => $ok,
 			'cmd' => $cmd,
 			'trans' => $trans,
@@ -388,33 +387,31 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 
 		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.id.value,'" . FILE_TABLE . "','id','href_int','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
-		$yuiSuggest->setInput('href_int', $href_int);
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('id', $id);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($but, 10);
+		$weSuggest = & weSuggest::getInstance();
+		$weSuggest->setAcId('Doc');
+		$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
+		$weSuggest->setInput('href_int', $href_int);
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult('id', $id);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($but, 10);
 
-		$intLink = $yuiSuggest->getHTML();
+		$intLink = $weSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
-			$yuiSuggest->setAcId("Obj");
-			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
-			$yuiSuggest->setInput("href_obj", $href_obj);
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult("obj_id", $obj_id);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-			$yuiSuggest->setWidth(300);
-			$yuiSuggest->setSelectButton($but, 10);
+			$weSuggest->setAcId("Obj");
+			$weSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
+			$weSuggest->setInput("href_obj", $href_obj);
+			$weSuggest->setMaxResults(20);
+			$weSuggest->setResult("obj_id", $obj_id);
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setTable(OBJECT_FILES_TABLE);
+			$weSuggest->setWidth(300);
+			$weSuggest->setSelectButton($but, 10);
 
-			$objLink = $yuiSuggest->getHTML();
+			$objLink = $weSuggest->getHTML();
 		}
 
 		//added for #7269
@@ -484,17 +481,16 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 
 		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements.img_id.value,'" . FILE_TABLE . "','id','src_int','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$yuiSuggest->setAcId("Image");
-		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
-		$yuiSuggest->setInput("src_int", $src_int);
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('img_id', $img_id);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($but, 10);
+		$weSuggest->setAcId("Image");
+		$weSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
+		$weSuggest->setInput("src_int", $src_int);
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult('img_id', $img_id);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(300);
+		$weSuggest->setSelectButton($but, 10);
 
-		$intImg = $yuiSuggest->getHTML();
+		$intImg = $weSuggest->getHTML();
 		$imgProps = '
 <table class="default" style="width:100%">
 	<tr>
@@ -651,8 +647,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
 				]) .
-			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
-			$yuiSuggest->getYuiJs();
+			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'));
 			?>
 		</form>
 		<?php

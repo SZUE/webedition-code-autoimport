@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
@@ -37,9 +37,5 @@ echo we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCo
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
-	<?=
-	weSuggest::getYuiFiles() .
-	$yuiSuggest->getYuiJs();
-	?>
 </body>
 </html>

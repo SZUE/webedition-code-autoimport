@@ -202,19 +202,19 @@ class we_schedpro{
 
 				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $GLOBALS['we_doc']->Table . "','" . $idname . "','" . $textname . "','setHot',''," . $rootDirID . ")");
 
-				$yuiSuggest = & weSuggest::getInstance();
-				$yuiSuggest->setAcId('WsDir');
-				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-				$yuiSuggest->setInput($textname, $path);
-				$yuiSuggest->setMaxResults(20);
-				$yuiSuggest->setMayBeEmpty(0);
-				$yuiSuggest->setResult($idname, $myid);
-				$yuiSuggest->setSelector(weSuggest::DirSelector);
-				$yuiSuggest->setTable(FILE_TABLE);
-				$yuiSuggest->setWidth(320);
-				$yuiSuggest->setSelectButton($button);
+				$weSuggest = & weSuggest::getInstance();
+				$weSuggest->setAcId('WsDir');
+				$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+				$weSuggest->setInput($textname, $path);
+				$weSuggest->setMaxResults(20);
+				$weSuggest->setRequired(true);
+				$weSuggest->setResult($idname, $myid);
+				$weSuggest->setSelector(weSuggest::DirSelector);
+				$weSuggest->setTable(FILE_TABLE);
+				$weSuggest->setWidth(320);
+				$weSuggest->setSelectButton($button);
 
-				$extracont = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+				$extracont = $weSuggest->getHTML();
 				$extraheadl = g_l('modules_schedule', '[dirctory]');
 		}
 

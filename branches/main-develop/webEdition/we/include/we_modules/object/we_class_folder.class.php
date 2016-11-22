@@ -525,7 +525,7 @@ class we_class_folder extends we_folder{
 
 	function getSearchresult($content, $headline, $javascriptAll){
 		$foundItems = $this->searchclass->maxItems;
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		$values = [10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000];
 
@@ -647,10 +647,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 </table>
-</form>
-		' .
-			weSuggest::getYuiFiles() .
-			$yuiSuggest->getYuiJs();
+</form>';
 	}
 
 	function getSearchJS(){

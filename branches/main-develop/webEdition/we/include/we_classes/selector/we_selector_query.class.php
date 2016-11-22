@@ -101,9 +101,9 @@ class we_selector_query{
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
-		$where = 'Path="' . $this->db->escape($search) . '"'.
-			($q ? ' AND (' . implode(' OR ', $q) . ')' : '').
-			($userExtraSQL ? : '');
+		$where = 'Path="' . $this->db->escape($search) . '"' .
+			($q ? ' AND (' . implode(' OR ', $q) . ')' : '') .
+			($userExtraSQL ?: '');
 
 		if($this->condition){
 			foreach($this->condition as $val){
@@ -128,7 +128,7 @@ class we_selector_query{
 	 *
 	 * @return void
 	 */
-	function search($search, $table, array $types, $limit = null, $rootDir = ""){
+	function search($search, $table, array $types, $limit = 0, $rootDir = ""){
 		$search = strtr($search, ["[" => "\\\[", "]" => "\\\]"]);
 		$userExtraSQL = $this->getUserExtraQuery($table);
 		switch($table){
@@ -150,11 +150,11 @@ class we_selector_query{
 
 		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
 		$where = ($rootOnly ?
-				'Path LIKE "' . $rootDir . '"' :
-				'Path REGEXP "^' . preg_quote(preg_quote($search)) . '[^/]*$"' . (
-				($rootDir) ?
-					' AND (Path LIKE "' . $this->db->escape($rootDir) . '" OR Path LIKE "' . $this->db->escape($rootDir) . '%")' :
-					''));
+			'Path LIKE "' . $rootDir . '"' :
+			'Path REGEXP "^' . preg_quote(preg_quote($search)) . '[^/]*$"' . (
+			($rootDir) ?
+			' AND (Path LIKE "' . $this->db->escape($rootDir) . '" OR Path LIKE "' . $this->db->escape($rootDir) . '%")' :
+			''));
 
 		$isFolder = 0;
 		$addCT = 0;
@@ -172,7 +172,7 @@ class we_selector_query{
 				$addCT = 1;
 			}
 		}
-		$where.=($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
+		$where .= ($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
 		if(!$q){
 			$isFolder = 1;
 		}
@@ -192,7 +192,7 @@ class we_selector_query{
 			}
 		}
 		if(defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE){
-			$where.=we_navigation_navigation::getWSQuery();
+			$where .= we_navigation_navigation::getWSQuery();
 		}
 		//FIXME: what about other workspacequeries?!
 		$this->db->query('SELECT ' . implode(', ', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
@@ -212,22 +212,15 @@ class we_selector_query{
 			$this->addQueryField('ContentType');
 		}
 
-		$this->addQueryField("Text");
-		$this->addQueryField("ParentID");
+		$this->addQueryField('Text');
+		$this->addQueryField('ParentID');
 
 		// deal with contenttypes
-		$ctntQuery = ' OR ( 0 ';
-		if($types){
-			foreach($types as $type){
-				$ctntQuery .= ' OR ContentType= "' . $type . '"';
-			}
-		}
-		$ctntQuery .= ' ) ';
 		if($table == CATEGORY_TABLE){
-			$ctntQuery = '';
+			$types = [];
 		}
 
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID=' . intval($id) . ' AND (IsFolder=1 ' . $ctntQuery . ' ) ' .
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID=' . intval($id) . ' AND (IsFolder=1 ' . ($ctntQuery ? ' OR ContentType IN ("' . implode('","', $types) . '")' : '') . ' ) ' .
 			$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
@@ -247,10 +240,10 @@ class we_selector_query{
 		}
 
 		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
-				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
+			($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
-		$this->addQueryField("Text");
-		$this->addQueryField("ParentID");
+		$this->addQueryField('Text');
+		$this->addQueryField('ParentID');
 		if(is_array($fields)){
 			foreach($fields as $val){
 				$this->addQueryField($val);
@@ -269,8 +262,8 @@ class we_selector_query{
 	function getItemByPath($path, $table, $fields = ""){
 		$userExtraSQL = $this->getUserExtraQuery($table);
 
-		$this->addQueryField("Text");
-		$this->addQueryField("ParentID");
+		$this->addQueryField('Text');
+		$this->addQueryField('ParentID');
 		if(is_array($fields)){
 			foreach($fields as $val){
 				$this->addQueryField($val);
@@ -286,15 +279,7 @@ class we_selector_query{
 	 * @return Array
 	 */
 	function getResult(){
-		$i = 0;
-		$result = [];
-		while($this->db->next_record()){
-			foreach($this->fields as $val){
-				$result[$i][$val] = htmlspecialchars_decode($this->db->f($val));
-			}
-			$i++;
-		}
-		return $result;
+		return $this->db->getAll();
 	}
 
 	/**
@@ -308,32 +293,17 @@ class we_selector_query{
 	}
 
 	/**
-	 * delQueryField
-	 * Entfernt den �bergebenen String von der Liste der gesuchten Felder.
-	 * @param field
-	 * @return void
-	 */
-	function delQueryField($field){
-		foreach($this->fields as $key => $val){
-			if($val == $field){
-				unset($this->fields[$key]);
-			}
-		}
-	}
-
-	/**
 	 * addCondition
 	 * F�gt die �bergeben Abfragebedingung hinzu.
 	 * @param array $condition
 	 */
-	function addCondition($condition){
-		if(is_array($condition)){
-			$arrayIndex = count($this->condition);
-			$this->condition[$arrayIndex]['queryOperator'] = $condition[0];
-			$this->condition[$arrayIndex]['conditionOperator'] = $condition[1];
-			$this->condition[$arrayIndex]['field'] = $condition[2];
-			$this->condition[$arrayIndex]['value'] = $condition[3];
-		}
+	function addCondition($qop, $op, $field, $value){
+		$this->condition[] = [
+			'queryOperator' => $qop,
+			'conditionOperator' => $op,
+			'field' => $field,
+			'value' => $value
+		];
 	}
 
 	/**
@@ -366,7 +336,7 @@ class we_selector_query{
 				case USER_TABLE:
 					break;
 				default:
-					$userExtraSQL.=' OR RestrictOwners=0 ';
+					$userExtraSQL .= ' OR RestrictOwners=0 ';
 			}
 		}
 		return $userExtraSQL . ')';

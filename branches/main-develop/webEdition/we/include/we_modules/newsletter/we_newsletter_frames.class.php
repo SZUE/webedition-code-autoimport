@@ -767,18 +767,17 @@ class we_newsletter_frames extends we_modules_frame{
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "','','" . $open_doc . "')");
 		if(is_object($acObject)){
 
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-			$yuiSuggest->setInput($Pathname, $Pathvalue);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable($table);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();
+			$weSuggest = $acObject;
+			$weSuggest->setAcId($IDName);
+			$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+			$weSuggest->setInput($Pathname, $Pathvalue);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult($IDName, $IDValue);
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setTable($table);
+			$weSuggest->setWidth($width);
+			$weSuggest->setSelectButton($button);
+			return $weSuggest->getHTML();
 		}
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=true; readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
 	}
@@ -788,19 +787,18 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
+			$weSuggest = $acObject;
+			$weSuggest->setAcId($IDName);
+			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 				we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-			$yuiSuggest->setInput($Pathname, $Pathvalue);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable($table);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();
+			$weSuggest->setInput($Pathname, $Pathvalue);
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult($IDName, $IDValue);
+			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setTable($table);
+			$weSuggest->setWidth($width);
+			$weSuggest->setSelectButton($button);
+			return $weSuggest->getHTML();
 		}
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=true; readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button);
 	}
@@ -961,19 +959,18 @@ window.onload=extraInit;');
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.we_form.elements['" . $IDName . "'].value,'" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "')");
 		if(is_object($acObject)){
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId('PathGroup');
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(NEWSLETTER_TABLE);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
+			$weSuggest = $acObject;
+			$weSuggest->setAcId('PathGroup');
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$weSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
+			$weSuggest->setMaxResults(10);
+			$weSuggest->setResult($IDName, $IDValue);
+			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setTable(NEWSLETTER_TABLE);
+			$weSuggest->setWidth($width);
+			$weSuggest->setSelectButton($button);
 
-			return $yuiSuggest->getHTML();
+			return $weSuggest->getHTML();
 		}
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly="readonly" id="yuiAcInputPathGroup"', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), $button
 		);
@@ -1041,16 +1038,14 @@ window.onload=extraInit;');
 
 		switch($this->View->page){
 			case 0:
-				$out .= weSuggest::getYuiFiles() .
-					we_html_element::htmlHiddens(['home' => 0, "fromPage" => 0]);
+				$out .= we_html_element::htmlHiddens(['home' => 0, "fromPage" => 0]);
 
 				if($this->View->newsletter->IsFolder == 0){
 					$out .= $this->View->getHiddensMailingPage() .
 						$this->View->getHiddensContentPage();
 				}
 
-				$out .= $this->getHTMLNewsletterHeader() .
-					$this->weAutoCompleter->getYuiJs();
+				$out .= $this->getHTMLNewsletterHeader();
 				break;
 			case 1:
 				$out .= $this->View->getHiddensPropertyPage() .
@@ -1059,22 +1054,18 @@ window.onload=extraInit;');
 					$this->getHTMLNewsletterGroups();
 				break;
 			case 2:
-				$out .= weSuggest::getYuiFiles() .
-					JQUERY .
+				$out .= JQUERY .
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensPropertyPage() .
 					we_html_element::htmlHiddens(["fromPage" => 2, "blockid" => 0]) .
-					$this->getHTMLNewsletterBlocks() .
-					$this->weAutoCompleter->getYuiJs();
+					$this->getHTMLNewsletterBlocks();
 				break;
 			default:
-				$out .= weSuggest::getYuiFiles() .
-					$this->View->getHiddensPropertyPage() .
+				$out .= $this->View->getHiddensPropertyPage() .
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensContentPage() .
 					we_html_element::htmlHiddens(["fromPage" => 3, "blockid" => 0]) .
-					we_html_multiIconBox::getHTML('', $this->getHTMLReporting(), 30) .
-					$this->weAutoCompleter->getYuiJs();
+					we_html_multiIconBox::getHTML('', $this->getHTMLReporting(), 30);
 		}
 
 		$body = we_html_element::htmlBody(["onload" => "self.loaded=true;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"], we_html_element::htmlForm([

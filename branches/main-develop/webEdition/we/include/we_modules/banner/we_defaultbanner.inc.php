@@ -32,30 +32,29 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
 	exit();
 }
-$yuiSuggest = & weSuggest::getInstance();
+$weSuggest = & weSuggest::getInstance();
 
 function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $idname = ''){
-	$yuiSuggest = & weSuggest::getInstance();
+	$weSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
 	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')");
 
-	$yuiSuggest->setAcId("Path");
-	$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-	$yuiSuggest->setInput($textname, $path);
-	$yuiSuggest->setMaxResults(10);
-	$yuiSuggest->setMayBeEmpty(false);
-	$yuiSuggest->setResult($idname, $idvalue);
-	$yuiSuggest->setSelector(weSuggest::DirSelector);
-	$yuiSuggest->setTable($table);
-	$yuiSuggest->setWidth($width);
-	$yuiSuggest->setSelectButton($button);
+	$weSuggest->setAcId("Path");
+	$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
+	$weSuggest->setInput($textname, $path);
+	$weSuggest->setMaxResults(10);
+	$weSuggest->setRequired(true);
+	$weSuggest->setResult($idname, $idvalue);
+	$weSuggest->setSelector(weSuggest::DirSelector);
+	$weSuggest->setTable($table);
+	$weSuggest->setWidth($width);
+	$weSuggest->setSelectButton($button);
 
-	return $yuiSuggest->getHTML();
+	return $weSuggest->getHTML();
 }
 
-echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/we_defaultbanner.js', 'self.focus();') .
- weSuggest::getYuiFiles();
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/we_defaultbanner.js', 'self.focus();');
 ?>
 </head>
 <body class="weDialogBody" onunload="doUnload()">
@@ -70,6 +69,5 @@ $yes_button = we_html_button::create_button(we_html_button::SAVE, "javascript:we
 		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, 175);
 		?>
 	</form>
-	<?= $yuiSuggest->getYuiJs(); ?>
 </body>
 </html>

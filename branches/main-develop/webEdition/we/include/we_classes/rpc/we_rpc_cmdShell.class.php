@@ -72,7 +72,7 @@ class we_rpc_cmdShell{
 	}
 
 	function getView($cmd){
-		$classname = 'rpc' . $cmd["view"] . 'View';
+		$classname = 'rpc' . $cmd['view'] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
 		$viewfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?

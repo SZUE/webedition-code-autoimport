@@ -47,7 +47,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	function getAccessControlHTML(){
 		$filter = $this->getFilter();
 
-		$yuiSuggest = & weSuggest::getInstance();
+		$weSuggest = & weSuggest::getInstance();
 
 		/*		 * ** AUTOSELECTOR FOR ErrorDocument, Customer is not logged in *** */
 		$id_selectorNoLoginId = $filter->getErrorDocNoLogin();
@@ -61,18 +61,17 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
 		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $selectorNoLoginId . "','" . $selectorNoLoginText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
-		$yuiSuggest->setAcId("NoLogin");
-		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
-		$yuiSuggest->setInput($selectorNoLoginText, $path_selectorNoLoginId);
-		$yuiSuggest->setLabel(g_l('modules_customerFilter', '[documentNoLogin]'));
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($selectorNoLoginId, $id_selectorNoLoginId);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(409);
-		$yuiSuggest->setSelectButton($selectorNoLoginButton);
+		$weSuggest->setAcId("NoLogin");
+		$weSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
+		$weSuggest->setInput($selectorNoLoginText, $path_selectorNoLoginId);
+		$weSuggest->setLabel(g_l('modules_customerFilter', '[documentNoLogin]'));
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult($selectorNoLoginId, $id_selectorNoLoginId);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(409);
+		$weSuggest->setSelectButton($selectorNoLoginButton);
 
-		$weAcSelector = $yuiSuggest->getHTML();
+		$weAcSelector = $weSuggest->getHTML();
 
 		/*		 * ** AUTOSELECTOR FOR ErrorDocument, Customer might be logged in, but has no access *** */
 		$id_selectorNoAccessId = $filter->getErrorDocNoAccess();
@@ -86,18 +85,17 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		//$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
 		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $selectorNoAccessId . "','" . $selectorNoAccessText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
-		$yuiSuggest->setAcId("NoAccess");
-		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
-		$yuiSuggest->setInput($selectorNoAccessText, $path_selectorNoAccessId);
-		$yuiSuggest->setLabel(g_l('modules_customerFilter', '[documentNoAccess]'));
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($selectorNoAccessId, $id_selectorNoAccessId);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(409);
-		$yuiSuggest->setSelectButton($selectorNoAccessButton);
+		$weSuggest->setAcId("NoAccess");
+		$weSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
+		$weSuggest->setInput($selectorNoAccessText, $path_selectorNoAccessId);
+		$weSuggest->setLabel(g_l('modules_customerFilter', '[documentNoAccess]'));
+		$weSuggest->setMaxResults(20);
+		$weSuggest->setResult($selectorNoAccessId, $id_selectorNoAccessId);
+		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setWidth(409);
+		$weSuggest->setSelectButton($selectorNoAccessButton);
 
-		$weAcSelector2 = $yuiSuggest->getHTML();
+		$weAcSelector2 = $weSuggest->getHTML();
 
 		$accesControl = '<div class="weMultiIconBoxHeadline">' .
 			g_l('modules_customerFilter', '[accessControl]') . '</div>' .
@@ -109,8 +107,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 
 
-		return weSuggest::getYuiFiles() .
-			$this->getDiv($accesControl, 'accessControlDiv', $filter->getMode() !== we_customer_abstractFilter::OFF, 0);
+		return $this->getDiv($accesControl, 'accessControlDiv', $filter->getMode() !== we_customer_abstractFilter::OFF, 0);
 	}
 
 	/**

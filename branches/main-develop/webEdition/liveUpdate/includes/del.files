@@ -699,6 +699,7 @@ stay_alive.php
 showDoc.php
 rpc/views/text/rpcSelectorGetSelectedIdView.class.php
 rpc/views/json/widgets/rpcGetRssView.class.php
+rpc/views/json/rpcSelectorSuggestView.class.php
 rpc/views/json/rpcSelectorGetSelectedIdView.class.php
 rpc/views/json/rpcHelloView.class.php
 rpc/views/json/rpcGetNaviItemsView.class.php
@@ -734,6 +735,8 @@ lib/we/ui/layout/NoteDiv.js
 lib/we/ui/dialog/OkCancelDialog.js
 lib/we/ui/controls/WeWysiwygEditorWindow.php
 lib/we/ui/controls/JavaMenu.jar
+lib/we/ui/controls/ACFileSelector.php
+lib/we/ui/controls/ACFileSelector.js
 lib/we/net/Http.php
 lib/we/net/Community.php
 lib/we/License.txt
@@ -788,6 +791,7 @@ js/we_colors.js
 js/weValidate.js
 js/weTinyMceFunctions.js
 js/weTinyMceDialogs.js
+js/weSuggest.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
@@ -1030,6 +1034,7 @@ css/wysiwyg/tinymce/tinyDialogCss_mac.scss
 css/wysiwyg/tinymce/tinyDialogCss_mac.css
 css/wysiwyg/tinymce/contentCssLast.php
 css/we_tab_modules.css
+css/weSuggest.scss
 css/mozillamenu.php
 css/menu/pro_drop_safari.css
 css/menu/pro_drop_mac.css
@@ -1121,7 +1126,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/samples
 !lib/phpMailer/language
 !lib/phpMailer
-!lib/additional/yui/treeview
+!lib/additional/yui
 !lib/additional/tinymce/plugins/table
 !lib/additional/tinymce/plugins/paste
 !lib/additional/jscalendar
