@@ -600,6 +600,14 @@ td.boxHeader{
 			color: #386aab;
 		}
 	}
+	div.mark{
+		display:none;
+		color:red;
+		i.modified{
+			vertical-align:super;
+			font-size:xx-small;
+		}
+	}
 }
 
 #cmdDiv{

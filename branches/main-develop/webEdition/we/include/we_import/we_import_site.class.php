@@ -422,7 +422,6 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', '', '', '', 0);
 
 		// Destination Directory
-		$to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','to','toPath','','','0')");
 
 		//$hidden = we_html_element::htmlHidden("to",$this->to);
 		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),'','readonly="readonly"',"text",300);
@@ -439,7 +438,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$weSuggest->setResult("to", $this->to);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setWidth(300);
-		$weSuggest->setSelectButton($to_button, 10);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','to','toPath','','','0')"));
 
 		$importTo = $weSuggest->getHTML();
 
@@ -746,7 +745,6 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','templateParentID','templateDirName','','')");
 
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId("TplPath");
@@ -758,7 +756,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$weSuggest->setWidth(320);
 		$weSuggest->setTable(TEMPLATES_TABLE);
 		$weSuggest->setSelector(weSuggest::DirSelector);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','templateParentID','templateDirName','','')"));
 		$dirChooser = $weSuggest->getHTML();
 
 		/*

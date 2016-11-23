@@ -293,8 +293,6 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * longdesc file chooser
 			 */
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-			$but2 = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('dialog_emptyLongdesc');");
 
 			$weSuggest->setAcId("Longdesc");
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -305,8 +303,8 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setWidth(315);
-			$weSuggest->setSelectButton($but);
-			$weSuggest->setTrashButton($but2);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('dialog_emptyLongdesc');"));
 			$weSuggest->setAdditionalButton('');
 
 			$longdesc = $weSuggest->getHTML();

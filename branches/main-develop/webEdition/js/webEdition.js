@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO, errorHandler */
+/* global WE, top, errorHandler */
 
 /**
  * webEdition CMS
@@ -263,12 +263,15 @@ var WebEdition = {
 					WE().layout.openToEdit(table, id, type);
 				}
 			},
-			checkRequired: function (win) {
+			checkRequired: function (win, id) {
 				var isValid = true;
-				win.$('.weSuggest').each(function () {
-					if (!this.getAttribute("disbled") && (
+				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
+					if (
+						!this.getAttribute("disbled") && (
 						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-						!parseInt(this.result.value) && this.getAttribute("required") //a required field has no value
+						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+						this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
 						)
 						) {
 						this.classList.add("weMarkInputError");
@@ -1535,6 +1538,9 @@ var we_cmd_modules = {
 				break;
 			case "setHot":
 				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+				break;
+			case "unsetHot":
+				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(false);
 				break;
 			case 'setCreateTemplate':
 				document.we_form.CreateTemplate.checked = true;

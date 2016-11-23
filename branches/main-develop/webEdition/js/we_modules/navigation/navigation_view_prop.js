@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -107,9 +107,6 @@ function we_cmd() {
 		case "rebuildNavi":
 			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
 			break;
-		case "setHot":
-			top.content.mark();
-			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
@@ -162,14 +159,14 @@ function closeAllStats() {
 }
 
 function putTitleField(field) {
-	top.content.mark();
+	we_cmd("setHot");
 	document.we_form.TitleField.value = field;
 	document.we_form.__TitleField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
 	document.we_form.__TitleField.classList.remove('weMarkInputError');
 }
 
 function putSortField(field) {
-	top.content.mark();
+	we_cmd("setHot");
 	document.we_form.SortField.value = field;
 	document.we_form.__SortField.value = document.we_form.DynamicSelection.value === "doctype" ? field : field.substring(field.indexOf("_") + 1, field.length);
 	document.we_form.__SortField.classList.remove('weMarkInputError');
@@ -277,7 +274,7 @@ function submitForm(target, action, method) {
 }
 
 function clearFields() {
-	top.content.mark();
+	we_cmd("setHot");
 	var st = document.we_form.DynamicSelection;
 	if (st.selectedIndex > -1) {
 		removeAllCats();

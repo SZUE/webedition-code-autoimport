@@ -148,13 +148,13 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + doc.docName + "_ParentID"])) {
 		var parentid = _elem.value;
 		if (parentid !== doc.oldparentid) {
-			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion','cns=customer&folderId=' + parentid + '&we_transaction=' + doc.we_transaction + '&table=' + doc.docTable + '&classname=' + doc.docClass, function (weResponse) {
+			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion', 'cns=customer&folderId=' + parentid + '&we_transaction=' + doc.we_transaction + '&table=' + doc.docTable + '&classname=' + doc.docClass, function (weResponse) {
 				if (weResponse) {
-							if (weResponse.DataArray.data === true) {
-								_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
-								WE().util.showConfirm(window, "", _question, ["customer_applyWeDocumentCustomerFilterFromFolder"]);
-							}
-						}
+					if (weResponse.DataArray.data === true) {
+						_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
+						WE().util.showConfirm(window, "", _question, ["customer_applyWeDocumentCustomerFilterFromFolder"]);
+					}
+				}
 			});
 			doc.oldparentid = parentid;
 		}
@@ -286,7 +286,7 @@ function we_cmd() {
 			document.we_form.elements[args[2]].value = '-1';
 			document.we_form.elements[args[3]].value = '';
 			we_cmd('setHot');
-			YAHOO.autocoml.setValidById(args[4]);
+			WE().layout.weSuggest.checkRequired(window, args[4]);
 			break;
 		case "image_resize":
 			if (WE().consts.graphic.gdSupportedTypes[doc.gdType]) {
@@ -346,26 +346,26 @@ function we_cmd() {
 			break;
 		case 'tag_weHref_selectorCallback':
 			_EditorFrame.setEditorIsHot(true);
-			if(args[3] === WE().consts.linkPrefix.TYPE_ALL){
+			if (args[3] === WE().consts.linkPrefix.TYPE_ALL) {
 				this.document.we_form.elements[args[4]][(args[2] === WE().consts.linkPrefix.TYPE_INT ? 0 : 1)].checked = true;
 			}
-			if(args[5]){
+			if (args[5]) {
 				this.setScrollTo();
 				top.we_cmd('reload_editpage');
 			}
 			break;
 		case 'tag_weHref_openDocument':
 			var value;
-			if(value = this.document.we_form.elements[args[1]].value){
-				WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, value,'');
+			if (value = this.document.we_form.elements[args[1]].value) {
+				WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, value, '');
 			}
 			break;
 		case 'tag_weHref_trash':
 			_EditorFrame.setEditorIsHot(true);
-			if(args[1] === WE().consts.linkPrefix.TYPE_INT){
+			if (args[1] === WE().consts.linkPrefix.TYPE_INT) {
 				this.document.we_form.elements[args[2]].value = '';
 				this.document.we_form.elements[args[3]].value = '';
-				if(args[4]){
+				if (args[4]) {
 					this.setScrollTo();
 					top.we_cmd('reload_editpage');
 				}
@@ -534,7 +534,7 @@ if (doc.isDW) {
 
 function reinitTiny(confName, transaction, isIEOpera) {
 	var target = _EditorFrame.getContentEditor();
-var confObject;
+	var confObject;
 	/* if tinyMCE-field: re-write confObject on visible field and re-init editor
 	 * ff and chrome only: on ie and opera we reload edit tab when saving properties
 	 */

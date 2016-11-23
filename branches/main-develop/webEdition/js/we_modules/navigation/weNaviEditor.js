@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO, data, WE_NAVIID */
+/* global WE, top, data, WE_NAVIID */
 
 /**
  * webEdition CMS

@@ -96,9 +96,6 @@ function we_cmd() {
 			document.we_form.ncmd.value = "delete_stat";
 			submitForm();
 			break;
-		case "setHot":
-			top.content.setHot();
-			break;
 		case "selector_intHrefCallback":
 			// used as selector callback: args[1] is selector result
 			this.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;

@@ -89,7 +89,6 @@ this.id = treeId;
 								text: text,
 								title: id
 				};
-								var childNode = new YAHOO.widget.TextNode(myobj, mParentNode, false);
 								if (contentType != WE().consts.contentTypes.FOLDER) {
 				childNode.isLeaf = true;
 				}

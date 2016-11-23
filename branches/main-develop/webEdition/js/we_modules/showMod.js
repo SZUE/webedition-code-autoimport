@@ -35,6 +35,14 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
+		case 'setHot':
+			top.content.document.getElementById("mark").style.display = "inline";
+			top.content.hot = true;
+			break;
+		case 'unsetHot':
+			top.content.document.getElementById("mark").style.display = "none";
+			top.content.hot = false;
+			break;
 		case 'loadTree':
 			var pid = args[1].pid;
 			var items = args[1].items;
@@ -69,6 +77,7 @@ function we_cmd() {
 			top.content.treeData.deleteEntry.apply(this, args);
 			break;
 		default:
+			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(this, args);
 	}
 }

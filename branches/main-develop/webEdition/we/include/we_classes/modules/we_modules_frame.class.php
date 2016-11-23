@@ -201,10 +201,6 @@ abstract class we_modules_frame{
 		}
 	}
 
-	protected function getJSEditorHeader(){
-		return we_html_element::jsScript(JS_DIR . 'modules_header.js');
-	}
-
 	protected function getHTMLEditorBody(){
 // to be overridden
 	}

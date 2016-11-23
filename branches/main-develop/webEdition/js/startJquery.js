@@ -82,8 +82,18 @@ $(function () {
 				this.classList.remove("weMarkInputError");
 			},
 			change: function (event, ui) {
-				if (this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-					!parseInt(this.result.value) && this.getAttribute("required") //a required field has no value
+				if (this.value == "") {//is this correct?!
+					this.value = "/";
+					this.result.value = 0;
+					this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
+				}
+				if (
+					!this.getAttribute("disbled") && (
+					this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
+					!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+					this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+					(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+					)
 					) {
 					this.classList.add("weMarkInputError");
 				} else {

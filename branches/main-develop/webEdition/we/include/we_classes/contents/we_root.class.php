@@ -290,11 +290,12 @@ abstract class we_root extends we_class{
 			);
 		}
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','dirChooser_callback," . $Pathname . ($cmd ? ',' . $cmd : '') . "','" . $rootDirID . "')");
 		$weSuggest->setAcId('Path', id_to_path([$rootDirID], $table));
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$weSuggest->setInput($textname, $path);
-		$weSuggest->setjsCommandOnItemSelect(($Pathname === 'ParentPath' ? 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }' : ''));
+		if($Pathname === 'ParentPath'){
+			$weSuggest->setDoOnItemSelect('if(pathOfDocumentChanged) { pathOfDocumentChanged(); }');
+		}
 		//FIXME: onblur!
 		$weSuggest->setLabel($label ?: '');
 		$weSuggest->setMaxResults(10);
@@ -303,7 +304,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(intval($width));
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','dirChooser_callback," . $Pathname . ($cmd ? ',' . $cmd : '') . "','" . $rootDirID . "')"));
 		return $weSuggest->getHTML();
 	}
 
@@ -534,7 +535,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','','" . we_base_ContentTypes::IMAGE . "',1)"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
 		return $weSuggest->getHTML();
 	}
 
@@ -561,7 +562,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(388);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
 		return $weSuggest->getHTML();
 	}
 
@@ -594,8 +595,7 @@ abstract class we_root extends we_class{
 			$db = new DB_WE();
 			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $db->escape($langkey) . '"', '', $db);
 			if($LDcoType){
-				$createbutton = we_html_button::create_button('fa:add_doc,fa-plus,fa-lg fa-file-text-o', "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
-				$weSuggest->setCreateButton($createbutton);
+				$weSuggest->setCreateButton(we_html_button::create_button('fa:add_doc,fa-plus,fa-lg fa-file-text-o', "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');"));
 			}
 		}
 		$weSuggest->setInput($textname, $path, [], true);
@@ -606,7 +606,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInput" . $ackeyshort . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
 		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . $etype . "',document.we_form.elements['" . $idname . "'].value,'" . $ctype . "');}"));
 		//$weSuggest->setIsDropFromTree(true);//deactivated
 		return $weSuggest->getHTML();

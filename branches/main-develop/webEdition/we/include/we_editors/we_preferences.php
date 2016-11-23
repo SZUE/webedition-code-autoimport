@@ -878,8 +878,6 @@ function build_dialog($selected_setting = 'ui'){
 				$sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', ['' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400], 1, '', false, ['onchange' => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], "value", 100, "defaultfont");
 
 				// Sidebar document
-				$sidebar_document_button = we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()');
-
 				$weSuggest->setAcId('SidebarDoc');
 				$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
 				$weSuggest->setInput('ui_sidebar_file_name', $sidebar_path);
@@ -887,7 +885,7 @@ function build_dialog($selected_setting = 'ui'){
 				$weSuggest->setResult('newconf[SIDEBAR_DEFAULT_DOCUMENT]', $sidebar_id);
 				$weSuggest->setSelector(weSuggest::DocSelector);
 				$weSuggest->setWidth(150);
-				$weSuggest->setSelectButton($sidebar_document_button, 10);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()'));
 
 				// build html
 				$sidebar_html1 = new we_html_table(['class' => 'default'], 1, 1);
@@ -993,9 +991,6 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
-			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')");
-			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value = 0;document.forms[0].elements.imagestartid_default_text.value=''");
-
 			$weSuggest->setAcId("doc2");
 			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$weSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
@@ -1003,8 +998,8 @@ function build_dialog($selected_setting = 'ui'){
 			$weSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ? : 0));
 			$weSuggest->setSelector(weSuggest::DirSelector);
 			$weSuggest->setWidth(226);
-			$weSuggest->setSelectButton($acButton1, 10);
-			$weSuggest->setTrashButton($acButton2, 4);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')"));
+			$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value = 0;document.forms[0].elements.imagestartid_default_text.value=''"));
 
 			$settings = [
 				['headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG],
@@ -1816,8 +1811,6 @@ function build_dialog($selected_setting = 'ui'){
 			// Build dialog if user has permission
 
 			$navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
-			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)");
-			$acButton2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = ''");
 
 			$weSuggest->setAcId("doc2");
 			$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -1826,8 +1819,8 @@ function build_dialog($selected_setting = 'ui'){
 			$weSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? : 0));
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setWidth(300);
-			$weSuggest->setSelectButton($acButton1, 10);
-			$weSuggest->setTrashButton($acButton2, 4);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)"));
+			$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = ''"));
 
 			$settings = [
 				["headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", 'noline' => 1],

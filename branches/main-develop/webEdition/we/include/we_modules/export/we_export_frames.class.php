@@ -363,19 +363,17 @@ function closeAllType(){
 	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','setHot')");
-
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId("PathGroup");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput("ParentPath", $path, ['onchange' => 'top.content.hot=true;']);
+		$weSuggest->setInput("ParentPath", $path, [], false, true);
 		$weSuggest->setLabel(g_l('export', '[group]'));
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult("ParentID", $this->View->export->ParentID);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable(EXPORT_TABLE);
 		$weSuggest->setWidth(400);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','setHot')"));
 
 		return $weSuggest->getHTML();
 	}
@@ -669,17 +667,16 @@ if (top.content.editor.edbody.addLog){
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/'){
 		$Pathvalue = ($Pathvalue ?: f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId('SelPath');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => 'top.content.hot=true;']);
+		$weSuggest->setInput($Pathname, $Pathvalue, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($IDName, $IDValue);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable(FILE_TABLE);
 		$weSuggest->setWidth($width);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')"));
 
 		return $weSuggest->getHTML();
 	}

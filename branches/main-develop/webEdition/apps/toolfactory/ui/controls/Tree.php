@@ -139,7 +139,6 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 			(function() {
 
 				function tree_' . $this->_id . '_Init() {
-					//tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
 					' . $this->getNodesJS() . '
 
 					tree_' . $this->_id . '.draw();

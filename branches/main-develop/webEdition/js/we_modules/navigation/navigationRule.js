@@ -76,7 +76,7 @@ function addCat(paths, ids) {
 	for (var i = 0; i < paths.length; i++) {
 		if (paths[i] !== "") {
 			categories_edit.addItem();
-		//FIXME: ids will not be used, since this js function only has 3 parameters!
+			//FIXME: ids will not be used, since this js function only has 3 parameters!
 			categories_edit.setItem(0, (categories_edit.itemCount - 1), paths[i], ids[i]);
 		}
 	}
@@ -97,13 +97,13 @@ function we_cmd() {
 			clearNavigationForm();
 			break;
 		case "save_navigation_rule":
-			var isValid = 1;
+			var isValid = true;
 			if (document.we_form.SelectionType.options[0].selected === true) {
-				isValid = YAHOO.autocoml.isValidById("yuiAcInputFolderIDPath");
+				isValid = WE().layout.weSuggest.checkRequired(window, "yuiAcInputFolderIDPath").valid;
 			} else if (document.we_form.SelectionType.options[1] !== undefined && document.we_form.SelectionType.options[1].selected === true) {
-				isValid = YAHOO.autocoml.isValidById("yuiAcInputClassIDPath");
+				isValid = WE().layout.weSuggest.checkRequired(window, "yuiAcInputClassIDPath").valid;
 			}
-			if (isValid && YAHOO.autocoml.isValidById("yuiAcInputNavigationIDPath")) {
+			if (isValid && WE().layout.weSuggest.checkRequired(window, "yuiAcInputNavigationIDPath").valid) {
 				weInput.setValue("cmd", "save_navigation_rule");
 				document.we_form.submit();
 			} else {

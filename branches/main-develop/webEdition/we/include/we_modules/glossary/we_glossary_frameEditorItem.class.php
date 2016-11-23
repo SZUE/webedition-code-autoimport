@@ -47,7 +47,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				break;
 		}
 
-		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
+		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark"><i class="fa fa-asterisk modified"></i></div>');
 	}
 
 	public static function Body(we_glossary_frames $weGlossaryFrames){
@@ -250,7 +250,6 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 	private static function getHTMLIntern(we_glossary_glossary $glossary){
 		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','link[Attributes][InternLinkID]','link[Attributes][InternLinkPath]','','','0')";
-		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false);
 
 		if($glossary->Type === "link" && $glossary->getAttribute('mode') === "intern"){
 			//$linkPath = $glossary->getAttribute('InternLinkPath');
@@ -267,7 +266,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			we_base_ContentTypes::APPLICATION]);
 		$weSuggest->setInput('link[Attributes][InternLinkPath]', $linkPath);
 		$weSuggest->setMaxResults(10);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false));
 		$weSuggest->setResult('link[Attributes][InternLinkID]', $linkID);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setTable(FILE_TABLE);
@@ -310,14 +309,13 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		}
 
 		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
-		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false);
 
 		$weSuggest = &weSuggest::getInstance();
 		$weSuggest->setAcId('objPathLink');
 		$weSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 		$weSuggest->setInput('link[Attributes][ObjectLinkPath]', $linkPath);
 		$weSuggest->setMaxResults(10);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false));
 		$weSuggest->setResult('link[Attributes][ObjectLinkID]', $linkID);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setTable(OBJECT_FILES_TABLE);

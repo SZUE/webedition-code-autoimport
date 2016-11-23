@@ -1107,8 +1107,8 @@ class we_object extends we_document{
 		  $weSuggest->setSelector(weSuggest::DocSelector);
 		  $weSuggest->setTable($table);
 		  $weSuggest->setWidth(246);
-		  $weSuggest->setSelectButton($button,10);
-		  $weSuggest->setTrashButton($delbutton,5);
+		  $weSuggest->setSelectButton($button);
+		  $weSuggest->setTrashButton($delbutton);
 
 		  return $weSuggest->getHTML();
 		 */
@@ -1143,8 +1143,8 @@ class we_object extends we_document{
 		  $weSuggest->setSelector(weSuggest::DocSelector);
 		  $weSuggest->setTable($table);
 		  $weSuggest->setWidth(246);
-		  $weSuggest->setSelectButton($btnSelect,10);
-		  $weSuggest->setTrashButton($btnDelete,5);
+		  $weSuggest->setSelectButton($btnSelect);
+		  $weSuggest->setTrashButton($btnDelete);
 
 		  return $weSuggest->getHTML();
 		 */

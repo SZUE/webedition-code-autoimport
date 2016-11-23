@@ -277,7 +277,6 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 		if(!$this->parentID['setFixed']){
 			$weSuggest = &weSuggest::getInstance();
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','document." . $formName . ".fu_file_parentID','document." . $formName . ".parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$weSuggest->setAcId("fu_file_parentID");
 			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$weSuggest->setInput("parentPath", $parentID ? id_to_path($parentID, FILE_TABLE) : '/', [], false);
@@ -285,7 +284,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			$weSuggest->setResult("fu_file_parentID", $parentID);
 			$weSuggest->setSelector(weSuggest::DirSelector);
 			$weSuggest->setWidth(326);
-			$weSuggest->setSelectButton($but);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','document." . $formName . ".fu_file_parentID','document." . $formName . ".parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 
 			$html = $weSuggest->getHTML();
 		} else {

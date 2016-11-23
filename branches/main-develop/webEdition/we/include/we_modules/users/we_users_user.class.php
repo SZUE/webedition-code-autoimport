@@ -1255,7 +1255,7 @@ _multiEditorreload = true;';
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -1349,7 +1349,7 @@ _multiEditorreload = true;';
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, ['onchange' => 'top.content.setHot()']);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
 		$weSuggest->setSelector(weSuggest::DirSelector);
@@ -1555,18 +1555,6 @@ function toggleRebuildPerm(disabledOnly) {';
 					$path = id_to_path($value);
 				}
 
-				switch($k){
-					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
-						break;
-
-					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
-						break;
-
-					default:
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
-				}
 
 				$weSuggest->setAcId('WS' . $k . $key);
 				$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -1576,7 +1564,19 @@ function toggleRebuildPerm(disabledOnly) {';
 				$weSuggest->setSelector(weSuggest::DirSelector);
 				$weSuggest->setTable($k);
 				$weSuggest->setWidth(290);
-				$weSuggest->setSelectButton($button, 10);
+
+				switch($k){
+					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
+						$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )"));
+						break;
+
+					case NAVIGATION_TABLE:
+						$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )"));
+						break;
+
+					default:
+						$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )"));
+				}
 
 				$weAcSelector = $weSuggest->getHTML();
 
@@ -2018,7 +2018,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId('PathName');
 		$weSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
-		$weSuggest->setInput($this->Name . '_Alias_Text', $alias_text, ['onchange' => 'top.content.setHot();']);
+		$weSuggest->setInput($this->Name . '_Alias_Text', $alias_text, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($this->Name . '_Alias', $this->Alias);
@@ -2031,7 +2031,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		$weSuggest->setAcId("PathGroup");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, ['onchange' => "top.content.setHot();"]);
+		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
 		$weSuggest->setSelector(weSuggest::DirSelector);

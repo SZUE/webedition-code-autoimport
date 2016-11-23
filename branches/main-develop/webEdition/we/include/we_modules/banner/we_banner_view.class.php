@@ -669,17 +669,16 @@ class we_banner_view extends we_modules_view{
 		$weSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
-		$weSuggest->setAcId("Image");
+		$weSuggest->setAcId('Image');
 		$weSuggest->setLabel($title);
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setInput($Pathname, $Pathvalue, [], true, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($IDName, $IDValue);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth($width);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')"));
 
 		return $weSuggest->getHTML();
 	}
@@ -688,19 +687,18 @@ class we_banner_view extends we_modules_view{
 		$weSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, BANNER_TABLE, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','setHot')");
 
 		$weSuggest->setAcId($acID);
 		$weSuggest->setLabel($title);
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput($textname, $path, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setInput($textname, $path, [], true, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $idvalue);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable(BANNER_TABLE);
 		//$weSuggest->setWidth($width);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','setHot')"));
 
 		return $weSuggest->getHTML();
 	}
@@ -737,7 +735,7 @@ class we_banner_view extends we_modules_view{
 		$Pathvalue = $idvalue ? id_to_path($idvalue, FILE_TABLE, $this->db) : "";
 		$Pathname = md5(uniqid(__FUNCTION__, true));
 
-		$onkeydown = "self.document.we_form.elements['" . $this->uid . "_IntHref'][0].checked=true; YAHOO.autocoml.setValidById('yuiAcInputInternalURL'); document.getElementById('yuiAcInputInternalURL').value=''; document.getElementById('yuiAcResultInternalURL').value=''";
+		$onkeydown = "self.document.we_form.elements['" . $this->uid . "_IntHref'][0].checked=true; WE().layout.weSuggest.checkRequired(window,'yuiAcInputInternalURL'); document.getElementById('yuiAcInputInternalURL').value=''; document.getElementById('yuiAcResultInternalURL').value=''";
 
 		$title1 = '<table class="default">
 	<tr>
@@ -753,18 +751,17 @@ class we_banner_view extends we_modules_view{
 	</tr>
 </table>';
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','selector_intHrefCallback," . $this->uid . "','',0,'')");
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId("InternalURL");
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$weSuggest->setInput($Pathname, $Pathvalue, ['onchange' => "we_cmd('setHot');"], true);
+		$weSuggest->setInput($Pathname, $Pathvalue, [], true, true);
 		$weSuggest->setLabel($title2);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $idvalue);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth(388);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','selector_intHrefCallback," . $this->uid . "','',0,'')"));
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_bannerUrl", 30, $this->banner->bannerUrl, "", 'id="' . $this->uid . '_bannerUrl" onkeydown="' . $onkeydown . '"', "text", 388, 0), $title1, "left", "defaultfont", "", "", "", "", "", 0) . $weSuggest->getHTML();
 	}

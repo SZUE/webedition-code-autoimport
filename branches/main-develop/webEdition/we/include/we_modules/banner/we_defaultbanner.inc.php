@@ -38,7 +38,6 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$weSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
-	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')");
 
 	$weSuggest->setAcId("Path");
 	$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -49,7 +48,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$weSuggest->setSelector(weSuggest::DirSelector);
 	$weSuggest->setTable($table);
 	$weSuggest->setWidth($width);
-	$weSuggest->setSelectButton($button);
+	$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')"));
 
 	return $weSuggest->getHTML();
 }
