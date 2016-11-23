@@ -56,7 +56,7 @@ function getCsv(bTbl) {
 	var iDtOrCls = (bTbl) ? _fo.classID.value : _fo.DocTypeID.value;
 	var sCats = '';
 	for (var j = 0; j < categories_edit.itemCount; j++) {
-		sCats += WE().util.Base64.encode(categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value);
+		sCats += window.btoa(categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value);
 		if (j < categories_edit.itemCount - 1)
 			sCats += ',';
 	}
@@ -90,7 +90,7 @@ function exit_close() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	var aInitCsv = _sInitCsv_.split(';');
-	var sInitTitle = WE().util.Base64.decode(aInitCsv[0]);
+	var sInitTitle = window.atob(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
 		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
@@ -102,7 +102,7 @@ function exit_close() {
 function we_submit() {
 	var bSelection = _fo.Selection.selectedIndex;
 	var bSelType = _fo.headerSwitch.selectedIndex;
-	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + WE().util.Base64.encode(_fo.title.value) + ';' +
+	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + window.btoa(_fo.title.value) + ';' +
 		(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
 	_fo.method = 'post';
 	_fo.submit();
@@ -143,7 +143,7 @@ function save() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
-	_oCsv_.value = WE().util.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
+	_oCsv_.value = window.btoa(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	window.close();
 }
@@ -195,7 +195,7 @@ function init(tab, title, sBinary, _sCsv) {
 				obj.value = aInitCsv[3];
 			}
 			if (aInitCsv[4] !== undefined && aInitCsv[4] !== '') {
-				addCat(WE().util.Base64.decode(aInitCsv[4]));
+				addCat(window.atob(aInitCsv[4]));
 			}
 		}
 	}
