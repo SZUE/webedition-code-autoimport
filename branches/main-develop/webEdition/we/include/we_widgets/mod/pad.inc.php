@@ -278,7 +278,7 @@ var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
 var _sType='pad';
 var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
 ") . "
-var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
+var _ttlB64Esc=escape(window.btoa(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		[
 		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'toggleTblValidity();'
