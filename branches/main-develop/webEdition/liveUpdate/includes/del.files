@@ -731,15 +731,6 @@ liveUpdate/images/updateBackground.gif
 licenses/SMTP_PHPClass/License.txt
 licenses/PhpMailer/License.txt
 licenses/PEAR/PHP_License.txt
-lib/we/ui/layout/NoteDiv.js
-lib/we/ui/dialog/OkCancelDialog.js
-lib/we/ui/controls/WeWysiwygEditorWindow.php
-lib/we/ui/controls/JavaMenu.jar
-lib/we/ui/controls/ACFileSelector.php
-lib/we/ui/controls/ACFileSelector.js
-lib/we/net/Http.php
-lib/we/net/Community.php
-lib/we/License.txt
 lib/additional/pear/PEAR5.php
 lib/additional/archive/altArchive_Tar.class.php
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.PlatformInstaller.dll
@@ -1055,9 +1046,7 @@ apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
 !wysiwyg
-!webEdition/lib/we/xml
-!webEdition/lib/we/net/LiveUpdate
-!webEdition/lib/we/io
+!webEdition/lib/we
 !we_backup/tmp
 !we/include/we_widgets/inc/plg
 !we/include/we_widgets/dlg/upb
