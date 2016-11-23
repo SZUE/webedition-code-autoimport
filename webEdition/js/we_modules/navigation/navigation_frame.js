@@ -1,4 +1,4 @@
-/* global top, WE, YAHOO */
+/* global top, WE */
 
 /**
  * webEdition SDK
@@ -30,16 +30,16 @@ var categories_edit;
 
 function onSelectionClassChangeJS(value) {
 	YAHOO.autocoml.modifySetById("yuiAcInputFolderPath", {
-		table: "trunk_tblObjectFiles",
+		table: WE().consts.tables.OBJECT_FILES_TABLE,
 		rootDir: classPaths[value],
-		mayBeEmpty: false
+		required: true
 	}
 	);
 	document.we_form.elements.FolderID.value = classDirs[value];
 	document.we_form.elements.FolderPath.value = classPaths[value];
 	document.we_form.elements.FolderPath.disabled = !hasClassSubDirs[value];
 	top.content.we_cmd('populateWorkspaces');
-	top.content.mark();
+	we_cmd("setHot");
 }
 
 
@@ -63,7 +63,7 @@ function onSelectionTypeChangeJS(value) {
 			}
 			);
 	}
-	YAHOO.autocoml.setValidById("yuiAcInputFolderPath");
+	WE().layout.weSuggest.checkRequired(window, "yuiAcInputFolderPath");
 }
 
 function onFolderSelectionChangeJS(value) {
@@ -128,7 +128,7 @@ function categoriesEdit(size, elements, delBut) {
 }
 
 function removeAllCats() {
-	top.content.mark();
+	we_cmd("setHot");
 	if (categories_edit.itemCount > 0) {
 		while (categories_edit.itemCount > 0) {
 			categories_edit.delItem(categories_edit.itemCount);
@@ -137,7 +137,7 @@ function removeAllCats() {
 }
 
 function addCat(paths) {
-	top.content.mark();
+	we_cmd("setHot");
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < paths.length; i++) {

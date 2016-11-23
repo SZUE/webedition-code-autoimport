@@ -199,7 +199,7 @@ function setTab(tab) {
 					], we_html_element::htmlDiv(['id' => "main"], we_html_element::htmlDiv(['id' => 'headrow'], '&nbsp;' .
 							we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
 								str_replace('&amp;', '&', $this->Model->Text) .
-								we_html_element::htmlDiv(['id' => 'mark', 'style' => 'display: none;'], '*'))) .
+								we_html_element::htmlDiv(['id' => 'mark'], '<i class="fa fa-asterisk modified"></i>'))) .
 						$we_tabs->getHTML() . '</div>')
 				), $tabsHead . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
@@ -369,7 +369,7 @@ function setTab(tab) {
 					implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 						we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH])
 			));
-		$weSuggest->setInput('LinkPath', $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setInput('LinkPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult('LinkID', $this->Model->LinkID);
 		$weSuggest->setSelector(weSuggest::DocSelector);
@@ -583,7 +583,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 					we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]) :
 				($this->Model->SelectionType === we_navigation_navigation::STYPE_OBJLINK ? we_base_ContentTypes::OBJECT_FILE : ''));
-		$weSuggest->setInput('LinkPath', $path, ['onchange' => "top.content.mark();"]);
+		$weSuggest->setInput('LinkPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult('LinkID', $this->Model->LinkID);
 		$weSuggest->setSelector(weSuggest::DocSelector);
@@ -884,9 +884,9 @@ function showPreview() {
 
 		if($selector == weSuggest::DocSelector){
 			$path = $path === '/' ? '' : $path;
-			$mayBeEmpty = 1;
+			$required = 0;
 		} else {
-			$mayBeEmpty = 0;
+			$required = 1;
 		}
 
 		if($showtrash){
@@ -901,10 +901,10 @@ function showPreview() {
 		$weSuggest = &weSuggest::getInstance();
 		$weSuggest->setAcId($PathName);
 		$weSuggest->setContentType($acCTypes ?: $filter);
-		$weSuggest->setInput($PathName, $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setInput($PathName, $path, [], false, true);
 		$weSuggest->setLabel($title);
 		$weSuggest->setMaxResults(50);
-		$weSuggest->setMayBeEmpty($mayBeEmpty);
+		$weSuggest->setRequired($required);
 		$weSuggest->setResult($IDName, $IDValue);
 		$weSuggest->setSelector($selector);
 		$weSuggest->setTable($table);
@@ -1122,7 +1122,7 @@ function showPreview() {
 		$weSuggest->setAcId($prefix . 'UrlIDPath');
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$weSuggest->setInput($prefix . 'UrlIDPath', $path, ['onchange' => 'top.content.mark();']);
+		$weSuggest->setInput($prefix . 'UrlIDPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
 		$weSuggest->setSelector(weSuggest::DocSelector);

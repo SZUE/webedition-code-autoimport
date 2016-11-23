@@ -572,10 +572,7 @@ function exit_open() {
 				}
 			}
 		}
-		if (opener.YAHOO !== undefined && opener.YAHOO.autocoml !== undefined) {
-			var val = opener.document.we_form.elements[top.fileSelect.data.JSTextName].id;
-			opener.YAHOO.autocoml.selectorSetValid(val);
-		}
+		WE().layout.weSuggest.checkRequired(opener, opener.document.we_form.elements[top.fileSelect.data.JSTextName].id);
 	}
 	if (top.fileSelect.data.JSCommand) {
 		fillIDs();

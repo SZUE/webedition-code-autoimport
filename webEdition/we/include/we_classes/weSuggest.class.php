@@ -72,7 +72,7 @@ class weSuggest{
 	private $resultValue = '';
 	private $resultId = '';
 	private $rootDir = '';
-	private $selector = "Dir"; //FIXME: self::DirSelector???
+	private $selector = self::DirSelector;
 	private $buttons = [
 		self::BTN_SELECT => '',
 		self::BTN_ADDITIONAL => '',
@@ -107,7 +107,7 @@ class weSuggest{
 		$resultId = $this->resultId ?: 'yuiAcResult' . $this->acId;
 
 		if($this->buttons[self::BTN_OPEN] === self::BTN_EDIT){
-			$this->buttons[self::BTN_OPEN] = we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weSuggest.openSelectionToEdit(window,'" . $inputId. "')");
+			$this->buttons[self::BTN_OPEN] = we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weSuggest.openSelectionToEdit(window,'" . $inputId . "')");
 		}
 
 		if(!$this->noautoinit){
@@ -115,9 +115,10 @@ class weSuggest{
 		}
 		$this->inputAttribs['data-table'] = $this->table;
 		$this->inputAttribs['data-contenttype'] = $this->contentType;
-		$this->inputAttribs['data-basedir'] = $this->rootDir;
+		$this->inputAttribs['data-basedir'] = ($this->rootDir ?: '/');
 		$this->inputAttribs['data-result'] = $resultId;
 		$this->inputAttribs['data-max'] = $this->maxResults;
+		$this->inputAttribs['data-selector'] = $this->selector;
 		$this->inputAttribs['data-currentDocumentType'] = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$this->inputAttribs['data-currentDocumentID'] = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
@@ -126,12 +127,10 @@ class weSuggest{
 		}
 
 		$html = we_html_tools::htmlFormElementTable([
-				'text' => $this->htmlTextInput($this->inputName, $this->inputValue, $this->inputAttribs, "text", $this->width, "", $this->inputDisabled) .
-
-			we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId,[
-				//FIXME: we need to know this
-				'data-contenttype'=>'',
-
+				'text' => $this->htmlTextInput($this->inputName, $this->inputValue, $this->inputAttribs, 'text', $this->width) .
+				we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId, [
+					//FIXME: we need to know this
+					'data-contenttype' => '',
 				])
 				], $this->label, 'left', 'defaultfont', (
 				$this->buttons[self::BTN_SELECT]
@@ -143,7 +142,7 @@ class weSuggest{
 				$this->buttons[self::BTN_OPEN] ?: ''
 				), (
 				$this->buttons[self::BTN_CREATE] ?: '')
-			);
+		);
 
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
@@ -185,7 +184,7 @@ class weSuggest{
 			$this->contentType = we_base_ContentTypes::FOLDER;
 			$this->required = false;
 			$this->label = '';
-			$this->selector = self::DirSelector; //FIXME:self::Dirselector??
+			$this->selector = self::DirSelector;
 			$this->table = FILE_TABLE;
 			$this->width = 280;
 			$this->doOnItemSelect = '';
@@ -218,15 +217,19 @@ class weSuggest{
 	 * @param Array $attribs
 	 * @param Boolean $disabled
 	 */
-	public function setInput($name, $value = "", array $attribs = [], $disabled = false, $markHot = false){
+	public function setInput($name, $value = '', array $attribs = [], $disabled = false, $markHot = false){
 		$this->inputId = '';
 		$this->inputName = $name;
 		$this->inputValue = $value;
 		$class = $onchange = 0;
 		$this->inputAttribs = [
-			'class' => "wetextinput",
-			'onchange' => ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=true;' : '')
+			'class' => 'wetextinput',
+			//removed WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); - this causes unwanted behaviour
+			'onchange' => ($markHot ? 'hot=true;we_cmd(\'setHot\')' : ''),
 		];
+		if($disabled){
+			$this->inputAttribs['disabled'] = 'disabled';
+		}
 		foreach($attribs as $key => $val){
 			$key = strtolower($key);
 			switch($key){
@@ -250,15 +253,14 @@ class weSuggest{
 		if(!$this->inputId){
 			$this->setInputId();
 		}
-		$this->inputDisabled = $disabled;
 	}
 
-	private function htmlTextInput($name, $value = "", array $attribs = [], $type = "text", $width = 0, $markHot = "", $disabled = false){
-		$attribs['type'] = "text";
+	private function htmlTextInput($name, $value = '', array $attribs = [], $type = 'text', $width = 0){
+		$attribs['type'] = $type;
 		$attribs['name'] = trim($name);
 		$attribs['value'] = oldHtmlspecialchars($value);
 		$attribs['style'] = (empty($attribs['style']) ? '' : $attribs['style']) .
-			($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';						') : '');
+			($width ? ('width: ' . $width . ((strpos($width, 'px') || strpos($width, '%')) ? '' : 'px') . ';') : '');
 
 		return we_html_element::htmlInput($attribs);
 	}
@@ -274,7 +276,6 @@ class weSuggest{
 		$this->noautoinit = $noautoinit;
 	}
 
-
 	/**
 	 * Set the content tye to filter result
 	 *
@@ -284,10 +285,12 @@ class weSuggest{
 		$this->contentType = is_array($val) ? implode(',', $val) : $val;
 	}
 
+//FIXME: not implemented
 	public function setDoOnItemSelect($val){
 		$this->doOnItemSelect = $val;
 	}
 
+//FIXME: not implemented
 	public function setjsCommandOnItemSelect($val){
 		$this->jsCommandOnItemSelect = $val;
 	}
@@ -344,18 +347,6 @@ class weSuggest{
 		$this->resultName = $resultName;
 		$this->resultId = $resultID;
 		$this->resultValue = $resultValue;
-	}
-
-	public function setResultId($val){
-		$this->resultId = $val;
-	}
-
-	public function setResultName($val){
-		$this->resultValue = $val;
-	}
-
-	public function setResultValue($val){
-		$this->resultValue = $val;
 	}
 
 	/**

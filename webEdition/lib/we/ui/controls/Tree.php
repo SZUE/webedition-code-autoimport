@@ -288,14 +288,12 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		if(!empty($nodes)){
 			foreach($nodes as $k => $v){
 				$out .= $this->getNodeObject($v['ID'], $v['Text'], $v['Published'], $v['Status']) .
-					'var tmpNode = new YAHOO.widget.TextNode(myobj, root, false);' .
 					'tmpNode.labelStyle = "' . $this->getTreeIconClass($v['ContentType']) . '";' .
 					($this->getTreeIconClass($v['ContentType']) !== we_base_ContentTypes::FOLDER ? 'tmpNode.isLeaf = true;' : '');
 
 				$session = new we_sdk_namespace($this->_sessionName);
 				if(in_array($v['ID'], $session->openNodes) && $v['IsFolder']){
-					$out .= 'YAHOO.widget.TreeView.getNode(\'' . $this->_id . '\',tmpNode.index).toggle();' .
-						'tmpNode.labelStyle = "' . $this->getTreeIconClass('folderOpen') . '";';
+					$out .= 'tmpNode.labelStyle = "' . $this->getTreeIconClass('folderOpen') . '";';
 				}
 			}
 		}
@@ -314,9 +312,9 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		include($appPath . '/conf/meta.conf.php');
 		$db = new DB_WE();
 		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && $db->isTabExist($metaInfo['maintable']) ?
-				'table' :
-				(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?
-					'custom' : 'custom'));
+			'table' :
+			(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?
+			'custom' : 'custom'));
 	}
 
 	/**
@@ -352,7 +350,6 @@ var tree_' . $this->_id . '_activEl = 0;
 (function() {
 
 	function tree_' . $this->_id . '_Init() {
-		tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
 		tree_' . $this->_id . '.setDynamicLoad(loadNodeData);
 
 		' . $this->getNodesJS() . '
@@ -363,7 +360,7 @@ var tree_' . $this->_id . '_activEl = 0;
 						success: function(oResponse) {
 							var _node = document.getElementById(node.labelElId);
 							if(_node) {
-						_node.className = "' . $this->getTreeIconClass(WE().consts.contentTypes.FOLDER) . '";
+						_node.className = "' . $this->getTreeIconClass(WE() . consts . contentTypes . FOLDER) . '";
 					}
 						},
 						failure: function(oResponse) {
@@ -403,14 +400,11 @@ var tree_' . $this->_id . '_activEl = 0;
 					//if our XHR call is successful, we want to make use
 					//of the returned data and create child nodes.
 					success: function(oResponse) {
-							YAHOO.log("XHR transaction was successful.", "info", "example");
 							var oResults = JSON.parse(oResponse.responseText);
 							if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
 									//Result is an array if more than one result, string otherwise
-									if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
 											for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
 												' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"', '"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"') . '
-												var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
 												tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];
 												if(tmpNode.labelStyle!=="folder") {
 													tmpNode.isLeaf = true;
@@ -422,7 +416,6 @@ var tree_' . $this->_id . '_activEl = 0;
 									} else {
 											//there is only one result; comes as string:
 						' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"', '"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"') . '
-											var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
 											tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
 											if(tmpNode.labelStyle!=="folder") {
 												tmpNode.isLeaf = true;
@@ -436,7 +429,6 @@ var tree_' . $this->_id . '_activEl = 0;
 					},
 
 					failure: function(oResponse) {
-							YAHOO.log("Failed to process XHR transaction.", "info", "example");
 							oResponse.argument.fnLoadComplete();
 					},
 
@@ -451,8 +443,7 @@ var tree_' . $this->_id . '_activEl = 0;
 				WE().util.rpc(sUrl, null,callback);
 	}
 
-	YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
-
+	
 })();';
 
 		$page = we_ui_layout_HTMLPage::getInstance();

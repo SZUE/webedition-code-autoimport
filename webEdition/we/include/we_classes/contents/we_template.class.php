@@ -514,7 +514,7 @@ we_templateInit();?>';
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);"));
 		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements.we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID.value)'));
 		return $weSuggest->getHTML();
 	}

@@ -25,16 +25,6 @@
  */
 var weTabs = new (WE().layout.we_tabs)(document, window);
 
-function mark() {
-	var elem = document.getElementById("mark");
-	elem.style.display = "inline";
-}
-
-function unmark() {
-	var elem = document.getElementById("mark");
-	elem.style.display = "none";
-}
-
 function setTab(tab) {
 	switch (tab) {
 

@@ -1250,8 +1250,6 @@ switch (args[0]) {
 			$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), "", $this->db);
 		}
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
-
 		$weSuggest->setAcId("Dir");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput($Pathname, $Pathvalue);
@@ -1259,7 +1257,7 @@ switch (args[0]) {
 		$weSuggest->setResult($IDName, $IDValue);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setWidth($width);
-		$weSuggest->setSelectButton($button, 10);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')"));
 
 		return $weSuggest->getHTML();
 	}

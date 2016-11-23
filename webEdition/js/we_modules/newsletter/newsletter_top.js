@@ -222,9 +222,6 @@ function we_cmd() {
 			}
 			top.content.editor.edbody.submitForm();
 			break;
-		case "setHot":top.console.log('set hot');
-			top.content.hot = true;
-			break;
 		case "syncNewsletterTitle":
 			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements['Text'].value);
 			break;

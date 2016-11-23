@@ -33,7 +33,6 @@ function we_core_EventController() {
 
 	this.register = function(eventName, callbackFn, scope) {
 		if (this.events[eventName] === undefined) {
-			//this.events[eventName] = new YAHOO.util.CustomEvent(eventName, scope, false, YAHOO.util.CustomEvent.FLAT);
 		}
 		this.events[eventName].subscribe(callbackFn, self);
 	};

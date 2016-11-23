@@ -35,7 +35,7 @@ class rpcSelectorSuggestView extends we_rpc_genericJSONView{
 					'ID' => $sug['ID'],
 					'label' => ($short !== $sug['Path'] ? '/...' : '') . $short,
 					'value' => $sug['Path'],
-					'contenttype' => (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? 'folder' : ''))
+					'contenttype' => (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? we_base_ContentTypes::FOLDER : ''))
 				];
 			}
 		}

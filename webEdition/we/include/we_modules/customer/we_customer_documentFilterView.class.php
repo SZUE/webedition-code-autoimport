@@ -59,7 +59,6 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoLoginId = "wecf_noLoginId";
 		$selectorNoLoginText = "wecf_InputNoLoginText";
 		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
-		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $selectorNoLoginId . "','" . $selectorNoLoginText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$weSuggest->setAcId("NoLogin");
 		$weSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -69,7 +68,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weSuggest->setResult($selectorNoLoginId, $id_selectorNoLoginId);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth(409);
-		$weSuggest->setSelectButton($selectorNoLoginButton);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $selectorNoLoginId . "','" . $selectorNoLoginText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>");
 
 		$weAcSelector = $weSuggest->getHTML();
 
@@ -83,7 +82,6 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoAccessId = "wecf_noAccessId";
 		$selectorNoAccessText = "wecf_InputNoAccessText";
 		//$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
-		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $selectorNoAccessId . "','" . $selectorNoAccessText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
 		$weSuggest->setAcId("NoAccess");
 		$weSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -93,7 +91,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weSuggest->setResult($selectorNoAccessId, $id_selectorNoAccessId);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth(409);
-		$weSuggest->setSelectButton($selectorNoAccessButton);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $selectorNoAccessId . "','" . $selectorNoAccessText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
 
 		$weAcSelector2 = $weSuggest->getHTML();
 

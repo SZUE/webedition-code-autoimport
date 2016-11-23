@@ -1,4 +1,4 @@
-/* global WE, YAHOO, top */
+/* global WE, top */
 
 /**
  * webEdition CMS

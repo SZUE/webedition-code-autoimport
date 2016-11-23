@@ -269,18 +269,17 @@ class we_workflow_view extends we_modules_view{
 				$headline[$counter1 + 3] = ['dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1)];
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$weSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$weSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
-				$weSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, ['onchange' => 'top.content.setHot();']);
+				$weSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, [], false, true);
 				$weSuggest->setMaxResults(10);
 				$weSuggest->setRequired(true);
 				$weSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
 				$weSuggest->setSelector(weSuggest::DocSelector);
 				$weSuggest->setTable(USER_TABLE);
 				$weSuggest->setWidth(200);
-				$weSuggest->setSelectButton($button, 6);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);"));
 
 				$content[$counter][$counter1 + 3] = ['dat' => '<table class="default" style="margin-top:1ex;">
 						<tr style="vertical-align:middle"><td>' . $weSuggest->getHTML() . '</td>

@@ -200,8 +200,6 @@ class we_schedpro{
 					$rootDirID = 0;
 				}
 
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $GLOBALS['we_doc']->Table . "','" . $idname . "','" . $textname . "','setHot',''," . $rootDirID . ")");
-
 				$weSuggest = & weSuggest::getInstance();
 				$weSuggest->setAcId('WsDir');
 				$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -212,7 +210,7 @@ class we_schedpro{
 				$weSuggest->setSelector(weSuggest::DirSelector);
 				$weSuggest->setTable(FILE_TABLE);
 				$weSuggest->setWidth(320);
-				$weSuggest->setSelectButton($button);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $GLOBALS['we_doc']->Table . "','" . $idname . "','" . $textname . "','setHot',''," . $rootDirID . ")"));
 
 				$extracont = $weSuggest->getHTML();
 				$extraheadl = g_l('modules_schedule', '[dirctory]');

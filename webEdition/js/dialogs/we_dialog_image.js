@@ -122,7 +122,6 @@ function update_editor(data){
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var val;
 
 	switch (args[0]) {
 		case 'we_selector_document':

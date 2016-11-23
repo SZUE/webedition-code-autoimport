@@ -153,7 +153,6 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return string
 	 */
 	protected function _getComputedOnFocusAttrib(){
-		$onFocus = 'YAHOO.util.Dom.addClass(this, "' . self::kDateTimeClassFocus . '");';
 		if($this->getOnFocus() !== ''){
 			$onFocus .= $this->getOnFocus();
 		}
@@ -166,7 +165,6 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return string
 	 */
 	protected function _getComputedOnBlurAttrib(){
-		$onBlur = 'YAHOO.util.Dom.removeClass(this, "' . self::kDateTimeClassFocus . '");';
 		if($this->getOnBlur() !== ''){
 			$onBlur .= $this->getOnBlur();
 		}

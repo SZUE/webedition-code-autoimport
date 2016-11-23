@@ -60,10 +60,7 @@ function subscribeLabelClick(){
 function delaySubcriptionForIE9(){
 	window.setTimeout(subscribeLabelClick, 1000);
 }
-	YAHOO.util.Event.addListener(window, "load", delaySubcriptionForIE9());
 
-	YAHOO.util.Event.addListener("' . $TreeDiv->getId() . '", "mouseover", function(e) {
-		var elTarget = YAHOO.util.Event.getTarget(e);
 	    var a = "ygtvlabelel";
 	    var span = "spanText_' . $tree->getId() . '_";
         if(a == elTarget.id.substring(0, a.length) || span == elTarget.id.substring(0, span.length)) {

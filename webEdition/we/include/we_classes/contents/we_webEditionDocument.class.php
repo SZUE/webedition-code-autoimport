@@ -236,7 +236,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		$myid = $this->TemplateID ? : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$weSuggest->setAcId('Template');
 		$weSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
 		$weSuggest->setInput($textname, $path);
@@ -246,7 +245,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
 		//$weSuggest->setIsDropFromTree(true);// deactivated
 		return $weSuggest->getHTML();
 	}

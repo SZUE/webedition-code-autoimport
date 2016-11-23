@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO, data */
+/* global WE, top, data */
 
 /**
  * webEdition CMS
@@ -49,9 +49,6 @@ function we_cmd() {
 		}
 	}
 	switch (args[0]) {
-		case "setHot":
-			mark();
-			break;
 		case "module_navigation_edit":
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -168,7 +165,7 @@ function we_cmd() {
 			WE().layout.button.switch_button_state(document, 'open_navigation_doc', document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
 			break;
 		case "populateText":
-			top.content.mark();
+			we_cmd("setHot");
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 			top.content.editor.edbody.document.we_form.pnt.value = "cmd";

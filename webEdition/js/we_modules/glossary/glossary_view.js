@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO, data */
+/* global WE, top, data */
 
 /**
  * webEdition CMS
@@ -49,9 +49,6 @@ function we_cmd() {
 	var exc;
 
 	switch (args[0]) {
-		case "setHot":
-			top.content.setHot();
-			break;
 		case "exit_glossary":
 			if (!hot) {
 				top.opener.top.we_cmd("exit_modules");

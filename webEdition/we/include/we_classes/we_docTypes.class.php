@@ -225,7 +225,6 @@ class we_docTypes extends we_class{
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $idname . "', '" . $textname . "', '', '')");
 		$weSuggest->setAcId("Path");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput($textname, $this->ParentPath);
@@ -233,7 +232,7 @@ class we_docTypes extends we_class{
 		$weSuggest->setResult($idname, $this->ParentID);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setWidth($width - 10);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $idname . "', '" . $textname . "', '', '')"));
 
 		return $weSuggest->getHTML();
 	}

@@ -673,19 +673,17 @@ function setVisible(id,visible){
 
 	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')");
-		$width = 416;
 
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput('ParentPath', $path, ['onchange' => 'top.content.setHot();']);
+		$weSuggest->setInput('ParentPath', $path, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult('ParentID', ($this->View->voting->ParentID ?: 0));
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable(VOTING_TABLE);
-		$weSuggest->setWidth($width);
-		$weSuggest->setSelectButton($button);
+		$weSuggest->setWidth(416);
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')"));
 		$weSuggest->setLabel(g_l('modules_voting', '[group]'));
 
 		return $weSuggest->getHTML();

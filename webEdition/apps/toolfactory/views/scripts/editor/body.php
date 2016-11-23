@@ -569,7 +569,6 @@ weCmdController.register("save_body", "app_' . $appName . '_save", null, self, f
 	return true;
 });
 
-YAHOO.util.Event.addListener(window, "unload", function(e){
 	weCmdController.unregister("save_body");
 	weEventController.unregister("save", __updateIdEventHandler__);
 });

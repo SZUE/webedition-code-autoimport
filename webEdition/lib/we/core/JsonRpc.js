@@ -143,7 +143,6 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 			var jsonString = o.responseText;
 			var obj = null;
 			try {
-				obj = YAHOO.lang.JSON.parse(o.responseText);
 				if (obj.result !== null && obj.error === null) {
 					// tell the command controller that the command was ok. Needed to check if there is a following command
 					weCmdController.cmdOk(cmdObj);
