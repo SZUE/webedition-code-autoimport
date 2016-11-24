@@ -54,11 +54,11 @@ function getHTMLDirSelector($selType){
 	$buttons = '<div id="docFolder" style="display: ' . (!$selType ? "inline" : "none") . '">' . $button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($selType ? "inline" : "none") . '">' . $button_obj . "</div>";
 	$path = id_to_path($folderID, (!$selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));
 
+	//FIXME: autocompleter?!
+
 	return we_html_element::htmlDiv(['style' => "margin-top:10px;"
 			], we_html_tools::htmlFormElementTable(
-				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . we_html_tools::htmlTextInput("FolderPath", 58, $path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) .
-				"<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
-				), $buttons));
+				we_html_tools::htmlTextInput("FolderPath", 58, $path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0), g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"), $buttons));
 }
 
 $docTypes = [0 => g_l('cockpit', '[no_entry]')];
@@ -137,14 +137,14 @@ $divContent = we_html_element::htmlDiv(['style' => "display:block;"
 		we_html_element::htmlDiv(["id" => "static", 'style' => ($selection ? "display:block;" : "display:none;")], we_html_element::htmlDiv(["id" => "treeContainer"], $tree->getHTMLMultiExplorer(420, 180, false)) . '<iframe name="cmd" src="about:blank" style="visibility:hidden; width: 0px; height: 0px;"></iframe>') .
 		we_html_element::htmlDiv(["id" => "dynamic", 'style' => (!$selection ? 'display:block;' : 'display:none;')
 			], getHTMLDirSelector($selType) . we_html_element::htmlBr() . ((!$selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory($widgetData)) .
+					$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory($widgetData)) .
 		we_html_element::htmlBr() .
 		we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("title", 55, $title, 255, "", "text", 420, 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
 $parts = [["headline" => "",
 	"html" => $divContent,
 	],
-		["headline" => "",
+	["headline" => "",
 		"html" => $oSelCls->getHTML(),
 	]
 ];

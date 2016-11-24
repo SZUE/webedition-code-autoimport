@@ -29,12 +29,12 @@
 var categories_edit;
 
 function onSelectionClassChangeJS(value) {
-	YAHOO.autocoml.modifySetById("yuiAcInputFolderPath", {
+	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputFolderPath", {
 		table: WE().consts.tables.OBJECT_FILES_TABLE,
-		rootDir: classPaths[value],
+		basedir: classPaths[value],
 		required: true
-	}
-	);
+
+	});
 	document.we_form.elements.FolderID.value = classDirs[value];
 	document.we_form.elements.FolderPath.value = classPaths[value];
 	document.we_form.elements.FolderPath.disabled = !hasClassSubDirs[value];
@@ -56,10 +56,10 @@ function onSelectionTypeChangeJS(value) {
 			}
 			break;
 		default:
-			YAHOO.autocoml.modifySetById("yuiAcInputFolderPath", {
+			WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputFolderPath", {
 				table: value === WE().consts.navigation.DYN_DOCTYPE ? WE().consts.tables.FILE_TABLE : WE().consts.tables.CATEGORY_TABLE,
-				rootDir: "",
-				mayBeEmpty: value === WE().consts.navigation.DYN_DOCTYPE
+				basedir: "",
+				required: value !== WE().consts.navigation.DYN_DOCTYPE
 			}
 			);
 	}
@@ -83,7 +83,7 @@ function onFolderSelectionChangeJS(value) {
 		case WE().consts.navigation.STYPE_DOCLINK:
 			set = {
 				table: WE().consts.tables.FILE_TABLE,
-				cTypes: [
+				contenttypes: [
 					WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML,
 					WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE,
 					WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION,
@@ -94,20 +94,20 @@ function onFolderSelectionChangeJS(value) {
 		case WE().consts.navigation.STYPE_OBJLINK:
 			set = {
 				table: WE().consts.tables.OBJECT_FILES_TABLE,
-				cTypes: [WE().consts.contentTypes.FOLDER,
+				contenttypes: [WE().consts.contentTypes.FOLDER,
 					WE().consts.contentTypes.OBJECT_FILE].join(",")
 			};
 			break;
 		case WE().consts.navigation.STYPE_CATLINK:
 			set = {
 				table: WE().consts.tables.CATEGORY_TABLE,
-				cTypes: ''
+				contenttypes: ''
 			};
 			break;
 	}
 
 
-	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath", set);
+	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputLinkPath", set);
 }
 
 function fieldChooserBut(cmd) {
