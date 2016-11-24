@@ -27,7 +27,7 @@ function we_tag_js(array $attribs){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
+	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	if(!$row){
 		return '';
