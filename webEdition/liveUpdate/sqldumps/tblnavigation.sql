@@ -6,14 +6,15 @@
 
 ###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection="doctype" WHERE IsFolder=1 AND FolderSelection IS NULL;###
 /* query separator */
-###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation MODIFY `FolderSelection` `FolderSelection` enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE `FolderSelection` `FolderSelection` enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
 /* query separator */
 ###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection=SelectionType WHERE IsFolder=0;###
 /* query separator */
 
 ###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE SelectionType DynamicSelection enum('doctype','category','classname') NOT NULL default 'doctype';###
 /* query separator */
-###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE FolderSelection SelectionType enum('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
+###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) ALTER TABLE ###TBLPREFIX###tblnavigation CHANGE `FolderSelection` `SelectionType` ENUM('docLink','objLink','urlLink','catLink') NOT NULL default 'docLink';###
+ALTER TABLE `tblnavigation` CHANGE `SelectionType` `SelectionType` ENUM('urlLink','categfory','catLink','classname','objLink','docLink','doctype') NOT NULL DEFAULT 'docLink';
 /* query separator */
 
 
