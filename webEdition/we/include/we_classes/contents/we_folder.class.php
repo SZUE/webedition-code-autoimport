@@ -389,7 +389,7 @@ class we_folder extends we_root{
 		return (!$userCanChange ? '<table class="default"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
 			'<table class="default">
 <colgroup><col style="width:20px;"/><col style="width:20px;"/><col style="width:100px;"/></colgroup>
-	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[foldername]'), 50, 0, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[foldername]'), 50, 0, 255, 'onchange="pathOfDocumentChanged(true);"') . '</td><td></td><td></td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(0) . '</td></tr>' .
 			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
@@ -533,7 +533,7 @@ class we_folder extends we_root{
 	/**
 	 * Create the folders on the server in the public and the site directory.
 	 * Note: for internal use
-	 * 
+	 *
 	 * @return boolean true on success, false in case of failure
 	 */
 	private function saveToServer(){

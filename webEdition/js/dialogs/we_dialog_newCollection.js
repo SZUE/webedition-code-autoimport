@@ -29,7 +29,7 @@ var dialog = WE().util.getDynamicVar(document, "loadVarWe_dialog_newCollection",
 
 var _EditorFrame = {};
 _EditorFrame.setEditorIsHot = function(){};
-var pathOfDocumentChanged = false;
+//var pathOfDocumentChanged = false;
 
 function we_submitForm(url){
 	var f = document.we_form;
