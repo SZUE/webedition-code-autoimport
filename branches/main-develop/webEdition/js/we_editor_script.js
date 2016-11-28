@@ -162,12 +162,13 @@ function updateCustomerFilterIfNeeded() {
 }
 
 // check If Filename was changed..
-function pathOfDocumentChanged() {
+function pathOfDocumentChanged(setHot) {
 	var _filetext = '';
 	var _filepath = '';
-	var elem = false;
-
-	elem = document.we_form["we_" + doc.docName + "_Filename"]; // documents
+	if (setHot) {
+		we_cmd('setHot');
+	}
+	var elem = document.we_form["we_" + doc.docName + "_Filename"]; // documents
 	if (!elem) { // object
 		elem = document.we_form["we_" + doc.docName + "_Text"];
 	}
@@ -243,6 +244,9 @@ function we_cmd() {
 			if (args[3]) {
 				we_cmd(args[3]);
 			}
+			break;
+		case "pathOfDocumentChanged":
+			this.pathOfDocumentChanged(true);
 			break;
 		case "we_selector_directory":
 		case "we_selector_document":

@@ -490,7 +490,7 @@ class we_objectFile extends we_document{
 		}
 		$this->setUrl();
 		return '<table class="default">
-	<tr><td style="padding-bottom:4px;">' . $this->formInputField("", "Text", g_l('modules_object', '[objectname]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
+	<tr><td style="padding-bottom:4px;">' . $this->formInputField("", "Text", g_l('modules_object', '[objectname]'), 30, 388, 255, 'onchange="pathOfDocumentChanged(true);"') . '</td><td></td><td></td></tr>
 	<tr><td colspan="3" style="padding-bottom:4px;">' . $this->formDirChooser(388, $rootDirId) . '</td></tr>
 	<tr><td colspan="3" style="padding-bottom:4px;">
 			<table class="default">

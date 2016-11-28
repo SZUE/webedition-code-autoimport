@@ -1571,7 +1571,7 @@ class we_object extends we_document{
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		return '<table class="default">
-	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
+	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="pathOfDocumentChanged(true);"') . '</td><td></td><td></td></tr>
 </table>';
 	}
 
@@ -2116,8 +2116,8 @@ class we_object extends we_document{
 		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier ? '_' . $identifier : '');
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 
-		// Important: custom callback commands must call we_cmd('object_selectDirectory_callback') at the beginning
-		$cmd = $cmd ?: 'object_selectDirectory_callback';
+		// Important: custom callback commands must call we_cmd('pathOfDocumentChanged') at the beginning
+		$cmd = $cmd ?: 'pathOfDocumentChanged';
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . $rootDirID . "')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $pathID), $button);

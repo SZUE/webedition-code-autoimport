@@ -298,7 +298,7 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$weSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
 			$weSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
-			$weSuggest->setDoOnItemSelect('');
+			$weSuggest->setjsCommandOnItemSelect('');
 			$weSuggest->setMaxResults(7);
 			$weSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
 			$weSuggest->setSelector(weSuggest::DocSelector);

@@ -126,10 +126,6 @@ we_cmd_modules.object = function (args, url) {
 		case "object_obj_search":
 			we_repl(window.load, url, args[0]);
 			break;
-		case "object_selectDirectory_callback":
-			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-			this.pathOfDocumentChanged();
-			break;
 		case 'fieldHref_selectIntHref_callback':
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			if(args[2]){

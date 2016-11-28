@@ -82,7 +82,6 @@ class weSuggest{
 	];
 	private $table = FILE_TABLE;
 	private $width = 280;
-	private $doOnItemSelect = '';
 	private $jsCommandOnItemSelect = '';
 	private $isDropFromTree = false;
 	private $isDropFromExt = false;
@@ -121,6 +120,7 @@ class weSuggest{
 		$this->inputAttribs['data-selector'] = $this->selector;
 		$this->inputAttribs['data-currentDocumentType'] = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$this->inputAttribs['data-currentDocumentID'] = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
+		$this->inputAttribs['data-onSelect'] = $this->jsCommandOnItemSelect;
 
 		if($this->required){
 			$this->inputAttribs['required'] = 'required';
@@ -187,7 +187,6 @@ class weSuggest{
 			$this->selector = self::DirSelector;
 			$this->table = FILE_TABLE;
 			$this->width = 280;
-			$this->doOnItemSelect = '';
 			$this->jsCommandOnItemSelect = '';
 		}
 		$this->acId = '';
@@ -285,12 +284,7 @@ class weSuggest{
 		$this->contentType = is_array($val) ? implode(',', $val) : $val;
 	}
 
-//FIXME: not implemented
-	public function setDoOnItemSelect($val){
-		$this->doOnItemSelect = $val;
-	}
-
-//FIXME: not implemented
+	/*if some other item is selected this we-cmd is called*/
 	public function setjsCommandOnItemSelect($val){
 		$this->jsCommandOnItemSelect = $val;
 	}

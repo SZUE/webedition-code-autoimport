@@ -294,7 +294,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$weSuggest->setInput($textname, $path);
 		if($Pathname === 'ParentPath'){
-			$weSuggest->setDoOnItemSelect('if(pathOfDocumentChanged) { pathOfDocumentChanged(); }');
+			$weSuggest->setjsCommandOnItemSelect('pathOfDocumentChanged');
 		}
 		//FIXME: onblur!
 		$weSuggest->setLabel($label ?: '');
@@ -475,7 +475,7 @@ abstract class we_root extends we_class{
 			$this->Filename = $this->Filename ?: current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
 		} else {
-			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); ') . 'if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
+			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="if(self.pathOfDocumentChanged){pathOfDocumentChanged(' . ($notSetHot ? 'false' : 'true') . ');}"');
 		}
 		return $disable ? ($this->Path) : '
 <table class="default">

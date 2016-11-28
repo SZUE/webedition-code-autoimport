@@ -447,7 +447,8 @@ class we_collection extends we_root{
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::EDIT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnEdit'), 0);
 		$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', '', 0, 0, '', '', false, false, '', false, '', 'collectionItem_btnAddFromTree'), 0);
 		//$weSuggest->setOpenButton($editButton, 4);
-		$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
+		//FIXME: this function is not implemented: repaintAndRetrieveCsv
+		//$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
 		$btnSelect = we_html_button::create_button(we_html_button::SELECT, '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnSelect');
 		$btnAdd = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '', '', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnAdd');
@@ -507,7 +508,8 @@ class we_collection extends we_root{
 		$weSuggest->setWidth(500);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setSelectButton(null, 0);
-		$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
+		//FIXME: this function is not implemented: repaintAndRetrieveCsv
+		//$weSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$weSuggest->setAdditionalButton('', 0);
 		$divRowContent = we_html_element::htmlDiv(['class' => 'divContent'], we_html_element::htmlDiv(['class' => 'colContentInput'], $weSuggest->getHTML()) .
 				we_html_element::htmlDiv(['class' => 'colContentTextOnly'])
