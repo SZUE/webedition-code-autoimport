@@ -25,5 +25,6 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataO
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	new weTagDataOption('top'),
+    new weTagDataOption('listview'),
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('creator', weTagData_selectAttribute::getTrueFalse(), false, '');
