@@ -12,14 +12,10 @@ class HintAboutOnlineInstallation extends leStep{
 
 		$this->setHeadline($this->Language['headline']);
 
-		$Name = 'acceptConnection';
-		$Value = 1;
 		$Attributes = array(
 			"onClick" => "top.leForm.evalCheckBox(this, 'top.leButton.enable(\'next\');', 'top.leButton.disable(\'next\');');",
 		);
-		$Text = $this->Language["labelAccept"];
-		$Checked = false;
-		$AcceptConnection = leCheckbox::get($Name, $Value, $Attributes, $Text, $Checked);
+		$AcceptConnection = leCheckbox::get('acceptConnection', 1, $Attributes, $this->Language["labelAccept"], false);
 
 		if(isset($_SESSION['leChangedMod'])){
 			$Template->addError(sprintf($this->Language['chmod_hint'], $_SESSION['leChangedMod']));

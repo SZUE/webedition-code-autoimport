@@ -27,21 +27,16 @@ class ConnectionCheck extends leStep{
 				$this->AutoContinue = 10;
 			}
 		} else {
-			$errorMessage = $this->Language["noConnection"];
-			if(isset($Response)){
-				$errorMessage .= str_replace("</body></html>", "", stristr($Response, "<body>"));
-			}
-			$errorMessage .= "<hr /><h1>" . $this->Language["connectionInfo"] . ":</h1>";
-			$errorMessage .= "<li>" . $this->Language["availableConnectionTypes"] . ": ";
-			$errorMessage .= "<ul>";
-			if(ini_get("allow_url_fopen") == "1"){
-				$errorMessage .= "<li>fopen</li>";
-			}
-			if(is_callable("curl_exec")){
-				$errorMessage .= "<li>curl</li>";
-			}
-			$errorMessage .= "</ul>";
-			$errorMessage .= "<li>" . $this->Language["connectionType"] . ": ";
+			$errorMessage = $this->Language["noConnection"] .
+				(isset($Response) ?
+				str_replace("</body></html>", "", stristr($Response, "<body>")) :
+				'') .
+				"<hr /><h1>" . $this->Language["connectionInfo"] . ":</h1>
+<li>" . $this->Language["availableConnectionTypes"] . ": <ul>" .
+				(ini_get("allow_url_fopen") == "1" ? "<li>fopen</li>" : '') .
+				(is_callable("curl_exec") ? "<li>curl</li>" : '') .
+				"</ul>" .
+				"<li>" . $this->Language["connectionType"] . ": ";
 			if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use'] == "1"){
 				$errorMessage .= "Proxy (fsockopen)" .
 					"<ul>" .
@@ -84,10 +79,10 @@ class ConnectionCheck extends leStep{
 			} else {
 				$errorMessage .= liveUpdateHttp::getHttpOption();
 			}
-			$errorMessage .= "</li>";
-			$errorMessage .= "<li>" . $this->Language["addressResolution"] . " " . $this->Language["updateServer"] . ":</li>";
-			$errorMessage .= "<ul>";
-			$errorMessage .= "<li>" . $this->Language["hostName"] . ": " . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'] . "</li>";
+			$errorMessage .= "</li>" .
+				"<li>" . $this->Language["addressResolution"] . " " . $this->Language["updateServer"] . ":</li>" .
+				"<ul>" .
+				"<li>" . $this->Language["hostName"] . ": " . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'] . "</li>";
 			if(is_callable("gethostbynamel")){
 				$errorMessage .= "<li>" . $this->Language["dnsResolutionTest"] . ": ";
 				if($ipAddr = gethostbynamel($GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'])){

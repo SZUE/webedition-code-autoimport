@@ -6,13 +6,13 @@ class ChooseApplication extends leStep{
 	function execute(&$Template = ''){
 
 		$Options = array();
-		$JSString = 'var information = new Array();' . "\n";
+		$JSString = 'var information = [];';
 		foreach($GLOBALS['leApplicationList'] as $Key => $Value){
 			$Options[$Key] = $Value['Name'];
-			$JSString .= 'information["' . $Key . '"] = new Array();' . "\n";
-			$JSString .= 'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n";
-			$JSString .= 'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n";
-			$JSString .= 'information["' . $Key . '"]["Longdescription"] = "' . $Value['Longdescription'] . '";' . "\n";
+			$JSString .= 'information["' . $Key . '"] = new Array();' . "\n".
+				'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n".
+				'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n".
+				'information["' . $Key . '"]["Longdescription"] = "' . $Value['Longdescription'] . '";' . "\n";
 		}
 		$temp = $Options;
 

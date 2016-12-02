@@ -91,11 +91,9 @@ class leTemplate{
 		$ReturnValue = "";
 
 		foreach($ButtonNames as $Button){
-			if(in_array($Button, $CurrentStep->EnabledButtons)){
-				$ReturnValue .= 'top.leButton.enable("' . $Button . '");';
-			} else {
-				$ReturnValue .= 'top.leButton.disable("' . $Button . '");';
-			}
+			$ReturnValue .= (in_array($Button, $CurrentStep->EnabledButtons) ?
+				'top.leButton.enable("' . $Button . '");' :
+				'top.leButton.disable("' . $Button . '");');
 		}
 
 		return $ReturnValue;
@@ -103,11 +101,11 @@ class leTemplate{
 
 	function getOutput(&$CurrentStep){
 		if($CurrentStep->liveUpdateHttpResponse){
-			$Output = "<script>"
-				. $this->getButtonJs($CurrentStep)
-				. $this->getProgressBarJs($CurrentStep)
-				. "</script>"
-				. $CurrentStep->liveUpdateHttpResponse->getOutput();
+			$Output = "<script>" .
+				$this->getButtonJs($CurrentStep) .
+				$this->getProgressBarJs($CurrentStep) .
+				"</script>" .
+				$CurrentStep->liveUpdateHttpResponse->getOutput();
 			return $Output;
 		}
 
@@ -164,9 +162,8 @@ class leTemplate{
 EOF;
 
 			return $Output;
-		} else {
-			return $this->Output;
 		}
+		return $this->Output;
 	}
 
 }

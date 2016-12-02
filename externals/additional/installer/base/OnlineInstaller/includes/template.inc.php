@@ -6,7 +6,7 @@
 		<title><?php
 			echo $GLOBALS['lang']['Template']['title'];
 			if(isset($_REQUEST['debug']) && isset($LU_Version)){
-				echo " &bull; Version " . $LU_Version;
+				echo ' &bull; Version ' . $LU_Version;
 			}
 			?></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -107,14 +107,14 @@
 				<div id="leCenter">
 					<div id="leHead">
 						<div id="leTitle">
-<?php echo $GLOBALS['lang']['Template']['headline']; ?>
+							<?php echo $GLOBALS['lang']['Template']['headline']; ?>
 						</div>
 						<div id="leEmoticon" style="padding-top:12px;">
 						</div>
 					</div>
 					<div id="leMain">
 						<div id="leStatus">
-<?php echo leStatus::get($OnlineInstaller, 'leStatus'); ?>
+							<?php echo leStatus::get($OnlineInstaller, 'leStatus'); ?>
 						</div>
 						<div id="leContent">
 
@@ -124,11 +124,13 @@
 						</div>
 					</div>
 					<div id="leFoot">
-						<?php echo leButton::get('back', $GLOBALS['lang']['Buttons']['back'], 'javascript:leForm.back();', 100, 22, "", true, false); ?>
-<?php echo leButton::get('next', $GLOBALS['lang']['Buttons']['next'], 'javascript:leForm.next();', 100, 22, "", false, false); ?>
-<?php echo leProgressBar::get('leProgress'); ?>
-<?php echo leButton::get('reload', 'function_reload.gif', 'javascript:leForm.reload();', 40, 22, "", true, false); ?>
-<?php echo leButton::get('print', $GLOBALS['lang']['Buttons']['print'], 'javascript:window.print();', 100, 22, "", false, false); ?>
+						<?php
+						echo leButton::get('back', $GLOBALS['lang']['Buttons']['back'], 'javascript:leForm.back();', 100, 22, "", true, false) .
+						leButton::get('next', $GLOBALS['lang']['Buttons']['next'], 'javascript:leForm.next();', 100, 22, "", false, false) .
+						leProgressBar::get('leProgress') .
+						leButton::get('reload', 'function_reload.gif', 'javascript:leForm.reload();', 40, 22, "", true, false) .
+						leButton::get('print', $GLOBALS['lang']['Buttons']['print'], 'javascript:window.print();', 100, 22, "", false, false);
+						?>
 					</div>
 				</div>
 			</div>

@@ -5,7 +5,6 @@ class DetermineFilesInstaller extends leStep{
 	var $ProgressBarVisible = true;
 
 	function execute(&$Template = ''){
-
 		// start the session on server
 		if(!isset($_REQUEST["liveUpdateSession"]) || $_REQUEST["liveUpdateSession"] == ""){
 

@@ -6,11 +6,7 @@ class leStatus{
 
 		$StatusBar = "<ul id=\"{$id}Bar\">";
 
-		if($Wizard != null){
-			$NextWizardStyle = "FinishedStep";
-		} else {
-			$NextWizardStyle = "UpcomingStep";
-		}
+		$NextWizardStyle = ($Wizard != null ? "FinishedStep" : "UpcomingStep");
 
 		// wizardnames/stepnames for the progress on left side
 		foreach($OnlineInstaller->Wizards as $_wizard){
@@ -28,11 +24,7 @@ class leStatus{
 
 			$Steps = $_wizard->WizardSteps;
 			if(!empty($Steps)){
-				if($Step != null){
-					$NextStepStyle = "FinishedStep";
-				} else {
-					$NextStepStyle = "UpcomingStep";
-				}
+				$NextStepStyle = ($Step != null ? "FinishedStep" : "UpcomingStep");
 
 				foreach($Steps as $_step){
 					if($Step == $_step->Name){

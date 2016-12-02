@@ -239,7 +239,6 @@ class leOnlineInstaller{
 	}
 
 	function getFirstStepUrl(){
-
 		$leWizard = $this->Wizards[0]->Name;
 		$leStep = $this->Wizards[0]->WizardSteps[0]->Name;
 
@@ -250,7 +249,6 @@ class leOnlineInstaller{
 	 * @return le_OnlineInstaller_WizardStep
 	 */
 	function &getNextWizardStep(){
-
 		$wizardStepInformation = $this->_getCurrentWizardStepInformation();
 		$currentPosition = $wizardStepInformation["position"];
 

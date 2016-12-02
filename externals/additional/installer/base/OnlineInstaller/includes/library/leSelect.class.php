@@ -7,13 +7,13 @@ class leSelect{
 		$_attribs = "";
 		$_options = "";
 
-		while(list($_key, $_val) = each($attribs)){
+		foreach($attribs as $_key => $_val){
 			$_attribs .= " $_key=\"$_val\"";
 		}
 
-		while(list($_key, $_val) = each($options)){
-			$_options .= " $_key=\"$_val\"";
-			$_options .= '	<option value="' . $_key . '"' . ($selected == $_key ? ' selected="selected"' : '') . '>' . $_val . '</option>';
+		foreach($options as $_key => $_val){
+			$_options .= " $_key=\"$_val\"" .
+				'	<option value="' . $_key . '"' . ($selected == $_key ? ' selected="selected"' : '') . '>' . $_val . '</option>';
 		}
 
 		$_attribs .= " class=\"textselect\" onblur=\"this.className='textselect';\" onfocus=\"this.className='textselectselected'\"";

@@ -17,8 +17,6 @@ class liveUpdateTemplates{
 	 * @return string
 	 */
 	function getContainer($headline, $content){
-
-
 		return "
 		<div id=\"leContent\" class=\"defaultfont\">
 			<h1>{$headline}</h1>
@@ -34,7 +32,6 @@ class liveUpdateTemplates{
 	 * @return string
 	 */
 	function getHtmlHead(){
-
 		return "";
 	}
 

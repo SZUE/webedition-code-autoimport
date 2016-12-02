@@ -5,7 +5,6 @@ class ConfigureInstaller extends leStep{
 	var $EnabledButtons = array('next');
 
 	function execute(&$Template = ''){
-
 		// update the steps on the left side.
 		// ulInstallerSteps
 		$newLi = leStatus::get($GLOBALS['OnlineInstaller'], 'leStatus', $this->Wizard->Name, $this->Name, false);

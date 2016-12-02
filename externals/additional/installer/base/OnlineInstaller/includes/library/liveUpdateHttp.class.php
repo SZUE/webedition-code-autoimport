@@ -3,17 +3,12 @@
 class liveUpdateHttp{
 
 	function getServerProtocol($addslashes = true){
+		$prot = (isset($_SERVER["HTTPS"]) && strtoupper($_SERVER["HTTPS"]) == "ON" ? "https" : "http");
 
-		$_prot = "http";
-
-		if(isset($_SERVER["HTTPS"]) && strtoupper($_SERVER["HTTPS"]) == "ON"){
-			$_prot = "https";
-		}
 		if($addslashes){
-			return $_prot . "://";
-		} else {
-			return $_prot;
+			return $prot . "://";
 		}
+		return $prot;
 	}
 
 	static function connectFopen($server, $url, $parameters = array()){

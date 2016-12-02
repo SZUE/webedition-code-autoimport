@@ -53,21 +53,21 @@ class le_MySQL{
 
 	function connect($Database = "", $Host = "", $User = "", $Password = ""){
 		/* Handle defaults */
-		if("" == $Database){
+		if(!$Database){
 			$Database = $this->Database;
 		}
-		if("" == $Host){
+		if(!$Host){
 			$Host = $this->Host;
 		}
-		if("" == $User){
+		if(!$User){
 			$User = $this->User;
 		}
-		if("" == $Password){
+		if(!$Password){
 			$Password = $this->Password;
 		}
 
 		/* establish connection, select database */
-		if(0 == $this->Link_ID){
+		if(!$this->Link_ID){
 
 			$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password, $Database);
 			if(!$this->Link_ID){
@@ -142,7 +142,7 @@ class le_MySQL{
 			return 0;
 		}
 
-		$this->Record = @mysqli_fetch_array($this->Query_ID);
+		$this->Record = mysqli_fetch_array($this->Query_ID);
 		$this->Row += 1;
 		$this->Errno = mysqli_errno($this->Link_ID);
 		$this->Error = mysqli_error($this->Link_ID);
@@ -416,19 +416,19 @@ class le_MySQL_DB extends le_MySQL{
 	function connect($Database = "", $Host = "", $User = "", $Password = "", $Charset = ""){
 
 		/* Handle defaults */
-		if("" == $Database){
+		if(!$Database){
 			$Database = $this->Database;
 		}
-		if("" == $Host){
+		if(!$Host){
 			$Host = $this->Host;
 		}
-		if("" == $User){
+		if(!$User){
 			$User = $this->User;
 		}
-		if("" == $Password){
+		if(!$Password){
 			$Password = $this->Password;
 		}
-		if("" == $Charset){
+		if(!$Charset){
 			$Charset = $this->Charset;
 		}
 

@@ -3,22 +3,6 @@
 class le_OnlineInstaller_Make{
 
 	/**
-	 * PHP5 Constructor
-	 *
-	 */
-	function __construct(){
-
-	}
-
-	/**
-	 * Desctructor
-	 *
-	 */
-	function __destruct(){
-
-	}
-
-	/**
 	 * executes the main routine
 	 * writes the installer file which includes all files located in
 	 * $directory directory and save it to $saveTo directory with the
@@ -36,7 +20,7 @@ class le_OnlineInstaller_Make{
 			$directory .= (!preg_match("|/$|", $directory) ? "/" : "");
 		}
 		if(!is_null($saveTo) || !empty($saveTo)){
-			$saveTo .=!preg_match("|/$|", $saveTo) ? "/" : "";
+			$saveTo .= !preg_match("|/$|", $saveTo) ? "/" : "";
 		}
 
 		$lang['error'] = "An error occured!";
@@ -240,26 +224,27 @@ header("Location: " . \$http . \$host . \$cleanUp . \$parameters);
 EOF;
 		if(is_null($saveTo)){
 			return $content;
-		} else {
-			$fp = fopen($saveTo . "OnlineInstaller.php", "wb+");
-			if(!$fp){
-				return false;
-			}
-
-			// put the content into the file
-			fputs($fp, $content);
-
-			// save the file
-			if(!fclose($fp)){
-				return false;
-			}
-
-			header("Content-Type: application/octet-stream");
-			header("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
-			header("Content-Disposition: attachment; filename=OnlineInstaller.php");
-			readfile($saveTo . "OnlineInstaller.php");
-			return true;
 		}
+		$fp = fopen($saveTo . "OnlineInstaller.php", "wb+");
+		if(!$fp){
+			return false;
+		}
+
+		// put the content into the file
+		fputs($fp, $content);
+
+		// save the file
+		if(!fclose($fp)){
+			return false;
+		}
+/*
+		header("Content-Type: application/octet-stream");
+		header("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
+		header("Content-Disposition: attachment; filename=OnlineInstaller.php");
+		readfile($saveTo . "OnlineInstaller.php");
+ */
+		echo "done";
+		return true;
 	}
 
 	/**
@@ -278,7 +263,7 @@ EOF;
 		if(!file_exists($dirname) || !is_dir($dirname) || stristr($dirname, ".svn")){
 			return $files;
 		}
-		$dirname .=!preg_match("|/$|", $dirname) ? "/" : "";
+		$dirname .= !preg_match("|/$|", $dirname) ? "/" : "";
 		$d = dir($dirname);
 		while(false !== ($entry = $d->read())){
 			//ignore Tempfiles
@@ -483,7 +468,7 @@ EOF;
 		$SoftwareVersion = "Version " . $version;
 		$SoftwareVersionFiller = str_repeat(" ", $HeaderCols - strlen($SoftwareVersion));
 
-		$PHPVersion = "PHP version 5.2.4 or greater";
+		$PHPVersion = "PHP version 5.3 or greater";
 		$PHPVersionFiller = str_repeat(" ", $HeaderCols - strlen($PHPVersion));
 
 		$AvailableSoftware = "Applications: webEdition, pageLogger";
@@ -513,4 +498,4 @@ EOF;
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
-$le_OnlineInstaller->execute('./base', './out/', '2.9.4.1');
+$le_OnlineInstaller->execute('./base', './out/', '2.9.4.2');
