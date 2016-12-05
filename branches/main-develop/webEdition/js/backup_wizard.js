@@ -29,7 +29,7 @@ var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-bac
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	f.target = target;
@@ -47,7 +47,7 @@ function doClicked(checked, opt) {
 				if (!document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.temporary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.temporary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 12:
@@ -56,7 +56,7 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_object.value = 1;
 					document.we_form.handle_object.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.versions_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.versions_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 13:
@@ -67,14 +67,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_object.checked = true;
 					document.we_form.handle_versions.value = 1;
 					document.we_form.handle_versions.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.versions_binarys_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.versions_binarys_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 14:
 				if (!document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.binary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.binary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 55:
@@ -83,14 +83,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_object.value = 1;
 					document.we_form.handle_object.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.schedule_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.schedule_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 30:
 				if (WE().consts.tables.SHOP_ORDER_TABLE && WE().consts.tables.CUSTOMER_TABLE && !document.we_form.handle_customer.checked) {
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 35:
@@ -99,14 +99,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_user.value = 1;
 					document.we_form.handle_user.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.workflow_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.workflow_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 40:
 				if (WE().consts.tables.MESSAGES_TABLE && !document.we_form.handle_user.checked) {
 					document.we_form.handle_user.value = 1;
 					document.we_form.handle_user.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.todo_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.todo_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 45:
@@ -117,14 +117,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_object.checked = true;
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.newsletter_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.newsletter_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 50:
 				if (WE().consts.tables.BANNER_TABLE && !document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					top.we_showMessage(WE().consts.g_l.backupWizard.banner_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard.banner_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 
@@ -169,7 +169,7 @@ function doClicked(checked, opt) {
 			}
 			if (mess !== "") {
 				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.core_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-				top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 
@@ -189,7 +189,7 @@ function doClicked(checked, opt) {
 				}
 				if (mess !== "") {
 					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.object_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-					top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 			break;
@@ -201,7 +201,7 @@ function doClicked(checked, opt) {
 				}
 				if (mess !== "") {
 					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.versions_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-					top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 			break;
@@ -209,7 +209,7 @@ function doClicked(checked, opt) {
 		case 14:
 			if (mess !== "") {
 				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.binary_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-				top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 		case 20:
@@ -224,7 +224,7 @@ function doClicked(checked, opt) {
 				}
 				if (mess !== "") {
 					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.user_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-					top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 			break;
@@ -240,7 +240,7 @@ function doClicked(checked, opt) {
 				}
 				if (mess !== "") {
 					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.customer_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
-					top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 			break;
@@ -314,7 +314,7 @@ function delSelected() {
 			top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=cmd&operation_mode=deletebackup&bfile=" + sel.options[sel.selectedIndex].value;
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
+		WE().util.showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
 	}
 }
 
@@ -334,7 +334,7 @@ function startImport(isFileReady) {
 			document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php";
 			document.we_form.submit();
 		} else {
-			top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
+			WE().util.showMessage(WE().consts.g_l.backupWizard.nothing_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
 		}
 	} else {
 		if (document.we_form.backup_select.value) {
@@ -344,7 +344,7 @@ function startImport(isFileReady) {
 			document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php";
 			document.we_form.submit();
 		} else {
-			top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
+			WE().util.showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
 		}
 	}
 }

@@ -25,7 +25,6 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
-
 $cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 $id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);

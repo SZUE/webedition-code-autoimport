@@ -599,7 +599,7 @@ class we_backup_wizard{
 						$head.=we_html_element::jsElement('
 function doExport() {
 	if((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
-		' . we_message_reporting::getShowMessageCall(g_l('backup', '[save_not_checked]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+		WE().util.showMessage(WE().consts.g_l.backupWizard.save_not_checked, WE().consts.message.WE_MESSAGE_WARNING, window);
 	}else {
 		top.busy.location="' . $this->frameset . '&pnt=busy&operation_mode=busy&step=2";
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
@@ -696,16 +696,16 @@ function press_yes() {
 		switch(we_base_request::_(we_base_request::STRING, "operation_mode", '-1')){
 			case '-1':
 				return;
-			case "rebuild":
+			case 'rebuild':
 				return we_html_element::jsElement('
-new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '","rebuildwin",-1,-1,600,130,true,0,true);
+new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText="+WE().consts.g_l.backupWizard.finished_success,"rebuildwin",-1,-1,600,130,true,0,true);
 top.close();');
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = [];
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
 				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
-			case "deletebackup":
+			case 'deletebackup':
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){
 					return we_message_reporting::jsMessagePush(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -738,13 +738,12 @@ top.close();');
 		$retry = 3;
 
 		return we_html_element::jsElement('
-
 function reloadFrame(){
 	var reload = ' . (we_base_request::_(we_base_request::INT, 'reload', 0) + 1) . ';
 	if(reload < ' . $retry . '){
 		top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=' . ($mode == self::RECOVER ? 'import' : 'export') . '&reload="+reload;
-	} else{' .
-				we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	} else{
+		WE().util.showMessage(WE().consts.g_l.backupWizard.error_timeout, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -811,20 +810,20 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 		$weBackupWizard = new self(we_backup_wizard::BACKUP);
 
 		switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
-			case "frameset":
+			case 'frameset':
 				echo $weBackupWizard->getHTMLFrameset();
 				break;
-			case "body":
-				echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, "step", 1));
+			case 'body':
+				echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, 'step', 1));
 				break;
-			case "cmd":
+			case 'cmd':
 				echo we_html_tools::getHtmlTop('', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
 				flush();
 				break;
-			case "busy":
+			case 'busy':
 				echo $weBackupWizard->getHTMLBusy();
 				break;
-			case "extern":
+			case 'extern':
 				echo $weBackupWizard->getHTMLExtern();
 				break;
 			default:
@@ -862,37 +861,40 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.backupWizard={
-	temporary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_temporary_dep]')) . '",
-	versions_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_dep]')) . '",
-	versions_binarys_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_binarys_dep]')) . '",
-	binary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_binary_dep]')) . '",
-	schedule_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_schedule_dep]')) . '",
-	shop_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_shop_dep]')) . '",
-	workflow_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_workflow_dep]')) . '",
-	todo_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_todo_dep]')) . '",
-  newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
 	banner_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_banner_dep]')) . '",
-	workflow_data:"' . g_l('backup', '[' . $mode . '_workflow_data]') . '",
-	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
-	schedule_data:"' . g_l('backup', '[' . $mode . '_schedule_data]') . '",
-	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
-	versions_binarys_data:"' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '",
-	temporary_data:"' . g_l('backup', '[' . $mode . '][temporary_data]') . '",
-	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
-	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
-	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
-	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
-	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
-	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
-	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
-	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
 	binary_data:"' . g_l('backup', '[' . $mode . '_binary_data]') . '",
-	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
+	binary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_binary_dep]')) . '",
+	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
 	customer_data:"' . g_l('backup', '[' . $mode . '_customer_data]') . '",
+	del_backup_confirm:"' . g_l('backup', '[del_backup_confirm]') . '",
 	delold_confirm:"' . g_l('backup', '[delold_confirm]') . '",
+	error_timeout:"'.g_l('backup', '[error_timeout]').'",
+	finished_success:"'.g_l('backup', '[finished_success]').'",
+	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
+	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
+  newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
 	nothing_selected:"' . g_l('backup', '[nothing_selected]') . '",
 	nothing_selected_fromlist:"' . g_l('backup', '[nothing_selected_fromlist]') . '",
-	del_backup_confirm:"' . g_l('backup', '[del_backup_confirm]') . '",
+	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
+	save_not_checked:"'.g_l('backup', '[save_not_checked]').'",
+	schedule_data:"' . g_l('backup', '[' . $mode . '_schedule_data]') . '",
+	schedule_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_schedule_dep]')) . '",
+	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
+	shop_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_shop_dep]')) . '",
+	temporary_data:"' . g_l('backup', '[' . $mode . '][temporary_data]') . '",
+	temporary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_temporary_dep]')) . '",
+	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
+	todo_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_todo_dep]')) . '",
+	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
+	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
+	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
+	versions_binarys_data:"' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '",
+	versions_binarys_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_binarys_dep]')) . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	versions_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_dep]')) . '",
+	workflow_data:"' . g_l('backup', '[' . $mode . '_workflow_data]') . '",
+	workflow_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_workflow_dep]')) . '",
 };
 ';
 	}

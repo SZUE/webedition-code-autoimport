@@ -49,7 +49,7 @@ function getPreferencesFooter(){
 	return we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%;'], we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
 }
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(we_tabs::CSS) .
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 	we_html_element::jsScript(JS_DIR . 'preferences_frameset.js', 'self.focus();', ['id' => 'loadVarPreferences_frameset', 'data-prefData' => setDynamicVar([
 			'tabs' => array_keys($GLOBALS['tabs']),
 			'validTabs' => $validTabs,

@@ -476,17 +476,17 @@ WE().consts.g_l.glossary={
 };
 
 WE().consts.g_l.glossary.view={
-	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
 	delete_alert:	"' . g_l('modules_glossary', '[delete_alert]') . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_perms]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
 	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
+	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
 };
 WE().consts.glossary={
-	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
 	TYPE_ABBREVATION:"' . we_glossary_glossary::TYPE_ABBREVATION . '",
 	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
+	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
 };
 ';
 	}

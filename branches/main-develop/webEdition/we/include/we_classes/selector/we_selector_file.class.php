@@ -383,36 +383,36 @@ class we_selector_file{
 	public static function getJSLangConsts(){
 		return '
 WE().consts.g_l.fileselector = {
-	edit_file_nok: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
-	edit_file_is_folder: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '",
 	already_root: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')) . '",
-	deleteQuestion:"' . g_l('fileselector', '[deleteQuestion]') . '",
-	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
 	date_format:"' . date(g_l('date', '[format][default]')) . '",
+	deleteQuestion:"' . g_l('fileselector', '[deleteQuestion]') . '",
+	edit_file_is_folder: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '",
+	edit_file_nok: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
 	folder:"' . g_l('contentTypes', '[folder]') . '",
-	newbannergroup:"' . g_l('modules_banner', '[newbannergroup]') . '",
 	newFolderExport:"' . g_l('export', '[newFolder]') . '",
-	newFolderVoting:"' . g_l('modules_voting', '[newFolder]') . '",
 	newFolderNavigation:"' . g_l('navigation', '[newFolder]') . '",
+	newFolderVoting:"' . g_l('modules_voting', '[newFolder]') . '",
+	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
+	newbannergroup:"' . g_l('modules_banner', '[newbannergroup]') . '",
 };';
 	}
 
 	public static function getJSConsts(){
 		return 'WE().consts.selectors={
-	DORENAMEFOLDER:' . self::DORENAMEFOLDER . ',
-	CREATEFOLDER:' . self::CREATEFOLDER . ',
 	CMD:' . self::CMD . ',
-	DEL:' . self::DEL . ',
-	PROPERTIES:' . self::PROPERTIES . ',
-	PREVIEW:' . self::PREVIEW . ',
-	NEWFOLDER:' . self::NEWFOLDER . ',
-	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
+	CREATEFOLDER:' . self::CREATEFOLDER . ',
 	CREATE_CAT:' . self::CREATE_CAT . ',
+	DEL:' . self::DEL . ',
+	DEL:' . self::DEL . ',
+	DORENAMEFOLDER:' . self::DORENAMEFOLDER . ',
 	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
+	NEWFOLDER:' . self::NEWFOLDER . ',
+	PREVIEW:' . self::PREVIEW . ',
+	PROPERTIES:' . self::PROPERTIES . ',
+	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
 	SETDIR:' . self::SETDIR . ',
 	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
   VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
-	DEL:' . self::DEL . ',
 };
 ';
 	}

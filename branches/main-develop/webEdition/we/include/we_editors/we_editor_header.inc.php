@@ -124,7 +124,7 @@ switch($we_doc->ContentType){
 	default:
 }
 
-echo we_html_tools::getHtmlTop('', '', '',  we_html_element::cssLink(we_tabs::CSS).we_html_element::jsScript(JS_DIR . 'we_editor_header.js'), we_html_element::htmlBody(array_merge($we_doc->getEditorBodyAttributes(we_root::EDITOR_HEADER), [
+echo we_html_tools::getHtmlTop('', '', '',  we_html_element::cssLink(CSS_DIR . 'we_tab.css').we_html_element::jsScript(JS_DIR . 'we_editor_header.js'), we_html_element::htmlBody(array_merge($we_doc->getEditorBodyAttributes(we_root::EDITOR_HEADER), [
 		'id' => "eHeaderBody",
 		'onresize' => "weTabs.setFrameSize()",
 		'onload' => '_EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .

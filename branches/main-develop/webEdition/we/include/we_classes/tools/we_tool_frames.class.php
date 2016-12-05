@@ -70,7 +70,7 @@ abstract class we_tool_frames extends we_modules_frame{
 				'</div>'
 		);
 
-		return $this->getHTMLDocument($body, we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'we_tool_frames_tab.js'));
+		return $this->getHTMLDocument($body, we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'we_tool_frames_tab.js'));
 	}
 
 	protected function getHTMLEditorBody(){

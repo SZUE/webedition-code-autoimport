@@ -380,9 +380,9 @@ class we_collection extends we_root{
 
 		return 'WE().consts.collection = {
 			blankItem : {
+				grid : \'' . strtr(self::makeGridItem($placeholders), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
 				list : \'' . strtr(self::makeListItem($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
 				listMinimal : \'' . strtr(self::makeListItemMinimal($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
-				grid : \'' . strtr(self::makeGridItem($placeholders), ["'" => "\'", "\r" => '', "\n" => '']) . '\'
 			},
 		};';
 	}

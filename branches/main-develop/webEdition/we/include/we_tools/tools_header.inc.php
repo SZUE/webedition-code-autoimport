@@ -41,8 +41,9 @@ foreach($menuItems as $menuItem){
 	}
 }
 
-echo we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+echo we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+ we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+ we_html_element::jsElement('
 var current = "' . $tool . '";
 function setTab(tool) {
 	if (top.content.hot) {

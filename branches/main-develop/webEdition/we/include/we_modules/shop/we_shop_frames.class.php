@@ -192,8 +192,9 @@ class we_shop_frames extends we_modules_frame{
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
 		$textPost = !empty($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
 
-		$tab_head = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+		$tab_head = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 function setTab(tab) {
 	switch (tab) {
 		case ' . self::TAB_OVERVIEW . ':
@@ -249,8 +250,9 @@ function setTab(tab) {
 			}
 		}
 
-		$tab_head = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+		$tab_head = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 function setTab(tab) {
 	switch (tab) {
 		case ' . self::TAB_ADMIN1 . ':
