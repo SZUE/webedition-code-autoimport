@@ -89,8 +89,9 @@ class we_search_frames extends we_modules_frame{
 		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, self::TAB_PROPERTIES, ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
 
 		$tabNr = $this->getTab();
-		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . 'top.content.activ_tab = ' . $tabNr . ';
+		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('top.content.activ_tab = ' . $tabNr . ';
 function setTab(tab) {
 	switch (tab) {
 		default: // just toggle content to show

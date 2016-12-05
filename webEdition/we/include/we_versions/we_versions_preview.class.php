@@ -565,8 +565,9 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 	public function showHtml(){
 		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ?: DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
-			we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+			we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 var activ_tab = 1;
 
 function toggle(id) {

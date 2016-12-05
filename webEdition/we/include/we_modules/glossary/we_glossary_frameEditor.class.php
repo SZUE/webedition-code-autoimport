@@ -31,8 +31,9 @@ abstract class we_glossary_frameEditor{
 				//$table->getHtml() .
 				//$tabsBody
 		);
-		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . "
+		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement(				 "
 function setTab(tab) {
 	top.content.activ_tab=tab;
 	//top.content.editor.edbody.we_cmd('switchPage',0);

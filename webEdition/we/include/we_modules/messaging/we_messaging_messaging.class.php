@@ -996,13 +996,13 @@ class we_messaging_messaging extends we_class{
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.messaging={
-	q_rm_todos:"' . g_l('modules_messaging', '[q_rm_todos]') . '",
-	q_rm_messages:"' . g_l('modules_messaging', '[q_rm_messages]') . '",
+	Erledigt:"' . g_l('modules_messaging', '[Erledigt]') . '",
+	Gesendet:"' . g_l('modules_messaging', '[Gesendet]') . '",
 	Mitteilungen:"' . g_l('modules_messaging', '[Mitteilungen]') . '",
 	ToDo:"' . g_l('modules_messaging', '[ToDo]') . '",
-	Erledigt:"' . g_l('modules_messaging', '[Erledigt]') . '",
 	Zurueckgewiesen:"' . g_l('modules_messaging', '[Zurueckgewiesen]') . '",
-	Gesendet:"' . g_l('modules_messaging', '[Gesendet]') . '",
+	q_rm_messages:"' . g_l('modules_messaging', '[q_rm_messages]') . '",
+	q_rm_todos:"' . g_l('modules_messaging', '[q_rm_todos]') . '",
 	save_changed_folder:"' . g_l('modules_messaging', '[save_changed_folder]') . '",
 };
 ';

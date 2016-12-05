@@ -280,9 +280,9 @@ function we_cmd() {
 						req += "- " + weTagWizard.missingFields[i] + "\n";
 					}
 					req = WE().consts.g_l.tagWizzard.fill_required_fields + "\n" + req;
-					top.we_showMessage(req, WE().consts.message.WE_MESSAGE_WARNING, window);
+					WE().util.showMessage(req, WE().consts.message.WE_MESSAGE_WARNING, window);
 				} else {
-					top.we_showMessage(WE().consts.g_l.tagWizzard.no_type_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
+					WE().util.showMessage(WE().consts.g_l.tagWizzard.no_type_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
 				}
 			}
 			break;

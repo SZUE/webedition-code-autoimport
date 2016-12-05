@@ -81,7 +81,7 @@ function we_cmd() {
 				return;
 			}
 			if (!top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
-				top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				WE().util.showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
 				return;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.banner.view.delete_question, ["delete_banner_do"]);

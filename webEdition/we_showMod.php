@@ -47,7 +47,7 @@ $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
-	echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(we_tabs::CSS) .
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 		we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
 				'mod' => $mod,
 		])]) . JQUERY);

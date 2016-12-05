@@ -986,17 +986,17 @@ weCollectionEdit = {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
 					}
-					top.we_showMessage("the item you try to drag doesn't match your collection's contenttypes", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+					WE().util.showMessage("the item you try to drag doesn't match your collection's contenttypes", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 					this.resetColors();
 				} else {
-					top.we_showMessage("the tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+					WE().util.showMessage("the tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 				}
 				setTimeout(weCollectionEdit.resetItemColors, 100, el);
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
 				if (this.we_doc.docRealRemCT.search(',' + files[0].type + ',') === -1) {
-					top.we_showMessage('wrong type', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+					WE().util.showMessage('wrong type', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 					return;
 				}
 
@@ -1075,7 +1075,7 @@ weCollectionEdit = {
 							} else {
 								var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.gui.view + '_item_' + index), respArr, notReplace);
 								if (message) {
-									top.we_showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
+									WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
 							setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);

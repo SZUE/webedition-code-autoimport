@@ -73,8 +73,9 @@ class we_export_frames extends we_modules_frame{
 			$we_tabs->addTab(g_l('export', '[log]'), false, self::TAB_LOG, ["id" => "tab_3"]);
 		}
 
-		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 function setTab(tab) {
 	parent.edbody.toggle("tab"+top.content.activ_tab);
 	parent.edbody.toggle("tab"+tab);

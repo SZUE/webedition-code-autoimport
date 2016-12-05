@@ -2118,8 +2118,9 @@ function toggleRebuildPerm(disabledOnly) {';
 		}
 
 
-		return we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 var activeTab = ' . self::TAB_DATA . ';
 function setTab(tab) {
 	switch(tab) {
@@ -2402,9 +2403,9 @@ function resetTabs(){
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.users={
 	view:{
-		save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
 		give_org_name:"' . g_l('modules_users', '[give_org_name]') . '",
-		password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '"
+		password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '",
+		save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
 	}
 };
 ';

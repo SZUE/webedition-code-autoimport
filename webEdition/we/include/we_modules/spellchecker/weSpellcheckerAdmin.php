@@ -56,7 +56,7 @@ $we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, 1, ["id" => 
 $we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, 2, ["id" => "tab_2"]);
 
 
-$js = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(we_tabs::JS_LOAD);
+$js = we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(JS_DIR . 'initTabs.js');
 
 $table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 3, 5);
 

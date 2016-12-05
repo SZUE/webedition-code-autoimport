@@ -139,7 +139,7 @@ class we_newsletter_frames extends we_modules_frame{
 				$we_tabs->getHTML() .
 				'</div>'
 		);
-		return $this->getHTMLDocument($body, we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(we_tabs::JS_LOAD));
+		return $this->getHTMLDocument($body, we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(JS_DIR . 'initTabs.js'));
 	}
 
 	/**

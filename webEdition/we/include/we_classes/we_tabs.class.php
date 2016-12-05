@@ -25,9 +25,6 @@
 class we_tabs{
 	private $container = '';
 
-	const CSS = CSS_DIR . 'we_tab.css';
-	const JS_LOAD = 'var weTabs = new (WE().layout.we_tabs)(document, window);';
-
 	public function addTab($text, $isActive = false, $jscmd = '', $attribs = []){
 		$class = ($isActive ? 'tabActive' : 'tabNormal');
 		$att = '';

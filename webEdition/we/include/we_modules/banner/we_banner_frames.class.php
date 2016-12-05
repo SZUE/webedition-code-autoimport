@@ -68,8 +68,9 @@ class we_banner_frames extends we_modules_frame{
 				'title' => g_l('tabs', '[module][statistics]')]);
 		}
 
-		$extraHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD . '
+		$extraHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement('
 function setTab(tab){
 	top.content.editor.edbody.we_cmd("switchPage",tab);
 }');

@@ -43,9 +43,10 @@ $body = we_html_element::htmlBody([
 		'onload' => 'weTabs.setFrameSize();',
 		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(we_tabs::CSS) .
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
 	we_html_element::jsElement('
 function setTab(tab){
 	top.updatecontent.location="?section="+tab;
 }
-' . we_tabs::JS_LOAD), $body);
+'), $body);

@@ -295,7 +295,7 @@ function setWidgetWidth(id, w) {
 }
 
 function resizeWidget(id) {
-	var _type = document.getElementById(id + '_type').value;
+	//var _type = document.getElementById(id + '_type').value;
 	var w = (resizeIdx('get', id) === "0") ? 'cls_expand' : 'cls_collapse';
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
@@ -351,7 +351,7 @@ function fadeTrans(wizId, start, end, ms) {
 	var t = 0;
 	if (start > end) {
 		for (i = start; i >= end; i--) {
-			var obj = document.getElementById(wizId);
+			//var obj = document.getElementById(wizId);
 			setTimeout(setOpacity, (t * v), wizId, i);
 			t++;
 		}

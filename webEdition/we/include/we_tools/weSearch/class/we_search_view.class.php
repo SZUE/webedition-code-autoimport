@@ -285,12 +285,12 @@ top.content.hot=false;');
 
 	public static function getJSConsts(){
 		return 'WE().consts.weSearch= {
-	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
-	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
-	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
+	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::VIDEO . '",
 	SEARCH_ADV: "' . self::SEARCH_ADV . '",
 	SEARCH_DOCLIST: "' . we_search_view::SEARCH_DOCLIST . '",
-	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::VIDEO . '"
+	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
+	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
+	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
 };';
 	}
 

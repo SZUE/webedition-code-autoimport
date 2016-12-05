@@ -156,8 +156,9 @@ class we_navigation_frames extends we_modules_frame{
 			$we_tabs->addTab(we_base_constants::WE_ICON_PREVIEW, false, "'" . self::TAB_PREVIEW . "'", ['id' => 'tab_' . self::TAB_PREVIEW, 'title' => g_l('navigation', '[preview]')]);
 		}
 
-		$tabsHead = we_html_element::cssLink(we_tabs::CSS) . we_html_element::jsElement(
-				we_tabs::JS_LOAD .
+		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsElement(
 				($this->Model->ID ? '' : 'top.content.activ_tab=' . self::TAB_PROPERTIES . ';') .
 				($this->Model->IsFolder == 0 ? '
 if(top.content.activ_tab!=' . self::TAB_PROPERTIES . ' && top.content.activ_tab!=' . self::TAB_CUSTOMER . ') {

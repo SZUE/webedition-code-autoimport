@@ -1701,22 +1701,22 @@ class we_import_wizard extends we_import_wizardBase{
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.import={
-	format_timestamp:"' . g_l('import', '[format_timestamp]') . '",
-	pleaseSelectTemplateAlert:"' . g_l('siteimport', '[pleaseSelectTemplateAlert]') . '",
-	startEndMarkAlert:"' . g_l('siteimport', '[startEndMarkAlert]') . '",
+	backup_file_found:\'' . g_l('import', '[backup_file_found]') . '\',
+	backup_file_found_question:\'' . g_l('import', '[backup_file_found_question]') . '\',
 	errorEmptyDateFormat:"' . we_message_reporting::prepareMsgForJS(g_l('siteimport', '[errorEmptyDateFormat]')) . '",
+	format_timestamp:"' . g_l('import', '[format_timestamp]') . '",
+	invalid_path:"' . g_l('import', '[invalid_path]') . '",
 	nameOfTemplateAlert:"' . g_l('siteimport', '[nameOfTemplateAlert]') . '",
-	we_filename_notValid:"' . g_l('alert', '[we_filename_notValid]') . '",
+	num_elements:"' . g_l('import', '[num_elements]') . '",
+	pleaseSelectTemplateAlert:"' . g_l('siteimport', '[pleaseSelectTemplateAlert]') . '",
 	root_dir_1:"' . g_l('importFiles', '[root_dir_1]') . '",
 	root_dir_2:"' . g_l('importFiles', '[root_dir_2]') . '",
 	root_dir_3:"' . g_l('importFiles', '[root_dir_3]') . '",
-	select_source_file:"' . g_l('import', '[select_source_file]') . '",
 	select_docType:"' . g_l('import', '[select_docType]') . '",
-	invalid_path:"' . g_l('import', '[invalid_path]') . '",
 	select_seperator:"' . g_l('import', '[select_seperator]') . '",
-	backup_file_found:\'' . g_l('import', '[backup_file_found]') . '\',
-	backup_file_found_question:\'' . g_l('import', '[backup_file_found_question]') . '\',
-	num_elements:"' . g_l('import', '[num_elements]') . '"
+	select_source_file:"' . g_l('import', '[select_source_file]') . '",
+	startEndMarkAlert:"' . g_l('siteimport', '[startEndMarkAlert]') . '",
+	we_filename_notValid:"' . g_l('alert', '[we_filename_notValid]') . '",
 };';
 	}
 

@@ -148,11 +148,11 @@ class we_fileupload_ui_base extends we_fileupload{
 		$cts = $contentTypes ? ',' . implode(',', $contentTypes) . ',' : '';
 
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::jsScript(JS_DIR . 'we_fileupload_externalDropzone.js') . // insert this in every top
-			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag', 
-					'class' => 'we_file_drag', 
+			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag',
+					'class' => 'we_file_drag',
 					'ondrop' => "handleDrop(event,'" . $name . "', " . ($dragFromTree ? 'true' : 'false') . ", " . ($dragFromExt ? 'true' : 'false') . ", '" . $jsCmdTree . "', '" . $jsCmdExt . "', '" . $cts . "', '" . $table . "');",
-					'ondragover' => "handleDragOver(event, '" . $name . "');", 
-					'ondragleave' => "handleDragLeave(event, '" . $name . "');", 
+					'ondragover' => "handleDragOver(event, '" . $name . "');",
+					'ondragleave' => "handleDragLeave(event, '" . $name . "');",
 					'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style
 				], $content);
 	}
@@ -268,7 +268,7 @@ class we_fileupload_ui_base extends we_fileupload{
 				}
 			');
 	}
-	
+
 	public function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'weFileUpload_init.js', '', ['id' => 'loadVarWeFileUpload_init', 'data-initObject' => setDynamicVar($this->getJSDynamic())]);
 	}
@@ -305,34 +305,34 @@ class we_fileupload_ui_base extends we_fileupload{
 	public static function getJSLangConsts(){
 		return '
 WE().consts.g_l.fileupload = {
-		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
-		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
-		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . we_fileupload::getMaxUploadSizeMB() . ' MB, ",
-		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
-		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-		errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
-		errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
-		errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
-		errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
-		uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+		btnCancel : "' . g_l('button', '[cancel][value]') . '",
+		btnClose : "' . g_l('button', '[close][value]') . '",
+		btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
+		btnUpload : "' . g_l('button', '[upload][value]') . '",
 		cancelled : "' . g_l('importFiles', '[cancelled]') . '",
 		doImport : "' . g_l('importFiles', '[do_import]') . '",
-		file : "' . g_l('importFiles', '[file]') . '",
-		btnClose : "' . g_l('button', '[close][value]') . '",
-		btnCancel : "' . g_l('button', '[cancel][value]') . '",
-		btnUpload : "' . g_l('button', '[upload][value]') . '",
-		btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
-		maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
-		maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
-		maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
-		maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
-		editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
+		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
+		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
+		editQuality: "' . g_l('weClass', '[quality]') . '",
 		editRotation: "' . g_l('importFiles', '[rotation]') . '",
 		editRotationLeft: "' . g_l('global', '[left]') . '",
 		editRotationRight: "' . g_l('global', '[right]') . '",
-		editQuality: "' . g_l('weClass', '[quality]') . '",
-		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
-		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
+		editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
+		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '",
+		errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
+		errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
+		errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
+		errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
+		file : "' . g_l('importFiles', '[file]') . '",
+		maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
+		maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
+		maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
+		maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
+		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . we_fileupload::getMaxUploadSizeMB() . ' MB, ",
+		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
+		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
+		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
+		uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
 };';
 	}
 }

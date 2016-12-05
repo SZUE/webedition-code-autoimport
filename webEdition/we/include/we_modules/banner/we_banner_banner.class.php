@@ -427,11 +427,11 @@ class we_banner_banner extends we_banner_base{
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.banner={
 	view:{
-		save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
+		deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '",
 		delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
 		nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
 		nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '",
-		deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '"
+		save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
 	}
 };
 ';

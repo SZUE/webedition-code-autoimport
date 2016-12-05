@@ -113,7 +113,7 @@ var frames={
 	parentid:"0",
 	text:"' . $tt . '",
 	disable:"0",
-	tooltip:"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
+	tooltip:"' . (($this->customer->Forename || $this->customer->Surname ) ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
 }
 top.content.treeData.addSort(new top.content.node(attribs));
 top.content.applySort();';
