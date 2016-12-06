@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -89,8 +90,8 @@ $bDateLastMfd = $sDisplayOpt{1};
 $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
-		makeArrayFromCSV($aCols[4]) :
-		[$uid])));
+				makeArrayFromCSV($aCols[4]) :
+				[$uid])));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);
@@ -114,8 +115,8 @@ if($bTypeDoc){
 		$paths[] = 'f.Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
 	$join[] = FILE_TABLE . ' f ON (h.DocumentTable="' . $t . '" AND f.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-		($admin ? '' : ' AND (f.RestrictOwners=0 OR f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))') .
-		')';
+			($admin ? '' : ' AND (f.RestrictOwners=0 OR f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))') .
+			')';
 	$tables[] = 'f';
 }
 if($bTypeObj){
@@ -126,22 +127,22 @@ if($bTypeObj){
 		$paths[] = 'of.Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
 	$join[] = OBJECT_FILES_TABLE . ' of ON (h.DocumentTable="' . $t . '" AND of.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-		($admin ? '' : ' AND (of.RestrictOwners=0 OR of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))') .
-		')';
+			($admin ? '' : ' AND (of.RestrictOwners=0 OR of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))') .
+			')';
 	$tables[] = 'of';
 }
 if($bTypeTpl && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 	$join[] = TEMPLATES_TABLE . ' t ON (h.DocumentTable="tblTemplates" AND t.ID=h.DID' .
-		($admin ? '' : ' AND (t.RestrictOwners=0 OR t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))') .
-		')';
+			($admin ? '' : ' AND (t.RestrictOwners=0 OR t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))') .
+			')';
 	$tables[] = 't';
 }
 if($bTypeCls && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 	$join[] = OBJECT_TABLE . ' o ON (h.DocumentTable="tblObject" AND o.ID=h.DID' .
-		($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
-		')';
+			($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
+			')';
 	$tables[] = 'o';
 }
 
@@ -172,25 +173,24 @@ COALESCE(' . implode('.ContentType,', $tables) . '.ContentType) AS ContentType,
 COALESCE(' . implode('.ModDate,', $tables) . '.ModDate) AS ModDate
 FROM ' . HISTORY_TABLE . ' h
 LEFT JOIN ' .
-	LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
+		LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
 ' . $where . '
 GROUP BY h.DID,h.DocumentTable
 ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 
-$lastModified = '<table style="width:100%" class="middlefont">';
+$lastModified = '<table class="middlefont">';
 
 while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 	$file = $db->getRecord();
 
 	$isOpen = $file['isOpen'];
-	$lastModified .= '<tr><td class="mfdIcon" data-contenttype="' . $file['ContentType'] . '"></td>' .
-		'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" ><span ' .
-		($isOpen ? '' : 'style="color:#000000;" onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '>' .
-		$file['Path'] .
-		'</span></td>' .
-		($bMfdBy ? '<td>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-		($bDateLastMfd ? '<td>' . $file['MDate'] . '</td>' : '') .
-		'</tr>';
+	$lastModified .= '<tr ' . ($isOpen ? '' : 'onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '><td class="mfdIcon" data-contenttype="' . $file['ContentType'] . '"></td>' .
+			'<td class="mfdDoc' . ($isOpen ? ' isOpen' : '') . '" >' .
+			$file['Path'] .
+			'</td>' .
+			($bMfdBy ? '<td class="mfdUser">' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+			($bDateLastMfd ? '<td class="mfdDate">' . $file['MDate'] . '</td>' : '') .
+			'</tr>';
 }
 
 $lastModified .= '</table>';
@@ -208,7 +208,7 @@ function init(){
 }";
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
-		['style' => 'margin:10px 15px;',
-		"onload" => 'init();'
-		], we_html_element::htmlDiv(['id' => 'mfd'], we_html_element::htmlDiv(['id' => 'mfd_data'], $lastModified)
+				['style' => 'margin:10px 15px;',
+			"onload" => 'init();'
+				], we_html_element::htmlDiv(['id' => 'mfd'], we_html_element::htmlDiv(['id' => 'mfd_data'], $lastModified)
 )));
