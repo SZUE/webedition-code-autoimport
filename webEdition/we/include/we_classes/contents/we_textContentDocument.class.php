@@ -24,9 +24,11 @@
  */
 abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
+
 	public $DocType = '';
 
 	/* these fields are never read from temporary tables */
+
 	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected,CreationDate,RebuildDate';
 
 	function __construct(){
@@ -93,15 +95,15 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		$maxDB = 65535;
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
-					'ID' => intval($this->ID),
-					'DID' => intval($this->ID),
-					'Text' => substr(preg_replace(['/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'], ' ', trim(strip_tags($text))), 0, $maxDB),
-					'WorkspaceID' => intval($this->ParentID),
-					'Category' => $this->Category,
-					'Doctype' => $this->DocType,
-					'Title' => $this->getElement('Title'),
-					'Description' => $this->getElement('Description'),
-					'Language' => $this->Language
+							'ID' => intval($this->ID),
+							'DID' => intval($this->ID),
+							'Text' => substr(preg_replace(['/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'], ' ', trim(strip_tags($text))), 0, $maxDB),
+							'WorkspaceID' => intval($this->ParentID),
+							'Category' => $this->Category,
+							'Doctype' => $this->DocType,
+							'Title' => $this->getElement('Title'),
+							'Description' => $this->getElement('Description'),
+							'Language' => $this->Language
 		]));
 	}
 
@@ -173,10 +175,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 
 		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'dt.ID,dt.DocType', g_l('weClass', '[doctype]'), $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
-				"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
-				"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
-				'', g_l('weClass', '[nodoctype]')] : '');
+						"WE().util.showConfirm(window, '', '" . g_l('weClass', '[doctype_changed_question]') . "',['doctype_changed']);" :
+						"we_cmd('doctype_changed');"), [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
+					'', g_l('weClass', '[nodoctype]')] : '');
 	}
 
 	function formDocTypeTempl(){
@@ -365,9 +366,9 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published ?
-			$this->we_publish(true, $rebuildMain) :
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
-			);
+				$this->we_publish(true, $rebuildMain) :
+				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
+				);
 	}
 
 	function we_resaveTemporaryTable(){
@@ -375,9 +376,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
-				we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
-				we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
-				);
+					we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
+					we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
+					);
 		}
 		return true;
 	}

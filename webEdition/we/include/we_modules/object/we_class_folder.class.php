@@ -570,7 +570,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "',['setDoReload','delete']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
 			</tr>
 			</table>
@@ -580,7 +580,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "',['setDoReload','publish']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
 			</tr>
 			</table>
@@ -590,7 +590,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "',['setDoReload','unpublish']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
 			</tr>
 			</table>
@@ -600,7 +600,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "',['setDoReload','searchable']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
 			</tr>
 			</table>
@@ -610,7 +610,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fas:btn_function_unsearchable,fa-ban,fa-search', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fas:btn_function_unsearchable,fa-ban,fa-search', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "',['setDoReload','unsearchable']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
 			</tr>
 			</table>
@@ -620,7 +620,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "',['setDoReload','copychar']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
 			</tr>
 			</table>
@@ -630,7 +630,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "')){document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');}") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "',['setDoReload','copyws']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
 			</tr>
 			</table>
@@ -640,7 +640,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "',['setDoReload','copytid']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
 			</tr>
 			</table>

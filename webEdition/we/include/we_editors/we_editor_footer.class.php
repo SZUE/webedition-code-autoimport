@@ -91,7 +91,7 @@ abstract class we_editor_footer{
 		$ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$ctrlElem || !$ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setColContent(0, $pos++, we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setColContent(0, $pos++, we_html_button::create_button(we_html_button::TRASH, "javascript:WE().util.showConfirm(window, '', WE().consts.g_l.main.delete_single_confirm_delete+doc.Path,['delete_single_document','',doc.Table,1]);"));
 		}
 	}
 
