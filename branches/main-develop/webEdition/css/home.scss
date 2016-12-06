@@ -245,6 +245,24 @@ td.mdcIcon{
 	padding-right:4px;
 }
 
+div#mfd_data{
+	table{
+		width:100%;
+		td{
+			vertical-align:text-bottom;
+		}
+		td.mfdDoc.isOpen{
+				color:red;
+		}
+		td.mfdUser{
+			width:10em;
+		}
+		td.mfdDate{
+			width: 8em;
+		}
+	}
+}
+
 td.upbEntry{
 	vertical-align:middle;
 	white-space: nowrap;
