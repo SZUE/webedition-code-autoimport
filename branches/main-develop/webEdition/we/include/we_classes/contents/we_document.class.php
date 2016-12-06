@@ -187,7 +187,7 @@ class we_document extends we_root{
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('module_navigation_edit_navi',0)", '', 0, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
 		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
-			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", '', 0, 0, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
+			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:WE().util.showConfirm(window, '', '" . g_l('navigation', '[dellall_question]') . "',['delete_all_navi']);", '', 0, 0, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
 		} else {
 			$delallbut = '';
 		}

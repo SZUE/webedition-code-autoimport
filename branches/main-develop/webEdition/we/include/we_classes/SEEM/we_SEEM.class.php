@@ -460,7 +460,7 @@ abstract class we_SEEM{
 
 				//  Target document is on another Web-Server - leave webEdition !
 			} elseif(strpos($linkArray[5][$i], 'http://') === 0 || strpos($linkArray[5][$i], 'https://') === 0){
-				$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', '[ext_document_on_other_server_selected]') . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"";
+				$javascriptCode = " onclick=\"WE().util.showConfirm(window, '', '" . g_l('SEEM', '[ext_document_on_other_server_selected]') . "',['seem_open_extern_document','" . $linkArray[5][$i] . $linkArray[3][$i] . "']);return false;\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"";
 
 				//  Target is on the same Web-Server - open doc with webEdition.
 			} elseif(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters

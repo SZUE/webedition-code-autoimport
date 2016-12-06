@@ -94,6 +94,7 @@ $doc = [
 	'ID' => intval($we_doc->ID),
 	'Path' => $we_doc->Path,
 	'Text' => $we_doc->Text,
+	'Table'=>$we_doc->Table,
 	'contentType' => $we_doc->ContentType,
 	'editFilename' => preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path),
 	'makeSameDocCheck' => intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))),

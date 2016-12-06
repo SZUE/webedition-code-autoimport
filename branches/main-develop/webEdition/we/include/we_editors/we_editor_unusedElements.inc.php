@@ -133,7 +133,7 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
 			],
 				['html' => $table->getHtml() .
-				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('weClass', '[unusedElements][delete]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") : ''),
+				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: WE().util.showConfirm(window, '','" . g_l('weClass', '[unusedElements][delete]') . "',['setDoReload','delete']);") : ''),
 			],
 			/*
 			  array(

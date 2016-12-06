@@ -209,7 +209,7 @@ abstract class we_base_jsConstants{
 	},
 	editorScript:{
 		confirm_navDel: "' . g_l('navigation', '[del_question]') . '",
-		fieldNameEmpty: "' . g_l('modules_object', '[fieldNameEmpty]') . '"
+		fieldNameEmpty: "' . g_l('modules_object', '[fieldNameEmpty]') . '",
 		fieldNameNotTitleDesc: "' . g_l('modules_object', '[fieldNameNotTitleDesc]') . '",
 		fieldNameNotValid: "' . g_l('modules_object', '[fieldNameNotValid]') . '",
 		field_contains_incorrect_chars: "' . g_l('alert', '[field_contains_incorrect_chars]') . '",
