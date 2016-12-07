@@ -263,13 +263,13 @@ var WebEdition = {
 						return;
 					}
 					var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SelectorSuggest" +
-									"&we_cmd[table]=" + el.getAttribute('data-table') +
-									"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
-									"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
-									"&we_cmd[max]=" + el.getAttribute('data-max') +
-									"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
-									"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
-									"&we_cmd[query]=" + request.term;
+						"&we_cmd[table]=" + el.getAttribute('data-table') +
+						"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
+						"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
+						"&we_cmd[max]=" + el.getAttribute('data-max') +
+						"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
+						"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
+						"&we_cmd[query]=" + request.term;
 					$.getJSON(target, request, function (data, status, xhr) {
 						el.cache[term] = data;
 						response(data);
@@ -305,13 +305,13 @@ var WebEdition = {
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
 					}
 					if (
-									!this.getAttribute("disabled") && (
-									this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-									!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-									this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-									(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-									)
-									) {
+						!this.getAttribute("disabled") && (
+						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
+						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+						this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+						)
+						) {
 						this.classList.add("weMarkInputError");
 					} else {
 						this.classList.remove("weMarkInputError");
@@ -343,8 +343,8 @@ var WebEdition = {
 			openSelectionToEdit: function (win, elID) {
 				var el = win.document.getElementById(elID);
 				var table = el.getAttribute('data-table'),
-								id = el.result.value,
-								type = el.result.getAttribute('data-contenttype');
+					id = el.result.value,
+					type = el.result.getAttribute('data-contenttype');
 
 				if (table && id && type) {
 					WE().layout.openToEdit(table, id, type);
@@ -355,13 +355,13 @@ var WebEdition = {
 				var isValid = true;
 				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
 					if (
-									!this.getAttribute("disabled") && (
-									this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-									!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-									this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-									(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-									)
-									) {
+						!this.getAttribute("disabled") && (
+						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
+						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+						this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+						)
+						) {
 						this.classList.add("weMarkInputError");
 						isValid = false;
 					} else {
@@ -399,9 +399,9 @@ var WebEdition = {
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
 			doc.cookie = name + "=" + encodeURI(value) +
-							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-							((path === undefined) ? "" : "; path=" + path) +
-							((domain === undefined) ? "" : "; domain=" + domain);
+				((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+				((path === undefined) ? "" : "; path=" + path) +
+				((domain === undefined) ? "" : "; domain=" + domain);
 		},
 		weGetCookie: function (doc, name) {
 			var cname = name + "=";
@@ -471,7 +471,7 @@ var WebEdition = {
 		getTreeIcon: function (contentType, open, extension) {
 			var simplepre = '<span class="fa-stack fa-lg fileicon">';
 			var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
-							post = '</span>';
+				post = '</span>';
 			switch (contentType) {
 				case 'cockpit':
 					return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
@@ -662,7 +662,14 @@ var WebEdition = {
 			title = title ? title : WE().consts.g_l.message_reporting.question;
 			var ab;
 
-			if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
+			if (win.top.top.$) {
+				ab = win.top.top.$("#alertBox");
+				if (!ab.length) {
+					var alertDiv = win.top.top.document.createElement('div');
+					alertDiv.id = "alertBox";
+					win.top.top.document.body.appendChild(alertDiv);
+					ab = win.top.top.$("#alertBox");
+				}
 				ab[0].data = {
 					win: win,
 					yesCmd: yesCmd,
@@ -719,9 +726,9 @@ var WebEdition = {
 					maxWidth: "400px",
 					closeOnEscape: false,
 					buttons: (WE().session.isMac ?
-									(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
-									(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
-									)
+						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
+						(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
+						)
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;
@@ -782,7 +789,15 @@ var WebEdition = {
 						break;
 				}
 				//try Jquery
-				if (win.top.top.$ && (ab = win.top.top.$("#alertBox")).length) {
+				if (win.top.top.$) {
+					ab = win.top.top.$("#alertBox");
+					if (!ab.length) {
+						var alertDiv = win.top.top.document.createElement('div');
+						alertDiv.id = "alertBox";
+						win.top.top.document.body.appendChild(alertDiv);
+						ab = win.top.top.$("#alertBox");
+					}
+
 					ab.html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
 					ab.dialog({
 						dialogClass: "no-close",
@@ -916,9 +931,9 @@ var WebEdition = {
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
 			return (el ?
-							this.decodeDynamicVar(el, dataname) :
-							null
-							);
+				this.decodeDynamicVar(el, dataname) :
+				null
+				);
 		},
 		decodeDynamicVar: function (el, dataname) {
 			var data = el.getAttribute(dataname);
@@ -968,8 +983,8 @@ function we_repl(target, url) {
 			if (target.name === "load" || target.name === "load2") {
 				if (top.lastUsedLoadFrame === target.name) {
 					target = (target.name === "load" ?
-									window.load2 :
-									window.load);
+						window.load2 :
+						window.load);
 				}
 				top.lastUsedLoadFrame = target.name;
 			}
@@ -1163,12 +1178,12 @@ function wecmd_editDocument(args, url) {
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 		// use Editor Frame
 		nextWindow.initEditorFrameData(
-						{
-							"EditorType": "model",
-							"EditorEditorTable": args[1],
-							"EditorDocumentId": args[2],
-							"EditorContentType": args[3]
-						}
+			{
+				"EditorType": "model",
+				"EditorEditorTable": args[1],
+				"EditorDocumentId": args[2],
+				"EditorContentType": args[3]
+			}
 		);
 		// set Window Active and show it
 		ctrl.setActiveEditorFrame(nextWindow.FrameId);
@@ -1463,15 +1478,15 @@ var we_cmd_modules = {
 				break;
 			case "help_tools":
 				WE().util.jsWindow.prototype.focus('tool_window') ||
-								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+					WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+					WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 				url = "http://help.webedition.org/index.php?language=" + WE().session.lang.long;
 				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
 				break;
 			case "info_tools":
 				WE().util.jsWindow.prototype.focus('tool_window') ||
-								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+					WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+					WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
 				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
 				break;
@@ -1816,11 +1831,11 @@ var we_cmd_modules = {
 			case 'collection_insertFiles_rpc':
 				// TODO: make some tests and return with alert when not ok
 				postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '') +
-								'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
-								'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
-								'&we_cmd[full]=0' +
-								'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
-								'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+					'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
+					'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
+					'&we_cmd[full]=0' +
+					'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
+					'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
 				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=InsertValidItemsByID&cns=collection", postData);
 
 				break;
@@ -1953,8 +1968,8 @@ var we_cmd_modules = {
 				break;
 			case 'tag_weimg_insertImage':
 				var table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE,
-								tab = args[7] ? args[7] : 1,
-								editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
+					tab = args[7] ? args[7] : 1,
+					editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
 
 				if (editorFrame) {
 					editorFrame.getContentEditor().setScrollTo();
@@ -1968,7 +1983,7 @@ var we_cmd_modules = {
 				} else {
 					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], table);
 					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: table, transaction: verifiedTransaction},
-									{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+						{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 				}
 				break;
 			case 'wedoc_setPropertyOrElement_rpc':
@@ -1977,12 +1992,12 @@ var we_cmd_modules = {
 				}
 
 				postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id) +
-								'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
-								'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
-								'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
-								'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
-								'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
-								'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+					'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
+					'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
+					'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
+					'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
+					'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
+					'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
 				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPropertyOrElement&cns=document" + postData);
 				break;
@@ -2052,8 +2067,8 @@ function getHotDocumentsString() {
 
 		for (i = 0; i < hotDocumentsOfCt[ct].length; i++) {
 			ulCtElem += "<li>" + (hotDocumentsOfCt[ct][i].getEditorDocumentText() ?
-							hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
-							"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
+				hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
+				"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
 		}
 
 		ret += "<li>" + WE().consts.g_l.contentTypes[ct] + "<ul>" + ulCtElem + "</ul></li>";
@@ -2146,10 +2161,10 @@ function collection_insertFiles(args) {
 
 	if (collection && ids) {
 		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						editor = null,
-						index = args[3] !== undefined ? args[3] : -1,
-						recursive = args[5] !== undefined ? args[5] : false,
-						transaction, frameId, candidate;
+			editor = null,
+			index = args[3] !== undefined ? args[3] : -1,
+			recursive = args[5] !== undefined ? args[5] : false,
+			transaction, frameId, candidate;
 
 		for (frameId in usedEditors) {
 			candidate = usedEditors[frameId];
@@ -2370,7 +2385,7 @@ function doReloadCmd(args, url, hot) {
 	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
 		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
-						(args[1] ? '#f' + args[1] : '');
+			(args[1] ? '#f' + args[1] : '');
 	} else if (args[0] === "remove_image" && args[2]) {
 		url += '#f' + args[2];
 	}
