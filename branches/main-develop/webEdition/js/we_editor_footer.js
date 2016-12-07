@@ -109,7 +109,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "glossary_check":
-			new (WE().util.jsWindow)(window, url, "glossary_check", 730, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "save_document":
 			args[1] = doc.we_transaction;

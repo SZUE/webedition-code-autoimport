@@ -24,7 +24,7 @@
  */
 
 
-function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
+function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg) {
 	var foo_w = w;
 	var foo_h = h;
 
@@ -50,12 +50,12 @@ function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resi
 		WE().layout.windows.push(this);
 	}
 	if (openAtStartup) {
-		this.open(noPopupErrorMsg, noPopupLocation);
+		this.open(noPopupErrorMsg);
 	}
 }
 
 jsWindow.prototype = {
-	open: function (noPopupErrorMsg, noPopupLocation) {
+	open: function (noPopupErrorMsg) {
 		var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
 		try {
 			this.wind = this.opener.open(this.url, this.ref, properties);
@@ -68,9 +68,6 @@ jsWindow.prototype = {
 				if (!this.wind) {
 					top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
 					//  disabled See Bug#1335
-					if (noPopupLocation !== undefined) {
-						//document.location = noPopupLocation;
-					}
 				}
 			}
 		}

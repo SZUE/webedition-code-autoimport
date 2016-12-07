@@ -325,7 +325,7 @@ function we_cmd(){
 
 	switch (args[0]){
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width, WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_catselector",WE().consts.size.dialog.big, WE().consts.size.dialog.small,true,true,true,true);
 		break;
 		case "add_cat":
 		case "del_cat":
@@ -336,7 +336,7 @@ function we_cmd(){
 			document.we_form.submit();
 		break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_selector",WE().consts.size.dialog.big, WE().consts.size.dialog.medium,true,true,true,true);
 		break;
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
@@ -1128,7 +1128,7 @@ function formFileChooser() {
 
 switch (args[0]) {
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,500,300,true,false,true);
+			new (WE().util.jsWindow)(window, url,"server_selector",500,300,true,false,true);
 		break;
 	}
 }') .

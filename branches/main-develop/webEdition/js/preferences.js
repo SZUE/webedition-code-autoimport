@@ -516,21 +516,21 @@ function we_cmd() {
 			doDelete_recipient();
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_selector_directory":
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_selector_document", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector_document", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true, true);
 			break;
 		case "show_formmail_log":
-			new (WE().util.jsWindow)(window, url, "we_log", 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "show_formmail_block_log":
-			new (WE().util.jsWindow)(window, url, "we_log", 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "openColorChooser":
-			new (WE().util.jsWindow)(window, url, "we_colorChooser", 430, 370, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));

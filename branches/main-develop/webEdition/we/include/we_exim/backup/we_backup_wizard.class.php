@@ -709,13 +709,13 @@ class we_backup_wizard{
 				return;
 			case 'rebuild':
 				return we_html_element::jsElement('
-new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText="+WE().consts.g_l.backupWizard.finished_success,"rebuildwin",-1,-1,600,130,true,0,true);
+new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText="+WE().consts.g_l.backupWizard.finished_success,"rebuildwin",600,130,true,0,true);
 top.close();');
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = [];
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
-				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", 600, 130, true, true, true);');
+				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);');
 			case 'deletebackup':
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){

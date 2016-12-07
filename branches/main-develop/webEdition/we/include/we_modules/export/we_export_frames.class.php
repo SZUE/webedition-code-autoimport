@@ -228,7 +228,7 @@ function formFileChooser() {
 
 switch (args[0]) {
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,660,330,true,false,true);
+			new (WE().util.jsWindow)(window, url,"server_selector",660,330,true,false,true);
 		break;
 	}
 }

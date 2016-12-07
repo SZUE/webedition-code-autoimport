@@ -99,7 +99,7 @@ function we_cmd() {
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", 580, 400, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 		case "updateTitle":
 			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];

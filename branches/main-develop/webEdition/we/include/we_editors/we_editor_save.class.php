@@ -102,7 +102,7 @@ abstract class we_editor_save{
 					'we_complete_request' => 1
 					], null, '&') .
 				'";
-new (WE().util.jsWindow)(window, url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
+new (WE().util.jsWindow)(window, url,"templateSaveQuestion",400,170,true,false,true);
 '), '<body></body>');
 	}
 

@@ -287,20 +287,20 @@ function we_cmd() {
 			}
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "we_multiSelector_writeback":
 			if(args[1][args[2]] && args[1][args[2]].length){

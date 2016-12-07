@@ -85,7 +85,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_selector_document":
-			new (WE().util.jsWindow)(document, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(document, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		default:
 			if (parent.we_cmd) {

@@ -913,7 +913,7 @@ class we_navigation_navigation extends we_base_model{
 
 			$head = we_html_element::jsElement(
 					'new (WE().util.jsWindow)(window, url, \'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(
-						g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',-1,-1,600,130,true,false,true);
+						g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',600,130,true,false,true);
 ');
 		} else {
 			$head = we_html_element::jsElement('WE().util.showMessage(WE().consts.g_l.main.no_perms_action,WE().consts.message.WE_MESSAGE_ERROR,window);');

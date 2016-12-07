@@ -35,17 +35,17 @@ function we_cmd() {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_dirselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "siteImportCreateWePageSettings":
-			new (WE().util.jsWindow)(window, url, "siteImportCreateWePageSettings", 520, 600, true, false, true);
+			new (WE().util.jsWindow)(window, url, "siteImportCreateWePageSettings", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "displayTable":
 			displayTable();

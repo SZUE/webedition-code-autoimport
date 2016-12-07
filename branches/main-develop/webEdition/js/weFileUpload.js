@@ -2489,7 +2489,7 @@ WE().layout.weFileUpload = (function () {
 			this.openImageEditor = function(index){
 				if(_.sender.preparedFiles[index]){
 					// TODO: use WE().util.jsWindow
-					//var previewWin = new (WE().util.jsWindow)(window, '', "", 840, 400, true, false, true);
+					//var previewWin = new (WE().util.jsWindow)(window, '', "", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 					var previewWin = _.window.open('', '', 'width=700,height=500');
 					var img;
 

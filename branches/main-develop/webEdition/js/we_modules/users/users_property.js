@@ -72,10 +72,10 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "select_seem_start":
 			var myWind = WE().util.jsWindow.prototype.find('preferences');
@@ -84,7 +84,7 @@ function we_cmd() {
 			break;
 		case "we_navigation_dirSelector":
 		case "we_newsletter_dirSelector":
-			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", 600, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

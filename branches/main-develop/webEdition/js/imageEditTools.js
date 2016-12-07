@@ -1102,7 +1102,7 @@ ImageEditTools = {
 		start: function (url, gdType) {
 			ImageEditTools.deactivateAll();
 			ImageEditTools.activeTool = 'rotate';
-			this.win = new (WE().util.jsWindow)(window, url, "we_rotate", 300, (gdType === 'jpg' ? 230 : 170), true, false, true);
+			this.win = new (WE().util.jsWindow)(window, url, "we_rotate", WE().consts.size.dialog.tiny, WE().consts.size.dialog.tiny, true, false, true);
 		},
 		drop: function () {
 			this.win.close();
@@ -1113,7 +1113,7 @@ ImageEditTools = {
 		start: function (url, gdType) {
 			ImageEditTools.deactivateAll();
 			ImageEditTools.activeTool = 'resize';
-			this.win = new (WE().util.jsWindow)(window, url, "we_image_resize", 260, (gdType === 'jpg' ? 250 : 190), true, false, true);
+			this.win = new (WE().util.jsWindow)(window, url, "we_image_resize", WE().consts.size.dialog.tiny, WE().consts.size.dialog.tiny, true, false, true);
 		},
 		drop: function () {
 			this.win.close();
@@ -1124,7 +1124,7 @@ ImageEditTools = {
 		start: function (url) {
 			ImageEditTools.deactivateAll();
 			ImageEditTools.activeTool = 'convertJPEG';
-			this.win = new (WE().util.jsWindow)(window, url, "we_convert_jpg", 260, 160, true, false, true);
+			this.win = new (WE().util.jsWindow)(window, url, "we_convert_jpg", WE().consts.size.dialog.tiny, WE().consts.size.dialog.tiny, true, false, true);
 		},
 		drop: function () {
 			this.win.close();

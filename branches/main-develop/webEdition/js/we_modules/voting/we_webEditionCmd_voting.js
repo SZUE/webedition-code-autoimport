@@ -26,7 +26,7 @@ we_cmd_modules.voting = function (args, url) {
 	switch (args[0]) {
 		case "voting_edit":
 		case "voting_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "new_voting":
 		case "new_voting_group":
