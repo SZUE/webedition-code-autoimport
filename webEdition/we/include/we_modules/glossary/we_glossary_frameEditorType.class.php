@@ -92,7 +92,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		// ---> Search End
 
-		$js = we_html_element::jsElement($js) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
+		$js = we_html_element::jsElement($js) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?
@@ -105,16 +106,14 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		// ---> end of uilding content
 
-		$parts = [0 => ['headline' => '',
-				'html' => $content,
-			],
-		];
 
-		$out = we_html_element::htmlDiv(['id' => 'tab1'], we_html_multiIconBox::getHTML('', $parts, 30));
+		$out = we_html_element::htmlDiv(['id' => 'tab1'], we_html_multiIconBox::getHTML('', [
+						['headline' => '',
+						'html' => $content,
+					],
+					], 30));
 
-		$content = $js . $out;
-
-		return self::buildBody($weGlossaryFrames, $content);
+		return self::buildBody($weGlossaryFrames, $js . $out);
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
@@ -160,20 +159,20 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			  } */
 
 			$temp = [['dat' => '<input type="checkbox" name="ID[]" value="' . $Search->getField('ID') . '" />',
+				'height' => 25,
+				'style' => 'text-align:center',
+				'bgcolor' => '#ffffff',
+				],
+					['dat' => $show,
 					'height' => 25,
 					'style' => 'text-align:center',
 					'bgcolor' => '#ffffff',
-					],
-						['dat' => $show,
-					'height' => 25,
-					'style' => 'text-align:center',
-					'bgcolor' => '#ffffff',
-					],
-						['dat' => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+top.content.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
+				],
+					['dat' => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+top.content.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
 					'height' => 25,
 					'style' => 'text-align:left',
 					'bgcolor' => '#ffffff',
-					]
+				]
 			];
 
 			$values = we_unserialize($Search->getField('Attributes'));
@@ -185,7 +184,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-						];
+					];
 					break;
 
 				case we_glossary_glossary::TYPE_FOREIGNWORD:
@@ -220,24 +219,24 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-						];
+					];
 					$temp[4] = ['dat' => $url,
 						'height' => 25,
 						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
-						];
+					];
 					break;
 			}
 			$temp[] = ['dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br/>", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
 				'height' => 25,
 				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
-				];
+			];
 			$temp[] = ['dat' => $Search->getField('ModDate') > 0 ? str_replace(" - ", "<br />", date(g_l('date', '[format][default]'), $Search->getField('ModDate'))) : "-",
 				'height' => 25,
 				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
-				];
+			];
 			$content[] = $temp;
 		}
 
@@ -259,7 +258,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				"Sort" => $Search->Sort,
 				"selectAll" => 0,
 				"do" => ""
-				]) . '
+			]) . '
 <table class="default" style="width:637px;margin-bottom:12px;">
 	<tr>
 		<td style="width:80px;"></td>

@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 13162 $
+ * $Author: mokraemer $
+ * $Date: 2016-12-05 02:03:38 +0100 (Mo, 05. Dez 2016) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -23,34 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var fdl = WE().util.getDynamicVar(document, 'loadVarFdl', 'data-fdl');
-
-
-function init(){
-	_fo=document.forms[0];
-	initPrefs();
-}
-
-function save(){
-	savePrefs();
-	previewPrefs();
-	refresh();
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	window.close();
-}
-
-function preview(){
-	previewPrefs();
-	refresh();
-}
-
-function exit_close(){
-	//previewPrefs();
-	refresh();
-	exitPrefs();
-	window.close();
-}
-
-function refresh(){
-	opener.rpc('','','','','',fdl.refreshCmd);
+function setTab(tab) {
+	top.content.activ_tab = tab;
+	//top.content.editor.edbody.we_cmd('switchPage',0);
 }

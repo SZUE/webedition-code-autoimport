@@ -68,12 +68,7 @@ class we_customer_view extends we_modules_view{
 	}
 
 	function getJSSearch(){
-		return we_html_element::jsElement('
-var frames={
-	"set":"' . $this->frameset . '"
-};
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
 	}
 
 	private function saveCustomer(we_base_jsCmd $jscmd){
@@ -161,12 +156,7 @@ top.content.applySort();';
 
 				$jscmd->addMsg(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				$jscmd->addCmd('deleteTreeEntry', $oldid);
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edheader";
-top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody"
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edfooter";'
-				);
-
+				$jscmd->addCmd('loadHome');
 				break;
 			case 'switchPage':
 				break;
@@ -216,7 +206,7 @@ close();');
 
 				$this->customer->loadPresistents();
 				$jscmd->addMsg(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE);
-				echo we_html_element::jsElement('opener.top.content.editor.edbody.refreshForm();');
+				$jscmd->addCmd('refreshForm');
 				break;
 			case 'move_field_up':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
@@ -246,15 +236,17 @@ close();');
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
 					$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					$this->customer->loadPresistents();
-					echo we_html_element::jsElement('
+					return;
+				}
+				$this->customer->loadPresistents();
+				echo we_html_element::jsElement('
 opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
 opener.submitForm();
-opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
-opener.opener.refreshForm();
+if(opener.opener.document.we_form && opener.opener.document.we_form.branch){
+	opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
+	opener.opener.refreshForm();
+}
 close();');
-				}
 
 				break;
 			case 'add_sort':
@@ -288,26 +280,10 @@ close();');
 				}
 				break;
 			case 'save_sort':
-
 				$this->settings->save();
-				$sorting = 'opener.top.content.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
-				foreach(array_keys($this->settings->SortView) as $sort){
-					$sorting .= 'opener.top.content.addSorting("' . $sort . '");' . "\n";
-				}
+				$sorting = array_merge([g_l('modules_customer', '[no_sort]')], array_keys($this->settings->SortView));
 				$jscmd->addMsg(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				echo we_html_element::jsElement('
-var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
-opener.top.content.document.we_form_treeheader.sort.options.length=0;
-' . $sorting . '
-
-if(selected<opener.top.content.document.we_form_treeheader.sort.options.length){
-	opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;
-} else {
-	opener.top.content.document.we_form_treeheader.sort.selectedIndex = opener.top.content.document.we_form_treeheader.sort.options.length-1;
-}
-
-opener.top.content.applySort();
-self.close();');
+				$jscmd->addCmd('setSorts', $sorting);
 				break;
 			case 'applySort':
 				break;

@@ -25,14 +25,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 list($jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 
 we_html_tools::protect();
-$jsCode = "
-function refresh(){
-	opener.rpc('','','','','','" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "');
-}
-";
 
 $parts = [
-	["headline" => "",
+		["headline" => "",
 		"html" => $oSelCls->getHTML(),
 	]
 ];
@@ -45,8 +40,9 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("Props", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[customer]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[customer]'), '', '', $jsFile .
-	we_html_element::jsElement($jsCode) .
-	we_html_element::jsScript(JS_DIR . 'widgets/fdl.js')
+	we_html_element::jsScript(JS_DIR . 'widgets/fdl.js', '', ['id' => 'loadVarFdl', 'data-fdl' => setDynamicVar([
+			'refreshCmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
+	])])
 	, we_html_element::htmlBody(
 		["class" => "weDialogBody", "onload" => "init();"
 		], we_html_element::htmlForm("", $sTblWidget)));

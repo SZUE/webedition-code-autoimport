@@ -92,9 +92,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 </div>';
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
-		we_html_element::jsElement('
-			reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');
-');
+		we_html_element::jsElement('reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}

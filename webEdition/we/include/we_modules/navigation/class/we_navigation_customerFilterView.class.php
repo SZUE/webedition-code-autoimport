@@ -37,7 +37,7 @@ class we_navigation_customerFilterView extends we_customer_filterView{
 	function getFilterHTML($isDynamic = false){
 		$filter = $this->getFilter();
 		return we_html_forms::checkboxWithHidden(
-				$filter->getUseDocumentFilter(), 'wecf_useDocumentFilter', g_l('navigation', '[useDocumentFilter]'), false, 'defaultfont', 'updateView();', $isDynamic
+				$filter->getUseDocumentFilter(), 'wecf_useDocumentFilter', g_l('navigation', '[useDocumentFilter]'), false, 'defaultfont', 'updateView_navigation();', $isDynamic
 			) . $this->getDiv(
 				'<div style="border-top: 1px solid #AFB0AF;margin-bottom: 5px;"></div>' . parent::getFilterHTML(true), 'MainFilterDiv', !$filter->getUseDocumentFilter()
 		);
@@ -49,10 +49,7 @@ class we_navigation_customerFilterView extends we_customer_filterView{
 	 * @return string
 	 */
 	function createUpdateViewScript(){
-		return parent::createUpdateViewScript() . <<<EOF
-	var wecf_useDocumentFilterCheckbox = f.check_wecf_useDocumentFilter;  // with underscore (_) its the checkbox, otherwise the hidden field
-	getById('MainFilterDiv').style.display = wecf_useDocumentFilterCheckbox.checked ? 'none' : 'block';
-EOF;
+		return 'updateView_navigation();';
 	}
 
 }

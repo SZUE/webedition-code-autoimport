@@ -75,10 +75,10 @@ class we_customer_frames extends we_modules_frame{
 		$select = new we_html_select(['name' => 'branch']);
 
 		$fields_names = $this->View->customer->getFieldsNames($branch);
-		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = {};';
+		$this->jsOut_fieldTypesByName = [];
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties(($branch ? $branch . '_' : '') . $val);
-			$this->jsOut_fieldTypesByName .= "fieldTypesByName['" . $val . "'] = '" . (isset($tmp['type']) ? $tmp['type'] : '') . "';";
+			$this->jsOut_fieldTypesByName[$val] = (isset($tmp['type']) ? $tmp['type'] : '');
 		}
 		if(is_array($fields_names)){
 			foreach($fields_names as $k => $field){
@@ -102,31 +102,29 @@ class we_customer_frames extends we_modules_frame{
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, '\'' . g_l('modules_customer', '[common]') . '\'', ["id" => "common", 'title' => g_l('modules_customer', '[common]')]);
-		$extraJS = 'var aTabs={' .
-			"'" . g_l('modules_customer', '[common]') . "':'common',";
+		$allTabs = [g_l('modules_customer', '[common]') => 'common'];
 		$branchCount = 0;
 		foreach($branches_names as $branch){
 			$tabs->addTab('<i class="fa fa-lg fa-object-group"></i>', false, '\'' . $branch . '\'', ['id' => 'branch_' . $branchCount, 'title' => $branch]);
-			$extraJS .= "'" . $branch . "':'branch_" . $branchCount . "',";
+			$allTabs[$branch] = 'branch_' . $branchCount;
 			$branchCount++;
 		}
 		$tabs->addTab('<i class="fa fa-lg fa-object-ungroup"></i>', false, '\'' . g_l('modules_customer', '[other]') . '\'', ['id' => 'other', 'title' => g_l('modules_customer', '[other]')]);
 		$tabs->addTab('<i class="fa fa-lg fa-list"></i>', false, '\'' . g_l('modules_customer', '[all]') . '\'', ['id' => 'all', 'title' => g_l('modules_customer', '[all]')]);
-		$extraJS .= "'" . g_l('modules_customer', '[other]') . "':'other'," .
-			"'" . g_l('modules_customer', '[all]') . "':'all',";
+		$allTabs[g_l('modules_customer', '[other]')] = 'other';
+		$allTabs[g_l('modules_customer', '[all]')] = 'all';
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") )
 
 		if(defined('SHOP_ORDER_TABLE')){
 			$tabs->addTab('<i class="fa fa-lg fa-shopping-cart"></i>', false, '\'' . g_l('modules_customer', '[orderTab]') . '\'', ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
-			$extraJS .= "'" . g_l('modules_customer', '[orderTab]') . "':'orderTab',";
+			$allTabs[g_l('modules_customer', '[orderTab]')] = 'orderTab';
 		}
 		if(defined('OBJECT_FILES_TABLE')){
 			$tabs->addTab('<i class="fa fa-lg fa-file-o"></i>', false, '\'' . g_l('modules_customer', '[objectTab]') . '\'', ['id' => 'objectTab', 'title' => g_l('modules_customer', '[objectTab]')]);
-			$extraJS .= "'" . g_l('modules_customer', '[objectTab]') . "':'objectTab',";
+			$allTabs[g_l('modules_customer', '[objectTab]')] = 'objectTab';
 		}
 		$tabs->addTab('<i class="fa fa-lg fa-file"></i>', false, '\'' . g_l('modules_customer', '[documentTab]') . '\'', ['id' => 'documentTab', 'title' => g_l('modules_customer', '[documentTab]')]);
-		$extraJS .= "'" . g_l('modules_customer', '[documentTab]') . "':'documentTab'"
-			. '};';
+		$allTabs[g_l('modules_customer', '[documentTab]')] = 'documentTab';
 
 		/*
 		  $table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
@@ -152,22 +150,8 @@ class we_customer_frames extends we_modules_frame{
 
 		return $this->getHTMLDocument($body, we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsElement('
-function setTab(tab) {
-	top.content.activ_tab=tab;
-	parent.edbody.we_cmd("switchPage",tab);
-}
-
-function loaded(){
-	weTabs.setFrameSize()
-	if(top.content.activ_tab){
-		document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
-	}else{
-		document.getElementById("common").className="tabActive";
-	}
-}
-' .
-					$extraJS));
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_header.js', '', ['id' => 'loadVarCustomerHeader', 'data-customerHeader' => setDynamicVar($allTabs)])
+		);
 	}
 
 	protected function getHTMLEditorBody(){
@@ -422,21 +406,19 @@ function loaded(){
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')], $this->View->getJSSearch() .
-					we_html_element::jsElement(
-						$this->jsOut_fieldTypesByName) .
-					we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_functions.js') .
+					we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_functions.js', (we_base_request::_(we_base_request::BOOL, 'mode') ? "setTimeout(lookForDateFields, 1);" : ''), [
+						'id' => 'loadVarCustomerFuntions', 'data-customerFunctions' => setDynamicVar($this->jsOut_fieldTypesByName)]) .
 					we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => "we_cmd('search');return false;"], $hiddens .
 						we_html_tools::htmlDialogLayout(
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")), "100%", 30, 558
 						)
-					) .
-					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields, 1);") : '')
+					)
 				)
 		);
 	}
 
 	private function getHTMLSettings(){
-		if(we_base_request::_(we_base_request::STRING, "cmd") === "save_settings"){
+		if(we_base_request::_(we_base_request::STRING, 'cmd') === 'save_settings'){
 			$jscmd = new we_base_jsCmd();
 			$this->View->processCommands($jscmd);
 			echo $jscmd->getCmds();
@@ -446,19 +428,19 @@ function loaded(){
 		}
 
 		$default_sort_view_select = $this->View->getHTMLSortSelect();
-		$default_sort_view_select->setAttributes(['name' => "default_sort_view", "style", "width:200px;"]);
+		$default_sort_view_select->setAttributes(['name' => "default_sort_view", 'style' => 'width:200px;']);
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
-		$table = new we_html_table(['class' => 'default', 'style' => 'margin-right:10px;'], 5, 3);
+		$table = new we_html_table(['class' => 'default', 'style' => 'margin-right:10px;'], 5, 2);
 		$cur = 0;
 		$table->setCol($cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
-		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
+		$table->setCol($cur, 1, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
 
 		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
-		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
+		$table->setCol($cur, 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
 		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
-		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
+		$table->setCol($cur, 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
 		$default_order = new we_html_select(['name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect']);

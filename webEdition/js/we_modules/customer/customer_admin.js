@@ -114,6 +114,9 @@ function we_cmd() {
 
 function setStatusEncryption(type) {
 	var encSelect = document.getElementsByName('field_encrypt')[0];
+	if(!encSelect){
+		return;
+	}
 	switch (type) {
 		case 'input':
 		case 'textarea':

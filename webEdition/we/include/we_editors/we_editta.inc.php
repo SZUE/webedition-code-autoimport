@@ -52,13 +52,15 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-	$js = 'opener._EditorFrame.setEditorIsHot(true);'
-		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
+	$js = 'opener._EditorFrame.setEditorIsHot(true);
+		opener.setScrollTo();' .
+		((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
 		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
 		$we_doc->getElement($name . 'inlineedit') === 'on' ?
-			'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
-			'opener.we_cmd("object_reload_entry_at_class","","' . $we_transaction . '", "' . $nr . '");'
-		) . 'top.close();';
+		'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+		'opener.we_cmd("object_reload_entry_at_class","","' . $we_transaction . '", "' . $nr . '");'
+		) .
+		'top.close();';
 } else {
 	$js = 'function okFn(){
 	document.forms[0].submit();
@@ -115,7 +117,7 @@ $table = '<table class="default">
 
 $parts[] = ["headline" => "",
 	"html" => $table,
- ];
+];
 
 
 // INLINEEDIT && SHOWMENUS
@@ -136,7 +138,7 @@ $table = '<table class="default">
 
 $parts[] = ["headline" => "",
 	"html" => $table,
- ];
+];
 
 
 // WIDTH & HEIGHT & BGCOLOR
@@ -165,9 +167,11 @@ $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::get
 
 $table = '<table class="default">
 	<tr class="withBigSpace">
-		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), ['id' => "commands", 'style' => "width:392px;height:50px"]) . '</td>	</tr>
+		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), [
+		'id' => "commands", 'style' => "width:392px;height:50px"]) . '</td>	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), ['id' => "contextmenu", 'style' => "width:392px;height:50px"]) . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), [
+		'id' => "contextmenu", 'style' => "width:392px;height:50px"]) . '</td>
 	</tr>
 </table>';
 

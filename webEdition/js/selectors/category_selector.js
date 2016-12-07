@@ -235,7 +235,7 @@ function writeBody(d) {
 					(top.fileSelect.data.makeNewCat ?
 									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
-									'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onMouseDown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
+									'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
 									'</tr>' :
 									'');
 	for (i = 0; i < entries.length; i++) {
@@ -244,7 +244,7 @@ function writeBody(d) {
 		body += '<tr id="line_' + entries[i].ID + '" ' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + ondblclick+ ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
 						((top.fileSelect.data.we_editCatID === entries[i].ID) ?
-										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
 										) +
 						'</td></tr>';

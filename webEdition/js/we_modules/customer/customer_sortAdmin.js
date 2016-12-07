@@ -31,7 +31,6 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args, frames.set + "?");
 
 	switch (args[0]) {
 		case "add_sort_field":
@@ -56,6 +55,22 @@ function we_cmd() {
 				document.we_form.sortindex.value = args[1];
 				submitForm();
 			}
+			break;
+		case "setSorts":
+			var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
+			opener.top.content.document.we_form_treeheader.sort.options.length = 0;
+			for (var i = 0; i < args[1].length; i++) {
+				opener.top.content.addSorting(args[1][i]);
+			}
+
+			if (selected < opener.top.content.document.we_form_treeheader.sort.options.length) {
+				opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;
+			} else {
+				opener.top.content.document.we_form_treeheader.sort.selectedIndex = opener.top.content.document.we_form_treeheader.sort.options.length - 1;
+			}
+
+			opener.top.content.applySort();
+			self.close();
 			break;
 		case "save_sort":
 		case "selectBranch":

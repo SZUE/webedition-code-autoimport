@@ -113,7 +113,6 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 		switch($contentType){
 			case "toolfactory/item":
 				return "toolfactory_item";
-				break;
 			default:
 				return we_ui_controls_Tree::getTreeIconClass($contentType, $extension = '');
 		}
