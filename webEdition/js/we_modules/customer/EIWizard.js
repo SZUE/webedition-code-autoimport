@@ -86,7 +86,7 @@ function we_cmd() {
 			args[1].selectedIndex=0;
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "add_customer":
 			top.body.document.we_form.wcmd.value = args[0];

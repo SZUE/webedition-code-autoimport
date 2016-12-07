@@ -288,7 +288,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			$headerjs = 'function open_we() {
 var aw=' . (empty($_SESSION['prefs']['weWidth']) ? 8000 : $_SESSION['prefs']['weWidth']) . ';
 var ah=' . (empty($_SESSION['prefs']['weHeight']) ? 6000 : $_SESSION['prefs']['weHeight']) . ';
-win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw, '" . md5(uniqid(__FILE__, true)) . '", "mainwindow",-1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
+win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw, '" . md5(uniqid(__FILE__, true)) . '", "mainwindow", aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
 
 			break;
 		case LOGIN_CREDENTIALS_INVALID:

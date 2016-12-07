@@ -51,7 +51,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]'));
 
 			function selectRecipient() {
 				var rs = encodeURI(document.compose_form.mn_recipients.value);
-				new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?= $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+				new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?= $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", 530, 420, true, false, true, false);
 			}
 
 			function do_send() {

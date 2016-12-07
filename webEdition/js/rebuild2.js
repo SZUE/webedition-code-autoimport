@@ -51,10 +51,10 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_cat":
 			var catsToAdd = args[1].allIDs;

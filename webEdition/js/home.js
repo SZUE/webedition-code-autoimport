@@ -429,9 +429,9 @@ function createWidget(typ, row, col) {
 	} else { // add to empty col - before wildcard!
 		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
-			divClone,
-			_td.childNodes[0]
-			);
+						divClone,
+						_td.childNodes[0]
+						);
 	}
 	if (findInArray(cockpit.oCfg._noResizeTypes, typ) > -1) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
@@ -681,7 +681,7 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 
 function propsWidget(wid, ref) {
 	var uri = composeUri(arguments);
-	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, cockpit.oCfg.iDlgWidth, cockpit.oCfg[wid + '_props_'].iDlgHeight, true, true, true);
+	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, cockpit.oCfg.iDlgWidth, cockpit.oCfg[wid + '_props_'].iDlgHeight, true, true, true);
 }
 
 function closeAllModalWindows() {
@@ -747,7 +747,7 @@ function removeWidget(wizId) {
 
 /*function newMessage(username) {
  if (WE().consts.tables.MESSAGES_TABLE) {
- new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+ new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', 670, 530, true, false, true, false);
  }
  }*/
 
@@ -769,8 +769,8 @@ function getDimension(theString, styleClassElement) {
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-			theString + '<\/span>';
+						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+						theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;

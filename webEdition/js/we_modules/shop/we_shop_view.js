@@ -63,25 +63,25 @@ function we_cmd() {
 			}
 			break;
 		case "pref_shop":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 470, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 470, 600, true, true, true, false);
 			break;
 		case "edit_shop_vats":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 500, 450, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 500, 450, true, false, true, false);
 			break;
 		case "edit_shop_shipping":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 600, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 700, 600, true, false, true, false);
 			break;
 		case "edit_shop_status":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 780, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 700, 780, true, true, true, false);
 			break;
 		case "edit_shop_vat_country":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 780, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 700, 780, true, true, true, false);
 			break;
 		case "payment_val":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 520, 720, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 520, 720, true, false, true, false);
 			break;
 		case "edit_shop_categories":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 500, 450, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], 500, 450, true, false, true, false);
 			break;
 		case "revenue_view":
 			//FIXME: this is not correct; document doesnt work like this

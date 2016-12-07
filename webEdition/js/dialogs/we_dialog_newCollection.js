@@ -28,10 +28,10 @@
 var dialog = WE().util.getDynamicVar(document, "loadVarWe_dialog_newCollection", "data-dialog");
 
 var _EditorFrame = {};
-_EditorFrame.setEditorIsHot = function(){};
+_EditorFrame.setEditorIsHot = function () {};
 //var pathOfDocumentChanged = false;
 
-function we_submitForm(url){
+function we_submitForm(url) {
 	var f = document.we_form;
 	if (!f.checkValidity()) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -49,16 +49,16 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "close":
 			window.close();
 			break;
 		case "save_notclose":
-			if(document.we_form["we_" + top.dialog.name + "_Filename"].value){
+			if (document.we_form["we_" + top.dialog.name + "_Filename"].value) {
 				document.we_form["we_cmd[0]"].value = top.dialog.cmd;
 				document.we_form.dosave.value = 1;
 				we_submitForm(top.dialog.scriptName);

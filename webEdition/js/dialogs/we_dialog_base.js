@@ -60,10 +60,10 @@ function addKeyListener() {
 	}
 }
 
-function openExtSource(argName){
-	if(argName && this.document.we_form.elements['we_dialog_args[' + argName + ']']){
+function openExtSource(argName) {
+	if (argName && this.document.we_form.elements['we_dialog_args[' + argName + ']']) {
 		var val = this.document.we_form.elements['we_dialog_args[' + argName + ']'].value;
-		if(val && val !== '" . we_base_link::EMPTY_EXT . "'){
+		if (val && val !== '" . we_base_link::EMPTY_EXT . "') {
 			window.open(val);
 		}
 	}
@@ -76,17 +76,17 @@ function we_cmd() {
 	switch (args[0]) {
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
 			break;
 		case "edit_new_collection":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
-			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "weNewCollection", 590, 560, true, true, true, true);
 			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));

@@ -24,25 +24,22 @@
  */
 
 
-function jsWindow(opener, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
+function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
 	var foo_h = h;
 
-	if (window.screen) {
-		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
-		screen_height = screen_height - 40;
-		var screen_width = screen.availWidth - 10;
-		w = Math.min(screen_width, w);
-		h = Math.min(screen_height, h);
-		x = (x === -1 ? Math.round((screen_width - w) / 2) : x);
-		y = (y === -1 ? Math.round((screen_height - h) / 2) : y);
-	}
+	var screen_height = (((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight) - 40;
+	var screen_width = screen.availWidth - 10;
+
+	w = Math.min(screen_width, w);
+	h = Math.min(screen_height, h);
+
 	this.opener = opener;
 	this.referer = opener.top;
 	this.url = url;
 	this.ref = ref;
-	this.x = x;
-	this.y = y;
+	this.x = Math.round((screen_width - w) / 2);
+	this.y = Math.round((screen_height - h) / 2);
 	this.w = w;
 	this.h = h;
 	this.scroll = (foo_w !== w || foo_h !== h) ? true : scroll;

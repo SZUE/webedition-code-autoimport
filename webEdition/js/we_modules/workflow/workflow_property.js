@@ -34,17 +34,17 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openObjselector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + args[5] + "&we_cmd[8]=object&we_cmd[9]=1";
-			new (WE().util.jsWindow)(this, url, "we_objectselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_objectselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "add_cat":
 		case "add_objcat":
