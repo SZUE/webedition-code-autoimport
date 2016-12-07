@@ -1090,7 +1090,7 @@ function we_unserialize($string, $default = [], $quiet = false){
 		$string = $try ?: $string;
 	}
 	//no content, return default
-	if($string === '' || $string === false){
+	if($string === '' || $string === false || $string === null){
 		return $default;
 	}
 	//std-serialized data by php

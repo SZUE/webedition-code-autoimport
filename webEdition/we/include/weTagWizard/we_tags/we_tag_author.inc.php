@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -21,8 +22,9 @@ $this->Attributes[] = new weTagData_selectAttribute('type', [new weTagDataOption
 	new weTagDataOption('fax'),
 	new weTagDataOption('mobile'),
 	new weTagDataOption('description'),
-	], false, '');
+		], false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	], false, '');
+	new weTagDataOption('listview'),
+		], false, '');
 $this->Attributes[] = new weTagData_selectAttribute('creator', weTagData_selectAttribute::getTrueFalse(), false, '');
