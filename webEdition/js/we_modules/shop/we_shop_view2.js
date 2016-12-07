@@ -40,21 +40,21 @@ function we_cmd() {
 	var wind;
 	switch (args[0]) {
 		case "edit_shipping_cost":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, args[0], 545, 205, true, true, true, false);
+			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, args[0],  WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), args[0], 545, 300, true, true, true, false);
+			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 
 		case "edit_order_customer":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_order_customer", 545, 600, true, true, true, false);
+			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_order_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "customer_edit":
 			top.document.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=show_frameset&sid=' + cid;
 			break;
 		case "add_new_article":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "add_new_article", 650, 600, true, false, true, false);
+			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "add_new_article", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
 			break;
 	}
 }

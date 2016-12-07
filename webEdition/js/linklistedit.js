@@ -90,11 +90,11 @@ function we_cmd() {
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 
 		default:

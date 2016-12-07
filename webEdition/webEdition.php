@@ -174,25 +174,13 @@ $const = [
 			'moveWidth' => we_tree_base::MoveWidth,
 			'deleteWidth' => we_tree_base::DeleteWidth,
 		],
-		'catSelect' => [
-			'width' => we_selector_file::WINDOW_CATSELECTOR_WIDTH,
-			'height' => we_selector_file::WINDOW_CATSELECTOR_HEIGHT,
-		],
-		'docSelect' => [
-			'width' => we_selector_file::WINDOW_DOCSELECTOR_WIDTH,
-			'height' => we_selector_file::WINDOW_DOCSELECTOR_HEIGHT,
-		],
-		'windowSelect' => [
-			'width' => we_selector_file::WINDOW_SELECTOR_WIDTH,
-			'height' => we_selector_file::WINDOW_SELECTOR_HEIGHT,
-		],
-		'windowDirSelect' => [
-			'width' => we_selector_file::WINDOW_DIRSELECTOR_WIDTH,
-			'height' => we_selector_file::WINDOW_DIRSELECTOR_HEIGHT,
-		],
-		'windowDelSelect' => [
-			'width' => we_selector_file::WINDOW_DELSELECTOR_WIDTH,
-			'height' => we_selector_file::WINDOW_DELSELECTOR_HEIGHT,
+		'dialog' => [
+			'tiny' => 300,
+			'smaller' => 400,
+			'small' => 600,
+			'medium' => 800,
+			'big' => 1000,
+			'fullScreen' => 2500
 		],
 		'sidebar' => [
 			'defaultWidth' => intval(defined('SIDEBAR_DEFAULT_WIDTH') ? SIDEBAR_DEFAULT_WIDTH : 0),
@@ -229,7 +217,7 @@ $session = [
 	'specialUnload' => intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())),
 	'lang' => [
 		'short' => array_search($GLOBALS['WE_LANGUAGE'], getWELangs()),
-		'long'=> $GLOBALS["WE_LANGUAGE"]
+		'long' => $GLOBALS["WE_LANGUAGE"]
 	],
 	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
 	'isChrome' => we_base_browserDetect::isChrome(),
@@ -242,184 +230,184 @@ foreach($_SESSION['perms'] as $perm => $access){
 }
 
 $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEData',
-	'data-session' => setDynamicVar($session),
-	'data-consts' => setDynamicVar($const),
-]) .
- we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
- we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
- JQUERY .
- we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
- we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
- we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
- we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
- we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
- we_html_element::jsScript(JS_DIR . 'weButton.js') .
- we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
- we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
- we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
- we_main_headermenu::css() .
- we_html_element::cssLink(CSS_DIR . 'sidebar.css');
+			'data-session' => setDynamicVar($session),
+			'data-consts' => setDynamicVar($const),
+		]) .
+		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
+		we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
+		JQUERY .
+		we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
+		we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
+		we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+		we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+		we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+		we_html_element::jsScript(JS_DIR . 'weButton.js') .
+		we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
+		we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+		we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
+		we_main_headermenu::css() .
+		we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
-	$head.= we_html_element::jsScript($cur);
+	$head .= we_html_element::jsScript($cur);
 }
 $head .= we_html_element::jsElement('
 function checkPwd(){' .
-		(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
-		'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
-		) . '
+				(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
+				'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
+				) . '
 }
 
 function startMsg() {' .
-		we_main_headermenu::createMessageConsole('mainWindow', true) . '
+				we_main_headermenu::createMessageConsole('mainWindow', true) . '
 }
 function updateCheck() {' .
-		(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
-		'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
-		'') . '
+				(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
+				'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
+				'') . '
 }');
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
 unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 ?>
-	<body id="weMainBody" onload="initWE();
-			top.start('<?= $table_to_load; ?>');
-			startMsg();
-			checkPwd();
-			updateCheck();
-			self.focus();" onbeforeunload ="return doUnload();">
-		<div id="alertBox"></div>
-		<div id="headerDiv"><?php
-			$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-			$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
+<body id="weMainBody" onload="initWE();
+		top.start('<?= $table_to_load; ?>');
+		startMsg();
+		checkPwd();
+		updateCheck();
+		self.focus();" onbeforeunload ="return doUnload();">
+	<div id="alertBox"></div>
+	<div id="headerDiv"><?php
+		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
+		?>
+		<div id="weMainHeader"><?php
+			we_main_headermenu::pbody($msg);
 			?>
-			<div id="weMainHeader"><?php
-				we_main_headermenu::pbody($msg);
-				?>
-			</div>
 		</div>
-		<div id="resizeFrame"><?php
-			$sidebarwidth = getSidebarWidth();
-			switch($_SESSION['weS']['we_mode']){
-				default:
-				case we_base_constants::MODE_NORMAL:
-					$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
-					$treeStyle = 'display:block;';
-					break;
-				case we_base_constants::MODE_SEE:
-					$treewidth = 0;
-					if($SEEM_edit_include){ // edit include file
-						$_REQUEST['SEEM_edit_include'] = true;
-						$_REQUEST['we_cmd'][0] = 'edit_document';
+	</div>
+	<div id="resizeFrame"><?php
+		$sidebarwidth = getSidebarWidth();
+		switch($_SESSION['weS']['we_mode']){
+			default:
+			case we_base_constants::MODE_NORMAL:
+				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
+				$treeStyle = 'display:block;';
+				break;
+			case we_base_constants::MODE_SEE:
+				$treewidth = 0;
+				if($SEEM_edit_include){ // edit include file
+					$_REQUEST['SEEM_edit_include'] = true;
+					$_REQUEST['we_cmd'][0] = 'edit_document';
+				}
+				$treeStyle = '';
+				break;
+		}
+		?>
+		<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
+			<div id="vtabs"><?php
+				$vtab = [
+					'FILE_TABLE' => [
+						'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'),
+						'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
+					],
+					'TEMPLATES_TABLE' => [
+						'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
+						'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
+					],
+					'OBJECT_FILES_TABLE' => [
+						'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
+						'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
+					],
+					'OBJECT_TABLE' => [
+						'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
+						'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
+					],
+					'VFILE_TABLE' => [
+						'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS"),
+						'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
+					]
+				];
+				foreach($vtab as $tab => $val){
+					if($val['show']){
+						echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
 					}
-					$treeStyle = '';
-					break;
-			}
-			?>
-			<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
-				<div id="vtabs"><?php
-					$vtab = [
-						'FILE_TABLE' => [
-							'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'),
-							'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
-						],
-						'TEMPLATES_TABLE' => [
-							'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
-							'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
-						],
-						'OBJECT_FILES_TABLE' => [
-							'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
-							'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
-						],
-						'OBJECT_TABLE' => [
-							'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
-							'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
-						],
-						'VFILE_TABLE' => [
-							'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS"),
-							'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
-						]
-					];
-					foreach($vtab as $tab => $val){
-						if($val['show']){
-							echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
-						}
-					}
-					?>
-					<div id="baumArrows">
-						<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.inc();"><i class="fa fa-plus"></i></div>
-						<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.dec();"><i class="fa fa-minus"></i></div>
-					</div>
-				</div>
-				<div id="treeFrameDiv">
-					<div id="treeControl">
-						<span id="treeName" class="middlefont"></span>
-						<span id="reloadTree" onclick="we_cmd('loadVTab', top.treeData.table, 0);"><i class="fa fa-refresh"></i></span>
-						<span id="toggleTree" onclick="WE().layout.tree.toggle();" title="<?= g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?= ($treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
-					</div>
-					<div id="treeContent">
-						<div id="bm_treeheaderDiv">
-							<iframe src="about:blank" name="treeheader"></iframe>
-						</div>
-						<?php
-						$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
-						echo $Tree->getHTMLConstruct();
-						?>
-						<div id="bm_searchField">
-							<div id="infoField" class="defaultfont"></div>
-							<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
-									return false;">
-								<div id="search">
-									<?php
-									echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
-									we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);");
-									?>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
-				<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
-			</div>
-			<?php
-			if(!(SIDEBAR_DISABLED == 1)){
+				}
 				?>
-				<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
+				<div id="baumArrows">
+					<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.inc();"><i class="fa fa-plus"></i></div>
+					<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.dec();"><i class="fa fa-minus"></i></div>
+				</div>
+			</div>
+			<div id="treeFrameDiv">
+				<div id="treeControl">
+					<span id="treeName" class="middlefont"></span>
+					<span id="reloadTree" onclick="we_cmd('loadVTab', top.treeData.table, 0);"><i class="fa fa-refresh"></i></span>
+					<span id="toggleTree" onclick="WE().layout.tree.toggle();" title="<?= g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?= ($treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
+				</div>
+				<div id="treeContent">
+					<div id="bm_treeheaderDiv">
+						<iframe src="about:blank" name="treeheader"></iframe>
+					</div>
 					<?php
-					$weFrame = new we_sidebar_frames();
-					$weFrame->getHTML('');
+					$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
+					echo $Tree->getHTMLConstruct();
 					?>
+					<div id="bm_searchField">
+						<div id="infoField" class="defaultfont"></div>
+						<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
+								return false;">
+							<div id="search">
+								<?php
+								echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
+								we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);");
+								?>
+							</div>
+						</form>
+					</div>
 				</div>
-			<?php } ?>
+			</div>
 		</div>
-		<div id="cmdDiv">
-			<iframe src="about:blank" name="load"></iframe>
-			<iframe src="about:blank" name="load2"></iframe>
-			<iframe src="about:blank" name="plugin"></iframe>
+		<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
+			<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
 		</div>
 		<?php
+		if(!(SIDEBAR_DISABLED == 1)){
+			?>
+			<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
+				<?php
+				$weFrame = new we_sidebar_frames();
+				$weFrame->getHTML('');
+				?>
+			</div>
+		<?php } ?>
+	</div>
+	<div id="cmdDiv">
+		<iframe src="about:blank" name="load"></iframe>
+		<iframe src="about:blank" name="load2"></iframe>
+		<iframe src="about:blank" name="plugin"></iframe>
+	</div>
+	<?php
 //	get the frameset for the actual mode.
-		echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
+	echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
 			we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
-		getWebEdition_Tree();
-		?>
-	</body>
-	</html>
-	<?php
-	if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
-		flush();
-		if(function_exists('fastcgi_finish_request')){
-			fastcgi_finish_request();
-		}
-		session_write_close();
-// trigger scheduler
-		we_schedpro::trigger_schedule();
+	getWebEdition_Tree();
+	?>
+</body>
+</html>
+<?php
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	flush();
+	if(function_exists('fastcgi_finish_request')){
+		fastcgi_finish_request();
 	}
+	session_write_close();
+// trigger scheduler
+	we_schedpro::trigger_schedule();
+}

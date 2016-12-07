@@ -81,23 +81,23 @@ function we_cmd() {
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_navigation_dirSelector":
-			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", 600, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "openFieldSelector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=fields&cmd=" + args[1] + "&type=" + args[2] + "&selection=" + args[3] + "&multi=" + args[4];
-			new (WE().util.jsWindow)(window, url, "we_navigation_field_selector", 380, 350, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navigation_field_selector", WE().consts.size.dialog.smaller, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
@@ -105,7 +105,7 @@ function we_cmd() {
 			setTimeout(copyNaviFolder, 100, folderPath, folderID);
 			break;
 		case "rebuildNavi":
-			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
+			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',600,130,0,true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

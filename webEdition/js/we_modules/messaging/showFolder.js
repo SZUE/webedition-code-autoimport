@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -116,5 +118,5 @@ function unSelectMessage(id) {
 }
 
 function newMessage(username) {
-	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', 670, 530, true, false, true, false);
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true, false);
 }

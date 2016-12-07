@@ -48,13 +48,13 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_votingSelector", 600, 350, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_votingSelector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "users_add_owner":
 			var owners = args[1].allPaths;
@@ -77,7 +77,7 @@ function we_cmd() {
 			document.we_form.item_count.value = answers_edit.itemCount;
 			document.we_form.cmd.value = args[0];
 			document.we_form.pnt.value = args[0];
-			new (WE().util.jsWindow)(window, "", "export_csv", 420, 250, true, false, true);
+			new (WE().util.jsWindow)(window, "", "export_csv", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			submitForm("export_csv");
 			document.we_form.cmd.value = oldcmd;
 			document.we_form.pnt.value = oldpnt;
@@ -87,7 +87,7 @@ function we_cmd() {
 			oldpnt = document.we_form.pnt.value;
 			document.we_form.cmd.value = args[0];
 			document.we_form.pnt.value = args[0];
-			new (WE().util.jsWindow)(window, "", "exportGroup_csv", 420, 250, true, false, true);
+			new (WE().util.jsWindow)(window, "", "exportGroup_csv", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			submitForm("exportGroup_csv");
 			document.we_form.cmd.value = oldcmd;
 			document.we_form.pnt.value = oldpnt;
@@ -98,7 +98,7 @@ function we_cmd() {
 			break;
 		case "reset_ipdata_do":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=reset_ipdata";
-			new (WE().util.jsWindow)(window, url, "reset_ipdata", 420, 230, true, false, true);
+			new (WE().util.jsWindow)(window, url, "reset_ipdata", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			var t = document.getElementById("ip_mem_size");
 			setVisible("delete_ip_data", false);
 			t.innerHTML = "0";
@@ -108,11 +108,11 @@ function we_cmd() {
 			break;
 		case "delete_log_do":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=delete_log";
-			new (WE().util.jsWindow)(window, url, "delete_log", 420, 230, true, false, true);
+			new (WE().util.jsWindow)(window, url, "delete_log", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 		case "show_log":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-			new (WE().util.jsWindow)(window, url, "show_log", 810, 600, true, true, true);
+			new (WE().util.jsWindow)(window, url, "show_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

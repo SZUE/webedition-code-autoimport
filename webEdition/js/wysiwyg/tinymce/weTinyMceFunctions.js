@@ -383,7 +383,7 @@ function tinyEdonDblClick(ed, e) {
 					frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[1], "");
 				}
 			} else {
-				new (WE().util.jsWindow)(window, src, "_blank", 2500, 2500, true, true, true);
+				new (WE().util.jsWindow)(window, src, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 			}
 		}
 		if (ed.selection.getNode().nodeName === "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))) {
@@ -400,7 +400,7 @@ function tinyEdonDblClick(ed, e) {
 					}
 				}
 			} else {
-				new (WE().util.jsWindow)(window, href, "_blank", 2500, 2500, true, true, true);
+				new (WE().util.jsWindow)(window, href, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 			}
 		}
 	}

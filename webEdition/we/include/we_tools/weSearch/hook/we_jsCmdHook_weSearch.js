@@ -24,7 +24,7 @@
 we_cmd_modules.tool_weSearch = function (args, url) {
 	switch (args[0]) {
 		/*		case "tool_weSearch_edit":
-		 new (WE().util.jsWindow)(window, url, "tool_window_weSearch", 970, 760, true, true, true, true);
+		 new (WE().util.jsWindow)(window, url, "tool_window_weSearch", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 		 break;*/
 		case "tool_weSearch_new_forDocuments":
 		case "tool_weSearch_new_forTemplates":

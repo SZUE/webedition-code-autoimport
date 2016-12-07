@@ -55,7 +55,7 @@ function isNoError() {
 function getUser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
+	new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 }
 
 function delUser(iUsrId) {

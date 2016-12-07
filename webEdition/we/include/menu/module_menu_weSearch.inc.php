@@ -72,10 +72,10 @@ return [
 	'help' => ['text' => g_l('searchtool', '[menu_help]'),],
 	['text' => g_l('searchtool', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
-		'cmd' => 'help_tools',
+		'cmd' => 'help_modules',
 	],
 	['text' => g_l('searchtool', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
-		'cmd' => 'info_tools',
+		'cmd' => 'info_modules',
 	],
 ];

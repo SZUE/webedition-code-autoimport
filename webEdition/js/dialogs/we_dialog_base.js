@@ -76,17 +76,17 @@ function we_cmd() {
 	switch (args[0]) {
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "edit_new_collection":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
-			new (WE().util.jsWindow)(window, url, "weNewCollection", 590, 560, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "weNewCollection", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));

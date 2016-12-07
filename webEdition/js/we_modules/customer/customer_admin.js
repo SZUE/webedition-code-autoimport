@@ -50,7 +50,7 @@ function we_cmd() {
 		case "open_add_field":
 			branch = document.we_form.branch.value;
 			url += "&pnt=field_editor&art=add&branch=" + branch;
-			new (WE().util.jsWindow)(window, url, "field_editor", 380, 250, true, false, true);
+			new (WE().util.jsWindow)(window, url, "field_editor", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 		case "open_edit_field":
 			field = document.we_form.fields_select.value;
@@ -59,7 +59,7 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				url += "&pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
-				new (WE().util.jsWindow)(window, url, "field_editor", 380, 250, true, false, true);
+				new (WE().util.jsWindow)(window, url, "field_editor", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			}
 			break;
 		case "delete_field":
@@ -94,7 +94,7 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				url += "&pnt=branch_editor&art=edit&&branch=" + branch;
-				new (WE().util.jsWindow)(window, url, "field_editor", 380, 250, true, false, true);
+				new (WE().util.jsWindow)(window, url, "field_editor", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			}
 			break;
 		case "save_branch":

@@ -648,7 +648,7 @@ edf.populateGroups();');
 					$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir" . $exportno), '/') . "/emails_export_" . time() . ".csv";
 
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
-					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",440,250,true,true,true,true);');
 				}
 				break;
 

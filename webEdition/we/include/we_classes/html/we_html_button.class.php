@@ -197,7 +197,7 @@ abstract class we_html_button{
 				$cmd = $on_click . /* ($target ? // The link will be opened in a different frame or in a new window
 					  // Check if the link has to be opend in a frame or a window
 					  ($target === '_blank' ? // The link will be opened in a new window
-					  "new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', 500, 550, true, true, true);" :
+					  "new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);" :
 					  // The link will be opened in a different frame
 					  "target_frame = eval('parent.' + " . $target . ");" .
 					  "target_frame.location.href='" . $href . "';") :

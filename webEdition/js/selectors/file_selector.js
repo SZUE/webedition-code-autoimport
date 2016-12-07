@@ -523,7 +523,7 @@ function we_cmd() {
 			setTimeout(top.selectFile, 200, importedDoc.currentID);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));

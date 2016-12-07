@@ -25,7 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-var image = WE().util.getDynamicVar(document, 'loadVarDialogImage','data-image');
+var image = WE().util.getDynamicVar(document, 'loadVarDialogImage', 'data-image');
 
 function imageChanged(wasThumbnailChange) {
 	if (wasThumbnailChange !== null && wasThumbnailChange) {
@@ -43,7 +43,7 @@ function imageChanged(wasThumbnailChange) {
 }
 
 function extSrc_doOnchange(input) {
-	if(input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT){
+	if (input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT) {
 		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
 	} else {
 		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
@@ -78,43 +78,44 @@ function checkWidthHeight(field) {
 	return true;
 }
 
-function update_editor(data){
+function update_editor(data) {
 	document.we_form['we_cmd[0]'].value = '';
 
 	var inputElem;
 
 	for (var arg in data.args) {
-		if(data.args.hasOwnProperty(arg) && arg !== 'cssclass'){
-			if(inputElem = document.we_form.elements['we_dialog_args[' + arg + ']']){
+		if (data.args.hasOwnProperty(arg) && arg !== 'cssclass') {
+			if (inputElem = document.we_form.elements['we_dialog_args[' + arg + ']']) {
 				inputElem.value = data.args[arg];
 			}
 		}
 	}
 
 	// => buggy!
-	if(inputElem = document.we_form.elements["we_dialog_args[thumbnail]"]){
+	if (inputElem = document.we_form.elements["we_dialog_args[thumbnail]"]) {
 		var disabled = (inputElem.value !== '');
 		document.we_form.elements["we_dialog_args[height]"].disabled = disabled;
 		document.we_form.elements["we_dialog_args[width]"].disabled = disabled;
 	}
 
-	try{
-		if(data.displayThumbnailSel === 'none'){
+	try {
+		if (data.displayThumbnailSel === 'none') {
 			top.document.getElementById('selectThumbnail').setAttribute('disabled', 'disabled');
 		} else {
 			top.document.getElementById('selectThumbnail').removeAttribute('disabled');
 		}
-	} catch(err){}
+	} catch (err) {
+	}
 
 	var rh = 0, rw = 0;
-	if(parseInt(data.args.width) * parseInt(data.args.height)){
+	if (parseInt(data.args.width) * parseInt(data.args.height)) {
 		rh = data.args.width / data.args.height;
 		rw = data.args.height / data.args.width;
 	}
-	if(document.we_form.tinyMCEInitRatioH !== undefined){
+	if (document.we_form.tinyMCEInitRatioH !== undefined) {
 		document.we_form.tinyMCEInitRatioH.value = rh;
 	}
-	if(document.we_form.tinyMCEInitRatioW !== undefined){
+	if (document.we_form.tinyMCEInitRatioW !== undefined) {
 		document.we_form.tinyMCEInitRatioW.value = rw;
 	}
 }
@@ -127,23 +128,23 @@ function we_cmd() {
 		case 'we_selector_document':
 		case 'we_selector_image':
 		case 'we_selector_directory':
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case 'browse_server':
-			new (WE().util.jsWindow)(window, url, "browse_server",  WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_fileupload_editor":
-			new (WE().util.jsWindow)(window, url, "we_fileupload_editor", 500, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileupload_editor", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "dialog_setType":
 			var isInt = this.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
-			this.document.getElementById('imageExt').style.display = isInt ? 'none' :  'block';
-			this.document.getElementById('imageInt').style.display = isInt ? 'block' :  'none';
+			this.document.getElementById('imageExt').style.display = isInt ? 'none' : 'block';
+			this.document.getElementById('imageInt').style.display = isInt ? 'block' : 'none';
 			imageChanged();
 			break;
 		case "dialog_emptyLongdesc":
-			this.document.we_form.elements['we_dialog_args[longdescid]'].value='';
-			this.document.we_form.elements['we_dialog_args[longdescsrc]'].value='';
+			this.document.we_form.elements['we_dialog_args[longdescid]'].value = '';
+			this.document.we_form.elements['we_dialog_args[longdescsrc]'].value = '';
 			break;
 		case "dialog_imageChanged":
 			imageChanged();

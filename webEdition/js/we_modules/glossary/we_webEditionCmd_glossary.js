@@ -41,7 +41,7 @@ we_cmd_modules.glossary = function (args, url) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
-				new (WE().util.jsWindow)(window, url, "glossary_check", 730, 400, true, false, true);
+				new (WE().util.jsWindow)(window, url, "glossary_check",  WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -53,14 +53,14 @@ we_cmd_modules.glossary = function (args, url) {
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
 		case "glossary_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "glossary_settings":
 			WE().util.jsWindow.prototype.focus('edit_module');
-			new (WE().util.jsWindow)(window, url, "edit_glossary_settings", 490, 250, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_glossary_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "glossary_dictionaries":
-			new (WE().util.jsWindow)(window, url, "edit_glossary_dictionaries", 490, 250, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_glossary_dictionaries", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
