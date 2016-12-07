@@ -430,7 +430,7 @@ class we_customer_customer extends we_base_model{
 		delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
 		nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
 		nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '",
-		reset_failed_login_successfully:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) . '".
+		reset_failed_login_successfully:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) . '",
 		save_changed_customer:"' . g_l('modules_customer', '[save_changed_customer]') . '",
 	},
 	admin:{

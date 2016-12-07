@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+var fieldTypesByName = WE().util.getDynamicVar(document, 'loadVarCustomerFuntions', 'data-customerFunctions');
 function showHideDatePickerIcon(fieldNr, show) {
 	document.getElementsByName('value_' + fieldNr)[0].style.display = (show ? 'none' : '');
 	document.getElementsByName('value_date_' + fieldNr)[0].style.display = (show ? '' : 'none');
@@ -33,7 +35,7 @@ function isDateField(fieldNr) {
 	var selBranch = document.getElementsByName('branch_' + fieldNr)[0].value;
 	var selField = document.getElementsByName('field_' + fieldNr)[0].value;
 	selField = selField.substring(selBranch.length + 1, selField.length);
-	if (fieldTypesByName[selField] === 'date'||fieldTypesByName[selField] === 'datetime') {
+	if (fieldTypesByName[selField] === 'date' || fieldTypesByName[selField] === 'datetime') {
 		showHideDatePickerIcon(fieldNr, true);
 	} else {
 		showHideDatePickerIcon(fieldNr, false);
@@ -41,12 +43,12 @@ function isDateField(fieldNr) {
 }
 
 function lookForDateFields() {
-	var selBranch,selField;
+	var selBranch, selField;
 	for (i = 0; i < document.getElementsByName('count')[0].value; i++) {
 		selBranch = document.getElementsByName('branch_' + i)[0].value;
 		selField = document.getElementsByName('field_' + i)[0].value;
 		selField = selField.substring(selBranch.length + 1, selField.length);
-		if (fieldTypesByName[selField] === 'date'||fieldTypesByName[selField] === 'datetime') {
+		if (fieldTypesByName[selField] === 'date' || fieldTypesByName[selField] === 'datetime') {
 			if (document.getElementsByName('value_' + i)[0].value !== '') {
 				//document.getElementById('value_date_' + i).value = fieldDate.timestempToDate(document.getElementsByName('value_' + i)[0].value);
 

@@ -88,3 +88,38 @@ function addToMultiEdit(_multEdit, paths, ids) {
 	}
 	_multEdit.showVariant(0);
 }
+
+function updateView_base() {
+	var f = document.forms[0];
+	var r = f.wecf_mode;
+	//var modeRadioOff = r[0];
+	//var modeRadioAll = r[1];
+	var modeRadioSpecific = r[2];
+	var modeRadioFilter = r[3];
+	//var modeRadioNone = r[4];
+
+	getById('specificCustomersEditDiv').style.display = modeRadioSpecific.checked ? "block" : "none";
+	getById('blackListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+	getById('whiteListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+	getById('filterCustomerDiv').style.display = modeRadioFilter.checked ? "block" : "none";
+}
+
+function updateView_document() {
+	updateView_base();
+	var f = document.forms[0];
+	var r = f.wecf_mode;
+	var modeRadioOff = r[0];
+	var r2 = f.wecf_accessControlOnTemplate;
+	//var wecf_onTemplateRadio = r2[0];
+	var wecf_errorDocRadio = r2[1];
+
+	getById('accessControlSelectorDiv').style.display = wecf_errorDocRadio.checked ? "block" : "none";
+	getById('accessControlDiv').style.display = modeRadioOff.checked ? "none" : "block";
+}
+
+function updateView_navigation() {
+	updateView_base();
+	var f = document.forms[0];
+	var wecf_useDocumentFilterCheckbox = f.check_wecf_useDocumentFilter;  // with underscore (_) its the checkbox, otherwise the hidden field
+	getById('MainFilterDiv').style.display = wecf_useDocumentFilterCheckbox.checked ? 'none' : 'block';
+}

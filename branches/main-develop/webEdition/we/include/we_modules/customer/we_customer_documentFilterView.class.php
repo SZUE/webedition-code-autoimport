@@ -98,9 +98,9 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$accesControl = '<div class="weMultiIconBoxHeadline">' .
 			g_l('modules_customerFilter', '[accessControl]') . '</div>' .
 			we_html_forms::radiobutton(
-				"onTemplate", $filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView();top.content.setHot();") .
+				"onTemplate", $filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView_document();top.content.setHot();") .
 			we_html_forms::radiobutton(
-				"errorDoc", !$filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();top.content.setHot();") .
+				"errorDoc", !$filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView_document();top.content.setHot();") .
 			we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$filter->getAccessControlOnTemplate()), 25);
 
 
@@ -132,15 +132,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 * @return string
 	 */
 	function createUpdateViewScript(){
-		return parent::createUpdateViewScript() . <<<EOF
-	var r2 = f.wecf_accessControlOnTemplate;
-	var wecf_onTemplateRadio 	= r2[0];
-	var wecf_errorDocRadio 		= r2[1];
-
-	getById('accessControlSelectorDiv').style.display = wecf_errorDocRadio.checked ? "block" : "none";
-	getById('accessControlDiv').style.display = modeRadioOff.checked ? "none" : "block";
-
-EOF;
+		return 'updateView_document();';
 	}
 
 }

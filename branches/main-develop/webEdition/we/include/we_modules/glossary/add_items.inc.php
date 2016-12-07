@@ -32,7 +32,6 @@ if(!($Transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0
 echo we_html_tools::getHtmlTop(g_l('modules_glossary', '[glossary_check]')) .
  we_html_element::cssLink(CSS_DIR . 'glossary_add.css') .
  we_html_element::jsElement('
-WE().util.loadConsts(document, "g_l.glossary");
 var doc={
 	EditPageNr:' . intval($we_doc->EditPageNr) . '",
 };

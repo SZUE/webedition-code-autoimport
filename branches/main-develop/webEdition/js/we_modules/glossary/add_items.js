@@ -30,6 +30,8 @@ var counter = 0;
 var table;
 var Combobox;
 
+WE().util.loadConsts(document, "g_l.glossary");
+
 function applyOnEnter() {
 	top.frames.glossarycheck.checkForm();
 	return true;

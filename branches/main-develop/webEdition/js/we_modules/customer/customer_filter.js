@@ -20,6 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var cf = WE().util.getDynamicVar(document, 'loadVarCustomerFilter', 'data-customerFilter');
 
 String.prototype.trim = function () {
 	return this.replace(/^\s+|\s+$/g, "");
@@ -44,18 +45,18 @@ function addRow(rowNr) {
 		_cell.style.width = "64px";
 
 		if (rowNr > 0) {
-		_cell.innerHTML = '<select onchange="wecf_logic_changed(this);" class="weSelect logicInput">' + filter.logic + '</select>';
+			_cell.innerHTML = '<select onchange="wecf_logic_changed(this);" class="weSelect logicInput">' + cf.filter.logic + '</select>';
 		}
 		_newRow.appendChild(_cell);
 
 		_cell = document.createElement("TD");
 		_cell.style.paddingTop = "4px";
-		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect leftInput">' + filter.args + '</select>';
+		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect leftInput">' + cf.filter.args + '</select>';
 		_newRow.appendChild(_cell);
 
 		_cell = document.createElement("TD");
 		_cell.style.paddingTop = "4px";
-		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect middleInput">' + filter.op + '</select>';
+		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect middleInput">' + cf.filter.op + '</select>';
 		_newRow.appendChild(_cell);
 
 		_cell = document.createElement("TD");
@@ -129,20 +130,20 @@ function updateFilterTable() {
 			_cell.firstChild.name = "filterValue_" + i;
 
 			_cell = _row.cells[4];  // plus
-			_cell.innerHTML = buttons.add.replace(/__CNT__/, i + 1);
+			_cell.innerHTML = cf.buttons.add.replace(/__CNT__/, i + 1);
 
 			_cell = _row.cells[5];  // trash
 			if (i === 0) {
 				_cell.style.width = "25px";
 			}
-			_cell.innerHTML = (i === 0 ? '<span></span>' : buttons.trash.replace(/__CNT__/, i));
+			_cell.innerHTML = (i === 0 ? '<span></span>' : cf.buttons.trash.replace(/__CNT__/, i));
 
 
 			if (i > 0) {
 				_cell = _row.cells[0];
 				var elem = _cell.firstChild;
 
-				var _logic = elem.selectedIndex!==undefined?elem.options[elem.selectedIndex].value:"OR";
+				var _logic = elem.selectedIndex !== undefined ? elem.options[elem.selectedIndex].value : "OR";
 				var _prevRow = _table.rows[i - 1];
 
 				for (var n = 0; n < _prevRow.cells.length; n++) {
