@@ -96,7 +96,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_category":
 			new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);

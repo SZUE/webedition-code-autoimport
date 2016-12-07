@@ -107,7 +107,7 @@ switch($cmd0){
 							'path' => $item['Path']
 							];
 					}
-					$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=moveInfo","we_moveinfo",550,550,true,true,true);' . "\n";
+					$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=moveInfo","we_moveinfo",WE().consts.size.dialog.small,WE().consts.size.dialog.small,true,true,true);' . "\n";
 				} else {
 					$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}

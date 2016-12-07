@@ -96,15 +96,15 @@ if (top.content.viewclass != "' . $mode . '") {
 				return $out;
 			case 'new_message':
 				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",670,530,true,false,true,false);');
+					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
 			case 'new_todo':
 				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",690,520,true,false,true,false);');
+					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
 			case 'forward_todo':
 				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",690,600,true,false,true,false);');
+					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
 			case 'rej_todo':
-				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",690,600,true,false,true,false);');
+				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
 			case 'reset_right_view':
 				return we_html_element::jsElement('
 top.content.editor.edbody.entries_selected = [];
@@ -113,7 +113,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
-					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",690,600,true,false,true,false);');
+					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
 				}
 				break;
 			case 'todo_markdone':

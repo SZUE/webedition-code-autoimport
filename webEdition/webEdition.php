@@ -193,7 +193,7 @@ $const = [
 	],
 	'graphic' => [
 		'gdSupportedTypes' => [],
-		'canRotate' => intval(function_exists("ImageRotate")),
+		'canRotate' => intval(function_exists('ImageRotate')),
 	],
 	'tabs' => [
 		'PREVIEW' => we_base_constants::WE_EDITPAGE_PREVIEW

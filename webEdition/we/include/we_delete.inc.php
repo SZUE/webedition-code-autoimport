@@ -335,7 +335,7 @@ for ( frameId in _usedEditors ) {
 									"path" => $datafile
 								];
 							}
-							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",550,550,true,true,true);';
+							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",WE().consts.size.dialog.small,WE().consts.size.dialog.small,true,true,true);';
 						} else {
 							$delete_ok = g_l('alert', '[delete_ok]');
 							$weCmd->addMsg($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);

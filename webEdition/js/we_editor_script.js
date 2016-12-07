@@ -346,7 +346,7 @@ function we_cmd() {
 			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
 			break;
 		case "import_files":
-			new (WE().util.jsWindow)(top, url, "import_files", 650, 720, true, false, true); // be sure we have top as opener!
+			new (WE().util.jsWindow)(top, url, "import_files", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, false, true); // be sure we have top as opener!
 			break;
 		case 'tag_weHref_selectorCallback':
 			_EditorFrame.setEditorIsHot(true);
