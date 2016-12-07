@@ -52,7 +52,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "editThumbs":
-			new (WE().util.jsWindow)(window, url, "thumbnails", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(window, url, "thumbnails", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));

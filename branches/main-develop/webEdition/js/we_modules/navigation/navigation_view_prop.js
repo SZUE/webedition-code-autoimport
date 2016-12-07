@@ -105,7 +105,7 @@ function we_cmd() {
 			setTimeout(copyNaviFolder, 100, folderPath, folderID);
 			break;
 		case "rebuildNavi":
-			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',600,130,0,true);
+			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,0,true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

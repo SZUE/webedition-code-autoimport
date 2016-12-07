@@ -62,7 +62,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.big, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true);
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {

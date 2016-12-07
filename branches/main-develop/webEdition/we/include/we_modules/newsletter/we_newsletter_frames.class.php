@@ -1234,7 +1234,7 @@ window.onload=extraInit;');
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js .= we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",440,250,true,true,true,true);');
+				$js .= we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",WE().consts.size.dialog.smaller,WE().consts.size.dialog.tiny,true,true,true,true);');
 				break;
 		}
 
@@ -1695,7 +1695,7 @@ function cancel(){
 
 function ask(start,group){
 	//WE().util.showConfirm(window,"","' . g_l('modules_newsletter', '[continue_camp]') . '");
-	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '&pnt=qsend&start="+start+"&grp="+group,"send_question",400,200,true,true,true,false);
+	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '&pnt=qsend&start="+start+"&grp="+group,"send_question",WE().consts.size.dialog.smaller,WE().consts.size.dialog.tiny,true,true,true,false);
 }
 
 function doSend(start,group){

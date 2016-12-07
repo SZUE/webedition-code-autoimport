@@ -941,7 +941,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$wfType = f('SELECT ' . WORKFLOW_TABLE . '.Type FROM ' . WORKFLOW_TABLE . ',' . WORKFLOW_DOC_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.ID=' . intval($workflowDocument->ID), '', $db);
 		return '<table class="default" style="margin-right:15px;">
 		<tr><td>' . we_html_tools::htmlDialogBorder3(730, $content, $headline) . '</td></tr>
-		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . WEBEDITION_DIR . 'we_showMod.php?mod=wrokflow&pnt=log&art=' . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',640,480,true,false,true);") . '</td></tr>		</table>';
+		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . WEBEDITION_DIR . 'we_showMod.php?mod=wrokflow&pnt=log&art=' . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true);") . '</td></tr>		</table>';
 	}
 
 	static function getLogForDocument($docID, $type = 0){//type is an string-array

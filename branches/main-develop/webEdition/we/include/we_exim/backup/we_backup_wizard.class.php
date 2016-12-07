@@ -709,7 +709,7 @@ class we_backup_wizard{
 				return;
 			case 'rebuild':
 				return we_html_element::jsElement('
-new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText="+WE().consts.g_l.backupWizard.finished_success,"rebuildwin",600,130,true,0,true);
+new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText="+WE().consts.g_l.backupWizard.finished_success,"rebuildwin",WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,0,true);
 top.close();');
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
