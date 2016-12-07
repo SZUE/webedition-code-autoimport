@@ -81,7 +81,7 @@ function we_cmd() {
 				url += "&delayCmd[]=" + delay[i];
 			}
 
-			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", 380, 130, true, false, true);
 			break;
 		case "tool_weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {

@@ -173,7 +173,7 @@ function we_cmd() {
 			break;
 		case "dyn_preview":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=dyn_preview";
-			new (WE().util.jsWindow)(window, url, "we_navigation_dyn_preview", -1, -1, 480, 350, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navigation_dyn_preview", 480, 350, true, true, true);
 			break;
 		case "populateWorkspaces":
 			WE().layout.button.switch_button_state(document, 'open_navigation_obj', document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
@@ -223,7 +223,7 @@ function we_cmd() {
 			for (var i = 0; i < delay.length; i++) {
 				url += "&delayCmd[]=" + delay[i];
 			}
-			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", 380, 130, true, false, true);
 			break;
 
 		case "module_navigation_reset_customer_filter":
@@ -231,7 +231,7 @@ function we_cmd() {
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", 580, 400, true, true, true, false);
 			break;
 		case 'moveAbs':
 			moveAbs(args[1], args[2], args[3]);

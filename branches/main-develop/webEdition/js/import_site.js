@@ -35,17 +35,17 @@ function we_cmd() {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_dirselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirselector", WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 800, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
 			break;
 		case "siteImportCreateWePageSettings":
-			new (WE().util.jsWindow)(this, url, "siteImportCreateWePageSettings", -1, -1, 520, 600, true, false, true);
+			new (WE().util.jsWindow)(window, url, "siteImportCreateWePageSettings", 520, 600, true, false, true);
 			break;
 		case "displayTable":
 			displayTable();

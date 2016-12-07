@@ -25,7 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-var vars = WE().util.getDynamicVar(document, 'loadVarDialog_Hyperlink','data-vars');
+var vars = WE().util.getDynamicVar(document, 'loadVarDialog_Hyperlink', 'data-vars');
 var editname = vars.editname;
 var classNames = vars.classNames === 'getFromTiny' ? top.opener.weclassNames_tinyMce : vars.classNames;
 
@@ -59,15 +59,15 @@ function we_cmd() {
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 800, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
 			break;
 		case "selector_callback":
-			if(args[1].currentID){
+			if (args[1].currentID) {
 				this.document.getElementById(args[2]).disabled = false;
-				if(args[2] === 'btn_edit_int'){
+				if (args[2] === 'btn_edit_int') {
 					this.document.we_form.yuiAcResultCT.value = args[1].currentType;
 				}
 			}
@@ -79,17 +79,18 @@ function we_cmd() {
 }
 
 function extHref_doOnchange(input) {
-	if(input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT){
+	if (input.value === '' || input.value === WE().consts.linkPrefix.EMPTY_EXT) {
 		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'disabled');
 		checkMakeEmptyHrefExt();
-	}else{
+	} else {
 		WE().layout.button.switch_button_state(document, 'btn_edit_ext', 'enabled');
-		var x = input.value.match(/((.*:\/)?\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);top.console.log('x', x);
+		var x = input.value.match(/((.*:\/)?\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
+		top.console.log('x', x);
 		input.value = x[1];
-		if(x[4] !== undefined){
+		if (x[4] !== undefined) {
 			document.getElementsByName('we_dialog_args[param]')[0].value = x[4];
 		}
-		if(x[6] !== undefined){
+		if (x[6] !== undefined) {
 			document.getElementsByName('we_dialog_args[anchor]')[0].value = x[6];
 		}
 	}
@@ -99,8 +100,8 @@ function extHref_doOnFocus(input) {
 	input.value = this.value === '' ? WE().consts.linkPrefix.EMPTY_EXT : input.value;
 }
 
-function openToEdit(id, ct, table){
-	if(!id || !ct){
+function openToEdit(id, ct, table) {
+	if (!id || !ct) {
 		return;
 	}
 
@@ -156,7 +157,7 @@ function weDoCheckAcFields() {
 	if (weAcCheckLoop > 10) {
 		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		weAcCheckLoop = 0;
-	} else{
+	} else {
 		if (acStatus.running) {
 			weAcCheckLoop++;
 			setTimeout(weDoCheckAcFields, 100);

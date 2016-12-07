@@ -27,7 +27,7 @@ we_cmd_modules.users = function (args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
-				new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
+				new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
 				break;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -35,7 +35,7 @@ we_cmd_modules.users = function (args, url) {
 		case "users_edit":
 		case "users_edit_ifthere":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
-				new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+				new (WE().util.jsWindow)(window, url, "edit_module", 970, 760, true, true, true, true);
 				break;
 			}
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -79,7 +79,7 @@ we_cmd_modules.users = function (args, url) {
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			break;
 		case "doctypes":
-			new (WE().util.jsWindow)(this, url, "doctypes", -1, -1, 720, 670, true, true, true);
+			new (WE().util.jsWindow)(window, url, "doctypes", 720, 670, true, true, true);
 			break;
 		case "users_unlock":
 			WE().util.rpc(url);
@@ -102,7 +102,7 @@ we_cmd_modules.users = function (args, url) {
 			}
 			break;
 		case "chooseAddress":
-			new (WE().util.jsWindow)(this, url, "chooseAddress", -1, -1, 400, 590, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "chooseAddress", 400, 590, true, true, true, true);
 			break;
 		case "users_changeR":
 			we_repl(window.load, url, args[0]);

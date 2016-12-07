@@ -156,7 +156,7 @@ function we_cmd() {
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
+				new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qlog", "log_question", 330, 230, true, false, true);
 			}
 			break;
 

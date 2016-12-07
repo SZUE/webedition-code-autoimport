@@ -25,11 +25,11 @@
 we_cmd_modules.newsletter = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_newsletter":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", 600, 750, true, false, true);
 			break;
 		case "newsletter_edit":
 		case "newsletter_edit_ifthere":
-			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_module", 970, 760, true, true, true, true);
 			return true;
 		case "new_user":
 		case "save_newsletter":

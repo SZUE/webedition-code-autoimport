@@ -218,19 +218,19 @@ function we_cmd() {
 		case "edit_link":
 		case "edit_link_at_class":
 		case "edit_link_at_object":
-			new (WE().util.jsWindow)(this, "", "we_linkEdit", -1, -1, 615, 600, true, true, true);
+			new (WE().util.jsWindow)(window, "", "we_linkEdit", 615, 600, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_linkEdit", url);
 			}
 			break;
 		case "edit_linklist":
-			new (WE().util.jsWindow)(this, "", "we_linklistEdit", -1, -1, 615, 600, true, true, true);
+			new (WE().util.jsWindow)(window, "", "we_linklistEdit", 615, 600, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_linklistEdit", url);
 			}
 			break;
 		case "openColorChooser":
-			new (WE().util.jsWindow)(this, "", "we_colorChooser", -1, -1, 430, 370, true, true, true);
+			new (WE().util.jsWindow)(window, "", "we_colorChooser", 430, 370, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_colorChooser", url);
 			}
@@ -251,40 +251,40 @@ function we_cmd() {
 		case "we_selector_directory":
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", 500, 300, true, false, true);
 			break;
 		case "object_editObjectTextArea":
-			new (WE().util.jsWindow)(this, url, "edit_object_text", -1, -1, 550, 455, true, false, true);
+			new (WE().util.jsWindow)(window, url, "edit_object_text", 550, 455, true, false, true);
 			break;
 		case "open_templateSelect":
-			new (WE().util.jsWindow)(this, "", "we_templateSelect", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(window, "", "we_templateSelect", 600, 400, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_templateSelect", url);
 			}
 			break;
 		case "open_tag_wizzard":
-			new (WE().util.jsWindow)(this, url, "we_tag_wizzard", -1, -1, 600, 620, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_tag_wizzard", 600, 620, true, true, true);
 			break;
 		case "glossary_check":
 			if (doc.hasGlossary) {
-				new (WE().util.jsWindow)(this, url, "glossary_check", -1, -1, 730, 400, true, false, true);
+				new (WE().util.jsWindow)(window, url, "glossary_check", 730, 400, true, false, true);
 			}
 			break;
 		case "add_thumbnail":
-			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_add_thumbnail", 400, 410, true, true, true);
 			break;
 		case "imageDocument_emptyLongdesk":
 			document.we_form.elements[args[2]].value = '-1';
@@ -338,7 +338,7 @@ function we_cmd() {
 			break;
 		case "spellcheck":
 			if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
+				var win = new (WE().util.jsWindow)(window, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", 500, 450, true, false, true, false);
 			}
 			break;
 		case "updateCollectionItem":
@@ -346,7 +346,7 @@ function we_cmd() {
 			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
 			break;
 		case "import_files":
-			new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
+			new (WE().util.jsWindow)(top, url, "import_files", 650, 720, true, false, true); // be sure we have top as opener!
 			break;
 		case 'tag_weHref_selectorCallback':
 			_EditorFrame.setEditorIsHot(true);

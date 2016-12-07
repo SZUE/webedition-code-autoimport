@@ -42,7 +42,7 @@ function addOptionh(txt, id) {
 
 function openFile() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[2]=0&we_cmd[3]=sselector&we_cmd[4]=" + top.fileSelect.data.currentDir + "&we_cmd[5]=1&we_cmd[7]=sselector_insertFromUploader";
-	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", -1, -1, 500, 550, true, true, true, true);
+	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", 500, 550, true, true, true, true);
 }
 
 function reorder(name) {
@@ -140,7 +140,7 @@ function editFile() {
 				top.fileSelect.data.currentID = top.fileSelect.data.sitepath + top.fileSelect.data.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
 			}
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
-			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fseditFile", 600, 500, true, false, true, true);
 		} else {
 			top.we_showMessage(WE().consts.g_l.fileselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}

@@ -34,7 +34,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_banner_selector":
-			new (WE().util.jsWindow)(this, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_bannerselector", 650, 400, true, true, true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));

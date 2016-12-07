@@ -112,7 +112,7 @@ function we_cmd() {
 			 break;
 			 */
 		case "empty_log":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", 360, 230, true, false, true);
 			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));

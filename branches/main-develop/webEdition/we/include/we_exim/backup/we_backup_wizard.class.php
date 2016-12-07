@@ -715,7 +715,7 @@ top.close();');
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = [];
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
-				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
+				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", 600, 130, true, true, true);');
 			case 'deletebackup':
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){

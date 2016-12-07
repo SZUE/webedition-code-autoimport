@@ -29,7 +29,7 @@ we_cmd_modules.spellchecker = function (args, url) {
 			break;
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":
-			new (WE().util.jsWindow)(this, url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
+			new (WE().util.jsWindow)(window, url, "spellcheckadmin", 470, 510, true, false, true, false);
 			return true;
 	}
 	return false;

@@ -146,12 +146,12 @@ function reloadDir() {
 
 function newFile() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[1]=" + top.fileSelect.data.currentType + "&we_cmd[3]=selector&we_cmd[4]=" + top.fileSelect.data.currentDir + "&we_cmd[5]=1&we_cmd[7]=selector_insertFromUploader";
-	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", -1, -1, 500, 550, true, true, true, true);
+	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", 500, 550, true, true, true, true);
 }
 
 function newCollection() {
 	url = "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=write_back_to_selector&fixedpid=" + top.currentDir;
-	new (WE().util.jsWindow)(window, url, "we_newICollection", -1, -1, 460, 560, true, false, true);
+	new (WE().util.jsWindow)(window, url, "we_newICollection", 460, 560, true, false, true);
 }
 
 function writeBodyDocument(d) {

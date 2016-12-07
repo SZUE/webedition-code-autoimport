@@ -57,7 +57,7 @@ function we_cmd() {
 	switch (args[0]) {
 		case "close":
 			if (hot) {
-				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+				new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", 380, 130, true, false, true);
 			} else {
 				window.close();
 			}
