@@ -110,23 +110,11 @@ abstract class we_tool_lookup{
 			return '';
 		}
 		//FIX for charset in tools, due to not started session
-		$tmps = explode('_', $cmd0);
-		switch(isset($tmps[1]) ? $tmps[1] : ''){
-			case 'weSearch':
-				$_REQUEST['tool'] = $tmps[1];
-				return 'we_tools/' . $tmps[1] . '/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
-			case 'navigation':
-				//FIMXE: remove this
-				$_REQUEST['mod'] = 'navigation';
-				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
-		}
 		$tools = self::getAllTools(true, true);
 		foreach($tools as $tool){
 			if(stripos($cmd0, 'tool_' . $tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $tool['name'];
-				return ($tool['name'] === 'weSearch' || $tool['name'] === 'navigation' ?
-						'we_tools/' : 'apps/' ) .
-					$tool['name'] . '/hook/we_phpCmdHook_' . $tool['name'] . '.inc.php';
+				return 'apps/' . $tool['name'] . '/hook/we_phpCmdHook_' . $tool['name'] . '.inc.php';
 			}
 		}
 
@@ -144,7 +132,7 @@ abstract class we_tool_lookup{
 				default:
 					$path = WEBEDITION_DIR . 'apps/';
 			}
-			$path.=$tool['name'] . '/hook/we_jsCmdHook_' . $tool['name'];
+			$path .= $tool['name'] . '/hook/we_jsCmdHook_' . $tool['name'];
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
 				$includes['tool_' . $tool['name']] = $path . '.js';
 			}
@@ -362,8 +350,8 @@ abstract class we_tool_lookup{
 
 	static function getBackupTables($name){
 		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
-				WE_INCLUDES_PATH . 'we_tools/' :
-				WE_APPS_PATH);
+			WE_INCLUDES_PATH . 'we_tools/' :
+			WE_APPS_PATH);
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
 			if(!empty($toolTables)){

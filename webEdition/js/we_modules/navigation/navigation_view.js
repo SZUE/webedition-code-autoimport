@@ -242,7 +242,9 @@ function we_cmd() {
 		case 'moveDown':
 			moveDown(args[1], args[2], args[3]);
 			break;
-
+		case "module_navigation_do_reset_customer_filter":
+			we_repl(window.load, url, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_navigation_do_reset_customer_filter");
+			return true;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 

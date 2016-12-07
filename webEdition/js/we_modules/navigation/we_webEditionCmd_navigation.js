@@ -43,9 +43,6 @@ we_cmd_modules.navigation = function (args, url) {
 		case "module_navigation_edit_navi":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=weNaviEditor&we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			return true;
-		case "module_navigation_do_reset_customer_filter":
-			we_repl(window.load, url, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_navigation_do_reset_customer_filter");
-			return true;
 	}
 	return false;
 };

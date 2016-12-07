@@ -902,8 +902,7 @@ class we_navigation_navigation extends we_base_model{
 		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $def . ')'], we_html_element::htmlForm(
 					['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'))));
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
-			we_html_element::jsElement('var WE_NAVIID=' . intval($id) . ';') .
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('var WE_NAVIID=' . intval($id) . ';') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/weNaviEditor.js')
 			, $body);
 	}
@@ -912,11 +911,14 @@ class we_navigation_navigation extends we_base_model{
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$GLOBALS['DB_WE']->query('UPDATE ' . NAVIGATION_TABLE . ' SET LimitAccess=0, ApplyFilter=0');
 
-			echo we_html_element::jsElement(
-				'new (WE().util.jsWindow)(window, url, \'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(
-					g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',-1,-1,600,130,true,false,true);
+			$head = we_html_element::jsElement(
+					'new (WE().util.jsWindow)(window, url, \'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(
+						g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',-1,-1,600,130,true,false,true);
 ');
+		} else {
+			$head = we_html_element::jsElement('WE().util.showMessage(WE().consts.g_l.main.no_perms_action,WE().consts.message.WE_MESSAGE_ERROR,window);');
 		}
+		echo we_html_tools::getHtmlTop('', '', '', $head, we_html_element::htmlBody());
 	}
 
 	public static function getJSConsts(){
