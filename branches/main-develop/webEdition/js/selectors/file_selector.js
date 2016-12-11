@@ -161,12 +161,12 @@ function selectFile(id) {
 	}
 }
 
-function addEntry(id, txt, folder, pth, ct) {
+function addEntry(ID, text, isFolder, path, ct) {
 	entries.push({
-		ID: id,
-		text: txt,
-		isFolder: folder,
-		path: pth,
+		ID: ID,
+		text: text,
+		isFolder: isFolder,
+		path: path,
 		contentType: ct
 	});
 }

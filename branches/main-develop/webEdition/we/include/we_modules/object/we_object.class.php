@@ -450,12 +450,12 @@ class we_object extends we_document{
 		$uid = uniqid();
 
 		$this->setElement($uid, '');
-		$this->setElement($uid . self::ELEMENT_LENGHT, "");
-		$this->setElement($uid . self::ELEMENT_TYPE, "");
+		$this->setElement($uid . self::ELEMENT_LENGHT, '');
+		$this->setElement($uid . self::ELEMENT_TYPE, '');
 		$this->setElement($uid . self::ELEMENT_WIDTH, 618);
 		$this->setElement($uid . self::ELEMENT_HEIGHT, 200);
-		$this->setElement($uid . self::ELEMENT_CLASS, "");
-		$this->setElement($uid . self::ELEMENT_MAX, "");
+		$this->setElement($uid . self::ELEMENT_CLASS, '');
+		$this->setElement($uid . self::ELEMENT_MAX, '');
 		$this->setElement('wholename' . $identifier, $uid);
 		$nf = $this->getElement('neuefelder', 'dat', []);
 		$nf[] = $uid;
@@ -622,7 +622,6 @@ class we_object extends we_document{
 				$foo = $this->getElement($name, "dat") ?: g_l('modules_object', '[new_field]');
 				$content .= we_html_tools::htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $foo, 52, ' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onchange="_EditorFrame.setEditorIsHot(true);"', "text", 388);
 		}
-
 
 		$content .= '</td></tr>' .
 			'<tr><td class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('global', '[description]') . '</td><td>' .

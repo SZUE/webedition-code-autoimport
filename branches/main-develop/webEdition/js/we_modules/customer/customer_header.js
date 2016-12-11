@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 13162 $
- * $Author: mokraemer $
- * $Date: 2016-12-05 02:03:38 +0100 (Mo, 05. Dez 2016) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@ function setTab(tab) {
 }
 
 function loaded() {
-	weTabs.setFrameSize()
+	weTabs.setFrameSize();
 	if (top.content.activ_tab) {
 		document.getElementById(aTabs[top.content.activ_tab]).className = "tabActive";
 	} else {

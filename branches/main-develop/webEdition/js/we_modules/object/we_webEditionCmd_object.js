@@ -51,14 +51,14 @@ we_cmd_modules.object = function (args, url) {
 
 		case "object_add_user_to_field":
 			args[4] = args[1].allIDs.join(',');
-			/* FALLTHROUGH */
+			/* falls through */
 		case "object_reload_entry_at_class":
 			// modified for use as selector callback: args[1] is reserved now for selector results
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			// splice args[1]
 			args.splice(1, 1);
 			url = WE().util.getWe_cmdArgsUrl(args);
-			/* FALLTHROUGH */
+			/* falls through */
 		case "object_insert_entry_at_class":
 		case "object_delete_entry_at_class":
 		case "object_up_entry_at_class":
@@ -83,14 +83,14 @@ we_cmd_modules.object = function (args, url) {
 			if(args[4] === 'setScrollTo'){
 				 this.setScrollTo();
 			}
-			/* FALLTHROUGH */
+			/* falls through */
 		case "object_change_objectlink":
 			// modified for use as selector callback: args[1] is reserved now for selector results
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			// splice args[1]
 			args.splice(1, 1);
 			url = WE().util.getWe_cmdArgsUrl(args);
-			/* FALLTHROUGH */
+			/* falls through */
 		case "object_remove_image_at_object":
 		case "object_up_meta_at_object":
 		case "object_down_meta_at_object":

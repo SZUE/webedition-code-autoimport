@@ -7,6 +7,31 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+function setPoint(node, start) {
+	var walker = new tinymce.dom.TreeWalker(node, node);
+
+	do {
+		// Text node
+		if (node.nodeType == 3 && tinymce.trim(node.nodeValue).length !== 0) {
+			if (start)
+				rng.setStart(node, 0);
+			else
+				rng.setEnd(node, node.nodeValue.length);
+
+			return;
+		}
+
+		// BR element
+		if (node.nodeName == 'BR') {
+			if (start)
+				rng.setStartBefore(node);
+			else
+				rng.setEndBefore(node);
+
+			return;
+		}
+	} while ((node = (start ? walker.next() : walker.prev())));
+}
 
 (function(tinymce) {
 	var each = tinymce.each;
@@ -926,31 +951,7 @@
 						if (tableGrid)
 							ed.getBody().style.webkitUserSelect = '';
 
-						function setPoint(node, start) {
-							var walker = new tinymce.dom.TreeWalker(node, node);
 
-							do {
-								// Text node
-								if (node.nodeType == 3 && tinymce.trim(node.nodeValue).length !== 0) {
-									if (start)
-										rng.setStart(node, 0);
-									else
-										rng.setEnd(node, node.nodeValue.length);
-
-									return;
-								}
-
-								// BR element
-								if (node.nodeName == 'BR') {
-									if (start)
-										rng.setStartBefore(node);
-									else
-										rng.setEndBefore(node);
-
-									return;
-								}
-							} while ((node = (start ? walker.next() : walker.prev())));
-						}
 
 						// Try to expand text selection as much as we can only Gecko supports cell selection
 						selectedCells = dom.select('td.mceSelected,th.mceSelected');
@@ -1400,7 +1401,7 @@ var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
 
 	for (i = 0; i < cells.length; i++){
 		if (cells[i] == tdElm){
-			if (nextCell = cells[i+1]){
+			if ((nextCell = cells[i+1])){
 				return nextCell;
 			}
 		}

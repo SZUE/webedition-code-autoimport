@@ -94,8 +94,8 @@ function we_cmd() {
 					"save_workflow_do"]);
 				return;
 			}
-		case "save_workflow_do":
 			/*falls through*/
+		case "save_workflow_do":
 			top.content.editor.edbody.document.we_form.wcmd.value = "save_workflow";
 			top.content.editor.edbody.submitForm();
 			top.content.usetHot();

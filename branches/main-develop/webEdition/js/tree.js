@@ -123,7 +123,7 @@ container.prototype = {
 		}
 	},
 	clear: function () {
-		for (var i = 0; i < this.len; i++) {
+		for (var i = 0; i <= this.len; i++) {
 			delete this[i];
 		}
 		this.len = 0;

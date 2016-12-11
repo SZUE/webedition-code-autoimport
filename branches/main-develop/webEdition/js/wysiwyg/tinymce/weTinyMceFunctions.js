@@ -194,7 +194,7 @@ function tinyMCECallRegisterDialog(win, action) {
 
 function tinyEdOnNodeChange(ed, cm, n) {
 	var pc, tmp,
-					td = ed.dom.getParent(n, "td");
+		td = ed.dom.getParent(n, "td");
 
 	if (typeof td === "object" && td && td.getElementsByTagName("p").length === 1) {
 		pc = td.getElementsByTagName("p")[0].cloneNode(true);
@@ -218,7 +218,7 @@ function tinyInit_instance_callback(ed) {
 	});
 }
 
-function tinyOnCopyCut(ed, isCut){
+function tinyOnCopyCut(ed, isCut) {
 	var selection = ed.getWin().getSelection();
 	top.bm = tinyMCE.activeEditor.selection.getBookmark();
 	var tmpDiv = ed.getDoc().createElement("div");
@@ -235,7 +235,7 @@ function tinyOnCopyCut(ed, isCut){
 	ed.getWin().setTimeout(function () {
 		ed.getBody().removeChild(tmpDiv);
 		tinyMCE.activeEditor.selection.moveToBookmark(top.bm);
-		if(isCut){
+		if (isCut) {
 			tinyMCE.activeEditor.selection.setContent("");
 		}
 	}, 100);
@@ -320,17 +320,18 @@ function tinyOnPostProcess(ed, o) {
 	var c = document.createElement("div");
 	c.innerHTML = o.content;
 	var first = c.firstChild;
+	var i;
 
 	if (first) {
 		if (first.innerHTML == "&nbsp;" && first == c.lastChild) {
 			c.innerHTML = "";
 		} else if (ed.settings.weRemoveFirstParagraph === "1" && first.nodeName == "P") {
 			var useDiv = false,
-							div = document.createElement("div"),
-							attribs = ["style", "class", "dir"];
+				div = document.createElement("div"),
+				attribs = ["style", "class", "dir"];
 			div.innerHTML = first.innerHTML;
 
-			for (var i = 0; i < attribs.length; i++) {
+			for (i = 0; i < attribs.length; i++) {
 				if (first.hasAttribute(attribs[i])) {
 					div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
 					useDiv = true;
@@ -347,8 +348,8 @@ function tinyOnPostProcess(ed, o) {
 
 	// remove border="0" and border="" from table tags
 	var tables;
-	if (tables = c.getElementsByTagName("TABLE")) {
-		for (var i = 0; i < tables.length; i++) {
+	if ((tables = c.getElementsByTagName("TABLE"))) {
+		for (i = 0; i < tables.length; i++) {
 			if (tables[i].getAttribute("border") === "0" || tables[i].getAttribute("border") === "") {
 				tables[i].removeAttribute("border");
 			}
@@ -369,39 +370,39 @@ function tinyEdonDblClick(ed, e) {
 		if (ed.selection.getNode().nodeName === "A" && ed.dom.getAttrib(ed.selection.getNode(), "href", "")) {
 			tinyMCE.execCommand("mceWelink");
 		}
-	} else {
-		var match,
-						frameControler = WE().layout.weEditorFrameController;
+		return;
+	}
+	var match,
+		frameControler = WE().layout.weEditorFrameController;
 
-		if (!frameController) {
-			return;
-		}
-		if (ed.selection.getNode().nodeName === "IMG" && (src = ed.dom.getAttrib(ed.selection.getNode(), "src", ""))) {
-			var regex = new RegExp('[^" >]*\?id=(\d+)[^" >]*');
-			if ((match = src.match(regex))) {
-				if (match[1] && parseInt(match[1]) !== 0) {
-					frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[1], "");
-				}
-			} else {
-				new (WE().util.jsWindow)(window, src, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
+	if (!frameController) {
+		return;
+	}
+	if (ed.selection.getNode().nodeName === "IMG" && (src = ed.dom.getAttrib(ed.selection.getNode(), "src", ""))) {
+		var regex = new RegExp('[^" >]*\?id=(\d+)[^" >]*');
+		if ((match = src.match(regex))) {
+			if (match[1] && parseInt(match[1]) !== 0) {
+				frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[1], "");
 			}
+		} else {
+			new (WE().util.jsWindow)(window, src, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 		}
-		if (ed.selection.getNode().nodeName === "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))) {
-			var regex = new RegExp("(" + WE().consts.linkPrefix.TYPE_INT_PREFIX + "|" + WE().consts.linkPrefix.TYPE_OBJ_PREFIX + '|)(\d+)[^" >]*');
-			if ((match = href.match(regex))) {
-				if (match[1]) {
-					switch (match[1]) {
-						case WE().consts.linkPrefix.TYPE_INT_PREFIX:
-							frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[2], "");
-							break;
-						case WE().consts.linkPrefix.TYPE_OBJ_PREFIX:
-							frameControler.openDocument(WE().consts.tables.OBJECT_FILES_TABLE, match[2], "");
-							break;
-					}
+	}
+	if (ed.selection.getNode().nodeName === "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))) {
+		var regex = new RegExp("(" + WE().consts.linkPrefix.TYPE_INT_PREFIX + "|" + WE().consts.linkPrefix.TYPE_OBJ_PREFIX + '|)(\d+)[^" >]*');
+		if ((match = href.match(regex))) {
+			if (match[1]) {
+				switch (match[1]) {
+					case WE().consts.linkPrefix.TYPE_INT_PREFIX:
+						frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[2], "");
+						break;
+					case WE().consts.linkPrefix.TYPE_OBJ_PREFIX:
+						frameControler.openDocument(WE().consts.tables.OBJECT_FILES_TABLE, match[2], "");
+						break;
 				}
-			} else {
-				new (WE().util.jsWindow)(window, href, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 			}
+		} else {
+			new (WE().util.jsWindow)(window, href, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 		}
 	}
 }
@@ -424,10 +425,10 @@ function tinyWeResizeEditor(render, name) {
 	}
 
 	tinyMCE.DOM.setStyle(
-					tinyMCE.DOM.get(name + "_ifr"),
-					"height",
-					(window.innerHeight - h - 60) + "px"
-					);
+		tinyMCE.DOM.get(name + "_ifr"),
+		"height",
+		(window.innerHeight - h - 60) + "px"
+		);
 }
 
 function tinySetEditorLevel(ed) {

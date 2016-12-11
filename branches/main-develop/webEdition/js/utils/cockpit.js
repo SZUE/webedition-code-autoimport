@@ -42,9 +42,9 @@ var oEvt = {
 		if (isNaN(parseInt(oWidgetDiv.style.top))) {
 			oWidgetDiv.style.top = '0px';
 		}
-		oWidgetDiv.onDragStart = new Function();
-		oWidgetDiv.onDragEnd = new Function();
-		oWidgetDiv.onDrag = new Function();
+		oWidgetDiv.onDragStart = function(){};
+		oWidgetDiv.onDragEnd = function(){};
+		oWidgetDiv.onDrag = function(){};
 	},
 	uninit: function (oWidgetTbl, oWidgetDiv) {
 		window.clearInterval(oWidgetDiv.H);

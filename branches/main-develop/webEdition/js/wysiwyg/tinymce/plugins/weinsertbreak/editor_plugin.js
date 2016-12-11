@@ -19,7 +19,7 @@
 				author: 'webEdition e.V',
 				authorurl: 'http://www.webedition.org',
 				infourl: 'http://www.webedition.org'
-			}
+			};
 		}});
-	tinymce.PluginManager.add('weinsertbreak', tinymce.plugins.WeinsertbreakPlugin)
+	tinymce.PluginManager.add('weinsertbreak', tinymce.plugins.WeinsertbreakPlugin);
 })();

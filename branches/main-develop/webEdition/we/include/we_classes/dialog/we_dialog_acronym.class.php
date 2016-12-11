@@ -46,10 +46,11 @@ top.close();
 	}
 
 	function defaultInit(){
-		$this->args = ["title" => "",
-			"lang" => "",
-			"class" => "",
-			'style' => ""
+		$this->args = [
+			'title' => '',
+			'lang' => '',
+			'class' => '',
+			'style' => ''
 			];
 	}
 
@@ -62,7 +63,7 @@ top.close();
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] : ""), "", '', "text", 350);
 		$title = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[title]'));
 
-		$lang = $this->getLangField("lang", g_l('wysiwyg', '[language]'), 350);
+		$lang = $this->getLangField('lang', g_l('wysiwyg', '[language]'), 350);
 
 		return '<table class="default">
 <tr><td style="padding-bottom:10px;">' . $title . '</td></tr>
@@ -80,7 +81,7 @@ top.close();
 	function getDialogButtons(){
 		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
-		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
+		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm('NEW_GLOSSARY') && !$this->noInternals){
 			$buttons.= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();");
 		}
 

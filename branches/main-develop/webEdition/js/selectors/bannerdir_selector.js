@@ -23,13 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function addEntry(id, txt, folder, pth) {
+function addEntry(ID, text, isFolder, path) {
 	entries.push({
-		ID: id,
-		text: txt,
-		isFolder: folder,
-		path: pth,
-		contentType: (folder ? WE().consts.contentTypes.FOLDER : "we/banner"),
+		ID: ID,
+		text: text,
+		isFolder: isFolder,
+		path: path,
+		contentType: (isFolder ? WE().consts.contentTypes.FOLDER : "we/banner"),
 	});
 }
 

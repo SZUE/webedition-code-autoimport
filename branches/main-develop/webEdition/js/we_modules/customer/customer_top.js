@@ -89,7 +89,7 @@ function we_cmd() {
 			break;
 		case "loadHome":
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edheader";
-			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody"
+			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody";
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edfooter";
 			break;
 		case "save_customer":

@@ -57,10 +57,10 @@ function selectFile(id) {
 
 function addEntry(ID, text, isFolder, path) {
 	entries.push({
-		"ID": ID,
-		"text": text,
-		"isFolder": isFolder,
-		"path": path,
+		ID: ID,
+		text: text,
+		isFolder: isFolder,
+		path: path,
 		contentType: (isFolder ? WE().consts.contentTypes.FOLDER : 'we/navigation')
 	});
 }

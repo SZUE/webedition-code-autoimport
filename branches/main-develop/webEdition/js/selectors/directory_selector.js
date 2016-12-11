@@ -139,12 +139,12 @@ function elementSelected() {
 	return true;
 }
 
-function addEntry(id, txt, folder, pth, moddte, ct) {
+function addEntry(ID, txt, isFolder, path, moddte, ct) {
 	entries.push({
-		ID: id,
+		ID: ID,
 		text: txt,
-		isFolder: folder,
-		path: pth,
+		isFolder: isFolder,
+		path: path,
 		modDate: moddte,
 		contentType: ct
 	});

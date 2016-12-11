@@ -38,6 +38,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var delay = Array.prototype.slice.call(arguments);
+	var el, id;
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -188,8 +189,8 @@ function we_cmd() {
 		case "doPopulateFolderWs":
 			populateFolderWs(args[1]);
 			if (args[1] === "values") {
-				var el = top.content.editor.edbody.document.we_form.WorkspaceID;
-				for (var id in args[2]) {
+				el = top.content.editor.edbody.document.we_form.WorkspaceID;
+				for (id in args[2]) {
 					el.options.add(new Option(args[2][id], id));
 				}
 			}
@@ -197,8 +198,8 @@ function we_cmd() {
 		case "doPopulateWs":
 			populateWorkspaces(args[1], args[2]);
 			if (args[1] === "values") {
-				var el = top.content.editor.edbody.document.we_form['WorkspaceID' + args[2]];
-				for (var id in args[3]) {
+				el = top.content.editor.edbody.document.we_form['WorkspaceID' + args[2]];
+				for (id in args[3]) {
 					el.options.add(new Option(args[3][id], id));
 				}
 			}

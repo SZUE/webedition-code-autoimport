@@ -223,7 +223,7 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "syncNewsletterTitle":
-			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements['Text'].value);
+			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements.Text.value);
 			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
