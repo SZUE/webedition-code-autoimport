@@ -363,13 +363,13 @@ class we_binaryDocument extends we_document{
 
 		$js = "";
 		$values = [];
-		$c = 0;
-		$num = 0;
+		$c = $num = 0;
 		$limit = 20;
 		foreach($groups as $group){
 			$cna = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
 			$ca = (isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0) + $cna;
 			$num += $ca;
+			//FIXME:g_l
 			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
 			$cc = 0;
 			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : []) as $v){

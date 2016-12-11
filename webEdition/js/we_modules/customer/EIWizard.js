@@ -78,7 +78,7 @@ function we_cmd() {
 			top.body.document.we_form.elements[arg.name].value = arg.value;
 			break;
 		case "selectCharset_onchange":
-			top.body.document.we_form.elements['the_charset'].value = arg.select.options[arg.select.selectedIndex].value;
+			top.body.document.we_form.elements.the_charset.value = arg.select.options[arg.select.selectedIndex].value;
 			arg.select.selectedIndex=-1;
 			break;
 		case "chooser_onChange":
@@ -101,6 +101,7 @@ function we_cmd() {
 			break;
 		case "do_back":
 			we_cmd('load_processCmd', 'export_back', args[1]);
+			break;
 		case "reload_frame":
 			top.frames[arg.frame].location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=' + arg.pnt + '&art=' + arg.art + '&cmd=' + arg.cmd + '&step=' + arg.step;
 			break;
@@ -143,10 +144,10 @@ function we_cmd() {
 					top.body.document.we_form.submit();
 					break;
 				case 'do_import':
-					if(!(arg.fstart < arg.fcount)){
-						top.load.document.we_form.cmd.value = 'import_end';
-					} else {
+					if((arg.fstart < arg.fcount)){
 						top.load.document.we_form.cmd.value = 'do_import';
+					} else {
+						top.load.document.we_form.cmd.value = 'import_end';
 					}
 					if (top.footer.setProgress){
 						top.footer.setProgress('', arg.percent);

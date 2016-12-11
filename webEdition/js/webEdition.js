@@ -299,7 +299,7 @@ var WebEdition = {
 				/*called if the element was modified*/
 				change: function (event, ui) {
 					//set path to / if no path is given
-					if (this.value == "") {//is this correct?!
+					if (this.value === "") {//is this correct?!
 						this.value = "/";
 						this.result.value = 0;
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
@@ -1432,8 +1432,7 @@ var we_cmd_modules = {
 					break;
 				}
 
-				table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
-				we_cmd("setTab", table);
+				we_cmd("setTab", (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE);
 				/* falls through */
 			case "loadFolder":
 			case "closeFolder":

@@ -82,7 +82,8 @@ var LinkDialog = {
 		top.close();
 	},
 
-	setAllAttribs: function(elem, attribs) {top.console.log(attribs)
+	setAllAttribs: function(elem, attribs) {
+		//top.console.log(attribs);
 		this.setAttrib(elem, 'href', attribs.href.replace(/ /g, '%20'));
 		this.setAttrib(elem, 'title', attribs.title);
 		this.setAttrib(elem, 'target', attribs.target === '_self' ? '' : attribs.target);

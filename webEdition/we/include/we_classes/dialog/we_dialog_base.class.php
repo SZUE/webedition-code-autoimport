@@ -267,12 +267,13 @@ function weDoOk() {' .
 	<option value="nl">nl</option>
 	<option value="pl">pl</option>
 </select>';
-		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
+		return we_html_tools::htmlFormElementTable($foo, $title, 'left', 'defaultfont', $foo2);
 	}
 
 	function getClassSelect($style = 'width: 300px;'){
-		$clSelect = new we_html_select(["name" => "we_dialog_args[cssclass]",
-			"id" => "we_dialog_args[cssclass]",
+		$clSelect = new we_html_select([
+			'name' => 'we_dialog_args[cssclass]',
+			'id' => 'we_dialog_args[cssclass]',
 			'style' => $style,
 			'class' => 'defaultfont'
 			]);
@@ -283,11 +284,11 @@ function weDoOk() {' .
 				$clSelect->addOption($val, "." . $val);
 			}
 		}
-		if(!empty($this->args["cssclass"])){
-			$clSelect->selectOption($this->args["cssclass"]);
+		if(!empty($this->args['cssclass'])){
+			$clSelect->selectOption($this->args['cssclass']);
 		}
 
-		return $clSelect->getHTML() . we_html_element::htmlHidden("we_dialog_args[cssclasses]", $classesCSV);
+		return $clSelect->getHTML() . we_html_element::htmlHidden('we_dialog_args[cssclasses]', $classesCSV);
 	}
 
 }

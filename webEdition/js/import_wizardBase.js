@@ -475,19 +475,18 @@ function doNext_FileImportStep1() {
 function doNext_WXMLImportStep1() {
 	var f = top.wizbody.document.we_form,
 		fs = f.elements['v[fserver]'].value,
-		ext = '',
 		fl = 'placeholder.xml';
 
-	if (f.elements['v[rdofloc]'][0].checked && fs !== '/') {
+	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) == '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length - 4, 4);
+		//ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 
 	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
-		ext = fl.substr(fl.length - 4, 4);
+		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -504,17 +503,16 @@ function doNext_GXMLImportStep1() {
 
 	var fs = f.elements['v[fserver]'].value;
 	var fl = top.wizbody.weFileUpload_instance !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
-	var ext = '';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) === '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length - 4, 4);
+		//ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
-		ext = fl.substr(fl.length - 4, 4);
+		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -545,18 +543,17 @@ function doNext_CSVImportStep1() {
 	var f = top.wizbody.document.we_form,
 		fvalid = true,
 		fs = f.elements['v[fserver]'].value,
-		fl = 'placeholder.xml',
-		ext = '';
+		fl = 'placeholder.xml';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs != '/') {
 		if (fs.match(/\.\./) === '..') {
 			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
-		ext = fs.substr(fs.length - 4, 4);
+		//ext = fs.substr(fs.length - 4, 4);
 		f.elements['v[import_from]'].value = fs;
 	} else if (f.elements['v[rdofloc]'][1].checked && fl !== '') {
-		ext = fl.substr(fl.length - 4, 4);
+		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
 		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
