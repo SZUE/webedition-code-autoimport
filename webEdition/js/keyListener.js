@@ -296,7 +296,7 @@ function keyToolListener(_successor) {
 								this.win.top.content.resize.editor.edfooter &&
 								this.win.top.content.weCmdController) {
 					this.win.top.content.weCmdController.fire({
-						"cmdName": "app_" + this.win.top.content.appName + "_save"
+						cmdName: "app_" + this.win.top.content.appName + "_save"
 					});
 					return true;
 				}

@@ -135,15 +135,14 @@ foreach($shortcuts as $sctCol){
 $sc = $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");');
 
 if(!isset($aProps)){
-	$sJsCode = "
-	var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
-	var _sType='sct';
-	var _sTb='" . g_l('cockpit', '[shortcuts]') . "';
-	function init(){
-		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-	}";
-
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
+			'id' => 'loadVarPreview',
+			'data-preview' => setDynamicVar([
+				'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+				'type' => 'sct',
+				'tb' => g_l('cockpit', '[shortcuts]'),
+				//'iconClass' =>
+		])]), we_html_element::htmlBody(
 			['style' => 'margin:10px 15px;',
 			"onload" => "if(parent!=self)init();"
 			], we_html_element::htmlDiv(["id" => "sct"

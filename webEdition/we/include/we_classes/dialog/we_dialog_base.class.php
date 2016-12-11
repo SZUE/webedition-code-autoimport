@@ -86,7 +86,7 @@ class we_dialog_base{
 			case 'cmd':
 				return $this->getCmdHTML();
 			default:
-				return $this->getHeaderHTML(true) .
+				return $this->getHeaderHTML(true, we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();')) .
 					$this->getFramesetHTML() . '</html>';
 		}
 	}
@@ -111,27 +111,7 @@ class we_dialog_base{
 	}
 
 	function getFramesetHTML(){
-		return we_html_element::jsScript(JS_DIR . 'closeEscape.js') . we_html_element::jsElement('
-if (document.addEventListener) {
-	document.addEventListener("keyup", doKeyDown, true);
-} else {
-	document.onkeydown = doKeyDown;
-}
-
-function doKeyDown() {
-	var key = event.keyCode;
-
-	switch(key) {
-		case 27:
-			top.close();
-			break;
-
-		case 13:
-			self.we_' . $this->ClassName . '_edit_area.weDoOk();
-			break;
-	}
-}') .
-			we_html_element::htmlBody(['id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()']
+		return we_html_element::htmlBody(['id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()']
 				, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 				we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		);
@@ -157,8 +137,8 @@ function doKeyDown() {
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-				we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
-				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+			we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
+			we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
 			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
@@ -172,11 +152,11 @@ function doKeyDown() {
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
-			$okBut = ($back && $next ) ? $back . $next : ($back ? : $next );
+			$okBut = ($back && $next ) ? $back . $next : ($back ?: $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = ($back && $ok ) ? $back . $ok : ($back ? : $ok );
+			$okBut = ($back && $ok ) ? $back . $ok : ($back ?: $ok );
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
@@ -218,8 +198,8 @@ function doKeyDown() {
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . static::getTinyMceJS() .
 			($printJS_Style ?
-				$this->getJs() :
-				''
+			$this->getJs() :
+			''
 			) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
 			'</head>';
 	}
@@ -244,7 +224,7 @@ function weDoOk() {' .
 	if (!textareaFocus) {
 		' . $this->getOkJs() . '
 	}' :
-					'') . '
+				'') . '
 }') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}
@@ -276,7 +256,7 @@ function weDoOk() {' .
 			'id' => 'we_dialog_args[cssclass]',
 			'style' => $style,
 			'class' => 'defaultfont'
-			]);
+		]);
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
 		$classesCSV = trim($this->args['cssclasses'], ",");
 		if($classesCSV){

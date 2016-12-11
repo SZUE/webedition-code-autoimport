@@ -354,7 +354,7 @@ abstract class we_root extends we_class{
 		if($canChange){
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
-			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('reload_editpage');");
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();we_cmd('setHot');we_cmd('reload_editpage');");
 		}
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictOwners ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
@@ -370,8 +370,8 @@ abstract class we_root extends we_class{
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$owner = $this->DB_WE->f('ID');
 				$content .= '<tr><td class="userIcon" data-contenttype="' . $this->DB_WE->f('ContentType') . '"></td><td class="defaultfont">' . $this->DB_WE->f('Path') . '</td><td>' .
-					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', !$canChange) .
-					'</td><td>' . ($canChange ? we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
+					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', "we_cmd('setHot');", !$canChange) .
+					'</td><td>' . ($canChange ? we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();we_cmd('setHot');;we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td class="userIcon" data-contenttype="we/user"></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -535,7 +535,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','','" . we_base_ContentTypes::IMAGE . "',1)"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');we_cmd('setHot');"));
 		return $weSuggest->getHTML();
 	}
 
@@ -562,7 +562,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(388);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInputTriggerID');we_cmd('setHot');"));
 		return $weSuggest->getHTML();
 	}
 
@@ -606,7 +606,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')"));
-		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInput" . $ackeyshort . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
+		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';WE().layout.weSuggest.checkRequired(window,'yuiAcInput" . $ackeyshort . "');we_cmd('setHot');"));
 		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . $etype . "',document.we_form.elements['" . $idname . "'].value,'" . $ctype . "');}"));
 		//$weSuggest->setIsDropFromTree(true);//deactivated
 		return $weSuggest->getHTML();
@@ -632,8 +632,8 @@ abstract class we_root extends we_class{
 			return '
 <table class="default" style="margin-top:2px;">' .
 				$headline . '
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
-					'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "we_cmd('setHot');",
+					'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);we_cmd('setHot');"], "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
@@ -641,8 +641,8 @@ abstract class we_root extends we_class{
 		return '
 <table class="default" style="margin-top:2px;">' .
 			$headline . '
-	<tr><td>' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
-				'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "we_cmd('setHot');",
+				'onchange' => "we_cmd('setHot');"], "value") . '</td></tr>
 </table>';
 	}
 

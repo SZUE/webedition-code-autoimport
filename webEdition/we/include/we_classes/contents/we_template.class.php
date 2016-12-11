@@ -937,7 +937,7 @@ we_templateInit();?>';
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$extra = '<tr><td colspan="3" style="padding-bottom:4px;">' .
-			$this->formInputField('', 'Display', g_l('navigation', '[display]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); ') . '"')
+			$this->formInputField('', 'Display', g_l('navigation', '[display]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : "we_cmd('setHot'); ") . '"')
 			. '</td></tr>';
 		return parent::formPath($disablePath, $notSetHot, $extra);
 	}

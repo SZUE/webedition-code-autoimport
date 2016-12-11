@@ -1178,10 +1178,10 @@ function wecmd_editDocument(args, url) {
 		// use Editor Frame
 		nextWindow.initEditorFrameData(
 						{
-							"EditorType": "model",
-							"EditorEditorTable": args[1],
-							"EditorDocumentId": args[2],
-							"EditorContentType": args[3]
+							EditorType: "model",
+							EditorEditorTable: args[1],
+							EditorDocumentId: args[2],
+							EditorContentType: args[3]
 						}
 		);
 		// set Window Active and show it

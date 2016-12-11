@@ -94,7 +94,7 @@ class we_chooser_multiDir{
 	}
 
 	function getJsSetHot(){
-		return $this->onchangeSetHot ? "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" : '';
+		return $this->onchangeSetHot ? "we_cmd('setHot');" : '';
 	}
 
 	function get(){

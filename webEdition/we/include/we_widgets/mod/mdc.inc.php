@@ -26,8 +26,8 @@
 if(!isset($aProps)){//preview requested
 	$all = explode(';', we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1));
 	list($dir, $dt_tid, $cats) = (count($all) > 1 ?
-			$all :
-			[$all[0], '', '']);
+		$all :
+		[$all[0], '', '']);
 
 	$aCsv = [
 		0, //unused - compatibility
@@ -60,8 +60,8 @@ if($csv){
 			$where[] = 'Path LIKE "' . $path . '%" ';
 		}
 		$query = ($where ?
-				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE (' . implode(' OR ', $where) . ') AND IsFolder=0' :
-				false);
+			'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE (' . implode(' OR ', $where) . ') AND IsFolder=0' :
+			false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $csv);
 		$q_path = 'Path LIKE "' . $folderPath . '%"';
@@ -94,19 +94,17 @@ if($csv){
 if(!isset($aProps)){//preview requested
 	$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 
-	$js = "
-var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
-var _sType='mdc';
-var _sTb='" . ($cmd4 ? : g_l('cockpit', (($binary{1} ? '[my_objects]' : '[my_documents]')))) . "';
-
-function init(){
-	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-}";
-
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', we_html_element::jsElement($js), we_html_element::htmlBody(
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
+			'id' => 'loadVarPreview',
+			'data-preview' => setDynamicVar([
+				'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+				'type' => 'mdc',
+				'tb' => ($cmd4 ?: g_l('cockpit', (($binary{1} ? '[my_objects]' : '[my_documents]')))),
+				'iconClass' => 'mdcIcon'
+		])]), we_html_element::htmlBody(
 			[
 			'style' => 'margin:10px 15px;',
-			"onload" => "if(parent!=self){init();}WE().util.setIconOfDocClass(document,'mdcIcon');"
+			"onload" => "if(parent!=self){init();}"
 			], we_html_element::htmlDiv([
 				"id" => "mdc"
 				], $mdc)));

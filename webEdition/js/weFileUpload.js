@@ -752,7 +752,7 @@ WE().layout.weFileUpload = (function () {
 							}
 						}
 					} else {
-						this.processError({'from': 'gui', 'msg': cur.error});
+						this.processError({from: 'gui', msg: cur.error});
 					}
 				} else {
 					//all uploads done

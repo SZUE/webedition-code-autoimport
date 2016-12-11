@@ -53,11 +53,7 @@ function doKeyDown(e) {
 }
 
 function addKeyListener() {
-	if (document.addEventListener) {
-		document.addEventListener("keyup", doKeyDown, true);
-	} else {
-		document.onkeydown = doKeyDown;
-	}
+	document.addEventListener("keyup", doKeyDown, true);
 }
 
 function openExtSource(argName) {
