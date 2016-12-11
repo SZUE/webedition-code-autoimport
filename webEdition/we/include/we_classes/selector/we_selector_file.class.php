@@ -188,7 +188,6 @@ class we_selector_file{
 				'table' => $this->table,
 				'formtarget' => $_SERVER['SCRIPT_NAME'],
 				'multiple' => intval($this->multiple),
-				'needIEEscape' => intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'),
 				'open_doc' => $this->open_doc,
 			],
 			'data' => [

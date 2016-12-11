@@ -261,7 +261,7 @@ function saveNote() {
 				return false;
 			}
 			var q_ID = document.getElementById(_id + '_ID').value;
-			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
+			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 		} else {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
@@ -287,7 +287,7 @@ function saveNote() {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
-		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), escape(csv), 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
+		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), csv, 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 	} else {
 		top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
@@ -345,8 +345,7 @@ function save() {
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
 					(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
-		var sTitleEsc = escape(sTitleEnc);
-		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
+		opener.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, _sObjId);
 	}
 	opener.setPrefs(_sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -356,16 +355,15 @@ function save() {
 
 function preview() {
 	var sTitleEnc = window.btoa(getTitle());
-	var sTitleEsc = escape(sTitleEnc);
 	var sBit = getBitString();
-	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, prefs._sObjId);
+	opener.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, prefs._sObjId);
 	previewPrefs();
 	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
 }
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		opener.rpc(_sInitCsv_, '', '', '', escape(window.btoa(_sInitTitle)), prefs._sObjId);
+		opener.rpc(_sInitCsv_, '', '', '', window.btoa(_sInitTitle), prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();

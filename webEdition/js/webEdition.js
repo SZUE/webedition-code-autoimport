@@ -395,7 +395,6 @@ var WebEdition = {
 		}
 		WE().handler.errorHandler(msg, '', 0, 0, Array.prototype.slice.call(arguments));
 	},
-	//utility functions, defined in webedition.js
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
 			doc.cookie = name + "=" + encodeURI(value) +
@@ -414,7 +413,7 @@ var WebEdition = {
 					if (end === -1) {
 						end = dc.length;
 					}
-					return unescape(dc.substring(begin, end));
+					return dc.substring(begin, end);
 				}
 			}
 			return null;

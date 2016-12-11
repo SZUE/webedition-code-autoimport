@@ -51,7 +51,7 @@ function weGetCookieVariable(name) {
 		var parts = c.split(/&/);
 		for (var i = 0; i < parts.length; i++) {
 			var foo = parts[i].split(/=/);
-			vals[unescape(foo[0])] = unescape(foo[1]);
+			vals[foo[0]] = foo[1];
 		}
 		return vals[name];
 	}
@@ -66,7 +66,7 @@ function weSetCookieVariable(name, value) {
 		var parts = c.split(/&/);
 		for (i = 0; i < parts.length; i++) {
 			var foo = parts[i].split(/=/);
-			vals[unescape(foo[0])] = unescape(foo[1]);
+			vals[foo[0]] = foo[1];
 		}
 	}
 	vals[name] = value;

@@ -229,8 +229,7 @@ function makeAjaxRequestDoclist() {
 			makeAjaxRequestParametersTop();
 			makeAjaxRequestParametersBottom();
 		}
-	}
-	, "html");
+	}, "html");
 }
 
 function makeAjaxRequestParametersTop() {
@@ -244,8 +243,7 @@ function makeAjaxRequestParametersTop() {
 		if (responseText !== "") {
 			document.getElementById("parametersTop").innerHTML = responseText;
 		}
-	}
-	, "html");
+	}, "html");
 }
 
 function makeAjaxRequestParametersBottom() {
@@ -259,8 +257,7 @@ function makeAjaxRequestParametersBottom() {
 		if (responseText !== "") {
 			document.getElementById("parametersBottom").innerHTML = responseText;
 		}
-	}
-	, "html");
+	}, "html");
 }
 
 function ajaxCallbackResetVersion(response) {
