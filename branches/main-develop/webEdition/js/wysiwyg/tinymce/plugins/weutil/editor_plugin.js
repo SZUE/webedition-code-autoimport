@@ -33,13 +33,13 @@
 
 			ed.onNodeChange.add(function (ed, cm, n, co) {
 				var mapTable = {
-					'strong': 'weadaptbold',
-					'b': 'weadaptbold',
-					'em': 'weadaptitalic',
-					'i': 'weadaptitalic',
-					'acronym': 'weacronym',
-					'abbr': 'weabbr',
-					'img': 'weimage'
+					strong: 'weadaptbold',
+					b: 'weadaptbold',
+					em: 'weadaptitalic',
+					i: 'weadaptitalic',
+					acronym: 'weacronym',
+					abbr: 'weabbr',
+					img: 'weimage'
 				};
 
 				n = ed.dom.getParent(n, 'STRONG,B,EM,I,ACRONYM,ABBR,A,IMG,SPAN');

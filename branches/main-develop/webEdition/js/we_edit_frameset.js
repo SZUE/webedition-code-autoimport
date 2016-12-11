@@ -92,10 +92,10 @@ function checkDocument() {
 			top.close();
 		} else {
 			_EditorFrame.initEditorFrameData({
-				"EditorType": "none_webedition",
-				"EditorContentType": "none_webedition",
-				"EditorDocumentText": "Unknown",
-				"EditorDocumentPath": "Unknown"
+				EditorType: "none_webedition",
+				EditorContentType: "none_webedition",
+				EditorDocumentText: "Unknown",
+				EditorDocumentPath: "Unknown"
 			});
 
 			editHeader.location = "about:blank";
@@ -145,8 +145,8 @@ function setOnload() {
 	if (top.edit_include) {
 		top.edit_include.close();
 	}
-	if (openedWithWE === false) {
+	if (!openedWithWE) {
 		checkDocument();
 	}
-	openedWithWE=false;
+	openedWithWE = false;
 }

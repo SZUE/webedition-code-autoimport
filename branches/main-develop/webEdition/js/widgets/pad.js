@@ -228,7 +228,7 @@ function saveNote() {
 	var _id = fo.elements.mark.value;
 	var q_init = (_id !== '' ?
 					getInitialQueryById(_id) :
-					{'Validity': 'always', 'ValidFrom': '', 'ValidUntil': '', 'Priority': 'low', 'Title': '', 'Text': ''});
+					{Validity: 'always', ValidFrom: '', ValidUntil: '', Priority: 'low', Title: '', Text: ''});
 	var q_curr = getCurrentQuery();
 	var hot = false;
 	var idx = ['Title', 'Text', 'Priority', 'Validity', 'ValidFrom', 'ValidUntil'];

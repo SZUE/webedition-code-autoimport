@@ -139,20 +139,15 @@ asort($cont);
 $ct = '<table class="default">' . implode('', $cont) . '</table>';
 
 if($preview){
-	$sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));
 
-	$jsCode = "
-var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
-var _sType='upb';
-var _sTb='" . $sTb . "';
-
-function init(){
-	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-	WE().util.setIconOfDocClass(document,'upbIcon');
-}
-";
-
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', we_html_element::jsElement($jsCode), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
+			'id' => 'loadVarPreview',
+			'data-preview' => setDynamicVar([
+				'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+				'type' => 'upb',
+				'tb' => g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]')))),
+				'iconClass' => 'upbIcon'
+		])]), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
 			"onload" => 'if(parent!=self){init();}'
 			], we_html_element::htmlDiv(["id" => "upb"
 				], $ct)));

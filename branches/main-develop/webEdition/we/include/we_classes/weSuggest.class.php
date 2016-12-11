@@ -223,7 +223,6 @@ class weSuggest{
 		$class = $onchange = 0;
 		$this->inputAttribs = [
 			'class' => 'wetextinput',
-			//removed WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); - this causes unwanted behaviour
 			'onchange' => ($markHot ? 'hot=true;we_cmd(\'setHot\')' : ''),
 		];
 		if($disabled){

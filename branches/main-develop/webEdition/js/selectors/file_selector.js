@@ -69,11 +69,11 @@ function getEntry(id) {
 		}
 	}
 	return {
-		"ID": 0,
-		"icon": "",
-		"text": "/",
-		"isFolder": 1,
-		"path": "/"
+		ID: 0,
+		icon: "",
+		text: "/",
+		isFolder: 1,
+		path: "/"
 	};
 }
 

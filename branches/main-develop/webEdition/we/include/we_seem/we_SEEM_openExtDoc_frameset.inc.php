@@ -57,7 +57,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset', we_html_element::jsScript(JS_
 	<?php
 	$headerSize = 35;
 	echo we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_header.php?filepath=" . urlencode($url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .
-	we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_content.php?filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', 'if (openedWithWE==false) {checkDocument();}openedWithWE=false;') .
+	we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_content.php?filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', 'if (!openedWithWE) {checkDocument();}openedWithWE=false;') .
 	we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false);
 	?>
 </body>
