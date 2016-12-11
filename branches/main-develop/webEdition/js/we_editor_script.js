@@ -360,7 +360,7 @@ function we_cmd() {
 			break;
 		case 'tag_weHref_openDocument':
 			var value;
-			if (value = this.document.we_form.elements[args[1]].value) {
+			if ((value = this.document.we_form.elements[args[1]].value)) {
 				WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, value, '');
 			}
 			break;
@@ -542,14 +542,13 @@ function reinitTiny(confName, transaction, isIEOpera) {
 	/* if tinyMCE-field: re-write confObject on visible field and re-init editor
 	 * ff and chrome only: on ie and opera we reload edit tab when saving properties
 	 */
-	if (confObject = typeof target[confName] === 'object' ? target[confName] : false) {
+	if ((confObject = typeof target[confName] === 'object' ? target[confName] : false)) {
 		if (isIEOpera) {
 			if (typeof target[confName] === 'object') {
-				for (prop in confObject) {
+				for (var prop in confObject) {
 					if (prop !== "setup") {
 						target[confName][prop] = confObject[prop];
 					}
-					;
 				}
 				target.tinyMceInitialize(target[confName]);
 			} else {

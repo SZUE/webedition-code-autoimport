@@ -133,7 +133,7 @@ function displayRssFeed(sUri, bOnChange) {
 					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
-		opener.rpc(escape(sUri), sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
+		opener.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
 	}
 }
 
@@ -145,7 +145,7 @@ function resetRssFeed() {
 					(getBinary('tb') != _sInitTbCfg) ||
 					(_iInitRssCfgNumEntries != iSctConfSel) ||
 					(_iInitTbTitlePers != iRdoTitleSel)) {
-		opener.rpc(escape(_sInitUri), _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
+		opener.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
 	}
 }
 

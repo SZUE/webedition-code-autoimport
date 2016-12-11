@@ -78,13 +78,13 @@ function selectFile(id) {
 		e = getEntry(id);
 		var a = top.document.getElementsByName("fname")[0];
 		if (a.value != e.text &&
-						a.value.indexOf(e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1) {
+			a.value.indexOf(e.text + ",") == -1 &&
+			a.value.indexOf("," + e.text + ",") == -1 &&
+			a.value.indexOf("," + e.text + ",") == -1) {
 
 			a.value = a.value ?
-							(a.value + "," + e.text) :
-							e.text;
+				(a.value + "," + e.text) :
+				e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id)) {
 			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
@@ -218,36 +218,33 @@ function hidePref() {
 }
 
 function writeBody(d) {
-	var body = (top.fileSelect.options.needIEEscape ?
-					'<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-					'<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
-					) +
-					(top.fileSelect.data.we_editCatID ?
-									'<input type="hidden" name="what" value="' + WE().consts.selectors.DO_RENAME_ENTRY + '" />' +
-									'<input type="hidden" name="we_editCatID" value="' + top.fileSelect.data.we_editCatID + '" />' :
-									'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
-									) +
-					'<input type="hidden" name="order" value="' + top.fileSelect.data.order + '" />' +
-					'<input type="hidden" name="rootDirID" value="' + top.fileSelect.options.rootDirID + '" />' +
-					'<input type="hidden" name="table" value="' + top.fileSelect.options.table + '" />' +
-					'<input type="hidden" name="id" value="' + top.fileSelect.data.currentDir + '" />' +
-					'<table class="selector">' +
-					(top.fileSelect.data.makeNewCat ?
-									'<tr class="newEntry">' +
-									'<td class="selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
-									'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
-									'</tr>' :
-									'');
+	var body = '<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">' +
+		(top.fileSelect.data.we_editCatID ?
+			'<input type="hidden" name="what" value="' + WE().consts.selectors.DO_RENAME_ENTRY + '" />' +
+			'<input type="hidden" name="we_editCatID" value="' + top.fileSelect.data.we_editCatID + '" />' :
+			'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
+			) +
+		'<input type="hidden" name="order" value="' + top.fileSelect.data.order + '" />' +
+		'<input type="hidden" name="rootDirID" value="' + top.fileSelect.options.rootDirID + '" />' +
+		'<input type="hidden" name="table" value="' + top.fileSelect.options.table + '" />' +
+		'<input type="hidden" name="id" value="' + top.fileSelect.data.currentDir + '" />' +
+		'<table class="selector">' +
+		(top.fileSelect.data.makeNewCat ?
+			'<tr class="newEntry">' +
+			'<td class="selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
+			'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
+			'</tr>' :
+			'');
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" ' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + ondblclick+ ' >' +
-						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
-						((top.fileSelect.data.we_editCatID === entries[i].ID) ?
-										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-										'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
-										) +
-						'</td></tr>';
+		body += '<tr id="line_' + entries[i].ID + '" ' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + ondblclick + ' >' +
+			'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
+			((top.fileSelect.data.we_editCatID === entries[i].ID) ?
+				'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+				'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
+				) +
+			'</td></tr>';
 	}
 	d.innerHTML = body + '</table></form>';
 	if (top.fileSelect.data.makeNewCat || top.fileSelect.data.we_editCatID) {
@@ -267,7 +264,7 @@ function weonclick(e) {
 	if (top.fileSelect.data.makeNewCat || top.fileSelect.data.we_editCatID) {
 		if (!inputklick) {
 			if (parent.top.fileSelect.options.needIEEscape) {
-				document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
+				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
 			} else {
 				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
 			}

@@ -88,16 +88,16 @@ function setDir(id) {
 }
 
 function selectFile(id) {
-	fname = top.document.getElementsByName("fname");
+	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
-		e = getEntry(id);
+		var e = getEntry(id);
 		top.document.getElementById('fspath').innerHTML = e.path;
-		if (fname && fname[0].value != e.text &&
-						fname[0].value.indexOf(e.text + ",") == -1 &&
-						fname[0].value.indexOf("," + e.text + ",") == -1 &&
-						fname[0].value.indexOf("," + e.text + ",") == -1) {
-			fname[0].value = fname[0].value ?
-							(fname[0].value + "," + e.text) :
+		if (a.value != e.text &&
+						a.value.indexOf(e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1) {
+			a.value = a.value ?
+							(a.value + "," + e.text) :
 							e.text;
 		}
 
@@ -110,7 +110,7 @@ function selectFile(id) {
 		top.fileSelect.data.currentType = e.contentType;
 		showPreview(id);
 	} else {
-		fname[0].value = "";
+		a.value = "";
 		top.fileSelect.data.currentPath = "";
 		top.fileSelect.data.we_editDirID = 0;
 	}
@@ -118,15 +118,15 @@ function selectFile(id) {
 
 function addEntry(ID, text, extension, isFolder, path, modDate, contentType, published, title) {
 	entries.push({
-		"ID": ID,
-		"text": text,
-		"extension": extension,
-		"isFolder": isFolder,
-		"path": path,
-		"modDate": modDate,
-		"contentType": contentType,
-		"published": published,
-		"title": title,
+		ID: ID,
+		text: text,
+		isFolder: isFolder,
+		path: path,
+		modDate: modDate,
+		contentType: contentType,
+		extension: extension,
+		published: published,
+		title: title,
 	});
 }
 
@@ -167,7 +167,7 @@ function writeBodyDocument(d) {
 					'<table class="selector">' +
 					(top.fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
-									'<td class="treeIcon selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
+									'<td class="selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
 									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
 									'<td class="selector title">' + WE().consts.g_l.fileselector.folder + '</td>' +
 									'<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' +
@@ -176,8 +176,8 @@ function writeBodyDocument(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID) ? 'selected' : "") + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-						'<td class="selector treeIcon selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
+		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID) ? 'selected' : '') + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
+						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
 										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
@@ -188,7 +188,7 @@ function writeBodyDocument(d) {
 						'<td class="selector moddate">' + entries[i].modDate + '</td>' +
 						'</tr>';
 	}
-	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
+	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=document.we_form.we_FolderText_tmp.value;return true;">' + body + '</table></form>';
 	if (top.fileSelect.data.makeNewFolder || top.fileSelect.data.we_editDirID) {
 		top.fsbody.document.we_form.we_FolderText_tmp.focus();
 		top.fsbody.document.we_form.we_FolderText_tmp.select();

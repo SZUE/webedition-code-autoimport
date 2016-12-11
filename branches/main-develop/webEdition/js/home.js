@@ -624,7 +624,7 @@ function rpc(a, b, c, d, e, wid, path) {
 		_tmpForm.appendChild(_tmpField);
 
 		_tmpField.name = "we_cmd[]";
-		_tmpField.value = unescape(args[i]);
+		_tmpField.value = args[i];
 		_tmpField.style.display = "none";
 	}
 	_tmpForm.submit();

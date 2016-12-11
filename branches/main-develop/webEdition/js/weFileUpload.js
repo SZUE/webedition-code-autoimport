@@ -1353,7 +1353,7 @@ WE().layout.weFileUpload = (function () {
 								fileobj.img.pngTextChunks.push(chunks[i]);
 								/*
 								var decodedChunk = chunks[i].name !== 'iTXt' ? window.decodeChunk(chunks[i]) :
-										decodeURIComponent(escape(String.fromCharCode.apply(null, chunks[i].data)));
+										decodeURIComponent(String.fromCharCode.apply(null, chunks[i].data));
 								*/
 							}
 						}
