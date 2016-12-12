@@ -77,8 +77,8 @@
 	}
 
 	function getEOL() {
-		return '.CodeMirror-code > div > pre > span::after {\n\
-content: "¬"\n\
+		return '.CodeMirror-code > div > pre > span::after {\
+content: "\\f1dd";\
 }';
 	}
 });
