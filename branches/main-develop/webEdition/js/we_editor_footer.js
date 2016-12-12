@@ -171,9 +171,10 @@ function we_save_document(nextCmd) {
 	/*if (_EditorFrame.getEditorPublishWhenSave() && doc._showGlossaryCheck) {
 	 we_cmd('glossary_check', '', doc.we_transaction);
 	 } else */{
-		var acStatus = WE().layout.weSuggest.checkRequired(parent.frames[1]);
+		//if parent.frames[1].$ is not existent, the frame was not loaded
+		var acStatus = parent.frames[1].$ ? WE().layout.weSuggest.checkRequired(parent.frames[1]) : {'running': false, 'valid': true};
 
-		if (countSaveLoop > 10) {
+		if (countSaveLoop > 10 || !acStatus.valid) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else if (acStatus.running) {
