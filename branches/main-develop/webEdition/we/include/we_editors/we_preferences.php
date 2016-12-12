@@ -1273,17 +1273,30 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');');
 
 
-			$template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
-				we_html_element::htmlHidden('newconf[editorShowTab]', get_value('editorShowTab')) .
+			$template_editor_tabstop_code =
 				'<table class="default">
+				<tr><td colspan="2">'.
+					we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[editor_tabstop]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
+				we_html_element::htmlHidden('newconf[editorShowTab]', get_value('editorShowTab')).
+				'</td></tr>
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
+				<tr><td colspan="2">'.
+					we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_autoindent]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
+				we_html_element::htmlHidden('newconf[editorAutoIndent]', get_value('editorAutoIndent')).
+					'</td></tr>
+				<tr><td colspan="2">'.
+					we_html_forms::checkbox(1, get_value('editorIndentSpaces'), 'editorIndentSpaces', g_l('prefs', '[editor][indentSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorIndentSpaces]\');') .
+				we_html_element::htmlHidden('newconf[editorIndentSpaces]', get_value('editorIndentSpaces')).
+					'</td></tr>
+				<tr><td colspan="2">'.
+					we_html_forms::checkbox(1, get_value('editorShowSpaces'), 'editorShowSpaces', g_l('prefs', '[editor][showSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowSpaces]\');') .
+				we_html_element::htmlHidden('newconf[editorShowSpaces]', get_value('editorShowSpaces')).
+				'</td></tr>
 			</table>';
 
 			$template_editor_Wrap_code = we_html_forms::checkbox(1, get_value('editorWrap'), 'editorWrap', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorWrap]\');') .
 				we_html_element::htmlHidden('newconf[editorWrap]', get_value('editorWrap'));
 
-			$template_editor_autoIndent_code = we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
-				we_html_element::htmlHidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
 			$template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editorTooltips]'), true, 'defaultfont', '') .
 				'<br/>' .
@@ -1326,8 +1339,7 @@ function build_dialog($selected_setting = 'ui'){
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2],
-				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2],
-				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $template_editor_autoIndent_code, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '	[editor][indent]'), 'html' => $template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $template_editor_tooltips_code . '<br/>' . $template_editor_tooltip_font_specify_code . '<br/>' . $template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2],

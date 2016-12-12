@@ -40,19 +40,29 @@ function initCM() {
 	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, ""); //this is our reference of the original content to compare with current content
 	var CMoptions = doc.CMOptions;
 	CMoptions.closeCharacters = new RegExp(CMoptions.closeCharacters);
-	if (CMoptions.hasCodeCompletion) {
-		CMoptions.extraKeys = {
-			"Space": function (cm) {
+	CMoptions.extraKeys = {
+		Space: function (cm) {
+			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, ' ');
-			},
-			"'<'": function (cm) {
+			}
+		},
+		Tab: function (cm) {
+			if (!CMoptions.indentWithTabs) {
+				var spaces = [cm.getOption("indentUnit") + 1].join(" ");
+				cm.replaceSelection(spaces);
+			}
+		},
+		"'<'": function (cm) {
+			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '<');
-			},
-			"Ctrl-Space": function (cm) {
+			}
+		},
+		"Ctrl-Space": function (cm) {
+			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '');
 			}
-		};
-	}
+		},
+	};
 	try {
 		document.getElementById("bodydiv").style.display = "block";
 		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
@@ -142,8 +152,8 @@ function wedoKeyDown(ta, ev) {
 			var selectionStart = ta.selectionStart;
 			var selectionEnd = ta.selectionEnd;
 			ta.value = ta.value.substring(0, selectionStart) +
-				"\t" +
-				ta.value.substring(selectionEnd);
+							"\t" +
+							ta.value.substring(selectionEnd);
 			ta.focus();
 			ta.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 			ta.focus();

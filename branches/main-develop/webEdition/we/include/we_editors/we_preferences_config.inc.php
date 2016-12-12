@@ -244,8 +244,10 @@ $GLOBALS['configs'] = [// Create array for needed configuration variables
 		'siteImportPrefs' => [we_base_request::STRING, ''],
 		'usePlugin' => [we_base_request::BOOL, false],
 		'editorShowTab' => [we_base_request::BOOL, true],
+		'editorShowSpaces' => [we_base_request::BOOL, true],
 		'editorTabSize' => [we_base_request::INT, 2],
 		'editorAutoIndent' => [we_base_request::BOOL, true],
+		'editorIndentSpaces' => [we_base_request::BOOL, false],
 	],
 	'conf' => [
 		'HTTP_USERNAME' => ['if used password protection to the webEdition directory, the username', we_base_request::STRING, '', true],
