@@ -91,7 +91,7 @@ function we_getCodeMirror2Code(&$options){
 		'addon/fold/foldgutter.js',
 		'addon/fold/brace-fold.js',
 		'addon/fold/xml-fold.js',
-		'addon/fold/markdown-fold.js',
+		//'addon/fold/markdown-fold.js',
 		'addon/fold/comment-fold.js'
 	];
 	$parser_css = [

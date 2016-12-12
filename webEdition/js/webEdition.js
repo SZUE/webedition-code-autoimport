@@ -368,6 +368,7 @@ var WebEdition = {
 						this.classList.remove("weMarkInputError");
 					}
 				});
+				//FIXME: do we need running?
 				return {'running': false, 'valid': isValid};
 			},
 			/*???*/
@@ -947,7 +948,7 @@ var WebEdition = {
 				dataType: (dataType === undefined ? "json" : dataType),
 				//timeout: 2000
 			}).fail(function (jqxhr, textStatus, error) {
-				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText);
+				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText, this.url);
 			});
 		}
 	},

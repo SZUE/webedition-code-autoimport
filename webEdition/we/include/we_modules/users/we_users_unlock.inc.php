@@ -23,7 +23,6 @@
  */
 we_html_tools::protect();
 
-
 // prepare the queries, 4 as maximum.
 $ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1); // we_cmd[1] is commaseperated list of ids
 //FIXME: make tblList???
@@ -58,4 +57,4 @@ foreach($queries as $table => $ids){
 		$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID=x\'' . session_id() . '\' AND UserID=' . $uid);
 	}
 }
-?>UNLOCKED
+?>{"UNLOCKED":true}
