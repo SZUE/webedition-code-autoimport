@@ -69,25 +69,16 @@
 		}
 	});
 
-	function add(max) {
+	function add() {
 		var style = document.createElement('style');
-
 		style.setAttribute('data-name', 'js-show-invisibles');
-
-
-
 		style.textContent = getEOL();
-
 		document.head.appendChild(style);
 	}
 
 	function getEOL() {
-		var style = [
-			'.CodeMirror-code > div > pre > span::after {',
-			'content: "¬"',
-			'}',
-		].join('');
-
-		return style;
+		return '.CodeMirror-code > div > pre > span::after {\n\
+content: "¬"\n\
+}';
 	}
 });
