@@ -180,22 +180,22 @@
 	pre > span::after,
 	.cm-whitespace{
 		color: lightgrey;
+		pointer-events: none;
 	}
 
-	.cm-tab {
-		/*background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
-		background-position: right;
-		background-repeat: no-repeat;*/
+	.cm-tab,
+	pre > span::after{
 		font: normal normal normal 14px/1 FontAwesome;
 		font-size: inherit;
 		text-rendering: auto;
+	}
+
+	.cm-tab {
 		content: "\f178";
 	}
 
 	.cm-trailingspace {
-		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
-		background-position: bottom left;
-		background-repeat: repeat-x;
+		text-decoration: underline;
 	}
 
 	.cm-whitespace::before{
@@ -210,10 +210,4 @@
 		}
 	}
 
-	pre > span::after,
-	.cm-whitespace{
-		color: lightgrey;
-		pointer-events: none;
-		color: #lightgrey;
-	}
 }
