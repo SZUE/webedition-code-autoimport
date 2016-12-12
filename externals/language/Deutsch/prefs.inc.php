@@ -84,6 +84,7 @@ $l_prefs=array(
 	'editor'=>array(
 		'indentSpaces'=>'Mit Leerzeichen einrücken',
 		'indent'=>'Einrückung',
+		'showSpaces'=>'Nicht druckbare Zeichen anzeigen',
 	),
 	'editor_autoCloseTags'=>'Tags automatisch schließen',
 	'editor_autoindent'=>'Automatische Einrückung',

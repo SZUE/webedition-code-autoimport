@@ -84,6 +84,7 @@ $l_prefs=array(
 	'editor'=>array(
 		'indentSpaces'=>'Indent with spaces',
 		'indent'=>'Indentation',
+		'showSpaces'=>'Show nonprintable chars',
 	),
 	'editor_autoCloseTags'=>'Close tags automatically',
 	'editor_autoindent'=>'Autoindent code',
