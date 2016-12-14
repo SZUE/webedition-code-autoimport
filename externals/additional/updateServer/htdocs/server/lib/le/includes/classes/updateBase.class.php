@@ -147,7 +147,7 @@ abstract class updateBase{
 	 *
 	 * @return array
 	 */
-	static function getVersionsLanguageArray($installedLanguagesOnly = true, $vers = 0,$useBeta=false){
+	static function getVersionsLanguageArray($installedLanguagesOnly = true, $vers = 0, $useBeta = false){
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
@@ -160,8 +160,9 @@ abstract class updateBase{
 		}
 
 		$GLOBALS['DB_WE']->query('SELECT l.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND l.version=' . $vers : '') .
-				($useBeta?'':' AND v.branch="'.$_SESSION['clientVersionBranch'].'" AND v.islive=1').
+				($useBeta ? '' : ' AND v.islive=1') .
 				' ORDER BY l.version DESC,l.language');
+		//AND v.branch="' . $_SESSION['clientVersionBranch'] . '" is not set in installer
 		$langs = [];
 		foreach($GLOBALS['DB_WE']->getAll(false) as $rec){
 			$langs[$rec['version']] = isset($langs[$rec['version']]) ? $langs[$rec['version']] : [];
