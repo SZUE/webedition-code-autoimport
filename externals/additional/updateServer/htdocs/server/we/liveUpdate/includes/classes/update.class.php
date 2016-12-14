@@ -234,19 +234,19 @@ class update extends updateBase{
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){
-		$versionArray = array(
+		$versionArray = [
 			'version' => $_SESSION['clientVersionNumber'],
 			'versname' => empty($_SESSION['clientVersionName']) ? '' : $_SESSION['clientVersionName'],
 			'svnrevision' => (empty($_SESSION['clientSubVersion']) || $_SESSION['clientSubVersion'] == '0000' ) ? 'n.n.' : $_SESSION['clientSubVersion'],
 			'type' => $_SESSION['clientVersionSupp'],
 			'typeversion' => $_SESSION['clientVersionSuppVersion'],
 			'branch' => $_SESSION['clientVersionBranch'],
-		);
+			];
 
 		return static::getFormattedVersionString(0, $showBranch, $showBranchIfTrunk, $versionArray);
 	}
 
-	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, array $versionArray = array()){
+	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, array $versionArray = []){
 		if($versionnumber != 0){
 			$versionArray = $GLOBALS['DB_WE']->getHash('SELECT version,versname,svnrevision,type,typeversion,branch FROM ' . VERSION_TABLE . ' WHERE version = ' . $versionnumber);
 		}

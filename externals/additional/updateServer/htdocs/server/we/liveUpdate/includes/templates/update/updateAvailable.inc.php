@@ -7,8 +7,10 @@ $selectList = '';
 
 if(version_compare(phpversion(), "4.3.0") == -1){
 	$maxVersionNumber = "5099";
+}elseif(version_compare(phpversion(), "5.6.0") == -1){
+	$maxVersionNumber = "7099";
 }
-$shownversions = array();
+$shownversions = [];
 foreach($GLOBALS['updateServerTemplateData']['possibleVersions'] as $number => $version){
 	if(isset($maxVersionNumber) && $number > $maxVersionNumber){
 

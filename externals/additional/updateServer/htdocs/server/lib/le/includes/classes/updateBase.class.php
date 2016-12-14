@@ -4,22 +4,30 @@ abstract class updateBase{
 
 	static function getZFversion($versionnumber){
 		$zf_version = "1.5.1";
-		if($versionnumber >= 6007)
+		if($versionnumber >= 6007){
 			$zf_version = "1.8.4";
-		if($versionnumber >= 6009)
+		}
+		if($versionnumber >= 6009){
 			$zf_version = "1.10.4";
-		if($versionnumber >= 6100)
+		}
+		if($versionnumber >= 6100){
 			$zf_version = "1.10.6";
-		if($versionnumber >= 6103)
+		}
+		if($versionnumber >= 6103){
 			$zf_version = "1.11.6";
-		if($versionnumber >= 6201)
+		}
+		if($versionnumber >= 6201){
 			$zf_version = "1.11.7";
-		if($versionnumber >= 6261)
+		}
+		if($versionnumber >= 6261){
 			$zf_version = "1.11.11";
-		if($versionnumber >= 6351)
+		}
+		if($versionnumber >= 6351){
 			$zf_version = "1.12.1";
-		if($versionnumber >= 6360)
+		}
+		if($versionnumber >= 6360){
 			$zf_version = "1.12.3";
+		}
 		return $zf_version;
 	}
 
@@ -41,9 +49,9 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleVersionsArray(){
-		$langVersions = update::getVersionsLanguageArray(true);
+		$langVersions = update::getVersionsLanguageArray(true, 0, isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : false);
 
-		$possibleVersions = array();
+		$possibleVersions = [];
 
 		foreach($langVersions as $version => $lngArray){
 			if($version > $_SESSION['clientVersionNumber'] && count($lngArray) == count($_SESSION['clientInstalledLanguages'])){
@@ -56,7 +64,7 @@ abstract class updateBase{
 	}
 
 	static function getAlphaBetaVersions(){
-		$AlphaBetaVersions = array();
+		$AlphaBetaVersions = [];
 
 		$GLOBALS['DB_WE']->query('SELECT v.version,v.svnrevision,v.type,v.typeversion,v.branch,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version ORDER BY v.version DESC,l.language');
 
@@ -139,7 +147,7 @@ abstract class updateBase{
 	 *
 	 * @return array
 	 */
-	static function getVersionsLanguageArray($installedLanguagesOnly = true, $vers = 0){
+	static function getVersionsLanguageArray($installedLanguagesOnly = true, $vers = 0,$useBeta=false){
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
@@ -151,10 +159,12 @@ abstract class updateBase{
 			}
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT version,language FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE 1 ' . ($installedLanguagesOnly ? ' AND language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND version=' . $vers : '') . ' ORDER BY version DESC,language');
-		$langs = array();
+		$GLOBALS['DB_WE']->query('SELECT l.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND l.version=' . $vers : '') .
+				($useBeta?'':' AND v.branch="'.$_SESSION['clientVersionBranch'].'" AND v.islive=1').
+				' ORDER BY l.version DESC,l.language');
+		$langs = [];
 		foreach($GLOBALS['DB_WE']->getAll(false) as $rec){
-			$langs[$rec['version']] = isset($langs[$rec['version']]) ? $langs[$rec['version']] : array();
+			$langs[$rec['version']] = isset($langs[$rec['version']]) ? $langs[$rec['version']] : [];
 			if(!in_array($rec['language'], $langs[$rec['version']])){
 				$langs[$rec['version']][] = $rec['language'];
 			}
