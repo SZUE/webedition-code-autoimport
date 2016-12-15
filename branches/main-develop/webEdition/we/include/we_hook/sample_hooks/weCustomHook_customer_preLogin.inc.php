@@ -35,6 +35,8 @@
 function weCustomHook_customer_preLogin($param){
 	$hookHandler = $param['hookHandler'];
 	$data = &$param['customer']; //contains $REQUEST['s'] which is the submitted login-data
+	$pwdCheck = &$param['checkPassword']; //!!IMORTANT if this is set to false, password is not compared with the saved password the parameter $_REQUEST['s']['Password'] must still be set, but is ignored
+
 	switch($param['type']){
 		case 'normal':
 		case 'autoLogin':
