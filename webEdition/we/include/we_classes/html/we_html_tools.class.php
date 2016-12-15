@@ -94,7 +94,7 @@ abstract class we_html_tools{
 				$colspan++;
 			}
 		}
-		return '<table class="default">' .
+		return '<table class="default noSpace">' .
 			($text ? '<tr><td class="' . trim($textclass) . '" style="' . ($abstand ? 'margin-bottom:' . $abstand . 'px;' : '') . 'text-align:' . trim($textalign) . ';" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			'<tr>' . $elemOut . '</tr></table>';
 	}

@@ -244,11 +244,23 @@ class we_class_folder extends we_folder{
 					["align" => "center",
 					"height" => 35,
 					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
-					'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '"></i>' :
-					'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"></i>')],
+				'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
+    <i class="fa fa-stack-1x fa-cog"></i>
+</span>':
+				'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]'). '">
+  <i class="fa fa-stack-2x fa-ban"></i>
+  <i class="fa fa-stack-1x fa-cog"></i>
+</span>'
+)],
 					['dat' => ($this->searchclass->f("IsSearchable") ?
-					'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
-					'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')],
+				'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '">
+    <i class="fa fa-stack-1x fa-search"></i>
+</span>':
+				'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '">
+  <i class="fa fa-stack-2x fa-ban"></i>
+  <i class="fa fa-stack-1x fa-search"></i>
+</span>'
+)],
 					['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'],
 				['dat' => $this->searchclass->f("ID")],
 					['dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("Workspaces")), 32)],
@@ -535,7 +547,7 @@ class we_class_folder extends we_folder{
 			we_html_element::htmlHiddens(["Order" => $this->searchclass->Order,
 				"do" => ''
 				]) . '
-<table class="default" style="margin-bottom:20px;">
+<table class="default withSpace" style="margin-bottom:20px;">
 	<tr>
 		<td class="defaultfont lowContrast" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
 		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "reload_editpage", false) . '</td>
