@@ -61,10 +61,11 @@ function we_tag_sessionStart(array $attribs){
 	if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
 	){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
-		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart']);
+		$checkPassword = true;
+		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart', 'checkPassword' => &$checkPassword,]);
 		$hook->executeHook();
 
-		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
+		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin, !$checkPassword)){
 			wetagsessionHandleFailedLogin();
 		} else {
 			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
@@ -89,7 +90,6 @@ function we_tag_sessionStart(array $attribs){
 			$_SESSION['webuser']['LastAccess'] = time();
 		}
 	}
-
 
 	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<(NOW() - INTERVAL 1 HOUR)');
