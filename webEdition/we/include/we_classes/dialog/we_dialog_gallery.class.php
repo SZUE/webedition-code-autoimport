@@ -23,15 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_gallery extends we_dialog_base{
-	var $dialogWidth = 370;
-	var $JsOnly = true;
-	var $changeableArgs = ['collid',
-		'tmpl',
-		'templateIDs'
-		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
+		$this->changeableArgs = ['collid',
+			'tmpl',
+			'templateIDs'
+		];
+		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[addGallery]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();

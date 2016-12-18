@@ -23,16 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_acronym extends we_dialog_base{
-	var $dialogWidth = 370;
-	var $JsOnly = true;
-	var $changeableArgs = ["title",
-		"lang",
-		"class",
-		"style"
-		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
+		$this->changeableArgs = ["title",
+			"lang",
+			"class",
+			"style"
+		];
+		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[acronym_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
@@ -51,7 +50,7 @@ top.close();
 			'lang' => '',
 			'class' => '',
 			'style' => ''
-			];
+		];
 	}
 
 	public static function getTinyMceJS(){
@@ -71,10 +70,10 @@ top.close();
 </table>
 ' .
 			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
+			we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
 				'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
-					'text' => ''
-					]) :
+				'text' => ''
+			]) :
 			'');
 	}
 
@@ -82,10 +81,10 @@ top.close();
 		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm('NEW_GLOSSARY') && !$this->noInternals){
-			$buttons.= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();");
+			$buttons .= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();");
 		}
 
-		$buttons.= parent::getDialogButtons();
+		$buttons .= parent::getDialogButtons();
 
 		return $buttons;
 	}

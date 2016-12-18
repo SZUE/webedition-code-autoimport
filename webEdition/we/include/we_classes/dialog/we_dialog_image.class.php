@@ -24,31 +24,31 @@
  */
 class we_dialog_image extends we_dialog_base{
 	private $weFileupload = null;
-	var $ClassName = __CLASS__;
-	var $changeableArgs = ["type",
-		"extSrc",
-		"fileID",
-		"src",
-		"fileSrc",
-		"width",
-		"height",
-		"hspace",
-		"vspace",
-		"border",
-		"alt",
-		"align",
-		"name",
-		"thumbnail",
-		"ratiow",
-		"class",
-		"title",
-		"longdescid",
-		"longdescsrc",
-		"longdesc"
-		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
+		$this->changeableArgs = [
+			"type",
+			"extSrc",
+			"fileID",
+			"src",
+			"fileSrc",
+			"width",
+			"height",
+			"hspace",
+			"vspace",
+			"border",
+			"alt",
+			"align",
+			"name",
+			"thumbnail",
+			"ratiow",
+			"class",
+			"title",
+			"longdescid",
+			"longdescsrc",
+			"longdesc"
+		];
 		$this->dialogTitle = g_l('wysiwyg', '[insert_image]');
 		$this->noInternals = $noInternals;
 		$this->bodyId = 'weImageDialog';
@@ -176,7 +176,7 @@ class we_dialog_image extends we_dialog_base{
 		$thumbnail = $this->getHttpVar(we_base_request::INT, 'thumbnail');
 		$isPresetFromDnD = $this->getHttpVar(we_base_request::INT, 'isPresetFromDnD', 0);
 
-		$type = ($type ? : we_base_link::TYPE_EXT);
+		$type = ($type ?: we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
 			$this->initBySrc($src, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 		} else if($type){
@@ -184,7 +184,7 @@ class we_dialog_image extends we_dialog_base{
 
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extSrc = $this->getHttpVar(we_base_request::URL, 'extSrc', '') ? : 'http://';
+					$extSrc = $this->getHttpVar(we_base_request::URL, 'extSrc', '') ?: 'http://';
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
 				case we_base_link::TYPE_INT:
@@ -258,7 +258,7 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * input for webedition internal image files
 			 */
-			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
+			$startID = $this->args['selectorStartID'] ?: (IMAGESTARTID_DEFAULT ?: 0);
 			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "top.we_cmd('dialog_setType')");
 
 			$weSuggest->setAcId("Image");
@@ -293,7 +293,6 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * longdesc file chooser
 			 */
-
 			$weSuggest->setAcId("Longdesc");
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$weSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
@@ -345,11 +344,11 @@ class we_dialog_image extends we_dialog_base{
 <table class="default" style="margin-bottom:4px;">
 <tr><td><div id="imageExt" style="margin-top:4px;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : 'display:none;') . '">' . $extSrc . '</div></td></tr>' .
 			($intSrc ?
-				'<tr><td><div id="imageInt" style="margin:2px 0 2px 0;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>' :
-				'') .
+			'<tr><td><div id="imageInt" style="margin:2px 0 2px 0;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>' :
+			'') .
 			'</table>',
 			'noline' => true
-			];
+		];
 
 		$parts[] = [];
 		$parts[] = ['headline' => g_l('wysiwyg', '[image][formatting]'),
@@ -360,7 +359,7 @@ class we_dialog_image extends we_dialog_base{
 						<td>' . $align . '</td>
 					</tr>
 				</table>'
-			];
+		];
 		$parts[] = ['headline' => g_l('global', '[attributes]'),
 			'html' => '<table class="default" style="width:560px">
 					<tr><td style="padding-bottom:15px;">' . $width . '</td><td style="padding-bottom:15px;">' . $height . '</td><td style="padding-bottom:15px;">' . $ratio . '</td></tr>
@@ -378,9 +377,9 @@ class we_dialog_image extends we_dialog_base{
 				'isTinyMCEInitialization' => 0,
 				'tinyMCEInitRatioH' => 0,
 				'tinyMCEInitRatioW' => 0
-				]) .
+			]) .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')
-			];
+		];
 		return $parts;
 	}
 
@@ -401,8 +400,8 @@ class we_dialog_image extends we_dialog_base{
 					'displayThumbnailSel' => $this->getDisplayThumbsSel(),
 				];
 				$js = we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_update_editor')", [
-					'id' => 'loadVarDialog_cmdFrame',
-					'data-payload' => setDynamicVar($payload)
+						'id' => 'loadVarDialog_cmdFrame',
+						'data-payload' => setDynamicVar($payload)
 				]);
 
 				echo we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
@@ -428,7 +427,7 @@ class we_dialog_image extends we_dialog_base{
 					we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
 						'id' => 'loadVarDialog_cmdFrame',
 						'data-payload' => setDynamicVar($payload)
-					]);
+				]);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());

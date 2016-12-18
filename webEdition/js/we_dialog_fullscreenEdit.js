@@ -23,7 +23,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-var textareaFocus = false;
 document.addEventListener("keyup", doKeyDown, true);
 
 function doKeyDown(e) {

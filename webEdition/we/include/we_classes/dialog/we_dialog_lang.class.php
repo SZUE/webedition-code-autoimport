@@ -23,13 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_lang extends we_dialog_base{
-	var $dialogWidth = 370;
-	var $JsOnly = true;
-	var $changeableArgs = ["lang"
-	];
 
 	function __construct($noInternals = false){
 		parent::__construct();
+		$this->changeableArgs = ["lang"
+		];
+		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[language_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
@@ -56,10 +55,10 @@ top.close();
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
 </table>' .
 			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
+			we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
 				'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
-					'text' => ''
-					]) : ''
+				'text' => ''
+			]) : ''
 			);
 	}
 
@@ -70,7 +69,7 @@ top.close();
 			$buttons = we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();");
 		}
 
-		$buttons.= parent::getDialogButtons();
+		$buttons .= parent::getDialogButtons();
 
 		return $buttons;
 	}
