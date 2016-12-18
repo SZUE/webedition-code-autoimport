@@ -24,12 +24,10 @@
  */
 class we_dialog_fullscreenEdit extends we_dialog_base{
 
-	var $JsOnly = true;
-	var $ClassName = __CLASS__;
-	var $changeableArgs = ["src"];
-
 	function __construct(){
 		parent::__construct();
+		$this->changeableArgs = ["src"];
+		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[fullscreen_editor]');
 		$this->args["src"] = "";
 	}
@@ -41,7 +39,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
 	}
 
 	function getJs(){

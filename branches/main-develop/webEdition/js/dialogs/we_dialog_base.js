@@ -44,9 +44,7 @@ function doKeyDown(e) {
 			break;
 		case 13:
 			if (onEnterKey) {
-				if (!textareaFocus) {
-					weDoOk();
-				}
+				weDoOk();
 			}
 			break;
 	}
@@ -83,6 +81,11 @@ function we_cmd() {
 		case "edit_new_collection":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
 			new (WE().util.jsWindow)(window, url, "weNewCollection", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, true);
+			break;
+		case "setFocus":
+			var elem = document.forms[0].elements[args[1]];
+			elem.focus();
+			elem.select();
 			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));

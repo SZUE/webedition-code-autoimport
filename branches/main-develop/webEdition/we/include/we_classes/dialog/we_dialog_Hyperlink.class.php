@@ -23,13 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
-	var $ClassName = __CLASS__;
-	var $changeableArgs = ['type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
-		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
-		];
 
 	function __construct($href = '', $target = '', $fileID = 0, $objID = 0, $noInternals = false){
 		parent::__construct();
+		$this->changeableArgs = ['type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
+			'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
+		];
 		$this->dialogTitle = g_l('wysiwyg', '[edit_hyperlink]');
 		$this->noInternals = $noInternals;
 	}
@@ -44,11 +43,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
 				($back . $next) :
-				($back ? : $next );
+				($back ?: $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = $back && $ok ? $back . $ok : ($back ? : $ok);
+			$okBut = $back && $ok ? $back . $ok : ($back ?: $ok);
 		}
 
 		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'));
@@ -60,7 +59,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$href = explode(':', $this->args['href']);
 			if(count($href) == 2){
 				list($type, $ref) = $href;
-				$type.=':';
+				$type .= ':';
 			} else {
 				$ref = '';
 				$type = we_base_link::TYPE_EXT;
@@ -232,9 +231,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
 			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-			($parsed['host'] ? : '') .
+			($parsed['host'] ?: '') .
 			($parsed['port'] ? ':' . $parsed['port'] : '') .
-			($parsed['path'] ? : '') .
+			($parsed['path'] ?: '') .
 			($parsed['query'] ? '?' . $parsed['query'] : '') .
 			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
@@ -316,7 +315,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			'mailsubject' => '',
 			'mailcc' => '',
 			'mailbcc' => '',
-			]);
+		]);
 	}
 
 	function getDialogContentHTML(){
@@ -338,20 +337,20 @@ class we_dialog_Hyperlink extends we_dialog_base{
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
 				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
-					''
+				'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
+				''
 				);
 
 			// EXTERNAL LINK
 			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : '';
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:top.openExtSource('extHref');", '', 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
-			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="extHref_doOnFocus(this)" onblur="checkMakeEmptyHrefExt();" onchange="extHref_doOnchange(this)"', "url", 300), "",
-					"left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
+			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="extHref_doOnFocus(this)" onblur="checkMakeEmptyHrefExt();" onchange="extHref_doOnchange(this)"', "url", 300), "", "left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
 			$weSuggest->setAcId("Path");
-			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
+			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
+				we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 			$weSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
 			$weSuggest->setMaxResults(20);
 			$weSuggest->setRequired(true);
@@ -414,7 +413,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 		return [['html' =>
 			// Create table output
-				'<div style="position:relative; top:15px"><table class="default" style="height:65px">
+			'<div style="position:relative; top:15px"><table class="default" style="height:65px">
 	<tr>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:20px">' . g_l('weClass', '[linkType]') . '</td>
 		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $select_type . '</select></td>
@@ -422,7 +421,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) || ($noInternals && $this->args["type"] !== we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $external_link . '</td>
 	</tr>' .
-				(isset($internal_link) ? '
+			(isset($internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px"> ' . g_l('weClass', '[document]') . '</td>
 		<td style="vertical-align:top"> ' . $internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
@@ -431,7 +430,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[emaillink]') . '</td>
 		<td style="vertical-align:top">' . $email_link . '</td>
 	</tr>' .
-				(defined('OBJECT_TABLE') && isset($object_link) ? '
+			(defined('OBJECT_TABLE') && isset($object_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:0px;">' . g_l('contentTypes', '[objectFile]') . '</td>
 		<td style="vertical-align:top">' . $object_link . '</td>
@@ -517,7 +516,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js', '', [
 				'id' => 'loadVarDialog_Hyperlink',
 				'data-vars' => setDynamicVar($this->getJSDynamic())
-			]);
+		]);
 	}
 
 	function getJSDynamic(){
@@ -539,7 +538,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
-				(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
 		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$query = [];
@@ -567,11 +566,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$payload = ['attributes' => $attribs];
 
 		return we_html_tools::getHtmlTop('', '', '', parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
-				'id' => 'loadVarDialog_cmdFrame',
-				'data-payload' => setDynamicVar($payload)
-			]), we_html_element::htmlBody());
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
+				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
+					'id' => 'loadVarDialog_cmdFrame',
+					'data-payload' => setDynamicVar($payload)
+				]), we_html_element::htmlBody());
 	}
 
 }

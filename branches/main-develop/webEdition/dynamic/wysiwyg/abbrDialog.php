@@ -23,8 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$appendJS = "";
-
+$jsCmd = new we_base_jsCmd();
 
 if(!(
 	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
@@ -48,24 +47,26 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 	$Glossary->setPath();
 
 	if($Glossary->Title === ''){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();';
+		$jsCmd->addMsg(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addCmd('setFocus', "we_dialog_args[title]");
 	} else if($Glossary->getAttribute('lang') === ''){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();';
+		$jsCmd->addMsg(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addCmd('setFocus', "we_dialog_args[lang]");
 	} else if($Glossary->Text === ''){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else if($Glossary->pathExists($Glossary->Path)){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$Glossary->save();
 
 		$Cache = new we_glossary_cache(we_base_request::_(we_base_request::STRING, 'language'));
 		$Cache->write();
 		unset($Cache);
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();';
+		$jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addCmd('close');
 	}
 }
 
 $dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
-echo $dialog->getHTML() .
- ($appendJS ? we_html_element::jsElement($appendJS) : '');
+echo $dialog->getHTML() . $jsCmd->getCmds;
