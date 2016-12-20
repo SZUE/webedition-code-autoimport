@@ -232,8 +232,8 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['isPresetByDnD'] = 0;
 	}
 
-	function getHeaderHTML($printJS_Style = false, $additionals = ''){
-		return parent::getHeaderHTML($printJS_Style, /* $this->weFileupload->getJs() . $this->weFileupload->getCss() */ '');
+	function getHeaderHTML($additionals = ''){
+		return parent::getHeaderHTML(/* $this->weFileupload->getJs() . $this->weFileupload->getCss() */ '');
 	}
 
 	function getDialogContentHTML(){
@@ -433,7 +433,7 @@ class we_dialog_image extends we_dialog_base{
 		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
 	}
 
-	function getJs(){
+	protected function getJs(){
 		$weSuggest = & weSuggest::getInstance();
 		//$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
 

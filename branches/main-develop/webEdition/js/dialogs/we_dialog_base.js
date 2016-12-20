@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+var dialogVars = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
@@ -43,7 +45,7 @@ function doKeyDown(e) {
 			top.close();
 			break;
 		case 13:
-			if (onEnterKey) {
+			if (dialogVars.onEnterKey) {
 				weDoOk();
 			}
 			break;
@@ -91,3 +93,6 @@ function we_cmd() {
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
+
+addKeyListener();
+self.focus();

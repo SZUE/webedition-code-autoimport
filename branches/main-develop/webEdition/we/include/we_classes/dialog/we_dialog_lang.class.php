@@ -45,8 +45,8 @@ top.close();
 		$this->args = ["lang" => ""];
 	}
 
-	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() .
+	protected function getJs(){
+		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welang/js/lang_init.js');
 	}
 

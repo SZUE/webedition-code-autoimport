@@ -84,7 +84,7 @@ class we_dialog_base{
 			case 'cmd':
 				return $this->getCmdHTML();
 			default:
-				return $this->getHeaderHTML(true, we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();')) .
+				return $this->getHeaderHTML() .
 					$this->getFramesetHTML() . '</html>';
 		}
 	}
@@ -193,16 +193,19 @@ class we_dialog_base{
 		return ''; // overwrite !
 	}
 
-	function getHeaderHTML($printJS_Style = false, $additionals = ''){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . static::getTinyMceJS() .
-			($printJS_Style ?
-			$this->getJs() :
-			''
-			) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
-			'</head>';
+	function getHeaderHTML($additionals = ''){
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset, '', self::getTinyMceJS() .
+				$this->getJs() .
+				we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
+				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', '', [
+					'id' => 'loadVarDialog',
+					'data-vars' => setDynamicVar([
+						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->JsOnly)
+				])]) .
+				$additionals);
 	}
 
-	public static function getTinyMceJS(){
+	private static function getTinyMceJS(){
 		return
 			we_html_element::jsElement('var isWeDialog = true;') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
@@ -212,15 +215,12 @@ class we_dialog_base{
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
-	function getJs(){
+	protected function getJs(){
 		return we_html_element::jsElement('
-var onEnterKey=' . intval($this->pageNr == $this->numPages && $this->JsOnly) . ';
-
 function weDoOk() {
-		if(onEnterKey){' . $this->getOkJs() . '
+		if(dialogVars.onEnterKey){' . $this->getOkJs() . '
 	}
-}') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
+}');
 	}
 
 	function getHttpVar($type, $name, $alt = ""){

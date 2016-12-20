@@ -42,8 +42,8 @@ class we_dialog_gallery extends we_dialog_base{
 		$this->args['templateIDs'] = '';
 	}
 
-	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() .
+	protected function getJs(){
+		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js');
 	}
 

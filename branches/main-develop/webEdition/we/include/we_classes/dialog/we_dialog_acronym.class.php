@@ -53,8 +53,8 @@ top.close();
 		];
 	}
 
-	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() .
+	protected function getJs(){
+		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weacronym/js/acronym_init.js');
 	}
 

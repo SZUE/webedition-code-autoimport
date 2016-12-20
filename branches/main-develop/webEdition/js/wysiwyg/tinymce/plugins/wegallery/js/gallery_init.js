@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE, tinyMCEPopup */
 
 /**
  * webEdition CMS
@@ -25,26 +25,25 @@
 
 var isTinyMCE = true;
 
-var WegalleryDialog = { // TODO: clean code by using more vars
+var WegalleryDialog = {// TODO: clean code by using more vars
 
-	sel : '',
-	inst : '',
-	elm : '',
-	isGallery : false,
+	sel: '',
+	inst: '',
+	isGallery: false,
 
-	init : function() {
+	init: function () {
 		var idValue = '';
 		var tmplValue = '';
 
-		inst = tinyMCEPopup.editor;
-		elm = inst.selection.getNode();
-		sel = inst.selection.getContent({format : 'text'});
+		this.inst = tinyMCEPopup.editor;
+		var elm = this.inst.selection.getNode();
+		this.sel = this.inst.selection.getContent({format: 'text'});
 
-		if(elm.nodeName === 'WE-GALLERY'){
+		if (elm.nodeName === 'WE-GALLERY') {
 			this.isGallery = true;
 		}
 
-		if(this.isGallery){
+		if (this.isGallery) {
 			idValue = elm.getAttribute('id') ? elm.getAttribute('id') : 0;
 			tmplValue = elm.getAttribute('tmpl') ? elm.getAttribute('tmpl') : 0;
 		}
@@ -53,36 +52,37 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 		document.forms.we_form.elements['we_dialog_args[tmpl]'].value = tmplValue;
 	},
 
-	insert : function() {
+	insert: function () {
 		var idValue = document.forms.we_form.elements['we_dialog_args[collid]'].value;
 		var tmplValue = document.forms.we_form.elements['we_dialog_args[tmpl]'].value;
 
-		if(this.isGallery){
+		if (this.isGallery) {
 			if (idValue && tmplValue !== "0") {
-				inst.selection.getNode().setAttribute('id', idValue);
-				inst.selection.getNode().setAttribute('tmpl', tmplValue);
-			} else{
-				inst.dom.remove(inst.selection.getNode(), 1);
+				this.inst.selection.getNode().setAttribute('id', idValue);
+				this.inst.selection.getNode().setAttribute('tmpl', tmplValue);
+			} else {
+				this.inst.dom.remove(this.inst.selection.getNode(), 1);
 			}
 			top.close();
-		} else{
-			if (idValue && tmplValue !== "0") {
-				var blank = '';
-				var isBlank = false;
-				while(sel.charAt(sel.length-1) === ' '){
-					sel = sel.substr(0,sel.length-1);
-					isBlank = true;
-					blank += '&nbsp;';
-				}
-				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
-
-				var content = '<we-gallery id="' + idValue + '" tmpl="' + tmplValue + '"></we-gallery>' + blank;
-				inst.execCommand('mceInsertContent', false, content);
-				top.close();
-			} else {
-				top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[inst.getParam('language')].we.plugin_wegallery_values_nok, WE().consts.message.WE_MESSAGE_ERROR);
-			}
+			return;
 		}
+		if (idValue && tmplValue !== "0") {
+			var blank = '';
+			var isBlank = false;
+			while (this.sel.charAt(sel.length - 1) === ' ') {
+				this.sel = this.sel.substr(0, this.sel.length - 1);
+				isBlank = true;
+				blank += '&nbsp;';
+			}
+			blank = isBlank ? blank.substr(0, blank.length - 6) + ' ' : blank;
+
+			var content = '<we-gallery id="' + idValue + '" tmpl="' + tmplValue + '"></we-gallery>' + blank;
+			this.inst.execCommand('mceInsertContent', false, content);
+			top.close();
+		} else {
+			top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[this.inst.getParam('language')].we.plugin_wegallery_values_nok, WE().consts.message.WE_MESSAGE_ERROR);
+		}
+
 		//tinyMCEPopup.close();
 	}
 };
