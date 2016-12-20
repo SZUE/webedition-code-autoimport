@@ -1167,7 +1167,6 @@ apps/toolfactory/hook/custom_hooks/dummy
 !editors/template/CodeMirror/js
 !editors/template/CodeMirror/css
 !editors/template/CodeMirror/contrib
-!editors/template/CodeMirror/addon
 !editors/content/wysiwyg
 !editors/content/tinymce
 !editor
