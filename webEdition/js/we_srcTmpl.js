@@ -44,22 +44,30 @@ function initCM() {
 		Space: function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, ' ');
+			}else{
+				return CodeMirror.Pass;
 			}
 		},
 		Tab: function (cm) {
 			if (!CMoptions.indentWithTabs) {
 				var spaces = [cm.getOption("indentUnit") + 1].join(" ");
 				cm.replaceSelection(spaces);
+			}else{
+				return CodeMirror.Pass;
 			}
 		},
 		"'<'": function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '<');
+			}else{
+				return CodeMirror.Pass;
 			}
 		},
 		"Ctrl-Space": function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '');
+			}else{
+				return CodeMirror.Pass;
 			}
 		},
 	};
