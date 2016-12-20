@@ -510,9 +510,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 </select>';
 	}
 
-	function getJs(){
+	protected function getJs(){
 		return parent::getJs() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js', '', [
 				'id' => 'loadVarDialog_Hyperlink',
 				'data-vars' => setDynamicVar($this->getJSDynamic())

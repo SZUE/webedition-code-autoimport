@@ -37,13 +37,10 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 		return we_wysiwyg_editor::getHeaderHTML(false, false) . we_html_element::jsElement('var isFullScreen = true;') . $e->getHTML();
 	}
 
-	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
-	}
-
-	function getJs(){
-		return we_html_element::jsScript(JS_DIR . 'we_dialog_fullscreenEdit.js', 'self.focus();');
+	protected function getJs(){
+		return parent::getJs() .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js') .
+			we_html_element::jsScript(JS_DIR . 'we_dialog_fullscreenEdit.js', 'self.focus();');
 	}
 
 	protected function getCancelBut(){

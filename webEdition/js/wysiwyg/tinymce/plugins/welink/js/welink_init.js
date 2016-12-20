@@ -1,5 +1,7 @@
 /* Functions for the welink plugin popup */
 
+/* global tinyMCEPopup */
+
 //tinyMCEPopup.requireLangPack();
 var weFocusedField;
 
@@ -9,6 +11,7 @@ function preinit() {
 	if ((url = tinyMCEPopup.getParam("external_link_list_url"))) {
 		document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 	}
+	tinyMCEPopup.onInit.add(init);
 }
 
 function init() {
@@ -189,11 +192,11 @@ function getAnchorListHTML(id, target) {
 	}
 
 	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"' +
-					' onchange="this.form.elements[\'' + target + '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"' +
-					'>' +
-					'<option value=""></option>' +
-					html +
-					'</select>';
+		' onchange="this.form.elements[\'' + target + '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"' +
+		'>' +
+		'<option value=""></option>' +
+		html +
+		'</select>';
 
 	return html;
 }
@@ -232,3 +235,4 @@ function setFocusedField(elem) {
 // the rest of tiny-functions is deleted
 
 
+preinit();
