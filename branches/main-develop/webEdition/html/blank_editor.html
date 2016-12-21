@@ -3,12 +3,11 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>blank</title>
-		<script src="/webEdition/js/global.js"></script>
 		<style>
 			html{
 				height:100%;
 			}
-			body {
+			body.blankEditor {
 				background: #d7dce0;
 				margin:0px;
 			}
@@ -19,7 +18,7 @@
 			}
 		</style>
 	</head>
-	<body onload="initWE();parent.openedWithWE = true;">
+	<body class="blankEditor" onload="parent.openedWithWE = true;">
 		<img class="blank_editor_logo" src="/webEdition/images/backgrounds/bg-editor.png" alt="logo"/>
 	</body>
 </html>
