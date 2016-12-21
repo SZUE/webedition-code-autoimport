@@ -943,15 +943,16 @@ we_templateInit();?>';
 	}
 
 	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){
-		$ret = '';
+		$ret = [];
 		$allTags = [];
 		if($weTags && ($css || $setting['WE'])){
 			$allWeTags = we_wizard_tag::getExistingWeTags($css); //only load deprecated tags if css is requested
 			foreach($allWeTags as $tagName){
 				if(($weTag = weTagData::getTagData($tagName))){
 					if($css){
-						$ret .= '.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), ['"' => '\'',
-								"\n" => ' ']) . '";}' . "\n";
+						$ret[] = '.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), [
+								'"' => '\'',
+								"\n" => ' ']) . '";}';
 					} else {
 						$allTags['we:' . $tagName] = ['we' => $weTag->getAttributesForCM()];
 					}
@@ -959,7 +960,7 @@ we_templateInit();?>';
 			}
 		}
 		if($css){
-			return $ret;
+			return implode('', $ret);
 		}
 
 		$all = include(WE_INCLUDES_PATH . 'accessibility/htmlTags.inc.php');
@@ -968,7 +969,7 @@ we_templateInit();?>';
 			return '';
 		}
 		//keep we tags in front of ordinal html tags
-		$ret .= 'CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
+		$ret[] = '"<":["' . implode('","', array_keys($allTags)) . '"]';
 
 		ksort($allTags);
 		foreach($allTags as $tagName => $cur){
@@ -1005,10 +1006,10 @@ we_templateInit();?>';
 			if($attribs){
 				$attribs = array_unique($attribs);
 				sort($attribs);
-				$ret .= 'CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+				$ret[] = '"<' . $tagName . ' ":[' . implode(',', $attribs) . ']';
 			}
 		}
-		return $ret;
+		return 'WE().layout.editors.CodeMirror={weHints:{' . implode(',', $ret) . '}};';
 	}
 
 	public static function getJSLangConsts(){

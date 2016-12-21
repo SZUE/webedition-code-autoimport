@@ -62,7 +62,7 @@ function getTabs($classname, $predefined = 0){
 
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
-$we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
+$we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) ?: ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -181,9 +181,9 @@ if($we_doc->ID == 0){
 	}
 
 	$we_doc->EditPageNr = (in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs) ?
-			getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']) :
-			//	Here we must get the first valid EDIT_PAGE
-			getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
+		getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']) :
+		//	Here we must get the first valid EDIT_PAGE
+		getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
@@ -233,7 +233,8 @@ if(!$we_doc->getElement('data')){
 	);
 }
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
- we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');", ['id' => 'loadVarEdit_frameset', 'data-editFrameset' => setDynamicVar([
+ we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');", [
+	'id' => 'loadVarEdit_frameset', 'data-editFrameset' => setDynamicVar([
 		'SEEM_edit_include' => we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include'),
 		'USERACCESS' => $we_doc->userHasAccess() == we_root::USER_HASACCESS
 ])]);
@@ -243,8 +244,8 @@ function setOnload(){
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
 	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
-			'setOnload();' :
-			'');
+		'setOnload();' :
+		'');
 }
 
 if(!$we_doc->ID && $we_doc instanceof we_binaryDocument){
@@ -267,12 +268,13 @@ switch($_SESSION['weS']['we_mode']){
 ?>
 <body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" onunload="doUnload();" class="editFrameset">
 	<?php
+	$activeEditors = we_base_request::_(we_base_request::RAW_CHECKED, 'activeEditors');
 //FIXME: if we want to remove these iframes, e.g. EditorFrameController.js enumerate the frames, make sure to get all
-	echo we_html_element::htmlIFrame('editHeader', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"), 'height:' . $headerSize . 'px;', '', '', false, 'editHeader') .
+	echo we_html_element::htmlIFrame('editHeader', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_header'), 'height:' . $headerSize . 'px;', '', '', false, 'editHeader') .
 	($showContentEditor ?
 		we_html_element::htmlIFrame('editor_' . $fid, 'about:blank', 'display:none;top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
-		we_html_element::htmlIFrame('contenteditor_' . $fid, we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1', 'top:' . $headerSize . 'px;', '', '', true, 'contenteditor') :
-		we_html_element::htmlIFrame('editor_' . $fid, we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1', 'top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
+		we_html_element::htmlIFrame('contenteditor_' . $fid, we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', '', true, 'contenteditor') :
+		we_html_element::htmlIFrame('editor_' . $fid, we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
 		we_html_element::htmlIFrame('contenteditor_' . $fid, 'about:blank', 'display:none;top:' . $headerSize . 'px;', '', '', true, 'contenteditor')
 	) .
 	we_html_element::htmlIFrame('editFooter', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'), '', '', '', false, 'editorButtonFrame');

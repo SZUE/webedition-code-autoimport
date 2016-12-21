@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/* global _EditorFrame, WE */
+/* global _EditorFrame, WE, CodeMirror */
 var doc = WE().util.getDynamicVar(document, 'loadVarSrcTmpl', 'data-doc');
 WE().util.loadConsts(document, "tagWizzard");
 
@@ -32,8 +32,8 @@ var reloadContent = false;
 var lastPos = null, lastQuery = null, marked = [];
 var countJEditorInitAttempts = 0;
 var wizardHeight = {
-	"open": 305,
-	"closed": 140
+	open: 305,
+	closed: 140
 };
 
 function initCM() {
@@ -44,7 +44,7 @@ function initCM() {
 		Space: function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, ' ');
-			}else{
+			} else {
 				return CodeMirror.Pass;
 			}
 		},
@@ -52,21 +52,21 @@ function initCM() {
 			if (!CMoptions.indentWithTabs) {
 				var spaces = [cm.getOption("indentUnit") + 1].join(" ");
 				cm.replaceSelection(spaces);
-			}else{
+			} else {
 				return CodeMirror.Pass;
 			}
 		},
 		"'<'": function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '<');
-			}else{
+			} else {
 				return CodeMirror.Pass;
 			}
 		},
 		"Ctrl-Space": function (cm) {
 			if (CMoptions.hasCodeCompletion) {
 				CodeMirror.weHint(cm, '');
-			}else{
+			} else {
 				return CodeMirror.Pass;
 			}
 		},
@@ -160,8 +160,8 @@ function wedoKeyDown(ta, ev) {
 			var selectionStart = ta.selectionStart;
 			var selectionEnd = ta.selectionEnd;
 			ta.value = ta.value.substring(0, selectionStart) +
-							"\t" +
-							ta.value.substring(selectionEnd);
+				"\t" +
+				ta.value.substring(selectionEnd);
 			ta.focus();
 			ta.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 			ta.focus();
