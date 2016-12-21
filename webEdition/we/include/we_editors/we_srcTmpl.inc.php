@@ -81,138 +81,117 @@ function we_getCSSIds(){
 }
 
 function we_getCodeMirror2Code(&$options){
-	$maineditor = '';
-	$parser_js = [
-		'addon/mode/overlay.js',
-		'addon/search/searchcursor.js',
-		'addon/edit/trailingspace.js',
-		'addon/edit/matchbrackets.js',
-		'addon/fold/foldcode.js',
-		'addon/fold/foldgutter.js',
-		'addon/fold/brace-fold.js',
-		'addon/fold/xml-fold.js',
-		//'addon/fold/markdown-fold.js',
-		'addon/fold/comment-fold.js'
-	];
-	$parser_css = [
-		'theme/' . $_SESSION['prefs']['editorTheme'] . '.css',
-		'addon/fold/foldgutter.css'];
 	$useCompletion = false;
+	$mode = '';
 	switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 		case we_base_ContentTypes::CSS:
-			$parser_js[] = 'mode/css/css.js';
-			$parser_js[] = 'mode/sass/sass.js';
-			$parser_js[] = 'mode/less/less.js';
 			$mode = 'text/css';
 			break;
 		case we_base_ContentTypes::JS:
-			$parser_js[] = 'mode/javascript/javascript.js';
-			$parser_js[] = 'mode/sass/sass.js';
-			$parser_js[] = 'addon/hint/show-hint.js';
-			$parser_js[] = 'addon/hint/javascript-hint.js';
-			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = 'text/javascript';
 			break;
 		case we_base_ContentTypes::TEMPLATE:
-			$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
-			$parser_js[] = 'mode/xml/xml.js';
-			$parser_js[] = 'mode/javascript/javascript.js';
-			$parser_js[] = 'mode/css/css.js';
-			$parser_js[] = 'mode/clike/clike.js';
-			$parser_js[] = 'mode/php/php.js';
-			$parser_js[] = 'addon/edit/closetag.js';
-			if($_SESSION['prefs']['editorCodecompletion']){
-				$parser_js[] = 'addon/hint/show-hint.js';
-				$parser_js[] = 'addon/we/we-hint.js';
-			}
-			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = we_base_ContentTypes::TEMPLATE;
 			$useCompletion = true;
 			break;
 		case we_base_ContentTypes::HTML:
-			$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
-			$parser_js[] = 'mode/xml/xml.js';
-			$parser_js[] = 'mode/javascript/javascript.js';
-			$parser_js[] = 'mode/css/css.js';
-			$parser_js[] = 'mode/clike/clike.js';
-			$parser_js[] = 'mode/php/php.js';
-			$parser_js[] = 'addon/edit/closetag.js';
-			if($_SESSION['prefs']['editorCodecompletion']){
-				$parser_js[] = 'addon/hint/show-hint.js';
-				$parser_js[] = 'addon/we/we-hint.js';
-			}
-			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 			$useCompletion = true;
 			break;
 		case we_base_ContentTypes::XML:
-			$parser_js[] = 'mode/xml/xml.js';
-			$parser_js[] = 'addon/hint/show-hint.js';
-			$parser_js[] = 'addon/hint/xml-hint.js';
-			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = 'application/xml';
 			break;
 		default:
 			//don't use CodeMirror
 			$GLOBALS['initEditor'] = 'initDefaultEdior();';
-			$parser_js = [];
 			return '';
 	}
 
-	if($parser_js){ // CodeMirror will be used
-		$maineditor = we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/lib/codemirror.css') .
-				we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/lib/codemirror.js');
-		foreach($parser_css as $css){
-			$maineditor .= we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/' . $css);
-		}
+	$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
+	$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
+	$settings = http_build_query(['settings' => is_array($tmp) ? $tmp : []]);
+
+	$maineditor = '';
+	$editors = we_base_request::_(we_base_request::JSON, 'activeEditors', []);
+	if(true||empty($editors['CodeMirror'])){ //load js only if not present in browser
+		$maineditor = we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/lib/codemirror.js');
+
+		$parser_js = [
+			'addon/edit/closetag.js',
+			'addon/edit/matchbrackets.js',
+			'addon/edit/trailingspace.js',
+			'addon/fold/brace-fold.js',
+			'addon/fold/comment-fold.js',
+			'addon/fold/foldcode.js',
+			'addon/fold/foldgutter.js',
+			'addon/fold/markdown-fold.js',
+			'addon/fold/xml-fold.js',
+/*			'addon/hint/css-hint.js',
+			'addon/hint/html-hint.js',
+			'addon/hint/javascript-hint.js',*/
+			'addon/hint/show-hint.js',
+			'addon/hint/xml-hint.js',
+			'addon/mode/overlay.js',
+			'addon/search/searchcursor.js',
+			'mode/clike/clike.js',
+			'mode/css/css.js',
+			'mode/htmlmixed/htmlmixed.js',
+			'mode/javascript/javascript.js',
+			'mode/php/php.js',
+			'mode/sass/sass.js',
+			'mode/xml/xml.js',
+		];
+
 		foreach($parser_js as $js){
 			$maineditor .= we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/' . $js);
 		}
+		$maineditor .= we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') .
+			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
+			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
+			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
+	}
 
-		$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
-		$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-		$settings = http_build_query(['settings' => is_array($tmp) ? $tmp : []]);
 
-		$options = [//these are the CodeMirror options
-			'mode' => $mode,
-			'electricChars' => false,
-			'theme' => $_SESSION['prefs']['editorTheme'],
-			'lineNumbers' => ($_SESSION['prefs']['editorLinenumbers'] ? true : false),
-			'gutter' => true,
-			'foldGutter' => true,
-			'minFoldSize'=>5,
-			'gutters' => ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-			'indentWithTabs' => !$_SESSION['prefs']['editorIndentSpaces'],
-			'tabSize' => intval($_SESSION['prefs']['editorTabSize']),
-			'indentUnit' => intval($_SESSION['prefs']['editorTabSize']),
-			'matchBrackets' => true,
-			/* 	workTime: 300,
-			  workDelay: 800, */
-			'dragDrop' => false,
-			'height' => intval(($_SESSION['prefs']['editorHeight'] != 0) ? $_SESSION['prefs']['editorHeight'] : 320),
-			'lineWrapping' => ($_SESSION['weS']['we_wrapcheck'] ? true : false),
-			'autoCloseTags' => ($_SESSION['prefs']['editorDocuintegration'] ? true : false), // use object with indentTags to indent these tags
-			'autofocus' => true,
-			'smartIndent' => ($_SESSION['prefs']['editorAutoIndent'] ? true : false/* '"Enter": false,' */),
-			'closeCharacters' => '()[]{};>,',
-			'hasCodeCompletion' => ($hasCompletion && $useCompletion),
-			'showTrailingSpace' => $_SESSION['prefs']['editorShowSpaces'],
-			'showInvisibles' => true || $_SESSION['prefs']['editorShowSpaces'],
-		];
+	// CodeMirror will be used; we add css to the page
+	$maineditor .= we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/lib/codemirror.css') .
+		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
+		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
+		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
+		we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
 
-		$maineditor .= ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') :
-				'') .
-				($hasCompletion && $useCompletion ?
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings) :
-				''
-				) .
-				we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css') .
-				($_SESSION['prefs']['editorShowSpaces'] ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') : '') .
-				($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
-				we_html_element::cssElement(
-						($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
-						we_getCSSIds() : '') . '
+	$options = [//these are the CodeMirror options
+		'mode' => $mode,
+		'electricChars' => false,
+		'theme' => $_SESSION['prefs']['editorTheme'],
+		'lineNumbers' => ($_SESSION['prefs']['editorLinenumbers'] ? true : false),
+		'gutter' => true,
+		'foldGutter' => true,
+		'minFoldSize' => 5,
+		'gutters' => ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		'indentWithTabs' => !$_SESSION['prefs']['editorIndentSpaces'],
+		'tabSize' => intval($_SESSION['prefs']['editorTabSize']),
+		'indentUnit' => intval($_SESSION['prefs']['editorTabSize']),
+		'matchBrackets' => true,
+		/* 	workTime: 300,
+		  workDelay: 800, */
+		'dragDrop' => false,
+		'height' => intval(($_SESSION['prefs']['editorHeight'] != 0) ? $_SESSION['prefs']['editorHeight'] : 320),
+		'lineWrapping' => ($_SESSION['weS']['we_wrapcheck'] ? true : false),
+		'autoCloseTags' => ($_SESSION['prefs']['editorDocuintegration'] ? true : false), // use object with indentTags to indent these tags
+		'autofocus' => true,
+		'smartIndent' => ($_SESSION['prefs']['editorAutoIndent'] ? true : false/* '"Enter": false,' */),
+		'closeCharacters' => '()[]{};>,',
+		'hasCodeCompletion' => ($hasCompletion && $useCompletion),
+		'showTrailingSpace' => $_SESSION['prefs']['editorShowSpaces'],
+		'showInvisibles' => $_SESSION['prefs']['editorShowSpaces'],
+	];
+
+	$maineditor .= //($hasCompletion && $useCompletion ?		 :		''		) .
+		//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
+		($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
+		we_html_element::cssElement(
+			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+			we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,
 .weOpenTag:hover:after,
@@ -234,8 +213,8 @@ function we_getCodeMirror2Code(&$options){
 .cm-tab {
 background: none;
 }')
-		);
-	}
+	);
+
 	return $maineditor;
 }
 
@@ -301,10 +280,10 @@ function getTagWizzard($we_doc){
 		<td id="tagSelectCol" style="width: 250px;">' . $tagselect . we_wizard_code::getSelect() . we_wizard_code::getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
 		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(['name' => 'we_' . $we_doc->Name . '_TagWizardCode',
-				'id' => 'tag_edit_area',
-				'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
-				'class' => 'defaultfont'
-					], $we_doc->TagWizardCode) . '</td>
+			'id' => 'tag_edit_area',
+			'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
+			'class' => 'defaultfont'
+			], $we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
 ';
@@ -324,24 +303,24 @@ function getTagWizzard($we_doc){
 	  </tr>
 	  </table> */
 	return
-				[$selectedGroup,
-					[
-					[],
-						["headline" => "", "html" => $tagWizardHtml,]
-				]
+			[$selectedGroup,
+				[
+				[],
+					["headline" => "", "html" => $tagWizardHtml,]
+			]
 	];
 }
 
 $code = ($we_doc instanceof we_htmlDocument ?
-		$we_doc->getDocumentCode() :
-		$we_doc->getElement('data')
-		);
+	$we_doc->getDocumentCode() :
+	$we_doc->getElement('data')
+	);
 
 $maineditor = '<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
-		'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
-		'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
-		((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
-		. oldHtmlspecialchars($code) . '</textarea>';
+	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
+	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
+	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
+	. oldHtmlspecialchars($code) . '</textarea>';
 $options = [];
 switch($_SESSION['prefs']['editorMode']){
 	case 'java':
@@ -371,27 +350,27 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
-echo we_class::hiddenTrans() .
- '<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">
+		echo we_class::hiddenTrans() .
+		'<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">
 <div id="editorDiv" style="margin-left: 20px;margin-right: 20px;">' .
- $maineditor . '
+		$maineditor . '
 	<table class="default" id="srtable">
 	<tr>
 		<td style="text-align:left" class="defaultfont">' .
- ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
+		($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
 	<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
 	<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button('replace', 'javascript:cmReplace(null);') . '</div>' .
-		we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
-		'</div>' : ''
-) . '
+			we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+			'</div>' : ''
+		) . '
 						</td>
 						<td style="text-align:right" class="defaultfont">' .
- we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
- ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
- '</td></tr></table>
+		we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
+		($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
+		'</td></tr></table>
 </div>' .
- (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
- we_html_element::htmlHidden('we_complete_request', 1);
-?>
+		(isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
+		we_html_element::htmlHidden('we_complete_request', 1);
+		?>
 	</form></body>
 </html>
