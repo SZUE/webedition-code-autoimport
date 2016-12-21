@@ -960,8 +960,6 @@ images/gruen.gif
 images/gelb.gif
 images/frame_bg.gif
 images/foo.gif
-images/edit/editfooterback.gif
-images/edit
 images/e_busy.gif
 images/e.gif
 images/dition.gif
@@ -985,6 +983,7 @@ images/backgrounds/header_with_black_lines.gif
 images/backgrounds/header_with_black_line.gif
 images/backgrounds/header.gif
 images/backgrounds/blank_editor_bg.gif
+images/backgrounds/blank_editor.gif
 images/backgrounds/bgWhiteLineTop.gif
 images/backgrounds/bgWhiteLineLeft.gif
 images/backgrounds/bgGrayLineTop.gif
@@ -1028,10 +1027,6 @@ css/wysiwyg/tinymce/contentCssLast.php
 css/we_tab_modules.css
 css/weSuggest.scss
 css/mozillamenu.php
-css/menu/pro_drop_safari.css
-css/menu/pro_drop_mac.css
-css/menu/clickMenu_IE8.js
-css/menu/clickMenu.js
 css/global.php
 css/first_steps_wizard.css.php
 baumFrame.php
@@ -1145,6 +1140,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !images/icons/doclist
 !images/first_steps_wizard
 !images/fileUpload
+!images/edit
 !images/button
 !images/box
 !images/backgrounds/doclistBg
@@ -1171,6 +1167,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !editors/content/tinymce
 !editor
 !css/multiEditor
+!css/menu
 !cms
 !apps/toolfactory/service/views
 !apps/toolfactory/pattern

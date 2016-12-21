@@ -39,15 +39,13 @@ body{
 		margin: 0px;
 		padding: 0px;
 		background-color: $White;
-		overflow: hidden;
+		overflow: auto;
 		height: 100%;
 	}
 
 	&.weEditorBody {
 		padding: 10px 0px;
-		overflow:auto;
 		div.multiIcon {
-
 			div.weMultiIconBoxHeadline {
 				font-size: 16px;
 				color: #284a70;

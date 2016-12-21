@@ -28,11 +28,16 @@ body{
 	background-color: #F5F5F5;
 	margin:10px;
 	&.noHome {
-		background: #DDE7F1 url("/webEdition/images/backgrounds/blank_editor.gif") no-repeat fixed bottom right;
+		background: #d7dce0;
 		height:100%;
 		margin: 0px;
 		padding: 0px;
 		text-align: center;
+		img.blank_editor_logo {
+			position:absolute;
+			right:0px;
+			bottom:0px;
+		}
 	}
 }
 
@@ -252,7 +257,7 @@ div#mfd_data{
 			vertical-align:text-bottom;
 		}
 		td.mfdDoc.isOpen{
-				color:red;
+			color:red;
 		}
 		td.mfdUser{
 			width:10em;

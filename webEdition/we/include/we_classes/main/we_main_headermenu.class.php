@@ -46,7 +46,7 @@ window.document.body.addEventListener(\'onunload\',	_console_.unregister);' :
 
 	static function css(){
 		return
-			we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css') .
+			we_html_element::cssLink(WEBEDITION_DIR . 'css/menu.css') .
 			we_html_element::jsScript(JS_DIR . 'menu/clickMenu.js');
 	}
 

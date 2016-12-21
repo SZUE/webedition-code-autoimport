@@ -164,7 +164,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
 		we_html_element::cssLink(CSS_DIR . 'home.css') .
 		we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)])
-		, we_html_element::htmlBody(['onload' => "startCockpit();",], 
+		, we_html_element::htmlBody(['onload' => "startCockpit();",],
 			we_html_element::htmlDiv(["id" => "rpcBusy", 'style' => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
 			) . we_html_element::htmlDiv(["id" => "widgets"], "") .
 			$oTblWidgets->getHtml() .
@@ -179,7 +179,9 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				['class' => "defaultfont errorMessage", 'style' => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
 					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
 						we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
-					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false)))));
+					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))).
+			'<img class="blank_editor_logo" src="/webEdition/images/backgrounds/bg-editor.png" alt="logo"/>'
+			));
 }
 //FIXME: remove iframe
 	?>
