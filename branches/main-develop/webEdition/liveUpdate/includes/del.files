@@ -1115,6 +1115,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/additional/tinymce/plugins/table
 !lib/additional/tinymce/plugins/paste
 !lib/additional/jscalendar
+!lib/additional/CodeMirror/addon/we
 !jupload
 !js/libs/yui
 !js/libs/we
