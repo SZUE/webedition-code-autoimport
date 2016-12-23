@@ -361,7 +361,7 @@ var WebEdition = {
 						!this.getAttribute("disabled") && (
 						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
 						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-						this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+						(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
 						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
 						)
 						) {
