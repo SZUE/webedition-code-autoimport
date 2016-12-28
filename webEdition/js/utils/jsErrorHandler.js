@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//'use strict';
+'use strict';
 function errorHandler(msg, file, line, col, errObj) {
 	var deb = console.debug !== undefined;
 	if (deb) {
