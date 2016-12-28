@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblMsgFolders (
   obj_type tinyint unsigned NOT NULL default '0',
   Name varchar(255) NOT NULL default '',
   sortItem varchar(255) default NULL,
-  sortOrder varchar(5) default NULL,
+  sortOrder enum("asc","desc") default NULL,
   Properties int unsigned default NULL,
   tag tinyint unsigned default NULL,
   PRIMARY KEY  (ID)

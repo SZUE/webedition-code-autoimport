@@ -34,9 +34,17 @@ class we_tree_main extends we_tree_base{
 		return 'treeData.table="' . FILE_TABLE . '";';
 	}
 
-	function getJSUpdateTreeScript($doc, $select = true){
+	public static function getJSUpdateTreeScript($doc, $select = true){
 
-		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == we_base_ContentTypes::HTML || $doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $doc->ContentType === we_base_ContentTypes::OBJECT_FILE)) ? -1 : $doc->Published);
+		switch($doc->ContentType){
+			case we_base_ContentTypes::HTML:
+			case we_base_ContentTypes::WEDOCUMENT:
+			case we_base_ContentTypes::OBJECT_FILE:
+				$published = ($doc->Published && ($doc->Published < $doc->ModDate) ? -1 : $doc->Published);
+				break;
+			default:
+				$published = $doc->Published;
+		}
 
 //	This is needed in SeeMode
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
@@ -46,10 +54,10 @@ class we_tree_main extends we_tree_base{
 		$hasSched = false;
 		if(!empty($doc->schedArr) && is_array($doc->schedArr)){
 			foreach($doc->schedArr as $sched){
-				$hasSched|=$sched['active'];
+				$hasSched |= $sched['active'];
 			}
 		}
-		$s = 'changeTree('.intval($select).',{
+		$s = 'we_cmd("updateMainTree",' . intval($select) . ',{
 id:' . $doc->ID . ',
 parentid:' . $doc->ParentID . ',
 text:\'' . addcslashes($doc->Text, '\'') . '\',
@@ -80,8 +88,8 @@ tooltip:' . $doc->ID . ',
 				$cur = [];
 				foreach($item as $k => $v){
 					$cur[strtolower($k)] = ($v === 1 || $v === 0 || $v === 'true' || $v === 'false' || is_int($v) ?
-							intval($v) :
-							$v);
+						intval($v) :
+						$v);
 				}
 				$ret[] = $cur;
 			}

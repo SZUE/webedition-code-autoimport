@@ -539,7 +539,9 @@ new (WE().util.jsWindow)(window, top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.p
 					if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2){
 						$we_responseText = g_l('weEditor', '[text/weTmpl][no_template_save]');
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-						include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
+						we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+								]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
+
 						exit();
 					}
 //FIXME: is this safe??? Code-Injection!
@@ -559,13 +561,17 @@ new (WE().util.jsWindow)(window, top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.p
 						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !we_users_util::in_workspace($we_doc->ParentID, get_ws($we_doc->Table, true), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-							include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
+							we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+									]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
+
 							exit();
 						}
 						if(!$we_doc->userCanSave()){
 							$we_responseText = g_l('alert', '[access_denied]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-							include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
+							we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+									]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
+
 							exit();
 						}
 
@@ -701,7 +707,9 @@ new (WE().util.jsWindow)(window, top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.p
 				we_schedpro::trigger_schedule();
 				$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 			}
-			include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
+			we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+					]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
+
 			break;
 		case 'unpublish':
 			doUnpublish($we_doc, $we_transaction);

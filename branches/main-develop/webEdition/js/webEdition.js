@@ -1304,6 +1304,9 @@ function we_cmd() {
 				return top.plugin.getDocCount();
 			}
 			return 0;
+		case 'updateMainTree':
+			updateMainTree(args[1], args[2], args[3]);
+			break;
 		default:
 			var i, mods = WE().consts.modules.jsmods;
 			for (i = 0; i < mods.length; i++) {
@@ -2045,6 +2048,33 @@ var we_cmd_modules = {
 		return true;
 	}
 };
+
+function updateMainTree(select, attribs, adv) {
+	if (top.treeData) {
+		if (select) {
+			top.treeData.selection_table = attribs.table;
+			top.treeData.selection = attribs.id;
+		} else {
+			top.treeData.unselectNode();
+		}
+		if (top.treeData.table === attribs.table) {
+			if (top.treeData[top.treeData.indexOfEntry(attribs.parentid)]) {
+
+				/*var visible = (top.treeData.indexOfEntry(attribs.parentid) !== -1 ?
+				 top.treeData[top.treeData.indexOfEntry(attribs.parentid)].open :
+				 0);*/
+				if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+					top.treeData.updateEntry(attribs);
+				} else {
+					top.treeData.addSort(new top.node(Object.assign(attribs, adv)));
+				}
+				top.drawTree();
+			} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+				top.treeData.deleteEntry(attribs.id);
+			}
+		}
+	}
+}
 
 function getHotDocumentsString() {
 	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();

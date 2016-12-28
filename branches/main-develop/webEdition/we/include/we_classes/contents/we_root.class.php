@@ -726,8 +726,7 @@ abstract class we_root extends we_class{
 	/* returns the JavaScript-Code which modifies the tree-menue */
 
 	function getUpdateTreeScript($select = true){
-		$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
-		return $Tree->getJSUpdateTreeScript($this, $select);
+		return we_tree_main::getJSUpdateTreeScript($this, $select);
 	}
 
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */

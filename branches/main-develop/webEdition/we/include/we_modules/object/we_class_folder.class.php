@@ -855,7 +855,7 @@ for ( frameId in _usedEditors ) {
 			}
 
 			if($update){
-				$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
+				$javascript .= "var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
 					$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!=WE().consts.tables.OBJECT_FILES_TABLE) {
 	 top.we_cmd('loadVTab', WE().consts.tables.OBJECT_FILES_TABLE, 0);
@@ -869,7 +869,7 @@ top.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 				$obj->getContentDataFromTemporaryDocs($ofid);
 
 				if($obj->we_publish()){
-					$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
+					$javascript .= "var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
 						$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!=WE().consts.tables.OBJECT_FILES_TABLE) {
 	top.we_cmd('loadVTab', WE().consts.tables.OBJECT_FILES_TABLE, 0);
