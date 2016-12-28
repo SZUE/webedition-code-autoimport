@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var loaded;
 function doUnload() {
@@ -37,7 +38,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_bannerselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -47,7 +48,7 @@ function we_save() {
 
 	while (acLoopCount < 20 && acStatus.running) {
 		acLoopCount++;
-		setTimeout(we_save, 100);
+		window.setTimeout(we_save, 100);
 		return;
 	}
 

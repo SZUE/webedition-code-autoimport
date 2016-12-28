@@ -243,8 +243,8 @@ close();');
 opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
 opener.submitForm();
 if(opener.opener.document.we_form && opener.opener.document.we_form.branch){
-	opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
-	opener.opener.refreshForm();
+	window.opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
+	window.opener.opener.refreshForm();
 }
 close();');
 

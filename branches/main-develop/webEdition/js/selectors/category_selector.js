@@ -1,4 +1,4 @@
-/* global top, WE, fileSelect */
+/* global top, WE, fileSelect, entries */
 
 /**
  * webEdition CMS
@@ -22,12 +22,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var hot = false; // this is hot for category edit!!
 
 WE().util.loadConsts(document, "g_l.selectors.category");
 
 function unselectFile(id) {
-	e = getEntry(id);
+	var e = getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).classList.remove("selected");
 
 	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
@@ -75,7 +76,7 @@ function getPositionByID(id) {
 
 function selectFile(id) {
 	if (id) {
-		e = getEntry(id);
+		var e = getEntry(id);
 		var a = top.document.getElementsByName("fname")[0];
 		if (a.value != e.text &&
 			a.value.indexOf(e.text + ",") == -1 &&
@@ -107,8 +108,8 @@ function selectFile(id) {
 function exit_close() {
 	if (!top.fileSelect.data.noChoose && hot && opener.setScrollTo) {
 		if (opener.setScrollTo) {
-			opener.setScrollTo();
-			opener.top.we_cmd("reload_editpage");
+			window.opener.setScrollTo();
+			window.opener.top.we_cmd("reload_editpage");
 		}
 	}
 	window.close();
@@ -116,20 +117,20 @@ function exit_close() {
 
 function doClick(id, ct) {
 	if (ct == 1) {
-		if (wasdblclick) {
+		if (top.metaKeys.doubleClick) {
 			setDir(id);
-			setTimeout(function () {
-				wasdblclick = false;
+			window.setTimeout(function () {
+				top.metaKeys.doubleClick = false;
 			}, 400);
 		} else if (top.fileSelect.data.currentID == id && WE().util.hasPerm("EDIT_KATEGORIE")) {
 			top.RenameEntry(id);
 		}
-	} else if (top.fileSelect.data.currentID == id && (!top.ctrlpressed)) {
+	} else if (top.fileSelect.data.currentID == id && (!top.metaKeys.ctrl)) {
 		if (WE().util.hasPerm("EDIT_KATEGORIE")) {
 			top.RenameEntry(id);
 		}
 
-	} else if (top.shiftpressed) {
+	} else if (top.metaKeys.shift) {
 		var oldid = top.fileSelect.data.currentID;
 		var currendPos = getPositionByID(id);
 		var firstSelected = getFirstSelected();
@@ -142,7 +143,7 @@ function doClick(id, ct) {
 		}
 		top.fileSelect.data.currentID = oldid;
 		hidePref(id);
-	} else if (!top.ctrlpressed) {
+	} else if (!top.metaKeys.ctrl) {
 		showPref(id);
 		selectFile(id);
 	} else {
@@ -154,17 +155,17 @@ function doClick(id, ct) {
 		}
 	}
 
-	if (top.ctrlpressed) {
-		top.ctrlpressed = 0;
+	if (top.metaKeys.ctrl) {
+		top.metaKeys.ctrl = 0;
 	}
 
-	if (top.shiftpressed) {
-		top.shiftpressed = 0;
+	if (top.metaKeys.shift) {
+		top.metaKeys.shift = 0;
 	}
 }
 
 function setDir(id) {
-	e = getEntry(id);
+	var e = getEntry(id);
 	if (id === 0) {
 		e.text = "";
 	}
@@ -184,7 +185,7 @@ function drawNewCat() {
 	top.writeBody(top.fsbody.document.body);
 }
 function deleteEntry() {
-	if (confirm(WE().consts.g_l.fileselector.deleteQuestion)) {
+	if (window.confirm(WE().consts.g_l.fileselector.deleteQuestion)) {
 		var todel = "";
 		for (var i = 0; i < entries.length; i++) {
 			if (isFileSelected(entries[i].ID)) {
@@ -195,8 +196,9 @@ function deleteEntry() {
 			todel = "," + todel;
 		}
 		top.fscmd.location.replace(top.queryString(WE().consts.selectors.DEL, top.fileSelect.data.currentID) + "&todel=" + encodeURI(todel));
-		if (top.fsvalues)
+		if (top.fsvalues) {
 			top.fsvalues.location.replace(top.queryString(WE().consts.selectors.PROPERTIES, 0));
+		}
 		top.DelBut(false);
 	}
 }
@@ -208,13 +210,15 @@ function RenameEntry(id) {
 }
 
 function showPref(id) {
-	if (window.fsvalues)
+	if (window.fsvalues) {
 		window.fsvalues.location = top.queryString(WE().consts.selectors.PROPERTIES) + "&catid=" + id;
+	}
 }
 
 function hidePref() {
-	if (window.fsvalues)
+	if (window.fsvalues) {
 		window.fsvalues.location = top.queryString(WE().consts.selectors.PROPERTIES);
+	}
 }
 
 function writeBody(d) {
@@ -232,16 +236,16 @@ function writeBody(d) {
 		(top.fileSelect.data.makeNewCat ?
 			'<tr class="newEntry">' +
 			'<td class="selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
-			'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
+			'<td><input type="hidden" name="we_EntryText" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" /><input onmousedown="window.metaKeys.inputClick=true" name="we_EntryText_tmp" type="text" value="' + WE().consts.g_l.selectors.category.new_cat_name + '" class="wetextinput" /></td>' +
 			'</tr>' :
 			'');
-	for (i = 0; i < entries.length; i++) {
+	for (var i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr id="line_' + entries[i].ID + '" ' + ((top.fileSelect.data.we_editCatID || top.fileSelect.data.makeNewCat) ? '' : onclick) + ondblclick + ' >' +
 			'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
 			((top.fileSelect.data.we_editCatID === entries[i].ID) ?
-				'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onmousedown="window.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+				'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onmousedown="window.metaKeys.inputClick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 				'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
 				) +
 			'</td></tr>';
@@ -262,8 +266,8 @@ function queryString(what, id, o, we_editCatID) {
 
 function weonclick(e) {
 	if (top.fileSelect.data.makeNewCat || top.fileSelect.data.we_editCatID) {
-		if (!inputklick) {
-			if (parent.top.fileSelect.options.needIEEscape) {
+		if (!top.metaKeys.inputClick) {
+			if (window.parent.top.fileSelect.options.needIEEscape) {
 				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
 			} else {
 				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
@@ -271,26 +275,26 @@ function weonclick(e) {
 			top.fileSelect.data.makeNewCat = top.fileSelect.data.we_editCatID = false;
 			document.we_form.submit();
 		} else {
-			inputklick = false;
+			top.metaKeys.inputClick = false;
 		}
 	} else {
-		inputklick = false;
+		top.metaKeys.inputClick = false;
 		if (document.all) {
 			if (e.ctrlKey || e.altKey) {
-				ctrlpressed = true;
+				top.metaKeys.ctrl = true;
 			}
 			if (e.shiftKey) {
-				shiftpressed = true;
+				top.metaKeys.shift = true;
 			}
 		} else {
 			if (e.altKey || e.metaKey || e.ctrlKey) {
-				ctrlpressed = true;
+				top.metaKeys.ctrl = true;
 			}
 			if (e.shiftKey) {
-				shiftpressed = true;
+				top.metaKeys.shift = true;
 			}
 		}
-		if (!window.shiftpressed && !window.ctrlpressed) {
+		if (!window.metaKeys.shift && !top.metaKeys.ctrl) {
 			top.unselectAllFiles();
 		}
 	}
@@ -303,7 +307,7 @@ function saveOnKeyBoard() {
 function we_checkName() {
 	var regExp = /'|"|>|<|\\|\//;
 	if (regExp.test(document.getElementById("category").value)) {
-		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid, document.getElementById("category").value), WE().consts.message.WE_MESSAGE_ERROR, this);
+		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid, document.getElementById("category").value), WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		document.we_form.submit();
 	}

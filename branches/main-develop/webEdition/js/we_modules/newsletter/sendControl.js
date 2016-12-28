@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var control = WE().util.getDynamicVar(document, 'loadVarSendControl', 'data-control');
 
 var to = null;
@@ -51,7 +52,7 @@ function stopTimeout() {
 }
 
 function reload() {
-	chk = document.we_form.ecs.value;
+	var chk = document.we_form.ecs.value;
 	if (parseInt(chk) > parseInt(param) && parseInt(chk) !== 0) {
 		param = chk;
 		startTimeout();

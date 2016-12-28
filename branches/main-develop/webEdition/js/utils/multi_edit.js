@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, formName) {
 	this.variantCount = 0;
@@ -115,13 +116,13 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 				}
 			}
 			var item = this.win.document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
-			parent.removeChild(item);
+			window.parent.removeChild(item);
 		}
 
 		var item1 = this.win.document.getElementById(this.name + "_item" + this.itemCount);
-		parent.removeChild(item1);
+		window.parent.removeChild(item1);
 		if (this.relatedItems[child]) {
-			parent.removeChild(this.relatedItems[child]);
+			window.parent.removeChild(this.relatedItems[child]);
 			//remove from list
 			this.relatedItems.splice(child, 1);
 		}
@@ -154,7 +155,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 	};
 
 	this.button = but;
-	for (i = 0; i < itemNum; i++) {
+	for (var i = 0; i < itemNum; i++) {
 		this.addItem();
 	}
 

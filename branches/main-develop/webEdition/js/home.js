@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,initDragWidgets,le_dragInit */
 
 /**
  * webEdition CMS
@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var cockpit = WE().util.getDynamicVar(document, 'loadVarHome', 'data-cockpit');
 
 var _iLayoutCols = cockpit._iInitCols;
@@ -46,7 +47,7 @@ _EditorFrame.initEditorFrameData({
 
 function startCockpit() {
 	for (var i = 0; i < cockpit.widgetData.length; i++) {
-		setLabel.apply(this, cockpit.widgetData[i]);
+		setLabel.apply(window, cockpit.widgetData[i]);
 		initWidget(cockpit.widgetData[i][0]);
 	}
 	WE().layout.weEditorFrameController.getEditorFrame(window.name).initEditorFrameData({'EditorIsLoading': false});
@@ -244,6 +245,7 @@ function jsStyleCls(evt, obj, cls1, cls2) {
 }
 
 function updateJsStyleCls() {
+	var cls1,cls2;
 	for (var i = 1; i <= _iLayoutCols; i++) {
 		var oCol = document.getElementById('c_' + i);
 		if (hasExpandedWidget(oCol)) {
@@ -270,7 +272,8 @@ function getLabel(id) {
 function setLabel(id, prefix, postfix) {
 	var el_label = document.getElementById(id + '_lbl');
 	var w = parseInt(el_label.style.width);
-	var suspensionPts = '';
+	var suspensionPts = '',
+		label;
 	if (prefix === undefined || postfix === undefined) {
 		label = getLabel(id);
 	} else {
@@ -316,7 +319,7 @@ function initWidget(_id) {
 
 		var _elem = document.getElementById(_id);
 		var _inlineDivs = _elem.getElementsByTagName('div');
-		for (i = 0; i < _inlineDivs.length; i++) {
+		for (var i = 0; i < _inlineDivs.length; i++) {
 			if (_inlineDivs[i].className === "sct_row") {
 				_inlineDivs[i].style.width = _width;
 			}
@@ -347,17 +350,18 @@ function setOpacity(sId, degree) {
 }
 
 function fadeTrans(wizId, start, end, ms) {
-	var v = Math.round(ms / 100);
-	var t = 0;
+	var v = Math.round(ms / 100),
+		t = 0,
+		i;
 	if (start > end) {
 		for (i = start; i >= end; i--) {
 			//var obj = document.getElementById(wizId);
-			setTimeout(setOpacity, (t * v), wizId, i);
+			window.setTimeout(setOpacity, (t * v), wizId, i);
 			t++;
 		}
 	} else if (start < end) {
 		for (i = start; i <= end; i++) {
-			setTimeout(setOpacity, (t * v), wizId, i);
+			window.setTimeout(setOpacity, (t * v), wizId, i);
 			t++;
 		}
 	}
@@ -450,7 +454,7 @@ function createWidget(typ, row, col) {
 	} else {
 		top.we_cmd('edit_home', 'add', typ, new_id);
 	}
-	tableNode = document.getElementById('le_tblWidgets');
+	var tableNode = document.getElementById('le_tblWidgets');
 	le_dragInit(tableNode);
 	saveSettings();
 }
@@ -737,7 +741,7 @@ function resizeIdx(a, id) {
 }
 
 function removeWidget(wizId) {
-	var remove = confirm(WE().consts.g_l.cockpit.pre_remove + getLabel(wizId) + WE().consts.g_l.cockpit.post_remove);
+	var remove = window.confirm(WE().consts.g_l.cockpit.pre_remove + getLabel(wizId) + WE().consts.g_l.cockpit.post_remove);
 	if (remove === true) {
 		document.getElementById(wizId).parentNode.removeChild(document.getElementById(wizId));
 		updateJsStyleCls();
@@ -775,17 +779,6 @@ function getDimension(theString, styleClassElement) {
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
 		document.all.newSpan.outerHTML = '';
-	} else if (document.layers) {
-		var lr = new Layer(window.innerWidth);
-		lr.document.open();
-		if (styleClassElement) {
-			lr.document.write('<span class="' + styleClassElement + '">' + theString + '<\/span>');
-		} else {
-			lr.document.write(theString);
-		}
-		lr.document.close();
-		dim.height = lr.document.height;
-		dim.width = lr.document.width;
 	}
 
 	return dim;

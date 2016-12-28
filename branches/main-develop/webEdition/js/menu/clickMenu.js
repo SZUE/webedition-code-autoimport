@@ -23,6 +23,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var menuActive = false;
 
 function topMenuClick(elem) {

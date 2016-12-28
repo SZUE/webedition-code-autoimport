@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 var code;
 var to;
@@ -142,7 +143,7 @@ function initPlugin() {
 }
 
 function nojava() {
-	alert(g_l.no_java);
+	window.alert(g_l.no_java);
 	top.opener.top.plugin.location = "about:blank";
 	wait_count = 0;
 }
@@ -160,7 +161,7 @@ function checkPlugin() {
 	} else {
 		wait_count++;
 		if (wait_count < wait_retry) {
-			setTimeout(checkPlugin, 1000);
+			window.setTimeout(checkPlugin, 1000);
 		} else {
 			nojava();
 		}

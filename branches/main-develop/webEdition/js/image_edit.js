@@ -1,4 +1,4 @@
-/* global top */
+/* global top,WE, doc */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var imgEdit = WE().util.getDynamicVar(document, 'loadImage_edit', 'data-imgEdit');
 
 document.onkeyup = function (e) {

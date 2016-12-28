@@ -1,3 +1,5 @@
+/* global treeData, node, container, drawTree*/
+
 /**
  * webEdition SDK
  *
@@ -23,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 node.prototype.getLayout = function () {
 	if (this.typ === "threedots") {
@@ -47,9 +50,9 @@ container.prototype.openClose = function (id) {
 	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);
+		window.we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);
 	} else {
-		we_cmd("closeFolder", top.treeData.table, treeData[eintragsIndex].id);
+		window.we_cmd("closeFolder", top.treeData.table, treeData[eintragsIndex].id);
 		drawTree();
 	}
 	if (openstatus) {
@@ -58,8 +61,8 @@ container.prototype.openClose = function (id) {
 };
 
 function info(text) {
-	t = document.getElementById("infoField");
-	s = document.getElementById("search");
+	var t = document.getElementById("infoField");
+	var s = document.getElementById("search");
 	if (text !== " ") {
 		s.style.display = "none";
 		t.innerHTML = text;
@@ -76,14 +79,14 @@ function doClick(id) {
 	var ct = node.contenttype;
 	var table = node.table;
 	id = node.we_id ? node.we_id : id;
-	setScrollY();
+	window.setScrollY();
 
 	switch (table) {
 		case WE().consts.tables.FILE_TABLE:
-			if (wasdblclick && ct !== WE().consts.contentTypes.FOLDER) {
+			if (top.wasdblclick && ct !== WE().consts.contentTypes.FOLDER) {
 				WE().layout.openBrowser(id);
-				setTimeout(function () {
-					wasdblclick = false;
+				window.setTimeout(function () {
+					top.wasdblclick = false;
 				}, 400);
 				break;
 			}

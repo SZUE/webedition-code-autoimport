@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, categories_edit */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var lastCFolder;
 function removeAllCats() {
 	if (categories_edit.itemCount > 0) {
@@ -55,6 +56,7 @@ function addCat(paths) {
 }
 
 function toggleButton() {
+	var acin;
 	if (document.getElementById('CreateTemplate').checked) {
 		WE().layout.button.enable(document, 'select');
 		if ((acin = document.getElementById('yuiAcInputTemplate'))) {
@@ -102,6 +104,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		default:
-			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

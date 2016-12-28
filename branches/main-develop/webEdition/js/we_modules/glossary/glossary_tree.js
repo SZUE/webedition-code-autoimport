@@ -1,4 +1,4 @@
-/* global node, treeData, container, top, WE */
+/* global node, treeData, container, top, WE,drawTree */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	var sort = "";
@@ -46,7 +47,7 @@ container.prototype.openClose = function (id) {
 function doClick(id, typ) {
 	var node;
 	if (top.content.hot) {
-		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
+		if (window.confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			top.content.we_cmd("save_glossary");
 			return;
 		}
@@ -60,7 +61,7 @@ function info(text) {
 }
 
 node.prototype.showSegment = function () {
-	parentnode = this.get(this.parentid);
+	var parentnode = this.get(this.parentid);
 	parentnode.clear();
 	treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();

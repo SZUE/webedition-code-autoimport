@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
@@ -45,7 +46,7 @@ function we_cmd() {
 			window.close();
 			break;
 		default :
-			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			break;
 	}
 }

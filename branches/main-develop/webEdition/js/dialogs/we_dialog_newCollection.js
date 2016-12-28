@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var dialog = WE().util.getDynamicVar(document, "loadVarWe_dialog_newCollection", "data-dialog");
 
 var _EditorFrame = {};
@@ -68,21 +69,21 @@ function we_cmd() {
 			break;
 		case "do_onSuccess":
 			var tmp = top.dialog.cmdOnSuccess.split(",");
-			we_cmd.apply(this, tmp);
+			we_cmd.apply(window, tmp);
 			break;
 		case "write_back_to_opener":
-			opener.we_form.elements[args[1]].value = top.dialog.data.id;
-			opener.we_form.elements[args[2]].value = top.dialog.data.text;
+			window.opener.we_form.elements[args[1]].value = top.dialog.data.id;
+			window.opener.we_form.elements[args[2]].value = top.dialog.data.text;
 			window.close();
 			break;
 		case "write_back_to_selector":
-			opener.top.reloadDir();
-			opener.top.unselectAllFiles();
-			opener.top.doClick(top.dialog.data.id, 0);
-			setTimeout(opener.top.selectFile, 200, top.dialog.data.text);
+			window.opener.top.reloadDir();
+			window.opener.top.unselectAllFiles();
+			window.opener.top.doClick(top.dialog.data.id, 0);
+			window.setTimeout(opener.top.selectFile, 200, top.dialog.data.text);
 			window.close();
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
 WE().util.loadConsts(document, "g_l.fileselector");
 WE().util.loadConsts(document, "selectors");
@@ -29,14 +30,16 @@ WE().util.loadConsts(document, "selectors");
 var entries = [];
 var clickCount = 0;
 var mk = null;
-var ctrlpressed = false;
-var shiftpressed = false;
-var wasdblclick = false;
-var inputklick = false;
-var tout = null;
+var metaKeys = {
+	ctrl: false,
+	shift: false,
+	doubleClick: false,
+	inputClick: false,
+	doubleTout: null
+};
 
 function applyOnEnter(evt) {
-	_elemName = "target";
+	var _elemName = "target";
 	if (evt.srcElement !== undefined) { // IE
 		_elemName = "srcElement";
 	}
@@ -87,14 +90,14 @@ function exit_close() {
 
 function doClick(id, ct) {
 	if (ct == 1) {
-		if (wasdblclick) {
+		if (top.metaKeys.doubleClick) {
 			setDir(id);
-			setTimeout(function () {
-				wasdblclick = false;
+			window.setTimeout(function () {
+				top.metaKeys.doubleClick = false;
 			}, 400);
 		}
 	} else if (top.fileSelect.options.multiple) {
-		if (top.shiftpressed) {
+		if (top.metaKeys.shift) {
 			var oldid = top.fileSelect.data.currentID;
 			var currendPos = getPositionByID(id);
 			var firstSelected = getFirstSelected();
@@ -107,7 +110,7 @@ function doClick(id, ct) {
 				selectFile(id);
 			}
 			top.fileSelect.data.currentID = oldid;
-		} else if (!top.ctrlpressed) {
+		} else if (!top.metaKeys.ctrl) {
 			selectFile(id);
 		} else if (isFileSelected(id)) {
 			unselectFile(id);
@@ -118,16 +121,16 @@ function doClick(id, ct) {
 		selectFile(id);
 
 	}
-	if (top.ctrlpressed) {
-		top.ctrlpressed = 0;
+	if (top.metaKeys.ctrl) {
+		top.metaKeys.ctrl = 0;
 	}
-	if (top.shiftpressed) {
-		top.shiftpressed = 0;
+	if (top.metaKeys.shift) {
+		top.metaKeys.shift = 0;
 	}
 }
 
 function setDir(id) {
-	e = getEntry(id);
+	var e = getEntry(id);
 	top.fileSelect.data.currentID = id;
 	top.fileSelect.data.currentDir = id;
 	top.fileSelect.data.currentPath = e.path;
@@ -143,7 +146,7 @@ function setRootDir() {
 function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
-		e = getEntry(id);
+		var e = getEntry(id);
 
 		if (a.value != e.text &&
 			a.value.indexOf(e.text + ",") === -1 &&
@@ -173,7 +176,7 @@ function addEntry(ID, text, isFolder, path, ct) {
 
 function writeBody(d) {
 	var body = '<table class="selector">';
-	for (i = 0; i < entries.length; i++) {
+	for (var i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr' + ((entries[i].ID == top.fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
@@ -195,7 +198,7 @@ function getFirstSelected() {
 }
 
 function unselectFile(id) {
-	e = getEntry(id);
+	var e = getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).style.classList.remove("selected");
 
 	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
@@ -238,6 +241,7 @@ function isFileSelected(id) {
 }
 
 function unselectAllFiles() {
+	var elem;
 	for (var i = 0; i < entries.length; i++) {
 		if ((elem = top.fsbody.document.getElementById("line_" + entries[i].ID))) {
 			elem.classList.remove("selected");
@@ -278,7 +282,7 @@ function fillIDs() {
 }
 
 function we_makeTextFromPath(path) {
-	position = path.lastIndexOf("/");
+	var position = path.lastIndexOf("/");
 	if (position > -1 && position < path.length) {
 		return path.substring(position + 1);
 	}
@@ -288,21 +292,21 @@ function we_makeTextFromPath(path) {
 function weonclick(e) {
 	if (document.all) {
 		if (e.ctrlKey || e.altKey) {
-			ctrlpressed = true;
+			metaKeys.ctrl = true;
 		}
 		if (e.shiftKey) {
-			shiftpressed = true;
+			metaKeys.shift = true;
 		}
 	} else {
 		if (e.altKey || e.metaKey || e.ctrlKey) {
-			ctrlpressed = true;
+			metaKeys.ctrl = true;
 		}
 		if (e.shiftKey) {
-			shiftpressed = true;
+			metaKeys.shift = true;
 		}
 	}
 	if (top.fileSelect.options.multiple) {
-		if ((window.shiftpressed === false) && (window.ctrlpressed === false)) {
+		if ((window.metaKeys.shift === false) && (window.metaKeys.ctrl === false)) {
 			top.unselectAllFiles();
 		}
 	} else {
@@ -322,7 +326,7 @@ function press_ok_button() {
 	}
 }
 
-function DelBut(enable) {
+function delBut(enable) {
 	if (enable) {
 		WE().layout.button.switch_button_state(document, "delete", "enabled");
 		if (top.fileSelect.options.userCanEditCat) {
@@ -340,7 +344,7 @@ function startFrameset() {
 	top.document.getElementById('fspath').innerHTML = (top.fileSelect.data.startPath === '' ? '/' : top.fileSelect.data.startPath);
 }
 
-function RootDirButs(enable) {
+function rootDirButs(enable) {
 	if (enable) {
 		WE().layout.button.switch_button_state(document, "root_dir", "enabled");
 		WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
@@ -350,7 +354,7 @@ function RootDirButs(enable) {
 	}
 	top.fileSelect.data.rootDirButsState = enable;
 }
-function NewFolderBut(enable) {
+function newFolderBut(enable) {
 	if (enable) {
 		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
 	} else {
@@ -371,7 +375,7 @@ function NewBut(enable) {
 	}
 }
 
-function NewFileBut(enable) {
+function newFileBut(enable) {
 	if (enable) {
 		WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
 	} else {
@@ -388,7 +392,7 @@ function clearOptions() {
 }
 function addOption(txt, id) {
 	var a = top.document.getElementById("lookin");
-	a.options[a.options.length] = new Option(txt, id);
+	a.options[a.options.length] = new window.Option(txt, id);
 	a.selectedIndex = (a.options.length > 0 ?
 		a.options.length - 1 :
 		0);
@@ -424,7 +428,7 @@ function setview(view) {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var i, ref;
 	switch (args[0]) {
 		case 'clearEntries':
@@ -432,13 +436,13 @@ function we_cmd() {
 			break;
 		case 'addEntries':
 			for (i = 0; i < args[1].length; i++) {
-				top.addEntry.apply(this, args[1][i]);
+				top.addEntry.apply(window, args[1][i]);
 			}
 			break;
 		case 'writeOptions':
 			top.clearOptions();
 			for (i = 0; i < args[1].length; i++) {
-				top.addOption.apply(this, args[1][i]);
+				top.addOption.apply(window, args[1][i]);
 			}
 			top.selectIt();
 			break;
@@ -476,16 +480,16 @@ function we_cmd() {
 			for (i = 0; i < args[1].length; i++) {
 				switch (args[1][i][0]) {
 					case 'NewFolderBut':
-						NewFolderBut(args[1][i][1]);
+						newFolderBut(args[1][i][1]);
 						break;
 					case 'NewFileBut':
-						NewFileBut(args[1][i][1]);
+						newFileBut(args[1][i][1]);
 						break;
 					case 'RootDirButs':
-						RootDirButs(args[1][i][1]);
+						rootDirButs(args[1][i][1]);
 						break;
 					case 'DelBut':
-						DelBut(args[1][i][1]);
+						delBut(args[1][i][1]);
 				}
 			}
 			break;
@@ -520,41 +524,42 @@ function we_cmd() {
 			top.unselectAllFiles();
 			top.addEntry(importedDoc.currentID, importedDoc.currentText, false, importedDoc.currentPath, importedDoc.currentType);
 			top.doClick(importedDoc.currentID);
-			setTimeout(top.selectFile, 200, importedDoc.currentID);
+			window.setTimeout(top.selectFile, 200, importedDoc.currentID);
 			break;
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		default:
-			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
 function selectorOnClick(event, id) {
 	weonclick(event);
-	tout = setTimeout(function () {
-		if (!top.wasdblclick) {
+	metaKeys.doubleTout = setTimeout(function () {
+		if (!top.metaKeys.doubleClick) {
 			top.doClick(id, 0);
 		} else {
-			top.wasdblclick = false;
+			top.metaKeys.doubleClick = false;
 		}
 	}, 300);
 	return true;
 }
 
 function selectorOnDblClick(id) {
-	top.wasdblclick = true;
-	clearTimeout(tout);
+	top.metaKeys.doubleClick = true;
+	window.clearTimeout(metaKeys.doubleTout);
 	top.doClick(id, 1);
 	return true;
 }
 
 function exit_open() {
+	var setTabsCurPath;
 	if (top.fileSelect.data.JSIDName) {
-		opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
+		window.opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
 	}
 	if (top.fileSelect.data.JSTextName) {
-		opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
+		window.opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
 
 		if ((opener.parent !== undefined) && (opener.parent.frames.editHeader !== undefined)) {
 			if (top.fileSelect.data.currentType !== "") {
@@ -566,9 +571,9 @@ function exit_open() {
 						setTabsCurPath = top.fileSelect.data.currentPath;
 				}
 				if (getEntry(top.fileSelect.data.currentID).isFolder) {
-					opener.parent.frames.editHeader.weTabs.setTitlePath("", setTabsCurPath);
+					window.opener.parent.frames.editHeader.weTabs.setTitlePath("", setTabsCurPath);
 				} else {
-					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
+					window.opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
 				}
 			}
 		}
@@ -581,7 +586,7 @@ function exit_open() {
 		} else {
 			var tmp = top.fileSelect.data.JSCommand.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
-			opener.we_cmd.apply(opener, tmp);
+			window.opener.we_cmd.apply(opener, tmp);
 		}
 	}
 

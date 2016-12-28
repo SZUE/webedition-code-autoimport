@@ -1,3 +1,4 @@
+/* global tinymce */
 /**
  * editor_plugin_src.js
  *
@@ -7,6 +8,7 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 function setPoint(node, start) {
 	var walker = new tinymce.dom.TreeWalker(node, node);
 
@@ -1294,7 +1296,7 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 
 						if (isVerticalMovement() && isInTable(ed)) {
 							var preBrowserNode = ed.selection.getNode();
-							setTimeout(function() {
+							window.setTimeout(function() {
 								if (shouldFixCaret(preBrowserNode)) {
 									handle(!e.shiftKey && key === VK.UP, preBrowserNode, e);
 								}

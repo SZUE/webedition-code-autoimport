@@ -23,13 +23,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var _oCsv_;
 var _sInitCsv_;
 var _bPrev = false;
 var _sLastPrevCsv = '';
 
 function init() {
-	_fo = document.forms[0];
+	var _fo = document.forms[0];
 	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	var sCsv = _oCsv_.value;
 	_sInitCsv_ = sCsv;
@@ -46,6 +47,7 @@ function init() {
 }
 
 function getBinary() {
+	var _fo = document.forms[0];
 	var oChbx = _fo.elements.chbx_type;
 	if (WE().consts.tables.FILE_TABLE && WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE' && WE().util.hasPerm('CAN_SEE_OBJECTFILES')) {
 		var iChbxLen = oChbx.length;
@@ -63,7 +65,7 @@ function save() {
 	var sCsv = getBinary();
 	_oCsv_.value = sCsv;
 	if ((!_bPrev && _sInitCsv_ != sCsv) || (_bPrev && _sLastPrevCsv != sCsv)) {
-		opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+		window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -75,12 +77,12 @@ function preview() {
 	var sCsv = getBinary();
 	_sLastPrevCsv = sCsv;
 	previewPrefs();
-	opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+	window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sInitCsv_ != getBinary() && _bPrev) {
-		opener.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
+		window.opener.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();

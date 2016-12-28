@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var loaded = 0;
 
@@ -41,7 +42,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -1,3 +1,6 @@
+/* global tinyMCEPopup, tinymce */
+
+'use strict';
 tinyMCEPopup.requireLangPack();
 
 var PasteTextDialog = {

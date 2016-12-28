@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var _oCsv_;
 var _sInitCsv_;
 var _oSctDate;
@@ -31,7 +32,7 @@ var _sLastPreviewCsv = '';
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 function init() {
-	_fo = document.forms[0];
+	var _fo = document.forms[0];
 	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
@@ -41,6 +42,7 @@ function init() {
 
 function getBinary(postfix) {
 	var sBinary = '';
+	var _fo = document.forms[0];
 	var oChbx = _fo.elements['chbx_' + postfix];
 	var iChbxLen = oChbx.length;
 	for (var i = 0; i < iChbxLen; i++) {
@@ -50,19 +52,21 @@ function getBinary(postfix) {
 }
 
 function getCsv() {
+	var _fo = document.forms[0];
 	return getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _fo.elements.revenueTarget.value;
 }
 
 function refresh(bRender) {
-	if (bRender)
+	if (bRender) {
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, document.forms[0].elements.revenueTarget.value, '', '', prefs._sObjId);
+	}
+	window.opener.rpc(getBinary('type'), _oSctDate.selectedIndex, document.forms[0].elements.revenueTarget.value, '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
+		window.opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
@@ -73,7 +77,7 @@ function save() {
 		var sCsv = getCsv();
 		_oCsv_.value = sCsv;
 		//savePrefs();
-		opener.saveSettings();
+		window.opener.saveSettings();
 		if ((!_bPrev && sCsv != _sInitCsv_) || (_bPrev && sCsv != _sLastPreviewCsv)) {
 			refresh(false);
 		}
@@ -85,13 +89,15 @@ function save() {
 }
 
 function isNoError() {
-	chbx_type_checked = false;
+	var chbx_type_checked = false;
 	for (var chbx_type_i = 0; chbx_type_i < document.we_form.chbx_type.length; chbx_type_i++) {
-		if (document.we_form.chbx_type[chbx_type_i].checked)
+		if (document.we_form.chbx_type[chbx_type_i].checked) {
 			chbx_type_checked = true;
+		}
 	}
 	return chbx_type_checked;
 }
+
 function preview() {
 	if (isNoError()) {
 		_bPrev = true;

@@ -1,4 +1,4 @@
-/* global top, WE, fileSelect */
+/* global top, WE, fileSelect, entries,getEntry,writeBodyDir */
 
 /**
  * webEdition CMS
@@ -22,11 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
-		e = getEntry(id);
+		var e = getEntry(id);
 		if (a.value != e.text &&
 			a.value.indexOf(e.text + ",") == -1 &&
 			a.value.indexOf("," + e.text + ",") == -1 &&

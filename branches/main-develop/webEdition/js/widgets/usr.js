@@ -21,16 +21,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function init() {
-	_fo = document.forms[0];
+	//_fo = document.forms[0];
 	initPrefs();
 }
 
 function save() {
 	savePrefs();
 	previewPrefs();
-	opener.saveSettings();
+	window.opener.saveSettings();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }

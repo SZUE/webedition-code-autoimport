@@ -23,16 +23,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var loaded = false;
 var table = WE().consts.tables.FILE_TABLE;
+var props = WE().util.getDynamicVar(document, 'loadVarViewProp', 'data-prop');
+
 
 function setFieldValue(fieldNameTo, fieldFrom) {
 	if (document.we_form.DynamicSelection.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
 		document.we_form[fieldNameTo].value = fieldFrom.value;
 		fieldFrom.classList.remove('weMarkInputError');
-	} else if (weNavTitleField[fieldFrom.value] !== undefined) {
-		document.we_form[fieldNameTo].value = weNavTitleField[fieldFrom.value];
+	} else if (props.weNavTitleField[fieldFrom.value] !== undefined) {
+		document.we_form[fieldNameTo].value = props.weNavTitleField[fieldFrom.value];
 		fieldFrom.classList.remove('weMarkInputError');
 	} else if (fieldFrom.value === "") {
 		document.we_form[fieldNameTo].value = '';
@@ -76,7 +79,8 @@ function populateVars() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	var url = WE().util.getWe_cmdArgsUrl(args),
+		folderPath,folderID;
 
 	switch (args[0]) {
 		case "we_selector_image":
@@ -102,13 +106,13 @@ function we_cmd() {
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
 			folderID = document.we_form.CopyFolderID.value;
-			setTimeout(copyNaviFolder, 100, folderPath, folderID);
+			window.setTimeout(copyNaviFolder, 100, folderPath, folderID);
 			break;
 		case "rebuildNavi":
 			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,0,true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -303,7 +307,7 @@ function clearFields() {
 				setVisible("objFolder", true);
 				setVisible("catFolder", false);
 		}
-		if (!data.IsFolder) {
+		if (!props.IsFolder) {
 			document.we_form.LinkID.value = "";
 			document.we_form.LinkPath.value = "";
 		}
@@ -336,7 +340,7 @@ function clearFields() {
 }
 
 function setCustomerFilter(sel) {
-	if (data.IsFolder) {
+	if (props.IsFolder) {
 		return;
 	}
 	if (sel.options[sel.selectedIndex].value == "dynamic") {

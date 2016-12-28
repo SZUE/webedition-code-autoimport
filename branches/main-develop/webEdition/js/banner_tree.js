@@ -25,6 +25,7 @@
  */
 
 //FIXME: compare & unite all _tree.js files
+'use strict';
 
 function doClick(id) {
 	var item = top.content.treeData.get(id);

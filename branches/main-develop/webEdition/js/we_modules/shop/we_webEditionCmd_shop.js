@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 we_cmd_modules.shop = function (args, url) {
 	switch (args[0]) {

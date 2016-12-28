@@ -21,8 +21,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global WE */
+'use strict';
 
-function weNavigationHistory() {
+var weNavigationHistory = function () {
 
 	this.documentHistory = [];
 	this.currentIndex = -1;
@@ -37,7 +38,7 @@ function weNavigationHistory() {
 					this.documentHistory.pop();
 				} while (this.currentIndex < (this.documentHistory.length - 1));
 // resave document array
-				var newDocumentHistory = [];
+				this.documentHistory = [];
 			}
 
 			this.documentHistory.push(new weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
@@ -84,6 +85,7 @@ function weNavigationHistory() {
 
 	this.navigateReload = function () {
 		if (this.documentHistory.length) {
+			var _currentEditor;
 			if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) { // reload current Editor
 				_currentEditor.setEditorReloadAllNeeded(true);
 				_currentEditor.setEditorIsActive(true);
@@ -101,9 +103,9 @@ function weNavigationHistory() {
 	this.getNoDocumentMessage = function () {
 		top.we_showMessage(WE().consts.g_l.main.nav_no_entry, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	};
-}
+};
 
-function weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters) {
+var weNavigationHistoryEntry = function (table, id, ct, editcmd, url, parameters) {
 
 	this.table = table;
 	this.id = id;
@@ -115,18 +117,18 @@ function weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters) {
 
 		if (this.editcmd || (this.id && this.id != "0")) {
 			WE().layout.weEditorFrameController.openDocument(
-							this.table,
-							this.id,
-							this.ct,
-							this.editcmd,
-							'',
-							this.url,
-							'',
-							'',
-							this.parameters
-							);
+				this.table,
+				this.id,
+				this.ct,
+				this.editcmd,
+				'',
+				this.url,
+				'',
+				'',
+				this.parameters
+				);
 			return true;
 		}
 		return false;
 	};
-}
+};

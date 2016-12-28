@@ -25,13 +25,14 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 function getById(id) {
 	return document.getElementById(id);
 }
 
 function wecf_logic_changed(s) {
-	//wecf_hot();
+	window.we_cmd('setHot');
 	var val = s.options[s.selectedIndex].value;
 	var cell = s.parentNode;
 	var row = cell.parentNode;
@@ -58,7 +59,7 @@ function wecf_logic_changed(s) {
 
 // FIXME:  move this to multiedit!
 function removeFromMultiEdit(_multEdit) {
-	we_cmd('setHot');
+	window.we_cmd('setHot');
 	if (_multEdit.itemCount > 0) {
 		while (_multEdit.itemCount > 0) {
 			_multEdit.delItem(_multEdit.itemCount);
@@ -68,7 +69,7 @@ function removeFromMultiEdit(_multEdit) {
 
 // FIXME:  move this to multiedit!
 function addToMultiEdit(_multEdit, paths, ids) {
-	we_cmd('setHot');
+	window.we_cmd('setHot');
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < ids.length; i++) {

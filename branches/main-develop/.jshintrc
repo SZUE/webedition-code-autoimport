@@ -1,0 +1,9 @@
+{
+  "undef": true,
+	"strict": "global",
+	"bitwise":true,
+	"curly":true,
+	"browser":true,
+	"jquery":true,
+  "predef": [ "WE" ]
+}

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
@@ -35,7 +36,7 @@ function we_cmd() {
 		case "empty_log":
 			break;
 		default:
-			parent.edbody.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.edbody.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -51,7 +52,7 @@ function delGroup(val) {
 
 function populateGroups() {
 	if (!top.content.editor.edbody.getGroupsNum || !top.content.editor.edbody.loaded) {
-		setTimeout(populateGroups, 100);
+		window.setTimeout(populateGroups, 100);
 		return;
 	}
 	var num = top.content.editor.edbody.getGroupsNum();
@@ -64,7 +65,7 @@ function populateGroups() {
 
 	addGroup(WE().util.sprintf(WE().consts.g_l.newsletter.all_list, 0), 0);
 
-	for (i = 1; i < num; i++) {
+	for (var i = 1; i < num; i++) {
 		addGroup(WE().util.sprintf(WE().consts.g_l.newsletter.mailing_list, i), i);
 	}
 }

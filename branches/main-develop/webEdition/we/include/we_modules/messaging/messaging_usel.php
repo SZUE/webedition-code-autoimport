@@ -230,8 +230,8 @@ function add_addr2sel() {
 }
 
 function ok() {
-	opener.rcpt_sel = current_sel;
-	opener.update_rcpts();
+	window.opener.rcpt_sel = current_sel;
+	window.opener.update_rcpts();
 	window.close();
 }
 

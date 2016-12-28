@@ -68,7 +68,7 @@ class we_navigation_ruleFrames{
 		asort($rules);
 
 		$parts = [
-				[
+			[
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default">
@@ -186,18 +186,17 @@ class we_navigation_ruleFrames{
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
 		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
-				we_html_element::jsElement('
-var dependencies = {
-	' . we_navigation_navigation::DYN_CLASS . ':["ClassID", "WorkspaceID", "Categories"],
-	' . we_navigation_navigation::DYN_DOCTYPE . ': ["FolderID", "DoctypeID", "Categories"]
-};
-') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)",
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js', '', ['id' => 'loadVarNavigationRules', 'data-rules' => setDynamicVar([
+						'dependencies' => [
+							we_navigation_navigation::DYN_CLASS => ["ClassID", "WorkspaceID", "Categories"],
+							we_navigation_navigation::DYN_DOCTYPE => ["FolderID", "DoctypeID", "Categories"]
+						]
+				])]), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)",
 					'class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
 							'cmd' => '',
 							'ID' => '0'
 						]) .
-						we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]'))) 
+						we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')))
 		));
 	}
 

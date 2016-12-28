@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var doc = WE().util.getDynamicVar(document, 'loadVarEditor_footer', 'data-doc');
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(doc.we_transaction);
@@ -126,14 +127,14 @@ function we_cmd() {
 				args[3] = 1;
 				args[4] = (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0);
 			}
-			top.we_cmd.apply(this, args);
+			top.we_cmd.apply(window, args);
 			break;
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", doc.we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 			break;
 		default:
 			if (top.we_cmd) {
-				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+				top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			}
 	}
 }
@@ -171,15 +172,15 @@ function we_save_document(nextCmd) {
 	/*if (_EditorFrame.getEditorPublishWhenSave() && doc._showGlossaryCheck) {
 	 we_cmd('glossary_check', '', doc.we_transaction);
 	 } else */{
-		//if parent.frames[1].$ is not existent, the frame was not loaded
-		var acStatus = parent.frames[1].$ ? WE().layout.weSuggest.checkRequired(parent.frames[1]) : {'running': false, 'valid': true};
+		//if window.parent.frames[1].$ is not existent, the frame was not loaded
+		var acStatus = window.parent.frames[1].$ ? WE().layout.weSuggest.checkRequired(window.parent.frames[1]) : {'running': false, 'valid': true};
 
 		if (countSaveLoop > 10 || !acStatus.valid) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else if (acStatus.running) {
 			countSaveLoop++;
-			setTimeout(we_save_document, 100, nextCmd);
+			window.setTimeout(we_save_document, 100, nextCmd);
 		} else {
 			countSaveLoop = 0;
 			if (doc.weCanSave) {
@@ -187,10 +188,10 @@ function we_save_document(nextCmd) {
 				if (doc.isBinary) {
 					WE().layout.checkFileUpload(we_cmd_args);
 				} else {
-					we_cmd.apply(this, we_cmd_args);
+					we_cmd.apply(window, we_cmd_args);
 				}
 				if (doc.reloadOnSave) {
-					setTimeout(saveReload, 1500);
+					window.setTimeout(saveReload, 1500);
 				}
 			}
 		}

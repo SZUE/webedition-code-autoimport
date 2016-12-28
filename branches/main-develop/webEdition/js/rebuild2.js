@@ -21,8 +21,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global top, WE */
+'use strict';
 function handle_event(what) {
-	f = document.we_form;
+	var f = document.we_form;
 	switch (what) {
 		case "previous":
 			f.step.value = 0;
@@ -30,7 +31,7 @@ function handle_event(what) {
 			break;
 		case "next":
 			if (document._errorMessage !== undefined && document._errorMessage !== "") {
-				top.we_showMessage(WE().consts.g_l.rebuild.noFieldsChecked, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.rebuild.noFieldsChecked, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			} else {
 				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
@@ -43,8 +44,9 @@ function handle_event(what) {
 	}
 	f.submit();
 }
+
 function we_cmd() {
-	f = document.we_form;
+	var f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var cats,i, folders;
@@ -131,7 +133,7 @@ function we_cmd() {
 			document._errorMessage = (checked > 0 ? "" : WE().consts.g_l.rebuild.noFieldsChecked);
 			break;
 		default:
-			opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 function checkForError() {
@@ -168,7 +170,7 @@ function set_button_state() {
 		top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
 		top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 	} else {
-		setTimeout(set_button_state, 300);
+		window.setTimeout(set_button_state, 300);
 	}
 }
 set_button_state();

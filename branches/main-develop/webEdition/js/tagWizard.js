@@ -23,11 +23,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var tw = WE().util.getDynamicVar(document, 'loadVarTagWizard', 'data-tw');
 WE().util.loadConsts(document, "g_l.tagWizzard");
 
-function weTagWizard(tagName) {
+weTagWizard = function (tagName) {
 
 	this.tagName = tagName; // name of the we:tag
 
@@ -44,7 +45,7 @@ function weTagWizard(tagName) {
 	this.changeType = function (newType) {
 		// set the matching required fields.
 		// 1st remove all not always needed
-		for (i = 0; i < this.allAttributes.length; i++) {
+		for (var i = 0; i < this.allAttributes.length; i++) {
 
 			if (this.reqAttributes[this.allAttributes[i]]) {
 				// no need to change these elements
@@ -95,48 +96,44 @@ function weTagWizard(tagName) {
 	};
 
 	this.showElement = function (id) {
-		elem = document.getElementById(id);
+		var elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "";
 		}
 	};
 
 	this.hideElement = function (id) {
-		elem = document.getElementById(id);
+		var elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "none";
 		}
 	};
 
 	this.showAttribute = function (id) {
-		elem = document.getElementById("li_" + id);
+		var elem = document.getElementById("li_" + id);
 		if (elem) {
 			elem.style.display = "";
 		}
 	};
 
 	this.hideAttribute = function (id) {
-
-		elem = document.getElementById("li_" + id);
+		var elem = document.getElementById("li_" + id);
 		if (elem) {
 			elem.style.display = "none";
 		}
 	};
 
 	this.getPartFromId = function (elemIdName, getId) {
-
 		if (getId) {
 			return elemIdName.substr(0, elemIdName.indexOf("_"));
-		} else {
-			return elemIdName.substr(elemIdName.indexOf("_") + 1);
 		}
+		return elemIdName.substr(elemIdName.indexOf("_") + 1);
+
 	};
 
 	this.setLabelRequired = function (elemIdName, required) {
-
-		element = document.getElementById("label_" + elemIdName);
-
-		elemName = this.getPartFromId(elemIdName);
+		var element = document.getElementById("label_" + elemIdName);
+		var elemName = this.getPartFromId(elemIdName);
 
 		if (element) {
 
@@ -150,14 +147,14 @@ function weTagWizard(tagName) {
 	};
 
 	this.getWeTag = function () { // build the we:tag in this function and return it.
-
-		ret = "<we:" + this.tagName;
+		var ret = "<we:" + this.tagName,
+			fieldId, fieldName, fieldValue, i;
 
 		this.missingFields = [];
-		var i;
+
 		// differbetween case with/without type-attribute
 
-		if (this.typeAttributeId && typeAttributeAllows[document.getElementById(this.typeAttributeId).value]) {
+		if (this.typeAttributeId && this.typeAttributeAllows[document.getElementById(this.typeAttributeId).value]) {
 
 			var typeValue = document.getElementById(this.typeAttributeId).value;
 
@@ -173,13 +170,13 @@ function weTagWizard(tagName) {
 				} else {
 
 					// check if attribute is required by the value of the type-Attribut
-					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, typeAttributeRequires[typeValue])) {
+					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, this.typeAttributeRequires[typeValue])) {
 						this.missingFields.push(fieldName);
 					}
 				}
 
 				// at last add attribute to the we:tag
-				if (fieldValue && !(fieldValue == '-' && this.typeAttributeId == fieldId)) {
+				if (fieldValue && !(fieldValue === '-' && this.typeAttributeId == fieldId)) {
 					ret += " " + fieldName + "=\"" + fieldValue + "\"";
 				}
 			}
@@ -218,36 +215,34 @@ function weTagWizard(tagName) {
 		}
 	};
 
-	this.editMultiSelector = function (cmdObj) {
-
-		selItems = cmdObj.selectedItems;
-		textName = cmdObj.textName;
-
-		val = weTextInput.getValue(cmdObj.textFieldId);
+	/*this.editMultiSelector = function (cmdObj) {
+		var selItems = cmdObj.selectedItems,
+			textName = cmdObj.textName,
+			val = weTextInput.getValue(cmdObj.textFieldId),
+			selItem;
 
 		for (var selId in cmdObj.selectedItems) {
-
-			selItem = cmdObj.selectedItems[selId];
+			selItem = selItems[selId];
 			if (val) {
 				val += ",";
 			}
 			val += selItem[textName];
 		}
 		weTextInput.setValue(cmdObj.textFieldId, val);
-	};
-}
+	};*/
+};
 
 function closeOnEscape() {
 	return true;
 }
 
 function applyOnEnter(evt) {
-	_elemName = "target";
+	var elemName = "target";
 	if (evt.srcElement !== undefined) { // IE
-		_elemName = "srcElement";
+		elemName = "srcElement";
 	}
 
-	if (evt[_elemName].tagName != "SELECT") {
+	if (evt[elemName].tagName != "SELECT") {
 		we_cmd("saveTag");
 		return true;
 	}
@@ -256,6 +251,7 @@ function applyOnEnter(evt) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var i;
 
 	switch (args[0]) {
 		case "switch_type":
@@ -303,20 +299,20 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "we_multiSelector_writeback":
-			if(args[1][args[2]] && args[1][args[2]].length){
+			if (args[1][args[2]] && args[1][args[2]].length) {
 				var sel = args[1][args[2]];
-				var values = this.document.getElementById(args[3]).value ? this.document.getElementById(args[3]).value.split(',') : [];
+				var values = window.document.getElementById(args[3]).value ? window.document.getElementById(args[3]).value.split(',') : [];
 
-				for(var i = 0; i < sel.length; i++){
-					if(!WE().util.in_array(sel[i], values)){
+				for (i = 0; i < sel.length; i++) {
+					if (!WE().util.in_array(sel[i], values)) {
 						values.push(sel[i]);
 					}
 				}
-				this.document.getElementById(args[3]).value = values.join();
+				window.document.getElementById(args[3]).value = values.join();
 			}
 			break;
 		default:
-			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

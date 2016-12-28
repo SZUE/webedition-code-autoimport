@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 WE().util.loadConsts(document, "g_l.fileselector");
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
 
@@ -92,7 +93,8 @@ function setLookin() {
 	var dirs = [];
 	var foo = [];
 	var a = document.getElementById('lookin');
-	var c = 0;
+	var c = 0,
+		i, j;
 
 	a.options.length = 0;
 	foo = top.fileSelect.data.currentDir.split("/");
@@ -103,7 +105,7 @@ function setLookin() {
 		}
 	}
 	foo = top.fileSelect.data.rootDir.split("/");
-	root = "/";
+	var root = "/";
 	for (j = 0; j < foo.length; j++) {
 		if (foo[j] !== "") {
 			root = foo[j];
@@ -139,13 +141,13 @@ function editFile() {
 			if (a.value != top.fileSelect.data.currentName) {
 				top.fileSelect.data.currentID = top.fileSelect.data.sitepath + top.fileSelect.data.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
 			}
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
+			var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, true);
 		} else {
 			top.we_showMessage(WE().consts.g_l.fileselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	} else {
-		top.we_showMessage(g_l.edit_file_is_folder, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.edit_file_is_folder, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -157,7 +159,7 @@ function exit_close() {
 	if (!top.fileSelect.data.browseServer) {
 		var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === fileSelect.data.sitepath) ? "/" : top.fileSelect.data.currentID.substring(fileSelect.data.sitepath.length));
 		if (top.fileSelect.data.cmd1) {
-			opener.document.we_form.elements[top.fileSelect.data.cmd1].value = foo;
+			window.opener.document.we_form.elements[top.fileSelect.data.cmd1].value = foo;
 		}
 	}
 
@@ -169,7 +171,7 @@ function exit_close() {
 		} else {
 			var tmp = top.fileSelect.data.cmd4.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
-			opener.we_cmd.apply(opener, tmp);
+			window.opener.we_cmd.apply(opener, tmp);
 		}
 	}
 
@@ -183,12 +185,12 @@ function we_cmd() {
 	switch (args[0]) {
 		case "sselector_insertFromUploader":
 			top.fscmd.selectDir();
-			setTimeout(function (text) {
+			window.setTimeout(function (text) {
 				top.fscmd.selectFile(text);
 			}, 400, args[1].text);
 			break;
 		default:
-			//opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		//opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

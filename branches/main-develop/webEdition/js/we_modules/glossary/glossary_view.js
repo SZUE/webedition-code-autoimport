@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var get_focus = 1;
 var activ_tab = 1;
@@ -40,7 +41,7 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] !== "save_glossary") {
-		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
+		if (window.confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			args[0] = "save_glossary";
 		} else {
 			top.content.usetHot();
@@ -67,13 +68,13 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd.apply, 10, args);
+				window.setTimeout(we_cmd.apply, 10, args);
 			}
 			break;
 		case "delete_glossary":
 			exc = top.content.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length - 10, exc.length) == "_exception") {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			switch (top.content.editor.edbody.document.we_form.cmd.value) {
@@ -84,16 +85,16 @@ function we_cmd() {
 					return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_GLOSSARY")) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 
 			}
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.glossary.view.delete_alert, ["delete_glossary_do"]);
@@ -127,7 +128,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			top.content.usetHot();
 			break;
@@ -137,7 +138,7 @@ function we_cmd() {
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
 			if (!WE().util.hasPerm("EDIT_GLOSSARY")) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			top.content.hot = false;
@@ -162,7 +163,7 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=editor";
 			/* falls through */
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -184,7 +185,7 @@ function populateWorkspaces(type) {
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.add(new Option("-1", -1));
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkID]'].value = "";
 			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkPath]'].value = "";
-			WE().util.showMessage(WE().consts.g_l.glossary.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			WE().util.showMessage(WE().consts.g_l.glossary.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 	}
 

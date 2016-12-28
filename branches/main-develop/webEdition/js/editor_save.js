@@ -1,4 +1,4 @@
-/*
+/**
  * webEdition CMS
  *
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global WE, top */
+'use strict';
 
 var editorSave = WE().util.getDynamicVar(document, 'loadVarEditor_save', 'data-editorSave');
 
@@ -51,6 +52,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	}
 
 //FIXME eval
+WE().t_e("bad eval",editorSave.we_JavaScript);
 	eval(editorSave.we_JavaScript);
 
 	window.focus();
@@ -76,7 +78,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 			}
 			if (editorSave.docHasPreview && editorSave.EditPageNr != WE().consts.tabs.PREVIEW) {
 				if (!showAlert) { //	alert or confirm
-					if (confirm(editorSave.we_responseText + "\n\n" + WE().consts.g_l.alert.confirm_change_to_preview)) {
+					if (window.confirm(editorSave.we_responseText + "\n\n" + WE().consts.g_l.alert.confirm_change_to_preview)) {
 						_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', WE().consts.tabs.PREVIEW, editorSave.we_transaction);
 					} else {
 						_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
@@ -89,6 +91,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 				top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 				_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
 				//FIXME eval
+				WE().t_e("bad eval",editorSave.we_cmd5);
 				eval(editorSave.we_cmd5);
 			}
 			if (editorSave.isPublished) {
@@ -103,15 +106,16 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	} else {
 		top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 		for (var i = 0; i < editorSave.we_responseJS; i++) {
-			top.we_cmd.apply(this, editorSave.we_responseJS[i]);
+			top.we_cmd.apply(window, editorSave.we_responseJS[i]);
 		}
 
 		for (var i = 0; i < editorSave.we_cmd5; i++) {
-			top.we_cmd.apply(this, editorSave.we_cmd5[i]);
+			top.we_cmd.apply(window, editorSave.we_cmd5[i]);
 		}
 	}
 } else {//called from we_editor_publish.inc.php
 //FIXME eval
+WE().t_e("bad eval",editorSave.we_JavaScript);
 	eval(editorSave.we_JavaScript);
 	top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 }

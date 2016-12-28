@@ -21,9 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
-function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount) {
-
+var multi_editMulti = function (parentId, form, itemNum, but, width, editable, minCount) {
 	this.variantCount = 0;
 	this.itemCount = 0;
 	this.currentVariant = 0;
@@ -192,8 +192,8 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 			this.parent.removeChild(item);
 		}
 		this.currentVariant = (variant < (this.variantCount - 1) ?
-						variant :
-						this.variantCount - 1);
+			variant :
+			this.variantCount - 1);
 
 		this.showVariant(this.currentVariant);
 
@@ -205,13 +205,13 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
 		if (this.editable === true) {
-			TabStart = "<table style=\"margin-bottom:5px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td><td>&nbsp;</td><td>" + butt + "</td></tr>";
-			TabEnd = "</table>";
+			var TabStart = "<table style=\"margin-bottom:5px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td><td>&nbsp;</td><td>" + butt + "</td></tr>";
+			var TabEnd = "</table>";
 
-			TabMiddle1 = "<tr valign=\"middle\" id=\"tabrowImageID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.imageIDText + "</td><td><input name=\"" + this.name + "_itemImageID" + this.itemCount + "\" id=\"" + this.name + "_itemImageID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemImageID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-			TabMiddle2 = "<tr valign=\"middle\" id=\"tabrowMediaID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.mediaIDText + "</td><td><input name=\"" + this.name + "_itemMediaID" + this.itemCount + "\" id=\"" + this.name + "_itemMediaID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemMediaID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+			var TabMiddle1 = "<tr valign=\"middle\" id=\"tabrowImageID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.imageIDText + "</td><td><input name=\"" + this.name + "_itemImageID" + this.itemCount + "\" id=\"" + this.name + "_itemImageID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemImageID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+			var TabMiddle2 = "<tr valign=\"middle\" id=\"tabrowMediaID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.mediaIDText + "</td><td><input name=\"" + this.name + "_itemMediaID" + this.itemCount + "\" id=\"" + this.name + "_itemMediaID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemMediaID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
-			TabMiddle3 = "<tr valign=\"middle\" id=\"tabrowSuccessorID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.successorIDText + "</td><td><input name=\"" + this.name + "_itemSuccessorID" + this.itemCount + "\" id=\"" + this.name + "_itemSuccessorID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemSuccessorID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+			var TabMiddle3 = "<tr valign=\"middle\" id=\"tabrowSuccessorID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.successorIDText + "</td><td><input name=\"" + this.name + "_itemSuccessorID" + this.itemCount + "\" id=\"" + this.name + "_itemSuccessorID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemSuccessorID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
 			set.innerHTML = TabStart + TabMiddle1 + TabMiddle2 + TabMiddle3 + TabEnd;
 		} else {
@@ -262,7 +262,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		this.parent.removeChild(item1);
 		if (this.delRelatedItems) {
 			document.getElementById("updateScores").value = true;
-			elemRow = document.getElementById("row_scores_" + child);
+			var elemRow = document.getElementById("row_scores_" + child);
 			elemRow.parentNode.removeChild(elemRow);
 			var xcount = child + 1;
 			while ((elemRow = document.getElementById("row_scores_" + xcount))) {
@@ -318,11 +318,11 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 	};
 
 	this.button = but;
-	for (i = 0; i < itemNum; i++) {
+	for (var i = 0; i < itemNum; i++) {
 		this.addItem();
 	}
 
 	//FIXME: do we need this as a global var?
 	window[this.name] = this;
 
-}
+};

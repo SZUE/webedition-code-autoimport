@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function drawNewFolder() {
 	unselectAllFiles();
@@ -44,14 +45,14 @@ function doClick(id, ct) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	if (ct == 1) {
-		if (wasdblclick) {
+		if (top.metaKeys.doubleClick) {
 			setDir(id);
-			setTimeout(function () {
-				wasdblclick = false;
+			window.setTimeout(function () {
+				top.metaKeys.doubleClick = false;
 			}, 400);
 		}
 	} else {
-		if (top.fileSelect.data.currentID == id && (!top.ctrlpressed)) {
+		if (top.fileSelect.data.currentID == id && (!top.metaKeys.ctrl)) {
 			if (top.fileSelect.options.userCanRenameFolder) {
 				top.RenameFolder(id);
 			} else {
@@ -60,7 +61,7 @@ function doClick(id, ct) {
 
 		} else {
 			if (top.fileSelect.options.multiple) {
-				if (top.shiftpressed) {
+				if (top.metaKeys.shift) {
 					var oldid = top.fileSelect.data.currentID;
 					var currendPos = getPositionByID(id);
 					var firstSelected = getFirstSelected();
@@ -74,7 +75,7 @@ function doClick(id, ct) {
 					}
 					top.fileSelect.data.currentID = oldid;
 
-				} else if (!top.ctrlpressed) {
+				} else if (!top.metaKeys.ctrl) {
 					selectFile(id);
 				} else if (isFileSelected(id)) {
 					unselectFile(id);
@@ -87,16 +88,16 @@ function doClick(id, ct) {
 
 		}
 	}
-	if (top.ctrlpressed) {
-		top.ctrlpressed = 0;
+	if (top.metaKeys.ctrl) {
+		top.metaKeys.ctrl = 0;
 	}
-	if (top.shiftpressed) {
-		top.shiftpressed = 0;
+	if (top.metaKeys.shift) {
+		top.metaKeys.shift = 0;
 	}
 }
 
 function setDir(id) {
-	e = getEntry(id);
+	var e = getEntry(id);
 	showPreview(id);
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
@@ -161,18 +162,18 @@ function writeBodyDir(d, newText, withModDate) {
 		(top.fileSelect.data.makeNewFolder ?
 			'<tr class="newEntry">' +
 			'<td class="selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
-			'<td class="filename"><input type="hidden" name="we_FolderText" value="' + newText + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + newText + '" class="wetextinput" /></td>' +
+			'<td class="filename"><input type="hidden" name="we_FolderText" value="' + newText + '" /><input onMouseDown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + newText + '" class="wetextinput" /></td>' +
 			(withModDate ? '<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' : '') +
 			'</tr>' :
 			'');
 
-	for (i = 0; i < entries.length; i++) {
+	for (var i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID && (!top.fileSelect.data.makeNewFolder)) ? 'selected' : '') + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
 			'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 			(top.fileSelect.data.we_editDirID == entries[i].ID ?
-				'<td class="selector filename"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+				'<td class="selector filename"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 				'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 				) +
 			'</td>' + (withModDate ? '<td class="selector moddate">' + entries[i].modDate + '</td>' : '') +
@@ -201,32 +202,32 @@ function weonclick(e) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	if (top.fileSelect.data.makeNewFolder || top.fileSelect.data.we_editDirID) {
-		if (!inputklick) {
+		if (!top.metaKeys.inputClick) {
 			top.fileSelect.data.makeNewFolder = top.fileSelect.data.we_editDirID = false;
 			document.we_form.we_FolderText.value = document.we_form.we_FolderText_tmp.value;
 			document.we_form.submit();
 		} else {
-			inputklick = false;
+			top.metaKeys.inputClick = false;
 		}
 	} else {
-		inputklick = false;
+		top.metaKeys.inputClick = false;
 		if (document.all) {
 			if (e.ctrlKey || e.altKey) {
-				ctrlpressed = true;
+				top.metaKeys.ctrl = true;
 			}
 			if (e.shiftKey) {
-				shiftpressed = true;
+				top.metaKeys.shift = true;
 			}
 		} else {
 			if (e.altKey || e.metaKey || e.ctrlKey) {
-				ctrlpressed = true;
+				top.metaKeys.ctrl = true;
 			}
 			if (e.shiftKey) {
-				shiftpressed = true;
+				top.metaKeys.shift = true;
 			}
 		}
 		if (top.fileSelect.options.multiple) {
-			if (!window.shiftpressed && !window.ctrlpressed) {
+			if (!window.metaKeys.shift && !window.metaKeys.ctrl) {
 				top.unselectAllFiles();
 			}
 		} else {

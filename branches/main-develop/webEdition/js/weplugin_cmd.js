@@ -22,6 +22,7 @@
  */
 
 /* global WE */
+'use strict';
 
 var weplugin = WE().util.getDynamicVar(document, 'loadVarWeplugin_cmd', 'data-weplugin');
 var _EditorFrame;

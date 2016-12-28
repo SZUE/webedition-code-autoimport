@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE,chec,loadData,drawTree,check */
 
 /**
  * webEdition CMS
@@ -23,22 +23,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var sel_color = "#697ace";
 var default_color = "#000000";
+var entries_selected;
 
 // Highlighting-Stuff start
 function selectEntryHandler(id) {
-	if (parent.multi_select === false) {
+	if (window.parent.multi_select === false) {
 		//unselect all selected entries
-		for (var j = 0; j < parent.entries_selected.length; j++) {
-			highlight_Elem(parent.entries_selected[j], default_color);
+		for (var j = 0; j < window.parent.entries_selected.length; j++) {
+			highlight_Elem(window.parent.entries_selected[j], default_color);
 		}
-		parent.entries_selected = [];
+		window.parent.entries_selected = [];
 		doSelectMessage(id, '');
 		return;
 	}
-	if (WE().util.in_array(id, parent.entries_selected)) {
+	if (WE().util.in_array(id, window.parent.entries_selected)) {
 		unSelectMessage(id, '');
 	} else {
 		doSelectMessage(id, '');
@@ -53,7 +55,7 @@ function doSelectMessage(id, doc) {
 
 	var highlight_color = sel_color;
 
-	entries_selected = entries_selected.concat([String(id)]);
+	var entries_selected = entries_selected.concat([String(id)]);
 	highlight_Elem(id, highlight_color, doc);
 
 }

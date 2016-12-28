@@ -23,20 +23,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
+
 function setStatusCheck() {
 	var a = document.we_form.status_workflow;
 	var b;
 	if (top.content.editor.edbody.loaded) {
 		b = top.content.editor.edbody.getStatusContol();
 	} else {
-		setTimeout(setStatusCheck, 100);
+		window.setTimeout(setStatusCheck, 100);
 	}
 
 	a.checked = (b == 1);
 }
 
 function clearLog() {
-	opener.top.content.cmd.document.we_form.wcmd.value = "empty_log";
+	window.opener.top.content.cmd.document.we_form.wcmd.value = "empty_log";
 	if (document.we_form.clear_opt.value == 1) {
 		var day = document.we_form.log_time_day.options[document.we_form.log_time_day.selectedIndex].text;
 		var month = document.we_form.log_time_month.options[document.we_form.log_time_month.selectedIndex].text;
@@ -45,10 +47,10 @@ function clearLog() {
 		var min = document.we_form.log_time_minute.options[document.we_form.log_time_minute.selectedIndex].text;
 
 		var timearr = [day, month, year, hour, min];
-		opener.top.content.cmd.document.we_form.wopt.value = timearr.join();
-	} else if (!confirm(WE().consts.g_l.workflow.view.emty_log_question)) {
+		window.opener.top.content.cmd.document.we_form.wopt.value = timearr.join();
+	} else if (!window.confirm(WE().consts.g_l.workflow.view.emty_log_question)) {
 		return;
 	}
-	opener.top.content.cmd.submitForm();
+	window.opener.top.content.cmd.submitForm();
 	close();
 }

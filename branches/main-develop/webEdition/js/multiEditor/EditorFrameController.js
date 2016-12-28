@@ -22,9 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function we_cmd() {
 	if (top.we_cmd) {
-		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -34,7 +35,7 @@ function setFrameSize() {
 
 function startMultiEditor() {
 	WE().layout.weEditorFrameController = new EditorFrameController();
-	WE().layout.multiTabs = new TabView(this.document);
+	WE().layout.multiTabs = new TabView(window.document);
 }
 
 
@@ -95,7 +96,7 @@ EditorFrameController.prototype = {
 			this.FreeEditorFrames = [];
 			this.EditorWindowsAmount = _frames.length;
 
-			for (i = 0; i < _frames.length; i++) {
+			for (var i = 0; i < _frames.length; i++) {
 				this.EditorFrames[_frames[i].id] = new EditorFrame(_frames[i], _frames[i].id);
 				this.FreeEditorFrames.push(_frames[i].id);
 			}
@@ -148,6 +149,7 @@ EditorFrameController.prototype = {
 		if (this.EditorFrames === null) {
 			this.init();
 		}
+		var _editorId;
 
 		// initalize variables
 		dt = dt ? dt : ""; // doctype if open a document via doctype!
@@ -330,10 +332,10 @@ EditorFrameController.prototype = {
 	 *   nothing
 	 */
 	closeAllDocuments: function () {
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || window.confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
 			// close all none Hot Editors
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-				_UsedEditors = this.getEditorsInUse();
+				var _UsedEditors = this.getEditorsInUse();
 				for (var frameId in _UsedEditors) {
 					// remove from editor plugin
 					top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
@@ -358,7 +360,7 @@ EditorFrameController.prototype = {
 		}
 	},
 	closeAllButActiveDocument: function (activeId) {
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || window.confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
 			// only do something, if more than one editor is open
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {
 				// get active id, if not given
@@ -366,7 +368,7 @@ EditorFrameController.prototype = {
 					activeId = this.ActiveEditorFrameId;
 				}
 
-				_UsedEditors = this.getEditorsInUse();
+				var _UsedEditors = this.getEditorsInUse();
 				var frameId;
 				// remove all from editor plugin
 				for (frameId in _UsedEditors) {
@@ -424,7 +426,7 @@ EditorFrameController.prototype = {
 						docRef.closeAllModalWindows();
 					}
 					// unlock document
-					trans = this.EditorFrames[frameId].getEditorTransaction();
+					var trans = this.EditorFrames[frameId].getEditorTransaction();
 					if (trans) {
 						top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), WE().session.userID, this.EditorFrames[frameId].getEditorEditorTable(), trans);
 						top.we_cmd("remove_from_editor_plugin", trans);
@@ -555,7 +557,7 @@ EditorFrameController.prototype = {
 		var frameId;
 		//		var _colStr = "";
 		if (!this.ActiveEditorFrameId) {
-			first = true;
+			var first = true;
 			for (frameId in this.EditorFrames) {
 				if (first) {
 					this.getEditorFrame(frameId).setEmptyEditor();
@@ -1155,7 +1157,7 @@ EditorFrame.prototype = {
  * the class TabView controls the behaviort of the tabs
  * onload a instance of this class is created
  */
-TabView = function (myDoc) {
+var TabView = function (myDoc) {
 	this.myDoc = myDoc;
 	this.init();
 };
@@ -1198,7 +1200,7 @@ TabView.prototype = {
 	 * controls the click on the close button
 	 */
 	onCloseTab: function (val) {
-		frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
+		var frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
 		WE().layout.weEditorFrameController.closeDocument(frameId);
 	},
 	/**
@@ -1237,8 +1239,8 @@ TabView.prototype = {
 	 * deselects all tab (set style for deselected tabs to all tabs)
 	 */
 	deselectAll: function () {
-		tabs = this.myDoc.getElementsByName("tab");
-		for (i = 0; tabs.length; i++) {
+		var tabs = this.myDoc.getElementsByName("tab");
+		for (var i = 0; tabs.length; i++) {
 			tabs[i].className = "tab";
 		}
 	},

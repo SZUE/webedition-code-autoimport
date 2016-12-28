@@ -1157,8 +1157,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				} else{
 					//we are in frontend
 					try{
-						opener.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
-						opener.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
+						window.opener.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
+						window.opener.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 					}catch(e){
 						//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
 					}

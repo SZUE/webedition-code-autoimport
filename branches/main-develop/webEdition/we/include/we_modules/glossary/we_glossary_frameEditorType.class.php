@@ -321,7 +321,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
 			</tr>
 			</table>
@@ -331,7 +331,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
 			</tr>
 			</table>
@@ -341,7 +341,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
 			</tr>
 			</table>

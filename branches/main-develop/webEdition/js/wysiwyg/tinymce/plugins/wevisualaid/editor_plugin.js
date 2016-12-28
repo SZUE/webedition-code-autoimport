@@ -1,3 +1,5 @@
+/* global tinymce */
+'use strict';
 (function() {
 	tinymce.create('tinymce.plugins.WevisualaidPlugin', {
 		init: function(d, f) {

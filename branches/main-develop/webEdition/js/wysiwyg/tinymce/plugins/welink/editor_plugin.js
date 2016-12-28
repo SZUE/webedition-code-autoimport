@@ -1,3 +1,5 @@
+/* global tinymce */
+'use strict';
 (function () {
 	tinymce.create("tinymce.plugins.WelinkPlugin", {
 		init: function (a, b) {
@@ -14,7 +16,7 @@
 				var wehref = "";
 				if (a.dom.getParent(c.getNode(), 'A') !== null) {
 					wehref = a.dom.getParent(c.getNode(), 'A').href;
-					if(dropID){ 
+					if(dropID){
 						wehref = 'document:' + dropID; // replace existing paths by DnD!
 					}
 				} else if(dropID) {

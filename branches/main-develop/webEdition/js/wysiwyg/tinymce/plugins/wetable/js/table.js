@@ -1,4 +1,5 @@
 /* global tinyMCEPopup */
+'use strict';
 
 tinyMCEPopup.requireLangPack();
 

@@ -1,4 +1,4 @@
-/*
+/**
  * webEdition CMS
  *
  * $Rev$
@@ -21,6 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global top, WE */
+'use strict';
 
 var customer = WE().util.getDynamicVar(document, 'loadVarCustomer_property', 'data-customer');
 
@@ -111,7 +112,7 @@ function we_cmd() {
 			refreshForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

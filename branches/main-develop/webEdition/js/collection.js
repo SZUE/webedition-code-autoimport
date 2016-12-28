@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE, doc */
 
 /**
  * webEdition CMS
@@ -23,10 +23,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.loadConsts(document, 'collection');
 
-wePropertiesEdit = {
+var wePropertiesEdit = {
 	hasOptions: function (obj) {
 		if (obj !== null && obj.options !== null) {
 			return true;
@@ -73,7 +74,7 @@ wePropertiesEdit = {
 		}
 		var i;
 		for (i = 0; i < obj.options.length; i++) {
-			o[o.length] = new Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
+			o[o.length] = new window.Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
 		}
 		if (o.length === 0) {
 			return;
@@ -90,7 +91,7 @@ wePropertiesEdit = {
 			}
 		);
 		for (i = 0; i < o.length; i++) {
-			obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
+			obj.options[i] = new window.Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 		}
 	},
 	/*retrieveCsv: function (type) {
@@ -105,7 +106,7 @@ wePropertiesEdit = {
 	 }*/
 };
 
-weCollectionEdit = {
+var weCollectionEdit = {
 	styles: {// TODO: use classes!
 		standard: {
 			border: '1px solid #888888',
@@ -178,7 +179,11 @@ weCollectionEdit = {
 			removed: false
 		}
 	},
-
+	listeners: {
+		collectionBtnViewClick: function (e) {
+			weCollectionEdit.setView(e.target.nodeName === 'BUTTON' ? e.target.name : e.target.parentNode.name);
+		}
+	},
 	init: function () {
 		// load variable data
 		var dynamicVars = WE().util.getDynamicVar(document, 'loadVarCollection', 'data-dynamicVars');
@@ -196,9 +201,7 @@ weCollectionEdit = {
 		// set listeners
 		var btnsView = document.getElementsByClassName('collection_btnView');
 		for (var i = 0; i < btnsView.length; i++) {
-			btnsView[i].addEventListener('click', function (e) {
-				weCollectionEdit.setView(e.target.nodeName === 'BUTTON' ? e.target.name : e.target.parentNode.name);
-			}, true);
+			btnsView[i].addEventListener('click', weCollectionEdit.listeners.colContentText, true);
 		}
 		document.getElementById('collection_slider').addEventListener('click', function (e) {
 			weCollectionEdit.doZoomGrid(e.target.value);
@@ -320,7 +323,7 @@ weCollectionEdit = {
 
 				if (id === -1) {
 					elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', function (e) {
-						we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'we_' + t.we_doc.docName + '_ItemID_' + index, 'we_' + t.we_doc.docName + '_ItemName_' + index, 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
+						window.we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'we_' + t.we_doc.docName + '_ItemID_' + index, 'we_' + t.we_doc.docName + '_ItemName_' + index, 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
 					}, false);
 				}
 				break;
@@ -335,7 +338,7 @@ weCollectionEdit = {
 			}, false);
 		} else {
 			elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', function (e) {
-				we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'collectionItem_we_id_' + index, '', 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
+				window.we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'collectionItem_we_id_' + index, '', 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
 			}, false);
 		}
 
@@ -958,7 +961,7 @@ weCollectionEdit = {
 						this.dd.moveItem.el.firstChild.style.borderColor = 'green';
 						this.reindexAndRetrieveCollection();
 
-						setTimeout(function () {
+						window.setTimeout(function () {
 							weCollectionEdit.resetItemColors(weCollectionEdit.dd.moveItem.el);
 							weCollectionEdit.resetDdParams();
 						}, 200);
@@ -991,7 +994,7 @@ weCollectionEdit = {
 				} else {
 					WE().util.showMessage("the tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 				}
-				setTimeout(weCollectionEdit.resetItemColors, 100, el);
+				window.setTimeout(weCollectionEdit.resetItemColors, 100, el);
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
@@ -1026,7 +1029,7 @@ weCollectionEdit = {
 		this.dd.moveItem.el.style.borderColor = 'red';
 		this.gui.elements.container[this.gui.view].insertBefore(this.dd.moveItem.el, this.dd.moveItem.next);
 		this.reindexAndRetrieveCollection();
-		setTimeout(function () {
+		window.setTimeout(function () {
 			weCollectionEdit.resetItemColors(weCollectionEdit.dd.moveItem.el);
 			weCollectionEdit.resetDdParams();
 			if (this.gui.view === 'list') {
@@ -1056,14 +1059,14 @@ weCollectionEdit = {
 
 		try {
 			if (csvIDs) {
-				postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction);
-				postData += '&we_cmd[ids]=' + encodeURIComponent(csvIDs);
-				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId);
-				postData += '&we_cmd[full]=' + encodeURIComponent(1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(recursive);
+				var postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction)+
+					'&we_cmd[ids]=' + encodeURIComponent(csvIDs)+
+					'&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId)+
+					'&we_cmd[full]=' + encodeURIComponent(1)+
+					'&we_cmd[recursive]=' + encodeURIComponent(recursive);
 				//postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
-				xhr = new XMLHttpRequest();
+				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
@@ -1078,7 +1081,7 @@ weCollectionEdit = {
 									WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
-							setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
+							window.setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
 						} else {
 							top.console.debug('http request failed');
 							return false;

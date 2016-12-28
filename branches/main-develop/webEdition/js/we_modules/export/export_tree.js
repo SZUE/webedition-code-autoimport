@@ -1,3 +1,5 @@
+/* global container, WE,treeData,drawTree */
+
 /**
  * webEdition SDK
  *
@@ -23,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	if (id === "") {
@@ -30,7 +33,7 @@ container.prototype.openClose = function (id) {
 	}
 
 	var eintragsIndex = this.indexOfEntry(id);
-	var status;
+	//var status;
 
 	openstatus = (this[eintragsIndex].open ? 0 : 1);
 
@@ -56,7 +59,7 @@ container.prototype.openClose = function (id) {
 container.prototype.checkNode = function (imgName) {
 	var tmp;
 	var object_name = imgName.substring(4, imgName.length);
-	for (i = 1; i <= this.len; i++) {
+	for (var i = 1; i <= this.len; i++) {
 		if (this[i].id == object_name) {
 //			treeData.frames.tree.populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
@@ -119,7 +122,7 @@ container.prototype.addSort = function (object) {
 function setHead(tab) {
 	treeData.frames.top.table = tab;
 	treeData.frames.top.document.we_form.table.value = tab;
-	setTimeout(treeData.frames.top.startTree, 100);
+	window.setTimeout(treeData.frames.top.startTree, 100);
 }
 
 

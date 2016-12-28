@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global WE, top */
+'use strict';
 
 function deleteEntries() {
 	document.we_form.log_cmd.value = "deleteEntries";

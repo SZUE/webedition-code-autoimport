@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function setDir(id) {
 	if (top.fileSelect.data.currentType === "user") {
@@ -35,7 +36,7 @@ function setDir(id) {
 function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
-		e = top.getEntry(id);
+		var e = top.getEntry(id);
 		if (top.fileSelect.data.currentType !== "user" || !e.isFolder) {
 			if (a.value != e.text &&
 							a.value.indexOf(e.text + ",") == -1 &&

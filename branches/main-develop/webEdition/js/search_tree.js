@@ -1,4 +1,4 @@
-/* global top */
+/* global top, node, container, treeData,startTree,drawTree */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);

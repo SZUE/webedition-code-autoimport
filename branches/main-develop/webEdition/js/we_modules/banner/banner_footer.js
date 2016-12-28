@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -35,7 +36,7 @@ function we_cmd() {
 		case "empty_log":
 			break;
 		default:
-			parent.edbody.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.edbody.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -45,12 +46,12 @@ function we_save() {
 
 	while (acLoopCount < 20 && acStatus.running) {
 		acLoopCount++;
-		setTimeout(we_save, 100);
+		window.setTimeout(we_save, 100);
 		return;
 	}
 
 	if (acStatus.valid) {
-		_we_save();
+		we_save();
 	} else {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}

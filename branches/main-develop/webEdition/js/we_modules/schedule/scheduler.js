@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, _EditorFrame */
 
 /**
  * webEdition CMS
@@ -23,19 +23,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var scheduler = WE().util.getDynamicVar(document, 'loadVarScheduler', 'data-scheduler');
 
 function changeSchedOption(elem, nr) {
 	_EditorFrame.setEditorIsHot(true);
 	checkFooter();
 	if (scheduler.we_hasExtraRow[nr] || elem.options[elem.selectedIndex].value == scheduler.selection.DOCTYPE || elem.options[elem.selectedIndex].value == scheduler.selection.CATEGORY || elem.options[elem.selectedIndex].value == scheduler.selection.DIR) {
-		setScrollTo();
-		we_cmd('reload_editpage');
+		window.setScrollTo();
+		window.we_cmd('reload_editpage');
 	}
 }
 
 function checkFooter() {
-	var button = parent.editFooter.document.getElementById("publish_" + scheduler.docID);
+	var button = window.parent.editFooter.document.getElementById("publish_" + scheduler.docID);
 	var aEl = document.getElementsByClassName("we_schedule_active");
 	var active = false;
 	if (button !== undefined) {

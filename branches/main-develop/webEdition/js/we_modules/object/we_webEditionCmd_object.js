@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, we_cmd_modules,we_cmd */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.object = function (args, url) {
 	switch (args[0]) {
 		case "object_edit_ifthere":
@@ -110,7 +111,7 @@ we_cmd_modules.object = function (args, url) {
 			}
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
 
@@ -120,11 +121,11 @@ we_cmd_modules.object = function (args, url) {
 		case "object_ws_from_class":
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
 		case "object_obj_search":
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			break;
 		case 'fieldHref_selectIntHref_callback':
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);

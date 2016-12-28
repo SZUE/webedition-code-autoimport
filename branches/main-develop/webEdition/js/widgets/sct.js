@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,11 +23,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var _sCsvInit_;
 var _bPrev = false;
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 function addEntry(sText, sValue) {
+	var _fo = document.forms[0];
 	var oSctPool = _fo.elements.sct_pool;
 	oSctPool.options[0].text = '';
 	oSctPool.options[oSctPool.options.length] = new Option(sText, sValue, false, false);
@@ -199,7 +203,7 @@ function moveAllOptions(from, to, select, regex) {
 function copyAllOptions(from, to, select) {
 	selectAllOptions(from);
 	if (arguments.length > 1) {
-		copySelectedOptions.apply(this, Array.prototype.slice.call(arguments));
+		copySelectedOptions.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -219,7 +223,7 @@ function moveOptionUp(obj) {
 	if (!hasOptions(obj)) {
 		return;
 	}
-	for (i = 0; i < obj.options.length; i++) {
+	for (var i = 0; i < obj.options.length; i++) {
 		if (obj.options[i].selected) {
 			if (i !== 0 && !obj.options[i - 1].selected) {
 				swapOptions(obj, i, i - 1);
@@ -233,7 +237,7 @@ function moveOptionDown(obj) {
 	if (!hasOptions(obj)) {
 		return;
 	}
-	for (i = obj.options.length - 1; i >= 0; i--) {
+	for (var i = obj.options.length - 1; i >= 0; i--) {
 		if (obj.options[i].selected) {
 			if (i != (obj.options.length - 1) && !obj.options[i + 1].selected) {
 				swapOptions(obj, i, i + 1);
@@ -279,7 +283,7 @@ function addOption(obj, text, value, selected) {
 function removeOption(obj) {
 	var selIndex = obj.selectedIndex;
 	if (selIndex != -1) {
-		for (i = obj.length - 1; i >= 0; i--) {
+		for (var i = obj.length - 1; i >= 0; i--) {
 			if (obj.options[i].selected) {
 				addEntry(obj.options[i].text, obj.options[i].value);
 				obj.options[i] = null;
@@ -292,19 +296,21 @@ function removeOption(obj) {
 }
 
 function getCsv() {
-	aSct = [];
+	var _fo = document.forms[0];
+	var aSct = [],
 	aSctLen = [];
 	aSct[0] = _fo.list11;
 	aSctLen[0] = aSct[0].length;
 	aSct[1] = _fo.list21;
 	aSctLen[1] = aSct[1].length;
-	aValue = [];
+	var aValue = [];
 	aValue[0] = aValue[1] = '';
 	for (var i = 0; i < 2; i++) {
 		for (var k = 0; k < aSctLen[i]; k++) {
 			aValue[i] += aSct[i].options[k].value;
-			if (k != aSctLen[i] - 1)
+			if (k != aSctLen[i] - 1){
 				aValue[i] += ',';
+			}
 		}
 	}
 	return aValue[0] + ';' + aValue[1];
@@ -313,19 +319,19 @@ function getCsv() {
 function preview() {
 	_bPrev = true;
 	previewPrefs();
-	opener.rpc(getCsv(), '', '', '', '', prefs._sObjId);
+	window.opener.rpc(getCsv(), '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sCsvInit_ != getCsv() && _bPrev) {
-		opener.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
+		window.opener.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
 }
 
 function init() {
-	_fo = document.forms[0];
+	var _fo = document.forms[0];
 	_sCsvInit_ = opener.document.getElementById(prefs._sObjId + '_csv').value;
 	var aCsv = _sCsvInit_.split(';');
 	for (var i = 0; i < aCsv.length; i++) {
@@ -343,6 +349,7 @@ function init() {
 }
 
 function deleteEntry(sValue) {
+	var _fo = document.forms[0];
 	var oSctPool = _fo.elements.sct_pool;
 	for (var i = 1; i < oSctPool.length; i++) {
 		if (oSctPool.options[i].value == sValue) {
@@ -362,7 +369,7 @@ function save() {
 	oCsv_.value = sCsv;
 	//savePrefs();
 	if (_sCsvInit_ != sCsv) {
-		opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+		window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();

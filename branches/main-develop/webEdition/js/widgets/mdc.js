@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sInitTitle_;
@@ -57,8 +58,9 @@ function getCsv(bTbl) {
 	var sCats = '';
 	for (var j = 0; j < categories_edit.itemCount; j++) {
 		sCats += window.btoa(categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value);
-		if (j < categories_edit.itemCount - 1)
+		if (j < categories_edit.itemCount - 1){
 			sCats += ',';
+		}
 	}
 	var sCsv = iFolderID + ',' + sFolderPath + ';' + iDtOrCls + ';' + sCats;
 	return sCsv;
@@ -69,8 +71,9 @@ function getTreeSelected() {
 	var iTemsLen = SelectedItems[table].length;
 	for (var i = 0; i < iTemsLen; i++) {
 		sCsvIds += SelectedItems[table][i];
-		if (i < iTemsLen - 1 && SelectedItems[table][i] !== undefined && SelectedItems[table][i] !== '')
+		if (i < iTemsLen - 1 && SelectedItems[table][i] !== undefined && SelectedItems[table][i] !== ''){
 			sCsvIds += ',';
+		}
 	}
 	return sCsvIds;
 }
@@ -81,7 +84,7 @@ function preview() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	previewPrefs();
-	opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
+	window.opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
 }
 
 function exit_close() {
@@ -92,7 +95,7 @@ function exit_close() {
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = window.atob(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
-		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
+		window.opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
@@ -142,7 +145,7 @@ function save() {
 	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
-	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
+	window.opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
 	_oCsv_.value = window.btoa(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	window.close();
@@ -162,10 +165,10 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case 'add_cat':
-			this.addCat(args[1].allPaths);
+			addCat(args[1].allPaths);
 			break;
 		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

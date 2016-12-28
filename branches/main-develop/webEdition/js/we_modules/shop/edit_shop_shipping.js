@@ -1,4 +1,5 @@
 /* global WE, top */
+'use strict';
 
 /**
  * webEdition CMS
@@ -64,16 +65,16 @@ function we_cmd() {
 			deleteShippingCostTableRow(args[1]);
 			break;
 		default :
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			break;
 	}
 }
 
 function deleteShippingCostTableRow(rowId) {
-	tbl = document.getElementById("shippingCostTable");
-	tableRows = tbl.rows;
+	var tbl = document.getElementById("shippingCostTable");
+	var tableRows = tbl.rows;
 
-	for (i = 0; i < tableRows.length; i++) {
+	for (var i = 0; i < tableRows.length; i++) {
 		if (rowId == tableRows[i].id) {
 			tbl.deleteRow(i);
 		}

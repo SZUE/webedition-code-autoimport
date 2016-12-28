@@ -22,6 +22,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var isTinyMCE = true;
 

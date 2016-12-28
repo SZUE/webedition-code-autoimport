@@ -22,10 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function setDir(id) {
+	var path;
 	if (id >= 0 || id < 0) {
-		e = getEntry(id);
+		var e = getEntry(id);
 		top.fileSelect.data.currentDir = id;
 		path = e.path;
 		if (path == "/") {

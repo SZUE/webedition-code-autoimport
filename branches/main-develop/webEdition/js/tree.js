@@ -25,14 +25,15 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
-var wasdblclick = false;
-var tout = null;
-var hot = false;
-var we_scrollY = {};
-var treeData;
+var wasdblclick = false,
+	tout = null,
+	hot = false,
+	we_scrollY = {},
+	treeData;
 
-function container() {
+var container = function () {
 	this.len = 0;
 	this.state = 0;
 	this.startloc = 0;
@@ -40,7 +41,7 @@ function container() {
 	this.selection = "";
 	this.selection_table = "";
 	return this;
-}
+};
 
 container.prototype = {
 	node_layouts: {
@@ -116,8 +117,9 @@ container.prototype = {
 			if (ind !== -1) {
 				var node = this.get(this.selection);
 				node.selected = 0;
-				if (node.applylayout)
+				if (node.applylayout) {
 					node.applylayout();
+				}
 			}
 			this.selection = "";
 		}
@@ -190,7 +192,7 @@ container.prototype = {
 	},
 	makeFoldersOpenString: function () {
 		var op = "";
-		for (i = 1; i <= treeData.len; i++) {
+		for (var i = 1; i <= treeData.len; i++) {
 			if (treeData[i].typ === "group" && treeData[i].open) {
 				op += treeData[i].id + ",";
 			}
@@ -400,14 +402,14 @@ function treeStartDrag(evt, type, table, id, ct, path) { // TODO: throw out setD
 }
 
 
-function node(attribs) {
+var node = function (attribs) {
 	for (var aname in attribs) {
 		var val = attribs[aname];
 		this[aname] = val;
 	}
 
 	return this;
-}
+};
 
 node.prototype = {
 	rootEntry: function (id, text, rootstat, offset) {
@@ -427,9 +429,9 @@ node.prototype = {
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
-		parentnode = treeData.get(this.parentid);
+		var parentnode = treeData.get(this.parentid);
 		parentnode.clear();
-		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
+		window.we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
 	applylayout: function (layout) {
 		if (treeData.frames.tree.document.getElementById("lab_" + this.id)) {
@@ -437,7 +439,8 @@ node.prototype = {
 		}
 	},
 	clear: function () {
-		var deleted = 0;
+		var deleted = 0,
+			ind;
 		for (var ai = 1; ai <= treeData.len; ai++) {
 			if (treeData[ai].parentid != this.id) {
 				continue;

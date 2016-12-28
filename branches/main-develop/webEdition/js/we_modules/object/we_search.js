@@ -21,6 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function sub() {
 	document.we_form_search.target = "load";

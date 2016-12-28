@@ -23,16 +23,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var loaded = false;
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 
-	ok = true;
+	var ok = true;
 
 	if (f.input_pass) {
 		if (f.oldtab.value === "0") {
 			if (f.input_pass.value.length < 4 && f.input_pass.value.length !== 0) {
-				WE().util.showMessage(WE().consts.g_l.navigation.users.password_alert, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.navigation.users.password_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 			if (f.input_pass.value !== "") {
@@ -79,7 +80,7 @@ function we_cmd() {
 			break;
 		case "select_seem_start":
 			var myWind = WE().util.jsWindow.prototype.find('preferences');
-			myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\')";
+			var myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\')";
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, WE().consts.tables.FILE_TABLE, myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", WE().consts.contentTypes.WEDOCUMENT, 1);
 			break;
 		case "we_navigation_dirSelector":
@@ -87,12 +88,12 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
 function select_seem_start() {
-	myWindStr = "WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody";
+	var myWindStr = "WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody";
 
 	if (document.getElementById('seem_start_type').value == 'object') {
 		we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', WE().consts.contentTypes.OBJECT_FILE, 'objectFile', WE().util.hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1);
@@ -133,18 +134,18 @@ function show_seem_chooser(val) {
 }
 
 function showParentPerms(show) {
-	tmp=document.getElementsByClassName("showParentPerms");
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display=(show?"inline":"none");
+	var tmp = document.getElementsByClassName("showParentPerms");
+	for (var k = 0; k < tmp.length; k++) {
+		tmp[k].style.display = (show ? "inline" : "none");
 	}
 }
 
-function delElement(elvalues,elem) {
-	elvalues.value=elem;
+function delElement(elvalues, elem) {
+	elvalues.value = elem;
 	top.content.setHot();
 }
 
 function addElement(elvalues) {
-	elvalues.value="new";
+	elvalues.value = "new";
 	switchPage(2);
 }

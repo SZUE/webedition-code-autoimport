@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, container,drawTree,treeData */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	var sort = "";
@@ -47,7 +48,7 @@ function doClick(id, typ) {
 	var cmd = "";
 	var node;
 	if (top.content.hot) {
-		if (confirm(WE().consts.g_l.exports.save_changed_export)) {
+		if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
 			cmd = "save_export";
 			top.content.we_cmd("save_export");
 			return;

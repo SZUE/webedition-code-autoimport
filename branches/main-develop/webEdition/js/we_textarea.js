@@ -24,11 +24,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
-weTextarea_count = 0;
+var weTextarea_count = 0;
 
 //FIXME: change/remove this!
-function we_textarea(name, value, autobr, autobrName, showAutobr, attribs, xml) {
+var we_textarea = function (name, value, autobr, autobrName, showAutobr, attribs, xml) {
 	showSpell = false;
 	this.TAName = name;
 	this.name = "weTextarea" + (weTextarea_count++);
@@ -56,7 +57,7 @@ function we_textarea(name, value, autobr, autobrName, showAutobr, attribs, xml) 
 		return i.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	};
 
-	val = (value ?
+	var val = (value ?
 		value.replace(/##\|n##/gi, "\n").replace(/<##scr#ipt##/gi, "<script").replace(/<\/##scr#ipt##/gi, "</script").replace(/##\|lt\;\?##/gi, "<?") :
 		""
 		);
@@ -115,15 +116,16 @@ function we_textarea(name, value, autobr, autobrName, showAutobr, attribs, xml) 
 	};
 	//FIXME: do we need this as a global var?
 	window[this.obj] = this;
-}
+};
 
 //used for we:userInput
 function open_wysiwyg_win() {
 	var url = "/webEdition/we_cmd_frontend.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1))
+		if (i < (arguments.length - 1)) {
 			url += "&";
+		}
 	}
 
 	/*if (window.screen) {

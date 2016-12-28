@@ -1,4 +1,4 @@
-/* global WE, top, errorHandler */
+/* global WE, errorHandler,treeData,drawTree, top */
 
 /**
  * webEdition CMS
@@ -23,6 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
+
 if (window.location !== top.location) {
 	top.location = window.location;
 }
@@ -32,6 +34,8 @@ var last = 0;
 var lastUsedLoadFrame = null;
 var nlHTMLMail = false;
 
+/** webEdition Main Objekt
+ */
 var WebEdition = {
 //all constants in WE used in JS
 	layout: {
@@ -121,7 +125,7 @@ var WebEdition = {
 				var a = doc.we_form.elements;
 				var ok = true;
 				if (id) {
-					ok = confirm(WE().consts.g_l.main.confirm_ext_change);
+					ok = window.confirm(WE().consts.g_l.main.confirm_ext_change);
 				}
 				if (ok) {
 					a["we_" + name + "_Extension"].value = (a["we_" + name + "_IsDynamic"].value == 1 ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
@@ -134,10 +138,10 @@ var WebEdition = {
 
 			if (parentObj !== undefined && (frame.weFileUpload_instance) !== undefined && frame.weFileUpload_instance.getType() === 'binDoc') {
 				frame.weFileUpload_instance.doUploadIfReady(function () {
-					top.we_cmd.apply(this, we_cmd_args);
+					top.we_cmd.apply(window, we_cmd_args);
 				});
 			} else {
-				top.we_cmd.apply(this, we_cmd_args);
+				top.we_cmd.apply(window, we_cmd_args);
 			}
 
 		},
@@ -410,10 +414,10 @@ var WebEdition = {
 			var cname = name + "=";
 			var dc = doc.cookie;
 			if (dc.length > 0) {
-				begin = dc.indexOf(cname);
+				var begin = dc.indexOf(cname);
 				if (begin !== -1) {
 					begin += cname.length;
-					end = dc.indexOf(";", begin);
+					var end = dc.indexOf(";", begin);
 					if (end === -1) {
 						end = dc.length;
 					}
@@ -613,17 +617,12 @@ var WebEdition = {
 			return argum;
 		},
 		IsDigitPercent: function (e) {
-			var key;
-			if (e.charCode === undefined) {
-				key = event.keyCode;
-			} else {
-				key = e.charCode;
-			}
+			var key = e.charCode;
 
 			return (((key >= 48) && (key <= 57)) || (key === 37) || (key === 0) || (key === 46) || (key === 101) || (key === 109) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
 		},
 		IsDigit: function (e) {
-			var key = e.charCode === undefined ? event.keyCode : e.charCode;
+			var key = e.charCode === undefined ? window.event.keyCode : e.charCode;
 			return ((key === 46) || ((key >= 48) && (key <= 57)) || (key === 0) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
 		},
 		getWe_cmdArgsArray: function (arr) {
@@ -955,14 +954,16 @@ var WebEdition = {
 			});
 		}
 	},
+	/*all session/user specific stuff goes here */
 	session: {},
+	/*all consts in WE (e.g. language, paths, ...) */
 	consts: {},
 };
 
 WebEdition.consts = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-consts');
 WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-session');
 //finally load language files
-WE().util.loadConsts(document, 'g_l.main');
+WebEdition.util.loadConsts(document, 'g_l.main');
 
 function doClickWithParameters(id, ct, table, parameters) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
@@ -970,7 +971,9 @@ function doClickWithParameters(id, ct, table, parameters) {
 
 function doExtClick(url) {
 	// split url in url and parameters !
-	var parameters = "";
+	var parameters = "",
+		_position = 0;
+
 	if ((_position = url.indexOf("?")) !== -1) {
 		parameters = url.substring(_position);
 		url = url.substring(0, _position);
@@ -1064,8 +1067,8 @@ function doUnloadSEEM(whichWindow) {
 	//  only when no SEEM-edit-include window is closed
 
 	if (whichWindow !== "include") {
-		if (opener) {
-			opener.location.replace(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php');
+		if (window.opener) {
+			window.opener.location.replace(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php');
 		}
 	}
 }
@@ -1286,13 +1289,13 @@ function we_cmd() {
 			WE().layout.weEditorFrameController.closeDocument(args[1]);
 			if (args[3]) {
 				//FIXME: eval
-				setTimeout(args[3], 1000);
+				window.setTimeout(args[3], 1000);
 			}
 			break;
 		case "eplugin_exit_doc" :
 			if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 				if (top.plugin.isInEditor(args[1])) {
-					return confirm(WE().consts.g_l.main.eplugin_exit_doc);
+					return window.confirm(WE().consts.g_l.main.eplugin_exit_doc);
 				}
 			}
 			return true;
@@ -1304,7 +1307,7 @@ function we_cmd() {
 		default:
 			var i, mods = WE().consts.modules.jsmods;
 			for (i = 0; i < mods.length; i++) {
-				if (we_cmd_modules[mods[i]].apply(this, [args, url])) {
+				if (we_cmd_modules[mods[i]].apply(window, [args, url])) {
 					return true;
 				}
 				//if a tool window is requested, we have to open it
@@ -1331,11 +1334,11 @@ function we_cmd() {
 
 var we_cmd_modules = {
 	base: function (args, url) {
-		var postData, table;
+		var postData, table, win;
 		switch (args[0]) {
 			case "loadVTab":
 				var op = top.treeData.makeFoldersOpenString();
-				parent.we_cmd("load", args[1], 0, op, top.treeData.table);
+				window.parent.we_cmd("load", args[1], 0, op, top.treeData.table);
 				break;
 			case "exit_modules":
 				WE().util.jsWindow.prototype.closeByName('edit_module');
@@ -1524,7 +1527,7 @@ var we_cmd_modules = {
 					WE().layout.vtab.setActiveTab(args[1]);
 					treeData.table = args[1];
 				} else {
-					setTimeout(we_cmd, 500, "setTab", args[1]);
+					window.setTimeout(we_cmd, 500, "setTab", args[1]);
 				}
 				break;
 			case "revert_published_question":
@@ -1535,7 +1538,7 @@ var we_cmd_modules = {
 				if (args[1].currentID == args[2]) {
 					top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
 					document.we_form.elements[args[1].JSIDName].value = '';
-					opener.document.we_form.elements[args[1].JSTextName].value = '';
+					window.opener.document.we_form.elements[args[1].JSTextName].value = '';
 				}
 				break;
 			case "add_cat":
@@ -1612,6 +1615,7 @@ var we_cmd_modules = {
 				we_cmd_new_document(url);
 				break;
 			case "close_document":
+				var _currentEditor;
 				if (args[1]) { // close special tab
 					WE().layout.weEditorFrameController.closeDocument(args[1]);
 				} else if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) {
@@ -1623,7 +1627,7 @@ var we_cmd_modules = {
 				WE().layout.weEditorFrameController.closeAllDocuments();
 				break;
 			case "close_all_but_active_document":
-				activeId = null;
+				var activeId = null;
 				if (args[1]) {
 					activeId = args[1];
 				}
@@ -1801,7 +1805,7 @@ var we_cmd_modules = {
 				if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 					WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);
 				} else {
-					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 			case "open_document":
@@ -1960,7 +1964,7 @@ var we_cmd_modules = {
 				doExtClick(args[1]);
 				break;
 			case 'tag_weimg_insertImage':
-				var table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE,
+				table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE,
 					tab = args[7] ? args[7] : 1,
 					editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
 
@@ -2007,7 +2011,7 @@ var we_cmd_modules = {
 			case "multiedit_addItem":
 				switch (args[2]) {
 					case 'customer':
-						var win = this;
+						win = this;
 						win.addToMultiEdit(win[args[3]], args[1].allTexts, args[1].allIDs);
 						win.we_cmd('setHot');
 						break;
@@ -2018,7 +2022,7 @@ var we_cmd_modules = {
 			case "multiedit_delAll":
 				switch (args[1]) {
 					case 'customer':
-						var win = this;
+						win = this;
 						win.removeFromMultiEdit(win[args[2]]);
 						win.we_cmd('setHot');
 						break;
@@ -2307,9 +2311,10 @@ function open_wysiwyg_window(args, url) {
 }
 
 function we_cmd_new_document(url) {
-	var ctrl = WE().layout.weEditorFrameController;
+	var ctrl = WE().layout.weEditorFrameController,
+		nextWindow, nextContent;
 	if ((nextWindow = ctrl.getFreeWindow())) {
-		_nextContent = nextWindow.getDocumentReference();
+		nextContent = nextWindow.getDocumentReference();
 		// activate tab and set it status loading ...
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 		nextWindow.updateEditorTab();
@@ -2317,7 +2322,7 @@ function we_cmd_new_document(url) {
 		ctrl.setActiveEditorFrame(nextWindow.getFrameId());
 		ctrl.toggleFrames();
 		// load new document editor
-		we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
+		we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
 	} else {
 		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 	}
@@ -2331,13 +2336,13 @@ function we_cmd_delete_single_document_question(url) {
 
 	if (ctrl.getActiveDocumentReference()) {
 		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
-			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
-		} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
-			url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
+			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+		} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
+			var url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 			WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
+		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -2348,12 +2353,12 @@ function we_cmd_delete_single_document(url) {
 
 	if (ctrl.getActiveDocumentReference()) {
 		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
-			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
+		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -2364,7 +2369,7 @@ function doReloadCmd(args, url, hot) {
 		_EditorFrame.setEditorIsHot(true);
 	}
 	if (top.setScrollTo) {
-		setScrollTo();
+		window.setScrollTo();
 	}
 	// get editor root frame of active tab
 	var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();

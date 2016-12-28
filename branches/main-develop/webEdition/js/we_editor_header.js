@@ -25,8 +25,9 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.parent.name);
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
@@ -35,11 +36,11 @@ function we_cmd() {
 	switch (args[0]) {
 		case 'switch_edit_page':
 			_EditorFrame.setEditorEditPageNr(args[1]);
-			parent.we_cmd.apply(this, args);
+			window.parent.we_cmd.apply(window, args);
 			break;
 		default:
 			if (top.we_cmd) {
-				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+				top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			}
 	}
 
@@ -74,9 +75,9 @@ if (WE().session.seemode) {
 
 function setTab(we_cmd_args){
 	//first arg is always switch_edit_page
-	if(false && parent.editFooter.doc.isBinary){// IMI: checking fileupload.ready is temprarily deactivated
+	if(false && window.parent.editFooter.doc.isBinary){// IMI: checking fileupload.ready is temprarily deactivated
 		WE().layout.checkFileUpload(we_cmd_args);
 	}else{
-		we_cmd.apply(this, we_cmd_args);
+		we_cmd.apply(window, we_cmd_args);
 	}
 }

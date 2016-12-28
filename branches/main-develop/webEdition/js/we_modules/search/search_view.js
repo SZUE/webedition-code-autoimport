@@ -25,12 +25,13 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "weSearch");
 WE().util.loadConsts(document, "g_l.weSearch");
 var searchConf = WE().util.getDynamicVar(document, 'loadVarSearch_view', 'data-searchConf');
 
-weSearch = {
+var weSearch = {
 	/*conf: {
 	 whichsearch: '',
 	 editorBodyFrame: '',
@@ -73,7 +74,7 @@ weSearch = {
 				WE().util.setIconOfDocClass(document, 'resultIcon');
 			}
 		} else {
-			setTimeout(weSearch.init, 10);
+			window.setTimeout(weSearch.init, 10);
 		}
 	},
 	setNextPrevData: function () {
@@ -798,7 +799,6 @@ weSearch = {
 				_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
 		}
-		_multiEditorreload = true;
 
 		//reload tree
 		if (top.opener.top.treeData) {
@@ -824,7 +824,7 @@ weSearch = {
 			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
-		if (confirm(WE().consts.g_l.weSearch.resetVersionsSearchtool) !== true) {
+		if (window.confirm(WE().consts.g_l.weSearch.resetVersionsSearchtool) !== true) {
 			return;
 		}
 		this.resetVersionAjax(checkboxes.join(","), 0, 0, 0);
@@ -861,7 +861,7 @@ weSearch = {
 		if (check === false) {//searchtool__notChecked
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
-			Check = confirm(WE().consts.g_l.weSearch.publish_docs);
+			var Check = window.confirm(WE().consts.g_l.weSearch.publish_docs);
 			if (Check === true) {
 				this.publishDocsAjax(whichSearch);
 			}
@@ -896,7 +896,6 @@ weSearch = {
 				_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
 		}
-		_multiEditorreload = true;
 
 		//reload tree
 		if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
@@ -946,7 +945,7 @@ weSearch = {
 		if (!check) {
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
-			var conf = confirm("you really want to delete them?");//FIXME: G_L
+			var conf = window.confirm("you really want to delete them?");//FIXME: G_L
 			if (conf) {
 				this.deleteMediaDocsAjax(whichSearch);
 			}

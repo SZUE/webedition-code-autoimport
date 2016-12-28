@@ -1,3 +1,4 @@
+/* global tinymce */
 /**
  * webEdition CMS
  *
@@ -25,6 +26,7 @@
  * This source is based on tinyMCE-plugin "contextmenu":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
  */
+'use strict';
 
 (function () {
 	tinymce.create('tinymce.plugins.WeUtilPlugin', {

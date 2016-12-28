@@ -1,6 +1,7 @@
 /* Functions for the welink plugin popup */
 
-/* global tinyMCEPopup */
+/* global tinyMCEPopup, tinymce */
+'use strict';
 
 tinyMCEPopup.requireLangPack();
 
@@ -17,8 +18,9 @@ var LinkDialog = {
 		var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
 		for (i = 0, len = nodes.length; i < len; i++) {
-			if ((name = ed.dom.getAttrib(nodes[i], "name")) !== "")
+			if ((name = ed.dom.getAttrib(nodes[i], "name")) !== ""){
 				html += '<option value="#' + name + '">' + name + '</option>';
+			}
 		}
 
 		if (html === "") {

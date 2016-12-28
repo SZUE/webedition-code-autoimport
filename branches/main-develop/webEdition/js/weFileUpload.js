@@ -22,6 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
+
 /* move to init js
 (function (win) {
 	win.we_FileUpload_addListeners = false;
@@ -369,7 +371,7 @@ WE().layout.weFileUpload = (function () {
 					fileobj.processSingleImage = false;
 					_.view.unsetImageEditMessage(true, fileobj.preparedFilesIndex);//
 					if (fileobj.img.callback === 'sendNextFile' && _.sender.prepareUpload(true)) {
-						setTimeout(function () {
+						window.setTimeout(function () {
 							_.sender.sendNextFile();
 						}, 100);
 					}
@@ -1020,7 +1022,7 @@ WE().layout.weFileUpload = (function () {
 						_.utils.logTimeFromStart('end load fullpreview');
 						_.view.setPreviewLoupe(fileobj, 1);
 					};
-					setTimeout(function () {
+					window.setTimeout(function () {
 						/*
 						var bin = '', base64 = '';
 						if(!fileobj.dataUrl){
@@ -1118,7 +1120,7 @@ WE().layout.weFileUpload = (function () {
 					fileobj.img.focusX = focusX.toFixed(2);
 					fileobj.img.focusY = focusY.toFixed(2);
 					_.view.writeFocusToForm(fileobj);
-					setTimeout(function () {
+					window.setTimeout(function () {
 						fileobj.focusPoint.style.top = (fileobj.loupInner.parentNode.offsetHeight / 2) + 'px';
 						fileobj.focusPoint.style.left = (fileobj.loupInner.parentNode.offsetWidth / 2) + 'px';
 						fileobj.focusPoint.style.display = 'block';
@@ -1907,11 +1909,11 @@ WE().layout.weFileUpload = (function () {
 				var head = 0;
 
 				while (head < uint8array.length) {
-					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+					if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
 						break;
 					}
 
-					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+					if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 						head += 2;
 					} else {
 						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -1935,11 +1937,11 @@ WE().layout.weFileUpload = (function () {
 
 				while (head < uint8array.length) {
 					// each segment starts with 255 (FF) and its segment marker
-					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // 218 (DA): SOS = Start of Scan = image data (canvas works on)
+					if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // 218 (DA): SOS = Start of Scan = image data (canvas works on)
 						//top.console.log('found SOS at pos', head, segments);
 						break;
 					}
-					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+					if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 						head += 2;
 					} else {
 						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -1965,11 +1967,11 @@ WE().layout.weFileUpload = (function () {
 				}
 
 				while (head < uint8array.length) {
-					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+					if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
 						break;
 					}
 
-					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+					if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 						head += 2;
 					} else {
 						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -2063,7 +2065,7 @@ WE().layout.weFileUpload = (function () {
 		this.startUpload = function () {
 			if (_.sender.prepareUpload()) {
 				//setTimeout(_.sender.sendNextFile, 100); // FIXME: check why this does not work!!
-				setTimeout(function () {
+				window.setTimeout(function () {
 					_.sender.sendNextFile();
 				}, 100);
 			} else {
@@ -2176,7 +2178,7 @@ WE().layout.weFileUpload = (function () {
 				//this.form.form.elements.weIsUploadComplete.value = 1;
 
 				if(_.sender.nextCmd){
-					setTimeout(function () {
+					window.setTimeout(function () {
 						var tmp = _.sender.nextCmd.split(',');
 						tmp.splice(1, 0, _.sender.resp);
 						if(_.window.we_cmd){
@@ -2607,7 +2609,7 @@ WE().layout.weFileUpload = (function () {
 					top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, window);
 
 					if(_.sender.nextCmd){
-						setTimeout(function () {
+						window.setTimeout(function () {
 							var tmp = _.sender.nextCmd.split(',');
 							tmp.splice(1, 0, _.sender.resp);
 							top.we_cmd.apply(top, tmp);
@@ -3011,7 +3013,7 @@ WE().layout.weFileUpload = (function () {
 				pos = general ? -1 : (pos && pos !== -1 ? pos : -1);
 				indexes = _.utils.getImageEditIndexes(pos, general, true);
 
-				for(i = 0; i < indexes.length; i++){
+				for(var i = 0; i < indexes.length; i++){
 					form = _.document.getElementById('form_editOpts_' + indexes[i]);
 					if (form && !form.elements.fuOpts_useCustomOpts.checked) {
 						form.elements.fuOpts_scaleWhat.value = generalForm.elements.fuOpts_scaleWhat.value;
@@ -3332,7 +3334,7 @@ WE().layout.weFileUpload = (function () {
 							resp[k]=resp.weDoc[k];
 						}
 
-						setTimeout(function () {
+						window.setTimeout(function () {
 							var tmp = _.sender.nextCmd.split(',');
 							tmp.splice(1, 0, resp);
 							_.window.opener.we_cmd.apply(_.window.opener, tmp);

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 WE().util.jsWindow.prototype.closeAll();
 
 if (top.tinyMceDialog !== undefined && top.tinyMceDialog !== null) {

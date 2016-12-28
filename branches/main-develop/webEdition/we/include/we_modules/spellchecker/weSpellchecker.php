@@ -69,7 +69,7 @@ if($editname !== false){
 		function setAppletCode() {
 			retryjava = 0;
 			document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
-			setTimeout(spellcheck, 1000);
+			window.setTimeout(spellcheck, 1000);
 		}
 
 //-->

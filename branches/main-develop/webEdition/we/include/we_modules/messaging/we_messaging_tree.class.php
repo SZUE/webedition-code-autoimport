@@ -44,7 +44,7 @@ function startTree(){
 	};
 	if(treeData.frames.cmd===undefined){
 	//FIXME: we have too much frames, this module is not separated well
-		setTimeout(startTree,500);
+		window.setTimeout(startTree,500);
 	}else{
 		treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
 	}

@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,18 +23,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
-function weCombobox() {
+var weCombobox = function () {
 
 	this.init = function (id, inputClass) {
 
-		selectObj = document.getElementById(id);
+		var selectObj = document.getElementById(id);
 		if (selectObj === undefined) {
 			WE().t_e('weCombobox: Unkown id \'' + id + '\'');
 			return false;
 		}
 
-		inputObj = document.createElement("input");
+		var inputObj = document.createElement("input");
 		inputObj.id = id + '_input';
 		if (selectObj.style.width !== undefined) {
 			inputObj.style.width = selectObj.style.width;
@@ -56,9 +59,9 @@ function weCombobox() {
 
 	this.makeInput = function () {
 		// this.id is the i of the select-element
-		selectObj = document.getElementById(this.id);
+		var selectObj = document.getElementById(this.id);
 
-		inputObj = selectObj.nextSibling;
+		var inputObj = selectObj.nextSibling;
 		while (inputObj.nodeType == 3) {
 			inputObj = inputObj.nextSibling;
 		}
@@ -75,9 +78,9 @@ function weCombobox() {
 
 	this.makeSelect = function () {
 		// this.id is the i of the input-element
-		inputObj = document.getElementById(this.id);
+		var inputObj = document.getElementById(this.id);
 
-		selectObj = inputObj.previousSibling;
+		var selectObj = inputObj.previousSibling;
 		while (selectObj.nodeType == 3) {
 			selectObj = selectObj.previousSibling;
 		}
@@ -89,7 +92,7 @@ function weCombobox() {
 		inputObj.style.display = 'none';
 		selectObj.style.display = 'inline';
 	};
-}
+};
 
 /*
  Usage:

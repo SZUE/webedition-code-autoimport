@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -22,8 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function setInfoSize() {
-	infoSize = document.body.clientHeight;
+	var infoElem, prieviewpic;
 	if ((infoElem = document.getElementById("info"))) {
 		infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0) + "px";
 	}

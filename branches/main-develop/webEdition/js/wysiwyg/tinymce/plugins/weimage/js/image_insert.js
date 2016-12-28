@@ -1,3 +1,5 @@
+/* global tinyMCEPopup, tinymce */
+
 /**
  * webEdition CMS
  *
@@ -20,6 +22,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 /**
  * This source is based on tinyMCE-plugin "advimage":
@@ -35,7 +38,7 @@ var ImageDialog = {
 	},
 
 	writeBack: function (attributes) {
-		this.preInit;
+		this.preInit();
 		var ed = tinyMCEPopup.editor, t = this;
 
 		if(!attributes){

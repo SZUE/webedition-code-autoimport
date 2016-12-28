@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.export = function (args, url) {
 	switch (args[0]) {
 		case "export_edit":
@@ -37,7 +38,7 @@ we_cmd_modules.export = function (args, url) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:???
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			return true;
 	}
 	return false;

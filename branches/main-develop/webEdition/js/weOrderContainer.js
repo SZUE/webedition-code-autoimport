@@ -21,8 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
-function weOrderContainer(id) {
+var weOrderContainer = function (id) {
 	this.container = id;
 	this.elements = [];
 	this.position = [];
@@ -129,8 +130,8 @@ function weOrderContainer(id) {
 
 
 	this.del = function (id) {
-		var node = null;
-		var i;
+		var node = null,
+			i, pos;
 		for (i = 0; i < this.elements.length; i++) {
 			if (this.elements[i].id == id) {
 				this.elements.splice(i, 1);
@@ -153,9 +154,9 @@ function weOrderContainer(id) {
 
 
 	this.up = function (id) {
-
-		var up = null;
-		var down = null;
+		var up = null,
+			down = null,
+			temp;
 
 		for (var i = 1; i < this.position.length; i++) {
 			if (this.position[i] == id) {
@@ -176,9 +177,9 @@ function weOrderContainer(id) {
 
 
 	this.down = function (id) {
-
-		var up = null;
-		var down = null;
+		var up = null,
+			down = null,
+			temp;
 
 		for (var i = 0; i < this.position.length - 1; i++) {
 			if (this.position[i] == id) {
@@ -200,7 +201,6 @@ function weOrderContainer(id) {
 
 
 	this.createDIV = function (node) {
-
 		var div = document.createElement("div");
 		var attr = document.createAttribute("id");
 
@@ -215,8 +215,9 @@ function weOrderContainer(id) {
 
 	// Bug in IE -> loses the selected attribute in option tags
 	this.fixIESelectBug = function (doc, id) {
+		var i, j;
 		if (!document.importNode) {
-			node = (doc == document ? document : document.getElementById(id));
+			var node = (doc == document ? document : document.getElementById(id));
 
 			for (j = 0; j < doc.getElementsByTagName("select").length; j++) {
 
@@ -231,4 +232,4 @@ function weOrderContainer(id) {
 
 	};
 
-}
+};

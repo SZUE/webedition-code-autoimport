@@ -23,5 +23,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var weTabs = new (WE().layout.we_tabs)(document, window);

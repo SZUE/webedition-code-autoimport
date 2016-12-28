@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, weSelect, weInput, categories_edit */
 
 /**
  * webEdition SDK
@@ -25,6 +25,8 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
+var ruleData = WE().util.getDynamicVar(document, 'loadVarNavigationRules', 'data-rules');
 
 var allFields = [
 	"FolderID", "DoctypeID", "ClassID", "WorkspaceID"
@@ -35,17 +37,18 @@ var resetFields = [
 
 function switchType(value) {
 	// 1st hide all
-	for (i = 0; i < allFields.length; i++) {
+	var elem;
+	for (var i = 0; i < allFields.length; i++) {
 		if ((elem = document.getElementById("tr" + allFields[i]))) {
 			elem.style.display = "none";
 		}
 	}
 
 	// show needed
-	if (dependencies[value]) {
+	if (ruleData.dependencies[value]) {
 
-		for (j = 0; j < dependencies[value].length; j++) {
-			if ((elem = document.getElementById("tr" + dependencies[value][j]))) {
+		for (var j = 0; j < ruleData.dependencies[value].length; j++) {
+			if ((elem = document.getElementById("tr" + ruleData.dependencies[value][j]))) {
 				elem.style.display = "";
 			}
 		}
@@ -53,7 +56,7 @@ function switchType(value) {
 }
 
 function clearNavigationForm() {
-	for (i = 0; i < resetFields.length; i++) {
+	for (var i = 0; i < resetFields.length; i++) {
 		if (document.we_form[resetFields[i]]) {
 			document.we_form[resetFields[i]].value = "";
 		}
@@ -65,7 +68,6 @@ function clearNavigationForm() {
 }
 
 function removeAllCats() {
-
 	if (categories_edit.itemCount > 0) {
 		while (categories_edit.itemCount > 0) {
 			categories_edit.delItem(categories_edit.itemCount);
@@ -109,11 +111,12 @@ function we_cmd() {
 				weInput.setValue("cmd", "save_navigation_rule");
 				document.we_form.submit();
 			} else {
-				top.we_showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 			break;
 		case "delete_navigation_rule":
+			var navId;
 			if ((navId = document.we_form.navigationRules.value)) {
 				document.we_form.NavigationName.value = "";
 				weInput.setValue("cmd", "delete_navigation_rule");

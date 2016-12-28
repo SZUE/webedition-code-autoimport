@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition SDK
  *
@@ -25,11 +27,12 @@
  */
 
 //FIXME: compare & unite all _tree.js files
+'use strict';
 
 function doClick(id) {
 	var item = top.content.treeData.get(id);
-	ct = item.contenttype;
-	table = item.table;
+	var ct = item.contenttype;
+	var table = item.table;
 	switch (ct) {
 		case WE().consts.contentTypes.FOLDER:
 			top.content.we_cmd('workflow_edit', id, ct, table);

@@ -47,7 +47,7 @@ echo we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 var current = "' . $tool . '";
 function setTab(tool) {
 	if (top.content.hot) {
-		if (confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
+		if (window.confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 			top.content.hot = false;
 			current = tool;
 			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);

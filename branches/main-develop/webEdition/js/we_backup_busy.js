@@ -22,6 +22,7 @@
  */
 
 /* global top, WE */
+'use strict';
 
 var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-backup');
 

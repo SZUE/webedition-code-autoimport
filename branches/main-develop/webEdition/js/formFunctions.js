@@ -21,29 +21,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 // functions for normal input fields
 
-weInput = function () {
+var weInput = function () {
 };
 
 weInput.setValue = function (elementName, optionValue) {
+	var elem;
 	if ((elem = document.we_form[elementName])) {
 		elem.value = optionValue;
 	}
 };
 
 weInput.getValue = function (elementName) {
+	var elem;
 	if ((elem = document.we_form[elementName])) {
 		return elem.value;
 	}
 };
 
 // select
-function weSelect() {
+var weSelect = function () {
 }
 
 weSelect.addOption = function (selectName, optionValue, optionText) {
+	var elem;
 	if ((elem = document.we_form[selectName])) {
 		var newOpt = document.createElement("option");
 		if (optionValue) {
@@ -85,6 +89,7 @@ weSelect.setOptions = function (selectName, optionsList) {
 };
 
 weSelect.updateOption = function (selectName, optionValue, newText, newValue) {
+	var elem, i;
 	if ((elem = document.we_form[selectName])) {
 		for (i = 0; i < elem.options.length; i++) {
 			if (elem.options[i].value == optionValue) {
@@ -100,6 +105,7 @@ weSelect.updateOption = function (selectName, optionValue, newText, newValue) {
 };
 
 weSelect.removeOption = function (selectName, optionValue) {
+	var elem, i;
 	if ((elem = document.we_form[selectName])) {
 		for (i = 0; i < elem.options.length; i++) {
 			if (elem.options[i].value == optionValue) {
@@ -110,6 +116,7 @@ weSelect.removeOption = function (selectName, optionValue) {
 };
 
 weSelect.selectOption = function (selectName, optionValue) {
+	var elem, i;
 	if ((elem = document.we_form[selectName])) {
 		for (i = 0; i < elem.options.length; i++) {
 			if (elem.options[i].value == optionValue) {

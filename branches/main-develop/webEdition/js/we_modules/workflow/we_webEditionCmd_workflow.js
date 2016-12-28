@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.workflow = function (args, url) {
 	switch (args[0]) {
 		case "workflow_isIn":
@@ -30,7 +31,7 @@ we_cmd_modules.workflow = function (args, url) {
 			new (WE().util.jsWindow)(window, url, "choose_workflow", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
 			return true;
 		case "workflow_finish":
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			return true;
 		case "workflow_edit":
 		case "workflow_edit_ifthere":

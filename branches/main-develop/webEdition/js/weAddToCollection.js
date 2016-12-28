@@ -21,10 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var initData = WE().util.getDynamicVar(document, 'loadVarWeAddToCollection', 'data-init');
 
-weAddToCollection = {
+var weAddToCollection = {
 	conf: {
 		table: '',
 		targetInsertIndex: -1,
@@ -59,9 +60,10 @@ weAddToCollection = {
 		// check if selected target exists
 		var acStatus = WE().layout.weSuggest.checkRequired(window);
 		if (acStatus.running) {
-			setTimeout(press_ok_move, 100, '');
+			window.setTimeout(weAddToCollection.press_ok_add, 100, '');
 			return;
-		} else if (!acStatus.valid) {
+		}
+		if (!acStatus.valid) {
 			top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
@@ -88,8 +90,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(document, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		default:
-			if (parent.we_cmd) {
-				parent.we_cmd.apply(this, args);
+			if (window.parent.we_cmd) {
+				window.parent.we_cmd.apply(window, args);
 			}
 	}
 }

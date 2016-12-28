@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 window.addEventListener('load', function () {
 	var el = document.getElementById('loadVarCmd');
@@ -45,11 +46,11 @@ window.addEventListener('load', function () {
 					break;
 				case 'we_cmd':
 					if (window.we_cmd) {
-						window.we_cmd.apply(this, cmdData);
-					} else if (parent.we_cmd) {
-						parent.we_cmd.apply(this, cmdData);
+						window.we_cmd.apply(window, cmdData);
+					} else if (window.parent.we_cmd) {
+						window.parent.we_cmd.apply(window, cmdData);
 					} else {
-						top.we_cmd.apply(this, cmdData);
+						top.we_cmd.apply(window, cmdData);
 					}
 					break;
 				case 'location':
@@ -65,11 +66,11 @@ window.addEventListener('load', function () {
 				default:
 					//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
 					if (window.we_cmd) {
-						window.we_cmd.apply(this, [cmds[i], cmdData]);
-					} else if (parent.we_cmd) {
-						parent.we_cmd.apply(this, [cmds[i], cmdData]);
+						window.we_cmd.apply(window, [cmds[i], cmdData]);
+					} else if (window.parent.we_cmd) {
+						window.parent.we_cmd.apply(window, [cmds[i], cmdData]);
 					} else {
-						top.we_cmd.apply(this, [cmds[i], cmdData]);
+						top.we_cmd.apply(window, [cmds[i], cmdData]);
 					}
 			}
 		}

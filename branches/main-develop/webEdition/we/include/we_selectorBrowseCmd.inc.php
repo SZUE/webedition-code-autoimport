@@ -140,9 +140,9 @@ if(!$cmd || $cmd != "save_last"){
 			}
 			if(we_base_request::_(we_base_request::BOOL, "ask")){
 				if(!is_link($fid) && is_dir($fid)){
-					echo 'if (confirm("' . g_l('alert', '[delete_folder]') . '")){delFile(0);}';
+					echo 'if (window.confirm("' . g_l('alert', '[delete_folder]') . '")){delFile(0);}';
 				} else if(is_link($fid) || is_file($fid)){
-					echo 'if (confirm("' . g_l('alert', '[delete]') . '")){delFile(0);}';
+					echo 'if (window.confirm("' . g_l('alert', '[delete]') . '")){delFile(0);}';
 				}
 			} else {
 				if(!is_link($fid) && is_dir($fid)){

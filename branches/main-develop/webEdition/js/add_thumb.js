@@ -1,3 +1,4 @@
+'use strict';
 /* global WE */
 
 /**
@@ -29,8 +30,8 @@
 var thumbData = WE().util.getDynamicVar(document, 'loadVarAdd_thumb', 'data-thumbData');
 
 function add_thumbnails() {
-	sel = document.getElementById("Thumbnails");
-	var thumbs = "";
+	var sel = document.getElementById("Thumbnails"),
+		thumbs = "";
 	for (var i = 0; i < sel.options.length; i++) {
 		if (sel.options[i].selected) {
 			thumbs += (sel.options[i].value + ",");
@@ -39,7 +40,7 @@ function add_thumbnails() {
 
 	if (thumbs.length) {
 		thumbs = "," + thumbs;
-		opener.we_cmd("do_add_thumbnails", thumbs);
+		window.opener.we_cmd("do_add_thumbnails", thumbs);
 	}
 
 	window.close();
@@ -55,7 +56,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "thumbnails", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -20,6 +20,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function deleteCategory(obj, cat) {
 	top.we_cmd('delete_Cat', obj, cat, true);
@@ -30,6 +31,6 @@ function we_cmd() {
 
 	switch (args[0]) {
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

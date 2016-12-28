@@ -21,14 +21,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* global top, WE */
+'use strict';
 
 function handle_event(what) {
-	f = document.we_form;
+	var f = document.we_form;
 	switch (what) {
 		case "previous":
 			break;
 		case "next":
-			selectedValue = "";
+			var selectedValue = "";
 			for (var i = 0; i < f.type.length; i++) {
 				if (f.type[i].checked) {
 					selectedValue = f.type[i].value;
@@ -38,8 +39,9 @@ function handle_event(what) {
 			break;
 	}
 }
+
 function goTo(where) {
-	f = document.we_form;
+	var f = document.we_form;
 	switch (where) {
 		case "rebuild_thumbnails":
 		case "rebuild_documents":
@@ -66,7 +68,7 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 		}
 	} else {
-		setTimeout(set_button_state, 300, (alldis ? 1 : 0));
+		window.setTimeout(set_button_state, 300, (alldis ? 1 : 0));
 	}
 }
 function setNavStatDocDisabled() {

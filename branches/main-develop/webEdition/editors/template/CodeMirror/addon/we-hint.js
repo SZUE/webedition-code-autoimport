@@ -1,4 +1,5 @@
 /* global WE */
+'use strict';
 
 (function () {
 	CodeMirror.weHint = function (cm, simbol) {

@@ -55,13 +55,10 @@ class we_navigation_view extends we_modules_view{
 			}
 		}
 
-		return we_html_element::jsElement('
-var data={
-	IsFolder:' . intval($this->Model->IsFolder) . ',
-};
-
-var weNavTitleField = [' . implode(',', $objFields) . '];'
-			) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js', '', ['id' => 'loadVarViewProp', 'data-prop' => setDynamicVar([
+					'weNavTitleField' => $objFields,
+					'IsFolder' => intval($this->Model->IsFolder)
+		])]);
 	}
 
 	function getEditNaviPosition(){
@@ -231,7 +228,7 @@ if(top.content.treeData){
 				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();
 top.content.hot=false;
 if(top.content.makeNewDoc) {
-	setTimeout(top.content.we_cmd,100,"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
+	window.setTimeout(top.content.we_cmd,100,"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
 }'
 				);
 
@@ -357,7 +354,7 @@ if(top.content.makeNewDoc) {
 				}
 
 				if($values){ // if the class has workspaces
-					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'values', $prefix,$values]);
+					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'values', $prefix, $values]);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){ // if the class has no workspaces
 					$jscmd->addCmd('we_cmd', ['populateWorkspaces', 'workspace', $prefix]);
 				} else {

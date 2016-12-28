@@ -401,7 +401,7 @@ abstract class we_backup_preparer{
 			case 'weimport':
 				if(permissionhandler::hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
-if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
+if(window.confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
 	top.opener.top.we_cmd("import");
 	top.close();
 } else {

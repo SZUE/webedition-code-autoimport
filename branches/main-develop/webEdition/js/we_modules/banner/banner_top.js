@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 var hot = false;
 WE().util.loadConsts(document, "g_l.banner");
@@ -47,7 +48,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] != "save_banner") {
-		if (confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
+		if (window.confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
 			args[0] = "save_banner";
 		} else {
 			top.content.usetHot();
@@ -64,7 +65,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "new_banner");
+				window.setTimeout(we_cmd, 10, "new_banner");
 			}
 			break;
 		case "new_bannergroup":
@@ -72,16 +73,16 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "new_bannergroup");
+				window.setTimeout(we_cmd, 10, "new_bannergroup");
 			}
 			break;
 		case "delete_banner":
 			if (!WE().util.hasPerm("DELETE_BANNER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
-				WE().util.showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				WE().util.showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.banner.view.delete_question, ["delete_banner_do"]);
@@ -98,14 +99,14 @@ function we_cmd() {
 						return;
 					}
 				} else {
-					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, this);
+					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 					return;
 				}
 
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			top.content.usetHot();
 			break;
@@ -115,11 +116,11 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "banner_load":
-			top.content.editor.edheader.location  =WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edheader&page=' + args[1] + '&txt=' + args[2] + '&isFolder=' + args[3];
-			top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edheader&page=' + args[1] + '&txt=' + args[2] + '&isFolder=' + args[3];
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

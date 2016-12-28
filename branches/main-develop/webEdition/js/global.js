@@ -1,4 +1,4 @@
-/* global top */
+/* global top,window */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
@@ -59,7 +60,7 @@ function WE(retBool) {
 }
 
 function we_showMessage(message, prio, win, timeout) {
-	win = (win ? win : this.window);
+	win = (win ? win : window);
 	if (WE(true)) {
 		WE().util.showMessage(message, prio, win, timeout);
 	} else { // there is no webEdition window open, just show the alert
@@ -72,18 +73,18 @@ function initWE() {
 	if (WE(true)) {
 		try {
 			window.onerror = WE().handler.errorHandler;
-			document.addEventListener('keydown', function (evt) {
+			window.document.addEventListener('keydown', function (evt) {
 				WE().handler.dealWithKeyboardShortCut(evt, window);
 			});
-			document.addEventListener('drop', function (evt) {
+			window.document.addEventListener('drop', function (evt) {
 				evt.stopPropagation();
 				evt.preventDefault();
 			});
-			document.addEventListener('dragover', function (evt) {
+			window.document.addEventListener('dragover', function (evt) {
 				evt.preventDefault();
 			});
 		} catch (e) {
-			console.log('unable to add listeners');
+			window.console.log('unable to add listeners');
 		}
 	} else {
 		//console.log('error handler possibly not attached');

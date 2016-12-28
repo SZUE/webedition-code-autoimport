@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var image = WE().util.getDynamicVar(document, 'loadVarDialogImage', 'data-image');
 
 function imageChanged(wasThumbnailChange) {
@@ -85,14 +86,14 @@ function update_editor(data) {
 
 	for (var arg in data.args) {
 		if (data.args.hasOwnProperty(arg) && arg !== 'cssclass') {
-			if (inputElem = document.we_form.elements['we_dialog_args[' + arg + ']']) {
+			if ((inputElem = document.we_form.elements['we_dialog_args[' + arg + ']'])) {
 				inputElem.value = data.args[arg];
 			}
 		}
 	}
 
 	// => buggy!
-	if (inputElem = document.we_form.elements["we_dialog_args[thumbnail]"]) {
+	if ((inputElem = document.we_form.elements["we_dialog_args[thumbnail]"])) {
 		var disabled = (inputElem.value !== '');
 		document.we_form.elements["we_dialog_args[height]"].disabled = disabled;
 		document.we_form.elements["we_dialog_args[width]"].disabled = disabled;
@@ -137,20 +138,20 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_fileupload_editor", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "dialog_setType":
-			var isInt = this.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
-			this.document.getElementById('imageExt').style.display = isInt ? 'none' : 'block';
-			this.document.getElementById('imageInt').style.display = isInt ? 'block' : 'none';
+			var isInt = window.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
+			window.document.getElementById('imageExt').style.display = isInt ? 'none' : 'block';
+			window.document.getElementById('imageInt').style.display = isInt ? 'block' : 'none';
 			imageChanged();
 			break;
 		case "dialog_emptyLongdesc":
-			this.document.we_form.elements['we_dialog_args[longdescid]'].value = '';
-			this.document.we_form.elements['we_dialog_args[longdescsrc]'].value = '';
+			window.document.we_form.elements['we_dialog_args[longdescid]'].value = '';
+			window.document.we_form.elements['we_dialog_args[longdescsrc]'].value = '';
 			break;
 		case "dialog_imageChanged":
 			imageChanged();
 			break;
 		default :
-			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			break;
 	}
 }

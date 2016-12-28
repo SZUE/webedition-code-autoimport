@@ -1,4 +1,4 @@
-/* global top */
+/* global top, WE, treeData, container,drawTree,startTree,node*/
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	var sort = "";
@@ -60,8 +61,8 @@ node.prototype.showSegment = function () {
 };
 
 function info(text) {
-	i = treeData.frames.top.document.getElementById("infoField");
-	s = treeData.frames.top.document.getElementById("search");
+	var i = treeData.frames.top.document.getElementById("infoField");
+	var s = treeData.frames.top.document.getElementById("search");
 	if (text != " ") {
 		s.style.display = "none";
 		i.style.display = "block";

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var aTopRssFeeds = opener.cockpit._trf;
 var _iTopRssFeedsLen = aTopRssFeeds.length;
 var _bIsHotTopRssFeeds = false;
@@ -45,6 +46,7 @@ function handleButtonState(enable) {
 }
 
 function toggleRssTopFeed() {
+	var _fo = document.forms[0];
 	var oSctRss = _fo.elements.sct_rss;
 	var sUri = oSctRss.options[oSctRss.selectedIndex].value;
 	var sTitle = oSctRss.options[oSctRss.selectedIndex].text;
@@ -56,7 +58,7 @@ function toggleRssTopFeed() {
 }
 
 function init() {
-	_fo = document.forms[0];
+	var _fo = document.forms[0];
 	var sCsv_ = opener.document.getElementById(prefs._sObjId + '_csv').value;
 	var aCsv = sCsv_.split(',');
 	var sUri = window.atob(aCsv[0]);
@@ -95,6 +97,7 @@ function init() {
 function onChangeSctRss(obj) {
 	var sUri = obj.options[obj.selectedIndex].value;
 	var sTitle = obj.options[obj.selectedIndex].text;
+	var _fo = document.forms[0];
 	toggleRssTopFeed();
 	if (sUri !== '') {
 		var oIptUri = _fo.elements.ipt_uri;
@@ -104,6 +107,7 @@ function onChangeSctRss(obj) {
 }
 
 function onDisableRdoGroup(sId) {
+	var _fo = document.forms[0];
 	var oDisable = _fo.elements['rdo_' + sId];
 	var iDisableLen = oDisable.length;
 	for (var i = 0; iDisableLen > i; i++) {
@@ -112,6 +116,7 @@ function onDisableRdoGroup(sId) {
 }
 
 function getTbPersTitle(sUri) {
+	var _fo = document.forms[0];
 	var oRdoTitle = _fo.elements.rdo_title;
 	var sTbTitle = '';
 	if (oRdoTitle[1].checked) {
@@ -127,17 +132,19 @@ function getTbPersTitle(sUri) {
 }
 
 function displayRssFeed(sUri, bOnChange) {
+	var _fo = document.forms[0];
 	var sRssCfgBinary = getBinary('conf');
 	var sRssCfgSelIdx = _fo.elements.sct_conf.selectedIndex;
 	if (!bOnChange || (_sLastPreviewUri !== '' && sUri != _sLastPreviewUri) || (_sLastPreviewUri === '' && sUri != _sInitUri) ||
 					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
-		opener.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
+		window.opener.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
 	}
 }
 
 function resetRssFeed() {
+	var _fo = document.forms[0];
 	var iSctConfSel = _fo.elements.sct_conf.selectedIndex;
 	var iRdoTitleSel = (_fo.elements.rdo_title.checked) ? 0 : 1;
 	if ((_sLastPreviewUri !== '' && _sInitUri != _sLastPreviewUri) ||
@@ -145,12 +152,13 @@ function resetRssFeed() {
 					(getBinary('tb') != _sInitTbCfg) ||
 					(_iInitRssCfgNumEntries != iSctConfSel) ||
 					(_iInitTbTitlePers != iRdoTitleSel)) {
-		opener.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
+		window.opener.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
 	}
 }
 
 function getBinary(postfix) {
 	var sBinary = '';
+	var _fo = document.forms[0];
 	var oChbx = _fo.elements['chbx_' + postfix];
 	var iChbxLen = oChbx.length;
 	for (var i = 0; i < iChbxLen; i++) {
@@ -167,6 +175,7 @@ function exit_close() {
 }
 
 function save() {
+	var _fo = document.forms[0];
 	var oIptUri = _fo.elements.ipt_uri;
 	var sUri = oIptUri.value;
 	if (!isUrl(sUri)) {
@@ -184,10 +193,10 @@ function save() {
 			aNewTopRssFeeds[i] = [window.btoa(oSctRss.options[i + 1].text),
 				window.btoa(oSctRss.options[i + 1].value)];
 		}
-		opener.cockpit._trf = aNewTopRssFeeds;
-		opener._isHotTrf = true;
+		window.opener.cockpit._trf = aNewTopRssFeeds;
+		window.opener._isHotTrf = true;
 	}
-	opener.saveSettings();
+	window.opener.saveSettings();
 	//savePrefs();
 	//displayRssFeed(sUri,true);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -196,6 +205,7 @@ function save() {
 }
 
 function preview() {
+	var _fo = document.forms[0];
 	var oIptUri = _fo.elements.ipt_uri;
 	var sUri = oIptUri.value;
 	if (!isUrl(sUri)) {
@@ -208,6 +218,7 @@ function preview() {
 
 
 function handleTopRssFeed(sAction) {
+	var _fo = document.forms[0];
 	var oIptUri = _fo.elements.ipt_uri;
 	var oSctRss = _fo.elements.sct_rss;
 	var iSelIdx = oSctRss.selectedIndex;

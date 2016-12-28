@@ -23,6 +23,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 var orginal;
 var editPanel;
@@ -33,12 +34,11 @@ var rangeSelection = false;
 var currentWord = "";
 var retry = 0;
 
-
-function customAdapter() {
+var customAdapter = function () {
 //	this.innerHTML;
 	this.getSelectedText = function () {
 	};
-}
+};
 
 function setDialog() {
 	var text;
@@ -56,7 +56,7 @@ function setDialog() {
 	orginal = text;
 	editPanel = document.getElementById('preview');
 	editPanel.innerHTML = text;
-	setTimeout(setAppletCode, 1000);
+	window.setTimeout(setAppletCode, 1000);
 }
 
 function getTextFromWysiwyg() {
@@ -96,7 +96,7 @@ function fadeout(id, from, step, speed) {
 	if (from === 0) {
 		document.getElementById(id).style.display = "none";
 	} else {
-		setTimeout(fadeout, speed, id, (from - step), step, speed);
+		window.setTimeout(fadeout, speed, id, (from - step), step, speed);
 	}
 }
 
@@ -216,9 +216,9 @@ function spellcheck() {
 		document.getElementById("statusText").innerHTML = WE().consts.g_l.glossary.checking;
 		var text = getTextOnly(orginal);
 		document.spellchecker.check(text);
-		setTimeout(findNext, 2000);
+		window.setTimeout(findNext, 2000);
 	} else if (retryjava < 5) {
-		setTimeout(spellcheck, 1000);
+		window.setTimeout(spellcheck, 1000);
 		retryjava++;
 	} else {
 		top.we_showMessage(WE().consts.g_l.glossary.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -264,7 +264,7 @@ function findNext() {
 				}
 			}
 		} else {
-			setTimeout(spellcheck, 500);
+			window.setTimeout(spellcheck, 500);
 		}
 	}
 }

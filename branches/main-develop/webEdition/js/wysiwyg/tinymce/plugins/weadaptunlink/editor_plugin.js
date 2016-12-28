@@ -1,3 +1,4 @@
+/* global tinymce */
 /**
  * webEdition CMS
  *
@@ -20,6 +21,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 (function() {
 	tinymce.create('tinymce.plugins.WeAdaptUnlinkPlugin', {

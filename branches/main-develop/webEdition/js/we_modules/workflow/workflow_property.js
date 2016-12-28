@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition SDK
@@ -25,6 +25,8 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
+
 var loaded;
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -97,7 +99,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -184,11 +186,11 @@ function checkData() {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.objects_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
-	var _txt;
-	for (i = 0; i < nsteps.value; i++) {
+	var txt, j;
+	for (var i = 0; i < nsteps.value; i++) {
 		if (document.we_form[uid + '_step' + i + '_Worktime'].value === "") {
-			_txt = WE().consts.g_l.workflow.prop.worktime_empty;
-			top.we_showMessage(_txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
+			txt = WE().consts.g_l.workflow.prop.worktime_empty;
+			top.we_showMessage(txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		userempty = true;
@@ -198,8 +200,8 @@ function checkData() {
 			}
 		}
 		if (userempty) {
-			_txt = WE().consts.g_l.workflow.prop.user_empty;
-			top.we_showMessage(_txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
+			txt = WE().consts.g_l.workflow.prop.user_empty;
+			top.we_showMessage(txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 

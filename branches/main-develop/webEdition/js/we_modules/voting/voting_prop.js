@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -115,7 +116,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "show_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

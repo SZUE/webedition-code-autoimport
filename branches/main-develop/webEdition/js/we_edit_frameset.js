@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, editor */
 
 /**
  * webEdition CMS
@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var editFrameset = WE().util.getDynamicVar(document, 'loadVarEdit_frameset', 'data-editFrameset');
 
 var unlock = false;
@@ -45,7 +46,7 @@ function we_cmd() {
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 
 		if (top.we_cmd) {
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 		}
 	}
 }
@@ -66,7 +67,7 @@ function setOpenedWithWE(val) {
 }
 
 function checkDocument() {
-	loc = null;
+	var loc = null;
 	try {
 		loc = editor.location;
 	} catch (e) {
@@ -98,8 +99,8 @@ function checkDocument() {
 				EditorDocumentPath: "Unknown"
 			});
 
-			editHeader.location = "about:blank";
-			editFooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_seem/we_SEEM_openExtDoc_footer.php' ?>";
+			window.editHeader.location = "about:blank";
+			window.editFooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_seem/we_SEEM_openExtDoc_footer.php' ?>";
 
 		}
 	}

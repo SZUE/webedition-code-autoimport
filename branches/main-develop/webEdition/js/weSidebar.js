@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -20,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().layout.sidebar = {
 //
@@ -81,77 +84,81 @@ WE().layout.sidebar = {
 		this._open(obj);
 	},
 	openDocumentById: function (id, ct) {
-		obj.id = (id === undefined ? 0 : id);
-		obj.ct = (ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : ct);
-		this._open(obj);
+		this._open({
+			id: (id === undefined ? 0 : id),
+			ct: (ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : ct)
+		});
 	},
 	openTemplate: function (obj) {
-		obj.table = WE().consts.tables.TEMPLATES_TABLE;
-		obj.ct = WE().consts.contentTypes.TEMPLATE;
-		this._open(obj);
+		this._open({
+			table: WE().consts.tables.TEMPLATES_TABLE,
+			ct: WE().consts.contentTypes.TEMPLATE
+		});
 	},
 	openTemplateById: function (id) {
-		obj.id = (id === undefined ? 0 : id);
-		this._open(obj);
+		this._open({
+			id: (id === undefined ? 0 : id)
+		});
 	},
 	openObject: function (obj) {
 		if (WE().consts.tables.OBJECT_FILES_TABLE) {
-			obj.table = WE().consts.tables.OBJECT_FILES_TABLE;
-			obj.ct = "objectFile";
-			this._open(obj);
+			this._open({
+				table: WE().consts.tables.OBJECT_FILES_TABLE,
+				ct: "objectFile"
+			});
 		}
 	},
 	openObjectById: function (id) {
-		obj.id = (id === undefined ? 0 : id);
-		this._open(obj);
+		this._open({
+			id: (id === undefined ? 0 : id)
+		});
 	},
 	openClass: function (obj) {
 		if (WE().consts.tables.OBJECT_TABLE) {
-			obj.table = WE().consts.tables.OBJECT_TABLE;
-			obj.ct = "object";
-			this._open(obj);
+			this._open({
+				table: WE().consts.tables.OBJECT_TABLE,
+				ct: "object"
+			});
 		}
 	},
 	openClassById: function (id) {
-		obj.id = (id === undefined ? 0 : id);
-		this._open(obj);
+		this._open({
+			id: (id === undefined ? 0 : id)
+		});
 	},
 	openCockpit: function () {
-		obj.ct = "cockpit";
-		obj.editcmd = "open_cockpit";
-		this._open(obj);
+		this._open({
+			ct: "cockpit",
+			editcmd: "open_cockpit"
+		});
 	},
 //
 // ----> Function to open navigation tool
 //
 
 	openNavigation: function () {
-		var cmd = [];
-		cmd[0] = 'navigation_edit';
-		top.we_cmd(cmd[0]);
+		top.we_cmd('navigation_edit');
 	},
 //
 // ----> Function to open doctypes
 //
 
 	openDoctypes: function () {
-		var cmd = [];
-		cmd[0] = 'doctypes';
-		top.we_cmd(cmd[0]);
+		top.we_cmd('doctypes');
 	},
 //
 // ----> Internal function
 //
 	_open: function (obj) {
-		table = (obj.table === undefined ? "" : obj.table);
-		id = (obj.id === undefined ? "" : obj.id);
-		ct = (obj.ct === undefined ? "" : obj.ct);
-		editcmd = (obj.editcmd === undefined ? "" : obj.editcmd);
-		dt = (obj.dt === undefined ? "" : obj.dt);
-		url = (obj.url === undefined ? "" : obj.url);
-		code = (obj.code === undefined ? "" : obj.code);
-		mode = (obj.mode === undefined ? "" : obj.mode);
-		parameters = (obj.parameters === undefined ? "" : obj.parameters);
+		var table = (obj.table === undefined ? "" : obj.table),
+			id = (obj.id === undefined ? "" : obj.id),
+			ct = (obj.ct === undefined ? "" : obj.ct),
+			editcmd = (obj.editcmd === undefined ? "" : obj.editcmd),
+			dt = (obj.dt === undefined ? "" : obj.dt),
+			url = (obj.url === undefined ? "" : obj.url),
+			code = (obj.code === undefined ? "" : obj.code),
+			mode = (obj.mode === undefined ? "" : obj.mode),
+			parameters = (obj.parameters === undefined ? "" : obj.parameters);
 		WE().layout.weEditorFrameController.openDocument(table, id, ct, editcmd, dt, url, code, mode, parameters);
 	},
 	getWidth: function () {

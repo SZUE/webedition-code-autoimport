@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, transaction,array_rm_elem */
 
 /**
  * webEdition CMS
@@ -23,14 +23,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 
-sel_color = "#006DB8";
-sel_text_color = "#ffffff";
-default_text_color = "#000000";
-default_color = "#ffffff";
+var sel_color = "#006DB8",
+	sel_text_color = "#ffffff",
+	default_text_color = "#000000",
+	default_color = "#ffffff";
 
-passed_dls = [];
+var passed_dls = [];
 
 function showContent(id) {
 	top.content.editor.edbody.messaging_msg_view.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + transaction;
@@ -44,13 +45,13 @@ function check(elem, groupSel) {
 	if (top.content.multi_select === false) {
 
 		//de-select all selected entries
-		for (j = 0; j < parent.entries_selected.length; j++) {
-			highlight_TR(parent.entries_selected[j], default_color, default_text_color);
+		for (j = 0; j < window.parent.entries_selected.length; j++) {
+			highlight_TR(window.parent.entries_selected[j], default_color, default_text_color);
 		}
 
-		parent.entries_selected = [];
+		window.parent.entries_selected = [];
 		doSelectMessage(id);
-	} else if (WE().util.in_array(id, parent.entries_selected)) {
+	} else if (WE().util.in_array(id, window.parent.entries_selected)) {
 		unSelectMessage(id);
 	} else {
 		doSelectMessage(id);
@@ -63,13 +64,13 @@ function doSelectMessage(id) {
 	}
 	showContent(id);
 
-	if (parent.entries_selected.length > 0) {
-		parent.entries_selected.push(id);
+	if (window.parent.entries_selected.length > 0) {
+		window.parent.entries_selected.push(id);
 	} else {
-		parent.entries_selected = [id];
+		window.parent.entries_selected = [id];
 	}
 
-	parent.parent.last_entry_selected = id;
+	window.parent.parent.last_entry_selected = id;
 
 	if (document.getElementsByName("read_0").length) {
 		document.getElementsByName("read_0")[0].classList.remove("msgUnRead");
@@ -108,12 +109,12 @@ function highlight_TR(id, color, text_color) {
 function unSelectMessage(id) {
 	highlight_TR(id, default_color, default_text_color);
 
-	parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
+	window.parent.entries_selected = array_rm_elem(window.parent.entries_selected, id, -1);
 
-	if (parent.entries_selected.length === 0) {
+	if (window.parent.entries_selected.length === 0) {
 		top.content.editor.edbody.messaging_msg_view.location = "about:blank";
 	} else {
-		showContent(parent.entries_selected[parent.entries_selected.length - 1]);
+		showContent(window.parent.entries_selected[parent.entries_selected.length - 1]);
 	}
 }
 
