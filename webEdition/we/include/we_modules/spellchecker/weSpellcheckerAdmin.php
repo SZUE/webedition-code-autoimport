@@ -160,7 +160,7 @@ $_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
 				document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
 			}
 			appletActiv = true;
-			setTimeout(checkApplet, 2000);
+			window.setTimeout(checkApplet, 2000);
 		}
 
 
@@ -169,7 +169,7 @@ $_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
 			setVisible("updateBut_" + dict, false);
 			setVisible("updateIcon_" + dict, true);
 			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-			setTimeout(selectDict, 1000, dict);
+			window.setTimeout(selectDict, 1000, dict);
 	}
 
 	function updateDict(dict) {
@@ -177,7 +177,7 @@ $_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
 			setVisible("updateBut_" + dict, false);
 			setVisible("updateIcon_" + dict, true);
 			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-			setTimeout(selectDict, 1000, dict);
+			window.setTimeout(selectDict, 1000, dict);
 		}
 	//-->
 </script>

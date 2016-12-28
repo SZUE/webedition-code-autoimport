@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var weTabs = new (WE().layout.we_tabs)(document, window);
 
 function setTab(tab) {
@@ -31,9 +32,9 @@ function setTab(tab) {
 		// Add new tab handlers here
 
 		default: // just toggle content to show
-			parent.edbody.document.we_form.pnt.value = "edbody";
-			parent.edbody.document.we_form.tabnr.value = tab;
-			parent.edbody.submitForm();
+			window.parent.edbody.document.we_form.pnt.value = "edbody";
+			window.parent.edbody.document.we_form.tabnr.value = tab;
+			window.parent.edbody.submitForm();
 			break;
 	}
 	top.content.activ_tab = tab;

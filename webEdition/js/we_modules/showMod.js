@@ -22,6 +22,8 @@
  */
 
 /* global WE, top */
+'use strict';
+
 var moduleData = WE().util.getDynamicVar(document, 'loadVarShowMod', 'data-moduleData');
 
 var weTabs = new (WE().layout.we_tabs)(document, window);
@@ -68,24 +70,24 @@ function we_cmd() {
 			top.content.drawTree();
 			break;
 		case 'makeTreeEntry':
-			top.content.treeData.makeNewEntry.apply(this, args);
+			top.content.treeData.makeNewEntry.apply(window, args);
 			break;
 		case 'updateTreeEntry':
-			top.content.treeData.updateEntry.apply(this, args);
+			top.content.treeData.updateEntry.apply(window, args);
 			break;
 		case 'deleteTreeEntry':
-			top.content.treeData.deleteEntry.apply(this, args);
+			top.content.treeData.deleteEntry.apply(window, args);
 			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(window, args);
 	}
 }
 
 var current = moduleData.mod;
 function setTab(module) {
 	if (top.content.hot) {
-		if (!confirm(WE().consts.g_l.alert.discard_changed_data)) {
+		if (!window.confirm(WE().consts.g_l.alert.discard_changed_data)) {
 			weTabs.setActiveTab(current);
 			return;
 		}

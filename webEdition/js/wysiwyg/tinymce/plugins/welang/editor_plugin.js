@@ -1,3 +1,5 @@
+/* global tinymce */
+'use strict';
 (function () {
 	tinymce.create('tinymce.plugins.WelangPlugin', {
 		init: function (ed, f) {
@@ -28,7 +30,7 @@
 		createControl: function () {
 			return null;
 		},
-			
+
 		getInfo: function () {
 			return {
 				longname: 'Welang plugin',

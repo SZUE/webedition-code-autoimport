@@ -23,11 +23,11 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 document.addEventListener("keyup", doKeyDown, true);
 
 function doKeyDown(e) {
-	var key = (e.charCode === undefined ? event.keyCode : e.charCode);
-	switch (key) {
+	switch (e.charCode) {
 		case 27:
 			top.close();
 			break;

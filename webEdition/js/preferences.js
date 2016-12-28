@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,window,Detector */
 
 /**
  * webEdition CMS
@@ -23,12 +23,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var hot = false;
 var args = "";
 var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 
-mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
-showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
+var mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
+var showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
 
 WE().util.loadConsts(document, "g_l.prefs");
 
@@ -38,11 +39,12 @@ function checkAllRevert() {
 }
 
 function openVersionWizard() {
-	parent.opener.top.we_cmd("versions_wizard");
+	window.parent.opener.top.we_cmd("versions_wizard");
 }
 
 function disable_xhtml_fields(val, fields) {
-	for (i = 0; i < fields.length; i++) {
+	var elem, label;
+	for (var i = 0; i < fields.length; i++) {
 		elem = document.forms[0][fields[i]];
 		label = document.getElementById("label_" + fields[i]);
 		if (val == 1) {
@@ -62,9 +64,9 @@ function set_xhtml_field(val, field) {
 }
 
 function handle_message_reporting_click() {
-	val = 0;
-	var fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
-	for (i = 0; i < fields.length; i++) {
+	var val = 0,
+		fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
+	for (var i = 0; i < fields.length; i++) {
 
 		if (document.getElementById(fields[i]).checked) {
 			val += parseInt(document.getElementById(fields[i]).value);
@@ -74,6 +76,7 @@ function handle_message_reporting_click() {
 }
 
 function set_state_error_handler() {
+	var _new_state, _new_style, _new_cursor;
 	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked === true) {
 		_new_state = false;
 		_new_style = 'black';
@@ -108,6 +111,7 @@ function set_state_error_handler() {
 }
 
 function set_state_auth() {
+	var _new_state;
 	if (document.getElementsByName('useauthEnabler')[0].checked === true) {
 		document.getElementsByName('newconf[useauth]')[0].value = 1;
 		_new_state = false;
@@ -149,7 +153,7 @@ function setColorChooserDisabled(id, disabled) {
 }
 
 function displayEditorOptions(editor) {
-	tmp = document.getElementsByClassName("editor");
+	var tmp = document.getElementsByClassName("editor");
 	for (var k = 0; k < tmp.length; k++) {
 		tmp[k].style.display = "none";
 	}
@@ -167,7 +171,7 @@ function initEditorMode() {
 function resetLocales() {
 	if (document.getElementById('locale_temp_locales').options.length > 0) {
 		var temp = [document.getElementById('locale_temp_locales').options.length];
-		for (i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+		for (var i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
 			temp[i] = document.getElementById('locale_temp_locales').options[i].value;
 		}
 		document.getElementById('locale_locales').value = temp.join(",");
@@ -192,8 +196,8 @@ function defaultLocale() {
 
 function setDefaultLocale(Value) {
 	if (document.getElementById('locale_temp_locales').options.length > 0) {
-		Index = 0;
-		for (i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+		var Index = 0;
+		for (var i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
 			if (document.getElementById('locale_temp_locales').options[i].value == Value) {
 				Index = i;
 			}
@@ -206,8 +210,10 @@ function setDefaultLocale(Value) {
 }
 
 function set_state_edit_delete_recipient() {
-	var p = document.forms[0].elements.we_recipient;
-	var i = p.length;
+	var p = document.forms[0].elements.we_recipient,
+		i = p.length,
+		edit_enabled,
+		delete_enabled;
 	if (i === 0) {
 		edit_enabled = WE().layout.button.switch_button_state(document, 'edit', 'disabled');
 		delete_enabled = WE().layout.button.switch_button_state(document, 'delete', 'disabled');
@@ -275,11 +281,9 @@ function formmailBlockOnOff() {
 }
 
 function set_state() {
-	if (document.getElementsByName('newconf[useproxy]')[0].checked === true) {
-		_new_state = false;
-	} else {
-		_new_state = true;
-	}
+	var _new_state = (document.getElementsByName('newconf[useproxy]')[0].checked === true ?
+		false :
+		true);
 
 	document.getElementsByName('newconf[proxyhost]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
@@ -315,7 +319,7 @@ function addLocale() {
 	}
 
 	var found = false;
-	for (i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+	for (var i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
 		if (document.getElementById('locale_temp_locales').options[i].value === LocaleValue) {
 			found = true;
 		}
@@ -369,12 +373,12 @@ function doDelete_recipient() {
 }
 
 function add_recipient() {
-	var newRecipient = prompt(WE().consts.g_l.prefs.input_name, "");
+	var newRecipient = window.prompt(WE().consts.g_l.prefs.input_name, "");
 	var p = document.forms[0].elements.we_recipient;
 	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255) {
-				top.we_showMessage(g_l.max_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.max_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -398,7 +402,7 @@ function edit_recipient() {
 	var editRecipient;
 	if (p.selectedIndex >= 0) {
 		editRecipient = p.options[p.selectedIndex].text;
-		editRecipient = prompt(WE().consts.g_l.prefs.recipient_new_name, editRecipient);
+		editRecipient = window.prompt(WE().consts.g_l.prefs.recipient_new_name, editRecipient);
 	}
 
 	if (p.selectedIndex >= 0 && editRecipient !== null) {
@@ -493,18 +497,18 @@ function show_seem_chooser(val) {
 }
 
 function selectSidebarDoc() {
-	myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
-	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
+	var myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
+	window.parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 }
 
 function select_seem_start() {
-	myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
+	var myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
 	if (document.getElementById('seem_start_type').value == 'object') {
 		if (WE().consts.tables.OBJECT_FILES_TABLE) {
-			parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
+			window.parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
 	} else {
-		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
+		window.parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 	}
 }
 function we_cmd() {
@@ -533,7 +537,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -549,7 +553,7 @@ function checkFonts() {
 	var detective = new Detector();
 	var elements = document.getElementsByName("newconf[editorFontname]")[0].children;
 	var elements2 = document.getElementsByName("newconf[editorTooltipFontname]")[0].children;
-	for (i = 0; i < elements.length; ++i) {
+	for (var i = 0; i < elements.length; ++i) {
 		if (!detective.detect(elements[i].value)) {
 			elements[i].disabled = "disabled";
 			elements2[i].disabled = "disabled";
@@ -561,11 +565,11 @@ function doClose() {
 	doCloseDyn();
 	var childs = top.document.getElementById("tabContainer").children;
 	childs[0].className = "tabActive";
-	for (i = 1; i < childs.length; ++i) {
+	for (var i = 1; i < childs.length; ++i) {
 		childs[i].className = "tabNormal";
 	}
 
-	this.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_preferences.php";
-	setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
+	window.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_preferences.php";
+	window.setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
 
 }

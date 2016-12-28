@@ -23,12 +23,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var aTabs = WE().util.getDynamicVar(document, 'loadVarCustomerHeader', 'data-customerHeader');
 
 function setTab(tab) {
 	top.content.activ_tab = tab;
-	parent.edbody.we_cmd("switchPage", tab);
+	window.parent.edbody.we_cmd("switchPage", tab);
 }
 
 function loaded() {

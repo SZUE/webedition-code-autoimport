@@ -56,35 +56,38 @@ class we_versions_view{
 			  }'; */
 		}
 
-		return we_html_element::jsElement('
-var rows = ' . (isset($_REQUEST['searchFields']) ? count($_REQUEST['searchFields']) - 1 : 0) . ';
-var transaction="' . $GLOBALS['we_transaction'] . '";
-var doc={
-	ID:' . intval($GLOBALS['we_doc']->ID) . ',
-	Table:"' . $GLOBALS['we_doc']->Table . '",
-	ClassName:"' . get_class($GLOBALS['we_doc']) . '",
-	Text:"' . $GLOBALS['we_doc']->Text . '",
-};
-
-var searchClass={
-	scrollHeight:' . $h . ',
-	anzahl:' . intval($this->Model->getProperty('currentAnzahl')) . ',
-	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, [
-							'class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);']))) . '",
-	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont",
-							'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	locationFieldsDate:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, [
-							'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	locationFieldsText:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, [
-							'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont",
-							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
-	trash:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_row__)") . '\',
-	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont",
-							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
-	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, ['class' => "defaultfont",
-							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
-};') . we_html_element::jsScript(JS_DIR . 'versions_view.js');
+		return we_html_element::jsScript(JS_DIR . 'versions_view.js', '', ['id' => 'loadVarVersionView',
+				'data-searchClass' => setDynamicVar([
+					'scrollHeight' => $h,
+					'anzahl' => intval($this->Model->getProperty('currentAnzahl')),
+					'searchFields' => we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, [
+						'class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);']),
+					'locationFields' => we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont",
+						'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]),
+					'locationFieldsDate' => we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, [
+						'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]),
+					'locationFieldsText' => we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, [
+						'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]),
+					'search' => we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont",
+						'style' => "width:190px;", 'id' => "search[__we_new_id__]"]),
+					'trash' => we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_row__)"),
+					'searchUsers' => we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont",
+						'style' => "width:190px;", 'id' => "search[__we_new_id__]"]),
+					'searchStats' => we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, ['class' => "defaultfont",
+						'style' => "width:190px;", 'id' => "search[__we_new_id__]"])
+					]
+				),
+				'data-doc' => setDynamicVar([
+					'ID' => intval($GLOBALS['we_doc']->ID),
+					'Table' => $GLOBALS['we_doc']->Table,
+					'ClassName' => get_class($GLOBALS['we_doc']),
+					'Text' => $GLOBALS['we_doc']->Text,
+				]),
+				'data-props' => setDynamicVar([
+					'transaction' => $GLOBALS['we_transaction'],
+					'rows' => (isset($_REQUEST['searchFields']) ? count($_REQUEST['searchFields']) - 1 : 0)
+				])
+		]);
 	}
 
 	/**
@@ -202,7 +205,7 @@ var searchClass={
 				"order" => $order,
 				"mode" => $mode,
 				"height" => $height
-				]) .
+			]) .
 			'<table class="default" style="margin-top:20px;margin-bottom:12px;">
 <tr id="beschreibung_print" class="defaultfont">
 	<td>
@@ -344,14 +347,14 @@ var searchClass={
 			$resetFromVersion = ($versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $versions[$f]['resetFromVersion'] . "--" : "";
 
 			$content[] = [
-					['dat' => '<nobr>' . $vers . '</nobr>'],
-					['dat' => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'],
-					['dat' => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-") . ' </nobr>'],
-					['dat' => (($modificationText != '') ? $modificationText : '') .
+				['dat' => '<nobr>' . $vers . '</nobr>'],
+				['dat' => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'],
+				['dat' => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-") . ' </nobr>'],
+				['dat' => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler ?: '') .
 					($fromImport ?: '') .
 					($resetFromVersion ?: '')],
-					['dat' => (permissionhandler::hasPerm('ADMINISTRATOR')) ? we_html_forms::checkbox($versions[$f]['ID'], 0, 'deleteVersion', '', false, 'defaultfont', '') : ''],
+				['dat' => (permissionhandler::hasPerm('ADMINISTRATOR')) ? we_html_forms::checkbox($versions[$f]['ID'], 0, 'deleteVersion', '', false, 'defaultfont', '') : ''],
 				['dat' => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", '', 0, 0, "", "", $disabledReset) . "</span>"],
 				['dat' => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $table . "'," . $id . "," . $versions[$f]["version"] . ");") . "</span>"],
 				['dat' => "<span class='printShow'>" .
@@ -371,17 +374,17 @@ var searchClass={
 	 */
 	public function makeHeadLines(){
 		return [
-				['dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'],
+			['dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'],
 			['dat' => g_l('versions', '[modifications]')],
-				['dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
+			['dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
 				we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")],
-				['dat' => ''],
-				['dat' => ''],
-				['dat' => ''],
-				['dat' => ''],
+			['dat' => ''],
+			['dat' => ''],
+			['dat' => ''],
+			['dat' => ''],
 		];
 	}
 

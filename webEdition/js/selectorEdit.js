@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function setSize() {
 	var ta = document.getElementById("editFile");
@@ -32,7 +33,7 @@ function setSize() {
 
 
 function init() {
-	opener.top.fscmd.selectDir();
+	window.opener.top.fscmd.selectDir();
 	window.close();
 }
 

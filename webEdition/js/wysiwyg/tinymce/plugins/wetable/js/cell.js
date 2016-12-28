@@ -1,4 +1,5 @@
 /* global tinyMCEPopup */
+'use strict';
 
 tinyMCEPopup.requireLangPack();
 
@@ -8,8 +9,8 @@ function init() {
 	ed = tinyMCEPopup.editor;
 	tinyMCEPopup.resizeToInnerSize();
 
-	document.getElementById('backgroundimagebrowsercontainer').innerHTML = getBrowserHTML('backgroundimagebrowser','backgroundimage','image','table');
-	document.getElementById('bordercolor_pickcontainer').innerHTML = getColorPickerHTML('bordercolor_pick','bordercolor');
+	document.getElementById('backgroundimagebrowsercontainer').innerHTML = getBrowserHTML('backgroundimagebrowser', 'backgroundimage', 'image', 'table');
+	document.getElementById('bordercolor_pickcontainer').innerHTML = getColorPickerHTML('bordercolor_pick', 'bordercolor');
 	document.getElementById('bgcolor_pickcontainer').innerHTML = getColorPickerHTML('bgcolor_pick', 'bgcolor');
 
 	var inst = ed;
@@ -53,17 +54,19 @@ function init() {
 		selectByValue(formObj, 'scope', scope);
 
 		// Resize some elements
-		if (isVisible('backgroundimagebrowser'))
+		if (isVisible('backgroundimagebrowser')){
 			document.getElementById('backgroundimage').style.width = '180px';
+		}
 
 		updateColor('bordercolor_pick', 'bordercolor');
 		updateColor('bgcolor_pick', 'bgcolor');
-	} else
+	} else{
 		tinyMCEPopup.dom.hide('action');
+	}
 }
 
 function updateAction() {
-	var el, inst = ed, tdElm, trElm, tableElm, formObj = document.forms[0];
+	var el, inst = ed, tdElm, trElm, tableElm, formObj = document.forms[0], i, cell, row;
 
 	if (!AutoValidator.validate(formObj)) {
 		tinyMCEPopup.alert(AutoValidator.getErrorMessages(formObj).join('. ') + '.');
@@ -79,7 +82,7 @@ function updateAction() {
 	// Cell is selected
 	if (ed.dom.hasClass(tdElm, 'mceSelected')) {
 		// Update all selected sells
-		tinymce.each(ed.dom.select('td.mceSelected,th.mceSelected'), function(td) {
+		tinymce.each(ed.dom.select('td.mceSelected,th.mceSelected'), function (td) {
 			updateCell(td);
 		});
 
@@ -121,8 +124,9 @@ function updateAction() {
 		case "row":
 			var cell = trElm.firstChild;
 
-			if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
 				cell = nextCell(cell);
+			}
 
 			do {
 				cell = updateCell(cell, true);
@@ -131,22 +135,27 @@ function updateAction() {
 			break;
 
 		case "col":
-			var curr, col = 0, cell = trElm.firstChild, rows = tableElm.getElementsByTagName("tr");
+			var curr, col = 0;
+			cell = trElm.firstChild;
+			rows = tableElm.getElementsByTagName("tr");
 
-			if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
 				cell = nextCell(cell);
+			}
 
 			do {
-				if (cell == tdElm)
+				if (cell == tdElm){
 					break;
+				}
 				col += cell.getAttribute("colspan") ? cell.getAttribute("colspan") : 1;
 			} while ((cell = nextCell(cell)) !== null);
 
-			for (var i=0; i<rows.length; i++) {
+			for (var i = 0; i < rows.length; i++) {
 				cell = rows[i].firstChild;
 
-				if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
+				if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
 					cell = nextCell(cell);
+				}
 
 				curr = 0;
 				do {
@@ -163,7 +172,7 @@ function updateAction() {
 		case "all":
 			var rows = tableElm.getElementsByTagName("tr");
 
-			for (var i=0; i<rows.length; i++) {
+			for (i = 0; i < rows.length; i++) {
 				var cell = rows[i].firstChild;
 
 				if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
@@ -239,10 +248,10 @@ function updateCell(td, skip_id) {
 		// changing to a different node type
 		var newCell = doc.createElement(celltype);
 
-		for (var c=0; c<td.childNodes.length; c++)
+		for (var c = 0; c < td.childNodes.length; c++)
 			newCell.appendChild(td.childNodes[c].cloneNode(1));
 
-		for (var a=0; a<td.attributes.length; a++)
+		for (var a = 0; a < td.attributes.length; a++)
 			ed.dom.setAttrib(newCell, td.attributes[a].name, ed.dom.getAttrib(td, td.attributes[a].name));
 
 		td.parentNode.replaceChild(newCell, td);
@@ -309,12 +318,12 @@ function changedStyle() {
 
 	if (st['background-color']) {
 		formObj.bgcolor.value = st['background-color'];
-		updateColor('bgcolor_pick','bgcolor');
+		updateColor('bgcolor_pick', 'bgcolor');
 	}
 
 	if (st['border-color']) {
 		formObj.bordercolor.value = st['border-color'];
-		updateColor('bordercolor_pick','bordercolor');
+		updateColor('bordercolor_pick', 'bordercolor');
 	}
 }
 

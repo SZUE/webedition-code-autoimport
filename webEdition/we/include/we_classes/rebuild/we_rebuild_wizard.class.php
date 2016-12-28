@@ -264,7 +264,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
 					top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 				}else{
-					setTimeout(set_button_state,300);
+					window.setTimeout(set_button_state,300);
 				}
 			}
 			set_button_state();';

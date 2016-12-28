@@ -1,5 +1,6 @@
 /* global CodeMirror,define */
 /*taken in parts from https://github.com/coderaiser/cm-show-invisibles*/
+'use strict';
 
 (function (mod) {
 	'use strict';

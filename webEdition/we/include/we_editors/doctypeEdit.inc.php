@@ -152,7 +152,7 @@ switch($wecmd0){
 			break;
 		}
 		?>
-				if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
+				if (window.confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
 			we_cmd("deleteDocTypeok", "<?= we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
 				}
 		<?php

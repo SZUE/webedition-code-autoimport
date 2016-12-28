@@ -25,13 +25,14 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 
 function loadTable() {
 	if (hiddenCmd.dispatch) {
 		hiddenCmd.dispatch("refresh");
 	} else {
-		setTimeout(loadTable, 1000);
+		window.setTimeout(loadTable, 1000);
 	}
 }
 function setTab(tab) {
@@ -44,7 +45,7 @@ function selectDict(dict) {
 	if (document.spellcheckerCmd.isReady) {
 		if (document.spellcheckerCmd.isReady()) {
 			document.spellcheckerCmd.setDict(dict);
-			setTimeout(setStatusDone, 3000, dict);
+			window.setTimeout(setStatusDone, 3000, dict);
 		}
 	}
 }
@@ -57,7 +58,7 @@ function setStatusDone(dict) {
 			return;
 		}
 	}
-	setTimeout(setStatusDone, 3000);
+	window.setTimeout(setStatusDone, 3000);
 }
 
 
@@ -75,7 +76,7 @@ function showDictSelector() {
 	setVisible("addButt", false);
 	document.getElementById("selector").style.height = "100px";
 	setVisible("dictSelector", true);
-	setTimeout(setAppletCode, 1000);
+	window.setTimeout(setAppletCode, 1000);
 }
 
 function hideDictSelector() {
@@ -87,7 +88,7 @@ function hideDictSelector() {
 function checkApplet() {
 	if (appletActiv && document.spellchecker.uploadFinished && document.spellchecker.uploadFinished()) {
 		if (document.spellchecker.packingFinished()) {
-			top.we_showMessage(g_l.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		hideDictSelector();
 		appletActiv = false;
@@ -95,11 +96,11 @@ function checkApplet() {
 		return;
 	}
 
-	setTimeout(checkApplet, 2000);
+	window.setTimeout(checkApplet, 2000);
 }
 
 function deleteDict(name) {
-	if (confirm(WE().util.sprintf(g_l.ask_dict_del, name))) {
+	if (window.confirm(WE().util.sprintf(WE().consts.g_l.ask_dict_del, name))) {
 		hiddenCmd.dispatch("deleteDict", name);
 	}
 }

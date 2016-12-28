@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 WE().util.loadConsts(document, "g_l.users");
 
 var usersData = WE().util.getDynamicVar(document, 'loadVarUsersView', 'data-users');
@@ -49,7 +50,7 @@ function we_cmd() {
 		return;
 	}
 	if (hot && args[0] !== "save_user") {
-		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
+		if (window.confirm(WE().consts.g_l.users.view.save_changed_user)) {
 			args[0] = "save_user";
 		} else {
 			top.content.usetHot();
@@ -114,13 +115,13 @@ function we_cmd() {
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter" + home;
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
 function saveBeforeNextCmd(args) {
 	if (hot && top.content.editor.edbody.document.we_form.cmd) {
-		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
+		if (window.confirm(WE().consts.g_l.users.view.save_changed_user)) {
 			top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 			top.content.editor.edbody.document.we_form.sd.value = 1;
 		} else {

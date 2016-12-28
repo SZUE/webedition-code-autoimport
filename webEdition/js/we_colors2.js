@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var selector = WE().util.getDynamicVar(document, 'loadVarSelectorColor', 'data-selector');
 
 var we_color2 = {
@@ -279,13 +280,13 @@ function init(color) {
 
 function setColor() {
 	if (selector.isA) {
-		opener.document.we_form.elements[selector.cmd1].value = document.we_form.colorvalue.value;
+		window.opener.document.we_form.elements[selector.cmd1].value = document.we_form.colorvalue.value;
 		//FIXME: eval
 		if (selector.cmd3) {
 			eval(selector.cmd3);
 		} else {
-			opener._EditorFrame.setEditorIsHot(true);
-			opener.we_cmd("reload_editpage");
+			window.opener._EditorFrame.setEditorIsHot(true);
+			window.opener.we_cmd("reload_editpage");
 		}
 	} else {
 		window.returnValue = document.we_form.colorvalue.value;

@@ -125,7 +125,7 @@ if($this->Data['allEntries']){ // entries exist
 echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js') .
 	we_html_element::jsElement('
 function confirmDelete() {
-	if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
+	if (window.confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
 		deleteEntries();
 	}
 }

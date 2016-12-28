@@ -1,4 +1,5 @@
 /* global WE */
+'use strict';
 
 /**
  * webEdition CMS
@@ -28,8 +29,7 @@ var allVats = WE().util.getDynamicVar(document, 'loadVarEdit_shop_vats', 'data-a
 var hot = false;
 
 function doKeyDown(e) {
-	var key = (e.charCode === undefined ? event.keyCode : e.charCode);
-	switch (key) {
+	switch (e.charCode) {
 		case 27:
 			top.close();
 			break;
@@ -64,16 +64,16 @@ function closeOnEscape() {
 }
 
 function changeFormTextField(theId, newVal) {
-	if (document.getElementById(theId) === null) {
+	/*if (document.getElementById(theId) === null) {
 		console.log(theId);
-	}
+	}*/
 	document.getElementById(theId).value = newVal;
 }
 
 function changeFormSelect(theId, newVal) {
-	elem = document.getElementById(theId);
+	var elem = document.getElementById(theId);
 
-	for (i = 0; i < elem.options.length; i++) {
+	for (var i = 0; i < elem.options.length; i++) {
 		if (elem.options[i].value == newVal) {
 			elem.selectedIndex = i;
 		}
@@ -86,7 +86,8 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var elem,theVat;
 
 	switch (args[0]) {
 		case "save":
@@ -102,7 +103,7 @@ function we_cmd() {
 			if (hot) {
 				new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			} else {
-				this.close();
+				window.close();
 			}
 			break;
 

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 WE().util.loadConsts(document, "g_l.versions");
 var logView = WE().util.getDynamicVar(document, 'loadVarVersions_logview', 'data-logView');
 
@@ -149,7 +150,7 @@ function back(id) {
 	document.getElementById("startNumber_" + id).innerHTML = newstartNumber;
 
 
-	newshowNumber = (newstartNumber + logView.versionPerPage);
+	var newshowNumber = (newstartNumber + logView.versionPerPage);
 	document.getElementById("showNumber_" + id).innerHTML = newshowNumber;
 
 	document.getElementsByName("start_" + id)[0].value = parseInt(newStart);

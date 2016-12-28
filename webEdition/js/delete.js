@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var deleteData = WE().util.getDynamicVar(document, 'loadVarDelete', 'data-deleteData');
 
 
@@ -56,7 +57,7 @@ function we_submitForm(target, url) {
 
 function we_cmd() {
 	if (top.we_cmd) {
-		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

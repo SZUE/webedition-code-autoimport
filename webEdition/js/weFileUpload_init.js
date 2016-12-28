@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 window.initObj = WE().util.getDynamicVar(document, 'loadVarWeFileUpload_init', 'data-initObject');
 window.weFileUpload_instance = new WE().layout.weFileUpload(window.initObj.uiType, window);

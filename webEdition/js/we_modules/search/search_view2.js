@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,treeData */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var activ_tab = 1;
 var hot = false;
 
@@ -54,7 +55,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_edit", args[1]);
+				window.setTimeout(we_cmd, 10, "tool_weSearch_edit", args[1]);
 			}
 			break;
 		case "tool_weSearch_new":
@@ -66,7 +67,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -85,11 +86,11 @@ function we_cmd() {
 			break;
 		case "tool_weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
-				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			} else if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-					var name = prompt(WE().consts.g_l.weSearch.nameForSearch, "");
+					var name = window.prompt(WE().consts.g_l.weSearch.nameForSearch, "");
 					if (name === null) {
 						break;
 					} else {
@@ -101,20 +102,20 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "tool_weSearch_delete":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
-				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1 || !top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_WESEARCH")) {
-				top.we_showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
@@ -138,7 +139,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new_forDocuments");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forDocuments");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -154,7 +155,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new_forTemplates");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forTemplates");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -170,7 +171,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new_forObjects");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forObjects");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -186,7 +187,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new_forMedia");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forMedia");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -202,14 +203,14 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "tool_weSearch_new_advSearch");
+				window.setTimeout(we_cmd, 10, "tool_weSearch_new_advSearch");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
 		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

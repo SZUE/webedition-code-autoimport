@@ -20,6 +20,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 	var webeditionOverlay = {

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var activ_tab = 1;
 var hot = false;
 var makeNewDoc = false;
@@ -58,7 +59,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(top.content.we_cmd, 10, "module_navigation_edit", args[1]);
+				window.setTimeout(top.content.we_cmd, 10, "module_navigation_edit", args[1]);
 			}
 			break;
 		case "module_navigation_new":
@@ -73,10 +74,10 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(top.content.we_cmd, 10, args[0]);
+				window.setTimeout(top.content.we_cmd, 10, args[0]);
 			}
-			if ((this.treeData !== undefined) && treeData) {
-				treeData.unselectNode();
+			if ((window.treeData !== undefined) && window.treeData) {
+				window.treeData.unselectNode();
 			}
 			break;
 		case "module_navigation_save":
@@ -84,7 +85,7 @@ function we_cmd() {
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.editor.edbody.document.we_form.presetFolder) {
@@ -129,21 +130,21 @@ function we_cmd() {
 			break;
 		case "module_navigation_delete":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone) {
 				if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-					WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+					WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
 			}
 			if (!WE().util.hasPerm("DELETE_NAVIGATION")) {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.delete_alert, ["module_navigation_delete_do"]);
@@ -205,12 +206,12 @@ function we_cmd() {
 			}
 			break;
 		case "del_mode":
-			top.content.treeData.setState(treeData.tree_states.select);
+			top.content.treeData.setState(top.content.treeData.tree_states.select);
 			top.content.treeData.unselectNode();
 			top.content.drawTree();
 			/* falls through */
 		case "move_mode":
-			top.content.treeData.setState(treeData.tree_states.selectitem);
+			top.content.treeData.setState(top.content.treeData.tree_states.selectitem);
 			top.content.treeData.unselectNode();
 			top.content.drawTree();
 			break;
@@ -247,7 +248,7 @@ function we_cmd() {
 			we_repl(window.load, url, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_navigation_do_reset_customer_filter");
 			return true;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -300,7 +301,7 @@ function populateFolderWs(type, prefix) {
 			top.content.editor.edbody.document.we_form.WorkspaceID.options[top.content.editor.edbody.document.we_form.WorkspaceID.options.length] = new Option("-1", -1);
 			top.content.editor.edbody.document.we_form.LinkID.value = "";
 			top.content.editor.edbody.document.we_form.LinkPath.value = "";
-			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 	}
 }
@@ -323,7 +324,7 @@ function populateWorkspaces(type, prefix) {
 			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options[top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length] = new Option("-1", -1);
 			top.content.editor.edbody.document.we_form.LinkID.value = "";
 			top.content.editor.edbody.document.we_form.LinkPath.value = "";
-			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 	}
 }

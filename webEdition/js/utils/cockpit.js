@@ -1,3 +1,5 @@
+/* global oTblWidgets,updateJsStyleCls,saveSettings */
+
 /**
  * webEdition CMS
  *
@@ -21,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var bInitDrag = false;
 
@@ -42,9 +45,9 @@ var oEvt = {
 		if (isNaN(parseInt(oWidgetDiv.style.top))) {
 			oWidgetDiv.style.top = '0px';
 		}
-		oWidgetDiv.onDragStart = function(){};
-		oWidgetDiv.onDragEnd = function(){};
-		oWidgetDiv.onDrag = function(){};
+		oWidgetDiv.onDragStart = function () {};
+		oWidgetDiv.onDragEnd = function () {};
+		oWidgetDiv.onDrag = function () {};
 	},
 	uninit: function (oWidgetTbl, oWidgetDiv) {
 		window.clearInterval(oWidgetDiv.H);
@@ -67,7 +70,7 @@ var oEvt = {
 			obj.lastMouseY -= document.body.scrollTop;
 		}
 		obj.H = window.setInterval(setPosition, 10, obj, (document.body.scrollHeight > document.documentElement.clientHeight ?
-						document.body.scrollHeight : document.documentElement.clientHeight));
+			document.body.scrollHeight : document.documentElement.clientHeight));
 		document.onmouseup = oEvt.end;
 		document.onmousemove = oEvt.drag;
 		return false;
@@ -119,12 +122,13 @@ var oEvt = {
 		if (oMouseEvt.layerY !== undefined) {
 			oMouseEvt.layerY = oMouseEvt.offsetY;
 		}
-		if (oMouseEvt.which !== undefined) {
+		/*if (oMouseEvt.which !== undefined) {
 			oMouseEvt.which = oMouseEvt.button;
-		}
+		}*/
 		return oMouseEvt;
 	}
 };
+
 var le_dragInit = function (oMouseEvt) {
 	oWidget.oTbl = oMouseEvt;
 	oWidget.oTblRow = oWidget.oTbl.tBodies[0].rows[0];
@@ -227,12 +231,92 @@ var oWidget = {
 	}
 };
 
-function setHandler(oDiv) {
-	this._dragStart = onInsertNode;
-	this._drag = onDragNode;
-	this._dragEnd = getBr;
-	this.fDrop = drop;
-	this.fUnset = unset;
+var setHandler = function (oDiv) {
+	this._dragStart = function () {
+		oWidget.adaptOffset(this);
+		this.origNextSibling = this.node.nextSibling;
+		var oNodeInsert = oWidget.p();
+		var iOffsetH = this.node.offsetHeight;
+		if (oWidget.Gecko) {
+			iOffsetH -= parseInt(oNodeInsert.style.borderTopWidth) * 2;
+		}
+		var iOffsetW = (document.getElementById(this.node.id + '_res').value === 0 ? 225 : 452);
+		//var iOffsetW=this.node.offsetWidth;
+		var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
+		var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);
+		oWidget.hide();
+		oNodeInsert.style.height = '1px';
+		// set height, if it is narrow
+		oNodeInsert.style.width = iOffsetW + "px";
+
+		this.node.parentNode.insertBefore(oNodeInsert, this.node.nextSibling);
+		this.node.style.position = 'absolute';
+
+		this.node.style.zIndex = 100;
+		this.node.style.left = iOffsetTrue + 'px';
+		this.node.style.top = iOffsetFalse + 'px';
+
+		oWidget.show();
+		oWidget.appendMaskClone(this);
+
+		oNodeInsert.style.height = iOffsetH + 'px'; // IMPORTANT set height late otherwise the screen "jumps" 727
+
+		this.bSet = false;
+		return false;
+	};
+	this._drag = function (iPosX, iPosY) {
+		if (!this.bSet) {
+			this.node.style.filter = 'alpha(opacity=70)';
+			this.node.style.opacity = 0.7;
+			this.bSet = true;
+		}
+		var oBuff = null;
+		var iMax = 99999999;
+		var obj;
+		for (var i = 0; i < oWidget.c.length; i++) {
+			obj = oWidget.c[i];
+			var iCurrPos = Math.sqrt(Math.pow(iPosX - obj.node.pagePosLeft, 2) + Math.pow(iPosY - obj.node.pagePosTop, 2));
+			if (obj == this) {
+				continue;
+			}
+			if (isNaN(iCurrPos)) {
+				continue;
+			}
+			if (iCurrPos < iMax) {
+				iMax = iCurrPos;
+				oBuff = obj;
+			}
+		}
+		obj = oWidget.p();
+		if (oBuff && obj.nextSibling != oBuff.node && oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
+			oBuff.node.parentNode.insertBefore(obj, oBuff.node);
+		}
+	};
+	this._dragEnd = function () {
+		oWidget.removeMasks();
+		if (this.fDrop()) {
+			oWidget.br();
+		}
+		return true;
+	};
+	this.fDrop = function () {
+		var bInsertNode = false;
+		oWidget.hide();
+		this.node.style.position = '';
+		this.node.style.left = '0px';
+		this.node.style.zIndex = '';
+		this.node.style.top = '0px';
+		this.node.style.filter = '';
+		this.node.style.opacity = '';
+		var oNodeDiv = oWidget.p();
+		if (oNodeDiv.nextSibling != this.origNextSibling) {
+			oNodeDiv.parentNode.insertBefore(this.node, oNodeDiv.nextSibling);
+			bInsertNode = true;
+		}
+		oNodeDiv.parentNode.removeChild(oNodeDiv);
+		oWidget.show();
+		return bInsertNode;
+	};
 	this.bSet = false;
 	this.node = oDiv;
 	this.oDragTb = document.getElementById(oDiv.id + '_h');
@@ -242,110 +326,7 @@ function setHandler(oDiv) {
 		this.node.onDrag = oWidget.applyEvt(this, '_drag');
 		this.node.onDragEnd = oWidget.applyEvt(this, '_dragEnd');
 	}
-}
-
-function unset() {
-	if (this.oDragTb) {
-		if (this.b) {
-			this.b.onclick = null;
-			this.b.onmouseup = null;
-			this.b = null;
-		}
-		oEvt.uninit(this.oDragTb, this.node);
-		this.node.onDragStart = null;
-		this.node.onDrag = null;
-		this.node.onDragEnd = null;
-		this.oDragTb = null;
-	}
-	this.node = null;
-}
-
-function onInsertNode() {
-	oWidget.adaptOffset(this);
-	this.origNextSibling = this.node.nextSibling;
-	var oNodeInsert = oWidget.p();
-	var iOffsetH = this.node.offsetHeight;
-	if (oWidget.Gecko) {
-		iOffsetH -= parseInt(oNodeInsert.style.borderTopWidth) * 2;
-	}
-	var iOffsetW = (document.getElementById(this.node.id + '_res').value === 0 ? 225 : 452);
-	//var iOffsetW=this.node.offsetWidth;
-	var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
-	var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);
-	oWidget.hide();
-	oNodeInsert.style.height = '1px';
-	// set height, if it is narrow
-	oNodeInsert.style.width = iOffsetW + "px";
-
-	this.node.parentNode.insertBefore(oNodeInsert, this.node.nextSibling);
-	this.node.style.position = 'absolute';
-
-	this.node.style.zIndex = 100;
-	this.node.style.left = iOffsetTrue + 'px';
-	this.node.style.top = iOffsetFalse + 'px';
-
-	oWidget.show();
-	oWidget.appendMaskClone(this);
-
-	oNodeInsert.style.height = iOffsetH + 'px'; // IMPORTANT set height late otherwise the screen "jumps" 727
-
-	this.bSet = false;
-	return false;
-}
-
-function onDragNode(iPosX, iPosY) {
-	if (!this.bSet) {
-		this.node.style.filter = 'alpha(opacity=70)';
-		this.node.style.opacity = 0.7;
-		this.bSet = true;
-	}
-	var oBuff = null;
-	var iMax = 99999999;
-	var obj;
-	for (var i = 0; i < oWidget.c.length; i++) {
-		obj = oWidget.c[i];
-		var iCurrPos = Math.sqrt(Math.pow(iPosX - obj.node.pagePosLeft, 2) + Math.pow(iPosY - obj.node.pagePosTop, 2));
-		if (obj == this)
-			continue;
-		if (isNaN(iCurrPos))
-			continue;
-		if (iCurrPos < iMax) {
-			iMax = iCurrPos;
-			oBuff = obj;
-		}
-	}
-	obj = oWidget.p();
-	if (oBuff && obj.nextSibling != oBuff.node && oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
-		oBuff.node.parentNode.insertBefore(obj, oBuff.node);
-	}
-}
-
-function getBr() {
-	oWidget.removeMasks();
-	if (this.fDrop()) {
-		oWidget.br();
-	}
-	return true;
-}
-
-function drop() {
-	var bInsertNode = false;
-	oWidget.hide();
-	this.node.style.position = '';
-	this.node.style.left = '0px';
-	this.node.style.zIndex = '';
-	this.node.style.top = '0px';
-	this.node.style.filter = '';
-	this.node.style.opacity = '';
-	var oNodeDiv = oWidget.p();
-	if (oNodeDiv.nextSibling != this.origNextSibling) {
-		oNodeDiv.parentNode.insertBefore(this.node, oNodeDiv.nextSibling);
-		bInsertNode = true;
-	}
-	oNodeDiv.parentNode.removeChild(oNodeDiv);
-	oWidget.show();
-	return bInsertNode;
-}
+};
 
 function setPosition(obj, iPx) {
 	return function () {

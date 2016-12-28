@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.thumbnail");
 var thumbnails = WE().util.getDynamicVar(document, 'loadVarThumbnails', 'data-thumbnails');
@@ -63,7 +64,7 @@ function change_thumbnail(id) {
 }
 
 function add_thumbnail() {
-	var name = prompt(WE().consts.g_l.thumbnail.new, '');
+	var name = window.prompt(WE().consts.g_l.thumbnail.new, '');
 
 	if (name === null) {
 		return;
@@ -88,7 +89,7 @@ function add_thumbnail() {
 
 function delete_thumbnail() {
 	if (WE().util.hasPerm('ADMINISTRATOR')) {
-		var deletion = confirm(WE().util.sprintf(WE().consts.g_l.thumbnail.delete_prompt, thumbnails.selectedName));
+		var deletion = window.confirm(WE().util.sprintf(WE().consts.g_l.thumbnail.delete_prompt, thumbnails.selectedName));
 		if (deletion) {
 			window.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=' + thumbnails.selectedID;
 		}

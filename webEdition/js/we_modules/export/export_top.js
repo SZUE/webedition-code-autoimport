@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.exports");
 
@@ -50,7 +51,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] !== "save_export") {
-		if (confirm(WE().consts.g_l.exports.save_changed_export)) {
+		if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
 			args[0] = "save_export";
 		} else {
 			top.content.usetHot();
@@ -65,7 +66,7 @@ function we_cmd() {
 			break;
 		case "new_export_group":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -74,7 +75,7 @@ function we_cmd() {
 			/* falls through */
 		case "new_export":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -84,7 +85,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, args[0]);
+				window.setTimeout(we_cmd, 10, args[0]);
 			}
 			break;
 		case "delete_export":
@@ -92,12 +93,12 @@ function we_cmd() {
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 
@@ -114,11 +115,11 @@ function we_cmd() {
 			break;
 		case "start_export":
 			if (top.content.hot) {
-				WE().util.showMessage(WE().consts.g_l.exports.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edheader.setTab) {
@@ -139,7 +140,7 @@ function we_cmd() {
 			/* falls through */
 		case "save_export":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
@@ -148,7 +149,7 @@ function we_cmd() {
 
 			if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.Text.value === "") {
-					WE().util.showMessage(WE().consts.g_l.exports.name_empty, WE().consts.message.WE_MESSAGE_ERROR, this);
+					WE().util.showMessage(WE().consts.g_l.exports.name_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -172,14 +173,14 @@ function we_cmd() {
 
 				top.content.editor.edbody.submitForm(args[0] === "start_export" ? "cmd" : "edbody");
 			} else {
-				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 
 			}
 			top.content.usetHot();
 			break;
 		case "export_edit":
 			if (!WE().util.hasPerm("EDIT_EXPORT")) {
-				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			top.content.hot = false;
@@ -197,7 +198,7 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=editor";
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

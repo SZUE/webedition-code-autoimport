@@ -1,3 +1,4 @@
+/* global tinymce */
 /**
  * webEdition CMS
  *
@@ -25,6 +26,7 @@
  * This source is based on tinyMCE-plugin "wordcount":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
  */
+'use strict';
 
 (function () {
 	tinymce.create("tinymce.plugins.WeWordCount", {
@@ -103,11 +105,11 @@
 				return;
 			}
 			b.block = 1;
-			setTimeout(function (a, b) {
+			window.setTimeout(function (a, b) {
 				if (!a.destroyed) {
 					var c = b._getCount(a);
 					tinymce.DOM.setHTML(b.id, c.toString());
-					setTimeout(function (b) {
+					window.setTimeout(function (b) {
 						b.block = 0;
 					}, b.update_rate, b);
 				}

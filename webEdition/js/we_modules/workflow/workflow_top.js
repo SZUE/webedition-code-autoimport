@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.workflow");
 
@@ -38,7 +39,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] !== "save_workflow") {
-		var hotConfirmMsg = confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
+		var hotConfirmMsg = window.confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
 			top.content.usetHot();
@@ -59,11 +60,11 @@ function we_cmd() {
 			break;
 		case "delete_workflow":
 			if (!WE().util.hasPerm("DELETE_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				WE().util.showConfirm(window, "", WE().consts.g_l.workflow.view.delete_question, [
 					"delete_workflow_do"]);
@@ -76,11 +77,11 @@ function we_cmd() {
 			break;
 		case "save_workflow":
 			if (!WE().util.hasPerm("EDIT_WORKFLOW") && !WE().util.hasPerm("NEW_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
@@ -115,7 +116,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * webEdition CMS
  *
  * $Rev$
@@ -22,6 +22,7 @@
  */
 
 /* global WE, top */
+'use strict';
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -56,7 +57,7 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
-				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				url += "&pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
 				new (WE().util.jsWindow)(window, url, "field_editor", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
@@ -65,7 +66,7 @@ function we_cmd() {
 		case "delete_field":
 			field = document.we_form.fields_select.value;
 			if (field === "") {
-				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.customer.admin.del_fild_question, ["delete_field_do"]);
@@ -79,7 +80,7 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
-				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			document.we_form.cmd.value = args[0];
@@ -89,9 +90,9 @@ function we_cmd() {
 		case "open_edit_branch":
 			branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 			if (branch === "") {
-				top.we_showMessage(WE().consts.g_l.customer.admin.no_branch, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_branch, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else if (branch === WE().consts.g_l.customer.admin.other) {
-				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				url += "&pnt=branch_editor&art=edit&&branch=" + branch;
 				new (WE().util.jsWindow)(window, url, "field_editor", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
@@ -101,14 +102,14 @@ function we_cmd() {
 		case "save_field":
 			var field_name = document.we_form.name.value;
 			if (field_name === "" || field_name.match(/[^a-zA-Z0-9\_]/) !== null) {
-				top.we_showMessage(WE().consts.g_l.customer.admin.we_fieldname_notValid, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.admin.we_fieldname_notValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = args[0];
 				submitForm("field_editor");
 			}
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

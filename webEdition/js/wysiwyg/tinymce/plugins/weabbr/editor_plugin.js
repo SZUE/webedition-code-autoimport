@@ -1,3 +1,5 @@
+/* global tinymce */
+
 /**
  * webEdition CMS
  *
@@ -20,6 +22,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 //(function(){tinymce.create('tinymce.plugins.WeabbrPlugin',{init:function(e,f){e.addCommand('mceWeabbr',function(){var a=e.selection;if(a.isCollapsed()&&(!e.dom.getParent(a.getNode(),'ABBR')))return;e.windowManager.open({file:f+'/../../../../we_tinymce/abbrDialog.php?we_dialog_args[editor]=tinyMce',popup_css:false,width:460+parseInt(e.getLang('weabbr.delta_width',0)),height:200+parseInt(e.getLang('weabbr.delta_height',0)),inline:1},{plugin_url:f,some_custom_arg:'custom arg'})});e.addButton('weabbr',{title:'we.tt_weabbr',cmd:'mceWeabbr'});e.onNodeChange.add(function(a,b,n,c){var d=n.nodeName=='ABBR';b.setDisabled('weabbr',c&&!d);b.setActive('weabbr',d)})},createControl:function(n,a){return null},getInfo:function(){return{longname:'Weabbr plugin',author:'Some author',authorurl:'http://tinymce.moxiecode.com',infourl:'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/weabbr',version:"1.0"}}});tinymce.PluginManager.add('weabbr',tinymce.plugins.WeabbrPlugin)})();
 (function () {

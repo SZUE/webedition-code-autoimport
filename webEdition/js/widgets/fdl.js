@@ -23,15 +23,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var fdl = WE().util.getDynamicVar(document, 'loadVarFdl', 'data-fdl');
 
 
-function init(){
-	_fo=document.forms[0];
+function init() {
+	//var _fo = document.forms[0];
 	initPrefs();
 }
 
-function save(){
+function save() {
 	savePrefs();
 	previewPrefs();
 	refresh();
@@ -39,18 +40,18 @@ function save(){
 	window.close();
 }
 
-function preview(){
+function preview() {
 	previewPrefs();
 	refresh();
 }
 
-function exit_close(){
+function exit_close() {
 	//previewPrefs();
 	refresh();
 	exitPrefs();
 	window.close();
 }
 
-function refresh(){
-	opener.rpc('','','','','',fdl.refreshCmd);
+function refresh() {
+	window.opener.rpc('', '', '', '', '', fdl.refreshCmd);
 }

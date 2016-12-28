@@ -1,4 +1,4 @@
-/*
+/**
  * webEdition CMS
  *
  * $Rev$
@@ -22,6 +22,7 @@
  */
 
 /* global top, WE */
+'use strict';
 
 var settings = WE().util.getDynamicVar(document, 'loadVarCustomer_sortAdmin', 'data-settings');
 
@@ -35,7 +36,7 @@ function we_cmd() {
 	switch (args[0]) {
 		case "add_sort_field":
 			if (args[1] === "") {
-				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			document.we_form.sortindex.value = args[1];
@@ -49,7 +50,7 @@ function we_cmd() {
 			/* falls through */
 		case "del_sort":
 			if (args[1] === settings.default_sort_view) {
-				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = args[0];
 				document.we_form.sortindex.value = args[1];
@@ -58,19 +59,19 @@ function we_cmd() {
 			break;
 		case "setSorts":
 			var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
-			opener.top.content.document.we_form_treeheader.sort.options.length = 0;
+			window.opener.top.content.document.we_form_treeheader.sort.options.length = 0;
 			for (var i = 0; i < args[1].length; i++) {
-				opener.top.content.addSorting(args[1][i]);
+				window.opener.top.content.addSorting(args[1][i]);
 			}
 
 			if (selected < opener.top.content.document.we_form_treeheader.sort.options.length) {
-				opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;
+				window.opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;
 			} else {
-				opener.top.content.document.we_form_treeheader.sort.selectedIndex = opener.top.content.document.we_form_treeheader.sort.options.length - 1;
+				window.opener.top.content.document.we_form_treeheader.sort.selectedIndex = opener.top.content.document.we_form_treeheader.sort.options.length - 1;
 			}
 
-			opener.top.content.applySort();
-			self.close();
+			window.opener.top.content.applySort();
+			window.close();
 			break;
 		case "save_sort":
 		case "selectBranch":
@@ -78,7 +79,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 	setScrollTo();
@@ -88,12 +89,12 @@ function we_cmd() {
 function doScrollTo() {
 	if (opener.top.content.scrollToVal) {
 		window.scrollTo(0, opener.top.content.scrollToVal);
-		opener.top.content.scrollToVal = 0;
+		window.opener.top.content.scrollToVal = 0;
 	}
 }
 
 function setScrollTo() {
-	opener.top.content.scrollToVal = pageYOffset;
+	window.opener.top.content.scrollToVal = window.pageYOffset;
 }
 
 function submitForm(target, action, method, form) {

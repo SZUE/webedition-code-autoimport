@@ -1,4 +1,4 @@
-/* global top, WE, tinyMCE */
+/* global tinyMCEPopup, tinymce,top, WE, tinyMCE */
 
 /**
  * webEdition CMS
@@ -22,6 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
+
 
 var tinyEditors = {};
 var tinyEditorsInPopup = {};
@@ -283,7 +285,7 @@ function tinyEdOnSaveContent(ed, o) {
 	 */
 }
 
-function tinyPluginManager(n, u, cb, s) {
+var tinyPluginManager = function (n, u, cb, s) {
 	var t = this, url = u;
 	function loadDependencies() {
 		var dependencies = t.dependencies(n);
@@ -314,7 +316,7 @@ function tinyPluginManager(n, u, cb, s) {
 	} else {
 		tinymce.ScriptLoader.add(url, loadDependencies, s);
 	}
-}
+};
 
 function tinyOnPostProcess(ed, o) {
 	var c = document.createElement("div");
@@ -420,7 +422,7 @@ function tinyWeResizeEditor(render, name) {
 	var el = tinyMCE.DOM.get(name + "_toolbargroup");
 	var h = el ? el.parentNode.offsetHeight : 0;
 	if ((render || !el) && --tinyMCE.weResizeLoops && h < 24) {
-		setTimeout(tinyWeResizeEditor, 10, true);
+		window.setTimeout(tinyWeResizeEditor, 10, true);
 		return;
 	}
 

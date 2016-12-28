@@ -23,13 +23,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 /**
  * parent class for the keylistener, this is implemented with the design pattern:
  * "chain of responsibility"
  */
-function keyBoardListener(_successor) {
-	var win = null;
+var keyBoardListener = function (_successor) {
+	this.win = null;
 	/**
 	 * element of type keyBoardListener to forward action if needed
 	 */
@@ -64,7 +65,7 @@ function keyBoardListener(_successor) {
 		evt.preventDefault();
 		evt.stopPropagation();
 	};
-}
+};
 
 
 /**
@@ -87,7 +88,7 @@ function keyBoardListener(_successor) {
  *
  * @param {keyBoardListener} _successor
  */
-function keyDialogListener(_successor) {
+var keyDialogListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
@@ -118,7 +119,7 @@ function keyDialogListener(_successor) {
 		}
 		return this.next(evt);
 	};
-}
+};
 
 keyDialogListener.prototype = new keyBoardListener();
 
@@ -132,8 +133,7 @@ keyDialogListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyDialogSaveListener(_successor) {
-
+var keyDialogSaveListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function (evt) {
 
@@ -150,7 +150,7 @@ function keyDialogSaveListener(_successor) {
 
 		return this.next(evt);
 	};
-}
+};
 
 keyDialogSaveListener.prototype = new keyBoardListener();
 
@@ -165,19 +165,19 @@ keyDialogSaveListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyEditorListener(_successor) {
+var keyEditorListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
-		_editor = false;
-		_editorType = "";
+		var _editor = false,
+			_editorType = "";
 
-		if(!top || !WE()){
+		if (!top || !WE()) {
 			return;
 		}
 		// check if an editor is open
 
-		_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+		var _activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 			_editorType = _activeEditorFrame.getEditorType();
 			if (_editorType === "model") {
@@ -230,7 +230,7 @@ function keyEditorListener(_successor) {
 
 		return this.next(evt);
 	};
-}
+};
 keyEditorListener.prototype = new keyBoardListener();
 
 /**
@@ -242,16 +242,16 @@ keyEditorListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyModuleListener(_successor) {
+var keyModuleListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
 		if (this.win.top.weModuleWindow !== undefined) {
 			if (evt.keyCode === 83) { // S (Save)
 				if (this.win.top.content &&
-								this.win.top.content.editor &&
-								this.win.top.content.editor.edfooter &&
-								this.win.top.content.editor.edfooter.we_save !== undefined) {
+					this.win.top.content.editor &&
+					this.win.top.content.editor.edfooter &&
+					this.win.top.content.editor.edfooter.we_save !== undefined) {
 					this.cancelEvent(evt);
 					this.win.top.content.editor.edfooter.we_save();
 					return true;
@@ -261,7 +261,7 @@ function keyModuleListener(_successor) {
 		return this.next(evt);
 	};
 
-}
+};
 keyModuleListener.prototype = new keyBoardListener();
 
 
@@ -275,26 +275,26 @@ keyModuleListener.prototype = new keyBoardListener();
  * @param {keyBoardListener} _successor
  */
 
-function keyToolListener(_successor) {
+var keyToolListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
 		if (this.win.top.weToolWindow !== undefined) {
 			if (evt.keyCode == 83) { // S (Save)
 				if (this.win.top.content &&
-								this.win.top.content.resize &&
-								this.win.top.content.resize.editor &&
-								this.win.top.content.resize.editor.edfooter &&
-								this.win.top.content.resize.editor.edfooter.we_save !== undefined) {
+					this.win.top.content.resize &&
+					this.win.top.content.resize.editor &&
+					this.win.top.content.resize.editor.edfooter &&
+					this.win.top.content.resize.editor.edfooter.we_save !== undefined) {
 					this.cancelEvent(evt);
 					this.win.top.content.resize.editor.edfooter.we_save();
 					return true;
 				}
 				if (this.win.top.content &&
-								this.win.top.content.resize &&
-								this.win.top.content.resize.editor &&
-								this.win.top.content.resize.editor.edfooter &&
-								this.win.top.content.weCmdController) {
+					this.win.top.content.resize &&
+					this.win.top.content.resize.editor &&
+					this.win.top.content.resize.editor.edfooter &&
+					this.win.top.content.weCmdController) {
 					this.win.top.content.weCmdController.fire({
 						cmdName: "app_" + this.win.top.content.appName + "_save"
 					});
@@ -304,7 +304,7 @@ function keyToolListener(_successor) {
 		}
 		return this.next(evt);
 	};
-}
+};
 keyToolListener.prototype = new keyBoardListener();
 
 /**
@@ -313,16 +313,16 @@ keyToolListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyTagWizardListener(_successor) {
+var keyTagWizardListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function (evt) {
 
 		if (evt.keyCode === 73) { // I (Open Tag-Wizard Prompt)
 
-			_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			var _activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
 			if (_activeEditorFrame.getEditorContentType() === "text/weTmpl" &&
-							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
+				_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
 
 				_activeEditorFrame.getEditorFrameWindow().frames.editFooter.openTagWizardPrompt();
 				this.cancelEvent(evt);
@@ -331,7 +331,7 @@ function keyTagWizardListener(_successor) {
 		}
 		return this.next(evt);
 	};
-}
+};
 keyTagWizardListener.prototype = new keyBoardListener();
 
 /**
@@ -343,7 +343,7 @@ keyTagWizardListener.prototype = new keyBoardListener();
  *
  * @param {keyBoardListener} _successor
  */
-function keyReloadListener(_successor) {
+var keyReloadListener = function (_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function (evt) {
 		switch (evt.keyCode) {
@@ -355,7 +355,7 @@ function keyReloadListener(_successor) {
 		}
 		return this.next(evt);
 	};
-}
+};
 
 keyReloadListener.prototype = new keyBoardListener();
 
@@ -374,7 +374,7 @@ function dealWithKeyboardShortCut(evt, win) {
 	// the first keyboardlistener ("chain of responsibility")
 	WE().handler.keyListener.win = win;
 	switch (evt.keyCode) {
-		case -1:
+		case - 1:
 			WE().handler.keyListener.cancelEvent(evt);
 			return true;
 		case 27: // ESCAPE
@@ -388,6 +388,6 @@ function dealWithKeyboardShortCut(evt, win) {
 			break;
 		default:
 			return (evt.ctrlKey || evt.metaKey ?
-							WE().handler.keyListener.dealEvent(evt) : true);
+				WE().handler.keyListener.dealEvent(evt) : true);
 	}
 }

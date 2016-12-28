@@ -23,10 +23,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var Rows = 1;
 
 function AllItems() {
+	var temp;
 	if (document.we_form.selectAll.value === "0") {
 		temp = true;
 		document.we_form.selectAll.value = "1";

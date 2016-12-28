@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, _EditorFrame */
 
 /**
  * webEdition CMS
@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var searchObj = WE().util.getDynamicVar(document, 'loadVarObject_search', 'data-searchObj');
 
 _EditorFrame.setEditorIsHot(false);
@@ -37,8 +38,7 @@ function back() {
 }
 
 function setOrder(order) {
-
-	foo = document.we_form.elements.Order.value;
+	var foo = document.we_form.elements.Order.value;
 
 	if (((foo.substring(foo.length - 5, foo.length) == " DESC") && (foo.substring(0, order.length - 5) == order)) || foo != order) {
 		document.we_form.elements.Order.value = order;

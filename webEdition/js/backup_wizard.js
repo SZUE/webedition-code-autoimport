@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.backupWizard");
 var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-backup');
@@ -131,7 +132,8 @@ function doClicked(checked, opt) {
 		}
 		return;
 	}
-	var mess = "";
+	var mess = "",
+		tmpMess;
 	switch (opt) {
 		case 10:
 			if (WE().consts.tables.WORKFLOW_TABLE && document.we_form.elements.handle_workflow.checked) {
@@ -257,12 +259,13 @@ function delSelItem() {
 
 function showAll() {
 	var a = document.we_form.backup_select.options;
-	var b = document.we_form.show_all;
+	var b = document.we_form.show_all,
+		i,j;
 
 	if (b.checked) {
 		b.value = 1;
 		for (i = 0; i < backup.extra_files.length; i++) {
-			a[a.length] = new Option(backup.extra_files_desc[i], backup.extra_files[i]);
+			a[a.length] = new window.Option(backup.extra_files_desc[i], backup.extra_files[i]);
 		}
 	} else {
 		b.value = 0;
@@ -279,10 +282,10 @@ function showAll() {
 
 function setLocation(loc) {
 	if (top.cmd.reloadTimer) {
-		clearTimeout(top.cmd.reloadTimer);
+		window.clearTimeout(top.cmd.reloadTimer);
 	}
 
-	location.href = loc;
+	document.location.href = loc;
 }
 
 function startStep(step, doImport) {
@@ -302,7 +305,7 @@ function stopBusy() {
 }
 
 function delOldFiles() {
-	if (confirm(WE().consts.g_l.backupWizard.delold_confirm)) {
+	if (window.confirm(WE().consts.g_l.backupWizard.delold_confirm)) {
 		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=cmd&operation_mode=deleteall";
 	}
 }
@@ -310,7 +313,7 @@ function delOldFiles() {
 function delSelected() {
 	var sel = document.we_form.backup_select;
 	if (sel.selectedIndex > -1) {
-		if (confirm(WE().consts.g_l.backupWizard.del_backup_confirm)) {
+		if (window.confirm(WE().consts.g_l.backupWizard.del_backup_confirm)) {
 			top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=cmd&operation_mode=deletebackup&bfile=" + sel.options[sel.selectedIndex].value;
 		}
 	} else {

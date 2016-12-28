@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var validate = WE().util.getDynamicVar(document, 'loadVarValidateDocument', 'data-validate');
 
 function we_submitForm(target, url) {
@@ -50,7 +51,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

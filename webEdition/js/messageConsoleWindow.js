@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,9 +23,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
-function messageConsoleWindow(win) {
-
+var messageConsoleWindow = function (win) {
 	this.win = win;
 	this.doc = win.document;
 	this.name = "messageConsoleWindow";
@@ -67,7 +69,7 @@ function messageConsoleWindow(win) {
 		_li.className = "defaultfont " + _className;
 		var i = this.doc.createElement("i");
 		i.className = "fa-li fa fa-lg active fa-" + className;
-		_txt = this.doc.createTextNode(msg.message);
+		var _txt = this.doc.createTextNode(msg.message);
 		_li.appendChild(i);
 		_li.appendChild(_txt);
 
@@ -80,8 +82,8 @@ function messageConsoleWindow(win) {
 	};
 
 	this.init = function () {
-		_messages = WE().layout.messageConsole.getMessages();
-		for (i = 0; i < _messages.length; i++) {
+		var _messages = WE().layout.messageConsole.getMessages();
+		for (var i = 0; i < _messages.length; i++) {
 			this.addMessage(_messages[i]);
 		}
 	};
@@ -90,7 +92,7 @@ function messageConsoleWindow(win) {
 		WE().layout.messageConsole.removeMessages();
 		this.doc.getElementById("jsMessageUl").innerHTML = "";
 	};
-}
+};
 
 var messageConsoleWin = new messageConsoleWindow(window);
 messageConsoleWin.register();

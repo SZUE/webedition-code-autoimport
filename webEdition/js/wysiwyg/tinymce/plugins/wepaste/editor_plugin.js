@@ -1,3 +1,4 @@
+/* global tinymce */
 /**
  * editor_plugin_src.js
  *
@@ -7,9 +8,11 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 function removeClasses(match, g1) {
-	if (stripClass === "all")
+	if (stripClass === "all"){
 		return '';
+	}
 
 	var cls = grep(explode(g1.replace(/^(["'])(.*)\1$/, "$2"), " "),
 		function (v) {
@@ -78,8 +81,9 @@ function removeClasses(match, g1) {
 
 			ed.onKeyDown.addToTop(function (ed, e) {
 				// Block ctrl+v from adding an undo level since the default logic in tinymce.Editor will add that
-				if (((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45))
+				if (((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45)){
 					return false; // Stop other listeners
+				}
 			});
 
 			// Initialize plain text flag
@@ -102,8 +106,9 @@ function removeClasses(match, g1) {
 					rng = ed.selection.getRng(true);
 					if (rng.startContainer == rng.endContainer && rng.startContainer.nodeType == 3) {
 						// Is only one block node and it doesn't contain word stuff
-						if (o.node.childNodes.length === 1 && /^(p|h[1-6]|pre)$/i.test(o.node.firstChild.nodeName) && o.content.indexOf('__MCE_ITEM__') === -1)
+						if (o.node.childNodes.length === 1 && /^(p|h[1-6]|pre)$/i.test(o.node.firstChild.nodeName) && o.content.indexOf('__MCE_ITEM__') === -1){
 							dom.remove(o.node.firstChild, true);
+						}
 					}
 				}
 
@@ -167,17 +172,19 @@ function removeClasses(match, g1) {
 					textContent = (e.clipboardData || dom.doc.dataTransfer).getData('Text');
 				}
 
-				if (dom.get('_mcePaste'))
+				if (dom.get('_mcePaste')){
 					return;
+				}
 
 				// Create container to paste into
 				n = dom.add(body, 'div', {id: '_mcePaste', 'class': 'mcePaste', 'data-mce-bogus': '1'}, '\uFEFF\uFEFF');
 
 				// If contentEditable mode we need to find out the position of the closest element
-				if (body != ed.getDoc().body)
+				if (body != ed.getDoc().body){
 					posY = dom.getPos(ed.selection.getStart(), body).y;
-				else
+				}else{
 					posY = body.scrollTop + dom.getViewPort(ed.getWin()).y;
+				}
 
 				// Styles needs to be applied after the element is added to the document since WebKit will otherwise remove all styles
 				// If also needs to be in view on IE or the paste would fail
@@ -226,7 +233,7 @@ function removeClasses(match, g1) {
 					// For some odd reason we need to detach the the mceInsertContent call from the paste event
 					// It's like IE has a reference to the parent element that you paste in and the selection gets messed up
 					// when it tries to restore the selection
-					setTimeout(function () {
+					window.setTimeout(function () {
 						if (isFromInsideTinymce(n.innerHTML)) {
 							var tmp = ed.pasteAsPlainText;
 							ed.pasteAsPlainText = false;
@@ -287,8 +294,9 @@ function removeClasses(match, g1) {
 								});
 
 								// WebKit will make a copy of the DIV for each line of plain text pasted and insert them into the DIV
-								if (n.parentNode.className != 'mcePaste')
+								if (n.parentNode.className != 'mcePaste'){
 									h += n.innerHTML;
+								}
 							});
 						} else {
 							// Found WebKit weirdness so force the content into paragraphs this seems to happen when you paste plain text from Nodepad etc
@@ -302,8 +310,9 @@ function removeClasses(match, g1) {
 						});
 
 						// Restore the old selection
-						if (or)
+						if (or){
 							sel.setRng(or);
+						}
 
 						// WE: content is ready so here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
 						if (!isFromInsideTinymce(h) && ed.pasteAsPlainText && textContent) {

@@ -1,4 +1,4 @@
-/*
+/**
  * webEdition CMS
  *
  * $Rev$
@@ -22,6 +22,7 @@
  */
 
 /* global WE, top */
+'use strict';
 
 var get_focus = 1;
 var activ_tab = 0;
@@ -44,10 +45,10 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] !== "save_customer") {
-		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
+		if (window.confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
 		} else {
 			top.content.usetHot();
@@ -66,7 +67,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "new_customer");
+				window.setTimeout(we_cmd, 10, "new_customer");
 			}
 			break;
 		case "delete_customer":
@@ -74,11 +75,11 @@ function we_cmd() {
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.customer.view.delete_alert, ["delete_customer_do"]);
@@ -97,7 +98,7 @@ function we_cmd() {
 				return;
 			}
 			if (!WE().util.hasPerm("EDIT_CUSTOMER") && !WE().util.hasPerm("NEW_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 
@@ -105,7 +106,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, this);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 			top.content.usetHot();
 			break;
@@ -158,6 +159,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

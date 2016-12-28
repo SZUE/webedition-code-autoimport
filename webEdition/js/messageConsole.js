@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 /**
  * Controller of the messageconsole in the menu frame of the mainwindow and in
@@ -57,7 +58,7 @@ WE().layout.messageConsole = {
 		return null;
 	},
 	notifyObservers: function () {
-		for (i = 0; i < this.observers.length; i++) {
+		for (var i = 0; i < this.observers.length; i++) {
 			try { // must try this - perhaps a frame of an observer is reloaded
 				this.observers[i].notify(this.getLastMessage());
 			} catch (exc) {
@@ -69,8 +70,8 @@ WE().layout.messageConsole = {
 		this.observers.push(observer);
 	},
 	removeObserver: function (observer) {
-		_newObservers = [];
-		for (i = 0; i < this.observers.length; i++) {
+		var _newObservers = [];
+		for (var i = 0; i < this.observers.length; i++) {
 			if (this.observers[i].name !== observer.name) {
 				_newObservers.push(this.observers[i]);
 			}

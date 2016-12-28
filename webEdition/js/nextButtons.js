@@ -20,18 +20,19 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function showRefreshButton() {
-	prevBut = document.getElementById("prev");
-	nextBut = document.getElementById("next");
-	refrBut = document.getElementById("refresh");
+	var prevBut = document.getElementById("prev"),
+		nextBut = document.getElementById("next"),
+		refrBut = document.getElementById("refresh");
 	prevBut.style.display = "none";
 	nextBut.style.display = "none";
 	refrBut.style.display = "";
 }
 function showPrevNextButton() {
-	prevBut = document.getElementById("prev");
-	nextBut = document.getElementById("next");
-	refrBut = document.getElementById("refresh");
+	var prevBut = document.getElementById("prev"),
+		nextBut = document.getElementById("next"),
+		refrBut = document.getElementById("refresh");
 	refrBut.style.display = "none";
 	prevBut.style.display = "";
 	nextBut.style.display = "";

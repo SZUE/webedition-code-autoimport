@@ -20,6 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 /*
 var preview = WE().util.getDynamicVar(document, 'loadVarFileupload_ui_preview', 'data-preview');
 var categories_edit = new (WE().util.multi_edit)("categoriesDiv", window, 0, preview.delButton, preview.categoriesDivSize, false);
@@ -32,13 +33,13 @@ handleDragOver = function(e, name){
 	}
 	try {
 		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag we_file_drag_hover";
-	} catch(e){}
+	} catch(ex){}
 };
 
 handleDragLeave = function(e, name){
 	try {
 		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
-	} catch(e){}
+	} catch(ex){}
 };
 
 handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, tableTree){
@@ -46,7 +47,7 @@ handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, 
 
 	try {
 		document.getElementById('div_' + name + '_fileDrag').className = 'we_file_drag';
-	} catch(e){}
+	} catch(ex){}
 
 	e.preventDefault();
 	e.stopPropagation();

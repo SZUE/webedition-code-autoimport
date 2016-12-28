@@ -22,11 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var preview = WE().util.getDynamicVar(document, 'loadVarPreview', 'data-preview');
 
 function init() {
-	parent.rpcHandleResponse(preview.type, preview.id, document.getElementById(preview.type), preview.tb);
+	window.parent.rpcHandleResponse(preview.type, preview.id, document.getElementById(preview.type), preview.tb);
 	if (preview.iconClass) {
 		WE().util.setIconOfDocClass(document, preview.iconClass);
 	}

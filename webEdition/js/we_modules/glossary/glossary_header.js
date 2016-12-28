@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function setTab(tab) {
 	top.content.activ_tab = tab;
 	//top.content.editor.edbody.we_cmd('switchPage',0);

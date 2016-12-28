@@ -23,7 +23,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 WE().util.loadConsts(document, "g_l.versions");
+var searchClass = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-searchClass');
+var doc = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-doc');
+var props = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-props');
 
 function init() {
 	sizeScrollContent();
@@ -42,7 +46,7 @@ function printScreen() {
 	scrollContent.style.height = hContentTable + "px";
 	window.print();
 
-	setTimeout(setCrollContent, 2000, hScrollContent);
+	window.setTimeout(setCrollContent, 2000, hScrollContent);
 }
 
 function setCrollContent(hScrollContent) {
@@ -113,15 +117,15 @@ function back(anzahl) {
 }
 
 function setOrder(order) {
-	columns = ["version", "modifierID", "timestamp"];
+	var columns = ["version", "modifierID", "timestamp"];
 	for (var i = 0; i < columns.length; i++) {
 		if (order != columns[i]) {
-			deleteArrow = document.getElementById("" + columns[i] + "");
+			var deleteArrow = document.getElementById("" + columns[i] + "");
 			deleteArrow.innerHTML = "";
 		}
 	}
-	arrow = document.getElementById("" + order + "");
-	orderVal = document.we_form.elements.order.value;
+	var arrow = document.getElementById("" + order + "");
+	var orderVal = document.we_form.elements.order.value;
 
 	if (order + " DESC" == orderVal) {
 		document.we_form.elements.order.value = order;
@@ -139,10 +143,10 @@ function delRow(id) {
 
 	var elem = document.getElementById("filterTable");
 	if (elem) {
-		trows = elem.rows;
-		rowID = "filterRow_" + id;
+		var trows = elem.rows;
+		var rowID = "filterRow_" + id;
 
-		for (i = 0; i < trows.length; i++) {
+		for (var i = 0; i < trows.length; i++) {
 			if (rowID == trows[i].id) {
 				elem.deleteRow(i);
 			}
@@ -152,7 +156,7 @@ function delRow(id) {
 }
 
 function resetVersion(id, documentID, version, table) {
-	Check = confirm(WE().consts.g_l.versions.resetVersions);
+	var Check = window.confirm(WE().consts.g_l.versions.resetVersions);
 	if (Check === true) {
 		if (document.getElementById("publishVersion_" + id) !== null) {
 			if (document.getElementById("publishVersion_" + id).checked) {
@@ -173,12 +177,12 @@ function switchSearch(mode) {
 	var advSearch3 = document.getElementById("advSearch3");
 	var scrollContent = document.getElementById("scrollContent");
 
-	scrollheight = 37;
+	var scrollheight = 37;
 
 	var elem = document.getElementById("filterTable");
-	newID = elem.rows.length - 1;
+	var newID = elem.rows.length - 1;
 
-	for (i = 0; i < newID; i++) {
+	for (var i = 0; i < newID; i++) {
 		scrollheight += 26;
 	}
 
@@ -223,7 +227,7 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "protocol=json&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "protocol=json&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("scrollContent").innerHTML = responseText;
 			makeAjaxRequestParametersTop();
@@ -239,7 +243,7 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("parametersTop").innerHTML = responseText;
 		}
@@ -253,7 +257,7 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("parametersBottom").innerHTML = responseText;
 		}
@@ -262,8 +266,8 @@ function makeAjaxRequestParametersBottom() {
 
 function ajaxCallbackResetVersion(response) {
 	if (response !== undefined) {
-		//top.we_cmd("save_document",transaction,"0","1","0", "","");
-		setTimeout(search, 500, false);
+		//top.we_cmd("save_document",props.transaction,"0","1","0", "","");
+		window.setTimeout(search, 500, false);
 		// reload current document => reload all open Editors on demand
 
 		//reset content of editor
@@ -280,7 +284,6 @@ function ajaxCallbackResetVersion(response) {
 //					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
 		}
-		_multiEditorreload = true;
 
 		//reload tree
 		top.we_cmd("load", doc.Table, 0);
@@ -289,15 +292,15 @@ function ajaxCallbackResetVersion(response) {
 }
 
 function resetVersionAjax(id, documentID, version, table) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "protocol=json&cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction, ajaxCallbackResetVersion);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "protocol=json&cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + props.transaction, ajaxCallbackResetVersion);
 }
 
 
 function sizeScrollContent() {
 	var elem = document.getElementById("filterTable");
 	if (elem) {
-		newID = elem.rows.length - 1;
-		scrollheight = searchClass.scrollHeight;
+		var newID = elem.rows.length - 1;
+		var scrollheight = searchClass.scrollHeight;
 
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 		var scrollContent = document.getElementById("scrollContent");
@@ -332,7 +335,7 @@ function deleteVers() {
 		top.we_showMessage(WE().consts.g_l.versions.notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		return;
 	}
-	Check = confirm(WE().consts.g_l.versions.deleteVersions);
+	var Check = window.confirm(WE().consts.g_l.versions.deleteVersions);
 	if (Check === true) {
 		var label = document.getElementById("label_deleteAllVersions");
 		if (checkAllDoc[0].checked) {
@@ -342,7 +345,7 @@ function deleteVers() {
 				document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
 			}
 		} else {
-			allChecked = true;
+			var allChecked = true;
 			checkboxes = document.getElementsByName("deleteVersion");
 			for (i = 0; i < checkboxes.length; i++) {
 				if (checkboxes[i].checked === false) {
@@ -357,44 +360,44 @@ function deleteVers() {
 		}
 
 		deleteVersionAjax();
-		setTimeout(search, 800, false);
+		window.setTimeout(search, 800, false);
 	}
 }
 
 function newinput() {
 	var elem = document.getElementById("filterTable");
-	newID = elem.rows.length - 1;
-	rows++;
+	var newID = elem.rows.length - 1;
+	props.rows++;
 
 	var scrollContent = document.getElementById("scrollContent");
 	scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 
 	if (elem) {
 		var newRow = document.createElement("TR");
-		newRow.setAttribute("id", "filterRow_" + rows);
+		newRow.setAttribute("id", "filterRow_" + props.rows);
 
 		var cell = document.createElement("TD");
-		cell.innerHTML = searchClass.searchFields.replace(/__we_new_id__/g, rows);
+		cell.innerHTML = searchClass.searchFields.replace(/__we_new_id__/g, props.rows);
 		newRow.appendChild(cell);
 
 		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_location[" + rows + "]");
-		cell.innerHTML = searchClass.locationFields.replace(/__we_new_id__/g, rows);
+		cell.setAttribute("id", "td_location[" + props.rows + "]");
+		cell.innerHTML = searchClass.locationFields.replace(/__we_new_id__/g, props.rows);
 		newRow.appendChild(cell);
 
 		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search[" + rows + "]");
-		cell.innerHTML = searchClass.search.replace(/__we_new_id__/g, rows);
+		cell.setAttribute("id", "td_search[" + props.rows + "]");
+		cell.innerHTML = searchClass.search.replace(/__we_new_id__/g, props.rows);
 		newRow.appendChild(cell);
 
 		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_delButton[" + rows + "]");
-		cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rows);
+		cell.setAttribute("id", "td_delButton[" + props.rows + "]");
+		cell.innerHTML = searchClass.trash.replace(/__we_row__/g, props.rows);
 		newRow.appendChild(cell);
 
 		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_hiddenLocation[" + rows + "]");
-		cell.innerHTML = '<input type="hidden" name="location[' + rows + ']" value="IS">';
+		cell.setAttribute("id", "td_hiddenLocation[" + props.rows + "]");
+		cell.innerHTML = '<input type="hidden" name="location[' + props.rows + ']" value="IS">';
 		newRow.appendChild(cell);
 
 		elem.appendChild(newRow);

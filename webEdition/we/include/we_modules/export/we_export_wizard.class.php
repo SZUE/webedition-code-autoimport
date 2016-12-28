@@ -338,7 +338,7 @@ function we_cmd(){
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"we_selector",WE().consts.size.dialog.big, WE().consts.size.dialog.medium,true,true,true,true);
 		break;
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }');
 		$js .= we_html_element::jsElement('top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
@@ -422,7 +422,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$js = we_html_element::jsElement($js .
 				'top.footer.location="' . $this->frameset . '?pnt=footer&step=3";
-	setTimeout(top.startTree,100);
+	window.setTimeout(top.startTree,100);
 
 function setHead(tab){
 	var c=["#DDDDDD","#DDDDDD","#DDDDDD","#DDDDDD"];
@@ -446,7 +446,7 @@ function setHead(tab){
 		break;
 	}
 
-	setTimeout(top.startTree,100);
+	window.setTimeout(top.startTree,100);
 	document.getElementById(WE().consts.tables.FILE_TABLE).style.backgroundColor=c[0];
 	document.getElementById(WE().consts.tables.TEMPLATES_TABLE).style.backgroundColor=c[1];' .
 				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById(WE().consts.tables.OBJECT_FILES_TABLE).style.backgroundColor=c[2];' : '' ) .

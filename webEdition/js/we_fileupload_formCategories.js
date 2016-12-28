@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var preview = WE().util.getDynamicVar(document, 'loadVarFileupload_ui_preview', 'data-preview');
 var categories_edit = new (WE().util.multi_edit)("categoriesDiv", window, 0, preview.delButton, preview.categoriesDivSize, false);

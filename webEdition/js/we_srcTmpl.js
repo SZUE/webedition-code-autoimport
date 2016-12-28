@@ -23,6 +23,8 @@
  */
 
 /* global _EditorFrame, WE, CodeMirror */
+'use strict';
+
 var doc = WE().util.getDynamicVar(document, 'loadVarSrcTmpl', 'data-doc');
 WE().util.loadConsts(document, "tagWizzard");
 
@@ -72,6 +74,7 @@ function initCM() {
 		},
 	};
 	try {
+		var hlLine;
 		document.getElementById("bodydiv").style.display = "block";
 		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 		sizeEditor();
@@ -148,13 +151,13 @@ function getScrollPosLeft() {
 function scrollToPosition() {
 	var elem = document.getElementById("editarea");
 	if (elem) {
-		elem.scrollTop = parent.editorScrollPosTop;
-		elem.scrollLeft = parent.editorScrollPosLeft;
+		elem.scrollTop = window.parent.editorScrollPosTop;
+		elem.scrollLeft = window.parent.editorScrollPosLeft;
 	}
 }
 
 function wedoKeyDown(ta, ev) {
-	modifiers = (ev.altKey || ev.ctrlKey || ev.shiftKey);
+	var modifiers = (ev.altKey || ev.ctrlKey || ev.shiftKey);
 	if (!modifiers && ev.keycode == 9) { // TAB
 		if (ta.setSelectionRange) {
 			var selectionStart = ta.selectionStart;
@@ -198,6 +201,7 @@ function getCharset() {
 // ############ CodeMirror Functions ################
 
 function reindent() { // reindents code of CodeMirror2
+	var start, end;
 	if (editor.somethingSelected()) {
 		start = editor.getCursor(true).line;
 		end = editor.getCursor(false).line;
@@ -205,7 +209,7 @@ function reindent() { // reindents code of CodeMirror2
 		start = 0;
 		end = editor.lineCount();
 	}
-	for (i = start; i < end; ++i) {
+	for (var i = start; i < end; ++i) {
 		editor.indentLine(i, 'smart');
 	}
 }
@@ -217,8 +221,8 @@ function unmark() {
 	marked.length = 0;
 }
 
-function cmSearch(event) {
-	if (event === null || event.keyCode === 13 || event.keyCode === 10) {
+function cmSearch(e) {
+	if (e === null || e.keyCode === 13 || e.keyCode === 10) {
 		search(document.getElementById("query").value, !document.getElementById("caseSens").checked);
 	}
 }
@@ -295,7 +299,7 @@ function edit_wetag(tagname, insertAtCursor) {
 	if (!insertAtCursor) {
 		insertAtCursor = 0;
 	}
-	we_cmd("open_tag_wizzard", tagname, insertAtCursor);
+	window.we_cmd("open_tag_wizzard", tagname, insertAtCursor);
 }
 
 function selectTagGroup(groupname) {
@@ -316,7 +320,7 @@ function selectTagGroup(groupname) {
 			document.getElementById('codesnippet_custom').style.display = 'none';
 			document.getElementById('codesnippet_standard').style.display = 'none';
 			document.getElementById('tagSelection').style.display = 'block';
-			elem = document.getElementById("tagSelection");
+			var elem = document.getElementById("tagSelection");
 			var i;
 			for (i = (elem.options.length - 1); i >= 0; i--) {
 				elem.options[i] = null;
@@ -332,12 +336,13 @@ function openTagWizWithReturn(Ereignis) {
 	if (!Ereignis) {
 		Ereignis = window.event;
 	}
+	var keycode;
 	if (Ereignis.which) {
-		Tastencode = Ereignis.which;
+		keycode = Ereignis.which;
 	} else if (Ereignis.keyCode) {
-		Tastencode = Ereignis.keyCode;
+		keycode = Ereignis.keyCode;
 	}
-	if (Tastencode == 13) {
+	if (keycode == 13) {
 		edit_wetag(document.getElementById("tagSelection").value);
 	}
 	//return false;
@@ -349,12 +354,12 @@ function openTagWizardPrompt(wrongTag) {
 		prompttext = WE().consts.g_l.weTagWizard.insert_tagname_not_exist.replace(/_wrongTag/, wrongTag) + prompttext;
 	}
 
-	var tagName = prompt(prompttext);
+	var tagName = window.prompt(prompttext);
 	var tagExists = false;
 
 	if (typeof (tagName) == "string") {
-		for (i = 0; i < WE().consts.tagWizzard.groups.alltags.length && !tagExists; i++) {
-			if (WE().consts.tagWizzard.groups.alltags[i] == tagName) {
+		for (var i = 0; i < WE().consts.tagWizzard.groups.alltags.length && !tagExists; i++) {
+			if (WE().consts.tagWizzard.groups.alltags[i] === tagName) {
 				tagExists = true;
 			}
 		}
@@ -391,7 +396,8 @@ function addCursorPosition(tagText) {
 		window.editor.replaceSelection(tagText);
 		return;
 	}
-	var weForm = document.we_form["we_" + doc.docName + "_txt[data]"];
+	var weForm = document.we_form["we_" + doc.docName + "_txt[data]"],
+		intStart, intEnd;
 	if (document.selection) {
 		weForm.focus();
 		document.selection.createRange().text = tagText;

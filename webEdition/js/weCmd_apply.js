@@ -25,15 +25,16 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 
-	if(parent.we_cmd){
-		parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	if(window.parent.we_cmd){
+		window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	} else if(top.we_cmd){
-		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	} else if(top.opener.we_cmd){
-		top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var nlView = WE().util.getDynamicVar(document, 'loadVarNewsletter_property', 'data-nlView');
 function set_state_edit_delete_recipient(control) {
 	var p = document.forms[0].elements[control];
@@ -64,7 +65,7 @@ function getGroupsNum() {
 function PopulateVar(p, dest) {
 	var arr = [];
 
-	for (i = 0; i < p.length; i++) {
+	for (var i = 0; i < p.length; i++) {
 		arr[i] = p.options[i].text;
 	}
 
@@ -72,10 +73,10 @@ function PopulateVar(p, dest) {
 }
 
 function PopulateMultipleVar(p, dest) {
-	var arr = [];
-	c = 0;
+	var arr = [],
+		c = 0;
 
-	for (i = 0; i < p.length; i++) {
+	for (var i = 0; i < p.length; i++) {
 		if (p.options[i].selected) {
 			c++;
 			arr[c] = p.options[i].value;
@@ -114,7 +115,7 @@ function editEmail(group, id, email, html, salutation, title, firstname, lastnam
 function mysplice(arr, id) {
 	var newarr = [];
 
-	for (i = 0; i < arr.lenght; i++) {
+	for (var i = 0; i < arr.lenght; i++) {
 		if (i != id) {
 			newarr[newarr.lenght] = arr[id];
 		}
@@ -177,7 +178,7 @@ function clickCheck(a) {
 }
 
 function popAndSubmit(wname, pnt, width, height) {
-	old = document.we_form.pnt.value;
+	var old = document.we_form.pnt.value;
 	document.we_form.pnt.value = pnt;
 
 	new (WE().util.jsWindow)(window, "about:blank", wname, width, height, true, true, true, true);
@@ -186,9 +187,9 @@ function popAndSubmit(wname, pnt, width, height) {
 }
 
 function doScrollTo() {
-	if (parent.scrollToVal) {
-		window.scrollTo(0, parent.scrollToVal);
-		parent.scrollToVal = 0;
+	if (window.parent.scrollToVal) {
+		window.scrollTo(0, window.parent.scrollToVal);
+		window.parent.scrollToVal = 0;
 	}
 }
 
@@ -285,29 +286,29 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "popPreview":
-			if (document.we_form.ncmd.value == "home"){
+			if (document.we_form.ncmd.value == "home") {
 				return;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
-			document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
-			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+			document.we_form.gview.value = window.parent.edfooter.document.we_form.gview.value;
+			document.we_form.hm.value = window.parent.edfooter.document.we_form.hm.value;
 			popAndSubmit("newsletter_preview", "preview", 800, 800);
 			break;
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (document.we_form.IsFolder.value === 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			args[0] = "popSend_do";
@@ -326,22 +327,22 @@ function we_cmd() {
 				WE().util.showConfirm(window, "", WE().consts.g_l.newsletter.no_subject, ["popSend_do_cont_yes", args[1], args[2], args[3]]);
 				break;
 			}
-	/*falls through*/
+			/*falls through*/
 		case "popSend_do_cont_yes":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send&nid=" + args[1] + (args[3] ? '&test=1' : '');
 			new (WE().util.jsWindow)(window, url, "newsletter_send", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 		case "send_test":
 			if (document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */), ["send_test_do"]);
@@ -349,15 +350,16 @@ function we_cmd() {
 			break;
 		case "send_test_do":
 			document.we_form.ncmd.value = "send_test";
-			document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
-			document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+			document.we_form.gview.value = window.parent.edfooter.document.we_form.gview.value;
+			document.we_form.hm.value = window.parent.edfooter.document.we_form.hm.value;
 			submitForm();
 			break;
 		case "print_lists":
 		case "domain_check":
 		case "show_log":
-			if (document.we_form.ncmd.value != "home")
+			if (document.we_form.ncmd.value != "home") {
 				popAndSubmit(args[0], args[0], 650, 650);
+			}
 			break;
 		case "newsletter_settings":
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
@@ -424,7 +426,7 @@ function we_cmd() {
 		case "edit_email":
 			var p = document.we_form["we_recipient" + args[1]];
 			if (p.selectedIndex < 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -461,7 +463,7 @@ function we_cmd() {
 			if (document.we_form.ncmd.value === "home") {
 				return;
 			}
-			var searchname = prompt(WE().consts.g_l.newsletter.search_text, "");
+			var searchname = window.prompt(WE().consts.g_l.newsletter.search_text, "");
 
 			if (searchname !== null) {
 				searchEmail(searchname);
@@ -476,7 +478,7 @@ function we_cmd() {
 			break;
 		default:
 			// go to newsletter_top.js
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -498,7 +500,8 @@ function checkData() {
 }
 
 function add(group, newRecipient, htmlmail, salutation, title, firstname, lastname) {
-	var p = document.forms[0].elements["we_recipient" + group];
+	var //p = document.forms[0].elements["we_recipient" + group],
+		optionClassName;
 
 	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
@@ -508,10 +511,8 @@ function add(group, newRecipient, htmlmail, salutation, title, firstname, lastna
 			}
 
 			if (!inSelectBox(document.forms[0].elements["we_recipient" + group], newRecipient)) {
-				if (isValidEmail(newRecipient))
-					optionClassName = "markValid";
-				else
-					optionClassName = "markNotValid";
+				optionClassName = (isValidEmail(newRecipient) ? "markValid" : "markNotValid");
+
 				addElement(document.forms[0].elements["we_recipient" + group], "#", newRecipient, true, optionClassName);
 				addEmail(group, newRecipient, htmlmail, salutation, title, firstname, lastname);
 			} else {
@@ -528,7 +529,7 @@ function deleteit(group) {
 	var p = document.forms[0].elements["we_recipient" + group];
 
 	if (p.selectedIndex >= 0) {
-		if (confirm(WE().consts.g_l.newsletter.email_delete)) {
+		if (window.confirm(WE().consts.g_l.newsletter.email_delete)) {
 			delEmail(group, p.selectedIndex);
 			p.options[p.selectedIndex] = null;
 		}
@@ -541,7 +542,7 @@ function deleteit(group) {
 function deleteall(group) {
 	var p = document.forms[0].elements["we_recipient" + group];
 
-	if (confirm(WE().consts.g_l.newsletter.email_delete_all)) {
+	if (window.confirm(WE().consts.g_l.newsletter.email_delete_all)) {
 		delallEmails(group);
 		we_cmd("switchPage", 1);
 	}
@@ -549,7 +550,8 @@ function deleteall(group) {
 }
 
 function editIt(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname) {
-	var p = document.forms[0].elements["we_recipient" + group];
+	var p = document.forms[0].elements["we_recipient" + group],
+		optionClassName;
 
 	if (index >= 0 && editRecipient !== null) {
 		if (editRecipient !== "") {
@@ -557,10 +559,7 @@ function editIt(group, index, editRecipient, htmlmail, salutation, title, firstn
 				top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
-			if (isValidEmail(editRecipient))
-				optionClassName = "markValid";
-			else
-				optionClassName = "markNotValid";
+			optionClassName = (isValidEmail(editRecipient) ? "markValid" : "markNotValid");
 			p.options[index].text = editRecipient;
 			p.options[index].className = optionClassName;
 			editEmail(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname);
@@ -571,12 +570,12 @@ function editIt(group, index, editRecipient, htmlmail, salutation, title, firstn
 }
 
 function searchEmail(searchname) {
-	var f = document.we_form;
-	var c;
-	var hit = 0;
+	var f = document.we_form,
+		c,
+		hit = 0, j;
 
 	if (document.we_form.page.value == 1) {
-		for (i = 0; i < f.groups.value; i++) {
+		for (var i = 0; i < f.groups.value; i++) {
 			c = f.elements["we_recipient" + i];
 			c.selectedIndex = -1;
 
@@ -587,8 +586,7 @@ function searchEmail(searchname) {
 				}
 			}
 		}
-		msg = WE().util.sprintf(WE().consts.g_l.newsletter.search_finished, hit);
-		top.we_showMessage(msg, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.newsletter.search_finished, hit), WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
 }
 
@@ -598,13 +596,13 @@ function isValidEmail(email) {
 }
 
 function setHeaderTitle() {
-	if (parent.edheader && parent.edheader.weTabs && parent.edheader.weTabs.setTitlePath) {
+	if (window.parent.edheader && window.parent.edheader.weTabs && window.parent.edheader.weTabs.setTitlePath) {
 		var preObj = document.getElementById("yuiAcInputPathGroup");
 		var postObj = document.getElementById("yuiAcInputPathName");
 
-		parent.edheader.weTabs.setTitlePath((postObj ? postObj.value : ""), (preObj ? preObj.value : ""));
+		window.parent.edheader.weTabs.setTitlePath((postObj ? postObj.value : ""), (preObj ? preObj.value : ""));
 	} else {
-		setTimeout(setHeaderTitle, 100);
+		window.setTimeout(setHeaderTitle, 100);
 	}
 
 }
@@ -654,7 +652,7 @@ function setFocus() {
 }
 
 function setScrollTo() {
-	parent.scrollToVal = pageYOffset;
+	window.parent.scrollToVal = window.pageYOffset;
 }
 
 function editEmailFile(eid, email, htmlmail, salutation, title, firstname, lastname) {
@@ -697,7 +695,7 @@ function postSelectorSelect(wePssCmd) {
 
 function delEmailFile(eid, email) {
 	var fr = document.we_form;
-	if (confirm(WE().util.sprintf(WE().consts.g_l.newsletter.del_email_file, email))) {
+	if (window.confirm(WE().util.sprintf(WE().consts.g_l.newsletter.del_email_file, email))) {
 		fr.nrid.value = eid;
 		fr.ncmd.value = "delete_email_file";
 		submitForm("edit_file");

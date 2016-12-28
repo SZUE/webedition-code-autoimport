@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var extdoc = WE().util.getDynamicVar(document, 'loadVarExtDoc', 'data-extdoc');
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(extdoc.frameData);

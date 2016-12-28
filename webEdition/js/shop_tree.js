@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, container, top, treeData */
 
 /**
  * webEdition SDK
@@ -27,6 +27,7 @@
  */
 
 //FIXME: compare & unite all _tree.js files
+'use strict';
 
 function drawTree() {
 	top.content.document.getElementById("treetable").innerHTML = "<span onclick=\"doYearClick(" + treeData.yearshop + ");\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + treeData.yearshop + " </strong></span><br/>" + treeData.draw(0, "");

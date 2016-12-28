@@ -758,7 +758,7 @@ abstract class we_SEEM{
 			$newForm = '<form';
 
 			if($formArray[2][$i] == -1 && (strpos($formArray[1][$i], "http://") === 0 || strpos($formArray[1][$i], "https://") === 0)){ // Formular is on another webServer
-				$newForm .= " onsubmit='if(confirm(\"" . g_l('SEEM', '[ext_form_target_other_server]') . "\")){return true;} else {return false;};' target='_blank'";
+				$newForm .= " onsubmit='if(window.confirm(\"" . g_l('SEEM', '[ext_form_target_other_server]') . "\")){return true;} else {return false;};' target='_blank'";
 
 				foreach($theAttribs as $key => $value){
 					//  the target must be changed and shall open in a new window
@@ -774,7 +774,7 @@ abstract class we_SEEM{
 				// target is a webEdition Document
 				$newForm .= ' target="load" action="' . WEBEDITION_DIR . 'we_cmd.php"' .
 					($formArray[2][$i] != -1 || strpos($formArray[1][$i], WEBEDITION_DIR . 'we_cmd.php') === 0 ? '' :
-						" onsubmit='if(confirm(\"" . g_l('SEEM', '[ext_form_target_we_server]') . "\")){return true;} else {return false;};'");
+						" onsubmit='if(window.confirm(\"" . g_l('SEEM', '[ext_form_target_we_server]') . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
 					if(strtolower($key) === 'target' || strtolower($key) === 'action'){

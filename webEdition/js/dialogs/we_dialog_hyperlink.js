@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, weFocusedField */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var vars = WE().util.getDynamicVar(document, 'loadVarDialog_Hyperlink', 'data-vars');
 var editname = vars.editname;
 var classNames = vars.classNames === 'getFromTiny' ? top.opener.weclassNames_tinyMce : vars.classNames;
@@ -46,7 +47,7 @@ function weCheckAcFields() {
 		weFocusedField.blur();
 	}
 	if (document.getElementById("weDialogType").value === WE().consts.linkPrefix.TYPE_INT) {
-		setTimeout(weDoCheckAcFields, 100);
+		window.setTimeout(weDoCheckAcFields, 100);
 	} else {
 		document.we_form.submit();
 	}
@@ -66,14 +67,14 @@ function we_cmd() {
 			break;
 		case "selector_callback":
 			if (args[1].currentID) {
-				this.document.getElementById(args[2]).disabled = false;
+				window.document.getElementById(args[2]).disabled = false;
 				if (args[2] === 'btn_edit_int') {
-					this.document.we_form.yuiAcResultCT.value = args[1].currentType;
+					window.document.we_form.yuiAcResultCT.value = args[1].currentType;
 				}
 			}
 			break;
 		default :
-			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 			break;
 	}
 }
@@ -97,7 +98,7 @@ function extHref_doOnchange(input) {
 }
 
 function extHref_doOnFocus(input) {
-	input.value = this.value === '' ? WE().consts.linkPrefix.EMPTY_EXT : input.value;
+	input.value = (input.value === '' ? WE().consts.linkPrefix.EMPTY_EXT : input.value);
 }
 
 function openToEdit(id, ct, table) {
@@ -153,14 +154,14 @@ function checkMakeEmptyHrefExt() {
 }
 
 function weDoCheckAcFields() {
-	acStatus = WE().layout.weSuggest.checkRequired(window);
+	var acStatus = WE().layout.weSuggest.checkRequired(window);
 	if (weAcCheckLoop > 10) {
 		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		weAcCheckLoop = 0;
 	} else {
 		if (acStatus.running) {
 			weAcCheckLoop++;
-			setTimeout(weDoCheckAcFields, 100);
+			window.setTimeout(weDoCheckAcFields, 100);
 		} else if (!acStatus.valid) {
 			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			weAcCheckLoop = 0;

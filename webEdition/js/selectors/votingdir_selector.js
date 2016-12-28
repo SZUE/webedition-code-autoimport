@@ -1,4 +1,4 @@
-/* global WE, fileSelect, top */
+/* global WE, fileSelect, top,entries,writeBodyDir */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function addEntry(ID, text, isFolder, path) {
 	entries.push({

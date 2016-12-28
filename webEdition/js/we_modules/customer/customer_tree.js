@@ -1,4 +1,4 @@
-/* global node, treeData, container */
+/* global node, treeData, container,drawTree */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	var sort = "";
@@ -61,10 +62,10 @@ container.prototype.openClose = function (id) {
 
 node.prototype.showSegment = function () {
 	var sort = "";
-	parentnode = this.get(this.parentid);
+	var parentnode = this.get(this.parentid);
 	parentnode.clear();
 	sort = top.document.we_form_treheader.sort.value;
-	we_cmd("load", parentnode.id, this.offset, sort);
+	window.we_cmd("load", parentnode.id, this.offset, sort);
 };
 
 node.prototype.getLayout = function () {
@@ -79,7 +80,7 @@ node.prototype.getLayout = function () {
 function doClick(id, typ) {
 	var node = treeData.get(id);
 	if (node.typ === "item") {
-		we_cmd('customer_edit', node.id, node.typ, node.table);
+		window.we_cmd('customer_edit', node.id, node.typ, node.table);
 	}
 }
 
@@ -122,13 +123,13 @@ function applySort() {
 }
 
 function addSorting(sortname) {
-	len = document.we_form_treeheader.sort.options.length;
-	for (i = 0; i < len; i++) {
+	var len = document.we_form_treeheader.sort.options.length;
+	for (var i = 0; i < len; i++) {
 		if (document.we_form_treeheader.sort.options[i].value == sortname) {
 			return;
 		}
 	}
-	document.we_form_treeheader.sort.options[len] = new Option(sortname, sortname);
+	document.we_form_treeheader.sort.options[len] = new window.Option(sortname, sortname);
 
 }
 function submitForm(target, action, method, form) {

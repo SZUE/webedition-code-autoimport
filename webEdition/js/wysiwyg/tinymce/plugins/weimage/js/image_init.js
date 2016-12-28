@@ -1,3 +1,5 @@
+/* global tinyMCEPopup, tinymce */
+
 /**
  * webEdition CMS
  *
@@ -20,6 +22,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 /**
  * This source is based on tinyMCE-plugin "advimage":

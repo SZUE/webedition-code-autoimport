@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, treeData, container, we_transaction, node */
 
 /**
  * webEdition SDK
@@ -25,16 +25,16 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
-var multi_select = false;
-var mode = "show_folder_content";
-
-deleteMode = false;
-entries_selected = [];
-del_parents = [];
-open_folder = -1;
-viewclass = "message";
-mode = "show_folder_content";
+var multi_select = false,
+	mode = "show_folder_content",
+	deleteMode = false,
+	entries_selected = [],
+	del_parents = [],
+	open_folder = -1,
+	viewclass = "message",
+	mode = "show_folder_content";
 
 function check(img) {
 	var i, tmp;
@@ -68,7 +68,7 @@ function check(img) {
 
 
 function r_tree_open(id) {
-	ind = treeData.indexOfEntry(id);
+	var ind = treeData.indexOfEntry(id);
 	if (ind != -1) {
 		treeData[ind].open = 1;
 		if (treeData[ind].parentid >= 1) {
@@ -78,13 +78,14 @@ function r_tree_open(id) {
 }
 
 function update_messaging() {
+	var ent_str;
 	if (!deleteMode && (mode == "show_folder_content")) {
 		if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
 			ent_str = "&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 		} else {
 			ent_str = "";
 		}
-		cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
+		window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
 	}
 }
 
@@ -114,12 +115,13 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&");
 
 	if (hot && args[0] !== "messaging_start_view") {
-		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
+		if (window.confirm(WE().consts.g_l.messaging.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {
 			top.content.usetHot();
 		}
 	}
+	var ind;
 	switch (args[0]) {
 		case "messaging_exit":
 			if (!hot) {
@@ -135,7 +137,7 @@ function we_cmd() {
 				}
 				top.content.viewclass = treeData[ind].viewclass;
 			}
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
 			break;
 		case "edit_folder":
 			update_icon(args[1]);
@@ -144,10 +146,10 @@ function we_cmd() {
 		case "folder_new":
 			break;
 		case "messaging_new_message":
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
 			break;
 		case "messaging_new_todo":
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
 			break;
 		case "messaging_start_view":
 			deleteMode = false;
@@ -159,7 +161,7 @@ function we_cmd() {
 			break;
 		case "messaging_new_folder":
 			mode = "folder_new";
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
 			break;
 		case "messaging_delete_mode_on":
 			deleteMode = true;
@@ -167,30 +169,30 @@ function we_cmd() {
 			top.content.editor.edbody.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_delete_folders.php?we_transaction=" + we_transaction;
 			break;
 		case "messaging_delete_folders":
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
 			break;
 		case "messaging_edit_folder":
 			mode = "edit_folder";
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 			break;
 		case "messaging_settings":
-			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
+			window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
 			break;
 		case "messaging_copy":
-			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+			if (window.editor && window.editor.edbody && window.editor.edbody.entries_selected && window.editor.edbody.entries_selected.length > 0) {
+				window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + window.editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_cut":
-			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+			if (window.editor && window.editor.edbody && window.editor.edbody.entries_selected && window.editor.edbody.entries_selected.length > 0) {
+				window.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + window.editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_paste":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -199,7 +201,8 @@ function drawTree() {
 }
 
 container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
-	var newAst = zweigEintrag;
+	var newAst = zweigEintrag,
+		trg;
 	var ret = "<span onclick=\"top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>";
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
@@ -224,7 +227,8 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 };
 
 container.prototype.drawItem = function (nf, ai) {
-	var ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
+	var ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>',
+		trg;
 
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
@@ -341,7 +345,7 @@ function delete_menu_entries(ids) {
 			del_parents = del_parents.concat([String(t[i].parentid)]);
 		}
 	}
-	treeData = cont;
+	window.treeData = cont;
 }
 
 function msg_start() {

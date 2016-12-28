@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, LinkDialog, ImageDialog */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 var payload = WE().util.getDynamicVar(document, 'loadVarDialog_cmdFrame','data-payload');
 
 
@@ -43,6 +44,6 @@ function we_cmd() {
 			LinkDialog.writeBack(payload.attributes);
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

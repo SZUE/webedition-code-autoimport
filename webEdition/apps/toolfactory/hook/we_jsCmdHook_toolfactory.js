@@ -1,3 +1,5 @@
+/* global we_cmd_modules */
+
 /**
  * webEdition CMS
  *
@@ -21,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.tool_toolfactory = function (args, url) {
 	switch (args[0]) {
 		default:

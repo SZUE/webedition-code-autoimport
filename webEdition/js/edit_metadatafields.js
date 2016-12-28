@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.metadatafields");
 var phpdata = WE().util.getDynamicVar(document, 'loadVarEdit_metadatafields', 'data-phpdata');

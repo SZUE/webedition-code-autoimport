@@ -25,6 +25,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 var categories_edit;
 
@@ -39,7 +40,7 @@ function onSelectionClassChangeJS(value) {
 	document.we_form.elements.FolderPath.value = classPaths[value];
 	document.we_form.elements.FolderPath.disabled = !hasClassSubDirs[value];
 	top.content.we_cmd('populateWorkspaces');
-	we_cmd("setHot");
+	window.we_cmd("setHot");
 }
 
 
@@ -113,7 +114,7 @@ function onFolderSelectionChangeJS(value) {
 function fieldChooserBut(cmd) {
 	var st = document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value;
 	var s = (st === WE().consts.navigation.DYN_DOCTYPE ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value);
-	we_cmd('openFieldSelector', cmd, st, s, 0);
+	window.we_cmd('openFieldSelector', cmd, st, s, 0);
 }
 
 function categoriesEdit(size, elements, delBut) {
@@ -128,7 +129,7 @@ function categoriesEdit(size, elements, delBut) {
 }
 
 function removeAllCats() {
-	we_cmd("setHot");
+	window.we_cmd("setHot");
 	if (categories_edit.itemCount > 0) {
 		while (categories_edit.itemCount > 0) {
 			categories_edit.delItem(categories_edit.itemCount);
@@ -137,7 +138,7 @@ function removeAllCats() {
 }
 
 function addCat(paths) {
-	we_cmd("setHot");
+	window.we_cmd("setHot");
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < paths.length; i++) {
@@ -166,7 +167,7 @@ function setFields(cmd) {
 	var list = document.we_form.fields.options;
 
 	var fields = [];
-	for (i = 0; i < list.length; i++) {
+	for (var i = 0; i < list.length; i++) {
 		if (list[i].selected) {
 			fields.push(list[i].value);
 		}

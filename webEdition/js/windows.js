@@ -22,9 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 
-function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg) {
+var jsWindow = function (opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg) {
 	var foo_w = w;
 	var foo_h = h;
 
@@ -52,7 +53,7 @@ function jsWindow(opener, url, ref, w, h, openAtStartup, scroll, hideMenue, resi
 	if (openAtStartup) {
 		this.open(noPopupErrorMsg);
 	}
-}
+};
 
 jsWindow.prototype = {
 	open: function (noPopupErrorMsg) {

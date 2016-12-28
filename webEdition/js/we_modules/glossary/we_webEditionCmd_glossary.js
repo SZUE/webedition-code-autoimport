@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,11 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.glossary = function (args, url) {
 	var wind;
 	switch (args[0]) {
 		case "edit_settings_glossary":
-			we_cmd("glossary_settings");
+			window.we_cmd("glossary_settings");
 			break;
 		case "glossary_check":
 
@@ -44,7 +45,7 @@ we_cmd_modules.glossary = function (args, url) {
 				new (WE().util.jsWindow)(window, url, "glossary_check",  WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "glossary_edit_acronym":
@@ -74,11 +75,11 @@ we_cmd_modules.glossary = function (args, url) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:???
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			break;
 		default:
 			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {
-				tempargs = args[0].split("\XYZ");
+				var tempargs = args[0].split("\XYZ");
 
 				wind = WE().util.jsWindow.prototype.find('edit_module');
 				if (wind) {

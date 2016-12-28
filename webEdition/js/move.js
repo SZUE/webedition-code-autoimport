@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function initMove(table) {
 	top.treeData.setState(top.treeData.tree_states.select);
@@ -38,7 +39,7 @@ function initMove(table) {
 function we_cmd() {
 	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 }
 
 function we_submitForm(target, url) {
@@ -82,7 +83,7 @@ function press_ok_move(type) {
 	// check if selected target exists
 	var acStatus = WE().layout.weSuggest.checkRequired(window);
 	if (acStatus.running) {
-		setTimeout(press_ok_move, 100, type);
+		window.setTimeout(press_ok_move, 100, type);
 		return;
 	}
 	if (!acStatus.valid) {
@@ -114,7 +115,7 @@ function press_ok_move(type) {
 			openDocs_Str += "- " + open_move_editors[i].getEditorDocumentPath() + "\n";
 
 		}
-		if (confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
+		if (window.confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
 
 			for (i = 0; i < open_move_editors.length; i++) {
 				open_move_editors[i].setEditorIsHot(false);

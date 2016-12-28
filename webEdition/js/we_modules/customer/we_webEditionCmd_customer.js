@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 we_cmd_modules.customer = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_customer":
@@ -39,12 +40,12 @@ we_cmd_modules.customer = function (args, url) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:????
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			return true;
 		case "customer_applyWeDocumentCustomerFilterFromFolder":
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			return true;
 	}

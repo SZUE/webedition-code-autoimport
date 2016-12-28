@@ -20,6 +20,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
+
 var isRegisterDialogHere = true;
 var tinyMceDialog = null;
 var tinyMceSecondaryDialog = null;

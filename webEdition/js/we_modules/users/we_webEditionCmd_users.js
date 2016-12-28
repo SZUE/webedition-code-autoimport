@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, we_cmd_modules */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 we_cmd_modules.users = function (args, url) {
 	switch (args[0]) {
@@ -38,35 +39,35 @@ we_cmd_modules.users = function (args, url) {
 				new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 				break;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "new_user":
 			if (WE().util.hasPerm('NEW_USER')) {
 				WE().layout.pushCmdToModule(args);
 				return true;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "save_user":
 			if (WE().util.hasPerm('SAVE_USER')) {
 				WE().layout.pushCmdToModule(args);
 				return true;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "new_group":
 			if (WE().util.hasPerm('NEW_GROUP')) {
 				WE().layout.pushCmdToModule(args);
 				return true;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "new_alias":
 			if (WE().util.hasPerm('NEW_USER')) {
 				WE().layout.pushCmdToModule(args);
 				break;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "exit_users":
 			WE().layout.pushCmdToModule(args);
@@ -76,7 +77,7 @@ we_cmd_modules.users = function (args, url) {
 				WE().layout.pushCmdToModule(args);
 				break;
 			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "doctypes":
 			new (WE().util.jsWindow)(window, url, "doctypes",  WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, true, true);
@@ -98,14 +99,14 @@ we_cmd_modules.users = function (args, url) {
 			}
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
 		case "chooseAddress":
 			new (WE().util.jsWindow)(window, url, "chooseAddress", WE().consts.size.dialog.smaller, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "users_changeR":
-			we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url, args[0]);
 			break;
 		default:
 			return false;

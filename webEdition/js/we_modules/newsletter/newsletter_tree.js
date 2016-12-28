@@ -1,3 +1,5 @@
+/* global container, WE,treeData,drawTree */
+
 /**
  * webEdition CMS
  *
@@ -20,10 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function doClick(id, typ) {
 	var node = treeData.get(id);
-	we_cmd('newsletter_edit', node.id, node.typ, node.table);
+	window.we_cmd('newsletter_edit', node.id, node.typ, node.table);
 }
 
 function info(text) {

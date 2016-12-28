@@ -173,7 +173,7 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 		}
 	}else{
-		setTimeout(set_button_state,300,(alldis ? 1 : 0));
+		window.setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -390,7 +390,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(set_button_state,300,(alldis ? 1 : 0));
+		window.setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -605,7 +605,7 @@ set_button_state(false);';
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
-						setTimeout(set_button_state,300,(alldis ? 1 : 0));
+						window.setTimeout(set_button_state,300,(alldis ? 1 : 0));
 					}
 				}
 				set_button_state(false);';
@@ -1032,7 +1032,6 @@ function ajaxCallbackDeleteVersionsWizard (responseText){
 				_usedEditors[frameId].setEditorReloadAllNeeded(true);
 			}
 		}
-		_multiEditorreload = true;
 
 		//reload tree
 		top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
@@ -1082,7 +1081,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(set_button_state,300,(alldis ? 1 : 0));
+		window.setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';

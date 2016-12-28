@@ -23,23 +23,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var WE_checkDates;
 function WE_checkDate(name) {
-	var from = WE_checkDates[name].from;
-	var to = WE_checkDates[name].to;
-
-	var now = new Date();
-
-	var year = now.getFullYear();
-	var month = now.getMonth();
-	var day = now.getDate();
-	var hour = now.getHours();
-	var minute = now.getMinutes();
-	var second = 30;
+	var from = WE_checkDates[name].from,
+		to = WE_checkDates[name].to,
+		now = new Date(),
+		year = now.getFullYear(),
+		month = now.getMonth(),
+		day = now.getDate(),
+		hour = now.getHours(),
+		minute = now.getMinutes(),
+		second = 30,
+		i,
+		correct;
 
 	for (i = 0; i < document.getElementById(name + '_month').length; ++i) {
-		if (document.getElementById(name + '_month').options[i].selected ) {
+		if (document.getElementById(name + '_month').options[i].selected) {
 			month = document.getElementById(name + '_month').options[i].value - 1;
 		}
 	}

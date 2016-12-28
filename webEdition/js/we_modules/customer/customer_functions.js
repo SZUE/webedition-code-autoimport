@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var fieldTypesByName = WE().util.getDynamicVar(document, 'loadVarCustomerFuntions', 'data-customerFunctions');
 function showHideDatePickerIcon(fieldNr, show) {
@@ -44,7 +45,7 @@ function isDateField(fieldNr) {
 
 function lookForDateFields() {
 	var selBranch, selField;
-	for (i = 0; i < document.getElementsByName('count')[0].value; i++) {
+	for (var i = 0; i < document.getElementsByName('count')[0].value; i++) {
 		selBranch = document.getElementsByName('branch_' + i)[0].value;
 		selField = document.getElementsByName('field_' + i)[0].value;
 		selField = selField.substring(selBranch.length + 1, selField.length);
@@ -59,7 +60,8 @@ function lookForDateFields() {
 }
 
 function transferDateFields() {
-	for (i = 0; i < document.getElementsByName('count')[0].value; i++) {
+	var selBranch,selField;
+	for (var i = 0; i < document.getElementsByName('count')[0].value; i++) {
 		selBranch = document.getElementsByName('branch_' + i)[0].value;
 		selField = document.getElementsByName('field_' + i)[0].value;
 		selField = selField.substring(selBranch.length + 1, selField.length);

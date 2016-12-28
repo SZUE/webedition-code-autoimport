@@ -1,6 +1,7 @@
 /* Functions for the welink plugin popup */
 
 /* global tinyMCEPopup */
+'use strict';
 
 //tinyMCEPopup.requireLangPack();
 var weFocusedField;
@@ -206,11 +207,11 @@ function getAnchorListHTML(id, target) {
 
 function checkPrefix(n) {
 
-	if (n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_email'))) {
+	if (n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && window.confirm(tinyMCEPopup.getLang('welink_dlg.is_email'))) {
 		n.value = 'mailto:' + n.value;
 	}
 
-	if (/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_external'))) {
+	if (/^\s*www\./i.test(n.value) && window.confirm(tinyMCEPopup.getLang('welink_dlg.is_external'))) {
 		n.value = 'http://' + n.value;
 	}
 }

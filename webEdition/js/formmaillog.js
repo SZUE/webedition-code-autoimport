@@ -23,8 +23,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function clearBlockLog() {
-	if (confirm(WE().consts.g_l.prefs.clear_log_question)) {
+	if (window.confirm(WE().consts.g_l.prefs.clear_log_question)) {
 		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearlog=1";
 	}
 }
@@ -32,13 +33,13 @@ function clearBlockLog() {
 function clearEntry(id, ip) {
 	var txt = WE().consts.g_l.prefs.clear_block_entry_question;
 
-	if (confirm(txt.replace(/%s/, ip))) {
+	if (window.confirm(txt.replace(/%s/, ip))) {
 		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearEntry=" + id;
 	}
 }
 
 function clearLog() {
-	if (confirm(WE().consts.g_l.prefs.clear_log_question)) {
+	if (window.confirm(WE().consts.g_l.prefs.clear_log_question)) {
 		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_log&clearlog=1";
 	}
 }

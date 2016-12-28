@@ -84,7 +84,7 @@ function checkForOpenChilds() {
 	}
 
 	if (_openChilds.length) {
-		if ( confirm("' . g_l('modules_customerFilter', '[apply_filter_cofirm_close]') . '") ) {
+		if ( window.confirm("' . g_l('modules_customerFilter', '[apply_filter_cofirm_close]') . '") ) {
 			// close all
 			for (i=0;i<_openChilds.length;i++) {
 				_usedEditors[_openChilds[i]].setEditorIsHot(false);

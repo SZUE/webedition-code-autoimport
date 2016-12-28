@@ -53,7 +53,7 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);
-		opener.setScrollTo();' .
+		window.opener.setScrollTo();' .
 		((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
 		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
 		$we_doc->getElement($name . 'inlineedit') === 'on' ?

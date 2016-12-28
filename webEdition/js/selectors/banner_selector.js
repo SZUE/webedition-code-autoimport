@@ -22,17 +22,18 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function doClick(id, ct) {
 	if (ct == 1) {
-		if (wasdblclick) {
+		if (top.metaKeys.doubleClick) {
 			setDir(id);
-			setTimeout(function () {
-				wasdblclick = false;
+			window.setTimeout(function () {
+				top.metaKeys.doubleClick = false;
 			}, 400);
 		}
 	} else {
-		e = top.getEntry(id);
+		var e = top.getEntry(id);
 		if (e.isFolder) {
 			if (top.fileSelect.data.currentID == id) {
 				top.RenameFolder(id);

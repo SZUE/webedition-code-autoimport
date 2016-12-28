@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,weDoOk */
 
 /**
  * webEdition SDK
@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
 var dialogVars = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
 
@@ -38,9 +39,7 @@ function weSaveToGlossaryFn() {
 }
 
 function doKeyDown(e) {
-	var key = e.keyCode === undefined ? event.keyCode : e.keyCode;
-
-	switch (key) {
+	switch (e.keyCode) {
 		case 27:
 			top.close();
 			break;
@@ -57,8 +56,8 @@ function addKeyListener() {
 }
 
 function openExtSource(argName) {
-	if (argName && this.document.we_form.elements['we_dialog_args[' + argName + ']']) {
-		var val = this.document.we_form.elements['we_dialog_args[' + argName + ']'].value;
+	if (argName && window.document.we_form.elements['we_dialog_args[' + argName + ']']) {
+		var val = window.document.we_form.elements['we_dialog_args[' + argName + ']'].value;
 		if (val && val !== '" . we_base_link::EMPTY_EXT . "') {
 			window.open(val);
 		}
@@ -90,9 +89,9 @@ function we_cmd() {
 			elem.select();
 			break;
 		default:
-			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
 addKeyListener();
-self.focus();
+window.focus();

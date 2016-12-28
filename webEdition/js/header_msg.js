@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function header_msg_update(newmsg_count, newtodo_count) {
 	var msgTD = document.getElementById("msgCount");

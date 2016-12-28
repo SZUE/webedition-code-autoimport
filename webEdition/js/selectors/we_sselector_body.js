@@ -1,4 +1,4 @@
-/* global fileSelect */
+/* global fileSelect, top */
 
 /**
  * webEdition CMS
@@ -22,26 +22,33 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var clickCount = 0;
-var wasdblclick = false;
-var tout = null;
-var mk = null;
+'use strict';
+var clickCount = 0,
+	mk = null;
+var metaKeys = {
+	ctrl: false,
+	shift: false,
+	doubleClick: false,
+	inputClick: false,
+	doubleTout: null
+};
 
 function doClick(id, ct, indb) {
 	if (ct === 1) {
-		if (wasdblclick) {
+		if (metaKeys.doubleClick) {
 			top.fscmd.selectDir(id);
-			if (top.fileSelect.data.filter !== WE().consts.contentTypes.FOLDER && top.fileSelect.data.filter !== "filefolder")
+			if (top.fileSelect.data.filter !== WE().consts.contentTypes.FOLDER && top.fileSelect.data.filter !== "filefolder") {
 				top.fscmd.selectFile("");
-			setTimeout(function () {
-				wasdblclick = false;
+			}
+			window.setTimeout(function () {
+				metaKeys.doubleClick = false;
 			}, 400);
 		} else {
 			if ((top.fileSelect.data.filter === WE().consts.contentTypes.FOLDER || top.fileSelect.data.filter === "filefolder") && (!indb)) {
 				top.fscmd.selectFile(id);
 			}
 		}
-		if ((top.fileSelect.click.oldID === id) && (!wasdblclick)) {
+		if ((top.fileSelect.click.oldID === id) && (!metaKeys.doubleClick)) {
 			clickEdit(id);
 		}
 	} else {
@@ -84,20 +91,20 @@ function clickEditFile(file) {
 }
 
 function doScrollTo() {
-	if (parent.scrollToVal) {
-		window.scrollTo(0, parent.scrollToVal);
-		parent.scrollToVal = 0;
+	if (window.parent.scrollToVal) {
+		window.scrollTo(0, window.parent.scrollToVal);
+		window.parent.scrollToVal = 0;
 	}
 }
 
 function keypressed(e) {
 	if (e.keyCode === 13) { // RETURN KEY => valid for all Browsers
-		setTimeout(document.we_form.txt.blur, 30);
+		window.setTimeout(document.we_form.txt.blur, 30);
 	}
 }
 
 function setScrollTo() {
-	parent.scrollToVal = pageYOffset;
+	window.parent.scrollToVal = window.pageYOffset;
 }
 
 function initSelector(type) {

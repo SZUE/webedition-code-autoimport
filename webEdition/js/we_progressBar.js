@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var progressBar = WE().util.getDynamicVar(document, 'loadVarProgressBar', 'data-progress');
 
 function setProgressText(name, text) {

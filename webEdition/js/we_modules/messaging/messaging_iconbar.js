@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, transaction */
 
 /**
  * webEdition CMS
@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 function new_message(mode) {
 	if (mode == "re" && (top.content.editor.edbody.last_entry_selected == -1)) {
 		return;
@@ -50,7 +51,7 @@ function paste_messages() {
 
 function delete_messages(isTodo) {
 	if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-		c = confirm((isTodo ? WE().consts.g_l.messaging.q_rm_todos : WE().consts.g_l.messaging.q_rm_messages));
+		var c = window.confirm((isTodo ? WE().consts.g_l.messaging.q_rm_todos : WE().consts.g_l.messaging.q_rm_messages));
 		if (c === false) {
 			return;
 		}

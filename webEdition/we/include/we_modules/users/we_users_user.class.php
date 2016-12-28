@@ -2131,7 +2131,7 @@ function setTab(tab) {
 		case ' . self::TAB_WORKSPACES . ':
 		case ' . self::TAB_SETTINGS . ':
 			if(top.content.editor.edbody.switchPage(tab)==false){
-				setTimeout(resetTabs,50);
+				window.setTimeout(resetTabs,50);
 			}
 			break;
 	}

@@ -675,7 +675,7 @@ class we_backup_wizard{
 						if(defined('WORKFLOW_TABLE')){
 							$db = new DB_WE();
 							$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-								we_html_button::create_button('restore_backup', "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
+								we_html_button::create_button('restore_backup', "javascript:if(window.confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
 								we_html_button::create_button('restore_backup', "javascript:" . $startImportCall));
 						} else {
 							$nextbut = we_html_button::create_button('restore_backup', "javascript:" . $startImportCall);

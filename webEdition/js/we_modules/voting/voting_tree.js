@@ -1,4 +1,4 @@
-/* global top */
+/* global top, container, WE,treeData, drawTree, node*/
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 container.prototype.openClose = function (id) {
 	var sort = "";
@@ -47,7 +48,7 @@ function doClick(id, typ) {
 	var cmd = "";
 	var node;
 	if (top.content.hot) {
-		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
+		if (window.confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			cmd = "save_voting";
 			top.content.we_cmd("save_voting");
 			return;
@@ -63,7 +64,7 @@ function info(text) {
 }
 
 node.prototype.showSegment = function () {
-	parentnode = this.get(this.parentid);
+	var parentnode = this.get(this.parentid);
 	parentnode.clear();
 	treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();

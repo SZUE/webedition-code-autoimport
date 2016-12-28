@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var loaded;
 
@@ -98,10 +99,10 @@ function we_cmd() {
 			break;
 		case "selector_intHrefCallback":
 			// used as selector callback: args[1] is selector result
-			this.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;
+			window.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

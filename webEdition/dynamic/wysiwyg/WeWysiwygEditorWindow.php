@@ -36,10 +36,10 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 
 	echo we_html_element::jsElement('
 if (opener.document.getElementById("' . $type . '")) {
-	opener.we_ui_controls_WeWysiwygEditor.setData("' . $type . '", "' . $newHTMLencA . '");
+	window.opener.we_ui_controls_WeWysiwygEditor.setData("' . $type . '", "' . $newHTMLencA . '");
 }
 if (opener.document.getElementById("' . $type . '_View")) {
-	opener.we_ui_controls_WeWysiwygEditor.setDataView("' . $type . '", "' . $newHTMLencB . '");
+	window.opener.we_ui_controls_WeWysiwygEditor.setDataView("' . $type . '", "' . $newHTMLencB . '");
 }
 
 window.close();');

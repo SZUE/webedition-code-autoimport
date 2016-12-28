@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 if (WE(true)) {
 	var passwd = WE().util.getDynamicVar(document, 'loadVarComparePwd', 'data-passwd');

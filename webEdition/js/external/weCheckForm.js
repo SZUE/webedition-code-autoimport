@@ -21,6 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function weCheckFormEvent() {
 }
@@ -43,8 +44,8 @@ weCheckFormEvent.stopEvent = function (ev) {
 
 
 function initWeCheckForm_by_name(func, name) {
-	forms = document.getElementsByTagName("form");
-	for (i = 0; i < forms.length; i++) {
+	var forms = document.getElementsByTagName("form");
+	for (var i = 0; i < forms.length; i++) {
 		if (forms[i].name == name) {
 			weCheckFormEvent.addEvent(forms[i], "submit", func);
 			break;
@@ -53,7 +54,7 @@ function initWeCheckForm_by_name(func, name) {
 }
 
 function initWeCheckForm_by_id(func, id) {
-	formular = document.getElementById(id);
+	var formular = document.getElementById(id);
 	weCheckFormEvent.addEvent(formular, "submit", func);
 }
 
@@ -61,12 +62,13 @@ function initWeCheckForm_by_id(func, id) {
  */
 function weCheckFormMandatory(form, reqFields) {
 	//  check required fields
-	var missingFields = [];
-	var formname = form.name;
-	var elemType = '';
-	var ok;
+	var missingFields = [],
+		formname = form.name,
+		elemType = '',
+		ok,
+		elem;
 
-	for (i = 0; i < reqFields.length; i++) {
+	for (var i = 0; i < reqFields.length; i++) {
 		elem = form[reqFields[i]];
 		//test if userinput fields are used, format: we_ui_FORM[elemname]
 		if (elem === undefined) {
@@ -91,7 +93,7 @@ function weCheckFormMandatory(form, reqFields) {
 					ok = false;
 					//  perhaps it is a radio-button
 					if (elem && elem.length) {
-						for (j = 0; j < elem.length; j++) {
+						for (var j = 0; j < elem.length; j++) {
 							if (elem[j].checked) {
 								ok = true;
 							}
@@ -109,13 +111,14 @@ function weCheckFormMandatory(form, reqFields) {
 }
 
 function weCheckFormEmail(form, emailFields) {    //  return names of invalid email fields
-	invalidEmails = [];
+	var invalidEmails = [];
+	var i, elem;
 
 	if (emailFields.length > 0) {
-		pattern = "^([a-zA-Z0-9-_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
+		var pattern = "^([a-zA-Z0-9-_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
 		for (i = 0; i < emailFields.length; i++) {
 
-			elem = formular[emailFields[i]];
+			elem = form[emailFields[i]];
 			if (elem && elem.value) {
 				if (!elem.value.match(pattern)) {
 					invalidEmails.push(emailFields[i]);
@@ -130,11 +133,11 @@ function weCheckFormPassword(form, pwFields) {   //  return true in case of erro
 
 	if (form[pwFields[0]] && form[pwFields[1]] && pwFields[2]) {
 
-		f1 = form[pwFields[0]].value;
-		f2 = form[pwFields[1]].value;
-		f3 = pwFields[2];
+		var f1 = form[pwFields[0]].value;
+		var f2 = form[pwFields[1]].value;
+		var f3 = pwFields[2];
 
-		return ((f1 == f2) && (f1.length >= f3) ? false : true);
+		return ((f1 === f2) && (f1.length >= f3) ? false : true);
 	}
 	return true;
 

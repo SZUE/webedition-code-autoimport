@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function we_submitForm(url) {
 	var f = window.document.we_form;
@@ -53,6 +54,6 @@ function we_cmd() {
 			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_status");
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

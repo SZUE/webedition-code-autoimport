@@ -21,9 +21,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function init() {
-	_fo = document.forms[0];
+	//_fo = document.forms[0];
 	initPrefs();
 }
 

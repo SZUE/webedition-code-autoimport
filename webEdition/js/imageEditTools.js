@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, CropTool, _EditorFrame */
 
 /**
  * webEdition SDK
@@ -25,8 +25,9 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 
-ImageEditTools = {
+var ImageEditTools = {
 	activeTool: '',
 	size: {
 		origW: 0,
@@ -135,8 +136,8 @@ ImageEditTools = {
 			}
 
 			this.resetCropTool();
-			imgDiv = null;
-			imgBorder = null;
+			var imgDiv = null,
+				imgBorder = null;
 			elIdImage = null;
 			elCropCtrl = null;
 			elIds = null;
@@ -390,12 +391,15 @@ ImageEditTools = {
 		},
 		setDragEnabled: function (e) {
 			e.preventDefault();
-			if (e.altKey)
+			if (e.altKey){
 				this.altKey = e.altKey;
-			if (e.shiftKey)
+			}
+			if (e.shiftKey){
 				this.shiftKey = e.shiftKey;
-			if (e.ctrlKey)
+			}
+			if (e.ctrlKey){
 				this.ctrlKey = e.ctrlKey;
+			}
 			this.coords = {x: e.clientX, y: e.clientY};
 			this.posX1 = this.sel.getLeft();
 			this.posX2 = this.sel.getRight();
@@ -661,8 +665,9 @@ ImageEditTools = {
 			} else {
 				this.sel.setHeight(h);
 				document.forms.we_form.CropHeight.value = h;
-				if (typeof y1 === "number" && y1 + h > this.imgH)
+				if (typeof y1 === "number" && y1 + h > this.imgH){
 					y1 = this.imgH - h;
+				}
 				if (typeof x1 === "number" && typeof y1 === "number" && typeof w === "number") {
 					this.sel.draw(x1, y1, w, h);
 					cov.style.visibility = "visible";
@@ -877,13 +882,15 @@ ImageEditTools = {
 		},
 		zoomH: function (px) {
 			var w = this.sel.getWidth();
-			if (w !== undefined)
+			if (w !== undefined){
 				this.setCropWidth(w + px);
+			}
 		},
 		zoomV: function (px) {
 			var h = this.sel.getHeight();
-			if (h !== undefined)
+			if (h !== undefined){
 				this.setCropHeight(h + px);
+			}
 		},
 		switch_button_state: function (element, state) {
 			if (state === "enabled") {
@@ -1064,7 +1071,7 @@ ImageEditTools = {
 		},
 		moveFocusPosition: function (e) {
 			var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
-							leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
+				leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
 			//window.getSelection().removeAllRanges();
 			this.setFocusPositionByMouse(null, topVal, leftVal);
@@ -1082,7 +1089,7 @@ ImageEditTools = {
 		},
 		setFocusPositionByValue: function () {
 			var x = document.getElementById('x_focus').value,
-							y = document.getElementById('y_focus').value;
+				y = document.getElementById('y_focus').value;
 
 			if (Math.abs(this.elems.x_focus) > 1) {
 				this.elems.x_focus = 0;

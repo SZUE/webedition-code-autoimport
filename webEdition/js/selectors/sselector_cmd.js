@@ -22,10 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var filter = '';
 var selectOwn = 0;
 
 function drawNewFolder() {
+	var elem;
 	for (var i = 0; i < top.allentries.length; i++) {
 		if ((elem = top.fsbody.document.getElementById(top.allentries[i]))) {
 			elem.classList.remove("selected");
@@ -48,8 +50,9 @@ function selectFile(fid) {
 		top.document.getElementsByName("fname")[0].value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
-				if (top.fsbody.document.getElementById(top.allentries[i]))
+				if (top.fsbody.document.getElementById(top.allentries[i])){
 					top.fsbody.document.getElementById(top.allentries[i]).classList.remove("selected");
+				}
 			}
 			top.fsbody.document.getElementById(fid).classList.add("selected");
 		}
@@ -59,8 +62,9 @@ function selectFile(fid) {
 		top.document.getElementsByName("fname")[0].value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
-				if (top.fsbody.document.getElementById(top.allentries[i]))
+				if (top.fsbody.document.getElementById(top.allentries[i])){
 					top.fsbody.document.getElementById(top.allentries[i]).classList.remove("selected");
+				}
 			}
 			top.fsbody.document.getElementById(fid).classList.add("selected");
 		}
@@ -69,7 +73,7 @@ function selectFile(fid) {
 
 
 function reorderDir(dir, order) {
-	setTimeout(function (url) {
+	window.setTimeout(function (url) {
 		top.fsbody.location = url;
 	}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + dir + '&ord=' + order + '&file=' + top.fileSelect.data.currentFilter + '&curID=' + encodeURI(top.fileSelect.data.currentID));
 }
@@ -114,7 +118,7 @@ function delFile(ask) {
 function setDir(dir) {
 	var a = top.document.getElementById("lookin").options;
 	if (a.length - 2 > -1) {
-		for (j = 0; j < a.length; j++) {
+		for (var j = 0; j < a.length; j++) {
 			if (a[j].value === dir) {
 				a.length = j + 1;
 				a[j].selected = true;
@@ -148,7 +152,7 @@ function drawDir(dir, what, sid) {
 			}
 			break;
 		default:
-			setTimeout(function (url) {
+			window.setTimeout(function (url) {
 				top.fsbody.location = url;
 			}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + encodeURI(top.fileSelect.data.rootDir + dir) + '&file=' + top.fileSelect.data.currentFilter + '&curID=' + encodeURI(top.fileSelect.data.currentID) + '&selectOwn=' + selectOwn);
 	}

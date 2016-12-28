@@ -25,6 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+'use strict';
 WE().util.loadConsts(document, "g_l.doctypeEdit");
 var doctype = WE().util.getDynamicVar(document, 'loadVarDoctypeEdit', 'data-doctype');
 
@@ -38,7 +39,7 @@ function we_save_docType(doc, url) {
 	} else{
 		if (acStatus.running) {
 			countSaveLoop++;
-			setTimeout(we_save_docType, 100, doc, url);
+			window.setTimeout(we_save_docType, 100, doc, url);
 		} else if (!acStatus.valid) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
@@ -69,6 +70,7 @@ function doUnload() {
 
 function disableLangDefault(allnames, allvalues, deselect) {
 	var arr = allvalues.split(",");
+	var w,e;
 
 	for (var v in arr) {
 		w = allnames + '[' + arr[v] + ']';
@@ -96,16 +98,16 @@ function we_cmd() {
 		case "add_dt_template":
 		case "dt_add_cat":
 			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-			we_save_docType(this.name, url);
+			we_save_docType(window, url);
 			break;
 
 		case "delete_dt_template":
 		case "dt_delete_cat":
 		case "save_docType":
-			we_save_docType(this.name, url);
+			we_save_docType(window, url);
 			break;
 		case "newDocType":
-			var name = prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
+			var name = window.prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
 			if (name !== null) {
 				if ((name.indexOf("<") !== -1) || (name.indexOf(">") !== -1)) {
 					top.we_showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -121,17 +123,17 @@ function we_cmd() {
 					/*						if (top.opener.top.header) {
 					 top.opener.top.header.location.reload();
 					 }*/
-					this.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
+					window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
 				}
 			}
 			break;
 		case "change_docType":
 		case "deleteDocType":
 		case "deleteDocTypeok":
-			this.location = url;
+			window.location = url;
 			break;
 		default:
-			opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }

@@ -20,6 +20,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var linklist = WE().util.getDynamicVar(document, 'loadVarLinklistedit', 'data-linklist');
 
 function closeOnEscape() {
@@ -27,7 +28,7 @@ function closeOnEscape() {
 }
 
 function applyOnEnter(evt) {
-	_elemName = "target";
+	var _elemName = "target";
 	if (evt.srcElement !== undefined) { // IE
 		_elemName = "srcElement";
 	}
@@ -98,7 +99,7 @@ function we_cmd() {
 			break;
 
 		default:
-			opener.parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			window.opener.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -106,23 +107,23 @@ function we_cmd() {
 if (linklist.ok) {
 	switch (linklist.cmd) {
 		case "edit_link_at_class":
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_class", linklist.trans, linklist.we_field, linklist.name);
+			window.opener.setScrollTo();
+			window.opener.we_cmd("object_change_link_at_class", linklist.trans, linklist.we_field, linklist.name);
 			top.close();
 			break;
 		case "edit_link_at_object":
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_object", linklist.trans, "link_" + linklist.name);
+			window.opener.setScrollTo();
+			window.opener.we_cmd("object_change_link_at_object", linklist.trans, "link_" + linklist.name);
 			top.close();
 			break;
 		default:
 			if (!linklist.emptyLinkList) {
-				opener.setScrollTo();
-				opener.we_cmd("change_linklist", linklist.name, "");
+				window.opener.setScrollTo();
+				window.opener.we_cmd("change_linklist", linklist.name, "");
 				top.close();
 			} else if (!linklist.emptyLink) {
-				opener.setScrollTo();
-				opener.we_cmd("change_link", linklist.name, "");
+				window.opener.setScrollTo();
+				window.opener.we_cmd("change_link", linklist.name, "");
 				top.close();
 			}
 	}

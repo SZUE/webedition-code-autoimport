@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var orginal;
 var retryjava = 0;
 var retry = 0;
@@ -41,10 +42,10 @@ function closeOnEscape() {
 	return true;
 }
 
-function customAdapter() {
+var customAdapter = function () {
 	this.getSelectedText = function () {
 	};
-}
+};
 
 function spellcheck() {
 	retry = 0;
@@ -68,7 +69,7 @@ function findNext() {
 	if (document.spellchecker.isReady()) {
 		if (document.spellchecker.isReady()) {
 			if (document.spellchecker.nextSuggestion()) {
-				temp = document.spellchecker.getMisspelledWord();
+				var temp = document.spellchecker.getMisspelledWord();
 				var suggs = document.spellchecker.getSuggestions();
 				suggs = suggs + "";
 				var suggA = suggs.split("|");
@@ -195,9 +196,7 @@ function getImageColumn(src, width, height) {
 
 function getTitleColumn(word, suggestions, title) {
 	var td = document.createElement('td');
-	var html;
-
-	html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
+	var html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
 		'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
 		'<option value="' + word + '">' + word + '</option>' +
 		'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
@@ -205,7 +204,7 @@ function getTitleColumn(word, suggestions, title) {
 		'</optgroup>';
 	if (suggestions.length > 1) {
 		html += '<optgroup label="' + WE().consts.g_l.glossary.suggestions + '">';
-		for (i = 0; i < suggestions.length; i++) {
+		for (var i = 0; i < suggestions.length; i++) {
 			if (suggestions[i] !== '') {
 				html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
 			}
@@ -308,7 +307,8 @@ function init() {
 }
 
 function checkForm() {
-	for (i = 0; i < counter; i++) {
+	var type, title, lang;
+	for (var i = 0; i < counter; i++) {
 		type = document.getElementById('type_' + i).value;
 		title = document.getElementById('title_' + i).value;
 		lang = document.getElementById('lang_' + i).value;

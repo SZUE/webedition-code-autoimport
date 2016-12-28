@@ -488,7 +488,7 @@ function removeAll(){
 }
 
 function newIp(){
-	var ip = prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
+	var ip = window.prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
 
 
 	var re = new RegExp("[a-zA-Z|,]");
@@ -564,7 +564,7 @@ function newIp(){
 
 		$js = we_html_element::jsElement('
 function resetScores(){
-	if(confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
+	if(window.confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
 		for(var i=0;i<' . ($i - 1) . ';i++){
 			document.we_form.elements["scores_"+i].value = 0;
 		}

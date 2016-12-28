@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE,console */
 
 /**
  * webEdition CMS
@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var weRpcFailedCnt = 0;
 
@@ -41,7 +42,7 @@ window.setInterval(function () {
 						_ref.setUsersListOnline(usersHTML);
 					}
 				}
-				mfdData = result.DataArray.mfd_data;
+				var mfdData = result.DataArray.mfd_data;
 				if (_ref.setMfdData && mfdData !== undefined) {
 					_ref.setMfdData(mfdData);
 				}

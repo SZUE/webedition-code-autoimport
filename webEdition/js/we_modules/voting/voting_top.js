@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().util.loadConsts(document, "g_l.voting");
 
@@ -46,7 +47,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot && args[0] != "save_voting") {
-		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
+		if (window.confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			args[0] = "save_voting";
 		} else {
 			top.content.usetHot();
@@ -79,7 +80,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.vernr.value = 0;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd, 10, "new_voting");
+				window.setTimeout(we_cmd, 10, "new_voting");
 			}
 			break;
 		case "delete_voting":
@@ -87,15 +88,15 @@ function we_cmd() {
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_VOTING")) {
-				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 
@@ -113,7 +114,7 @@ function we_cmd() {
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -135,7 +136,7 @@ function we_cmd() {
 
 		case "voting_edit":
 			if (!WE().util.hasPerm("EDIT_VOTING")) {
-				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -150,6 +151,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
 		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 WE().util.loadConsts(document, 'g_l.import');
 
 function weGetCategories(obj, cats, part) {
@@ -66,65 +67,65 @@ function we_cmd() {
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
-				this.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
+				window.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
 			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
-				if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+				if (cats[i] && (window.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
 					found = true;
-					if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
-						this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
+					if (window.wizbody.document.we_form.elements['v[docCategories]'].value) {
+						window.wizbody.document.we_form.elements['v[docCategories]'].value = window.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
 					} else {
-						this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
+						window.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
 				if (found) {
-					setTimeout(weGetCategories, 100, 'doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+					window.setTimeout(weGetCategories, 100, 'doc', window.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
 				}
 			}
 			break;
 		case 'delete_docCat':
-			this.we_cmd('delete_Cat', 'doc', args[1], false);
+			window.we_cmd('delete_Cat', 'doc', args[1], false);
 			break;
 		case 'add_objCat':
-			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
+			window.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
 			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
-				if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+				if (cats[i] && (window.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
 					found = true;
-					if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
-						this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
+					if (window.wizbody.document.we_form.elements['v[objCategories]'].value) {
+						window.wizbody.document.we_form.elements['v[objCategories]'].value = window.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
 					} else {
-						this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
+						window.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
 
 				if (found) {
-					setTimeout(weGetCategories, 100, 'obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+					window.setTimeout(weGetCategories, 100, 'obj', window.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 				}
 			}
 			break;
 		case 'delete_objCat':
-			this.we_cmd('delete_Cat', 'obj', args[1], false);
+			window.we_cmd('delete_Cat', 'obj', args[1], false);
 			break;
 		case 'delete_Cat':
 			var obj = args[1],
 				cat = args[2],
 				reload = !args[3];
 
-			if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
-				if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
+			if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
+				if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
 					var re = new RegExp(',' + cat + ',');
-					this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
+					window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
 					if (!reload) {
-						this.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(this.wizbody.document.getElementById(obj + 'Cat' + cat));
+						window.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(window.wizbody.document.getElementById(obj + 'Cat' + cat));
 					}
-					if (this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
-						this.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
+					if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
+						window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
 						if (!reload) {
-							this.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
+							window.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 						}
 					}
 				}
@@ -164,7 +165,7 @@ function we_cmd() {
 			top.setFormField('v[rdofloc]', true, 'radio', 1);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -494,7 +495,7 @@ function doNext_WXMLImportStep1() {
 	}
 	f.step.value = 2;
 	// timing Problem with Safari
-	setTimeout(top.we_submit_form, 50, top.wizbody.document.forms.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
+	window.setTimeout(top.we_submit_form, 50, top.wizbody.document.forms.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 }
 
 function doNext_GXMLImportStep1() {
@@ -715,7 +716,7 @@ function we_import(mode, cid, reload) {
 		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=WXMLImport&noload=1';
 	}
 
-	var we_form = self.document.we_form;
+	var we_form = window.document.we_form;
 	we_form.elements['v[mode]'].value = mode;
 	we_form.elements['v[cid]'].value = cid;
 	we_form.target = 'wizcmd';

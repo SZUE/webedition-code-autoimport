@@ -23,6 +23,7 @@
  */
 
 /* global WE */
+'use strict';
 
 var editorSave = WE().util.getDynamicVar(document, 'loadVarTemplate_save_question', 'data-editorSave');
 
@@ -41,11 +42,11 @@ function pressed_cancel_button() {
 }
 
 function pressed_yes_button() {
-	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 1, window.btoa(JSON.stringify(editorSave.we_responseJS)), window.btoa(JSON.stringify(editorSave.we_cmd6)));
+	window.opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 1, window.btoa(JSON.stringify(editorSave.we_responseJS)), window.btoa(JSON.stringify(editorSave.we_cmd6)));
 	window.close();
 }
 
 function pressed_no_button() {
-	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 0, window.btoa(JSON.stringify(editorSave.we_responseJS)), window.btoa(JSON.stringify(editorSave.we_cmd6)));
+	window.opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 0, window.btoa(JSON.stringify(editorSave.we_responseJS)), window.btoa(JSON.stringify(editorSave.we_cmd6)));
 	window.close();
 }

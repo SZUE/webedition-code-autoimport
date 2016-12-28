@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var hot = false;
 var get_focus = 1;
@@ -47,7 +48,7 @@ function we_cmd() {
 			break;
 		case "delete_shop":
 			if (!top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
-				top.we_showMessage(WE().consts.g_l.shop.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.shop.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.shop.del_shop, ["delete_shop_order"]);
@@ -59,7 +60,7 @@ function we_cmd() {
 			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot) {
 				top.content.editor.edbody.neuerartikel();
 			} else {
-				top.we_showMessage(WE().consts.g_l.shop.no_order_there, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.shop.no_order_there, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "pref_shop":
@@ -98,7 +99,7 @@ function we_cmd() {
 			break;
 
 		default:
-			top.we_cmd.apply(this, arguments);
+			top.we_cmd.apply(window, arguments);
 	}
 }
 parent.document.title = viewData.title;

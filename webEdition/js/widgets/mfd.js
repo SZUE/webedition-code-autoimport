@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 var _oCsv_;
@@ -36,14 +37,14 @@ var _sLastPreviewCsv = '';
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
+		window.opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
 }
 
 function isNoError() {
-	elem = document.getElementsByName('chbx_type');
+	var elem = document.getElementsByName('chbx_type');
 	for (var i = 0; i < elem.length; i++) {
 		if (elem[i].checked) {
 			return true;
@@ -73,30 +74,34 @@ function delUser(iUsrId) {
 		}
 		for (i = 0; i < iUsersLen; i++) {
 			sUsers += aUsers[i];
-			if (i != iUsersLen - 1)
+			if (i != iUsersLen - 1) {
 				sUsers += ',';
+			}
 		}
 	}
+	var _fo = document.forms[0];
+
 	_fo.action = '/webEdition/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-					prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
-					';' + getBinary('display_opt') + ';' + sUsers;
+		prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
+		';' + getBinary('display_opt') + ';' + sUsers;
 	_fo.method = 'post';
 	_fo.submit();
 }
 
 function getCsv() {
 	return getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.value +
-					';' + getBinary('display_opt') + ';' + widget.sUsers;
+		';' + getBinary('display_opt') + ';' + widget.sUsers;
 }
 
 function refresh(bRender) {
-	if (bRender)
+	if (bRender) {
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), widget.sUsers, prefs._sObjId);
+	}
+	window.opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), widget.sUsers, prefs._sObjId);
 }
 
 function init() {
-	_fo = document.forms[0];
+	var _fo = document.forms[0];
 	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
@@ -107,6 +112,7 @@ function init() {
 
 function getBinary(postfix) {
 	var sBinary = '';
+	var _fo = document.forms[0];
 	var oChbx = _fo.elements['chbx_' + postfix];
 	var iChbxLen = oChbx.length;
 	for (var i = 0; i < iChbxLen; i++) {
@@ -116,6 +122,7 @@ function getBinary(postfix) {
 }
 
 function addUserToField() {
+	var _fo = document.forms[0];
 	var iNewUsrId = _fo.elements.UserIDTmp.value;
 	var aUsers = widget.sUsers.split(',');
 	var iUsersLen = aUsers.length;
@@ -128,8 +135,8 @@ function addUserToField() {
 	}
 	if (!bUsrExists) {//FIXME change this path!
 		_fo.action = '/webEdition/we/include/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-						prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
-						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
+			prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
+			_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
 		_fo.submit();
 	}
@@ -140,7 +147,7 @@ function save() {
 		var sCsv = getCsv();
 		_oCsv_.value = sCsv;
 		savePrefs();
-		opener.saveSettings();
+		window.opener.saveSettings();
 		if ((!_bPrev && sCsv != _sInitCsv_) || (_bPrev && sCsv != _sLastPreviewCsv)) {
 			refresh(false);
 		}

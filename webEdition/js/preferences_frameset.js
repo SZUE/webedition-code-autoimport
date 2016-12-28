@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 var prefData = WE().util.getDynamicVar(document, 'loadVarPreferences_frameset', 'data-prefData');
 var weTabs = new (WE().layout.we_tabs)(document, window);
 
@@ -56,7 +57,7 @@ function closeOnEscape() {
 }
 
 function saveOnKeyBoard() {
-	this.we_save();
+	window.we_save();
 	return true;
 }
 
@@ -66,12 +67,12 @@ function we_cmd() {
 
 	for (var i = 0; i < prefData.validTabs.length; i++) {
 		try {
-			content.document.getElementById('setting_' + prefData.validTabs[i]).style.display = 'none';
+			window.content.document.getElementById('setting_' + prefData.validTabs[i]).style.display = 'none';
 		} catch (e) {
 		}
 	}
 	try {
-		content.document.getElementById('setting_' + args[0]).style.display = '';
+		window.content.document.getElementById('setting_' + args[0]).style.display = '';
 	} catch (e) {
 	}
 }

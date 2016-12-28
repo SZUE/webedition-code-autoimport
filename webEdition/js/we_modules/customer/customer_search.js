@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE,transferDateFields */
 
 /**
  * webEdition CMS
@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -44,8 +45,9 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "del_search":
-			if (document.we_form.count.value > 0)
+			if (document.we_form.count.value > 0) {
 				document.we_form.count.value--;
+			}
 			submitForm();
 			break;
 		case "search":
@@ -61,7 +63,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -347,7 +347,7 @@ class we_users_view extends we_modules_view{
 				break;
 		}
 		echo we_html_element::jsElement('
-		if(confirm("' . $question . '")){
+		if(window.confirm("' . $question . '")){
 			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
 		}');
 	}

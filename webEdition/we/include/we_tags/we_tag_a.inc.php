@@ -188,7 +188,7 @@ function we_tag_a(array $attribs, $content){
 
 		if($confirm){
 			$confirm = str_replace("'", "\\'", $confirm);
-			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){' . $attribs['onclick'] . '}';
+			$attribs['onclick'] = 'if(window.confirm(\'' . $confirm . '\')){' . $attribs['onclick'] . '}';
 		}
 		return getHtmlTag('button', $attribs, $content, true);
 	}
@@ -196,7 +196,7 @@ function we_tag_a(array $attribs, $content){
 	$attribs['href'] = $url . ($param ? oldHtmlspecialchars('?' . implode('&', $param)) : '');
 
 	if($confirm){
-		$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){return true;}else{return false;}';
+		$attribs['onclick'] = 'if(window.confirm(\'' . $confirm . '\')){return true;}else{return false;}';
 	}
 
 	return getHtmlTag('a', $attribs, $content, true);

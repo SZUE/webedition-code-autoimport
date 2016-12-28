@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 var wizzard = WE().util.getDynamicVar(document, 'loadVarEIWizard', 'data-wizzard');
 var table = WE().consts.tables.FILE_TABLE;
@@ -174,6 +175,6 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
 }

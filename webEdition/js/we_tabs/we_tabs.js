@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+'use strict';
 
 WE().layout.we_tabs = function (doc, win) {
 	this.doc = doc;
@@ -34,8 +35,8 @@ WE().layout.we_tabs = function (doc, win) {
 WE().layout.we_tabs.prototype = {
 	setActiveTab: function (tab) {
 		var tabCon = this.doc.getElementById('tabContainer');
-		docTabs = tabCon.getElementsByTagName('DIV');
-		for (i = 0; i < docTabs.length; i++) {
+		var docTabs = tabCon.getElementsByTagName('DIV');
+		for (var i = 0; i < docTabs.length; i++) {
 			docTabs[i].className = "tabNormal";
 		}
 		var obj = this.doc.getElementById(tab);
@@ -101,8 +102,7 @@ WE().layout.we_tabs.prototype = {
 					//no need to resize
 				}
 			} else {
-				console.log('no parent');
-				console.log(this.doc);
+				WE().t_e('no parent', this.doc);
 			}
 		}
 	},
