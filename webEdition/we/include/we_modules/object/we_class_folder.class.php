@@ -857,10 +857,10 @@ for ( frameId in _usedEditors ) {
 			if($update){
 				$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
 					$obj->getUpdateTreeScript(false) . "
-if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
-	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+if(top.treeData.table!=WE().consts.tables.OBJECT_FILES_TABLE) {
+	 top.we_cmd('loadVTab', WE().consts.tables.OBJECT_FILES_TABLE, 0);
 }
-weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
+top.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 			} else {
 
 				$obj = new we_objectFile();
@@ -871,10 +871,10 @@ weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 				if($obj->we_publish()){
 					$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
 						$obj->getUpdateTreeScript(false) . "
-if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
-	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+if(top.treeData.table!=WE().consts.tables.OBJECT_FILES_TABLE) {
+	top.we_cmd('loadVTab', WE().consts.tables.OBJECT_FILES_TABLE, 0);
 }
-weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
+top.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 				}
 			}
 		}

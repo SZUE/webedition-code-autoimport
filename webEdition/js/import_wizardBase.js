@@ -146,6 +146,7 @@ function we_cmd() {
 			top.handleEvent(args[1]);
 			break;
 		case 'confirm_start_recoverBackup':
+			//FIXME: command yes/no missing!
 			WE().util.showConfirm(window, "", WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question, []);
 			break;
 		case "recover_backup":

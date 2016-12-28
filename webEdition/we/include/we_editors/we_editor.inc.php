@@ -577,10 +577,10 @@ new (WE().util.jsWindow)(window, top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.p
 							$wasSaved = true;
 							switch($we_doc->ContentType){
 								case we_base_ContentTypes::OBJECT:
-									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+									$we_JavaScript .= "if(top.treeData.table==WE().consts.tables.OBJECT_FILES_TABLE){top.we_cmd('loadVTab', top.treeData.table, 0);}";
 									break;
 								case we_base_ContentTypes::COLLECTION:
-									$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+									$we_JavaScript .= "if(top.treeData.table===WE().consts.tables.VFILE_TABLE){top.we_cmd('loadVTab', top.treeData.table, 0);}";
 									break;
 							}
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);

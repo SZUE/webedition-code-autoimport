@@ -39,19 +39,8 @@ class we_tree_main extends we_tree_base{
 		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == we_base_ContentTypes::HTML || $doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $doc->ContentType === we_base_ContentTypes::OBJECT_FILE)) ? -1 : $doc->Published);
 
 //	This is needed in SeeMode
-		$s = '
-var isEditInclude = false;
-var weWindow = top;
-while(1){
-	if(!weWindow.top.opener || weWindow.treeData){
-			break;
-	} else {
-		 isEditInclude = true;
-		 weWindow = weWindow.opener.top;
-	}
-}';
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			return $s;
+			return '';
 		}
 
 		$hasSched = false;
@@ -60,46 +49,22 @@ while(1){
 				$hasSched|=$sched['active'];
 			}
 		}
-		$s .= '
-if(weWindow.treeData){
-	var obj = weWindow.treeData;' .
-			($select ? '
-	weWindow.treeData.selection_table="' . $doc->Table . '";
-	weWindow.treeData.selection="' . $doc->ID . '";' :
-				'weWindow.treeData.unselectNode();') . '
-	if(weWindow.treeData.table == "' . $doc->Table . '"){
-		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
-			var attribs={
-				id:' . $doc->ID . ',
-				parentid:' . $doc->ParentID . ',
-				text:\'' . addcslashes($doc->Text, '\'') . '\',
-				published:' . $published . ',
-				table:\'' . $doc->Table . '\',
-				inschedule:\'' . intval($hasSched) . '\'
-			};
-
-			var visible=(top.treeData.indexOfEntry(' . $doc->ParentID . ')!=-1?
-				top.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')].open:
-					0);
-			if(top.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-				top.treeData.updateEntry(attribs);
-			}else{
-			//FIXME: makenewentry!
-				attribs.contenttype=\'' . $doc->ContentType . '\';
-				attribs.isclassfolder=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
-				attribs.checked=0;
-				attribs.typ=\'' . ($doc->IsFolder ? "group" : "item") . '\';
-				attribs.open=0;
-				attribs.disabled=0;
-				attribs.tooltip=' . $doc->ID . ';
-				top.treeData.addSort(new top.node(attribs));
-			}
-			weWindow.drawTree();
-		}else if(top.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-			top.treeData.deleteEntry(' . $doc->ID . ');
-		}
-	}
-}';
+		$s = 'changeTree('.intval($select).',{
+id:' . $doc->ID . ',
+parentid:' . $doc->ParentID . ',
+text:\'' . addcslashes($doc->Text, '\'') . '\',
+published:' . $published . ',
+table:\'' . $doc->Table . '\',
+inschedule:\'' . intval($hasSched) . '\'
+			},{
+contenttype:\'' . $doc->ContentType . '\',
+isclassfolder:\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\',
+checked:0,
+typ:\'' . ($doc->IsFolder ? "group" : "item") . '\',
+open:0,
+disabled:0,
+tooltip:' . $doc->ID . ',
+});';
 		return $s;
 	}
 

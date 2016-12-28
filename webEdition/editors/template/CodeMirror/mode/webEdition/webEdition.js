@@ -37,6 +37,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 			};
 		},
 		token: function (stream, state) {
+			var quot,value,ch,attrName;
 			if (state.insideTag) {
 				if (state.close) {
 					if (stream.skipTo(">")) {
@@ -53,7 +54,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 					if (state.attrActive) {
 						stream.next();//consume =
 						quot = false;
-						var value = "";
+						value = "";
 						while ((ch = stream.next()) !== null && ch !== undefined) {
 							switch (ch) {
 								case "\\":
@@ -92,7 +93,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 							}
 						}
 					} else {
-						var attrName = "";
+						attrName = "";
 						state.attrActive = true;
 						while ((ch = stream.next()) !== null && ch !== undefined) {
 							switch (ch) {
