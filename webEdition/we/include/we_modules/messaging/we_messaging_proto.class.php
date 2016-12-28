@@ -83,7 +83,8 @@ abstract class we_messaging_proto /* extends we_class */{
 		$this->DB_WE = new DB_WE();
 
 		$this->Name = 'msg_proto_' . md5(uniqid(__FILE__, true));
-		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached'];
+		$this->persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders',
+			'search_folder_ids', 'search_fields', 'cached'];
 	}
 
 	/* Getters And Setters */
@@ -209,7 +210,7 @@ abstract class we_messaging_proto /* extends we_class */{
 			$this->available_folders[$this->DB_WE->f('ID')] = $this->DB_WE->getRecord() + [
 				'ClassName' => $this->ClassName,
 				'view_class' => $this->view_class,
-				];
+			];
 		}
 
 		return $this->available_folders;
@@ -224,7 +225,7 @@ abstract class we_messaging_proto /* extends we_class */{
 				'msg_type' => $this->sql_class_nr,
 				'obj_type' => we_messaging_proto::FOLDER_NR,
 				'Name' => $name
-				]));
+		]));
 		return $this->DB_WE->getInsertId();
 	}
 
@@ -254,7 +255,7 @@ abstract class we_messaging_proto /* extends we_class */{
 	function delete_folders(array $f_arr){
 		$ret = ["res" => 0,
 			"ids" => []
-			];
+		];
 
 		if(!$f_arr){
 			return $ret;
@@ -314,7 +315,7 @@ abstract class we_messaging_proto /* extends we_class */{
 	function save_sortstuff($id, $sortfield, $sortorder){
 		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET ' . we_database_base::arraySetter(['sortItem' => $sortfield,
 				'sortOrder' => ($sortorder === 'asc' ? 'desc' : 'asc')
-				]) .
+			]) .
 			' WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
 
@@ -327,7 +328,7 @@ abstract class we_messaging_proto /* extends we_class */{
 		}
 
 		if(($this->DB_WE->f('sortOrder'))){
-			$this->sortorder = ($this->DB_WE->f('sortOrder') === 'asc') ? 'desc' : 'asc';
+			$this->sortorder = ($this->DB_WE->f('sortOrder') === 'asc') ? 'asc' : 'desc';
 		}
 
 		$this->cached[] = 'sortfield';
