@@ -28,6 +28,43 @@ var editorSave = WE().util.getDynamicVar(document, 'loadVarEditor_save', 'data-e
 
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(editorSave.we_transaction);
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
+var isEditInclude = false;
+var weWindow = top;
+while (1) {
+	if (!weWindow.top.opener || weWindow.treeData) {
+		break;
+	} else {
+		isEditInclude = true;
+		weWindow = weWindow.opener.top;
+	}
+}
+
+function changeTree(select, attribs, adv) {
+	if (weWindow.treeData) {
+		if (select) {
+			weWindow.treeData.selection_table = attribs.table;
+			weWindow.treeData.selection = attribs.id;
+		} else {
+			weWindow.treeData.unselectNode();
+		}
+		if (weWindow.treeData.table === attribs.table) {
+			if (weWindow.treeData[top.treeData.indexOfEntry(attribs.parentid)]) {
+
+				/*var visible = (top.treeData.indexOfEntry(attribs.parentid) !== -1 ?
+					top.treeData[top.treeData.indexOfEntry(attribs.parentid)].open :
+					0);*/
+				if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+					top.treeData.updateEntry(attribs);
+				} else {
+					top.treeData.addSort(new top.node(Object.assign(attribs, adv)));
+				}
+				weWindow.drawTree();
+			} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+				top.treeData.deleteEntry(attribs.id);
+			}
+		}
+	}
+}
 
 if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 
@@ -52,7 +89,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	}
 
 //FIXME eval
-WE().t_e("bad eval",editorSave.we_JavaScript);
+	WE().t_e("bad eval", editorSave.we_JavaScript);
 	eval(editorSave.we_JavaScript);
 
 	window.focus();
@@ -91,7 +128,7 @@ WE().t_e("bad eval",editorSave.we_JavaScript);
 				top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 				_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
 				//FIXME eval
-				WE().t_e("bad eval",editorSave.we_cmd5);
+				WE().t_e("bad eval", editorSave.we_cmd5);
 				eval(editorSave.we_cmd5);
 			}
 			if (editorSave.isPublished) {
@@ -115,7 +152,7 @@ WE().t_e("bad eval",editorSave.we_JavaScript);
 	}
 } else {//called from we_editor_publish.inc.php
 //FIXME eval
-WE().t_e("bad eval",editorSave.we_JavaScript);
+	WE().t_e("bad eval", editorSave.we_JavaScript);
 	eval(editorSave.we_JavaScript);
 	top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 }

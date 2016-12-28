@@ -401,7 +401,7 @@ var WebEdition = {
 		for (var i = 0; i < arguments.length; i++) {
 			msg += JSON.stringify(arguments[i]) + (i < (arguments.length - 1) ? "\n" : "");
 		}
-		WE().handler.errorHandler(msg, '', 0, 0, Array.prototype.slice.call(arguments));
+		WE().handler.errorHandler(msg, '', 0, 0, new Error()/*Array.prototype.slice.call(arguments)*/);
 	},
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
@@ -1258,7 +1258,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
-	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 
 		switch (args[0]) {
 			case 'edit_document':

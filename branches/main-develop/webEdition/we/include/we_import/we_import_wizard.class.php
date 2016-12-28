@@ -271,7 +271,7 @@ class we_import_wizard extends we_import_wizardBase{
 		switch($xml_type){
 			case 'backup':
 				$return[0] = '';
-				if(true || permissionhandler::hasPerm('IMPORT')){
+				if(permissionhandler::hasPerm('IMPORT')){
 					$cmd->addCmd('confirm_start_recoverBackup');
 					$return[1] = $cmd->getCmds();
 				} else {

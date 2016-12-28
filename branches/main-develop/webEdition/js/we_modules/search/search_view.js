@@ -843,7 +843,7 @@ var weSearch = {
 		}
 	},
 	publishDocs: function (whichSearch) {
-		var checkAll = document.getElementsByName("action_all_" + whichSearch);
+		//var checkAll = document.getElementsByName("action_all_" + whichSearch);
 		var checkboxes = document.getElementsByName("publish_docs_" + whichSearch);
 		var check = false;
 
