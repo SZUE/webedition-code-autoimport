@@ -24,18 +24,20 @@
  */
 abstract class we_editor_save{
 
-	public static function publishInc($we_transaction, $we_responseText = '', $we_responseTextType = '', $we_JavaScript = ''){
+	public static function unPublishInc($we_transaction, $we_responseText = '', $we_responseTextType = '', we_base_jsCmd $jsCmd = null, $we_responseJS = []){
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
 					'we_editor_save' => false,
 					'we_transaction' => $we_transaction,
-					//FIXME:we_JavaScript is evaled
-					'we_JavaScript' => $we_JavaScript,
+					'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
+					'we_JavaScript' => [],
 					'we_responseText' => $we_responseText,
 					'we_responseTextType' => $we_responseTextType,
-			])]), we_html_element::htmlBody());
+					'we_responseJS' => $we_responseJS,
+			])]) . ($jsCmd ? $jsCmd->getCmds() : ''), we_html_element::htmlBody());
 	}
 
-	public static function saveInc($we_transaction, $we_doc, $we_responseText = '', $we_responseTextType = '', $we_JavaScript = '', $wasSaved = false, $saveTemplate = false, $we_responseJS = [], $isClose = false, $showAlert = false, $publish_doc = false){
+	public static function saveInc($we_transaction, $we_doc, $we_responseText = '', $we_responseTextType = '', array $we_JavaScript = [], $wasSaved = false, $saveTemplate = false, $we_responseJS = [
+	], $isClose = false, $showAlert = false, $publish_doc = false){
 		$reload = [];
 		if(!empty($wasSaved)){
 			// DOC was saved, mark open tabs to reload if necessary
@@ -106,15 +108,16 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 '), '<body></body>');
 	}
 
-	public static function templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate,$nrDocsUsedByThisTemplate, $we_responseJS){
+	public static function templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $nrDocsUsedByThisTemplate, $we_responseJS){
 		$we_cmd6 = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6);
 
 		$alerttext = ($isTemplatesUsedByThisTemplate ?
-				g_l('alert', '[template_save_warning2]') :
-				sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
+			g_l('alert', '[template_save_warning2]') :
+			sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
 			);
 
-		echo we_html_tools::getHtmlTop(g_l('global', '[question]'), '', '', we_html_element::jsScript(JS_DIR . 'template_save_question.js', '', ['id' => 'loadVarTemplate_save_question', 'data-editorSave' => setDynamicVar([
+		echo we_html_tools::getHtmlTop(g_l('global', '[question]'), '', '', we_html_element::jsScript(JS_DIR . 'template_save_question.js', '', ['id' => 'loadVarTemplate_save_question',
+				'data-editorSave' => setDynamicVar([
 					'we_transaction' => $we_transaction,
 					'we_responseJS' => $we_responseJS,
 					'we_cmd6' => $we_cmd6

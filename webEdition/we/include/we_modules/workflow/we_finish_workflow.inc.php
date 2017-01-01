@@ -33,19 +33,18 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 	} else if($we_doc->we_publish()){
-		$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
+		$we_JavaScript = [
+			['setEditorDocumentId(', $we_doc->ID],
+			$we_doc->getUpdateTreeScript(true, null, true)
+		];
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]]; // wird in Templ eingef�gt
 		}
-		$we_JavaScript .= 'if(opener){
-	WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
-	_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
-}else{
-	WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
-	_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
-}' . $we_doc->getUpdateTreeScript();
+		$we_JavaScript[] = ['reload_editfooter'];
+		$we_JavaScript[] = ["setEditorDocumentId", $we_doc->ID];
+		$we_JavaScript[] = $we_doc->getUpdateTreeScript(true, null, true);
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -56,5 +55,4 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 }
 
 we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
-]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
-
+		]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));

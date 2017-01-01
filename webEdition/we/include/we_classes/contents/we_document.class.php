@@ -60,42 +60,44 @@ class we_document extends we_root{
 	}
 
 	function copyDoc($id){
-		if($id){
-			$tmp = $this->ClassName;
-			$doc = new $tmp();
-			$doc->InitByID($id, $this->Table);
-			$parentIDMerk = $doc->ParentID;
-			if($this->ID == 0){
-				foreach($this->persistent_slots as $name){
-					if($name != 'elements' && in_array($name, array_keys(get_object_vars($doc)))){
-						$this->{$name} = $doc->{$name};
-					}
-				}
-				$this->Published = 0;
-				if(isset($doc->Category)){
-					$this->Category = $doc->Category;
-				}
-				$this->CreationDate = time();
-				$this->CreatorID = (isset($_SESSION['user']) ? $_SESSION['user']['ID'] : 0);
-
-				$this->ID = 0;
-				$this->OldPath = '';
-				$this->Filename .= '_copy';
-				$this->Text = $this->Filename . $this->Extension;
-				$this->setParentID($parentIDMerk);
-				$this->Path = $this->ParentPath . $this->Text;
-				$this->OldPath = $this->Path;
-			}
-			$this->elements = $doc->elements;
-			foreach($this->elements as $n => $e){
-				$this->elements[$n]['cid'] = 0;
-			}
-			$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-			$this->InWebEdition = true;
-			if(isset($this->documentCustomerFilter)){
-				$this->documentCustomerFilter = $doc->documentCustomerFilter;
-			}
+		if(!$id){
+			return false;
 		}
+		$tmp = $this->ClassName;
+		$doc = new $tmp();
+		$doc->InitByID($id, $this->Table);
+		$parentIDMerk = $doc->ParentID;
+		if($this->ID == 0){
+			foreach($this->persistent_slots as $name){
+				if($name != 'elements' && in_array($name, array_keys(get_object_vars($doc)))){
+					$this->{$name} = $doc->{$name};
+				}
+			}
+			$this->Published = 0;
+			if(isset($doc->Category)){
+				$this->Category = $doc->Category;
+			}
+			$this->CreationDate = time();
+			$this->CreatorID = (isset($_SESSION['user']) ? $_SESSION['user']['ID'] : 0);
+
+			$this->ID = 0;
+			$this->OldPath = '';
+			$this->Filename .= '_copy';
+			$this->Text = $this->Filename . $this->Extension;
+			$this->setParentID($parentIDMerk);
+			$this->Path = $this->ParentPath . $this->Text;
+			$this->OldPath = $this->Path;
+		}
+		$this->elements = $doc->elements;
+		foreach($this->elements as $n => $e){
+			$this->elements[$n]['cid'] = 0;
+		}
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+		$this->InWebEdition = true;
+		if(isset($this->documentCustomerFilter)){
+			$this->documentCustomerFilter = $doc->documentCustomerFilter;
+		}
+		return true;
 	}
 
 	/** gets the filesize of the document */

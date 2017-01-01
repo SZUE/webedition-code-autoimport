@@ -64,7 +64,6 @@ if($editname !== false){
 			no_java: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
 			finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
 		};
-		var retryjava = 0;
 
 		function setAppletCode() {
 			retryjava = 0;

@@ -256,6 +256,7 @@ abstract class we_root extends we_class{
 	/* init the object with data from the database */
 
 	function copyDoc($id){
+		return false;
 		// overwrite
 	}
 
@@ -725,8 +726,8 @@ abstract class we_root extends we_class{
 
 	/* returns the JavaScript-Code which modifies the tree-menue */
 
-	function getUpdateTreeScript($select = true){
-		return we_tree_main::getJSUpdateTreeScript($this, $select);
+	function getUpdateTreeScript($select = true, we_base_jsCmd $jsCmd = null, $asCmd = false){
+		return we_tree_main::getJSUpdateTreeScript($this, $select, $jsCmd, $asCmd);
 	}
 
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */

@@ -235,7 +235,7 @@ class we_objectFile extends we_document{
 
 	function copyDoc($id){
 		if(!$id){
-			return;
+			return false;
 		}
 
 		$doc = new we_objectFile();
@@ -264,6 +264,7 @@ class we_objectFile extends we_document{
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		$this->Category = $doc->Category;
 		$this->documentCustomerFilter = $doc->documentCustomerFilter;
+		return true;
 	}
 
 	function restoreWorkspaces(){
@@ -466,12 +467,13 @@ class we_objectFile extends we_document{
 		}
 	}
 
+	/*
 	function publishFromInsideDocument(){
 		$this->publish();
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
 		}
-		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+		$GLOBALS['we_JavaScript'][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
 	function unpublishFromInsideDocument(){
@@ -479,8 +481,9 @@ class we_objectFile extends we_document{
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
 		}
-		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+		$GLOBALS["we_JavaScript"][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
+*/
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);

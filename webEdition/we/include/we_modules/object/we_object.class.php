@@ -42,6 +42,7 @@ class we_object extends we_document{
 	var $Templates = '';
 	var $SerializedArray = []; // #3931
 	var $DefaultValues = '';
+	protected $isInApp = false; // runtime variable which allows to construct Classes from within Apps
 	protected static $urlFields = ['urlfield1' => 64,
 		'urlfield2' => 64,
 		'urlfield3' => 64,
@@ -104,9 +105,10 @@ class we_object extends we_document{
 
 		$this->OldPath = $this->Path; // reset oldPath
 		if(empty($this->isInApp)){// allows to save Classes from within WE-Apps
-			$GLOBALS['we_JavaScript'] = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
-				$this->getUpdateTreeScript() .
-				we_main_headermenu::getMenuReloadCode('top.');
+			$GLOBALS['we_JavaScript'][] = ['reload_editpage'];
+			$GLOBALS['we_JavaScript'][] = ['setEditorDocumentId', $this->ID];
+			$GLOBALS['we_JavaScript'][] = $this->getUpdateTreeScript(true, null, true);
+			$GLOBALS['we_JavaScript'][] = we_main_headermenu::getMenuReloadCode('', true);
 		}
 	}
 
@@ -926,7 +928,8 @@ class we_object extends we_document{
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
 					$values = ['0' => ' '] + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
-					$selectCategories = we_html_tools::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, [], 'value', 388);
+					$selectCategories = we_html_tools::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, [
+							], 'value', 388);
 					$selectLimitChoice = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatLimitChoice', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 
 					$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont" style="vertical-align:top"></td><td class="defaultfont">' .
@@ -1167,7 +1170,7 @@ class we_object extends we_document{
 			f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, "", $db) :
 			''
 			) );
-		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' .$db->escape($classPath) . '"', '', $db);
+		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($classPath) . '"', '', $db);
 
 		$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';document.we_form.elements['" . $textname . "'].value=''");
@@ -1461,7 +1464,8 @@ class we_object extends we_document{
 					$select .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultText_' . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'], "value", 140) . "&nbsp;" .
 						we_html_tools::htmlTextInput('we_' . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
-					$select .= we_html_tools::htmlSelect('we_' . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'], "value", 140) . "&nbsp;";
+					$select .= we_html_tools::htmlSelect('we_' . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", [
+							'onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'], "value", 140) . "&nbsp;";
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
@@ -1509,7 +1513,8 @@ class we_object extends we_document{
 						$anz = (!$regs[1] ? $len : abs($regs[1]));
 						$unique = substr(md5(uniqid('', true)), 0, min($anz, 32));
 						$text = preg_replace('/%' . $key . '[^%]*%/', $unique, (isset($text) ? $text : ""));
-						$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', ['onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;" .
+						$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', [
+								'onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;" .
 							we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 						$found = true;
 						break;
@@ -1519,14 +1524,16 @@ class we_object extends we_document{
 					foreach(self::$urlFields as $key => $len){
 						if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
 							$anz = (!$regs[1] ? $len : abs($regs[1]));
-							$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', ['onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;" .
+							$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', [
+									'onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;" .
 								we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 							$found = true;
 							break;
 						}
 					}
 					if(!$found){
-						$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $data . '%', '', ['onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;";
+						$select2 .= we_html_tools::htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $data . '%', '', [
+								'onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;";
 					}
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
@@ -1633,7 +1640,7 @@ class we_object extends we_document{
 
 	function copyDoc($id){
 		if(!$id){
-			return;
+			return false;
 		}
 		$doc = new we_object();
 		$doc->InitByID($id, $this->Table, we_class::LOAD_TEMP_DB);
@@ -1658,6 +1665,7 @@ class we_object extends we_document{
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		$this->Category = $doc->Category;
+		return true;
 	}
 
 	function changeTempl_ob($nr, $id){
@@ -2151,22 +2159,22 @@ class we_object extends we_document{
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => 'path.gif'
 				],
-					['headline' => g_l('modules_object', '[default]'),
+				['headline' => g_l('modules_object', '[default]'),
 					'html' => $this->formDefault(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'default.gif'
 				],
-					['headline' => g_l('weClass', '[Charset]'),
+				['headline' => g_l('weClass', '[Charset]'),
 					'html' => $this->formCharset(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'charset.gif'
 				],
-					['headline' => g_l('weClass', '[CSS]'),
+				['headline' => g_l('weClass', '[CSS]'),
 					'html' => $this->formCSS(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'css.gif'
 				],
-					['headline' => g_l('modules_object', '[copyClass]'),
+				['headline' => g_l('modules_object', '[copyClass]'),
 					'html' => $this->formCopyDocument(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'copy.gif'
@@ -2178,7 +2186,7 @@ class we_object extends we_document{
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => 'workspace.gif'
 				],
-					['headline' => g_l('modules_object', '[behaviour]'),
+				['headline' => g_l('modules_object', '[behaviour]'),
 					'html' => $this->formWorkspacesFlag(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'display.gif'
@@ -2187,4 +2195,5 @@ class we_object extends we_document{
 		}
 		return we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
+
 }

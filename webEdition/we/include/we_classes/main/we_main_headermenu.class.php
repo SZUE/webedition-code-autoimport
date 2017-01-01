@@ -35,7 +35,7 @@ class we_main_headermenu{
 _console_ = new (WE().layout.messageConsoleView)(\'' . $consoleName . '\', this.window );
 _console_.register();
 window.document.body.addEventListener(\'onunload\',	_console_.unregister);' :
-				'
+			'
 <div id="messageConsole" onclick="_console_.openMessageConsole();">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
@@ -50,9 +50,10 @@ window.document.body.addEventListener(\'onunload\',	_console_.unregister);' :
 			we_html_element::jsScript(JS_DIR . 'menu/clickMenu.js');
 	}
 
-	static function getMenuReloadCode($location = 'top.opener.'){
+	static function getMenuReloadCode($location = 'top.opener.', $asCmd = false){
 		$menu = self::getMenu();
-		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . str_replace("\n", '"+"', addslashes($menu->getHTML())) . '";';
+		return $asCmd ? ['updateMenu', $menu->getHTML()] :
+			$location . 'document.getElementById("nav").parentNode.innerHTML="' . str_replace("\n", '"+"', addslashes($menu->getHTML())) . '";';
 	}
 
 	private static function getMenu(){
@@ -91,7 +92,7 @@ window.document.body.addEventListener(\'onunload\',	_console_.unregister);' :
 					"onclick" => "top.we_cmd('dologout');",
 					"i" => "close",
 					"text" => g_l('javaMenu_global', '[close]')
-					];
+				];
 			}
 			$navigationButtons = array_merge($navigationButtons, [
 				["onclick" => "WE().layout.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')],
