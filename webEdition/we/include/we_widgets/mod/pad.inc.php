@@ -195,20 +195,6 @@ switch($bSort){
 		$q_sort = 'CreationDate, Title';
 }
 
-$sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
-		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
-		UserID = " . intval($_SESSION['user']['ID']) .
-	($bDisplay ?
-	" AND (
-			Valid = 'always' OR (
-				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
-			) OR (
-				Valid = 'period' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\") AND ValidUntil >= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
-			)
-		)" : ''
-	) .
-	' ORDER BY ' . $q_sort;
-
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", [g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		], 1, g_l('cockpit', '[always]'), false, ['style' => "width:100px;", 'onchange' => "toggleTblValidity()"], 'value', 100, 'middlefont');
@@ -260,7 +246,19 @@ $oPad = new we_html_table([
 	], 1, 1);
 
 $oPad->setCol(0, 0, ["colspan" => 3, "class" => "cl_notes"], we_html_element::htmlDiv(["id" => "notices"
-		], getNoteList($sql, $bDate, $bDisplay)));
+		], getNoteList( 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
+		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
+		UserID = " . intval($_SESSION['user']['ID']) .
+	($bDisplay ?
+	" AND (
+			Valid = 'always' OR (
+				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
+			) OR (
+				Valid = 'period' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\") AND ValidUntil >= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
+			)
+		)" : ''
+	) .
+	' ORDER BY ' . $q_sort, $bDate, $bDisplay)));
 
 $notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(["id" => "props"], $oTblProps->getHTML()) .

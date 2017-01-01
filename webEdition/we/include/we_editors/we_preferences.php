@@ -59,7 +59,7 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 	// Return HTML code of dialog
 	return $output . we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text);
 }
-
+/*
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
 	return we_html_element::htmlHidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
 		($disabled ? ' class="disabled"' : '') .
@@ -68,7 +68,7 @@ function getColorInput($name, $value, $disabled = false, $width = 20, $height = 
 		'><a style="cursor:' .
 		($disabled ? "default" : "pointer") .
 		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}"><span style="width:' . $width . 'px;height:' . $height . '"></span></a></td></tr></table>';
-}
+}*/
 
 /**
  * This functions return either the saved option or the changed one.

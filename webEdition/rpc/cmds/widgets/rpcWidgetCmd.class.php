@@ -22,17 +22,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetRssCmd extends we_rpc_cmd{
+class rpcWidgetCmd extends we_rpc_cmd{
 
 	function execute(){
 		//FIXME: this needs change, it is only a copy of widget_cmd
 		$resp = new we_rpc_response();
 
-		$cmd2 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2);
+		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 			case 'save' :
 				we_base_preferences::setUserPref('cockpit_dat', $cmd2);
-				we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 3));
+				we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 				break;
 			case 'reload':
 				$mod = we_base_request::_(we_base_request::STRING, 'mod');

@@ -139,7 +139,7 @@ function displayRssFeed(sUri, bOnChange) {
 					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
-		window.opener.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
 	}
 }
 
@@ -152,7 +152,7 @@ function resetRssFeed() {
 					(getBinary('tb') != _sInitTbCfg) ||
 					(_iInitRssCfgNumEntries != iSctConfSel) ||
 					(_iInitTbTitlePers != iRdoTitleSel)) {
-		window.opener.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
 	}
 }
 

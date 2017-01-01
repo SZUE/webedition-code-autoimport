@@ -218,7 +218,7 @@ function saveSettings() {
 	for (i = 0; i < topRssFeedsLen; i++) {
 		rss[i] = [cockpit._trf[i][0], cockpit._trf[i][1]];
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=save', "we_cmd[2]=" + JSON.stringify(aDat) + "&we_cmd[3]" + JSON.stringify(rss));
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=Widget&cns=widgets&we_cmd[1]=save', "we_cmd[2]=" + JSON.stringify(aDat) + "&we_cmd[3]=" + JSON.stringify(rss));
 
 }
 
@@ -245,7 +245,7 @@ function jsStyleCls(evt, obj, cls1, cls2) {
 }
 
 function updateJsStyleCls() {
-	var cls1,cls2;
+	var cls1, cls2;
 	for (var i = 1; i <= _iLayoutCols; i++) {
 		var oCol = document.getElementById('c_' + i);
 		if (hasExpandedWidget(oCol)) {
@@ -433,9 +433,9 @@ function createWidget(typ, row, col) {
 	} else { // add to empty col - before wildcard!
 		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
-						divClone,
-						_td.childNodes[0]
-						);
+			divClone,
+			_td.childNodes[0]
+			);
 	}
 	if (findInArray(cockpit.oCfg._noResizeTypes, typ) > -1) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
@@ -581,16 +581,14 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
 			_cmdName = "Widget";
 	}
 
-	if (_cmdName) {
-		var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&');
-		WE().util.rpc(url, null, function (weResponse) {
-			if (weResponse.Success) {
-				if (weResponse.DataArray.titel) {
-					updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
-				}
+	var args = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), '');
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&mod=' + widgetType, args, function (weResponse) {
+		if (weResponse.Success) {
+			if (weResponse.DataArray.titel) {
+				updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
 			}
-		});
-	}
+		}
+	});
 }
 
 
@@ -599,9 +597,6 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
  */
 function rpc(a, b, c, d, e, wid, path) {
 	//FIXME: remove this!
-	if (!document.createElement) {
-		return true;
-	}
 	var sType = document.getElementById(wid + '_type').value;
 	showLoadingSymbol(wid);
 	var args = Array.prototype.slice.call(arguments);
@@ -773,8 +768,8 @@ function getDimension(theString, styleClassElement) {
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-						theString + '<\/span>';
+			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+			theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;

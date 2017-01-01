@@ -164,7 +164,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' + args[1] + '&responseText=' + args[2], 'resave', WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
 			break;
 		case 'updateVTab':
-			if (top.treeData.table == args[1]) {
+			if (top.treeData.table === args[1]) {
 				we_cmd('loadVTab', top.treeData.table, 0);
 			}
 			break;
