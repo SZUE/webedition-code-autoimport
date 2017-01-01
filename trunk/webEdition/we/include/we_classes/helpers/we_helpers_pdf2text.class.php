@@ -141,12 +141,18 @@ class we_helpers_pdf2text{
 		$str = trim($str);
 		switch($str{0}){
 			case '('://string
-				return CheckAndConvertISOfrontend(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', trim($str, self::TRIM_STRING)));
+				$str = preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', trim($str, self::TRIM_STRING));
+				if(preg_match('/^[\xFF,\xFE]{2}/', $str)){
+					$str = mb_convert_encoding($str, 'UTF-8', 'UTF-16');
+				} elseif(($enc = mb_detect_encoding($str, 'UTF-8,ISO-8859-1,ISO-8859-15')) != 'UTF-8'){
+					$str = mb_convert_encoding($str, 'UTF-8', $enc);
+				}
+				return CheckAndConvertISOfrontend($str);
 			case '<'://hex
 				$str = str_split(trim($str, '<>'), 2);
 				$out = '';
 				foreach($str as $cur){
-					$out.=chr(hexdec($cur));
+					$out .= chr(hexdec($cur));
 				}
 				return CheckAndConvertISOfrontend(mb_convert_encoding(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', $out), 'UTF-8', 'UTF-16'));
 		}
@@ -546,7 +552,7 @@ class we_helpers_pdf2text{
 		if($hex){
 			$ret = '';
 			foreach(str_split($u, 4) as $cur){
-				$ret.=mb_convert_encoding('&#x' . $cur . ';', 'UTF-8', 'HTML-ENTITIES');
+				$ret .= mb_convert_encoding('&#x' . $cur . ';', 'UTF-8', 'HTML-ENTITIES');
 			}
 			return $ret;
 		}
@@ -596,10 +602,10 @@ class we_helpers_pdf2text{
 			return '';
 		}
 
-		$file = $file ? : fopen($fname, 'r');
+		$file = $file ?: fopen($fname, 'r');
 		$data = '';
 		while(($read = fread($file, self::READPORTION))){
-			$data.=$read;
+			$data .= $read;
 			if(strrpos($read, self::ENDOBJ) !== FALSE){
 				break;
 			}
@@ -612,7 +618,7 @@ class we_helpers_pdf2text{
 
 		$pos = (strrpos($data, self::ENDOBJ) + 7) - strlen($data);
 		fseek($file, $pos, SEEK_CUR);
-		$lastPos+=strlen($data) + $pos;
+		$lastPos += strlen($data) + $pos;
 		return substr($data, 0, $pos);
 	}
 
@@ -700,7 +706,7 @@ class we_helpers_pdf2text{
 				$values['stream'] = $matches2[3];
 				if(self::DEFLATE_ALL){
 					$values['stream'] = self::getStream($values);
-					$values['Filter'].='-done';
+					$values['Filter'] .= '-done';
 				}
 			}
 			/* if(isset($values['Filter'])&&!isset($values['stream'])){
@@ -820,7 +826,7 @@ class we_helpers_pdf2text{
 				p_r($line);
 			}
 			$type = $line[3];
-			$data = $line[1]? : $line[2];
+			$data = $line[1] ?: $line[2];
 			switch($type){
 				case 'Tf'://fontsize
 					if($hasData){
@@ -851,11 +857,11 @@ class we_helpers_pdf2text{
 				case 'TJ':
 				case 'Tj':
 					$hasData = true;
-					$tmpText.=$this->extractPSTextElement($line[1], $fs);
+					$tmpText .= $this->extractPSTextElement($line[1], $fs);
 					break;
 			}
 		}
-		$tmpText.=self::SPACE;
+		$tmpText .= self::SPACE;
 		$this->applyTextChars($tmpText, $selectedFont);
 	}
 
@@ -863,7 +869,7 @@ class we_helpers_pdf2text{
 		$text = str_replace(array('\\\\', '\(', '\)'), array('\\\\', '(', ')'), $text);
 
 		if(!$selectedFont){
-			$this->text.=$text;
+			$this->text .= $text;
 			return;
 		}
 
@@ -875,15 +881,15 @@ class we_helpers_pdf2text{
 			$tmp = '';
 			for($i = 0; $i < strlen($text); ++$i){
 				$x = $text{$i};
-				$tmp.=isset($res[$x]) ? $res[$x] : $x;
+				$tmp .= isset($res[$x]) ? $res[$x] : $x;
 			}
 			//		$tmp = str_replace(array_keys($this->currentFontRessource[$selectedFont]), $this->currentFontRessource[$selectedFont], $text);
 			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
 				echo 'Font:' . $selectedFont . ' ' . $text . ' post: ' . $tmp . "\n";
 			}
-			$this->text.=$tmp;
+			$this->text .= $tmp;
 		} else {
-			$this->text.=$text;
+			$this->text .= $text;
 			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
 				echo 'Error-text: ' . $selectedFont;
 			}
@@ -902,7 +908,7 @@ class we_helpers_pdf2text{
 		//add spaces only if size is bigger than a certain amount
 		$parts[2] = array_filter($parts[2], 'we_helpers_pdf2text::lower');
 		foreach(array_keys($parts[2]) as $key){
-			$parts[1][$key].=self::SPACE;
+			$parts[1][$key] .= self::SPACE;
 		}
 		$tmp = implode('', $parts[1]);
 
