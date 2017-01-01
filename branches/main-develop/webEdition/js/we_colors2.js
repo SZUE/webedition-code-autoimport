@@ -275,19 +275,14 @@ function init(color) {
 		html += '</tr>';
 	}
 
-	document.getElementById("colorTable").innerHTML = html;
+	document.getElementById("colorTableCont").innerHTML = html;
 }
 
 function setColor() {
 	if (selector.isA) {
 		window.opener.document.we_form.elements[selector.cmd1].value = document.we_form.colorvalue.value;
-		//FIXME: eval
-		if (selector.cmd3) {
-			eval(selector.cmd3);
-		} else {
-			window.opener._EditorFrame.setEditorIsHot(true);
-			window.opener.we_cmd("reload_editpage");
-		}
+		window.opener._EditorFrame.setEditorIsHot(true);
+		window.opener.we_cmd("reload_editpage");
 	} else {
 		window.returnValue = document.we_form.colorvalue.value;
 	}

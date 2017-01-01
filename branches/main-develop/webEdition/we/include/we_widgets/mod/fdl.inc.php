@@ -68,7 +68,7 @@ if(!isset($aProps)){
 $failedLoginHTML = we_html_element::jsElement('function ajaxCallbackResetLogins(weResponse){
 	if ( weResponse ) {
 		if (weResponse.DataArray.data == "true") {
-			' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '");' : '' ) .
+			' . ( isset($newSCurrId) ? 'WE().layout.cockpitFrame.rpc("","","","","","' . $newSCurrId . '");' : '' ) .
 		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
 		}

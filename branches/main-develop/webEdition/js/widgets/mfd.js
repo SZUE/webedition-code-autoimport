@@ -37,7 +37,7 @@ var _sLastPreviewCsv = '';
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		window.opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
@@ -97,7 +97,7 @@ function refresh(bRender) {
 	if (bRender) {
 		_sLastPreviewCsv = getCsv();
 	}
-	window.opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), widget.sUsers, prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), widget.sUsers, prefs._sObjId);
 }
 
 function init() {

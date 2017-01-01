@@ -65,7 +65,7 @@ function save() {
 	var sCsv = getBinary();
 	_oCsv_.value = sCsv;
 	if ((!_bPrev && _sInitCsv_ != sCsv) || (_bPrev && _sLastPrevCsv != sCsv)) {
-		window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -77,12 +77,12 @@ function preview() {
 	var sCsv = getBinary();
 	_sLastPrevCsv = sCsv;
 	previewPrefs();
-	window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(sCsv, '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sInitCsv_ != getBinary() && _bPrev) {
-		window.opener.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();

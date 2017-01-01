@@ -319,12 +319,12 @@ function getCsv() {
 function preview() {
 	_bPrev = true;
 	previewPrefs();
-	window.opener.rpc(getCsv(), '', '', '', '', prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(getCsv(), '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sCsvInit_ != getCsv() && _bPrev) {
-		window.opener.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
@@ -369,7 +369,7 @@ function save() {
 	oCsv_.value = sCsv;
 	//savePrefs();
 	if (_sCsvInit_ != sCsv) {
-		window.opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();

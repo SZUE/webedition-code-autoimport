@@ -86,7 +86,7 @@ function deleteNote() {
 	var fo = document.forms[0];
 	var mark = fo.elements.mark.value;
 	var q_ID = document.getElementById(mark + '_ID').value;
-	window.parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId);
+	WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId);
 }
 
 function isHotNote() {
@@ -263,7 +263,7 @@ function saveNote() {
 				return false;
 			}
 			var q_ID = document.getElementById(_id + '_ID').value;
-			window.parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
+			WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 		} else {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
@@ -289,7 +289,7 @@ function saveNote() {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
-		window.parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), csv, 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
+		WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), csv, 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 	} else {
 		top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
@@ -350,7 +350,7 @@ function save() {
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
 		(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
-		window.opener.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, _sObjId);
+		WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, _sObjId);
 	}
 	window.opener.setPrefs(_sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -361,14 +361,14 @@ function save() {
 function preview() {
 	var sTitleEnc = window.btoa(getTitle());
 	var sBit = getBitString();
-	window.opener.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, prefs._sObjId);
 	previewPrefs();
 	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
 }
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		window.opener.rpc(_sInitCsv_, '', '', '', window.btoa(_sInitTitle), prefs._sObjId);
+		WE().layout.cockpitFrame.rpc(_sInitCsv_, '', '', '', window.btoa(_sInitTitle), prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();

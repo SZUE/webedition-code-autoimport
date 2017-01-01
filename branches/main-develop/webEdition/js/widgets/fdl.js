@@ -53,5 +53,5 @@ function exit_close() {
 }
 
 function refresh() {
-	window.opener.rpc('', '', '', '', '', fdl.refreshCmd);
+	WE().layout.cockpitFrame.rpc('', '', '', '', '', fdl.refreshCmd);
 }

@@ -84,7 +84,7 @@ function preview() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	previewPrefs();
-	window.opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
 }
 
 function exit_close() {
@@ -94,8 +94,8 @@ function exit_close() {
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = window.atob(aInitCsv[0]);
-	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
-		window.opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
+	if ((sInitTitle !== '' && sInitTitle !== sTitle) || aInitCsv[1] !== sSel + sSwitch || aInitCsv[2] !== sCsv) {
+		WE().layout.cockpitFrame.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
 	exitPrefs();
 	window.close();
@@ -145,7 +145,7 @@ function save() {
 	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
-	window.opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
+	WE().layout.cockpitFrame.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
 	_oCsv_.value = window.btoa(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	window.close();
