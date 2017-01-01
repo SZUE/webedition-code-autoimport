@@ -33,7 +33,9 @@ var ImageDialog = {
 		var url;
 		//tinyMCEPopup.requireLangPack();
 		if ((url = tinyMCEPopup.getParam("external_image_list_url"))) {
-			document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+			var fileref = document.createElement('script');
+			fileref.setAttribute("src", tinyMCEPopup.editor.documentBaseURI.toAbsolute(url));
+			document.getElementsByTagName("head")[0].appendChild(fileref);
 		}
 	},
 
@@ -41,7 +43,7 @@ var ImageDialog = {
 		this.preInit();
 		var ed = tinyMCEPopup.editor, t = this;
 
-		if(!attributes){
+		if (!attributes) {
 			top.close();
 			return;
 		}
@@ -109,11 +111,11 @@ var ImageDialog = {
 			'class': attribs['class'], // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
 			title: attribs.title,
 			longdesc: attribs.longdesc
-			//style : attribs.style,
-			//id : attribs.id,
-			//dir : attribs.dir,
-			//lang : attribs.lang,
-			//usemap : attribs.usemap,
+				//style : attribs.style,
+				//id : attribs.id,
+				//dir : attribs.dir,
+				//lang : attribs.lang,
+				//usemap : attribs.usemap,
 		});
 
 		el = ed.selection.getNode();

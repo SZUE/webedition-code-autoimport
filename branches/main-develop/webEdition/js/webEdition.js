@@ -1352,6 +1352,9 @@ var we_cmd_modules = {
 			case "openUnpublishedPages":
 				we_cmd("tool_weSearch_edit", "", "", 4, 3);
 				break;
+			case "reloadMainEditor":
+				WE().layout.weEditorFrameController.getActiveDocumentReference().frames[2].reloadContent = true;
+				break;
 			case "we_selector_category":
 				new (WE().util.jsWindow)(window, url, "we_cateditor", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 				break;
@@ -1458,6 +1461,9 @@ var we_cmd_modules = {
 				break;
 			case "reload_editfooter":
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
+				break;
+			case "reload_edit_header":
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editHeader, url, args[0]);
 				break;
 			case "rebuild":
 				new (WE().util.jsWindow)(window, url, "rebuild", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);

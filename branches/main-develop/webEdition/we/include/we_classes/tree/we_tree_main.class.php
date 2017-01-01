@@ -34,7 +34,7 @@ class we_tree_main extends we_tree_base{
 		return 'treeData.table="' . FILE_TABLE . '";';
 	}
 
-	public static function getJSUpdateTreeScript($doc, $select = true){
+	public static function getJSUpdateTreeScript($doc, $select = true, we_base_jsCmd $jsCmd = null, $asCmd = false){
 
 		switch($doc->ContentType){
 			case we_base_ContentTypes::HTML:
@@ -57,23 +57,30 @@ class we_tree_main extends we_tree_base{
 				$hasSched |= $sched['active'];
 			}
 		}
-		$s = 'we_cmd("updateMainTree",' . intval($select) . ',{
-id:' . $doc->ID . ',
-parentid:' . $doc->ParentID . ',
-text:\'' . addcslashes($doc->Text, '\'') . '\',
-published:' . $published . ',
-table:\'' . $doc->Table . '\',
-inschedule:\'' . intval($hasSched) . '\'
-			},{
-contenttype:\'' . $doc->ContentType . '\',
-isclassfolder:\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\',
-checked:0,
-typ:\'' . ($doc->IsFolder ? "group" : "item") . '\',
-open:0,
-disabled:0,
-tooltip:' . $doc->ID . ',
-});';
-		return $s;
+		$main = [
+			'id' => $doc->ID,
+			'parentid' => $doc->ParentID,
+			'text' => $doc->Text,
+			'published' => $published,
+			'table' => $doc->Table,
+			'inschedule' => intval($hasSched),
+		];
+		$adv = [
+			'contenttype' => $doc->ContentType,
+			'isclassfolder' => (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false),
+			'checked' => 0,
+			'typ' => ($doc->IsFolder ? "group" : "item"),
+			'open' => 0,
+			'disabled' => 0,
+			'tooltip' => $doc->ID,
+		];
+		if($jsCmd){
+			$jsCmd->addCmd('updateMainTree', intval($select), $main, $adv);
+		} elseif($asCmd){
+			return ['updateMainTree', intval($select), $main, $adv];
+		} else {
+			return 'we_cmd("updateMainTree",' . intval($select) . ',' . we_serialize($main, SERIALIZE_JSON) . ',' . we_serialize($adv, SERIALIZE_JSON) . ');';
+		}
 	}
 
 	protected function customJSFile(){

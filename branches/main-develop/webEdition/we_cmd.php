@@ -161,6 +161,7 @@ function findInclude($cmd){
 			$SEEM_edit_include = true;
 			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/webEdition.php');
 			return true;
+		case 'reload_edit_header':
 		case 'load_edit_header':
 			return 'we_editors/we_editor_header.inc.php';
 		case 'load_edit_footer':

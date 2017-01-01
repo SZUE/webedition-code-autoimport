@@ -35,7 +35,9 @@ var ImageDialog = {
 //		tinyMCEPopup.requireLangPack();
 
 		if ((url = tinyMCEPopup.getParam("external_image_list_url"))) {
-			document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+			var fileref = document.createElement('script');
+			fileref.setAttribute("src", tinyMCEPopup.editor.documentBaseURI.toAbsolute(url));
+			document.getElementsByTagName("head")[0].appendChild(fileref);
 		}
 	},
 	init: function (ed) {
@@ -49,7 +51,7 @@ var ImageDialog = {
 		TinyMCE_EditableSelects.init();
 		this.addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
-		if(nl["we_dialog_args[isPresetFromDnD]"].value == 1){
+		if (nl["we_dialog_args[isPresetFromDnD]"].value == 1) {
 			nl["we_dialog_args[isPresetFromDnD]"].value = 0;
 			top.imageChanged();
 		}

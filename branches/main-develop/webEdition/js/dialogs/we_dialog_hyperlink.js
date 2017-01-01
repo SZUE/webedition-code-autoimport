@@ -1,4 +1,4 @@
-/* global WE, weFocusedField */
+/* global WE, weFocusedField, top */
 
 /**
  * webEdition SDK
@@ -110,6 +110,7 @@ function openToEdit(id, ct, table) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct);
 }
 
+//FIXME: this function is not used anymore, why?
 function showanchors(name, val, onCh) {
 	var pageAnchors = top.opener.document.getElementsByTagName("A");
 	var objAnchors = top.opener["weWysiwygObject_" + editname].eDocument.getElementsByTagName("A");

@@ -53,7 +53,7 @@ class we_template extends we_document{
 
 	function copyDoc($id){
 		if(!$id){
-			return;
+			return false;
 		}
 		$temp = new we_template();
 		$temp->InitByID($id, TEMPLATES_TABLE);
@@ -79,9 +79,7 @@ class we_template extends we_document{
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-		return we_html_element::jsElement('
-var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-_currentEditorRootFrame.frames[2].reloadContent = true;');
+		return true;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */

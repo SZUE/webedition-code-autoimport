@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition SDK
  *
@@ -25,6 +27,7 @@
  */
 'use strict';
 
+var retryjava = 0;
 var orginal;
 var editPanel;
 var to;
@@ -256,11 +259,11 @@ function findNext() {
 					to = setTimeout(findNext, 500);
 				} else {
 					removeHighlight();
-					if (document.getElementById("spinner").style.display != "none") {
+					if (document.getElementById("spinner").style.display !== "none") {
 						fadeout("spinner", 80, 10, 10);
 					}
 					WE().layout.button.enable(document, "check");
-					top.we_showMessage(g_l.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					top.we_showMessage(WE().consts.g_l.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 		} else {

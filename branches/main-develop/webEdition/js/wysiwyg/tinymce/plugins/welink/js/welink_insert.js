@@ -10,7 +10,9 @@ var LinkDialog = {
 	preinit: function() {
 		var url;
 		if ((url = tinyMCEPopup.getParam("external_link_list_url"))) {
-			document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+			var fileref = document.createElement('script');
+			fileref.setAttribute("src", tinyMCEPopup.editor.documentBaseURI.toAbsolute(url));
+			document.getElementsByTagName("head")[0].appendChild(fileref);
 		}
 	},
 

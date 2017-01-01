@@ -30,6 +30,8 @@ var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransacti
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 var isEditInclude = false;
 var weWindow = top;
+var i;
+
 while (1) {
 	if (!weWindow.top.opener || weWindow.treeData) {
 		break;
@@ -61,9 +63,9 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 		}
 	}
 
-//FIXME eval
-	WE().t_e("bad eval", editorSave.we_JavaScript);
-	eval(editorSave.we_JavaScript);
+	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
+		we_cmd.apply(window, editorSave.we_JavaScript[i]);
+	}
 
 	window.focus();
 	var showAlert = false;
@@ -100,9 +102,13 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 				//	alert when in preview mode
 				top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 				_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
-				//FIXME eval
-				WE().t_e("bad eval", editorSave.we_cmd5);
-				eval(editorSave.we_cmd5);
+
+				for (i = 0; i < editorSave.we_responseJS.length; i++) {
+					we_cmd.apply(window, editorSave.we_responseJS[i]);
+				}
+				for (i = 0; i < editorSave.we_cmd5.length; i++) {
+					we_cmd.apply(window, editorSave.we_cmd5[i]);
+				}
 			}
 			if (editorSave.isPublished) {
 				if (isEditInclude) {
@@ -115,27 +121,57 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 		}
 	} else {
 		top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
-		for (var i = 0; i < editorSave.we_responseJS; i++) {
-			top.we_cmd.apply(window, editorSave.we_responseJS[i]);
+		for (i = 0; i < editorSave.we_responseJS.length; i++) {
+			we_cmd.apply(window, editorSave.we_responseJS[i]);
 		}
 
-		for (var i = 0; i < editorSave.we_cmd5; i++) {
-			top.we_cmd.apply(window, editorSave.we_cmd5[i]);
+		for (i = 0; i < editorSave.we_cmd5.length; i++) {
+			we_cmd.apply(window, editorSave.we_cmd5[i]);
 		}
 	}
 } else {//called from we_editor_publish.inc.php
-//FIXME eval
-	WE().t_e("bad eval", editorSave.we_JavaScript);
-	eval(editorSave.we_JavaScript);
+	for (i = 0; i < editorSave.we_responseJS.length; i++) {
+		we_cmd.apply(window, editorSave.we_responseJS[i]);
+	}
+	for (i = 0; i < editorSave.we_cmd5.length; i++) {
+		we_cmd.apply(window, editorSave.we_cmd5[i]);
+	}
+	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
+		we_cmd.apply(window, editorSave.we_JavaScript[i]);
+	}
 	top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 }
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(editorSave.we_transaction);
 
 	switch (args[0]) {
+		case 'setEditorDocumentId':
+			_EditorFrame.setEditorDocumentId(args[1]);
+			break;
+		case "we_setPath":
+			WE().layout.we_setPath(_EditorFrame, args[1], args[2], args[3], args[4]);
+			break;
+		case 'unsetHot':
+			_EditorFrame.setEditorIsHot(false);
+			break;
+		case 'addHistory':
+			WE().layout.weNavigationHistory.addDocToHistory(args[1], args[2], args[3]);
+			break;
+		case 'rebuildTemplates':
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' + args[1] + '&responseText=' + args[2], 'resave', WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
+			break;
+		case 'updateVTab':
+			if (top.treeData.table == args[1]) {
+				we_cmd('loadVTab', top.treeData.table, 0);
+			}
+			break;
+		case 'updateMenu':
+			document.getElementById("nav").parentNode.innerHTML = args[1];
+			break;
 		default:
-			top.opener.top.we_cmd.apply(window, args);
+			top.we_cmd.apply(window, args);
 	}
 }

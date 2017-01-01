@@ -2499,6 +2499,7 @@ WE().layout.weFileUpload = (function () {
 						// IMPORTANT: try to load img from fileobj.dataArray to avoid saving dataUrl!!
 						img = previewWin.document.createElement("img");
 						img.src = _.sender.preparedFiles[index].dataUrl;
+						//FIXME: never use document.write
 						previewWin.document.write('<h3>image editet</h3>');
 						previewWin.document.write('<p>here we could edit/reedit image, applying filters, antialiasing and set focus!</p>');
 						previewWin.document.body.appendChild(img);
@@ -2508,6 +2509,7 @@ WE().layout.weFileUpload = (function () {
 						reader.onload = function() {
 							img = previewWin.document.createElement("img");
 							img.src = reader.result;
+							//FIXME: never use document.write
 							previewWin.document.write('<h3>image not editet</h3>');
 							previewWin.document.write('<p>here we could edit/reedit image, applying filters, antialiasing and set focus!</p>');
 							previewWin.document.body.appendChild(img);
