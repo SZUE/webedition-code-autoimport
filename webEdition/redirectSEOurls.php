@@ -31,11 +31,19 @@ if(!empty($GLOBALS['we_editmode'])){
 	return;
 }
 
+if(!defined('OBJECT_FILES_TABLE')){
+	if(ERROR_DOCUMENT_NO_OBJECTFILE){
+		we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
+		include(WEBEDITION_PATH . '../' . id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
+	}
+	return;
+}
+
 $urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
 	urldecode($_SERVER['REDIRECT_URL']) :
 	(!empty($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
-		parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
-		'');
+	parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
+	'');
 
 if(!$urlLookingFor){
 	return;
@@ -48,7 +56,7 @@ if(!$urlLookingFor){
 $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
 	strtr(urlencode($urlLookingFor), ['%2F' => '/', '//' => '/']) :
 	strtr($urlLookingFor, ['//' => '/'])
-);
+	);
 
 define('WE_REDIRECTED_SEO', $urlLookingFor);
 
@@ -64,7 +72,6 @@ define('WE_REDIRECTED_SEO', $urlLookingFor);
  * third check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
  * and so one
  */
-
 while($urlLookingFor){// first we try to get the object
 	if(($object = getHash('SELECT ID,ParentID,TriggerID,Url,Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
 		/**
@@ -86,9 +93,8 @@ while($urlLookingFor){// first we try to get the object
  */
 if($object && $object['ID']){
 	$docPathOfUrl = substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $urlLookingFor)); //cut the known seo-url from object of the whole URL
-
 	//get trigger document by url and/or (extra) workspaces by object properties
-	$triggerDocPath = we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim($docPathOfUrl, "/")), $object['Workspaces'], '', $GLOBALS['DB_WE']);
+	$triggerDocPath = we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim($docPathOfUrl, '/')), $object['Workspaces'], '', $GLOBALS['DB_WE']);
 
 	if(!$triggerDocPath){//fallback
 		if(NAVIGATION_DIRECTORYINDEX_NAMES){ //now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
@@ -100,11 +106,6 @@ if($object && $object['ID']){
 				}
 			}
 		}
-
-		$triggerDocPath = $triggerDocPath ? : //we use the default trigger document of object class
-			(($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ?
-				id_to_path($object['TriggerID'], FILE_TABLE) :
-				false);
 	}
 
 	if($triggerDocPath){// now we have an object and a trigger document
@@ -114,9 +115,11 @@ if($object && $object['ID']){
 		//get query string if there
 		$queryStringArray = [];
 		$queryString = !empty($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING'] :
-			(!empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] :
-				parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY)
-			);
+
+		$triggerDocPath = $triggerDocPath ? : //we use the default trigger document of object class
+			(($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ?
+				id_to_path($object['TriggerID'], FILE_TABLE) :
+				false);
 		parse_str($queryString, $queryStringArray);
 
 		//should we also send $_GET?
