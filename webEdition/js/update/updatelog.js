@@ -23,6 +23,7 @@
  */
 /* global WE, top */
 'use strict';
+WE().util.loadConsts(document, "g_l.liveUpdate");
 
 function deleteEntries() {
 	document.we_form.log_cmd.value = "deleteEntries";
@@ -37,4 +38,14 @@ function lastEntries() {
 function nextEntries() {
 	document.we_form.log_cmd.value = "nextEntries";
 	document.we_form.submit();
+}
+
+function confirmDelete() {
+	if (window.confirm(WE().consts.g_l.liveUpdate.confirmDelete)) {
+		deleteEntries();
+	}
+}
+
+function setTab(tab) {
+	top.updatecontent.location = "?section=" + tab;
 }

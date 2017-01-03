@@ -71,7 +71,7 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		echo we_html_element::jsElement('
-top.opener.top.we_cmd("load","' . FILE_TABLE . '");
+top.opener.top.we_cmd("load",WE().consts.tables.FILE_TABLE );
 WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
 top.close();');
 	}

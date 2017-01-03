@@ -107,26 +107,19 @@ if($this->Data['allEntries']){ // entries exist
 
 		$buttons = we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();") .
 			($start > 0 ? //	backbutton
-				we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
-				we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)) .
+			we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
+			we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)) .
 			($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-				we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true) :
-				we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
+			we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true) :
+			we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
 
 		$content .= '
 </table>';
 	} else {
-		$content .=g_l('liveUpdate', '[updatelog][noEntriesMatchFilter]');
+		$content .= g_l('liveUpdate', '[updatelog][noEntriesMatchFilter]');
 	}
 	$content .= '
 </form>';
 }
 
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js') .
-	we_html_element::jsElement('
-function confirmDelete() {
-	if (window.confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
-		deleteEntries();
-	}
-}
-'), $buttons);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js'), $buttons);
