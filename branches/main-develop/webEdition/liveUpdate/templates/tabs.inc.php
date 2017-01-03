@@ -36,17 +36,11 @@ foreach($this->Data['allTabs'] as $tabname){
 
 // get output
 
-$bodyContent = '<div id="main">' . $tabs->getHTML() . '</div>';
-
-$body = we_html_element::htmlBody([
-		'id' => 'eHeaderBody',
-		'onload' => 'weTabs.setFrameSize();',
-		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
-
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-	we_html_element::jsElement('
-function setTab(tab){
-	top.updatecontent.location="?section="+tab;
-}
-'), $body);
+	we_html_element::jsScript(JS_DIR . 'update/updatelog.js'), we_html_element::htmlBody([
+		'id' => 'eHeaderBody',
+		'onload' => 'weTabs.setFrameSize();',
+		'onresize' => 'weTabs.setFrameSize()'
+		], '<div id="main">' . $tabs->getHTML() . '</div>')
+);
