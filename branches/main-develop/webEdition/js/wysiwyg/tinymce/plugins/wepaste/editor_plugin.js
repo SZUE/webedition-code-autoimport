@@ -22,6 +22,10 @@ function removeClasses(match, g1) {
 
 	return cls.length ? ' class="' + cls.join(" ") + '"' : '';
 }
+function block(e) {
+	e.preventDefault();
+}
+
 (function () {
 	var each = tinymce.each,
 		defs = {
@@ -248,10 +252,6 @@ function removeClasses(match, g1) {
 					// Block the real paste event
 					return tinymce.dom.Event.cancel(e);
 				} else {
-					//FIXME: ????
-					function block(e) {
-						e.preventDefault();
-					}
 
 					// Block mousedown and click to prevent selection change
 					dom.bind(ed.getDoc(), 'mousedown', block);
@@ -316,8 +316,8 @@ function removeClasses(match, g1) {
 
 						// WE: content is ready so here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
 						if (!isFromInsideTinymce(h) && ed.pasteAsPlainText && textContent) {
-							dom.unbind(ed.getDoc(), 'mousedown', block);
-							dom.unbind(ed.getDoc(), 'keydown', block);
+							dom.unbind(ed.getDoc(), 'mousedown');
+							dom.unbind(ed.getDoc(), 'keydown');
 
 							// this is what we would have done from the beginning when ed.pasteAsPlainText
 							e.preventDefault();
@@ -335,8 +335,8 @@ function removeClasses(match, g1) {
 							}
 
 							// Unblock events ones we got the contents
-							dom.unbind(ed.getDoc(), 'mousedown', block);
-							dom.unbind(ed.getDoc(), 'keydown', block);
+							dom.unbind(ed.getDoc(), 'mousedown');
+							dom.unbind(ed.getDoc(), 'keydown');
 						}
 					}, 0);
 				}
