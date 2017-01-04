@@ -37,7 +37,148 @@ function setPoint(node, start) {
 
 (function(tinymce) {
 	var each = tinymce.each;
+function moveSelection(ed, e) {
+						var VK = tinymce.VK;
+						var key = e.keyCode;
 
+						function handle(upBool, sourceNode, event) {
+							var siblingDirection = upBool ? 'previousSibling' : 'nextSibling';
+							var currentRow = ed.dom.getParent(sourceNode, 'tr');
+							var siblingRow = currentRow[siblingDirection];
+
+							if (siblingRow) {
+								moveCursorToRow(ed, sourceNode, siblingRow, upBool);
+								tinymce.dom.Event.cancel(event);
+								return true;
+							} else {
+								var tableNode = ed.dom.getParent(currentRow, 'table');
+								var middleNode = currentRow.parentNode;
+								var parentNodeName = middleNode.nodeName.toLowerCase();
+								if (parentNodeName === 'tbody' || parentNodeName === (upBool ? 'tfoot' : 'thead')) {
+									var targetParent = getTargetParent(upBool, tableNode, middleNode, 'tbody');
+									if (targetParent !== null) {
+										return moveToRowInTarget(upBool, targetParent, sourceNode, event);
+									}
+								}
+								return escapeTable(upBool, currentRow, siblingDirection, tableNode, event);
+							}
+						}
+
+						function getTargetParent(upBool, topNode, secondNode, nodeName) {
+							var tbodies = ed.dom.select('>' + nodeName, topNode);
+							var position = tbodies.indexOf(secondNode);
+							if (upBool && position === 0 || !upBool && position === tbodies.length - 1) {
+								return getFirstHeadOrFoot(upBool, topNode);
+							} else if (position === -1) {
+								var topOrBottom = secondNode.tagName.toLowerCase() === 'thead' ? 0 : tbodies.length - 1;
+								return tbodies[topOrBottom];
+							} else {
+								return tbodies[position + (upBool ? -1 : 1)];
+							}
+						}
+
+						function getFirstHeadOrFoot(upBool, parent) {
+							var tagName = upBool ? 'thead' : 'tfoot';
+							var headOrFoot = ed.dom.select('>' + tagName, parent);
+							return headOrFoot.length !== 0 ? headOrFoot[0] : null;
+						}
+
+						function moveToRowInTarget(upBool, targetParent, sourceNode, event) {
+							var targetRow = getChildForDirection(targetParent, upBool);
+							if(targetRow){
+moveCursorToRow(ed, sourceNode, targetRow, upBool);
+								}
+							tinymce.dom.Event.cancel(event);
+							return true;
+						}
+
+						function escapeTable(upBool, currentRow, siblingDirection, table, event) {
+							var tableSibling = table[siblingDirection];
+							if (tableSibling) {
+								moveCursorToStartOfElement(tableSibling);
+								return true;
+							} else {
+								var parentCell = ed.dom.getParent(table, 'td,th');
+								if (parentCell) {
+									return handle(upBool, parentCell, event);
+								} else {
+									var backUpSibling = getChildForDirection(currentRow, !upBool);
+									moveCursorToStartOfElement(backUpSibling);
+									return tinymce.dom.Event.cancel(event);
+								}
+							}
+						}
+
+						function getChildForDirection(parent, up) {
+							var child =  parent && parent[up ? 'lastChild' : 'firstChild'];
+							// BR is not a valid table child to return in this case we return the table cell
+							return child && child.nodeName === 'BR' ? ed.dom.getParent(child, 'td,th') : child;
+						}
+
+						function moveCursorToStartOfElement(n) {
+							ed.selection.setCursorLocation(n, 0);
+						}
+
+						function isVerticalMovement() {
+							return key == VK.UP || key == VK.DOWN;
+						}
+
+						function isInTable(ed) {
+							var node = ed.selection.getNode();
+							var currentRow = ed.dom.getParent(node, 'tr');
+							return currentRow !== null;
+						}
+
+						function columnIndex(column) {
+							var colIndex = 0;
+							var c = column;
+							while (c.previousSibling) {
+								c = c.previousSibling;
+								colIndex = colIndex + getSpanVal(c, "colspan");
+							}
+							return colIndex;
+						}
+
+						function findColumn(rowElement, columnIndex) {
+							var c = 0;
+							var r = 0;
+							each(rowElement.children, function(cell, i) {
+								c = c + getSpanVal(cell, "colspan");
+								r = i;
+								if (c > columnIndex)
+									return false;
+							});
+							return r;
+						}
+
+						function moveCursorToRow(ed, node, row, upBool) {
+							var srcColumnIndex = columnIndex(ed.dom.getParent(node, 'td,th'));
+							var tgtColumnIndex = findColumn(row, srcColumnIndex);
+							var tgtNode = row.childNodes[tgtColumnIndex];
+							var rowCellTarget = getChildForDirection(tgtNode, upBool);
+							moveCursorToStartOfElement(rowCellTarget || tgtNode);
+						}
+
+						function shouldFixCaret(preBrowserNode) {
+							var newNode = ed.selection.getNode();
+							var newParent = ed.dom.getParent(newNode, 'td,th');
+							var oldParent = ed.dom.getParent(preBrowserNode, 'td,th');
+							return newParent && newParent !== oldParent && checkSameParentTable(newParent, oldParent);
+						}
+
+						function checkSameParentTable(nodeOne, NodeTwo) {
+							return ed.dom.getParent(nodeOne, 'TABLE') === ed.dom.getParent(NodeTwo, 'TABLE');
+						}
+
+						if (isVerticalMovement() && isInTable(ed)) {
+							var preBrowserNode = ed.selection.getNode();
+							window.setTimeout(function() {
+								if (shouldFixCaret(preBrowserNode)) {
+									handle(!e.shiftKey && key === VK.UP, preBrowserNode, e);
+								}
+							}, 0);
+						}
+					}
 	// Checks if the selection/caret is at the start of the specified block element
 	function isAtStart(rng, par) {
 		var doc = par.ownerDocument, rng2 = doc.createRange(), elm;
@@ -1161,148 +1302,7 @@ function setPoint(node, start) {
 
 				// Fix to allow navigating up and down in a table in WebKit browsers.
 				if (tinymce.isWebKit) {
-					function moveSelection(ed, e) {
-						var VK = tinymce.VK;
-						var key = e.keyCode;
 
-						function handle(upBool, sourceNode, event) {
-							var siblingDirection = upBool ? 'previousSibling' : 'nextSibling';
-							var currentRow = ed.dom.getParent(sourceNode, 'tr');
-							var siblingRow = currentRow[siblingDirection];
-
-							if (siblingRow) {
-								moveCursorToRow(ed, sourceNode, siblingRow, upBool);
-								tinymce.dom.Event.cancel(event);
-								return true;
-							} else {
-								var tableNode = ed.dom.getParent(currentRow, 'table');
-								var middleNode = currentRow.parentNode;
-								var parentNodeName = middleNode.nodeName.toLowerCase();
-								if (parentNodeName === 'tbody' || parentNodeName === (upBool ? 'tfoot' : 'thead')) {
-									var targetParent = getTargetParent(upBool, tableNode, middleNode, 'tbody');
-									if (targetParent !== null) {
-										return moveToRowInTarget(upBool, targetParent, sourceNode, event);
-									}
-								}
-								return escapeTable(upBool, currentRow, siblingDirection, tableNode, event);
-							}
-						}
-
-						function getTargetParent(upBool, topNode, secondNode, nodeName) {
-							var tbodies = ed.dom.select('>' + nodeName, topNode);
-							var position = tbodies.indexOf(secondNode);
-							if (upBool && position === 0 || !upBool && position === tbodies.length - 1) {
-								return getFirstHeadOrFoot(upBool, topNode);
-							} else if (position === -1) {
-								var topOrBottom = secondNode.tagName.toLowerCase() === 'thead' ? 0 : tbodies.length - 1;
-								return tbodies[topOrBottom];
-							} else {
-								return tbodies[position + (upBool ? -1 : 1)];
-							}
-						}
-
-						function getFirstHeadOrFoot(upBool, parent) {
-							var tagName = upBool ? 'thead' : 'tfoot';
-							var headOrFoot = ed.dom.select('>' + tagName, parent);
-							return headOrFoot.length !== 0 ? headOrFoot[0] : null;
-						}
-
-						function moveToRowInTarget(upBool, targetParent, sourceNode, event) {
-							var targetRow = getChildForDirection(targetParent, upBool);
-							if(targetRow){
-moveCursorToRow(ed, sourceNode, targetRow, upBool);
-								}
-							tinymce.dom.Event.cancel(event);
-							return true;
-						}
-
-						function escapeTable(upBool, currentRow, siblingDirection, table, event) {
-							var tableSibling = table[siblingDirection];
-							if (tableSibling) {
-								moveCursorToStartOfElement(tableSibling);
-								return true;
-							} else {
-								var parentCell = ed.dom.getParent(table, 'td,th');
-								if (parentCell) {
-									return handle(upBool, parentCell, event);
-								} else {
-									var backUpSibling = getChildForDirection(currentRow, !upBool);
-									moveCursorToStartOfElement(backUpSibling);
-									return tinymce.dom.Event.cancel(event);
-								}
-							}
-						}
-
-						function getChildForDirection(parent, up) {
-							var child =  parent && parent[up ? 'lastChild' : 'firstChild'];
-							// BR is not a valid table child to return in this case we return the table cell
-							return child && child.nodeName === 'BR' ? ed.dom.getParent(child, 'td,th') : child;
-						}
-
-						function moveCursorToStartOfElement(n) {
-							ed.selection.setCursorLocation(n, 0);
-						}
-
-						function isVerticalMovement() {
-							return key == VK.UP || key == VK.DOWN;
-						}
-
-						function isInTable(ed) {
-							var node = ed.selection.getNode();
-							var currentRow = ed.dom.getParent(node, 'tr');
-							return currentRow !== null;
-						}
-
-						function columnIndex(column) {
-							var colIndex = 0;
-							var c = column;
-							while (c.previousSibling) {
-								c = c.previousSibling;
-								colIndex = colIndex + getSpanVal(c, "colspan");
-							}
-							return colIndex;
-						}
-
-						function findColumn(rowElement, columnIndex) {
-							var c = 0;
-							var r = 0;
-							each(rowElement.children, function(cell, i) {
-								c = c + getSpanVal(cell, "colspan");
-								r = i;
-								if (c > columnIndex)
-									return false;
-							});
-							return r;
-						}
-
-						function moveCursorToRow(ed, node, row, upBool) {
-							var srcColumnIndex = columnIndex(ed.dom.getParent(node, 'td,th'));
-							var tgtColumnIndex = findColumn(row, srcColumnIndex);
-							var tgtNode = row.childNodes[tgtColumnIndex];
-							var rowCellTarget = getChildForDirection(tgtNode, upBool);
-							moveCursorToStartOfElement(rowCellTarget || tgtNode);
-						}
-
-						function shouldFixCaret(preBrowserNode) {
-							var newNode = ed.selection.getNode();
-							var newParent = ed.dom.getParent(newNode, 'td,th');
-							var oldParent = ed.dom.getParent(preBrowserNode, 'td,th');
-							return newParent && newParent !== oldParent && checkSameParentTable(newParent, oldParent);
-						}
-
-						function checkSameParentTable(nodeOne, NodeTwo) {
-							return ed.dom.getParent(nodeOne, 'TABLE') === ed.dom.getParent(NodeTwo, 'TABLE');
-						}
-
-						if (isVerticalMovement() && isInTable(ed)) {
-							var preBrowserNode = ed.selection.getNode();
-							window.setTimeout(function() {
-								if (shouldFixCaret(preBrowserNode)) {
-									handle(!e.shiftKey && key === VK.UP, preBrowserNode, e);
-								}
-							}, 0);
-						}
-					}
 
 					ed.onKeyDown.add(moveSelection);
 				}
