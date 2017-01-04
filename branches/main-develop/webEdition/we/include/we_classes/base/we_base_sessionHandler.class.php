@@ -1,6 +1,6 @@
 <?php
 
-class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
+class we_base_sessionHandler implements SessionHandlerInterface{
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -11,7 +11,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private $releaseError = false;
 	public static $acquireLock = 0;
 
-	function __construct(){
+	public function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
 			register_shutdown_function(function(){
 				session_write_close();
@@ -20,7 +20,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			ini_set('session.gc_divisor', 100);
 			ini_set('session.hash_function', 1); //set sha-1 which will generate 40 bytes of session_id
 			ini_set('session.hash_bits_per_character', 4);
-			session_set_save_handler([$this, 'open'], [$this, 'close'], [$this, 'read'], [$this, 'write'], [$this, 'destroy'], [$this, 'gc']);
+			session_set_save_handler($this, true);
 			$this->DB = new DB_WE();
 			$this->execTime = intval(get_cfg_var('max_execution_time'));
 			$this->execTime = max(min(60, $this->execTime), 5); //time might be wrong (1&1); make exectime at least 5 seconds which is quite small
@@ -47,18 +47,18 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 	}
 
-	function __destruct(){
+	public function __destruct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && isset($_SESSION)){
 			session_write_close();
 		}
 	}
 
-	function open($savePath, $sessName){
+	public function open($savePath, $sessName){
 		$this->sessionName = $sessName;
 		return true;
 	}
 
-	function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
+	public function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
 		$sessID = $this->DB->escape(self::getSessionID(session_id()));
 		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
 		//make sure every access will be an error after close
@@ -66,7 +66,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		return true;
 	}
 
-	function read($sessID){
+	public function read($sessID){
 		$sessID = $this->DB->escape(self::getSessionID($sessID));
 		$lock = microtime(true);
 		if(f('SELECT 1 FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"')){//session exists
@@ -107,7 +107,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		return '';
 	}
 
-	function write($sessID, $sessData, $lock = false){
+	public function write($sessID, $sessData, $lock = false){
 		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
@@ -134,14 +134,14 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		return true;
 	}
 
-	function destroy($sessID){
+	public function destroy($sessID){
 		unset($_SESSION);
 		$sessID = $this->DB->escape(self::getSessionID($sessID));
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $this->DB->escape($sessID) . '\' AND sessionName="' . $this->sessionName . '"');
 		return true;
 	}
 
-	function gc($sessMaxLifeTime){
+	public function gc($sessMaxLifeTime){
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
 		$this->DB->query('OPTIMIZE TABLE ' . SESSION_TABLE);
 		return true;
