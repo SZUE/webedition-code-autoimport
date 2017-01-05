@@ -165,10 +165,11 @@ class we_customer_settings{
 			//check if all fields are set
 			$fields = $this->customer->getFieldset();
 			foreach($fields as $name){
-				if(!isset($this->FieldAdds[$name]['type'])){
-					$modified = true;
-					$tmp = $props = $this->customer->getFieldDbProperties($name);
-					$this->FieldAdds[$name]['type'] = $this->getOldFieldType($tmp['Type']);
+				$old = '';
+				if(!isset($this->FieldAdds[$name]['type']) || $old=$this->FieldAdds[$name]['type'] === 'input'){
+					$tmp = $this->customer->getFieldDbProperties($name);
+					$this->FieldAdds[$name]['type'] = $this->getOldFieldType($tmp['Type'], $this->FieldAdds[$name]['default']);
+					$modified |= ($old != $this->FieldAdds[$name]['type']);
 				}
 				if(!isset($this->FieldAdds[$name]['encrypt'])){
 					$modified = true;
@@ -205,10 +206,10 @@ class we_customer_settings{
 
 	function save(){
 		//FIXME: make Fieldadds more fields in DB
-		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds);
-		$this->properties['SortView'] = we_serialize($this->SortView);
+		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds, SERIALIZE_JSON);
+		$this->properties['SortView'] = we_serialize($this->SortView, SERIALIZE_JSON);
 		$this->properties['EditSort'] = $this->EditSort;
-		$this->properties['Prefs'] = we_serialize($this->Prefs);
+		$this->properties['Prefs'] = we_serialize($this->Prefs, SERIALIZE_JSON);
 
 		foreach($this->properties as $key => $value){
 			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
@@ -274,9 +275,21 @@ class we_customer_settings{
 	}
 
 //returns predefined  field type
-	private function getOldFieldType($field_type){
+	private function getOldFieldType($field_type, &$default){
+		$expl = explode('(', $field_type);
+		$type = $expl[0];
 		foreach($this->field_types as $k => $v){
 			if($v == $field_type){
+				return $k;
+			}
+
+			if($v == $type){
+				//if this matches we have to extract fieldvalues
+				$data = explode(',', rtrim($expl[1], ')'));
+				foreach($data as &$d){
+					$d = trim($d, '\'');
+				}
+				$default = implode(',', $data);
 				return $k;
 			}
 		}
