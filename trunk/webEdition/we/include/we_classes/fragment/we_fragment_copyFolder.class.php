@@ -594,7 +594,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$id = $reg[2];
+				$id = intval($reg[2]);
 
 				$path = id_to_path($id, FILE_TABLE, $DB_WE);
 				if($this->mustChange($path)){
