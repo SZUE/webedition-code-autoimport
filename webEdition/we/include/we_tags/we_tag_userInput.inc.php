@@ -46,13 +46,6 @@ function we_tag_userInput(array $attribs, $content){
 		$type = 'hidden';
 	}
 
-	$fieldname = $property ?
-		('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
-		('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
-			$GLOBALS['WE_FORM'] :
-			''
-		) . '[' . $name . ']');
-
 	$object = (isset($GLOBALS['WE_FORM']) ?
 			(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
 				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
@@ -64,6 +57,7 @@ function we_tag_userInput(array $attribs, $content){
 			'');
 
 	if($object){
+        $name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING); //Fix #11201
 		if($property){
 			$isset = isset($object->{$name});
 			$orgVal = $isset ? $object->{$name} : $value;
@@ -81,6 +75,13 @@ function we_tag_userInput(array $attribs, $content){
 		$orgVal = $value;
 		$isset = false;
 	}
+
+    $fieldname = $property ?
+        ('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
+        ('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
+                $GLOBALS['WE_FORM'] :
+                ''
+            ) . '[' . $name . ']');
 
 
 	if(!$editable && !$hidden){
