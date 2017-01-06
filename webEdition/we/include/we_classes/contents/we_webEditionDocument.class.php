@@ -551,35 +551,28 @@ class we_webEditionDocument extends we_textContentDocument{
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$regs = array();
-		$allElements = $this->getUsedElements();
-		if(isset($allElements['textarea'])){
-			foreach($allElements['textarea'] as $name){
-				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
-				$value = $this->getElement($name);
-				if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
-					}
-				}
-				if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
-					}
-				}
-
-				$this->setElement($name, $value);
-			}
-		}
 		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
+		//FIXME: getUsedElements is not available on save
 		$types = $this->getFieldTypes($this->getTemplateCode());
 
-		foreach($this->elements as $k => $v){
+		foreach($this->elements as $name => &$v){
 			switch(isset($v['type']) ? $v['type'] : ''){
 				case 'block':
 				case 'list':
-					$this->elements[$k]['type'] = 'block';
+					$this->elements[$name]['type'] = 'block';
 					break;
 				case 'txt':
+					//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
+				if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $v['dat']);
+					}
+				}
+				if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $v['dat']);
+					}
+				}
 				case 'attrib':
 				case 'variant':
 				case 'formfield':
@@ -591,20 +584,20 @@ class we_webEditionDocument extends we_textContentDocument{
 				case 'href':
 				case 'object':
 				case 'customer':
-					if(isset($types[$k])){
-						$this->elements[$k]['type'] = $types[$k];
+					if(isset($types[$name])){
+						$this->elements[$name]['type'] = $types[$name];
 					}
 					break;
 				case 'vars'://internal data which is never saved
 					break;
 				default:
-					switch(isset($types[$k]) ? $types[$k] : ''){
+					switch(isset($types[$name]) ? $types[$name] : ''){
 						case 'link':
 							// FIXME: make sure fixed types are written to tblFile too!
-							$this->elements[$k]['type'] = $types[$k];
+							$this->elements[$name]['type'] = $types[$name];
 							break;
 						default:
-							$this->elements[$k]['type'] = 'txt';
+							$this->elements[$name]['type'] = 'txt';
 					}
 			}
 		}
