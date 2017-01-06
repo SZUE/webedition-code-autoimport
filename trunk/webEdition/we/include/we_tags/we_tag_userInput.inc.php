@@ -57,7 +57,11 @@ function we_tag_userInput(array $attribs, $content){
 			'');
 
 	if($object){
-        $name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING); //Fix #11201
+        $tableID = '';
+	    if($object instanceof we_objectFile){
+            $name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+            $tableID = $object->TableID;
+        }
 		if($property){
 			$isset = isset($object->{$name});
 			$orgVal = $isset ? $object->{$name} : $value;
@@ -69,7 +73,6 @@ function we_tag_userInput(array $attribs, $content){
 			$orgVal = $isset ? $object->getElement($name) : $value;
 		}
 
-        $tableID = $object instanceof we_objectFile ? $object->TableID : '';
 		$content = $object->getFieldByVal($orgVal, $type, $attribs, true, $object->ParentID, $object->Path, $GLOBALS['DB_WE'], $tableID);
 	} else {
 		$orgVal = $value;
