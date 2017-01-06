@@ -61,20 +61,21 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-				array(
+            array(
 				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
 				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
 				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
 				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
 				) :
-				array(
+            array(
 				'id' => '',
 				'filter' => '',
 				'blacklist' => '',
 				'whitelist' => '',
 				'usedocumentfilter' => 1
-		));
+		    )
+        );
 	}
 
 	private function initRulesFromDB(){
@@ -265,7 +266,7 @@ class we_navigation_items{
                 }
             }
 
-			if($ponder < $score){
+			if($ponder <= $score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 					$this->setCurrent($rule->NavigationID);
 				} else {
