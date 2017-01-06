@@ -27,7 +27,7 @@ function we_tag_userInput(array $attribs, $content){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$property = weTag_getAttribute('property', $attribs, false, we_base_request::BOOL);
 	$format = weTag_getAttribute('format', $attribs, '', we_base_request::STRING);
