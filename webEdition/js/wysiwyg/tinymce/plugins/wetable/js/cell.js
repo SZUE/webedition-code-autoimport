@@ -54,16 +54,28 @@ function init() {
 		selectByValue(formObj, 'scope', scope);
 
 		// Resize some elements
-		if (isVisible('backgroundimagebrowser')){
+		if (isVisible('backgroundimagebrowser')) {
 			document.getElementById('backgroundimage').style.width = '180px';
 		}
 
 		updateColor('bordercolor_pick', 'bordercolor');
 		updateColor('bgcolor_pick', 'bgcolor');
-	} else{
+	} else {
 		tinyMCEPopup.dom.hide('action');
 	}
 }
+
+function doUpdate(s) {
+	if (s) {
+		updateCell(tdElm);
+
+		ed.addVisual();
+		ed.nodeChanged();
+		inst.execCommand('mceEndUndoLevel');
+		tinyMCEPopup.close();
+	}
+}
+
 
 function updateAction() {
 	var el, inst = ed, tdElm, trElm, tableElm, formObj = document.forms[0], i, cell, row;
@@ -98,16 +110,6 @@ function updateAction() {
 			var celltype = getSelectValue(formObj, 'celltype');
 			var scope = getSelectValue(formObj, 'scope');
 
-			function doUpdate(s) {
-				if (s) {
-					updateCell(tdElm);
-
-					ed.addVisual();
-					ed.nodeChanged();
-					inst.execCommand('mceEndUndoLevel');
-					tinyMCEPopup.close();
-				}
-			}
 
 			if (ed.getParam("accessibility_warnings", 1)) {
 				if (celltype === "th" && scope === "") {
@@ -124,7 +126,7 @@ function updateAction() {
 		case "row":
 			var cell = trElm.firstChild;
 
-			if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH") {
 				cell = nextCell(cell);
 			}
 
@@ -139,12 +141,12 @@ function updateAction() {
 			cell = trElm.firstChild;
 			rows = tableElm.getElementsByTagName("tr");
 
-			if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH") {
 				cell = nextCell(cell);
 			}
 
 			do {
-				if (cell == tdElm){
+				if (cell == tdElm) {
 					break;
 				}
 				col += cell.getAttribute("colspan") ? cell.getAttribute("colspan") : 1;
@@ -153,7 +155,7 @@ function updateAction() {
 			for (var i = 0; i < rows.length; i++) {
 				cell = rows[i].firstChild;
 
-				if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
+				if (cell.nodeName !== "TD" && cell.nodeName !== "TH") {
 					cell = nextCell(cell);
 				}
 
