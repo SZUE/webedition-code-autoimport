@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://svn.code.sf.net/p/webedition/code/branches" />
+                  <option value="https://svn.code.sf.net/p/webedition/code/externals" />
+                  <option value="https://svn.code.sf.net/p/webedition/code/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/additional">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/externals/additional" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/webEdition/lib/Zend">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/externals/Zend/Zend-FW1" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/webEdition/lib/additional">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/externals/libraries" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/webEdition/licenses">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/externals/licenses" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/webEdition/we/include/we_language">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/webedition/code/externals/language" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>
