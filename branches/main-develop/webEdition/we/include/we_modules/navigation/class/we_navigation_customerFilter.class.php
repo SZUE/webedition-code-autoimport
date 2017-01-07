@@ -211,11 +211,11 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		$DB_WE = new DB_WE();
 		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
-			we_database_base::arraySetter(['LimitAccess' => $limitAccess,
+			we_database_base::arraySetter([
+				'LimitAccess' => $limitAccess,
 				'ApplyFilter' => $applyFilter,
 				'AllCustomers' => $allCustomers,
 				'Customers' => implode(',', $filterObj->getSpecificCustomers()),
-				//FIXME: this is due to customerfilter
 				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_JSON),
 				'BlackList' => implode(',', $filterObj->getBlackList()),
 				'WhiteList' => implode(',', $filterObj->getWhiteList())
