@@ -112,6 +112,11 @@ weSelect.removeOption = function (selectName, optionValue) {
 weSelect.selectOption = function (selectName, optionValue) {
 	if ((elem = document.we_form[selectName])) {
 		for (i = 0; i < elem.options.length; i++) {
+			//first, remove attribute 'selected' from predefined or default selected options; e. g. setOptions()
+			if (elem.options[i].hasAttribute("selected")){
+				elem.options[i].removeAttribute("selected");
+			}
+			
 			if (elem.options[i].value == optionValue) {
 				elem.selectedIndex = i;
 				elem.options[i].setAttribute("selected", "selected");
