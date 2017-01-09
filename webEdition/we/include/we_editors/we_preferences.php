@@ -59,16 +59,17 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 	// Return HTML code of dialog
 	return $output . we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text);
 }
+
 /*
-function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
-	return we_html_element::htmlHidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
-		($disabled ? ' class="disabled"' : '') .
-		' id="color_' . $name . '" ' .
-		($value ? (' style="background-color:' . $value . ';"') : '') .
-		'><a style="cursor:' .
-		($disabled ? "default" : "pointer") .
-		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}"><span style="width:' . $width . 'px;height:' . $height . '"></span></a></td></tr></table>';
-}*/
+  function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
+  return we_html_element::htmlHidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
+  ($disabled ? ' class="disabled"' : '') .
+  ' id="color_' . $name . '" ' .
+  ($value ? (' style="background-color:' . $value . ';"') : '') .
+  '><a style="cursor:' .
+  ($disabled ? "default" : "pointer") .
+  ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}"><span style="width:' . $width . 'px;height:' . $height . '"></span></a></td></tr></table>';
+  } */
 
 /**
  * This functions return either the saved option or the changed one.
@@ -430,12 +431,13 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$host = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyhost");
 				$port = we_base_request::_(we_base_request::INT, 'newconf', '', "proxyport");
 				$user = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyuser");
-				$pass = we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass");
+				$pass = str_replace('"', '', we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass"));
+				$pass = ($pass === we_customer_customer::NOPWD_CHANGE ? (defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '') : $pass);
 				we_base_preferences::setConfigContent('proxysettings', '<?php
 	define(\'WE_PROXYHOST\', "' . $host . '");
 	define(\'WE_PROXYPORT\', ' . $port . ');
 	define(\'WE_PROXYUSER\', "' . $user . '");
-	define(\'WE_PROXYPASSWORD\', "' . str_replace('"', '', $pass) . '");'
+	define(\'WE_PROXYPASSWORD\', "' . $pass . '");'
 				);
 			} else {
 				// Delete proxy settings file
@@ -450,6 +452,12 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 		case 'proxyport':
 		case 'proxyuser':
 		case 'proxypass':
+			return;
+		case 'SMTP_PASSWORD':
+			if($settingvalue !== we_customer_customer::NOPWD_CHANGE){
+				$file = &$GLOBALS['config_files']['conf_global']['content'];
+				$file = we_base_preferences::changeSourceCode('define', $file, $settingname, $settingvalue, true, $comment);
+			}
 			return;
 
 		// ADVANCED
@@ -479,10 +487,10 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$pw = defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '';
 				$un1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_USERNAME');
 				$pw1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_PASSWORD');
-				if($un != $un1 || $pw != $pw1){
+				if($un != $un1 || $pw1 != we_customer_customer::NOPWD_CHANGE){
 
 					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_USERNAME', $un1);
-					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_PASSWORD', $pw1);
+					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_PASSWORD', ($pw1 === we_customer_customer::NOPWD_CHANGE ? $pw : $pw1));
 				}
 			} else {
 				// disable
@@ -687,7 +695,7 @@ function build_dialog($selected_setting = 'ui'){
 				$settings[] = ['headline' => g_l('prefs', '[default_charset]'),
 					'space' => we_html_multiIconBox::SPACE_BIG,
 					'html' => $DEFAULT_CHARSET
-					];
+				];
 			}
 
 			//AMOUNT COLUMNS IN COCKPIT
@@ -1053,7 +1061,7 @@ function build_dialog($selected_setting = 'ui'){
 				['headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1],
 				['headline' => g_l('prefs', '[countries_default]'), 'html' => $countries_default, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				['headline' => '', 'html' => $tabC->getHtml(), 'noline' => 1],
-				];
+			];
 			// Build dialog element if user has permission
 			return create_dialog('', $settings);
 
@@ -1099,7 +1107,7 @@ function build_dialog($selected_setting = 'ui'){
 				'~pl' => $Languages['pl'],
 				'~ru' => $Languages['ru'],
 				'~es' => $Languages['es'],
-				];
+			];
 			asort($Languages);
 			asort($TopLanguages);
 			$TopLanguages[''] = '---';
@@ -1122,7 +1130,7 @@ function build_dialog($selected_setting = 'ui'){
 				'~PL' => $Countries['PL'],
 				'~RU' => $Countries['RU'],
 				'~ES' => $Countries['ES'],
-				];
+			];
 			asort($Countries);
 			asort($TopCountries);
 			$TopCountries['~'] = '---';
@@ -1148,7 +1156,7 @@ function build_dialog($selected_setting = 'ui'){
 				['headline' => g_l('prefs', '[locale_add]'), 'html' => $add_html, 'space' => we_html_multiIconBox::SPACE_BIG],
 				['headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1],
 				['headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
-				];
+			];
 
 			return create_dialog('', $settings) . $postJs;
 
@@ -1250,14 +1258,14 @@ function build_dialog($selected_setting = 'ui'){
 
 			//Build activation of code completion
 			$template_editor_codecompletion_code = we_html_element::htmlHiddens([
-				'newconf[editorCodecompletion][WE]' => get_value('editorCodecompletion-WE'),
+					'newconf[editorCodecompletion][WE]' => get_value('editorCodecompletion-WE'),
 					'newconf[editorCodecompletion][htmlTag]' => get_value('editorCodecompletion-htmlTag'),
 					'newconf[editorCodecompletion][htmlDefAttr]' => get_value('editorCodecompletion-htmlDefAttr'),
 					'newconf[editorCodecompletion][htmlAttr]' => get_value('editorCodecompletion-htmlAttr'),
 					'newconf[editorCodecompletion][htmlJSAttr]' => get_value('editorCodecompletion-htmlJSAttr'),
 					'newconf[editorCodecompletion][html5Tag]' => get_value('editorCodecompletion-html5Tag'),
 					'newconf[editorCodecompletion][html5Attr]' => get_value('editorCodecompletion-html5Attr')
-					]) .
+				]) .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
@@ -1273,24 +1281,23 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');');
 
 
-			$template_editor_tabstop_code =
-				'<table class="default">
-				<tr><td colspan="2">'.
-					we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[editor_tabstop]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
-				we_html_element::htmlHidden('newconf[editorShowTab]', get_value('editorShowTab')).
+			$template_editor_tabstop_code = '<table class="default">
+				<tr><td colspan="2">' .
+				we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[editor_tabstop]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
+				we_html_element::htmlHidden('newconf[editorShowTab]', get_value('editorShowTab')) .
 				'</td></tr>
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
-				<tr><td colspan="2">'.
-					we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_autoindent]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
-				we_html_element::htmlHidden('newconf[editorAutoIndent]', get_value('editorAutoIndent')).
-					'</td></tr>
-				<tr><td colspan="2">'.
-					we_html_forms::checkbox(1, get_value('editorIndentSpaces'), 'editorIndentSpaces', g_l('prefs', '[editor][indentSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorIndentSpaces]\');') .
-				we_html_element::htmlHidden('newconf[editorIndentSpaces]', get_value('editorIndentSpaces')).
-					'</td></tr>
-				<tr><td colspan="2">'.
-					we_html_forms::checkbox(1, get_value('editorShowSpaces'), 'editorShowSpaces', g_l('prefs', '[editor][showSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowSpaces]\');') .
-				we_html_element::htmlHidden('newconf[editorShowSpaces]', get_value('editorShowSpaces')).
+				<tr><td colspan="2">' .
+				we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_autoindent]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
+				we_html_element::htmlHidden('newconf[editorAutoIndent]', get_value('editorAutoIndent')) .
+				'</td></tr>
+				<tr><td colspan="2">' .
+				we_html_forms::checkbox(1, get_value('editorIndentSpaces'), 'editorIndentSpaces', g_l('prefs', '[editor][indentSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorIndentSpaces]\');') .
+				we_html_element::htmlHidden('newconf[editorIndentSpaces]', get_value('editorIndentSpaces')) .
+				'</td></tr>
+				<tr><td colspan="2">' .
+				we_html_forms::checkbox(1, get_value('editorShowSpaces'), 'editorShowSpaces', g_l('prefs', '[editor][showSpaces]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowSpaces]\');') .
+				we_html_element::htmlHidden('newconf[editorShowSpaces]', get_value('editorShowSpaces')) .
 				'</td></tr>
 			</table>';
 
@@ -1565,8 +1572,8 @@ function build_dialog($selected_setting = 'ui'){
 			$use_proxy = we_html_forms::checkbox(1, $proxy, "newconf[useproxy]", g_l('prefs', '[useproxy]'), false, "defaultfont", "set_state();");
 			$proxyaddr = we_html_tools::htmlTextInput("newconf[proxyhost]", 22, get_value("WE_PROXYHOST"), "", "", "text", 225, 0, "", !$proxy);
 			$proxyport = we_html_tools::htmlTextInput("newconf[proxyport]", 22, get_value("WE_PROXYPORT"), "", "", "text", 225, 0, "", !$proxy);
-			$proxyuser = we_html_tools::htmlTextInput("newconf[proxyuser]", 22, get_value("WE_PROXYUSER"), "", "", "text", 225, 0, "", !$proxy);
-			$proxypass = we_html_tools::htmlTextInput("newconf[proxypass]", 22, get_value("WE_PROXYPASSWORD"), "", "", "password", 225, 0, "", !$proxy);
+			$proxyuser = we_html_tools::htmlTextInput("newconf[proxyuser]", 22, get_value("WE_PROXYUSER"), "", 'autocomplete="off"', "text", 225, 0, "", !$proxy);
+			$proxypass = we_html_tools::htmlTextInput("newconf[proxypass]", 22, we_customer_customer::NOPWD_CHANGE, "", 'autocomplete="off"', "password", 225, 0, "", !$proxy);
 
 			// Build dialog if user has permission
 
@@ -1577,7 +1584,7 @@ function build_dialog($selected_setting = 'ui'){
 				["headline" => g_l('prefs', '[proxyport]'), "html" => $proxyport, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				["headline" => g_l('prefs', '[proxyuser]'), "html" => $proxyuser, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
 				["headline" => g_l('prefs', '[proxypass]'), "html" => $proxypass, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
-				];
+			];
 			// Build dialog element if user has permission
 			return create_dialog("", $settings, -1);
 
@@ -1754,8 +1761,8 @@ function build_dialog($selected_setting = 'ui'){
 			/**
 			 * User name
 			 */
-			$authuser = we_html_tools::htmlTextInput("newconf[HTTP_USERNAME]", 22, $auth_user, "", "", "text", 225, 0, "", !$auth);
-			$authpass = we_html_tools::htmlTextInput("newconf[HTTP_PASSWORD]", 22, $auth_pass, "", "", "password", 225, 0, "", !$auth);
+			$authuser = we_html_tools::htmlTextInput("newconf[HTTP_USERNAME]", 22, $auth_user, "", 'autocomplete="off"', "text", 225, 0, "", !$auth);
+			$authpass = we_html_tools::htmlTextInput("newconf[HTTP_PASSWORD]", 22, we_customer_customer::NOPWD_CHANGE, "", 'autocomplete="off"', "password", 225, 0, "", !$auth);
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
@@ -1914,20 +1921,20 @@ function build_dialog($selected_setting = 'ui'){
 			$customer_table->setCol($row, 0, ['class' => 'defaultfont', 'width' => '20px'], '');
 			$customer_table->setCol($row, 1, ['class' => 'defaultfont', 'colspan' => 5], g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, ['width' => 300]);
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, ['width' => '20px']);
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'width:2em;text-align:center'], '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'text-align:center;'], '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
 			$weSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -1941,11 +1948,11 @@ function build_dialog($selected_setting = 'ui'){
 
 			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $weSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, [], 's');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', [g_l('prefs', '[no]'), g_l('prefs', '[yes]')], 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -1989,7 +1996,7 @@ function build_dialog($selected_setting = 'ui'){
 			];
 
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', ['php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')], 1, get_value('WE_MAILER'), false, ['onchange' => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"], 'value', 300, 'defaultfont');
+				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', ['php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')], 1, get_value('WE_MAILER'), false, ['onchange' => "var el = document.getElementById('smtp_table').style;var el2=document.getElementById('auth_table').style;var elAuth=document.getElementsByName('newconf[SMTP_AUTH]')[0]; if(this.value=='smtp'){ el.display='block'; el2.display=(elAuth.checked?'block':'none');}else{ el.display='none';el2.display='none';}"], 'value', 300, 'defaultfont');
 
 				$smtp_table = new we_html_table(['class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'], 4, 2);
 				$smtp_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-right:10px;'], g_l('prefs', '[smtp_server]'));
@@ -2006,13 +2013,9 @@ function build_dialog($selected_setting = 'ui'){
 
 				$auth_table = new we_html_table(['class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'], 2, 2);
 				$auth_table->setCol(0, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_username]'));
-				$auth_table->setCol(0, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="username"', 'text', 180));
+				$auth_table->setCol(0, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="' . g_l('prefs', '[smtp_username]') . '"', 'text', 180));
 				$auth_table->setCol(1, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_password]'));
-				$auth_table->setCol(1, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
-
-				$settings[] = ['headline' => g_l('prefs', '[mailer_type]'), 'html' => $emailSelect, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
-				$settings[] = ['headline' => '', 'html' => $smtp_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
-				$settings[] = ['headline' => '', 'html' => $auth_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
+				$auth_table->setCol(1, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD') ? we_customer_customer::NOPWD_CHANGE : '', 105, 'placeholder="' . g_l('prefs', '[smtp_password]') . '"', 'password', 180));
 			}
 
 			return create_dialog('settings_email', $settings);
@@ -2291,7 +2294,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$doSave = true;
 }
 
-echo  we_html_element::jsScript(JS_DIR . 'preferences.js');
+echo we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
 
