@@ -45,8 +45,8 @@ function applyOnEnter(evt) {
 	}
 
 	if (!(evt[_elemName].tagName === "SELECT" ||
-		(evt[_elemName].tagName === "INPUT" && evt[_elemName].name !== "fname")
-		)) {
+					(evt[_elemName].tagName === "INPUT" && evt[_elemName].name !== "fname")
+					)) {
 		top.press_ok_button();
 		return true;
 	}
@@ -149,9 +149,9 @@ function selectFile(id) {
 		var e = getEntry(id);
 
 		if (a.value != e.text &&
-			a.value.indexOf(e.text + ",") === -1 &&
-			a.value.indexOf("," + e.text + ",") === -1 &&
-			a.value.indexOf("," + e.text + ",") === -1) {
+						a.value.indexOf(e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1) {
 
 			a.value = a.value ? (a.value + "," + e.text) : e.text;
 		}
@@ -180,9 +180,9 @@ function writeBody(d) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 		body += '<tr' + ((entries[i].ID == top.fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
-			'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
-			'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
-			'</tr>';
+						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
+						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
+						'</tr>';
 	}
 	body += '</table>';
 	d.innerHTML = body;
@@ -248,7 +248,7 @@ function unselectAllFiles() {
 		}
 	}
 	top.document.getElementsByName("fname")[0].value = "";
-	top.DelBut(false);
+	top.delBut(false);
 }
 
 function queryString(what, id, o) {
@@ -394,8 +394,8 @@ function addOption(txt, id) {
 	var a = top.document.getElementById("lookin");
 	a.options[a.options.length] = new window.Option(txt, id);
 	a.selectedIndex = (a.options.length > 0 ?
-		a.options.length - 1 :
-		0);
+					a.options.length - 1 :
+					0);
 
 }
 function selectIt() {
@@ -504,7 +504,7 @@ function we_cmd() {
 			top.hot = true; // this is hot for category edit!!
 
 			if (top.fileSelect.data.currentID) {
-				top.DelBut(false);
+				top.delBut(false);
 				top.showPref(top.fileSelect.data.currentID);
 			}
 			break;
@@ -514,7 +514,7 @@ function we_cmd() {
 		case 'postRenameCat':
 			top.hot = true; // this is hot for category edit!!
 			if (top.fileSelect.data.currentID) {
-				top.DelBut(true);
+				top.delBut(true);
 				top.showPref(top.fileSelect.data.currentID);
 			}
 			break;

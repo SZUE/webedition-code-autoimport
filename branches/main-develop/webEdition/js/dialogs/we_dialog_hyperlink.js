@@ -74,7 +74,7 @@ function we_cmd() {
 			}
 			break;
 		default :
-			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			window.we_cmd_dialogBase.apply(window, Array.prototype.slice.call(arguments));
 			break;
 	}
 }

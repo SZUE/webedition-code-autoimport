@@ -93,7 +93,7 @@ function selectFile(id) {
 		top.fileSelect.data.currentPath = e.path;
 		top.fileSelect.data.currentID = id;
 		if (id) {
-			top.DelBut(true);
+			top.delBut(true);
 		}
 		if (id !== top.fileSelect.data.we_editCatID) {
 			top.fileSelect.data.we_editCatID = 0;
@@ -174,7 +174,7 @@ function setDir(id) {
 	top.fileSelect.data.currentPath = e.path;
 	top.document.getElementsByName("fname")[0].value = e.text;
 	if (id) {
-		top.DelBut(true);
+		top.delBut(true);
 	}
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
@@ -199,7 +199,7 @@ function deleteEntry() {
 		if (top.fsvalues) {
 			top.fsvalues.location.replace(top.queryString(WE().consts.selectors.PROPERTIES, 0));
 		}
-		top.DelBut(false);
+		top.delBut(false);
 	}
 }
 
