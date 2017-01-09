@@ -41,6 +41,10 @@ class we_tag_tagParser{
 		return $this->tags;
 	}
 
+	/* fixme: check regex: (["'])(?:(?=(\\?))\2.)*?\1
+	([""']) match a quote; ((?=(\\?))\2.) if backslash exists, gobble it, and whether or not that happens, match a character; *? match many times (non-greedily, as to not eat the closing quote); \1 match the same quote that was use for opening.
+	 */
+
 	private function setAllTags($code){
 		$this->tags = [];
 		$foo = [];

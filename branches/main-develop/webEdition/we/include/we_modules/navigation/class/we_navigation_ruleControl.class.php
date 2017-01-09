@@ -92,7 +92,9 @@ doc.weInput.setValue('ID', 0);";
 					$workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
 					foreach($workspaces as $key => $value){
-						$workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
+					    if($key > 0){ // avoid dublicate keys: workspace '/' (0) already set as 'no_entry'
+                            $workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
+                        }
 					}
 					$selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
 				}

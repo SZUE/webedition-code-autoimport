@@ -46,13 +46,6 @@ function we_tag_userInput(array $attribs, $content){
 		$type = 'hidden';
 	}
 
-	$fieldname = $property ?
-		('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
-		('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
-		$GLOBALS['WE_FORM'] :
-		''
-		) . '[' . $name . ']');
-
 	$object = (isset($GLOBALS['WE_FORM']) ?
 		(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
 		$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
@@ -64,6 +57,11 @@ function we_tag_userInput(array $attribs, $content){
 		'');
 
 	if($object){
+        $tableID = '';
+	    if($object instanceof we_objectFile){
+            $name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+            $tableID = $object->TableID;
+        }
 		if($property){
 			$isset = isset($object->{$name});
 			$orgVal = $isset ? $object->{$name} : $value;
@@ -74,17 +72,19 @@ function we_tag_userInput(array $attribs, $content){
 
 			$orgVal = $isset ? $object->getElement($name) : $value;
 		}
-		$object_pid = $object->ParentID;
-		$object_path = $object->Path;
-		$object_tableID = $object instanceof we_objectFile ? $object->TableID : '';
-		$content = $object->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
+
+		$content = $object->getFieldByVal($orgVal, $type, $attribs, true, $object->ParentID, $object->Path, $GLOBALS['DB_WE'], $tableID);
 	} else {
 		$orgVal = $value;
-		$object_pid = 0;
-		$object_path = '';
-		$object_tableID = '';
 		$isset = false;
 	}
+
+    $fieldname = $property ?
+        ('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
+        ('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
+                $GLOBALS['WE_FORM'] :
+                ''
+            ) . '[' . $name . ']');
 
 
 	if(!$editable && !$hidden){
