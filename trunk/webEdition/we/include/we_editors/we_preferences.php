@@ -430,12 +430,13 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 				$host = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyhost");
 				$port = we_base_request::_(we_base_request::INT, 'newconf', '', "proxyport");
 				$user = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyuser");
-				$pass = we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass");
+				$pass = str_replace('"', '', we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass"));
+				$pass = ($pass === we_customer_customer::NOPWD_CHANGE ? (defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '') : $pass);
 				we_base_preferences::setConfigContent('proxysettings', '<?php
 	define(\'WE_PROXYHOST\', "' . $host . '");
 	define(\'WE_PROXYPORT\', ' . $port . ');
 	define(\'WE_PROXYUSER\', "' . $user . '");
-	define(\'WE_PROXYPASSWORD\', "' . str_replace('"', '', $pass) . '");'
+	define(\'WE_PROXYPASSWORD\', "' . $pass . '");'
 				);
 			} else {
 				// Delete proxy settings file
@@ -450,6 +451,12 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 		case 'proxyport':
 		case 'proxyuser':
 		case 'proxypass':
+			return;
+		case 'SMTP_PASSWORD':
+			if($settingvalue !== we_customer_customer::NOPWD_CHANGE){
+				$file = &$GLOBALS['config_files']['conf_global']['content'];
+				$file = we_base_preferences::changeSourceCode('define', $file, $settingname, $settingvalue, true, $comment);
+			}
 			return;
 
 		// ADVANCED
@@ -479,10 +486,10 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 				$pw = defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '';
 				$un1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_USERNAME');
 				$pw1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_PASSWORD');
-				if($un != $un1 || $pw != $pw1){
+				if($un != $un1 || $pw1 != we_customer_customer::NOPWD_CHANGE){
 
 					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_USERNAME', $un1);
-					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_PASSWORD', $pw1);
+					$file = we_base_preferences::changeSourceCode('define', $file, 'HTTP_PASSWORD', ($pw1 === we_customer_customer::NOPWD_CHANGE ? $pw : $pw1));
 				}
 			} else {
 				// disable
@@ -1581,8 +1588,8 @@ for(i=0;i<elements.length; ++i){
 			$use_proxy = we_html_forms::checkbox(1, $proxy, "newconf[useproxy]", g_l('prefs', '[useproxy]'), false, "defaultfont", "set_state();");
 			$proxyaddr = we_html_tools::htmlTextInput("newconf[proxyhost]", 22, get_value("WE_PROXYHOST"), "", "", "text", 225, 0, "", !$proxy);
 			$proxyport = we_html_tools::htmlTextInput("newconf[proxyport]", 22, get_value("WE_PROXYPORT"), "", "", "text", 225, 0, "", !$proxy);
-			$proxyuser = we_html_tools::htmlTextInput("newconf[proxyuser]", 22, get_value("WE_PROXYUSER"), "", "", "text", 225, 0, "", !$proxy);
-			$proxypass = we_html_tools::htmlTextInput("newconf[proxypass]", 22, get_value("WE_PROXYPASSWORD"), "", "", "password", 225, 0, "", !$proxy);
+			$proxyuser = we_html_tools::htmlTextInput("newconf[proxyuser]", 22, get_value("WE_PROXYUSER"), "", 'autocomplete="off"', "text", 225, 0, "", !$proxy);
+			$proxypass = we_html_tools::htmlTextInput("newconf[proxypass]", 22, we_customer_customer::NOPWD_CHANGE, "", 'autocomplete="off"', "password", 225, 0, "", !$proxy);
 
 			// Build dialog if user has permission
 
@@ -1771,8 +1778,8 @@ for(i=0;i<elements.length; ++i){
 			/**
 			 * User name
 			 */
-			$authuser = we_html_tools::htmlTextInput("newconf[HTTP_USERNAME]", 22, $auth_user, "", "", "text", 225, 0, "", !$auth);
-			$authpass = we_html_tools::htmlTextInput("newconf[HTTP_PASSWORD]", 22, $auth_pass, "", "", "password", 225, 0, "", !$auth);
+			$authuser = we_html_tools::htmlTextInput("newconf[HTTP_USERNAME]", 22, $auth_user, "", 'autocomplete="off"', "text", 225, 0, "", !$auth);
+			$authpass = we_html_tools::htmlTextInput("newconf[HTTP_PASSWORD]", 22, we_customer_customer::NOPWD_CHANGE, "", 'autocomplete="off"', "password", 225, 0, "", !$auth);
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
@@ -2016,7 +2023,7 @@ for(i=0;i<elements.length; ++i){
 			);
 
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
+				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style;var el2=document.getElementById('auth_table').style;var elAuth=document.getElementsByName('newconf[SMTP_AUTH]')[0]; if(this.value=='smtp'){ el.display='block'; el2.display=(elAuth.checked?'block':'none');}else{ el.display='none';el2.display='none';}"), 'value', 300, 'defaultfont');
 
 				$smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 4, 2);
 				$smtp_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[smtp_server]'));
@@ -2034,9 +2041,9 @@ for(i=0;i<elements.length; ++i){
 
 				$auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 2, 2);
 				$auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
-				$auth_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="username"', 'text', 180));
+				$auth_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="' . g_l('prefs', '[smtp_username]') . '" autocomplete="off"', 'text', 180));
 				$auth_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
-				$auth_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
+				$auth_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, we_customer_customer::NOPWD_CHANGE, 105, 'placeholder="' . g_l('prefs', '[smtp_password]') . '" autocomplete="off"', 'password', 180));
 
 				$settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $emailSelect, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
 				$settings[] = array('headline' => '', 'html' => $smtp_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
