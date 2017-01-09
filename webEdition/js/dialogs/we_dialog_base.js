@@ -64,7 +64,8 @@ function openExtSource(argName) {
 	}
 }
 
-function we_cmd() {
+
+function we_cmd_dialogBase() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -91,6 +92,11 @@ function we_cmd() {
 		default:
 			window.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
 	}
+}
+
+//is executed in case nothing else is present. call we_cmd_dialogBase if you override this
+function we_cmd() {
+	window.we_cmd_dialogBase.apply(window, Array.prototype.slice.call(arguments));
 }
 
 addKeyListener();
