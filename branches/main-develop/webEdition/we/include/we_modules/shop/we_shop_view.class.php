@@ -198,8 +198,7 @@ customFields' .
 			' FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
 
 		if(empty($orderData)){
-			//FIXME: JS is broken
-			echo we_html_element::jsElement('top.opener.document.getElementById("iconbar").location.reload();') . '
+			echo we_html_element::jsElement('top.content.document.getElementById("iconbar").contentDocument.location.reload();') . '
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 <table style="width:300px">

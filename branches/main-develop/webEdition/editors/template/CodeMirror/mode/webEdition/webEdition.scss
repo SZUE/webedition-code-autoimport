@@ -204,7 +204,7 @@
 
 	$wsp:"";
 	@for $i from 1 through 16 {
-		$wsp:$wsp+"·";
+		$wsp:$wsp+"\b7";
 		.cm-whitespace-#{$i}::before {
 			content:$wsp;
 		}
