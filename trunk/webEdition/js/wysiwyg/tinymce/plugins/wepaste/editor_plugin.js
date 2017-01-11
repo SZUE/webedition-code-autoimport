@@ -293,7 +293,7 @@
 						if (or)
 							sel.setRng(or);
 
-						// WE: content is ready so here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
+						// WE: here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
 						if (!isFromInsideTinymce(h) && ed.pasteAsPlainText && textContent) {
 							dom.unbind(ed.getDoc(), 'mousedown', block);
 							dom.unbind(ed.getDoc(), 'keydown', block);
@@ -306,8 +306,7 @@
 							if(isFromInsideTinymce(h)){
 								var tmp = ed.pasteAsPlainText;
 								ed.pasteAsPlainText = false;
-								h = unmarkContentFromInside(h);
-								process({content : h});
+								process({content : unmarkContentFromInside(h)});
 								ed.pasteAsPlainText = tmp;
 							} else {
 								process({content : h});
@@ -321,24 +320,14 @@
 				}
 			}
 
-			// WE: check for marker: ##FROM_INSIDE_TINYMCE##
+			// WE: check for attribute we-tiny in paste-content
 			function isFromInsideTinymce(content) {
-				var ret = content.search('##FROM_INSIDE_TINYMCE##') !== -1;
-				return ret;
+				return content.search(' we-tiny="1"') !== -1;
 			}
 
 			// WE: unmark content from inside tinymce
 			function unmarkContentFromInside(content) {
-				content = content.replace(/##FROM_INSIDE_TINYMCE##/, '');
-
-				var tmpDiv = document.createElement('DIV');
-				tmpDiv.innerHTML = content;
-				if(tmpDiv.firstChild.tagName === 'DIV' && tmpDiv.firstChild.className === 'FROM_INSIDE_TINYMCE'){
-					content = tmpDiv.firstChild.innerHTML;
-				}
-				tmpDiv = null;
-
-				return content;
+				return content.replace(/ we-tiny="1"/, '');
 			}
 
 			// Check if we should use the new auto process method
