@@ -2105,21 +2105,19 @@ WE().layout.weFileUpload = (function () {
 	}
 
 	function weFileUpload_base() {
-		(function () {
-			weFileUpload_abstract.call(this);
+		weFileUpload_abstract.call(this);
 
-			Controller.prototype = this.getAbstractController();
-			Sender.prototype = this.getAbstractSender();
-			View.prototype = this.getAbstractView();
-			Utils.prototype = this.getAbstractUtils();
+		Controller.prototype = this.getAbstractController();
+		Sender.prototype = this.getAbstractSender();
+		View.prototype = this.getAbstractView();
+		Utils.prototype = this.getAbstractUtils();
 
-			_.fileuploadType = 'base';
-			_.self = this;
-			_.controller = new Controller();
-			_.sender = new Sender();
-			_.view = new View();
-			_.utils = new Utils();
-		})();
+		_.fileuploadType = 'base';
+		_.self = this;
+		_.controller = new Controller();
+		_.sender = new Sender();
+		_.view = new View();
+		_.utils = new Utils();
 
 		this.init = function (conf) {
 			_.init_abstract(conf);
@@ -2353,21 +2351,19 @@ WE().layout.weFileUpload = (function () {
 	}
 
 	function weFileUpload_importer() {
-		(function () {
-			weFileUpload_abstract.call(this);
+		weFileUpload_abstract.call(this);
 
-			Controller.prototype = this.getAbstractController();
-			Sender.prototype = this.getAbstractSender();
-			View.prototype = this.getAbstractView();
-			Utils.prototype = this.getAbstractUtils();
+		Controller.prototype = this.getAbstractController();
+		Sender.prototype = this.getAbstractSender();
+		View.prototype = this.getAbstractView();
+		Utils.prototype = this.getAbstractUtils();
 
-			_.fileuploadType = 'importer';
-			_.self = this;
-			_.controller = new Controller();
-			_.sender = new Sender();
-			_.view = new View();
-			_.utils = new Utils();
-		})();
+		_.fileuploadType = 'importer';
+		_.self = this;
+		_.controller = new Controller();
+		_.sender = new Sender();
+		_.view = new View();
+		_.utils = new Utils();
 
 		this.init = function (conf) {
 			_.init_abstract(conf);
@@ -3176,21 +3172,19 @@ WE().layout.weFileUpload = (function () {
 	}
 
 	function weFileUpload_binDoc() { // TODO: look for image edit params just onbefore processing files!
-		(function () {
-			weFileUpload_abstract.call(this);
+		weFileUpload_abstract.call(this);
 
-			Controller.prototype = this.getAbstractController();
-			Sender.prototype = this.getAbstractSender();
-			View.prototype = this.getAbstractView();
-			Utils.prototype = this.getAbstractUtils();
+		Controller.prototype = this.getAbstractController();
+		Sender.prototype = this.getAbstractSender();
+		View.prototype = this.getAbstractView();
+		Utils.prototype = this.getAbstractUtils();
 
-			_.fileuploadType = 'binDoc';
-			_.self = this;
-			_.controller = new Controller();
-			_.sender = new Sender();
-			_.view = new View();
-			_.utils = new Utils();
-		})();
+		_.fileuploadType = 'binDoc';
+		_.self = this;
+		_.controller = new Controller();
+		_.sender = new Sender();
+		_.view = new View();
+		_.utils = new Utils();
 
 		this.init = function (conf) {
 			_.init_abstract(conf);
