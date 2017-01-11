@@ -46,6 +46,7 @@
 
 			t.editor = ed;
 			t.url = url;
+			t.fromInsideTiny = false;
 
 			// Setup plugin events
 			t.onPreProcess = new tinymce.util.Dispatcher(t);
@@ -218,6 +219,7 @@
 					setTimeout(function() {
 						if(isFromInsideTinymce(n.innerHTML)){
 							var tmp = ed.pasteAsPlainText;
+							t.fromInsideTiny = true;
 							ed.pasteAsPlainText = false;
 							var cnt = unmarkContentFromInside(n.innerHTML);
 							process({content : cnt});
@@ -305,6 +307,7 @@
 						} else {
 							if(isFromInsideTinymce(h)){
 								var tmp = ed.pasteAsPlainText;
+								t.testt.fromInsideTiny = true;
 								ed.pasteAsPlainText = false;
 								process({content : unmarkContentFromInside(h)});
 								ed.pasteAsPlainText = tmp;
@@ -678,19 +681,21 @@
 				}
 			}
 
-			// Remove all style information or only specifically on WebKit to avoid the style bug on that browser
-			if (getParam(ed, "paste_remove_styles") || (getParam(ed, "paste_remove_styles_if_webkit") && tinymce.isWebKit)) {
-				each(dom.select('*[style]', o.node), function(el) {
-					el.removeAttribute('style');
-					el.removeAttribute('data-mce-style');
-				});
-			} else {
-				if (tinymce.isWebKit) {
-					// We need to compress the styles on WebKit since if you paste <img border="0" /> it will become <img border="0" style="... lots of junk ..." />
-					// Removing the mce_style that contains the real value will force the Serializer engine to compress the styles
-					each(dom.select('*', o.node), function(el) {
+			if(!t.fromInsideTiny){
+				// Remove all style information or only specifically on WebKit to avoid the style bug on that browser
+				if (getParam(ed, "paste_remove_styles") || (getParam(ed, "paste_remove_styles_if_webkit") && tinymce.isWebKit)) {
+					each(dom.select('*[style]', o.node), function(el) {
+						el.removeAttribute('style');
 						el.removeAttribute('data-mce-style');
 					});
+				} else {
+					if (tinymce.isWebKit) {
+						// We need to compress the styles on WebKit since if you paste <img border="0" /> it will become <img border="0" style="... lots of junk ..." />
+						// Removing the mce_style that contains the real value will force the Serializer engine to compress the styles
+						each(dom.select('*', o.node), function(el) {
+							el.removeAttribute('data-mce-style');
+						});
+					}
 				}
 			}
 		},
