@@ -173,7 +173,7 @@ body {
 .image {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding: 2px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/image.gif)
 		0 0px no-repeat;
 }
@@ -181,7 +181,7 @@ body {
 .we_document {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/we_dokument.gif) 0 0px no-repeat;
 }
@@ -189,7 +189,7 @@ body {
 .folder {
 	display: block;
 	height: 16px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/folder.gif) 0 0px no-repeat;
 	font-weight:bold;
@@ -198,7 +198,7 @@ body {
 .folderOpen  {
 	display: block;
 	height: 16px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/folderopen.gif) 0 0px no-repeat;
 	font-weight:bold;
@@ -207,7 +207,7 @@ body {
 .text_html {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/html.gif) 0
 		0px no-repeat;
 }
@@ -215,7 +215,7 @@ body {
 .text_css {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/css.gif) 0
 		0px no-repeat;
 }
@@ -223,7 +223,7 @@ body {
 .text_weTmpl {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/we_template.gif) 0 0px no-repeat;
 }
@@ -231,7 +231,7 @@ body {
 .text_js {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/javascript.gif) 0 0px no-repeat;
 }
@@ -239,7 +239,7 @@ body {
 .text_plain {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/link.gif) 0
 		0px no-repeat;
 }
@@ -247,7 +247,7 @@ body {
 .flash {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/flashmovie.gif) 0 0px no-repeat;
 }
@@ -256,6 +256,7 @@ body {
 	display: block;
 	height: 18px;
 	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/quicktime.gif) 0 0px no-repeat;
 }
@@ -263,7 +264,7 @@ body {
 .xml {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/link.gif) 0
 		0px no-repeat;
 }
@@ -271,7 +272,7 @@ body {
 .pdf {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/pdf.gif) 0
 		0px no-repeat;
 }
@@ -279,7 +280,7 @@ body {
 .zip {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/zip.gif) 0
 		0px no-repeat;
 }
@@ -287,7 +288,7 @@ body {
 .word {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/word.gif) 0
 		0px no-repeat;
 }
@@ -295,7 +296,7 @@ body {
 .excel {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/excel.gif) 0
 		0px no-repeat;
 }
@@ -304,6 +305,7 @@ body {
 	display: block;
 	height: 18px;
 	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/powerpoint.gif) 0
 		0px no-repeat;
 }
@@ -311,7 +313,7 @@ body {
 .powerpoint {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/powerpoint.gif) 0
 		0px no-repeat;
 }
@@ -319,7 +321,7 @@ body {
 .object {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent url(../../../../../../images/tree/icons/object.gif)
 		0 0px no-repeat;
 }
@@ -327,7 +329,7 @@ body {
 .objectFile {
 	display: block;
 	height: 18px;
-	padding-left: 20px;
+	padding:3px 0 0 3px;
 	background: transparent
 		url(../../../../../../images/tree/icons/objectFile.gif) 0 0px no-repeat;
 }
