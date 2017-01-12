@@ -2076,8 +2076,8 @@ HTS;
 				"v[startCSVImport]" => we_base_request::_(we_base_request::BOOL, 'v', false, "startCSVImport"),
 				"v[cid]" => -2,
 				"v[encoding]" => $encoding,
-				"v[pfx_fn]" => we_base_request::_(we_base_request::STRING, 'v', 0, "pfx_fn"))) .
-			(($tm = we_base_request::_(we_base_request::INT, 'rdo_timestamp')) !== false ? we_html_element::htmlHidden("v[sTimeStamp]", $tm) : '');
+				"v[pfx_fn]" => we_base_request::_(we_base_request::STRING, 'v', 0, "pfx_fn"))) . /*rdo_timestamp is a string: 'GMT', 'UNIX' or 'Format'*/
+			(($tm = we_base_request::_(we_base_request::STRING, 'v', '','rdo_timestamp')) !== false ? we_html_element::htmlHidden("v[sTimeStamp]", $tm) : '');
 
 
 		$functions = "
