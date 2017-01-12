@@ -142,12 +142,12 @@ class we_import_wizard extends we_import_wizardBase{
 		$tblData->setCol(2, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
 		$parts = [
-				[
+			[
 				'headline' => g_l('import', '[import_file]'),
 				'html' => $tblFiles->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1],
-				['headline' => g_l('import', '[import_data]'),
+			['headline' => g_l('import', '[import_data]'),
 				'html' => $tblData->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1],
@@ -211,10 +211,10 @@ class we_import_wizard extends we_import_wizardBase{
 		$fn_colsn->setCol(3, 0, [], we_html_forms::radiobutton('skip', (!empty($v['collision']) && $v['collision'] === 'skip'), 'v[collision]', g_l('import', '[skip]'), true, 'defaultfont', '', false, g_l('import', '[skip_txt]'), 0, 384));
 
 		$parts = [
-				['headline' => g_l('import', '[import]'),
+			['headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED],
-				['headline' => g_l('import', '[file_collision]'),
+			['headline' => g_l('import', '[file_collision]'),
 				'html' => $fn_colsn->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
@@ -450,7 +450,7 @@ class we_import_wizard extends we_import_wizardBase{
 						'v[btnState_back]' => 'enabled'
 				]);
 				$parts = [
-						['headline' => '',
+					['headline' => '',
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 					]
 				];
@@ -493,7 +493,7 @@ class we_import_wizard extends we_import_wizardBase{
 	protected function getWXMLImportStep3(){
 		$hdns = we_html_element::htmlHiddens(['v[btnState_next]' => 'disabled', 'v[btnState_back]' => 'disabled']);
 		$parts = [
-				['headline' => '',
+			['headline' => '',
 				'html' => we_html_element::htmlDiv(['class' => 'blockWrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'], ''),
 			]
 		];
@@ -696,10 +696,10 @@ class we_import_wizard extends we_import_wizardBase{
 		$specifyDoc->setCol(0, 0, ['style' => 'padding-right:20px;'], we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('v[we_Extension]', (isset($v['we_Extension']) ? $v['we_Extension'] : '.html'), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', '[extension]')));
 
 		$parts = [
-				['headline' => g_l('import', '[import]'),
+			['headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED],
-				['headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
+			['headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
 				'html' => $doctypeElement . ' ' . $templateElement . ' ' . $storeTo . ' ' . $specifyDoc->getHTML() . ' ' .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), 'left', 'defaultfont'),
 				'space' => we_html_multiIconBox::SPACE_MED,
@@ -709,7 +709,7 @@ class we_import_wizard extends we_import_wizardBase{
 		if(defined('OBJECT_TABLE')){
 			$parts[] = ['headline' => $radioObjs,
 				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') . ' ' .
-				we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
+					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			];
@@ -970,8 +970,8 @@ class we_import_wizard extends we_import_wizardBase{
 					$new_record = '';
 			}
 			$rows[] = [['dat' => ($new_record != '') ? $new_record : $record],
-					['dat' => $sct_we_fields->getHTML()],
-					['dat' => we_html_tools::htmlTextInput('attrs[' . $record . ']', 30, (isset($attrs[$record]) ? base64_decode($attrs[$record]) : ''), 255, '', 'text', 100)]
+				['dat' => $sct_we_fields->getHTML()],
+				['dat' => we_html_tools::htmlTextInput('attrs[' . $record . ']', 30, (isset($attrs[$record]) ? base64_decode($attrs[$record]) : ''), 255, '', 'text', 100)]
 			];
 			$i++;
 		}
@@ -1117,7 +1117,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$csvSettings->setCol(3, 0, [], $rowDef);
 
 		$parts = [
-				['headline' => g_l('import', '[import]'),
+			['headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED], ['headline' => g_l('import', '[field_options]'),
 				'html' => $csvSettings->getHTML(),
@@ -1434,11 +1434,8 @@ class we_import_wizard extends we_import_wizardBase{
 			we_html_element::htmlHiddens(["v[startCSVImport]" => we_base_request::_(we_base_request::BOOL, 'v', false, "startCSVImport"),
 				"v[cid]" => -2,
 				"v[encoding]" => $encoding,
-				"v[pfx_fn]" => we_base_request::_(we_base_request::STRING, 'v', 0, "pfx_fn"),
-				'v[btnState_next]' => (we_base_request::_(we_base_request::INT, "mode") != 1 ? 'enabled' : 'disabled'),
-				'v[btnState_back]' => 'enabled'
-			]) .
-			(($tm = we_base_request::_(we_base_request::INT, 'rdo_timestamp')) !== false ? we_html_element::htmlHidden("v[sTimeStamp]", $tm) : '');
+				"v[pfx_fn]" => we_base_request::_(we_base_request::STRING, 'v', 0, "pfx_fn")]) . /* rdo_timestamp is a string: 'GMT', 'UNIX' or 'Format' */
+			(($tm = we_base_request::_(we_base_request::STRING, 'v', '', 'rdo_timestamp')) !== false ? we_html_element::htmlHidden("v[sTimeStamp]", $tm) : '');
 
 		$db = new DB_WE();
 		$records = $dateFields = [];

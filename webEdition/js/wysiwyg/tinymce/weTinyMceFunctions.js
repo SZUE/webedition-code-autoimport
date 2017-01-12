@@ -222,25 +222,36 @@ function tinyInit_instance_callback(ed) {
 
 function tinyOnCopyCut(ed, isCut) {
 	var selection = ed.getWin().getSelection();
-	top.bm = tinyMCE.activeEditor.selection.getBookmark();
 	var tmpDiv = ed.getDoc().createElement("div");
 
-	tmpDiv.style.position = "absolute";
-	tmpDiv.style.left = "-99999px"; // we must display it to select!
-	tmpDiv.setAttribute("class", "FROM_INSIDE_TINYMCE");
-	ed.getBody().appendChild(tmpDiv);
-
 	tmpDiv.appendChild(selection.getRangeAt(0).cloneContents());
-	tmpDiv.innerHTML += "##FROM_INSIDE_TINYMCE##";
-	selection.selectAllChildren(tmpDiv);
 
-	ed.getWin().setTimeout(function () {
-		ed.getBody().removeChild(tmpDiv);
-		tinyMCE.activeEditor.selection.moveToBookmark(top.bm);
-		if (isCut) {
-			tinyMCE.activeEditor.selection.setContent("");
-		}
-	}, 100);
+	if (tmpDiv.firstElementChild !== null){
+		tmpDiv.firstElementChild.setAttribute('we-tiny', '1');
+
+		// to get marked content into the clipboard, we must
+		// - set tiny-"bookmark" to original selection (i.e. set two spans as start- and end-marker around selection)
+		// - append tmpDiv to tiny content
+		// - select its innerHTML,
+		// - remove tmpDiv, and
+		// - reselect original selection using bookmark
+
+		top.bm = tinyMCE.activeEditor.selection.getBookmark();
+		tmpDiv.style.position = "absolute";
+		tmpDiv.style.left = "-99999px";
+		ed.getBody().appendChild(tmpDiv);
+		selection.selectAllChildren(tmpDiv);
+
+		ed.getWin().setTimeout(function () {
+			ed.getBody().removeChild(tmpDiv);
+			tmpDiv = null;
+			tinyMCE.activeEditor.selection.moveToBookmark(top.bm);
+			if(isCut){
+				tinyMCE.activeEditor.selection.setContent("");
+			}
+			// we mus repaint tiny-path too
+		}, 100);
+	}
 }
 
 function tinyEdOnPaste(ed) {

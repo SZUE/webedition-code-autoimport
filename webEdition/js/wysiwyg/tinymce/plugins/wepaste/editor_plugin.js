@@ -64,6 +64,7 @@ function block(e) {
 
 			t.editor = ed;
 			t.url = url;
+			t.fromInsideTiny = false;
 
 			// Setup plugin events
 			t.onPreProcess = new tinymce.util.Dispatcher(t);
@@ -240,6 +241,7 @@ function block(e) {
 					window.setTimeout(function () {
 						if (isFromInsideTinymce(n.innerHTML)) {
 							var tmp = ed.pasteAsPlainText;
+							t.fromInsideTiny = true;
 							ed.pasteAsPlainText = false;
 							var cnt = unmarkContentFromInside(n.innerHTML);
 							process({content: cnt});
@@ -314,7 +316,7 @@ function block(e) {
 							sel.setRng(or);
 						}
 
-						// WE: content is ready so here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
+						// WE: here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
 						if (!isFromInsideTinymce(h) && ed.pasteAsPlainText && textContent) {
 							dom.unbind(ed.getDoc(), 'mousedown');
 							dom.unbind(ed.getDoc(), 'keydown');
@@ -326,9 +328,9 @@ function block(e) {
 						} else {
 							if (isFromInsideTinymce(h)) {
 								var tmp = ed.pasteAsPlainText;
+								t.testt.fromInsideTiny = true;
 								ed.pasteAsPlainText = false;
-								h = unmarkContentFromInside(h);
-								process({content: h});
+								process({content : unmarkContentFromInside(h)});
 								ed.pasteAsPlainText = tmp;
 							} else {
 								process({content: h});
@@ -342,24 +344,14 @@ function block(e) {
 				}
 			}
 
-			// WE: check for marker: ##FROM_INSIDE_TINYMCE##
+			// WE: check for attribute we-tiny in paste-content
 			function isFromInsideTinymce(content) {
-				var ret = content.search('##FROM_INSIDE_TINYMCE##') !== -1;
-				return ret;
+				return content.search(' we-tiny="1"') !== -1;
 			}
 
 			// WE: unmark content from inside tinymce
 			function unmarkContentFromInside(content) {
-				content = content.replace(/##FROM_INSIDE_TINYMCE##/, '');
-
-				var tmpDiv = document.createElement('DIV');
-				tmpDiv.innerHTML = content;
-				if (tmpDiv.firstChild.tagName === 'DIV' && tmpDiv.firstChild.className === 'FROM_INSIDE_TINYMCE') {
-					content = tmpDiv.firstChild.innerHTML;
-				}
-				tmpDiv = null;
-
-				return content;
+				return content.replace(/ we-tiny="1"/, '');
 			}
 
 			// Check if we should use the new auto process method
@@ -695,19 +687,21 @@ function block(e) {
 				}
 			}
 
-			// Remove all style information or only specifically on WebKit to avoid the style bug on that browser
-			if (getParam(ed, "paste_remove_styles") || (getParam(ed, "paste_remove_styles_if_webkit") && tinymce.isWebKit)) {
-				each(dom.select('*[style]', o.node), function (el) {
-					el.removeAttribute('style');
-					el.removeAttribute('data-mce-style');
-				});
-			} else {
-				if (tinymce.isWebKit) {
-					// We need to compress the styles on WebKit since if you paste <img border="0" /> it will become <img border="0" style="... lots of junk ..." />
-					// Removing the mce_style that contains the real value will force the Serializer engine to compress the styles
-					each(dom.select('*', o.node), function (el) {
+			if(!t.fromInsideTiny){
+				// Remove all style information or only specifically on WebKit to avoid the style bug on that browser
+				if (getParam(ed, "paste_remove_styles") || (getParam(ed, "paste_remove_styles_if_webkit") && tinymce.isWebKit)) {
+					each(dom.select('*[style]', o.node), function(el) {
+						el.removeAttribute('style');
 						el.removeAttribute('data-mce-style');
 					});
+				} else {
+					if (tinymce.isWebKit) {
+						// We need to compress the styles on WebKit since if you paste <img border="0" /> it will become <img border="0" style="... lots of junk ..." />
+						// Removing the mce_style that contains the real value will force the Serializer engine to compress the styles
+						each(dom.select('*', o.node), function(el) {
+							el.removeAttribute('data-mce-style');
+						});
+					}
 				}
 			}
 		},
