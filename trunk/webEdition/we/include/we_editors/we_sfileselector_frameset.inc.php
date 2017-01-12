@@ -33,7 +33,7 @@ function printHeaderHTML($ret){
 			</select></td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.fscmd.setDir('/');") . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.fscmd.goUp();") . '</td>
-' . ($ret ? '' : '
+' . ($ret && !permissionhandler::hasPerm('ADMINISTRATOR') ? '' : '
 			<td>' . we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 			<td>' . we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 			<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
