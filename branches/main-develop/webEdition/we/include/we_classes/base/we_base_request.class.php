@@ -203,6 +203,7 @@ class we_base_request{
 						$var = defined('supportDebugging') && (supportDebugging == $_SERVER['REMOTE_ADDR']) ? $var : '-1';
 					}
 				}
+				$var = $var ? : $default;
 				return;
 			case self::URL:
 				if(preg_match('-(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_MAIL_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|' . we_base_link::TYPE_THUMB_PREFIX . ')-', $var)){

@@ -110,10 +110,8 @@ function we_tag_form(array $attribs){
 			break;
 		case 'object' :
 		case 'document' :
-			if(!isset($_REQUEST['edit_' . $type])){
-				if(!empty($GLOBALS['WE_SESSION_START'])){
-					unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
-				}
+			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START']))){
+                unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
 			}
 
 			$formAttribs['onsubmit'] = $onsubmit;
@@ -141,7 +139,7 @@ function we_tag_form(array $attribs){
 							we_webEditionDocument::initDocument($formname, $tid, $doctype, $categories, $id);
 					}
 				}
-				$typetmp = (($type === 'object') ? 'Object' : 'Document');
+				$typetmp = ($type === 'object') ? 'Object' : 'Document';
 
 				if(empty($GLOBALS['we_editmode'])){
 					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
@@ -150,8 +148,8 @@ function we_tag_form(array $attribs){
 							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					]);
 				}
-			} elseif(empty($GLOBALS['we_editmode'])){
-				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
+			} elseif(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+					$ret.=getHtmlTag('form', $formAttribs, '', false, true);
 			}
 			break;
 		case 'formmail' :
