@@ -220,7 +220,7 @@ class we_newsletter_base{
 		$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"');
 		foreach($arr as $file){
 			if(strpos($file, '..') === false){
-				$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
+				$data = str_replace("\r\n", "\n", ($rawData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file)));
 				$dataArr = explode("\n", $data);
 				if(!empty($dataArr)){
 					foreach($dataArr as $value){
@@ -236,17 +236,32 @@ class we_newsletter_base{
 							continue;
 						}
 						$emailkey[] = $countEMails - 1;
+						$saveTrimmed = true;
 						switch($emails_only){
 							case 1:
 								$ret[] = $dat[0];
+								$saveTrimmed = false;
 								break;
 							case 2:
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? trim($dat[3]) : "", isset($dat[4]) ? trim($dat[4]) : "", isset($dat[5]) ? trim($dat[5]) : "");
 								break;
 							default:
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? trim($dat[3]) : "", isset($dat[4]) ? trim($dat[4]) : "", isset($dat[5]) ? trim($dat[5]) : "", $group, $blocks);
 						}
 					}
+				}
+			}
+
+			if($saveTrimmed){
+				foreach($ret as $entry){
+					$content .= implode(',', array_slice($entry, 0, 6)) . "\n";
+				}
+				if($content !== $rawData){
+					while(($lock = we_base_file::lock(basename($file))) == false){
+						usleep(100000);
+					}
+					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $file, $content);
+					we_base_file::unlock($lock);
 				}
 			}
 		}
