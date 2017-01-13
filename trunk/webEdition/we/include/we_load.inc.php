@@ -36,7 +36,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 
 	$DB_WE = new DB_WE();
 	if($table == VFILE_TABLE){// TODO: permision
-		$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY ID,position ASC');
+		$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE type="collection" ORDER BY ID,position ASC');
 
 		$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = array();
 		while($DB_WE->next_record()){
