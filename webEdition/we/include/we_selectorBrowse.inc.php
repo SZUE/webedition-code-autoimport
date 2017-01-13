@@ -33,7 +33,7 @@ if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'
 
 $nf = we_base_request::_(we_base_request::RAW, 'nf');
 $sid = we_base_request::_(we_base_request::RAW, "sid");
-$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
+$selectInternal = we_base_request::_(we_base_request::BOOL, 'selectInternal', false);
 $org = we_base_request::_(we_base_request::FILE, 'dir', '/');
 $contentFilter = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
 $curID = we_base_request::_(we_base_request::FILE, 'curID');
@@ -200,7 +200,7 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 							$onclick = ' onclick="metaKeys.doubleTout=setTimeout(function(){if(!top.metaKeys.doubleClick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{top.metaKeys.doubleClick=false;}},300);return true;"';
 							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(metaKeys.doubleTout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$cursor = 'cursor:pointer;';
-						} elseif($selectOwn){
+						} elseif($selectInternal){
 							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$cursor = 'cursor:pointer;';
 						}

@@ -24,7 +24,7 @@
  */
 'use strict';
 var filter = '';
-var selectOwn = 0;
+var selectInternal = 0;
 
 function drawNewFolder() {
 	var elem;
