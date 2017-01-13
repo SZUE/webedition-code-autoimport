@@ -33,7 +33,7 @@ function printHeaderHTML($ret){
 			</select></td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.fscmd.setDir('/');") . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.fscmd.goUp();") . '</td>
-' . ($ret ? '' : '
+' . ($ret && !permissionhandler::hasPerm('ADMINISTRATOR') ? '' : '
 			<td>' . we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.fscmd.drawNewFolder();", '', 0, 0, "", "", false, false, "_ss") . '</td>
 			<td>' . we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:javascript:openFile();", '', 0, 0, "", "", false, false, "_ss") . '</td>
 			<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, "javascript:top.fscmd.delFile();", '', 0, 0, "", "", false, false, "_ss") . '</td>') .
@@ -110,7 +110,7 @@ function printFrameSet(){
 	$currentID = str_replace('\\', '/', $currentID);
 
 	$rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
-	$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
+	$selectInternal = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 
 	echo we_html_tools::getHtmlTop('', '', 'frameset', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		we_html_element::cssElement('
