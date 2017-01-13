@@ -31,14 +31,14 @@ if($cmd === "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
 }
 if(!$cmd || $cmd != "save_last"){
-	$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
+	$selectInternal = we_base_request::_(we_base_request::BOOL, 'selectInternal', false);
 
 	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js');
 	?>
 	<script><!--<?php
 	echo '
 filter="' . we_base_request::_(we_base_request::STRING, 'filter') . '";
-selectOwn=' . intval($selectOwn) . ';
+selectInternal=' . intval($selectInternal) . ';
 ';
 
 	function delDir($dir){

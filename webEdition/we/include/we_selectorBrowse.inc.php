@@ -33,7 +33,7 @@ if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'
 
 $nf = we_base_request::_(we_base_request::RAW, 'nf');
 $sid = we_base_request::_(we_base_request::RAW, "sid");
-$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
+$selectInternal = we_base_request::_(we_base_request::BOOL, 'selectInternal', false);
 $org = we_base_request::_(we_base_request::FILE, 'dir', '/');
 $contentFilter = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
 $curID = we_base_request::_(we_base_request::FILE, 'curID');
@@ -202,7 +202,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 							$onclick = ' onclick="tout=setTimeout(function(){if(!wasdblclick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=false;}},300);return true;"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$cursor = 'cursor:pointer;';
-						} elseif($selectOwn){
+						} elseif($selectInternal){
 							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$cursor = 'cursor:pointer;';
 						}
