@@ -250,7 +250,7 @@ function we_submitForm(url){
 				<td></td>
 				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
-				<td>' . we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
+				<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
 				}
 			}
