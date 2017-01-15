@@ -50,7 +50,14 @@ function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	// check if entry is a folder
 	$row = getHash('SELECT Path,Text,IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
 	if(!$row /* || $row['IsFolder'] */){
-		return -1;
+		return we_base_file::ERROR_NO_SUCH_FILE;
+	}
+
+	if($row['IsFolder']){
+		$targetDir = $targetDirectoryID ? f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID)) : '/';
+		if(strpos($targetDir, $row['Path'] . '/') === 0){
+			return we_base_file::ERROR_SAME_PARENT;
+		}
 	}
 
 	$text = $row['Text'];
@@ -64,13 +71,13 @@ function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	while($DB_WE->next_record()){
 		// check if there is a item with the same name in the target directory
 		if(in_array($DB_WE->f('Text'), $items2move)){
-			return -2;
+			return we_base_file::ERROR_DUPLICATE_NAME;
 		}
 
 		if(defined('OBJECT_TABLE') && $table == OBJECT_FILES_TABLE){
 			// check if class directory is the same
 			if(substr($DB_WE->f('Path'), 0, strlen($rootdir) + 1) != $rootdir . '/'){
-				return -3;
+				return we_objectFile::ERROR_NOT_SAME_CLASS;
 			}
 		}
 	}
@@ -115,8 +122,8 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 	$ids = $DB_WE->getAll(true);
 	foreach($ids as $id){
 		$folder = (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? //4076
-				new we_class_folder() :
-				new we_folder());
+			new we_class_folder() :
+			new we_folder());
 		$folder->initByID($id, $table);
 		$folder->ParentID = $targetDirectoryID;
 		$folder->Path = $folder->getPath();

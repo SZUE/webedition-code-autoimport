@@ -65,26 +65,26 @@ switch($cmd0){
 			}
 
 			// check if item could be moved to the target directory
-			$check = checkMoveItem($db, $targetDirectroy, $selectedItem, $table, $items2move);
-			switch($check){
+			switch(checkMoveItem($db, $targetDirectroy, $selectedItem, $table, $items2move)){
 				default :
 				case 1 :
 					break;
-				case -1 :
-					$message = g_l('alert', '[move_nofolder]');
+				case we_base_file::ERROR_NO_SUCH_FILE:
+					$message = 'File not found';
 					$retVal = 0;
 					break;
-				case -2 :
+				case we_base_file::ERROR_SAME_PARENT:
+					$message = g_l('weEditor','[folder_save_nok_parent_same]');
+					$retVal = 0;
+					break;
+				case we_base_file::ERROR_DUPLICATE_NAME:
 					$message = g_l('alert', '[move_duplicate]');
 					$retVal = 0;
 					break;
-				case -3 :
+				case we_objectFile::ERROR_NOT_SAME_CLASS :
 					$message = g_l('alert', '[move_onlysametype]');
 					$retVal = 0;
 					break;
-			}
-			if(!$check){
-				break;
 			}
 		}
 

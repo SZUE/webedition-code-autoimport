@@ -43,6 +43,7 @@ class we_objectFile extends we_document{
 	const TYPE_SHOPCATEGORY = 'shopCategory';
 	const TYPE_SHOPVAT = 'shopVat';
 	const TYPE_TEXT = 'text';
+	const ERROR_NOT_SAME_CLASS = -3;
 
 	var $TableID = 0;
 	var $rootDirID = 0;
