@@ -27,6 +27,9 @@ abstract class we_base_file{
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
 	const SZ_MB = 3;
+	const ERROR_NO_SUCH_FILE = -1;
+	const ERROR_DUPLICATE_NAME = -2;
+	const ERROR_SAME_PARENT = -4;
 
 	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = false){
 		if($filename === ''){
