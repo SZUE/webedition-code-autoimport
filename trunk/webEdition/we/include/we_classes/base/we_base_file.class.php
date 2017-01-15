@@ -27,6 +27,9 @@ abstract class we_base_file{
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
 	const SZ_MB = 3;
+	const ERROR_NO_SUCH_FILE = -1;
+	const ERROR_DUPLICATE_NAME = -2;
+	const ERROR_SAME_PARENT = -4;
 
 	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = false){
 		if($filename === ''){
@@ -244,7 +247,7 @@ abstract class we_base_file{
 				}
 
 				if($fh_temp){
-					$buff.=$line;
+					$buff .= $line;
 					$write = false;
 
 					//print substr($buff,(0-($marker_size+1)))."<br/>\n";
@@ -256,7 +259,7 @@ abstract class we_base_file{
 					}
 
 					if($write){
-						$fsize+=strlen($buff);
+						$fsize += strlen($buff);
 						fwrite($fh_temp, $buff);
 						if(($split_size && $fsize > $split_size) || ($marker_size)){
 							$open_new = true;
@@ -286,8 +289,8 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-				false :
-				($path ? self::createLocalFolderByPath($path) : false));
+			false :
+			($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date = 300){
@@ -435,7 +438,7 @@ abstract class we_base_file{
 			return false;
 		}
 
-		$zfile = ($destination ? : $file) . '.' . self::getZExtension($compression);
+		$zfile = ($destination ?: $file) . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){
@@ -609,7 +612,7 @@ abstract class we_base_file{
 		if($id == 0){
 			return true;
 		}
-		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ? : new DB_WE())) === '1');
+		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ?: new DB_WE())) === '1');
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){
@@ -660,7 +663,7 @@ abstract class we_base_file{
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		if(!$d){
 			self::checkAndMakeFolder(rtrim(WE_FRAGMENT_PATH, '/'));
-		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
+			$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		}
 		while(false !== ($entry = $d->read())){
 			switch($entry){
@@ -768,7 +771,7 @@ abstract class we_base_file{
 		$outArray = array(
 			$folderID
 		);
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = array();
 		while($db->next_record()){
