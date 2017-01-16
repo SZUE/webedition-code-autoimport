@@ -31,9 +31,7 @@ class we_folder extends we_root{
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	protected $viewType = 'list';
-	public $doclistModel; // FIXME: set protected and make getter
-	public $doclistViewClass = 'we_doclist_view';
-	public $doclistSearchClass = 'we_doclist_search';
+	protected $doclistModel = null;
 	//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
@@ -94,14 +92,16 @@ class we_folder extends we_root{
 		}
 		$this->adjustEditPageNr();
 
-		if(!is_object($this->doclistModel)){
-			$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
+		IF($this->ID){
+			if(!$this->doclistModel){
+				$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
+			}
+			$this->doclistModel->initByHttp();
 		}
-		$this->doclistModel->initByHttp();
 	}
 
 	public function getDoclistModel(){
-		return $this->doclistModel ? : new we_doclist_model(0, $this->ID, $this->viewType);
+		return $this->doclistModel ? : ($this->ID ? new we_doclist_model(0, $this->ID, $this->viewType) : null);
 	}
 
 	/**
@@ -566,7 +566,7 @@ class we_folder extends we_root{
 	/**
 	 * Create the folders on the server in the public and the site directory.
 	 * Note: for internal use
-	 * 
+	 *
 	 * @return boolean true on success, false in case of failure
 	 */
 	private function saveToServer(){
@@ -660,11 +660,11 @@ class we_folder extends we_root{
 		}
 		$replace = self::getUrlReplacements($GLOBALS['DB_WE'], true, true);
 		$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
-		$cnt=0;
+		$cnt = 0;
 		$ret = $replace ?
-						preg_replace($replace, array_keys($replace), $path, 1, $cnt) :
-						$path;
-			return ($cnt ? getServerProtocol() . ':' : '') . $ret;
+			preg_replace($replace, array_keys($replace), $path, 1, $cnt) :
+			$path;
+		return ($cnt ? getServerProtocol() . ':' : '') . $ret;
 	}
 
 	public function getPropertyPage(){

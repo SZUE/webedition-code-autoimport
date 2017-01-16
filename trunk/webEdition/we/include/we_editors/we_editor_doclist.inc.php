@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$doclistView = new $GLOBALS['we_doc']->doclistViewClass($GLOBALS['we_doc']->doclistModel);
+$doclistView = new we_doclist_view($GLOBALS['we_doc']->getDoclistModel());
 $doclistSearch = $doclistView->searchclass;
 
 echo we_html_tools::getCalendarFiles() .
