@@ -44,7 +44,7 @@ if(!$keepBin && ($mimetype = we_base_util::getMimeType(end($allfile), $filename,
 	}
 } else {
 	header('Content-Type: application/octet-stream');
-	header('Content-Disposition: attachment; filename="' . ($keepBin ? $filename : basename($filename, '.gz')) . '"');
+	header('Content-Disposition: attachment; filename="' . ($keepBin ? basename($filename) : basename($filename, '.gz')) . '"');
 	$isCompressed = false;
 }
 

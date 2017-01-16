@@ -35,12 +35,13 @@ class we_import_site{
 	var $css = 1;
 	var $text = 1;
 	var $other = 1;
-	var $maxSize = 1; // in Mb
+	var $maxSize = 12; // in Mb
 	var $sameName = 'overwrite';
 	var $isSearchable = true;
 	var $importMetadata = true;
 	public $files;
-	private $depth = 1;
+	private $depth = 0;
+	private $actualDepth = 0;
 	var $thumbs = '';
 	var $width = '';
 	var $height = '';
@@ -65,7 +66,7 @@ class we_import_site{
 		$this->from = we_base_request::_(we_base_request::FILE, 'from', (!empty($_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
 		$this->to = we_base_request::_(we_base_request::FILE, 'to', (strlen($this->to) ? $this->to : $ws));
-		$this->depth = we_base_request::_(we_base_request::INT, 'depth', $this->depth);
+		$this->depth = we_base_request::_(we_base_request::INT, 'depth', $this->depth) === 1 ? -1 : $this->depth;
 		$this->images = we_base_request::_(we_base_request::BOOL, 'images', $this->images);
 		$this->htmlPages = we_base_request::_(we_base_request::BOOL, 'htmlPages', $this->htmlPages);
 		$this->createWePages = we_base_request::_(we_base_request::BOOL, 'createWePages', $this->createWePages);
@@ -459,10 +460,45 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, '', '', false, true, '', true);
 		// Depth
+		/*$select = we_html_tools::htmlSelect(
+				"depth", array(
+				"-1" => g_l('siteimport', '[nolimit]'),
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30
+				), 1, $this->depth, false, array(), "value", 150);*/
 
-		$select = we_html_tools::htmlSelect("depth", array_merge([-1 => g_l('siteimport', '[nolimit]')], range(0, 30)), 1, $this->depth, false, [], "value", 150);
-
-		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
+		$depth = we_html_tools::htmlFormElementTable(
+				we_html_forms::checkboxWithHidden($this->depth === 1, 'depth', g_l('siteimport', '[import_recursively]'), false, 'defaultfont'), ''
+			);
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ?: 20;
 		$maxarray = [0 => g_l('siteimport', '[nolimit]'), 0.5 => "0.5"];
 		for($i = 1; $i <= $maxallowed; $i++){
@@ -1471,7 +1507,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// when running on windows we have to change slashes to backslashes
 		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/'));
 		$this->files = [];
-		$this->depth = 0;
+		//$this->actualDepth = 0;
 		$this->postProcess = [];
 		$this->_fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
@@ -1530,7 +1566,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR . $entry;
 
-			if((strpos($PathOfEntry, $weDirectory) !== false) ||
+			if((strpos($PathOfEntry, $weDirectory) !== false) || is_link($PathOfEntry) ||
 				(!is_dir($PathOfEntry) && ($this->maxSize && (filesize($PathOfEntry) > (abs($this->maxSize) * 1024 * 1024))))){
 				continue;
 			}
@@ -1618,7 +1654,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				];
 			}
 			if($contentType === we_base_ContentTypes::FOLDER){
-				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
+				if(($this->depth == -1)/* || (abs($this->depth) > $this->actualDepth)*/){
 					$this->files[] = [
 						'path' => $PathOfEntry,
 						'contentType' => $contentType,
@@ -1636,9 +1672,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						'isSearchable' => false,
 						'importMetadata' => 0
 					];
-					$this->depth++;
+					//$this->actualDepth++;
 					$this->_fillDirectories($PathOfEntry);
-					$this->depth--;
+					//$this->actualDepth--;
 				}
 			}
 		}
