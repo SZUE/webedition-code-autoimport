@@ -583,15 +583,62 @@ function setTab(tab) {
 		$row = 0;
 		$htmlTable->setCol($row++, 0, ['class' => 'weDialogHeadline', 'colspan' => 4], g_l('modules_shop', '[paypal][name]'));
 
-		$list1 = ["AI" => "Anguilla", "AR" => "Argentina", "AU" => "Australia", "AT" => "Austria", "BE" => "Belgium", "BR" => "Brazil", "CA" => "Canada", "CL" => "Chile",
-			"CN" => "China", "CR" => "Costa Rica", "CY" => "Cyprus", "CZ" => "Czech Republic", "DK" => "Denmark", "DO" => "Dominican Rep.", "EC" => "Equador", "EE" => "Estonia",
-			"FI" => "Finland", "FR" => "France", "DE" => "Deutschland", "GR" => "Greece", "HK" => "Hong Kong"];
-		$list2 = ["HU" => "Hungary", "IS" => "Iceland", "IN" => "India", "IE" => "Ireland", "IL" => "Israel", "IT" => "Italy", "JM" => "Jamaica", "JP" => "Japan", "LV" => "Latvia",
-			"LT" => "Lithuania", "LU" => "Luxemburg", "MY" => "Malaysia", "MT" => "Malta", "MX" => "Mexico"];
-		$list3 = ["NL" => "Netherlands", "NZ" => "New Zealand", "NO" => "Norway", "PL" => "Poland", "PT" => "Portugal", "SG" => "Singapore", "SK" => "Slovakia", "ZA" => "South Afrika",
-			"KR" => "South Korea", "ES" => "Spain", "SE" => "Sweden", "CH" => "Switzerland", "TW" => "Taiwan", "TH" => "Thailand", "TR" => "Turkey", "GB" => "United Kingdom",
-			"United States" => "US", "Uruguay" => "UY", "Venezuela" => "VE"];
-		$list = array_merge($list1, $list2, $list3);
+		$list = [
+			"AI" => "Anguilla",
+			"AR" => "Argentina",
+			"AU" => "Australia",
+			"AT" => "Austria",
+			"BE" => "Belgium",
+			"BR" => "Brazil",
+			"CA" => "Canada",
+			"CL" => "Chile",
+			"CN" => "China",
+			"CR" => "Costa Rica",
+			"CY" => "Cyprus",
+			"CZ" => "Czech Republic",
+			"DK" => "Denmark",
+			"DO" => "Dominican Rep.",
+			"EC" => "Equador",
+			"EE" => "Estonia",
+			"FI" => "Finland",
+			"FR" => "France",
+			"DE" => "Deutschland",
+			"GR" => "Greece",
+			"HK" => "Hong Kong",
+			"HU" => "Hungary",
+			"IS" => "Iceland",
+			"IN" => "India",
+			"IE" => "Ireland",
+			"IL" => "Israel",
+			"IT" => "Italy",
+			"JM" => "Jamaica",
+			"JP" => "Japan",
+			"LV" => "Latvia",
+			"LT" => "Lithuania",
+			"LU" => "Luxemburg",
+			"MY" => "Malaysia",
+			"MT" => "Malta",
+			"MX" => "Mexico",
+			"NL" => "Netherlands",
+			"NZ" => "New Zealand",
+			"NO" => "Norway",
+			"PL" => "Poland",
+			"PT" => "Portugal",
+			"SG" => "Singapore",
+			"SK" => "Slovakia",
+			"ZA" => "South Afrika",
+			"KR" => "South Korea",
+			"ES" => "Spain",
+			"SE" => "Sweden",
+			"CH" => "Switzerland",
+			"TW" => "Taiwan",
+			"TH" => "Thailand",
+			"TR" => "Turkey",
+			"GB" => "United Kingdom",
+			"US" => "United States",
+			"UY" => "Uruguay",
+			"VE" => "Venezuela"
+		];
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[lc]'));
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('lc', $list, 1, $feldnamen[5]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalLcTxt]') . ' </span>');
@@ -769,30 +816,30 @@ function setTab(tab) {
 		$tabSprache->setCol(0, 2, ['class' => 'defaultfont', "width" => 220], g_l('modules_shop', '[statusmails][SprachenFeld]') . we_html_tools::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
 		$parts = [
-				[
+			[
 				'headline' => g_l('modules_shop', '[statusmails][AnzeigeDaten]'),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'html' => '',
 				'noline' => 1
 			],
-				[
+			[
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 				'noline' => 1
 			],
-				[
+			[
 				'headline' => '',
 				'html' => $tabStatus->getHtml()
 			],
-				[
+			[
 				'headline' => g_l('modules_shop', '[statusmails][EMailDaten]'),
 				'html' => '',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
 				'noline' => 1
 			],
-				['space' => we_html_multiIconBox::SPACE_MED,
+			['space' => we_html_multiIconBox::SPACE_MED,
 				'html' => $tabEMail->getHtml(),
 			], [
 				'headline' => g_l('modules_shop', '[statusmails][Spracheinstellungen]'),
@@ -972,9 +1019,9 @@ function setTab(tab) {
 </form>';
 
 		$parts = [
-				['html' => $vatTable],
-				['html' => $plusBut],
-				['html' => $formVat,],
+			['html' => $vatTable],
+			['html' => $plusBut],
+			['html' => $formVat,],
 		];
 
 		$jscmd = new we_base_jsCmd();
@@ -1034,48 +1081,48 @@ function setTab(tab) {
 		$conditionReturn = we_html_tools::htmlSelect('conditionalReturn[]', ['false' => 'false', 'true' => 'true'], 1, $actCondition['returnValue']);
 
 		$parts = [
-				['headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
+			['headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $defaultInput,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][defaultReturn_desc]'), we_html_tools::TYPE_INFO, 600),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][defaultReturn_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-				['headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
+			['headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $countrySelect . $countrySelectISO,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][stateField_desc]'), we_html_tools::TYPE_INFO, 600),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][stateField_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-				['headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
+			['headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $textAreaLiableStates,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-				['headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
+			['headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $textAreaNotLiableStates,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesNotLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesNotLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
+			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionTextarea,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesSpecialRules_desc]'), we_html_tools::TYPE_INFO, 600),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesSpecialRules_desc]'), we_html_tools::TYPE_INFO, 600),
 				'noline' => 1
 			],
-				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_condition]'),
+			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_condition]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionField . ' ' . $conditionSelect,
 				'noline' => 1
 			],
-				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_result]'),
+			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_result]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionReturn
 			]
@@ -1241,7 +1288,7 @@ function setTab(tab) {
 							$selAttribs = ['id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']'];
 							$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-							$innerTable->setCol($num, 0, ['class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')], ($v['textTerritory'] ?: 'N.N.'));
+							$innerTable->setCol($num, 0, ['class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')], ($v['textTerritory'] ? : 'N.N.'));
 							$innerTable->setCol($num, 1, ['class' => 'defaultfont', 'width' => 220], $sel);
 						}
 					}
@@ -1274,36 +1321,36 @@ function setTab(tab) {
 		}
 
 		$parts = [
-				['headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
+			['headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $selCategoryDirs,
 			],
-				['headline' => g_l('modules_shop', '[shopcats][text_editShopCatDir]'),
+			['headline' => g_l('modules_shop', '[shopcats][text_editShopCatDir]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '',
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, 614, false, 100),
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 				'html' => $catsDirTableHtml,
 			],
-				['headline' => g_l('modules_shop', '[shopcats][text_editShopCats]'),
+			['headline' => g_l('modules_shop', '[shopcats][text_editShopCats]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '',
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_editShopCats]'), we_html_tools::TYPE_INFO, 614, false, 101),
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 				'html' => $catsTableHtml,
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 			//'html' => $debug_output
 		]];
 
@@ -1369,21 +1416,21 @@ function setTab(tab) {
 		}
 
 		$parts = [
-				['headline' => g_l('modules_shop', '[vat_country][stateField]'),
+			['headline' => g_l('modules_shop', '[vat_country][stateField]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_html_tools::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, [], 'value', 280),
 				'noline' => 1
 			],
-				['headline' => g_l('modules_shop', '[mwst]'),
+			['headline' => g_l('modules_shop', '[mwst]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_html_tools::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, [], 'value', 280),
 				'noline' => 1
 			],
-				['headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
+			['headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_html_tools::htmlSelect('isNet', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], 1, $weShippingControl->isNet, false, [], 'value', 280)
 			],
-				['headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
+			['headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default defaultfont">
 	<tr>
@@ -1458,36 +1505,10 @@ function setTab(tab) {
 		}
 
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_shipping.js') .
-				we_html_element::jsElement('
-function addShippingCostTableRow() {
-	var tbl = document.getElementById("shippingCostTableEntries");
-	var entryId = "New" + "" + entryPosition++;
-
-	var theNewRow = document.createElement("TR");
-	theNewRow.setAttribute("id", "weShippingId_" + entryId);
-
-	var cell1 = document.createElement("TD");
-	cell1.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" />\';
-			var cell2 = document.createElement("TD");
-	var cell3 = document.createElement("TD");
-	cell3.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" />\';
-	var cell4 = document.createElement("TD");
-	var cell5 = document.createElement("TD");
-
-	var tmp=\'' . addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
-
-cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
-	theNewRow.appendChild(cell1);
-	theNewRow.appendChild(cell2);
-	theNewRow.appendChild(cell3);
-	theNewRow.appendChild(cell4);
-	theNewRow.appendChild(cell5);
-
-	// append new row
-	tbl.appendChild(theNewRow);
-}
-') . (isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_shipping.js', '', ['id' => 'loadVarShopping', 'data-shopping' => setDynamicVar([
+						'trashButton' => we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")
+				])]) .
+				(isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
 		<input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />' .
 					we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")

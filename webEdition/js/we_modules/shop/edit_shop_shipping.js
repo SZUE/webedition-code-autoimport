@@ -25,6 +25,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var shopping = WE().util.getDynamicVar(document, 'loadVarShopping', 'data-shopping');
+
 // this is for new entries.
 var entryPosition = 0;
 
@@ -92,4 +94,31 @@ function we_submitForm(url) {
 
 	f.submit();
 	return true;
+}
+
+function addShippingCostTableRow() {
+	var tbl = document.getElementById("shippingCostTableEntries");
+	var entryId = "New" + "" + entryPosition++;
+
+	var theNewRow = document.createElement("TR");
+	theNewRow.setAttribute("id", "weShippingId_" + entryId);
+
+	var cell1 = document.createElement("TD");
+	cell1.innerHTML = '<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" />';
+	var cell2 = document.createElement("TD");
+	var cell3 = document.createElement("TD");
+	cell3.innerHTML = '<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" />';
+	var cell4 = document.createElement("TD");
+	var cell5 = document.createElement("TD");
+
+
+	cell5.innerHTML = shopping.trashButton.replace("#####placeHolder#####", entryId);
+	theNewRow.appendChild(cell1);
+	theNewRow.appendChild(cell2);
+	theNewRow.appendChild(cell3);
+	theNewRow.appendChild(cell4);
+	theNewRow.appendChild(cell5);
+
+	// append new row
+	tbl.appendChild(theNewRow);
 }
