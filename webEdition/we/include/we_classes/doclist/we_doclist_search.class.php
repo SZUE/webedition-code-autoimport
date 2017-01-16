@@ -26,8 +26,8 @@ class we_doclist_search extends we_search_search{
 	public $View;
 	protected $whichSearch;
 
-	public function __construct($view = null){
-		parent::__construct($view ? : new we_doclist_view());
+	public function __construct(we_modules_view $view = null){
+		parent::__construct($view);
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
 

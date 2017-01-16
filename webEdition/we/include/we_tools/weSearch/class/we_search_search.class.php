@@ -69,7 +69,7 @@ class we_search_search extends we_search_base{
 	public $founditems = 0;
 	public $View;
 
-	public function __construct($view = null){
+	public function __construct(we_modules_view $view = null){
 		parent::__construct();
 		$this->View = $view ?: new we_search_view();
 	}

@@ -31,9 +31,7 @@ class we_folder extends we_root{
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	protected $viewType = 'list';
-	public $doclistModel; // FIXME: set protected and make getter
-	public $doclistViewClass = 'we_doclist_view';
-	public $doclistSearchClass = 'we_doclist_search';
+	protected $doclistModel = null;
 	//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
@@ -94,14 +92,16 @@ class we_folder extends we_root{
 		}
 		$this->adjustEditPageNr();
 
-		if(!is_object($this->doclistModel)){
-			$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
+		if($this->ID){
+			if(!$this->doclistModel){
+				$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
+			}
+			$this->doclistModel->initByHttp();
 		}
-		$this->doclistModel->initByHttp();
 	}
 
 	public function getDoclistModel(){
-		return $this->doclistModel ?: new we_doclist_model(0, $this->ID, $this->viewType);
+		return $this->doclistModel ? : ($this->ID ? new we_doclist_model(0, $this->ID, $this->viewType) : null);
 	}
 
 	/**

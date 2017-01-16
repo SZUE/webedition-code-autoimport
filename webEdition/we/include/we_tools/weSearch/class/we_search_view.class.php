@@ -63,7 +63,7 @@ class we_search_view extends we_modules_view{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
 	}
 
-	function processCommands(we_base_jsCmd $jscmd){
+	public function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
 		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
