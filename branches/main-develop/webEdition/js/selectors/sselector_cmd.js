@@ -139,21 +139,21 @@ function setDir(dir) {
 function drawDir(dir, what, sid) {
 	switch (what) {
 		case "new_folder":
-			top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=new_folder&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectOwn=" + selectOwn;
+			top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=new_folder&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectInternal=" + selectInternal;
 			break;
 		case "rename_folder":
 			if (sid) {
-				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectOwn=" + selectOwn;
+				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectInternal=" + selectInternal;
 			}
 			break;
 		case "rename_file":
 			if (sid) {
-				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectOwn=" + selectOwn;
+				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.fileSelect.data.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.fileSelect.data.currentFilter + "&curID=" + encodeURI(top.fileSelect.data.currentID) + "&selectInternal=" + selectInternal;
 			}
 			break;
 		default:
 			window.setTimeout(function (url) {
 				top.fsbody.location = url;
-			}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + encodeURI(top.fileSelect.data.rootDir + dir) + '&file=' + top.fileSelect.data.currentFilter + '&curID=' + encodeURI(top.fileSelect.data.currentID) + '&selectOwn=' + selectOwn);
+			}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + encodeURI(top.fileSelect.data.rootDir + dir) + '&file=' + top.fileSelect.data.currentFilter + '&curID=' + encodeURI(top.fileSelect.data.currentID) + '&selectInternal=' + selectInternal);
 	}
 }

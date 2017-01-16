@@ -32,7 +32,7 @@ if($cmd === "save_last"){
 if(!$cmd || $cmd != "save_last"){
 	$selectInternal = we_base_request::_(we_base_request::BOOL, 'selectInternal', false);
 
-	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js', "top.fileSelect.data.filter='" . we_base_request::_(we_base_request::STRING, 'filter') . "';selectOwn=" . intval($selectOwn) . ";");
+	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js', "top.fileSelect.data.filter='" . we_base_request::_(we_base_request::STRING, 'filter') . "';selectInternal=" . intval($selectInternal) . ";");
 
 	function delDir($dir){
 		$d = dir($dir);
