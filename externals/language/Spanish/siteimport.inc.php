@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Documentos de texto simple',
 	'importTo'=>'Directorio destino',
 	'import'=>'Importar',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Importando archivo',
 	'limits'=>'Límites',
 	'maxSize'=>'Tamaño máximo de archivo en MB',

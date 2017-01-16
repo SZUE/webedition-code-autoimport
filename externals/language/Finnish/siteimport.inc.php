@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Tekstitiedostoja',
 	'importTo'=>'Kohdehakemisto',
 	'import'=>'Tuo',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Tuodaan tiedostoa',
 	'limits'=>'Rajoitukset',
 	'maxSize'=>'Tiedoston maksimikoko Mt',

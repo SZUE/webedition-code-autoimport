@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Dokumenty Plain-Text',
 	'importTo'=>'Importuj do',
 	'import'=>'Importuj',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Importuj plik',
 	'limits'=>'Ograniczenia',
 	'maxSize'=>'Maksymalna wilekość pliku w MB',

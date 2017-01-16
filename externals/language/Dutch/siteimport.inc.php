@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Platte tekst documenten',
 	'importTo'=>'Doel directorie',
 	'import'=>'Importeer',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Bezig met importeren van bestand',
 	'limits'=>'Grenzen',
 	'maxSize'=>'Maximale bestands grootte in MB',

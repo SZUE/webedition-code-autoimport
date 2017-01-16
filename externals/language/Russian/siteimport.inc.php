@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Plain Text документы',
 	'importTo'=>'Директория назначения',
 	'import'=>'Импорт',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Импорт файла',
 	'limits'=>'Пределы',
 	'maxSize'=>'Максимальный размер файла в MB',

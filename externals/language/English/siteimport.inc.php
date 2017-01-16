@@ -26,6 +26,7 @@ $l_siteimport=array(
 	'importText'=>'Plain text documents',
 	'importTo'=>'Destination directory',
 	'import'=>'Import',
+	'import_recursively'=>'Import recursively',
 	'importingFile'=>'Importing file',
 	'limits'=>'Limits',
 	'maxSize'=>'Maximum file size in MB',
