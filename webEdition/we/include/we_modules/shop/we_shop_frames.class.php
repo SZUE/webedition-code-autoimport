@@ -1475,7 +1475,7 @@ function addShippingCostTableRow() {
 	var cell4 = document.createElement("TD");
 	var cell5 = document.createElement("TD");
 
-	var tmp=\'' . addslashes(we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
+	var tmp=\'' . addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
 
 cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	theNewRow.appendChild(cell1);
