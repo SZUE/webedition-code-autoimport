@@ -82,7 +82,7 @@ WE().consts.g_l.weSearch = {
 			we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view2.js');
 	}
 
-	function processCommands(){
+	public function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
 		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
