@@ -882,12 +882,12 @@ top.content.hot=false;');
 			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . $currentSearchTables[0] . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", '', 0, 0, '', '', false);
 			$tbl->setCol(0, ++$c, ['style' => 'width:50px;'], $btnNewdir);
 
-			$moreHiddens = we_html_element::htmlHiddens(['we_transaction' => $this->Model->transaction,
-			]);
+			$moreHiddens = we_html_element::htmlHiddens(['we_transaction' => $this->Model->transaction,]);
 		}
 		$moreHiddens = '';
 
-		return we_html_element::htmlHiddens(['setView' . $whichSearch => $currentSetView,
+		return we_html_element::htmlHiddens([
+				'setView' . $whichSearch => $currentSetView,
 				'Order' . $whichSearch => $currentOrder,
 				'mode' => $mode = $this->Model->mode,
 				'searchstart' . $whichSearch => $currentSearchstart,
