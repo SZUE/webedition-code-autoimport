@@ -36,12 +36,13 @@ class we_import_site{
 	var $css = 1;
 	var $text = 1;
 	var $other = 1;
-	var $maxSize = 1; // in Mb
+	var $maxSize = 12; // in Mb
 	var $sameName = 'overwrite';
 	var $isSearchable = true;
 	var $importMetadata = true;
 	public $files;
-	private $depth = 1;
+	private $depth = 0;
+	private $actualDepth = 0;
 	var $thumbs = '';
 	var $width = '';
 	var $height = '';
@@ -66,7 +67,7 @@ class we_import_site{
 		$this->from = we_base_request::_(we_base_request::FILE, 'from', (!empty($_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
 		$this->to = we_base_request::_(we_base_request::FILE, 'to', (strlen($this->to) ? $this->to : $ws));
-		$this->depth = we_base_request::_(we_base_request::INT, 'depth', $this->depth);
+		$this->depth = we_base_request::_(we_base_request::INT, 'depth', $this->depth) === 1 ? -1 : $this->depth;
 		$this->images = we_base_request::_(we_base_request::BOOL, 'images', $this->images);
 		$this->htmlPages = we_base_request::_(we_base_request::BOOL, 'htmlPages', $this->htmlPages);
 		$this->createWePages = we_base_request::_(we_base_request::BOOL, 'createWePages', $this->createWePages);
@@ -626,6 +627,7 @@ function doUnload() {
 
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
+		/*
 		$select = we_html_tools::htmlSelect(
 				"depth", array(
 				"-1" => g_l('siteimport', '[nolimit]'),
@@ -661,8 +663,11 @@ function doUnload() {
 				29,
 				30
 				), 1, $this->depth, false, array(), "value", 150);
+		*/
 
-		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
+		$depth = we_html_tools::htmlFormElementTable(
+				we_html_forms::checkboxWithHidden($this->depth === 1, 'depth', g_l('siteimport', '[import_recursively]'), false, 'defaultfont'), ''
+			);
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ? : 20;
 		$maxarray = array(
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
@@ -1764,7 +1769,7 @@ function doUnload() {
 		// when running on windows we have to change slashes to backslashes
 		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/'));
 		$this->files = array();
-		$this->depth = 0;
+		//$this->actualDepth = 0;
 		$this->postProcess = array();
 		$this->_fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
@@ -1822,7 +1827,7 @@ function doUnload() {
 			// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR. $entry;
 
-			if((strpos($PathOfEntry, $weDirectory) !== false) ||
+			if((strpos($PathOfEntry, $weDirectory) !== false) || is_link($PathOfEntry) ||
 				(!is_dir($PathOfEntry) && ($this->maxSize && (filesize($PathOfEntry) > (abs($this->maxSize) * 1024 * 1024))))){
 				continue;
 			}
@@ -1915,7 +1920,7 @@ function doUnload() {
 				);
 			}
 			if($contentType === "folder"){
-				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
+				if(($this->depth == -1)/* || (abs($this->depth) > $this->actualDepth)*/){
 					$this->files[] = array(
 						"path" => $PathOfEntry,
 						"contentType" => $contentType,
@@ -1933,9 +1938,9 @@ function doUnload() {
 						"isSearchable" => false,
 						"importMetadata" => 0
 					);
-					$this->depth++;
+					//$this->actualDepth++;
 					$this->_fillDirectories($PathOfEntry);
-					$this->depth--;
+					//$this->actualDepth--;
 				}
 			}
 		}
