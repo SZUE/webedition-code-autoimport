@@ -31,8 +31,8 @@ class we_workflow_step extends we_workflow_base{
 	var $ID = 0;
 	var $workflowID = 0;
 	var $Worktime = 10;
-	var $timeAction = 0;
-	var $stepCondition = 0;
+	var $timeAction = false;
+	var $stepCondition = false;
 	var $tasks = []; # array of we_workflow_task objects
 
 	/**
@@ -45,11 +45,12 @@ class we_workflow_step extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_STEP_TABLE;
 
-		$this->persistents = ["ID" => we_base_request::INT,
-			"Worktime" => we_base_request::FLOAT,
-			"timeAction" => we_base_request::RAW,
-			"stepCondition" => we_base_request::RAW,
-			"workflowID" => we_base_request::INT,
+		$this->persistents = [
+			'ID' => we_base_request::INT,
+			'Worktime' => we_base_request::FLOAT,
+			'timeAction' => we_base_request::BOOL,
+			'stepCondition' => we_base_request::BOOL,
+			'workflowID' => we_base_request::INT,
 			];
 
 		if($stepID > 0){

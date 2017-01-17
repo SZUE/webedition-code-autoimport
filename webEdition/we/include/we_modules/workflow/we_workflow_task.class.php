@@ -32,8 +32,8 @@ class we_workflow_task extends we_workflow_base{
 	var $stepID = 0;
 	var $userID = 0;
 	var $username='';
-	var $Edit = 0;
-	var $Mail = 0;
+	var $Edit = false;
+	var $Mail = false;
 
 	/**
 	 * Default Constructor
@@ -44,11 +44,12 @@ class we_workflow_task extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_TASK_TABLE;
 
-		$this->persistents = ["ID" => we_base_request::INT,
-			"userID" => we_base_request::INT,
-			"Edit" => we_base_request::RAW,
-			"Mail" => we_base_request::RAW,
-			"stepID" => we_base_request::RAW,
+		$this->persistents = [
+			'ID' => we_base_request::INT,
+			'userID' => we_base_request::INT,
+			'Edit' => we_base_request::BOOL,
+			'Mail' => we_base_request::BOOL,
+			'stepID' => we_base_request::INT,
 			];
 
 		if($taskID > 0){
