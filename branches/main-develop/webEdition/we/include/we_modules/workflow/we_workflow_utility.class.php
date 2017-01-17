@@ -235,7 +235,7 @@ abstract class we_workflow_utility{
 	}
 
 	static function getAllWorkflowDocs($table, we_database_base $db){
-		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID WHERE ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . self::getTypeForTable($table) . ')');
+		$db->query('SELECT DISTINCT doc.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' doc LEFT JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE doc.Status = ' . we_workflow_workflow::STATE_INACTIVE. ' AND wf.Type IN(' . self::getTypeForTable($table) . ')');
 		return array_unique($db->getAll(true));
 	}
 
@@ -281,9 +281,9 @@ abstract class we_workflow_utility{
 	static function forceOverdueDocuments($userID = 0){
 		$db = new DB_WE();
 		$ret = '';
-		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . '.ID AS docstepID,' . WORKFLOW_STEP_TABLE . '.ID AS stepID ' .
-			'FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_DOC_STEP_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.ID=' . WORKFLOW_DOC_STEP_TABLE . '.workflowDocID LEFT JOIN ' . WORKFLOW_STEP_TABLE . ' ON ' . WORKFLOW_DOC_STEP_TABLE . '.workflowStepID=' . WORKFLOW_STEP_TABLE . '.ID ' .
-			'WHERE ' . WORKFLOW_DOC_STEP_TABLE . '.startDate!=0 AND (' . WORKFLOW_DOC_STEP_TABLE . '.startDate+ ROUND(' . WORKFLOW_STEP_TABLE . '.Worktime*3600))<' . time() . ' AND ' . WORKFLOW_DOC_STEP_TABLE . '.finishDate=0 AND ' . WORKFLOW_DOC_STEP_TABLE . '.Status=' . we_workflow_documentStep::STATUS_UNKNOWN . ' AND ' . WORKFLOW_DOC_TABLE . '.Status=' . we_workflow_document::STATUS_UNKNOWN);
+		$db->query('SELECT doc.ID AS docID,docstep.ID AS docstepID,step.ID AS stepID
+FROM ' . WORKFLOW_DOC_TABLE . ' doc LEFT JOIN ' . WORKFLOW_DOC_STEP_TABLE . ' docstep ON doc.ID=docstep.workflowDocID LEFT JOIN ' . WORKFLOW_STEP_TABLE . ' step ON docstep.workflowStepID=step.ID
+WHERE docstep.startDate!=0 AND (docstep.startDate+ ROUND(step.Worktime*3600))<UNIX_TIMESTAMP() AND docstep.finishDate=0 AND docstep.Status=' . we_workflow_documentStep::STATUS_UNKNOWN . ' AND doc.Status=' . we_workflow_workflow::STATE_INACTIVE);
 		while($db->next_record()){
 			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));

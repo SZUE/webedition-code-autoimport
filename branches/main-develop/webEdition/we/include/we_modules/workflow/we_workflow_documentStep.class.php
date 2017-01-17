@@ -54,13 +54,14 @@ class we_workflow_documentStep extends we_workflow_base{
 		$this->table = WORKFLOW_DOC_STEP_TABLE;
 		$this->ClassName = __CLASS__;
 
-		$this->persistents = ["ID" => we_base_request::INT,
-			"workflowDocID" => we_base_request::INT,
-			"workflowStepID" => we_base_request::INT,
-			"startDate" => we_base_request::INT,
-			"finishDate" => we_base_request::INT,
-			"Status" => we_base_request::RAW,
-			];
+		$this->persistents = [
+			'ID' => we_base_request::INT,
+			'workflowDocID' => we_base_request::INT,
+			'workflowStepID' => we_base_request::INT,
+			'startDate' => we_base_request::INT,
+			'finishDate' => we_base_request::INT,
+			'Status' => we_base_request::INT,
+		];
 
 		if($wfDocumentStep){
 			$this->ID = $wfDocumentStep;
@@ -107,14 +108,13 @@ class we_workflow_documentStep extends we_workflow_base{
 
 				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
-					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
-					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
-					if($foo){
-						$desc = str_replace('<br />', "\n", $desc);
+					$targetUser = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
+					$fromUser = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
+					if($targetUser){
+						$desc = strtr($desc, ['<br />' => "\n"]);
 						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
 
-
-						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (!empty($this_user["Email"]) ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+						we_mail($targetUser, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (!empty($fromUser['Email']) ? $fromUser['First'] . ' ' . $fromUser['Second'] . ' <' . $fromUser['Email'] . '>' : ''));
 					}
 				}
 			}
@@ -172,9 +172,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new we_workflow_step($this->workflowStepID);
-			if($workflowStep->stepCondition == 0){
-				$this->Status = self::STATUS_APPROVED;
-			} else {
+			if($workflowStep->stepCondition){
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
@@ -186,6 +184,8 @@ class we_workflow_documentStep extends we_workflow_base{
 						$this->Status = self::STATUS_APPROVED;
 					}
 				}
+			} else {
+				$this->Status = self::STATUS_APPROVED;
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
@@ -218,9 +218,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new we_workflow_step($this->workflowStepID);
-			if($workflowStep->stepCondition == 0){
-				$this->Status = self::STATUS_APPROVED;
-			} else {
+			if($workflowStep->stepCondition){
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
@@ -232,6 +230,8 @@ class we_workflow_documentStep extends we_workflow_base{
 						$this->Status = self::STATUS_APPROVED;
 					}
 				}
+			} else {
+				$this->Status = self::STATUS_APPROVED;
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
