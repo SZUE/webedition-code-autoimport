@@ -25,7 +25,7 @@
 class we_doclist_view extends we_search_view{
 
 	public function __construct($model = null){
-		$this->Model = $model ? : new we_doclist_model();
+		$this->Model = $model;
 		$this->searchclass = new we_doclist_search($this);
 	}
 
@@ -40,7 +40,7 @@ class we_doclist_view extends we_search_view{
 			we_html_element::jsElement('
 weSearch.conf = {
 	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",
-	we_transaction: "' . $this->Model->transaction . '",
+	we_transaction: "' . ($this->Model?$this->Model->transaction:0) . '",
 	editorBodyFrame : window,
 	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc.php",
 	rows: ' . (isset($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) ? count($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) - 1 : 0) . ',
