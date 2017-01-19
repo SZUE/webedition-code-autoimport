@@ -48,7 +48,11 @@ class we_folder extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+			if($this->ID){
+				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+			} else {
+				$this->EditPageNrs = array(we_base_constants::WE_EDITPAGE_PROPERTIES);
+			}
 		}
 		$this->Table = FILE_TABLE;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
@@ -111,19 +115,26 @@ class we_folder extends we_root{
 		if(!isWE()){
 			return;
 		}
+		if($this->ID){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+		}
 
 		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			switch($this->Table){
 				case FILE_TABLE:
 				case OBJECT_FILES_TABLE:
-					array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+					if($this->ID){
+						array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+					}
 			}
 		}
 		switch($this->Table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
 			case VFILE_TABLE:
-				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
+				if($this->ID){
+					$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
+				}
 		}
 	}
 

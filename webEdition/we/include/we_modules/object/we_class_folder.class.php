@@ -40,13 +40,24 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			if($this->ID){
+				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			}
 		}
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
 
 	public function makeSameNew(array $keep = array()){
 		parent::makeSameNew(array_merge($keep, array('TableID', 'TriggerID', 'ClassPath', 'RootfolderID', 'ParentID', 'Table')));
+	}
+
+	function adjustEditPageNr(){
+		if(!isWE()){
+			return;
+		}
+		if($this->ID){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+		}
 	}
 
 	private function setClassProp(){
