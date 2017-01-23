@@ -30,7 +30,6 @@ class we_navigation_ruleControl{
 	}
 
 	function processCommands(we_base_jsCmd $jscmd){
-		$js = '';
 		$html = '';
 
 		switch(we_base_request::_(we_base_request::STRING, 'cmd', '')){
@@ -59,21 +58,14 @@ class we_navigation_ruleControl{
 				}
 
 				if($save && $this->NavigationRule->save()){
-
-					$js = "doc = top.frames.content;
-doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
-doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
-doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");";
+					$jscmd->addCmd('setSavedRule', $this->NavigationRule->ID, $this->NavigationRule->NavigationName, $isNew);
 					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
 
 			case "delete_navigation_rule" :
 				if($this->NavigationRule->delete()){
-
-					$js = "var doc = top.frames.content;
-doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
-doc.weInput.setValue('ID', 0);";
+					$jscmd->addCmd('delRule', $this->NavigationRule->ID, $this->NavigationRule->NavigationName);
 				}
 				break;
 
@@ -86,81 +78,69 @@ doc.weInput.setValue('ID', 0);";
 				$NavigationIDPath = htmlspecialchars_decode($this->NavigationRule->NavigationID ? id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE) : '', ENT_NOQUOTES);
 
 				// workspaces:
-				$workspaceList = ['{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}'];
+				$workspaceList = [
+					[
+						'text' => g_l('navigation', '[no_entry]'),
+						'value' => 0
+					]
+				];
 				$selectWorkspace = '';
 				if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
 					$workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
 					foreach($workspaces as $key => $value){
-					    if($key > 0){ // avoid dublicate keys: workspace '/' (0) already set as 'no_entry'
-                            $workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
-                        }
+						if($key > 0){ // avoid dublicate keys: workspace '/' (0) already set as 'no_entry'
+							$workspaceList[] = [
+								'text' => $value,
+								'value' => $key
+							];
+						}
 					}
-					$selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
+					$selectWorkspace = $this->NavigationRule->WorkspaceID;
 				}
 
 				// categories
-				$catJs = '';
-				if($this->NavigationRule->Categories){
+				$catPaths = ($this->NavigationRule->Categories ? id_to_path(makeArrayFromCSV($this->NavigationRule->Categories), CATEGORY_TABLE) : []);
 
-					$catIds = makeArrayFromCSV($this->NavigationRule->Categories);
 
-					foreach($catIds as $catId){
-						if(($path = id_to_path($catId, CATEGORY_TABLE))){
-							$catJs .= 'doc.categories_edit.addItem();doc.categories_edit.setItem(0,(doc.categories_edit.itemCount-1),"' . $path . '");
-							';
-						}
-					}
+				$jscmd->addCmd('setFormData', [
+					'ID' => $this->NavigationRule->ID,
+					'NavigationName' => $this->NavigationRule->NavigationName,
+					'NavigationID' => $this->NavigationRule->NavigationID,
+					'NavigationIDPath' => $NavigationIDPath,
+					'FolderID' => $this->NavigationRule->FolderID,
+					'FolderIDPath' => $FolderIDPath,
+					'SelectionType' => $this->NavigationRule->SelectionType,
+					'DoctypeID' => $this->NavigationRule->DoctypeID,
+					'ClassID' => $this->NavigationRule->ClassID,
+					'ClassIDPath' => $ClassIDPath,
+				]);
+				$jscmd->addCmd('setCategories', $catPaths);
+				$jscmd->addCmd('setWorkspaces', $workspaceList);
+				if($selectWorkspace){
+					$jscmd->addCmd('selectWorkspace', $this->NavigationRule->WorkspaceID);
 				}
 
-				$js = "
-var doc = top.frames.content;
-doc.clearNavigationForm();
-
-doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
-doc.weInput.setValue('NavigationName', '" . $this->NavigationRule->NavigationName . "');
-
-doc.weInput.setValue('NavigationID', '" . $this->NavigationRule->NavigationID . "');
-doc.weInput.setValue('NavigationIDPath', '" . $NavigationIDPath . "');
-
-doc.weInput.setValue('FolderID', '" . $this->NavigationRule->FolderID . "');
-doc.weInput.setValue('FolderIDPath', '" . $FolderIDPath . "');
-
-
-doc.weSelect.selectOption('SelectionType', '" . $this->NavigationRule->SelectionType . "');
-doc.switchType('" . $this->NavigationRule->SelectionType . "');
-
-doc.weInput.setValue('DoctypeID', '" . $this->NavigationRule->DoctypeID . "');
-
-doc.weInput.setValue('ClassID', '" . $this->NavigationRule->ClassID . "');
-doc.weInput.setValue('ClassIDPath', '" . $ClassIDPath . "');
-
-doc.removeAllCats();
-$catJs
-doc.categories_edit.showVariant(0);
-doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
-
-
-var optionList = [" . implode(',', $workspaceList) . "];
-doc.weSelect.setOptions('WorkspaceID', optionList);
-$selectWorkspace";
 				break;
 
 			case "get_workspaces" :
 
 				if(defined('OBJECT_TABLE') && ($classid = we_base_request::_(we_base_request::INT, 'ClassID'))){
 					$workspaces = $this->getWorkspacesByClassID($classid);
-					$optionList = ['{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}'];
+					$optionList = [
+						[
+							'text' => g_l('navigation', '[no_entry]'),
+							'value' => 0
+						]
+					];
 
 					foreach($workspaces as $key => $value){
-						$optionList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
+						$optionList[] = [
+							'text' => $value,
+							'value' => $key
+						];
 					}
-
-					$js = '
-var doc = top.frames.content;
-var optionList = [' . implode(',', $optionList) . '];
-doc.weSelect.setOptions("WorkspaceID", optionList);
-';
+					$jscmd->addCmd('setWorkspaces', $optionList);
 				}
 
 				break;
@@ -168,7 +148,8 @@ doc.weSelect.setOptions("WorkspaceID", optionList);
 				return;
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $jscmd->getCmds() . we_html_element::jsElement($js), '<body>' . $html . '</body>');
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRuleControl.js') .
+			$jscmd->getCmds(), '<body>' . $html . '</body>');
 		exit();
 	}
 

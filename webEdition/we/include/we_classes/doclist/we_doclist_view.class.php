@@ -25,7 +25,7 @@
 class we_doclist_view extends we_search_view{
 
 	public function __construct($model = null){
-		$this->Model = $model ? : new we_doclist_model();
+		$this->Model = $model;
 		$this->searchclass = new we_doclist_search($this);
 	}
 

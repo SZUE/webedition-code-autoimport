@@ -39,3 +39,19 @@ function setProgress(name, progress) {
 	document.getElementById("progress_image_bg" + name).style.width = (koef * 100) - (koef * progress) + "px";
 	setProgressText("progress_text" + name, progress + "%");
 }
+
+//FIXME: remove; this is from export
+function doProgress(progress) {
+	var elem = document.getElementById("progress");
+	if (elem.style.display === "none") {
+		elem.style.display = "";
+	}
+	setProgress("", progress);
+}
+
+function hideProgress() {
+	var elem = document.getElementById("progress");
+	if (elem.style.display !== "none") {
+		elem.style.display = "none";
+	}
+}

@@ -355,40 +355,41 @@ close();');
 				}
 			}
 		}
-		if(we_base_request::_(we_base_request::STRING, 'pnt') === 'sort_admin'){
-			$counter = we_base_request::_(we_base_request::INT, 'counter');
+		if(we_base_request::_(we_base_request::STRING, 'pnt') !== 'sort_admin'){
+			return;
+		}
+		$counter = we_base_request::_(we_base_request::INT, 'counter');
 
-			if($counter !== false){
-				$this->settings->SortView = [];
+		if($counter !== false){
+			$this->settings->SortView = [];
 
-				for($i = 0; $i < $counter; $i++){
-					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i) ?:
-						g_l('modules_customer', '[sort_name]') . '_' . $i;
+			for($i = 0; $i < $counter; $i++){
+				$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i) ? :
+					g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
-					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
+				$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
 
-					if($fcounter > -1){
-						$this->settings->SortView[$sort_name] = [];
+				if($fcounter > -1){
+					$this->settings->SortView[$sort_name] = [];
+				}
+				for($j = 0; $j < $fcounter; $j++){
+					$new = [];
+					if(($b = we_base_request::_(we_base_request::STRING, 'branch_' . $i . '_' . $j))){
+						$new['branch'] = $b;
 					}
-					for($j = 0; $j < $fcounter; $j++){
-						$new = [];
-						if(($b = we_base_request::_(we_base_request::STRING, 'branch_' . $i . '_' . $j))){
-							$new['branch'] = $b;
-						}
-						if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
-							$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
+					if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
+						$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
 								str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
 								$field);
-						}
-						if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
-							$new['function'] = $func;
-						}
-						if(($ord = we_base_request::_(we_base_request::STRING, 'order_' . $i . '_' . $j))){
-							$new['order'] = $ord;
-						}
-						$this->settings->SortView[$sort_name][$j] = $new;
 					}
+					if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
+						$new['function'] = $func;
+					}
+					if(($ord = we_base_request::_(we_base_request::STRING, 'order_' . $i . '_' . $j))){
+						$new['order'] = $ord;
+					}
+					$this->settings->SortView[$sort_name][$j] = $new;
 				}
 			}
 		}
@@ -544,8 +545,8 @@ close();');
 					}
 				}
 				$condition .= ($condition ?
-					' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
-					' (' . implode(' OR ', $conditionarr) . ')'
+						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
+						' (' . implode(' OR ', $conditionarr) . ')'
 					);
 			}
 		}
@@ -861,7 +862,7 @@ close();');
 				}
 
 				$parts = [
-						["html" => $objectStr,]
+					["html" => $objectStr,]
 				];
 				break;
 			case g_l('modules_customer', '[documentTab]'):

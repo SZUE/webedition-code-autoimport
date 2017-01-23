@@ -133,7 +133,14 @@ function submitForm(target, action, method) {
 	f.submit();
 }
 
-function loadHeaderFooter() {
+function loadHeaderFooter(type, link, category) {
 	top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader";
 	top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";
+	showType(type);
+	if (link) {
+		showLinkMode(link);
+	}
+	if (category) {
+		showLinkModeCategory(category);
+	}
 }

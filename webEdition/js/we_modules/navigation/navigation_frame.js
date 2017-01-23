@@ -196,3 +196,42 @@ function initNavHeader() {
 	weTabs.setFrameSize();
 	document.getElementById('tab_' + top.content.activ_tab).className = 'tabActive';
 }
+
+function setTab(tab) {
+	switch (tab) {
+		case WE().consts.tabs.navigation.PREVIEW:	// submit the information to preview screen
+			parent.edbody.document.we_form.cmd.value = "";
+			if (top.content.activ_tab !== tab || (top.content.activ_tab === WE().consts.tabs.navigation.PREVIEW && tab === WE().consts.tabs.navigation.PREVIEW)) {
+				parent.edbody.document.we_form.pnt.value = WE().consts.tabs.navigation.PREVIEW;
+				parent.edbody.document.we_form.tabnr.value = WE().consts.tabs.navigation.PREVIEW;
+				parent.edbody.submitForm();
+			}
+			break;
+
+		default: // just toggle content to show
+			if (top.content.activ_tab !== WE().consts.tabs.navigation.PREVIEW) {
+				parent.edbody.toggle("tab" + top.content.activ_tab);
+				parent.edbody.toggle("tab" + tab);
+				top.content.activ_tab = tab;
+				window.focus();
+			} else {
+				parent.edbody.document.we_form.pnt.value = "edbody";
+				parent.edbody.document.we_form.tabnr.value = tab;
+				parent.edbody.submitForm();
+			}
+			break;
+	}
+	window.focus();
+	top.content.activ_tab = tab;
+}
+
+function setInitialTabs(id, isFolder) {
+	if (id) {
+		top.content.activ_tab = WE().consts.tabs.navigation.PROPERTIES;
+	}
+	if (isFolder) {
+		if (top.content.activ_tab !== WE().consts.tabs.navigation.PROPERTIES && top.content.activ_tab !== WE().consts.tabs.navigation.CUSTOMER) {
+			top.content.activ_tab = WE().consts.tabs.navigation.PROPERTIES;
+		}
+	}
+}

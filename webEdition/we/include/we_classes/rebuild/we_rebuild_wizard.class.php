@@ -48,7 +48,7 @@ abstract class we_rebuild_wizard{
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
 		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
-		$WE_PB->addText("", 0, "pb1");
+		$WE_PB->addText("", "pb1");
 		$pb = $WE_PB->getHTML();
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");

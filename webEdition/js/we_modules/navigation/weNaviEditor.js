@@ -24,10 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+var naviEditor = WE().util.getDynamicVar(document, 'loadVarNavi', 'data-navi');
 
 function save() {
 	var dir = document.we_form.ParentID;
-	window.opener.we_cmd("add_navi", WE_NAVIID, encodeURIComponent(document.we_form.Text.value), dir.options[dir.selectedIndex].value, document.we_form.Ordn.value);
+	window.opener.we_cmd("add_navi", naviEditor.naviID, encodeURIComponent(document.we_form.Text.value), dir.options[dir.selectedIndex].value, document.we_form.Ordn.value);
 	window.close();
 }
 
