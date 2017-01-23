@@ -64,3 +64,13 @@ function loadHeaderFooter(cmd) {
 	top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_type&cmdid=" + cmd;
 	top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_type&cmdid=" + cmd;
 }
+
+function setRows(cnt) {
+	Rows = cnt;
+}
+
+function delItems(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		top.content.treeData.deleteEntry(ids[i]);
+	}
+}

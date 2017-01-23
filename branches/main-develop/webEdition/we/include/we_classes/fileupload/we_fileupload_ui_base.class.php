@@ -251,7 +251,6 @@ class we_fileupload_ui_base extends we_fileupload{
 				</div>';
 		/*
 		  $progress = new we_progressBar(0, 170,'_fileupload');
-		  $progress->setProgressTextPlace(0);
 		  return $progress->getHTML('', 'font-size:11px;');
 		  $divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		 *

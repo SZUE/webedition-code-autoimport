@@ -865,7 +865,7 @@ class we_customer_EIWizard{
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
 			$progressbar = new we_progressBar($progress, 200);
-			$progressbar->addText($text, 0, 'current_description');
+			$progressbar->addText($text, 'current_description');
 
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ''));
 		} else if($step == 5){
@@ -905,7 +905,7 @@ class we_customer_EIWizard{
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_back', step: " . $step . "});") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_next', step: " . $step . "});", '', 0, 0, '', '', false, false, '_footer'), 
+						we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_next', step: " . $step . "});", '', 0, 0, '', '', false, false, '_footer'),
 						we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd(uploader_cancel);")
 				);
 				break;
@@ -917,7 +917,7 @@ class we_customer_EIWizard{
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
 				$progressbar = new we_progressBar($progress, 200);
-				$progressbar->addText($text, 0, "current_description");
+				$progressbar->addText($text, "current_description");
 
 				$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 				break;
@@ -929,14 +929,14 @@ class we_customer_EIWizard{
 			case "99":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_back', step: 2});") .
-						we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true), 
+						we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true),
 						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_back', step: " . $step . "});") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_next', step: " . $step . "});"), 
+						we_html_button::create_button(we_html_button::NEXT, "javascript:we_cmd('reload_frame', {frame: 'load', pnt: 'eiload', art: '" . self::ART_IMPORT . "', cmd: 'import_next', step: " . $step . "});"),
 						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
@@ -1148,7 +1148,7 @@ class we_customer_EIWizard{
 	}
 
 	private function getImportBackCode(){
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_base_jsCmd::singleCmd('load_processCmd', ['cmd' => 'import_back', 'art' => self::ART_IMPORT]), we_html_element::htmlBody(['bgcolor' => '#ffffff', 
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_base_jsCmd::singleCmd('load_processCmd', ['cmd' => 'import_back', 'art' => self::ART_IMPORT]), we_html_element::htmlBody(['bgcolor' => '#ffffff',
 			'style' => 'margin: 5px'], we_html_element::htmlForm(['name' => 'we_form',
 						'method' => 'post', 'target' => 'body', 'action' => $this->frameset], '')
 				)
@@ -1251,8 +1251,8 @@ class we_customer_EIWizard{
 
 		$percent = ($fcount == 0 || $fcount == '0' ? 0 : min(100, max(0, (int) (($fstart / $fcount) * 100))) );
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_base_jsCmd::singleCmd('load_processCmd', ['cmd' => 'do_import', 'fstart' => $fstart, 'fcount' => $fcount, 'percent' => $percent]), 
-			we_html_element::htmlBody(['bgcolor' => '#ffffff', 'style' => 'margin:5px'], 
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_base_jsCmd::singleCmd('load_processCmd', ['cmd' => 'do_import', 'fstart' => $fstart, 'fcount' => $fcount, 'percent' => $percent]),
+			we_html_element::htmlBody(['bgcolor' => '#ffffff', 'style' => 'margin:5px'],
 					we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'target' => 'load', 'action' => $this->frameset], $hiddens
 				)
 			)
@@ -1312,7 +1312,7 @@ class we_customer_EIWizard{
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	
+
 	private function formFileChooser($width = 400, $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
 		// IMI: replace enc (+ eval)
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $IDName . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $cmd . "');");

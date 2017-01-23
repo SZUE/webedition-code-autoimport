@@ -61,7 +61,6 @@ class weSuggest{
 	private $checkFieldValue = true;
 	private $contentType = we_base_ContentTypes::FOLDER;
 	private $inputAttribs = [];
-	private $inputDisabled = false;
 	private $inputId = '';
 	private $inputName = '';
 	private $inputValue = '';

@@ -32,7 +32,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 
 	$pb = new we_progressBar(0, 270);
 
-	$pb->addText("&nbsp;", 0, "pbar1");
+	$pb->addText("&nbsp;", "pbar1");
 
 	$buttons = '<table class="default" style="width:100%"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . '</td><td style="text-align:right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .

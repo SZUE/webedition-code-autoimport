@@ -55,19 +55,9 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 		$weSuggest = &weSuggest::getInstance();
 
-		$out = we_html_element::jsElement('var table="' . GLOSSARY_TABLE . '";') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter();') .
+		$out = we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter("' . $weGlossaryFrames->View->Glossary->Type . '","' . ($weGlossaryFrames->View->Glossary->Type === "link" ? ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") : '') . '","' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ? ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") : '') . '");') .
 			we_html_multiIconBox::getJs() .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
-			we_html_element::jsElement(
-				'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
-				($weGlossaryFrames->View->Glossary->Type === "link" ?
-				'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ?: "intern") . '");' :
-				'') .
-				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
-				'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ?: "intern") . '");' :
-				'')
-			);
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
 		return self::buildBody($weGlossaryFrames, $out);
 	}
@@ -123,7 +113,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			we_html_element::htmlHidden('Published', $glossary->ID == 0 ? 1 : ($glossary->Published > 0 ? 1 : 0), 'Published');
 
 
-		$language = ($glossary->Language ?: $GLOBALS['weDefaultFrontendLanguage']);
+		$language = ($glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
@@ -136,7 +126,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			"html" => $content,
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				["headline" => g_l('modules_glossary', '[selection]'),
+			["headline" => g_l('modules_glossary', '[selection]'),
 				"html" => self::getHTMLAbbreviation($glossary) .
 				self::getHTMLAcronym($glossary) .
 				self::getHTMLForeignWord($glossary) .
@@ -473,7 +463,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 			],
-				['headline' => g_l('modules_glossary', '[attributes]'),
+			['headline' => g_l('modules_glossary', '[attributes]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Title]', 30, $glossary->Title, '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[title]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $glossary->getAttribute('anchor'), '', 'onchange="setHot();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z0-9_:.-=]*$\',\'i\').test(this.value)){top.we_showMessage(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\', WE().consts.message.WE_MESSAGE_ERROR);this.focus();}"', 'text', 520), g_l('modules_glossary', '[anchor]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][attribute]', 30, $glossary->getAttribute('attribute'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[link_attribute]')) .
@@ -481,25 +471,25 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['headline' => g_l('modules_glossary', '[language]'),
+			['headline' => g_l('modules_glossary', '[language]'),
 				'html' => self::getLangField('link[Attributes][lang]', $glossary->getAttribute('lang'), g_l('modules_glossary', '[link_language]'), 520) .
 				self::getLangField('link[Attributes][hreflang]', $glossary->getAttribute('hreflang'), g_l('modules_glossary', '[href_language]'), 520),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['headline' => g_l('modules_glossary', '[keyboard]'),
+			['headline' => g_l('modules_glossary', '[keyboard]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][accesskey]', 30, $glossary->getAttribute('accesskey'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[accesskey]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][tabindex]', 30, $glossary->getAttribute('tabindex'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[tabindex]')),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['headline' => g_l('modules_glossary', '[relation]'),
+			['headline' => g_l('modules_glossary', '[relation]'),
 				'html' => self::getRevRel('link[Attributes][rel]', $glossary->getAttribute('rel'), 'rel', 520) .
 				self::getRevRel('link[Attributes][rev]', $glossary->getAttribute('rev'), 'rev', 520),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['headline' => g_l('modules_glossary', '[popup]'),
+			['headline' => g_l('modules_glossary', '[popup]'),
 				'html' => $popup->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1

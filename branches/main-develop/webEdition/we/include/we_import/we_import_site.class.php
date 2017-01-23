@@ -678,7 +678,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, '', '', false, false);
 
 		$pb = new we_progressBar(0, 200);
-		$pb->addText("&nbsp;", 0, "progressTxt");
+		$pb->addText("&nbsp;", "progressTxt");
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');

@@ -137,30 +137,17 @@ function setTab(tab) {
 
 		$table2->setCol(0, $col++, ['style' => 'width:290px;']);
 
-		$js = we_html_element::jsElement('
-function doProgress(progress) {
-	var elem = document.getElementById("progress");
-	if(elem.style.display == "none") elem.style.display = "";
-	setProgress("",progress);
-}
-
-function hideProgress() {
-	var elem = document.getElementById("progress");
-	if(elem.style.display != "none") elem.style.display = "none";
-}
-		');
-
 		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));
 		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
 		$progressbar = new we_progressBar($progress, 200);
-		$progressbar->addText($text, 0, "current_description");
+		$progressbar->addText($text, "current_description");
 
 		$table2->setCol(0, 4, ["id" => "progress", 'style' => "display: none"], $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())
-				), (isset($progressbar) ? we_progressBar::getJSCode() : "") . $js
+				), (isset($progressbar) ? we_progressBar::getJSCode() : "")
 		);
 	}
 
@@ -470,8 +457,6 @@ if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . adds
 if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[prepare]'))) . '");
 if (top.content.editor.edfooter.doProgress){
 	top.content.editor.edfooter.doProgress(0);
-}
-if(top.content.editor.edfooter.setProgressText){
 	top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
 }
 if(top.content.editor.edbody.addLog){
@@ -488,9 +473,10 @@ if(top.content.editor.edbody.addLog){
 				$percent = round(max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0), 2);
 
 				$progress_update = we_html_element::jsElement('
-									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress("' . $percent . '");
-									if(top.content.editor.edfooter.setProgressText) top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
-							');
+if (top.content.editor.edfooter.doProgress){
+	top.content.editor.edfooter.doProgress("' . $percent . '");
+	top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
+}');
 			}
 
 			$xmlExIm->savePerserves();
@@ -623,7 +609,7 @@ if (top.content.editor.edbody.addLog){
 			$filename = basename(urldecode($filename));
 
 			if(file_exists(TEMP_PATH . $filename) // Does file exist?
-				&& !preg_match('%p?html?%i', $filename) && stripos($filename, "inc") === false && !preg_match('%php3?%i', $filename)){ // Security check
+				&& !preg_match('%p?html?%i', $filename) && stripos($filename, "inc") === false && !preg_match('%php%i', $filename)){ // Security check
 				session_write_close();
 				$size = filesize(TEMP_PATH . $filename);
 

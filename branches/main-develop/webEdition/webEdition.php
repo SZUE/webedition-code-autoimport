@@ -196,7 +196,13 @@ $const = [
 		'canRotate' => intval(function_exists('ImageRotate')),
 	],
 	'tabs' => [
-		'PREVIEW' => we_base_constants::WE_EDITPAGE_PREVIEW
+		'PREVIEW' => we_base_constants::WE_EDITPAGE_PREVIEW,
+		'navigation' => [
+			'PROPERTIES' => we_navigation_frames::TAB_PROPERTIES,
+			'CONTENT' => we_navigation_frames::TAB_CONTENT,
+			'CUSTOMER' => we_navigation_frames::TAB_CUSTOMER,
+			'PREVIEW' => we_navigation_frames::TAB_PREVIEW,
+		]
 	]
 ];
 foreach(we_base_imageEdit::supported_image_types() as $v){
@@ -230,46 +236,46 @@ foreach($_SESSION['perms'] as $perm => $access){
 }
 
 $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEData',
-			'data-session' => setDynamicVar($session),
-			'data-consts' => setDynamicVar($const),
-		]) .
-		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
-		we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
-		JQUERY .
-		we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
-		we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
-		we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
-		we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
-		we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
-		we_html_element::jsScript(JS_DIR . 'weButton.js') .
-		we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
-		we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-		we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
-		we_main_headermenu::css() .
-		we_html_element::cssLink(CSS_DIR . 'sidebar.css');
+		'data-session' => setDynamicVar($session),
+		'data-consts' => setDynamicVar($const),
+	]) .
+	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
+	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
+	JQUERY .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
+	we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
+	we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+	we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+	we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+	we_html_element::jsScript(JS_DIR . 'weButton.js') .
+	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
+	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+	we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
+	we_main_headermenu::css() .
+	we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
 	$head .= we_html_element::jsScript($cur);
 }
 $head .= we_html_element::jsElement('
 function checkPwd(){' .
-				(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
-				'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
-				) . '
+		(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
+			'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
+		) . '
 }
 
 function startMsg() {' .
-				we_main_headermenu::createMessageConsole('mainWindow', true) . '
+		we_main_headermenu::createMessageConsole('mainWindow', true) . '
 }
 function updateCheck() {' .
-				(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
-				'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
-				'') . '
+		(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
+			'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
+			'') . '
 }');
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
@@ -395,7 +401,7 @@ unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 	<?php
 //	get the frameset for the actual mode.
 	echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
-			we_messaging_headerMsg::getJS() : '') .
+		we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
 	getWebEdition_Tree();
 	?>
