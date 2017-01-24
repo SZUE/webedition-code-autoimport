@@ -404,7 +404,7 @@ class we_base_request{
 			(isset($parsed_url['host']) ? $parsed_url['host'] : '') .
 			(isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '') .
 			($user || $pass ? $pass . '@' : '') .
-			(isset($parsed_url['path']) ? $parsed_url['path'] : '') .
+			(isset($parsed_url['path']) ? str_replace(' ', '%20', $parsed_url['path']) : '') .
 			(isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '') .
 			(isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '');
 	}

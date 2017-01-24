@@ -239,7 +239,7 @@ class we_dialog_image extends we_dialog_base{
 	function getDialogContentHTML(){
 		$weSuggest = & weSuggest::getInstance();
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", '', "", "", "", "", 0);
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? str_replace('%20', ' ', $this->args["extSrc"]) : ""), "", "", "text", 410), "", "left", "defaultfont", '', "", "", "", "", 0);
 			$intSrc = '';
 			$thumbnails = '';
 

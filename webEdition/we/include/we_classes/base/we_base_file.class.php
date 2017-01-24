@@ -289,8 +289,8 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-			false :
-			($path ? self::createLocalFolderByPath($path) : false));
+				false :
+				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date = 300){
@@ -437,7 +437,7 @@ abstract class we_base_file{
 			return false;
 		}
 
-		$zfile = ($destination ?: $file) . '.' . self::getZExtension($compression);
+		$zfile = ($destination ? : $file) . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){
@@ -611,11 +611,16 @@ abstract class we_base_file{
 		if($id == 0){
 			return true;
 		}
-		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ?: new DB_WE())) === '1');
+		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ? : new DB_WE())) === '1');
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){
 		$db = $GLOBALS['DB_WE'];
+		$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date<=NOW() LIMIT 100', true);
+		foreach($files as $file){
+			self::deleteLocalFile($file);
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path="' . $file . '"');
+		}
 		if($cleanSessFiles){
 			$seesID = session_id();
 			$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"', true);
@@ -655,8 +660,8 @@ abstract class we_base_file{
 					$foo = TEMP_PATH . $entry;
 					if(filemtime($foo) <= (time() - 300)){
 						if(is_dir($foo)){
-							self::deleteLocalFolder($foo, 1);
-						} elseif(file_exists($foo)){
+							self::deleteLocalFolder($foo, true);
+						} else{
 							self::deleteLocalFile($foo);
 						}
 					}
@@ -681,7 +686,7 @@ abstract class we_base_file{
 					if(filemtime($foo) <= (time() - 3600 * 24)){
 						if(is_dir($foo)){
 							self::deleteLocalFolder($foo, true);
-						} elseif(file_exists($foo)){
+						} else{
 							self::deleteLocalFile($foo);
 						}
 					}
@@ -693,7 +698,7 @@ abstract class we_base_file{
 	public static function cleanWECache(){
 		if(defined('WE_VERSION_UPDATE')){
 			if(!is_writeable(WE_CACHE_PATH)){
-				t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
+				t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors & undefined behaviour');
 				return;
 			}
 			we_cache_file::clean();
@@ -774,7 +779,7 @@ abstract class we_base_file{
 	 */
 	public static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
 		$outArray = [$folderID];
-		$db = ($db ?: new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = [];
 		while($db->next_record()){
