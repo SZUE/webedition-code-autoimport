@@ -2094,7 +2094,7 @@ class we_objectFile extends we_document{
 					$newWs[] = $wsID;
 				}
 			}
-			$this->ExtraWorkspaces = implode(',', $newWs, true);
+			$this->ExtraWorkspaces = implode(',', $newWs);
 		}
 		if($this->ExtraWorkspacesSelected){
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
