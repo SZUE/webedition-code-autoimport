@@ -27,7 +27,7 @@ var categories_edit = new (WE().util.multi_edit)("categoriesDiv", window, 0, pre
 categories_edit.addVariant();
 */
 
-handleDragOver = function(e, name){
+function handleDragOver(e, name){
 	if(e.preventDefault){
 		e.preventDefault();
 	}
@@ -36,13 +36,13 @@ handleDragOver = function(e, name){
 	} catch(ex){}
 };
 
-handleDragLeave = function(e, name){
+function handleDragLeave(e, name){
 	try {
 		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
 	} catch(ex){}
 };
 
-handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, tableTree){
+function handleDrop(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, tableTree){
 	var text;
 
 	try {
@@ -74,7 +74,7 @@ handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, 
 	}
 };
 
-doDragFromExternal = function(files, cmdExt, cts){
+function doDragFromExternal(files, cmdExt, cts){
 	if(!files || !cmdExt){
 		return false;
 	}
@@ -83,7 +83,7 @@ doDragFromExternal = function(files, cmdExt, cts){
 	top.we_cmd('we_fileupload_editor', cts, 1, '', 0, 0, true, cmdExt, files);
 };
 
-doDragFromTree = function(text, cmdTree, cts, table){
+function doDragFromTree(text, cmdTree, cts, table){
 	if(!text || !cmdTree){
 		return false;
 	}
