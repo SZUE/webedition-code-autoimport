@@ -197,8 +197,8 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
 					if($indb){
 						if($isfolder){
-							$onclick = ' onclick="metaKeys.doubleTout=setTimeout(function(){if(!top.metaKeys.doubleClick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{top.metaKeys.doubleClick=false;}},300);return true;"';
-							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(metaKeys.doubleTout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
+							$onclick = ' onclick="top.metaKeys.doubleTout=setTimeout(function(){if(!top.metaKeys.doubleClick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{top.metaKeys.doubleClick=false;}},300);return true;"';
+							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$cursor = 'cursor:pointer;';
 						} elseif($selectInternal){
 							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
@@ -207,7 +207,7 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 					} else {
 						if($isfolder){
 							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEdit(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
-							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(metaKeys.doubleTout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
+							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
 							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}

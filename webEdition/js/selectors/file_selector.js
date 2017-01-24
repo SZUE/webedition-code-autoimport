@@ -30,7 +30,7 @@ WE().util.loadConsts(document, "selectors");
 var entries = [];
 var clickCount = 0;
 var mk = null;
-var metaKeys = {
+top.metaKeys = {
 	ctrl: false,
 	shift: false,
 	doubleClick: false,
@@ -292,21 +292,21 @@ function we_makeTextFromPath(path) {
 function weonclick(e) {
 	if (document.all) {
 		if (e.ctrlKey || e.altKey) {
-			metaKeys.ctrl = true;
+			top.metaKeys.ctrl = true;
 		}
 		if (e.shiftKey) {
-			metaKeys.shift = true;
+			top.metaKeys.shift = true;
 		}
 	} else {
 		if (e.altKey || e.metaKey || e.ctrlKey) {
-			metaKeys.ctrl = true;
+			top.metaKeys.ctrl = true;
 		}
 		if (e.shiftKey) {
-			metaKeys.shift = true;
+			top.metaKeys.shift = true;
 		}
 	}
 	if (top.fileSelect.options.multiple) {
-		if ((window.metaKeys.shift === false) && (window.metaKeys.ctrl === false)) {
+		if ((top.metaKeys.shift === false) && (top.metaKeys.ctrl === false)) {
 			top.unselectAllFiles();
 		}
 	} else {
@@ -536,7 +536,7 @@ function we_cmd() {
 
 function selectorOnClick(event, id) {
 	weonclick(event);
-	metaKeys.doubleTout = setTimeout(function () {
+	top.metaKeys.doubleTout = setTimeout(function () {
 		if (!top.metaKeys.doubleClick) {
 			top.doClick(id, 0);
 		} else {
@@ -548,7 +548,7 @@ function selectorOnClick(event, id) {
 
 function selectorOnDblClick(id) {
 	top.metaKeys.doubleClick = true;
-	window.clearTimeout(metaKeys.doubleTout);
+	window.clearTimeout(top.metaKeys.doubleTout);
 	top.doClick(id, 1);
 	return true;
 }
