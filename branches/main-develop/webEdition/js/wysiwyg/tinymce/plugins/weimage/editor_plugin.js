@@ -10,7 +10,7 @@
 				if (e.dom.getAttrib(e.selection.getNode(), 'class', '').indexOf('mceItem') != -1) {
 					return;
 				}
-				wesrc = "";
+				var wesrc = "";
 				if (e.selection.getNode().nodeName == 'IMG' && e.dom.getAttrib(e.selection.getNode(), 'src', '')) {
 					wesrc = e.dom.getAttrib(e.selection.getNode(), 'src', '');
 				}
