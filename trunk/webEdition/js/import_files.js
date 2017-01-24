@@ -45,33 +45,9 @@ function wedelRow(nr, but) {
 }
 
 function checkButtons() {
-	try {
-		if (document.JUpload === undefined || (typeof (document.JUpload.isActive) !== "function") || document.JUpload.isActive() === false) {
-			checkFileinput();
-			window.setTimeout(checkButtons, 1000);
-			//recheck
-		} else {
-			setApplet();
-		}
-	} catch (e) {
-		checkFileinput();
-		window.setTimeout(checkButtons, 1000);
-	}
-}
-
-function setApplet() {
-	var descDiv = document.getElementById("desc");
-	if (descDiv.style.display != "none") {
-		var descJUDiv = document.getElementById("descJupload");
-		var buttDiv = top.imgimportbuttons.document.getElementById("normButton");
-		var buttJUDiv = top.imgimportbuttons.document.getElementById("juButton");
-		descDiv.style.display = "none";
-		buttDiv.style.display = "none";
-		descJUDiv.style.display = "block";
-		buttJUDiv.style.display = "block";
-	}
-
-//setTimeout(document.JUpload.jsRegisterUploaded("refreshTree"),3000);
+	checkFileinput();
+	window.setTimeout(checkButtons, 1000);
+	//recheck
 }
 
 function makeArrayFromCSV(csv) {
@@ -85,11 +61,6 @@ function makeArrayFromCSV(csv) {
 		return [];
 	}
 	return csv.split(/,/);
-}
-
-function refreshTree() {
-	//FIXME: this won\'t work in current version
-	top.opener.top.we_cmd("load", WE().consts.tables.FILE_TABLE);
 }
 
 function checkFileinput() {

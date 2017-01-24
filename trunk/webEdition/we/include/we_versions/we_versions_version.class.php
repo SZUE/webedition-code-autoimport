@@ -841,10 +841,11 @@ class we_versions_version{
 		$_SESSION['weS']['versions']['fromImport'] = 0;
 		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)? : we_base_request::_(we_base_request::STRING, 'cmd');
 //import
-		if(we_base_request::_(we_base_request::BOOL, "jupl")){
+		/*if(we_base_request::_(we_base_request::BOOL, "jupl")){
 			$_SESSION['weS']['versions']['fromImport'] = 1;
 			$this->saveVersion($docObj);
-		} elseif(we_base_request::_(we_base_request::STRING, "pnt") === "wizcmd"){
+		} else*/
+		if(we_base_request::_(we_base_request::STRING, "pnt") === "wizcmd"){
 			switch(we_base_request::_(we_base_request::STRING, "v", '', "type")){
 				case we_import_functions::TYPE_CSV:
 				case we_import_functions::TYPE_GENERIC_XML:
