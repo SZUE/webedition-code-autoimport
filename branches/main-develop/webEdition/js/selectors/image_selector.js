@@ -41,7 +41,7 @@ function writeBody(d) {
 				'<input type="hidden" name="id" value="' + top.fileSelect.data.currentDir + '" />' +
 				(top.fileSelect.data.makeNewFolder ?
 					'<div class="imgDiv">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '<br/>' +
-					'<input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" style="width:100%" />' +
+					'<input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="top.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" style="width:100%" />' +
 					'</div>' :
 					'');
 			for (var i = 0; i < entries.length; i++) {
@@ -51,7 +51,7 @@ function writeBody(d) {
 					(entries[i].isFolder ? WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER) : '<img src="' + WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size[width]=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size[height]=200" + '" class="icon"/>') +
 					'<div class="imgText selector">' +
 					(top.fileSelect.data.we_editDirID == entries[i].ID ?
-						'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onmousedown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+						'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onmousedown="top.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 						entries[i].text) +
 					'</div></div>';
 			}
