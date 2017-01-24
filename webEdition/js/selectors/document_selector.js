@@ -169,7 +169,7 @@ function writeBodyDocument(d) {
 					(top.fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, false) + '</td>' +
-									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
+									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="top.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
 									'<td class="selector title">' + WE().consts.g_l.fileselector.folder + '</td>' +
 									'<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' +
 									'</tr>' :
@@ -181,7 +181,7 @@ function writeBodyDocument(d) {
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
-										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="top.metaKeys.inputClick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<div class="cutText">' + entries[i].text + '</div><div class="extension">' + entries[i].extension + '</div>'
 										) +
 						'</td>' +
