@@ -323,7 +323,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$weSuggest = &weSuggest::getInstance();
 		$noInternals = false;
 
-		$extHref = (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
+		$extHref = str_replace('%20', ' ', (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$noInternals = true;
 			$select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>

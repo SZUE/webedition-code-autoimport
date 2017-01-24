@@ -150,21 +150,20 @@ function we_tag_field(array $attribs){
 
 	unset($attribs['winprops']);
 
-	$classid = ($classid ?:
-		(isset($GLOBALS['lv']) ? (
-		isset($GLOBALS['lv']->classID) ?
-		$GLOBALS['lv']->classID :
-		($GLOBALS['lv'] instanceof we_shop_shop ?
-		$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TABLEID') :
-		''
-		)
-		) : //Fix #9223
-		(isset($GLOBALS['we_doc']->OF_ID) ?
-		$GLOBALS['we_doc']->TableID :
-		0
-		)
-		)
-
+	$classid = ($classid ? :
+			(isset($GLOBALS['lv']) ? (
+				isset($GLOBALS['lv']->classID) ?
+					$GLOBALS['lv']->classID :
+					($GLOBALS['lv'] instanceof we_shop_shop ?
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TABLEID') :
+						''
+					)
+				) : //Fix #9223
+				(isset($GLOBALS['we_doc']->OF_ID) ?
+					$GLOBALS['we_doc']->TableID :
+					0
+				)
+			)
 		);
 
 
@@ -200,12 +199,12 @@ function we_tag_field(array $attribs){
 					$out = $t[5];
 					break;
 			}
-			$href = ($href ?: $t[1]);
+			$href = ($href ? : $t[1]);
 			break;
 		case 'link' :
 			if(is_object($GLOBALS['lv'])){
 				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-				$href = ($href ?: $out);
+				$href = ($href ? : $out);
 				break;
 			}
 		case 'img' :
@@ -259,8 +258,8 @@ function we_tag_field(array $attribs){
 		case 'country' :
 			list(, $langcode) = getFieldOutLang($attribs);
 			$out = (WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) === '--' ?
-				WE_COUNTRIES_DEFAULT :
-				CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::TERRITORY, $langcode))
+					WE_COUNTRIES_DEFAULT :
+					CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::TERRITORY, $langcode))
 				);
 			break;
 		case 'language' :
@@ -295,8 +294,8 @@ function we_tag_field(array $attribs){
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_listview_document':
 						$hrefArr = [
-							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ?: $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
-							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ?: $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
+							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
+							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
 							'extPath' => $GLOBALS['lv']->f($name)
 						];
 						break;
@@ -325,7 +324,7 @@ function we_tag_field(array $attribs){
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
 					(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename']) ?
-					'' : $triggerpath_parts['filename'] . '/' ) .
+						'' : $triggerpath_parts['filename'] . '/' ) .
 					$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL');
 			} else {
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
@@ -522,19 +521,19 @@ function we_tag_field(array $attribs){
 
 			$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
 			$linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
-				($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-				$objecturl .
-				$pidstr :
-				($isSeo && $objecturl ?
-				($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl :
-				$_SERVER['SCRIPT_NAME'] . $objecturl
-				) . $pidstr);
+					($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					$objecturl .
+					$pidstr :
+					($isSeo && $objecturl ?
+						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl :
+						$_SERVER['SCRIPT_NAME'] . $objecturl
+					) . $pidstr);
 
 			$linkAttribs['href'] .= $tail;
 
 			return ($name === 'we_href' ?
-				$linkAttribs['href'] :
-				getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
+					$linkAttribs['href'] :
+					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
@@ -542,14 +541,14 @@ function we_tag_field(array $attribs){
 			$linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?
-				$linkAttribs['href'] :
-				getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
+					$linkAttribs['href'] :
+					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		$showlink = false;
 		switch(get_class($GLOBALS['lv'])){
 			case 'we_listview_document':
-				$triggerid = $triggerid ?: $GLOBALS['lv']->triggerID;
+				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
 				$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
 			case '':
 			case 'we_listview_search':
@@ -560,7 +559,7 @@ function we_tag_field(array $attribs){
 				$showlink = true;
 				break;
 			case 'we_listview_object':
-				$triggerid = $triggerid ?: $GLOBALS['lv']->triggerID;
+				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
 				$showlink = $tid || $triggerid || $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TEMPLATES') || $GLOBALS['lv']->docID;
 				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->f('OF_ID');
 				break;
@@ -590,25 +589,25 @@ function we_tag_field(array $attribs){
 				$triggerpath_parts = pathinfo($triggerpath);
 
 				$linkAttribs['href'] = (!empty($GLOBALS['lv']->objectseourls)) ? // objectseourls=true
-					rtrim($triggerpath_parts['dirname'], '/') . '/' .
+					(empty($triggerpath_parts['dirname']) ? '' : rtrim($triggerpath_parts['dirname'], '/') ) . '/' .
 					((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename'])) ? //hidedirindex of triggerID
-					$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
-					$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
+						$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail
 					) : //objectseourls=false or not set
 					$triggerpath . $tailOwnId . $tail;
 
 				/* End Fix '7771 */
 			} else {
 				$linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
-					($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-					$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'PATH') . $tail
+						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'PATH') . $tail
 					);
 			}
 		}
 
 		return ($name === 'we_href' ? //  return href for this object
-			$linkAttribs['href'] :
-			$out = getHtmlTag('a', $linkAttribs, $out, true));
+				$linkAttribs['href'] :
+				$out = getHtmlTag('a', $linkAttribs, $out, true));
 	}
 
 	return $out;

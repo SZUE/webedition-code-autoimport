@@ -539,16 +539,18 @@ class we_webEditionDocument extends we_textContentDocument{
 					break;
 				case 'txt':
 					//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
-				if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $v['dat']);
+					if(!empty($v['dat'])){
+						if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
+							foreach($regs as $reg){
+								$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $v['dat']);
+							}
+						}
+						if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
+							foreach($regs as $reg){
+								$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $v['dat']);
+							}
+						}
 					}
-				}
-				if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $v['dat'], $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$v['dat'] = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $v['dat']);
-					}
-				}
 				case 'attrib':
 				case 'variant':
 				case 'formfield':
