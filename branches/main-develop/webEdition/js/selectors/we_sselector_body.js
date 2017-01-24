@@ -25,7 +25,7 @@
 'use strict';
 var clickCount = 0,
 	mk = null;
-var metaKeys = {
+top.metaKeys = {
 	ctrl: false,
 	shift: false,
 	doubleClick: false,
@@ -35,20 +35,20 @@ var metaKeys = {
 
 function doClick(id, ct, indb) {
 	if (ct === 1) {
-		if (metaKeys.doubleClick) {
+		if (top.metaKeys.doubleClick) {
 			top.fscmd.selectDir(id);
 			if (top.fileSelect.data.filter !== WE().consts.contentTypes.FOLDER && top.fileSelect.data.filter !== "filefolder") {
 				top.fscmd.selectFile("");
 			}
 			window.setTimeout(function () {
-				metaKeys.doubleClick = false;
+				top.metaKeys.doubleClick = false;
 			}, 400);
 		} else {
 			if ((top.fileSelect.data.filter === WE().consts.contentTypes.FOLDER || top.fileSelect.data.filter === "filefolder") && (!indb)) {
 				top.fscmd.selectFile(id);
 			}
 		}
-		if ((top.fileSelect.click.oldID === id) && (!metaKeys.doubleClick)) {
+		if ((top.fileSelect.click.oldID === id) && (!top.metaKeys.doubleClick)) {
 			clickEdit(id);
 		}
 	} else {
