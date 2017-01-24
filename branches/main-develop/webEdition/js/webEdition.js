@@ -1975,9 +1975,9 @@ var we_cmd_modules = {
 				doExtClick(args[1]);
 				break;
 			case 'tag_weimg_insertImage':
-				table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE,
-					tab = args[7] ? args[7] : 1,
-					editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
+				var table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE;
+				var tab = args[7] ? args[7] : 1;
+				var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
 
 				if (editorFrame) {
 					editorFrame.getContentEditor().setScrollTo();
