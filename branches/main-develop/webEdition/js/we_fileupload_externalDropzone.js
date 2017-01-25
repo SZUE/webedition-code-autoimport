@@ -34,13 +34,13 @@ function handleDragOver(e, name){
 	try {
 		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag we_file_drag_hover";
 	} catch(ex){}
-};
+}
 
 function handleDragLeave(e, name){
 	try {
 		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
 	} catch(ex){}
-};
+}
 
 function handleDrop(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, tableTree){
 	var text;
@@ -72,7 +72,7 @@ function handleDrop(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, ta
 			top.we_showMessage('no drag from external here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 		}
 	}
-};
+}
 
 function doDragFromExternal(files, cmdExt, cts){
 	if(!files || !cmdExt){
@@ -81,7 +81,7 @@ function doDragFromExternal(files, cmdExt, cts){
 
 	document.presetFileupload = files;
 	top.we_cmd('we_fileupload_editor', cts, 1, '', 0, 0, true, cmdExt, files);
-};
+}
 
 function doDragFromTree(text, cmdTree, cts, table){
 	if(!text || !cmdTree){
@@ -106,4 +106,4 @@ function doDragFromTree(text, cmdTree, cts, table){
 		tmp.splice(1, 0, data);
 		top.we_cmd.apply(top, tmp);
 	}
-};
+}

@@ -429,6 +429,7 @@ var WebEdition = {
 			return null;
 		},
 		hashCode: function (s) {
+			/*jshint bitwise:false */
 			return s.split("").reduce(function (a, b) {
 				a = ((a << 5) - a) + b.charCodeAt(0);
 				return a & a;
@@ -769,7 +770,7 @@ var WebEdition = {
 
 			// always show in console !
 			WE().layout.messageConsole.addMessage(prio, message);
-
+			/*jshint bitwise:false */
 			if (prio & WE().session.messageSettings) { // show it, if you should
 				var title = "";
 				var icon = "";
@@ -1257,6 +1258,7 @@ function we_showInNewTab(args, url) {
 
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
@@ -1339,7 +1341,7 @@ function we_cmd() {
 }
 
 var we_cmd_modules = {
-	
+
 	base: function (args, url, caller) {
 		var postData, table, win;
 		switch (args[0]) {

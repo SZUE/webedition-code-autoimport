@@ -24,6 +24,7 @@
  */
 'use strict';
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	if (top.we_cmd) {
 		top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

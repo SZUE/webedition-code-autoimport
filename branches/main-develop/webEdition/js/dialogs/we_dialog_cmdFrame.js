@@ -30,9 +30,10 @@ var payload = WE().util.getDynamicVar(document, 'loadVarDialog_cmdFrame','data-p
 
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "image_update_editor":

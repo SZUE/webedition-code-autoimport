@@ -66,6 +66,7 @@ function openExtSource(argName) {
 
 
 function we_cmd_dialogBase() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
@@ -97,6 +98,7 @@ function we_cmd_dialogBase() {
 
 //is executed in case nothing else is present. call we_cmd_dialogBase if you override this
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 
 	window.we_cmd_dialogBase.apply(caller, Array.prototype.slice.call(arguments));

@@ -30,9 +30,10 @@ function we_submitDateform() {
 }
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
