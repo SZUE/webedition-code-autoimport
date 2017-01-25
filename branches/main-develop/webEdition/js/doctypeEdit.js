@@ -99,13 +99,13 @@ function we_cmd() {
 		case "add_dt_template":
 		case "dt_add_cat":
 			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-			we_save_docType(window, url);
+			we_save_docType(caller, url);
 			break;
 
 		case "delete_dt_template":
 		case "dt_delete_cat":
 		case "save_docType":
-			we_save_docType(window, url);
+			we_save_docType(caller, url);
 			break;
 		case "newDocType":
 			var name = window.prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
@@ -131,7 +131,7 @@ function we_cmd() {
 		case "change_docType":
 		case "deleteDocType":
 		case "deleteDocTypeok":
-			window.location = url;
+			caller.location = url;
 			break;
 		default:
 			window.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

@@ -347,30 +347,30 @@ function we_cmd() {
 		case 'tag_weHref_selectorCallback':
 			_EditorFrame.setEditorIsHot(true);
 			if (args[3] === WE().consts.linkPrefix.TYPE_ALL) {
-				window.document.we_form.elements[args[4]][(args[2] === WE().consts.linkPrefix.TYPE_INT ? 0 : 1)].checked = true;
+				caller.document.we_form.elements[args[4]][(args[2] === WE().consts.linkPrefix.TYPE_INT ? 0 : 1)].checked = true;
 			}
 			if (args[5]) {
-				window.setScrollTo();
+				caller.setScrollTo();
 				top.we_cmd('reload_editpage');
 			}
 			break;
 		case 'tag_weHref_openDocument':
 			var value;
-			if ((value = window.document.we_form.elements[args[1]].value)) {
+			if ((value = caller.document.we_form.elements[args[1]].value)) {
 				WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, value, '');
 			}
 			break;
 		case 'tag_weHref_trash':
 			_EditorFrame.setEditorIsHot(true);
 			if (args[1] === WE().consts.linkPrefix.TYPE_INT) {
-				window.document.we_form.elements[args[2]].value = '';
-				window.document.we_form.elements[args[3]].value = '';
+				caller.document.we_form.elements[args[2]].value = '';
+				caller.document.we_form.elements[args[3]].value = '';
 				if (args[4]) {
-					window.setScrollTo();
+					caller.setScrollTo();
 					top.we_cmd('reload_editpage');
 				}
 			} else {
-				window.document.we_form.elements[args[2]].value = '';
+				caller.document.we_form.elements[args[2]].value = '';
 			}
 			break;
 		case 'setHot':
@@ -378,7 +378,7 @@ function we_cmd() {
 			break;
 			// it must be the last command
 		case "delete_navi":
-			if (!window.confirm(WE().consts.g_l.editorScript.confirm_navDel)) {
+			if (!caller.confirm(WE().consts.g_l.editorScript.confirm_navDel)) {
 				break;
 			}
 			/* falls through */

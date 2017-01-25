@@ -68,9 +68,9 @@ function we_cmd() {
 			break;
 		case "selector_callback":
 			if (args[1].currentID) {
-				window.document.getElementById(args[2]).disabled = false;
+				caller.document.getElementById(args[2]).disabled = false;
 				if (args[2] === 'btn_edit_int') {
-					window.document.we_form.yuiAcResultCT.value = args[1].currentType;
+					caller.document.we_form.yuiAcResultCT.value = args[1].currentType;
 				}
 			}
 			break;
