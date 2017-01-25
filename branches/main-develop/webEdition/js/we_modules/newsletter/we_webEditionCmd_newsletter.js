@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.newsletter = function (args, url) {
+we_cmd_modules.newsletter = function (args, url, caller) {
 	switch (args[0]) {
 		case "edit_settings_newsletter":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "newsletter_edit":
 		case "newsletter_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "new_user":
 		case "save_newsletter":

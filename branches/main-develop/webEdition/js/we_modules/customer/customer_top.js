@@ -44,6 +44,7 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -117,48 +118,48 @@ function we_cmd() {
 			break;
 		case "show_admin":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
-			new (WE().util.jsWindow)(window, url, "customer_admin", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, url, "customer_admin", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "show_sort_admin":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
-			new (WE().util.jsWindow)(window, url, "sort_admin", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "sort_admin", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "show_customer_settings":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
-			new (WE().util.jsWindow)(window, url, "customer_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
+			new (WE().util.jsWindow)(caller, url, "customer_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
 			break;
 		case "export_customer":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
-			new (WE().util.jsWindow)(window, url, "export_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, url, "export_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "import_customer":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
-			new (WE().util.jsWindow)(window, url, "import_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, url, "import_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "load":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "show_customer_settings":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
 			break;
 		case "export_customer":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export", "export_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export", "export_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "import_customer":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		default:
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

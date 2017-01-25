@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.schedule = function (args, url) {
+we_cmd_modules.schedule = function (args, url, caller) {
 	switch (args[0]) {
 		case "edit_schedule":
 		case "schedule_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 	}
 	return false;

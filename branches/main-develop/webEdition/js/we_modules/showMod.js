@@ -33,6 +33,7 @@ var publishWhenSave = 0;
 var weModuleWindow = true;
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -80,7 +81,7 @@ function we_cmd() {
 			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
-			top.opener.top.we_cmd.apply(window, args);
+			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

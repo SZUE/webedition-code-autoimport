@@ -57,6 +57,7 @@ function selectWeSelect_doOnselect(sel){
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arg = args[1]; // we use this when using named params
@@ -87,7 +88,7 @@ function we_cmd() {
 			args[1].selectedIndex=0;
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "add_customer":
 			top.body.document.we_form.wcmd.value = args[0];
@@ -175,6 +176,6 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

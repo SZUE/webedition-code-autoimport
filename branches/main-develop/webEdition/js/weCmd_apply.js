@@ -28,13 +28,13 @@
 'use strict';
 
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var caller = (this && this.window === this ? this : window);
 
 	if(window.parent.we_cmd){
-		window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+		window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	} else if(top.we_cmd){
-		top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+		top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	} else if(top.opener.we_cmd){
-		top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+		top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

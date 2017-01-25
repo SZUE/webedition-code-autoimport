@@ -204,6 +204,7 @@ function goTemplate(tid) {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -213,19 +214,19 @@ function we_cmd() {
 		case "edit_link":
 		case "edit_link_at_class":
 		case "edit_link_at_object":
-			new (WE().util.jsWindow)(window, "", "we_linkEdit", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(caller, "", "we_linkEdit", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_linkEdit", url);
 			}
 			break;
 		case "edit_linklist":
-			new (WE().util.jsWindow)(window, "", "we_linklistEdit", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(caller, "", "we_linklistEdit", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_linklistEdit", url);
 			}
 			break;
 		case "openColorChooser":
-			new (WE().util.jsWindow)(window, "", "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, "", "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_colorChooser", url);
 			}
@@ -246,40 +247,40 @@ function we_cmd() {
 		case "we_selector_directory":
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "object_editObjectTextArea":
-			new (WE().util.jsWindow)(window, url, "edit_object_text", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "edit_object_text", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "open_templateSelect":
-			new (WE().util.jsWindow)(window, "", "we_templateSelect", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, "", "we_templateSelect", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			if (contentEditor.we_submitForm) {
 				contentEditor.we_submitForm("we_templateSelect", url);
 			}
 			break;
 		case "open_tag_wizzard":
-			new (WE().util.jsWindow)(window, url, "we_tag_wizzard", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_tag_wizzard", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
 			break;
 		case "glossary_check":
 			if (doc.hasGlossary) {
-				new (WE().util.jsWindow)(window, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
+				new (WE().util.jsWindow)(caller, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 			}
 			break;
 		case "add_thumbnail":
-			new (WE().util.jsWindow)(window, url, "we_add_thumbnail", WE().consts.size.dialog.smaller, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_add_thumbnail", WE().consts.size.dialog.smaller, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "imageDocument_emptyLongdesk":
 			document.we_form.elements[args[2]].value = '-1';
@@ -329,11 +330,11 @@ function we_cmd() {
 		case "image_convertGIF":
 		case "image_convertPNG":
 			ImageEditTools().deactivateAll();
-			window.parent.we_cmd.apply(window, args);
+			window.parent.we_cmd.apply(caller, args);
 			break;
 		case "spellcheck":
 			if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(window, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
+				var win = new (WE().util.jsWindow)(caller, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
 			}
 			break;
 		case "updateCollectionItem":
@@ -382,7 +383,7 @@ function we_cmd() {
 			}
 			/* falls through */
 		default:
-			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
 	}
 }

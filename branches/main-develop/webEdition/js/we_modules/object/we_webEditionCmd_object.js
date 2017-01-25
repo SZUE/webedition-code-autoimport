@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.object = function (args, url) {
+we_cmd_modules.object = function (args, url, caller) {
 	switch (args[0]) {
 		case "object_edit_ifthere":
 		case "edit_object":
-			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "new_objectFile":
 			we_cmd("new", WE().consts.tables.OBJECT_FILES_TABLE, "", "objectFile");
@@ -159,20 +159,20 @@ we_cmd_modules.object = function (args, url) {
 			top.we_cmd("mv", 1, WE().consts.tables.OBJECT_FILES_TABLE);
 			break;
 		case "object_preview_objectFile":
-			new (WE().util.jsWindow)(window, url, "preview_object", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "preview_object", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true, true);
 			break;
 		case "object_create_tmpfromClass":
-			new (WE().util.jsWindow)(window, url, "tmpfromClass", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true, false);
+			new (WE().util.jsWindow)(caller, url, "tmpfromClass", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true, false);
 			break;
 		case "open_object":
 			we_cmd("load", WE().consts.tables.OBJECT_TABLE);
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(window, url, "we_dirChooser", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_dirChooser", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		case "open_objectFile":
 			we_cmd("load", WE().consts.tables.OBJECT_FILES_TABLE);
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=objectFile&we_cmd[2]=" + WE().consts.tables.OBJECT_FILES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(window, url, "we_dirChooser", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_dirChooser", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		default:
 			return false;

@@ -54,16 +54,17 @@ function weCheckAcFields() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "selector_callback":
 			if (args[1].currentID) {
@@ -74,7 +75,7 @@ function we_cmd() {
 			}
 			break;
 		default :
-			window.we_cmd_dialogBase.apply(window, Array.prototype.slice.call(arguments));
+			window.we_cmd_dialogBase.apply(caller, Array.prototype.slice.call(arguments));
 			break;
 	}
 }

@@ -45,15 +45,16 @@ function we_submitForm(url) {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "close":
 			window.close();
@@ -69,7 +70,7 @@ function we_cmd() {
 			break;
 		case "do_onSuccess":
 			var tmp = top.dialog.cmdOnSuccess.split(",");
-			we_cmd.apply(window, tmp);
+			we_cmd.apply(caller, tmp);
 			break;
 		case "write_back_to_opener":
 			window.opener.we_form.elements[args[1]].value = top.dialog.data.id;
@@ -84,6 +85,6 @@ function we_cmd() {
 			window.close();
 			break;
 		default:
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

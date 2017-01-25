@@ -56,8 +56,9 @@ function we_submitForm(target, url) {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	if (top.we_cmd) {
-		top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+		top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

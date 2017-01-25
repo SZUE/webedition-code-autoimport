@@ -122,6 +122,7 @@ function update_editor(data) {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -129,13 +130,13 @@ function we_cmd() {
 		case 'we_selector_document':
 		case 'we_selector_image':
 		case 'we_selector_directory':
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case 'browse_server':
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_fileupload_editor":
-			new (WE().util.jsWindow)(window, url, "we_fileupload_editor", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileupload_editor", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "dialog_setType":
 			var isInt = window.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
@@ -151,7 +152,7 @@ function we_cmd() {
 			imageChanged();
 			break;
 		default :
-			top.opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			break;
 	}
 }

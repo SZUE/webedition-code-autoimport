@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.spellchecker = function (args, url) {
+we_cmd_modules.spellchecker = function (args, url, caller) {
 	switch (args[0]) {
 		case "edit_settings_spellchecker":
 			window.we_cmd("spellchecker_edit");
 			break;
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "spellcheckadmin", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
+			new (WE().util.jsWindow)(caller, url, "spellcheckadmin", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
 			return true;
 	}
 	return false;
