@@ -44,7 +44,7 @@ weInput.getValue = function (elementName) {
 
 // select
 var weSelect = function () {
-}
+};
 
 weSelect.addOption = function (selectName, optionValue, optionText) {
 	var elem;
@@ -123,7 +123,7 @@ weSelect.selectOption = function (selectName, optionValue) {
 			if (elem.options[i].hasAttribute("selected")){
 				elem.options[i].removeAttribute("selected");
 			}
-			
+
 			if (elem.options[i].value == optionValue) {
 				elem.selectedIndex = i;
 				elem.options[i].setAttribute("selected", "selected");

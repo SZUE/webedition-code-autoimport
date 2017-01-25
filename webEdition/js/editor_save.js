@@ -64,7 +64,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	}
 
 	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
-		we_cmd.apply(caller, editorSave.we_JavaScript[i]);
+		we_cmd.apply(window, editorSave.we_JavaScript[i]);
 	}
 
 	window.focus();
@@ -143,6 +143,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 }
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);

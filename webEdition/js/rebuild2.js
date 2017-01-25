@@ -46,6 +46,7 @@ function handle_event(what) {
 }
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));

@@ -28,6 +28,7 @@
 'use strict';
 
 function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 
 	if(window.parent.we_cmd){

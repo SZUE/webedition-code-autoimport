@@ -41,6 +41,7 @@ var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.nam
 
 
 function we_cmd() {
+	/*jshint validthis:true */
 	if (!unlock) {
 		var caller = (this && this.window === this ? this : window);
 		//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
