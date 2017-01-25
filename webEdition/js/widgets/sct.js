@@ -196,7 +196,7 @@ function copySelectedOptions(from, to, select) {
 function moveAllOptions(from, to, select, regex) {
 	selectAllOptions(from);
 	if (arguments.length > 1) {
-		moveSelectedOptions.apply(Array.prototype.slice.call(arguments));
+		moveSelectedOptions.apply(window, Array.prototype.slice.call(arguments));
 	}
 }
 
@@ -298,7 +298,7 @@ function removeOption(obj) {
 function getCsv() {
 	var _fo = document.forms[0];
 	var aSct = [],
-	aSctLen = [];
+					aSctLen = [];
 	aSct[0] = _fo.list11;
 	aSctLen[0] = aSct[0].length;
 	aSct[1] = _fo.list21;
@@ -308,7 +308,7 @@ function getCsv() {
 	for (var i = 0; i < 2; i++) {
 		for (var k = 0; k < aSctLen[i]; k++) {
 			aValue[i] += aSct[i].options[k].value;
-			if (k != aSctLen[i] - 1){
+			if (k != aSctLen[i] - 1) {
 				aValue[i] += ',';
 			}
 		}

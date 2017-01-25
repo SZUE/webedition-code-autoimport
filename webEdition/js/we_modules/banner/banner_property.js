@@ -100,7 +100,7 @@ function we_cmd() {
 			break;
 		case "selector_intHrefCallback":
 			// used as selector callback: args[1] is selector result
-			window.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;
+			caller.document.we_form.elements[args[2] + '_IntHref'][1].checked = true;
 			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

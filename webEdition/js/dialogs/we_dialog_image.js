@@ -139,14 +139,14 @@ function we_cmd() {
 			new (WE().util.jsWindow)(caller, url, "we_fileupload_editor", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "dialog_setType":
-			var isInt = window.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
-			window.document.getElementById('imageExt').style.display = isInt ? 'none' : 'block';
-			window.document.getElementById('imageInt').style.display = isInt ? 'block' : 'none';
+			var isInt = caller.document.we_form.elements['we_dialog_args[type]'].value === WE().consts.linkPrefix.TYPE_INT;
+			caller.document.getElementById('imageExt').style.display = isInt ? 'none' : 'block';
+			caller.document.getElementById('imageInt').style.display = isInt ? 'block' : 'none';
 			imageChanged();
 			break;
 		case "dialog_emptyLongdesc":
-			window.document.we_form.elements['we_dialog_args[longdescid]'].value = '';
-			window.document.we_form.elements['we_dialog_args[longdescsrc]'].value = '';
+			caller.document.we_form.elements['we_dialog_args[longdescid]'].value = '';
+			caller.document.we_form.elements['we_dialog_args[longdescsrc]'].value = '';
 			break;
 		case "dialog_imageChanged":
 			imageChanged();

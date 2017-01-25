@@ -68,65 +68,65 @@ function we_cmd() {
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
-				window.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
+				caller.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
 			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
-				if (cats[i] && (window.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+				if (cats[i] && (caller.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
 					found = true;
-					if (window.wizbody.document.we_form.elements['v[docCategories]'].value) {
-						window.wizbody.document.we_form.elements['v[docCategories]'].value = window.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
+					if (caller.wizbody.document.we_form.elements['v[docCategories]'].value) {
+						caller.wizbody.document.we_form.elements['v[docCategories]'].value = calller.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
 					} else {
-						window.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
+						caller.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
 				if (found) {
-					window.setTimeout(weGetCategories, 100, 'doc', window.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+					window.setTimeout(weGetCategories, 100, 'doc', caller.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
 				}
 			}
 			break;
 		case 'delete_docCat':
-			window.we_cmd('delete_Cat', 'doc', args[1], false);
+			caller.we_cmd('delete_Cat', 'doc', args[1], false);
 			break;
 		case 'add_objCat':
-			window.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
+			caller.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
 			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
-				if (cats[i] && (window.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+				if (cats[i] && (caller.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
 					found = true;
-					if (window.wizbody.document.we_form.elements['v[objCategories]'].value) {
-						window.wizbody.document.we_form.elements['v[objCategories]'].value = window.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
+					if (caller.wizbody.document.we_form.elements['v[objCategories]'].value) {
+						caller.wizbody.document.we_form.elements['v[objCategories]'].value = caller.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
 					} else {
-						window.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
+						caller.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
 
 				if (found) {
-					window.setTimeout(weGetCategories, 100, 'obj', window.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+					window.setTimeout(weGetCategories, 100, 'obj', caller.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 				}
 			}
 			break;
 		case 'delete_objCat':
-			window.we_cmd('delete_Cat', 'obj', args[1], false);
+			caller.we_cmd('delete_Cat', 'obj', args[1], false);
 			break;
 		case 'delete_Cat':
 			var obj = args[1],
 				cat = args[2],
 				reload = !args[3];
 
-			if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
-				if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
+			if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
+				if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
 					var re = new RegExp(',' + cat + ',');
-					window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
+					caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.replace(re, ',');
 					if (!reload) {
-						window.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(window.wizbody.document.getElementById(obj + 'Cat' + cat));
+						caller.wizbody.document.getElementById(obj + 'Cat' + cat).parentNode.removeChild(caller.wizbody.document.getElementById(obj + 'Cat' + cat));
 					}
-					if (window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
-						window.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
+					if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value === ',') {
+						caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value = '';
 						if (!reload) {
-							window.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
+							caller.wizbody.document.getElementById(obj + 'docCatTable').innerHTML = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 						}
 					}
 				}

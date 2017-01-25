@@ -57,7 +57,7 @@ function closeOnEscape() {
 }
 
 function saveOnKeyBoard() {
-	window.we_save();
+	we_save();
 	return true;
 }
 
