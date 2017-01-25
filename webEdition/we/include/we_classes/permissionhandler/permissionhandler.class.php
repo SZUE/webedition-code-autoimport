@@ -32,6 +32,10 @@
  *
  */
 abstract class permissionhandler{
+const USER_RESTRICTED=-1;
+const WORKSPACE_HAS_USERS=-2;
+	const NO_PERMISSION=-6;
+
 
 	public static function hasPerm($perm, $or = true){
 		if(empty($_SESSION['user']['isWeSession'])){

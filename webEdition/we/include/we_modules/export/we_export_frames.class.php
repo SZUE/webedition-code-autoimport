@@ -141,7 +141,7 @@ function setTab(tab) {
 		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
 		$progressbar = new we_progressBar($progress, 200);
-		$progressbar->addText($text, "current_description");
+		$progressbar->addText($text, we_progressBar::TOP, "current_description");
 
 		$table2->setCol(0, 4, ["id" => "progress", 'style' => "display: none"], $progressbar->getHtml());
 

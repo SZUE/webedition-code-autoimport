@@ -34,10 +34,11 @@ function setProgressText(name, text) {
 }
 
 function setProgress(name, progress) {
-	var koef = (progressBar[name] / 100);
+	var koef = progressBar[name].koef;
 	document.getElementById("progress_image" + name).style.width = (koef * progress) + "px";
 	document.getElementById("progress_image_bg" + name).style.width = (koef * 100) - (koef * progress) + "px";
 	setProgressText("progress_text" + name, progress + "%");
+	updateEst(name, progress);
 }
 
 //FIXME: remove; this is from export
@@ -55,3 +56,40 @@ function hideProgress() {
 		elem.style.display = "none";
 	}
 }
+
+function updateEst(name, progress) {
+	if (progress == 0) {
+		progressBar[name].start = Date.now();
+	}
+	var diffTime = Date.now() - progressBar[name].start;
+	progressBar[name].est = (progress > 0 ? ((diffTime * 100) / progress) - diffTime : -1);
+	progressBar[name].count = 30;
+	if (!progressBar[name].timer) {
+		updateElapsed(name);
+		progressBar[name].timer = window.setInterval(updateElapsed, 1000, name);
+	}
+}
+
+function updateElapsed(name) {
+	progressBar[name].count--;
+
+	if (progressBar[name].count < 0) {
+		window.clearInterval(progressBar[name].timer);
+		progressBar[name].timer = 0;
+	}
+	var elapsed = new Date();
+	elapsed.setTime(-3600000 + Date.now() - progressBar[name].start);
+	progressBar[name].est -= 1000;
+	var est = new Date();
+	est.setTime(-3600000 + (progressBar[name].est > 0 ? progressBar[name].est : 0));
+	setProgressText("elapsedTime" + name, elapsed.toLocaleTimeString() + "/" + est.toLocaleTimeString());
+}
+
+$(function () {
+	var t = Date.now();
+	for (var name in progressBar) {
+		progressBar[name].start = t;
+		updateEst(name, 0);
+		updateElapsed(name);
+	}
+});

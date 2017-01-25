@@ -845,7 +845,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 			$progress = we_base_request::_(we_base_request::INT, 'percent', 0);
 
 			$progressbar = new we_progressBar($progress, 200);
-			$progressbar->addText($text, "current_description");
+			$progressbar->addText($text, we_progressBar::TOP, "current_description");
 		}
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);

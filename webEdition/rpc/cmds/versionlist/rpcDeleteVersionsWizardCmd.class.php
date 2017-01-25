@@ -63,7 +63,7 @@ class rpcDeleteVersionsWizardCmd extends we_rpc_cmd{
 
 		$WE_PB = new we_progressBar(100, 200);
 
-		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), "pb1");
+		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), we_progressBar::TOP, "pb1");
 		//$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 

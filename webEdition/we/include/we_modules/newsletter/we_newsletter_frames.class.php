@@ -1713,7 +1713,7 @@ self.focus();
 
 	private function getHTMLSendBody(){
 		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0), 400);
-		$pb->addText(g_l('modules_newsletter', '[sending]'), "title");
+		$pb->addText(g_l('modules_newsletter', '[sending]'), we_progressBar::TOP, "title");
 
 		$footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
 			$pb->getHTML() . '</td><td style="text-align:right">' .
