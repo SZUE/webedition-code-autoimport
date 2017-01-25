@@ -30,6 +30,7 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customers&");
 
@@ -39,7 +40,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 function submitForm(target, action, method, form) {

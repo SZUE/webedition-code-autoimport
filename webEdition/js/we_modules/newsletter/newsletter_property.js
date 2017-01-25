@@ -201,6 +201,7 @@ function doUnload() {
  * Newsletter command controler
  */
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -210,20 +211,20 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_newsletter_dirSelector":
-			new (WE().util.jsWindow)(window, url, "we_newsletter_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_newsletter_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "add_customer":
 			document.we_form.ngroup.value = args[2];
@@ -330,7 +331,7 @@ function we_cmd() {
 			/*falls through*/
 		case "popSend_do_cont_yes":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send&nid=" + args[1] + (args[3] ? '&test=1' : '');
-			new (WE().util.jsWindow)(window, url, "newsletter_send", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
+			new (WE().util.jsWindow)(caller, url, "newsletter_send", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 		case "send_test":
 			if (document.we_form.ncmd.value === "home") {
@@ -362,16 +363,16 @@ function we_cmd() {
 			}
 			break;
 		case "newsletter_settings":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "black_list":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "edit_file":
 			if (args[1]) {
-				new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&art=" + args[1], args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&art=" + args[1], args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			} else {
-				new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			}
 			break;
 		case "reload_table":
@@ -417,11 +418,11 @@ function we_cmd() {
 			break;
 		case "upload_csv":
 		case "upload_black":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "add_email":
 			var email = document.we_form.group = args[1];
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "edit_email":
 			var p = document.we_form["we_recipient" + args[1]];
@@ -450,7 +451,7 @@ function we_cmd() {
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
 			emailx = encodeURIComponent(emailx);
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "save_black":
 		case "import_black":
@@ -470,7 +471,7 @@ function we_cmd() {
 			}
 			break;
 		case "clear_log":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "blocks_selectTemplateCallback":
 			document.we_form.elements['block' + args[2] + '_use_def_template'].checked = false;
@@ -478,7 +479,7 @@ function we_cmd() {
 			break;
 		default:
 			// go to newsletter_top.js
-			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
 	}
 }

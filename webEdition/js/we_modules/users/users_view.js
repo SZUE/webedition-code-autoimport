@@ -42,6 +42,7 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -100,7 +101,7 @@ function we_cmd() {
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 		case "updateTitle":
 			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
@@ -115,7 +116,7 @@ function we_cmd() {
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter" + home;
 			break;
 		default:
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -512,6 +512,7 @@ function select_seem_start() {
 	}
 }
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -520,24 +521,24 @@ function we_cmd() {
 			doDelete_recipient();
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "we_selector_directory":
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_selector_document", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector_document", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true, true);
 			break;
 		case "show_formmail_log":
-			new (WE().util.jsWindow)(window, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "show_formmail_block_log":
-			new (WE().util.jsWindow)(window, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "we_log", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 			break;
 		case "openColorChooser":
-			new (WE().util.jsWindow)(window, url, "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
-			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

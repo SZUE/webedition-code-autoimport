@@ -44,6 +44,7 @@ function usetHot() {
 
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -120,7 +121,7 @@ function we_cmd() {
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
 			break;
 		default:
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
 	}
 }

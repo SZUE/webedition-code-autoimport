@@ -48,15 +48,16 @@ function add_thumbnails() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "editThumbs":
-			new (WE().util.jsWindow)(window, url, "thumbnails", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "thumbnails", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		default:
-			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -179,6 +179,7 @@ function exit_close() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -190,7 +191,7 @@ function we_cmd() {
 			}, 400, args[1].text);
 			break;
 		default:
-		//opener.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

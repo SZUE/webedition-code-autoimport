@@ -29,6 +29,7 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -41,6 +42,6 @@ function we_cmd() {
 			break;
 		default:
 			// not needed yet
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

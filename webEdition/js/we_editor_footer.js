@@ -105,12 +105,13 @@ function saveReload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "glossary_check":
-			new (WE().util.jsWindow)(window, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "save_document":
 			args[1] = doc.we_transaction;
@@ -127,14 +128,14 @@ function we_cmd() {
 				args[3] = 1;
 				args[4] = (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0);
 			}
-			top.we_cmd.apply(window, args);
+			top.we_cmd.apply(caller, args);
 			break;
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", doc.we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 			break;
 		default:
 			if (top.we_cmd) {
-				top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+				top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			}
 	}
 }

@@ -23,19 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.workflow = function (args, url) {
+we_cmd_modules.workflow = function (args, url, caller) {
 	switch (args[0]) {
 		case "workflow_isIn":
 		case "workflow_pass":
 		case "workflow_decline":
-			new (WE().util.jsWindow)(window, url, "choose_workflow", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "choose_workflow", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
 			return true;
 		case "workflow_finish":
 			window.we_repl(window.load, url, args[0]);
 			return true;
 		case "workflow_edit":
 		case "workflow_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "new_user":
 		case "exit_workflow":

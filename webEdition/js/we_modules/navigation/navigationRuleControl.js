@@ -27,6 +27,7 @@
  */
 'use strict';
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 	var i;
@@ -82,6 +83,7 @@ function we_cmd() {
 			doc.weSelect.selectOption('navigationRules', args[1]);
 			doc.weInput.setValue('ID', args[1]);
 			break;
-
+		default:
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

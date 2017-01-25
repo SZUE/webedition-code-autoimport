@@ -90,6 +90,7 @@ function addCat(paths, ids) {
 
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -134,17 +135,19 @@ function we_cmd() {
 			document.we_form.submit();
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_selector_directory", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector_directory", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_selector_category", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector_category", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector_file", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector_file", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, args[0], WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
+		default:
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

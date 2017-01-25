@@ -30,15 +30,16 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_banner_selector":
-			new (WE().util.jsWindow)(window, url, "we_bannerselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_bannerselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -42,11 +42,12 @@ var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.nam
 
 function we_cmd() {
 	if (!unlock) {
+		var caller = (this && this.window === this ? this : window);
 		//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
+		//var url = WE().util.getWe_cmdArgsUrl(args);
 
 		if (top.we_cmd) {
-			top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 		}
 	}
 }

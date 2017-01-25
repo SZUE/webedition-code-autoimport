@@ -33,22 +33,23 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "openObjselector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + args[5] + "&we_cmd[8]=object&we_cmd[9]=1";
-			new (WE().util.jsWindow)(window, url, "we_objectselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_objectselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		case "add_cat":
 		case "add_objcat":
@@ -99,7 +100,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

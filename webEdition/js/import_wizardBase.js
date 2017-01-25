@@ -43,6 +43,7 @@ function wiz_next(frm, url) {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var cats, found, i;
@@ -51,19 +52,19 @@ function we_cmd() {
 		case 'we_selector_directory':
 		case 'we_selector_image':
 		case 'we_selector_document':
-			new (WE().util.jsWindow)(window, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_fileselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		case 'we_selector_file':
-			new (WE().util.jsWindow)(window, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "we_navigation_dirSelector":
-			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case 'browse_server':
-			new (WE().util.jsWindow)(window, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(window, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true);
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
@@ -166,7 +167,7 @@ function we_cmd() {
 			top.setFormField('v[rdofloc]', true, 'radio', 1);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 

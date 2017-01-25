@@ -64,7 +64,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	}
 
 	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
-		we_cmd.apply(window, editorSave.we_JavaScript[i]);
+		we_cmd.apply(caller, editorSave.we_JavaScript[i]);
 	}
 
 	window.focus();
@@ -143,6 +143,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(editorSave.we_transaction);
@@ -161,7 +162,7 @@ function we_cmd() {
 			WE().layout.weNavigationHistory.addDocToHistory(args[1], args[2], args[3]);
 			break;
 		case 'rebuildTemplates':
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' + args[1] + '&responseText=' + args[2], 'resave', WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' + args[1] + '&responseText=' + args[2], 'resave', WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
 			break;
 		case 'updateVTab':
 			if (top.treeData.table === args[1]) {
@@ -172,6 +173,6 @@ function we_cmd() {
 			document.getElementById("nav").parentNode.innerHTML = args[1];
 			break;
 		default:
-			top.we_cmd.apply(window, args);
+			top.we_cmd.apply(caller, args);
 	}
 }

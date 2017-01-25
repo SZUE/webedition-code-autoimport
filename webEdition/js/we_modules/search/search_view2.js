@@ -32,6 +32,7 @@ var hot = false;
 WE().util.loadConsts(document, "g_l.weSearch");
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var delay = args;
@@ -82,7 +83,7 @@ function we_cmd() {
 				url += "&delayCmd[]=" + delay[i];
 			}
 
-			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
+			new (WE().util.jsWindow)(caller, url, "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 		case "tool_weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
@@ -210,7 +211,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			window.parent.we_cmd.apply(window, Array.prototype.slice.call(arguments));
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
 	}
 }

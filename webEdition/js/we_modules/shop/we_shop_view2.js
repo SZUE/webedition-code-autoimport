@@ -35,27 +35,28 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_order_properties&");
 
 	var wind;
 	switch (args[0]) {
 		case "edit_shipping_cost":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, args[0],  WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
+			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid, args[0],  WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
+			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
 
 		case "edit_order_customer":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_order_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
+			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid, "edit_order_customer", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true, false);
 			break;
 		case "customer_edit":
 			top.document.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=show_frameset&sid=' + cid;
 			break;
 		case "add_new_article":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "add_new_article", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
+			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid, "add_new_article", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
 			break;
 	}
 }

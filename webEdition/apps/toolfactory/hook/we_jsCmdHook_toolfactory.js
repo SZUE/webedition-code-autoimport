@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-we_cmd_modules.tool_toolfactory = function (args, url) {
+we_cmd_modules.tool_toolfactory = function (args, url, caller) {
 	switch (args[0]) {
 		default:
 			return false;
