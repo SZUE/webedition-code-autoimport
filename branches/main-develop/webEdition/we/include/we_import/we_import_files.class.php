@@ -229,7 +229,7 @@ class we_import_files{
 
 		// TODO: let we_fileupload set pb
 		$pb = new we_progressBar(0, 200);
-		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), "progress_title");
+		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), we_progressBar::TOP, "progress_title");
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
 		$js .= we_progressBar::getJSCode();
 

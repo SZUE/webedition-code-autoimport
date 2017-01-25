@@ -57,7 +57,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	}
 
 	$pb = new we_progressBar(0, 300);
-	$pb->addText('&nbsp;', 'copyWeDocumentCustomerFilterText');
+	$pb->addText('&nbsp;', we_progressBar::TOP, 'copyWeDocumentCustomerFilterText');
 
 	// image and progressbar
 	$content = $pb->getHTML();

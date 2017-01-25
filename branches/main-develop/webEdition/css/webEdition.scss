@@ -997,7 +997,7 @@ optgroup{
 	margin: 0px;
 	border-top: 2px groove white;
 	/*padding left for rebuild*/
-	padding:5px 10px 10px 0px;
+	padding:0px 10px 10px 0px;
 	background: $Grey;
 	overflow:hidden;
 }
@@ -1339,8 +1339,19 @@ span.fileicon{
 	color: red;
 }
 
+table.progressbar{
+	font-size: 1px;
+	line-height: 0;
+	td{
+		line-height:12px;
+		color:#006699;
+		padding-right:5px;
+	}
+}
+
 div.progress_image_bg{
 	display:inline-block;
+	height:8px;
 	border-top: 1px solid #b5b5b5;
 	border-bottom:1px solid #dedede;
 	background: linear-gradient(#e7e7e7, #dedede 50%,white);
@@ -1348,6 +1359,7 @@ div.progress_image_bg{
 
 div.progress_image{
 	display:inline-block;
+	height:8px;
 	border-top: 1px solid #395ABD;
 	border-bottom:1px solid #73BDFF;
 	background: linear-gradient(#84ade7, #3984E7 50%,#73c6ff);

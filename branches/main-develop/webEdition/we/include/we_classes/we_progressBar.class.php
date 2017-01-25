@@ -23,10 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_progressBar{
+	const TOP = 0;
+	const RIGHT = 1;
+	const BOTTOM = 2;
+	const LEFT = 3;
+
 	private $progress = 0;
 	private $texts = [];
-	private $stud_width = 10;
 	private $stud_len = 100;
+	private $progressTextPlace = self::RIGHT;
 	private $name = "";
 	private static $studLen = [];
 
@@ -34,43 +39,62 @@ class we_progressBar{
 		$this->setProgress($progress);
 		$this->stud_len = $stud_len;
 		$this->name = $name;
-		self::$studLen[$name] = $stud_len;
+		self::$studLen[$name] = [
+			'koef' => $stud_len / 100
+		];
 	}
 
 	public static function getJSCode(){
 		return we_html_element::jsScript(JS_DIR . 'we_progressBar.js', '', ['id' => 'loadVarProgressBar', 'data-progress' => setDynamicVar(self::$studLen)]);
 	}
 
-	public function addText($text = "", $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
-		$this->texts[] = ['name' => $id, "text" => $text, "class" => $class, "color" => $color, "bold" => $bold, "italic" => 0, "height" => $height];
+	public function addText($text = "", $place = self::TOP, $id = ""){
+		$this->texts[] = ['name' => $id, "text" => $text, "place" => $place];
 	}
 
 	private function setProgress($progress = 0){
 		$this->progress = min(100, $progress);
 	}
 
-	public function setStudWidth($stud_width = 10){
-		$this->stud_width = $stud_width;
+	public function setProgressTextPlace($place = 0){
+		$this->progressTextPlace = $place;
 	}
 
 	public function getHTML($class = '', $style = ''){
-		 $top = '';
+		$left = $right = $top = $bottom = '';
 
-		$this->addText($this->progress . '%', 'progress_text');
+		$this->addText($this->progress . '%', $this->progressTextPlace, 'progress_text');
+		$this->addText('', self::BOTTOM, 'elapsedTime');
 
 		foreach($this->texts as $text){
-			$top .= '<td ' . ($text['name'] ? 'id="' . $text['name'] . $this->name . '" ' : "") . 'class="' . $text['class'] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
+			$tmp = '<td ' . ($text['name'] ? 'id="' . $text['name'] . $this->name . '" ' : "") . 'class="small bold">' . $text["text"] . '</td>';
+			switch($text['place']){
+				case self::TOP:
+					$top .= $tmp;
+					break;
+				case self::RIGHT:
+					$right .= $tmp;
+					break;
+				case self::BOTTOM:
+					$bottom .= $tmp;
+					break;
+				case self::LEFT:
+					$left .= $tmp;
+					break;
+			}
 		}
 
 
 		$progress_len = ($this->stud_len / 100) * $this->progress;
 		$rest_len = $this->stud_len - $progress_len;
 
-		return '<table class="default ' . $class . '" style="display:inline-table;font-size: 1px;line-height: 0;' . $style . '">' .
-			'<tr>' . $top . '</tr>' .
-			'<tr>' .
-			'<td><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div></td>' .
-			'</tr>'
+		return '<table class="default progressbar ' . $class . '" style="' . $style . '">' .
+			($top ? '<tr>' . $top . '</tr>' : '') .
+			'<tr>' . $left .
+			'<td style="padding-right:5px;"><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;"></div></td>' .
+			$right .
+			'</tr>' .
+			($bottom ? '<tr>' . $bottom . '</tr>' : '' )
 			. '</table>';
 	}
 
