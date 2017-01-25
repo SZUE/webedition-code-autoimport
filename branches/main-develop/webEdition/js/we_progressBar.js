@@ -34,6 +34,10 @@ function setProgressText(name, text) {
 }
 
 function setProgress(name, progress) {
+	var elems = document.getElementsByClassName('progressbar');
+	for (var i = 0; i < elems.length; i++) {
+		elems[i].style.display = "";
+	}
 	var koef = progressBar[name].koef;
 	document.getElementById("progress_image" + name).style.width = (koef * progress) + "px";
 	document.getElementById("progress_image_bg" + name).style.width = (koef * 100) - (koef * progress) + "px";
@@ -41,23 +45,19 @@ function setProgress(name, progress) {
 	updateEst(name, progress);
 }
 
-//FIXME: remove; this is from export
-function doProgress(progress) {
-	var elem = document.getElementById("progress");
-	if (elem.style.display === "none") {
-		elem.style.display = "";
-	}
-	setProgress("", progress);
-}
-
 function hideProgress() {
-	var elem = document.getElementById("progress");
-	if (elem.style.display !== "none") {
-		elem.style.display = "none";
+	var elems = document.getElementsByClassName('progressbar');
+	for (var i = 0; i < elems.length; i++) {
+		elems[i].style.display = "none";
 	}
 }
 
 function updateEst(name, progress) {
+	if (progress == 100) {
+		progressBar[name].count = 1;
+		progressBar[name].est = 0;
+		return;
+	}
 	if (progress == 0) {
 		progressBar[name].start = Date.now();
 	}
@@ -82,14 +82,15 @@ function updateElapsed(name) {
 	progressBar[name].est -= 1000;
 	var est = new Date();
 	est.setTime(-3600000 + (progressBar[name].est > 0 ? progressBar[name].est : 0));
-	setProgressText("elapsedTime" + name, elapsed.toLocaleTimeString() + "/" + est.toLocaleTimeString());
+	setProgressText("elapsedTime" + name, elapsed.toLocaleTimeString() + " / " + (progressBar[name].est >= 0 ? est.toLocaleTimeString() : '<i class="fa fa-cog fa-spin"></i>')
+		);
 }
 
-$(function () {
-	var t = Date.now();
-	for (var name in progressBar) {
-		progressBar[name].start = t;
-		updateEst(name, 0);
-		updateElapsed(name);
-	}
-});
+/*$(function () {
+ var t = Date.now();
+ for (var name in progressBar) {
+ progressBar[name].start = t;
+ updateEst(name, 0);
+ updateElapsed(name);
+ }
+ });*/

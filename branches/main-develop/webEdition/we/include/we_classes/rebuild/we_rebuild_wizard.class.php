@@ -48,8 +48,7 @@ abstract class we_rebuild_wizard{
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
 		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
-		$WE_PB->addText("", we_progressBar::TOP, 'pb1');
-		$pb = $WE_PB->getHTML();
+		$WE_PB->addText(g_l('rebuild', '[savingDocument]'), we_progressBar::TOP, 'pb1');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", '', 0, 0, "", "", false, false);
@@ -57,7 +56,7 @@ abstract class we_rebuild_wizard{
 		$nextbutdisabled = !(permissionhandler::hasPerm(["REBUILD_ALL", "REBUILD_FILTERD", "REBUILD_OBJECTS", "REBUILD_INDEX", "REBUILD_THUMBS", "REBUILD_META"]));
 
 		if($dc){
-			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $refreshButton . $cancelButton);
+			$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('rebuild', '[rebuild]'), $refreshButton . $cancelButton);
 		} else {
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
@@ -68,7 +67,7 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlSpan(["id" => "cancel", 'style' => "padding-left:10px;text-align:right"], $cancelButton);
 
 			$content = new we_html_table(["width" => "100%"], 1, 2);
-			$content->setCol(0, 0, ["id" => "progr", 'style' => "display:none;padding-left:1em;text-align:left"], $pb);
+			$content->setCol(0, 0, ["id" => "progr", 'style' => "padding-left:1em;text-align:left"], $WE_PB->getHTML('', 'display:none;'));
 			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 

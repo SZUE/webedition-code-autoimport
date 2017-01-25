@@ -37,6 +37,7 @@ function handle_event(what) {
 				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
 				top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 				top.wizbusy.showRefreshButton();
+				top.wizbusy.setProgress("", 0);
 				f.step.value = 2;
 				f.target = "wizcmd";
 			}
@@ -51,7 +52,7 @@ function we_cmd() {
 	var f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var cats,i, folders;
+	var cats, i, folders;
 
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -151,8 +152,8 @@ function checkForError() {
 		}
 	}
 	document._errorMessage = (_fieldsChecked === false ?
-					WE().consts.g_l.rebuild.noFieldsChecked :
-					"");
+		WE().consts.g_l.rebuild.noFieldsChecked :
+		"");
 }
 function makeArrayFromCSV(csv) {
 	if (csv.length && csv.substring(0, 1) === ",") {
@@ -162,9 +163,9 @@ function makeArrayFromCSV(csv) {
 		csv = csv.substring(0, csv.length - 1);
 	}
 	return (csv.length === 0 ?
-					[] :
-					csv.split(/,/)
-					);
+		[] :
+		csv.split(/,/)
+		);
 
 }
 function set_button_state() {

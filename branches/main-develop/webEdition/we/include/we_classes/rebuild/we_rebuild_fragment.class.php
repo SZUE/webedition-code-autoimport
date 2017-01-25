@@ -25,7 +25,6 @@
 class we_rebuild_fragment extends we_fragment_base{
 
 	function doTask(){
-		$this->updateProgressBar();
 		we_rebuild_base::rebuild($this->data);
 	}
 
@@ -46,15 +45,16 @@ class we_rebuild_fragment extends we_fragment_base{
 			}
 		}
 	}
+	function printFooter(){
+		$this->updateProgressBar();
+		parent::printFooter();
+	}
 
 	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		echo we_html_element::jsElement('if(parent.wizbusy.document.getElementById("progr")){
-	parent.wizbusy.document.getElementById("progr").style.display="";
-};
+		echo we_html_element::jsElement('
 parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_base_util::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', '[savingDocument]') . addslashes(we_base_util::shortenPath($this->data["path"], 60)) . '") );
 parent.wizbusy.setProgress("",' . $percent . ');');
-		flush();
 	}
 
 	function finish(){
