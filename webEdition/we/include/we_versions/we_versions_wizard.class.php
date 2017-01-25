@@ -51,7 +51,7 @@ abstract class we_versions_wizard{
 
 		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
 		$WE_PB->addText("", we_progressBar::TOP, "pb1");
-		$pb = $WE_PB->getHTML();
+
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", '', 0, 0, "", "", false, false);
@@ -60,7 +60,7 @@ abstract class we_versions_wizard{
 
 		if($dc){
 			$buttons = $refreshButton . $cancelButton;
-			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $buttons);
+			$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('rebuild', '[rebuild]'), $buttons);
 		} else {
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", '', 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", '', 0, 0, "", "", $nextbutdisabled, false);
@@ -71,13 +71,13 @@ abstract class we_versions_wizard{
 				we_html_element::htmlSpan(["id" => "cancel", 'style' => "padding-left:10px;text-align:right"], $cancelButton);
 
 			$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
-			$content->setCol(0, 0, ["id" => "progr", 'style' => "display:none;text-align:left"], $pb);
+			$content->setCol(0, 0, ["id" => "progr", 'style' => 'text-align:left'], $WE_PB->getHTML('', 'display:none;'));
 			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
 				we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(
-					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"),					], ($dc ? $pb : $content->getHtml()))
+					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"),], ($dc ? $pb : $content->getHtml()))
 		);
 	}
 
@@ -121,7 +121,7 @@ abstract class we_versions_wizard{
 		$parts = [["headline" => "",
 			"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
 			],
-				["headline" => "",
+			["headline" => "",
 				"html" => we_html_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
 		]];
 
@@ -231,7 +231,7 @@ set_button_state(false);';
 		$parts = [['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
 			],
-				['headline' => g_l('versions', '[ContentType]'),
+			['headline' => g_l('versions', '[ContentType]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
@@ -280,7 +280,7 @@ set_button_state(false);';
 			'style' => "",
 			"class" => "weSelect",
 			"onchange" => ""
-			]);
+		]);
 
 		for($x = 0; $x <= 59; $x++){
 			$txt = $x;
@@ -438,15 +438,15 @@ set_button_state(false);';
 		$parts = [['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
 			],
-				['headline' => g_l('versions', '[ContentType]'),
+			['headline' => g_l('versions', '[ContentType]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
 			],
-				['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
+			['html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
 			],
-				['headline' => "", 'html' => $doPublish, 'noline' => 1
+			['headline' => "", 'html' => $doPublish, 'noline' => 1
 			],
 		];
 
@@ -1098,8 +1098,7 @@ set_button_state(false);';
 			return '';
 		}
 
-		return we_html_tools::getHtmlTop('', '', '',
-				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
+		return we_html_tools::getHtmlTop('', '', '', ($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
 					['class' => "weDialogBody"]
 					, we_html_element::htmlForm(["name" => "we_form",
 						"method" => "post",

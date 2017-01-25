@@ -130,9 +130,7 @@ function we_cmd() {
 			if (top.content.editor.edheader.setTab) {
 				top.content.editor.edheader.setTab(3);
 			}
-			if (top.content.editor.edfooter.doProgress) {
-				top.content.editor.edfooter.doProgress(0);
-			}
+				top.content.editor.edfooter.setProgress("", 0);
 			if (top.content.editor.edbody.clearLog) {
 				top.content.editor.edbody.clearLog();
 			}
