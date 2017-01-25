@@ -37,16 +37,6 @@ if (!_EditorFrame) {
 
 }
 
-function we_rpc_dw_onload() {
-	we_cmd = function () {
-	};
-	we_submitForm = function () {
-	};
-	doUnload = function () {
-	};
-}
-
-
 function seeMode_dealWithLinks() {
 	var _aTags = document.getElementsByTagName("a");
 
