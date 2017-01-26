@@ -359,7 +359,7 @@ if(!empty($this->model->ID)){
 				) .
 				'<br/>' . $translate->_('AppStatus') . ': <strong>' .
 				(!we_app_Common::isActive($this->model->classname) ?
-					$translate->_('AppStatusDiabled') :
+					$translate->_('AppStatusDisabled') :
 					$translate->_('AppStatusActive')
 				) . '</strong>';
 
@@ -599,8 +599,6 @@ function firstCharNum(str) {
 
    return IsNumber;
 }
-
-
 ';
 
 $cssLoadingWheel = '

@@ -24,14 +24,12 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
-$translate = we_core_Local::addTranslation('apps.xml');
-we_core_Local::addTranslation('default.xml', 'toolfactory');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
 
 $saveButton = new we_ui_controls_Button(
-	['text' => $translate->_('Save'),
+	['text' => g_l('apps','[button][Save]'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_save"});',
 	'type' => 'onClick',
 	'width' => 110,
@@ -40,7 +38,7 @@ $saveButton = new we_ui_controls_Button(
  ]
 );
 $unpublishButton = new we_ui_controls_Button(
-	['text' => $translate->_('Unpublish'),
+	['text' => g_l('apps','[button][Unpublish]'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_unpublish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "' . $this->model->classname . '", ignoreHot: "1"}})',
 	'type' => 'onClick',
 	'width' => 110,
@@ -49,7 +47,7 @@ $unpublishButton = new we_ui_controls_Button(
  ]
 );
 $publishButton = new we_ui_controls_Button(
-	['text' => $translate->_('Publish'),
+	['text' => g_l('apps','[button][Publish]'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_publish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "' . $this->model->classname . '", ignoreHot: "1"}})',
 	'type' => 'onClick',
 	'width' => 110,
