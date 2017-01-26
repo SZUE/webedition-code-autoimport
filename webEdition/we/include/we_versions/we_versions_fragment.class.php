@@ -25,23 +25,22 @@
 class we_versions_fragment extends we_fragment_base{
 
 	public function __construct($name, $initdata = ''){
-		parent::__construct($name, 1, 0, [], $initdata);
+		parent::__construct($name, 1, [], $initdata);
 	}
 
-	function doTask(){
+	protected function doTask(){
 		we_versions_version::todo($this->data);
-		$this->updateProgressBar();
 	}
 
-	function updateProgressBar(){
+	protected function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		echo we_html_element::jsElement(
-			'parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' .
-			addslashes(we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" .
-			addslashes(we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress("",' . $percent . ');');
+		return we_html_element::jsElement(
+				'parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' .
+				addslashes(we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" .
+				addslashes(we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress("",' . $percent . ');');
 	}
 
-	function finish(){
+	protected function finish(){
 		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
 			$versionslog = new we_versions_log();
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
@@ -55,32 +54,9 @@ class we_versions_fragment extends we_fragment_base{
 			case 'reset_versions':
 				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(
-					addslashes($responseText ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
-			// reload current document => reload all open Editors on demand
-
-			var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
-			}
-
-			//reload tree
-			top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
-
-			top.close();
-		'), we_html_element::htmlBody());
-	}
-
-	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
+		echo we_html_tools::getHtmlTop('', '', '', we_message_reporting::jsMessagePush($responseText, we_message_reporting::WE_MESSAGE_NOTICE) .
+			we_html_element::jsScript(JS_DIR . 'we_versionsRebuild_finish.js')
+			, we_html_element::htmlBody());
 	}
 
 	/**

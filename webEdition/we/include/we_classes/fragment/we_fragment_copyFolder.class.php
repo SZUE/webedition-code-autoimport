@@ -24,8 +24,9 @@
  */
 class we_fragment_copyFolder extends we_fragment_base{
 	var $copyToPath = "";
+	private $text = '';
 
-	function init(){
+	protected function init(){
 		$fromID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$toID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4);
@@ -69,7 +70,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				"CreateTemplateInFolderID" => $CreateTemplateInFolderID,
 				"OverwriteCategories" => $OverwriteCategories,
 				"newCategories" => $newCategories,
-				];
+			];
 
 			// make it twice to be sure that all linked IDs are correct
 			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType != '" . we_base_ContentTypes::WEDOCUMENT . "' ORDER BY IsFolder DESC,Path");
@@ -107,7 +108,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					"CreateTemplateInFolderID" => 0,
 					"OverwriteCategories" => 0,
 					"newCategories" => '',
-					];
+				];
 				$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
 				while($db->next_record(MYSQL_ASSOC)){
 					$this->alldata[] = array_merge($db->getRecord(), $merge);
@@ -116,31 +117,33 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
-	function doTask(){
+	protected function doTask(){
 		if(is_array($this->data)){
 			if(!isset($this->data['TheTable'])){
-				if($this->copyFile()){
-					$pbText = ($this->data['IsWeFile'] && $this->data['num'] ?
-							sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
-							sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])));
-
-					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
-					flush();
-				} else {
+				if(!$this->copyFile()){
+					t_e('Error importing File: ' . $this->data['Path']);
 					exit('Error importing File: ' . $this->data['Path']);
 				}
-			} else {
-				if($this->copyObjects()){
-					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"]))) . '");');
-					flush();
-				} else {
-					exit('Error importing Object: ' . $this->data['Path']);
-				}
+				$this->text = addslashes(($this->data['IsWeFile'] && $this->data['num'] ?
+					sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
+					sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])))
+				);
+
+				return;
 			}
+			if(!$this->copyObjects()){
+				t_e('Error importing Object: ' . $this->data['Path']);
+				exit('Error importing Object: ' . $this->data['Path']);
+			}
+			$this->text = addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"])));
 		}
 	}
 
-	function getObjectPid($path, we_database_base $db){
+	protected function updateProgressBar(){
+		return we_html_element::jsElement('parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . $this->text . '");');
+	}
+
+	private function getObjectPid($path, we_database_base $db){
 		$path = dirname($path);
 		if($path === '/'){
 			return 0;
@@ -148,7 +151,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
-	function copyObjects(){
+	private function copyObjects(){
 		$GLOBALS['we_doc'] = $this->getObjectFile();
 		$this->copyToPath = id_to_path($this->data['CopyToId'], OBJECT_FILES_TABLE);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
@@ -194,15 +197,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($path) . '"');
 	}
 
-	function copyObjectFolder(){
-		return true;
-	}
-
-	function copyObjectFile(){
-		return true;
-	}
-
-	function getObjectFile(){
+	private function getObjectFile(){
 		switch($this->data['ContentType']){
 			case we_base_ContentTypes::FOLDER:
 				$we_ContentType = $this->data['ContentType'];
@@ -213,7 +208,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
-	function copyFile(){
+	private function copyFile(){
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data['CopyToId']);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
@@ -335,7 +330,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return true;
 	}
 
-	function copyTemplate($templateID, $parentID, $CreateMasterTemplate = false, $CreateIncludedTemplate = false, $counter = 0){
+	private function copyTemplate($templateID, $parentID, $CreateMasterTemplate = false, $CreateIncludedTemplate = false, $counter = 0){
 		$counter++;
 		$templVars = [];
 		if(!isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
@@ -466,7 +461,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 							if($this->mustChange($path)){
 								$changed = true;
 								$pathTo = $this->getNewPath($path);
-								$idTo = path_to_id($pathTo, FILE_TABLE, $GLOBALS['DB_WE'])? : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+								$idTo = path_to_id($pathTo, FILE_TABLE, $GLOBALS['DB_WE']) ?: '##WEPATH##' . $pathTo . ' ###WEPATH###';
 								$destTag = preg_replace('/' .
 									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
@@ -524,7 +519,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 								if($this->mustChange($path)){
 									$pathTo = $this->getNewPath($path);
 									$idTo = path_to_id($pathTo, FILE_TABLE, $DB_WE);
-									$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
+									$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ?: '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
 								}
 							}
 						} elseif(($path = $we_doc->getElement($regs[1]))){
@@ -540,7 +535,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					if($this->mustChange($path)){
 						$pathTo = $this->getNewPath($path);
 						$idTo = path_to_id($pathTo, FILE_TABLE, $DB_WE);
-						$we_doc->setElement($k, ($idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'img', 'bdid');
+						$we_doc->setElement($k, ($idTo ?: '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'img', 'bdid');
 					}
 					break;
 				case 'linklist' :
@@ -595,7 +590,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				$path = id_to_path($id, FILE_TABLE, $DB_WE);
 				if($this->mustChange($path)){
 					$pathTo = $this->getNewPath($path);
-					$idTo = path_to_id($pathTo, FILE_TABLE, $DB_WE) ? : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+					$idTo = path_to_id($pathTo, FILE_TABLE, $DB_WE) ?: '##WEPATH##' . $pathTo . ' ###WEPATH###';
 					$text = preg_replace('#(href|src)="' . we_base_link::TYPE_INT_PREFIX . $id . '#i', $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $idTo, $text);
 				}
 			}
@@ -610,12 +605,12 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
-	function getDocument(){
+	private function getDocument(){
 		$we_ContentType = $this->data['ContentType'];
 		return we_document::initDoc([], $we_ContentType);
 	}
 
-	function finish(){
+	protected function finish(){
 		//$cancelButton = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){

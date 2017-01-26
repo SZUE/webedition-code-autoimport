@@ -71,7 +71,6 @@ class we_fragment_base{
 	 * Pause for each task in ms.
 	 * @var        int
 	 */
-	var $pause;
 	var $initdata = null;
 
 	/**
@@ -88,10 +87,9 @@ class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment, $pause = 1, array $bodyAttributes = [], $initdata = ""){
+	public function __construct($name, $taskPerFragment,array $bodyAttributes = [], $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
-		$this->pause = $pause;
 		if($initdata){
 			$this->initdata = $initdata;
 		}
@@ -134,7 +132,7 @@ class we_fragment_base{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag(array $attributes = []){
+	protected function printBodyTag(array $attributes = []){
 		$attr = "";
 		foreach($attributes as $k => $v){
 			$attr .= " $k=\"$v\"";
@@ -151,10 +149,6 @@ class we_fragment_base{
 
 		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?' . $tail . "';";
 
-		$onload = ($this->pause ?
-				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :
-				$onload);
-
 		if(($nextTask < $this->numberOfTasks)){
 			return $onload;
 		}
@@ -164,11 +158,16 @@ class we_fragment_base{
 	 * Prints the Footer.
 	 *
 	 */
-	function printFooter(){
-		echo '</body></html>';
+	protected function printFooter(){
+		echo $this->updateProgressBar() .
+		'</body></html>';
 	}
 
-	static function printHeader(){
+	protected function updateProgressBar(){
+		return '';
+	}
+
+	protected static function printHeader(){
 		//FIXME: missing title
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
@@ -181,7 +180,7 @@ class we_fragment_base{
 	 * Overwrite this function to initialize the array taskFragment::alldata.
 	 *
 	 */
-	function init(){
+	protected function init(){
 		$this->alldata = $this->initdata;
 	}
 
@@ -189,7 +188,7 @@ class we_fragment_base{
 	 * Overwrite this function to do the work for each task.
 	 *
 	 */
-	function doTask(){
+	protected function doTask(){
 
 	}
 
@@ -197,7 +196,7 @@ class we_fragment_base{
 	 * Overwrite this function to do the work when everything is finished.
 	 *
 	 */
-	function finish(){
+	protected function finish(){
 
 	}
 

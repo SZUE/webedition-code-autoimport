@@ -27,27 +27,32 @@ class we_import_siteFrag extends we_fragment_base{
 
 	function __construct($obj){
 		$this->obj = $obj;
-		parent::__construct("siteImport", 1, 0, ['style' => 'margin:10px 15px;']);
+		parent::__construct("siteImport", 1, ['style' => 'margin:10px 15px;']);
 	}
 
-	function init(){
+	protected function init(){
 		$this->alldata = $this->obj->files;
 	}
 
-	function doTask(){
+	protected function doTask(){
+		switch($this->data["contentType"]){
+			case "post/process":
+				we_import_site::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
+				return;
+			default:
+				$ret = we_import_site::importFile($this->data["path"], $this->data["contentType"], $this->data["sourceDir"], $this->data["destDirID"], $this->data["sameName"], $this->data["thumbs"], $this->data["width"], $this->data["height"], $this->data["widthSelect"], $this->data["heightSelect"], $this->data["keepRatio"], $this->data["quality"], $this->data["degrees"], $this->data["importMetadata"], $this->data["isSearchable"]);
+				if(!empty($ret)){
+					t_e('import error:', $ret);
+				}
+		}
+	}
+
+	protected function updateProgressBar(){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
 		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = we_base_util::shortenPath($path, 30);
 
-		if($this->data["contentType"] === "post/process"){
-			we_import_site::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
-		} else {
-			$ret = we_import_site::importFile($this->data["path"], $this->data["contentType"], $this->data["sourceDir"], $this->data["destDirID"], $this->data["sameName"], $this->data["thumbs"], $this->data["width"], $this->data["height"], $this->data["widthSelect"], $this->data["heightSelect"], $this->data["keepRatio"], $this->data["quality"], $this->data["degrees"], $this->data["importMetadata"], $this->data["isSearchable"]);
-			if(!empty($ret)){
-				t_e('import error:', $ret);
-			}
-		}
-		echo we_html_element::jsElement('
+		return we_html_element::jsElement('
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 WE().layout.button.disable(top.siteimportbuttons.document, "back");
 WE().layout.button.disable(top.siteimportbuttons.document, "next");
@@ -55,7 +60,7 @@ top.siteimportbuttons.setProgress("",' . $progress . ');
 top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldHtmlspecialchars($progressText, ENT_QUOTES) . '";');
 	}
 
-	function finish(){
+	protected function finish(){
 		echo we_html_element::jsElement(
 			"top.siteimportbuttons.setProgress('',100);setTimeout('" . we_message_reporting::getShowMessageCall(
 				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");

@@ -24,7 +24,7 @@
  */
 class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 
-	function init(){
+	protected function init(){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$this->alldata = [];
 			foreach($_SESSION['weS']['WE_CREATE_TEMPLATE'] as $id){
@@ -34,19 +34,21 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		}
 	}
 
-	function doTask(){
-		if($this->correctTemplate()){
+	protected function doTask(){
+		if(!$this->correctTemplate()){
+			t_e("Error correcting Template with id: " . $this->data);
+			exit("Error correcting Template with id: " . $this->data);
+		}
+	}
 
-			$pbText = sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)));
+	protected function updateProgressBar(){
+		$pbText = sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
-			echo we_html_element::jsElement('
+		return
+			we_html_element::jsElement('
 parent.document.getElementById("pbTd").style.display="block";
 parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * ($this->currentTask + 1))) . ');
 parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
-			flush();
-		} else {
-			exit("Error correcting Template with id: " . $this->data);
-		}
 	}
 
 	private function correctTemplate(){
@@ -66,7 +68,7 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 		return $templ->we_save();
 	}
 
-	function finish(){
+	protected function finish(){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
