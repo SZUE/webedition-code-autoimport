@@ -38,9 +38,7 @@ switch($tool){
 		$showHeader = false;
 		break;
 	default:
-		$translate = we_core_Local::addTranslation('apps.xml');
-		we_core_Local::addTranslation('default.xml', $tool);
-		$title .= $translate->_('Applications') . ' - ' . $translate->_($tool);
+		$title .= g_l('apps', '[title][Applications]') . ' - ' . $tool;
 		break;
 }
 

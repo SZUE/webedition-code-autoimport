@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -84,14 +83,11 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView{
 		$loadingWheelContainer = "document.getElementById('containerDivBody')";
 		$loadingWheelImg = we_ui_layout_Image::kLoading;
 
-		$js = <<<EOS
-
-
+		$js = 'parent.document.title = "' . $_SERVER['SERVER_NAME'] . ' webEdition ' . g_l('apps', '[title][Applications]') . ' - ' . $this->appName . '"' .
+			<<<EOS
 self.hot = false;
 self.focus();
 self.appName = "{$this->appName}";
-
-parent.document.title = "{$_SERVER['SERVER_NAME']} webEdition {$translate->_('Applications')} - {$translate->_($this->appName)}";
 
 
 /*******************************************
