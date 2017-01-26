@@ -40,11 +40,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 	 */
 	public function save($args){
 
-		$translate = we_core_Local::addTranslation('apps.xml');
-
 		if(!isset($args[0])){
-			throw new we_service_Exception(
-			'Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+			throw new we_service_Exception('Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
 		}
 		$formData = $args[0];
 
@@ -52,8 +49,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$appName = $controller->getParam('appName');
 		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
-			throw new we_service_Exception(
-			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
 		$model = $session->model;
 		$model->setFields($formData);
@@ -61,17 +57,14 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$newBeforeSaving = $model->ID === 0;
 		// check if user has the permissions to create new entries
 		if($model->ID === 0 && !permissionhandler::hasPerm('NEW_APP_' . strtoupper($appName))){
-			$ex = new we_service_Exception(
-				$translate->_(
-					'You do not have the permission to create new entries or folders!'));
+			$ex = new we_service_Exception(g_l('apps', '[error][noperm]'));
 			$ex->setType('warning');
 			throw $ex;
 		}
 
 		// check if name is empty
 		if($model->Text === ''){
-			$ex = new we_service_Exception(
-				$translate->_('The name must not be empty!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception(g_l('apps', '[error][emptyName]'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
@@ -86,56 +79,49 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		// check if it is a folder saving in itself
 		if($model->IsFolder && $model->ID > 0 && $model->ParentID === $model->ID){
-			$ex = new we_service_Exception(
-				$translate->_('The folder cannot be saved in the chosen folder!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception(g_l('apps', '[error][parentFolderNotValid]'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 		// check all required fields
 		$miss = [];
 		if(!$model->hasRequiredFields($miss)){
-			$ex = new we_service_Exception(
-				$translate->_('Required fields are empty!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception(g_l('apps', '[error][requiredEmpty]'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 
 		// check if maintable name is valid
 		if($model->maintablenameNotValid()){
-			$ex = new we_service_Exception(
-				$translate->_('The name of the maintable is not valid!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('The name of the maintable is not valid!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 
 		// check if maintable exists
 		if((!empty($model->maintable))){
-			$db=new DB_WE();
+			$db = new DB_WE();
 			if($db->isTabExist($model->maintable)){
-				$ex = new we_service_Exception(
-					$translate->_('The maintable exists!'), we_service_ErrorCodes::kModelTextEmpty);
+				$ex = new we_service_Exception($translate->_('The maintable exists!'), we_service_ErrorCodes::kModelTextEmpty);
 				$ex->setType('warning');
 				throw $ex;
 			}
 		}
 
 		if($model->textNotValid()){
-			$ex = new we_service_Exception(
-				$translate->_('The name is not valid!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception(g_l('apps', '[error][nameInvalid]'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 
 		if($model->classnameNotValid()){
-			$ex = new we_service_Exception(
-				$translate->_('The name of the model class is not valid!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('The name of the model class is not valid!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 
 		if($model->modelclassExists($model->classname)){
-			$ex = new we_service_Exception(
-				$translate->_('The model class exists!'), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('The model class exists!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
@@ -145,8 +131,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		} catch (we_core_ModelException $e){
 			switch($e->getCode()){
 				case we_service_ErrorCodes::kPathExists :
-					$ex = new we_service_Exception(
-						$translate->_('The name already exists! Please choose another name or folder.'), $e->getCode());
+					$ex = new we_service_Exception(g_l('apps', '[error][nameExists]'), $e->getCode());
 					$ex->setType('warning');
 					throw $ex;
 				default :
@@ -156,7 +141,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$model->ID = $model->classname;
 		we_app_Common::rebuildAppTOC();
 		return ['model' => $model, 'newBeforeSaving' => $newBeforeSaving
-			];
+		];
 	}
 
 	/**
@@ -167,8 +152,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 	 */
 	public function delete($args){
 		if(!isset($args[0])){
-			throw new we_service_Exception(
-			'ID not set (first argument) at delete cmd!', we_service_ErrorCodes::kModelIdNotSet);
+			throw new we_service_Exception('ID not set (first argument) at delete cmd!', we_service_ErrorCodes::kModelIdNotSet);
 		}
 		we_app_Common::rebuildAppTOC();
 		$IdToDel = $args[0];
@@ -176,14 +160,12 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$appName = $controller->getParam('appName');
 		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
-			throw new we_service_Exception(
-			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
 		$model = $session->model;
 
 		if($model->ID != $IdToDel){
-			throw new we_service_Exception(
-			'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', we_service_ErrorCodes::kModelIdsNotTheSame);
+			throw new we_service_Exception('Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', we_service_ErrorCodes::kModelIdsNotTheSame);
 		}
 
 		try{
@@ -199,7 +181,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		we_app_Common::rebuildAppTOC();
 		//return deleted model
 		return ['model' => $model
-			];
+		];
 	}
 
 	/**
@@ -248,7 +230,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		we_app_Common::deactivate($model->classname);
 		return ['model' => $model
-			];
+		];
 	}
 
 	/**
@@ -280,7 +262,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		we_app_Common::activate($model->classname); // eintrag im TOC, in define und meta
 		return ['model' => $model
-			];
+		];
 	}
 
 	public function localInstallFromTGZ($args){
@@ -309,7 +291,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$newBeforeSaving = 0;
 		we_app_Common::rebuildAppTOC();
 		return ['model' => $model, 'newBeforeSaving' => $newBeforeSaving
-			];
+		];
 	}
 
 	public function generateTGZ($args){
@@ -323,13 +305,11 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$appName = $controller->getParam('appName');
 		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
-			throw new we_service_Exception(
-			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
 		$model = $session->model;
 		if($model->ID != $IdToTGZ){
-			throw new we_service_Exception(
-			'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', we_service_ErrorCodes::kModelIdsNotTheSame);
+			throw new we_service_Exception('Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', we_service_ErrorCodes::kModelIdsNotTheSame);
 		}
 		we_util_File::compressDirectory(WE_APPS_PATH . $model->classname, WE_APPS_PATH . $model->classname . "_" . $model->appconfig->info->version . ".tgz");
 
@@ -347,10 +327,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		switch($method){
 			case 'save':
 				return we_net_rpc_JsonRpc::kDefaultAccessibility;
-				break;
 			case 'delete':
 				return we_net_rpc_JsonRpc::kDefaultAccessibility;
-				break;
 			default:
 				return we_net_rpc_JsonRpc::kDefaultAccessibility;
 		}

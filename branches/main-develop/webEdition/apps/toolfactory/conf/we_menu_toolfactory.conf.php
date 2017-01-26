@@ -21,33 +21,30 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$translate = we_core_Local::addTranslation('apps.xml');
-we_core_Local::addTranslation('default.xml', 'toolfactory');
-
-
 include_once ('meta.conf.php');
 
 $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
-$we_menu_toolfactory = [100 => ['text' => $translate->_('toolfactory'),
+$we_menu_toolfactory = [
+	100 => ['text' => g_l('apps', '[toolfactory][name]'),
 		'parent' => 0,
 		'perm' => '',
 		'enabled' => 1,
 	],
-	['text' => $translate->_('New Entry'),
+	['text' => g_l('apps', '[menu][new][entry]'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_new',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
 		'enabled' => 1,
 	],
-	['text' => $translate->_('Delete Entry/Group.'),
+	['text' => g_l('apps', '[menu][delete][all]'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_checkdelete',
 		'perm' => 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR',
 		'enabled' => 1,
 	],
-	['text' => $translate->_('Generate TGZ-File from App'),
+	['text' => g_l('apps', '[menu][generateTGZ]'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_generateTGZ',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
@@ -55,24 +52,24 @@ $we_menu_toolfactory = [100 => ['text' => $translate->_('toolfactory'),
 	],
 	['parent' => 100, // separator
 	],
-	['text' => $translate->_('Close'),
+	['text' => g_l('apps', '[menu][close]'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_exit',
 		'perm' => '',
 		'enabled' => 1,
 	],
-	3000 => ['text' => $translate->_('Help'),
+	3000 => ['text' => g_l('apps', '[menu][help]'),
 		'parent' => 0,
 		'perm' => '',
 		'enabled' => 1,
 	],
-	['text' => $translate->_('Help') . '&hellip;',
+	['text' => g_l('apps', '[menu][help]') . '&hellip;',
 		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_help',
 		'perm' => '',
 		'enabled' => 1,
 	],
-	['text' => $translate->_('Info') . '&hellip;',
+	['text' => g_l('apps', '[menu][info]') . '&hellip;',
 		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_info',
 		'perm' => '',

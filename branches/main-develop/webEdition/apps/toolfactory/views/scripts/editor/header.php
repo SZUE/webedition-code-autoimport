@@ -26,7 +26,7 @@ $translate = we_core_Local::addTranslation('apps.xml');
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-$propertiesTitle = $translate->_('Properties');
+$propertiesTitle = g_l('apps', '[Properties]');
 
 $we_tabs = new we_ui_controls_Tabs(
 	['contentFrame' => 'parent.edbody.',
@@ -46,7 +46,7 @@ $htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');
 
 $htmlPage->setBodyAttributes(['class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()']);
 
-$titlePathGroup = oldHtmlspecialchars($this->model->IsFolder ? $translate->_('Folder') : $translate->_('Entry'));
+$titlePathGroup = oldHtmlspecialchars($this->model->IsFolder ? g_l('apps', '[Folder]') : g_l('apps', '[Entry]'));
 $titlePathName = oldHtmlspecialchars($this->model->Text);
 
 $htmlPage->addHTML(

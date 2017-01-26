@@ -53,7 +53,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 			'class' => self::kClassBoxBody
 		]);
 		$perm = 'NEW_APP_' . strtoupper($appName);
-		$newItemButton = new we_ui_controls_Button(['text' => $translate->_('New Entry'),
+		$newItemButton = new we_ui_controls_Button(['text' => g_l('apps','[menu][new][entry]'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
 			'type' => 'onClick',
 			'disabled' => !permissionhandler::hasPerm($perm),
