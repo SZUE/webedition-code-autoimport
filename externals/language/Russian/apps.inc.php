@@ -31,6 +31,9 @@ $l_apps=array(
 		'new'=>array(
 			'entry'=>'New Entry',
 	),),
+	'title'=>array(
+		'Applications'=>'Applications',
+	),
 	'toolfactory'=>array(
 		'name'=>'Toolfactory',
 		

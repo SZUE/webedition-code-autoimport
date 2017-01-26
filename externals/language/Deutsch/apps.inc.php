@@ -31,6 +31,9 @@ $l_apps=array(
 		'new'=>array(
 			'entry'=>'Neuer Eintrag',
 	),),
+	'title'=>array(
+		'Applications'=>'Applications',
+	),
 	'toolfactory'=>array(
 		'name'=>'Anwendungsverwaltung',
 		
