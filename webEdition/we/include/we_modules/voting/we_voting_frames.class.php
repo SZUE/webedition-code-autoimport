@@ -202,6 +202,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 		$variant_js .= 'owners_label = new (WE().util.multi_edit)("owners",window,0,"' . $del_but . '",510,false);
 owners_label.addVariant();';
+
 		if(is_array($this->View->voting->Owners)){
 			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
 			foreach($this->View->voting->Owners as $owner){
@@ -328,7 +329,7 @@ iptable_label.addVariant();';
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
 		$table = new we_html_table([], 4, 2);
-		$table->setCol(0, 0, ['colspan' => 2], we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, 520, false, 133));
+		$table->setCol(0, 0, ['colspan' => 2], we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, 520, false, 60));
 		$table->setCol(1, 0, ['colspan' => 2], we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
 		$table->setColContent(2, 1, we_html_element::htmlDiv(['id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'], $activeTime->getHtml()

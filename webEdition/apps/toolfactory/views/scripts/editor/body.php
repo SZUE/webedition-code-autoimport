@@ -254,54 +254,34 @@ if(!empty($this->model->ID)){
 			}
 			if(!empty($this->model->appconfig->maintainer)){
 				$cm = $this->model->appconfig->maintainer;
-				$html = '';
 				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Maintainer')]);
 				$rowMaintainer->setLine(0);
-				if(!empty($cm->company)){
-					$html .= '<strong>' . $cm->company . '</strong><br/>';
-				}
+				$html = (empty($cm->company) ? '' : '<strong>' . $cm->company . '</strong><br/>');
+
 				if(!empty($cm->authors->author)){
-					if(is_array($cm->authors->author)){
-						$authornames = $cm->authors->author->toArray();
-					} else {
-						$authornames = $cm->authors->author;
-					}
-					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
-						$authorlinks = $cm->authorlinks->www->toArray();
-					} else {
-						$authorlinks = $cm->authorlinks->www;
-					}
+					$authornames = (is_array($cm->authors->author) ? $cm->authors->author->toArray() : $cm->authors->author);
+					$authorlinks = (!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www) ?
+						$cm->authorlinks->www->toArray() :
+						$cm->authorlinks->www);
+
 					if(is_array($authornames)){
 						$authorentry = [];
 						for($i = 0; $i < count($authornames); $i++){
-							$htmla = '';
-							if(!empty($authorlinks[$i])){
-								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
-							}
-							$htmla .= $authornames[$i];
-							if(!empty($authorlinks[$i])){
-								$htmla .= '</a>';
-							}
-							$authorentry[] = $htmla;
+							$htmla = (empty($authorlinks[$i]) ? '' : '<a href="' . $authorlinks[$i] . '" target="_blank" >') .
+								$authornames[$i] .
+								(empty($authorlinks[$i]) ? '' : '</a>');
 						}
-						$html .= implode(', ', $authorentry);
-					} else {
-						$html .= '';
-						if(!empty($authorlinks)){
-							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
-						}
-						$html .= $authornames;
-						if(!empty($authorlinks)){
-							$html .= '</a>';
-						}
+						$authorentry[] = $htmla;
 					}
+					$html .= implode(', ', $authorentry);
+				} else {
+					$html .= (empty($authorlinks) ? '' :
+						'<a href="' . $authorlinks . '" target="_blank" >') .
+						$authornames .
+						(empty($authorlinks) ? '' : '</a>');
 				}
-				if(!empty($cm->address)){
-					$html .= '<br/>' . $cm->address;
-				}
-				if(!empty($cm->email)){
-					$html .= '<br/><a href="mailto' . $cm->email . '">' . $cm->email . '</a>';
-				}
+				$html .= (empty($cm->address) ? '' : '<br/>' . $cm->address) .
+					(empty($cm->email) ? '' : '<br/><a href="mailto' . $cm->email . '">' . $cm->email . '</a>');
 
 				$rowMaintainer->addHTML($html);
 
@@ -317,50 +297,44 @@ if(!empty($this->model->ID)){
 			$rowVersion = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('AppStatus')]);
 			$html = '';
 			if(!empty($this->model->appconfig->info->version)){
-				$html .= '<strong>' . $translate->_('Version') . ': ' . $this->model->appconfig->info->version . '</strong>';
-				if(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl)){
-					$html .= ' &copy; ';
-					if(!empty($this->model->appconfig->info->copyrighturl)){
-						$html .= ' <a href="http://' . $this->model->appconfig->info->copyrighturl . '" target="_blank">';
-					}
-					$html .= $this->model->appconfig->info->copyright;
-					if(!empty($this->model->appconfig->info->copyrighturl)){
-						$html .= '</a>';
-					}
-				}
-				$html .= '<br/>';
+				$html .= '<strong>' . $translate->_('Version') . ': ' . $this->model->appconfig->info->version . '</strong>' .
+					(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl) ? (
+					' &copy; ' .
+					(empty($this->model->appconfig->info->copyrighturl) ? '' : ' <a href="http://' . $this->model->appconfig->info->copyrighturl . '" target="_blank">') .
+					$this->model->appconfig->info->copyright .
+					(empty($this->model->appconfig->info->copyrighturl) ? '' : '</a>')
+					) : '') .
+					'<br/>';
 			}
 			if(!empty($this->model->appconfig->dependencies->version)){
 				$we_version = we_util_Strings::version2number(WE_VERSION, false);
-				if($we_version < $this->model->appconfig->dependencies->version){
-					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . $this->model->appconfig->dependencies->version . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
-				} else {
-					$html .= $translate->_('MinWeVersion') . ': <strong>' . $this->model->appconfig->dependencies->version . '</strong>';
-				}
+				$html .= ($we_version < $this->model->appconfig->dependencies->version ?
+					($translate->_('MinWeVersion') . ': <strong><span style="color:red">' . $this->model->appconfig->dependencies->version . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>') :
+					$translate->_('MinWeVersion') . ': <strong>' . $this->model->appconfig->dependencies->version . '</strong>' );
 			}
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
 				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . $this->model->appconfig->dependencies->sdkversion . '</strong>';
 			}
 			$html .= '<br/>' . ($this->model->appconfig ?
-					$translate->_('The application manifest is available') :
-					$translate->_('The application manifest is not available')
+				$translate->_('The application manifest is available') :
+				$translate->_('The application manifest is not available')
 				) .
 				'<br/>' . ($this->model->appconfig->info->deactivatable === 'true' ?
-					$translate->_('The application can be deactivated.') :
-					$translate->_('The application can not be deactivated!')
+				$translate->_('The application can be deactivated.') :
+				$translate->_('The application can not be deactivated!')
 				) .
 				'<br/>' . ($this->model->appconfig->info->deinstallable === 'true' ?
-					$translate->_('The application is deletable.') :
-					$translate->_('The application can not be deleted!')
+				$translate->_('The application is deletable.') :
+				$translate->_('The application can not be deleted!')
 				) .
 				'<br/>' . ($this->model->appconfig->info->updatable === 'true' ?
-					$translate->_('The application can be updated.') :
-					$translate->_('The application can not be updated.')
+				$translate->_('The application can be updated.') :
+				$translate->_('The application can not be updated.')
 				) .
 				'<br/>' . $translate->_('AppStatus') . ': <strong>' .
 				(!we_app_Common::isActive($this->model->classname) ?
-					$translate->_('AppStatusDisabled') :
-					$translate->_('AppStatusActive')
+				$translate->_('AppStatusDisabled') :
+				$translate->_('AppStatusActive')
 				) . '</strong>';
 
 			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
@@ -379,30 +353,22 @@ if(!empty($this->model->ID)){
 			$html = '';
 			$rowExTool = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('ExTool')]);
 			if(!empty($this->model->appconfig->thirdparty->www)){
-				$html .= ' <a href="' . $this->model->appconfig->thirdparty->www . '" target="_blank">';
-				if(!empty($this->model->appconfig->thirdparty->name)){
-					$html .= $this->model->appconfig->thirdparty->name;
-				} else {
-					$html .= $this->model->appconfig->thirdparty->www;
-				}
-				$html .= '</a>';
+				$html .= ' <a href="' . $this->model->appconfig->thirdparty->www . '" target="_blank">' .
+					(!empty($this->model->appconfig->thirdparty->name) ?
+					$this->model->appconfig->thirdparty->name :
+					$this->model->appconfig->thirdparty->www) .
+					'</a>';
 			}
-			if(!empty($this->model->appconfig->thirdparty->version)){
-				$html .= ', ' . $translate->_('Version') . ' ' . $this->model->appconfig->thirdparty->version;
-			}
+			$html .= (empty($this->model->appconfig->thirdparty->version) ? '' :
+				', ' . $translate->_('Version') . ' ' . $this->model->appconfig->thirdparty->version);
+
 			if(!empty($this->model->appconfig->thirdparty->license)){
-				$html .= '<br/> ' . $translate->_('LicenseType') . ' ';
-				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
-					$html .= ' <a href="' . $this->model->appconfig->thirdparty->licenseurl . '" target="_blank">';
-				}
-				if(!empty($this->model->appconfig->thirdparty->license)){
-					$html .= $this->model->appconfig->thirdparty->license;
-				} else {
-					$html .= $this->model->appconfig->thirdparty->licenseurl;
-				}
-				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
-					$html .= '</a>';
-				}
+				$html .= '<br/> ' . $translate->_('LicenseType') . ' ' .
+					(empty($this->model->appconfig->thirdparty->licenseurl) ? '' : ' <a href="' . $this->model->appconfig->thirdparty->licenseurl . '" target="_blank">') .
+					(!empty($this->model->appconfig->thirdparty->license) ?
+					$this->model->appconfig->thirdparty->license :
+					$this->model->appconfig->thirdparty->licenseurl) .
+					(empty($this->model->appconfig->thirdparty->licenseurl) ? '' : '</a>');
 			}
 			$rowExTool->addHTML($html);
 			$tableExTool->setRows([$rowExTool]);
