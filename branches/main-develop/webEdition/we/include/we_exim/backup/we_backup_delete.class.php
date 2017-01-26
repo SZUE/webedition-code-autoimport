@@ -27,10 +27,10 @@ class we_backup_delete extends we_fragment_base{
 
 	function __construct($name){
 		$this->db = new DB_WE();
-		parent::__construct($name, 1, 0);
+		parent::__construct($name, 1);
 	}
 
-	function init(){
+	protected function init(){
 		if(!empty($_SESSION['weS']['backup_delete'])){
 
 			$this->db->query('SELECT ContentType,Path FROM ' . FILE_TABLE . ' ORDER BY IsFolder, CHAR_LENGTH(Path) DESC');
@@ -50,7 +50,7 @@ class we_backup_delete extends we_fragment_base{
 		}
 	}
 
-	function doTask(){
+	protected function doTask(){
 		if(!we_base_file::delete($this->data[0])){
 			if(file_exists($this->data[0])){
 				$_SESSION['weS']['delete_files_nok'][] = [
@@ -59,18 +59,21 @@ class we_backup_delete extends we_fragment_base{
 				];
 			}
 		}
+	}
+
+	protected function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", we_base_file::clearPath($this->data[0]));
 		if(strlen($text) > 75){
 			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}
-		echo we_html_element::jsElement('
-			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
-			parent.delmain.setProgress("",' . $percent . ');
+		return we_html_element::jsElement('
+parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
+parent.delmain.setProgress("",' . $percent . ');
 		');
 	}
 
-	function finish(){
+	protected function finish(){
 		$js = (!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) ?
 			'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",WE().consts.size.dialog.small,WE().consts.size.dialog.small,true,true,true);' :
 			'');

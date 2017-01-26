@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
+	private $rebuildPath = '';
 
-	function init(){
+	protected function init(){
 
 		// init the fragment
 		// REQUEST[we_cmd][1] = id of folder
@@ -68,7 +69,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		}
 	}
 
-	function doTask(){
+	protected function doTask(){
 		// getFilter of base-folder
 		$theFolder = new we_folder();
 		$theFolder->initByID($this->data['idForFilter'], $this->data['table']);
@@ -102,18 +103,23 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		// save filter
 		we_customer_documentFilter::saveForModel($targetDoc);
 		$targetDoc->rewriteNavigation();
+		$this->rebuildPath = $targetDoc->Path;
+	}
 
-		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($targetDoc->Path, 55) . "');
+	protected function updateProgressBar(){
+		return we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($this->rebuildPath, 55) . "');
 parent.setProgress(''," . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 
-	function finish(){
+	protected function finish(){
+		$jsCmd = new we_base_jsCmd();
 		echo we_html_element::jsElement("
 parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
 parent.setProgress('',100);
-" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-window.setTimeout(parent.top.close, 2000);
 ");
+		$jsCmd->addMsg(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addCmd('close');
+		echo $jsCmd->getCmds();
 	}
 
 }
