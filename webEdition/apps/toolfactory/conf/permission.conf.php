@@ -23,29 +23,25 @@
  */
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
-$isUTF8 = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8');
-
-$translate = we_core_Local::addTranslation('default.xml', 'toolfactory');
-
 $perm_group_name = "toolfactory";
-$perm_group_title[$perm_group_name] = $isUTF8 ? $translate->_('toolfactory') : utf8_decode($translate->_('toolfactory'));
+$perm_group_title[$perm_group_name] = g_l('apps', '[toolfactory][name]');
 
 $perm_values[$perm_group_name] = ['USE_APP_TOOLFACTORY', 'NEW_APP_TOOLFACTORY', 'DELETE_APP_TOOLFACTORY', 'EDIT_APP_TOOLFACTORY', 'PUBLISH_APP_TOOLFACTORY', 'GENTOC_APP_TOOLFACTORY'];
 
-$perm_titles[$perm_group_name] = [];
-
-$translated = [
-	$translate->_('The user is allowed to use toolfactory'),
-	$translate->_('The user is allowed to create new items in toolfactory'),
-	$translate->_('The user is allowed to delete items from toolfactory'),
-	$translate->_('The user is allowed to edit items toolfactory'),
-	$translate->_('The user is allowed to publish items toolfactory'),
-	$translate->_('The user is allowed to regenerate the application toc.xml')
+$perm_titles[$perm_group_name] = [
+	'USE_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][use]'),
+	'NEW_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][create]'),
+	'DELETE_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][delete]'),
+	'EDIT_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][edit]'),
+	'PUBLISH_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][publish]'),
+	'GENTOC_APP_TOOLFACTORY' => g_l('apps', '[toolfactory][perm][regenerateTOC]'),
 ];
 
-foreach($translated as $i => $value){
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $isUTF8 ? $value : utf8_decode($value);
-}
-
-$perm_defaults[$perm_group_name] = ['USE_APP_TOOLFACTORY' => 1, 'NEW_APP_TOOLFACTORY' => 1, 'DELETE_APP_TOOLFACTORY' => 0, 'EDIT_APP_TOOLFACTORY' => 0, 'PUBLISH_APP_TOOLFACTORY' => 0, 'GENTOC_APP_TOOLFACTORY' => 0
+$perm_defaults[$perm_group_name] = [
+	'USE_APP_TOOLFACTORY' => 1,
+	'NEW_APP_TOOLFACTORY' => 1,
+	'DELETE_APP_TOOLFACTORY' => 0,
+	'EDIT_APP_TOOLFACTORY' => 0,
+	'PUBLISH_APP_TOOLFACTORY' => 0,
+	'GENTOC_APP_TOOLFACTORY' => 0
 ];
