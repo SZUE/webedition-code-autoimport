@@ -203,6 +203,13 @@ $const = [
 			'CUSTOMER' => we_navigation_frames::TAB_CUSTOMER,
 			'PREVIEW' => we_navigation_frames::TAB_PREVIEW,
 		]
+	],
+	'import' => [
+		'TYPE_CSV' => we_import_functions::TYPE_CSV,
+		'TYPE_GENERIC_XML' => we_import_functions::TYPE_GENERIC_XML,
+		'TYPE_WE_XML' => we_import_functions::TYPE_WE_XML,
+		'TYPE_LOCAL_FILES' => we_import_functions::TYPE_LOCAL_FILES,
+		'TYPE_SITE' => we_import_functions::TYPE_SITE
 	]
 ];
 foreach(we_base_imageEdit::supported_image_types() as $v){

@@ -140,12 +140,6 @@ class we_export_wizard{
 		}
 	}
 
-	private function getJSTop(){
-		return we_html_element::jsElement('
- 			var table="' . FILE_TABLE . '";
- 		');
-	}
-
 	private function getExportVars(){
 		if(isset($_SESSION['weS']['exportVars_session'])){
 			$this->exportVars = $_SESSION['weS']['exportVars_session'];
@@ -167,8 +161,8 @@ class we_export_wizard{
 		}
 		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . "export_frameset.php", 'top', 'top.content.editor.edbody', 'top.load');
 
-		$js = $this->getJSTop() .
-			$this->Tree->getJSTreeCode() .
+		$js = we_html_element::jsScript(JS_DIR . 'export_wizard.js') . $this->Tree->getJSTreeCode();
+/* TODO: maybe send this vars as dynvars so we have the defaults here
 			we_html_element::jsElement('
 var step = 0;
 
@@ -187,6 +181,8 @@ var filename="";
 var export_to="server";
 var path="/";'
 		);
+ *
+ */
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "top.body.location='" . $this->frameset . '?pnt=body' . $args . "&step=' + step;"]
 				, we_html_element::htmlIFrame('header', $this->frameset . '?pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
@@ -208,6 +204,11 @@ var path="/";'
 	}
 
 	private function getHTMLStep0(){
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('load_frame', ['frame' => 'footer', 'location' => $this->frameset . '?pnt=footer&step=0']);
+		$jsCmd->addCmd('load_frame', ['frame' => 'header', 'location' => $this->frameset . '?pnt=header&step=0']);
+		$jsCmd->addCmd('set_focus', ['frame' => 'body']);
+
 		$wexpotEnabled = (permissionhandler::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']));
 
 		$extype = $this->exportVars["extype"];
@@ -224,12 +225,6 @@ var path="/";'
 				}
 			}
 		}
-
-
-		$js = we_html_element::jsElement(
-				'top.footer.location="' . $this->frameset . '?pnt=footer&step=0";
-					top.header.location="' . $this->frameset . '?pnt=header&step=0";
-					self.focus();');
 
 		$parts = [
 			/* 		array(
@@ -252,7 +247,7 @@ var path="/";'
 			];
 		}
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(["pnt" => "body",
 							"step" => 1]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
@@ -263,26 +258,18 @@ var path="/";'
 
 	private function getHTMLStep1(){
 		$extype = $this->exportVars["extype"];
+		$jsCmd = new we_base_jsCmd();
 
+		// FIXME: doesn't work! Looks like we_processCmd has no WE() anymore
 		if($extype == we_import_functions::TYPE_WE_XML){
-			return we_html_element::jsElement('
-top.opener.top.we_cmd("export_edit_ifthere");
-top.close();');
+			return we_base_jsCmd::singleCmd('exit_to_moduleExport');
 		}
 
 		$js = we_html_element::jsElement(
 				'top.footer.location="' . $this->frameset . '?pnt=footer&step=1";
 top.header.location="' . $this->frameset . '?pnt=header&step=1";
 self.focus();
-
-function we_submit(){
-	' . ($this->exportVars["extype"] === "csv" ? '
-	if(document.we_form.selection[1].checked){
-		document.we_form.step.value=3;
-	}
-	' : '') . '
-	document.we_form.submit();
-}');
+');
 
 		$selection = $this->exportVars["selection"];
 
@@ -295,6 +282,7 @@ function we_submit(){
 		return we_html_tools::getHtmlTop(g_l('export', '[wizard_title]'), '', '', $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(['pnt' => "body",
 							'step' => 2,
+							'typeTmp' => $this->exportVars["extype"],
 							'art' => ($this->exportVars["extype"] === 'csv' ? 'objects' : 'docs')]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[step1]'))
 					)
@@ -318,32 +306,8 @@ function we_submit(){
 	private function getHTMLStep2a(){
 		$weSuggest = & weSuggest::getInstance();
 
-		$js = we_html_element::jsElement('
-function we_cmd(){
-/*jshint validthis:true */
-	var caller = (this && this.window === this ? this : window);
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]){
-		case "we_selector_category":
-			new (WE().util.jsWindow)(caller, url,"we_catselector",WE().consts.size.dialog.big, WE().consts.size.dialog.small,true,true,true,true);
-		break;
-		case "add_cat":
-		case "del_cat":
-		case "del_all_cats":
-			document.we_form.wcmd.value=args[0];
-			document.we_form.cat.value=args[1];
-			document.we_form.step.value=2;
-			document.we_form.submit();
-		break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(caller, url,"we_selector",WE().consts.size.dialog.big, WE().consts.size.dialog.medium,true,true,true,true);
-		break;
-			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
-	}
-}');
-		$js .= we_html_element::jsElement('top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
+		$js = we_html_element::jsScript(JS_DIR . 'weCmd_apply.js') .
+			we_base_jsCmd::singleCmd('load_frame', ['frame' => 'footer', 'location' => $this->frameset . '?pnt=footer&step=2']);
 
 		$parts = [];
 		$showdocs = false;
@@ -797,7 +761,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 			case 1:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.body.document.we_form.step.value=0;top.body.document.we_form.submit();") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submit();"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.we_submit();"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			case 2:
