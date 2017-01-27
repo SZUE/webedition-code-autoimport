@@ -78,10 +78,10 @@ function selectFile(id) {
 	if (id) {
 		var e = top.getEntry(id);
 		var a = top.document.getElementsByName("fname")[0];
-		if (a.value != e.text &&
-			a.value.indexOf(e.text + ",") == -1 &&
-			a.value.indexOf("," + e.text + ",") == -1 &&
-			a.value.indexOf("," + e.text + ",") == -1) {
+		if (a.value !== e.text &&
+			a.value.indexOf(e.text + ",") === -1 &&
+			a.value.indexOf("," + e.text + ",") === -1 &&
+			a.value.indexOf("," + e.text + ",") === -1) {
 
 			a.value = a.value ?
 				(a.value + "," + e.text) :

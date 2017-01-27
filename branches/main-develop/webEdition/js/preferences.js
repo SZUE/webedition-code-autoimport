@@ -538,6 +538,15 @@ function we_cmd() {
 		case "openColorChooser":
 			new (WE().util.jsWindow)(caller, url, "we_colorChooser", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
+		case 'setNewWESize':
+			setNewWESize(args[1], args[2]);
+			break;
+		case 'reloadUsedEditors':
+			reloadUsedEditors(args[1]);
+			break;
+		case 'updatePrefs':
+			updatePrefs();
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -587,8 +596,7 @@ function setNewWESize(width, height) {
 
 }
 
-function doClose() {
-	doCloseDyn();
+function updatePrefs() {
 	var childs = top.document.getElementById("tabContainer").children;
 	childs[0].className = "tabActive";
 	for (var i = 1; i < childs.length; ++i) {

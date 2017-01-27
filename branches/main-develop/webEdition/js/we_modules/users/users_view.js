@@ -30,7 +30,6 @@ WE().util.loadConsts(document, "g_l.users");
 
 var usersData = WE().util.getDynamicVar(document, 'loadVarUsersView', 'data-users');
 
-var frameset = usersData.frameset;
 var cgroup = usersData.cgroup;
 parent.document.title = usersData.modTitle;
 

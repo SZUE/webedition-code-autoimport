@@ -621,7 +621,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
-			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
+			echo we_html_element::jsElement('parent.setProgress("",0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
 			$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
