@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragment
-	$theFrag = new we_customer_copyWeDocumentFilterFrag('copyWeDocumentCustomerFilter', 1, 200);
+	$theFrag = new we_customer_copyWeDocumentFilterFrag('copyWeDocumentCustomerFilter', 5);
 } else { // print the window
 	// if any childs of the folder are open - bring message to close them
 	// REQUEST[we_cmd][1] = id of folder

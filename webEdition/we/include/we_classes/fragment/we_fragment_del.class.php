@@ -29,7 +29,7 @@ class we_fragment_del extends we_fragment_base{
 	function __construct($name, $table){
 		$this->db = new DB_WE();
 		$this->table = $table;
-		parent::__construct($name, 1);
+		parent::__construct($name, 10);
 	}
 
 	protected function init(){

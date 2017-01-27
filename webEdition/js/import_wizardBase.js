@@ -77,7 +77,7 @@ function we_cmd() {
 				if (cats[i] && (caller.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
 					found = true;
 					if (caller.wizbody.document.we_form.elements['v[docCategories]'].value) {
-						caller.wizbody.document.we_form.elements['v[docCategories]'].value = calller.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
+						caller.wizbody.document.we_form.elements['v[docCategories]'].value = caller.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
 					} else {
 						caller.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 					}

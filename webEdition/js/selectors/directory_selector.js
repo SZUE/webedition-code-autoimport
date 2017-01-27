@@ -1,4 +1,4 @@
-/* global top, WE, fileSelect, entries */
+/* global top, WE, entries */
 
 /**
  * webEdition CMS
@@ -25,12 +25,12 @@
 'use strict';
 
 function drawNewFolder() {
-	unselectAllFiles();
+	top.unselectAllFiles();
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.NEWFOLDER, top.fileSelect.data.currentDir));
 }
 
 function RenameFolder(id) {
-	unselectAllFiles();
+	top.unselectAllFiles();
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.RENAMEFOLDER, top.fileSelect.data.currentDir, "", id));
 }
 
@@ -63,24 +63,24 @@ function doClick(id, ct) {
 			if (top.fileSelect.options.multiple) {
 				if (top.metaKeys.shift) {
 					var oldid = top.fileSelect.data.currentID;
-					var currendPos = getPositionByID(id);
-					var firstSelected = getFirstSelected();
+					var currendPos = top.getPositionByID(id);
+					var firstSelected = top.getFirstSelected();
 
 					if (currendPos > firstSelected) {
-						selectFilesFrom(firstSelected, currendPos);
+						top.selectFilesFrom(firstSelected, currendPos);
 					} else if (currendPos < firstSelected) {
-						selectFilesFrom(currendPos, firstSelected);
+						top.selectFilesFrom(currendPos, firstSelected);
 					} else {
-						selectFile(id);
+						top.selectFile(id);
 					}
 					top.fileSelect.data.currentID = oldid;
 
 				} else if (!top.metaKeys.ctrl) {
-					selectFile(id);
-				} else if (isFileSelected(id)) {
-					unselectFile(id);
+					top.selectFile(id);
+				} else if (top.isFileSelected(id)) {
+					top.unselectFile(id);
 				} else {
-					selectFile(id);
+					top.selectFile(id);
 				}
 			} else {
 				selectFile(id);
@@ -97,7 +97,7 @@ function doClick(id, ct) {
 }
 
 function setDir(id) {
-	var e = getEntry(id);
+	var e = top.getEntry(id);
 	showPreview(id);
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
@@ -110,7 +110,7 @@ function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		showPreview(id);
-		var e = getEntry(id);
+		var e = top.getEntry(id);
 		if (a.value != e.text &&
 			a.value.indexOf(e.text + ",") === -1 &&
 			a.value.indexOf("," + e.text + ",") === -1 &&

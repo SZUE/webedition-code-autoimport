@@ -27,7 +27,7 @@ class we_import_siteFrag extends we_fragment_base{
 
 	function __construct($obj){
 		$this->obj = $obj;
-		parent::__construct("siteImport", 1, ['style' => 'margin:10px 15px;']);
+		parent::__construct("siteImport", 10, ['style' => 'margin:10px 15px;']);
 	}
 
 	protected function init(){
@@ -53,7 +53,6 @@ class we_import_siteFrag extends we_fragment_base{
 		$progressText = we_base_util::shortenPath($path, 30);
 
 		return we_html_element::jsElement('
-top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 WE().layout.button.disable(top.siteimportbuttons.document, "back");
 WE().layout.button.disable(top.siteimportbuttons.document, "next");
 top.siteimportbuttons.setProgress("",' . $progress . ');

@@ -563,6 +563,30 @@ function checkFonts() {
 	}
 }
 
+function reloadUsedEditors(force) {
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+	for (var frameId in _usedEditors) {
+
+		if (force || ((_usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.TEMPLATES_TABLE || _usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.FILE_TABLE) &&
+			_usedEditors[frameId].getEditorEditPageNr() == WE().consts.global.WE_EDITPAGE_CONTENT)) {
+
+			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+				_usedEditors[frameId].setEditorReloadNeeded(true);
+				_usedEditors[frameId].setEditorIsActive(true);
+
+			} else {
+				_usedEditors[frameId].setEditorReloadNeeded(true);
+			}
+		}
+	}
+}
+
+function setNewWESize(width, height) {
+	parent.opener.top.resizeTo(width, height);
+	parent.opener.top.moveTo((screen.width / 2) - (width / 2), (screen.height / 2) - (height / 2));
+
+}
+
 function doClose() {
 	doCloseDyn();
 	var childs = top.document.getElementById("tabContainer").children;

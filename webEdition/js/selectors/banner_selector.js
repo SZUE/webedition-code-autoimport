@@ -1,4 +1,4 @@
-/* global top,WE, fileSelect */
+/* global top,WE */
 
 /**
  * webEdition CMS
@@ -39,7 +39,7 @@ function doClick(id, ct) {
 				top.RenameFolder(id);
 			}
 		} else {
-			selectFile(id);
+			top.selectFile(id);
 		}
 	}
 }

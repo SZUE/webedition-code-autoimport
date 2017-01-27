@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition SDK
  *
@@ -36,7 +38,7 @@ function doKeyDown(e) {
 
 function weDoOk() {
 	top.opener.tinyMCECallRegisterDialog({}, "unregisterDialog");
-	WefullscreenDialog.writeback();
+	top.WefullscreenDialog.writeback();
 	top.close();
 }
 

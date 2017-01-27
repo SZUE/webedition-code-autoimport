@@ -28,7 +28,7 @@ var hot = false; // this is hot for category edit!!
 WE().util.loadConsts(document, "g_l.selectors.category");
 
 function unselectFile(id) {
-	var e = getEntry(id);
+	var e = top.getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).classList.remove("selected");
 
 	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
@@ -50,7 +50,7 @@ function unselectFile(id) {
 }
 
 function selectFilesFrom(from, to) {
-	unselectAllFiles();
+	top.unselectAllFiles();
 	for (var i = from; i <= to; i++) {
 		selectFile(entries[i].ID);
 	}
@@ -76,7 +76,7 @@ function getPositionByID(id) {
 
 function selectFile(id) {
 	if (id) {
-		var e = getEntry(id);
+		var e = top.getEntry(id);
 		var a = top.document.getElementsByName("fname")[0];
 		if (a.value != e.text &&
 			a.value.indexOf(e.text + ",") == -1 &&
@@ -148,10 +148,10 @@ function doClick(id, ct) {
 		selectFile(id);
 	} else {
 		hidePref(id);
-		if (isFileSelected(id)) {
-			unselectFile(id);
+		if (top.isFileSelected(id)) {
+			top.unselectFile(id);
 		} else {
-			selectFile(id);
+			top.selectFile(id);
 		}
 	}
 
@@ -165,7 +165,7 @@ function doClick(id, ct) {
 }
 
 function setDir(id) {
-	var e = getEntry(id);
+	var e = top.getEntry(id);
 	if (id === 0) {
 		e.text = "";
 	}
@@ -180,7 +180,7 @@ function setDir(id) {
 }
 
 function drawNewCat() {
-	unselectAllFiles();
+	top.unselectAllFiles();
 	top.fileSelect.data.makeNewCat = true;
 	top.writeBody(top.fsbody.document.body);
 }
@@ -188,7 +188,7 @@ function deleteEntry() {
 	if (window.confirm(WE().consts.g_l.fileselector.deleteQuestion)) {
 		var todel = "";
 		for (var i = 0; i < entries.length; i++) {
-			if (isFileSelected(entries[i].ID)) {
+			if (top.isFileSelected(entries[i].ID)) {
 				todel += entries[i].ID + ",";
 			}
 		}

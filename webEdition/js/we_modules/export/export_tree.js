@@ -35,7 +35,7 @@ container.prototype.openClose = function (id) {
 	var eintragsIndex = this.indexOfEntry(id);
 	//var status;
 
-	openstatus = (this[eintragsIndex].open ? 0 : 1);
+	var openstatus = (this[eintragsIndex].open ? 0 : 1);
 
 	this[eintragsIndex].open = openstatus;
 	if (openstatus && !this[eintragsIndex].loaded) {
