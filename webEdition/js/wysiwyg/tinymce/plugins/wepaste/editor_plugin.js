@@ -307,7 +307,7 @@
 						} else {
 							if(isFromInsideTinymce(h)){
 								var tmp = ed.pasteAsPlainText;
-								t.testt.fromInsideTiny = true;
+								t.fromInsideTiny = true;
 								ed.pasteAsPlainText = false;
 								process({content : unmarkContentFromInside(h)});
 								ed.pasteAsPlainText = tmp;
