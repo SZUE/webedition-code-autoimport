@@ -34,7 +34,7 @@ define('secondsDay', 86400);
 define('secondsWeek', 604800);
 define('secondsYear', 31449600);
 
-$save_javascript = '';
+$jsCmd = new we_base_jsCmd();
 $GLOBALS['editor_reloaded'] = false;
 $email_saved = true;
 $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
@@ -192,8 +192,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 				if($generate_java_script){
 					$height = we_base_request::_(we_base_request::INT, 'newconf', 0, "weHeight");
-					$GLOBALS['save_javascript'] .= "
-setNewWESize(" . $settingvalue . ", " . $height . ");";
+					$GLOBALS['jsCmd']->addCmd('setNewWESize', $settingvalue, $height);
 				}
 			}
 			return;
@@ -217,11 +216,7 @@ setNewWESize(" . $settingvalue . ", " . $height . ");";
 				$GLOBALS['editor_reloaded'] = true;
 
 				// editor font has changed - mark all editors to reload!
-				$GLOBALS['save_javascript'] .= '
-if (!_multiEditorreload) {
-	reloadUsedEditors();
-}
-_multiEditorreload = true;';
+				$GLOBALS['jsCmd']->addCmd('reloadUsedEditors');
 			}
 			return;
 
@@ -249,11 +244,7 @@ _multiEditorreload = true;';
 				$GLOBALS['editor_reloaded'] = true;
 
 				// editor tooltip font has changed - mark all editors to reload!
-				$GLOBALS['save_javascript'] .= '
-if (!_multiEditorreload) {
-reloadUsedEditors();
-}
-_multiEditorreload = true;';
+				$GLOBALS['jsCmd']->addCmd('reloadUsedEditors');
 			}
 
 			return;
@@ -266,9 +257,7 @@ _multiEditorreload = true;';
 			if($settingvalue != $GLOBALS['WE_LANGUAGE'] || $_SESSION['prefs']['BackendCharset'] != $GLOBALS['WE_BACKENDCHARSET']){
 
 				// complete webEdition reload: anpassen nach Wegfall der Frames
-				$GLOBALS['save_javascript'] .= "
-reloadUsedEditors(true);
-_multiEditorreload = true;";
+				$GLOBALS['jsCmd']->addCmd('reloadUsedEditors', 1);
 			}
 
 		case 'locale_locales':
@@ -2059,7 +2048,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$checkboxes = we_html_element::jsElement('
 function checkAll(val) {
-	checked=(val.checked)?1:0;
+	var checked=(val.checked)?1:0;
 	' . $jsCheckboxCheckAll . ';
 }
 ') .
@@ -2284,17 +2273,14 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 echo we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
-
-	echo
-	we_html_element::jsElement('
-function doCloseDyn() {
-	var _multiEditorreload = false;
-' . $save_javascript .
-		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
+	if($email_saved){
+		$jsCmd->addMsg(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+	} else {
+		$jsCmd->addMsg(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
-	') .
-	'</head>' .
-	we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'doClose()'], build_dialog('saved')) . '</html>';
+	$jsCmd->addCmd('updatePrefs');
+	echo $jsCmd->getCmds() .	'</head>' .
+	we_html_element::htmlBody(['class' => 'weDialogBody'], build_dialog('saved')) . '</html>';
 } else {
 	$form = we_html_element::htmlForm(['onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']], we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 

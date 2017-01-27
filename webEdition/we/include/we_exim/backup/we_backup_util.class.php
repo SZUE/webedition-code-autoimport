@@ -174,10 +174,10 @@ abstract class we_backup_util{
 	}
 
 	public static function getProgressJS($percent, $description, $return){
-		$ret = 'if(top.busy && top.busy.setProgressText && top.busy.setProgress){
+		$ret = '
 		top.busy.setProgressText("current_description", "' . $description . '");
 		top.busy.setProgress("",' . $percent . ');
-}';
+';
 		if($return){
 			return $ret;
 		}
@@ -185,7 +185,6 @@ abstract class we_backup_util{
 		echo we_html_element::jsElement($ret . '
 			/*' . (time() - $_SESSION['weS']['weBackupVars']['limits']['requestTime']) . 's, ' . we_base_file::getHumanFileSize(memory_get_usage(true)) . '*/
 			');
-		flush();
 	}
 
 	public static function getExportPercent(){

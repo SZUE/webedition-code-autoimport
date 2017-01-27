@@ -38,7 +38,6 @@ class we_users_view extends we_modules_view{
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', '', ['id' => 'loadVarUsersView', 'data-users' => setDynamicVar([
 					'modTitle' => $title,
-					'frameset' => $this->frameset,
 					'cgroup' => ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0)
 		])]);
 	}
