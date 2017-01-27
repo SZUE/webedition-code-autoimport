@@ -25,7 +25,7 @@
 class we_versions_fragment extends we_fragment_base{
 
 	public function __construct($name, $initdata = ''){
-		parent::__construct($name, 1, [], $initdata);
+		parent::__construct($name, 5, [], $initdata);
 	}
 
 	protected function doTask(){

@@ -1,4 +1,4 @@
-/* global WE, we_cmd_modules */
+/* global WE, we_cmd_modules,we_cmd */
 
 /**
  * webEdition CMS

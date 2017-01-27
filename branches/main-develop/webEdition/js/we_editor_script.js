@@ -510,16 +510,7 @@ if (doc.cmd) {
 	doc.cmd = false;
 }
 
-if (doc.isDW) {
-	// overwrite/disable some functions in javascript!!!!
-	window.open = function () {};
-	window.onerror = function () {
-		return true;
-	};
-
-	window.addEventListener("load", we_rpc_dw_onload);
-
-} else if (doc.useSEE_MODE) {
+if (doc.useSEE_MODE) {
 	// add event-Handler, replace links after load
 	window.addEventListener("load", seeMode_dealWithLinks, false);
 }

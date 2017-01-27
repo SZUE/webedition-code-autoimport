@@ -29,49 +29,49 @@
  * It is needed if you need to do a lot of work, which takes time
  * longer than the timeout of some servers
  */
-class we_fragment_base{
+abstract class we_fragment_base{
 	/**
 	 * Number of all tasks.
 	 * @var        int
 	 */
-	var $numberOfTasks = 1;
+	protected $numberOfTasks = 1;
 
 	/**
 	 * Number of current tasks.
 	 * @var        int
 	 */
-	var $currentTask = 0;
+	protected $currentTask = 0;
 
 	/**
 	 * Number of tasks per fragment.
 	 * @var        int
 	 */
-	var $taskPerFragment = 1;
+	protected $taskPerFragment = 1;
 
 	/**
 	 * Array of the data.
 	 * @var        array
 	 */
-	var $alldata = [];
+	protected $alldata = [];
 
 	/**
 	 * Data for the current task.
 	 * @var        mixed
 	 */
-	var $data = null;
+	protected $data = null;
 
 	/**
 	 * Name for the whole fragment action.
 	 * This variable is used for a reference, so it must be unique
 	 * @var        string
 	 */
-	var $name;
+	protected $name;
 
 	/**
 	 * Pause for each task in ms.
 	 * @var        int
 	 */
-	var $initdata = null;
+	protected  $initdata = null;
 
 	/**
 	 * init Data.

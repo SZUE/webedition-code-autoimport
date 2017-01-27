@@ -27,7 +27,7 @@ class we_backup_delete extends we_fragment_base{
 
 	function __construct($name){
 		$this->db = new DB_WE();
-		parent::__construct($name, 1);
+		parent::__construct($name, 10);
 	}
 
 	protected function init(){

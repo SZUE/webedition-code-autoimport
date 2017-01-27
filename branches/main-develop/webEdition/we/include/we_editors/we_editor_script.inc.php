@@ -48,7 +48,6 @@ $doc = [
 	'WE_EDIT_IMAGE' => intval(defined('WE_EDIT_IMAGE')),
 	'useSEE_MODE' => false,
 	'cmd' => false,
-	'isDW' => false,
 ];
 
 if(isset($GLOBALS['we_doc'])){

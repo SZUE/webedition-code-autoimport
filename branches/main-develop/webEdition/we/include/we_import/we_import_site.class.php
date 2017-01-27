@@ -290,8 +290,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getSiteImportTableHTML($fields, $values = []){
 
 		$headlines = [['dat' => g_l('siteimport', '[fieldName]')],
-				['dat' => g_l('siteimport', '[startMark]')],
-				['dat' => g_l('siteimport', '[endMark]')]
+			['dat' => g_l('siteimport', '[startMark]')],
+			['dat' => g_l('siteimport', '[endMark]')]
 		];
 
 		$content = [];
@@ -300,9 +300,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			foreach(array_keys($fields) as $name){
 				list($valpre, $valpost) = $this->_getIndexOfValues($values, $name);
 				$content[] = [
-						['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
-						['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
-						['dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'],
+					['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
+					['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
+					['dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'],
 				];
 				$i++;
 			}
@@ -423,7 +423,6 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', '', '', '', 0);
 
 		// Destination Directory
-
 		//$hidden = we_html_element::htmlHidden("to",$this->to);
 		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),'','readonly="readonly"',"text",300);
 		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, '', '', 0);
@@ -460,45 +459,45 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, '', '', false, true, '', true);
 		// Depth
-		/*$select = we_html_tools::htmlSelect(
-				"depth", array(
-				"-1" => g_l('siteimport', '[nolimit]'),
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10,
-				11,
-				12,
-				13,
-				14,
-				15,
-				16,
-				17,
-				18,
-				19,
-				20,
-				21,
-				22,
-				23,
-				24,
-				25,
-				26,
-				27,
-				28,
-				29,
-				30
-				), 1, $this->depth, false, array(), "value", 150);*/
+		/* $select = we_html_tools::htmlSelect(
+		  "depth", array(
+		  "-1" => g_l('siteimport', '[nolimit]'),
+		  0,
+		  1,
+		  2,
+		  3,
+		  4,
+		  5,
+		  6,
+		  7,
+		  8,
+		  9,
+		  10,
+		  11,
+		  12,
+		  13,
+		  14,
+		  15,
+		  16,
+		  17,
+		  18,
+		  19,
+		  20,
+		  21,
+		  22,
+		  23,
+		  24,
+		  25,
+		  26,
+		  27,
+		  28,
+		  29,
+		  30
+		  ), 1, $this->depth, false, array(), "value", 150); */
 
 		$depth = we_html_tools::htmlFormElementTable(
 				we_html_forms::checkboxWithHidden($this->depth === 1, 'depth', g_l('siteimport', '[import_recursively]'), false, 'defaultfont'), ''
-			);
+		);
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ?: 20;
 		$maxarray = [0 => g_l('siteimport', '[nolimit]'), 0.5 => "0.5"];
 		for($i = 1; $i <= $maxallowed; $i++){
@@ -528,11 +527,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
 
 		$parts = [
-				["headline" => g_l('siteimport', '[dirs_headline]'),
+			["headline" => g_l('siteimport', '[dirs_headline]'),
 				"html" => $importFrom . $importTo,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				["headline" => g_l('siteimport', '[import]'),
+			["headline" => g_l('siteimport', '[import]'),
 				"html" => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
@@ -681,7 +680,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$pb->addText("&nbsp;", we_progressBar::TOP, "progressTxt");
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
-		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
+		$table->setCol(0, 0, null, $pb->getHTML('', 'display:none;'));
 		$table->setCol(0, 1, ['style' => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
@@ -1654,7 +1653,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				];
 			}
 			if($contentType === we_base_ContentTypes::FOLDER){
-				if(($this->depth == -1)/* || (abs($this->depth) > $this->actualDepth)*/){
+				if(($this->depth == -1)/* || (abs($this->depth) > $this->actualDepth) */){
 					$this->files[] = [
 						'path' => $PathOfEntry,
 						'contentType' => $contentType,

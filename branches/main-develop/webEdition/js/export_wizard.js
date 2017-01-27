@@ -42,12 +42,12 @@ var filename = '';
 var export_to = 'server';
 var path = '/';
 
-function we_submit(){
-	var actualStep = top.body.we_form.elements['step'].value ? parseInt(top.body.we_form.elements['step'].value) - 1 : -1;
+function we_submit() {
+	var actualStep = top.body.we_form.elements.step.value ? parseInt(top.body.we_form.elements.step.value) - 1 : -1;
 
-	switch(actualStep){
+	switch (actualStep) {
 		case 1:
-			if(top.body.we_form.elements['typeTmp'].value === 'csv' && top.body.we_form.selection[1].checked){
+			if (top.body.we_form.elements.typeTmp.value === 'csv' && top.body.we_form.selection[1].checked) {
 				top.body.we_form.step.value = 3;
 			}
 			top.body.we_form.submit();
@@ -58,25 +58,26 @@ function we_submit(){
 	}
 }
 
-function we_cmd(){
+function we_cmd() {
+	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch (args[0]){
+	switch (args[0]) {
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(caller, url,"we_catselector",WE().consts.size.dialog.big, WE().consts.size.dialog.small,true,true,true,true);
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case 'add_cat':
 		case 'del_cat':
 		case 'del_all_cats':
-			caller.document.we_form.wcmd.value=args[0];
-			caller.document.we_form.cat.value=args[1];
-			caller.document.we_form.step.value=2;
+			caller.document.we_form.wcmd.value = args[0];
+			caller.document.we_form.cat.value = args[1];
+			caller.document.we_form.step.value = 2;
 			caller.document.we_form.submit();
 			break;
 		case 'we_selector_directory':
-			new (WE().util.jsWindow)(caller, url,"we_selector",WE().consts.size.dialog.big, WE().consts.size.dialog.medium,true,true,true,true);
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case 'load_frame':
 			top.console.log('load', args);
