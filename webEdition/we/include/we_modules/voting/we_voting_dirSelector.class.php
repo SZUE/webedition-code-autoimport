@@ -136,7 +136,7 @@ class we_voting_dirSelector extends we_selector_directory{
 		$userExtraSQL = ' AND ((1 ' . we_users_util::makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
-			$userExtraSQL .= getWsQueryForSelector($table);
+			$userExtraSQL .= self::getWsQuery($table);
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$wsQuery =[];
 			$ac = we_users_util::getAllowedClasses($this->db);

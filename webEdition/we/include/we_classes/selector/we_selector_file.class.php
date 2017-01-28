@@ -158,7 +158,7 @@ class we_selector_file{
 	}
 
 	protected function query(){
-		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
+		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . self::getWsQuery($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
 			( ($this->filter && $this->table != CATEGORY_TABLE ? 'AND ContentType="' . $this->db->escape($this->filter) . '" ' : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
@@ -404,6 +404,44 @@ WE().consts.g_l.fileselector = {
   VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
 };
 ';
+	}
+
+	public static function getWsQuery($tab, $includingFolders = true){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			return '';
+		}
+
+		if(!($ws = get_ws($tab, true))){
+			return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
+		}
+		$paths = id_to_path($ws, $tab, null, true);
+		$wsQuery = [];
+		foreach($paths as $path){
+			$parts = explode('/', $path);
+			array_shift($parts);
+			$last = array_pop($parts);
+			$path = '/';
+			foreach($parts as $part){
+
+				$path .= $part;
+				if($includingFolders){
+					$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+				} else {
+					$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+				}
+				$path .= '/';
+			}
+			$path .= $last;
+			if($includingFolders){
+				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+			} else {
+				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+			}
+			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		}
+
+		return ' AND (' . implode(' OR ', $wsQuery) . ')';
 	}
 
 }

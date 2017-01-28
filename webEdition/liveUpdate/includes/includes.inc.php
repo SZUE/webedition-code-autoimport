@@ -29,21 +29,6 @@ if(function_exists('we_error_setHandleAll')){
 }
 we_error_handler();
 
-if(!isset($_COOKIE[SESSION_NAME]) && isset($_COOKIE['PHPSESSID'])){
-	session_name('PHPSESSID');
-	session_id($_COOKIE['PHPSESSID']);
-	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
-//note due to session upgrade: in session are serialized classes so an autoloader is needed before starting the session
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
-	session_start();
-	if(!empty($_SESSION['user']['isWeSession'])){//use this session&rename if we have a good we session found
-		setcookie('PHPSESSID', '', time() - 3600);
-		//rename session
-		session_name(SESSION_NAME);
-	}
-	session_write_close();
-}
-
 if(isset($_REQUEST[SESSION_NAME])){
 	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);

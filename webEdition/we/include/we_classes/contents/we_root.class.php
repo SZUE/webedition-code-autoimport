@@ -949,13 +949,13 @@ abstract class we_root extends we_class{
 					$v = we_base_util::rmPhp($v);
 				}
 				if($this->DefArray[$type . '_' . $k]['forbidhtml'] === 'on'){
-					$v = removeHTML($v);
+					$v = we_base_util::rmHTML($v);
 				}
 				break;
 			case 'internal'://pseudo-element for i_setElementsFromHTTP
 				break;
 			default:
-				$v = removeHTML(we_base_util::rmPhp($v));
+				$v = we_base_util::rmHTML(we_base_util::rmPhp($v));
 				break;
 		}
 	}

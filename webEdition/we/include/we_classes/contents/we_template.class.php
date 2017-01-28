@@ -329,7 +329,7 @@ we_templateInit();?>';
 		//get clean variants
 		$regs = [];
 		foreach($_REQUEST as $n => $v){
-			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
+			if(is_array($v) && preg_match('|^we_' . preg_quote($this->Name, '|') . '_variant|', $n, $regs)){
 				foreach($v as $n2 => $v2){
 					if($this->getElement($n2, 'type') === 'variant' && empty($v2)){
 						$this->delElement($n2);
@@ -928,7 +928,7 @@ we_templateInit();?>';
 		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
+				['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
 				]
 		);
 	}

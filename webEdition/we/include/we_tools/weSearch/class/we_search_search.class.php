@@ -896,7 +896,7 @@ class we_search_search extends we_search_base{
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
 					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE';
-						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . getWsQueryForSelector(addTblPrefix($k)));
+						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . we_selector_file::getWsQuery(addTblPrefix($k)));
 						while($db->next_record()){
 							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');
@@ -911,7 +911,7 @@ class we_search_search extends we_search_base{
 						break;
 					case TEMPLATES_TABLE:
 					case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
-						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . getWsQueryForSelector(addTblPrefix($k)));
+						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . we_selector_file::getWsQuery(addTblPrefix($k)));
 						while($db->next_record()){
 							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');

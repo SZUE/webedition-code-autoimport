@@ -27,7 +27,7 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 	function execute(){
 		if(isset($_REQUEST['we_cmd']) && function_exists('log_error_message')){
 			$br = we_base_browserDetect::inst();
-			$line = empty($_REQUEST['we_cmd']['line']) ? 0 : $_REQUEST['we_cmd']['line'];
+			$line = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'line');
 
 			if($br->getBrowser() == we_base_browserDetect::IE && $line == 111){
 				//bad ie, don't log this anymore

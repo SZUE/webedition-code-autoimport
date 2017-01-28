@@ -162,28 +162,6 @@ function filterXss($var, $type = 'string'){
 	return $ret;
 }
 
-/**
- * @deprecated since version 6.3.9
- *
- */
-function we_make_attribs($attribs, $doNotUse = ''){
-	t_e('deprecated', __FUNCTION__);
-	$attr = '';
-	$fil = explode(',', $doNotUse);
-	$fil[] = 'user';
-	$fil[] = 'removefirstparagraph';
-	if(is_array($attribs)){
-		reset($attribs);
-		foreach($attribs as $k => $v){
-			if(!in_array($k, $fil)){
-				$attr .= $k . '="' . $v . '" ';
-			}
-		}
-		$attr = trim($attr);
-	}
-	return $attr;
-}
-
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ?: new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
@@ -374,44 +352,6 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 	}
 }
 
-function getWsQueryForSelector($tab, $includingFolders = true){
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		return '';
-	}
-
-	if(!($ws = get_ws($tab, true))){
-		return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
-	}
-	$paths = id_to_path($ws, $tab, null, true);
-	$wsQuery = [];
-	foreach($paths as $path){
-		$parts = explode('/', $path);
-		array_shift($parts);
-		$last = array_pop($parts);
-		$path = '/';
-		foreach($parts as $part){
-
-			$path .= $part;
-			if($includingFolders){
-				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
-			} else {
-				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-			}
-			$path .= '/';
-		}
-		$path .= $last;
-		if($includingFolders){
-			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
-			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-		} else {
-			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-		}
-		$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-	}
-
-	return ' AND (' . implode(' OR ', $wsQuery) . ')';
-}
-
 function get_def_ws($table = FILE_TABLE){
 	if(!get_ws($table)){ // WORKARROUND
 		return '';
@@ -488,18 +428,8 @@ function t_e($type = 'warning'){
 }
 
 function removeHTML($val){
-	$val = preg_replace(['%<br ?/?>%i', '/<[^><]+>/'], ['###BR###', ''], str_replace(['<?', '?>'], ['###?###', '###/?###'], $val));
-	return str_replace(['###BR###', '###?###', '###/?###'], ['<br/>', '<?', '?>'], $val);
-}
-
-/**
- * @deprecated since version 6.3.0
- * @param type $val
- * @return type
- */
-function removePHP($val){
 	t_e('deprecated', 'use of deprecated function');
-	return we_base_util::rmPhp($val);
+	return we_base_util::rmHTML($val);
 }
 
 function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
@@ -746,11 +676,10 @@ function getVarArray($arr, $string){
 	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
 	$return = $arr;
 	foreach($arr_matches[1] as $dimension){
-		if(isset($return[$dimension])){
-			$return = $return[$dimension];
-		} else {
+		if(!isset($return[$dimension])){
 			return false;
 		}
+		$return = $return[$dimension];
 	}
 	return $return;
 }
