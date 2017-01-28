@@ -172,7 +172,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-	//	$hiddens = ['cmd' => 'tool_' . $this->module . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0)];
+		//	$hiddens = ['cmd' => 'tool_' . $this->module . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0)];
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
@@ -186,18 +186,18 @@ class we_navigation_frames extends we_modules_frame{
 		$table = new we_html_table(['class' => 'default', 'style' => 'margin-top: 5px;'], 1, 3);
 
 		$parentid = (!empty($this->Model->Text) && !empty($this->Model->ID) ?
-				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), '', $this->db) :
-				(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
-					$this->Model->ParentID :
-					(($wq = we_navigation_navigation::getWSQuery()) ?
-						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', '', $this->db) :
-						0)
-				));
+			f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), '', $this->db) :
+			(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
+			$this->Model->ParentID :
+			(($wq = we_navigation_navigation::getWSQuery()) ?
+			f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', '', $this->db) :
+			0)
+			));
 
 		$table->setCol(0, 0, ['class' => 'defaultfont'], g_l('navigation', '[order]') . ':');
 		if($this->Model->ID){
 			$table->setColContent(0, 1, //we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px"') .
-				we_html_element::htmlHidden('Ordn', ($this->Model->Ordn)) .
+												 we_html_element::htmlHidden('Ordn', ($this->Model->Ordn)) .
 				we_html_tools::htmlSelect('Position', $this->View->getEditNaviPosition(), 1, $this->Model->Ordn, false, ['onchange' => 'top.content.we_cmd(\'move_abs\',this.value);'])
 			);
 
@@ -271,18 +271,18 @@ class we_navigation_frames extends we_modules_frame{
 				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : 0)]) .
 			'<div style="display: block;">' .
 			(!$this->Model->IsFolder ?
-				(permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
-					we_html_tools::htmlSelect('Selection', [
-						we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
-						we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-						], 1, $this->Model->Selection, false, ['onchange' => 'closeAllSelection();toggle(this.value);setWorkspaces(\'\');top.content.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::DYN_DOCTYPE . '\');'], 'value', 520) . '<br />' .
-					we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->Model->SelectionType, false, ['onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);top.content.mark();',
-						'style' => 'width: 520px; margin-top: 5px;'], 'value', 520) :
-					we_html_element::htmlHiddens([
-						'Selection' => $this->Model->Selection,
-						'SelectionType' => $this->Model->SelectionType
-					]) ) :
-				'') .
+			(permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
+			we_html_tools::htmlSelect('Selection', [
+				we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
+				we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
+				], 1, $this->Model->Selection, false, ['onchange' => 'closeAllSelection();toggle(this.value);setWorkspaces(\'\');top.content.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::DYN_DOCTYPE . '\');'], 'value', 520) . '<br />' .
+			we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->Model->SelectionType, false, ['onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);top.content.mark();',
+				'style' => 'width: 520px; margin-top: 5px;'], 'value', 520) :
+			we_html_element::htmlHiddens([
+				'Selection' => $this->Model->Selection,
+				'SelectionType' => $this->Model->SelectionType
+			]) ) :
+			'') .
 			'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' . $this->getHTMLDynamic() . '</div>' .
 			'<div id="static" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC ? 'display: block;' : 'display: none;') . '">
 				<div id="staticSelect" style="' . ($this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK ? 'display: block;' : 'display: none;') . '">' . $this->getHTMLStatic() . '</div>
@@ -315,8 +315,8 @@ class we_navigation_frames extends we_modules_frame{
 
 		$buttons = '<div id="docFolderLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? 'inline' : 'none') . '">' . $button_obj . '</div>';
 		$path = ($this->Model->LinkID == 0 ?
-				'' :
-				id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE))));
+			'' :
+			id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE))));
 
 		$seltype = [
 			we_navigation_navigation::STYPE_DOCLINK => g_l('navigation', '[docLink]'),
@@ -386,13 +386,11 @@ class we_navigation_frames extends we_modules_frame{
 
 		$parts[] = [
 			'headline' => g_l('weClass', '[copyFolder]'),
-			'html' => we_html_element::jsElement("var selfNaviPath='" . addslashes($this->Model->Path) . "';
-var selfNaviId = '" . $this->Model->ID . "';") .
-			"<div style='float:left; margin-right:20px'>" .
-			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabled, we_html_tools::TYPE_INFO, 400, true, 0) . "</div>" . "<div style='padding-top:15px'>" . $button_copyFolder . "</div>" . we_html_element::htmlHiddens(
-				[
-					'CopyFolderID' => '',
-					'CopyFolderPath' => ''
+			'html' => "<div style='float:left; margin-right:20px'>" .
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabled, we_html_tools::TYPE_INFO, 400, true, 0) . "</div>" . "<div style='padding-top:15px'>" . $button_copyFolder . "</div>" .
+			we_html_element::htmlHiddens([
+				'CopyFolderID' => '',
+				'CopyFolderPath' => ''
 			]),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
@@ -497,7 +495,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	</div>
 	<div id="classname" style="' . ($this->Model->DynamicSelection == we_navigation_navigation::DYN_CLASS ? 'display: block' : 'display: none') . '; width: 520px;margin-top:5px;">' .
 			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlSelect('ClassID', $classID2Name, 1, $this->Model->ClassID, false, ['onchange' => "clearFields();onSelectionClassChangeJS(this.value);"], 'value', 520), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $firstClass) : '') . '
+				we_html_tools::htmlSelect('ClassID', $classID2Name, 1, $this->Model->ClassID, false, ['onchange' => "clearFields();onSelectionClassChangeJS(this.value);"], 'value', 520), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $firstClass) : '') . '
 	</div>
 	<div id="fieldChooser" style="' . ($this->Model->DynamicSelection != we_navigation_navigation::DYN_CATEGORY ? 'display: block' : 'display: none') . '; width: 520px;margin-top: 5px;">' .
 			$this->getHTMLFieldChooser(g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->DynamicSelection) . '
@@ -539,8 +537,8 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? 'inline' : 'none') . '">' . $button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK ? 'inline' : 'none') . '">' . $button_cat . '</div>';
 		$path = ($this->Model->LinkID == 0 ?
-				'' :
-				id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK ? CATEGORY_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))))
+			'' :
+			id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK ? CATEGORY_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))))
 			);
 
 		$weSuggest = & weSuggest::getInstance();
@@ -776,19 +774,19 @@ function showPreview() {
 							'presetFolder' => we_base_request::_(we_base_request::STRING, 'presetFolder', '')]) .
 						we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 						($this->Model->IsFolder ?
-							we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :
-							we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)
 						) .
 						(($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC || $this->Model->IsFolder) ?
-							$this->getHTMLAttributes() :
-							''
+						$this->getHTMLAttributes() :
+						''
 						)
 					) . ($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
-						we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
-						''
+					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
+					''
 					) . ((defined('CUSTOMER_TABLE')) ?
-						we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CUSTOMER, 'style' => ($tabNr == self::TAB_CUSTOMER ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
-						''
+					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CUSTOMER, 'style' => ($tabNr == self::TAB_CUSTOMER ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
+					''
 					);
 		}
 		return $out;
@@ -867,7 +865,7 @@ function showPreview() {
 
 		$weSuggest = &weSuggest::getInstance();
 		$weSuggest->setAcId($PathName);
-		$weSuggest->setContentType($acCTypes ? : $filter);
+		$weSuggest->setContentType($acCTypes ?: $filter);
 		$weSuggest->setInput($PathName, $path, [], false, true);
 		$weSuggest->setLabel($title);
 		$weSuggest->setMaxResults(50);
@@ -880,9 +878,9 @@ function showPreview() {
 
 		$weAcSelector = $weSuggest->getHTML();
 		return (isset($weAcSelector) ?
-				$weAcSelector :
-				we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput($PathName, 58, $path, '', 'readonly', 'text', (520 - $width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button)
+			$weAcSelector :
+			we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput($PathName, 58, $path, '', 'readonly', 'text', (520 - $width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button)
 			);
 	}
 
@@ -969,8 +967,8 @@ function showPreview() {
 	private function getHTMLDirSelector(){
 		$table = $this->Model->DynamicSelection == we_navigation_navigation::DYN_DOCTYPE ? FILE_TABLE :
 			($this->Model->DynamicSelection == we_navigation_navigation::DYN_CLASS ? OBJECT_FILES_TABLE :
-				($this->Model->DynamicSelection == we_navigation_navigation::DYN_CATEGORY ? CATEGORY_TABLE :
-					FILE_TABLE));
+			($this->Model->DynamicSelection == we_navigation_navigation::DYN_CATEGORY ? CATEGORY_TABLE :
+			FILE_TABLE));
 
 		$rootDirID = (($ws = get_ws($table, true)) ? reset($ws) : 0);
 
@@ -986,7 +984,7 @@ function showPreview() {
 		$buttons = '<div id="docFolder" style="display: ' . (($this->Model->DynamicSelection == we_navigation_navigation::DYN_DOCTYPE) ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->DynamicSelection == we_navigation_navigation::DYN_CLASS ? 'inline' : 'none') . '">' . $button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->DynamicSelection == we_navigation_navigation::DYN_CATEGORY ? 'inline' : 'none') . '">' . $button_cat . '</div>';
 
 
-		$path = id_to_path($this->Model->FolderID ? : $rootDirID, $table);
+		$path = id_to_path($this->Model->FolderID ?: $rootDirID, $table);
 		$attribs = ['onchange' => 'top.content.mark();'];
 		if(!$countSubDirs){
 			$attribs['disabled'] = "disabled";
@@ -997,7 +995,7 @@ function showPreview() {
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput('FolderPath', $path, $attribs);
 		$weSuggest->setMaxResults(50);
-		$weSuggest->setResult('FolderID', $this->Model->FolderID ? : $rootDirID);
+		$weSuggest->setResult('FolderID', $this->Model->FolderID ?: $rootDirID);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setLabel(g_l('navigation', '[dir]'));
 		$weSuggest->setTable($table);
@@ -1049,11 +1047,11 @@ function showPreview() {
 	private function getHTMLWorkspace($type = 'object', $defClassID = 0, $field = 'WorkspaceID'){
 		if($type === 'class'){
 			$wsid = ($this->Model->DynamicSelection == we_navigation_navigation::DYN_CLASS && $this->Model->ClassID ?
-					we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID) :
-					($defClassID ?
-						we_navigation_dynList::getWorkspacesForClass($defClassID) :
-						[]
-					));
+				we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID) :
+				($defClassID ?
+				we_navigation_dynList::getWorkspacesForClass($defClassID) :
+				[]
+				));
 
 			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: 5px;">' .
 				we_html_tools::htmlFormElementTable(

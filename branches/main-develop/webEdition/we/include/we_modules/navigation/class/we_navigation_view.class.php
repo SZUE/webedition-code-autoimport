@@ -57,7 +57,9 @@ class we_navigation_view extends we_modules_view{
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js', '', ['id' => 'loadVarViewProp', 'data-prop' => setDynamicVar([
 					'weNavTitleField' => $objFields,
-					'IsFolder' => intval($this->Model->IsFolder)
+					'IsFolder' => intval($this->Model->IsFolder),
+					'selfNaviPath' => $this->Model->Path,
+					'selfNaviId' => $this->Model->ID,
 		])]);
 	}
 
@@ -79,9 +81,7 @@ class we_navigation_view extends we_modules_view{
 				$this->Model = new we_navigation_navigation();
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";');
+				$jscmd->addCmd('editLoad',$this->Model->Text);
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -97,13 +97,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$_REQUEST['home'] = true;
 					break;
 				}
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";
-if(top.content.treeData){
-	top.content.treeData.unselectNode();
-	top.content.treeData.selectNode(' . $this->Model->ID . ');
-}');
+				$jscmd->addCmd('editLoad',$this->Model->Text,$this->Model->ID);
 				break;
 			case 'module_navigation_save':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION') && !permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -225,13 +219,7 @@ if(top.content.treeData){
 				$delaycmd = we_base_request::_(we_base_request::STRING, 'delayCmd');
 
 				$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
-				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();
-top.content.hot=false;
-if(top.content.makeNewDoc) {
-	window.setTimeout(top.content.we_cmd,100,"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
-}'
-				);
-
+				$jscmd->addCmd('saveReload',$this->Model->IsFolder==1);
 				if($delaycmd){
 					$jscmd->addCmd('we_cmd', $delaycmd);
 					unset($_REQUEST['delayCmd']);
@@ -354,11 +342,11 @@ if(top.content.makeNewDoc) {
 				}
 
 				if($values){ // if the class has workspaces
-					$jscmd->addCmd('we_cmd', ['doPopulateFolderWs', 'values', $prefix, $values]);
+					$jscmd->addCmd('doPopulateFolderWs', 'values', $prefix, $values);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){ // if the class has no workspaces
-					$jscmd->addCmd('we_cmd', ['populateWorkspaces', 'workspace', $prefix]);
+					$jscmd->addCmd('populateWorkspaces', 'workspace', $prefix);
 				} else {
-					$jscmd->addCmd('we_cmd', ['populateWorkspaces', "noWorkspace", $prefix]);
+					$jscmd->addCmd('populateWorkspaces', "noWorkspace", $prefix);
 				}
 				break;
 			case 'populateText':
@@ -367,7 +355,7 @@ if(top.content.makeNewDoc) {
 					$cat->load($this->Model->LinkID);
 
 					if(isset($cat->Title)){
-						echo we_html_element::jsElement('top.content.editor.edbody.document.we_form.Text.value = "' . addslashes($cat->Title) . '";');
+						$jscmd->addCmd('setTitle', $cat->Title);
 					}
 				}
 				break;

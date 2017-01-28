@@ -207,6 +207,24 @@ function we_cmd() {
 				}
 			}
 			break;
+		case 'saveReload':
+			top.content.editor.edheader.location.reload();
+			top.content.hot = false;
+			if (top.content.makeNewDoc) {
+				window.setTimeout(top.content.we_cmd, 100, "module_navigation_" + (args[1] ? 'new_group' : 'new'));
+			}
+			break;
+		case "editLoad":
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=" + encodeURIComponent(args[1]);
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";
+			if (top.content.treeData && args[2]) {
+				top.content.treeData.unselectNode();
+				top.content.treeData.selectNode(args[2]);
+			}
+			break;
+		case "setTitle":
+			top.content.editor.edbody.document.we_form.Text.value = args[1];
+			break;
 		case "del_mode":
 			top.content.treeData.setState(top.content.treeData.tree_states.select);
 			top.content.treeData.unselectNode();
