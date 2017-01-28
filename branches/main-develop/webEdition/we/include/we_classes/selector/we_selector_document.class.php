@@ -89,7 +89,7 @@ class we_selector_document extends we_selector_directory{
 
 		} else {
 			if(get_ws($this->table)){
-				$wsQuery = getWsQueryForSelector($this->table);
+				$wsQuery = self::getWsQuery($this->table);
 			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->db);
 				$wsQueryA = [];

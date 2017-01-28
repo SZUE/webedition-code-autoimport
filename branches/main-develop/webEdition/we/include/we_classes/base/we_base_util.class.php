@@ -136,7 +136,7 @@ abstract class we_base_util{
 		'm4v' => 'video/mp4',
 		'mp3' => 'audio/mp3',
 		'wav' => 'audio/wav'
-	 ];
+	];
 
 	/**
 	 * Formates a number with a country specific format into computer readable format.
@@ -231,6 +231,11 @@ abstract class we_base_util{
 		return $out;
 	}
 
+	static function rmHTML($val){
+		$val = preg_replace(['%<br ?/?>%i', '/<[^><]+>/'], ['###BR###', ''], str_replace(['<?', '?>'], ['###?###', '###/?###'], $val));
+		return str_replace(['###BR###', '###?###', '###/?###'], ['<br/>', '<?', '?>'], $val);
+	}
+
 	static function getGlobalPath(){
 		return (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path) ? $GLOBALS['WE_MAIN_DOC']->Path : '');
 	}
@@ -273,18 +278,18 @@ abstract class we_base_util{
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
 			'error' => '' // error string
-			];
+		];
 		$parsedurl = parse_url($server);
 		$protocol = (isset($parsedurl['scheme']) ?
-				$parsedurl['scheme'] . '://' :
-				'http://');
+			$parsedurl['scheme'] . '://' :
+			'http://');
 
 		$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
 		$pathA = explode('?', $path);
 		$url = $protocol . $parsedurl['host'] . $port . $pathA[0];
 		if(isset($pathA[1]) && strlen($url . $pathA[1]) < 2000){
 //it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
-			$url.='?' . $pathA[1];
+			$url .= '?' . $pathA[1];
 			unset($pathA[1]);
 		}
 		$params = [];
@@ -344,7 +349,7 @@ abstract class we_base_util{
 
 		$data = curl_exec($session);
 
-		if(curl_errno($seson)){
+		if(curl_errno($session)){
 			$info = curl_getinfo($session);
 			$_response['status'] = empty($info['http_code']) ? 1 : $info['http_code'];
 			$_response['error'] = curl_error($session);
@@ -372,8 +377,8 @@ abstract class we_base_util{
 				$vv['month'] = $vv['day'] = $vv['hour'] = $vv['minute'] = 0;
 			}
 			$req[$k] = ($asInt ?
-					mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']) :
-					sprintf('%04d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
+				mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']) :
+				sprintf('%04d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
 		}
 	}
 
@@ -430,13 +435,13 @@ abstract class we_base_util{
 					$mime = finfo_buffer($finfo, we_base_file::loadPart($filepath, 0, 8192, $isCompressed));
 					finfo_close($finfo);
 					if($mime || $method == self::MIME_BY_HEAD){
-						return $mime ? : false;
+						return $mime ?: false;
 					}
 				}
 				if(!($handleCompressed && $isCompressed) && function_exists('mime_content_type')){
 					$mime = mime_content_type($filepath);
 					if($mime || $method == self::MIME_BY_HEAD){
-						return $mime ? : false;
+						return $mime ?: false;
 					}
 				}
 				if($method == self::MIME_BY_HEAD){
@@ -453,15 +458,15 @@ abstract class we_base_util{
 		return (!isset(self::$mimetypes[strtolower($ext)])) ?
 			'application/octet-stream' :
 			(is_array(self::$mimetypes[strtolower($ext)]) ?
-				current(self::$mimetypes[strtolower($ext)]) :
-				self::$mimetypes[strtolower($ext)]);
+			current(self::$mimetypes[strtolower($ext)]) :
+			self::$mimetypes[strtolower($ext)]);
 	}
 
 	public static function extension2mime($ext){
 		return isset(self::$mimetypes[strtolower($ext)]) ?
 			(is_array(self::$mimetypes[strtolower($ext)]) ?
-				current(self::$mimetypes[strtolower($ext)]) :
-				self::$mimetypes[strtolower($ext)]) :
+			current(self::$mimetypes[strtolower($ext)]) :
+			self::$mimetypes[strtolower($ext)]) :
 			false;
 	}
 
@@ -525,9 +530,9 @@ abstract class we_base_util{
 
 		switch(isset($regs[2]) ? $regs[2] : 'px'){
 			case 'ch':
-				$regs[1]*=1.2;
+				$regs[1] *= 1.2;
 			case 'ex':
-				$regs[1]*=2;
+				$regs[1] *= 2;
 			case 'rem':
 			case 'em':
 				return $regs[1] * $base;

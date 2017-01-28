@@ -114,7 +114,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 
 	protected function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
-			getWsQueryForSelector(NEWSLETTER_TABLE) .
+			self::getWsQuery(NEWSLETTER_TABLE) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}

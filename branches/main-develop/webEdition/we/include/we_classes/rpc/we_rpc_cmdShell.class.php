@@ -31,8 +31,7 @@ class we_rpc_cmdShell{
 	protected $Response;
 	protected $Status = we_rpc_cmd::STATUS_OK;
 
-	public function __construct(&$cmd, $protocol){
-
+	public function __construct(array &$cmd, $protocol){
 		$this->Protocol = $protocol;
 		$this->Cmd = $this->createCmd($cmd);
 
@@ -48,7 +47,7 @@ class we_rpc_cmdShell{
 		}
 	}
 
-	private function createCmd($cmd){
+	private function createCmd(array $cmd){
 		$this->CmdName = $cmd['cmd'];
 		$classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
@@ -71,7 +70,7 @@ class we_rpc_cmdShell{
 		return null;
 	}
 
-	function getView($cmd){
+	function getView(array $cmd){
 		$classname = 'rpc' . $cmd['view'] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
@@ -86,11 +85,7 @@ class we_rpc_cmdShell{
 		return $obj;
 	}
 
-	function setView(&$cmd){
-		$this->View = $this->getView($cmd);
-	}
-
-	function isViewAllowed($view){
+	private function isViewAllowed($view){
 		if($view == $this->CmdName){
 			return true;
 		}
@@ -120,7 +115,7 @@ class we_rpc_cmdShell{
 		return $View->getResponse($this->executeInternalCmd($cmd));
 	}
 
-	function getErrorOut(){
+	public function getErrorOut(){
 		switch($this->Status){
 			case we_rpc_cmd::STATUS_NO_CMD:
 				return 'ERROR: No command defined!';
