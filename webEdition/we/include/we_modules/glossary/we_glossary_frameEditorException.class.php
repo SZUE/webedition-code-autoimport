@@ -35,8 +35,8 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 	}
 
 	function Body(we_glossary_frames $weGlossaryFrames){
-		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
-		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
+		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder ? 1 :
+			we_base_request::_(we_base_request::INT, 'tabnr', 1));
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_exception&cmdid=' . $cmdid . '";

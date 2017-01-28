@@ -120,9 +120,9 @@ function we_cmd() {
 }
 
 function copyNaviFolder(folderPath, folderID) {
-	var parentPos = selfNaviPath.indexOf(folderPath);
-	if (parentPos === -1 || selfNaviPath.indexOf(folderPath) > 0) {
-		var cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
+	var parentPos = props.selfNaviPath.indexOf(folderPath);
+	if (parentPos === -1 || props.selfNaviPath.indexOf(folderPath) > 0) {
+		var cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + props.selfNaviPath + "&we_cmd[1]=" + props.selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
 
 		WE().util.rpc(cnfUrl, null, function (weResponse) {
 			if (weResponse !== "") {

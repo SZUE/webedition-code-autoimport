@@ -917,7 +917,7 @@ class we_navigation_navigation extends we_base_model{
 						g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,false,true);
 ');
 		} else {
-			$head = we_html_element::jsElement('WE().util.showMessage(WE().consts.g_l.main.no_perms_action,WE().consts.message.WE_MESSAGE_ERROR,window);');
+			$head = we_message_reporting::jsMessagePush(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 		echo we_html_tools::getHtmlTop('', '', '', $head, we_html_element::htmlBody());
 	}
