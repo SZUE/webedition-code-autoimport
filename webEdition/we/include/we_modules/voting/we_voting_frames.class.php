@@ -152,8 +152,8 @@ function setTab(tab) {
 		if($this->View->voting->IsFolder == 1){
 			return $js . we_html_element::jsElement($variant_js . '}');
 		}
-		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",window,1,"",' . 520 . ',true);
-answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
+		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",window,1,"",520 ,true);
+answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",500 ,true);
 answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
 answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
 answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);';
@@ -653,16 +653,14 @@ function refreshTexts(){
 		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
 		return we_html_element::jsElement('
-var table = "' . FILE_TABLE . '";
+var table = WE().consts.tables.FILE_TABLE;
 function toggle(id){
 	var elem = document.getElementById(id);
-	if(elem.style.display == "none") elem.style.display = "block";
-	else elem.style.display = "none";
+	elem.style.display = (elem.style.display == "none"?"block":"none");
 }
 function setVisible(id,visible){
 	var elem = document.getElementById(id);
-	if(visible==true) elem.style.display = "block";
-	else elem.style.display = "none";
+	elem.style.display = (visible==true?"block":"none");
 }') .
 				we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 				(!$this->View->voting->IsFolder ?

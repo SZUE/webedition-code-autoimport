@@ -1284,7 +1284,7 @@ _multiEditorreload = true;';
 			'html' => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('modules_users', '[user]'),
+			['headline' => g_l('modules_users', '[user]'),
 				'html' => $content,
 				'space' => we_html_multiIconBox::SPACE_MED
 			]
@@ -1305,28 +1305,28 @@ _multiEditorreload = true;';
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 
 		$tableObj = new we_html_table(['class' => 'withBigSpace'], 12, 2, [[[null, $this->getUserfield('Salutation', 'salutation')]],
-				[[null, $this->getUserfield('First', 'first_name')],
-					[null, $this->getUserfield('Second', 'second_name')]
+			[[null, $this->getUserfield('First', 'first_name')],
+				[null, $this->getUserfield('Second', 'second_name')]
 			],
-				[[null, $this->getUserfield('Address', 'address')],
-					[null, $this->getUserfield('HouseNo', 'houseno')]
+			[[null, $this->getUserfield('Address', 'address')],
+				[null, $this->getUserfield('HouseNo', 'houseno')]
 			],
-				[[null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true)],
-					[null, $this->getUserfield('City', 'city')]
+			[[null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true)],
+				[null, $this->getUserfield('City', 'city')]
 			],
-				[[null, $this->getUserfield('State', 'state')],
-					[null, $this->getUserfield('Country', 'country')]
+			[[null, $this->getUserfield('State', 'state')],
+				[null, $this->getUserfield('Country', 'country')]
 			],
-				[[null, $this->getUserfield('Tel_preselection', 'tel_pre')],
-					[null, $this->getUserfield('Telephone', 'telephone', 'tel')]
+			[[null, $this->getUserfield('Tel_preselection', 'tel_pre')],
+				[null, $this->getUserfield('Telephone', 'telephone', 'tel')]
 			],
-				[[null, $this->getUserfield('Fax_preselection', 'fax_pre')],
-					[null, $this->getUserfield('Fax', 'fax', 'tel')]
+			[[null, $this->getUserfield('Fax_preselection', 'fax_pre')],
+				[null, $this->getUserfield('Fax', 'fax', 'tel')]
 			],
-				[[null, $this->getUserfield('Handy', 'mobile')],
-					[null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"')]
+			[[null, $this->getUserfield('Handy', 'mobile')],
+				[null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"')]
 			],
-				[[['colspan' => 2], we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]'))]
+			[[['colspan' => 2], we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]'))]
 			]
 		]);
 
@@ -1373,18 +1373,18 @@ _multiEditorreload = true;';
 			) :
 			'-');
 		$tableObj = new we_html_table([], 5, 2, [[[['style' => 'padding-bottom:10px;width:280px;'], $username],
-				[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
+			[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
 			],
-				[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))],
+			[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))],
 				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
 			],
-				[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($weSuggest->getHTML(), g_l('modules_users', '[group]'))]
+			[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($weSuggest->getHTML(), g_l('modules_users', '[group]'))]
 			],
-				[[['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext],
-					[['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-')]
+			[[['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext],
+				[['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-')]
 			],
-				[[['class' => 'defaultfont'], g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext],
-					[['class' => 'defaultfont'], g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-')]
+			[[['class' => 'defaultfont'], g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext],
+				[['class' => 'defaultfont'], g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-')]
 			],
 		]);
 
@@ -1489,9 +1489,9 @@ function toggleRebuildPerm(disabledOnly) {';
 			];
 		}
 		if($this->ParentID){
+			$javascript .= 'showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');';
 			$parts[] = ['headline' => '',
-				'html' => we_html_element::jsElement('showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
-				$this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
+				'html' => $this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
 			];
 		}
 

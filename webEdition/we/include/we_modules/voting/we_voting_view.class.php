@@ -99,7 +99,6 @@ class we_voting_view extends we_modules_view{
 					break;
 				}
 
-				$js = "";
 				if(we_voting_voting::filenameNotValid($this->voting->Text)){
 					$jscmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
@@ -128,9 +127,7 @@ class we_voting_view extends we_modules_view{
 					break;
 				}
 
-
 				$error = false;
-
 				$q_empty = true;
 				$a_empty = true;
 				if(!$this->voting->IsFolder && !empty($this->voting->QASet)){
