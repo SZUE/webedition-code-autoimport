@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -43,7 +43,7 @@ function we_cmd() {
 	var wind;
 	switch (args[0]) {
 		case "edit_shipping_cost":
-			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid, args[0],  WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
+			wind = new (WE().util.jsWindow)(caller, url + "&bid=" + bid, args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
@@ -69,4 +69,14 @@ function neuerartikel() {
 function deleteorder() {
 	top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=" + bid;
 	top.content.treeData.deleteEntry(bid);
+}
+
+function we_submit() {
+	var elem = document.getElementById("cartfieldname");
+
+	if (elem && elem.value) {
+		document.we_form.submit();
+	} else {
+		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
 }

@@ -91,11 +91,7 @@ function getPagerLinkDoc(){
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
-	function we_submitDateform() {
-		elem = document.forms[0];
-		elem.submit();
-	}')) . '
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */). '
 <body class="weEditorBody" onload="self.focus();top.content.editor.edheader.weTabs.setFrameSize();" onresize="top.content.editor.edheader.weTabs.setFrameSize();" onunload="">
 <form>';
 

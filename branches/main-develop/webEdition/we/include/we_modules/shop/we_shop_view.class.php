@@ -808,20 +808,20 @@ function CalendarChanged(field,oldval,val) {
 					}
 
 					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-		self.focus();
+self.focus();
 
-		function selectArticle(articleInfo) {
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
-		}
+function selectArticle(articleInfo) {
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
+}
 
-		function switchEntriesPage(pageNum) {
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
-		}
+function switchEntriesPage(pageNum) {
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
+}
 
-		function searchArticles() {
-			field = document.getElementById("searchArticle");
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
-		}'), '<body class="weDialogBody">' .
+function searchArticles() {
+	var field = document.getElementById("searchArticle");
+	document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
+}'), '<body class="weDialogBody">' .
 						we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 						'</form>');
 					exit;
@@ -885,15 +885,7 @@ function CalendarChanged(field,oldval,val) {
 						]
 					];
 
-					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('function we_submit() {
-	var elem = document.getElementById("cartfieldname");
-
-	if (elem && elem.value) {
-		document.we_form.submit();
-	} else {
-		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-}'), '
+					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js'), '
 		<body class="weDialogBody">
 		<form name="we_form">
 		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
