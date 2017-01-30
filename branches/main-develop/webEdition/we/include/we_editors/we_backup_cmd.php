@@ -63,7 +63,12 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 	}
 	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
-	echo we_html_tools::getHtmlTop('', '', '', we_backup_wizard::getHTMLChecker(we_base_request::_(we_base_request::STRING, 'cmd')), we_html_element::htmlBody());
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard',
+			'data-backup' => setDynamicVar([
+				'reload' => (we_base_request::_(we_base_request::INT, 'reload', 0) + 1),
+				'mode' => (we_base_request::_(we_base_request::STRING, 'cmd') == self::RECOVER ? 'import' : 'export'),
+				'reloadTimer' => (min($_SESSION['weS']['weBackupVars']['limits']['exec'], 32) * 1000) + 5000 //wait extra 5 secs
+		])]), we_html_element::htmlBody());
 }
 
 switch(we_base_request::_(we_base_request::STRING, 'cmd')){
@@ -107,10 +112,10 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 						we_backup_util::exportFile($file_to_export, $fh);
 					}
 					$percent = we_backup_util::getExportPercent();
-					/*if($oldPercent != $percent){
-						we_backup_util::getProgressJS($percent, $description, false);
-						$oldPercent = $percent;
-					}*/
+					/* if($oldPercent != $percent){
+					  we_backup_util::getProgressJS($percent, $description, false);
+					  $oldPercent = $percent;
+					  } */
 					we_backup_util::writeLog();
 				} while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && we_backup_util::limitsReached('', microtime(true) - $start));
 				$_SESSION['weS']['weBackupVars']['close']($fh);
@@ -126,10 +131,10 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 					$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'export');
 					$percent = we_backup_util::getExportPercent();
-					/*if($oldPercent != $percent){
-						we_backup_util::getProgressJS($percent, $description, false);
-						$oldPercent = $percent;
-					}*/
+					/* if($oldPercent != $percent){
+					  we_backup_util::getProgressJS($percent, $description, false);
+					  $oldPercent = $percent;
+					  } */
 
 					if(we_backup_export::export($fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log'], $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']) === false){
 // force end
@@ -270,10 +275,10 @@ top.cmd.location = "about:blank";
 					we_base_file::delete(array_pop($_SESSION['weS']['weBackupVars']['files_to_delete']));
 				}
 				$percent = we_backup_util::getImportPercent();
-				/*if($oldPercent != $percent){
-					we_backup_util::getProgressJS($percent, $description, false);
-					$oldPercent = $percent;
-				}*/
+				/* if($oldPercent != $percent){
+				  we_backup_util::getProgressJS($percent, $description, false);
+				  $oldPercent = $percent;
+				  } */
 			} while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_util::limitsReached('', microtime(true) - $start));
 		} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 			if($_SESSION['weS']['weBackupVars']['options']['format'] !== 'xml'){
@@ -308,11 +313,11 @@ top.cmd.location = "about:blank";
 					break;
 				}
 				$percent = we_backup_util::getImportPercent();
-				/*if($oldPercent != $percent){
-					$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
-					we_backup_util::getProgressJS($percent, $description, false);
-					$oldPercent = $percent;
-				}*/
+				/* if($oldPercent != $percent){
+				  $description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
+				  we_backup_util::getProgressJS($percent, $description, false);
+				  $oldPercent = $percent;
+				  } */
 				we_backup_util::writeLog();
 			} while(we_backup_util::limitsReached('', microtime(true) - $start));
 			we_backup_fileReader::closeFile();

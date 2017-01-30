@@ -79,13 +79,15 @@ abstract class we_base_moduleInfo{
 	}
 
 	static function isActive($modul){
-		if(!in_array($modul, $GLOBALS['_we_active_integrated_modules'])){
-			return false;
-		}
 		switch($modul){
+			case 'weSearch':
+				break;
 			case 'users'://removed config
 				break;
 			default:
+				if(!in_array($modul, $GLOBALS['_we_active_integrated_modules'])){
+					return false;
+				}
 				if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
 					require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
 				}

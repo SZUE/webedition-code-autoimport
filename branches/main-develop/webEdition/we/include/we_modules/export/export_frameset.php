@@ -32,3 +32,4 @@ $step = we_base_request::_(we_base_request::INT, "step", 0);
 
 
 echo $frames->getHTML($what, $step);
+//FIXME: check to replace this by we_showMod.php

@@ -51,7 +51,7 @@ container.prototype.openClose = function (id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		treeData.frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
+		top.content.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -64,3 +64,5 @@ function doClick(id, typ) {
 	var node = top.content.treeData.get(id);
 	top.content.editor.edbody.we_cmd("tool_weSearch_edit", node.id);
 }
+
+drawTree.selection_table=WE().consts.tables.SEARCH_TABLE;

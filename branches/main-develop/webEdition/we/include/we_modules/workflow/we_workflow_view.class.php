@@ -528,7 +528,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						$jscmd->addMsg(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
-					$childs = '';
 					$this->workflowDef->loadDocuments();
 					foreach($this->workflowDef->documents as $v){
 						$jscmd->addCmd('deleteTreeEntry', [$v["ID"], 'file']);

@@ -70,13 +70,13 @@ class we_export_view extends we_modules_view{
 		}
 
 		foreach($arr as $table => $elem){
-			$items = makeArrayFromCSV($this->export->$elem);
-			foreach($items as $item){
-				$selected .= 'top.content.editor.edbody.SelectedItems["' . $table . '"].push("' . $item . '");';
+
+			if($this->export->$elem){
+				$selected .= 'top.content.editor.edbody.SelectedItems.' . $table . '=['.$this->export->$elem.']';
 			}
 
 			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){
-				$opened .= 'treeData.frames.top.openFolders["' . $table . '"]="' . $open . '";';
+				$opened .= 'top.content.editor.edbody.openFolders.' . $table . '="' . $open . '";';
 			}
 		}
 

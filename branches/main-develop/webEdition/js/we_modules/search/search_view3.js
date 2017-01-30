@@ -51,3 +51,11 @@ function we_cmd() {
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
+
+function submitForm(target, action, method) {
+	var f = self.document.we_form;
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch");
+	f.method = (method ? method : "post");
+	f.submit();
+}

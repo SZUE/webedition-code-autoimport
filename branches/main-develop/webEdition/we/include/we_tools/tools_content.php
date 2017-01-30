@@ -39,7 +39,8 @@ if(!$tool || !in_array($tool, $whiteList)){
 }
 
 if($tool === 'weSearch'){
-	require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/edit_weSearch_frameset.php');
+	$_REQUEST['mod']=$tool;
+	require_once(WEBEDITION_PATH. 'we_showMod.php');
 	return;
 }
 

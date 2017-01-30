@@ -1,4 +1,4 @@
-/* global node, treeData, container,drawTree */
+/* global node, treeData, container,drawTree, WE, top */
 
 /**
  * webEdition CMS
@@ -51,7 +51,7 @@ container.prototype.openClose = function (id) {
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
 		sort = sort.replace(/\+/g, "%2B");
-		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

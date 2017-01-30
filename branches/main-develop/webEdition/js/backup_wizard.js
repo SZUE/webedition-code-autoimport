@@ -249,7 +249,6 @@ function doClicked(checked, opt) {
 	}
 }
 
-
 function delSelItem() {
 	var sel = document.we_form.backup_select;
 	if (sel.selectedIndex > -1) {
@@ -260,7 +259,7 @@ function delSelItem() {
 function showAll() {
 	var a = document.we_form.backup_select.options;
 	var b = document.we_form.show_all,
-		i,j;
+		i, j;
 
 	if (b.checked) {
 		b.value = 1;
@@ -291,7 +290,7 @@ function setLocation(loc) {
 function startStep(step, doImport) {
 	window.focus();
 	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step + (
-					doImport !== undefined ? "&do_import_after_backup" + doImport : "");
+		doImport !== undefined ? "&do_import_after_backup" + doImport : "");
 }
 
 function startBusy() {
@@ -374,4 +373,41 @@ function doClick(opt) {
 
 		}
 	}
+}
+
+function reloadFrame() {
+	if (backup.reload < 3) {
+		top.cmd.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php?cmd=" + backup.mode + "&reload=" + backup.reload;
+	} else {
+		WE().util.showMessage(WE().consts.g_l.backupWizard.error_timeout, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "rebuild":
+			new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=" + WE().consts.g_l.backupWizard.finished_success, "rebuildwin", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
+			top.close();
+			break;
+		case "deleteall":
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=-1", "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
+			break;
+		case "deletebackup":
+			if (top.body.delSelItem) {
+				top.body.delSelItem();
+			}
+			break;
+		default:
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
+//add reload timer if set
+if (backup.reloadTimer) {
+	top.cmd.reloadTimer = setTimeout(reloadFrame, backup.reloadTimer);
 }

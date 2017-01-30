@@ -58,6 +58,7 @@ we/include/we_versions/weVersions.class.inc.php
 we/include/we_versions/versionsLog.inc.php
 we/include/we_tools/weSearch/hook/we_phpCmdHook_weSearch.inc.php
 we/include/we_tools/weSearch/hook/we_jsCmdHook_weSearch.inc.php
+we/include/we_tools/weSearch/edit_weSearch_frameset.php
 we/include/we_tools/weSearch/conf/we_menu_weSearch.conf.php
 we/include/we_tools/weSearch/conf/define.conf.php
 we/include/we_tools/weSearch/class/we_search_treeDataSource.class.php

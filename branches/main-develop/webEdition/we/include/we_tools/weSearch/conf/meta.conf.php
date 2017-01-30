@@ -24,8 +24,8 @@
 //FIXME: remove this file
 $metaInfo = ['name' => 'weSearch',
 	'classname' => 'we_search_model',
-	'maintable' => SUCHE_TABLE,
-	'datasource' => 'table:' . SUCHE_TABLE,
+	'maintable' => SEARCH_TABLE,
+	'datasource' => 'table:' . SEARCH_TABLE,
 	'startpermission' => '',
 	'supportshooks' => 0
 ];

@@ -39,14 +39,13 @@ class we_messaging_tree extends we_tree_base{
 function startTree(){
 	treeData.frames={
 		top:top.content,
-		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	if(treeData.frames.cmd===undefined){
+	if(top.content.cmd===undefined){
 	//FIXME: we have too much frames, this module is not separated well
 		window.setTimeout(startTree,500);
 	}else{
-		treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
+		top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
 	}
 }';
 	}
