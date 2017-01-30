@@ -28,6 +28,7 @@
 'use strict';
 
 var dialogVars = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
+var isWeDialog = true;
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -63,7 +64,6 @@ function openExtSource(argName) {
 		}
 	}
 }
-
 
 function we_cmd_dialogBase() {
 	/*jshint validthis:true */

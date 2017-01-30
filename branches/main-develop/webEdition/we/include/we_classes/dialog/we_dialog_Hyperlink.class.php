@@ -565,12 +565,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$attribs['href'] = $href;
 		$payload = ['attributes' => $attribs];
 
-		return we_html_tools::getHtmlTop('', '', '', parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
+		return we_html_tools::getHtmlTop('', '', '',
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
 					'id' => 'loadVarDialog_cmdFrame',
 					'data-payload' => setDynamicVar($payload)
-				]), we_html_element::htmlBody());
+				]).
+			parent::getTinyMceJS() .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js')
+				, we_html_element::htmlBody());
 	}
 
 }

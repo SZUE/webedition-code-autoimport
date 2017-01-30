@@ -695,8 +695,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $contents[0] .
 				($contents[1] ?
 				we_html_element::jsElement($contents[1]) :
-				''), we_html_element::htmlBody(["class" => "weDialogBody"
-					], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"], $contents[2])
+				''), we_html_element::htmlBody(["class" => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . 'we_cmd.php'], $contents[2])
 				)
 		);
 	}
