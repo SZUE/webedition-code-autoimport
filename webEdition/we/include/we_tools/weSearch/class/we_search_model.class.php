@@ -169,7 +169,7 @@ class we_search_model extends we_search_modelBase{
 	 * Can load or create new searchtool object depends of parameter
 	 */
 	public function __construct($weSearchID = 0){
-		parent::__construct(SUCHE_TABLE);
+		parent::__construct(SEARCH_TABLE);
 		if($weSearchID){
 			$this->ID = $weSearchID;
 			$this->load($weSearchID);

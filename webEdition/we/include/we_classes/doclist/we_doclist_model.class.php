@@ -79,7 +79,7 @@ class we_doclist_model extends we_search_modelBase{
 	 */
 	function __construct($transaction, $searchTable, $folderID = 0, $setView = 'list'){
 		//as we do actually not save this model to db nor session we do call parent
-		//parent::__construct(SUCHE_TABLE);
+		//parent::__construct(SEARCH_TABLE);
 
 		$this->transaction = $transaction;
 		$this->searchTablesDoclistSearch = [$searchTable];

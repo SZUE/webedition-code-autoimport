@@ -53,7 +53,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 		])]) . JQUERY);
 	?>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
-<div id="alertBox"></div>
+		<div id="alertBox"></div>
 		<?php
 		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
 
@@ -98,6 +98,10 @@ $jscmd = new we_base_jsCmd();
 switch($mod){
 	case 'banner':
 		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+		$weFrame->process($jscmd);
+		break;
+	case 'weSearch':
+		$weFrame = new we_search_frames();
 		$weFrame->process($jscmd);
 		break;
 	case 'shop':

@@ -79,7 +79,7 @@ function we_cmd() {
 			top.close();
 			break;
 		case "exit_doc_question":
-			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&pnt=exit_doc_question";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=exit_doc_question";
 			for (var i = 0; i < delay.length; i++) {
 				url += "&delayCmd[]=" + delay[i];
 			}
@@ -128,8 +128,8 @@ function we_cmd() {
 		case "tool_weSearch_delete_do":
 			top.content.editor.edbody.document.we_form.cmd.value = "tool_weSearch_delete";
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-			top.content.editor.edheader.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edheader";
-			top.content.editor.edfooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edfooter";
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&home=0&pnt=edheader";
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&home=0&pnt=edfooter";
 			top.content.editor.edbody.submitForm();
 			break;
 		case "tool_weSearch_new_forDocuments":

@@ -39,7 +39,7 @@ container.prototype.openClose = function (id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -61,8 +61,8 @@ node.prototype.showSegment = function () {
 };
 
 function info(text) {
-	var i = treeData.frames.top.document.getElementById("infoField");
-	var s = treeData.frames.top.document.getElementById("search");
+	var i = top.content.document.getElementById("infoField");
+	var s = top.content.document.getElementById("search");
 	if (text != " ") {
 		s.style.display = "none";
 		i.style.display = "block";

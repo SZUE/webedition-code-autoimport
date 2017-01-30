@@ -33,7 +33,7 @@ class we_search_frames extends we_modules_frame{
 
 	public function __construct(){
 		$this->module = 'weSearch';
-		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
+		parent::__construct(WEBEDITION_DIR . 'we_showMod.php?mod=weSearch');
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->View = new we_search_view($this->frameset, 'top.content');
 	}
@@ -214,15 +214,15 @@ function setTab(tab) {
 			'html' => $searchField_block,
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[suchenIn]'),
+			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[optionen]'),
+			['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+			['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		]];
 	}
 
@@ -245,15 +245,15 @@ function setTab(tab) {
 			'html' => $searchField_block,
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[suchenIn]'),
+			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[optionen]'),
+			['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+			['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		]];
 	}
 
@@ -278,23 +278,23 @@ function setTab(tab) {
 			'html' => $searchField_block,
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[suchenIn]'),
+			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[optionen]'),
+			['headline' => g_l('searchtool', '[optionen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[anzeigen]'),
+			['headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $searchCheckboxMediaTyp_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => 'Filter', //g_l('searchtool', '[optionen]'),
+			['headline' => 'Filter', //g_l('searchtool', '[optionen]'),
 				'html' => $searchFilter_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+			['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		]];
 	}
 
@@ -315,11 +315,11 @@ function setTab(tab) {
 			'html' => $searchFields_block,
 			'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('searchtool', '[anzeigen]'),
+			['headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+			['headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		]];
 	}
 
