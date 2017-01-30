@@ -27,7 +27,7 @@
  */
 'use strict';
 var payload = WE().util.getDynamicVar(document, 'loadVarDialog_cmdFrame','data-payload');
-
+var isWeDialog = true;
 
 function we_cmd() {
 	/*jshint validthis:true */

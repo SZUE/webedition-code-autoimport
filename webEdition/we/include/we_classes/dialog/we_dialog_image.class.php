@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
-	private $weFileupload = null;
+	//private $weFileupload = null;
 
 	function __construct($noInternals = false){
 		parent::__construct();
@@ -422,19 +422,19 @@ class we_dialog_image extends we_dialog_base{
 				$attribs['longdesc'] = intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '';
 				$payload = ['attributes' => $attribs];
 
-				$js = we_dialog_base::getTinyMceJS() .
-					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
-					we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
+				$js = we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
 						'id' => 'loadVarDialog_cmdFrame',
 						'data-payload' => setDynamicVar($payload)
-				]);
+					]) .
+					we_dialog_base::getTinyMceJS() .
+					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js');
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
 	}
 
 	protected function getJs(){
-		$weSuggest = & weSuggest::getInstance();
+		//$weSuggest = & weSuggest::getInstance();
 		//$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
 
 		return parent::getJs() .

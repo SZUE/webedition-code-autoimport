@@ -135,8 +135,8 @@ class we_dialog_base{
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-				we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
-				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+			we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
+			we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
 			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
@@ -150,11 +150,11 @@ class we_dialog_base{
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
-			$okBut = ($back && $next ) ? $back . $next : ($back ? : $next );
+			$okBut = ($back && $next ) ? $back . $next : ($back ?: $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = ($back && $ok ) ? $back . $ok : ($back ? : $ok );
+			$okBut = ($back && $ok ) ? $back . $ok : ($back ?: $ok );
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
@@ -194,12 +194,12 @@ class we_dialog_base{
 	}
 
 	function getHeaderHTML($additionals = ''){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset, '', self::getTinyMceJS() .
-				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', '', [
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset, '', we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', '', [
 					'id' => 'loadVarDialog',
 					'data-vars' => setDynamicVar([
 						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->JsOnly)
 				])]) .
+			self::getTinyMceJS() .
 				$this->getJs() .
 				we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 				$additionals);
@@ -207,7 +207,6 @@ class we_dialog_base{
 
 	protected static function getTinyMceJS(){
 		return
-			we_html_element::jsElement('var isWeDialog = true;') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
