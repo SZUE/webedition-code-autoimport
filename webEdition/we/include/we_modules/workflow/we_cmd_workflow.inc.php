@@ -28,7 +28,8 @@ switch($cmd){
 	case 'workflow_isIn':
 	case 'workflow_pass':
 	case 'workflow_decline':
-		return 'we_modules/workflow/we_workflow_win.inc.php';
+		we_workflow_win::showWin();
+		return true;
 	case 'workflow_edit':
 	case 'workflow_edit_ifthere':
 		$_REQUEST['mod'] = 'workflow';
