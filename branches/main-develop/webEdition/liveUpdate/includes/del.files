@@ -96,8 +96,12 @@ we/include/we_seem/open_url_in_editor.inc.php
 we/include/we_seem/open_form_in_editor.php
 we/include/we_seem/open_form_in_editor.inc.php
 we/include/we_perms.inc.php
+we/include/we_modules/workflow/we_workflow_win.inc.php
 we/include/we_modules/workflow/we_workflow_doc_footer.inc.php
 we/include/we_modules/workflow/we_webEditionCmd_workflow.inc.php
+we/include/we_modules/workflow/we_pass_workflow.inc.php
+we/include/we_modules/workflow/we_in_workflow.inc.php
+we/include/we_modules/workflow/we_decline_workflow.inc.php
 we/include/we_modules/workflow/weWorkflowView.php
 we/include/we_modules/workflow/weWorkflowUtility.php
 we/include/we_modules/workflow/weWorkflowTask.php
