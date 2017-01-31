@@ -49,7 +49,7 @@ function dieWithError($text, $protocol){
 	}
 }
 
-if(!we_base_request::_(we_base_request::RAW, 'cmd')){
+if(!we_base_request::_(we_base_request::STRING, 'cmd')){
 	dieWithError('The Request is not well formed!', $protocol);
 }
 

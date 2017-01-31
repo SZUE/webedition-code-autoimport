@@ -62,7 +62,7 @@ function processEditorCmd($we_doc, $cmd0){
 			}
 			break;
 		case 'delete_list':
-			$we_doc->removeEntryFromList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 2), we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3));
+			$we_doc->removeEntryFromList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 2), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
 			break;
 		case 'insert_entry_at_list':
 			$we_doc->insertEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
@@ -87,7 +87,7 @@ function processEditorCmd($we_doc, $cmd0){
 			$we_doc->addLinkToLinklist($GLOBALS['we_list_inserted']);
 			break;
 		case 'delete_linklist':
-			$we_doc->removeLinkFromLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3));
+			$we_doc->removeLinkFromLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
 			break;
 		case 'insert_link_at_linklist':
 			$GLOBALS['we_list_insertedNr'] = abs(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));

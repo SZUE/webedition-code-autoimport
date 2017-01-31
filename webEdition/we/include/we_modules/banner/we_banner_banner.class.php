@@ -237,7 +237,7 @@ class we_banner_banner extends we_banner_base{
 		return true;
 	}
 
-	static function getBannerData($did, $paths, $dt, $cats, $bannername, we_database_base $db){
+	static function getBannerData($did, $paths, array $dt, array $cats, $bannername, we_database_base $db){
 		$parents = [];
 
 		we_readParents($did, $parents, FILE_TABLE, 'ContentType', we_base_ContentTypes::FOLDER, $db);
@@ -248,18 +248,14 @@ class we_banner_banner extends we_banner_base{
 		}
 		$where = 'IsActive=1 AND IsFolder=0 AND ( FIND_IN_SET(' . intval($did) . ',FileIDs) OR FileIDs="" OR FileIDs="0" ) AND (' . $foo . ' FolderIDs="" OR FolderIDs="0") ';
 
-		$dtArr = explode(',', $dt);
-
 		$foo = '';
-		foreach($dtArr as $d){
+		foreach($dt as $d){
 			$foo .= ' FIND_IN_SET(' . intval($d) . ',DoctypeIDs) OR ';
 		}
 		$where .= ' AND (' . $foo . ' DoctypeIDs="" OR DoctypeIDs="0") ';
 
-		$catArr = explode(',', $cats);
-
 		$foo = '';
-		foreach($catArr as $c){
+		foreach($cats as $c){
 			$foo .= ' FIND_IN_SET(' . intval($c) . ',CategoryIDs) OR ';
 		}
 		$where .= ' AND (' . $foo . ' CategoryIDs="" OR CategoryIDs="0") ';
@@ -307,7 +303,7 @@ class we_banner_banner extends we_banner_base{
 		return $db->getAllFirst(false);
 	}
 
-	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = '/webEdition/bannerclick.php', $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
+	public static function getBannerCode($did, $paths, $target, $width, $height, array $dt, array $cats, $bannername, $link = true, $referer = "", $bannerclick = '/webEdition/bannerclick.php', $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
 		$db = new DB_WE();
 		$bannerData = self::getBannerData($did, $paths, $dt, $cats, $bannername, $db);
 		$uniq = md5(uniqid(__FUNCTION__, true));

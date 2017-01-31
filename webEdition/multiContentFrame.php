@@ -30,7 +30,7 @@ $cmd_string = [];
 
 if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	for($i = 1; $i < 4; $i++){
-		$cmd_string[] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i);
+		$cmd_string[] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', $i);
 	}
 	$cmd_string[] = 'SEEM_edit_include';
 }

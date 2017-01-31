@@ -54,7 +54,7 @@ class we_docTypes extends we_class{
 		$this->Templates = implode(',', $newIdArr);
 
 		if(LANGLINK_SUPPORT){
-			if(($llink = we_base_request::_(we_base_request::RAW, 'we_' . $this->Name . '_LangDocType'))){
+			if(($llink = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_LangDocType'))){
 				$this->setLanguageLink($llink, 'tblDocTypes');
 			}
 		} else {

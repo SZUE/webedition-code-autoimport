@@ -93,8 +93,8 @@ $parts[] = ['headline' => 'Inhalt', 'html' => $collection->formContent(true), 'n
 $content = we_html_element::htmlHiddens([
 		'dosave' => 0,
 		'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-		'we_cmd[1]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1),
-		'we_cmd[2]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2),
+		'we_cmd[1]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),
+		'we_cmd[2]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2),
 		"fixedpid" => $fixedPID,
 		"fixedremtable" => $fixedRemTable,
 		'we_name' => $collection->Name,

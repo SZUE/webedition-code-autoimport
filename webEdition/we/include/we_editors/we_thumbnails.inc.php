@@ -309,9 +309,7 @@ function render_dialog(){
 }
 
 function getFooter(){
-	$close = we_base_request::_(we_base_request::JS, "closecmd");
-
-	return we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%'], we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();'), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
+	return we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%'], we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();'), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:" . 'top.close()'), 10, '', '', 0));
 }
 
 function getMainDialog(){

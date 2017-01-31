@@ -701,7 +701,7 @@ if (top.content.editor.edbody.addLog){
 
 
 		$hiddens = we_html_element::htmlHiddens(["Categorys" => $this->View->export->Categorys,
-				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")]);
+				"cat" => we_base_request::_(we_base_request::STRING, 'cat', "")]);
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", '', 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

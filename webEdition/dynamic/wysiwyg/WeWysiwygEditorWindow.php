@@ -25,7 +25,7 @@ $fieldName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8');
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
-	$newHTML = we_base_request::_(we_base_request::RAW, $fieldName, '');
+	$newHTML = we_base_request::_(we_base_request::STRING, $fieldName, '');
 	$type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 	$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . $type] = $newHTML;
 	$newHTMLoldA = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', $newHTML);

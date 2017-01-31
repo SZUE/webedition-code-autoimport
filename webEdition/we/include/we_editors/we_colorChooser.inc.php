@@ -26,7 +26,7 @@ we_html_tools::protect();
 $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 echo we_html_tools::getHtmlTop(g_l('global', '[select_color]'), '', '', we_html_element::jsScript(JS_DIR . 'we_colors2.js', '', ['id' => 'loadVarSelectorColor', 'data-selector' => setDynamicVar([
 			'isA' => $isA,
-			'cmd1' => we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1),
+			'cmd1' => we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1),
 	])])
 );
 ?>

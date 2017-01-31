@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
+if(($uniqid = we_base_request::_(we_base_request::STRING, 'u')) &&
 	($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) &&
 	($thumbIDs = we_base_request::_(we_base_request::INTLISTA, 'id', []))){
 

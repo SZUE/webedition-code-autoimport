@@ -63,7 +63,7 @@ class we_dialog_base{
 
 	function initByHttp(){
 		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
-		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', []);
+		$this->we_cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', []);
 
 		if(($args = we_base_request::_(we_base_request::STRING, 'we_dialog_args'))){//assume no tags are allowed
 			$this->args = $args;
