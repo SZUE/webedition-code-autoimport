@@ -29,11 +29,11 @@ $code = '';
 $ok = we_base_request::_(we_base_request::BOOL, "ok");
 $type = we_base_request::_(we_base_request::STRING, "type");
 $tagname = we_base_request::_(we_base_request::STRING, "tagname");
-$page = we_base_request::_(we_base_request::RAW, "page", "");
-$target = we_base_request::_(we_base_request::RAW, "target", "");
+$page = we_base_request::_(we_base_request::STRING, "page", "");
+$target = we_base_request::_(we_base_request::STRING, "target", "");
 $width = we_base_request::_(we_base_request::INT, "width", 468);
 $height = we_base_request::_(we_base_request::INT, "height", 60);
-$paths = we_base_request::_(we_base_request::RAW, "paths", "");
+$paths = we_base_request::_(we_base_request::STRING, "paths", "");
 $getscript = we_base_request::_(we_base_request::URL, "getscript", WEBEDITION_DIR . "getBanner.php");
 $clickscript = we_base_request::_(we_base_request::URL, "clickscript", WEBEDITION_DIR . "bannerclick.php");
 

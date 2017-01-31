@@ -39,7 +39,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 		'</td></tr></table>';
 
 	$hidden = we_html_element::htmlHiddens([
-			"we_cmd[0]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0),
+			"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 			"we_cmd[1]" => $cmd1,
 			"we_cmd[2]" => we_base_request::_(we_base_request::INT, 'we_cmd', '', 2),
 			($cmd4 ? "we_cmd[4]" : '') => $cmd4]);

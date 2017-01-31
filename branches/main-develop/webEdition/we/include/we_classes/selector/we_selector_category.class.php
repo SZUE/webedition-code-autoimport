@@ -340,7 +340,7 @@ class we_selector_category extends we_selector_file{
 		$db = $GLOBALS['DB_WE'];
 		$result = getHash('SELECT Category,Title,Description,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $catId, $db);
 		$title = we_base_request::_(we_base_request::STRING, 'catTitle', $result["Title"]);
-		$description = we_base_request::_(we_base_request::RAW, 'catDescription', $result["Description"]);
+		$description = we_base_request::_(we_base_request::STRING, 'catDescription', $result["Description"]);
 		$path = $result['Path'];
 		$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
 		$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);

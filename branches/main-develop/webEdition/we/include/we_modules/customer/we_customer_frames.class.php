@@ -64,7 +64,7 @@ class we_customer_frames extends we_modules_frame{
 			case 'frameset':
 				$this->View->customer->clearSessionVars();
 				$this->View->settings->load(false);
-				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($sid = we_base_request::_(we_base_request::RAW, 'sid', false)) !== false ? '&sid=' . $sid : '');
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($sid = we_base_request::_(we_base_request::STRING, 'sid', false)) !== false ? '&sid=' . $sid : '');
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}
@@ -317,7 +317,7 @@ class we_customer_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLCmd(){
-		if(($p = we_base_request::_(we_base_request::RAW, 'pid')) === false){
+		if(($p = we_base_request::_(we_base_request::STRING, 'pid')) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?

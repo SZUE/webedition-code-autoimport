@@ -70,7 +70,7 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 
 			if($we_doc->ID){
 				$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
-				$link = '<a href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . '&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . '&we_cmd[3]=download&we_transaction=' . $we_transaction . '" download="' . $we_doc->Filename . '">' . $http = $we_doc->getHttpPath() . "</a>";
+				$link = '<a href="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . '&we_cmd[2]=' . we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2) . '&we_cmd[3]=download&we_transaction=' . $we_transaction . '" download="' . $we_doc->Filename . '">' . $http = $we_doc->getHttpPath() . "</a>";
 			} else {
 				$link = g_l('weClass', '[file_not_saved]');
 			}

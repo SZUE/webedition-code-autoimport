@@ -186,8 +186,8 @@ if(!$wfchk){
 		$wfchk_html .= we_html_element::jsElement('
 function confirmDel(){' .
 						($found ?
-						'WE().util.showConfirm(window, "", "' . g_l('alert', '[found_in_workflow]') . '",["' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1]);' :
-						'we_cmd("' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1);'
+						'WE().util.showConfirm(window, "", "' . g_l('alert', '[found_in_workflow]') . '",["' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '","","' . $table . '",1]);' :
+						'we_cmd("' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '","","' . $table . '",1);'
 						) . '}');
 	} else {
 		$weCmd->addMsg(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);

@@ -63,7 +63,7 @@ function save_all_values(){
 			foreach(we_base_request::_(we_base_request::STRING, 'metadataTag', '') as $key => $value){
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . METADATA_TABLE . ' SET ' . we_database_base::arraySetter(['tag' => $value,
 						'type' => ($type = we_base_request::_(we_base_request::STRING, 'metadataType', '', $key) ? : 'textfield'),
-						'importFrom' => we_base_request::_(we_base_request::RAW, 'metadataImportFrom', '', $key),
+						'importFrom' => we_base_request::_(we_base_request::STRING, 'metadataImportFrom', '', $key),
 						'mode' => we_base_request::_(we_base_request::STRING, 'metadataMode', '', $key),
 						'csv' => we_base_request::_(we_base_request::INT, 'metadataCsv', '', $key),
 						'closed' => we_base_request::_(we_base_request::INT, 'metadataClosed', '', $key)

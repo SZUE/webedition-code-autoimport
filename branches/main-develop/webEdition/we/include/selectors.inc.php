@@ -59,7 +59,7 @@ switch($class){
 			$JSTextName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
 			$JSCommand = $cmd;
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
-			$filter = we_base_request::_(we_base_request::RAW, 'we_cmd', 7, '');
+			$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 7, '');
 			$multiple = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 		} else {
 			$JSIDName = $JSTextName = $JSCommand = '';
@@ -243,7 +243,7 @@ switch($class){
 			$id = we_base_request::_(we_base_request::INT, 'id', 0);
 			$table = we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE);
 			$rootDirID = we_base_request::_(we_base_request::INT, 'rootDirID', 0);
-			$filter = we_base_request::_(we_base_request::RAW, 'filter', '');
+			$filter = we_base_request::_(we_base_request::STRING, 'filter', '');
 			$multiple = we_base_request::_(we_base_request::BOOL, 'multiple');
 		}
 

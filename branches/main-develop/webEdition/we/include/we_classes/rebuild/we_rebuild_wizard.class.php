@@ -576,15 +576,15 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	}
 
 	static function getRebuildMetadata(){
-		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
+		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', []);
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
+		$thumbs = we_base_request::_(we_base_request::INT, 'thumbs', []);
 		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
-		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::RAW, 'doctypes', []));
-		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
+		$categories = we_base_request::_(we_base_request::INTLIST, 'categories', '');
+		$doctypes = we_base_request::_(we_base_request::INT, 'doctypes', []);
+		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', '');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 
 		$ws = get_ws(FILE_TABLE, true);
@@ -618,14 +618,12 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		];
 
 		$dthidden = '';
-		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < count($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden('doctypes[' . $i . ']', $doctypesArray[$i]);
+		foreach($doctypes as $doctype){
+			$dthidden .= we_html_element::htmlHidden('doctypes[]', $doctype);
 		}
 		$thumbsHidden = '';
-		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < count($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden('thumbs[' . $i . ']', $thumbsArray[$i]);
+		foreach($thumbs as $thumb){
+			$thumbsHidden .= we_html_element::htmlHidden('thumbs[]', $thumb);
 		}
 		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="metaFolders";',
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .

@@ -915,7 +915,7 @@ function showPreview() {
 		$type = we_base_request::_(we_base_request::STRING, 'type'); // doctype || class
 		$selection = we_base_request::_(we_base_request::INT, 'selection'); // doctype or classid
 		$cmd = we_base_request::_(we_base_request::JS, 'cmd'); // js command
-		$multi = we_base_request::_(we_base_request::JS, 'multi'); // js command
+		$multi = we_base_request::_(we_base_request::BOOL, 'multi'); // js command
 
 		$fields = [];
 		switch($type){
@@ -946,7 +946,7 @@ function showPreview() {
 		$parts = [
 			[
 				'headline' => '',
-				'html' => we_html_tools::htmlSelect('fields', $fields, 20, '', ($multi ? true : false), ['style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;",
+				'html' => we_html_tools::htmlSelect('fields', $fields, 20, '', $multi, ['style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;",
 					'onclick' => "setTimeout(selectItem,100);"]),
 			]
 		];
