@@ -60,7 +60,7 @@ abstract class we_temporaryDocument{
 
 	static function resave($documentID, $table, $document, we_database_base $db){
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
-				we_database_base::arraySetter(['DocumentObject' => ($document ? we_serialize($document, SERIALIZE_PHP) : ''),
+				we_database_base::arraySetter(['DocumentObject' => ($document ? we_serialize($document, SERIALIZE_JSON) : ''),
 				]) .
 				' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}

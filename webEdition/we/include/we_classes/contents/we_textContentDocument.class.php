@@ -327,9 +327,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		if(!$DoNotMark && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
-		}
+		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 		return $this->insertAtIndex();
 	}
 

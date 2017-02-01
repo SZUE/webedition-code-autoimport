@@ -26,15 +26,13 @@ function we_tag_js(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
-	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
+	$src = f('SELECT CONCAT(Path,"?m=",Published) FROM ' . FILE_TABLE . ' WHERE ID=' . weTag_getAttribute('id', $attribs, 0, we_base_request::INT));
 
-	if(!$row){
+	if(!$src){
 		return '';
 	}
-	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
-	$attribs['src'] = $url . '?m=' . $row['Published'];
+	$attribs['src'] = $src;
 
 	//	prepare $attribs for output:
 	return getHtmlTag('script', removeAttribs($attribs, ['id']), '', true) . "\n";
