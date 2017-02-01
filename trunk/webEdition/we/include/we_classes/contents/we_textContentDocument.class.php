@@ -202,7 +202,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
+					$this->i_getPersistentSlotsFromDB(/* self::primaryDBFiels */);
 					$this->OldPath = $this->Path;
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -215,7 +215,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = we_unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE));
 					if($sessDat && $this->i_initSerializedDat($sessDat)){
-						$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
+						$this->i_getPersistentSlotsFromDB(/* self::primaryDBFiels */);
 						$this->OldPath = $this->Path;
 
 						break;
@@ -326,9 +326,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		if(!$DoNotMark && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
-		}
+		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 		return $this->insertAtIndex();
 	}
 
