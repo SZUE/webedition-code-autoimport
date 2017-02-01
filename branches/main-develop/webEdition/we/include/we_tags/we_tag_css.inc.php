@@ -27,8 +27,8 @@ function we_tag_css(array $attribs){
 		return $foo;
 	}
 
-	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
-	if(!$row){
+	$src = f('SELECT CONCAT(Path,"?m=",Published) FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
+	if(!$src){
 		return '';
 	}
 
@@ -44,7 +44,7 @@ function we_tag_css(array $attribs){
 				case 'screen':
 				case 'all':
 					// we still need addDocumentCss() because JS getDocumentCss() won't apply it when applyTo=wysiwyg!
-					$GLOBALS['we_doc']->addDocumentCss($row['Path'] . '?m=' . $row['Published']);
+					$GLOBALS['we_doc']->addDocumentCss($src);
 					break;
 			}
 			break;
@@ -54,7 +54,7 @@ function we_tag_css(array $attribs){
 
 	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
-	$attribs['href'] = $row['Path'] . ($row['IsFolder'] ? '/' : '') . '?m=' . $row['Published'];
+	$attribs['href'] = $src;
 
 	if($GLOBALS['we_editmode']){
 		// these stylesheets are applied to wysiwyg using addDocumentCss depending on attribute "applyto":

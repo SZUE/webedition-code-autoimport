@@ -22,9 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_sessionLogout($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('sessionLogout', $attribs) . ');?>' . $content . '</a>';
-}
 
 function we_tag_sessionLogout(array $attribs, $content){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
