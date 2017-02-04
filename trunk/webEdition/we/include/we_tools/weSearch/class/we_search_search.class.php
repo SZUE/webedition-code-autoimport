@@ -71,7 +71,7 @@ class we_search_search extends we_search_base{
 
 	public function __construct(we_modules_view $view = null){
 		parent::__construct();
-		$this->View = $view ? : new we_search_view();
+		$this->View = $view ?: new we_search_view();
 	}
 
 	function searchProperties($whichSearch, $model){
@@ -91,8 +91,8 @@ class we_search_search extends we_search_base{
 		$searchForContentType = $model->getProperty('currentSearchForContentType');
 
 		$searchText = (is_array($searchText) ?
-				array_map('trim', $searchText) :
-				array());
+			array_map('trim', $searchText) :
+			array());
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)); //init activTab like this
 
@@ -511,7 +511,7 @@ class we_search_search extends we_search_base{
 				break;
 			case FILE_TABLE:
 				while($db->next_record()){
-					$res[$db->f('ID')] = ($db->f($field) ? : $db->f($field2));
+					$res[$db->f('ID')] = ($db->f($field) ?: $db->f($field2));
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -651,7 +651,7 @@ class we_search_search extends we_search_base{
 					$searching = ' LIKE "' . $db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
-					$reverse = $keyword === '##EMPTY##' ? : false;
+					$reverse = $keyword === '##EMPTY##' ?: false;
 					$searching = " = '" . $db->escape($keyword) . "' ";
 					break;
 				case 'IN':
@@ -689,38 +689,38 @@ class we_search_search extends we_search_base{
 				break;
 			case "geparkt" :
 				$ret = ($table == VERSIONS_TABLE ?
-						'v.status="unpublished"' :
-						'(WETABLE.Published=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+					'v.status="unpublished"' :
+					'(WETABLE.Published=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "veroeffentlicht" :
 				$ret = ($table == VERSIONS_TABLE ?
-						'v.status="published"' :
-						'(WETABLE.Published >=WETABLE.ModDate AND WETABLE.Published !=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+					'v.status="published"' :
+					'(WETABLE.Published >=WETABLE.ModDate AND WETABLE.Published !=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "geaendert" :
 				$ret = ($table == VERSIONS_TABLE ?
-						'v.status="saved"' :
-						'(WETABLE.Published<WETABLE.ModDate AND WETABLE.Published!=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+					'v.status="saved"' :
+					'(WETABLE.Published<WETABLE.ModDate AND WETABLE.Published!=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "veroeff_geaendert" :
 				$ret = '((WETABLE.Published>=WETABLE.ModDate OR WETABLE.Published < WETABLE.ModDate AND WETABLE.Published !=0) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )';
 				break;
 			case "geparkt_geaendert" :
 				$ret = ($table === VERSIONS_TABLE ?
-						'v.status!="published"' :
-						'((WETABLE.Published=0 OR WETABLE.Published< WETABLE.ModDate) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )');
+					'v.status!="published"' :
+					'((WETABLE.Published=0 OR WETABLE.Published< WETABLE.ModDate) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )');
 				break;
 			case "dynamisch" :
 				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-						'(WETABLE.IsDynamic=1 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+					'(WETABLE.IsDynamic=1 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
 				break;
 			case "statisch" :
 				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-						'(WETABLE.IsDynamic=0 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+					'(WETABLE.IsDynamic=0 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
 				break;
 			case "deleted" :
 				$ret = ($table !== VERSIONS_TABLE ? '' :
-						'v.status="deleted"' );
+					'v.status="deleted"' );
 				break;
 			case "default":
 				$ret = 1;
@@ -777,10 +777,10 @@ class we_search_search extends we_search_base{
 						}
 					}
 					$where[] = ($mtof ?
-							'WETABLE.ID IN (' . implode(',', $arr) . ') ' :
-							($myIds[0] ?
-								'WETABLE.ID IN (' . implode(',', $myIds[0]) . ') ' :
-								' 0 '));
+						'WETABLE.ID IN (' . implode(',', $arr) . ') ' :
+						($myIds[0] ?
+						'WETABLE.ID IN (' . implode(',', $myIds[0]) . ') ' :
+						' 0 '));
 				}
 			}
 		}
@@ -811,8 +811,8 @@ class we_search_search extends we_search_base{
 				$db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($db->next_record()){
 					$elements = we_unserialize((substr_compare($db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
-							html_entity_decode(urldecode($db->f('documentElements')), ENT_QUOTES) :
-							gzuncompress($db->f('documentElements')))
+						html_entity_decode(urldecode($db->f('documentElements')), ENT_QUOTES) :
+						gzuncompress($db->f('documentElements')))
 					);
 
 					if(is_array($elements)){
@@ -1061,7 +1061,7 @@ class we_search_search extends we_search_base{
 
 //FIXME path is only implemented for filetable
 	protected function insertInTempTable($where = '', $table = '', $path = ''){
-		$this->table = ($table ? : ($this->table ? : ''));
+		$this->table = ($table ?: ($this->table ?: ''));
 		if(!$this->table){
 			return;
 		}
@@ -1429,13 +1429,13 @@ class we_search_search extends we_search_base{
 							})) as $field => $v){
 								switch($field){
 									case "title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
-										$where_OR [] = ($this->searchInTitle($searchString, $table)? : '');
+										$where_OR [] = ($this->searchInTitle($searchString, $table) ?: '');
 										break;
 									case "text":
 										$where_OR [] = 'WETABLE.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
 										break;
 									case "meta":
-										$where_OR [] = ($this->searchInAllMetas($searchString, $table) ? : '');
+										$where_OR [] = ($this->searchInAllMetas($searchString, $table) ?: '');
 										break;
 								}
 							}
@@ -1462,8 +1462,9 @@ class we_search_search extends we_search_base{
 									}
 								}
 							}
-							$contentTypes = $contentTypes ? :
-								array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::QUICKTIME, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION);
+							$contentTypes = $contentTypes ?:
+								array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::QUICKTIME, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO,
+								we_base_ContentTypes::APPLICATION);
 							$where[] = 'WETABLE.ContentType IN ("' . implode('","', $contentTypes) . '")';
 							break;
 						case 'IsUsed':
@@ -1504,7 +1505,15 @@ class we_search_search extends we_search_base{
 							}
 							break;
 						case 'modifierID':
-							$where[] = $this->searchModifier($searchString);
+							$w = $this->searchModifier($searchString);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
+
 							break;
 						case 'allModsIn':
 							if($table == VERSIONS_TABLE){
@@ -1539,7 +1548,15 @@ class we_search_search extends we_search_base{
 									break;
 								case FILE_TABLE:
 								case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-									$where[] = $this->getStatusFiles($searchString, $table);
+									$w = $this->getStatusFiles($searchString, $table);
+									if($w === ''){
+										$where[] = ' 0 ';
+									} elseif($opAND){
+										$where[] = $w;
+									} else {
+										$where_OR[] = $w;
+									}
+
 									break 2;
 								default:
 									break 2;
@@ -1549,18 +1566,40 @@ class we_search_search extends we_search_base{
 						case 'CreatorName':
 						case 'WebUserName':
 							if(isset($curField) && isset($location[$i])){
-								$where[] = $this->searchSpecial($searchString, $curField, $location[$i]);
+								$w = $this->searchSpecial($searchString, $curField, $location[$i]);
+								if($w === ''){
+									$where[] = ' 0 ';
+								} elseif($opAND){
+									$where[] = $w;
+								} else {
+									$where_OR[] = $w;
+								}
 							}
 							break;
 						case 'temp_category':
-							$where[] = $this->searchCategory($searchString, $table, $curField);
+							$w = $this->searchCategory($searchString, $table, $curField);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
+
 							break;
 						case 'HasReferenceToID':
 							$where[] = $searchString ? (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $table) : 0) : '';
 							break;
 						default:
 							//if($whichSearch != "AdvSearch"){
-							$where[] = $this->searchfor($searchString, $curField, $location[$i], $table);
+							$w = $this->searchfor($searchString, $curField, $location[$i], $table);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
 						//}
 					}
 				}
@@ -1570,6 +1609,7 @@ class we_search_search extends we_search_base{
 		if($where_OR){
 			$where[] = '(' . implode(' OR ', $where_OR) . ')';
 		}
+
 		return array_filter($where);
 	}
 
