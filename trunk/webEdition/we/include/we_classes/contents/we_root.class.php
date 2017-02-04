@@ -1068,7 +1068,7 @@ abstract class we_root extends we_class{
 				$this->OwnersReadOnly = we_serialize($v, SERIALIZE_JSON);
 			}
 		}
-		
+
 		foreach($dates as $k => $v){
 			if(!array_sum($dates[$k])){
 				$this->setElement($k, 0, 'date', 'bdid');
@@ -1141,7 +1141,7 @@ abstract class we_root extends we_class{
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 				//ignore fields which result in empty entry
-				(empty($v['dat']) && empty($v['bdid']) && empty($v['ffname'])) ||
+				((!isset($v['dat']) || $v['dat'] === '') && empty($v['bdid']) && empty($v['ffname'])) ||
 				//don't set "vars" type
 				(isset($v['type']) && $v['type'] == 'vars') ||
 				//ignore binary data
@@ -1164,7 +1164,7 @@ abstract class we_root extends we_class{
 					break;
 			}
 
-			if($bdid || $dat){
+			if($bdid || $dat !== ''){
 				$dat = ($bdid ? sql_function('NULL') : (is_array($dat) ? we_serialize($dat) : $dat));
 				$data = array(
 					'Dat' => $dat,
