@@ -69,7 +69,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 			//find last we_listview_object in stack
 			foreach(array_reverse($GLOBALS['we_lv_array']) as $cur){
 				if($cur instanceof we_listview_object){
-					if(($dat = $parent_lv->f($name))){
+					if(($dat = $cur->f($name))){
 						$data = we_unserialize($dat);
 					}
 					$found=true;
