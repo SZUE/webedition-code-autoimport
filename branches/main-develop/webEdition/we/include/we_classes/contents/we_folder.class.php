@@ -59,6 +59,8 @@ class we_folder extends we_root{
 	}
 
 	public function we_new($table = '', $parentID = 0, $name = ''){
+		$this->ID = 0;
+		$this->OldPath='';
 		if($table){
 			$this->Table = $table;
 			$this->ParentID = $parentID;
@@ -105,7 +107,7 @@ class we_folder extends we_root{
 	}
 
 	public function getDoclistModel(){
-		return $this->doclistModel ? : ($this->ID ? new we_doclist_model(0, $this->ID, $this->viewType) : null);
+		return $this->doclistModel ?: ($this->ID ? new we_doclist_model(0, $this->ID, $this->viewType) : null);
 	}
 
 	/**

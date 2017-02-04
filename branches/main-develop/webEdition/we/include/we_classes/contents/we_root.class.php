@@ -1142,7 +1142,8 @@ abstract class we_root extends we_class{
 				$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . we_database_base::arraySetter($data));
 				$cid = $cid ?: $this->DB_WE->getInsertId();
 				$this->elements[$k]['id'] = $cid; // update Object itself
-				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $this->ID,
+				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter([
+							'DID' => $this->ID,
 							'CID' => $cid,
 							'Name' => $k,
 							'Type' => $v['type'],
