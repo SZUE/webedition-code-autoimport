@@ -95,9 +95,6 @@ class liveUpdateFrames{
 			case 'connect':
 				include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
 				return '';
-			case 'nextVersion':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
-				return '';
 			default:
 				echo "Frame $this->Section is not known!";
 				return;
