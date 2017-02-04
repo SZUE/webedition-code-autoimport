@@ -77,7 +77,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				}
 			}
 		}
-		if(!found && $GLOBALS['we_doc']->getElement($name)){
+		if(!$found && $GLOBALS['we_doc']->getElement($name)){
 			$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		}
 
