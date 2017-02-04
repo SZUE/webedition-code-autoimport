@@ -64,4 +64,11 @@ abstract class we_history{
 		$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable="' . stripTblPrefix($table) . '"');
 	}
 
+	public static function deleteByUserID($uid){
+		if($uid){
+			$db = new DB_WE();
+			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . intval($uid));
+		}
+	}
+
 }

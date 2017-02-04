@@ -276,8 +276,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+			getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+			(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
@@ -306,7 +306,7 @@ function cutSimpleText($text, $len){
 			strrpos($text, ','),
 			strrpos($text, "\n"),
 			strrpos($text, "\t"),
-		))? : $len
+		)) ?: $len
 	);
 }
 
@@ -329,23 +329,23 @@ function cutText($text, $max = 0, $striphtml = false){
 		switch(count($cur)){
 			case 2://entity
 				if($max > 0){
-					$ret.=$cur[0];
-					$max-=1;
+					$ret .= $cur[0];
+					$max -= 1;
 				}
 				break;
 			case 3://text
 				if($max > 0){
 					$len = strlen($cur[0]);
-					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
-					$max-=$len;
+					$ret .= ($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
+					$max -= $len;
 					if($max <= 0){
-						$ret.=($striphtml ? ' ...' : ' &hellip;');
+						$ret .= ($striphtml ? ' ...' : ' &hellip;');
 					}
 				}
 				break;
 			case 7://tags
 				if($max > 0){
-					$ret.=$cur[0];
+					$ret .= $cur[0];
 					if(!$cur[6]){//!selfclosing
 						if($cur[3]){//close
 							array_pop($tags);
@@ -360,7 +360,7 @@ function cutText($text, $max = 0, $striphtml = false){
 
 //close open tags
 	while($tags){
-		$ret.='</' . array_pop($tags) . '>';
+		$ret .= '</' . array_pop($tags) . '>';
 	}
 
 	return $ret;
@@ -374,8 +374,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-					$GLOBALS['WE_MAIN_DOC'] :
-					$GLOBALS['we_doc']);
+				$GLOBALS['WE_MAIN_DOC'] :
+				$GLOBALS['we_doc']);
 	}
 }
 
@@ -506,29 +506,31 @@ function we_getSelectField($name, $value, $values, array $attribs = array(), $ad
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
-function we_pre_tag_listview(){
+function we_pre_tag_listview($newLV){
 	//prevent error if $GLOBALS["we_lv_array"] is no array
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
+	if(empty($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
 	}
 
-	//FIXME: check why we need cloning here
-	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	//add current lv to the stack
+	if(isset($GLOBALS['lv'])){
+		$GLOBALS['we_lv_array'][] = $GLOBALS['lv'];
+	}
+	//set new lv
+	$GLOBALS['lv'] = $newLV;
 }
 
 //this function is used by all tags adding elements to we_lv_array
 function we_post_tag_listview(){
-	if(isset($GLOBALS['we_lv_array'])){
-		if(isset($GLOBALS['lv'])){
-			array_pop($GLOBALS['we_lv_array']);
-		}
-		if(!empty($GLOBALS['we_lv_array'])){
-			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
-		} else {
-			unset($GLOBALS['lv']);
-			unset($GLOBALS['we_lv_array']);
-		}
+	if(isset($GLOBALS['lv'])){
+		unset($GLOBALS['lv']);
 	}
+	if(empty($GLOBALS['we_lv_array'])){
+		$GLOBALS['we_lv_array'] = array();
+		return;
+	}
+	//get the last lv
+	$GLOBALS['lv'] = array_pop($GLOBALS['we_lv_array']);
 }
 
 //FIXME: remove in 7.1
