@@ -723,6 +723,7 @@ mozillamenu.php
 moveInfo.php
 liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
+liveUpdate/templates/nextVersion.inc.php
 liveUpdate/templates/modules.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
