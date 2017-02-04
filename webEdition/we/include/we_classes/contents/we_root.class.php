@@ -1068,12 +1068,12 @@ abstract class we_root extends we_class{
 				$this->OwnersReadOnly = we_serialize($v, SERIALIZE_JSON);
 			}
 		}
-		$year = date('Y');
+		
 		foreach($dates as $k => $v){
 			if(!array_sum($dates[$k])){
 				$this->setElement($k, 0, 'date', 'bdid');
 			} else {
-				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date', 'bdid');
+				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? 1970 : $dates[$k]['year']), 'date', 'bdid');
 			}
 		}
 	}
