@@ -1030,7 +1030,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 	//Fix: ad attribute id to anchor
 	init_instance_callback: tinyInit_instance_callback,
-	/*FIXME:*/
+
 	paste_text_sticky : true,
 	paste_auto_cleanup_on_paste: true,
 	paste_preprocess: function(pl, o) {
@@ -1113,8 +1113,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			//ed.execCommand("mceWevisualaid", true);
 
 			//TODO: clean up the mess in here!
-			//FIXME: we have to change this back
-			//ed.pasteAsPlainText = 1;
+			ed.pasteAsPlainText = 1;
 			ed.controlManager.setActive("pastetext", 1);
 			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document')) . ';
 			' . ($this->isInPopup ? '
