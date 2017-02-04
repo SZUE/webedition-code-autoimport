@@ -36,27 +36,24 @@ function we_tag_metadata(array $attribs){
 	if(!$id && $name){
 		$unique = md5(uniqid(__FILE__, true));
 		$value = (isset($GLOBALS['lv']) ?
-						$GLOBALS['lv']->f($name) :
-						// determine the id of the element
-						($GLOBALS['we_doc']->getElement($name)?:
-							//can be href
-							$GLOBALS['we_doc']->getElement($name . we_base_link::MAGIC_INT_LINK_ID, 'bdid')
-						)
-				);
+			$GLOBALS['lv']->f($name) :
+			// determine the id of the element
+			($GLOBALS['we_doc']->getElement($name) ?:
+			//can be href
+			$GLOBALS['we_doc']->getElement($name . we_base_link::MAGIC_INT_LINK_ID, 'bdid')
+			)
+			);
 
 		// it is an id
 		$id = (is_numeric($value) ? $value : 0);
 	}
 
 	if($id){
-		$GLOBALS['lv'] = new we_listview_document($unique, 1, 0, '', false, '', '', false, false, 0, '', '', false, '', '', '', '', '', '', 'off', true, '', $id, '', false, false, 0);
-		$avail = ($GLOBALS['lv']->next_record());
-	} else {
-		$GLOBALS['lv'] = new stdClass();
-		$avail = false;
+		$lv = new we_listview_document($unique, 1, 0, '', false, '', '', false, false, 0, '', '', false, '', '', '', '', '', '', 'off', true, '', $id, '', false, false, 0);
+		we_pre_tag_listview($lv);
+		return $lv->next_record();
 	}
-
-
-	we_pre_tag_listview();
-	return $avail;
+	//we need this to keep the stack synchronized
+	we_pre_tag_listview(new stdClass());
+	return false;
 }

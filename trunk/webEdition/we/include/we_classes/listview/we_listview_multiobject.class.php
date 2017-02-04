@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
 class we_listview_multiobject extends we_listview_objectBase{
-
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 
 	/**
@@ -60,15 +58,26 @@ class we_listview_multiobject extends we_listview_objectBase{
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data = 0;
-		if(!empty($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
-			if(($dat = $parent_lv->f($name))){
-				$data = we_unserialize($dat);
-			}
-		} elseif(!empty($GLOBALS['lv'])){
+		$found = false;
+		//check if current lv is of we_listview_object
+		if(!empty($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_object){
 			if(($dat = $GLOBALS['lv']->f($name))){
 				$data = we_unserialize($dat);
 			}
-		} elseif($GLOBALS['we_doc']->getElement($name)){
+			$found=true;
+		} elseif(!empty($GLOBALS['we_lv_array'])){
+			//find last we_listview_object in stack
+			foreach(array_reverse($GLOBALS['we_lv_array']) as $cur){
+				if($cur instanceof we_listview_object){
+					if(($dat = $parent_lv->f($name))){
+						$data = we_unserialize($dat);
+					}
+					$found=true;
+					break;
+				}
+			}
+		}
+		if(!found && $GLOBALS['we_doc']->getElement($name)){
 			$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		}
 
@@ -90,24 +99,24 @@ class we_listview_multiobject extends we_listview_objectBase{
 		$this->docID = $docID; //Bug #3720
 
 		$this->condition = $this->condition;
-		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$this->languages = $languages ?: (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
 		$obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-						' AND ' . $obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
-						'');
+			' AND ' . $obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
+			'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
 
 		$this->Path = ($this->triggerID && show_SeoLinks() ?
-						id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
-						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
-				);
+			id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+			(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
+			);
 
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -127,11 +136,11 @@ class we_listview_multiobject extends we_listview_objectBase{
 		$pid_tail = 1;
 
 		$cat_tail = ($this->cats || $this->categoryids ?
-						we_category::getCatSQLTail($this->cats, $obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
+			we_category::getCatSQLTail($this->cats, $obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
-						'');
+			we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
+			'');
 
 		if($sqlParts['tables']){
 			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
@@ -159,7 +168,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				$this->anz_all = count($this->objects);
 			}
 
-			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"].' JOIN '.OBJECT_FILES_TABLE . ' ON `' . OBJECT_FILES_TABLE . '`.ID=' .  OBJECT_X_TABLE . $this->classID . '.OF_ID WHERE ' .  OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
+			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' JOIN ' . OBJECT_FILES_TABLE . ' ON `' . OBJECT_FILES_TABLE . '`.ID=' . OBJECT_X_TABLE . $this->classID . '.OF_ID WHERE ' . OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
@@ -223,7 +232,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				} else {
 					$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
 				}
-				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
+				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ?: intval($this->DB_WE->f('OF_TriggerID')));
 				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
 				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');

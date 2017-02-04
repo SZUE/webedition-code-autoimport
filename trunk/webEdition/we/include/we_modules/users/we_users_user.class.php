@@ -312,6 +312,7 @@ class we_users_user{
 			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . $this->ID);
 			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID=' . $this->ID);
 		}
+		we_history::deleteByUserID($this->ID);
 	}
 
 	function getPersistentSlotsFromDB(){
