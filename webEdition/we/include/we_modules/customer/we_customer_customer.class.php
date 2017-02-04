@@ -350,13 +350,13 @@ class we_customer_customer extends we_base_model{
 	}
 
 	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY, $keepBin = false){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
-		if($data && function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
-			$iv = self::cryptGetIV();
+		if($data && function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_TWOFISH, '', MCRYPT_MODE_OFB, ''))){
+			$iv = self::cryptGetIV(16);
 			mcrypt_generic_init($res, hex2bin($key), $iv);
 			$data = mcrypt_generic($res, $data);
 			mcrypt_generic_deinit($res);
 			mcrypt_module_close($res);
-			return '$-1' . ($keepBin ? 'a' : '') . '$' . bin2hex($iv) . '$' . ($keepBin ? $data : bin2hex($data));
+			return '$-3' . ($keepBin ? 'a' : '') . '$' . bin2hex($iv) . '$' . ($keepBin ? $data : bin2hex($data));
 		}
 		return $data;
 	}
@@ -378,8 +378,20 @@ class we_customer_customer extends we_base_model{
 					mcrypt_module_close($res);
 					return $data;
 				}
+				return '';
 			default:
 			case '2y'://can't be decoded
+				return '';
+			case '-3':
+				$data = hex2bin($data);
+			case '-3a':
+				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_TWOFISH, '', MCRYPT_MODE_OFB, ''))){
+					mcrypt_generic_init($res, hex2bin($key), hex2bin($matches[2]));
+					$data = mdecrypt_generic($res, $data);
+					mcrypt_generic_deinit($res);
+					mcrypt_module_close($res);
+					return $data;
+				}
 				return '';
 		}
 	}
