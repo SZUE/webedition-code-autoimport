@@ -31,9 +31,6 @@ function we_tag_repeat(){
 	}
 	if(isset($GLOBALS['lv'])){
 		if($GLOBALS['lv']->next_record()){
-			//FIXME: is there any sense to have an copy of the old state?
-			end($GLOBALS['we_lv_array']);
-			$GLOBALS['we_lv_array'][key($GLOBALS['we_lv_array'])] = clone($GLOBALS['lv']);
 			return true;
 		} //last entry
 	}

@@ -503,29 +503,31 @@ function we_getSelectField($name, $value, $values, array $attribs = [], $addMiss
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
-function we_pre_tag_listview(){
+function we_pre_tag_listview($newLV){
 	//prevent error if $GLOBALS["we_lv_array"] is no array
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
+	if(empty($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = [];
 	}
 
-	//FIXME: check why we need cloning here
-	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	//add current lv to the stack
+	if(isset($GLOBALS['lv'])){
+		$GLOBALS['we_lv_array'][] = $GLOBALS['lv'];
+	}
+	//set new lv
+	$GLOBALS['lv'] = $newLV;
 }
 
 //this function is used by all tags adding elements to we_lv_array
 function we_post_tag_listview(){
-	if(isset($GLOBALS['we_lv_array'])){
-		if(isset($GLOBALS['lv'])){
-			array_pop($GLOBALS['we_lv_array']);
-		}
-		if(!empty($GLOBALS['we_lv_array'])){
-			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
-		} else {
-			unset($GLOBALS['lv']);
-			unset($GLOBALS['we_lv_array']);
-		}
+	if(isset($GLOBALS['lv'])){
+		unset($GLOBALS['lv']);
 	}
+	if(empty($GLOBALS['we_lv_array'])){
+		$GLOBALS['we_lv_array'] = [];
+		return;
+	}
+	//get the last lv
+	$GLOBALS['lv'] = array_pop($GLOBALS['we_lv_array']);
 }
 
 function getFieldOutLang(array $attribs, $fallBackBackend = false){

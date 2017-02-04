@@ -85,6 +85,5 @@ FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchab
 	}
 	$GLOBALS['we_position']['listdir'] = ['position' => 0];
 	//Fake listview
-	$GLOBALS['lv'] = new stdClass();
-	we_pre_tag_listview();
+	we_pre_tag_listview(new stdClass());
 }

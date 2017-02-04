@@ -54,13 +54,13 @@ function we_tag_customer(array $attribs){
 
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval(($we_doc->getElement($name, 'bdid') ?
-				$we_doc->getElement($name, 'bdid') :
-				($we_doc->getElement($name) ?
-					$we_doc->getElement($name) :
-					$we_cid)
+			$we_doc->getElement($name, 'bdid') :
+			($we_doc->getElement($name) ?
+			$we_doc->getElement($name) :
+			$we_cid)
 		));
 
-		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
+		$we_cid = $we_cid ?: we_base_request::_(we_base_request::INT, 'we_cid', 0);
 		$path = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '#bdid]';
@@ -80,14 +80,13 @@ function we_tag_customer(array $attribs){
 			</table><?php
 		}
 	} else {
-
-		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
+		$we_cid = $we_cid ?: we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
-	$GLOBALS['lv'] = new we_listview_customer('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+	$lv = new we_listview_customer('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+	we_pre_tag_listview($lv);
 
-	$avail = $GLOBALS['lv']->next_record();
-	we_pre_tag_listview();
+	$avail = $lv->next_record();
 	if($avail){
 //implement seem
 	}

@@ -64,12 +64,11 @@ if(defined('CUSTOMER_TABLE')){
 	$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$php = new weTagData_selectAttribute('php', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$abbr = new weTagData_selectAttribute('abbr', weTagData_selectAttribute::getTrueFalse(), false, '');
-	$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
+	//$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
 	$commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 
-
 	$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('textinput', false, '', [$name, $size, $maxlength, $value], [$name]),
-		new weTagDataOption('textarea', false, '', [$name, $rows, $cols, $value, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands], [$name]),
+		new weTagDataOption('textarea', false, '', [$name, $rows, $cols, $value, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, /*$spellcheck,*/ $commands], [$name]),
 		new weTagDataOption('checkbox', false, '', [$name, $checked], [$name]),
 		new weTagDataOption('radio', false, '', [$name, $checked, $value], [$name]),
 		new weTagDataOption('password', false, '', [$name, $size, $maxlength, $value], [$name]),
@@ -84,5 +83,5 @@ if(defined('CUSTOMER_TABLE')){
 
 	$this->Attributes = [$name, $size, $maxlength, $rows, $cols, $onchange, $choice, $checked, $value, $values, $dateformat, $xml, $id, $removefirstparagraph, $autofill,
 		$parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol,
-		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands];
+		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, /*$spellcheck,*/ $commands];
 }

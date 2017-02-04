@@ -7,8 +7,8 @@ $this->Groups[] = 'input_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $name = new weTagData_textAttribute('name', true, '');
-$cols = new weTagData_textAttribute('cols', false, '');
-$rows = new weTagData_textAttribute('rows', false, '');
+/*$cols = new weTagData_textAttribute('cols', false, '');
+$rows = new weTagData_textAttribute('rows', false, '');*/
 $autobr = new weTagData_selectAttribute('autobr', weTagData_selectAttribute::getTrueFalse(), false, '');
 $importrtf = new weTagData_selectAttribute('importrtf', weTagData_selectAttribute::getTrueFalse(), false, '');
 $width = new weTagData_textAttribute('width', false, '');
@@ -37,14 +37,13 @@ $buttonpos = new weTagData_choiceAttribute('buttonpos', [new weTagDataOption('to
  ], false, false, '');
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classes = new weTagData_textAttribute('classes', false, '');
-$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
+//$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
 $tinyparams = new weTagData_textAttribute('tinyparams', false, '');
 $templates = new weTagData_textAttribute('templates', false, '');
 $gallerytemplates = new weTagData_textAttribute('gallerytemplates', false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', [new weTagDataOption('true', false, '', [$name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $gallerytemplates, $tinyparams, $imagestartid], [$name]),
-	new weTagDataOption('false', false, '', [$name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck], [$name])], false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', [new weTagDataOption('true', false, '', [$name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid], [$name]),
+	new weTagDataOption('false', false, '', [$name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr/*, $spellcheck*/], [$name])], false, '');
 
 $this->Attributes = [$name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $xml, $abbr,
-	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $gallerytemplates, $tinyparams, $imagestartid];
-
+	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid];
