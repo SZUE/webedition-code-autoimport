@@ -456,7 +456,7 @@ this.selectedIndex = 0;' .
 			$daySelect = getHtmlTag('input', array_merge($attsHidden, ['type' => 'hidden',
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
-				'value' => $time ? $day : 0
+				'value' => $time ? $day : 1
 			]));
 		}
 
@@ -487,7 +487,7 @@ this.selectedIndex = 0;' .
 			$monthSelect = getHtmlTag('input', array_merge($attsHidden, ['type' => 'hidden',
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
-				'value' => $time ? $month : 0
+				'value' => $time ? $month : 3 //we set it to march since in march we have 31 days & 1.1.1970 - 00:00 is undefined
 			]));
 		}
 		if(!$format || $yearPos > -1){

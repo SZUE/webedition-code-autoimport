@@ -1485,7 +1485,15 @@ class we_search_search extends we_search_base{
 							}
 							break;
 						case 'modifierID':
-							$where[] = $this->searchModifier($searchString);
+							$w = $this->searchModifier($searchString);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
+
 							break;
 						case 'allModsIn':
 							if($table == VERSIONS_TABLE){
@@ -1520,7 +1528,15 @@ class we_search_search extends we_search_base{
 									break;
 								case FILE_TABLE:
 								case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-									$where[] = $this->getStatusFiles($searchString, $table);
+									$w = $this->getStatusFiles($searchString, $table);
+									if($w === ''){
+										$where[] = ' 0 ';
+									} elseif($opAND){
+										$where[] = $w;
+									} else {
+										$where_OR[] = $w;
+									}
+
 									break 2;
 								default:
 									break 2;
@@ -1530,18 +1546,40 @@ class we_search_search extends we_search_base{
 						case 'CreatorName':
 						case 'WebUserName':
 							if(isset($curField) && isset($location[$i])){
-								$where[] = $this->searchSpecial($searchString, $curField, $location[$i]);
+								$w = $this->searchSpecial($searchString, $curField, $location[$i]);
+								if($w === ''){
+									$where[] = ' 0 ';
+								} elseif($opAND){
+									$where[] = $w;
+								} else {
+									$where_OR[] = $w;
+								}
 							}
 							break;
 						case 'temp_category':
-							$where[] = $this->searchCategory($searchString, $table, $curField);
+							$w = $this->searchCategory($searchString, $table, $curField);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
+
 							break;
 						case 'HasReferenceToID':
 							$where[] = $searchString ? (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $table) : 0) : '';
 							break;
 						default:
 							//if($whichSearch != "AdvSearch"){
-							$where[] = $this->searchfor($searchString, $curField, $location[$i], $table);
+							$w = $this->searchfor($searchString, $curField, $location[$i], $table);
+							if($w === ''){
+								$where[] = ' 0 ';
+							} elseif($opAND){
+								$where[] = $w;
+							} else {
+								$where_OR[] = $w;
+							}
 						//}
 					}
 				}
@@ -1551,6 +1589,7 @@ class we_search_search extends we_search_base{
 		if($where_OR){
 			$where[] = '(' . implode(' OR ', $where_OR) . ')';
 		}
+
 		return array_filter($where);
 	}
 

@@ -1028,12 +1028,12 @@ abstract class we_root extends we_class{
 				$this->OwnersReadOnly = we_serialize($v, SERIALIZE_JSON);
 			}
 		}
-		$year = date('Y');
+
 		foreach($dates as $k => $v){
 			if(!array_sum($dates[$k])){
 				$this->setElement($k, 0, 'date', 'bdid');
 			} else {
-				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date', 'bdid');
+				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? 1970 : $dates[$k]['year']), 'date', 'bdid');
 			}
 		}
 	}
@@ -1101,7 +1101,7 @@ abstract class we_root extends we_class{
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 				//ignore fields which result in empty entry
-				(empty($v['dat']) && empty($v['bdid']) && empty($v['ffname'])) ||
+				((!isset($v['dat']) || $v['dat'] === '') && empty($v['bdid']) && empty($v['ffname'])) ||
 				//don't set "vars" type
 				(isset($v['type']) && $v['type'] == 'vars') ||
 				//ignore binary data
@@ -1124,7 +1124,7 @@ abstract class we_root extends we_class{
 					break;
 			}
 
-			if($bdid || $dat){
+			if($bdid || $dat !== ''){
 				$dat = ($bdid ? sql_function('NULL') : (is_array($dat) ? we_serialize($dat) : $dat));
 				$data = ['Dat' => $dat,
 					'BDID' => intval($bdid),

@@ -43,12 +43,11 @@ function we_tag_order(array $attribs){
 	if($id){
 		$unique = md5(uniqid(__FILE__, true));
 
-		$GLOBALS['lv'] = new we_listview_shopOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, $hidedirindex);
-		$avail = ($GLOBALS['lv']->next_record());
-	} else {
-		$GLOBALS['lv'] = new stdClass();
-		$avail = false;
+		$lv = new we_listview_shopOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, $hidedirindex);
+		we_pre_tag_listview($lv);
+		return $lv->next_record();
 	}
-	we_pre_tag_listview();
-	return $avail;
+
+	we_pre_tag_listview(new stdClass());
+	return false;
 }

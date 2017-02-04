@@ -58,15 +58,26 @@ class we_listview_multiobject extends we_listview_objectBase{
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data = 0;
-		if(!empty($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
-			if(($dat = $parent_lv->f($name))){
-				$data = we_unserialize($dat);
-			}
-		} elseif(!empty($GLOBALS['lv'])){
+		$found = false;
+		//check if current lv is of we_listview_object
+		if(!empty($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_object){
 			if(($dat = $GLOBALS['lv']->f($name))){
 				$data = we_unserialize($dat);
 			}
-		} elseif($GLOBALS['we_doc']->getElement($name)){
+			$found=true;
+		} elseif(!empty($GLOBALS['we_lv_array'])){
+			//find last we_listview_object in stack
+			foreach(array_reverse($GLOBALS['we_lv_array']) as $cur){
+				if($cur instanceof we_listview_object){
+					if(($dat = $cur->f($name))){
+						$data = we_unserialize($dat);
+					}
+					$found=true;
+					break;
+				}
+			}
+		}
+		if(!$found && $GLOBALS['we_doc']->getElement($name)){
 			$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		}
 
@@ -88,7 +99,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		$this->docID = $docID; //Bug #3720
 
 		$this->condition = $this->condition;
-		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$this->languages = $languages ?: (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
