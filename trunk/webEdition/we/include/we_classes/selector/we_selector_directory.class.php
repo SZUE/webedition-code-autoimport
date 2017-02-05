@@ -261,8 +261,9 @@ top.selectIt();';
 
 	protected function printSetDirHTML($morejs = ''){
 		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
-		if(!$morejs && $isWS && $this->id == 0){
+		if($isWS && $this->id == 0){
 			$this->path = '/';
+			$this->dir=0;
 		}
 
 		echo we_html_element::jsElement('
