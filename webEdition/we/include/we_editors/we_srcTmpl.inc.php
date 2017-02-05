@@ -157,6 +157,8 @@ function we_getCodeMirror2Code(){
 			$useCompletion = true;
 			break;
 		case we_base_ContentTypes::XML:
+		case we_base_ContentTypes::HTACCESS:
+		default://if we don't know, use XML Mode
 			$parser_js[] = 'mode/xml/xml.js';
 			$parser_js[] = 'addon/edit/matchbrackets.js';
 			$parser_js[] = 'addon/hint/show-hint.js';
@@ -164,10 +166,6 @@ function we_getCodeMirror2Code(){
 			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = 'application/xml';
 			break;
-		default:
-			//don't use CodeMirror
-			$GLOBALS['initEditor'] = 'initDefaultEdior();';
-			return '';
 	}
 
 	if($parser_js){ // CodeMirror will be used
