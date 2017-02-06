@@ -1,0 +1,23 @@
+CREATE TABLE ###TBLPREFIX###tblCaptchaDef (
+	ID int unsigned NOT NULL,
+	width smallint NOT NULL default '100',
+	height smallint NOT NULL default '25',
+	maxlength tinyint NOT NULL default '5',
+	fontpath tinytext NOT NULL,
+	font tinytext NOT NULL,
+	fontsize tinyint NOT NULL default '14',
+	fontcolor tinytext NOT NULL,
+	subset tinytext NOT NULL,
+	`case` enum('mix', 'upper', 'lower') NOT NULL default 'mix',
+	skip tinytext NOT NULL,
+	align enum('random', 'center', 'left', 'right') NOT NULL default 'random',
+	valign enum('random', 'top', 'middle', 'bottom') NOT NULL default 'random',
+  bgcolor tinytext NOT NULL,
+	transparent enum("0","1") NOT NULL default "0",
+	style enum('','strikeout', 'fullcircle', 'fullrectangle', 'outlinecircle', 'outlinerectangle')  NOT NULL default '',
+	stylecolor tinytext NOT NULL,
+	stylenumber tinytext NOT NULL,
+	angle smallint NOT NULL,
+	`type` enum('gif', 'jpg', 'png') NOT NULL default 'gif',
+	PRIMARY KEY  (ID)
+) ENGINE=MyISAM;

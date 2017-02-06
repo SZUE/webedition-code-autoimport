@@ -1,0 +1,206 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+@import "config.scss";
+#loginScreen{
+	background: url(../images/bg-login.jpg);
+	background-size: cover;
+	background-position: right bottom;
+	height: 100%;
+	form{
+		position:absolute;
+		left:0px;
+		right:0px;
+		top: 5em;
+	}
+	#picCopy{
+		font-size: $smallfont;
+		position: absolute;
+		right:5px;
+		bottom:0px;
+		color:white;
+	}
+	.error{
+		background-color: #EBEBEB;
+		color:red;
+		width:20em;
+		margin-left:auto;
+		margin-right:auto;
+		font: $weFontBold;
+		font-size: $bigfont;
+		position: relative;
+		padding: 1em;
+		top: 5em;
+	}
+}
+
+#mainTable{
+	border-style: none;
+	padding: 30px 40px;
+	border-spacing: 0px;
+	background-color: #192C3A;
+	background: url(../images/bg-login-box.png);
+	width: 432px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	box-shadow: none;
+	color: #ffffff;
+	td.logo{
+		text-align:center;
+	}
+
+	.defaultfont,
+	label ,
+	.small {
+		color: #ffffff;
+		font-size: $bigfont;
+	}
+
+	label {
+		font-family: $weFontBold;
+		margin-bottom: 2px;
+		display: block;
+	}
+
+	.radiobutton label {
+		font-weight: normal;
+		font-size: $medfont;
+		vertical-align: top;
+	}
+	input {
+		color: #4d565d;
+		background: #ffffff;
+		border: none;
+		padding: 0px 10px;
+		height: 30px;
+		line-height: 30px;
+		width: 100%;
+		margin-bottom: 5px;
+	}
+
+
+	input[type="radio"] {
+		padding: 0px;
+		height: auto;
+		line-height: inherit;
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+
+	input[type="checkbox"] {
+		padding: 0px;
+		height: auto;
+		line-height: inherit;
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+
+	.defaultfont  {
+		padding-top: 0px;
+	}
+
+
+	.logo img  {
+		margin-bottom: 15px;
+		max-width: 300px;
+	}
+
+
+	.agency img,
+	img.agency  {
+		max-width: 150px;
+		margin: 0px;
+	}
+
+	.defaultfont a,
+	.defaultfont a:link,
+		.defaultfont a:visited,
+		a,
+		a:link,
+		a:visited {
+		color: #a5aaae;
+	}
+}
+
+#versionSpec{
+	font-family: monospace;
+	font-size:22pt;
+	position:relative;
+	top:-25px;
+	left:200px;
+	text-align:left;
+	font-weight:bolder;
+	color:red;
+	transform: rotate(-35deg);
+	transform-origin: 0% 0%;
+}
+
+#credits{
+	line-height:160%;
+	padding-top:2ex;
+}
+
+.row5{
+	padding-top:5px;
+}
+
+.row10{
+	padding-top:10px
+}
+
+.plainTable{
+	border-style: none;
+	padding: 0px;
+	border-spacing: 0px;
+	width: 100%;
+
+	button.weBtn {
+		height: 30px;
+		line-height: 27px;
+		margin: 0px;
+	}
+}
+
+
+#username {
+	width: 250px;
+}
+#password {
+	width: 250px;
+}
+
+.modeTable {
+	width: 402px;
+}
+
+.spaceTable {
+	padding-top:15px;
+	padding-bottom:5px;
+	.plainTable {
+		padding-bottom: 20px;
+	}
+}

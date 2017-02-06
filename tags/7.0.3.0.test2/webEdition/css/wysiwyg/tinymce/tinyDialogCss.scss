@@ -1,0 +1,321 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+/* TODO: clean up this messy css! */
+/*FIXME: if we have STYLESHEETS applied, we don't need special handling of body (font) */
+
+/*FIXME: adapt to 7.0!! */
+
+/* CSS for all tiny Dialogs */
+@import "../../config.scss";
+html{
+	background: #ffffff;
+}
+
+body{ /* [role=application]? */
+	letter-spacing: normal !important;
+	font-family: $weFont;
+	font-size: $smallfont;
+	margin:0px;
+	background: #ffffff;
+	height: 100%;
+	padding-bottom:20px;
+	overflow: hidden; //add this
+}
+
+i.fa-ok,
+i.fa-retweet,
+i.fa-database {
+	color: green;
+}
+
+i.fa-ban, i.fa-cancel {
+	color: red;
+}
+
+.tabs{
+	background:#192c3a;
+	margin:0px; padding:0px;
+	border: 0px;
+	font-size: $bigfont;
+	color: #000000;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	overflow:hidden;
+	height:$defaultEditorTabHeight;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+
+	li {
+		margin: 0px;
+		padding: 0px 1em 0px 0px;
+		border: 0px;
+		float: left;
+		display: inline-block;
+		line-height: 30px;
+		cursor: pointer;
+		border-right: 1px solid $Grey;
+		border-bottom: 1px solid $Grey;
+		white-space: nowrap;
+		background: $MiddleGrey;
+		height: auto;
+		font-size: $bigfont;
+		&:after {
+			content: attr(title);
+		}
+		&.current {
+			background: #ffffff;
+			margin:0px;
+		}
+		span{
+			background: transparent;
+			border: none;
+			margin: 0px 1em;
+			padding: 0px;
+			font-size: 11px;
+			vertical-align: top;
+		}
+	}
+	.current span {
+		background: transparent;
+		border: none;
+		margin: 0px 1em;
+		padding: 0px;
+		font-size: 11px;
+		vertical-align: top;
+	}
+}
+
+form{
+	table{
+		display:block;
+	}
+	div{
+		color:black;
+	}
+}
+
+.title{
+	color:black;
+}
+
+.panel_wrapper{
+	background-color: transparent;
+	border: none;
+	overflow: auto;
+	padding-top: 12px;
+	position: absolute;
+	top:$defaultEditorTabHeight;
+	bottom:$diaglogFooterHeight;
+	left:0px;
+	right:0px;
+	#class{
+		width:110px;
+	}
+}
+
+label{
+	color:black;
+	margin-right:6px;
+}
+
+legend{
+	color:black;
+	margin-top:16px;
+}
+
+#styleSelectRow select{
+	width:110px;
+}
+
+
+textarea{
+	margin-left:0px;
+}
+
+input[type="text"]{
+	border: 1px solid #AAAAAA;
+	color: black;
+	font-family: sans-serif;
+	font-size: $medfont;
+	height: 18px;
+	line-height: 18px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
+	line-height: 18px;
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
+	background-color: white;
+	border: 1px solid #a5aaae;
+	box-sizing: border-box;
+	color: #192c3a;
+	font: inherit;
+	padding: 5px 3px;
+	line-height: 150%;
+	height:auto;
+}
+
+select,input,textarea{
+	&[disabled]{
+		background-color: lightgray;
+		color:darkgray;
+	}
+}
+
+.mceActionPanel{
+	background: #a5aaae none repeat scroll 0 0;
+	border-top: medium none;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding: 7px 10px;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: $diaglogFooterHeight;
+
+	#insert,
+	#cancel,
+	#apply,
+	#replaceBtn,
+	#replaceAllBtn,
+	button{
+		height: 25px;
+		cursor:pointer;
+		border-collapse: collapse;
+		padding: 0px;
+		color: $DarkGrey;
+		border-radius: 0px;
+		border: none;
+		background: $GreyGradient;
+		font-family: $weFont;
+		font-size: $medfont;
+		font-weight: normal;
+		text-align: center;
+		padding-left: 10px;
+		padding-right: 10px;
+		margin-left:0.5em;
+		margin-right:0.5em;
+		margin-bottom: 1ex;
+		white-space: nowrap;
+		width: auto;
+		box-shadow: 1px 1px 2px $DarkGrey;
+
+		&:hover, button.multiicon:hover {
+			color: $White;
+			background: $MiddleBlueGradient;
+		}
+
+		i.fa-moreicon {
+			padding-left: 0.3em;
+		}
+		i.fa-folder{
+			color: $DarkBlue;
+		}
+
+		&:active{
+			color: $White;
+			background: $MiddleBlueGradient;
+			box-shadow: none;
+		}
+
+		&[disabled]{
+			color: $Grey;
+			box-shadow: none;
+		}
+
+
+		&[disabled]:hover {
+			color: $Grey;
+			background: $GreyGradient;
+		}
+
+		img{
+			border: none;
+			margin: 0px;
+			padding:0px;
+			display:block;
+		}
+	}
+	div {
+		display: inline;
+	}
+}
+
+#colorpicker #previewblock{
+	margin-right:0px;
+}
+
+#colorpicker #preview_wrapper{
+	display:block;
+	position:absolute;
+	bottom:6px;
+	left:0px;
+}
+
+#colorpicker #preview_wrapper span{
+	margin-top:3px;
+	margin-bottom:-2px;
+	height:18px;
+	width:20px;
+}
+
+.panel_toggle_insert_span{
+	margin: 20px 0px 0px 14px;
+}
+
+/* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
+body[role=application]{
+	div#iframecontainer{
+		margin-top:6px;
+		margin-right:0px;
+	}
+	fieldset{
+		border:none;
+	}
+
+	label{
+		margin-left:6px;
+		margin-right:6px;
+	}
+
+	textarea{
+		margin-left:6px;
+	}
+}
