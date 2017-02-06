@@ -1,0 +1,106 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+#top{
+	margin-left:25px;
+}
+td {
+	font-size:11px;
+	vertical-align:top;
+	padding: 5px;
+	border-bottom:1px solid #B8B8B7;
+	border-left:1px solid #B8B8B7;
+}
+#tab1 {
+	position:absolute;
+	overflow:auto;
+}
+#topPrint {
+	margin:0px 0px 0px 25px;
+	display: none;
+}
+#content{
+	position:absolute;
+	margin: 0px;
+	top:30px;
+	bottom:40px;
+	left:0px;
+	right:0px;
+	overflow:auto;
+}
+table{
+	width:95%;
+	background-color:#F5F5F5;
+	margin:15px 15px 15px 25px;
+	border-left:1px solid #B8B8B7;
+	border-right:1px solid #B8B8B7;
+}
+thead td{
+	background-color:#BCBBBB;
+	text-align:left;
+}
+
+table.propDiff td{
+	width:33%;
+}
+
+tr.changedElement{
+	background-color:#BFD5FF;
+}
+
+span.insA{
+	color:blue;
+}
+span.insB{
+	text-decoration:underline;
+}
+span.delA{
+	color:red;
+}
+span.delB{
+	text-decoration: line-through;
+}
+
+
+@media print{
+	td {
+		font-size:9px;
+		vertical-align:top;
+		padding: 5px;
+	}
+	#tab1 {
+		position:relative;
+		overflow: visible;
+		font-size:12px;
+	}
+	#tab2,
+	#tab3,
+	#eHeaderBody,
+	#top {
+		display: none
+	}
+	#topPrint {
+		display: block
+	}
+}

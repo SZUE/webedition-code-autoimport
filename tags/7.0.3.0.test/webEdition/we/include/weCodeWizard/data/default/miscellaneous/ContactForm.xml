@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic SYSTEM "http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd">
+<topic id="topic_52EC37D9C7A34C07B8A1808A4CD3E552">
+	<title>
+		<g_l>[miscellaneous][ContactForm][title]</g_l>
+	</title>
+	<shortdesc>
+		<g_l>[miscellaneous][ContactForm][desc]</g_l>
+	</shortdesc>
+	<prolog>
+		<author>webEdition project</author>
+	</prolog>
+	<body>
+		<p><![CDATA[
+<we:form type="formmail" recipient="spam@webedition.invalid" from="spam@webedition.invalid" required="title,firstName,lastName,email,message" subject="Contact form from the website" onerror="ID" onsuccess="ID" onmailerror="ID" xml="true">
+  <p>__GL([miscellaneous][ContactForm][required])__</p>
+  <fieldset>
+    <legend>__GL([miscellaneous][ContactForm][yourData])__</legend>
+    <p>
+      <label for="title">__GL([miscellaneous][ContactForm][salutation])__*:</label>
+      <select name="title" id="title">
+        <option></option>
+        <option value="__GL([miscellaneous][ContactForm][mr])__">__GL([miscellaneous][ContactForm][mr])__</option>
+        <option value="__GL([miscellaneous][ContactForm][mrs])__">__GL([miscellaneous][ContactForm][mrs])__</option>
+      </select>
+    </p>
+    <p>
+      <label for="firstName">__GL([miscellaneous][ContactForm][forename])__*:</label>
+      <input type="text" name="firstName" id="firstName" />
+    </p>
+    <p>
+      <label for="lastName">__GL([miscellaneous][ContactForm][surname])__*:</label>
+      <input type="text" name="lastName" id="lastName" />
+    </p>
+    <p>
+      <label for="street">__GL([miscellaneous][ContactForm][street])__:</label>
+      <input type="text" name="street" id="street" />
+    </p>
+    <p>
+      <label for="number">__GL([miscellaneous][ContactForm][no])__:</label>
+      <input type="text" name="number" id="number" />
+    </p>
+    <p>
+      <label for="zipCode">__GL([miscellaneous][ContactForm][zip])__:</label>
+      <input type="text" name="zipCode" id="zipCode" />
+    </p>
+    <p>
+      <label for="city">__GL([miscellaneous][ContactForm][city])__:</label>
+      <input type="text" name="city" id="city" />
+    </p>
+    <p>
+      <label for="phone">__GL([miscellaneous][ContactForm][phone])__:</label>
+      <input type="text" name="phone" id="phone" />
+    </p>
+    <p>
+      <label for="email">__GL([miscellaneous][ContactForm][mail])__*:</label>
+      <input type="text" name="email" id="email" />
+    </p>
+    <p>
+      <label for="message">__GL([miscellaneous][ContactForm][message])__*:</label>
+      <textarea cols="19" rows="6" name="message" id="message"></textarea>
+    </p>
+  </fieldset>
+  <p>
+    <input type="submit" value="__GL([miscellaneous][ContactForm][send])__" />
+  </p>
+</we:form>
+				]]></p>
+	</body>
+</topic>

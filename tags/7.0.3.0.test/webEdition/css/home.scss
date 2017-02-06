@@ -1,0 +1,281 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+*/
+
+/* CSS for home screen*/
+@import "config.scss";
+body{
+	background-color: #F5F5F5;
+	margin:10px;
+	&.noHome {
+		background: #DDE7F1 url("/webEdition/images/backgrounds/blank_editor.gif") no-repeat fixed bottom right;
+		height:100%;
+		margin: 0px;
+		padding: 0px;
+		text-align: center;
+	}
+}
+
+.errorMessage {
+	position: relative;
+	top: 250px;
+	display: block;
+	border: 1px solid #999;
+	margin: auto;
+	padding: 1px;
+}
+
+.rssDiv,
+.rssDiv *{
+	background-color: transparent;
+}
+
+.rssDiv a {
+	color: black;
+	text-decoration:none;
+}
+
+div.le_widget {
+	margin-top: 1ex;
+	margin-right: 1em;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	margin-bottom: 15px;
+	line-height: 120%;
+}
+
+#divClone{
+	position:relative;
+	display:none;
+}
+
+.wildcard{
+	position:relative;
+	width:1px;
+	height:1px;
+}
+
+#widgets{
+	position:absolute;
+	top:27px;
+	left:45px;
+	z-index:3;
+	> table{
+		height:98%;
+		> tr >td{
+			vertical-align:top;
+			width:100%;
+			text-align:left
+		}
+	}
+}
+
+#le_tblWidgets{
+	table-layout:fixed;
+
+	.widgetTitle{
+		border-bottom: none;
+		min-height: 22px;
+		line-height: 20px;
+		padding: 5px 11px;
+		background: $DarkBlue;
+	}
+	.label{
+		font-size:15px;
+		color:white;
+		font-family: $weFontBold;
+	}
+
+	div.widget{
+		//width: 100%;
+		border: none;
+		background: $MiddleGrey;
+		&.bgc_white{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: $White;
+				border: 1px solid $MiddleGrey;
+				color: $DarkGrey;
+			}
+			.widget_controls {
+				background: $Grey;
+			}
+		}
+
+		&.bgc_lightCyan{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: #abc6e9;
+			}
+			.widget_controls {
+				background: #395e8d;
+			}
+		}
+
+		&.bgc_blue{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: #4675b1;
+			}
+			.widget_controls {
+				background: #284a70;
+			}
+		}
+
+		&.bgc_green{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: #82af38;
+			}
+			.widget_controls {
+				background: #2b4304;
+			}
+		}
+
+		&.bgc_orange{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: #f29638;
+			}
+			.widget_controls {
+				background: #562e05;
+			}
+		}
+
+		&.bgc_red{
+			background-color: $MiddleGrey;
+			.widgetTitle{
+				background-color: #c03a2f;
+			}
+			.widget_controls {
+				background: #410905;
+			}
+		}
+		&.bgc_yellow{
+			background-color: $MiddleGrey;
+
+			.widgetTitle{
+				background-color: #FFBC00;
+			}
+			.widget_controls {
+				background: #705302;
+			}
+		}
+		td{
+			padding: 0px;
+			vertical-align: top;
+			text-align: left;
+			height: 22px;
+
+			span {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.widget_controls{
+		border-spacing: 0px;
+		border-top-left-radius: 0px;
+		border-top-right-radius: 0px;
+		width: 100%;
+		height: 16px;
+		border-bottom: none;
+		font-size: 10px;
+		color: $White;
+		padding: 3px;
+		table{
+			border-spacing: 0px;
+		}
+		span {
+			padding-left: 5px;
+			width:2em;
+			display:inline-block;
+		}
+
+		.fa {
+			line-height: 23px;
+			font-size: $bigfont;
+			&:hover{
+				color: #abc6e9;
+			}
+		}
+
+	}
+}
+
+div.content{
+	text-align:left;
+	vertical-align:top;
+	padding-top:10px;
+	padding-bottom:11px;
+	padding-left:11px;
+	padding-right:11px;
+}
+
+td.mfdIcon,
+td.upbIcon,
+td.mdcIcon{
+	width:20px;
+	height:20px;
+	padding-right:4px;
+}
+
+td.upbEntry{
+	vertical-align:middle;
+	white-space: nowrap;
+	cursor:pointer
+}
+
+#users_online td{
+	vertical-align:middle;
+	&.we-user{
+		font-family: $weFontBold;
+	}
+}
+
+td{
+	&.sctFileIcon{
+		width:34px;
+		height:34px;
+		padding-right:5px;
+		padding-bottom:3px;
+		cursor:pointer;
+	}
+
+	&.sctText{
+		vertical-align:middle;
+		font-family: $weFontBold;
+		cursor:pointer;
+	}
+}
+
+.cls_expand {
+	vertical-align: top;
+	width: 454px;
+}
+
+.cls_collapse{
+	vertical-align: top;
+	width: 225px;
+}
