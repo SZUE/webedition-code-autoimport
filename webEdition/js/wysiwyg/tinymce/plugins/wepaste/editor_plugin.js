@@ -325,12 +325,23 @@
 
 			// WE: check for attribute we-tiny in paste-content
 			function isFromInsideTinymce(content) {
-				return content.search(' we-tiny="1"') !== -1;
+				// in FF tmpDiv is written to clipboard too, but attrib we-tiny is missing
+				return content.search(' we-tiny="1"') !== -1 || content.search(' name="we-tiny-tmpDiv"') !== -1;
 			}
 
 			// WE: unmark content from inside tinymce
 			function unmarkContentFromInside(content) {
-				return content.replace(/ we-tiny="1"/, '');
+				content = content.replace(/ we-tiny="1"/, '');
+
+				// in FF we must delete surrounding tmpDiv
+				if(content.search(' name="we-tiny-tmpDiv"') !== -1){
+					var tmpDiv = document.createElement('div');
+					tmpDiv.innerHTML = content;
+					content = tmpDiv.firstChild.innerHTML;
+					tmpDiv = null;
+				}
+
+				return content;
 			}
 
 			// Check if we should use the new auto process method
