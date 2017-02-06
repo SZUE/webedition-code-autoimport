@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+/**
+ * Configuration file for webEdition
+ * =================================
+ *
+ * Holds the globals settings of webEdition.
+ *
+ * NOTE:
+ * =====
+ * Edit this file ONLY if you know exactly what you are doing!
+ */

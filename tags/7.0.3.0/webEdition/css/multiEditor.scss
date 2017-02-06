@@ -1,0 +1,137 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+
+body{
+	margin:0px;
+	padding:0px;
+}
+
+#tabContainer{
+	font-size: 11px;
+	color: #000;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	overflow: hidden;
+	line-height: 30px;
+
+	div{
+		margin: 0px;
+		padding: 0px;
+		display: inline-block;
+		cursor: pointer;
+		white-space: nowrap;
+		border-right: 1px solid $DarkBlue;
+		border-bottom: none;
+		padding: 0px 5px;
+		background: $DarkGrey;
+		color: $LightGrey;
+		&.tab:hover{
+			/*			background: lighten($DarkGrey,20%);
+						color: lighten($LightGrey,20%);*/
+		}
+		&.tabActive{
+			background-color: $Grey;
+			color: #000000;
+		}
+	}
+
+	span{
+		&.text{
+			margin:0px;
+			padding:0px;
+			font-size: $smallfont;
+			vertical-align:middle;
+			//FIXME: remove problem in 7.0 with contrast
+			&.notpublished,
+			&.changed{
+				color: inherit;
+			}
+		}
+		&.spacer{
+			font-size: $fafontBig;
+			vertical-align:middle;
+		}
+		&.close{
+			color:#767B81;
+			padding: 0px .5ex;
+			color: $LightGrey;
+			&:hover i.fa-close{
+				color:black;
+			}
+		}
+		&.status{
+			padding: 0px .5ex;
+			display:inline-block;
+			color: $LightGrey;
+			span.fileicon{
+				height: 20px;
+				color: $LightGrey;
+				//change some icon colors
+				.fa-th-large,
+				.fa-archive{
+					color: white;
+				}
+			}
+		}
+		&.trailing{
+			font-size: $fafontMed;
+		}
+	}
+	i.modified{
+		vertical-align:super;
+		font-size:xx-small;
+		visibility:hidden;
+		color:red;
+	}
+}
+
+
+.hidden{
+	display: none;
+}
+.visible{
+	display: inline;
+}
+
+#multiEditorEditorFramesetsDiv{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	overflow: hidden;
+	background-color: white;
+
+	iframe{
+		margin:0px;
+		border:0px;
+		width:100%;
+		height:100%;
+		position:absolute;
+		top:0px;
+	}
+
+}

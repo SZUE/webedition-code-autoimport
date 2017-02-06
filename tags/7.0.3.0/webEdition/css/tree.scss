@@ -1,0 +1,232 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_layout
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+@import "config.scss";
+.tree{
+	white-space: nowrap;
+	padding: 10px 0px;
+}
+#treetable{
+	margin: 0px;
+	color: black;
+	border-width: 0px;
+	border-collapse: collapse;
+	padding: 0px;
+	padding-left:1ex;
+	white-space: nowrap;
+	&.deleteSelector,
+	&.moveSelector{
+		top:160px;
+	}
+	&.collectionSelector{
+		top:205px;
+	}
+
+	table{
+		border: none;
+		width: 100%;
+		border-spacing: 0px;
+		border-collapse: collapse;
+	}
+
+	label{
+		padding-left:.5ex;
+	}
+
+	span{
+		cursor: pointer;
+
+		&.treeKreuz{
+			font-size: $medfont;
+			width: 1ex;
+			height: 1.8em;
+			vertical-align: middle;
+			position: relative;
+			display: inline-block;
+			border: 0px solid $Grey;
+			/*for lines*/
+			i.fa-square{
+				left:-4px;
+				color: $MiddleGrey;
+			}
+		}
+		&.threedots{
+			display:inline-block;
+			background-color:lightgrey;
+			width:80%;
+			text-align:center;
+		}
+		&.strich{
+			width:1ex;
+			margin-left:1ex;
+			border-left-width: 1px;
+		}
+
+		&.kreuzung{
+			width: 1ex;
+			margin-left:1ex;
+			border-left-width: 1px;
+		}
+
+		&.kreuzungend{
+			width:1ex;
+			margin-left:1ex;
+			border-left: 1px solid darkgrey;
+			height:.8em;
+			margin-bottom: 1em;
+		}
+		&.kreuzung,
+		&.kreuzungend{
+			&::before{
+				content: " ";
+				display: inline-block;
+				position: absolute;
+				top: 1.4ex;
+				width: 1em;
+				border-bottom: 1px solid #a6abb0;
+			}
+			i::before,
+			i::before{
+				position: absolute;
+				top: -2px;
+				left: -4px;
+			}
+		}
+	}
+
+	.loginDenied,
+	.notpublished,
+	.checked_notpublished,
+	.red{
+		color:$NotPublishedColor !important;
+	}
+	.bold{
+		font-family: $weFontBold;
+	}
+
+	.blue{
+		color:blue;
+	}
+
+	.disabled {
+		color: grey;
+		cursor: pointer;
+	}
+
+	.item,
+	.group,
+	a,
+	.selected_item,
+	.selected_group{
+		color: $DarkBlue;
+		cursor: pointer;
+		font-size: $smallfont;
+	}
+
+	.disabled a,
+	a,
+	a:active,
+		a:visited,
+		.item a,
+		.group a,
+		.selected_item a,
+		.selected_group a,
+		.notpublished a,
+		.checked_item a,
+		.checked_group a,
+		.checked_notpublished a,
+		.checked_changed a,
+		.selected_notpublished_item a,
+		.selected_changed_item a,
+		.selected_open_group a {
+		text-decoration:none;
+	}
+
+	.group,
+	.selected_group {
+		font-family: $weFontBold;
+		font-size: $smallfont;
+		color: $DarkBlue;
+	}
+
+	.selected_item,
+	.selected_group{
+		background-color: #6070B6;
+	}
+
+	.selected_notpublished_item,
+	.selected_changed_item,
+	.selected_open_group,
+	.checked_changed,
+	.checked_item,
+	.checked_group,
+	.checked_notpublished{
+		color: $White;
+		background-color: $DarkGrey;//$MiddleBlue;
+		padding: 2px 5px;
+		cursor: pointer;
+	}
+	.selected_notpublished_item{
+		background-color: $NotPublishedColor;
+	}
+	.selected_changed_item{
+		background-color: $ModifiedColor;
+	}
+
+	.selected_open_group {
+		font-family: $weFontBold;
+	}
+
+	.checked_group{
+		font-family: $weFontBold;
+	}
+
+	/*change fa sizes in tree*/
+	fa-stack{
+		height: 1em;
+		line-height: 1em;
+		width: 1em;
+	}
+
+	.selected_group,
+	.selected_item {
+		/*background-color: #D4DBFA;*/
+		background-color: $MiddleBlue;
+		padding: 2px 5px;
+		color: $White;
+	}
+	span.fileicon {
+    margin-right: .1em;
+	}
+	span.treeEntry{
+		position: relative;
+	}
+	i.inscheduler{
+		background-color: white;
+		color:$ModifiedColor;
+		left: 0em;
+		position: absolute;
+	}
+}
