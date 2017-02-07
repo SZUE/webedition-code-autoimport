@@ -1611,7 +1611,7 @@ class we_document extends we_root{
 
 	private function getNavigationItems(){
 		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") AND LinkID=' . intval($this->ID));
+			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE (Selection="' . we_navigation_navigation::SELECTION_STATIC . '" OR IsFolder=1) AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '" AND LinkID=' . intval($this->ID));
 			return $this->DB_WE->getAll(true);
 		}
 		return [];
