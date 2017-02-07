@@ -44,6 +44,7 @@ function we_tag_condition(array $attribs){
 			break;
 		case 'stop':
 			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= ')';
+			$GLOBALS[$GLOBALS['we_lv_conditionName']] = str_replace('()', '', $GLOBALS[$GLOBALS['we_lv_conditionName']]);
 			$GLOBALS['we_lv_conditionCount'] --;
 			break;
 	}
