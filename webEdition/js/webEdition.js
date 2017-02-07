@@ -300,13 +300,13 @@ var WebEdition = {
 					this.classList.remove("weMarkInputError");
 					var cmd = this.getAttribute('data-onSelect');
 					if (cmd) {
-						we_cmd(cmd);
+						event.target.ownerDocument.parentWindow.we_cmd(cmd);
 					}
 				},
 				/*called if the element was modified*/
 				change: function (event, ui) {
 					//set path to / if no path is given
-					if (this.value === "") {//is this correct?!
+					if (this.value === "" && !this.getAttribute("required")) {//is this correct?!
 						this.value = "/";
 						this.result.value = 0;
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
@@ -314,11 +314,11 @@ var WebEdition = {
 					if (
 						!this.getAttribute("disabled") &&
 						this.offsetParent !== null /*returns null if parent is hidden*/ && (
-						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-						this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-						)
+							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+							this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+							)
 						) {
 						this.classList.add("weMarkInputError");
 					} else {
@@ -364,12 +364,12 @@ var WebEdition = {
 				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
 					if (
 						!this.getAttribute("disabled") &&
-						this.offsetParent!==null /*returns null if parent is hidden*/&&	(
-						this.value && !parseInt(this.result.value) || //sth. was typed, but not selected
-						!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-						(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
-						(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-						)
+						this.offsetParent !== null /*returns null if parent is hidden*/ && (
+							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+							(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
+							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+							)
 						) {
 						this.classList.add("weMarkInputError");
 						isValid = false;
@@ -2061,6 +2061,16 @@ var we_cmd_modules = {
 	}
 };
 
+function objectAssign(target, src) {
+	if (Object.assign) {
+		return Object.assign.call(Array.prototype.slice.call(arguments));
+	}
+	for (var key in src) {
+		target[key] = src[key];
+	}
+	return target;
+}
+
 function updateMainTree(select, attribs, adv) {
 	if (top.treeData) {
 		if (select) {
@@ -2078,7 +2088,7 @@ function updateMainTree(select, attribs, adv) {
 				if (top.treeData.indexOfEntry(attribs.id) !== -1) {
 					top.treeData.updateEntry(attribs);
 				} else {
-					top.treeData.addSort(new top.node(Object.assign(attribs, adv)));
+					top.treeData.addSort(new top.node(objectAssign(attribs, adv)));
 				}
 				top.drawTree();
 			} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {

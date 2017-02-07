@@ -107,7 +107,7 @@ class we_customer_view extends we_modules_view{
 	typ:"item",
 	parentid:"0",
 	text:"' . $tt . '",
-	disable:"0",
+	disable:0,
 	tooltip:"' . (($this->customer->Forename || $this->customer->Surname ) ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
 }
 top.content.treeData.addSort(new top.content.node(attribs));

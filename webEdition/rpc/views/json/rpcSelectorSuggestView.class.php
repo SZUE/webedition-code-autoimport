@@ -25,7 +25,6 @@
 class rpcSelectorSuggestView extends we_rpc_genericJSONView{
 
 	function getResponse(we_rpc_response $response){
-		header('Content-type: text/plain');
 		$suggests = $response->getData('data');
 		$ret = [];
 		if(is_array($suggests)){

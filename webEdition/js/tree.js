@@ -143,8 +143,9 @@ container.prototype = {
 	},
 	addSort: function (object) {
 		this.len++;
+		var oLower = object.text.toLowerCase();
 		for (var i = this.len; i > 0; i--) {
-			if (i > 1 && (this[i - 1].text.toLowerCase() > object.text.toLowerCase() || (this[i - 1].typ > object.typ))) {
+			if (i > 1 && (this[i - 1].text.toLowerCase() > oLower || this[i - 1].parentid != object.parentid || (this[i - 1].typ !== object.typ))) {
 				this[i] = this[i - 1];
 				continue;
 			}

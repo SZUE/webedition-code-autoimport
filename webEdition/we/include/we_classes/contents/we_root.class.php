@@ -300,7 +300,7 @@ abstract class we_root extends we_class{
 		//FIXME: onblur!
 		$weSuggest->setLabel($label ?: '');
 		$weSuggest->setMaxResults(10);
-		$weSuggest->setRequired(true);
+		//$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $myid);
 		$weSuggest->setSelector(weSuggest::DirSelector);
 		$weSuggest->setTable($table);
