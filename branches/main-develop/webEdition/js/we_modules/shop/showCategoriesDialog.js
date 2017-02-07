@@ -55,17 +55,21 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+	if (hot && args[0] === "close") {
+		args[0] = "exit_doc_question";
+	}
 	switch (args[0]) {
+		case "exit_doc_question_no":
+			top.content.hot = false;
+			/*falls through*/
 		case "close":
-			if (hot) {
-				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
-			} else {
-				window.close();
-			}
+			window.close();
 			break;
-		case "save":
+		case "exit_doc_question_yes":
+		//save the document
+		/*falls through*/
+		case "module_shop_save":
 			document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 			document.we_form.onsaveclose.value = 1;
 			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_categories");
@@ -82,12 +86,12 @@ function we_cmd() {
 function we_switch_active_by_id(id) {
 	try {
 		document.getElementById("destPrincipleRow_" + id).style.display =
-						document.getElementById("defCountryRow_" + id).style.display =
-						(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
+			document.getElementById("defCountryRow_" + id).style.display =
+			(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
 
 		document.getElementById("countriesRow_" + id).style.display =
-						document.getElementById("check_weShopCatIsActive[" + id + "]").checked &&
-						(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
+			document.getElementById("check_weShopCatIsActive[" + id + "]").checked &&
+			(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
 	} catch (e) {
 	}
 }
@@ -98,7 +102,7 @@ function we_switch_principle_by_id(id, obj, isShopCatsDir) {
 
 		document.getElementById("taxPrinciple_tmp[" + id + "]").value = obj.value;
 		document.getElementById("countriesRow_" + id).style.display =
-						(active && obj.value == 1) ? "" : "none";
+			(active && obj.value == 1) ? "" : "none";
 	} catch (e) {
 	}
 }

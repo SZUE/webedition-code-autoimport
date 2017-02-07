@@ -44,8 +44,7 @@ class we_search_view extends we_modules_view{
 
 	public function __construct($frameset = ''){
 		parent::__construct($frameset);
-		$this->Model = !isset($_SESSION['weS'][$this->toolName . '_session']) ? new we_search_model() :
-			$_SESSION['weS'][$this->toolName . '_session'];
+		$this->Model = isset($_SESSION['weS'][$this->toolName . '_session']) ? $_SESSION['weS'][$this->toolName . '_session'] : new we_search_model();
 		//$this->Model = new we_search_model();
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclassExp = new we_search_exp();

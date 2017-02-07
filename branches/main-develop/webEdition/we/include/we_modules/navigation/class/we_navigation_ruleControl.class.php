@@ -148,7 +148,7 @@ class we_navigation_ruleControl{
 				return;
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRuleControl.js') .
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRuleControl.js') .
 			$jscmd->getCmds(), '<body>' . $html . '</body>');
 		exit();
 	}

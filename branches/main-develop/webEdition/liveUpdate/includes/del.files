@@ -224,6 +224,7 @@ we/include/we_modules/object/we_webEditionCmd_object.inc.php
 we/include/we_modules/object/we_searchobject_class.inc.php
 we/include/we_modules/object/we_objecttag.inc.php
 we/include/we_modules/object/we_object_tag.class.php
+we/include/we_modules/object/we_object_showDocument.inc.php
 we/include/we_modules/object/we_object_properties.inc.php
 we/include/we_modules/object/we_object_listviewMultiobject.class.php
 we/include/we_modules/object/we_object_listviewBase.class.php

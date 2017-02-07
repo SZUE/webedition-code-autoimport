@@ -80,6 +80,13 @@ function we_cmd() {
 		case 'deleteTreeEntry':
 			top.content.treeData.deleteEntry.apply(window, args);
 			break;
+		case "exit_doc_question":
+			var yes = args, no = args;
+			yes[0] = 'exit_doc_question_yes';
+			no[0] = 'exit_doc_question_no';
+			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question['tools'], yes, no);
+			break;
+
 		default:
 			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

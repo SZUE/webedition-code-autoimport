@@ -53,8 +53,7 @@ if(!we_base_request::_(we_base_request::STRING, 'cmd')){
 	dieWithError('The Request is not well formed!', $protocol);
 }
 
-//FIXME: !this is not safe at all
-$shell = new we_rpc_cmdShell($_REQUEST, $protocol);
+$shell = new we_rpc_cmdShell($protocol);
 
 if($shell->getStatus() == we_rpc_cmd::STATUS_OK){
 	$shell->executeCommand();

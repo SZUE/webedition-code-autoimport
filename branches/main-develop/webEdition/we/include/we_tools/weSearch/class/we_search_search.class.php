@@ -413,7 +413,7 @@ class we_search_search extends we_search_base{
 					'START' => g_l('searchtool', '[START]'),
 					'END' => g_l('searchtool', '[END]'),
 					'IN' => g_l('searchtool', '[IN]'),
-					];
+				];
 			case 'date':
 				return ['IS' => g_l('searchtool', '[IS]'),
 					'LO' => g_l('searchtool', '[<]'),
@@ -525,7 +525,7 @@ class we_search_search extends we_search_base{
 			$res2[$k] = array_filter(explode(',', $v));
 		}
 
-		$where = $whereIn = [];
+		$whereIn = [];
 
 		$keyword = path_to_id($keyword, CATEGORY_TABLE);
 
@@ -534,18 +534,13 @@ class we_search_search extends we_search_base{
 				//look if the value is numeric
 				if(preg_match('=^[0-9]+$=i', $v2)){
 					if($v2 == $keyword){
-						$where[] = 'WETABLE.ID=' . intval($k);
 						$whereIn[] = intval($k);
 					}
 				}
 			}
 		}
 
-		// TODO: make IN for other tables too (must check first)
-		if($table == FILE_TABLE){
-			return ($whereIn ? 'WETABLE.ID IN(' . implode(',', $whereIn) . ')' : ' 0 ');
-		}
-		return ($where ? '(' . implode(' OR ', $where) . ')' : ' 0 ');
+		return ($whereIn ? 'WETABLE.ID IN(' . implode(',', $whereIn) . ')' : ' 0 ');
 	}
 
 	function searchSpecial($keyword, $searchFields, $searchlocation){
@@ -836,7 +831,7 @@ class we_search_search extends we_search_base{
 								$fields[] = ['name' => $tableInfo[$c]['name'],
 									'type' => $regs[1],
 									'length' => $tableInfo[$c]['len']
-									];
+								];
 							}
 						}
 					}
@@ -881,7 +876,7 @@ class we_search_search extends we_search_base{
 				defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => g_l('javaMenu_moduleInformation', '[customer][text]'),
 				defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => g_l('javaMenu_moduleInformation', '[glossary][text]'),
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
-				];
+			];
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
@@ -947,7 +942,7 @@ class we_search_search extends we_search_base{
 							defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => 'glossary',
 							defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE' => 'navigation',
 							defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE' => 'newsletter'
-							];
+						];
 						foreach($paths[$k] as $key => $v){
 							$accessible[$k][$key] = true;
 							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)] . '\',' . $key . ')';
@@ -989,7 +984,7 @@ class we_search_search extends we_search_base{
 								'path' => isset($paths[$val[1]][$val[0]]) ? $paths[$val[1]][$val[0]] : '',
 								'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
 								'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
-								];
+							];
 						} else {
 							$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = true;
 						}

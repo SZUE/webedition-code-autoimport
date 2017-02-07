@@ -36,7 +36,6 @@ function we_cmd() {
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var delay = args;
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -44,7 +43,7 @@ function we_cmd() {
 			case "tool_weSearch_new":
 			case "tool_weSearch_new_group":
 			case "tool_weSearch_exit":
-				args[0] = "exit_doc_question";
+				args.unshift("exit_doc_question");
 		}
 	}
 
@@ -78,14 +77,14 @@ function we_cmd() {
 		case "tool_weSearch_exit":
 			top.close();
 			break;
-		case "exit_doc_question":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=exit_doc_question";
-			for (var i = 0; i < delay.length; i++) {
-				url += "&delayCmd[]=" + delay[i];
-			}
-
-			new (WE().util.jsWindow)(caller, url, "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
+		case "exit_doc_question_no":
+			top.content.hot = false;
+			args.shift(); //old command is after this command name
+			we_cmd.apply(caller, args);
 			break;
+		case "exit_doc_question_yes":
+		//save the document
+		/*falls through*/
 		case "tool_weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
 				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, window);
