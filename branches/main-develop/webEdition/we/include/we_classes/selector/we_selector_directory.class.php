@@ -261,8 +261,9 @@ class we_selector_directory extends we_selector_file{
 
 	protected function printSetDirHTML(we_base_jsCmd $weCmd){
 		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
-		if(!$morejs && $isWS && $this->id == 0){
+		if($isWS && $this->id == 0){
 			$this->path = '/';
+			$this->dir=0;
 		}
 		$weCmd->addCmd('clearEntries');
 		if($isWS){

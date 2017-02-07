@@ -244,7 +244,7 @@ abstract class we_users_util{
 	}
 
 	public static function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-		if(!$wsIDs || $IDs === ''){
+		if(empty($wsIDs) || empty($IDs)){
 			return true;
 		}
 		$db = ($db ? : new DB_WE());

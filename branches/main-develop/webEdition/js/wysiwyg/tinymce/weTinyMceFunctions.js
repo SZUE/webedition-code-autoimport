@@ -222,12 +222,14 @@ function tinyInit_instance_callback(ed) {
 
 function tinyOnCopyCut(ed, isCut) {
 	var selection = ed.getWin().getSelection();
-	var tmpDiv = ed.getDoc().createElement("div");
+	var tmpDiv = ed.getDoc().createElement('div');
 
 	tmpDiv.appendChild(selection.getRangeAt(0).cloneContents());
 
 	if (tmpDiv.firstElementChild !== null){
 		tmpDiv.firstElementChild.setAttribute('we-tiny', '1');
+		// mark tmpDiv too: in FF tmpDiv is written to clipboard when using selection.selectAllChildren(tmpDiv)!
+		tmpDiv.setAttribute('name', 'we-tiny-tmpDiv');
 
 		// to get marked content into the clipboard, we must
 		// - set tiny-"bookmark" to original selection (i.e. set two spans as start- and end-marker around selection)

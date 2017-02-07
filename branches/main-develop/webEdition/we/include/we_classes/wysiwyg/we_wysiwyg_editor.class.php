@@ -1012,7 +1012,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	extended_valid_elements: "we-gallery[id|tmpl|class]",
 	custom_elements: "we-gallery",
 	visual: true,
-	//extended_valid_elements : "@[we-tiny]",
+	extended_valid_elements : "@[we-tiny]",
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",

@@ -27,7 +27,7 @@ $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', [new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')], false, '');
 $currentdate = new weTagData_selectAttribute('currentdate', weTagData_selectAttribute::getTrueFalse(), false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('text', false, '', [$name, $size, $maxlength, $value, $html, $php, $num_format, $precision, $user, $htmlspecialchars, $spellcheck,], [$name]),
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('text', false, '', [$name, $size, $maxlength, $value, $html, $php, $num_format, $precision, $user, $htmlspecialchars, /*$spellcheck,*/], [$name]),
 	new weTagDataOption('checkbox', false, '', [$name, $value, $reload, $user, $htmlspecialchars,], [$name]),
 	new weTagDataOption('date', false, '', [$name, $format, $currentdate, $user, $htmlspecialchars,], [$name]),
 	new weTagDataOption('choice', false, '', [$name, $size, $maxlength, $mode, $values, $reload, $seperator, $user, $htmlspecialchars,], [$name]),
@@ -36,4 +36,4 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption(
 	new weTagDataOption('language', false, '', [$name, $outputlanguage, $doc], [$name])], true, '');
 
 $this->Attributes = [$name, $size, $maxlength, $format, $mode, $value, $values, $html, $htmlspecialchars, $php, $num_format, $precision, $win2iso, $reload,
-	$seperator, $user, $spellcheck, $outputlanguage, $doc];
+	$seperator, $user, /*$spellcheck,*/ $outputlanguage, $doc];

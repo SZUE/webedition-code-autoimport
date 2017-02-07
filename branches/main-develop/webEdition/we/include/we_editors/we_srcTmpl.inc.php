@@ -99,12 +99,15 @@ function we_getCodeMirror2Code(&$options){
 			$useCompletion = true;
 			break;
 		case we_base_ContentTypes::XML:
+		case we_base_ContentTypes::HTACCESS:
+		default://if we don't know, use XML Mode
+			$parser_js[] = 'mode/xml/xml.js';
+			$parser_js[] = 'addon/edit/matchbrackets.js';
+			$parser_js[] = 'addon/hint/show-hint.js';
+			$parser_js[] = 'addon/hint/xml-hint.js';
+			$parser_css[] = 'addon/hint/show-hint.css';
 			$mode = 'application/xml';
 			break;
-		default:
-			//don't use CodeMirror
-			$GLOBALS['initEditor'] = 'initDefaultEdior();';
-			return '';
 	}
 
 	$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
