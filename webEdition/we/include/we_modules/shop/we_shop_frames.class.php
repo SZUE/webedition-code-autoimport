@@ -121,7 +121,7 @@ class we_shop_frames extends we_modules_frame{
 		);
 	}
 
-	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
+	function getHTMLEditorTop(){
 		$DB_WE = $this->db;
 
 		$home = we_base_request::_(we_base_request::BOOL, 'home');
@@ -285,8 +285,6 @@ function setTab(tab) {
 			case 'frameset':
 				$bid = we_base_request::_(we_base_request::INT, 'bid');
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . ($bid === -1 ? intval(f('SELECT MAX(ID) FROM ' . SHOP_ORDER_TABLE, '', $this->db)) : $bid) : '&top=1&home=1'));
-			case 'exitQuestion':
-				return we_shop_frames::showExitQuestion();
 			case 'customerOrderList':
 				return self::showCustomerOrderList();
 			case 'pref_shop':
@@ -322,17 +320,6 @@ function setTab(tab) {
 			return $this->View->getHomeScreen();
 		}
 		return $this->View->getProperties();
-	}
-
-	public static function showExitQuestion(){
-		$yes = 'opener.top.hot=false;opener.top.we_cmd("save");self.close()';
-		$no = 'opener.top.hot=false;opener.top.we_cmd("close");self.close();';
-		$cancel = 'self.close();';
-
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '
-<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
-			we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) . //GL
-			'</body>');
 	}
 
 	private static function showCustomerOrderList(){
@@ -862,7 +849,7 @@ function setTab(tab) {
 					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
 					we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('module_shop_save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
 					) .
 					'</form>'));
@@ -1132,7 +1119,7 @@ function setTab(tab) {
 					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />' .
 					we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('module_shop_save');"), '', we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
 					) . '</form>'));
 	}
@@ -1288,7 +1275,7 @@ function setTab(tab) {
 							$selAttribs = ['id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']'];
 							$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-							$innerTable->setCol($num, 0, ['class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')], ($v['textTerritory'] ? : 'N.N.'));
+							$innerTable->setCol($num, 0, ['class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')], ($v['textTerritory'] ?: 'N.N.'));
 							$innerTable->setCol($num, 1, ['class' => 'defaultfont', 'width' => 220], $sel);
 						}
 					}
@@ -1504,14 +1491,13 @@ function setTab(tab) {
 			];
 		}
 
-
 		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_shipping.js', '', ['id' => 'loadVarShopping', 'data-shopping' => setDynamicVar([
 						'trashButton' => we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")
 				])]) .
 				(isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
 		<input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />' .
 					we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")
+							we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('module_shop_save');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")
 						), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
 					) . '</form>'));
 	}

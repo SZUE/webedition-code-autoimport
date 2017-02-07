@@ -65,8 +65,8 @@ function closeOnEscape() {
 
 function changeFormTextField(theId, newVal) {
 	/*if (document.getElementById(theId) === null) {
-		console.log(theId);
-	}*/
+	 console.log(theId);
+	 }*/
 	document.getElementById(theId).value = newVal;
 }
 
@@ -89,24 +89,28 @@ function we_cmd() {
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
-	var elem,theVat;
+	var elem, theVat;
+
+	if (hot && args[0] === "close") {
+		args[0] = "exit_doc_question";
+	}
 
 	switch (args[0]) {
-		case "save":
-			document.we_form.onsaveclose.value = 1;
-			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats");
-			break;
-
 		case "save_notclose":
 			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats");
 			break;
-
+		case "exit_doc_question_yes":
+		//save the document
+		/*falls through*/
+		case "module_shop_save":
+			document.we_form.onsaveclose.value = 1;
+			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats");
+			break;
+		case "exit_doc_question_no":
+			top.content.hot = false;
+			/*falls through*/
 		case "close":
-			if (hot) {
-				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
-			} else {
-				window.close();
-			}
+			window.close();
 			break;
 
 		case "edit":

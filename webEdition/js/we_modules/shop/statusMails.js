@@ -52,7 +52,7 @@ function we_cmd() {
 		case "close":
 			window.close();
 			break;
-		case "save":
+		case "module_shop_save":
 			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_status");
 			break;
 		default:

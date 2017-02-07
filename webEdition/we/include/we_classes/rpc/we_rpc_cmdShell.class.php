@@ -31,33 +31,36 @@ class we_rpc_cmdShell{
 	protected $Response;
 	protected $Status = we_rpc_cmd::STATUS_OK;
 
-	public function __construct(array &$cmd, $protocol){
+	public function __construct($protocol){
 		$this->Protocol = $protocol;
-		$this->Cmd = $this->createCmd($cmd);
+		$this->Cmd = $this->createCmd();
 
 		if(($view = we_base_request::_(we_base_request::STRING, 'view'))){
 			if(!$this->isViewAllowed($view)){
 				$this->Status = we_rpc_cmd::STATUS_NOT_ALLOWED_VIEW;
 			}
 		} else {
-			$cmd['view'] = $this->CmdName;
+			$view = $this->CmdName;
 		}
 		if($this->Status == we_rpc_cmd::STATUS_OK){
-			$this->View = $this->getView($cmd);
+			$this->View = $this->getView($view);
 		}
 	}
 
-	private function createCmd(array $cmd){
-		$this->CmdName = $cmd['cmd'];
-		$classname = 'rpc' . $cmd['cmd'] . 'Cmd';
+	private function createCmd(){
+		$this->CmdName = we_base_request::_(we_base_request::STRING, 'cmd');
+		$classname = 'rpc' . $this->CmdName . 'Cmd';
 
-		$namespace = '/' . (isset($cmd['cns']) ? $cmd['cns'] . '/' : '');
+		$namespace = we_base_request::_(we_base_request::STRING, 'cns', '');
+		$namespace = '/' . ($namespace ? $namespace . '/' : '');
 
-		$cmdfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
-				we_tool_lookup::getCmdInclude($namespace, $cmd['tool'], $this->CmdName) :
-				'cmds' . $namespace . $classname . '.class.php');
+		$tool = we_base_request::_(we_base_request::STRING, 'tool');
 
-		if(include_once($cmdfile)){
+		$cmdfile = ($tool && we_tool_lookup::isTool($tool) ?
+			we_tool_lookup::getCmdInclude($namespace, $tool, $this->CmdName) :
+			'cmds' . $namespace . $classname . '.class.php');
+
+		if($cmdfile && include_once($cmdfile)){
 			$obj = new $classname($this);
 			$obj->executeRpcCmd($this);
 
@@ -70,19 +73,20 @@ class we_rpc_cmdShell{
 		return null;
 	}
 
-	function getView(array $cmd){
-		$classname = 'rpc' . $cmd['view'] . 'View';
-		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
+	function getView($view){
+		$classname = 'rpc' . $view . 'View';
+		$tool = we_base_request::_(we_base_request::STRING, 'tool');
+		$vns = we_base_request::_(we_base_request::STRING, 'vns');
+		$cns = we_base_request::_(we_base_request::STRING, 'cns');
+		$namespace = '/' . ($vns ? $vns . '/' : ($cns ? $cns . '/' : ''));
 
-		$viewfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
-				we_tool_lookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
-				'views/' . $this->Protocol . $namespace . $classname . '.class.php');
-		if(@include_once($viewfile)){
-			$obj = new $classname($this, $this->Protocol);
-		} else {
-			$obj = new we_rpc_genericJSONView($this, $this->Protocol);
+		$viewfile = ($tool && we_tool_lookup::isTool($tool) ?
+			we_tool_lookup::getViewInclude($this->Protocol, $namespace, $tool, $view) :
+			'views/' . $this->Protocol . $namespace . $classname . '.class.php');
+		if($viewfile && include_once($viewfile)){
+			return new $classname($this, $this->Protocol);
 		}
-		return $obj;
+		return new we_rpc_genericJSONView($this, $this->Protocol);
 	}
 
 	private function isViewAllowed($view){

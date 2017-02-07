@@ -829,7 +829,7 @@ for ( frameId in _usedEditors ) {
 			case 'IsSearchable':
 				$value = intval($value);
 				if($value){
-					//FIXME: we have to add new entries
+					//FIXME: we have to add new entries - we have to adapt a rebuild dialog
 				} else {
 					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . implode(',', $IDs) . ') AND IsFolder=0' . $whereRestrictOwners);
 				}

@@ -40,7 +40,6 @@ function we_cmd() {
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var delay = Array.prototype.slice.call(arguments);
 	var el, id;
 
 	if (top.content.hot) {
@@ -49,7 +48,7 @@ function we_cmd() {
 			case "module_navigation_new":
 			case "module_navigation_new_group":
 			case "exit_navigation":
-				args[0] = "exit_doc_question";
+				args.unshift("exit_doc_question");
 		}
 	}
 	switch (args[0]) {
@@ -82,6 +81,14 @@ function we_cmd() {
 				window.treeData.unselectNode();
 			}
 			break;
+		case "exit_doc_question_no":
+			top.content.hot = false;
+			args.shift(); //old command is after this command name
+			we_cmd.apply(caller, args);
+			break;
+		case "exit_doc_question_yes":
+			//save the document
+			/*falls through*/
 		case "module_navigation_save":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
@@ -240,14 +247,6 @@ function we_cmd() {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
-		case "exit_doc_question":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question";
-			for (var i = 0; i < delay.length; i++) {
-				url += "&delayCmd[]=" + delay[i];
-			}
-			new (WE().util.jsWindow)(caller, url, "we_exit_doc_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
-			break;
-
 		case "module_navigation_reset_customer_filter":
 			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.reset_customerfilter_question, ["module_navigation_do_reset_customer_filter"]);
 			break;

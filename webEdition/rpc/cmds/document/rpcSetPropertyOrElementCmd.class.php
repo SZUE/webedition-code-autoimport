@@ -49,11 +49,11 @@ class rpcSetPropertyOrElementCmd extends we_rpc_cmd{
 				$GLOBALS['we_doc'] = new we_webEditionDocument();
 				break;
 			case OBJECT_FILES_TABLE:
-				//$GLOBALS['we_doc'] = new we_objectFile;
-				//break;
+			//$GLOBALS['we_doc'] = new we_objectFile;
+			//break;
 			case VFILE_TABLE:
-				//$GLOBALS['we_doc'] = new we_collection();
-				//break;
+			//$GLOBALS['we_doc'] = new we_collection();
+			//break;
 			default:
 				$resp->setData('error', ['not implemented']);
 				return $resp;
@@ -63,22 +63,20 @@ class rpcSetPropertyOrElementCmd extends we_rpc_cmd{
 		if($transaction && (isset($_SESSION['weS']['we_data'][$transaction]))){
 			$GLOBALS['we_doc']->we_initSessDat($_SESSION['weS']['we_data'][$transaction]);
 			$isFromSessDat = true;
-		} else if($id){
+		} elseif($id){
 			$GLOBALS['we_doc']->initByID($id);
 		} else {
 			$resp->setData('error', ['cannot load wedoc']);
 			return $resp;
 		}
+		
 		$GLOBALS['we_doc']->setElement($name, $value, $type, $key);
 
-		if($isFromSessDat ){
-			$ret = $GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$transaction]);
-			$resp->setData('data', $ret ? 'successfully saved to session' : 'failure when saving to session');
-		} else {
-			$ret = $GLOBALS['we_doc']->save(false, true); // FIXME: why is $ret = -1?
-			$resp->setData('data', $ret ? 'successfully saved to db' : 'failure when saving to db');
+		$ret = ($isFromSessDat ?
+			$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$transaction]) :
+			$GLOBALS['we_doc']->save(false, true));
 
-		}
+		$resp->setData('data', ($ret ? 'successfully saved to' : 'failure when saving to') . ' ' . ($isFromSessDat ? 'session' : 'db'));
 
 		return $resp;
 	}

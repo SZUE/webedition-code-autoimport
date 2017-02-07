@@ -649,7 +649,7 @@ class we_navigation_navigation extends we_base_model{
 		return true;
 	}
 
-	public function reorder($pid){// FIXME: set private again in 6.5
+	private function reorder($pid){
 		$this->db->query('SET @count:=-1');
 		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=(@count:=@count+1) WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
 	}

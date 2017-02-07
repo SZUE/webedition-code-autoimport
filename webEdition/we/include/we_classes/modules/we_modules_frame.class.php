@@ -79,8 +79,6 @@ abstract class we_modules_frame{
 				return $this->getHTMLTree();
 			case 'search':
 				return $this->getHTMLSearch();
-			case 'exit_doc_question':
-				return $this->getHTMLExitQuestion();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			default:
@@ -226,18 +224,6 @@ abstract class we_modules_frame{
 
 	function getHTMLSearch(){
 		// to be overridden
-	}
-
-	protected function getHTMLExitQuestion(){
-		if(($dc = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
-			$yes = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'module_' . $this->module . '_save\');self.close();';
-			$no = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
-			$cancel = 'self.close();';
-
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
-					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
-					'</body>');
-		}
 	}
 
 	private function setTreeWidthFromCookie(){

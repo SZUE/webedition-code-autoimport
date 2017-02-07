@@ -144,17 +144,17 @@ abstract class we_tool_frames extends we_modules_frame{
 				), we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => $loader->getItems($pid, $offset, $this->Tree->default_segment, '')]));
 	}
 
-	protected function getHTMLExitQuestion(){
+	/*protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
 			$yes = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'tool_' . $this->toolName . '_save\');self.close();';
 			$no = 'opener.top.content.hot=false;opener.top.content.we_cmd(\'' . implode("','", $dc) . '\');self.close();';
 			$cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
+			return we_html_tools::getHtmlTop('', '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
 					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
 					'</body>');
 		}
-	}
+	}*/
 
 	function getHTMLDocument($body, $head = ''){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ' . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) . $head, $body);

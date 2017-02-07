@@ -1634,7 +1634,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 					'', //^a-z
 					'-', //--
 					'/', // //
-					'', // xxx/
+					'', // dangling slash
 					], htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {

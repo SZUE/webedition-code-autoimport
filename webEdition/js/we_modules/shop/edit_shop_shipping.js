@@ -45,7 +45,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-		case "save":
+		case "module_shop_save":
 			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping");
 			break;
 		case "close":

@@ -46,7 +46,7 @@ abstract class we_users_online{
 			'darkorange',
 			'fuchsia',
 			'seagreen'
-		]; //FIXME:add usefull colors
+		];
 		$i = -1;
 		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User,Email FROM ' . USER_TABLE . ' WHERE Ping>((NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);

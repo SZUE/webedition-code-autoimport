@@ -853,7 +853,7 @@ self.close();');
 		return $we_doc;
 	}
 
-	function we_includeEntity(&$we_doc, $tmpid){//FIXME: unused
+	/*function we_includeEntity(&$we_doc, $tmpid){
 		if($tmpid != "" && $tmpid != 0){
 			$path = id_to_path($tmpid, TEMPLATES_TABLE);
 		}
@@ -866,7 +866,7 @@ self.close();');
 			echo STYLESHEET .
 			'<div class="defaultfont lowContrast" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
 		}
-	}
+	}*/
 
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = '', $title = '', $firstname = '', $lastname = '', $customerid = 0){
 		if(!isset($this->newsletter->blocks[$pblk])){
