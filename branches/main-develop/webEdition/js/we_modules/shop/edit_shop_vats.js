@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 'use strict';
 
 /**
@@ -92,7 +92,8 @@ function we_cmd() {
 	var elem, theVat;
 
 	if (hot && args[0] === "close") {
-		args[0] = "exit_doc_question";
+		top.we_cmd.apply(caller, ["exit_doc_question"]);
+		return;
 	}
 
 	switch (args[0]) {

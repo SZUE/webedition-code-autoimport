@@ -51,10 +51,9 @@ $titlePathName = oldHtmlspecialchars($this->model->Text);
 
 $htmlPage->addHTML(
 	'<div id="main">
-		<div id="headrow">
-			&nbsp;<strong><span id="titlePathGroup">' .
+		<div id="headrow"><strong><span id="titlePathGroup">' .
 	$titlePathGroup . '</span>:&nbsp;<span id="titlePathName">' .
-	$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>
+	$titlePathName . '</span><div id="mark">*</div></strong>
 		</div>
 	');
 

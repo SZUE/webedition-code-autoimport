@@ -35,7 +35,7 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -44,6 +44,8 @@ function we_cmd() {
 			case "tool_weSearch_new_group":
 			case "tool_weSearch_exit":
 				args.unshift("exit_doc_question");
+				top.we_cmd.apply(caller, args);
+				return;
 		}
 	}
 

@@ -84,7 +84,7 @@ function we_cmd() {
 			var yes = args, no = args;
 			yes[0] = 'exit_doc_question_yes';
 			no[0] = 'exit_doc_question_no';
-			WE().util.showConfirm(window, "", WE().consts.g_l.alert.exit_doc_question['tools'], yes, no);
+			WE().util.showConfirm(caller, "", WE().consts.g_l.alert.exit_doc_question['tools'], yes, no);
 			break;
 
 		default:

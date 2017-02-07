@@ -57,7 +57,8 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 	if (hot && args[0] === "close") {
-		args[0] = "exit_doc_question";
+		top.we_cmd.apply(caller, ["exit_doc_question"]);
+		return;
 	}
 	switch (args[0]) {
 		case "exit_doc_question_no":
