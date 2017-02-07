@@ -109,8 +109,9 @@ function setTab(tab) {
 				['id' => 'eHeaderBody',
 				'onload' => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
 				'onresize' => 'weTabs.setFrameSize()'
-				], '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
-					$Text . '<div id="mark" style="display: none;"><i class="fa fa-asterisk modified"></i></div>') . '</div>' .
+				], '<div id="main"><div id="headrow">&nbsp;' .
+				we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' . $Text . '<div id="mark"><i class="fa fa-asterisk modified"></i></div>') .
+				'</div>' .
 				$we_tabs->getHTML() .
 				'</div>');
 

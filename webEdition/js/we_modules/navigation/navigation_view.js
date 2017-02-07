@@ -49,6 +49,8 @@ function we_cmd() {
 			case "module_navigation_new_group":
 			case "exit_navigation":
 				args.unshift("exit_doc_question");
+				top.we_cmd.apply(caller, args);
+				return;
 		}
 	}
 	switch (args[0]) {
