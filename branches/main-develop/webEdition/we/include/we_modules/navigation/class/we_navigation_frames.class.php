@@ -1113,9 +1113,7 @@ function showPreview() {
 	private function getHTMLCharsetTable(){
 		$value = (!empty($this->Model->Charset) ? $this->Model->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 
-		$charsetHandler = new we_base_charsetHandler();
-
-		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 		asort($charsets);
 		reset($charsets);
 

@@ -987,7 +987,7 @@ abstract class we_SEEM{
 		$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", ["we_cmd", "original_action"]);
 		$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ', we_html_element::htmlBody([],
+		echo we_html_tools::getHtmlTop('', '', '', ' ', we_html_element::htmlBody([],
 				//	The following will translate a given URL to a we_cmd.
 				//	When pressing a link in edit-mode this functionality
 				//	is needed to reopen the document (if possible) with webEdition

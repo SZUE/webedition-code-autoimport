@@ -832,7 +832,7 @@ function we_templateInit(){
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 //check if CHARSET is valid
 		$charset = $GLOBALS['we_doc']->getElement('Charset');
-		$GLOBALS['CHARSET'] = (!in_array($charset, we_base_charsetHandler::getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
+		$GLOBALS['CHARSET'] = (!in_array($charset, we_base_charsetHandler::inst()->getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
 		if((!defined('WE_CONTENT_TYPE_SET'))){
 			define('WE_CONTENT_TYPE_SET', 1);
 			we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);

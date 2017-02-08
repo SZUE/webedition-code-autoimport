@@ -1451,9 +1451,7 @@ class we_document extends we_root{
 	function formCharset($withHeadline = false){
 		$value = $this->getElement('Charset');
 
-		$charsetHandler = new we_base_charsetHandler();
-
-		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 		$charsets[''] = '';
 		asort($charsets);
 

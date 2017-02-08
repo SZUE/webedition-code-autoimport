@@ -1706,7 +1706,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 
 		$charset = new we_html_select(['name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();']);
-		$c = we_base_charsetHandler::getAvailCharsets();
+		$c = we_base_charsetHandler::inst()->getAvailCharsets();
 		foreach($c as $char){
 			$charset->addOption($char, $char);
 		}

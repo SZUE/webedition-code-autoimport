@@ -2117,9 +2117,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 	private function getHTMLCharsetTable(){
 		$value = (isset($this->View->newsletter->Charset) ? $this->View->newsletter->Charset : "");
 
-		$charsetHandler = new we_base_charsetHandler();
-
-		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 		asort($charsets);
 		reset($charsets);
 

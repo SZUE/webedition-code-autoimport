@@ -519,9 +519,7 @@ class we_objectFile extends we_document{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-		$charsetHandler = new we_base_charsetHandler();
-
-		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 		$charsets[''] = '';
 		asort($charsets);
 		reset($charsets);

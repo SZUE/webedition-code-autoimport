@@ -634,8 +634,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// DEFAULT CHARSET
 			if(we_base_preferences::userIsAllowed('DEFAULT_CHARSET')){
-				$charsetHandler = new we_base_charsetHandler();
-				$charsets = $charsetHandler->getCharsetsForTagWizzard();
+				$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
