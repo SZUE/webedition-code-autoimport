@@ -26,7 +26,7 @@
  * Base class for views.
  *
  */
-class we_rpc_view{
+abstract class we_rpc_view{
 	var $CmdShell;
 	protected $protocol;
 

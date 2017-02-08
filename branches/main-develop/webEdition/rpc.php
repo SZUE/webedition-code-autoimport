@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$protocol = we_base_request::_(we_base_request::STRING, 'protocol', 'json');
+$protocol = 'json';
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . WEBEDITION_PATH . '/rpc/');
 
 function dieWithError($text, $protocol){
@@ -35,13 +34,6 @@ function dieWithError($text, $protocol){
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
 			$errorView = new we_rpc_genericJSONView('', $protocol);
-			echo $errorView->getResponse($resp);
-			exit;
-		case 'text':
-			$resp = new we_rpc_response();
-			$resp->setStatus(false);
-			$resp->setData('data', $text);
-			$errorView = new we_rpc_view('', $protocol);
 			echo $errorView->getResponse($resp);
 			exit;
 		default:

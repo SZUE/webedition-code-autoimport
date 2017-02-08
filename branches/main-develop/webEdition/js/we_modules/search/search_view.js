@@ -244,7 +244,7 @@ var weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackResultList, "html");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", 'cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackResultList, "html");
 	},
 	/*makeAjaxRequestParametersTop: function () {
 	 var args = '', newString = '';
@@ -253,7 +253,7 @@ var weSearch = {
 	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 	 }
-	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersTop);
+	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersTop);
 	 },
 	 makeAjaxRequestParametersBottom: function () {
 	 var args = '', newString = '';
@@ -261,7 +261,7 @@ var weSearch = {
 	 newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 	 args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 	 }
-	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersBottom);
+	 WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", 'cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args,this.ajaxCallbackParametersBottom);
 	 },*/
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
@@ -269,7 +269,7 @@ var weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetMouseOverDivs", 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackgetMouseOverDivs, "html");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetMouseOverDivs", 'cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args, this.ajaxCallbackgetMouseOverDivs, "html");
 	},
 	setView: function (value) {
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = value;
@@ -808,7 +808,7 @@ var weSearch = {
 	},
 	resetVersionAjax: function (id, documentID, version, table) {
 		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "protocol=json&cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '", this.ajaxCallbackResetVersion, "html");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '", this.ajaxCallbackResetVersion, "html");
 	},
 	resetVersions: function () {
 		var checkboxes = [];
@@ -925,7 +925,7 @@ var weSearch = {
 		args += "&we_cmd[0]=" + encodeURI(check);
 		var scroll = document.getElementById("resetBusy" + whichSearch);
 		scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=PublishDocs", "protocol=json&cns=tools/weSearch&" + args, this.ajaxCallbackPublishDocs);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=PublishDocs", "cns=tools/weSearch&" + args, this.ajaxCallbackPublishDocs);
 
 	},
 	previewVersion: function (table, ID, version) {
@@ -965,7 +965,7 @@ var weSearch = {
 
 		var scroll = document.getElementById('resetBusy' + whichSearch);
 		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteMediaDocs", 'protocol=json&cns=tools/weSearch&' + args, this.ajaxCallbackDeleteMediaDocs);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteMediaDocs", 'cns=tools/weSearch&' + args, this.ajaxCallbackDeleteMediaDocs);
 	},
 	ajaxCallbackDeleteMediaDocs: function (weResponse) {
 		var response=weResponse.DataArray.response;

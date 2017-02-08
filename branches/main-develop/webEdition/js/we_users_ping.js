@@ -28,7 +28,7 @@
 var weRpcFailedCnt = 0;
 
 window.setInterval(function () {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=Ping", 'protocol=json', function (result) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=Ping", '', function (result) {
 		if (result && result.Success) {
 			var num_users = result.DataArray.num_users;
 			weRpcFailedCnt = 0;

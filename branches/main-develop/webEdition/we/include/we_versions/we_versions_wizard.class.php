@@ -1059,12 +1059,12 @@ function goTo(where){
 		f.submit();
 
 //						parent.wizbusy.document.getElementById("progr").style.display = "block";
-/*	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersionsWizard","protocol=json&publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist", ajaxCallbackResetVersionsWizard,"html");
+/*	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersionsWizard","publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist", ajaxCallbackResetVersionsWizard,"html");
 */
 //
 	}	else {
 		parent.wizbusy.document.getElementById("progr").style.display = "block";
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersionsWizard", "protocol=json&cns=versionlist",ajaxCallbackDeleteVersionsWizard,"html");
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersionsWizard", "cns=versionlist",ajaxCallbackDeleteVersionsWizard,"html");
 	}
 }
 
