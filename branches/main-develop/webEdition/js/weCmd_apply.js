@@ -37,5 +37,7 @@ function we_cmd() {
 		top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	} else if(top.opener.we_cmd){
 		top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	} else if(top.opener.top.we_cmd) {
+		top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
