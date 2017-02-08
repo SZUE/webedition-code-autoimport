@@ -269,7 +269,7 @@ var WebEdition = {
 						response(el.cache[ term ]);
 						return;
 					}
-					var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SelectorSuggest" +
+					var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SelectorSuggest" +
 						"&we_cmd[table]=" + el.getAttribute('data-table') +
 						"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
 						"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
@@ -944,13 +944,13 @@ var WebEdition = {
 			var data = el.getAttribute(dataname);
 			return data ? JSON.parse(window.atob(data)) : null;
 		},
-		rpc: function (url, data, success, dataType) {
+		rpc: function (url, data, success) {
 			return $.ajax({
 				type: "POST",
 				url: url,
 				data: data,
 				success: success,
-				dataType: (dataType === undefined ? "json" : dataType),
+				dataType: "json"
 				//timeout: 2000
 			}).fail(function (jqxhr, textStatus, error) {
 				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText, this.url);
@@ -1848,7 +1848,7 @@ var we_cmd_modules = {
 					'&we_cmd[full]=0' +
 					'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
 					'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
-				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=InsertValidItemsByID&cns=collection", postData);
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData);
 
 				break;
 			case "help_documentation":
@@ -2011,7 +2011,7 @@ var we_cmd_modules = {
 					'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
 					'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
-				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPropertyOrElement&cns=document" + postData);
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPropertyOrElement&cns=document" + postData);
 				break;
 			case "suggest_writeBack":
 				WE().layout.weSuggest.writebackExternalSelection(caller, args[1], args[2]);
@@ -2180,7 +2180,7 @@ function switchEditPage(args, url) {
 	// if visible frame equals to editpage content and there is already content loaded
 	if (isEditpageContent && visibleEditorFrame && visibleEditorFrame.weIsTextEditor !== undefined && currentEditorRootFrame.frames[2].location !== "about:blank") {
 		// tell the backend the right edit page nr and break (don't send the form)
-		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=json&cmd=SetPageNr", "transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPageNr", "transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
 		//FAIL: top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
 		if (visibleEditorFrame.reloadContent === false) {
 			return;

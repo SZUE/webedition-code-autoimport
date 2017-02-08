@@ -70,7 +70,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->setGenericFileName();
 		$this->doCommitFile = false;
 		$this->responseClass = 'we_fileupload_resp_base';
-		$this->form['action'] = WEBEDITION_DIR . 'rpc.php?protocol=json&cmd=ProcessFileupload&cns=fileupload';
+		$this->form['action'] = WEBEDITION_DIR . 'rpc.php?cmd=ProcessFileupload&cns=fileupload';
 	}
 
 	public function setResponseClass($responseClass){

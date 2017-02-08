@@ -1059,7 +1059,7 @@ var weCollectionEdit = {
 
 		try {
 			if (csvIDs) {
-				var postData = 'protocol=json&cns=collection' +
+				var postData = 'cns=collection' +
 					'&we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction) +
 					'&we_cmd[ids]=' + encodeURIComponent(csvIDs) +
 					'&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId) +

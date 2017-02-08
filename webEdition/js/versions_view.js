@@ -79,7 +79,7 @@ function deleteVersionAjax() {
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersion", "protocol=json&cns=versionlist&" + args);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersion", "cns=versionlist&" + args);
 }
 
 function previewVersion(table, ID, version) {
@@ -227,7 +227,7 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "protocol=json&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("scrollContent").innerHTML = responseText;
 			makeAjaxRequestParametersTop();
@@ -243,7 +243,7 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("parametersTop").innerHTML = responseText;
 		}
@@ -257,7 +257,7 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "protocol=json&position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText !== "") {
 			document.getElementById("parametersBottom").innerHTML = responseText;
 		}
@@ -292,7 +292,7 @@ function ajaxCallbackResetVersion(response) {
 }
 
 function resetVersionAjax(id, documentID, version, table) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "protocol=json&cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + props.transaction, ajaxCallbackResetVersion);
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetVersion", "cns=versionlist&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + props.transaction, ajaxCallbackResetVersion);
 }
 
 

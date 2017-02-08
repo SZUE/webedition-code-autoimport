@@ -39,7 +39,7 @@ function openDetails(id) {
 			otherdataContents[i].innerHTML = "";
 		}
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetLogVersionDetails", "protocol=json&cns=logging/versions&id=" + id, function (weResponse) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetLogVersionDetails", "cns=logging/versions&id=" + id, function (weResponse) {
 		document.getElementById("dataContent_" + currentId + "").innerHTML = weResponse;
 	}, "html");
 }
