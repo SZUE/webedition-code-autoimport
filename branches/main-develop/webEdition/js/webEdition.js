@@ -688,7 +688,7 @@ var WebEdition = {
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
 						if (ab[0].data.yesCmd) {
-							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
+							ab[0].data.win.we_cmd.apply(ab[0].data.win, [ab[0].data.yesCmd]);
 						}
 						ab[0].data = null;
 						ab.dialog("close");
@@ -702,7 +702,7 @@ var WebEdition = {
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
 						if (ab[0].data.noCmd) {
-							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.noCmd);
+							ab[0].data.win.we_cmd.apply(ab[0].data.win, [ab[0].data.noCmd]);
 						}
 						ab[0].data = null;
 						ab.dialog("close");
