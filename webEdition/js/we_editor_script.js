@@ -506,7 +506,7 @@ function changeOption(elem) {
 }
 
 if (doc.cmd) {
-	top.we_cmd.apply(window, doc.cmd);
+	top.we_cmd.apply(window, [doc.cmd]);
 	doc.cmd = false;
 }
 
