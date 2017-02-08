@@ -82,7 +82,7 @@ function we_cmd() {
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args),
-		folderPath,folderID;
+		folderPath, folderID;
 
 	switch (args[0]) {
 		case "we_selector_image":
@@ -122,17 +122,18 @@ function we_cmd() {
 function copyNaviFolder(folderPath, folderID) {
 	var parentPos = props.selfNaviPath.indexOf(folderPath);
 	if (parentPos === -1 || props.selfNaviPath.indexOf(folderPath) > 0) {
-		var cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + props.selfNaviPath + "&we_cmd[1]=" + props.selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
+		var cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + props.selfNaviPath + "&we_cmd[1]=" + props.selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
 
 		WE().util.rpc(cnfUrl, null, function (weResponse) {
-			if (weResponse !== "") {
+			var folders = weResponse.DataArray.folders;
+			if (folders !== "") {
 				WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				//FIXME: add code for Tree reload!
 				top.content.cmd.location.reload();
 			} else {
 				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
-		}, "html").fail(function (jqxhr, textStatus, error) {
+		}).fail(function (jqxhr, textStatus, error) {
 			WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		});
 	} else {

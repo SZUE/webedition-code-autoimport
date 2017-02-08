@@ -967,7 +967,8 @@ var weSearch = {
 		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
 		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteMediaDocs", 'protocol=json&cns=tools/weSearch&' + args, this.ajaxCallbackDeleteMediaDocs);
 	},
-	ajaxCallbackDeleteMediaDocs: function (response) {
+	ajaxCallbackDeleteMediaDocs: function (weResponse) {
+		var response=weResponse.DataArray.response;
 		top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		// close all Editors with deleted documents

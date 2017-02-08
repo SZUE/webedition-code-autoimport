@@ -26,8 +26,9 @@
 WE().util.loadConsts(document, 'g_l.import');
 
 function weGetCategories(obj, cats, part) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetCategory','obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]', function (weResponse) {
-		for (var property in weResponse) {
+	//FIXME: why do we send so much data, if the data is gathered from obj???
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetCategory', 'obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]', function (weResponse) {
+		for (var property in weResponse.DataArray.elements) {
 			if (obj.hasOwnProperty(property)) {
 				top.wizbody.document.getElementById(property).innerHTML = obj[property].innerHTML;
 			}
@@ -202,8 +203,10 @@ function set_button_state() {
 }
 
 function weChangeDocType(f) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=ChangeDocType','cns=importExport&docType=' + f.value, function (elems) {
-		var node, prop;
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=ChangeDocType', 'cns=importExport&docType=' + f.value, function (weResponse) {
+		var node, prop,
+			elems = weResponse.DataArray.elements;
+
 		for (var i = 0; i < elems.length; i++) {
 			if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
 				for (var j = 0; j < elems[i].props.length; j++) {

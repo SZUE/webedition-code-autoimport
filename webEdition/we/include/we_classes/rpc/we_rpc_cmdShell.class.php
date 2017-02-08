@@ -54,11 +54,9 @@ class we_rpc_cmdShell{
 		$namespace = we_base_request::_(we_base_request::STRING, 'cns', '');
 		$namespace = '/' . ($namespace ? $namespace . '/' : '');
 
-		$tool = we_base_request::_(we_base_request::STRING, 'tool');
+		//$tool = we_base_request::_(we_base_request::STRING, 'tool');
 
-		$cmdfile = ($tool && we_tool_lookup::isTool($tool) ?
-			we_tool_lookup::getCmdInclude($namespace, $tool, $this->CmdName) :
-			'cmds' . $namespace . $classname . '.class.php');
+		$cmdfile = 			'cmds' . $namespace . $classname . '.class.php';
 
 		if($cmdfile && include_once($cmdfile)){
 			$obj = new $classname($this);
@@ -74,19 +72,12 @@ class we_rpc_cmdShell{
 	}
 
 	function getView($view){
-		$classname = 'rpc' . $view . 'View';
+		/*$classname = 'rpc' . $view . 'View';
 		$tool = we_base_request::_(we_base_request::STRING, 'tool');
 		$vns = we_base_request::_(we_base_request::STRING, 'vns');
 		$cns = we_base_request::_(we_base_request::STRING, 'cns');
 		$namespace = '/' . ($vns ? $vns . '/' : ($cns ? $cns . '/' : ''));
-
-		$viewfile = ($tool && we_tool_lookup::isTool($tool) ?
-			we_tool_lookup::getViewInclude($this->Protocol, $namespace, $tool, $view) :
-			'views/' . $this->Protocol . $namespace . $classname . '.class.php');
-		//FIXME: this should not be needed anymore
-		if($viewfile && file_exists(WEBEDITION_PATH . '/rpc/' . $viewfile) && include_once($viewfile)){
-			return new $classname($this, $this->Protocol);
-		}
+*/
 		return new we_rpc_genericJSONView($this, $this->Protocol);
 	}
 

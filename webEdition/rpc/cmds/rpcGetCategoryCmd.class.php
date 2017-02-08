@@ -45,7 +45,7 @@ class rpcGetCategoryCmd extends we_rpc_cmd{
 			$target = we_base_request::_(we_base_request::STRING, 'target', $obj . "CatTable");
 			$catField = we_base_request::_(we_base_request::STRING, 'catfield', '');
 			$categories = strtr($this->getCategory($obj, we_base_request::_(we_base_request::INTLIST, 'cats', ''), $catField), ["\r" => '', "\n" => '']);
-			$resp->setData("elementsById", [$target => ["innerHTML" => $categories]]);
+			$resp->setData("elements", [$target => ["innerHTML" => $categories]]);
 		}
 		return $resp;
 	}

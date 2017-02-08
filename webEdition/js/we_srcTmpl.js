@@ -288,11 +288,11 @@ function executeEditButton() {
 }
 
 function YUIdoAjax(value) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSnippetCode", 'protocol=text&we_cmd[1]=' + value, function (weResponse) {
-		if (weResponse) {
-			document.getElementById('tag_edit_area').value = weResponse;
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSnippetCode", 'we_cmd[1]=' + value, function (weResponse) {
+		if (weResponse.DataArray.data) {
+			document.getElementById('tag_edit_area').value = weResponse.DataArray.data;
 		}
-	}, "html");
+	});
 }
 
 function edit_wetag(tagname, insertAtCursor) {

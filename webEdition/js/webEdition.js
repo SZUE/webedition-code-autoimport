@@ -277,9 +277,9 @@ var WebEdition = {
 						"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
 						"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
 						"&we_cmd[query]=" + request.term;
-					$.getJSON(target, request, function (data, status, xhr) {
-						el.cache[term] = data;
-						response(data);
+					$.getJSON(target, request, function (weResponse, status, xhr) {
+						el.cache[term] = weResponse.DataArray.suggest;
+						response(weResponse.DataArray.suggest);
 					});
 				},
 				/*fired on create of widget*/
