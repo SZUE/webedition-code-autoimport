@@ -83,7 +83,8 @@ class we_rpc_cmdShell{
 		$viewfile = ($tool && we_tool_lookup::isTool($tool) ?
 			we_tool_lookup::getViewInclude($this->Protocol, $namespace, $tool, $view) :
 			'views/' . $this->Protocol . $namespace . $classname . '.class.php');
-		if($viewfile && include_once($viewfile)){
+		//FIXME: this should not be needed anymore
+		if($viewfile && file_exists(WEBEDITION_PATH . '/rpc/' . $viewfile) && include_once($viewfile)){
 			return new $classname($this, $this->Protocol);
 		}
 		return new we_rpc_genericJSONView($this, $this->Protocol);
