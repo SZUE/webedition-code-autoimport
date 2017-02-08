@@ -21,9 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$charsetHandler = new we_base_charsetHandler();
 $whiteList = [];
-$charsets = $charsetHandler->charsets;
+$charsets = we_base_charsetHandler::inst()->getAll();
 
 $fields = ['cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),

@@ -7,6 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblexport (
   `Text` varchar(255) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
+	ExportType enum('WE','XML','CSV') default 'WE',
   ExportTo enum('','local','server') NOT NULL default '',
   ServerPath varchar(255) NOT NULL default '',
   Filename varchar(255) NOT NULL default '',

@@ -289,8 +289,7 @@ iptable_label.addVariant();';
 			$lineend->addOption('unix', g_l('export', '[unix]'));
 			$lineend->addOption('mac', g_l('export', '[mac]'));
 
-			$charsetHandler = new we_base_charsetHandler();
-			$charsets = $charsetHandler->getCharsetsForTagWizzard();
+			$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 			$importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
 			$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, '', false, ['onchange' => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], "value", 325, "defaultfont", false);
 			$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';

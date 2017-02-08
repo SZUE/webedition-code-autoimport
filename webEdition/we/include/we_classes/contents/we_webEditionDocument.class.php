@@ -200,8 +200,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function formDocTypeTempl(){
 		$disable = (permissionhandler::hasPerm('EDIT_DOCEXTENSION') ?
-				(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
-				true);
+			(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
+			true);
 
 		return '
 <table class="default">
@@ -233,7 +233,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$styleTemplateLabel = 'display:inline';
 			$styleTemplateLabelLink = 'display:none';
 		}
-		$myid = $this->TemplateID ? : '';
+		$myid = $this->TemplateID ?: '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
 		$weSuggest->setAcId('Template');
@@ -256,7 +256,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', '', $this->DB_WE);
 		}
 		if($disable){
-			$myid = intval($this->TemplateID ? : 0);
+			$myid = intval($this->TemplateID ?: 0);
 			$path = ($myid ? f('SELECT IF(Display!="",Display,Path) FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
 			/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
@@ -265,14 +265,14 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return ($templateFromDoctype ?
-						$this->xformTemplatePopup(0) :
-						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
+					$this->xformTemplatePopup(0) :
+					we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
 					);
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
-					'</td></tr></table>' :
-					$path);
+				'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
+				'</td></tr></table>' :
+				$path);
 
 			return we_html_tools::htmlFormElementTable($pop, g_l('weClass', '[template]'), 'left', 'defaultfont');
 		}
@@ -281,8 +281,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			// if a Doctype is set and this Doctype has defined some templates, just show a select box
 			return ($templateFromDoctype ?
-					$this->xformTemplatePopup(388) :
-					$this->formTemplateWindow() );
+				$this->xformTemplatePopup(388) :
+				$this->formTemplateWindow() );
 		}
 		return $this->formTemplateWindow();
 	}
@@ -291,7 +291,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$ws = get_ws(TEMPLATES_TABLE, true);
 
 		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE, MYSQL_NUM);
-		$tlist = ($TID? : '') . ($Templates ? ',' . $Templates : '');
+		$tlist = ($TID ?: '') . ($Templates ? ',' . $Templates : '');
 
 		if($tlist){
 			$temps = array_filter(explode(',', $tlist));
@@ -318,9 +318,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 AND ID IN (' . ($foo ? implode(',', $foo) : -1) . ') ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", ['required' => 'required'], 'left', 'defaultfont', '', $openButton, ['', '']);
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 AND ID IN (' . ($foo ? implode(',', $foo) : -1) . ') ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [
+					'required' => 'required'], 'left', 'defaultfont', '', $openButton, ['', '']);
 		}
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [], 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [
+], 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -362,8 +364,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @return string
 	 */
 	private function getCharsetSelect(){
-		$charsetHandler = new we_base_charsetHandler();
-
 		if(isset($GLOBALS['meta']['Charset'])){ //	charset-tag available
 			$name = 'Charset';
 
@@ -373,10 +373,10 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	input field - check value
 			$value = ($this->getElement($name) ?
-					$this->getElement($name) :
-					(isset($GLOBALS["meta"][$name]) ?
-						$GLOBALS["meta"][$name]["default"] :
-						''));
+				$this->getElement($name) :
+				(isset($GLOBALS["meta"][$name]) ?
+				$GLOBALS["meta"][$name]["default"] :
+				''));
 
 			$retInput = we_html_tools::htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
 
@@ -393,7 +393,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = we_html_tools::htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, ['onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'], 'value', 254);
+			$retSelect = we_html_tools::htmlSelect('we_tmp_' . $name, we_base_charsetHandler::inst()->getCharsetsByArray($chars), 1, $value, false, ['onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;',
+					'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'], 'value', 254);
 		} else {
 			//	charset-tag NOT available
 			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
@@ -502,7 +503,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						case 'linklist':
 							$foo = ['name' => $name,
 								'type' => $tagname
-								];
+							];
 							$blocks[] = $foo;
 							break;
 					}
@@ -721,7 +722,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
-		$we_include = $includepath ? : $this->editor();
+		$we_include = $includepath ?: $this->editor();
 		if(is_file($we_include)){
 			ob_start();
 			include($we_include);
@@ -767,15 +768,15 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
-				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
-				false);
+			we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+			false);
 	}
 
 	// returns the filesize of the document
 	function getFilesize(){
 		return (file_exists($_SERVER['DOCUMENT_ROOT'] . $this->Path) ?
-				filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
-				0);
+			filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
+			0);
 	}
 
 	protected function i_getDocumentToSave(){
@@ -959,7 +960,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			we_base_constants::WE_EDITPAGE_VERSIONS => 'versions',
 			we_base_constants::WE_EDITPAGE_VARIANTS => 'variants',
 			we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
-			];
+		];
 
 		$hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
@@ -1088,7 +1089,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	protected function getUsedElements($txtNamesOnly = false){
 		if($txtNamesOnly){
-			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : []), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : []));
+			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : []), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : [
+]));
 		}
 		return $this->usedElementNames;
 	}

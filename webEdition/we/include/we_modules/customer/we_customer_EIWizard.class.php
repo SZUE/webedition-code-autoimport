@@ -625,8 +625,7 @@ class we_customer_EIWizard{
 					$file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
 					$file_encoding->selectOption($csv_lineend);
 
-					$charsetHandler = new we_base_charsetHandler();
-					$charsets = $charsetHandler->getCharsetsForTagWizzard();
+					$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 					$importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);

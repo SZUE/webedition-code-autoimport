@@ -23,15 +23,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_charsetHandler{
-	var $charsets = [];
+	private $charsets = [];
+	private static $inst = null;
 
 	/**
 	 * @return charsetHandler
 	 * initialises with all available charsets
 	 */
-	function __construct(){
+	private function __construct(){
 		//	First ISO-8859-charsets
-		$this->charsets = ['west_european' => ['national' => 'West Europe', //	Here is the name of the country in mother language
+		$this->charsets = [
+			'west_european' => ['national' => 'West Europe', //	Here is the name of the country in mother language
 				'charset' => 'ISO-8859-1',
 				'international' => g_l('charset', '[titles][west_european]'), //	Name in selected language
 			],
@@ -102,12 +104,16 @@ class we_base_charsetHandler{
 		];
 	}
 
+	public static function inst(){
+		return (self::$inst ?: (self::$inst = new self()));
+	}
+
 	/**
 	 * @return array
 	 * @param $availableChars array
 	 * @desc This function returns an key = charset / value = charset - name(international) (name(national)))
 	 */
-	function getCharsetsForTagWizzard(){
+	public function getCharsetsForTagWizzard(){
 		$retArr = [];
 		foreach($this->charsets as $val){
 
@@ -121,10 +127,9 @@ class we_base_charsetHandler{
 	 * @param string $charset
 	 * @desc returns array (national, international, charset, when charset is known)
 	 */
-	function getCharsetArrByCharset($charset){
+	public function getCharsetArrByCharset($charset){
 		$charset = strtolower($charset);
 		foreach($this->charsets as $key => $val){
-
 			if(strtolower($val['charset']) == $charset){
 				return $this->charsets[$key];
 			}
@@ -137,12 +142,12 @@ class we_base_charsetHandler{
 	 * @param $availableChars array
 	 * @desc This function returns an array for the property page of a webEdition document
 	 */
-	function getCharsetsByArray($availableChars){
+	public function getCharsetsByArray($availableChars){
 		$tmpCharArray = [];
 		$retArr = [];
 
 		foreach($availableChars as $char){
-			$tmpCharArray[] = ($this->getCharsetArrByCharset($char) ? : ['charset' => $char]);
+			$tmpCharArray[] = ($this->getCharsetArrByCharset($char) ?: ['charset' => $char]);
 		}
 
 		foreach($tmpCharArray as $val){
@@ -153,8 +158,12 @@ class we_base_charsetHandler{
 		return $retArr;
 	}
 
+	public function getAll(){
+		return $this->charsets;
+	}
+
 	//FIXME: use array obove; currently this seems to complecated
-	static function getAvailCharsets(){
+	public function getAvailCharsets(){
 		return ['UTF-8',
 			'ISO-8859-1',
 			'ISO-8859-2',
