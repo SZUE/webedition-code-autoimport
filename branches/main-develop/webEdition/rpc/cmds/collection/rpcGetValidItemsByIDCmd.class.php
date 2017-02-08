@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
-
 	protected $resp = null;
 	protected $collection = null;
 	protected $collectionID = 0;
@@ -41,10 +40,13 @@ class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
 	protected function initByRequest(){
 		if(!($this->IDs = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 'ids'))){
 			$this->resp->setData("error", ["Missing field id"]);
-			$this->isError = true;
-
+			$this->resp->setStatus(false);
 			return;
 		}
+
+		$this->resp->setData('index', we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'index'));
+		$this->resp->setData('notReplace', we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 'notReplace'));
+		$this->resp->setData('message', we_base_request::_(we_base_request::STRING, 'we_cmd', true, 'message'));
 
 		// TODO: only save as prop when really needed!
 		$this->transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 'transaction');
@@ -60,7 +62,7 @@ class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
 			$this->collection->initByID($this->collectionID);
 		} else {
 			$this->resp->setData("error", ["no collection error"]);
-			$this->isError = true;
+			$this->resp->setStatus(false);
 
 			return;
 		}
@@ -71,11 +73,11 @@ class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
 	}
 
 	function execute(){
-		if($this->error){
+		if(!$this->resp->getStatus){
 			return $this->resp;
 		}
 
-		$this->resp->setData("itemsArray", $this->getValidItems());
+		$this->resp->setData('items', $this->getValidItems());
 
 		return $this->resp;
 	}

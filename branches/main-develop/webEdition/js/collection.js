@@ -1059,48 +1059,46 @@ var weCollectionEdit = {
 
 		try {
 			if (csvIDs) {
-				var postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction)+
-					'&we_cmd[ids]=' + encodeURIComponent(csvIDs)+
-					'&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId)+
-					'&we_cmd[full]=' + encodeURIComponent(1)+
-					'&we_cmd[recursive]=' + encodeURIComponent(recursive);
+				var postData = 'protocol=json&cns=collection' +
+					'&we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction) +
+					'&we_cmd[ids]=' + encodeURIComponent(csvIDs) +
+					'&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId) +
+					'&we_cmd[full]=' + encodeURIComponent(1) +
+					'&we_cmd[recursive]=' + encodeURIComponent(recursive) +
+					'&we_cmd[index]=' + encodeURIComponent(index) +
+					'&we_cmd[notReplace]=' + encodeURIComponent(notReplace) +
+					'&we_cmd[message]=' + encodeURIComponent(message);
+				;
 				//postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function () {
-					if (xhr.readyState === 4) {
-						if (xhr.status === 200) {
-							var respArr = JSON.parse(xhr.responseText);
-							if (respArr.length === -1) { // option deactivated: check doublettes for single insert too
-								document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
-								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
-								weCollectionEdit.reindexAndRetrieveCollection();
-							} else {
-								var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.gui.view + '_item_' + index), respArr, notReplace);
-								if (message) {
-									WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
-								}
-							}
-							window.setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
-						} else {
-							top.console.debug('http request failed');
-							return false;
-						}
-					}
-				};
-				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetValidItemsByID&cns=collection', true);
-				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-				xhr.send(postData);
-				// set max waiting time
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetValidItemsByID", postData, this.ajaxCallbackGetValidItemsByID);
+
+
 			}
 		} catch (e) {
 			top.console.debug(e);
 		}
 	},
+	ajaxCallbackGetValidItemsByID: function (weResponse) {
+		var respArr = weResponse.DataArray.items,
+			index = respArr = weResponse.DataArray.index,
+			message = respArr = weResponse.DataArray.message,
+			notReplace = respArr = weResponse.DataArray.notReplace;
+		if (respArr.length === -1) { // option deactivated: check doublettes for single insert too
+			document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
+			document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
+			weCollectionEdit.reindexAndRetrieveCollection();
+		} else {
+			var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.gui.view + '_item_' + index), respArr, notReplace);
+			if (message) {
+				WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
+			}
+		}
+		window.setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
+	},
 	insertImportedDocuments: function (ids) {
 		if (ids) {
 			this.callForValidItemsAndInsert(this.gui.elements.container[this.gui.view].lastChild.id.substr(10), ids.join());
 		}
-
 	}
 };

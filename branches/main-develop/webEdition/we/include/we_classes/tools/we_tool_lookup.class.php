@@ -213,14 +213,6 @@ abstract class we_tool_lookup{
 		return in_array($name, $tools);
 	}
 
-	static function getCmdInclude($namespace, $name, $cmd){
-		return WE_APPS_PATH . $name . '/service/cmds' . $namespace . 'rpc' . $cmd . 'Cmd.class.php';
-	}
-
-	static function getViewInclude($protocol, $namespace, $name, $view){
-		return WE_APPS_PATH . $name . '/service/views/' . $protocol . $namespace . 'rpc' . $view . 'View.class.php';
-	}
-
 	static function getAllToolTags($toolname, $includeDisabled = false){
 		return self::getFileRegister($toolname, '/tags', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}

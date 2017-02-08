@@ -41,8 +41,22 @@ class rpcSelectorSuggestCmd extends we_rpc_cmd{
 				$selectorSuggest->addCondition('AND', '!=', 'ID', $currentDocumentID);
 			}
 		}
-		$selectorSuggest->search($query, $table, $contentTypes,we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'max'), we_base_request::_(we_base_request::FILE, 'we_cmd', '', 'basedir'));
-		$resp->setData('data', $selectorSuggest->getResult());
+		$selectorSuggest->search($query, $table, $contentTypes, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'max'), we_base_request::_(we_base_request::FILE, 'we_cmd', '', 'basedir'));
+
+		$suggests = $selectorSuggest->getResult();
+		$ret = [];
+		if(is_array($suggests)){
+			foreach($suggests as $sug){
+				$short = strrchr($sug['Path'], '/');
+				$ret[] = [
+					'ID' => $sug['ID'],
+					'label' => ($short !== $sug['Path'] ? '/...' : '') . $short,
+					'value' => $sug['Path'],
+					'contenttype' => (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? we_base_ContentTypes::FOLDER : ''))
+				];
+			}
+		}
+		$resp->setData('suggest', $ret);
 
 		return $resp;
 	}

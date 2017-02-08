@@ -703,14 +703,8 @@ treeInfo.php
 sysinfo.php
 stay_alive.php
 showDoc.php
-rpc/views/text/rpcSelectorGetSelectedIdView.class.php
-rpc/views/json/widgets/rpcGetRssView.class.php
-rpc/views/json/rpcSelectorSuggestView.class.php
-rpc/views/json/rpcSelectorGetSelectedIdView.class.php
-rpc/views/json/rpcHelloView.class.php
-rpc/views/json/rpcGetNaviItemsView.class.php
-rpc/views/json/customer/rpcGetUpdateDocumentCustomerFilterQuestionView.class.php
 rpc/rpcRoot.inc.php
+rpc/cmds/document/rpcGetDocElementCmd.class.php
 rewrite_we_conf_global.php
 restore_we_conf_global.php
 resizeframe.php
@@ -1072,9 +1066,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/java_menu
 !we/include/fonts
 !sidebar/img
-!rpc/views/json/widgets
-!rpc/views/json/dw
-!rpc/views/json/customer
+!rpc/views
 !rpc/cmds/tools/navigation
 !rpc/cmds/dw
 !rpc/base
