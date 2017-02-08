@@ -64,7 +64,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	}
 
 	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
-		we_cmd.apply(window, [editorSave.we_JavaScript[i]]);
+		we_cmd.apply(window, editorSave.we_JavaScript[i]);
 	}
 
 	window.focus();
@@ -104,10 +104,10 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 				_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
 
 				for (i = 0; i < editorSave.we_responseJS.length; i++) {
-					we_cmd.apply(window, [editorSave.we_responseJS[i]]);
+					we_cmd.apply(window, editorSave.we_responseJS[i]);
 				}
 				for (i = 0; i < editorSave.we_cmd5.length; i++) {
-					we_cmd.apply(window, [editorSave.we_cmd5[i]]);
+					we_cmd.apply(window, editorSave.we_cmd5[i]);
 				}
 			}
 			if (editorSave.isPublished) {
@@ -122,22 +122,22 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	} else {
 		top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 		for (i = 0; i < editorSave.we_responseJS.length; i++) {
-			we_cmd.apply(window, [editorSave.we_responseJS[i]]);
+			we_cmd.apply(window, editorSave.we_responseJS[i]);
 		}
 
 		for (i = 0; i < editorSave.we_cmd5.length; i++) {
-			we_cmd.apply(window, [editorSave.we_cmd5[i]]);
+			we_cmd.apply(window, editorSave.we_cmd5[i]);
 		}
 	}
 } else {//called from we_editor_publish.inc.php
 	for (i = 0; i < editorSave.we_responseJS.length; i++) {
-		we_cmd.apply(window, [editorSave.we_responseJS[i]]);
+		we_cmd.apply(window, editorSave.we_responseJS[i]);
 	}
 	for (i = 0; i < editorSave.we_cmd5.length; i++) {
-		we_cmd.apply(window, [editorSave.we_cmd5[i]]);
+		we_cmd.apply(window, editorSave.we_cmd5[i]);
 	}
 	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
-		we_cmd.apply(window, [editorSave.we_JavaScript[i]]);
+		we_cmd.apply(window, editorSave.we_JavaScript[i]);
 	}
 	top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 }
