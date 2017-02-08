@@ -298,7 +298,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					break;
 			}
 			if($data){
-				$fr = new we_rebuild_fragment($taskname, 5, 0, [], $data);
+				$fr = new we_rebuild_fragment($taskname, 5, [], $data);
 
 				return [];
 			}
@@ -332,7 +332,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				break;
 		}
 
-		$fr = new we_rebuild_fragment($taskname, $count, 0, []);
+		$fr = new we_rebuild_fragment($taskname, $count, []);
 
 		return [];
 	}
