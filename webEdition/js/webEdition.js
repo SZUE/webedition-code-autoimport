@@ -300,7 +300,7 @@ var WebEdition = {
 					this.classList.remove("weMarkInputError");
 					var cmd = this.getAttribute('data-onSelect');
 					if (cmd) {
-						event.target.ownerDocument.parentWindow.we_cmd(cmd);
+						event.target.ownerDocument.defaultView.we_cmd(cmd);
 					}
 				},
 				/*called if the element was modified*/
