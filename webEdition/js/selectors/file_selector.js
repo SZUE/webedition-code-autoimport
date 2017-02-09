@@ -438,13 +438,13 @@ function we_cmd() {
 			break;
 		case 'addEntries':
 			for (i = 0; i < args[1].length; i++) {
-				top.addEntry.apply(window, [args[1][i]]);
+				top.addEntry.apply(window, args[1][i]);
 			}
 			break;
 		case 'writeOptions':
 			top.clearOptions();
 			for (i = 0; i < args[1].length; i++) {
-				top.addOption.apply(window, [args[1][i]]);
+				top.addOption.apply(window, args[1][i]);
 			}
 			top.selectIt();
 			break;
