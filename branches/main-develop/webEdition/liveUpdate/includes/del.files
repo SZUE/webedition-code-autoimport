@@ -737,6 +737,8 @@ lib/additional/archive/altArchive_Tar.class.php
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.PlatformInstaller.dll
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.PlatformInstaller.UI.dll
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.Deployment.dll
+js/wysiwyg/tinymce/weTinyMceFunctions.js
+js/wysiwyg/tinymce/weTinyMceDialogs.js
 js/wizard_code.js
 js/we_vtabs.js
 js/we_textarea_include.inc.php
@@ -750,6 +752,7 @@ js/we_modules/banner/banner_cmd.js
 js/we_lcmd.js
 js/we_exit_multi_doc_question.js
 js/we_editor_collectionContent.js
+js/we_dialog_fullscreenEdit.js
 js/we_colors.js
 js/weValidate.js
 js/weTinyMceFunctions.js
@@ -1014,7 +1017,6 @@ apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
 !wysiwyg
-!webEdition/lib/we
 !we_backup/tmp
 !we/include/we_widgets/inc/plg
 !we/include/we_widgets/dlg/upb
@@ -1077,6 +1079,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/we/util/Sys/Db
 !lib/we/ui/layout/img
 !lib/we/ui-samples
+!lib/we
 !lib/tests
 !lib/samples
 !lib/phpMailer/language

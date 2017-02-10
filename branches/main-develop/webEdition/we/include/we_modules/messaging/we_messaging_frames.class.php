@@ -83,7 +83,7 @@ class we_messaging_frames extends we_modules_frame{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$extraHead = we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
+		$extraHead .= we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
 			$this->Tree->getMsgJSTreeCode($this->messaging) .
 			we_html_element::jsElement('startTree();');
 
@@ -100,7 +100,7 @@ class we_messaging_frames extends we_modules_frame{
 		$head = $this->View->processCommands($jscmd);
 
 		$pid = we_base_request::_(we_base_request::INT, 'pnt');
-		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+		//$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		if($pid !== false){
 			$jscmd->addCmd('loadTree', ['pid' => intval($pid), 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]);
