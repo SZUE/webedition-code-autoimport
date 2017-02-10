@@ -231,34 +231,7 @@ abstract class we_base_jsConstants{
 	contentTypes:' . json_encode($ctLngs) . ',
 	selectors:{
 	},
-	tinyMceTranslationObject: {
-	' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . ':{
-			we:{
-				group_link:"' . g_l('wysiwyg', '[links]') . /* (insert_hyperlink) */ '",
-					group_copypaste:"' . g_l('wysiwyg', '[import_text]') . '",
-					group_advanced:"' . g_l('wysiwyg', '[advanced]') . '",
-					group_insert:"' . g_l('wysiwyg', '[insert]') . '",
-					group_indent:"' . g_l('wysiwyg', '[indent]') . '",
-					//group_view:"' . g_l('wysiwyg', '[view]') . '",
-					group_table:"' . g_l('wysiwyg', '[table]') . '",
-					group_edit:"' . g_l('wysiwyg', '[edit]') . '",
-					group_layer:"' . g_l('wysiwyg', '[layer]') . '",
-					group_xhtml:"' . g_l('wysiwyg', '[xhtml_extras]') . '",
-					tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
-					tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
-					tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
-					tt_wefullscreen_set:"' . g_l('wysiwyg', '[maxsize_set]') . '",
-					tt_wefullscreen_reset:"' . g_l('wysiwyg', '[maxsize_reset]') . '",
-					tt_welang:"' . g_l('wysiwyg', '[language]') . '",
-					tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
-					tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
-					tt_wegallery:"' . g_l('wysiwyg', '[addGallery]') . '",
-					plugin_wegallery_values_nok:"' . g_l('wysiwyg', '[gallery_alert_values_nok]') . '",
-					cm_inserttable:"' . g_l('wysiwyg', '[insert_table]') . '",
-					cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '",
-				}
-			}
-	},
+	tinyMceTranslationObject: ' . json_encode(we_wysiwyg_editor::getTinyMceTranslationObject()) . ',
 	weCollection:{
 		element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
 		info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"
