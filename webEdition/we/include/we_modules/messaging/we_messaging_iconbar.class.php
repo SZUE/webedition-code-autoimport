@@ -29,24 +29,24 @@ class we_messaging_iconbar{
 	private $weTransaction;
 	private $viewclass;
 	private $buttonsMsg = [["fa:btn_messages_create,fa-lg fa-pencil", "javascript:new_message('new')", false],
-			["fa:btn_messages_reply,fa-lg fa-mail-reply", "javascript:new_message('re')", true],
-			["fa:btn_messages_copy,fa-lg fa-copy", "javascript:copy_messages()", false],
-			["fa:btn_messages_cut,fa-lg fa-scissors", "javascript:cut_messages()", false],
-			["fa:btn_messages_paste,fa-lg fa-paste", "javascript:paste_messages()", false],
-			["fa:btn_messages_trash,fa-lg fa-trash-o", "javascript:delete_messages(false)", false],
-			["fa:btn_messages_update,fa-lg fa-refresh", "javascript:refresh()", false],
-			["fa:btn_messages_tasks,fa-lg fa-long-arrow-right,fa-lg fa-tasks", "javascript:launch_todo()", false]
+		["fa:btn_messages_reply,fa-lg fa-mail-reply", "javascript:new_message('re')", true],
+		["fa:btn_messages_copy,fa-lg fa-copy", "javascript:copy_messages()", false],
+		["fa:btn_messages_cut,fa-lg fa-scissors", "javascript:cut_messages()", false],
+		["fa:btn_messages_paste,fa-lg fa-paste", "javascript:paste_messages()", false],
+		["fa:btn_messages_trash,fa-lg fa-trash-o", "javascript:delete_messages(false)", false],
+		["fa:btn_messages_update,fa-lg fa-refresh", "javascript:refresh()", false],
+		["fa:btn_messages_tasks,fa-lg fa-long-arrow-right,fa-lg fa-tasks", "javascript:launch_todo()", false]
 	];
 	private $buttonsTodo = [["fa:btn_task_create,fa-lg fa-pencil", "javascript:new_todo()", false],
-			["fa:btn_task_forward,fa-lg fa-mail-forward", "javascript:forward_todo()", false],
-			["fa:btn_task_reject,fa-lg fa-mail-reply,fa-lg fa-tasks", "javascript:reject_todo()", false],
-			["fa:btn_task_status,fa-lg fa-question,,fa-lg fa-tasks", "javascript:update_todo()", true],
-			["fa:btn_task_copy,fa-lg fa-copy", "javascript:copy_messages()", false],
-			["fa:btn_task_cut,fa-lg fa-scissors", "javascript:cut_messages()", false],
-			["fa:btn_task_paste,fa-lg fa-paste", "javascript:paste_messages()", false],
-			["fa:btn_task_trash,fa-lg fa-trash-o", "javascript:delete_messages(true)", false],
-			["fa:btn_task_update,fa-lg fa-refresh", "javascript:refresh()", false],
-			["fa:btn_task_messages,fa-lg fa-long-arrow-right,fa-lg fa-envelope-o", "javascript:launch_msg()", false]
+		["fa:btn_task_forward,fa-lg fa-mail-forward", "javascript:forward_todo()", false],
+		["fa:btn_task_reject,fa-lg fa-mail-reply,fa-lg fa-tasks", "javascript:reject_todo()", false],
+		["fa:btn_task_status,fa-lg fa-question,,fa-lg fa-tasks", "javascript:update_todo()", true],
+		["fa:btn_task_copy,fa-lg fa-copy", "javascript:copy_messages()", false],
+		["fa:btn_task_cut,fa-lg fa-scissors", "javascript:cut_messages()", false],
+		["fa:btn_task_paste,fa-lg fa-paste", "javascript:paste_messages()", false],
+		["fa:btn_task_trash,fa-lg fa-trash-o", "javascript:delete_messages(true)", false],
+		["fa:btn_task_update,fa-lg fa-refresh", "javascript:refresh()", false],
+		["fa:btn_task_messages,fa-lg fa-long-arrow-right,fa-lg fa-envelope-o", "javascript:launch_msg()", false]
 	];
 
 	public function __construct($parentFrameset){
@@ -56,14 +56,10 @@ class we_messaging_iconbar{
 	}
 
 	public function getHTML(){
-		return $this->parentFrameset->getHTMLDocument($this->getHTMLBody(), $this->getJSCode());
-	}
-
-	private function getJSCode(){
-		return we_html_element::jsElement('
-var transaction="' . $this->weTransaction . '";
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_iconbar.js');
+		return $this->parentFrameset->getHTMLDocument($this->getHTMLBody(), we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_iconbar.js', '', ['id' => 'loadVarIcon',
+					'data-icon' => setDynamicVar([
+						'transaction' => $this->weTransaction
+		])]));
 	}
 
 	private function getHTMLBody(){
