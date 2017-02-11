@@ -1107,7 +1107,7 @@ class we_customer_EIWizard{
 		$percent = max(min(($all ? (int) ((($all - $exports + 2) / $all) * 100) : 0), 100), 0);
 
 
-		$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');');
+		$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $progressjs, we_html_element::htmlBody(['onload' => 'document.we_form.submit()'], we_html_element::htmlForm([
 						'name' => 'we_form', 'method' => 'post', 'target' => 'load', 'action' => $this->frameset], $hiddens)

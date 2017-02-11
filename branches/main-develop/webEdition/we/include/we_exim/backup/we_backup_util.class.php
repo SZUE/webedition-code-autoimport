@@ -177,7 +177,7 @@ abstract class we_backup_util{
 		$ret = '
 if(top.busy && top.busy.setProgressText){
 		top.busy.setProgressText("current_description", "' . $description . '");
-		top.busy.setProgress("",' . $percent . ');
+		top.busy.setProgress(' . $percent . ');
 }
 ';
 		if($return){

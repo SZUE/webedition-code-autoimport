@@ -37,7 +37,7 @@ function handle_event(what) {
 				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
 				top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 				top.wizbusy.showRefreshButton();
-				top.wizbusy.setProgress("", 0);
+				top.wizbusy.setProgress(0);
 				f.step.value = 2;
 				f.target = "wizcmd";
 			}

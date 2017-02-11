@@ -456,7 +456,7 @@ function closeAllType(){
 if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
 if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[prepare]'))) . '");
 if (top.content.editor.edfooter.doProgress){
-	top.content.editor.edfooter.setProgress("", 0);
+	top.content.editor.edfooter.setProgress( 0);
 	top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
 }
 if(top.content.editor.edbody.addLog){
@@ -474,7 +474,7 @@ if(top.content.editor.edbody.addLog){
 
 				$progress_update = we_html_element::jsElement('
 if (top.content.editor.edfooter.doProgress){
-	top.content.editor.edfooter.setProgress("", "' . $percent . '");
+	top.content.editor.edfooter.setProgress( "' . $percent . '");
 	top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
 }');
 			}
@@ -550,7 +550,7 @@ if (top.content.editor.edbody.addLog){
 		$percent = round(max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0), 2);
 		$progress_update .= we_html_element::jsElement('
 if (top.content.editor.edfooter.doProgress){
-	top.content.editor.edfooter.setProgress("", ' . $percent . ');
+	top.content.editor.edfooter.setProgress(' . $percent . ');
 }');
 		$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
@@ -573,7 +573,7 @@ function showEndStatus(){
 }
 
 if (top.content.editor.edfooter.doProgress){
-	top.content.editor.edfooter.setProgress("", 100);
+	top.content.editor.edfooter.setProgress( 100);
 }
 if (top.content.editor.edbody.addLog){
 	top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");

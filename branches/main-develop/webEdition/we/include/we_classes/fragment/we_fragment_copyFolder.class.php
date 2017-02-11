@@ -139,8 +139,12 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(){
-		return we_html_element::jsElement('parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . $this->text . '");');
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+		$jsCmd->addCmd('setProgress', [
+			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'name' => 'pbar1',
+			'text' => $this->text
+		]);
 	}
 
 	private function getObjectPid($path, we_database_base $db){
@@ -610,32 +614,32 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return we_document::initDoc([], $we_ContentType);
 	}
 
-	protected function finish(){
+	protected function finish(we_base_jsCmd $jsCmd){
 		//$cancelButton = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
 		}
-		$cmd = new we_base_jsCmd();
 
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
-			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
-			echo we_html_element::jsElement('parent.setProgress("",0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
-			flush();
-			$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
+			$jsCmd->addCmd('setProgress', [
+				'progress' => 0,
+				'name' => 'pbar1',
+				'text' => g_l('copyFolder', '[prepareTemplates]')
+			]);
+			$jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-			$cmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-			$cmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
-			$cmd->addCmd('close');
+			$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addCmd('close');
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-			$cmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
-			$cmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
-			$cmd->addCmd('close');
+			$jsCmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
+			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addCmd('close');
 		}
-		echo $cmd->getCmds();
 	}
 
 	static function formCreateTemplateDirChooser(){

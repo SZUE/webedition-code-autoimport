@@ -120,7 +120,11 @@ abstract class we_modules_frame{
 
 		return we_html_element::htmlDiv(['class' => 'menuDiv'], $menu .
 				we_html_element::htmlDiv(['id' => 'moduleMessageConsole'], we_main_headermenu::createMessageConsole('moduleFrame', false))
-			) . we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true));
+			) . we_html_element::jsElement(
+				'top._console_ = new (WE().layout.messageConsoleView)("moduleFrame", this.window );
+top._console_.register();
+window.document.body.addEventListener("onunload",	top._console_.unregister);'
+				);
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){

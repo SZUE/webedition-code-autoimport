@@ -41,13 +41,12 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		}
 	}
 
-	protected function updateProgressBar(){
-		$pbText = sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)));
-
-		return
-			we_html_element::jsElement('
-parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * ($this->currentTask + 1))) . ');
-parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+		$jsCmd->addCmd('setProgress', [
+			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'name' => 'pbar1',
+			'text' => sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)))
+		]);
 	}
 
 	private function correctTemplate(){
@@ -67,14 +66,13 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 		return $templ->we_save();
 	}
 
-	protected function finish(){
+	protected function finish(we_base_jsCmd $jsCmd){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
-		echo we_html_element::jsElement('
-top.opener.top.we_cmd("load",WE().consts.tables.FILE_TABLE );
-WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
-top.close();');
+		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+		$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addCmd('close');
 	}
 
 }

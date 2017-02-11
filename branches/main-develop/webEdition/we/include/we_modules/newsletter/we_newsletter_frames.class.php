@@ -1831,7 +1831,7 @@ self.focus();');
 			}
 			echo we_html_element::jsElement('
 				top.send_control.location="about:blank";
-				top.send_body.setProgress("",100);
+				top.send_body.setProgress(100);
 				top.send_body.setProgressText("title","<span style=\"color:#006699;text-weight:bold;\">' . g_l('modules_newsletter', '[finished]') . '",2);
 				updateText("' . g_l('modules_newsletter', '[campaign_ends]') . '");
 			');
@@ -2063,7 +2063,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 
 			$pro = ($ecount ? ($ecs / $ecount) * 100 : 0);
 
-			echo we_html_element::jsElement('top.send_body.setProgress("",' . ((int) $pro) . ');');
+			echo we_html_element::jsElement('top.send_body.setProgress(' . ((int) $pro) . ');');
 			flush();
 		}
 

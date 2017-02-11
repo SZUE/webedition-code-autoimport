@@ -46,25 +46,19 @@ class we_rebuild_fragment extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(){
-		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		return we_html_element::jsElement('
-parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_base_util::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', '[savingDocument]') . addslashes(we_base_util::shortenPath($this->data["path"], 60)) . '") );
-parent.wizbusy.setProgress("",' . $percent . ');');
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+		$jsCmd->addCmd('setProgress', [
+			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'name' => 'pb1',
+			'text' => g_l('rebuild', '[savingDocument]') . we_base_util::shortenPath($this->data["path"], 60),
+			'win' => 'wizbusy'
+		]);
 	}
 
-	protected function finish(){
+	protected function finish(we_base_jsCmd $jsCmd){
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', '');
-		$cmd = new we_base_jsCmd();
-		$cmd->addMsg($responseText ?: g_l('rebuild', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
-		$cmd->addCmd('close');
-		echo $cmd->getCmds();
-	}
-
-	protected function printBodyTag(array $attributes = []){
-		//note we need to subtract this, since it was already added in constructor loop.
-		//$this->currentTask = $this->currentTask - $this->taskPerFragment + 1;
-		parent::printBodyTag($attributes);
+		$jsCmd->addMsg($responseText ?: g_l('rebuild', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addCmd('close');
 	}
 
 }

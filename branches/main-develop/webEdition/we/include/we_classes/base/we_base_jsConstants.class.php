@@ -155,7 +155,16 @@ abstract class we_base_jsConstants{
 		confirm_applyFilterFolder: "' . g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]') . '",
 		confirm_change_to_preview:"' . g_l('SEEM', '[confirm][change_to_preview]') . '",
 		copy_folder_not_valid: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')) . '",
+		discard_changed_data:"' . g_l('alert', '[discard_changed_data]') . '",
+		exit_doc_question:{
+			"' . FILE_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(FILE_TABLE) . '][exit_doc_question]') . '",
+			"' . TEMPLATES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(TEMPLATES_TABLE) . '][exit_doc_question]') . '",
+			"tools":"' . g_l('tools', '[exit_doc_question]') . '",
+			' . (defined('OBJECT_TABLE') ? '"' . OBJECT_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_TABLE) . '][exit_doc_question]') . '",' : '') .
+			(defined('OBJECT_FILES_TABLE') ? '"' . OBJECT_FILES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_FILES_TABLE) . '][exit_doc_question]') . '"' : '') . '
+		},
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
+		ext_doc_selected:"' . g_l('SEEM', '[ext_doc_selected]') . '",
 		image_edit_null_not_allowed:"' . g_l('weClass', '[image_edit_null_not_allowed]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",
@@ -164,22 +173,14 @@ abstract class we_base_jsConstants{
 			tblTemplates:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : '') . '",
 			tblVFiles:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : '') . '",
 		},
-		discard_changed_data:"' . g_l('alert', '[discard_changed_data]') . '",
-		exit_multi_doc_question:"' . g_l('alert', '[exit_multi_doc_question]') . '",
+		link_does_not_work:"' . g_l('SEEM', '[link_does_not_work]') . '",
 		move:"' . g_l('alert', '[move]') . '",
 		move_exit_open_docs_continue:"' . g_l('alert', '[move_exit_open_docs_continue]') . '",
 		move_exit_open_docs_question:"' . g_l('alert', '[move_exit_open_docs_question]') . '",
+		newWEAvailable:"'.g_l('sysinfo', '[newWEAvailable]') .'",
+		pwd_startupRegExFailed:"'.	g_l('global', '[pwd][startupRegExFailed]').'",
 		revert_publish_question:"' . we_message_reporting::prepareMsgForJS(g_l('weEditorInfo', '[revert_publish_question]')) . '",
 		same_master_template:"' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[same_master_template]')) . '",
-		exit_doc_question:{
-			"' . FILE_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(FILE_TABLE) . '][exit_doc_question]') . '",
-			"' . TEMPLATES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(TEMPLATES_TABLE) . '][exit_doc_question]') . '",
-			"tools":"' . g_l('tools', '[exit_doc_question]') . '",
-			' . (defined('OBJECT_TABLE') ? '"' . OBJECT_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_TABLE) . '][exit_doc_question]') . '",' : '') .
-			(defined('OBJECT_FILES_TABLE') ? '"' . OBJECT_FILES_TABLE . '":"' . g_l('alert', '[' . stripTblPrefix(OBJECT_FILES_TABLE) . '][exit_doc_question]') . '"' : '') . '
-		},
-		ext_doc_selected:"' . g_l('SEEM', '[ext_doc_selected]') . '",
-		link_does_not_work:"' . g_l('SEEM', '[link_does_not_work]') . '",
 	},
 	scheduler:{
 		activeSchedule:{

@@ -33,7 +33,8 @@ function setProgressText(name, text) {
 	}
 }
 
-function setProgress(name, progress) {
+function setProgress(progress) {
+	var name="";
 	var elems = document.getElementsByClassName('progressbar');
 	for (var i = 0; i < elems.length; i++) {
 		elems[i].style.display = "";

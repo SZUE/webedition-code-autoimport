@@ -71,7 +71,7 @@ abstract class we_fragment_base{
 	 * Pause for each task in ms.
 	 * @var        int
 	 */
-	protected  $initdata = null;
+	protected $initdata = null;
 
 	/**
 	 * init Data.
@@ -87,7 +87,7 @@ abstract class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment,array $bodyAttributes = [], $initdata = ""){
+	public function __construct($name, $taskPerFragment, array $bodyAttributes = [], $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		if($initdata){
@@ -112,64 +112,44 @@ abstract class we_fragment_base{
 		}
 		$this->numberOfTasks = count($this->alldata);
 		$this->updateTaskPerFragment();
-		static::printHeader();
-		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment && $this->currentTask < $this->numberOfTasks; $i++){
 			$this->data = $this->alldata[$this->currentTask];
 			$this->doTask();
 
 			$this->currentTask++;
 		}
+
+		$this->printPage($bodyAttributes);
+	}
+
+	protected function printPage(array $bodyAttributes = []){
+		$jsCmd = new we_base_jsCmd();
+
+		$this->updateProgressBar($jsCmd);
 		if($this->currentTask >= $this->numberOfTasks){
+			$filename = WE_FRAGMENT_PATH . $this->name;
 			we_base_file::delete($filename);
-			$this->finish();
+			$this->finish($jsCmd);
+		} else {
+			$this->getJSReload($jsCmd);
 		}
-		$this->printFooter();
+
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_fragment.js') . $jsCmd->getCmds(), we_html_element::htmlBody($bodyAttributes));
 	}
 
-	/**
-	 * Prints the body tag.
-	 *
-	 * @param      array $attributes
-	 */
-	protected function printBodyTag(array $attributes = []){
-		$attr = "";
-		foreach($attributes as $k => $v){
-			$attr .= " $k=\"$v\"";
-		}
-		$onload = $this->getJSReload();
-		echo '<body' . $attr . ($onload ? ' onload="' . $onload : '') . '">';
-	}
-
-	protected function getJSReload(){
+	protected function getJSReload(we_base_jsCmd $jsCmd){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
-		$tmp = $_REQUEST;
-		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
-		$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
-
-		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?' . $tail . "';";
 
 		if(($nextTask < $this->numberOfTasks)){
-			return $onload;
+			$tmp = $_REQUEST;
+			$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
+			$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
+			$jsCmd->addCmd('location', ['doc' => 'document', 'loc' => $_SERVER['SCRIPT_NAME'] . '?' . $tail]);
 		}
 	}
 
-	/**
-	 * Prints the Footer.
-	 *
-	 */
-	protected function printFooter(){
-		echo $this->updateProgressBar() .
-		'</body></html>';
-	}
-
-	protected function updateProgressBar(){
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
 		return '';
-	}
-
-	protected static function printHeader(){
-		//FIXME: missing title
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 	protected function updateTaskPerFragment(){
@@ -196,7 +176,7 @@ abstract class we_fragment_base{
 	 * Overwrite this function to do the work when everything is finished.
 	 *
 	 */
-	protected function finish(){
+	protected function finish(we_base_jsCmd $jsCmd){
 
 	}
 

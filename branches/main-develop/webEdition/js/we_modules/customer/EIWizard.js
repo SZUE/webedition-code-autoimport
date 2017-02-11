@@ -153,7 +153,7 @@ function we_cmd() {
 						top.load.document.we_form.cmd.value = 'import_end';
 					}
 					if (top.footer.setProgress){
-						top.footer.setProgress('', arg.percent);
+						top.footer.setProgress(arg.percent);
 					}
 					top.load.document.we_form.submit();
 					break;

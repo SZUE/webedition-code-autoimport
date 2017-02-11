@@ -61,24 +61,25 @@ class we_backup_delete extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(){
-		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", we_base_file::clearPath($this->data[0]));
 		if(strlen($text) > 75){
-			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
+			$text = substr($text, 0, 65) . '&hellip;' . substr($text, -10);
 		}
-		return we_html_element::jsElement('
-parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
-parent.delmain.setProgress("",' . $percent . ');
-		');
+		$jsCmd->addCmd('setProgress', [
+			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'name' => 'pb1',
+			'text' => sprintf(g_l('backup', '[delete_entry]'), $text),
+			'win' => 'delmain'
+		]);
 	}
 
-	protected function finish(){
-		$js = (!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) ?
-			'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",WE().consts.size.dialog.small,WE().consts.size.dialog.small,true,true,true);' :
-			'');
+	protected function finish(we_base_jsCmd $jsCmd){
+		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
+			$jsCmd->addCmd('delFilesNOK');
+		}
+		$jsCmd->addCmd('close');
 		unset($_SESSION['weS']['backup_delete']);
-		echo we_html_element::jsElement($js . 'top.close();');
 	}
 
 }
