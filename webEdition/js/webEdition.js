@@ -951,7 +951,7 @@ var WebEdition = {
 				data: data,
 				success: success,
 				dataType: "json"
-				//timeout: 2000
+					//timeout: 2000
 			}).fail(function (jqxhr, textStatus, error) {
 				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText, this.url);
 			});
@@ -2454,5 +2454,23 @@ function doReloadCmd(args, url, hot) {
 			}
 			we_repl(_visibleEditorFrame, url, args[0]);
 		}
+	}
+}
+
+function startMsg() {
+	top._console_ = new (WE().layout.messageConsoleView)("mainWindow", this.window);
+	top._console_.register();
+	window.document.body.addEventListener("onunload", top._console_.unregister);
+}
+
+function checkPwd(sufficient) {
+	if (!sufficient) {
+		top.we_showMessage(WE().consts.g_l.alert.pwd_startupRegExFailed, WE().consts.message.WE_MESSAGE_ERROR);
+	}
+}
+
+function updateCheck(avail, version, date) {
+	if (avail) {
+		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.alert.newWEAvailable, version, date), WE().consts.message.WE_MESSAGE_INFO, window);
 	}
 }

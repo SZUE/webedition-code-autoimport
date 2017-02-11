@@ -270,30 +270,16 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 foreach($jsCmd as $cur){
 	$head .= we_html_element::jsScript($cur);
 }
-$head .= we_html_element::jsElement('
-function checkPwd(){' .
-		(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']) ?
-			'top.we_showMessage("' . g_l('global', '[pwd][startupRegExFailed]') . '", WE().consts.message.WE_MESSAGE_ERROR);' : ''
-		) . '
-}
 
-function startMsg() {' .
-		we_main_headermenu::createMessageConsole('mainWindow', true) . '
-}
-function updateCheck() {' .
-		(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable()) ?
-			'top.we_showMessage("' . printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']) . '", WE().consts.message.WE_MESSAGE_INFO, window);' :
-			'') . '
-}');
+$versionInfo = empty($_SESSION['perms']['ADMINISTRATOR']) ? [] : updateAvailable();
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
-unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 ?>
 <body id="weMainBody" onload="initWE();
 		top.start('<?= $table_to_load; ?>');
 		startMsg();
-		checkPwd();
-		updateCheck();
+		checkPwd(<?= intval(empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])); ?>);
+		updateCheck(<?= (empty($versionInfo) ? '0,0,0' : '1,\'' . $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')\',\'' . $versionInfo['date'] . '\'') ?>);
 		self.focus();" onbeforeunload ="return doUnload();">
 	<div id="alertBox"></div>
 	<div id="headerDiv"><?php
@@ -416,6 +402,7 @@ unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 </body>
 </html>
 <?php
+unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
 	flush();
 	if(function_exists('fastcgi_finish_request')){

@@ -47,22 +47,21 @@ class we_import_siteFrag extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(){
+	protected function updateProgressBar(we_base_jsCmd $jsCmd){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
-		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
-		$progressText = we_base_util::shortenPath($path, 30);
-
-		return we_html_element::jsElement('
-WE().layout.button.disable(top.siteimportbuttons.document, "back");
-WE().layout.button.disable(top.siteimportbuttons.document, "next");
-top.siteimportbuttons.setProgress("",' . $progress . ');
-top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldHtmlspecialchars($progressText, ENT_QUOTES) . '";');
+		$jsCmd->addCmd('setProgress', [
+			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'name' => 'progressTxt',
+			'text' => we_base_util::shortenPath($path, 30),
+			'win' => 'siteimportbuttons'
+		]);
+		$jsCmd->addCmd('disableBackNext', 'siteimportbuttons');
 	}
 
-	protected function finish(){
-		echo we_html_element::jsElement(
-			"top.siteimportbuttons.setProgress('',100);setTimeout('" . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
+	protected function finish(we_base_jsCmd $jsCmd){
+		$jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+		$jsCmd->addCmd('close');
 	}
 
 }
