@@ -39,9 +39,36 @@ function initMove(table) {
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
-	window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	switch (args[0]) {
+		case "moveInfo":
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=moveInfo", "we_moveinfo", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			break;
+		case "moveTreeEntries":
+			moveTreeEntries(args[1]);
+			break;
+		default:
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
+function moveTreeEntries(dontMoveClassFolders) {
+	var obj = top.treeData;
+	var cont = new top.container();
+	for (var i = 1; i <= obj.len; i++) {
+		if (obj[i].checked != 1 || (dontMoveClassFolders && obj[i].parentid == 0)) {
+			if (obj[i].parentid != 0) {
+				if (!top.treeData.parentChecked(obj[i].parentid)) {
+					cont.add(obj[i]);
+				}
+			} else {
+				cont.add(obj[i]);
+			}
+		}
+	}
+	top.treeData = cont;
+	top.drawTree();
 }
 
 function we_submitForm(target, url) {

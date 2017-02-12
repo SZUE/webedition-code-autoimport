@@ -66,7 +66,8 @@ function findInclude($cmd){
 			return true;
 		case 'phpinfo':
 		case 'sysinfo':
-			return 'sysinfo.inc.php';
+			we_dialog_sysinfo::getDialog($cmd);
+			return true;
 		case 'versions_preview':
 			$ver = new we_versions_preview();
 			$ver->showHtml();
@@ -235,7 +236,11 @@ function findInclude($cmd){
 		case 'delete':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':
-			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
+			if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1)){
+				we_base_move::getDialog();
+				return true;
+			}
+			return 'home.inc.php';
 		case 'addToCollection':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_addToCollection.inc.php' : 'home.inc.php');
 		case 'delete_single_document':
@@ -245,9 +250,11 @@ function findInclude($cmd){
 			return 'we_delInfo.inc.php';
 		case 'do_move':
 		case 'move_single_document':
-			return 'we_move.inc.php';
+			we_base_move::getDialog();
+			return true;
 		case 'moveInfo':
-			return 'we_moveInfo.inc.php';
+			we_base_move::getMoveInfo();
+			return true;
 		case 'do_addToCollection':
 			return 'we_addToCollection.inc.php';
 		case 'show_binaryDoc':
@@ -273,9 +280,9 @@ function findInclude($cmd){
 		case 'copyWeDocumentCustomerFilter':
 			return 'we_modules/customer/we_customer_copyWeDocumentFilter.inc.php';
 		case 'changeLanguageRecursive':
-			return 'changeLanguage_rec.inc.php';
 		case 'changeTriggerIDRecursive':
-			return 'changeTriggerID_rec.inc.php';
+			we_document::changeRecursiveRequest($cmd);
+			return true;
 		case 'add_thumbnail':
 			return 'we_editors/add_thumbnail.inc.php';
 		case 'image_convertJPEG':
