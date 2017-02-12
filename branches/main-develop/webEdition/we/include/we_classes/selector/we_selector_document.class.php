@@ -159,7 +159,7 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
+		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this). '&what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){

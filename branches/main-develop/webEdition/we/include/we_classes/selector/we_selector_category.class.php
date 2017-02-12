@@ -69,7 +69,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&noChoose=' . $this->noChoose;
+		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . __CLASS__ . '&what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&noChoose=' . $this->noChoose;
 	}
 
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
@@ -415,7 +415,7 @@ class we_selector_category extends we_selector_file{
 			$weSuggest->setResult('FolderID', $parentId);
 			$weSuggest->setSelector(weSuggest::DirSelector);
 			$weSuggest->setWidth(250);
-			$weSuggest->setSelectButton( we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'FolderID', 'FolderIDPath', '', '', '', '1', '', 'false', 1)"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'FolderID', 'FolderIDPath', '', '', '', '1', '', 'false', 1)"));
 
 			$table = new we_html_table(['class' => 'default'], 6, 3);
 
@@ -445,7 +445,7 @@ class we_selector_category extends we_selector_file{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js'), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
-	<form action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
+	<form action="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . __CLASS__ . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() .
 				'</div></form>' : '' ) .
 			'</body>');

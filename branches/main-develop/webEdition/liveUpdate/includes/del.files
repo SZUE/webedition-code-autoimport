@@ -91,6 +91,7 @@ we/include/we_tags/we_tag_collection.inc.php
 we/include/we_tags/custom_tags/dummy
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
+we/include/we_show_info.inc.php
 we/include/we_seem/we_SEEM_openExtDoc_frameset.php
 we/include/we_seem/open_url_in_editor.php
 we/include/we_seem/open_url_in_editor.inc.php
@@ -468,6 +469,7 @@ we/include/we_editors/we_preferences_footer.inc.php
 we/include/we_editors/we_make_backup.php
 we/include/we_editors/we_make_backup.inc.php
 we/include/we_editors/we_init_doc.inc.php
+we/include/we_editors/we_info.inc.php
 we/include/we_editors/we_fileupload.inc.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/we_exit_multi_doc_question.inc.php
@@ -685,6 +687,7 @@ we/include/validation/xhtml_10_transitional.inc.php
 we/include/validation/xhtml_10_strict.inc.php
 we/include/treeInfo.inc.php
 we/include/sidebar.inc.php
+we/include/selectors.inc.php
 we/include/notInstalledModules.inc.php
 we/include/newMsg.inc.php
 we/include/messageModuleNotActivated.inc.php
@@ -692,6 +695,7 @@ we/include/loadTree.inc.php
 we/include/jsMessageConsole/messageConsole.php
 we/include/htaccessbase.txt
 we/include/home_rss.inc.php
+we/include/fixOldPhp.inc.php
 we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php

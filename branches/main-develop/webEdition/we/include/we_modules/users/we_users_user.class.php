@@ -37,6 +37,11 @@ class we_users_user{
 	const TAB_WORKSPACES = 2;
 	const TAB_SETTINGS = 3;
 	const DEFAULT_PASS_REGEX = '(.{6,20})';
+	const LOGIN_DENIED = 4;
+	const LOGIN_OK = 2;
+	const LOGIN_DENIED_SECURITY = 3;
+	const LOGIN_CREDENTIALS_INVALID = 1;
+	const LOGIN_UNKNOWN = 0;
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;

@@ -38,5 +38,6 @@ switch($cmd){
 	case 'users_changeR':
 		return 'we_modules/users/changeRec_users.inc.php';
 	case 'we_users_selector':
-		return 'selectors.inc.php';
+		we_selector_file::getSelectorFromRequest();
+		return true;
 }
