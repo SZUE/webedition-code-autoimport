@@ -47,7 +47,8 @@ function findInclude($cmd){
 		case 'we_selector_document':
 		case 'we_selector_file':
 		case 'we_selector_image':
-			return 'selectors.inc.php';
+			we_selector_file::getSelectorFromRequest();
+			return true;
 		case 'selectorEdit':
 			return 'we_editors/selectorEdit.inc.php';
 		case 'selectorBrowse':
@@ -130,7 +131,8 @@ function findInclude($cmd){
 		case 'help':
 			return '';
 		case 'info':
-			return 'we_show_info.inc.php';
+			we_dialog_info::getFullDialog();
+			return true;
 		case 'openPreferences':
 			return 'we_editors/we_preferences_frameset.inc.php';
 		case 'editThumbs':

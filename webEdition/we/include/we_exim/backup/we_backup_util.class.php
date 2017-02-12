@@ -74,7 +74,7 @@ abstract class we_backup_util{
 			($import || file_exists(WEBEDITION_PATH . 'agency.php') ?
 			WEBEDITION_DIR . 'agency.php' :
 			'')
-			]);
+		]);
 	}
 
 	static function getRealTableName($table){
@@ -173,20 +173,13 @@ abstract class we_backup_util{
 		return max(min($percent, 100), 0);
 	}
 
-	public static function getProgressJS($percent, $description, $return){
-		$ret = '
+	public static function getProgressJS($percent, $description){
+		return '
 if(top.busy && top.busy.setProgressText){
 		top.busy.setProgressText("current_description", "' . $description . '");
 		top.busy.setProgress(' . $percent . ');
 }
 ';
-		if($return){
-			return $ret;
-		}
-
-		echo we_html_element::jsElement($ret . '
-			/*' . (time() - $_SESSION['weS']['weBackupVars']['limits']['requestTime']) . 's, ' . we_base_file::getHumanFileSize(memory_get_usage(true)) . '*/
-			');
 	}
 
 	public static function getExportPercent(){

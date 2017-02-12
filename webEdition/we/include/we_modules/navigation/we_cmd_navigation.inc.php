@@ -30,7 +30,8 @@ switch($cmd){
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';
 	case 'we_navigation_dirSelector':
-		return 'selectors.inc.php';
+		we_selector_file::getSelectorFromRequest();
+		return true;
 	case 'module_navigation_do_reset_customer_filter':
 		we_navigation_navigation::reset_customer_filter();
 		return true;

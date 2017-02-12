@@ -33,7 +33,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), [1, 'on', 'yes', 'true', true])) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
+		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
 	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : '';
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
@@ -49,11 +49,6 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	we_base_file::delete(WE_CACHE_PATH . 'newwe_version.json');
 }
 we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
-
-define('LOGIN_DENIED', 4);
-define('LOGIN_OK', 2);
-define('LOGIN_CREDENTIALS_INVALID', 1);
-define('LOGIN_UNKNOWN', 0);
 
 function getValueLoginMode($val){
 	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : we_base_constants::MODE_NORMAL;
@@ -79,7 +74,7 @@ function printHeader($login, $status = 200, $js = ''){
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement(we_message_reporting::jsString());
 
-	if($login != LOGIN_OK){
+	if($login != we_users_user::LOGIN_OK){
 		echo we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
 		we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]);
 	}
@@ -163,7 +158,6 @@ foreach($removePaths as $path){
 
 we_base_preferences::writeDefaultLanguageConfig();
 
-
 //CHECK FOR FAILED LOGIN ATTEMPTS
 $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
 
@@ -179,19 +173,19 @@ if($count >= we_base_constants::LOGIN_FAILED_NR){
  * SWITCH MODE
  * *************************************************************************** */
 //set denied as default
-$login = LOGIN_DENIED;
+$login = we_users_user::LOGIN_DENIED;
 if(isset($GLOBALS['userLoginDenied'])){
-	$login = LOGIN_DENIED;
+	$login = we_users_user::LOGIN_DENIED;
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
-	$login = LOGIN_OK;
+	$login = we_users_user::LOGIN_OK;
 	if(($mode = we_base_request::_(we_base_request::STRING, 'mode'))){
 		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !
 	}
 	setcookie('we_popup', we_base_request::_(we_base_request::BOOL, 'popup'), time() + 2592000);
 } else if(isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
-	$login = LOGIN_CREDENTIALS_INVALID;
+	$login = we_users_user::LOGIN_CREDENTIALS_INVALID;
 } else {
-	$login = LOGIN_UNKNOWN;
+	$login = we_users_user::LOGIN_UNKNOWN;
 	//old incompatible browser
 }
 
@@ -201,17 +195,17 @@ function getError($reason, $cookie = false){
 
 	$error = we_html_element::htmlB($reason) .
 		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
-			( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
-			'') .
+		( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+		'') .
 		(!ini_get('session.use_cookies') ?
-			( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
-			'') .
+		( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+		'') .
 		(ini_get('session.cookie_path') != '/' ?
-			( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
-			'') .
+		( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+		'') .
 		($cookie && $error_count == 0 ?
-			( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
-			'') .
+		( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+		'') .
 		we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
 	$layout = new we_html_table(['style' => 'width: 100%; height: 75%;'], 1, 1);
@@ -247,17 +241,15 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * BUILD DIALOG
 	 * *********************************************************************** */
 
-	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
-
 	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
-' . include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
+' . we_dialog_info::getDialog(true, ($login === we_users_user::LOGIN_OK) ? false : true);
 
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS
 	 * *********************************************************************** */
 	$headerjs = '';
 	switch($login){
-		case LOGIN_OK:
+		case we_users_user::LOGIN_OK:
 			$httpCode = 200;
 			$body_javascript = '';
 
@@ -277,7 +269,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 
 			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!we_base_request::_(we_base_request::BOOL, 'popup')))){
 				if($body_javascript){
-					$body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
+					$body_javascript .= 'top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				} else {
 					$httpCode = 303;
 					header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
@@ -291,7 +283,7 @@ var ah=' . (empty($_SESSION['prefs']['weHeight']) ? 6000 : $_SESSION['prefs']['w
 win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw, '" . md5(uniqid(__FILE__, true)) . '", "mainwindow", aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
 
 			break;
-		case LOGIN_CREDENTIALS_INVALID:
+		case we_users_user::LOGIN_CREDENTIALS_INVALID:
 			we_users_user::logLoginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'WE_LOGIN_username'));
 			//make it harder to guess salt/password
 			usleep(1100000 + rand(0, 1000000));
@@ -299,13 +291,13 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate>(NOW() - INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
 			$body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
-					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
-					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
+				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
-		case 3:
+		case we_users_user::LOGIN_DENIED_SECURITY:
 			$body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
 			break;
-		case LOGIN_DENIED:
+		case we_users_user::LOGIN_DENIED:
 			$body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_denied_for_user]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		default:

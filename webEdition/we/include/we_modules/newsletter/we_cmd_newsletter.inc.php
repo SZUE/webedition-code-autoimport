@@ -28,5 +28,6 @@ switch($cmd){
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';
 	case 'we_newsletter_dirSelector':
-		return 'selectors.inc.php';
+		we_selector_file::getSelectorFromRequest();
+		return true;
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,5 +29,6 @@ switch($cmd){
 		return '../../we_showMod.php';
 
 	case 'we_export_dirSelector':
-		return 'selectors.inc.php';
+		we_selector_file::getSelectorFromRequest();
+		return true;
 }

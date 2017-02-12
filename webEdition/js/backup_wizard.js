@@ -383,6 +383,27 @@ function reloadFrame() {
 	}
 }
 
+function run(type, percent, desc) {
+	updateProgress(percent, desc);
+	if (top.cmd.reloadTimer) {
+		clearTimeout(top.cmd.reloadTimer);
+	}
+	top.cmd.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php?cmd=" + type;
+}
+
+function updateProgress(percent, desc) {
+	if (top.busy && top.busy.setProgressText) {
+		top.busy.setProgressText("current_description", desc);
+		top.busy.setProgress(percent);
+	}
+}
+
+function backupFinished(text) {
+	updateProgress(100, text);
+	top.body.setLocation(WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=body&step=2");
+	top.cmd.location = "about:blank";
+}
+
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
