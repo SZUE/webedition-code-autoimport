@@ -161,7 +161,7 @@ class we_document extends we_root{
 			$selected = $this->Extension;
 		}
 		return $this->Extensions ?
-			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
+			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', we_base_permission::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
 			we_html_element::htmlHidden('we_' . $this->Name . '_Extension', $selected);
 	}
 
@@ -186,10 +186,10 @@ class we_document extends we_root{
 	function formNavigation(){
 		$isSee = $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE;
 		$navItems = $this->getNavigationItems();
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('module_navigation_edit_navi',0)", '', 0, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('module_navigation_edit_navi',0)", '', 0, 22, '', '', (we_base_permission::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
-		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
-			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:WE().util.showConfirm(window, '', '" . g_l('navigation', '[dellall_question]') . "',['delete_all_navi']);", '', 0, 0, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
+		if(we_base_permission::hasPerm('EDIT_NAVIGATION') && $isSee){
+			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:WE().util.showConfirm(window, '', '" . g_l('navigation', '[dellall_question]') . "',['delete_all_navi']);", '', 0, 0, '', '', (we_base_permission::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
 		} else {
 			$delallbut = '';
 		}
@@ -208,7 +208,7 @@ class we_document extends we_root{
 		}
 		$navis->setDisabledDelItems($NoDelNavis, g_l('navigation', '[NoDeleteFromDocument]'));
 
-		if(!$isSee || !permissionhandler::hasPerm('EDIT_NAVIGATION')){
+		if(!$isSee || !we_base_permission::hasPerm('EDIT_NAVIGATION')){
 			$navis->isEditable = false;
 			$navis->CanDelete = false;
 		}
@@ -1723,7 +1723,7 @@ class we_document extends we_root{
 		// init document
 		$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			$we_doc = we_document::initDoc($we_dt);
 			switch($what){
 				case 'changeLanguageRecursive':

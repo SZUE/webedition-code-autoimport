@@ -312,7 +312,7 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 
 function get_ws($table = FILE_TABLE, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return $asArray ? [] : '';
 		}
 		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
@@ -356,7 +356,7 @@ function get_def_ws($table = FILE_TABLE){
 	if(!get_ws($table)){ // WORKARROUND
 		return '';
 	}
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
+	if(we_base_permission::hasPerm('ADMINISTRATOR')){
 		return '';
 	}
 

@@ -63,8 +63,8 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
-		$SaveButton = we_html_button::create_button(we_html_button::SAVE, "javascript:if(top.publishWhenSave==1){top.content.editor.edbody.document.getElementById('Published').value=1;};top.content.we_cmd('save_glossary');", '', 0, 0, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
-		$UnpublishButton = we_html_button::create_button('deactivate', "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", '', 0, 0, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
+		$SaveButton = we_html_button::create_button(we_html_button::SAVE, "javascript:if(top.publishWhenSave==1){top.content.editor.edbody.document.getElementById('Published').value=1;};top.content.we_cmd('save_glossary');", '', 0, 0, '', '', (!we_base_permission::hasPerm('NEW_GLOSSARY') && !we_base_permission::hasPerm('EDIT_GLOSSARY')));
+		$UnpublishButton = we_html_button::create_button('deactivate', "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", '', 0, 0, '', '', (!we_base_permission::hasPerm('NEW_GLOSSARY') && !we_base_permission::hasPerm('EDIT_GLOSSARY')));
 
 		$NewEntry = we_html_forms::checkbox(1, false, "makeNewEntry", g_l('modules_glossary', '[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntryCheck = (this.checked) ? 1 : 0", false);
 		$PublishWhenSaved = we_html_forms::checkbox(1, false, "publishWhenSave", g_l('modules_glossary', '[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
@@ -83,7 +83,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		}
 		$table2->setColContent(0, $col++, $NewEntry);
 		if($weGlossaryFrames->View->Glossary->ID){
-			if(permissionhandler::hasPerm(['DELETE_GLOSSARY'])){
+			if(we_base_permission::hasPerm(['DELETE_GLOSSARY'])){
 				$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('delete_glossary');"));
 			}
 		}
@@ -298,7 +298,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			$linkPath = $linkID = $workspaceID = $parameter = "";
 		}
 
-		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 
 		$weSuggest = &weSuggest::getInstance();
 		$weSuggest->setAcId('objPathLink');

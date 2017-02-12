@@ -60,7 +60,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		foreach($list as $key){
 			$items = f('SELECT COUNT(1) FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $language . '" AND Type="' . $key . '"');
 //FIXME createbuttontable?
-			$button = we_html_button::create_button('new_glossary_' . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+			$button = we_html_button::create_button('new_glossary_' . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
 
 			$parts[] = ["headline" => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+top.content.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
 				"html" => '<table style="width:550px;" class="default defaultfont">

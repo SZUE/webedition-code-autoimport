@@ -70,21 +70,21 @@ class we_exim_refTable{
 			}
 			switch($rd->Table){
 				case FILE_TABLE:
-					return $allowed && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS');
+					return $allowed && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS');
 				case TEMPLATES_TABLE:
-					return $allowed && permissionhandler::hasPerm('CAN_SEE_TEMPLATES');
+					return $allowed && we_base_permission::hasPerm('CAN_SEE_TEMPLATES');
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTS');
+					return $allowed && we_base_permission::hasPerm('CAN_SEE_OBJECTS');
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES');
+					return $allowed && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES');
 				case VFILE_TABLE:
-					return $allowed && permissionhandler::hasPerm('CAN_SEE_COLLECTIONS');
+					return $allowed && we_base_permission::hasPerm('CAN_SEE_COLLECTIONS');
 				case DOC_TYPES_TABLE:
-					return $allowed && permissionhandler::hasPerm('EDIT_DOCTYPE');
+					return $allowed && we_base_permission::hasPerm('EDIT_DOCTYPE');
 				case CATEGORY_TABLE:
-					return $allowed && permissionhandler::hasPerm('EDIT_KATEGORIE');
+					return $allowed && we_base_permission::hasPerm('EDIT_KATEGORIE');
 				case NAVIGATION_TABLE:
-					return $allowed && permissionhandler::hasPerm('EDIT_NAVIGATION');
+					return $allowed && we_base_permission::hasPerm('EDIT_NAVIGATION');
 				case FILELINK_TABLE:
 					return true;
 			}

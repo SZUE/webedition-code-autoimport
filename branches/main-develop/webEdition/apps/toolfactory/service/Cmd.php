@@ -56,7 +56,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$newBeforeSaving = $model->ID === 0;
 		// check if user has the permissions to create new entries
-		if($model->ID === 0 && !permissionhandler::hasPerm('NEW_APP_' . strtoupper($appName))){
+		if($model->ID === 0 && !we_base_permission::hasPerm('NEW_APP_' . strtoupper($appName))){
 			$ex = new we_service_Exception(g_l('apps', '[error][noperm]'));
 			$ex->setType('warning');
 			throw $ex;

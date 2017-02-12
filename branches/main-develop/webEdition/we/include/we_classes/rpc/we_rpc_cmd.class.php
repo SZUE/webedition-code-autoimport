@@ -52,7 +52,7 @@ abstract class we_rpc_cmd{
 		$this->checkParameters();
 
 		foreach($this->Permissions as $perm){
-			if(!permissionhandler::hasPerm($perm)){
+			if(!we_base_permission::hasPerm($perm)){
 				$this->Status = self::STATUS_NO_PERMISSION;
 			}
 		}

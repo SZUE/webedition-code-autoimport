@@ -110,7 +110,7 @@ class we_fileupload_resp_base extends we_fileupload{
 		// FIXME: this test ist too strong:
 		// Only check permissions when we know, that the file is to be imported (important: e.g. html should be permitted on we_otherDocument even if the right new_html is missing!)
 		$this->fileVars['weFileCt'] = getContentTypeFromFile($this->FILES[$this->name]['name']); //compare mime and ct by extension
-		if(!permissionhandler::hasPerm(($perm = we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt'])))){
+		if(!we_base_permission::hasPerm(($perm = we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt'])))){
 			return array_merge($this->response, ['status' => 'failure', 'message' => 'no perms: ' . g_l('perms_workpermissions', '[' . $perm . ']')]);
 		}
 

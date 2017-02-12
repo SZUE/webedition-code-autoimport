@@ -380,7 +380,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 <option value="' . we_base_link::TYPE_OBJ . '"' . (($type == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' : '') . '
 </select>';
 
-		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'href', '', document.we_form.href.value, '')") : "";
+		$but = we_base_permission::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'href', '', document.we_form.href.value, '')") : "";
 
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
@@ -394,7 +394,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 		$weSuggest->setResult('id', $id);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth(300);
-		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.id.value,'" . FILE_TABLE . "','id','href_int','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.id.value,'" . FILE_TABLE . "','id','href_int','','',0,''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 
 		$intLink = $weSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
@@ -407,7 +407,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
 			$weSuggest->setWidth(300);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
 
 			$objLink = $weSuggest->getHTML();
 		}
@@ -474,7 +474,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'img_src', '', document.we_form.img_src.value, '')") : '';
+		$but = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'img_src', '', document.we_form.img_src.value, '')") : '';
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
 		$weSuggest->setAcId("Image");
@@ -484,7 +484,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 		$weSuggest->setResult('img_id', $img_id);
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setWidth(300);
-		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements.img_id.value,'" . FILE_TABLE . "','id','src_int','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements.img_id.value,'" . FILE_TABLE . "','id','src_int','','','','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 
 		$intImg = $weSuggest->getHTML();
 		$imgProps = '
@@ -579,7 +579,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 	];
 
 
-		if(permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
+		if(we_base_permission::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
 			//   start of accessible parameters
 			$parts[] = ['headline' => g_l('linklistEdit', '[language]'),
 				'html' => '

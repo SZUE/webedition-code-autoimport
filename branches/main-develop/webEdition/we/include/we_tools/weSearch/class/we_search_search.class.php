@@ -337,7 +337,7 @@ class we_search_search extends we_search_base{
 			unset($tableFields['HasReferenceToID']);
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+		if(!we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 			unset($tableFields['ParentIDDoc']);
 		}
 
@@ -345,7 +345,7 @@ class we_search_search extends we_search_base{
 			unset($tableFields['ParentIDObj']);
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+		if(!we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 			unset($tableFields['ParentIDObj']);
 		}
 
@@ -353,7 +353,7 @@ class we_search_search extends we_search_base{
 			unset($tableFields['ParentIDTmpl']);
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
+		if(!we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
 			unset($tableFields['ParentIDTmpl']);
 			unset($tableFields['temp_template_id']);
 			unset($tableFields['MasterTemplateID']);
@@ -918,7 +918,7 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
-						if(permissionhandler::hasPerm('CAN_SEE_COLLECTIONS')){
+						if(we_base_permission::hasPerm('CAN_SEE_COLLECTIONS')){
 							$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')'); //no ws fo collections
 							while($db->next_record()){
 								$accessible[$k][$db->f('ID')] = true;
@@ -952,7 +952,7 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case CATEGORY_TABLE:
-						if(permissionhandler::hasPerm('EDIT_KATEGORIE')){
+						if(we_base_permission::hasPerm('EDIT_KATEGORIE')){
 							$paths[$k] = id_to_path($v, addTblPrefix($k), null, true);
 							foreach($paths[$k] as $key => $v){
 								$accessible[$k][$key] = true;

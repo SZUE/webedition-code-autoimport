@@ -55,7 +55,7 @@ abstract class we_users_util{
 	}
 
 	static function isUserInUsers($uid, $users, we_database_base $db = null){ // $users can be a csv string or an array
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		if(!is_array($users)){
@@ -147,7 +147,7 @@ abstract class we_users_util{
 	}
 
 	public static function isOwner($csvOwners){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$ownersArray = makeArrayFromCSV($csvOwners);
@@ -156,7 +156,7 @@ abstract class we_users_util{
 
 	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-			(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
+			(we_base_permission::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
 			return true;
 		}
 		$db = new DB_WE();
@@ -178,7 +178,7 @@ abstract class we_users_util{
 	}
 
 	public static function canEditModule($modName){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$data = we_base_moduleInfo::getModuleData($modName);
@@ -186,7 +186,7 @@ abstract class we_users_util{
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return '';
 		}
 		$aliases = self::getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
@@ -223,8 +223,8 @@ abstract class we_users_util{
 		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
 
 		foreach($db->getAll() as $result){
-			//if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (we_users_util::in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
-			if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
+			//if(!$ws || we_base_permission::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (we_users_util::in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
+			if(!$ofWs || we_base_permission::hasPerm('ADMINISTRATOR')){
 				$out[] = $result['ID'];
 			} else {
 				$path = $result['Path'] . '/';

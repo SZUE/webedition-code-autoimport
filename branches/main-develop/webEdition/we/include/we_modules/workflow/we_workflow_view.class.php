@@ -188,8 +188,8 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getCategoryHTML(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -197,8 +197,8 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getObjCategoryHTML(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_objcat')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_objcat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -206,8 +206,8 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getObjectHTML(){
-		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objects')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','add_object')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objects')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','add_object')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", $delallbut . $addbut, "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -516,11 +516,11 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$newone = (!$this->workflowDef->ID);
 					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
-					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
+					if(!we_base_permission::hasPerm('EDIT_WORKFLOW') && !we_base_permission::hasPerm('NEW_WORKFLOW')){
 						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
-					if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
+					if($newone && !we_base_permission::hasPerm('NEW_WORKFLOW')){
 						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
@@ -571,7 +571,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case 'delete_workflow':
 				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
-					if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
+					if(!we_base_permission::hasPerm('DELETE_WORKFLOW')){
 						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
@@ -1032,7 +1032,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$footerTable->addCol(2);
 		$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_base_permission::hasPerm("PUBLISH"))){
 			$publishbutton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();");
 		} else {
 			$footerTable->addCol(2);
@@ -1073,7 +1073,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$footerTable->addCol(2);
-				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_base_permission::hasPerm("PUBLISH"))){
 					$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();"));
 				} else {
 					$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
@@ -1094,7 +1094,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$footerTable->addCol(2);
-				$footerTable->setColContent(0, $col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
+				$footerTable->setColContent(0, $col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_base_permission::hasPerm("PUBLISH")) ?
 						we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();") :
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
@@ -1120,7 +1120,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$footerTable->addCol(2);
-				$footerTable->setColContent(0, $col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
+				$footerTable->setColContent(0, $col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_base_permission::hasPerm("PUBLISH")) ?
 						we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();") :
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
@@ -1139,7 +1139,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.we_cmd('new_workflow');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
+		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.we_cmd('new_workflow');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_WORKFLOW"));
 
 		return parent::getActualHomeScreen('workflow', "workflow.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}

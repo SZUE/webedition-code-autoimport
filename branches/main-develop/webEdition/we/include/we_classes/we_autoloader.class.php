@@ -122,7 +122,6 @@ abstract class we_autoloader{
 		'we_classes' => [
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
 			'doclistView' => 'doclistView.class.php',
-			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
 			'we_category' => 'we_category.class.php',
 			'we_docTypes' => 'we_docTypes.class.php',
 			'we_element' => 'we_element.class.php',

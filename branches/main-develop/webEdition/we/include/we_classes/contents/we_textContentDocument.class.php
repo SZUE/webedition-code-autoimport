@@ -176,7 +176,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'dt.ID,dt.DocType', g_l('weClass', '[doctype]'), $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
 						"WE().util.showConfirm(window, '', '" . g_l('weClass', '[doctype_changed_question]') . "',['doctype_changed']);" :
-						"we_cmd('doctype_changed');"), [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
+						"we_cmd('doctype_changed');"), [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!we_base_permission::hasPerm('EDIT_DOCTYPE'))), ((we_base_permission::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
 					'', g_l('weClass', '[nodoctype]')] : '');
 	}
 

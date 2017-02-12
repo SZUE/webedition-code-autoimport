@@ -196,7 +196,7 @@ abstract class we_workflow_utility{
 	  defined documnet, otherwise false
 	 */
 	static function canUserEditDoc($docID, $table, $userID){
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		$doc = self::getWorkflowDocument($docID, $table);

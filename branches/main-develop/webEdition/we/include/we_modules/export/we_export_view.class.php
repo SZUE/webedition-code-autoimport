@@ -92,7 +92,7 @@ function start() {
 	function processCommands(we_base_jsCmd $jscmd){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "new_export":
-				if(!permissionhandler::hasPerm("NEW_EXPORT")){
+				if(!we_base_permission::hasPerm("NEW_EXPORT")){
 					$jscmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -104,7 +104,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				break;
 			case "new_export_group":
-				if(!permissionhandler::hasPerm("NEW_EXPORT")){
+				if(!we_base_permission::hasPerm("NEW_EXPORT")){
 					$jscmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				} else {
@@ -118,7 +118,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case "export_edit":
-				if(!permissionhandler::hasPerm("EDIT_EXPORT")){
+				if(!we_base_permission::hasPerm("EDIT_EXPORT")){
 					$jscmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -131,7 +131,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				break;
 			case "save_export":
-				if(!permissionhandler::hasPerm("NEW_EXPORT")){
+				if(!we_base_permission::hasPerm("NEW_EXPORT")){
 					$jscmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -218,7 +218,7 @@ top.content.hot=false;');
 
 				break;
 			case "delete_export":
-				if(!permissionhandler::hasPerm("DELETE_EXPORT")){
+				if(!we_base_permission::hasPerm("DELETE_EXPORT")){
 					$jscmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -266,8 +266,8 @@ top.content.hot=false;');
 
 	public function getHomeScreen(){
 		$hiddens["cmd"] = "home";
-		$content = we_html_button::create_button('new_export', "javascript:top.we_cmd('new_export');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT")) . '<br/>' .
-			we_html_button::create_button('new_export_group', "javascript:top.we_cmd('new_export_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT"));
+		$content = we_html_button::create_button('new_export', "javascript:top.we_cmd('new_export');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_EXPORT")) . '<br/>' .
+			we_html_button::create_button('new_export_group', "javascript:top.we_cmd('new_export_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_EXPORT"));
 		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
 		));
 	}

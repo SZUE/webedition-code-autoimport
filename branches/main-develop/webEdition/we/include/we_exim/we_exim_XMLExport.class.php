@@ -188,7 +188,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				$wsQuery [] = 'Path LIKE "' . $db->escape($path) . '/%"';
 				$wsQuery [] = we_tool_treeDataSource::getQueryParents($path);
 			}
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
 			$paths = id_to_path($ac, OBJECT_TABLE);
 			foreach($paths as $path){

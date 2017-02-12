@@ -61,7 +61,7 @@ abstract class we_glossary_frameEditor{
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
-		$form = we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", '', 0, 0, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
+		$form = we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", '', 0, 0, '', '', (!we_base_permission::hasPerm('NEW_GLOSSARY') && !we_base_permission::hasPerm('EDIT_GLOSSARY'))));
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 

@@ -4,7 +4,7 @@ include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : [false];
 we_html_tools::protect($protect);
 
-if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
+if(!we_base_permission::hasPerm('SPELLCHECKER_ADMIN')){
 	$cmd = new we_base_jsCmd();
 	$cmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 	$cmd->addCmd('close');

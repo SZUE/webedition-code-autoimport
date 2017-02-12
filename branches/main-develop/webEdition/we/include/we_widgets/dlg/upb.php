@@ -30,7 +30,7 @@ $oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[obje
 
 $dbTableType = '<table><tr>' .
 	(defined('FILE_TABLE') ? '<td>' . $oChbxDocs . ' </td>' : '') .
-	(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
+	(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
 	"</tr></table>";
 
 $parts = [["headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => we_html_multiIconBox::SPACE_MED],

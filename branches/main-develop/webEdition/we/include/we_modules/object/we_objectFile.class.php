@@ -77,7 +77,7 @@ class we_objectFile extends we_document{
 			$this->AllowedClasses = implode(',', $ac);
 		}
 		if(isWE()){
-			if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
+			if(defined('CUSTOMER_TABLE') && we_base_permission::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_SCHEDULER);
@@ -675,7 +675,7 @@ class we_objectFile extends we_document{
 
 			$realName = $field['type'] . '_' . $field['name'];
 			$edMerk = $editable;
-			if(!((!isset($dv[$realName]) || (isset($dv[$realName]) && !$dv[$realName]['users'])) || permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
+			if(!((!isset($dv[$realName]) || (isset($dv[$realName]) && !$dv[$realName]['users'])) || we_base_permission::hasPerm('ADMINISTRATOR') || we_users_util::isUserInUsers($_SESSION['user']['ID'], $dv[$realName]['users']))){
 				$editable = false;
 			}
 
@@ -775,7 +775,7 @@ class we_objectFile extends we_document{
 		}
 
 		$cmd = 'object_change_objectlink,' . $GLOBALS['we_transaction'] . ',' . we_object::QUERY_PREFIX . $ObjectID;
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . $pid . "','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
 			$editObjectButton .
 			($myid ? $openCloseButton : '') .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';top.we_cmd('object_reload_entry_at_object',,'" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
@@ -809,14 +809,14 @@ class we_objectFile extends we_document{
 		}
 
 		$cmd = 'object_change_objectlink,' . $GLOBALS['we_transaction'] . ',' . we_object::QUERY_PREFIX . $ObjectID;
-		$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')');
+		$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (we_base_permission::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')');
 
 		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . VFILE_TABLE . "');", '', 0, 0, "", "", false, false);
 
 		$btnEdit = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "',cid,'" . we_base_ContentTypes::COLLECTION . "');}"), '', 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';top.we_cmd('object_reload_entry_at_object',,'" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
 
-		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
+		$buttons = $btnSelect . (we_base_permission::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
 
 		$weSuggest = &weSuggest::getInstance();
 		$weSuggest->setNoAutoInit(true); // autosuggest is deactivated
@@ -886,7 +886,7 @@ class we_objectFile extends we_document{
 				}
 
 				$cmd = 'fieldMultiobject_selectMultiobject_callback,' . ($isSEEM ? 'isSEEM' : '') . ',' . self::TYPE_MULTIOBJECT . '_' . $name;
-				$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+				$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $cmd . "','','" . $rootDir . "','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 				$upbutDis = we_html_button::create_button(we_html_button::DIRUP, "#", '', 0, 0, "", "", true);
@@ -1058,7 +1058,7 @@ class we_objectFile extends we_document{
 			// Important: all extraCmds must call we_cmd('object_selectorHref_callback') at the beginning. actually no extraCmds are used
 			$cmd = 'fieldHref_selectIntHref_callback,' . ($showRadio ? 1 : 0) . ',' . $int_elem_Name;
 			$but = ( $file ?
-				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $cmd . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $cmd . "','',0,''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $cmd . "','',0);")
 				);
 			$weSuggest = &weSuggest::getInstance();
@@ -1074,7 +1074,7 @@ class we_objectFile extends we_document{
 		} else {
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$cmd = 'fieldHref_selectExtHref_callback,' . ($showRadio ? 'showRadio' : '') . ',' . $int_elem_Name;
-			$but = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
+			$but = (we_base_permission::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $Path_elem_Name . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $cmd . "')")
 				) : '');
 		}
@@ -1365,7 +1365,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function canMakeNew(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$ac = we_users_util::getAllowedClasses($this->DB_WE);
@@ -1376,7 +1376,7 @@ class we_objectFile extends we_document{
 		$wsArray = makeArrayFromCSV($ClassWs);
 		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
-		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
+		if(we_base_permission::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden zurückgeben
 			return $wsArray ? id_to_path($wsArray, FILE_TABLE, $db, true) : [];
 		}
@@ -2471,10 +2471,10 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 	}
 
 	function userCanSave($ctConditionOk = false){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+		if(!we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 			return false;
 		}
 		if(!$this->RestrictOwners){
@@ -2496,7 +2496,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 	 * @desc	checks if the user has the right to see an objectfile
 	 */
 	function userHasPerms(){
-		return (permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID));
+		return (we_base_permission::hasPerm('CAN_SEE_OBJECTFILES') || (!$this->RestrictOwners) || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID));
 	}
 
 	/**
@@ -2744,7 +2744,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				]
 			];
 
-			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !permissionhandler::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_base_permission::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
 				$parts[] = ["headline" => g_l('modules_object', '[class]'),
 					"html" => $this->formClass(),
 					'space' => we_html_multiIconBox::SPACE_MED2,

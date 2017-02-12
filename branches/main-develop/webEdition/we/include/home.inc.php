@@ -25,7 +25,7 @@ include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 we_html_tools::protect();
 
-if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
+if(we_base_permission::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home');
 	if(!$bResetProps && $iLayoutCols){
@@ -176,7 +176,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		we_html_element::jsScript(JS_DIR . 'nohome.js'), we_html_element::htmlBody(
 			['class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 			], we_html_element::htmlDiv(
-				['class' => "defaultfont errorMessage", 'style' => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
+				['class' => "defaultfont errorMessage", 'style' => "width: 400px;"], (we_base_permission::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
 					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
 						we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))).

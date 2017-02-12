@@ -120,7 +120,7 @@ function we_tag($name, $attribs = [], $content = '', $internal = false){
 		}
 	}
 
-	if($edMerk && $user && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
+	if($edMerk && $user && (!we_base_permission::hasPerm('ADMINISTRATOR'))){
 		if(!in_array($_SESSION['user']['Username'], $user)){
 			$GLOBALS['we_editmode'] = false;
 		}

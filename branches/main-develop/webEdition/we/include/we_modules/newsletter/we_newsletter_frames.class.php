@@ -176,7 +176,7 @@ class we_newsletter_frames extends we_modules_frame{
 		if($mode[0] == 0){
 			$table2->setRow(0, ['style' => 'vertical-align:middle;']);
 
-			$table2->setCol(0, 0, [], ((permissionhandler::hasPerm(['NEW_NEWSLETTER', 'EDIT_NEWSLETTER'])) ?
+			$table2->setCol(0, 0, [], ((we_base_permission::hasPerm(['NEW_NEWSLETTER', 'EDIT_NEWSLETTER'])) ?
 					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()") :
 					""
 				)
@@ -186,7 +186,7 @@ class we_newsletter_frames extends we_modules_frame{
 				$table2->setCol(0, 1, ['style' => 'padding-left:70px;'], $select->getHtml());
 				$table2->setCol(0, 2, ['style' => 'padding-left:5px;'], we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=true; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=false; }"));
 				$table2->setCol(0, 3, [], we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
-				$table2->setCol(0, 4, [], (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button('send', "javascript:we_cmd('popSend')") : ""));
+				$table2->setCol(0, 4, [], (we_base_permission::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button('send', "javascript:we_cmd('popSend')") : ""));
 			}
 		}
 
@@ -537,7 +537,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$values[we_newsletter_block::OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
 		}
 
-		if(permissionhandler::hasPerm("NEWSLETTER_FILES")){
+		if(we_base_permission::hasPerm("NEWSLETTER_FILES")){
 			$values[we_newsletter_block::FILE] = g_l('modules_newsletter', '[newsletter_type_4]');
 		}
 		$values[we_newsletter_block::TEXT] = g_l('modules_newsletter', '[newsletter_type_5]');
@@ -576,7 +576,7 @@ class we_newsletter_frames extends we_modules_frame{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_files'," . $group . ")");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','add_file,top.currentID," . $group . "','',1);");
 
-		$buttons = $delallbut . (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? $addbut : '';
+		$buttons = $delallbut . (we_base_permission::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? $addbut : '';
 
 		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, 'del_file', $buttons, 'edit_file');
 
@@ -783,7 +783,7 @@ class we_newsletter_frames extends we_modules_frame{
 	private function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $acObject = null){
 		$Pathvalue = $Pathvalue ?: f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
 			$weSuggest = $acObject;
 			$weSuggest->setAcId($IDName);
@@ -846,12 +846,12 @@ class we_newsletter_frames extends we_modules_frame{
 					break;
 
 				case we_newsletter_block::OBJECT:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", '', 'setHot', (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
+					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", '', 'setHot', (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
 						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", '', 'setHot', '', $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case we_newsletter_block::OBJECT_FIELD:
-					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", 'switchPage,2,setHot', (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
+					$content .= we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", 'switchPage,2,setHot', (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);

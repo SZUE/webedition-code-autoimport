@@ -86,7 +86,7 @@ class we_base_menu{
 			$and = explode('&&', $v);
 			$eand = 1;
 			foreach($and as $val){
-				$eand&=permissionhandler::hasPerm(trim($val));
+				$eand&=we_base_permission::hasPerm(trim($val));
 			}
 			$enabled|=$eand;
 			if($enabled){

@@ -340,7 +340,7 @@ class we_voting_voting extends we_base_model{
 	}
 
 	function isAllowedForUser(){
-		if($this->RestrictOwners == 0 || permissionhandler::hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
+		if($this->RestrictOwners == 0 || we_base_permission::hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
 			return true;
 		}
 
@@ -352,7 +352,7 @@ class we_voting_voting extends we_base_model{
 
 	function getOwnersSql(){
 		$owners_sql = '';
-		if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 			$userids = [$_SESSION['user']['ID']
 				];
 			we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);

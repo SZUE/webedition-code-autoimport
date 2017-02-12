@@ -1322,7 +1322,7 @@ class we_customer_EIWizard{
 		// IMI: replace enc (+ eval)
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $IDName . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $cmd . "');");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_base_permission::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
 
 	function getHTMLCustomer(&$jsCmd){
@@ -1357,7 +1357,7 @@ class we_customer_EIWizard{
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer')");
 		$custs = new we_chooser_multiDir(400, ($customers ?: []), 'del_customer', $delallbut . $addbut, '', '"we/customer"', CUSTOMER_TABLE);
 
-		$custs->isEditable = permissionhandler::hasPerm('EDIT_CUSTOMER');
+		$custs->isEditable = we_base_permission::hasPerm('EDIT_CUSTOMER');
 		$jsCmd->addCmd('set_topVar', ['name' => 'customers', 'value' => '', 'fromInput' => 1]);
 
 		return $hiddens . $custs->get();

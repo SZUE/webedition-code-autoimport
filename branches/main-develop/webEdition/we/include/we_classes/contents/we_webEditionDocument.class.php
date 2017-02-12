@@ -46,7 +46,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
 			//}
 
-			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
+			if(defined('CUSTOMER_TABLE') && (we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
@@ -199,7 +199,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function formDocTypeTempl(){
-		$disable = (permissionhandler::hasPerm('EDIT_DOCEXTENSION') ?
+		$disable = (we_base_permission::hasPerm('EDIT_DOCEXTENSION') ?
 			(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
 			true);
 
@@ -259,7 +259,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ?: 0);
 			$path = ($myid ? f('SELECT IF(Display!="",Display,Path) FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
-			/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			/* $ueberschrift = (we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 			  '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
 			  g_l('weClass', '[template]')); */
 
@@ -269,7 +269,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
 					);
 			}
-			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			$pop = (we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 				'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
 				'</td></tr></table>' :
 				$path);
@@ -308,7 +308,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$tlist = array_unique($temps);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, "javascript:goTemplate(document.we_form.elements." . $fieldname . ".options[document.we_form.elements." . $fieldname . ".selectedIndex].value)") : '');
+		$openButton = (we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, "javascript:goTemplate(document.we_form.elements." . $fieldname . ".options[document.we_form.elements." . $fieldname . ".selectedIndex].value)") : '');
 
 		if($tlist){
 			$foo = [];

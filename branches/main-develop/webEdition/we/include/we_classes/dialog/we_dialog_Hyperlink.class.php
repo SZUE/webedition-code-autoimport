@@ -336,13 +336,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
-				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || we_base_permission::hasPerm("CAN_SEE_OBJECTFILES"))) ?
 				'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
 				''
 				);
 
 			// EXTERNAL LINK
-			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : '';
+			$external_select_button = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : '';
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:top.openExtSource('extHref');", '', 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
 			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="extHref_doOnFocus(this)" onblur="checkMakeEmptyHrefExt();" onchange="extHref_doOnchange(this)"', "url", 300), "", "left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
@@ -357,7 +357,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$weSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setWidth(300);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"), 10);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"), 10);
 			$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value);", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
 			$internal_link = $weSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
@@ -365,7 +365,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
-			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
+			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || we_base_permission::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$weSuggest->setAcId("Obj");
 				$weSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$weSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
@@ -375,11 +375,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$weSuggest->setSelector(weSuggest::DocSelector);
 				$weSuggest->setTable(OBJECT_FILES_TABLE);
 				$weSuggest->setWidth(300);
-				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")), 10);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")), 10);
 				$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "');", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
 				$object_link = $weSuggest->getHTML();
 				/*
-				  $object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
+				  $object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")) .
 				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", $object_select_button, "", "","", "", 0);
 				 */
 			}
@@ -409,7 +409,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$rev = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rev"), "rev");
 		$rel = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rel"), "rel");
 
-		$show_accessible_class = (permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
+		$show_accessible_class = (we_base_permission::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
 
 		return [['html' =>
 			// Create table output

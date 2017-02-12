@@ -74,7 +74,7 @@ class we_navigation_view extends we_modules_view{
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'module_navigation_new':
 			case 'module_navigation_new_group':
-				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
+				if(!we_base_permission::hasPerm('EDIT_NAVIGATION')){
 					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -84,7 +84,7 @@ class we_navigation_view extends we_modules_view{
 				$jscmd->addCmd('editLoad',$this->Model->Text);
 				break;
 			case 'module_navigation_edit':
-				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
+				if(!we_base_permission::hasPerm('EDIT_NAVIGATION')){
 					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -100,7 +100,7 @@ class we_navigation_view extends we_modules_view{
 				$jscmd->addCmd('editLoad',$this->Model->Text,$this->Model->ID);
 				break;
 			case 'module_navigation_save':
-				if(!permissionhandler::hasPerm('EDIT_NAVIGATION') && !permissionhandler::hasPerm('EDIT_NAVIGATION')){
+				if(!we_base_permission::hasPerm('EDIT_NAVIGATION') && !we_base_permission::hasPerm('EDIT_NAVIGATION')){
 					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -228,7 +228,7 @@ class we_navigation_view extends we_modules_view{
 				break;
 			case 'module_navigation_delete':
 
-				if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
+				if(!we_base_permission::hasPerm('DELETE_NAVIGATION')){
 					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -453,8 +453,8 @@ class we_navigation_view extends we_modules_view{
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
 
-		$createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", '', 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
-		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", '', 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
+		$createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", '', 0, 0, "", "", !we_base_permission::hasPerm('EDIT_NAVIGATION'));
+		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm('EDIT_NAVIGATION'));
 		$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
 		return parent::getActualHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));

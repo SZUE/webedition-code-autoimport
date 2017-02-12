@@ -96,7 +96,7 @@ class we_glossary_tree extends we_tree_base{
 			];
 		}
 
-		if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
+		if(we_base_permission::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 			$Items[] = ['id' => $Language . "_exception",
 				'parentid' => $Language,
 				'text' => g_l('modules_glossary', '[exception]'),

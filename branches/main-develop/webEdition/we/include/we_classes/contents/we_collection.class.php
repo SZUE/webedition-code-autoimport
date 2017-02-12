@@ -70,7 +70,7 @@ class we_collection extends we_root{
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
-			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
+			if(defined('CUSTOMER_TABLE') && (we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
@@ -215,14 +215,14 @@ class we_collection extends we_root{
 		return we_html_element::jsScript(JS_DIR . 'collection.js') .
 			JQUERY .
 			we_html_multiIconBox::getHTML('PropertyPage', [
-					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!we_base_permission::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2],
 					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 
 	function formContent($fixedRemTable = false){
-		$fixedRemTable = true || !permissionhandler::hasPerm('NEW_COLLECTION');
+		$fixedRemTable = true || !we_base_permission::hasPerm('NEW_COLLECTION');
 		$this->remTable = stripTblPrefix(FILE_TABLE); // FIXME: remove this line when object collections are implemented
 
 		$valsRemTable = [
@@ -247,7 +247,7 @@ class we_collection extends we_root{
 			$mimes[$mime] = g_l('contentTypes', '[' . $mime . ']');
 		}
 		$this->remCT = $tmpRemCT;
-		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? ['disabled' => 'disabled'] : [];
+		$attribsFrom = $attribsTo = !we_base_permission::hasPerm('NEW_COLLECTION') ? ['disabled' => 'disabled'] : [];
 		/*
 		  $selectedClasses = [];
 		  $unselectedClasses = [];
@@ -291,11 +291,11 @@ class we_collection extends we_root{
 			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
-		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'), false, 'defaultfont', '', !permissionhandler::hasPerm('NEW_COLLECTION'));
+		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'), false, 'defaultfont', '', !we_base_permission::hasPerm('NEW_COLLECTION'));
 
 		$this->DefaultDir = $this->DefaultDir ?: (IMAGESTARTID_DEFAULT ?: 0);
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
-		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), !permissionhandler::hasPerm('NEW_COLLECTION'));
+		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), !we_base_permission::hasPerm('NEW_COLLECTION'));
 
 		$html = $selRemTable .
 			'<div id="collection_props-mime_class">
@@ -691,7 +691,7 @@ class we_collection extends we_root{
 	}
 
 	function userCanSave($ctConditionOk = false){
-		return permissionhandler::hasPerm('SAVE_COLLECTION') && parent::userCanSave(true);
+		return we_base_permission::hasPerm('SAVE_COLLECTION') && parent::userCanSave(true);
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -753,13 +753,13 @@ class we_collection extends we_root{
 	}
 
 	protected function i_setElementsFromHTTP(){
-		if(!permissionhandler::hasPerm('NEW_COLLECTION')){
+		if(!we_base_permission::hasPerm('NEW_COLLECTION')){
 			unset($_REQUEST['we_' . $this->Name . '_remTable'], $_REQUEST['we_' . $this->Name . '_remCT'], $_REQUEST['we_' . $this->Name . '_remClass'], $_REQUEST['we_' . $this->Name . '_IsDuplicates'], $_REQUEST['we_' . $this->Name . '_DefaultDir'], $_REQUEST['we_' . $this->Name . '_DefaultPath']);
 		} elseif(isset($_REQUEST['we_' . $this->Name . '_remCT'])){
 			$_REQUEST['we_' . $this->Name . '_remCT'] = implode(',', we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_remCT'));
 		}
 
-		if(!permissionhandler::hasPerm('MOVE_COLLECTION')){
+		if(!we_base_permission::hasPerm('MOVE_COLLECTION')){
 			//unset($_REQUEST['we_' . $this->Name . '_Filename']);
 			unset($_REQUEST['we_' . $this->Name . '_ParentID'], $_REQUEST['we_' . $this->Name . '_ParentPath']);
 		}
@@ -846,7 +846,7 @@ class we_collection extends we_root{
 					$wspaces[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
 					$wsQuery[] = we_tool_treeDataSource::getQueryParents($path);
 				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} elseif(defined('OBJECT_FILES_TABLE') && $this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				$paths = id_to_path($ac, OBJECT_TABLE);
 				foreach($paths as $path){

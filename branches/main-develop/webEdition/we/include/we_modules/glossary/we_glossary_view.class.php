@@ -66,7 +66,7 @@ class we_glossary_view extends we_modules_view{
 			case 'new_glossary_foreignword':
 			case 'new_glossary_link':
 			case 'new_glossary_textreplacement':
-				if(!permissionhandler::hasPerm('NEW_GLOSSARY')){
+				if(!we_base_permission::hasPerm('NEW_GLOSSARY')){
 					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -84,7 +84,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "glossary_edit_foreignword":
 			case "glossary_edit_link":
 			case "glossary_edit_textreplacement":
-				if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
+				if(!we_base_permission::hasPerm("EDIT_GLOSSARY")){
 					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
@@ -137,7 +137,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				$this->Glossary->Attributes = we_base_request::_(we_base_request::STRING, $type, '', 'Attributes');
 
-				if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
+				if(!we_base_permission::hasPerm("NEW_GLOSSARY") && !we_base_permission::hasPerm("EDIT_GLOSSARY")){
 					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -239,7 +239,7 @@ top.content.hot=false;
 
 			case "delete_glossary":
 
-				if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
+				if(!we_base_permission::hasPerm("DELETE_GLOSSARY")){
 					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -304,11 +304,11 @@ top.content.hot=false;
 
 		$form = ['name' => 'we_form',];
 
-		$createAbbreviation = we_html_button::create_button('new_glossary_abbreviation', "javascript:top.we_cmd('new_glossary_abbreviation');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
-		$createAcronym = we_html_button::create_button('new_glossary_acronym', "javascript:top.we_cmd('new_glossary_acronym');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
-		$createForeignWord = we_html_button::create_button('new_glossary_foreignword', "javascript:top.we_cmd('new_glossary_foreignword');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
-		$createLink = we_html_button::create_button('new_glossary_link', "javascript:top.opener.top.we_cmd('new_glossary_link');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
-		$createTextReplacement = we_html_button::create_button('new_glossary_textreplacement', "javascript:top.we_cmd('new_glossary_textreplacement');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+		$createAbbreviation = we_html_button::create_button('new_glossary_abbreviation', "javascript:top.we_cmd('new_glossary_abbreviation');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createAcronym = we_html_button::create_button('new_glossary_acronym', "javascript:top.we_cmd('new_glossary_acronym');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createForeignWord = we_html_button::create_button('new_glossary_foreignword', "javascript:top.we_cmd('new_glossary_foreignword');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createLink = we_html_button::create_button('new_glossary_link', "javascript:top.opener.top.we_cmd('new_glossary_link');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createTextReplacement = we_html_button::create_button('new_glossary_textreplacement', "javascript:top.we_cmd('new_glossary_textreplacement');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
 
 		$content = $createAbbreviation . '<br/>' .
 			$createAcronym . '<br/>' .

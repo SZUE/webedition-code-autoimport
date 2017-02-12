@@ -32,7 +32,7 @@ $jsCmd = new we_base_jsCmd();
 
 switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "save_docType":
-		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
+		if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
 			$jsCmd->addMsg(g_l('weClass', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
@@ -58,7 +58,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	case "deleteDocTypeok":
-		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
+		if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
 			$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
@@ -147,7 +147,7 @@ echo (empty($reloadMenu) ? '' : $reloadMenu . ';');
 
 switch($wecmd0){
 	case "deleteDocType":
-		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
+		if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
 			$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}

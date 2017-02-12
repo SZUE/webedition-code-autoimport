@@ -48,7 +48,7 @@ function we_tag_video(array $attribs){
 		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 		// Create "Edit" button
 
-		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ?: $startid) . "', '" . FILE_TABLE . "','" . $fname . "','','reload_hot_editpage',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ?: $startid) . "', '" . FILE_TABLE . "','" . $fname . "','','reload_hot_editpage',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
 		// Create "Delete/Clear" button
 		$clear_button = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')");

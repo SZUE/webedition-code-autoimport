@@ -399,7 +399,7 @@ abstract class we_backup_preparer{
 		$cmd = new we_base_jsCmd();
 		switch($format){
 			case 'weimport':
-				if(permissionhandler::hasPerm('WXML_IMPORT')){
+				if(we_base_permission::hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
 if(window.confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
 	top.opener.top.we_cmd("import");

@@ -235,7 +235,7 @@ abstract class we_rebuild_base{
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 */
 	private static function getAllDocuments($maintable, $tmptable){
-		if(!permissionhandler::hasPerm('REBUILD_ALL')){
+		if(!we_base_permission::hasPerm('REBUILD_ALL')){
 			return [];
 		}
 		$data = self::getTemplates(true, $maintable, $tmptable);
@@ -278,7 +278,7 @@ abstract class we_rebuild_base{
 			$metaFolders = makeArrayFromCSV($metaFolders);
 		}
 		$data = [];
-		if(permissionhandler::hasPerm('REBUILD_META')){
+		if(we_base_permission::hasPerm('REBUILD_META')){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(',', $metaFolders) . ') ' : '';
 			$GLOBALS['DB_WE']->query('SELECT ID,path FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND Extension IN (".jpg","jpeg","wbmp") ' . $foldersQuery);
 			while($GLOBALS['DB_WE']->next_record()){
@@ -427,7 +427,7 @@ abstract class we_rebuild_base{
 	 * @return array
 	 */
 	private static function getTemplates($all = false, $mt = 0, $tt = 0){
-		if(!($all || permissionhandler::hasPerm('REBUILD_TEMPLATES'))){
+		if(!($all || we_base_permission::hasPerm('REBUILD_TEMPLATES'))){
 			return [];
 		}
 		$data = [];
@@ -458,7 +458,7 @@ abstract class we_rebuild_base{
 	 * @param int $templateID ID of a template (All documents of this template should be rebuilded)
 	 */
 	private static function getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID){
-		if(!permissionhandler::hasPerm('REBUILD_FILTERD')){
+		if(!we_base_permission::hasPerm('REBUILD_FILTERD')){
 			return [];
 		}
 		$data = [];
@@ -545,7 +545,7 @@ abstract class we_rebuild_base{
 	 */
 	public static function getObjects(){
 		$data = [];
-		if(permissionhandler::hasPerm('REBUILD_OBJECTS')){
+		if(we_base_permission::hasPerm('REBUILD_OBJECTS')){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
@@ -577,7 +577,7 @@ abstract class we_rebuild_base{
 	 */
 	public static function getNavigation(){
 		$data = [];
-		if(permissionhandler::hasPerm('REBUILD_NAVIGATION')){
+		if(we_base_permission::hasPerm('REBUILD_NAVIGATION')){
 			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
@@ -612,7 +612,7 @@ abstract class we_rebuild_base{
 	 * @return array
 	 */
 	public static function getIndex(){
-		if(!permissionhandler::hasPerm('REBUILD_INDEX')){
+		if(!we_base_permission::hasPerm('REBUILD_INDEX')){
 			return [];
 		}
 		$data = [];
@@ -650,7 +650,7 @@ abstract class we_rebuild_base{
 	 * @param string $thumbsFolders csv value of directory IDs => Create Thumbs for images in these directories.
 	 */
 	public static function getThumbnails($thumbs = '', $thumbsFolders = ''){
-		if(!permissionhandler::hasPerm('REBUILD_THUMBS')){
+		if(!we_base_permission::hasPerm('REBUILD_THUMBS')){
 			return [];
 		}
 		$data = [];

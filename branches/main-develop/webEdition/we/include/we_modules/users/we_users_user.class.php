@@ -1346,7 +1346,7 @@ _multiEditorreload = true;';
 		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\'' . $this->Name . '_ParentID_Text\')[0].value,this.value);" required="required" autocomplete="off"');
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
-			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
+			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !we_base_permission::hasPerm('EDIT_PASSWD') ?
 			'****************' :
 			'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
 
@@ -1381,7 +1381,7 @@ _multiEditorreload = true;';
 		$tableObj = new we_html_table([], 5, 2, [[[['style' => 'padding-bottom:10px;width:280px;'], $username],
 			[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
 			],
-			[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))],
+			[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !we_base_permission::hasPerm("ADMINISTRATOR")))],
 				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
 			],
 			[[["colspan" => 2, 'style' => 'padding-bottom:10px;'], we_html_tools::htmlFormElementTable($weSuggest->getHTML(), g_l('modules_users', '[group]'))]
@@ -1485,7 +1485,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		];
 
 		// Check if user has right to decide to give administrative rights
-		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
+		if(we_base_permission::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
 			$content = '';
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content .= '<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>';
@@ -1668,7 +1668,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$table->setCol(1, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name . "_Preference_force_glossary_action", g_l('prefs', '[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()"));
 
 		// Build dialog if user has permission
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			$settings[] = ['headline' => g_l('prefs', '[glossary_publishing]'), 'html' => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1];
 		}
 
@@ -1792,7 +1792,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$start_weapp = new we_html_select(['name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();']);
 		$tools = we_tool_lookup::getAllTools(true, false);
 		foreach($tools as $tool){
-			if(!$tool['appdisabled'] && permissionhandler::hasPerm($tool['startpermission'])){
+			if(!$tool['appdisabled'] && we_base_permission::hasPerm($tool['startpermission'])){
 				$start_weapp->addOption($tool['name'], $tool['text']);
 			}
 		}
@@ -1840,7 +1840,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$seem_html->setCol(0, 0, ['class' => 'defaultfont'], $start_type->getHtml());
 		$seem_html->setCol(1, 0, null, $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
 
-		if(permissionhandler::hasPerm('CHANGE_START_DOCUMENT')){
+		if(we_base_permission::hasPerm('CHANGE_START_DOCUMENT')){
 			$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'),
 				'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'),
 				'space' => we_html_multiIconBox::SPACE_BIG

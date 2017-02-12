@@ -63,7 +63,7 @@ class we_voting_view extends we_modules_view{
 				break;
 			case "new_voting":
 			case "new_voting_group":
-				if(!permissionhandler::hasPerm("NEW_VOTING")){
+				if(!we_base_permission::hasPerm("NEW_VOTING")){
 					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -74,7 +74,7 @@ class we_voting_view extends we_modules_view{
 						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "voting_edit":
-				if(!permissionhandler::hasPerm("EDIT_VOTING")){
+				if(!we_base_permission::hasPerm("EDIT_VOTING")){
 					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
@@ -94,7 +94,7 @@ class we_voting_view extends we_modules_view{
 						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "save_voting":
-				if(!permissionhandler::hasPerm("NEW_VOTING") && !permissionhandler::hasPerm("EDIT_VOTING")){
+				if(!we_base_permission::hasPerm("NEW_VOTING") && !we_base_permission::hasPerm("EDIT_VOTING")){
 					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
@@ -205,7 +205,7 @@ class we_voting_view extends we_modules_view{
 				}
 				break;
 			case "delete_voting":
-				if(!permissionhandler::hasPerm("DELETE_VOTING")){
+				if(!we_base_permission::hasPerm("DELETE_VOTING")){
 					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -464,9 +464,9 @@ class we_voting_view extends we_modules_view{
 		$hiddens = ["cmd" => "home",
 			'pnt' => 'edbody'
 		];
-		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
+		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING")) .
 			'<br/>' .
-			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
+			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING"));
 
 		return parent::getActualHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}

@@ -723,14 +723,14 @@ function build_dialog($selected_setting = 'ui'){
 				$permitedStartTypes = [''];
 				$start_type->addOption(0, '-');
 				$seem_cockpit_selectordummy = "<div id='selectordummy' style='height:24px;'>&nbsp;</div>";
-				if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
+				if(we_base_permission::hasPerm('CAN_SEE_QUICKSTART')){
 					$start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;
 					$permitedStartTypes[] = 'cockpit';
 				}
 
 				$seem_document_chooser = '';
-				if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+				if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 					$start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 					$showStartType = true;
 					// Build SEEM select start document chooser
@@ -749,7 +749,7 @@ function build_dialog($selected_setting = 'ui'){
 					$permitedStartTypes[] = 'document';
 				}
 				$seem_object_chooser = '';
-				if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+				if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 					$start_type->addOption('object', g_l('prefs', '[seem_start_type_object]'));
 					$showStartType = true;
 					// Build SEEM select start object chooser
@@ -771,7 +771,7 @@ function build_dialog($selected_setting = 'ui'){
 				$start_weapp = new we_html_select(['name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp']);
 				$tools = we_tool_lookup::getAllTools(true, false);
 				foreach($tools as $tool){
-					if(!$tool['appdisabled'] && permissionhandler::hasPerm($tool['startpermission'])){
+					if(!$tool['appdisabled'] && we_base_permission::hasPerm($tool['startpermission'])){
 						$start_weapp->addOption($tool['name'], $tool['text']);
 					}
 				}
@@ -934,7 +934,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('', $settings, -1);
 
 		case 'defaultAttribs':
-			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 
@@ -1553,7 +1553,7 @@ function build_dialog($selected_setting = 'ui'){
 			/*			 * *******************************************************************
 			 * ATTRIBS
 			 * ******************************************************************* */
-			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+			if(!we_base_permission::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 			/*
@@ -1626,7 +1626,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog("", $settings, -1);
 
 		case "system":
-			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+			if(!we_base_permission::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 			//FILE EXTENSIONS
@@ -1728,11 +1728,11 @@ function build_dialog($selected_setting = 'ui'){
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
-				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'newconf[WE_THUMBNAIL_DIRECTORY]']', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$but = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'newconf[WE_THUMBNAIL_DIRECTORY]']', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$thumbnail_dir = $inp . $but;
 			} else { //  gd lib ist nicht installiert
-				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", '', 0, 0, '', '', true) : "";
+				$but = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", '', 0, 0, '', '', true) : "";
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
 				$thumbnail_dir = $inp . $but . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
 			}
@@ -1786,7 +1786,7 @@ function build_dialog($selected_setting = 'ui'){
 			/*			 * *******************************************************************
 			 * ATTRIBS
 			 * ******************************************************************* */
-			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+			if(!we_base_permission::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 			// Build dialog if user has permission
@@ -1838,7 +1838,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('', $settings, -1, '', '', null);
 
 		case 'error_handling':
-			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 
@@ -1885,7 +1885,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('settings_error_expert', $settings, $foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
 		case 'security':
-			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 				return;
 			}
 			$row = 0;
@@ -1968,7 +1968,7 @@ function build_dialog($selected_setting = 'ui'){
 				['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), we_html_tools::TYPE_INFO, 450, false),]
 			];
 
-			if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(we_base_permission::hasPerm('ADMINISTRATOR')){
 				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', ['php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')], 1, get_value('WE_MAILER'), false, [
 						'onchange' => "var el = document.getElementById('smtp_table').style;var el2=document.getElementById('auth_table').style;var elAuth=document.getElementsByName('newconf[SMTP_AUTH]')[0]; if(this.value=='smtp'){ el.display='block'; el2.display=(elAuth.checked?'block':'none');}else{ el.display='none';el2.display='none';}"], 'value', 300, 'defaultfont');
 
@@ -1996,7 +1996,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('settings_email', $settings);
 
 		case 'versions':
-			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 				break;
 			}
 

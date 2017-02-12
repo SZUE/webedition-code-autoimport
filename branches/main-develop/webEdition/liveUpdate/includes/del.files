@@ -1064,6 +1064,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_editors/we_metadata_fields
 !we/include/we_doclist
 !we/include/we_classes/weMetaData/classes
+!we/include/we_classes/permissionhandler
 !we/include/we_classes/leWizard
 !we/include/we_classes/java_menu
 !we/include/we_classes/delete

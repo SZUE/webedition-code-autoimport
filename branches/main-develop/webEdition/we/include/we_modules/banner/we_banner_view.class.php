@@ -71,9 +71,9 @@ class we_banner_view extends we_modules_view{
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('new_banner', "javascript:top.we_cmd('new_banner');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER")) .
+		$content = we_html_button::create_button('new_banner', "javascript:top.we_cmd('new_banner');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_BANNER")) .
 			'<br/>' .
-			we_html_button::create_button('new_bannergroup', "javascript:top.we_cmd('new_bannergroup');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
+			we_html_button::create_button('new_bannergroup', "javascript:top.we_cmd('new_bannergroup');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_BANNER"));
 
 		return parent::getActualHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
@@ -201,8 +201,8 @@ class we_banner_view extends we_modules_view{
 		if(we_base_request::_(we_base_request::INT, "bid") !== false){
 			$newone = ($this->banner->ID == 0);
 			$acQuery = new we_selector_query();
-			if((!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")) ||
-				($newone && !permissionhandler::hasPerm("NEW_BANNER"))){
+			if((!we_base_permission::hasPerm("EDIT_BANNER") && !we_base_permission::hasPerm("NEW_BANNER")) ||
+				($newone && !we_base_permission::hasPerm("NEW_BANNER"))){
 				$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 				return;
 			}
@@ -410,7 +410,7 @@ class we_banner_view extends we_modules_view{
 			case "delete_banner":
 				$bid = we_base_request::_(we_base_request::INT, 'bid');
 				if($bid){
-					if(!permissionhandler::hasPerm("DELETE_BANNER")){
+					if(!we_base_permission::hasPerm("DELETE_BANNER")){
 						$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}

@@ -27,7 +27,7 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 	function execute(){
 		we_html_tools::protect();
 
-		if(!permissionhandler::hasPerm('DELETE_DOCUMENT')){
+		if(!we_base_permission::hasPerm('DELETE_DOCUMENT')){
 			//return 'no perms';
 		}
 
@@ -76,7 +76,7 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 
 		// check owner restrictions and try to delete
 		foreach($docsToDelete as $k => $v){
-			if(permissionhandler::checkIfRestrictUserIsAllowed($k, FILE_TABLE, $db)){
+			if(we_base_permission::checkIfRestrictUserIsAllowed($k, FILE_TABLE, $db)){
 				we_base_delete::deleteEntry($k, FILE_TABLE);
 			}
 		}

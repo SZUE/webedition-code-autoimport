@@ -34,13 +34,13 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeDoc = defined('FILE_TABLE') && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeTpl = defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeTpl = defined('TEMPLATES_TABLE') && we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeObj = defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeObj = defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeCls = defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeCls = defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
 
 $iDate = intval($aCols[1]);
@@ -88,7 +88,7 @@ $bDateLastMfd = $sDisplayOpt{1};
 
 $db = $GLOBALS['DB_WE'];
 
-$aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
+$aUsers = array_filter(array_map('intval', (we_base_permission::hasPerm('EDIT_MFD_USER') ?
 		makeArrayFromCSV($aCols[4]) :
 		[$uid])));
 
@@ -104,7 +104,7 @@ if($aUsers){
 }
 
 $join = $tables = [];
-$admin = permissionhandler::hasPerm('ADMINISTRATOR');
+$admin = we_base_permission::hasPerm('ADMINISTRATOR');
 
 if($bTypeDoc){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';

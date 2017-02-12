@@ -26,28 +26,28 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop();
 
 function getHasPerm($idInfos, $table){
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
+	if(we_base_permission::hasPerm('ADMINISTRATOR')){
 		return true;
 	}
 	switch($table){
 		case FILE_TABLE:
 			return (
-					($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && !$idInfos['hasFiles']) ||
-					(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOCUMENT')) ||
-					($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_DOCUMENT'))
+					($idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_DOC_FOLDER') && !$idInfos['hasFiles']) ||
+					(!$idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_DOCUMENT')) ||
+					($idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_DOC_FOLDER') && $idInfos['hasFiles'] && we_base_permission::hasPerm('DELETE_DOCUMENT'))
 					);
 		case TEMPLATES_TABLE:
 			return (
-					($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && !$idInfos['hasFiles']) ||
-					(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMPLATE')) ||
-					($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_TEMPLATE'))
+					($idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_TEMP_FOLDER') && !$idInfos['hasFiles']) ||
+					(!$idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_TEMPLATE')) ||
+					($idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_TEMP_FOLDER') && $idInfos['hasFiles'] && we_base_permission::hasPerm('DELETE_TEMPLATE'))
 					);
 
 		case OBJECT_FILES_TABLE:
-			return (permissionhandler::hasPerm('DELETE_OBJECTFILE'));
+			return (we_base_permission::hasPerm('DELETE_OBJECTFILE'));
 
 		case OBJECT_TABLE:
-			return ($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_OBJECT'));
+			return ($idInfos['IsFolder'] && we_base_permission::hasPerm('DELETE_OBJECT'));
 		default:
 			return false;
 	}
@@ -55,8 +55,8 @@ function getHasPerm($idInfos, $table){
 
 function checkFilePerm($selectedItems, $table){
 	foreach($selectedItems as $selectedItem){
-		if(!permissionhandler::checkIfRestrictUserIsAllowed($selectedItem, $table, $GLOBALS['DB_WE'])){
-			return permissionhandler::USER_RESTRICTED;
+		if(!we_base_permission::checkIfRestrictUserIsAllowed($selectedItem, $table, $GLOBALS['DB_WE'])){
+			return we_base_permission::USER_RESTRICTED;
 		}
 
 		if(!we_base_delete::checkDeleteEntry($selectedItem, $table)){
@@ -70,7 +70,7 @@ function checkFilePerm($selectedItems, $table){
 		if($table == FILE_TABLE){
 			$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem);
 			if($users){
-				return permissionhandler::WORKSPACE_HAS_USERS;
+				return we_base_permission::WORKSPACE_HAS_USERS;
 			}
 
 			// check if childrenfolders are workspaces
@@ -92,7 +92,7 @@ function checkFilePerm($selectedItems, $table){
 		if($table == TEMPLATES_TABLE){
 			$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceTmp");
 			if($users){
-				return permissionhandler::WORKSPACE_HAS_USERS;
+				return we_base_permission::WORKSPACE_HAS_USERS;
 			}
 
 			// check if childrenfolders are workspaces
@@ -115,7 +115,7 @@ function checkFilePerm($selectedItems, $table){
 
 			$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceObj");
 			if($users){
-				return permissionhandler::WORKSPACE_HAS_USERS;
+				return we_base_permission::WORKSPACE_HAS_USERS;
 			}
 
 			$childs = [];
@@ -214,10 +214,10 @@ function confirmDel(){' .
 		}
 		$hasPerm = getHasPerm($idInfos, $table);
 		unset($idInfos);
-		$retVal = !$hasPerm ? permissionhandler::NO_PERMISSION : checkFilePerm($selectedItems, $table);
+		$retVal = !$hasPerm ? we_base_permission::NO_PERMISSION : checkFilePerm($selectedItems, $table);
 
 		switch($retVal){
-			case permissionhandler::NO_PERMISSION:
+			case we_base_permission::NO_PERMISSION:
 				$weCmd->addMsg(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			case -5: //	not allowed to delete workspace
@@ -241,14 +241,14 @@ function confirmDel(){' .
 				}
 				$weCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
-			case permissionhandler::WORKSPACE_HAS_USERS: //	not allowed to delete workspace
+			case we_base_permission::WORKSPACE_HAS_USERS: //	not allowed to delete workspace
 				$usrList = '';
 				foreach($users as $val){
 					$usrList .= '- ' . $val . '\n';
 				}
 				$weCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
-			case permissionhandler::USER_RESTRICTED: //	not allowed to delete document
+			case we_base_permission::USER_RESTRICTED: //	not allowed to delete document
 				$weCmd->addMsg(sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			default:

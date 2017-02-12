@@ -85,12 +85,12 @@ class we_selector_document extends we_selector_directory{
 		}
 		// deal with workspaces
 		$wsQuery = '';
-		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
+		if(we_base_permission::hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
 
 		} else {
 			if(get_ws($this->table)){
 				$wsQuery = self::getWsQuery($this->table);
-			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->db);
 				$wsQueryA = [];
 				foreach($ac as $cid){
@@ -213,7 +213,7 @@ class we_selector_document extends we_selector_directory{
 				$extra = '<td>' .
 					($this->filter && isset($this->ctb[$this->filter]) ?
 					we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
-					(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+					(we_base_permission::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", '', 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
 					'')
 					) .
 					'</td>' .
@@ -228,19 +228,19 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function _userCanMakeNewFile(){
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		if(!$this->userCanSeeDir()){
 			return false;
 		}
 		if($this->filter && isset($this->ctp[$this->filter])){
-			if(!permissionhandler::hasPerm($this->ctp[$this->filter])){
+			if(!we_base_permission::hasPerm($this->ctp[$this->filter])){
 				return false;
 			}
 		} elseif(!
 			(
-			permissionhandler::hasPerm(["NEW_GRAFIK", "NEW_HTML", "NEW_JS", "NEW_CSS", "NEW_TEXT", "NEW_HTACCESS", "NEW_FLASH", "NEW_SONSTIGE", 'FILE_IMPORT'])
+			we_base_permission::hasPerm(["NEW_GRAFIK", "NEW_HTML", "NEW_JS", "NEW_CSS", "NEW_TEXT", "NEW_HTACCESS", "NEW_FLASH", "NEW_SONSTIGE", 'FILE_IMPORT'])
 			)
 		){
 			return false;

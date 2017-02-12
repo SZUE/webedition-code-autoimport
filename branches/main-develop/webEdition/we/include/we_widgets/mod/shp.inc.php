@@ -92,7 +92,7 @@ $defaultVat = ($feldnamen[1] ?: 0);
 
 $amountOrders = $amountArticles = $amountCanceledOrders = $canceled = 0;
 
-if(defined('WE_SHOP_VAT_TABLE') && (permissionhandler::hasPerm(['NEW_SHOP_ARTICLE', 'DELETE_SHOP_ARTICLE', 'EDIT_SHOP_ORDER', 'DELETE_SHOP_ORDER', 'EDIT_SHOP_PREFS']))){
+if(defined('WE_SHOP_VAT_TABLE') && (we_base_permission::hasPerm(['NEW_SHOP_ARTICLE', 'DELETE_SHOP_ARTICLE', 'EDIT_SHOP_ORDER', 'DELETE_SHOP_ORDER', 'EDIT_SHOP_PREFS']))){
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;
 	if(f('SELECT 1 FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion)){
@@ -111,7 +111,7 @@ FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi
 	}
 }
 
-$amountCustomers = (defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER') ?
+$amountCustomers = (defined('CUSTOMER_TABLE') && we_base_permission::hasPerm('CAN_SEE_CUSTOMER') ?
 	f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer) :
 	'');
 

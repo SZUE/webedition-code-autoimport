@@ -70,7 +70,7 @@ echo we_html_tools::getHtmlTop('sideBar','','',' ')
 
 			showSidebarText(g_l('sidebar', '[default]'));
 
-			if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(we_base_permission::hasPerm('ADMINISTRATOR')){
 				showSidebarText(g_l('sidebar', '[admin]'));
 			}
 			?>

@@ -93,7 +93,7 @@ class we_users_selector extends we_selector_file{
 		$weCmd->addCmd('setButtons', [['RootDirButs', intval($this->dir) !== 0]]);
 		$this->setSelectorData($weCmd);
 
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 			$go = true;
 		} else {
 			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=(SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ')', '', $this->db);

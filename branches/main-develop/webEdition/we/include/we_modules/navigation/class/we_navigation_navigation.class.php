@@ -409,7 +409,7 @@ class we_navigation_navigation extends we_base_model{
 	}
 
 	function isAllowedForUser(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 //checkWS
@@ -831,7 +831,7 @@ class we_navigation_navigation extends we_base_model{
 	}
 
 	public static function getWSQuery(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR') || !($ws = get_ws(NAVIGATION_TABLE, true))){
+		if(we_base_permission::hasPerm('ADMINISTRATOR') || !($ws = get_ws(NAVIGATION_TABLE, true))){
 			return '';
 		}
 // #5836: Use function get_ws()
@@ -850,7 +850,7 @@ class we_navigation_navigation extends we_base_model{
 		$navi = new we_navigation_navigation($id);
 		$db = new DB_WE();
 
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			$dirs = ['0' => '/'];
 			$def = 0;
 		} else {
@@ -909,7 +909,7 @@ class we_navigation_navigation extends we_base_model{
 	}
 
 	public static function reset_customer_filter(){
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 			$GLOBALS['DB_WE']->query('UPDATE ' . NAVIGATION_TABLE . ' SET LimitAccess=0, ApplyFilter=0');
 
 			$head = we_html_element::jsElement(

@@ -29,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //Check some critical PHP Setings #7243
 //FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
-if(permissionhandler::hasPerm('ADMINISTRATOR')){
+if(we_base_permission::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), [1, 'on', 'yes', 'true', true])) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
@@ -257,7 +257,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
 			if(we_base_request::_(we_base_request::STRING, 'mode', we_base_constants::MODE_NORMAL) == we_base_constants::MODE_NORMAL){
-				if(permissionhandler::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
+				if(we_base_permission::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
 				} else {
 					$body_javascript = we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);

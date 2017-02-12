@@ -24,7 +24,7 @@
 we_html_tools::protect();
 $ok = false;
 
-if(permissionhandler::hasPerm('ADMINISTRATOR')){
+if(we_base_permission::hasPerm('ADMINISTRATOR')){
 	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1);
 
 	// init document

@@ -405,15 +405,15 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				$double = intval(f('SELECT COUNT(1) FROM ' . NEWSLETTER_TABLE . ' WHERE Path="' . $this->db->escape($this->newsletter->Path) . '"' . ($newone ? '' : ' AND ID!=' . $this->newsletter->ID), '', $this->db));
 
-				if(!permissionhandler::hasPerm("EDIT_NEWSLETTER") && !permissionhandler::hasPerm("NEW_NEWSLETTER")){
+				if(!we_base_permission::hasPerm("EDIT_NEWSLETTER") && !we_base_permission::hasPerm("NEW_NEWSLETTER")){
 					$jscmd->addMsg(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
-				if($newone && !permissionhandler::hasPerm("NEW_NEWSLETTER")){
+				if($newone && !we_base_permission::hasPerm("NEW_NEWSLETTER")){
 					$jscmd->addMsg(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
-				if(!$newone && !permissionhandler::hasPerm("EDIT_NEWSLETTER")){
+				if(!$newone && !we_base_permission::hasPerm("EDIT_NEWSLETTER")){
 					$jscmd->addMsg(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -475,7 +475,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						$jscmd->addMsg(g_l('modules_newsletter', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
-					if(!permissionhandler::hasPerm("DELETE_NEWSLETTER")){
+					if(!we_base_permission::hasPerm("DELETE_NEWSLETTER")){
 						$jscmd->addMsg(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					} else {
@@ -547,7 +547,7 @@ edf.populateGroups();');
 				break;
 
 			case "send_test":
-				if(!permissionhandler::hasPerm("SEND_TEST_EMAIL")){
+				if(!we_base_permission::hasPerm("SEND_TEST_EMAIL")){
 					$jscmd->addMsg(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
@@ -1564,9 +1564,9 @@ self.close();');
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('new_newsletter', "javascript:top.we_cmd('new_newsletter');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER")) .
+		$content = we_html_button::create_button('new_newsletter', "javascript:top.we_cmd('new_newsletter');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_NEWSLETTER")) .
 			'<br/>' .
-			we_html_button::create_button('new_newsletter_group', "javascript:top.we_cmd('new_newsletter_group');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
+			we_html_button::create_button('new_newsletter_group', "javascript:top.we_cmd('new_newsletter_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_NEWSLETTER"));
 
 		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getHiddens(['ncmd' => 'home']) . we_html_element::htmlHidden('home', 0)));
 	}

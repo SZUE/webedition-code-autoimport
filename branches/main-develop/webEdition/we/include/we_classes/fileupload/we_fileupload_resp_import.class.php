@@ -236,37 +236,37 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		$error = false;
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::IMAGE:
-				if(!permissionhandler::hasPerm('NEW_GRAFIK')){
+				if(!we_base_permission::hasPerm('NEW_GRAFIK')){
 					$error = true;
 				}
 				break;
 			case we_base_ContentTypes::HTML:
-				if(!permissionhandler::hasPerm('NEW_HTML')){
+				if(!we_base_permission::hasPerm('NEW_HTML')){
 					$error = true;
 				}
 				break;
 			case we_base_ContentTypes::FLASH:
-				if(!permissionhandler::hasPerm('NEW_FLASH')){
+				if(!we_base_permission::hasPerm('NEW_FLASH')){
 					$error = true;
 				}
 				break;
 			case we_base_ContentTypes::JS:
-				if(!permissionhandler::hasPerm('NEW_JS')){
+				if(!we_base_permission::hasPerm('NEW_JS')){
 					$error = true;
 				}
 				break;
 			case we_base_ContentTypes::CSS:
-				if(!permissionhandler::hasPerm('NEW_CSS')){
+				if(!we_base_permission::hasPerm('NEW_CSS')){
 					$error = true;
 				}
 				break;
 			case we_base_ContentTypes::TEXT:
-				if(!permissionhandler::hasPerm('NEW_TEXT')){
+				if(!we_base_permission::hasPerm('NEW_TEXT')){
 					$error = true;
 				}
 				break;
 			default:
-				if(!permissionhandler::hasPerm('NEW_SONSTIGE')){
+				if(!we_base_permission::hasPerm('NEW_SONSTIGE')){
 					$error = true;
 				}
 				break;
@@ -330,7 +330,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
 				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib', 'bdid');
 
-				if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
+				if(we_base_permission::hasPerm("EDIT_KATEGORIE")){
 					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] ? $this->docVars['categories'] : $we_doc->Category;
 				}
 

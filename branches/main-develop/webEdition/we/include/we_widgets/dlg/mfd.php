@@ -36,14 +36,14 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $content = '<table class="default" style="width:300px;margin-bottom:2px;">
 <colgroup><col style="width:20px;"/><col style="width:254px;"/><col style="width:26px;"/></colgroup>';
 
-if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
+if(we_base_permission::hasPerm('EDIT_MFD_USER') && $users){
 	$db = new DB_WE();
 	$db->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
 	while($db->next_record(MYSQL_ASSOC)){
 		$content .= '<tr><td class="mfdUIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="defaultfont">' . $db->f("Path") . '</td><td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:delUser('" . $db->f('ID') . "');") . '</td></tr>';
 	}
 } else {
-	$content .= '<tr><td class="mfdUIcon" data-contenttype="we/userGroup"></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
+	$content .= '<tr><td class="mfdUIcon" data-contenttype="we/userGroup"></td><td class="defaultfont">' . (we_base_permission::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
 }
 $content .= '</table>';
 
@@ -52,7 +52,7 @@ $sUsrContent = '<table class="default" style="width:300px"><tr><td>' . we_html_e
 		"UserIDTmp" => ""
 	]) .
 	'</td></tr>' .
-	(permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
+	(we_base_permission::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
 		we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", '', 0, 0, "", "", ($users ? false : true)) .
 		we_html_button::create_button(we_html_button::ADD, "javascript:getUser('we_users_selector','UserIDTmp','UserNameTmp','','','addUserToField','','',1);") .
 	'</td></tr>' : '') .
@@ -68,17 +68,17 @@ if($sType === '0000'){
 	$sType = '1111';
 }
 
-$oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
-		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
+$oChbxDocs = (we_base_permission::hasPerm('CAN_SEE_DOCUMENTS') ?
+		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
-$oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
+$oChbxTmpl = (we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && we_base_permission::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>'); //FIXME: this is needed for getBinary!
-$oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') ?
-		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
+$oChbxObjs = (we_base_permission::hasPerm('CAN_SEE_OBJECTFILES') ?
+		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
-$oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
+$oChbxCls = (we_base_permission::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
 
 $oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;

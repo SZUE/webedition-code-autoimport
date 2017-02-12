@@ -407,7 +407,7 @@ WE().consts.g_l.fileselector = {
 	}
 
 	public static function getWsQuery($tab, $includingFolders = true){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return '';
 		}
 
@@ -563,7 +563,7 @@ WE().consts.g_l.fileselector = {
 					$multiple = we_base_request::_(we_base_request::BOOL, 'multiple');
 					$canSelectDir = we_base_request::_(we_base_request::BOOL, 'canSelectDir');
 				}
-				$fs = new we_selector_image($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir, $startID);
+				$fs = new we_selector_image($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir, $startID);
 				break;
 			case 'we_customer_selector':
 				$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
@@ -623,7 +623,7 @@ WE().consts.g_l.fileselector = {
 					$canSelectDir = we_base_request::_(we_base_request::BOOL, 'canSelectDir');
 					$lang = we_base_request::_(we_base_request::STRING, 'lang');
 				}
-				$fs = new we_selector_document($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $filter, $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir, 0, $lang);
+				$fs = new we_selector_document($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $filter, $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir, 0, $lang);
 				break;
 			case 'we_selector_directory':
 				if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2))){

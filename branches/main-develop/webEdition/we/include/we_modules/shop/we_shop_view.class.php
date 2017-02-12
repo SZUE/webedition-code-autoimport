@@ -275,7 +275,7 @@ customFields' .
 				<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
 			</tr>
 			<tr>
-				<td colspan="9">' . (permissionhandler::hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'customer_edit\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
+				<td colspan="9">' . (we_base_permission::hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'customer_edit\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
 			</tr>
 		</table>';
 		//
@@ -346,7 +346,7 @@ WHERE o.ID=' . $bid);
 			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = window.prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&preis=' + preis; } }\">" . we_base_util::formatNumber($Price) . "</a>" . $waehr . '</td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
 				($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = window.prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
-			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&deleteaarticle=" . $tblOrdersId . "';}", '', 0, 0, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&deleteaarticle=" . $tblOrdersId . "';}", '', 0, 0, "", "", !we_base_permission::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 			// if this article has custom fields or is a variant - we show them in a extra rows
 			// add variant.
@@ -1155,8 +1155,8 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 			$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');
 
 
-			$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
-				we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
+			$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>' .
+				we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>';
 			if(($resultD) && $resultO){ //docs and objects
 				$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
 			} elseif((!$resultD) && $resultO){ // no docs but objects
