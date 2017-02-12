@@ -31,7 +31,7 @@
   b - checks, if the user has the right to perform the requested action.
  *
  */
-abstract class permissionhandler{
+abstract class we_base_permission{
 	const USER_RESTRICTED = -1;
 	const WORKSPACE_HAS_USERS = -2;
 	const NO_PERMISSION = -6;
@@ -58,7 +58,7 @@ abstract class permissionhandler{
 	}
 
 	/**
-	 * permissionhandler::getPermissionsForAction()
+	 * we_base_permission::getPermissionsForAction()
 	 * @desc    This function looks in the array $knownActions for the needed
 	  permissions for an action.
 	  It returns either an array of permissions, or "none", when no
@@ -110,11 +110,11 @@ abstract class permissionhandler{
 	}
 
 	/**
-	 * permissionhandler::isUserAllowedForAction()
+	 * we_base_permission::isUserAllowedForAction()
 	 * @desc    When a user is allowed to do an action with a certain parameter,
 	  true is returned, otherwise false.
 	 *
-	 * @see     permissionhandler::getPermissionsForAction
+	 * @see     we_base_permission::getPermissionsForAction
 	 *
 	 * @param   requestedAction     string - the action the user wants to do (we_cmd[0])
 	 * @param   paramater           string - a parameter to specify the action
@@ -122,7 +122,7 @@ abstract class permissionhandler{
 	 * @return  boolean
 	 */
 	static function isUserAllowedForAction($requestedAction, $parameter){
-		$neededPerm = permissionhandler::getPermissionsForAction($requestedAction, $parameter);
+		$neededPerm = we_base_permission::getPermissionsForAction($requestedAction, $parameter);
 		//  An array is returned, check the rights.
 		if(!is_array($neededPerm)){
 			//  no permissions are needed for this action
@@ -132,7 +132,7 @@ abstract class permissionhandler{
 			$allowed = true;
 			$perms = explode(',', $val);
 			foreach($perms as $perm){
-				if(!permissionhandler::hasPerm($perm)){
+				if(!we_base_permission::hasPerm($perm)){
 					$allowed = false;
 					break;
 				}
@@ -148,7 +148,7 @@ abstract class permissionhandler{
 
 	static function checkIfRestrictUserIsAllowed($id, $table, we_database_base $DB_WE){
 		$row = getHash('SELECT CreatorID=' . $_SESSION['user']['ID'] . ' AS isCreator,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-		if(!$row || $row['isCreator'] || permissionhandler::hasPerm('ADMINISTRATOR')){ //	Owner or admin or file doesn't exist
+		if(!$row || $row['isCreator'] || we_base_permission::hasPerm('ADMINISTRATOR')){ //	Owner or admin or file doesn't exist
 			return true;
 		}
 

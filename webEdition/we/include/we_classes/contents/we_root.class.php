@@ -396,10 +396,10 @@ abstract class we_root extends we_class{
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table class="default">
-<tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
-<tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
+<tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
+<tr><td>' . $this->formRestrictOwners($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
-			'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+			'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 
@@ -428,27 +428,27 @@ abstract class we_root extends we_class{
 	  the user is one of the restricted users
 	 */
 	function userHasPerms(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR') || !$this->RestrictOwners || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID)){
+		if(we_base_permission::hasPerm('ADMINISTRATOR') || !$this->RestrictOwners || we_users_util::isOwner($this->Owners) || we_users_util::isOwner($this->CreatorID)){
 			return true;
 		}
 		return false;
 	}
 
 	function userIsCreator(){
-		return (permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isOwner($this->CreatorID));
+		return (we_base_permission::hasPerm('ADMINISTRATOR') || we_users_util::isOwner($this->CreatorID));
 	}
 
 	function userCanSave($ctConditionOk = false){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$ctConditionOk){ // check table condition in respective subclasses: eg in we_collection we check SAVE_COLLECTION
 			if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
-				if(!(permissionhandler::hasPerm(['NEW_OBJECTFILE_FOLDER', 'NEW_OBJECTFILE']))){
+				if(!(we_base_permission::hasPerm(['NEW_OBJECTFILE_FOLDER', 'NEW_OBJECTFILE']))){
 					return false;
 				}
 			} else {
-				if(!permissionhandler::hasPerm('SAVE_DOCUMENT_TEMPLATE')){
+				if(!we_base_permission::hasPerm('SAVE_DOCUMENT_TEMPLATE')){
 					return false;
 				}
 			}
@@ -592,7 +592,7 @@ abstract class we_root extends we_class{
 			$etype = OBJECT_FILES_TABLE;
 		}
 
-		if(!empty($this->DocType) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
+		if(!empty($this->DocType) && we_base_permission::hasPerm("NEW_WEBEDITIONSITE")){
 			$db = new DB_WE();
 			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $db->escape($langkey) . '"', '', $db);
 			if($LDcoType){

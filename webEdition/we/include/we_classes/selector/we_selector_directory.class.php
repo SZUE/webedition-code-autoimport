@@ -152,7 +152,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function userCanSeeDir($showAll = false){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$showAll && !we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
@@ -162,7 +162,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function userCanRenameFolder(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userHasRenameFolderPerms()){
@@ -175,7 +175,7 @@ class we_selector_directory extends we_selector_file{
 		if(defined('OBJECT_FILES_TABLE') && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
 			return false;
 		}
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		if(!$this->userCanSeeDir() || !$this->userHasFolderPerms()){
@@ -187,7 +187,7 @@ class we_selector_directory extends we_selector_file{
 	protected function userHasRenameFolderPerms(){
 		switch($this->table){
 			case FILE_TABLE:
-				if(!permissionhandler::hasPerm("CHANGE_DOC_FOLDER_PATH")){
+				if(!we_base_permission::hasPerm("CHANGE_DOC_FOLDER_PATH")){
 					return false;
 				}
 				break;
@@ -199,17 +199,17 @@ class we_selector_directory extends we_selector_file{
 
 		switch($this->table){
 			case FILE_TABLE:
-				if(!permissionhandler::hasPerm("NEW_DOC_FOLDER")){
+				if(!we_base_permission::hasPerm("NEW_DOC_FOLDER")){
 					return false;
 				}
 				break;
 			case TEMPLATES_TABLE:
-				if(!permissionhandler::hasPerm("NEW_TEMP_FOLDER")){
+				if(!we_base_permission::hasPerm("NEW_TEMP_FOLDER")){
 					return false;
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				if(!permissionhandler::hasPerm("NEW_OBJECTFILE_FOLDER")){
+				if(!we_base_permission::hasPerm("NEW_OBJECTFILE_FOLDER")){
 					return false;
 				}
 				break;

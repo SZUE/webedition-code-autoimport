@@ -445,7 +445,7 @@ class we_backup_wizard{
 		$parts[] = ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_location]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1];
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, "export_server", g_l('backup', '[export_location_server]'), false, "defaultfont", "doClick(1)"),
 			'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
-		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, false, "export_send", g_l('backup', '[export_location_send]'), false, "defaultfont", "doClick(2)", (!permissionhandler::hasPerm("EXPORT"))),
+		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, false, "export_send", g_l('backup', '[export_location_send]'), false, "defaultfont", "doClick(2)", (!we_base_permission::hasPerm("EXPORT"))),
 			'space' => we_html_multiIconBox::SPACE_MED];
 		$parts[] = ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_options]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1];
 
@@ -761,7 +761,7 @@ class we_backup_wizard{
 	}
 
 	public static function showLog(){
-		if(permissionhandler::hasPerm("BACKUPLOG")){
+		if(we_base_permission::hasPerm("BACKUPLOG")){
 			$parts = [
 				[
 					'headline' => g_l('backup', '[view_log]'),

@@ -55,7 +55,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 	}
 
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
-		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
+		$makefolderState = we_base_permission::hasPerm("EDIT_NAVIGATION");
 		return parent::printHeaderTable($weCmd, '<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
 					'makefolderState' => $makefolderState
 				]) .

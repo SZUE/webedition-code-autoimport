@@ -56,14 +56,14 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		$newItemButton = new we_ui_controls_Button(['text' => g_l('apps','[menu][new][entry]'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
 			'type' => 'onClick',
-			'disabled' => !permissionhandler::hasPerm($perm),
+			'disabled' => !we_base_permission::hasPerm($perm),
 			'width' => 200
 		]);
 		$perm = 'GENTOC_APP_' . strtoupper($appName);
 		$regenerateTocButton = new we_ui_controls_Button(['text' => $translate->_('Regenetrate TOC'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_gentoc"})',
 			'type' => 'onClick',
-			'disabled' => !permissionhandler::hasPerm($perm),
+			'disabled' => !we_base_permission::hasPerm($perm),
 			'width' => 200,
 			'top' => '10px;',
 			'style' => 'margin-bottom:10px;'
@@ -78,7 +78,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 			$localInstallButton = new we_ui_controls_Button(['text' => $translate->_('Install') . ' ' . $dieApp['classname'] . ' ' . $dieApp['version'],
 				'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_localInstall' . $i . '"})',
 				'type' => 'onClick',
-				'disabled' => !permissionhandler::hasPerm($perm),
+				'disabled' => !we_base_permission::hasPerm($perm),
 				'width' => 200,
 				'top' => '10px;',
 				'style' => 'margin-top:10px;'

@@ -32,7 +32,7 @@ abstract class we_history{
 	const MAX = 50;
 
 	static function userHasPerms($creatorid, $owners, $restricted){
-		return (permissionhandler::hasPerm('ADMINISTRATOR') || !$restricted || we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid));
+		return (we_base_permission::hasPerm('ADMINISTRATOR') || !$restricted || we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid));
 	}
 
 	static function insertIntoHistory(&$object){

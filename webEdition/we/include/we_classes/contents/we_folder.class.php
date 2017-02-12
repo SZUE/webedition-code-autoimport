@@ -121,7 +121,7 @@ class we_folder extends we_root{
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
 
-		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER'])){
+		if(defined('CUSTOMER_TABLE') && we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER'])){
 			switch($this->Table){
 				case FILE_TABLE:
 				case OBJECT_FILES_TABLE:
@@ -395,7 +395,7 @@ class we_folder extends we_root{
 			$this->ParentPath = id_to_path($this->ParentID, $this->Table, $this->DB_WE);
 		}
 
-		$userCanChange = permissionhandler::hasPerm('CHANGE_DOC_FOLDER_PATH') || ($this->CreatorID == $_SESSION['user']['ID']) || (!$this->ID);
+		$userCanChange = we_base_permission::hasPerm('CHANGE_DOC_FOLDER_PATH') || ($this->CreatorID == $_SESSION['user']['ID']) || (!$this->ID);
 		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath === '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			$userCanChange = false;
 		}
@@ -411,7 +411,7 @@ class we_folder extends we_root{
 			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
 			'') .
-			($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
+			($this->Table == FILE_TABLE && $this->ID && we_base_permission::hasPerm('ADMINISTRATOR') ? '
 	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" ') . '</td><td></td><td></td></tr>
 ' : '')) .
 			'</table>';
@@ -652,7 +652,7 @@ class we_folder extends we_root{
 		];
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-			if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			if(we_base_permission::hasPerm('ADMINISTRATOR')){
 				$parts[] = ['icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
 				$parts[] = [
 					'headline' => g_l('weClass', '[grant_language][headline]'),
@@ -670,14 +670,14 @@ class we_folder extends we_root{
 			}
 		}
 
-		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
-			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_COPY_OBJECTS'))){
+		if($this->Table == FILE_TABLE && we_base_permission::hasPerm('CAN_COPY_FOLDERS') ||
+			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && we_base_permission::hasPerm('CAN_COPY_OBJECTS'))){
 			$parts[] = ['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2];
 		}
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			$parts[] = ['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
-			if(permissionhandler::hasPerm("ADMINISTRATOR")){
+			if(we_base_permission::hasPerm("ADMINISTRATOR")){
 				$parts[] = ["headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => we_html_multiIconBox::SPACE_MED2, "forceRightHeadline" => 1];
 			}
 		}

@@ -131,7 +131,7 @@ function setTab(tab) {
 		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !we_base_permission::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
@@ -384,7 +384,7 @@ function closeAllType(){
 	}
 
 	private function getDoExportCode(){
-		if(!permissionhandler::hasPerm("MAKE_EXPORT")){
+		if(!we_base_permission::hasPerm("MAKE_EXPORT")){
 			return we_message_reporting::jsMessagePush(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 
@@ -709,7 +709,7 @@ if (top.content.editor.edbody.addLog){
 
 		$cats = new we_chooser_multiDir(520, $this->View->export->Categorys, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
-		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
+		if(!we_base_permission::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
 		return $hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont");

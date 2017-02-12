@@ -209,9 +209,9 @@ abstract class we_base_move{
 	public static function getDialog(){
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 
-		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-			($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-			(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+		if(($table == TEMPLATES_TABLE && !we_base_permission::hasPerm("MOVE_TEMPLATE")) ||
+			($table == FILE_TABLE && !we_base_permission::hasPerm("MOVE_DOCUMENT")) ||
+			(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !we_base_permission::hasPerm("MOVE_OBJECTFILES"))){
 			require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 			exit();
 		}
@@ -241,7 +241,7 @@ abstract class we_base_move{
 				foreach($selectedItems as $selectedItem){
 
 					// check if user is allowed to move this item
-					if(!permissionhandler::checkIfRestrictUserIsAllowed($selectedItem, $table, $db)){
+					if(!we_base_permission::checkIfRestrictUserIsAllowed($selectedItem, $table, $db)){
 						$retVal = -1;
 						break;
 					}

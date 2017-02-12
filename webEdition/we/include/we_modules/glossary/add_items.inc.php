@@ -205,13 +205,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					$Modes[''] = g_l('modules_glossary', '[please_choose]');
 				}
 				$Modes['ignore'] = g_l('modules_glossary', '[ignore]');
-				if(permissionhandler::hasPerm('NEW_GLOSSARY')){
+				if(we_base_permission::hasPerm('NEW_GLOSSARY')){
 					$Modes[we_glossary_glossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
 					$Modes[we_glossary_glossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
 					$Modes[we_glossary_glossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
 					$Modes[we_glossary_glossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
 				}
-				if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
+				if(we_base_permission::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 					$Modes['exception'] = g_l('modules_glossary', '[to_exceptionlist]');
 				}
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');

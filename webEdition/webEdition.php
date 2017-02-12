@@ -80,15 +80,15 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=NULL WHERE Ping<(NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second)');
 
 
-if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 	$table_to_load = FILE_TABLE;
-} else if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
+} else if(we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
 	$table_to_load = TEMPLATES_TABLE;
-} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+} else if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 	$table_to_load = OBJECT_FILES_TABLE;
-} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')){
+} else if(defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTS')){
 	$table_to_load = OBJECT_TABLE;
-} else if(permissionhandler::hasPerm('CAN_SEE_COLLECTIONS')){
+} else if(we_base_permission::hasPerm('CAN_SEE_COLLECTIONS')){
 	$table_to_load = VFILE_TABLE;
 } else {
 	$table_to_load = '';
@@ -313,23 +313,23 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 			<div id="vtabs"><?php
 				$vtab = [
 					'FILE_TABLE' => [
-						'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'),
+						'show' => we_base_permission::hasPerm('CAN_SEE_DOCUMENTS'),
 						'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
 					],
 					'TEMPLATES_TABLE' => [
-						'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
+						'show' => we_base_permission::hasPerm('CAN_SEE_TEMPLATES'),
 						'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
 					],
 					'OBJECT_FILES_TABLE' => [
-						'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
+						'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES'),
 						'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
 					],
 					'OBJECT_TABLE' => [
-						'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
+						'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS"),
 						'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
 					],
 					'VFILE_TABLE' => [
-						'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS"),
+						'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS"),
 						'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
 					]
 				];

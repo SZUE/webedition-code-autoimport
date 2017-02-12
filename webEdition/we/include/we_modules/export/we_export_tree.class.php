@@ -93,19 +93,19 @@ var openFolders= {
 
 		if($useSelector){
 			$captions = [];
-			if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+			if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
-			if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
+			if(we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
 				$captions[TEMPLATES_TABLE] = g_l('export', '[templates]');
 			}
-			if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+			if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
 				$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
 			}
-			if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+			if(defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS")){
 				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
 			}
-			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS")){
 				$captions[VFILE_TABLE] = g_l('export', '[collections]');
 			}
 
@@ -201,20 +201,20 @@ var openFolders= {
 
 		switch($table){
 			case FILE_TABLE:
-				if(!permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+				if(!we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
 					return 0;
 				}
 				break;
 			case TEMPLATES_TABLE:
-				if(!permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+				if(!we_base_permission::hasPerm("CAN_SEE_TEMPLATES")){
 					return 0;
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+				if(!we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
 					return 0;
 				}
-				if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+				if(!we_base_permission::hasPerm("ADMINISTRATOR")){
 					$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 					foreach($ac as $cid){
 						$path = id_to_path($cid, OBJECT_TABLE);
@@ -224,12 +224,12 @@ var openFolders= {
 				}
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+				if(!we_base_permission::hasPerm("CAN_SEE_OBJECTS")){
 					return 0;
 				}
 				break;
 			case VFILE_TABLE:
-				if(!permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+				if(!we_base_permission::hasPerm("CAN_SEE_COLLECTIONS")){
 					return 0;
 				}
 				break;
@@ -264,12 +264,12 @@ if(!' . $this->topFrame . '.treeData) {
 
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 
-		if($table === FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+		if($table === FILE_TABLE && !we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
+			if(we_base_permission::hasPerm("CAN_SEE_TEMPLATES")){
 				$table = TEMPLATES_TABLE;
-			} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+			} else if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
 				$table = OBJECT_FILES_TABLE;
-			} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+			} else if(defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS")){
 				$table = OBJECT_TABLE;
 			}
 		}

@@ -67,7 +67,7 @@ switch($we_doc->userHasAccess()){
 
 
 //	preparations of needed vars
-$showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
+$showPubl = we_base_permission::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (bool) (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID));
 $haspermNew = we_editor_footer::hasNewPerm($we_doc);
 

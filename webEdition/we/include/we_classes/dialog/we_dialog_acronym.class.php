@@ -69,7 +69,7 @@ top.close();
 <tr><td>' . $lang . '</td></tr>
 </table>
 ' .
-			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
+			(defined('GLOSSARY_TABLE') && we_base_permission::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
 			we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
 				'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
 				'text' => ''
@@ -80,7 +80,7 @@ top.close();
 	function getDialogButtons(){
 		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
-		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm('NEW_GLOSSARY') && !$this->noInternals){
+		if(defined('GLOSSARY_TABLE') && we_base_permission::hasPerm('NEW_GLOSSARY') && !$this->noInternals){
 			$buttons .= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();");
 		}
 

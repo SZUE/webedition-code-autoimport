@@ -89,7 +89,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	function userCanEditCat(){
-		return permissionhandler::hasPerm('EDIT_KATEGORIE');
+		return we_base_permission::hasPerm('EDIT_KATEGORIE');
 	}
 
 	function userCanChangeCat(){

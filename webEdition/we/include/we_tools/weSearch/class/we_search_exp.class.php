@@ -236,16 +236,16 @@ class we_search_exp extends we_search_base{
 	function getTables($options){
 		$tables = [];
 		foreach($options as $option => $value){
-			if($value && $option == FILE_TABLE && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+			if($value && $option == FILE_TABLE && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 				$tables[] = FILE_TABLE;
 			}
-			if($value && $option == TEMPLATES_TABLE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
+			if($value && $option == TEMPLATES_TABLE && we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
 				$tables[] = TEMPLATES_TABLE;
 			}
-			if(defined('OBJECT_FILES_TABLE') && $value && $option == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+			if(defined('OBJECT_FILES_TABLE') && $value && $option == OBJECT_FILES_TABLE && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 				$tables[] = OBJECT_FILES_TABLE;
 			}
-			if(defined('OBJECT_TABLE') && $value && $option == OBJECT_TABLE && permissionhandler::hasPerm('CAN_SEE_OBJECTS')){
+			if(defined('OBJECT_TABLE') && $value && $option == OBJECT_TABLE && we_base_permission::hasPerm('CAN_SEE_OBJECTS')){
 				$tables[] = OBJECT_TABLE;
 			}
 		}

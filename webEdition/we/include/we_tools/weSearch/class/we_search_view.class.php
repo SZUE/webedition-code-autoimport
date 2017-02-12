@@ -446,24 +446,24 @@ top.content.hot=false;');
 		$table = new we_html_table(['style' => 'width:550px',], 4, 3);
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
-		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+		if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 			$table->setCol(0, 0, [], we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
-		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+		if(we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$table->setCol(1, 0, [], we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
-			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+			if(we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 				$table->setCol(0, 1, [], we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
-			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+			if(we_base_permission::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$table->setCol(1, 1, [], we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
-		if(permissionhandler::hasPerm('SEE_VERSIONS')){
+		if(we_base_permission::hasPerm('SEE_VERSIONS')){
 			$table->setCol(0, 2, [], we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
@@ -561,7 +561,7 @@ top.content.hot=false;');
 					foreach($foundInVersions as $k){
 
 						$resetDisabled = false;
-						if(!permissionhandler::hasPerm('RESET_VERSIONS')){
+						if(!we_base_permission::hasPerm('RESET_VERSIONS')){
 							$resetDisabled = true;
 						}
 
@@ -607,7 +607,7 @@ top.content.hot=false;');
 						case we_base_ContentTypes::HTML:
 						case 'objectFile':
 							$actionCheckbox = (!$showPubCheckbox ?
-								(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE)) ?
+								(we_base_permission::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE)) ?
 								we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
 								'' :
 								'');
@@ -626,7 +626,7 @@ top.content.hot=false;');
 							if($result[$f]["IsProtected"]){
 								$actionCheckbox = we_html_element::htmlSpan(['class' => 'wealertIcon', 'style' => 'margin-left:4px;', 'title' => g_l('searchtool', '[image_protected]')]);
 							} else if(!in_array($result[$f]['docID'], $this->searchclass->getUsedMedia())){
-								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]["docTable"])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE) ?
+								$actionCheckbox = we_base_permission::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]["docTable"])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE) ?
 									we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'delete_docs_' . $whichSearch, '', false, 'middlefont', '') : '';
 							}
 							break;
@@ -890,7 +890,7 @@ top.content.hot=false;');
 	}
 
 	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
-		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
+		$resetButton = (we_base_permission::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
 			we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", '') :
 			'');
 
@@ -899,7 +899,7 @@ top.content.hot=false;');
 			case self::SEARCH_ADV:
 			case self::SEARCH_DOCS:
 			case self::SEARCH_DOCLIST:
-				if(permissionhandler::hasPerm('PUBLISH') && !($whichSearch === self::SEARCH_DOCLIST && $table === TEMPLATES_TABLE)){
+				if(we_base_permission::hasPerm('PUBLISH') && !($whichSearch === self::SEARCH_DOCLIST && $table === TEMPLATES_TABLE)){
 					$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
 					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');");
 					break;

@@ -66,7 +66,7 @@ abstract class we_editor_footer{
 	}
 
 	static function workflow(we_root $we_doc){
-		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) || permissionhandler::hasPerm("PUBLISH")){
+		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) || we_base_permission::hasPerm("PUBLISH")){
 
 			$table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :
@@ -172,22 +172,22 @@ abstract class we_editor_footer{
 
 		switch($we_doc->Table){
 			case FILE_TABLE:
-				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOC_FOLDER')) ||
-					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOCUMENT'));
+				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_DOC_FOLDER')) ||
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_DOCUMENT'));
 				break;
 			case TEMPLATES_TABLE:
-				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMP_FOLDER')) ||
-					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMPLATE'));
+				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_TEMP_FOLDER')) ||
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_TEMPLATE'));
 				break;
 			case OBJECT_FILES_TABLE:
-				$hasPerm = (permissionhandler::hasPerm('DELETE_OBJECTFILE'));
+				$hasPerm = (we_base_permission::hasPerm('DELETE_OBJECTFILE'));
 				break;
 			case OBJECT_TABLE:
-				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_OBJECT'));
+				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_OBJECT'));
 				break;
 			case VFILE_TABLE:
-				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION_FOLDER')) ||
-					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION'));
+				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_COLLECTION_FOLDER')) ||
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_COLLECTION'));
 				break;
 			default:
 				$hasPerm = false;
@@ -235,13 +235,13 @@ abstract class we_editor_footer{
 
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::TEMPLATE:
-				if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
+				if(we_base_permission::hasPerm("NEW_WEBEDITIONSITE")){
 					$normalTable->addCol(2);
 					$normalTable->setColContent(0, $pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
 				break;
 			case we_base_ContentTypes::OBJECT:
-				if(permissionhandler::hasPerm("NEW_OBJECTFILE")){
+				if(we_base_permission::hasPerm("NEW_OBJECTFILE")){
 					$normalTable->addCol(2);
 					$normalTable->setColContent(0, $pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
@@ -287,7 +287,7 @@ abstract class we_editor_footer{
 		}
 		//	Button properties
 		if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)){
-			if(permissionhandler::isUserAllowedForAction("switch_edit_page", we_base_constants::WE_EDITPAGE_PROPERTIES)){
+			if(we_base_permission::isUserAllowedForAction("switch_edit_page", we_base_constants::WE_EDITPAGE_PROPERTIES)){
 				$seeModeTable->addCol(2);
 				$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
 			}
@@ -302,7 +302,7 @@ abstract class we_editor_footer{
 
 		//	Button scheduler
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
-			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_base_permission::hasPerm("CAN_SEE_SCHEDULER")){
 			$seeModeTable->addCol(2);
 			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
@@ -372,7 +372,7 @@ abstract class we_editor_footer{
 		//
 		//	4. show delete button to delete this document, not in edit_include-window
 		//
-		$canDelete = ( (!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm('DELETE_OBJECTFILE') : permissionhandler::hasPerm('DELETE_DOCUMENT')));
+		$canDelete = ( (!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) && (($we_doc instanceof we_objectFile) ? we_base_permission::hasPerm('DELETE_OBJECTFILE') : we_base_permission::hasPerm('DELETE_DOCUMENT')));
 		if($canDelete && $we_doc->ID){
 			self::addDelButton($seeModeTable, $we_doc, $pos);
 		}
@@ -383,20 +383,20 @@ abstract class we_editor_footer{
 		//	Check permissions for buttons
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::HTML:
-				return permissionhandler::hasPerm("NEW_HTML");
+				return we_base_permission::hasPerm("NEW_HTML");
 
 			case we_base_ContentTypes::WEDOCUMENT:
-				return permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
+				return we_base_permission::hasPerm("NEW_WEBEDITIONSITE");
 			case we_base_ContentTypes::OBJECT_FILE:
-				return permissionhandler::hasPerm("NEW_OBJECTFILE");
+				return we_base_permission::hasPerm("NEW_OBJECTFILE");
 			case we_base_ContentTypes::FOLDER:
 				switch($we_doc->Table){
 					case FILE_TABLE:
-						return permissionhandler::hasPerm('NEW_DOC_FOLDER');
+						return we_base_permission::hasPerm('NEW_DOC_FOLDER');
 					case TEMPLATES_TABLE:
-						return permissionhandler::hasPerm('NEW_TEMP_FOLDER');
+						return we_base_permission::hasPerm('NEW_TEMP_FOLDER');
 					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-						return permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER');
+						return we_base_permission::hasPerm('NEW_OBJECTFILE_FOLDER');
 				}
 		}
 		return false;

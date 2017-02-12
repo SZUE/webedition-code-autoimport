@@ -26,9 +26,9 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = []){
 
-		if(($table === TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) ||
-			($table === FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')) ||
-			($table === VFILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_COLLECTIONS'))){
+		if(($table === TEMPLATES_TABLE && !we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ||
+			($table === FILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')) ||
+			($table === VFILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_COLLECTIONS'))){
 			return 0;
 		}
 
@@ -201,7 +201,7 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 						$path = dirname($path);
 					}
 				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 				if(($ac = we_users_util::getAllowedClasses($DB_WE))){
 					$paths = id_to_path($ac, OBJECT_TABLE, $DB_WE, true);
 					$wspaces[] = 'IsClassFolder=1';

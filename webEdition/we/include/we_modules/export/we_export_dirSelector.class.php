@@ -55,7 +55,7 @@ class we_export_dirSelector extends we_selector_directory{
 	}
 
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
-		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
+		$makefolderState = we_base_permission::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable($weCmd, '<td>' .
 				we_base_jsCmd::singleCmd('updateSelectData', [
 					'makefolderState' => $makefolderState

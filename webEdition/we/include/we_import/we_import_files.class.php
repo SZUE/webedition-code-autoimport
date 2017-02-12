@@ -146,7 +146,7 @@ class we_import_files{
 				$fileupload->getFormCategories(),
 		];
 
-		if(permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(we_base_permission::hasPerm("NEW_GRAFIK")){
 			$parts = array_merge($parts, [
 					$fileupload->getFormImportMeta(),
 					$fileupload->getFormIsSearchable()

@@ -53,7 +53,7 @@ class we_voting_dirSelector extends we_selector_directory{
 	}
 
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
-		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
+		$makefolderState = we_base_permission::hasPerm("NEW_VOTING");
 		$weCmd->addCmd('updateSelectData', ['makefolderState' => $makefolderState]);
 		return parent::printHeaderTable($weCmd, '<td>' .
 				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", '', 0, 0, "", "", $makefolderState ? false : true) .
@@ -137,7 +137,7 @@ class we_voting_dirSelector extends we_selector_directory{
 
 		if(get_ws($table)){
 			$userExtraSQL .= self::getWsQuery($table);
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 			$wsQuery =[];
 			$ac = we_users_util::getAllowedClasses($this->db);
 			$paths = id_to_path($ac, OBJECT_TABLE);

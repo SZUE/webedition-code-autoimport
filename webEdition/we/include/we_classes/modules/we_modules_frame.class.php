@@ -217,7 +217,7 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 		$pos = 0;
 		foreach($btn_cmd as $but => $cur){
 			list($right, $cmd) = $cur;
-			if(empty($right) || permissionhandler::hasPerm($right)){
+			if(empty($right) || we_base_permission::hasPerm($right)){
 				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
 			}
 		}
@@ -241,7 +241,7 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 	protected function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $IDName . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* process vars & commands

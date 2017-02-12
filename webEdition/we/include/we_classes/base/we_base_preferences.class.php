@@ -146,7 +146,7 @@ class we_base_preferences{
 	}
 
 	static function userIsAllowed($setting){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$configs = $GLOBALS['configs'];
@@ -154,11 +154,11 @@ class we_base_preferences{
 			if(isset($config[$setting])){
 				switch($name){
 					case 'global':
-						return (isset($config[$setting][3]) ? permissionhandler::hasPerm($config[$setting][3]) : permissionhandler::hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][3]) ? we_base_permission::hasPerm($config[$setting][3]) : we_base_permission::hasPerm('ADMINISTRATOR'));
 					case 'user':
 						return true;
 					default:
-						return (isset($config[$setting][2]) ? permissionhandler::hasPerm($config[$setting][2]) : permissionhandler::hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][2]) ? we_base_permission::hasPerm($config[$setting][2]) : we_base_permission::hasPerm('ADMINISTRATOR'));
 				}
 			}
 		}

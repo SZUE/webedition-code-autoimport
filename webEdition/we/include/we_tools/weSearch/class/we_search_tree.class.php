@@ -68,18 +68,18 @@ class we_search_tree extends we_tree_base{
 			switch($db->f('Path')){
 				case '/_PREDEF_/object':
 				case '/_PREDEF_/object/unpublished':
-					if(!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+					if(!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 						continue;
 					}
 				case '/_PREDEF_/document':
 				case '/_PREDEF_/document/unpublished':
 				case '/_PREDEF_/document/static':
 				case '/_PREDEF_/document/dynamic':
-					if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+					if(!we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 						continue;
 					}
 				default:
-					if(strpos($db->f('Path'), '/_VERSION_') === 0 && !permissionhandler::hasPerm('SEE_VERSIONS')){
+					if(strpos($db->f('Path'), '/_VERSION_') === 0 && !we_base_permission::hasPerm('SEE_VERSIONS')){
 						continue;
 					}
 

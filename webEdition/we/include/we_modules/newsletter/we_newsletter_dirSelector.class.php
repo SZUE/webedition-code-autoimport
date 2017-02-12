@@ -156,19 +156,19 @@ class we_newsletter_dirSelector extends we_selector_directory{
 	}
 
 	protected function userCanRenameFolder(){
-		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
+		return we_base_permission::hasPerm('EDIT_NEWSLETTER');
 	}
 
 	protected function userCanMakeNewDir(){
-		return permissionhandler::hasPerm('NEW_NEWSLETTER');
+		return we_base_permission::hasPerm('NEW_NEWSLETTER');
 	}
 
 	protected function userHasRenameFolderPerms(){
-		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
+		return we_base_permission::hasPerm('EDIT_NEWSLETTER');
 	}
 
 	protected function userHasFolderPerms(){
-		return permissionhandler::hasPerm('NEW_NEWSLETTER');
+		return we_base_permission::hasPerm('NEW_NEWSLETTER');
 	}
 
 	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){

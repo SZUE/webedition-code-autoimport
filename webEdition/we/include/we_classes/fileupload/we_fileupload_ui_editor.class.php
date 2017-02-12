@@ -33,8 +33,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		parent::__construct($contentType, $extensions);
 
 		$this->type = 'editor';
-		$permImageEdit = permissionhandler::hasPerm("NEW_GRAFIK");
-		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
+		$permImageEdit = we_base_permission::hasPerm("NEW_GRAFIK");
+		$permCat = we_base_permission::hasPerm("EDIT_KATEGORIE");
 		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? [] : [
 			'imageResize' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
 			'imageRotate' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],

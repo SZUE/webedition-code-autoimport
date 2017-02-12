@@ -177,7 +177,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	function getFormCategories(){
 		$name = 'categories';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -284,7 +284,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			$weSuggest->setResult("fu_file_parentID", $parentID);
 			$weSuggest->setSelector(weSuggest::DirSelector);
 			$weSuggest->setWidth(326);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','document." . $formName . ".fu_file_parentID','document." . $formName . ".parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','document." . $formName . ".fu_file_parentID','document." . $formName . ".parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 
 			$html = $weSuggest->getHTML();
 		} else {
@@ -303,7 +303,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function getFormThumbnails($thumbs = ''){
 		$name = 'thumbnails';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -334,7 +334,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function getFormImageAttributes(){
 		$name = 'attributes';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -347,7 +347,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function getFormImageResize(){
 		$name = 'imageResize';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -380,7 +380,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function getFormImageRotate(){
 		$name = 'imageRotate';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -398,7 +398,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function getFormImageQuality(){ // obsolete
 		$name = 'imageQuality';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !we_base_permission::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 

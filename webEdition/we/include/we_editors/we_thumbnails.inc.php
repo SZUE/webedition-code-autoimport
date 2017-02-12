@@ -24,7 +24,7 @@
 we_html_tools::protect();
 
 // Check if we need to create a new thumbnail
-if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && permissionhandler::hasPerm('ADMINISTRATOR')){
+if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && we_base_permission::hasPerm('ADMINISTRATOR')){
 	$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
 	$GLOBALS['id'] = $DB_WE->getInsertId();
 } else {
@@ -32,7 +32,7 @@ if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && perm
 }
 
 // Check if we need to delete a thumbnail
-if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail')) && permissionhandler::hasPerm('ADMINISTRATOR')){
+if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail')) && we_base_permission::hasPerm('ADMINISTRATOR')){
 	// Delete thumbnails in filesystem
 	we_thumbnail::deleteByThumbID($delId);
 
@@ -114,7 +114,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 function save_all_values(){
 	global $DB_WE;
 
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
+	if(we_base_permission::hasPerm('ADMINISTRATOR')){
 		$setArray = ['Date' => sql_function('UNIX_TIMESTAMP()')];
 		// Update settings
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'thumbnail_name', null), 'Name');

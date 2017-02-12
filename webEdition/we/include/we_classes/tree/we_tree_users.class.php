@@ -29,8 +29,8 @@ class we_tree_users extends we_tree_base{
 	}
 
 	function getJSStartTree(){
-		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
-			$startloc = (permissionhandler::hasPerm("ADMINISTRATOR") ?
+		if(we_base_permission::hasPerm("NEW_USER") || we_base_permission::hasPerm("NEW_GROUP") || we_base_permission::hasPerm("SAVE_USER") || we_base_permission::hasPerm("SAVE_GROUP") || we_base_permission::hasPerm("DELETE_USER") || we_base_permission::hasPerm("DELETE_GROUP")){
+			$startloc = (we_base_permission::hasPerm("ADMINISTRATOR") ?
 				0 :
 				f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]))
 				);
@@ -43,9 +43,9 @@ class we_tree_users extends we_tree_base{
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$items = [];
 		$db = new DB_WE();
-		if(permissionhandler::hasPerm(['NEW_USER', 'NEW_GROUP', 'SAVE_USER', 'SAVE_GROUP', 'DELETE_USER', 'DELETE_GROUP'])){
+		if(we_base_permission::hasPerm(['NEW_USER', 'NEW_GROUP', 'SAVE_USER', 'SAVE_GROUP', 'DELETE_USER', 'DELETE_GROUP'])){
 
-			$parent_path = (permissionhandler::hasPerm("ADMINISTRATOR") ?
+			$parent_path = (we_base_permission::hasPerm("ADMINISTRATOR") ?
 				'/' :
 				str_replace("\\", "/", dirname(f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', $db))));
 

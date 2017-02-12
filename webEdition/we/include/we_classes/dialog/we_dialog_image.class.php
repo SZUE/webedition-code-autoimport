@@ -248,7 +248,7 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * input for external image files
 			 */
-			$btnExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
+			$btnExt = we_base_permission::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','we_dialog_args[extSrc]','',document.we_form.elements['we_dialog_args[extSrc]'].value,'dialog_extSrcOnchange')") : '';
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "top.we_cmd('dialog_setType')");
 			$btnOpen = we_html_button::create_button(we_html_button::EDIT, "javascript:top.openExtSource('extHref');", '', 0, 0, '', '', (empty($this->args['extSrc']) || $this->args['extSrc'] === we_base_link::EMPTY_EXT ? true : false), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
@@ -270,7 +270,7 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setWidth(315);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 			$weSuggest->setOpenButton(weSuggest::BTN_EDIT);
 			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')"));
 			$weSuggest->setIsDropFromTree(true);
@@ -302,7 +302,7 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
 			$weSuggest->setSelector(weSuggest::DocSelector);
 			$weSuggest->setWidth(315);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 			$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('dialog_emptyLongdesc');"));
 			$weSuggest->setAdditionalButton('');
 

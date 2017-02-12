@@ -55,7 +55,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
  */
 function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
-	if(permissionhandler::hasPerm('EDIT_METADATAFIELD')){
+	if(we_base_permission::hasPerm('EDIT_METADATAFIELD')){
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
 

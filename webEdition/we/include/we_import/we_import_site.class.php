@@ -415,7 +415,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getContentHTML(){
 		// Suorce Directory
 
-		$from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+		$from_button = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'from','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
 			'';
 
@@ -444,18 +444,18 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		// Checkboxes
 		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
-		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : '';
+		$weoncklick .= ((!we_base_permission::hasPerm("NEW_HTML")) && we_base_permission::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : '';
 
-		$images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_GRAFIK"));
+		$images = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_GRAFIK"));
 
-		$htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
-		$createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
-		$flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_FLASH"));
-		$jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_JS"));
-		$css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_CSS"));
-		$text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_TEXT"));
-		$htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_HTACCESS"));
-		$others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", '', !permissionhandler::hasPerm("NEW_SONSTIGE"));
+		$htmlPages = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_HTML") ? $this->htmlPages : ((we_base_permission::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !we_base_permission::hasPerm("NEW_HTML"));
+		$createWePages = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !we_base_permission::hasPerm("NEW_WEBEDITIONSITE"));
+		$flashmovies = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_FLASH"));
+		$jss = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_JS"));
+		$css = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_CSS"));
+		$text = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_TEXT"));
+		$htaccess = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_HTACCESS"));
+		$others = we_html_forms::checkboxWithHidden(we_base_permission::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", '', !we_base_permission::hasPerm("NEW_SONSTIGE"));
 
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", '', 0, 0, '', '', false, true, '', true);
 		// Depth
@@ -562,7 +562,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
-		if(permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(we_base_permission::hasPerm("NEW_GRAFIK")){
 			$parts[] = ['headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => we_html_multiIconBox::SPACE_MED

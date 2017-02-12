@@ -24,8 +24,8 @@
 $aCols = explode(';', isset($aProps) ? $aProps[3] : we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 $disableNew = true;
 $cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
-if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
-	if(permissionhandler::hasPerm("NO_DOCTYPE")){
+if(we_base_permission::hasPerm("NEW_WEBEDITIONSITE")){
+	if(we_base_permission::hasPerm("NO_DOCTYPE")){
 		$disableNew = false;
 	} else {
 		$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
@@ -51,34 +51,34 @@ if(defined('OBJECT_TABLE')){
 
 $js = [];
 
-if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+if(defined('FILE_TABLE') && we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["open_document"] = "top.we_cmd('open_document');";
 }
-if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$disableNew){
+if(defined('FILE_TABLE') && we_base_permission::hasPerm("CAN_SEE_DOCUMENTS") && we_base_permission::hasPerm("CAN_SEE_PROPERTIES") && !$disableNew){
 	$js["new_document"] = $cmdNew;
 }
-if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+if(defined('TEMPLATES_TABLE') && we_base_permission::hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','" . we_base_ContentTypes::TEMPLATE . "');";
 }
-if(permissionhandler::hasPerm("NEW_DOC_FOLDER")){
+if(we_base_permission::hasPerm("NEW_DOC_FOLDER")){
 	$js["new_directory"] = "top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "')";
 }
-if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+if(defined('FILE_TABLE') && we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["unpublished_pages"] = "top.we_cmd('openUnpublishedPages');";
 }
-if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") && !$disableObjects){
+if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES") && !$disableObjects){
 	$js["unpublished_objects"] = "top.we_cmd('openUnpublishedObjects');";
 }
-if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("NEW_OBJECTFILE") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$disableObjects){
+if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("NEW_OBJECTFILE") && we_base_permission::hasPerm("CAN_SEE_PROPERTIES") && !$disableObjects){
 	$js["new_object"] = "top.we_cmd('new_objectFile');";
 }
-if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+if(defined('OBJECT_TABLE') && we_base_permission::hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 	$js["new_class"] = "top.we_cmd('new_object');";
 }
-if(permissionhandler::hasPerm("EDIT_SETTINGS")){
+if(we_base_permission::hasPerm("EDIT_SETTINGS")){
 	$js["preferences"] = "top.we_cmd('openPreferences');";
 }
-if(permissionhandler::hasPerm('NEW_GRAFIK')){
+if(we_base_permission::hasPerm('NEW_GRAFIK')){
 	$js['btn_add_image'] = "top.we_cmd('new','tblFile','','image/*')";
 }
 

@@ -89,7 +89,7 @@ if($ac){
 }
 
 function getHTMLCategory(&$widgetData){
-	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')", '', 0, 0, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 	$del_but = we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();');
 	$widgetData['cats'] = [
 		'del' => $del_but,
@@ -120,10 +120,10 @@ if(defined('OBJECT_TABLE')){
 $tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
 
 $captions = [];
-if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+if(we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
 	$captions[FILE_TABLE] = g_l('export', '[documents]');
 }
-if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
 	$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
 }
 

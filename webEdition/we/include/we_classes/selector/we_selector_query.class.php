@@ -320,7 +320,7 @@ class we_selector_query{
 
 		if(get_ws($table)){
 			$userExtraSQL .= we_selector_file::getWsQuery($table);
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm('ADMINISTRATOR'))){
 			$wsQuery = [];
 			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){

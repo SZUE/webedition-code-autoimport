@@ -93,7 +93,7 @@ class we_versions_fragment extends we_fragment_base{
 	 */
 	private static function getDocumentsDelete($version){
 		$data = [];
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()){
@@ -116,7 +116,7 @@ class we_versions_fragment extends we_fragment_base{
 
 	private static function getDocumentsReset($version){
 		$data = [];
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(we_base_permission::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()){

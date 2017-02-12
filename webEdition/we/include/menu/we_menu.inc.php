@@ -488,7 +488,7 @@ $we_menu = [
 		'parent' => 'cockpit_new',
 		'cmd' => ['new_widget', 'fdl'],
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER',
-		'hide' => !defined('CUSTOMER_TABLE') || !permissionhandler::hasPerm('CAN_SEE_QUICKSTART'),
+		'hide' => !defined('CUSTOMER_TABLE') || !we_base_permission::hasPerm('CAN_SEE_QUICKSTART'),
 	], [// Cockpit > new Widget > default settings
 		'text' => g_l('javaMenu_global', '[default_settings]'),
 		'parent' => 'cockpit',
@@ -624,7 +624,7 @@ $we_menu = [
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 $GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 
-if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
+if($GLOBALS['DB_WE']->num_rows() && we_base_permission::hasPerm('NO_DOCTYPE')){
 	$we_menu[] = ['parent' => 'file_new_wedoc']; // separator
 }
 // New > webEdition Document > Doctypes*

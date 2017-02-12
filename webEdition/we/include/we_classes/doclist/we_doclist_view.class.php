@@ -222,7 +222,7 @@ class we_doclist_view extends we_search_view{
 					case we_base_ContentTypes::WEDOCUMENT:
 					case we_base_ContentTypes::HTML:
 					case we_base_ContentTypes::OBJECT_FILE:
-						if(permissionhandler::hasPerm('PUBLISH')){
+						if(we_base_permission::hasPerm('PUBLISH')){
 							$publishCheckbox = we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'publish_docs_DoclistSearch', '', false, 'middlefont', '');
 							break;
 						}

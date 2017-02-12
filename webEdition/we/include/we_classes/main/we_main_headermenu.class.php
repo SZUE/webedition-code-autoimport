@@ -62,7 +62,7 @@ class we_main_headermenu{
 			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
-			if(!permissionhandler::isUserAllowedForAction("header", "with_java")){
+			if(!we_base_permission::isUserAllowedForAction("header", "with_java")){
 				return null;
 			}
 			$jmenu = new we_base_menu($we_menu, "top.load");
@@ -80,7 +80,7 @@ class we_main_headermenu{
 		if(!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 // menu for normalmode
-			} else if(permissionhandler::isUserAllowedForAction('header', 'with_java')){
+			} else if(we_base_permission::isUserAllowedForAction('header', 'with_java')){
 // menu for seemode
 			} else {
 //  no menu in this case !

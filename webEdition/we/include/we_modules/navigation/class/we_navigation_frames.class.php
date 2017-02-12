@@ -144,11 +144,11 @@ class we_navigation_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ['id' => 'tab_' . self::TAB_PROPERTIES, 'title' => g_l('navigation', '[property]')]);
-		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
+		if($this->Model->IsFolder && we_base_permission::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
 			$we_tabs->addTab(we_base_constants::WE_ICON_CONTENT, false, self::TAB_CONTENT, ['id' => 'tab_' . self::TAB_CONTENT, 'title' => g_l('navigation', '[content]')]);
 		}
 
-		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
+		if(defined('CUSTOMER_TABLE') && we_base_permission::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
 			$we_tabs->addTab(we_base_constants::WE_ICON_CUSTOMER_FILTER, false, self::TAB_CUSTOMER, ['id' => 'tab_' . self::TAB_CUSTOMER, 'title' => g_l('navigation', '[customers]')]);
 		}
 
@@ -271,7 +271,7 @@ class we_navigation_frames extends we_modules_frame{
 				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : 0)]) .
 			'<div style="display: block;">' .
 			(!$this->Model->IsFolder ?
-			(permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
+			(we_base_permission::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
 			we_html_tools::htmlSelect('Selection', [
 				we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 				we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
@@ -523,9 +523,9 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			$seltype[we_navigation_navigation::STYPE_OBJLINK] = g_l('navigation', '[objLink]');
 		}
 
-		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','enable_open_navigation_doc','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','enable_open_navigation_doc','','0',''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
-		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "LinkID','LinkPath','populateWorkspaces','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "LinkID','LinkPath','populateWorkspaces','','0',''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$cmd_cat = "javascript:we_cmd('we_selector_category',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','populateText','','0')";
 
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, $cmd_doc, '', 0, 0, '', '', $disabled) .
@@ -781,7 +781,7 @@ function showPreview() {
 						$this->getHTMLAttributes() :
 						''
 						)
-					) . ($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
+					) . ($this->Model->IsFolder && we_base_permission::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
 					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
 					''
 					) . ((defined('CUSTOMER_TABLE')) ?
@@ -843,7 +843,7 @@ function showPreview() {
 			$cmd = "javascript:we_cmd('we_selector_file',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "')";
 			$selector = weSuggest::DirSelector;
 		} else {
-			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 			$selector = weSuggest::DocSelector;
 		}
 
@@ -1079,7 +1079,7 @@ function showPreview() {
 	}
 
 	private function getHTMLLink($prefix = ''){
-		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $prefix . "UrlID','" . $prefix . "UrlIDPath','setHot','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $prefix . "UrlID','" . $prefix . "UrlIDPath','setHot','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		$path = id_to_path($this->Model->UrlID);
 
@@ -1307,9 +1307,9 @@ function showPreview() {
 		}
 
 		$table2 = new we_html_table(['class' => 'default'], 1, 3);
-		$table2->setColContent(0, 0, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", '', 0, 0, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
+		$table2->setColContent(0, 0, we_html_element::htmlSpan(['style' => 'margin-left: 15px'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", '', 0, 0, '', '', (!we_base_permission::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
-		if($this->Model->ID && permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
+		if($this->Model->ID && we_base_permission::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
 			$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('module_navigation_delete');"));
 		}
 

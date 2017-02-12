@@ -249,7 +249,7 @@ class we_class_folder extends we_folder{
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
 			$content[] = [
 				["align" => "center",
-					'dat' => ((permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"])) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
+					'dat' => ((we_base_permission::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"])) && we_base_permission::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
 						'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
 						'<i class="fa fa-square-o wecheckIcon disabled"></i>')],
 				["align" => "center",
@@ -296,7 +296,7 @@ class we_class_folder extends we_folder{
 		if(we_base_request::_(we_base_request::STRING, 'do') === 'delete'){
 			$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 			foreach(array_keys($weg) as $ofid){//FIXME: this is not save
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				if(we_base_permission::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
 					we_base_delete::deleteEntry($ofid, OBJECT_FILES_TABLE, $this->DB_WE);
 				}
 			}
@@ -359,7 +359,7 @@ class we_class_folder extends we_folder{
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
 			$content[$f] = [["align" => "center",
-				'dat' => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
+				'dat' => (we_base_permission::hasPerm("DELETE_OBJECTFILE") ?
 					'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
 					'<i class="fa fa-square-o wecheckIcon disabled"></i>'
 				)],
@@ -585,7 +585,7 @@ class we_class_folder extends we_folder{
 </table>
 	<table class="default" style="margin-bottom:12px;">
 	<tr>
-		<td class="defaultfont lowContrast" style="width:200px">' . (permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
+		<td class="defaultfont lowContrast" style="width:200px">' . (we_base_permission::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
 			//(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
 			'</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
@@ -594,14 +594,14 @@ class we_class_folder extends we_folder{
 	<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, $content, $headline) . '</div>
 	<table class="default" style="margin:12px 0px;">
 	<tr>
-		<td style="width:200px;">' . (permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>
+		<td style="width:200px;">' . (we_base_permission::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "',['setDoReload','delete']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "',['setDoReload','delete']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
 			</tr>
 			</table>
@@ -611,7 +611,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "',['setDoReload','publish']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "',['setDoReload','publish']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
 			</tr>
 			</table>
@@ -621,7 +621,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "',['setDoReload','unpublish']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "',['setDoReload','unpublish']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
 			</tr>
 			</table>
@@ -631,7 +631,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "',['setDoReload','searchable']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "',['setDoReload','searchable']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
 			</tr>
 			</table>
@@ -641,7 +641,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fas:btn_function_unsearchable,fa-ban,fa-search', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "',['setDoReload','unsearchable']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fas:btn_function_unsearchable,fa-ban,fa-search', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "',['setDoReload','unsearchable']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
 			</tr>
 			</table>
@@ -651,7 +651,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "',['setDoReload','copychar']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "',['setDoReload','copychar']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
 			</tr>
 			</table>
@@ -661,7 +661,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "',['setDoReload','copyws']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "',['setDoReload','copyws']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
 			</tr>
 			</table>
@@ -671,7 +671,7 @@ class we_class_folder extends we_folder{
 		<td colspan="2">
 			<table class="default">
 			<tr>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "',['setDoReload','copytid']);") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript: WE().util.showConfirm(window, '','" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "',['setDoReload','copytid']);") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
 			</tr>
 			</table>
@@ -765,7 +765,7 @@ EOF;
 
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 		foreach(array_keys($weg) as $tid){
-			if(permissionhandler::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
+			if(we_base_permission::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
 				we_base_delete::deleteEntry($tid, OBJECT_FILES_TABLE, $this->DB_WE);
 				$javascript .= 'top.treeData.deleteEntry(' . $tid . ');';
 				$deletedItems[] = $tid;
@@ -852,7 +852,7 @@ for ( frameId in _usedEditors ) {
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 
 		foreach(array_keys($weg) as $ofid){//FIXME: this is not save
-			if(!permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+			if(!we_base_permission::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
 				continue;
 			}
 			$obj = new we_objectFile();

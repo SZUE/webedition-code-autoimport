@@ -30,26 +30,26 @@ return [
 		'parent' => 'new',
 		'cmd' => 'tool_weSearch_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
+		'hide' => !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')
 	],
 	['text' => g_l('searchtool', '[forTemplates]'),
 		'parent' => 'new',
 		'cmd' => 'tool_weSearch_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES'))
+		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_base_permission::hasPerm('CAN_SEE_TEMPLATES'))
 	],
 	['text' => g_l('searchtool', '[forObjects]'),
 		'parent' => 'new',
 		'cmd' => 'tool_weSearch_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
+		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES'))
 	],
 	['text' => g_l('searchtool', '[forMedia]'),
 		'parent' => 'new',
 		'cmd' => 'tool_weSearch_new_forMedia',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
-		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
+		'hide' => !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')
 	],
 	['text' => g_l('searchtool', '[menu_advSearch]'),
 		'parent' => 'new',

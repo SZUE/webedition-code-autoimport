@@ -35,7 +35,7 @@ we_html_tools::protect();
  * @return   string
  */
 function getFirstValidEditPageNr($doc, $EditPageNr){
-	if($doc->isValidEditPage($EditPageNr) && permissionhandler::isUserAllowedForAction('switch_edit_page', $EditPageNr)){
+	if($doc->isValidEditPage($EditPageNr) && we_base_permission::isUserAllowedForAction('switch_edit_page', $EditPageNr)){
 		return $EditPageNr;
 	}
 	//	bugfix for new tag: we:hidePages
@@ -43,7 +43,7 @@ function getFirstValidEditPageNr($doc, $EditPageNr){
 		//  the command in this case is swith_edit_page, because in this funtion
 		//  the editor tries to select a certain edit_page
 		//  in some cases it must switch it
-		if(permissionhandler::isUserAllowedForAction('switch_edit_page', $doc->EditPageNrs[$key])){
+		if(we_base_permission::isUserAllowedForAction('switch_edit_page', $doc->EditPageNrs[$key])){
 			return $doc->EditPageNrs[$key];
 		}
 	}
@@ -88,7 +88,7 @@ switch($we_Table){
 	default:
 		$needPerm = '';
 }
-if($needPerm && !permissionhandler::hasPerm($needPerm)){
+if($needPerm && !we_base_permission::hasPerm($needPerm)){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
 	exit();
 }

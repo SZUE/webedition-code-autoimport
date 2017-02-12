@@ -30,9 +30,9 @@ $insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) 
 
 /* FIXME: adapt when collection perms are implemented
  *
-  if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-  ($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-  (defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+  if(($table == TEMPLATES_TABLE && !we_base_permission::hasPerm("MOVE_TEMPLATE")) ||
+  ($table == FILE_TABLE && !we_base_permission::hasPerm("MOVE_DOCUMENT")) ||
+  (defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !we_base_permission::hasPerm("MOVE_OBJECTFILES"))){
   require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
   exit();
   }

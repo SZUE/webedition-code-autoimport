@@ -424,35 +424,35 @@ class we_search_model extends we_search_modelBase{
 						case FILE_TABLE:
 						case stripTblPrefix(FILE_TABLE): // in older predefined searches we have hardcoded tables without prefix)
 							$tmp[FILE_TABLE] = $v;
-							if($v && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+							if($v && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 								$this->searchTablesAdvSearch[] = FILE_TABLE; // this is used in search: so check perms!
 							}
 							break;
 						case defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE':
 						case defined('TEMPLATES_TABLE') ? stripTblPrefix(FILE_TABLE) : 'TEMPLATES_TABLE':
 							$tmp[TEMPLATES_TABLE] = $v;
-							if($v && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE){
+							if($v && we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE){
 								$this->searchTablesAdvSearch[] = TEMPLATES_TABLE;
 							}
 							break;
 						case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
 						case defined('OBJECT_FILES_TABLE') ? stripTblPrefix(OBJECT_FILES_TABLE) : 'OBJECT_FILES_TABLE':
 							$tmp[OBJECT_FILES_TABLE] = $v;
-							if($v && defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+							if($v && defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
 								$this->searchTablesAdvSearch[] = OBJECT_FILES_TABLE;
 							}
 							break;
 						case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
 						case defined('OBJECT_TABLE') ? stripTblPrefix(OBJECT_TABLE) : 'OBJECT_TABLE':
 							$tmp[OBJECT_TABLE] = $v;
-							if($v && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE){
+							if($v && defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE){
 								$this->searchTablesAdvSearch[] = OBJECT_TABLE;
 							}
 							break;
 						case VERSIONS_TABLE:
 						case stripTblPrefix(VERSIONS_TABLE):
 							$tmp[VERSIONS_TABLE] = $v;
-							if($v && permissionhandler::hasPerm('SEE_VERSIONS')){
+							if($v && we_base_permission::hasPerm('SEE_VERSIONS')){
 								$this->searchTablesAdvSearch[] = VERSIONS_TABLE;
 							}
 							break;

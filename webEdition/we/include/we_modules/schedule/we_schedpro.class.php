@@ -139,7 +139,7 @@ class we_schedpro{
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" onchange="changeSchedOption(this,' . $this->nr . ');">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
-		if((permissionhandler::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm('DELETE_OBJECTFILE') && $isobj)){
+		if((we_base_permission::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (we_base_permission::hasPerm('DELETE_OBJECTFILE') && $isobj)){
 			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
@@ -147,7 +147,7 @@ class we_schedpro{
 <option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CALL . ']') . '</option>';
 		}
 		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CATEGORY . ']') . '</option>';
-		if((permissionhandler::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm("MOVE_OBJECTFILE") && $isobj)){
+		if((we_base_permission::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (we_base_permission::hasPerm("MOVE_OBJECTFILE") && $isobj)){
 			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DIR . ']') . '</option>';
 		}
 		$taskpopup .= '
@@ -179,7 +179,7 @@ class we_schedpro{
 				$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.fileSelect.data.currentID," . $this->nr . ");')");
 				$cats = new we_chooser_multiDir(450, $this->CategoryIDs, "schedule_delete_schedcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
-				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
+				if(!we_base_permission::hasPerm("EDIT_KATEGORIE")){
 					$cats->isEditable = false;
 				}
 				$extracont = $cats->get();

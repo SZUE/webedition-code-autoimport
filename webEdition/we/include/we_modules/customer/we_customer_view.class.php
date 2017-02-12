@@ -727,7 +727,7 @@ close();');
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
-					we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . $field . "','','refreshForm','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();") .
+					we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . $field . "','','refreshForm','', '', '" . we_base_ContentTypes::IMAGE . "', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();") .
 					'</td>
 	</tr>
 </table>';
@@ -954,7 +954,7 @@ close();');
 
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
-		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.we_cmd('new_customer');", '', 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
+		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.we_cmd('new_customer');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_CUSTOMER"));
 
 		return parent::getActualHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
 	}
