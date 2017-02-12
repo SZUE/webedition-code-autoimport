@@ -26,7 +26,7 @@
 
 abstract class we_dialog_info{
 
-	public static function getDialog($isLogin = false, $loginSuccess = false){
+	public static function getDialog($isLogin = false, $showLoginDialog = false){
 		$we_version = '';
 		if(!$isLogin){
 			$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
@@ -87,7 +87,7 @@ abstract class we_dialog_info{
 
 		$loginRow = 0;
 
-		if($loginSuccess){
+		if($showLoginDialog){
 			$loginTable = new we_html_table(['class' => "plainTable"], 4, 1);
 			$loginTable->setCol($loginRow++, 0, ['class' => "small"], we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, ["for" => "username"], g_l('global', '[username]'))));
 			$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
@@ -96,7 +96,7 @@ abstract class we_dialog_info{
 			$loginTable->setCol($loginRow++, 0, [], '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 			$table->addRow(2);
-			$table->setCol($actRow++, 0, ['class' => 'spaceTable'], $loginTable->getHtml());
+			$table->setCol($actRow++, 0, ['class' => 'spaceTable'], $loginTable->getHtml().we_html_element::htmlHidden('WE_LOGIN_do', 1));
 
 
 			//	mode-table
@@ -140,7 +140,7 @@ abstract class we_dialog_info{
 
 			//	16th
 			$table->setCol($actRow++, 0, ['class' => "small"], $modetable->getHtml());
-		} else if($isLogin && !$loginSuccess){
+		} else if($isLogin && !$showLoginDialog){
 			srand((double) microtime() * 1000000);
 			$r = rand();
 
@@ -153,7 +153,7 @@ abstract class we_dialog_info{
 			$table->setCol($actRow++, 0, ["width" => (432 - 30), "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'], we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
 		}
 
-		return $table->getHtml() . (!$loginSuccess ? '' :
+		return $table->getHtml() . (!$showLoginDialog ? '' :
 			we_html_element::htmlDiv(['id' => 'loading'], '<i class="fa fa-5x fa-spinner fa-pulse"></i>')
 			);
 	}

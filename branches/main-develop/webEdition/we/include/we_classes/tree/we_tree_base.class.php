@@ -118,24 +118,5 @@ container.prototype.frames={
 		);
 	}
 
-	public static function deleteTreeEntries($dontDeleteClassFolders = false){
-		return '
-var obj = top.treeData;
-var cont = new top.container();
-for(var i=1;i<=obj.len;i++){
-	if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
-		if(obj[i].parentid != 0){
-			if(!top.treeData.parentChecked(obj[i].parentid)){
-				cont.add(obj[i]);
-			}
-		}else{
-			cont.add(obj[i]);
-		}
-	}
-}
-top.treeData = cont;
-top.drawTree();';
-	}
-
 	abstract public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false);
 }

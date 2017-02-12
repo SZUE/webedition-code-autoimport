@@ -75,7 +75,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 		}
 
 		// username existiert noch nicht!
-		$hook = new weHook('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser']);
+		$hook = new we_hook_base('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser']);
 		$ret = $hook->executeHook();
 
 		we_saveCustomerImages();
@@ -113,7 +113,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			return;
 		}
 		if(isset($_REQUEST['s'])){// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
-			$hook = new weHook('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser']);
+			$hook = new we_hook_base('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser']);
 			$ret = $hook->executeHook();
 
 			we_saveCustomerImages();

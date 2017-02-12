@@ -89,8 +89,7 @@ switch($we_Table){
 		$needPerm = '';
 }
 if($needPerm && !we_base_permission::hasPerm($needPerm)){
-	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
-	exit();
+	we_base_permission::noPermDialog(g_l('alert', '[no_perms_action]'));
 }
 
 $we_doc->InWebEdition = true;
@@ -148,8 +147,7 @@ if($we_doc->ID){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
 					$we_message = g_l('alert', '[' . ($we_ContentType === we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : $we_Table . '][not_im_ws]');
-					include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-					exit();
+					we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
 				case FILE_TABLE: //	only preview mode allowed for docs
 					//	MUST change to Preview-Mode
 					$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
@@ -162,8 +160,7 @@ if($we_doc->ID){
 		if($we_ContentType != we_base_ContentTypes::OBJECT){
 			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		} else {
-			include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-			exit();
+			we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
 		}
 	}
 }
@@ -213,9 +210,7 @@ if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	}
 
 	if($we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
-		$we_message = g_l('alert', '[no_new][objectFile]');
-		include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-		exit;
+		we_base_permission::noPermDialog(g_l('alert', '[no_new][objectFile]'));
 	}
 }
 

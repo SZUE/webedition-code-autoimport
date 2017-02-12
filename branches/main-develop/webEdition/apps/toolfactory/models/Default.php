@@ -372,7 +372,7 @@ class toolfactory_models_Default extends we_app_Model{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', $this->_appName, [$this]);
+			$hook = new we_hook_base('save', $this->_appName, [$this]);
 			$hook->executeHook();
 		}
 

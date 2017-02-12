@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,20 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:msgWin.removeMessages();");
-$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
+abstract class we_dialog_messageConsole{
 
-$buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
+	public static function getDialog(){
+		$deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:msgWin.removeMessages();");
+		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
 
-echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]'), '', '', we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
-	we_html_element::jsScript(JS_DIR . 'messageConsoleWindow.js'), we_html_element::htmlBody([
-		'onload' => "(msgWin=new messageConsoleWindow(window)).init();",
-		'onunload' => "msgWin.remove();",
-		'class' => "weDialogBody messageConsoleWindow"
-		], '
+		$buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
+
+		echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]'), '', '', we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
+			we_html_element::jsScript(JS_DIR . 'messageConsoleWindow.js'), we_html_element::htmlBody([
+				'onload' => "(msgWin=new messageConsoleWindow(window)).init();",
+				'onunload' => "msgWin.remove();",
+				'class' => "weDialogBody messageConsoleWindow"
+				], '
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">' . g_l('messageConsole', '[headline]') . '</div>
 	</div>
@@ -40,4 +44,6 @@ echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]'), '', '', we_h
 	</div>
 	<div class="dialogButtonDiv">' . $buttons . '</div>
 '));
-?>
+	}
+
+}

@@ -26,7 +26,7 @@
 /**
  * class to handle hooks in webEdition and in applications
  */
-class weHook{
+class we_hook_base{
 
 	protected $action;
 	protected $appName;

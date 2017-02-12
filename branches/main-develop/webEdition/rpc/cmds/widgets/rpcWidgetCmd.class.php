@@ -85,7 +85,7 @@ class rpcWidgetCmd extends we_rpc_cmd{
 				$id = intval($_SESSION['user']['ID']);
 				//delete user's cockpit preferences from db
 				$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns",""),(' . $id . ',"cockpit_rss","")');
-				include(WE_INCLUDES_PATH . 'home.inc.php');
+				we_main_cockpit::getEditor();
 				break;
 		}
 
