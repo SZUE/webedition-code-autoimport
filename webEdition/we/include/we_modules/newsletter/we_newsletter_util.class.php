@@ -77,7 +77,7 @@ abstract class we_newsletter_util{
 			$fields = ['ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
 				'ModifiedBy' => 'frontend',
 				];
-			$hook = new weHook('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
+			$hook = new we_hook_base('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
 				'isUnsubscribe' => true]);
 			$hook->executeHook();
 			$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
@@ -446,7 +446,7 @@ abstract class we_newsletter_util{
 			] : ['ModifyDate' => time(),
 			'ModifiedBy' => 'frontend',
 			]);
-		$hook = new weHook('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
+		$hook = new we_hook_base('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
 			'isSubscribe' => true, 'isUnsubscribe' => false]);
 		$hook->executeHook();
 

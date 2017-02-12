@@ -278,7 +278,7 @@ class we_folder extends we_root{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
+			$hook = new we_hook_base('save', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();

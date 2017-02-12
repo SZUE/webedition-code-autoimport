@@ -62,7 +62,7 @@ function we_tag_sessionStart(array $attribs){
 	){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
 		$checkPassword = true;
-		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart', 'checkPassword' => &$checkPassword,]);
+		$hook = new we_hook_base('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart', 'checkPassword' => &$checkPassword,]);
 		$hook->executeHook();
 
 		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin, !$checkPassword)){
@@ -71,7 +71,7 @@ function we_tag_sessionStart(array $attribs){
 			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
 			//change session ID to prevent session
 			we_base_sessionHandler::makeNewID();
-			$hook = new weHook('customer_Login', '', ['customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart']);
+			$hook = new we_hook_base('customer_Login', '', ['customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart']);
 			$hook->executeHook();
 		}
 		unset($_REQUEST['s']['Password']);
@@ -208,7 +208,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 function wetagsessionStartdoAutoLogin(){
 	$autologinSeek = $_COOKIE['_we_autologin'];
 	if(!empty($autologinSeek)){
-		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart']);
+		$hook = new we_hook_base('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart']);
 		$hook->executeHook();
 
 		$wasRegistered = $_SESSION['webuser']['registered'];
@@ -233,7 +233,7 @@ function wetagsessionStartdoAutoLogin(){
 
 			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
 			$GLOBALS['WE_LOGIN'] = $wasRegistered;
-			$hook = new weHook('customer_Login', '', ['customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart']);
+			$hook = new we_hook_base('customer_Login', '', ['customer' => &$_SESSION['webuser'], 'type' => 'autoLogin', 'tagname' => 'sessionStart']);
 			$hook->executeHook();
 			return true;
 		}

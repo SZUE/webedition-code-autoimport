@@ -52,6 +52,7 @@ abstract class we_autoloader{
 		'glossary' => 'we_modules/glossary',
 		'gui' => 'we_classes/js_gui',
 		'helpers' => 'we_classes/helpers',
+		'hook' => 'we_hook/class',
 		'html' => 'we_classes/html',
 		'http' => 'we_classes/http',
 		'import' => 'we_import',
@@ -144,9 +145,6 @@ abstract class we_autoloader{
 			'we_object' => 'object/we_object.class.php',
 			'we_objectFile' => 'object/we_objectFile.class.php',
 			'we_schedpro' => 'schedule/we_schedpro.class.php',
-		],
-		'we_hook/class' => [
-			'weHook' => 'weHook.class.php',
 		],
 		'validation' => [
 			'validation' => 'validation.class.php',

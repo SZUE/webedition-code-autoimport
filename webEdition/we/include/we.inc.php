@@ -135,7 +135,7 @@ $GLOBALS['DB_WE'] = new DB_WE();
 
 if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
-	require_once(WE_INCLUDES_PATH . 'we_session.inc.php');
+	we_main_session::initSession();
 	$tooldefines = we_tool_lookup::getDefineInclude();
 	if($tooldefines){
 		foreach($tooldefines as $tooldefine){

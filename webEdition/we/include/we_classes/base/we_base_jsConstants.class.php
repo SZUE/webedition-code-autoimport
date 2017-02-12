@@ -165,6 +165,7 @@ abstract class we_base_jsConstants{
 		},
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
 		ext_doc_selected:"' . g_l('SEEM', '[ext_doc_selected]') . '",
+		found_in_workflow:"'. g_l('alert', '[found_in_workflow]').'",
 		image_edit_null_not_allowed:"' . g_l('weClass', '[image_edit_null_not_allowed]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",

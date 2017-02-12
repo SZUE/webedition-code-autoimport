@@ -212,8 +212,7 @@ abstract class we_base_move{
 		if(($table == TEMPLATES_TABLE && !we_base_permission::hasPerm("MOVE_TEMPLATE")) ||
 			($table == FILE_TABLE && !we_base_permission::hasPerm("MOVE_DOCUMENT")) ||
 			(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !we_base_permission::hasPerm("MOVE_OBJECTFILES"))){
-			require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-			exit();
+			we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
 		}
 		$jsCmd = new we_base_jsCmd();
 

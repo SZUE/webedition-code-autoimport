@@ -23,9 +23,10 @@
  */
 //start autoloader!
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
 
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+we_html_tools::protect(null, ($cmd === 'loggingOut' ? WEBEDITION_DIR . 'index.php' : ''));
+
 if(!$cmd){
 	t_e('call without command, might be an error');
 	exit();
@@ -106,9 +107,14 @@ function findInclude($cmd){
 		case 'home':
 		case 'reset_home':
 		case 'open_cockpit':
-			return 'home.inc.php';
+			we_main_cockpit::getEditor();
+			return true;
 		case 'logout':
-			return 'we_logout.inc.php';
+			we_main_session::logout();
+			return true;
+		case 'loggingOut':
+			we_main_session::loggingOut();
+			return true;
 		case 'openColorChooser':
 			return 'we_editors/we_colorChooser.inc.php';
 		case 'show_formmail_log':
@@ -234,20 +240,34 @@ function findInclude($cmd){
 		case 'edit_link_at_object':
 			return 'we_editors/we_linklistedit.inc.php';
 		case 'delete':
-			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
+			if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1)){
+				we_base_delete::getDialog();
+			} else {
+				we_main_cockpit::getEditor();
+			}
+			return true;
 		case 'move':
 			if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1)){
 				we_base_move::getDialog();
-				return true;
+			} else {
+				we_main_cockpit::getEditor();
 			}
-			return 'home.inc.php';
+			return true;
 		case 'addToCollection':
-			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_addToCollection.inc.php' : 'home.inc.php');
+			if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1)){
+				we_dialog_addToCollection::getDialog();
+			} else {
+				we_main_cockpit::getEditor();
+			}
+			return true;
+
 		case 'delete_single_document':
 		case 'do_delete':
-			return 'we_delete.inc.php';
+			we_base_delete::getDialog();
+			return true;
 		case 'delInfo':
-			return 'we_delInfo.inc.php';
+			we_base_delete::getDelInfo();
+			return true;
 		case 'do_move':
 		case 'move_single_document':
 			we_base_move::getDialog();
@@ -256,7 +276,8 @@ function findInclude($cmd){
 			we_base_move::getMoveInfo();
 			return true;
 		case 'do_addToCollection':
-			return 'we_addToCollection.inc.php';
+			we_dialog_addToCollection::getDialog();
+			return true;
 		case 'show_binaryDoc':
 			we_binaryDocument::showBinaryDoc();
 			return true;
@@ -269,14 +290,16 @@ function findInclude($cmd){
 			we_backup_wizard::showRecoverFrameset();
 			return true;
 		case 'messageConsole':
-			return 'jsMessageConsole/messageConsole.inc.php';
+			we_dialog_messageConsole::getDialog();
+			return true;
 		case 'import':
 			we_import_wizard::getFrameset();
 			return true;
 		case 'export':
 			return 'we_modules/export/export_frameset.php';
 		case 'copyFolder':
-			return 'copyFolder.inc.php';
+			we_dialog_copyFolder::getDialog();
+			return true;
 		case 'copyWeDocumentCustomerFilter':
 			return 'we_modules/customer/we_customer_copyWeDocumentFilter.inc.php';
 		case 'changeLanguageRecursive':

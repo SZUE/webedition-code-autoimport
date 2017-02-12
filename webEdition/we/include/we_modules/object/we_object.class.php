@@ -1998,7 +1998,7 @@ class we_object extends we_document{
 		if($skipHook){
 			return true;
 		}
-		$hook = new weHook('save', '', [$this, 'resave' => $resave]);
+		$hook = new we_hook_base('save', '', [$this, 'resave' => $resave]);
 //check if doc should be saved
 		if($hook->executeHook() === false){
 			$this->errMsg = $hook->getErrorString();

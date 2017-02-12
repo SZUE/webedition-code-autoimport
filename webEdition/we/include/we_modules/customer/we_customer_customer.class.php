@@ -114,7 +114,7 @@ class we_customer_customer extends we_base_model{
 			$this->ModifiedBy = $this->setModifiedBy;
 		}
 
-		$hook = new weHook('customer_preSave', '', ['customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')]);
+		$hook = new we_hook_base('customer_preSave', '', ['customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')]);
 
 		return $hook->executeHook() && we_base_model::save() && $this->registerMediaLinks();
 	}

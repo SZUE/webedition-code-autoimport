@@ -5,6 +5,7 @@ we_sselector_footer.php
 we_sselector_editFile.php
 we_sselector_cmd.php
 we_sselector_body.php
+we_loggingOut.php
 we_lcmd.php
 we_imgSelect.php
 we_docSelect.php
@@ -92,6 +93,7 @@ we/include/we_tags/custom_tags/dummy
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
 we/include/we_show_info.inc.php
+we/include/we_session.inc.php
 we/include/we_seem/we_SEEM_openExtDoc_frameset.php
 we/include/we_seem/open_url_in_editor.php
 we/include/we_seem/open_url_in_editor.inc.php
@@ -141,6 +143,7 @@ we/include/we_modules/users/we_users_util.php
 we/include/we_modules/users/we_users_tree.class.php
 we/include/we_modules/users/we_users_ping.php
 we/include/we_modules/users/we_users_ping.inc.php
+we/include/we_modules/users/we_users_permmessage.inc.php
 we/include/we_modules/users/we_users_lockmessage.inc.php
 we/include/we_modules/users/we_usersSelector.inc.php
 we/include/we_modules/users/we_usersSelect.php
@@ -486,6 +489,9 @@ we/include/we_editors/file_no_save_footer.inc.php
 we/include/we_editors/file_locked_footer.inc.php
 we/include/we_editors/file_in_workspace_footer.inc.php
 we/include/we_editors/SEEM_edit_include_document.inc.php
+we/include/we_delete_fn.inc.php
+we/include/we_delete.inc.php
+we/include/we_delInfo.inc.php
 we/include/we_db.inc.php
 we/include/we_classes/xml_validate.inc.php
 we/include/we_classes/xml_splitFile.inc.php
@@ -666,6 +672,7 @@ we/include/we_classes/JSON.php
 we/include/we_classes/Getopt.php
 we/include/we_browser_check.inc.php
 we/include/we_browserDetect.inc.php
+we/include/we_addToCollection.inc.php
 we/include/we_active_integrated_modules.inc.php
 we/include/we_TemplateSave.inc.php
 we/include/we_ContentTypes.inc.php
@@ -678,6 +685,7 @@ we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/weTagWizard/we_tags/we_tag_collection.inc.php
 we/include/weTagWizard/we_tags/custom_tags/dummy
 we/include/weTagWizard/classes/weTagWizard.class.php
+we/include/weInfoPages/weNoPerms.inc.php
 we/include/weCodeWizard/data/default/search/_information.php
 we/include/weCodeWizard/data/default/miscellaneous/_information.php
 we/include/weCodeWizard/data/custom/dummy
@@ -698,9 +706,11 @@ we/include/loadTree.inc.php
 we/include/jsMessageConsole/messageConsole.php
 we/include/htaccessbase.txt
 we/include/home_rss.inc.php
+we/include/home.inc.php
 we/include/fixOldPhp.inc.php
 we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
+we/include/copyFolder.inc.php
 we/include/clear_cache.inc.php
 we/include/changeTriggerID_rec.inc.php
 we/include/changeLanguage_rec.inc.php
@@ -1076,6 +1086,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/weCodeWizard/data/English_UTF-8
 !we/include/weCodeWizard/data/Deutsch_UTF-8
 !we/include/multiEditor
+!we/include/jsMessageConsole
 !we/include/java_menu
 !we/include/fonts
 !sidebar/img

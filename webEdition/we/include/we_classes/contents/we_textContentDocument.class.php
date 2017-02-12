@@ -236,7 +236,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->errMsg = '';
 		$this->i_setText();
 		if(!$skipHook){
-			$hook = new weHook('preSave', '', [$this, 'resave' => $resave]);
+			$hook = new we_hook_base('preSave', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -268,7 +268,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
+			$hook = new we_hook_base('save', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -281,7 +281,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
-			$hook = new weHook('prePublish', '', [$this]);
+			$hook = new we_hook_base('prePublish', '', [$this]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -320,7 +320,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('publish', '', [$this, 'prePublishTime' => $oldPublished]);
+			$hook = new we_hook_base('publish', '', [$this, 'prePublishTime' => $oldPublished]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -349,7 +349,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('unpublish', '', [$this]);
+			$hook = new we_hook_base('unpublish', '', [$this]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();

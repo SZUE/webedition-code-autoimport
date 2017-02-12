@@ -195,4 +195,9 @@ abstract class we_base_permission{
 		return true;
 	}
 
+	public static function noPermDialog($msg){
+		echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);"], we_html_tools::htmlDialogLayout('<p class="defaultfont">' . $msg . '</p>', g_l('alert', '[no_perms_title]'))));
+		exit();
+	}
+
 }
