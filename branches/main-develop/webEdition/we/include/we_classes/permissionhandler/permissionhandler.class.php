@@ -32,10 +32,9 @@
  *
  */
 abstract class permissionhandler{
-const USER_RESTRICTED=-1;
-const WORKSPACE_HAS_USERS=-2;
-	const NO_PERMISSION=-6;
-
+	const USER_RESTRICTED = -1;
+	const WORKSPACE_HAS_USERS = -2;
+	const NO_PERMISSION = -6;
 
 	public static function hasPerm($perm, $or = true){
 		if(empty($_SESSION['user']['isWeSession'])){
@@ -51,8 +50,8 @@ const WORKSPACE_HAS_USERS=-2;
 		$ret = ($or ? false : true);
 		foreach($perm as $cur){
 			$ret = ($or ?
-					$ret || (!empty($_SESSION['perms'][$cur])) :
-					$ret && (!empty($_SESSION['perms'][$cur]))
+				$ret || (!empty($_SESSION['perms'][$cur])) :
+				$ret && (!empty($_SESSION['perms'][$cur]))
 				);
 		}
 		return $ret;
@@ -107,7 +106,7 @@ const WORKSPACE_HAS_USERS=-2;
 		];
 
 		return (isset($knownActions[$requestedAction][$parameter]) ?
-				$knownActions[$requestedAction][$parameter] : 'none');
+			$knownActions[$requestedAction][$parameter] : 'none');
 	}
 
 	/**

@@ -98,6 +98,8 @@ we/include/we_seem/open_url_in_editor.inc.php
 we/include/we_seem/open_form_in_editor.php
 we/include/we_seem/open_form_in_editor.inc.php
 we/include/we_perms.inc.php
+we/include/we_move_fn.inc.php
+we/include/we_moveInfo.inc.php
 we/include/we_modules/workflow/we_workflow_win.inc.php
 we/include/we_modules/workflow/we_workflow_doc_footer.inc.php
 we/include/we_modules/workflow/we_webEditionCmd_workflow.inc.php
@@ -686,6 +688,7 @@ we/include/weCodeWizard/classes
 we/include/validation/xhtml_10_transitional.inc.php
 we/include/validation/xhtml_10_strict.inc.php
 we/include/treeInfo.inc.php
+we/include/sysinfo.inc.php
 we/include/sidebar.inc.php
 we/include/selectors.inc.php
 we/include/notInstalledModules.inc.php
@@ -699,6 +702,8 @@ we/include/fixOldPhp.inc.php
 we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php
+we/include/changeTriggerID_rec.inc.php
+we/include/changeLanguage_rec.inc.php
 we/include/baumFrame.inc.php
 we/include/accessibility/checkDocument.inc.php
 treeMainModules.php

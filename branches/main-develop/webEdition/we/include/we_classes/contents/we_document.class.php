@@ -1716,4 +1716,29 @@ class we_document extends we_root{
 		return $we_doc;
 	}
 
+	public static function changeRecursiveRequest($what){
+		$ok = false;
+		$lang = 'grant_language';
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1);
+		// init document
+		$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
+
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			$we_doc = we_document::initDoc($we_dt);
+			switch($what){
+				case 'changeLanguageRecursive':
+					$ok = $we_doc->changeLanguageRecursive();
+					$lang = 'grant_language';
+					break;
+				case 'changeTriggerIDRecursive':
+					$ok = $we_doc->changeTriggerIDRecursive();
+					$lang = 'grant_tid';
+					break;
+			}
+			echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ($ok ?
+					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][ok]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][notok]'), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
+		}
+	}
+
 }

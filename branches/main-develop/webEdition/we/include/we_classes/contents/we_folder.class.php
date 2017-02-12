@@ -407,7 +407,7 @@ class we_folder extends we_root{
 			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
-		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
+		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid][expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
 			'') .
@@ -428,7 +428,7 @@ class we_folder extends we_root{
 	function formChangeLanguage(){
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language][expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -654,15 +654,17 @@ class we_folder extends we_root{
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$parts[] = ['icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
-				$parts[] = ["headline" => g_l('weClass', '[grant_language]'),
-					"html" => $this->formChangeLanguage(),
+				$parts[] = [
+					'headline' => g_l('weClass', '[grant_language][headline]'),
+					'html' => $this->formChangeLanguage(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
-					"forceRightHeadline" => true
+					'forceRightHeadline' => true
 				];
 			} else if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-				$parts[] = ['icon' => "lang.gif",
-					"headline" => g_l('weClass', '[language]'),
-					"html" => $this->formLangLinks(),
+				$parts[] = [
+					'icon' => "lang.gif",
+					'headline' => g_l('weClass', '[language]'),
+					'html' => $this->formLangLinks(),
 					'space' => we_html_multiIconBox::SPACE_MED2
 				];
 			}
