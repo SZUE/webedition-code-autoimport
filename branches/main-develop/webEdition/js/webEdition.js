@@ -2458,7 +2458,7 @@ function doReloadCmd(args, url, hot) {
 }
 
 function startMsg() {
-	top._console_ = new (WE().layout.messageConsoleView)("mainWindow", this.window);
+	top._console_ = new (WE().layout.messageConsoleView)("mainWindow", window);
 	top._console_.register();
 	window.document.body.addEventListener("onunload", top._console_.unregister);
 }
