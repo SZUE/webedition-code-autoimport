@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -18,6 +17,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect(['ADMINISTRATOR']);
+
 abstract class we_dialog_errorlog{
 	private static $trans = [
 		'Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
@@ -107,39 +108,31 @@ abstract class we_dialog_errorlog{
 		return $ret;
 	}
 
-	public static function getDialog(){
-		we_html_tools::protect(['ADMINISTRATOR']);
-
-		function getNavButtons($size, $pos, $id){
-			if(!$size){
-				return;
-			}
-
-			$div = max(intval($size / 10), 1);
-
-			$url = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=showerrorlog';
-			return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
-				we_html_button::create_button('fa:first,fa-lg fa-fast-backward', $url . '&function=first', '', 0, 0, '', '', ($pos == 1)) .
-				we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $url . '&function=prevX&ID=' . $id . '&step=' . $div . "';", '', ($pos - $div < 1)) .
-				we_html_button::create_button(we_html_button::BACK, $url . '&function=prev&ID=' . $id, '', 0, 0, '', '', ($pos == 1))
-				.
-				'</td><td style="text-align:center">' .
-				we_html_button::create_button('export', $url . '&function=export&ID=' . $id) .
-				we_html_button::create_button(we_html_button::DELETE, $url . '&function=delete&ID=' . $id) .
-				we_html_button::create_button(we_html_button::DELETE_EQUAL, $url . '&function=deleteEqual&ID=' . $id) .
-				'</td><td style="text-align:right;">' .
-				we_html_button::create_button(we_html_button::NEXT, $url . '&function=next&ID=' . $id, '', 0, 0, '', '', ($pos == $size)) .
-				we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '&function=nextX&ID=' . $id . '&step=' . $div . "';", '', ($pos + $div > $size)) .
-				we_html_button::create_button('fa:last,fa-lg fa-fast-forward', $url . '&function=last') .
-				'</td></tr><tr><td colspan="3" style="text-align:center;width:120px;" class="defaultfont bold" >' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</td></table>';
+	private static function getNavButtons($size, $pos, $id){
+		if(!$size){
+			return;
 		}
 
-		/* function formatLine(&$val, $key){
-		  $val = $key . ': ' . $val;
-		  } */
+		$div = max(intval($size / 10), 1);
 
+		$url = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=showerrorlog';
+		return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
+			we_html_button::create_button('fa:first,fa-lg fa-fast-backward', $url . '&function=first', '', 0, 0, '', '', ($pos == 1)) .
+			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $url . '&function=prevX&ID=' . $id . '&step=' . $div . "';", '', ($pos - $div < 1)) .
+			we_html_button::create_button(we_html_button::BACK, $url . '&function=prev&ID=' . $id, '', 0, 0, '', '', ($pos == 1))
+			.
+			'</td><td style="text-align:center">' .
+			we_html_button::create_button('export', $url . '&function=export&ID=' . $id) .
+			we_html_button::create_button(we_html_button::DELETE, $url . '&function=delete&ID=' . $id) .
+			we_html_button::create_button(we_html_button::DELETE_EQUAL, $url . '&function=deleteEqual&ID=' . $id) .
+			'</td><td style="text-align:right;">' .
+			we_html_button::create_button(we_html_button::NEXT, $url . '&function=next&ID=' . $id, '', 0, 0, '', '', ($pos == $size)) .
+			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '&function=nextX&ID=' . $id . '&step=' . $div . "';", '', ($pos + $div > $size)) .
+			we_html_button::create_button('fa:last,fa-lg fa-fast-forward', $url . '&function=last') .
+			'</td></tr><tr><td colspan="3" style="text-align:center;width:120px;" class="defaultfont bold" >' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</td></table>';
+	}
 
-
+	public static function getDialog(){
 		$options = '';
 		foreach(array_keys(self::$trans) as $key){
 			$options.='<option value="' . str_replace(' ', '', $key) . '">' . $key . '</option>';
@@ -251,7 +244,7 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 
 		echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js'
 			) . we_html_multiIconBox::getJS(), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '	<div id="info" style="display: block;">' .
-				we_html_element::htmlDiv(['style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'], $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+				we_html_element::htmlDiv(['style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'], $size && $data ? self::getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
 				we_html_element::htmlDiv(['style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'], we_html_multiIconBox::getHTML('', $parts, 30, $buttons)) . '
 	</div>
 '
