@@ -115,7 +115,7 @@ abstract class we_modules_frame{
 
 	protected function getHTMLHeader($menuFile){
 		$inc = include($menuFile);
-		$jmenu = new we_base_menu($inc, 'top.opener.top.load', '');
+		$jmenu = new we_base_menu($inc);
 		$menu = $jmenu->getHTML();
 
 		return we_html_element::htmlDiv(['class' => 'menuDiv'], $menu .

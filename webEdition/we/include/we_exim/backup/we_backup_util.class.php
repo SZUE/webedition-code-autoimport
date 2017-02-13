@@ -173,15 +173,6 @@ abstract class we_backup_util{
 		return max(min($percent, 100), 0);
 	}
 
-	public static function getProgressJS($percent, $description){
-		return '
-if(top.busy && top.busy.setProgressText){
-		top.busy.setProgressText("current_description", "' . $description . '");
-		top.busy.setProgress(' . $percent . ');
-}
-';
-	}
-
 	public static function getExportPercent(){
 		$all = intval($_SESSION['weS']['weBackupVars']['row_count']);
 		$done = intval($_SESSION['weS']['weBackupVars']['row_counter']);

@@ -67,4 +67,4 @@ $parts[] = ["headline" => "",
 	'icon' => "cal.gif"
  ];
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_multiIconBox::getJS(), we_html_element::htmlBody(['class' => "weEditorBody"], we_html_multiIconBox::getHTML("", $parts, 30)));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody(['class' => "weEditorBody"], we_html_multiIconBox::getHTML("", $parts, 30)));

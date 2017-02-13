@@ -54,7 +54,7 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  * @return         string
  */
 function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = ''){
-	$output = ($expand != -1 ? we_html_multiIconBox::getJS() : '');
+	$output = ($expand != -1 ? we_html_element::jsScript(JS_DIR . 'multiIconBox.js') : '');
 
 	// Return HTML code of dialog
 	return $output . we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text);

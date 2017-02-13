@@ -807,7 +807,7 @@ class we_customer_EIWizard{
 		];
 
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_html_multiIconBox::getJS(), we_html_element::htmlBody([
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody([
 					'class' => 'weDialogBody'], we_html_element::htmlForm([
 						'name' => 'we_form', 'method' => 'post', 'target' => 'body'], $this->getHiddens(['art' => self::ART_IMPORT, 'step' => 4]) .
 						we_html_multiIconBox::getHTML('xml', $parts, 30, '', -1, '', '', false, g_l('modules_customer', '[import_step4]'))
@@ -842,7 +842,7 @@ class we_customer_EIWizard{
 			rmdir(TEMP_PATH . $tmpdir);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_html_multiIconBox::getJS(), we_html_element::htmlBody([
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', self::getJSFrame() . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody([
 					'class' => 'weDialogBody'], we_html_element::htmlForm([
 						'name' => 'we_form', 'method' => 'post', 'target' => 'load'], we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false, g_l('modules_customer', '[import_step5]'))
 					)

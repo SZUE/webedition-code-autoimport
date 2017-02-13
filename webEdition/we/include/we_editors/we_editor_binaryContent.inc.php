@@ -27,7 +27,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .
-		we_html_multiIconBox::getJS() .
+		we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 		we_html_multiIconBox::getHTML("weImgProp", [['icon' => "upload.gif",
 	"headline" => "",
 				"html" => $GLOBALS['we_doc']->formUpload(),

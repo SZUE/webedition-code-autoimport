@@ -384,7 +384,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">' .
 			we_html_element::htmlHiddens([
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
-				"ok" => 1]) . we_html_multiIconBox::getJS() .
+				"ok" => 1]) . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('siteimport', '[importSettingsWePages]')) .
 			'</form></body>';
 
@@ -632,7 +632,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				"name" => "we_form",
 				"method" => "post",
 				"target" => "siteimportcmd"
-				], we_html_multiIconBox::getJS() .
+				], we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
 
 		$body = we_html_element::htmlBody(["class" => "weDialogBody", "onunload" => "doUnload();"

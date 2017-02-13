@@ -36,7 +36,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <body class="weEditorBody" onload="doScrollTo()" onunload="doUnload()">
 	<form name="we_form" method="post" action="" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .
-		we_html_multiIconBox::getJS() .
+		we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 		$GLOBALS['we_doc']->getPropertyPage() .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>

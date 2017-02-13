@@ -204,7 +204,7 @@ switch($wecmd0){
 				'<div style="text-align:right">' . $cancelbut . '</div>');
 
 
-			echo we_html_multiIconBox::getJS() .
+			echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML("", $parts, 30, $buttons);
 			?>
 		</form>

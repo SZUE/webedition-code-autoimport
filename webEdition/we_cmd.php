@@ -84,8 +84,7 @@ function findInclude($cmd){
 			echo $import_object->getHTML();
 			return true;
 		case 'loadSidebarDocument':
-			$weFrame = new we_sidebar_frames();
-			$weFrame->getHTMLContent();
+			we_sidebar_frames::getHTMLContent();
 			return true;
 		case 'siteImport':
 		case 'siteImportCreateWePageSettings':

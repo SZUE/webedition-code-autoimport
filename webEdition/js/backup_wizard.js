@@ -423,8 +423,25 @@ function we_cmd() {
 				top.body.delSelItem();
 			}
 			break;
+		case "importFinished":
+			finishedImport(args[1].doRebuild, args[1].file);
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
+function finishedImport(doRebuild, file) {
+	top.opener.top.we_cmd("load", top.opener.top.treeData.table);
+	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=busy&operation_mode=busy&percent=100&current_description=" + WE().consts.g_l.backupWizard.finished;
+	if (doRebuild) {
+		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=cmd&operation_mode=rebuild";
+	} else {
+		top.body.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=4&temp_filename=" + file;
+	}
+	if (top.busy && top.busy.setProgressText) {
+		top.busy.setProgressText("current_description", WE().consts.g_l.backupWizard.finished);
+		top.busy.setProgress(100);
 	}
 }
 

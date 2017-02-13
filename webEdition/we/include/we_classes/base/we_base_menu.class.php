@@ -24,15 +24,11 @@
  */
 class we_base_menu{
 	private $entries;
-	private $lcmdFrame = '';
-	private $menuaction = '';
 
-	public function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){
-		$this->menuaction = $menuaction;
+	public function __construct($entries){
 		if($entries){
 			$this->entries = $entries;
 		}
-		$this->lcmdFrame = $lcmdFrame;
 	}
 
 	public function getCode(){

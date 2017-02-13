@@ -203,7 +203,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], 8 * 3600); //8h
 			}
 
-			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js'), we_html_element::htmlBody(['onload'=>"backupFinished('".g_l('backup', '[finished]')."');"]));
+			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js'), we_html_element::htmlBody(['onload' => "backupFinished('" . g_l('backup', '[finished]') . "');"]));
 
 			we_backup_util::addLog('Backup export finished');
 		}
@@ -319,16 +319,15 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 // reload user prefs
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
-
-			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-var op = top.opener.top.treeData.makeFoldersOpenString();
-top.opener.top.we_cmd("load", top.opener.top.treeData.table);
-' . we_main_headermenu::getMenuReloadCode() . '
-top.busy.location=WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?we_cmd[0]=recover_backup&pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
-' . ( $_SESSION['weS']['weBackupVars']['options']['rebuild'] ?
-						'top.cmd.location = WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?we_cmd[0]=recover_backup&pnt=cmd&operation_mode=rebuild";' :
-						'top.body.location = WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=4&temp_filename=' . $_SESSION['weS']['weBackupVars']['backup_file'] . '";'
-					) . we_backup_util::getProgressJS(100, g_l('backup', '[finished]'))), we_html_element::htmlBody());
+			$jsCmd = new we_base_jsCmd();
+			$jsCmd->addCmd('finishedImport', [
+				'doRebuild' => $_SESSION['weS']['weBackupVars']['options']['rebuild'],
+				'file' => $_SESSION['weS']['weBackupVars']['options']['rebuild'] ? $_SESSION['weS']['weBackupVars']['backup_file'] : ''
+			]);
+			list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
+			$jsCmd->addCmd($cmd, $val);
+			
+			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $jsCmd->getCmds(), we_html_element::htmlBody());
 			we_backup_util::addLog('Backup import finished');
 		}
 
@@ -337,10 +336,7 @@ top.busy.location=WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?we_cmd[0]=recover
 		break;
 
 	case 'rebuild':
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-new (WE().util.jsWindow)(top.opener, top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny,true, 0, true);
-top.close();
-'), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . we_base_jsCmd::singleCmd('rebuild'), we_html_element::htmlBody());
 		break;
 
 	default:

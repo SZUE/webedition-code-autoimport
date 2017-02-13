@@ -58,6 +58,7 @@ function goTo(where) {
 	}
 	f.submit();
 }
+
 function set_button_state(alldis) {
 	if (top.wizbusy) {
 		top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
@@ -71,6 +72,7 @@ function set_button_state(alldis) {
 		window.setTimeout(set_button_state, 300, (alldis ? 1 : 0));
 	}
 }
+
 function setNavStatDocDisabled() {
 	var radio = document.getElementById("type");
 	var check = document.getElementById("rebuildStaticAfterNavi");

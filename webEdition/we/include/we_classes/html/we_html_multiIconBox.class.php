@@ -87,10 +87,6 @@ abstract class we_html_multiIconBox{
 				$out);
 	}
 
-	static function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'multiIconBox.js');
-	}
-
 	static function getDynJS($uniqname = '', $marginLeft = 0){
 		return we_html_element::jsScript(JS_DIR . 'multiIconBox.js', '', ['id' => 'loadVarMultiIconBox', 'data-iconbox' => setDynamicVar([
 					'name' => $uniqname,

@@ -928,7 +928,7 @@ window.onload=extraInit;');
 
 	function getHTMLNewsletterGroups(){
 		$count = count($this->View->newsletter->groups);
-		$out = we_html_multiIconBox::getJS();
+		$out = we_html_element::jsScript(JS_DIR . 'multiIconBox.js');
 
 		for($i = 0; $i < $count; $i++){
 			$parts = [defined('CUSTOMER_TABLE') ? ["headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => we_html_multiIconBox::SPACE_MED2] : null,

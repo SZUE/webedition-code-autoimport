@@ -139,12 +139,13 @@ function we_cmd() {
 			window.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
+
 function checkForError() {
 	var _elem = document.we_form.elements;
 	var _elemLength = _elem.length;
 	var _fieldsChecked = false;
 	for (var i = 0; i < _elemLength; i++) {
-		if (_elem[i].name.substring(0, 7) == "_field[") {
+		if (_elem[i].name.substring(0, 7) === "_field[") {
 			if (_elem[i].checked) {
 				_fieldsChecked = true;
 				break;
@@ -155,6 +156,7 @@ function checkForError() {
 		WE().consts.g_l.rebuild.noFieldsChecked :
 		"");
 }
+
 function makeArrayFromCSV(csv) {
 	if (csv.length && csv.substring(0, 1) === ",") {
 		csv = csv.substring(1, csv.length);
@@ -166,8 +168,8 @@ function makeArrayFromCSV(csv) {
 		[] :
 		csv.split(/,/)
 		);
-
 }
+
 function set_button_state() {
 	if (top.wizbusy) {
 		top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");

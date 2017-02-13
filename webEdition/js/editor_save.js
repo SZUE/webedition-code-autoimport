@@ -170,9 +170,6 @@ function we_cmd() {
 				we_cmd('loadVTab', top.treeData.table, 0);
 			}
 			break;
-		case 'updateMenu':
-			document.getElementById("nav").parentNode.innerHTML = args[1];
-			break;
 		default:
 			top.we_cmd.apply(caller, args);
 	}
