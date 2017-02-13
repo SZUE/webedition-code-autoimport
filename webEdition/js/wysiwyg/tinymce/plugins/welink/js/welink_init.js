@@ -38,7 +38,7 @@ function init() {
 	}
 	addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
-	if (action == "update" && inst.isWeLinkInitialized === false && formObj) {
+	if (action === "update" && inst.isWeLinkInitialized === false && formObj) {
 		inst.isWeLinkInitialized = true;
 
 		//var href = inst.dom.getAttrib(elm, 'href');

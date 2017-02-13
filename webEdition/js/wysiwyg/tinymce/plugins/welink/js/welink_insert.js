@@ -39,7 +39,7 @@ var LinkDialog = {
 		return html;
 	},
 
-	writeBack: function(attribs) {top.console.log('attribs', attribs);
+	writeBack: function(attribs) {
 		this.preinit();
 
 		var inst = tinyMCEPopup.editor;
@@ -64,7 +64,7 @@ var LinkDialog = {
 			inst.getDoc().execCommand("unlink", false, null);
 			tinyMCEPopup.execCommand("mceInsertLink", false, "#mce_temp_url#", {skip_undo: 1});
 			elementArray = tinymce.grep(inst.dom.select("a"), function (n) {
-				return inst.dom.getAttrib(n, 'href') == '#mce_temp_url#';
+				return inst.dom.getAttrib(n, 'href') === '#mce_temp_url#';
 			});
 			for (i = 0; i < elementArray.length; i++){
 				this.setAllAttribs(elem = elementArray[i], attribs);
@@ -74,7 +74,7 @@ var LinkDialog = {
 		}
 
 		// Don't move caret if selection was image
-		if (elem.childNodes.length != 1 || elem.firstChild.nodeName != 'IMG') {
+		if (elem.childNodes.length != 1 || elem.firstChild.nodeName !== 'IMG') {
 			inst.focus();
 			inst.selection.select(elem);
 			inst.selection.collapse(0);
@@ -100,11 +100,6 @@ var LinkDialog = {
 		this.setAttrib(elem, 'lang', attribs.lang);
 		this.setAttrib(elem, 'tabindex', attribs.tabindex);
 		this.setAttrib(elem, 'accesskey', attribs.accesskey);
-
-		// Refresh in old MSIE
-		if (tinyMCE.isMSIE5) {
-			elem.outerHTML = elem.outerHTML;
-		}
 	},
 
 	setAttrib: function(elem, attrib, value) {

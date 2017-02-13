@@ -1,3 +1,8 @@
+dynamic/wysiwyg/abbrDialog.php
+dynamic/wysiwyg/acronymDialog.php
+dynamic/wysiwyg/galleryDialog.php
+dynamic/wysiwyg/imageDialog.php
+dynamic/wysiwyg/langDialog.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -630,6 +635,7 @@ we/include/we_classes/dialog/we_dialog_rule.class.php
 we/include/we_classes/dialog/we_dialog_importRtf.class.php
 we/include/we_classes/dialog/we_dialog_color.class.php
 we/include/we_classes/dialog/we_dialog_cell.class.php
+we/include/we_classes/dialog/we_dialog_Hyperlink.class.php
 we/include/we_classes/csv.inc.php
 we/include/we_classes/contents/we_quicktimeDocument.class.php
 we/include/we_classes/charsetHandler.class.php

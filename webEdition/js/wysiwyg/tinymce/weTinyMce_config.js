@@ -73,7 +73,7 @@ function TinyMceConfObject(args) {
 		removedInlinePictures: args.removedInlinePictures
 	};
 	this.weFullscrenParams = args.weFullscrenParams;
-	this.weFullscrenParamsscreenWidth = screen.availWidth-10;
+	this.weFullscrenParams.screenWidth = screen.availWidth-10;
 	this.weFullscrenParams.screenHeight = screen.availHeight - 70;
 	this.weFullscrenParams.contentCss = args.weFullscrenParams.contentCss + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,args.weFullscrenParams.contentCss ? true : ''),
 	this.weImageStartID = args.weImageStartID;
@@ -118,6 +118,7 @@ function TinyMceConfObject(args) {
 	this.visual = true;
 	this.extended_valid_elements = '@[we-tiny]';
 	this.editor_css = args.editorCss;
+	this.content_css = args.contentCssFirst;
 	//this.content_css = args.fontawsomeCss + ',' + args.contentCssFirst + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,true) + (args.contentCssLast ? ',' + args.contentCssLast : ''),
 	this.popup_css_add = args.popupCssAdd; 
 	this.template_templates = args.templates;

@@ -9,7 +9,7 @@
 					return;
 				}
 			ed.windowManager.open({
-				file: '/webEdition/dynamic/wysiwyg/langDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + ed.getParam('weIsFrontend'),
+				file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_lang&we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + ed.getParam('weIsFrontend'),
 				popup_css: false,
 				width: 460 + parseInt(ed.getLang('welang.delta_width', 0)),
 				height: 160 + parseInt(ed.getLang('welang.delta_height', 0)),

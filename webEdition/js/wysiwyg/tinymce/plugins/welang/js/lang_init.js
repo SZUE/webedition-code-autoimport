@@ -37,19 +37,19 @@ var WelangDialog = { // TODO: clean code by using more vars
 	init : function() {
 		var langValue = '';
 
-		inst = tinyMCEPopup.editor;
-		elm = inst.selection.getNode();
-		sel = inst.selection.getContent({format : 'text'});
+		this.inst = tinyMCEPopup.editor;
+		this.elm = this.inst.selection.getNode();
+		this.sel = this.inst.selection.getContent({format : 'text'});
 
 		var printAsSelection = '';
 
-		if(sel === ''){
+		if(this.sel === ''){
 			// no selection, but cursor inside SPAN with lang-attribute (the only case where lang-Button is active without selection):
 			// we will manipulate this lang-attribute
-			sel = elm.innerHTML;
+			this.sel = this.elm.innerHTML;
 			this.isLangSpan = true;
 		} else{
-			if(elm.nodeName === 'SPAN' && sel.trim() === elm.innerHTML.trim()){ //exact selection is innerHTML of SPAN: we will add or manipulate lang-attrib of existing SPAN
+			if(this.elm.nodeName === 'SPAN' && this.sel.trim() === this.elm.innerHTML.trim()){ //exact selection is innerHTML of SPAN: we will add or manipulate lang-attrib of existing SPAN
 				//printAsSelection = sel;
 				this.isLangSpan = true;
 			} else{ //exact selection is not innerHTML of SPAN: we will add new SPAN
@@ -58,23 +58,23 @@ var WelangDialog = { // TODO: clean code by using more vars
 		}
 
 		if(this.isLangSpan){
-			langValue = elm.getAttribute('lang') ? elm.getAttribute('lang') : '';
+			langValue = this.elm.getAttribute('lang') ? this.elm.getAttribute('lang') : '';
 		}
 
 		document.forms.we_form.elements['we_dialog_args[lang]'].value = langValue;
-		document.forms.we_form.elements.text.value = sel; //Selected Text to insert into glossary
+		document.forms.we_form.elements.text.value = this.sel; //Selected Text to insert into glossary
 	},
 
 	insert : function() {
 		var lang = document.forms.we_form.elements['we_dialog_args[lang]'].value;
 		if(this.isLangSpan){//if there is an existing SPAN selected: just manipulate lang-Attribute
 			if(lang !== ''){
-				inst.selection.getNode().setAttribute('lang', document.forms.we_form.elements['we_dialog_args[lang]'].value);
+				this.inst.selection.getNode().setAttribute('lang', document.forms.we_form.elements['we_dialog_args[lang]'].value);
 
 			} else{//remove attribute lang
-				inst.selection.getNode().removeAttribute('lang');
-				if(inst.selection.getNode().attributes.length === 0){//if no attributes left: remove SPAN
-					inst.dom.remove(inst.selection.getNode(), 1);
+				this.inst.selection.getNode().removeAttribute('lang');
+				if(this.inst.selection.getNode().attributes.length === 0){//if no attributes left: remove SPAN
+					this.inst.dom.remove(this.inst.selection.getNode(), 1);
 				}
 			}
 
@@ -82,20 +82,25 @@ var WelangDialog = { // TODO: clean code by using more vars
 			if(lang !== ''){
 				var blank = '';
 				var isBlank = false;
-				while(sel.charAt(sel.length-1) === ' '){
-					sel = sel.substr(0,sel.length-1);
+				while(this.sel.charAt(this.sel.length-1) === ' '){
+					this.sel = this.sel.substr(0, this.sel.length-1);
 					isBlank = true;
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
 
-				var visual = inst.hasVisual ? ' class="mceItemWeLang"' : '';
-				var content = '<span lang="' + document.forms.we_form.elements['we_dialog_args[lang]'].value + '"' + visual + '>' + sel + '</span>' + blank;
-				inst.execCommand('mceInsertContent', false, content);
+				var visual = this.inst.hasVisual ? ' class="mceItemWeLang"' : '';
+				var content = '<span lang="' + document.forms.we_form.elements['we_dialog_args[lang]'].value + '"' + visual + '>' + this.sel + '</span>' + blank;
+				this.inst.execCommand('mceInsertContent', false, content);
 			}
 		}
 		//tinyMCEPopup.close();
 	}
 };
+
+function weTinyDialog_doOk(){
+	WelangDialog.insert();
+	top.close();
+}
 
 tinyMCEPopup.onInit.add(WelangDialog.init, WelangDialog);

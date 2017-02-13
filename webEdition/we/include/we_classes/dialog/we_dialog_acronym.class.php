@@ -24,8 +24,9 @@
  */
 class we_dialog_acronym extends we_dialog_base{
 
-	function __construct($noInternals = false){
-		parent::__construct();
+	public function __construct($noInternals = true){
+		parent::__construct($noInternals);
+
 		$this->changeableArgs = ["title",
 			"lang",
 			"class",
@@ -34,14 +35,15 @@ class we_dialog_acronym extends we_dialog_base{
 		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[acronym_title]');
 		$this->noInternals = $noInternals;
+
 		$this->defaultInit();
+		$this->initByHttp();
 	}
 
-	function getOkJs(){
-		return '
-WeacronymDialog.insert();
-top.close();
-';
+	public static function getDialog(){
+		$inst = new we_dialog_acronym();
+
+		return $inst->getHTML();
 	}
 
 	function defaultInit(){
@@ -51,6 +53,41 @@ top.close();
 			'class' => '',
 			'style' => ''
 		];
+	}
+
+	function initByHttp(){
+		if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$this->noInternals){
+			$Glossary = new we_glossary_glossary();
+			$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language');
+			$Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
+			$Glossary->Text = trim(we_base_request::_(we_base_request::STRING, 'text'));
+			$Glossary->Title = trim(we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'title'));
+			$Glossary->Published = time();
+			$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
+			$Glossary->setPath();
+
+			if($Glossary->Title === ''){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addCmd('setFocus', "we_dialog_args[title]");
+			} else if($Glossary->getAttribute('lang') === ''){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addCmd('setFocus', "we_dialog_args[lang]");
+			} else if($Glossary->Text === ''){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			} else if($Glossary->pathExists($Glossary->Path)){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+			} else {
+				$Glossary->save();
+
+				$Cache = new we_glossary_cache(we_base_request::_(we_base_request::STRING, 'language'));
+				$Cache->write();
+				unset($Cache);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$this->jsCmd->addCmd('close');
+			}
+		}
+
+		parent::initByHttp();
 	}
 
 	protected function getJs(){

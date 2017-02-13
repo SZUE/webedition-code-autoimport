@@ -24,7 +24,7 @@
 				}
 
 				a.windowManager.open({
-					file: "/webEdition/dynamic/wysiwyg/linkDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[href]=" + encodeURIComponent(wehref) + "&we_dialog_args[cssclasses]=" + a.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + a.getParam('weIsFrontend'),
+					file: "/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_hyperlink&we_dialog_args[editor]=tinyMce&we_dialog_args[href]=" + encodeURIComponent(wehref) + "&we_dialog_args[cssclasses]=" + a.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + a.getParam('weIsFrontend'),
 					width: 600 + parseInt(a.getLang("welink.delta_width", 0)),
 					popup_css: false,
 					height: 600 + parseInt(a.getLang("welink.delta_height", 0)),

@@ -52,6 +52,18 @@ function doKeyDown(e) {
 	}
 }
 
+function weDoOk() {
+	if(dialogVars.onEnterKey){
+		if(weTinyDialog_doOk){
+			weTinyDialog_doOk();
+		} else if(weDialog_doOk){ // for use in other then tiny-dialogs
+			weDialog_doOk();
+		} else {
+			WE().t_e('we_dialog_base.js: missing function doOk()');
+		}
+	}
+}
+
 function addKeyListener() {
 	document.addEventListener("keyup", doKeyDown, true);
 }

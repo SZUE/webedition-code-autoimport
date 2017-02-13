@@ -24,25 +24,50 @@
  */
 class we_dialog_lang extends we_dialog_base{
 
-	function __construct($noInternals = false){
-		parent::__construct();
+	public function __construct($noInternals = true){
+		parent::__construct($noInternals);
+
 		$this->changeableArgs = ["lang"
 		];
 		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[language_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
+		$this->initByHttp();
 	}
 
-	function getOkJs(){
-		return '
-WelangDialog.insert();
-top.close();
-';
+	public static function getDialog(){
+		$inst = new we_dialog_lang();
+
+		return $inst->getHTML();
 	}
 
 	function defaultInit(){
 		$this->args = ["lang" => ""];
+	}
+
+	function initByHttp(){
+		if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$this->noInternals){
+			$Glossary = new we_glossary_glossary();
+			$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language', '');
+			$Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
+			$Glossary->Text = trim(we_base_request::_(we_base_request::STRING, 'text'));
+			$Glossary->Published = time();
+			$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
+			$Glossary->setPath();
+
+			if($Glossary->Text === "" || $Glossary->getAttribute('lang') === ""){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			} else if($Glossary->pathExists($Glossary->Path)){
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+			} else {
+				$Glossary->save();
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$this->jsCmd->addCmd('close');
+			}
+		}
+
+		parent::initByHttp();
 	}
 
 	protected function getJs(){
