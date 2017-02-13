@@ -1349,6 +1349,9 @@ var we_cmd_modules = {
 				var op = top.treeData.makeFoldersOpenString();
 				window.parent.we_cmd("load", args[1], 0, op, top.treeData.table);
 				break;
+			case 'updateMenu':
+				document.getElementById("nav").parentNode.innerHTML = args[1];
+				break;
 			case "exit_modules":
 				WE().util.jsWindow.prototype.closeByName('edit_module');
 				break;

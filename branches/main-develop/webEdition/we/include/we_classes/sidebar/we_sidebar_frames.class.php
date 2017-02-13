@@ -22,22 +22,21 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_sidebar_frames{
+abstract class we_sidebar_frames{
 
-	function getHTML($what){
+	public static function getHTML($what){
 		switch($what){
-
 			case 'content':
-				echo $this->getHTMLContent();
+				echo self::getHTMLContent();
 				break;
 
 			default:
-				echo $this->getHTMLFrameset();
+				echo self::getHTMLFrameset();
 				break;
 		}
 	}
 
-	function getHTMLFrameset(){
+	private static function getHTMLFrameset(){
 		?>
 		<div id="weSidebarBody">
 			<div id="weSidebarHeader">
@@ -50,13 +49,13 @@ class we_sidebar_frames{
 				</div>
 			</div>
 			<div id="weSidebarContentDiv">
-				<iframe id="weSidebarContent" src="<?= WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
+				<iframe id="weSidebarContent" src="<?= WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=loadSidebarDocument" name="weSidebarContent"></iframe>
 			</div>
 		</div>
 		<?php
 	}
 
-	function getHTMLContent(){
+	public static function getHTMLContent(){
 		$file = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1);
 		$params = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 		define('WE_SIDEBAR', true);
@@ -85,9 +84,9 @@ class we_sidebar_frames{
 		ob_start();
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
 
-		$SrcCode = ob_get_clean();
 		$cnt = 0;
-		$SrcCode = str_replace('<head>', '<head><script src="/webEdition/js/global.js"></script>', $SrcCode, $cnt);
+		$SrcCode = str_replace('<head>', '<head><script src="/webEdition/js/global.js"></script>', ob_get_clean(), $cnt);
+
 		if(!$cnt){
 			$SrcCode = '<script src="/webEdition/js/global.js"></script>' . $SrcCode;
 		}

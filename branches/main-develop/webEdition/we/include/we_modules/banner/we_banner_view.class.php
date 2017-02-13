@@ -165,7 +165,7 @@ class we_banner_view extends we_modules_view{
 				$parts = [];
 		}
 
-		$out .= we_html_multiIconBox::getJS() .
+		$out .= we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, ($wepos === 'down')) .
 			'</form></body></html>';
 

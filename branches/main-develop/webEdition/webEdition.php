@@ -381,8 +381,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 			?>
 			<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
 				<?php
-				$weFrame = new we_sidebar_frames();
-				$weFrame->getHTML('');
+				we_sidebar_frames::getHTML('');
 				?>
 			</div>
 		<?php } ?>

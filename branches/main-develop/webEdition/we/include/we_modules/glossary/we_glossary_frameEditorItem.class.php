@@ -56,7 +56,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$weSuggest = &weSuggest::getInstance();
 
 		$out = we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter("' . $weGlossaryFrames->View->Glossary->Type . '","' . ($weGlossaryFrames->View->Glossary->Type === "link" ? ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") : '') . '","' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ? ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") : '') . '");') .
-			we_html_multiIconBox::getJs() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
 		return self::buildBody($weGlossaryFrames, $out);

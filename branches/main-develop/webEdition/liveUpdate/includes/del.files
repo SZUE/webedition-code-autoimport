@@ -723,6 +723,7 @@ treeMain.php
 treeInfo.php
 sysinfo.php
 stay_alive.php
+sideBarFrame.php
 showDoc.php
 rpc/rpcRoot.inc.php
 rpc/cmds/document/rpcGetDocElementCmd.class.php

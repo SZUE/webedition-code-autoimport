@@ -139,7 +139,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 
 		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', $this->formElements['tableProperties']['foldAtNr'], $this->formElements['tableProperties']['foldAtOpen'], $this->formElements['tableProperties']['foldAtClose']);
 
-		return we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload || $this->posBtnUpload === 'top' ? '' : $divBtnUpload);
+		return we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . $box . ($this->isExternalBtnUpload || $this->posBtnUpload === 'top' ? '' : $divBtnUpload);
 	}
 
 	public function getHtmlFooter(){

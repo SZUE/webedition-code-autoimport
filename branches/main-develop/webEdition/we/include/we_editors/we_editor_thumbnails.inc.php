@@ -93,7 +93,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 700),
 			]];
 		}
-		echo we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', $parts, 20) .
+		echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . we_html_multiIconBox::getHTML('', $parts, 20) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>

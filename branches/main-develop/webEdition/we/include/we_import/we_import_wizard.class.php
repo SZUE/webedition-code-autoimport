@@ -720,7 +720,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$content = JQUERY .
 			$hdns .
-			we_html_multiIconBox::getJS() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
 
 		return ['', $content];
@@ -834,7 +834,7 @@ class we_import_wizard extends we_import_wizardBase{
 			we_html_element::htmlHiddens(['v[btnState_next]' => (($xmlWellFormed && $hasChildNode) ? 'enabled' : 'disabled'),
 				'v[btnState_back]' => 'enabled'
 			]) .
-			we_html_multiIconBox::getJS() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[select_data_set]'));
 
 		return ['', $content];
@@ -1050,7 +1050,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$znr = -1;
 
 		$content = $hdns .
-			we_html_multiIconBox::getJS() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
 
 		return ['', $content];
@@ -1633,7 +1633,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$znr = -1;
 
 		$content = $hdns .
-			we_html_multiIconBox::getJS() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML('csv', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
 
 		return ['', $content];

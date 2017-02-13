@@ -46,6 +46,7 @@ class we_main_headermenu{
 			we_html_element::jsScript(JS_DIR . 'menu/clickMenu.js');
 	}
 
+	//FIXME: this should not be executed directly, this should be a command which loads the data
 	static function getMenuReloadCode($location = 'top.opener.', $asCmd = false){
 		$menu = self::getMenu();
 		return $asCmd ? ['updateMenu', $menu->getHTML()] :
@@ -60,12 +61,12 @@ class we_main_headermenu{
 
 		if(// menu for normalmode
 			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-			$jmenu = new we_base_menu($we_menu, "top.load");
+			$jmenu = new we_base_menu($we_menu);
 		} else { // menu for seemode
 			if(!we_base_permission::isUserAllowedForAction("header", "with_java")){
 				return null;
 			}
-			$jmenu = new we_base_menu($we_menu, "top.load");
+			$jmenu = new we_base_menu($we_menu);
 		}
 
 		return $jmenu;

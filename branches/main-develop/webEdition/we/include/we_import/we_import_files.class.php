@@ -177,7 +177,7 @@ class we_import_files{
 				'step' => '1',
 				'type' => $this->type
 			]) .
-			we_html_multiIconBox::getJS() .
+			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			we_html_multiIconBox::getHTML("weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
 
 		$startsrceen = we_html_element::htmlDiv(

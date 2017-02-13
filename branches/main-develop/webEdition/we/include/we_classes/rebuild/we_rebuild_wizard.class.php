@@ -35,8 +35,15 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 0);
-		return self::getPage(self::$step());
+		switch(we_base_request::_(we_base_request::INT, 'step', 0)){
+			default:
+			case 0:
+				return self::getPage(self::getStep0());
+			case 1:
+				return self::getPage(self::getStep1());
+			case 2:
+				return self::getPage(self::getStep2());
+		}
 	}
 
 	/**
@@ -91,7 +98,7 @@ abstract class we_rebuild_wizard{
 	 *
 	 * @return string
 	 */
-	static function getStep0(){
+	private static function getStep0(){
 		$dws = get_def_ws();
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
@@ -225,7 +232,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return string
 	 */
-	static function getStep1(){
+	private static function getStep1(){
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case "rebuild_documents":
 				return we_rebuild_wizard::getRebuildDocuments();
@@ -241,7 +248,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return string
 	 */
-	static function getStep2(){
+	private static function getStep2(){
 		$btype = we_base_request::_(we_base_request::STRING, "btype", "rebuild_all");
 		$categories = we_base_request::_(we_base_request::INTLIST, "categories", "");
 		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", []));
@@ -716,7 +723,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 	public static function getJSLangConsts(){
 		return '
-	WE().consts.g_l.rebuild={
+WE().consts.g_l.rebuild={
 	noFieldsChecked:"' . we_message_reporting::prepareMsgForJS(g_l('rebuild', '[noFieldsChecked]')) . '",
 };';
 	}

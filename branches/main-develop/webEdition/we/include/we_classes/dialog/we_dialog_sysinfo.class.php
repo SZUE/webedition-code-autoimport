@@ -275,7 +275,7 @@ abstract class we_dialog_sysinfo{
 		echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', we_html_element::jsScript(JS_DIR . 'sysinfo.js'), we_html_element::htmlBody([
 				'class' => "weDialogBody", 'onload' => "self.focus();"
 				], '<div id="info" style="display: block;">' .
-				we_html_multiIconBox::getJS() .
+				we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_html_multiIconBox::getHTML('', $parts, 30, $buttons) . '
 	</div>
 	<div id="more" style="display:none;">' .

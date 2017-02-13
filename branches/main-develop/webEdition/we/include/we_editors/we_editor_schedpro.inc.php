@@ -45,7 +45,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		$parts[] = ['headline' => '',
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_schedule,fa-plus,fa-lg fa-clock-o', "javascript:we_cmd('schedule_add')"),
 		];
-		echo we_html_multiIconBox::getJS() .
+		echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 		we_schedpro::getMainJS($we_doc) .
 		we_html_multiIconBox::getHTML('', $parts, 20) .
 		we_html_element::htmlHidden("we_complete_request", 1);

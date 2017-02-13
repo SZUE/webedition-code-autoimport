@@ -343,7 +343,7 @@ class we_backup_wizard{
 						"step" => 3,
 						"MAX_FILE_SIZE" => $maxsize]) .
 					we_html_element::htmlInput(["type" => "hidden", "name" => "operation_mode", "value" => "import"]) .
-					we_html_multiIconBox::getJS() .
+					we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 					we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", 7, g_l('backup', '[recover_option]'), "<b>" . g_l('backup', '[recover_option]') . "</b>", false, g_l('backup', '[step3]'))
 				)
 		);
@@ -511,7 +511,7 @@ class we_backup_wizard{
 							"cmd" => "export",
 							"operation_mode" => "backup",
 							"do_import_after_backup" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup")]) .
-						we_html_multiIconBox::getJS() .
+						we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 						we_html_multiIconBox::getHTML("backup_options1", $parts, 30, "", $switchbut, g_l('backup', '[option]'), "<b>" . g_l('backup', '[option]') . "</b>", $edit_cookie != false ? ($edit_cookie === "down") : $edit_cookie, g_l('backup', '[export_step1]'))
 					)
 				)
@@ -789,7 +789,7 @@ class we_backup_wizard{
 		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js')
 			, we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '
 	<div id="info">' .
-				we_html_multiIconBox::getJS() .
+				we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_html_multiIconBox::getHTML('', $parts, 30, $buttons) .
 				'</div>')
 		);
@@ -857,6 +857,7 @@ class we_backup_wizard{
 	del_backup_confirm:"' . g_l('backup', '[del_backup_confirm]') . '",
 	delold_confirm:"' . g_l('backup', '[delold_confirm]') . '",
 	error_timeout:"' . g_l('backup', '[error_timeout]') . '",
+	finished:"'.g_l('backup', '[finished]').'",
 	finished_success:"' . g_l('backup', '[finished_success]') . '",
 	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
 	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
