@@ -25,7 +25,6 @@
 var isTinyMCE = true;
 
 var WeabbrDialog = { // TODO: clean code by using more vars
-
 	sel : '',
 	inst : '',
 	elm : '',
@@ -35,30 +34,30 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 		var langValue = '';
 		var titleValue = '';
 
-		inst = tinyMCEPopup.editor;
-		elm = inst.selection.getNode();
-		sel = inst.selection.getContent({format : 'text'});
+		this.inst = tinyMCEPopup.editor;
+		this.elm = this.inst.selection.getNode();
+		this.sel = this.inst.selection.getContent({format : 'text'});
 
 		var printAsSelection = '';
 
-		if(sel === ''){
+		if(this.sel === ''){
 			// no selection, but cursor inside ABBR (the only case where acronym-Button is active without selection):
-			sel = elm.innerHTML;
+			this.sel = this.elm.innerHTML;
 			this.isAbbr = true;
 		} else{
-			if(elm.nodeName === 'ABBR' && sel.trim() === elm.innerHTML.trim()){ //exact selection is innerHTML of ABBR
+			if(this.elm.nodeName === 'ABBR' && this.sel.trim() === this.elm.innerHTML.trim()){ //exact selection is innerHTML of ABBR
 				this.isAbbr = true;
 			}
 		}
 
 		if(this.isAbbr){
-			langValue = elm.getAttribute('lang') ? elm.getAttribute('lang') : '';
-			titleValue = elm.getAttribute('title') ? elm.getAttribute('title') : '';
+			langValue = this.elm.getAttribute('lang') ? this.elm.getAttribute('lang') : '';
+			titleValue = this.elm.getAttribute('title') ? this.elm.getAttribute('title') : '';
 		}
 
 		document.forms.we_form.elements['we_dialog_args[lang]'].value = langValue;
 		document.forms.we_form.elements['we_dialog_args[title]'].value = titleValue;
-		document.forms.we_form.elements.text.value = sel; //Selected Text to insert into glossary
+		document.forms.we_form.elements.text.value = this.sel; //Selected Text to insert into glossary
 	},
 
 	insert : function() {
@@ -67,32 +66,38 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 
 		if(this.isAbbr){//if there is an existing ACRONYM selected: just manipulate lang-Attribute
 			if(titleValue !== ''){
-				inst.selection.getNode().setAttribute('title', titleValue);
+				this.inst.selection.getNode().setAttribute('title', titleValue);
 				if(langValue !== ''){
-					inst.selection.getNode().setAttribute('lang', langValue);
+					this.inst.selection.getNode().setAttribute('lang', langValue);
 				} else{
-					inst.selection.getNode().removeAttribute('lang');
+					this.inst.selection.getNode().removeAttribute('lang');
 				}
 			} else{
-				inst.dom.remove(inst.selection.getNode(), 1);
+				this.inst.dom.remove(this.inst.selection.getNode(), 1);
 			}
 		} else{//no ACRONYM selected: insert tight and move blanks to the right of ACRONYM
 			if(titleValue !== ''){
 				var blank = '';
 				var isBlank = false;
-				while(sel.charAt(sel.length-1) === ' '){
-					sel = sel.substr(0,sel.length-1);
+				while(this.sel.charAt(this.sel.length-1) === ' '){
+					this.sel = this.sel.substr(0,this.sel.length-1);
 					isBlank = true;
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
 
-				var visual = inst.hasVisual ? ' class="mceItemWeAbbr"' : '';
-				var content = '<abbr lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + sel + '</abbr>' + blank;
-				inst.execCommand('mceInsertContent', false, content);
+				var visual = this.inst.hasVisual ? ' class="mceItemWeAbbr"' : '';
+				var content = '<abbr lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + this.sel + '</abbr>' + blank;
+				this.inst.execCommand('mceInsertContent', false, content);
 			}
 		}
 		//tinyMCEPopup.close();
 	}
 };
+
+function weTinyDialog_doOk(){
+	WeabbrDialog.insert();
+	top.close();
+}
+
 tinyMCEPopup.onInit.add(WeabbrDialog.init, WeabbrDialog);

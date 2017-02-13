@@ -46,7 +46,7 @@
 				}
 
 				e.windowManager.open({
-					file: '/webEdition/dynamic/wysiwyg/galleryDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + e.getParam('weIsFrontend') + '&we_dialog_args[collid]=' + weid + '&we_dialog_args[tmpl]=' + wetmpl + '&we_dialog_args[templateIDs]=' + templates,
+					file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_gallery&we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + e.getParam('weIsFrontend') + '&we_dialog_args[collid]=' + weid + '&we_dialog_args[tmpl]=' + wetmpl + '&we_dialog_args[templateIDs]=' + templates,
 					popup_css: false,
 					width: 500 + parseInt(e.getLang('weabbr.delta_width', 0)),
 					height: 250 + parseInt(e.getLang('weabbr.delta_height', 0)),

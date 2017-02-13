@@ -25,8 +25,8 @@
 class we_dialog_image extends we_dialog_base{
 	//private $weFileupload = null;
 
-	function __construct($noInternals = false){
-		parent::__construct();
+	public function __construct($noInternals = true){
+		parent::__construct($noInternals);
 		$this->changeableArgs = [
 			"type",
 			"extSrc",
@@ -50,9 +50,14 @@ class we_dialog_image extends we_dialog_base{
 			"longdesc"
 		];
 		$this->dialogTitle = g_l('wysiwyg', '[insert_image]');
-		$this->noInternals = $noInternals;
 		$this->bodyId = 'weImageDialog';
-		//$this->initFileUploader();
+	}
+
+	public static function getDialog($noInternals){
+		$inst = new we_dialog_image($noInternals);
+		$inst->initByHttp();
+
+		return $inst->getHTML();
 	}
 
 	function initBySrc($src, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $class = '', $title = '', $longdesc = ''){

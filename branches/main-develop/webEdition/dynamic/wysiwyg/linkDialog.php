@@ -35,6 +35,6 @@ if(!(
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-$dialog = new we_dialog_Hyperlink('', '', 0, 0, $noInternals);
+$dialog = new we_dialog_hyperlink('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
 echo $dialog->getHTML();

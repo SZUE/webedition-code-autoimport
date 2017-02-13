@@ -56,7 +56,7 @@ var ImageDialog = {
 			top.imageChanged();
 		}
 
-		if (n.nodeName == 'IMG' && !ed.isWeDataInitialized) {
+		if (n.nodeName === 'IMG' && !ed.isWeDataInitialized) {
 			var imgWidth, imgHeight, longdesc, src_arr;
 
 			// load attributes into form
@@ -290,6 +290,10 @@ var ImageDialog = {
 	// lots of tinyMCE-functions removed
 
 };
+
+function weTinyDialog_doOk(){
+	top.opener.top.console.log('image dialog save?');
+}
 
 ImageDialog.preInit();
 tinyMCEPopup.onInit.add(ImageDialog.init, ImageDialog);

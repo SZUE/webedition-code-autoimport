@@ -34,7 +34,7 @@
 					return;
 				}
 				e.windowManager.open({
-					file: '/webEdition/dynamic/wysiwyg/abbrDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + e.getParam('weIsFrontend'),
+					file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_abbr&we_dialog_args[editor]=tinyMce&we_dialog_args[isFrontend]=' + e.getParam('weIsFrontend'),
 					popup_css: false,
 					width: 460 + parseInt(e.getLang('weabbr.delta_width', 0)),
 					height: 200 + parseInt(e.getLang('weabbr.delta_height', 0)),

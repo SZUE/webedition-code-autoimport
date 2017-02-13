@@ -70,7 +70,7 @@ var WegalleryDialog = {// TODO: clean code by using more vars
 		if (idValue && tmplValue !== "0") {
 			var blank = '';
 			var isBlank = false;
-			while (this.sel.charAt(sel.length - 1) === ' ') {
+			while (this.sel.charAt(this.sel.length - 1) === ' ') {
 				this.sel = this.sel.substr(0, this.sel.length - 1);
 				isBlank = true;
 				blank += '&nbsp;';
@@ -87,4 +87,10 @@ var WegalleryDialog = {// TODO: clean code by using more vars
 		//tinyMCEPopup.close();
 	}
 };
+
+function weTinyDialog_doOk(){
+	WegalleryDialog.insert();
+	top.close();
+}
+
 tinyMCEPopup.onInit.add(WegalleryDialog.init, WegalleryDialog);

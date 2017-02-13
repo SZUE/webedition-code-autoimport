@@ -24,8 +24,9 @@
  */
 class we_dialog_gallery extends we_dialog_base{
 
-	function __construct($noInternals = false){
-		parent::__construct();
+	public function __construct($noInternals = true){
+		parent::__construct($noInternals);
+
 		$this->changeableArgs = ['collid',
 			'tmpl',
 			'templateIDs'
@@ -33,7 +34,15 @@ class we_dialog_gallery extends we_dialog_base{
 		$this->JsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[addGallery]');
 		$this->noInternals = $noInternals;
+
 		$this->defaultInit();
+		$this->initByHttp();
+	}
+
+	public static function getDialog(){
+		$inst = new we_dialog_gallery();
+
+		return $inst->getHTML();
 	}
 
 	function defaultInit(){
@@ -45,12 +54,6 @@ class we_dialog_gallery extends we_dialog_base{
 	protected function getJs(){
 		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js');
-	}
-
-	function getOkJs(){
-		return '
-WegalleryDialog.insert();
-';
 	}
 
 	function getDialogContentHTML(){

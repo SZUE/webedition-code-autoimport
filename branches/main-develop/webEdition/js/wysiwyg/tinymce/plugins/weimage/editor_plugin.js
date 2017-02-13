@@ -16,7 +16,7 @@
 				}
 
 				e.windowManager.open({
-					file: '/webEdition/dynamic/wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[src]=' + encodeURIComponent(wesrc) + '&we_dialog_args[cssclasses]=' + e.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + e.getParam('weIsFrontend') + "&we_dialog_args[selectorStartID]=" + e.getParam('weImageStartID') + "&we_dialog_args[fileID]=" + dropID + "&we_dialog_args[isPresetFromDnD]=" + (dropID ? 1 : 0),
+					file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_image&we_dialog_args[editor]=tinyMce&we_dialog_args[src]=' + encodeURIComponent(wesrc) + '&we_dialog_args[cssclasses]=' + e.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + e.getParam('weIsFrontend') + "&we_dialog_args[selectorStartID]=" + e.getParam('weImageStartID') + "&we_dialog_args[fileID]=" + dropID + "&we_dialog_args[isPresetFromDnD]=" + (dropID ? 1 : 0),
 					popup_css: false,
 					width: 600 + parseInt(e.getLang('weimage.delta_width', 0)),
 					height: 610 + parseInt(e.getLang('weimage.delta_height', 0)),

@@ -75,7 +75,7 @@
 				Event.cancel(e);
 
 				// Select the image if it's clicked. WebKit would other wise expand the selection
-				if (e.target.nodeName == 'IMG') {
+				if (e.target.nodeName === 'IMG') {
 					ed.selection.select(e.target);
 				}
 
@@ -96,7 +96,7 @@
 
 				// Since the contextmenu event moves
 				// the selection we need to store it away
-				if (e && e.button == 2) {
+				if (e && e.button === 2) {
 					realCtrlKey = e.ctrlKey;
 					return;
 				}
@@ -159,7 +159,7 @@
 
 			function getParent(pa, sel) {
 				sel = (sel !== undefined ? sel : false);
-				if (sel && groups[pa][2] == 'top') {
+				if (sel && groups[pa][2] === 'top') {
 					return m;
 				}
 				return (groups[pa][0] = groups[pa][0] ? groups[pa][0] : getParent(groups[pa][2], sel).addMenu({title: groups[pa][1]}));

@@ -36,9 +36,13 @@ class we_dialog_base{
 	var $JsOnly = false;
 	var $charset = '';
 	var $tinyMCEPopupManagment = true;
+
 	protected $bodyId = 'weDialog';
-	protected $noInternals = false;
+	protected $noInternals = true;
 	protected $we_cmd = [];
+	protected $jsCmd = null;
+	protected $tinyDialogName = '';
+	
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -49,7 +53,9 @@ class we_dialog_base{
 	 *
 	 * @return     we_dialog_base
 	 */
-	function __construct(){
+	function __construct($noInternals = true){
+		$this->noInternals = $noInternals;
+		$this->jsCmd = new we_base_jsCmd();
 		$this->db = new DB_WE();
 	}
 
@@ -97,15 +103,11 @@ class we_dialog_base{
 			$send[$k] = str_replace('"', '\"', $v);
 		}
 
-		return $this->cmdFunction($send);
+		return $this->cmdFunction($send) . $this->jsCmd->getCmds();
 	}
 
 	function cmdFunction(array $args){
 		// overwrite
-	}
-
-	function getOkJs(){
-		return '';
 	}
 
 	function getFramesetHTML(){
@@ -197,12 +199,14 @@ class we_dialog_base{
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset, '', we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', '', [
 					'id' => 'loadVarDialog',
 					'data-vars' => setDynamicVar([
-						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->JsOnly)
+						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->JsOnly),
+						'pluginName' => $this-tinyDialogName
 				])]) .
 			self::getTinyMceJS() .
 				$this->getJs() .
 				we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
-				$additionals);
+				$additionals .
+				$this->jsCmd->getCmds());
 	}
 
 	protected static function getTinyMceJS(){
@@ -215,11 +219,7 @@ class we_dialog_base{
 	}
 
 	protected function getJs(){
-		return we_html_element::jsElement('
-function weDoOk() {
-		if(dialogVars.onEnterKey){' . $this->getOkJs() . '
-	}
-}');
+		return '';
 	}
 
 	function getHttpVar($type, $name, $alt = ""){
