@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
 		"function init() {
 	WE().layout.cockpitFrame.executeAjaxRequest('" . implode("', '", we_base_request::_(we_base_request::STRING, 'we_cmd')) . "');
 }"), we_html_element::htmlBody(['onload' => 'init()']));

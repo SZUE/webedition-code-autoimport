@@ -266,7 +266,7 @@ var path="/";'
 			];
 		}
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop('', '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(["pnt" => "body",
 							"step" => 1]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))

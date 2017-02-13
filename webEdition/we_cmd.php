@@ -158,7 +158,17 @@ function findInclude($cmd){
 			we_SEEM::openFormInEditor();
 			return true;
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
-			return 'we_seem/we_SEEM_openExtDoc_frameset.inc.php';
+			we_SEEM::getExtDocFrameset();
+			return true;
+		case 'openExtDoc_footer':
+			we_SEEM::getExtDocFooter();
+			return true;
+		case 'openExtDoc_header':
+			we_SEEM::getExtDocHeader();
+			return true;
+		case 'openExtDoc_content':
+			we_SEEM::getExtDocContent();
+			return true;
 		case 'edit_document_with_parameters':
 			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 4);
 		case 'edit_document':

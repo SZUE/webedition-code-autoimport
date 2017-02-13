@@ -44,4 +44,4 @@ if(we_base_permission::hasPerm('ADMINISTRATOR')){
 	}
 }
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_message_reporting::jsMessagePush(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
+echo we_html_tools::getHtmlTop('', '', '', we_message_reporting::jsMessagePush(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());

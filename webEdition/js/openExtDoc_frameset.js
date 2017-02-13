@@ -59,6 +59,6 @@ function checkDocument() {
 		});
 
 		top.extDocHeader.location = "about:blank";
-		top.extDocFooter.location = WE().consts.dirs.WEBEDITION_DIR + "we/include/we_seem/we_SEEM_openExtDoc_footer.php";
+		top.extDocFooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=openExtDoc_footer";
 	}
 }

@@ -1735,7 +1735,7 @@ class we_document extends we_root{
 					$lang = 'grant_tid';
 					break;
 			}
-			echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ($ok ?
+			echo we_html_tools::getHtmlTop('', '', '', ($ok ?
 					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][ok]'), we_message_reporting::WE_MESSAGE_NOTICE) :
 					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][notok]'), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
 		}

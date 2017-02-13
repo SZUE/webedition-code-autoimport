@@ -39,16 +39,14 @@ if(!$tool || !in_array($tool, $whiteList)){
 }
 
 if($tool === 'weSearch'){
-	$_REQUEST['mod']=$tool;
-	require_once(WEBEDITION_PATH. 'we_showMod.php');
+	$_REQUEST['mod'] = $tool;
+	require_once(WEBEDITION_PATH . 'we_showMod.php');
 	return;
 }
 
 //check if bootstrap file exists of specific app
 if(file_exists(WEBEDITION_PATH . 'apps/' . $tool . '/index.php')){
-
 	header('Location: ' . WEBEDITION_DIR . 'apps/' . $tool . '/index.php/frameset/index' . //redirect.php/
 		(isset($REQUEST['modelid']) ? '/modelId/' . intval($REQUEST['modelid']) : '') .
 		(isset($REQUEST['tab']) ? '/tab/' . intval($REQUEST['tab']) : ''));
-	exit();
 }

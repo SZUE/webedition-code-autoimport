@@ -394,7 +394,7 @@ abstract class we_SEEM{
 			'/\s*onmouseover\s*=/i' => ' thiswasonmouseover=',
 			'/\s*onmouseout\s*=/i' => ' thiswasonmouseout=',
 			'/\s*ondblclick\s*=/i' => ' thiswasondblclick=',
-			];
+		];
 
 		foreach($linkArray[1] as $i => &$ll){
 			$ll = preg_replace(array_keys($pattern), array_values($pattern), $ll);
@@ -993,6 +993,82 @@ abstract class we_SEEM{
 				//	is needed to reopen the document (if possible) with webEdition
 				we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . str_replace(' ', '+', $action) . '">'))
 		));
+	}
+
+	public static function getExtDocFrameset(){
+		$text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
+		$param = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
+		$url = $text . $param; // + Parameters
+
+		if(!$url || (substr($url, 0, 7) != 'http://' && substr($url, 0, 8) != 'https://')){
+
+			$serveradress = getServerUrl();
+
+			$url = (!$url || $url{0} != '/' ?
+					$serveradress . '/' . $url :
+					$serveradress . $url);
+		}
+//  extract the path to the file without parameters for file_exists -> we_SEEM_openExtDoc_content.php
+		$arr = parse_url($url);
+		$newUrl = $arr['scheme'] . '://' . $arr['host'] . ( isset($arr['port']) ? (':' . $arr['port']) : '' ) . (isset($arr['path']) ? $arr['path'] : '' );
+
+
+//	we also need some functionality here to check if the location of the doc was cahnged
+		echo we_html_tools::getHtmlTop('', '', 'frameset', we_html_element::jsScript(JS_DIR . 'openExtDoc_frameset.js', '', ['id' => 'loadVarExtDoc', 'data-extdoc' => setDynamicVar([
+					'frameData' => [
+						'EditorType' => "none_webedition",
+						'EditorDocumentText' => str_replace('"', '', $arr["path"]),
+						'EditorDocumentPath' => str_replace('"', '', $newUrl),
+						'EditorContentType' => "none_webedition",
+						'EditorUrl' => str_replace('"', '', $text),
+						'EditorDocumentParameters' => str_replace('"', '', $param),
+					]
+			])])
+			, we_html_element::htmlBody(['onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading': false});"], we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=openExtDoc_header&filepath=' . urlencode($url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:35px;', '', '', false) .
+				we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_content&filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:35px;left:0px;right:0px;bottom:40px;', '', 'if (!openedWithWE) {checkDocument();}openedWithWE=false;') .
+				we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_footer"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false)
+			)
+		);
+	}
+
+	public static function getExtDocFooter(){
+		$table = new we_html_table(["border" => 0], 1, 2);
+		$table->setColContent(0, 1, we_html_button::create_button(we_html_button::BACK, "javascript:WE().layout.weNavigationHistory.navigateBack();"));
+
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["id" => "footerBody"], $table->getHtml()));
+	}
+
+	public static function getExtDocContent(){
+		$path = we_base_request::_(we_base_request::URL, "filepath");
+		if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
+			echo we_SEEM::parseDocument($content);
+		} else {
+			$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'], 2, 1);
+			$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
+
+			//	there must be a navigation-history - so use it
+			$table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:WE().layout.weNavigationHistory.navigateBack();"));
+
+			echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['style' => 'background-color:#F3F7FF;'], $table->getHtml()));
+		}
+
+		echo we_html_element::jsElement('parent.openedWithWE=true;');
+	}
+
+	public static function getExtDocHeader(){
+		$webEditionSiteUrl = getServerUrl() . SITE_DIR;
+		$url = we_base_request::_(we_base_request::URL, 'url');
+		$errormsg = (strpos($url, $webEditionSiteUrl) === 0 ?
+				g_l('SEEM', '[ext_doc_tmp]') :
+				sprintf(g_l('SEEM', '[ext_doc]'), $url));
+
+
+		$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'], 1, 2);
+		$table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
+		$table->setCol(0, 1, ['class' => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'], $errormsg);
+
+
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["id" => 'eHeaderBody',], $table->getHtml()));
 	}
 
 }

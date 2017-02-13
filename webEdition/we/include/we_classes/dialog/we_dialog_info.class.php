@@ -159,7 +159,7 @@ abstract class we_dialog_info{
 	}
 
 	public static function getFullDialog(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 			we_html_element::cssLink(CSS_DIR . 'infoScreen.css'), we_html_element::htmlBody([
 				'id' => 'infoScreen',
 				'onload' => "self.focus();"

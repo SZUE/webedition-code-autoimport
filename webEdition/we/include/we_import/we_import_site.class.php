@@ -1703,7 +1703,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	}
 
 	private function _getHtmlPage($body, $js = ''){
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, $body);
+		return we_html_tools::getHtmlTop('', '', '', $js, $body);
 	}
 
 }

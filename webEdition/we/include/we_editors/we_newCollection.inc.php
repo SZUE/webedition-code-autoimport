@@ -82,7 +82,7 @@ if($saveSuccess){
 	$jsCmd->addCmd('do_onSuccess');
 }
 
-echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'collection.js') .
+echo we_html_tools::getHtmlTop(g_l('buttons_global','[new_collection][value]'), '', '', we_html_element::jsScript(JS_DIR . 'collection.js') .
 		we_html_element::jsScript(JS_DIR . '/dialogs/we_dialog_newCollection.js', '', ['id' => 'loadVarWe_dialog_newCollection', 'data-dialog' => setDynamicVar($jsDynamicVars)]) .
 		$jsCmd->getCmds()
 	);
