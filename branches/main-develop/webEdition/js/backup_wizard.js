@@ -416,7 +416,7 @@ function we_cmd() {
 			top.close();
 			break;
 		case "deleteall":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=-1", "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=delFrag&currentID=-1", "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
 			break;
 		case "deletebackup":
 			if (top.body.delSelItem) {

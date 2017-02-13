@@ -24,6 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+session_write_close();
 
 if(($uniqid = we_base_request::_(we_base_request::STRING, 'u')) &&
 	($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) &&
