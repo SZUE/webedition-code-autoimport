@@ -729,8 +729,10 @@ notPublished.php
 notExist.php
 noAvailable.php
 newMsg.php
+multiContentFrame.php
 mozillamenu.php
 moveInfo.php
+loginToSuperEasyEditMode.php
 liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
 liveUpdate/templates/nextVersion.inc.php
@@ -1005,6 +1007,7 @@ html/aqua.html
 headermenu.php
 header.php
 getHelp.php
+errorlog.php
 editors/template/CodeMirror/unittests.js
 editors/template/CodeMirror/unittests.html
 editors/template/CodeMirror/MODIFICATIONS
@@ -1012,6 +1015,7 @@ editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
 editors/content/eplugin/gal
 delInfo.php
+delFrag.php
 css/wysiwyg/tinymce/tinyDialogCss_mac.scss
 css/wysiwyg/tinymce/tinyDialogCss_mac.css
 css/wysiwyg/tinymce/contentCssLast.php
@@ -1071,6 +1075,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_editors/we_metadata_fields
 !we/include/we_doclist
 !we/include/we_classes/weMetaData/classes
+!we/include/we_classes/rpc/view
 !we/include/we_classes/permissionhandler
 !we/include/we_classes/leWizard
 !we/include/we_classes/java_menu

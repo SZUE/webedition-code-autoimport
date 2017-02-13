@@ -24,8 +24,21 @@
  */
 abstract class we_dialog_deleteProgress{
 
-	public static function main(){
+	public static function getDialog(){
 
+		switch(we_base_request::_(we_base_request::STRING, 'frame', '')){
+			case "main":
+				echo self::main();
+				break;
+			case "cmd":
+				echo self::cmd();
+				break;
+			default:
+				echo self::getHTML(we_base_request::_(we_base_request::TABLE, "table"), we_base_request::_(we_base_request::INT, "currentID", 0));
+		}
+	}
+
+	private static function main(){
 		$WE_PB = new we_progressBar(0, 490);
 		$WE_PB->addText("", we_progressBar::TOP, "pb1");
 
@@ -35,15 +48,15 @@ abstract class we_dialog_deleteProgress{
 		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode(), we_html_element::htmlBody(["class" => "weDialogBody"], $pb));
 	}
 
-	public static function getHTML($table, $currentID){
-		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', '', we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "delcmd.location=WE().consts.dirs.WEBEDITION_DIR+'delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';"]
-					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+	private static function getHTML($table, $currentID){
+		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', '', we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "delcmd.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=delFrag&frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';"]
+					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=delFrag&frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 				)
 		);
 	}
 
-	public static function cmd(){
+	private static function cmd(){
 		if(!empty($_SESSION['weS']['backup_delete'])){
 			$taskname = md5(session_id() . "_backupdel");
 			new we_backup_delete($taskname, 1, 0);

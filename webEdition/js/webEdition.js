@@ -1715,7 +1715,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(caller, url, "copyfolder", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 				break;
 			case "del_frag":
-				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=" + args[1], "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
+				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=delFrag&currentID=" + args[1], "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
 				break;
 			case "open_wysiwyg_window":
 				open_wysiwyg_window(args, url);
@@ -1748,7 +1748,7 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);
 				break;
 			case "showerrorlog":
-				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "errorlog.php", "we_errorlog", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
+				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=showerrorlog", "we_errorlog", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 				break;
 			case "view_backuplog":
 				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true);

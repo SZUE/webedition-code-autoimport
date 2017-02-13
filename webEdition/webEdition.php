@@ -374,7 +374,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 			</div>
 		</div>
 		<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
-			<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
+			<iframe src="<?= WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=loadMultiEditor" name="bm_content_frame"></iframe>
 		</div>
 		<?php
 		if(!(SIDEBAR_DISABLED == 1)){

@@ -278,6 +278,15 @@ function findInclude($cmd){
 		case 'delInfo':
 			we_base_delete::getDelInfo();
 			return true;
+		case 'delFrag':
+			we_dialog_deleteProgress::getDialog();
+			return true;
+		case 'loadMultiEditor':
+			we_main_multiContentFrame::getHTML();
+			return true;
+		case "showerrorlog":
+			we_dialog_errorlog::getDialog();
+			return true;
 		case 'do_move':
 		case 'move_single_document':
 			we_base_move::getDialog();
