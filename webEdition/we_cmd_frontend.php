@@ -40,11 +40,6 @@ switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 				we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend') ||
 				!isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] === '';
 
-		we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend'),
-		$_SESSION['user']['Username'],
-		$noInternals);
-		
-		
 		if(!$noInternals){
 			we_html_tools::protect();
 		}
