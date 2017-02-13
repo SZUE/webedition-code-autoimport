@@ -67,7 +67,7 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 }';
 }
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($js));
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_element::htmlHidden('ok', 1);
 

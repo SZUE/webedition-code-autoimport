@@ -139,7 +139,7 @@ class we_selector_category extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setSelectorData($weCmd);
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printHeaderHeadlines(){
@@ -189,7 +189,7 @@ class we_selector_category extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setSelectorData($weCmd);
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML(we_base_jsCmd $weCmd){
@@ -384,7 +384,7 @@ class we_selector_category extends we_selector_file{
 		}
 		$weCmd->addCmd('setLookinDir');
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	function printPropertiesHTML(){
@@ -442,7 +442,7 @@ class we_selector_category extends we_selector_file{
 			$table->setCol(5, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js'), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . __CLASS__ . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />

@@ -651,7 +651,7 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'd
 
 		$buttons = new we_html_table(['class' => 'default defaultfont', 'style' => "text-align:right"], 1, 1);
 		$buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"));
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "setIconOfDocClass(document,'selectoricon');"], we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "setIconOfDocClass(document,'selectoricon');"], we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
 			)
 		);
 	}

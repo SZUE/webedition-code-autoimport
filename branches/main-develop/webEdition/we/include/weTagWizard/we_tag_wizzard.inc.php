@@ -72,7 +72,7 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 }
 // additional javascript for the individual tags - end
 // print html header of page
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js', '', ['id' => 'loadVarTagWizard', 'data-tw' => setDynamicVar($tw)]));
 ?>
 <body onload="self.focus();" class="defaultfont tagWizzard">

@@ -72,7 +72,7 @@ class we_selector_delete extends we_selector_file{
 			$weCmd->addCmd('we_cmd', ['del_frag', $del]);
 			$weCmd->addCmd('close');
 		}
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printFooterTable(){

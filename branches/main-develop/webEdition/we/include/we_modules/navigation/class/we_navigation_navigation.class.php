@@ -902,7 +902,7 @@ class we_navigation_navigation extends we_base_model{
 		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $def . ')'], we_html_element::htmlForm(
 					['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'))));
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/weNaviEditor.js', '', ['id' => 'loadVarNavi', 'data-navi' => setDynamicVar([
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/weNaviEditor.js', '', ['id' => 'loadVarNavi', 'data-navi' => setDynamicVar([
 					'naviID' => intval($id)
 			])])
 			, $body);

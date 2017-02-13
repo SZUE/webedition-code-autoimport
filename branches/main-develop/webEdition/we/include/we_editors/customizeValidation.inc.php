@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
 ?>
 <body class="weDialogBody">
 	<?php
