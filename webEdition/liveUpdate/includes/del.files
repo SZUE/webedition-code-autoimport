@@ -19,6 +19,7 @@ we/versions/dummy
 we/tmp/fragments/.htaccess
 we/templates/dummy
 we/include/xhtml.inc.php
+we/include/wysiwygWindow.inc.php
 we/include/webEdition_seem.inc.php
 we/include/webEdition_normal.inc.php
 we/include/we_widgets/mod/wePadFunctions.inc.php

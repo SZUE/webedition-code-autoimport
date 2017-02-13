@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'open_wysiwyg_window':
-		include(WE_INCLUDES_PATH . 'wysiwygWindow.inc.php');
+		we_dialog_wysiwygWindow::getDialog();
 		exit();
 
 	default:

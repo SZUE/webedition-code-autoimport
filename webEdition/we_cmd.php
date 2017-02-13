@@ -324,7 +324,8 @@ function findInclude($cmd){
 		case 'image_rotate':
 			return 'we_editors/image_edit.inc.php';
 		case 'open_wysiwyg_window':
-			return 'wysiwygWindow.inc.php';
+			we_dialog_wysiwygWindow::getDialog();
+			return true;
 		//  stuff about accessibility/validation
 		case 'checkDocument':
 			return 'we_editors/checkDocument.inc.php'; //  Here request is performed
