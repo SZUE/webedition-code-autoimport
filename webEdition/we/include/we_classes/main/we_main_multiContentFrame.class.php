@@ -51,7 +51,8 @@ abstract class we_main_multiContentFrame{
 			we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js'), we_html_element::htmlBody([
 				'id' => 'multiEditor',
 				'onresize' => "if(WE().layout.multiTabs){WE().layout.multiTabs.setFrameSize()}",
-				'onload' => 'startMultiEditor();' . we_gui_multiEditor::start($cmd_string)], '
+				'onload' => 'startMultiEditor();' . we_gui_multiEditor::start($cmd_string)
+				], '
 <div id="multiEditorDocumentTabsFrameDiv">
 	<div id="weMultiTabs">
 		<div id="tabContainer" name="tabContainer"></div>

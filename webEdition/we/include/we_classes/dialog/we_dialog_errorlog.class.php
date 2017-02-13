@@ -19,6 +19,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_dialog_errorlog{
+	private static $trans = [
+		'Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
+		'Source code around' => 'posData',
+		'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global'
+	];
 
 	private static function getInfoTable($infoArr){
 		if(!$infoArr){
@@ -63,7 +68,7 @@ abstract class we_dialog_errorlog{
   	<td class="left">#' . $infoArr['ID'] . '</td>
     <td class="right">' . $infoArr['Date'] . '</td>
   </tr>';
-		foreach($GLOBALS['trans'] as $key => $val){
+		foreach(self::$trans as $key => $val){
 			if(isset($infoArr[$val])){
 				$ret.= '<tr id="' . str_replace(' ', '', $key) . '">
     <td class="left">' . $key . ':</td>
@@ -104,9 +109,6 @@ abstract class we_dialog_errorlog{
 
 	public static function getDialog(){
 		we_html_tools::protect(['ADMINISTRATOR']);
-		$trans = ['Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
-			'Source code around' => 'posData',
-			'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global'];
 
 		function getNavButtons($size, $pos, $id){
 			if(!$size){
@@ -139,7 +141,7 @@ abstract class we_dialog_errorlog{
 
 
 		$options = '';
-		foreach(array_keys($GLOBALS['trans']) as $key){
+		foreach(array_keys(self::$trans) as $key){
 			$options.='<option value="' . str_replace(' ', '', $key) . '">' . $key . '</option>';
 		}
 		$url = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=showerrorlog';

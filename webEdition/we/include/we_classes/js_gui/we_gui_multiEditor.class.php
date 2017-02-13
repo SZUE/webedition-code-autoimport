@@ -128,7 +128,7 @@ abstract class we_gui_multiEditor{
 			}
 		}
 
-		echo $jsCommand;
+		return $jsCommand;
 	}
 
 }
