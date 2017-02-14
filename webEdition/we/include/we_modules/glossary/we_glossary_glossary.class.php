@@ -464,7 +464,6 @@ class we_glossary_glossary extends we_base_model{
 WE().consts.g_l.glossary={
 	checking:"' . g_l('modules_glossary', '[checking]') . '",
 	all_words_identified:"' . g_l('modules_glossary', '[all_words_identified]') . '",
-	no_java:"' . g_l('modules_glossary', '[no_java]') . '",
 	change_to:"' . g_l('modules_glossary', '[change_to]') . '",
 	input:"' . g_l('modules_glossary', '[input]') . '",
 	suggestions:"' . g_l('modules_glossary', '[suggestions]') . '",

@@ -35,24 +35,11 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 
 echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', '[new_message]'));
+echo we_html_element::jsScript(WE_JS_MODULES_DIR.'messaging/messaging.js');
+
 ?>
 
 <script><!--
-	rcpt_sel = [];
-
-	function update_rcpts() {
-		var rcpt_str = "";
-
-		for (i = 0; i < rcpt_sel.length; i++) {
-			rcpt_str += rcpt_sel[i][2];
-			if (i != rcpt_sel.length - 1) {
-				rcpt_str += ", ";
-			}
-		}
-
-		document.compose_form.mn_recipients.value = rcpt_str;
-	}
-
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
 
@@ -60,11 +47,6 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 		//	    opener.top.add_win(msg_usel);
 	}
 
-	function do_send() {
-		rcpt_s = encodeURI(document.compose_form.mn_recipients.value);
-		document.compose_form.rcpts_string.value = rcpt_s;
-		document.compose_form.submit();
-	}
 
 //-->
 </script>

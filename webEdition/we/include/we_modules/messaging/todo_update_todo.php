@@ -33,19 +33,8 @@ $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status');
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/todo.js'));
 ?>
-<script><!--
-function do_confirm() {
-		document.update_todo_form.submit();
-	}
-
-	function doUnload() {
-		WE().util.jsWindow.prototype.closeAll(window);
-	}
-//-->
-	</script>
-</head>
 <body class="weDialogBody" onunload="doUnload();">
 	<?php
 	$heading = g_l('modules_messaging', '[todo_status_update]');
@@ -66,33 +55,33 @@ function do_confirm() {
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 			],
-				["headline" => g_l('modules_messaging', '[subject]'),
+			["headline" => g_l('modules_messaging', '[subject]'),
 				"html" => $compose->get_subject(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				["headline" => g_l('modules_messaging', '[deadline]'),
+			["headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => we_html_tools::getDateInput('td_deadline%s', $compose->get_deadline()),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				["headline" => g_l('modules_messaging', '[status]'),
+			["headline" => g_l('modules_messaging', '[status]'),
 				"html" => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				["headline" => g_l('modules_messaging', '[priority]'),
+			["headline" => g_l('modules_messaging', '[priority]'),
 				"html" => we_html_tools::htmlSelect('todo_priority', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10], 1, $compose->get_priority()),
 				'space' => we_html_multiIconBox::SPACE_MED,
 			],
-				["headline" => "",
+			["headline" => "",
 				"html" => $compose->get_msg_text(),
 				'noline' => 1
 			],
-				["headline" => "",
+			["headline" => "",
 				"html" => $compose->get_todo_history(),
 			],
-				["headline" => g_l('modules_messaging', '[comment]'),
+			["headline" => g_l('modules_messaging', '[comment]'),
 				"html" => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 			]

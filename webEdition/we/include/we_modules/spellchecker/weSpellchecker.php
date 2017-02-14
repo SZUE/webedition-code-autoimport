@@ -5,12 +5,6 @@ $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_user
 we_html_tools::protect($protect);
 
 $editname = we_base_request::_(we_base_request::STRING, 'we_dialog_args', false, 'editname');
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 
 if(!isset($_SESSION['weS']['dictLang'])){
 	$_SESSION['weS']['dictLang'] = $spellcheckerConf['default'];
@@ -33,51 +27,24 @@ $space = 5;
 
 $_mode = 'normal';
 
-$_applet_code = we_html_element::htmlApplet(['name' => "spellchecker",
-		'code' => "LeSpellchecker.class",
-		'archive' => "lespellchecker.jar",
-		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 20,
-		'height' => 20,
-		], '
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>
-<param name="code" value="LeSpellchecker.class"/>
-<param name="archive" value="lespellchecker.jar"/>
-<param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
-<param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
-<param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
-<param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"/>	'
-);
-
-
 if($editname !== false){
 	$_mode = 'tinyMce';
 }
+
+/* JS:
+  var mode = "<?= $_mode; ?>";
+  var editname = "<?= $editname; ?>";
+ */
+echo we_html_tools::getHtmlTop('','','',
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js').
+
+we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+ we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js'));
 ?>
-	<script><!--
-		var mode = "<?= $_mode; ?>";
-		var editname = "<?= $editname; ?>";
-		var g_l = {
-			checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
-			no_java: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
-			finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
-		};
-
-		function setAppletCode() {
-			retryjava = 0;
-			document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
-			window.setTimeout(spellcheck, 1000);
-		}
-
-//-->
-	</script>
-	<?=
-	we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
-	we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js');
-	?>
-</head>
 <body class="weDialogBody" onload="setDialog()"><?php
 	$_preview = '<div id="preview" class="defaultfont"></div>';
 
@@ -123,10 +90,10 @@ if($editname !== false){
 	$parts = [['headline' => '',
 		'html' => $_preview,
 		],
-			['headline' => '',
+		['headline' => '',
 			'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
 		],
-			['headline' => g_l('modules_spellchecker', '[dictionary]'),
+		['headline' => g_l('modules_spellchecker', '[dictionary]'),
 			'html' => $_selectCode,
 			'space' => we_html_multiIconBox::SPACE_MED
 		]

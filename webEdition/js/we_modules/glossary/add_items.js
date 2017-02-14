@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -24,7 +24,6 @@
  */
 'use strict';
 var orginal;
-var retryjava = 0;
 var retry = 0;
 var to;
 var counter = 0;
@@ -55,13 +54,7 @@ function spellcheck() {
 		document.spellchecker.check(text);
 		window.setTimeout(findNext, 2000);
 	} else {
-		if (retryjava < 5) {
-			window.setTimeout(spellcheck, 1000);
-			retryjava++;
-		} else {
-			fadeout("spinner", 80, 10, 10);
-			top.frames.glossarycheck.noJava();
-		}
+		fadeout("spinner", 80, 10, 10);
 	}
 }
 
@@ -149,7 +142,7 @@ function getTextColumn(text, colspan) {
 		td.setAttribute("colspan", colspan);
 		td.setAttribute('style', 'text-align:center;vertical-align:middle;height:220px;');
 	}
-	if (text !== WE().consts.g_l.glossary.all_words_identified && text !== WE().consts.g_l.glossary.no_java) {
+	if (text !== WE().consts.g_l.glossary.all_words_identified) {
 		text = shortenWord(text, 20);
 	}
 

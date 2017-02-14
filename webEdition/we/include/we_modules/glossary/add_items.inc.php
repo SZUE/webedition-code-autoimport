@@ -68,25 +68,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		$UserDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
-		$AppletCode = we_html_element::htmlApplet(['name' => "spellchecker",
-				'code' => "LeSpellchecker.class",
-				'archive' => "lespellchecker.jar",
-				'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-				'width' => 2,
-				'height' => 2,
-				'id' => "applet",
-				'style' => "visibility: hidden",
-				], '
-<param name="code" value="LeSpellchecker.class"/>
-<param name="archive" value="lespellchecker.jar"/>
-<param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'dict/' . '"/>
-<param name="dictionary" value="' . $LanguageDict . '"/>
-<param name="debug" value="off"/>
-<param name="user" value="' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '"/>
-<param name="udSize" value="' . (is_file($UserDict) ? filesize($UserDict) : '0') . '"/>'
-		);
-
 		//
 		// --> get the content
 		//
@@ -116,8 +97,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		$Pieces = preg_split('!(<[^>]*>)!', $SrcBody, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 		// replace words in non-tag pieces
-		$ReplBody = "";
-		$Before = " ";
+		$ReplBody = $Before = " ";
 		foreach($Pieces as $Piece){
 			if(strpos($Piece, '<') !== 0 && stripos($Before, '<script') === false){
 				$ReplBody .= $Piece . " ";
@@ -176,18 +156,17 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 				//-->
 			</script>
-				</head>
+					</head>
 
-		<body style="margin:0px;padding:0px;">
-					<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
+			<body style="margin:0px;padding:0px;">
+										<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
 				if(($cnt = count($_REQUEST['we_cmd'])) > 3){
 					for($i = 3; $i < $cnt; $i++){
 						echo we_html_element::htmlHidden('we_cmd[' . ($i - 3) . ']', we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i));
 					}
 				}
-				echo '<iframe id="glossarycheck" name="glossarycheck" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . (($cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3)) !== false ? '&we_cmd[3]=' . $cmd3 : '' ) . '"  style="width:730px;height:400px;overflow: hidden;"></iframe>' .
-				$AppletCode;
+				echo '<iframe id="glossarycheck" name="glossarycheck" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . (($cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3)) !== false ? '&we_cmd[3]=' . $cmd3 : '' ) . '"  style="width:730px;height:400px;overflow: hidden;"></iframe>';
 
 //
 // ---> Form with all unidentified words
@@ -217,20 +196,18 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
-				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js')					; ?>
+				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
 					<script><!--
 				var Combobox = new weCombobox();
 
 						function getActionColumn(word, type) {
 							var td = document.createElement('td');
-							var html;
-
-							html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
-							<?php
-							foreach($Modes as $Key => $Value){
-								echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
-							}
-							?>
+							var html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
+		<?php
+		foreach($Modes as $Key => $Value){
+			echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
+		}
+		?>
 							+ '</select>';
 
 							td.innerHTML = html;
@@ -245,11 +222,11 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
 								'</optgroup>' +
 								'<optgroup label="' + WE().consts.g_l.glossary.languages + '">' +
-							<?php
-							foreach($Languages as $Key => $Value){
-								echo "'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
-							}
-							?>
+		<?php
+		foreach($Languages as $Key => $Value){
+			echo "'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
+		}
+		?>
 							'</optgroup>' +
 								'</select>';
 
@@ -263,14 +240,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								tr.appendChild(getTextColumn(WE().consts.g_l.glossary.all_words_identified, 7));
 								table.appendChild(tr);
 								WE().layout.button.hide(document, 'execute');
-							<?php
-							if($cmd3 != "checkOnly"){
-								?>
+		<?php
+		if($cmd3 != "checkOnly"){
+			?>
 									WE().layout.button.enable(document, 'publish');
 									WE().layout.button.show(document, 'publish');
-								<?php
-							}
-							?>
+			<?php
+		}
+		?>
 
 							} else {
 								WE().layout.button.enable(document, 'execute');
@@ -278,30 +255,16 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 						}
 
-						function noJava() {
-							var tr = document.createElement('tr');
 
-							tr.appendChild(getTextColumn(WE().consts.g_l.glossary.no_java, 7));
-							table.appendChild(tr);
-							WE().layout.button.hide(document, 'execute');
-							<?php
-							if($cmd3 != "checkOnly"){
-								?>
-								document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", '', 0, 0, "", "", true, false)); ?>';
-								WE().layout.button.enable(document, 'publish');
-								<?php
-							}
-							?>
-						}
 
 						//-->
 						</script>
-					</head>
-					<body class="weDialogBody" onload="init();">
+						</head>
+						<body class="weDialogBody" onload="init();">
 
-						<div id="spinner">
-							<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
-							<div id="statusText" class="small" style="color: black;"><?= g_l('modules_glossary', '[download]'); ?></div>
+							<div id="spinner">
+								<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
+								<div id="statusText" class="small" style="color: black;"><?= g_l('modules_glossary', '[download]'); ?></div>
 							</div>
 
 
@@ -353,7 +316,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								}
 
 								$Parts = [
-										["headline" => "",
+									["headline" => "",
 										"html" => $Content,
 									]
 								];

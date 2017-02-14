@@ -21,55 +21,55 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 if(!$transaction){
 	exit();
 }
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
+
+$jsCmd = new we_base_jsCmd();
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
-?>
-<script><!--
-<?php
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging.js');
+
 $mode = we_base_request::_(we_base_request::STRING, 'mode');
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings'){
 	$foldername = we_base_request::_(we_base_request::FILE, 'folder_name');
 	$parentfolder = we_base_request::_(we_base_request::INT, 'parent_folder');
 	$types = we_base_request::_(we_base_request::STRING, 'foldertypes');
-	if($mode === 'new'){
-		$res = $messaging->create_folder($foldername, $parentfolder, $types);
-	} elseif($mode === 'edit'){
-		$res = $messaging->modify_folder(we_base_request::_(we_base_request::INT, 'fid'), $foldername, $parentfolder);
+	switch($mode){
+		case 'new':
+			$res = $messaging->create_folder($foldername, $parentfolder, $types);
+			break;
+		case 'edit':
+			$res = $messaging->modify_folder(we_base_request::_(we_base_request::INT, 'fid'), $foldername, $parentfolder);
 	}
 	$ID = array_shift($res);
 	if($ID >= 0){
-
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 		?>
-		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?= $transaction ?>&mcmd=save_folder_settings&name=<?= $foldername; ?>&id=<?= $ID ?>&mode=<?= $mode; ?>&parent_id=<?= $parentfolder; ?>&type=<?= $types; ?>';
-		top.content.we_cmd('messaging_start_view', '', '<?= we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
-		//-->
+		<script><!--
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?= $transaction ?>&mcmd=save_folder_settings&name=<?= $foldername; ?>&id=<?= $ID ?>&mode=<?= $mode; ?>&parent_id=<?= $parentfolder; ?>&type=<?= $types; ?>';
+			top.content.we_cmd('messaging_start_view', '', '<?= we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
+			//-->
 		</script>
 		</head>
 		<body></body>
 		</html>
 		<?php
 		exit;
+	} else {
+		$jsCmd->addMsg($res[0], we_message_reporting::WE_MESSAGE_ERROR);
 	}
-	echo we_message_reporting::getShowMessageCall($res[0], we_message_reporting::WE_MESSAGE_ERROR);
 }
+
+echo $jsCmd->getCmds();
 ?>
-
-function save() {
-document.edit_folder.submit();
-}
-//-->
-</script>
-
 <body class="weDialogBody" style="border-top: 1px solid black;">
 	<form name="edit_folder" action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 		<?php
@@ -79,7 +79,7 @@ document.edit_folder.submit();
 			'mcmd' => 'save_folder_settings',
 			'mode' => $mode,
 			($fid ? 'fid' : '') => $fid
-		 ]);
+		]);
 
 		switch($mode){
 			case 'new':

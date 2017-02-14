@@ -1621,6 +1621,13 @@ var we_cmd_modules = {
 			case "revert_published":
 				doReloadCmd(args, url, false);
 				break;
+			case "revert_published":
+				doReloadCmd(args, url, false);
+				var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+				_EditorFrame.setEditorIsHot(false);
+				_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
+
+				break;
 			case "edit_document_with_parameters":
 			case "edit_document":
 				wecmd_editDocument(args, url);
