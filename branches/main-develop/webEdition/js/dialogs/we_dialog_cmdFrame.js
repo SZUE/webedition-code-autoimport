@@ -45,6 +45,21 @@ function we_cmd() {
 		case 'link_writeback':
 			top.LinkDialog.writeBack(payload.attributes);
 			break;
+		case 'wysiwyg_writeBack':
+			var openerDoc = payload.isFrontendEdit ? top.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document;
+top.console.log(payload);
+			try{
+				openerDoc.getElementById(payload.name).value = payload.textareaValue;
+			} catch(err){}
+			try{
+				openerDoc.getElementById('div_wysiwyg_' + payload.name).innerHTML = payload.divValue;
+			} catch(err){}
+			try{
+				WE().layout.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
+			} catch(err){}
+
+			//top.close();
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

@@ -41,6 +41,7 @@ function imageChanged(wasThumbnailChange) {
 	document.we_form['we_cmd[0]'].value = 'update_editor';
 	document.we_form.imgChangedCmd.value = '1';
 	document.we_form.submit();
+	document.we_form['we_cmd[0]'].value = 'open_dialog_image';
 }
 
 function extSrc_doOnchange(input) {
@@ -80,7 +81,7 @@ function checkWidthHeight(field) {
 }
 
 function update_editor(data) {
-	document.we_form['we_cmd[0]'].value = '';
+	document.we_form['we_cmd[0]'].value = 'open_dialog_image';
 
 	var inputElem;
 
