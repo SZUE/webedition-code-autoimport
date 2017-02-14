@@ -3,6 +3,7 @@ dynamic/wysiwyg/acronymDialog.php
 dynamic/wysiwyg/galleryDialog.php
 dynamic/wysiwyg/imageDialog.php
 dynamic/wysiwyg/langDialog.php
+dynamic/wysiwyg/linkDialog.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -763,8 +764,10 @@ lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resource
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.Deployment.dll
 js/wysiwyg/tinymce/weTinyMceFunctions.js
 js/wysiwyg/tinymce/weTinyMceDialogs.js
-webEdition/js/wysiwyg/tinymce/plugins/weimage/js/image_init.js
-webEdition/js/wysiwyg/tinymce/plugins/weimage/js/image_insert.js
+js/wysiwyg/tinymce/plugins/weimage/js/image_init.js
+js/wysiwyg/tinymce/plugins/weimage/js/image_insert.js
+js/wysiwyg/tinymce/plugins/welink/js/welink_init.js  
+js/wysiwyg/tinymce/plugins/welink/js/welink_insert.js
 js/wizard_code.js
 js/we_vtabs.js
 js/we_versionsRebuild_finish.js
