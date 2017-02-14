@@ -130,7 +130,8 @@ function findInclude($cmd){
 		case 'dt_delete_cat':
 		case 'newDocType':
 		case 'save_docType':
-			return 'we_editors/doctypeEdit.inc.php';
+			we_dialog_doctypeEdit::getDialog();
+			return true;
 		case 'rebuild':
 			we_rebuild_wizard::showFrameset();
 			return true;
@@ -370,7 +371,8 @@ function findInclude($cmd){
 			foreach($mods as $m){
 				if($cmd == $m['name'] . '_edit_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 					$GLOBALS['moduleName'] = $m['text_short'];
-					return 'weInfoPages/messageModuleNotActivated.inc.php';
+					we_modules_frame::showNotActivatedMsg();
+					return true;
 				}
 			}
 			//	This is ONLY used in the edit-mode of the documents.

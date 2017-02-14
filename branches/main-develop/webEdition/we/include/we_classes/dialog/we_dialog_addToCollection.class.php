@@ -62,7 +62,7 @@ abstract class we_dialog_addToCollection{
 		$weSuggest->setSelector(weSuggest::DocSelector);
 		$weSuggest->setTable(VFILE_TABLE);
 		$weSuggest->setWidth(273);
-		$cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
+		//$cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
 
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements." . $idname . ".value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 6);
 		$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", '', 0, 0, "", "", false, false), 0);

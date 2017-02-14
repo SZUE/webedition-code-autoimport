@@ -44,7 +44,7 @@ abstract class we_main_multiContentFrame{
 
 		for($i = 0; $i < $count; $i++){
 			//'overflow:hidden;' removed to fix bug #6540
-			$frames.='<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '" noresize ></iframe>';
+			$frames .= '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . WEBEDITION_DIR . 'editors/blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '" noresize ></iframe>';
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'multiEditor.css') .

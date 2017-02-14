@@ -45,13 +45,14 @@ $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
 
 echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
-	we_html_element::jsScript(JS_DIR . 'selectorEdit.js', (isset($data) ? 'init();' : ''))
-);
-?>
-<body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><div style="text-align:center">
+	we_html_element::jsScript(JS_DIR . 'selectorEdit.js', (isset($data) ? 'init();' : '')), we_html_element::htmlBody([
+		'class' => "weDialogBody",
+		'onresize' => "setSize()",
+		'style' => "width:100%; height:100%"
+		], '<div style="text-align:center">
 		<form method="post">
-			<input type="hidden" name="cmd" value="save" />
-			<?= we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), $buttons, 1) . "</span>"; ?>
-		</form></div>
-</body>
-</html>
+			<input type="hidden" name="cmd" value="save" />' .
+		we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ': <span class="weMultiIconBoxHeadline">' . str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), $buttons, 1) . '</span>
+		</form></div>'
+	)
+);

@@ -956,7 +956,7 @@ EditorFrame.prototype = {
 	 //   nothing
 	 */
 	setEmptyEditor: function () {
-		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
+		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "editors/blank_editor.html";
 	},
 	getEditorFrameWindow: function () {
 		return this.EditorFrameWindow;

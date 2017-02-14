@@ -28,7 +28,8 @@ $delete = new weTagData_selectAttribute('delete', weTagData_selectAttribute::get
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 
-$this->TypeAttribute = new weTagData_typeAttribute('edit', [new weTagDataOption('', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex], [$id]),
+$this->TypeAttribute = new weTagData_typeAttribute('edit', [
+	new weTagDataOption('', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex], [$id]),
 	new weTagDataOption('document', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
 	new weTagDataOption('object', false, 'object', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
 	new weTagDataOption('shop', false, 'shop', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $amount, $delarticle, $delshop, $shopname,], [$id])]
