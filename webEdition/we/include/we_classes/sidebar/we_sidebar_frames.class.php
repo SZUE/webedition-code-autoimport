@@ -55,6 +55,41 @@ abstract class we_sidebar_frames{
 		<?php
 	}
 
+	private static function showSidebarText(array $textArray){
+		$ret = '';
+		unset($textArray[2]); // #6261: do not show entry [2]
+		foreach($textArray as $text){
+			$link = "%s";
+			if(!empty($text['link'])){
+
+				if(stripos($text['link'], 'javascript:') === 0){
+					$text['link'] = str_replace("\"", "'", $text['link']); #6625
+					$text['link'] = str_replace("`", "'", $text['link']); #6625
+					$link = '<a href="' . $text['link'] . '">%s</a>';
+				} else {
+					$link = '<a href="' . $text['link'] . '" target="_blank">%s</a>';
+				}
+			}
+
+			$headline = (empty($text['headline']) ? '' : sprintf($link, $text['headline']));
+			$ret .= '<tr>
+				<td class="defaultfont" style="vertical-align:top;padding-top:5px;" colspan="2"><strong>' . $headline . '</strong><br /><br/>' . $text['text'] . '</td>
+			</tr>
+			<tr>';
+		}
+		return $ret;
+	}
+
+	private static function getDefaultContent(){
+		echo we_html_tools::getHtmlTop('sideBar', '', '', '', we_html_element::htmlBody(['class' => "weSidebarBody"], '<table>' .
+				self::showSidebarText(g_l('sidebar', '[default]')) .
+				(we_base_permission::hasPerm('ADMINISTRATOR') ?
+					self::showSidebarText(g_l('sidebar', '[admin]')) :
+					'') .
+				'</table>'
+		));
+	}
+
 	public static function getHTMLContent(){
 		$file = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1);
 		$params = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
@@ -73,24 +108,25 @@ abstract class we_sidebar_frames{
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
 			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE, $GLOBALS['DB_WE'], false, false, true);
 			if(!$file || substr($file, -1) === '/' || $file === 'default'){
-				$file = WEBEDITION_DIR . 'sidebar/default.php';
+				$file = '';
 			}
 		}
 
-		//manipulate GET/REQUEST for document
-		$_GET = [];
-		parse_str($params, $_GET);
-		$_REQUEST = $_GET;
-		ob_start();
-		include($_SERVER['DOCUMENT_ROOT'] . $file);
+		if($file){
+			//manipulate GET/REQUEST for document
+			$_GET = [];
+			parse_str($params, $_GET);
+			$_REQUEST = $_GET;
+			ob_start();
+			include($_SERVER['DOCUMENT_ROOT'] . $file);
 
-		$cnt = 0;
-		$SrcCode = str_replace('<head>', '<head><script src="/webEdition/js/global.js"></script>', ob_get_clean(), $cnt);
-
-		if(!$cnt){
-			$SrcCode = '<script src="/webEdition/js/global.js"></script>' . $SrcCode;
+			$cnt = 0;
+			$SrcCode = str_replace('<head>', '<head><script src="/webEdition/js/global.js"></script>', ob_get_clean(), $cnt);
+		} else {
+			$SrcCode = self::getDefaultContent();
 		}
-		echo we_SEEM::parseDocument($SrcCode);
+
+		echo we_SEEM::parseDocument(($cnt ? $SrcCode : '<script src="/webEdition/js/global.js"></script>' . $SrcCode));
 
 		exit();
 	}
