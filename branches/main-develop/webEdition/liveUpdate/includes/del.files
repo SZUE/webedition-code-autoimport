@@ -1090,6 +1090,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/java_menu
 !we/include/fonts
 !sidebar/img
+!sidebar
 !rpc/views
 !rpc/cmds/tools/navigation
 !rpc/cmds/dw
