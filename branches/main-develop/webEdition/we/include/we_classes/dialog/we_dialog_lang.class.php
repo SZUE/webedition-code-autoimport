@@ -36,8 +36,8 @@ class we_dialog_lang extends we_dialog_base{
 		$this->initByHttp();
 	}
 
-	public static function getDialog(){
-		$inst = new we_dialog_lang();
+	public static function getDialog($noInternals = true){
+		$inst = new we_dialog_lang($noInternals);
 
 		return $inst->getHTML();
 	}

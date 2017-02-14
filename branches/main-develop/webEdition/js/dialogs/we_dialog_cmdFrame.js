@@ -36,14 +36,14 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-		case "image_update_editor":
+		case 'image_update_editor':
 			top.update_editor(payload);
 			break;
 		case 'image_writeback':
 			top.ImageDialog.writeBack(payload.attributes);
 			break;
 		case 'link_writeback':
-			LinkDialog.writeBack(payload.attributes);
+			top.LinkDialog.writeBack(payload.attributes);
 			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

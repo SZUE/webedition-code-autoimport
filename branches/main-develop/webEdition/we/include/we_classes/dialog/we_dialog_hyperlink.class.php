@@ -23,13 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_hyperlink extends we_dialog_base{
-	function __construct($href = '', $target = '', $fileID = 0, $objID = 0, $noInternals = false){
-		parent::__construct();
+	function __construct($noInternals = true){
+		parent::__construct($noInternals);
 
 		$this->changeableArgs = ['type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
 			'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
 		];
 		$this->dialogTitle = g_l('wysiwyg', '[edit_hyperlink]');
+	}
+
+	public static function getDialog($noInternals = true){
+		$inst = new we_dialog_hyperlink($noInternals);
+		$inst->initByHttp();
+
+		return $inst->getHTML();
 	}
 
 	function getDialogButtons(){
@@ -415,7 +422,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 			'<div style="position:relative; top:15px"><table class="default" style="height:65px">
 	<tr>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:20px">' . g_l('weClass', '[linkType]') . '</td>
-		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $select_type . '</select></td>
+		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" style="margin-bottom:5px;width:300px;" onchange="LinkDialog.changeTypeSelect(this);">' . $select_type . '</select></td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) || ($noInternals && $this->args["type"] !== we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $external_link . '</td>
@@ -511,7 +518,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 
 	protected function getJs(){
 		return parent::getJs() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js', '', [
 				'id' => 'loadVarDialog_Hyperlink',
 				'data-vars' => setDynamicVar($this->getJSDynamic())
@@ -568,10 +575,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
 					'id' => 'loadVarDialog_cmdFrame',
 					'data-payload' => setDynamicVar($payload)
-				]).
-			parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js')
-				, we_html_element::htmlBody());
+				]), we_html_element::htmlBody());
 	}
 
 }

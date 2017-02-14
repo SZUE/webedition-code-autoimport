@@ -53,7 +53,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->bodyId = 'weImageDialog';
 	}
 
-	public static function getDialog($noInternals){
+	public static function getDialog($noInternals = true){
 		$inst = new we_dialog_image($noInternals);
 		$inst->initByHttp();
 

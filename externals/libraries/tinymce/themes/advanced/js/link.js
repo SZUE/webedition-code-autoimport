@@ -155,5 +155,5 @@ var LinkDialog = {
 	}
 };
 
-LinkDialog.preInit();
-tinyMCEPopup.onInit.add(LinkDialog.init, LinkDialog);
+//LinkDialog.preInit();
+//tinyMCEPopup.onInit.add(LinkDialog.init, LinkDialog);
