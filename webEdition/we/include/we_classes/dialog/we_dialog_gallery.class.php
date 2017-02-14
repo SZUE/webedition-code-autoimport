@@ -39,8 +39,8 @@ class we_dialog_gallery extends we_dialog_base{
 		$this->initByHttp();
 	}
 
-	public static function getDialog(){
-		$inst = new we_dialog_gallery();
+	public static function getDialog($noInternals = true){
+		$inst = new we_dialog_gallery($noInternals);
 
 		return $inst->getHTML();
 	}

@@ -40,8 +40,8 @@ class we_dialog_abbr extends we_dialog_base{
 		$this->initByHttp();
 	}
 
-	public static function getDialog(){
-		$inst = new we_dialog_abbr();
+	public static function getDialog($noInternals = true){
+		$inst = new we_dialog_abbr($noInternals);
 
 		return $inst->getHTML();
 	}
