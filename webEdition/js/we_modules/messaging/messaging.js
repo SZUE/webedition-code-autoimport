@@ -26,6 +26,27 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 'use strict';
+var transaction;
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "reloadMsgContent":
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd' + args[1].query;
+			top.content.we_cmd('messaging_start_view', '', args[1].table);
+			break;
+		case 'setTrans':
+			transaction = args[1];
+			break;
+		default:
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
 function we_submitForm(target, url) {
 	var f = document.we_form;
 	if (!f.checkValidity()) {
@@ -83,4 +104,9 @@ function do_send() {
 
 function save_settings() {
 	document.search_adv.submit();
+}
+
+function selectRecipient() {
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=" + transaction + "&rs=" + encodeURI(document.compose_form.mn_recipients.value), "messaging_usel", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
+	//	    opener.top.add_win(msg_usel);
 }
