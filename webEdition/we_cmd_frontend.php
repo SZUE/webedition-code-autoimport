@@ -35,6 +35,7 @@ switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'open_dialog_gallery':
 	case 'open_dialog_image':
 	case 'open_dialog_hyperlink':
+	case 'open_dialog_fullscreen':
 		
 		$noInternals = we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
 				we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend') ||
@@ -65,6 +66,9 @@ switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 				return;
 			case 'open_dialog_hyperlink':
 				echo we_dialog_hyperlink::getDialog($noInternals);
+				return;
+			case 'open_dialog_fullscreen':
+				echo we_dialog_fullscreen::getDialog($noInternals);
 				return;
 		}
 
