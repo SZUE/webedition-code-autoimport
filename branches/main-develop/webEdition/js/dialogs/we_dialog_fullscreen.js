@@ -4,9 +4,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 13344 $
+ * $Author: mokraemer $
+ * $Date: 2017-02-10 18:01:58 +0100 (Fr, 10 Feb 2017) $
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@ function doKeyDown(e) {top.console.log(e.charCode);
 }
 
 function weDoOk() {
-	top.opener.tinyMCECallRegisterDialog({}, "unregisterDialog");
+	//top.opener.tinyMCECallRegisterDialog({}, "unregisterDialog"); // FIXME: register dialog
 	top.WefullscreenDialog.writeback();
 	top.close();
 }

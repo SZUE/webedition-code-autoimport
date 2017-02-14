@@ -4,6 +4,7 @@ dynamic/wysiwyg/galleryDialog.php
 dynamic/wysiwyg/imageDialog.php
 dynamic/wysiwyg/langDialog.php
 dynamic/wysiwyg/linkDialog.php
+dynamic/wysiwyg/fullscreenEditDialog.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -637,6 +638,7 @@ we/include/we_classes/dialog/we_dialog_importRtf.class.php
 we/include/we_classes/dialog/we_dialog_color.class.php
 we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/dialog/we_dialog_Hyperlink.class.php
+we/include/we_classes/dialog/we_dialog_fullscreenEdit.class.php
 we/include/we_classes/csv.inc.php
 we/include/we_classes/contents/we_quicktimeDocument.class.php
 we/include/we_classes/charsetHandler.class.php
@@ -791,6 +793,7 @@ js/weSuggest.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
+js/dialogs/we_dialog_fullscreenEdit.js
 js/utils/we_cmd_encode.js
 js/utils/weDate.js
 js/utils/rewrite_element.js
