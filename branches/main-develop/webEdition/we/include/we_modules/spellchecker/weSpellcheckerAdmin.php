@@ -12,8 +12,6 @@ if(!we_base_permission::hasPerm('SPELLCHECKER_ADMIN')){
 	exit();
 }
 
-echo we_html_tools::getHtmlTop();
-
 $_width = 600;
 $space = 5;
 
@@ -42,21 +40,10 @@ $l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 	'scid' => ''
 ];
 
-$l_params = '';
-
-foreach($l_param as $key => $value){
-	$l_params .= '<param name="' . $key . '" value="' . addslashes($value) . '">';
-}
-
-
-
 $we_tabs = new we_tabs();
 
 $we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, 1, ["id" => "tab_1"]);
 $we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, 2, ["id" => "tab_2"]);
-
-
-$js = we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(JS_DIR . 'initTabs.js');
 
 $table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 3, 5);
 
@@ -115,87 +102,19 @@ foreach(['\\', '/', ':', '*', '?', '<', '>', '|', '"'] as $cur){
 	$_username = str_replace($cur, 'MASK' . $i, $_username);
 }
 
-$_applet_code = we_html_element::htmlApplet(['name' => 'spellchecker',
-		'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
-		'archive' => 'lespellchecker.jar',
-		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 400,
-		'height' => 220,
-		], '
-<param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
-<param name="archive" value="lespellchecker.jar"/>
-<param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
-<param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
-<param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
-<param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '"/>' .
-		$l_params);
-$_applet_code2 = we_html_element::htmlApplet(['name' => "spellcheckerCmd",
-		'code' => "LeSpellchecker.class",
-		'archive' => "lespellchecker.jar",
-		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 20,
-		'height' => 20,], '
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>
-<param name="CODE" value="LeSpellchecker.class"/>
-<param name="ARCHIVE" value="lespellchecker.jar"/>
-<param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
-<param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
-<param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
-<param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js')
+);
 ?>
+<body onload="loadTable();
+					if (!activ_tab) {
+						activ_tab = 1;
+					}
+					document.getElementById('tab_' + activ_tab).className = 'tabActive';" class="weDialogBody">
 
-	<script><!--
-		var activ_tab = 1;
-		var appletActiv = false;
-		var g_l = {
-			dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
-			ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
-		};
+	<?= $tabsBody; ?>
 
-		function setAppletCode() {
-			if (!appletActiv) {
-				document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
-			}
-			appletActiv = true;
-			window.setTimeout(checkApplet, 2000);
-		}
-
-
-		function updateDict(dict) {
-
-			setVisible("updateBut_" + dict, false);
-			setVisible("updateIcon_" + dict, true);
-			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-			window.setTimeout(selectDict, 1000, dict);
-	}
-
-	function updateDict(dict) {
-
-			setVisible("updateBut_" + dict, false);
-			setVisible("updateIcon_" + dict, true);
-			document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
-			window.setTimeout(selectDict, 1000, dict);
-		}
-	//-->
-</script>
-<?=
-$js .
- we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js');
-?>
-</head>
-
-			<body onload="loadTable();
-		if (!activ_tab) {
-			activ_tab = 1;
-		}
-		document.getElementById('tab_' + activ_tab).className = 'tabActive';" class="weDialogBody">
-
-			<?= $tabsBody; ?>
-
-			<div id="content" style="margin: 10px; width: 450px;">
+	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
 			<?= $tab_1 ?>
 

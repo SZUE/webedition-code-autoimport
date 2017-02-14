@@ -27,7 +27,8 @@
  */
 'use strict';
 
-var retryjava = 0;
+WE().util.loadConsts(document, "g_l.spellcheck");
+
 var orginal;
 var editPanel;
 var to;
@@ -220,11 +221,8 @@ function spellcheck() {
 		var text = getTextOnly(orginal);
 		document.spellchecker.check(text);
 		window.setTimeout(findNext, 2000);
-	} else if (retryjava < 5) {
-		window.setTimeout(spellcheck, 1000);
-		retryjava++;
 	} else {
-		top.we_showMessage(WE().consts.g_l.glossary.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage("err", WE().consts.message.WE_MESSAGE_ERROR, window);
 		window.close();
 	}
 }
@@ -263,7 +261,7 @@ function findNext() {
 						fadeout("spinner", 80, 10, 10);
 					}
 					WE().layout.button.enable(document, "check");
-					top.we_showMessage(WE().consts.g_l.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					top.we_showMessage(WE().consts.g_l.spellcheck.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 		} else {

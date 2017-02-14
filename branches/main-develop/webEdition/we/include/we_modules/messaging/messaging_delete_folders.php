@@ -30,44 +30,14 @@ if(!$transaction){
 	exit();
 }
 
-echo we_html_tools::getHtmlTop();
-
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
-?>
-<script><!--
-	function we_submitForm(target, url) {
-		var f = self.document.we_form;
-		if (!f.checkValidity()) {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-			return false;
-		}
 
-		var sel = "";
-		for (var i = 1; i <= top.treeData.len; i++) {
-			if (top.treeData[i].checked)
-				sel += (top.treeData[i].name + ",");
-		}
-		if (!sel) {
-			top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
-			return;
-		}
-		sel = sel.substring(0, sel.length - 1);
-		f.sel.value = sel;
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-		f.submit();
-		return true;
-	}
+$jsCmd = new we_base_jsCmd();
+echo we_html_tools::getHtmlTop().
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging.js');
 
-	function do_delete() {
-		document.we_form.folders.value = top.content.entries_selected.join(",");
-		document.we_form.submit();
-	}
-
-<?php
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 	$folders = we_base_request::_(we_base_request::INTLISTA, 'folders', []);
 
@@ -77,6 +47,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 		if($v > 0){
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
+			<script><!--
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?= $transaction ?>&mcmd=delete_folders&folders=<?= implode(',', $v) ?>';
 				top.content.we_cmd('messaging_start_view', '', '<?= we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
 				//-->
@@ -87,22 +58,21 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 			<?php
 			exit;
 		}
-		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addMsg(g_l('modules_messaging', '[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 }
-?>
-//-->
-</script>
-<?php
+
 $form = '<form name="we_form" method="post">' .
 	we_html_element::htmlHiddens(['we_transaction' => $transaction,
 		'folders' => '',
 		'mcmd' => 'delete_folders'
-	 ]) .
+	]) .
 	'</form>';
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_delete()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view')")
 );
+
+echo $jsCmd->getCmds();
 ?>
 </head>
 <body style="border-top:1px solid black;margin:10px;">

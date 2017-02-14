@@ -27,6 +27,13 @@
  */
 'use strict';
 
+WE().util.loadConsts(document, "g_l.spellcheck");
+/*			dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+ ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
+checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
+			finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+ */
+var activ_tab = 0;
 
 function loadTable() {
 	if (hiddenCmd.dispatch) {
@@ -88,7 +95,7 @@ function hideDictSelector() {
 function checkApplet() {
 	if (appletActiv && document.spellchecker.uploadFinished && document.spellchecker.uploadFinished()) {
 		if (document.spellchecker.packingFinished()) {
-			top.we_showMessage(WE().consts.g_l.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.spellcheck.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		hideDictSelector();
 		appletActiv = false;
@@ -100,7 +107,20 @@ function checkApplet() {
 }
 
 function deleteDict(name) {
-	if (window.confirm(WE().util.sprintf(WE().consts.g_l.ask_dict_del, name))) {
+	if (window.confirm(WE().util.sprintf(WE().consts.g_l.spellcheck.ask_dict_del, name))) {
 		hiddenCmd.dispatch("deleteDict", name);
 	}
+}
+
+function updateDict(dict) {
+	setVisible("updateBut_" + dict, false);
+	setVisible("updateIcon_" + dict, true);
+}
+
+function dispatch(cmd) {
+	document.dispatcherForm.elements["cmd[0]"].value = cmd;
+	for (var i = 1; i < arguments.length; i++) {
+		document.dispatcherForm.elements["cmd[" + i + "]"].value = arguments[i];
+	}
+	document.dispatcherForm.submit();
 }

@@ -69,8 +69,7 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 			</tr>';
 			}
 		}
-		?></table><?php
-		?>
+		?></table>
   <script><!--
 	var k;
 
@@ -78,8 +77,9 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 			highlight_TR(parent.entries_selected[k], sel_color, sel_text_color);
 		}
 
-		if (parent.entries_selected.length > 0)
+		if (parent.entries_selected.length > 0){
 			showContent(parent.entries_selected[parent.entries_selected.length - 1]);
+			}
 
 <?= 'passed_dls = [' . implode(',', $passed_dls) . '];'; ?>
 //-->

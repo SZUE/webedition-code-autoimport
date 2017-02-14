@@ -206,17 +206,8 @@ parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_repl
 
 	default:
 }
-?>
-<script><!--
-	function dispatch(cmd) {
-		document.dispatcherForm.elements["cmd[0]"].value = cmd;
-		for (var i = 1; i < arguments.length; i++) {
-			document.dispatcherForm.elements["cmd[" + i + "]"].value = arguments[i];
-		}
-		document.dispatcherForm.submit();
-	}
-//-->
-</script>
+
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js');?>
 </head>
 
 <body>
