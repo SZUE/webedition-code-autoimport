@@ -5,6 +5,7 @@ dynamic/wysiwyg/imageDialog.php
 dynamic/wysiwyg/langDialog.php
 dynamic/wysiwyg/linkDialog.php
 dynamic/wysiwyg/fullscreenEditDialog.php
+dynamic/wysiwyg/WeWysiwygEditorWindow.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -1185,3 +1186,4 @@ apps/toolfactory/hook/custom_hooks/dummy
 !cms
 !apps/toolfactory/service/views
 !apps/toolfactory/pattern
+!dynamic
