@@ -257,25 +257,34 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 			?>
 		</table>
 		<?php
-		if(( $nf === "new_folder") || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
-			$isRename = ($nf === "rename_folder" || $nf === "rename_file");
-			echo we_html_element::htmlHiddens(['cmd' => $nf,
-				'pat' => we_base_request::_(we_base_request::RAW, "pat", ""),
-				($isRename ? 'sid' : '') => $sid,
-				($isRename ? 'oldtxt' : '') => ''
-			]);
+		switch($nf){
+			case "rename_folder":
+			case "rename_file":
+				if(!$set_rename){
+					break;
+				}
+				$isRename = true;
+			//no break
+			case "new_folder":
+				echo we_html_element::htmlHiddens(['cmd' => $nf,
+					'pat' => we_base_request::_(we_base_request::RAW, "pat", ""),
+					(isset($isRename) ? 'sid' : '') => $sid,
+					(isset($isRename) ? 'oldtxt' : '') => ''
+				]);
 		}
 		?>
 	</form>
 
 	<?php
-	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
-		?>
-		<script><!--
-			initSelector("<?= $nf; ?>");
-			//-->
-		</script>
-		<?php
+	switch($nf){
+		case "rename_folder":
+		case "rename_file":
+			if(!$set_rename){
+				break;
+			}
+		//no break
+		case "new_folder":
+			echo we_html_element::jsElement('initSelector("' . $nf . '");');
 	}
 	?>
 </body>

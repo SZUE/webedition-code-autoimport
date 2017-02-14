@@ -25,13 +25,28 @@
  */
 'use strict';
 
-
 var sel_color = "#006DB8",
 	sel_text_color = "#ffffff",
 	default_text_color = "#000000",
 	default_color = "#ffffff";
 
 var passed_dls = [];
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "doHighLight":
+			doHighLight();
+			passed_dls = args[1];
+			break;
+		default:
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
 
 function showContent(id) {
 	top.content.editor.edbody.messaging_msg_view.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + transaction;
@@ -120,4 +135,15 @@ function unSelectMessage(id) {
 
 function newMessage(username) {
 	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true, false);
+}
+
+function doHighLight() {
+	for (var k = 0; k < parent.entries_selected.length; k++) {
+		highlight_TR(parent.entries_selected[k], sel_color, sel_text_color);
+	}
+
+	if (parent.entries_selected.length > 0) {
+		showContent(parent.entries_selected[parent.entries_selected.length - 1]);
+	}
+
 }

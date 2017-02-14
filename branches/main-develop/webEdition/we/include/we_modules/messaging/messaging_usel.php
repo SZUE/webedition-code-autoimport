@@ -34,9 +34,6 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 $jsCmd = new we_base_jsCmd();
 
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
- we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js');
-
 if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 	$addrbook = [];
 	$t_arr = [];
@@ -81,25 +78,15 @@ foreach($rcpts as $rcpt){
 		$rcpts_str[] = '["we_messaging","' . $uid . '","' . $rcpt . '"]';
 	}
 }
-?>
-<script><!--
+$jsCmd->addCmd('setVars', $addrbook_str, $rcpts_str, $transaction);
 
-		addrbook_sel = [<?= implode(',', $addrbook_str); ?>];
-		current_sel = [<?= implode(',', $rcpts_str); ?>];
-
-
-		function browse_users_window() {
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel_browse_frameset.php?we_transaction=<?= $transaction; ?>", "messaging_usel_browse", WE().consts.size.dialog.smaller, WE().consts.size.dialog.smaller, true, false, true, false);
-		}
-
-
-		//-->
-	</script>
-	<?= $jsCmd->getCmds(); ?>
-</head>
-<body class="weDialogBody" onload="init();" onunload="doUnload();">
-	<form name="usel">
-		<?= we_html_tools::htmlDialogLayout('<table cellspacing="6">
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
+	$jsCmd->getCmds(), we_html_element::htmlBody([
+		'class' => "weDialogBody",
+		'onload' => "init();",
+		'onunload' => "doUnload();"
+		], '<form name="usel">' .
+		we_html_tools::htmlDialogLayout('<table cellspacing="6">
       <tr><td class="defaultfont">' . g_l('modules_messaging', '[addr_book]') . '</td><td></td><td class="defaultfont">' . g_l('modules_messaging', '[selected]') . '</td></tr>
       <tr>
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple="multiple"></select>
@@ -120,16 +107,12 @@ foreach($rcpts as $rcpt){
 	<td style="padding-top:15px;">' . we_html_button::create_button('save_address', "javascript:save_addrbook();") . '<td>
 	<td colspan="2">' . we_html_button::create_button('select_user', "javascript:browse_users_window();") . '<td>
       </tr>
-    </table>', g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:ok()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")));
-		?>
-	</form>
-	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
-		<?=
+    </table>', g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:ok()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();"))) .
+		'</form>
+	<form action="' . WE_MESSAGING_MODULE_DIR . 'messaging_usel.php" method="post" name="addrbook_data">' .
 		we_html_element::htmlHiddens(['mode' => 'save_addrbook',
 			'we_transaction' => $transaction,
 			'addrbook_arr' => ''
-		]);
-		?>
-	</form>
-</body>
-</html>
+		]) .
+		'</form>'
+));

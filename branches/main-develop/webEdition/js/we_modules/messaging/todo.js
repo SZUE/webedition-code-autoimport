@@ -24,15 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+var rcpt_sel = [];
+
 function do_confirm() {
 	document.update_todo_form.submit();
 }
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-var rcpt_sel = [];
 
 function update_rcpts() {
 	var rcpt_str = rcpt_sel[0][2];

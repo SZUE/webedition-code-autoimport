@@ -30,7 +30,25 @@ var sel_color = "#697ace",
 	entries_selected,
 	delta_sel = [],
 	addrbook_sel,
-	current_sel;
+	current_sel,
+	transaction;
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "setVars":
+			addrbook_sel = args[1];
+			current_sel = args[2];
+			transaction = args[3];
+			break;
+		default:
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
 
 // Highlighting-Stuff start
 function selectEntryHandler(id) {
@@ -307,4 +325,8 @@ function ok() {
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function browse_users_window() {
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel_browse_frameset.php?we_transaction=" + transaction, "messaging_usel_browse", WE().consts.size.dialog.smaller, WE().consts.size.dialog.smaller, true, false, true, false);
 }
