@@ -383,7 +383,7 @@ class we_dialog_image extends we_dialog_base{
 				'tinyMCEInitRatioH' => 0,
 				'tinyMCEInitRatioW' => 0
 			]) .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/weimage.js')
 		];
 		return $parts;
 	}
@@ -430,9 +430,7 @@ class we_dialog_image extends we_dialog_base{
 				$js = we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
 						'id' => 'loadVarDialog_cmdFrame',
 						'data-payload' => setDynamicVar($payload)
-					]) .
-					we_dialog_base::getTinyMceJS() .
-					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js');
+					]);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
