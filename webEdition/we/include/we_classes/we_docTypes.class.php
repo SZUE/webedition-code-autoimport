@@ -282,8 +282,6 @@ function switchExt(){
 	}
 
 	private function formSubDir($width = 100){
-		//FIXME: !!! after 7.0.2 g_l('weClass', '[subdir]') must be changed from 0... to '-'...ymd
-
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
