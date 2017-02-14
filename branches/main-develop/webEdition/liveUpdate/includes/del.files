@@ -763,6 +763,8 @@ lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resource
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.Deployment.dll
 js/wysiwyg/tinymce/weTinyMceFunctions.js
 js/wysiwyg/tinymce/weTinyMceDialogs.js
+webEdition/js/wysiwyg/tinymce/plugins/weimage/js/image_init.js
+webEdition/js/wysiwyg/tinymce/plugins/weimage/js/image_insert.js
 js/wizard_code.js
 js/we_vtabs.js
 js/we_versionsRebuild_finish.js

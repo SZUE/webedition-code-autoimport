@@ -40,7 +40,7 @@ function we_cmd() {
 			top.update_editor(payload);
 			break;
 		case 'image_writeback':
-			ImageDialog.writeBack(payload.attributes);
+			top.ImageDialog.writeBack(payload.attributes);
 			break;
 		case 'link_writeback':
 			LinkDialog.writeBack(payload.attributes);
