@@ -94,7 +94,8 @@ function we_tag_userInput(array $attribs, $content){
 			case 'flashmovie':
 				break;
 			default:
-				$hidden = getHtmlTag('input', ['type' => 'hidden',
+				$hidden = getHtmlTag('input', [
+					'type' => 'hidden',
 					'name' => $fieldname,
 					'value' => oldHtmlspecialchars($orgVal),
 					'xml' => $xml
@@ -641,7 +642,8 @@ function we_tag_userInput(array $attribs, $content){
 				we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
-			return getHtmlTag('input', ['type' => 'hidden',
+			return getHtmlTag('input', [
+				'type' => 'hidden',
 				'name' => $fieldname,
 				'value' => oldHtmlspecialchars($content),
 				'xml' => $xml,

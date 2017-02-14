@@ -38,7 +38,6 @@ define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('ICON_DIR', IMAGE_DIR . 'icons/');
-define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('WE_JS_MODULES_DIR', JS_DIR . 'we_modules/');
 define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');

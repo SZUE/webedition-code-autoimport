@@ -1741,4 +1741,12 @@ class we_document extends we_root{
 		}
 	}
 
+	public static function showNoRessourceMsg(){
+		echo we_html_tools::getHtmlTop(g_l('alert', '[noResourceTitle]'), '', '', '', we_html_element::htmlBody([
+				'class' => "weDialogBody",
+				'onload' => "WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);"
+				], we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[noResource]') . '</p>', g_l('alert', '[noResourceTitle]')))
+		);
+	}
+
 }

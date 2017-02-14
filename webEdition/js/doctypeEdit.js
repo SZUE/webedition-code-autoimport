@@ -36,7 +36,7 @@ function we_save_docType(doc, url) {
 	if (countSaveLoop > 10) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
-	} else{
+	} else {
 		if (acStatus.running) {
 			countSaveLoop++;
 			window.setTimeout(we_save_docType, 100, doc, url);
@@ -70,7 +70,7 @@ function doUnload() {
 
 function disableLangDefault(allnames, allvalues, deselect) {
 	var arr = allvalues.split(",");
-	var w,e;
+	var w, e;
 
 	for (var v in arr) {
 		w = allnames + '[' + arr[v] + ']';
@@ -133,6 +133,9 @@ function we_cmd() {
 		case "deleteDocType":
 		case "deleteDocTypeok":
 			caller.location = url;
+			break;
+		case "confirmDeleteDocType":
+			WE().util.showConfirm(window, "", args[1].msg, args[1].yes);
 			break;
 		default:
 			window.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

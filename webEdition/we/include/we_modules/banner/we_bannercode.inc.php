@@ -21,11 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('modules_banner', '[bannercode]'));
 
-$code = '';
 $ok = we_base_request::_(we_base_request::BOOL, "ok");
 $type = we_base_request::_(we_base_request::STRING, "type");
 $tagname = we_base_request::_(we_base_request::STRING, "tagname");

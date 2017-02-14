@@ -150,7 +150,7 @@ function we_cmd() {
 			break;
 		case 'confirm_start_recoverBackup':
 			//FIXME: command yes/no missing!
-			WE().util.showConfirm(window, "", WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question, []);
+			WE().util.showConfirm(window, "", WE().consts.g_l.import.backup_file_found + ' \n\n' + WE().consts.g_l.import.backup_file_found_question, ["recover_backup"]);
 			break;
 		case "recover_backup":
 			top.close();

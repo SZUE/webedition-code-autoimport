@@ -105,40 +105,43 @@ function we_tag_banner(array $attribs, $content){
 	}
 
 
-	if($type === "iframe"){
-		// stuff for iframe  and ilayer
-		$newAttribs = removeAttribs($attribs, ['name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page']);
-		$newAttribs['xml'] = $xml ? "true" : "false";
-		$newAttribs['width'] = $width ?: 468;
-		$newAttribs['height'] = $height ?: 60;
-		$newAttribs['src'] = $getbanner . '?' . http_build_query([($nocount ? 'nocount' : '') => $nocount,
-				'bannername' => $bannername,
-				'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
-				'link' => ($link ? 1 : 0),
-				'type' => 'iframe',
-				($page ? 'page' : '') => $page,
-				(!$page ? 'did' : '') => $did,
-				'paths' => $paths,
-				'target' => $target,
-				'bannerclick' => $bannerclick,
-				'width' => $width,
-				'height' => $height,
-				'xml' => ($xml ? "1" : "0")
-		]);
+	switch($type){
+		case "iframe":
+			// stuff for iframe  and ilayer
+			$newAttribs = removeAttribs($attribs, ['name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page']);
+			$newAttribs['xml'] = $xml ? "true" : "false";
+			$newAttribs['width'] = $width ?: 468;
+			$newAttribs['height'] = $height ?: 60;
+			$newAttribs['src'] = $getbanner . '?' . http_build_query([($nocount ? 'nocount' : '') => $nocount,
+					'bannername' => $bannername,
+					'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
+					'link' => ($link ? 1 : 0),
+					'type' => 'iframe',
+					($page ? 'page' : '') => $page,
+					(!$page ? 'did' : '') => $did,
+					'paths' => $paths,
+					'target' => $target,
+					'bannerclick' => $bannerclick,
+					'width' => $width,
+					'height' => $height,
+					'xml' => ($xml ? "1" : "0")
+			]);
 
-		return getHtmlTag('iframe', $newAttribs, $noscript);
-	}
+			return getHtmlTag('iframe', $newAttribs, $noscript);
+		default:
+		case 'js':
 
-	return ((isset($GLOBALS['we_obj']->ID) ? true : $GLOBALS['WE_MAIN_DOC']->IsDynamic) ?
-		we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
-		($type === "cookie" ?
-		$noscript :
-		we_html_element::jsElement('r = Math.random();
+			return ((isset($GLOBALS['we_obj']->ID) ? true : $GLOBALS['WE_MAIN_DOC']->IsDynamic) ?
+				we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
+				($type === "cookie" ?
+				$noscript :
+				we_html_element::jsElement('r = Math.random();
 var scr = document.createElement("script");
 scr.setAttribute("src", ' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $did . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : ""));
 document.getElementsByTagName("head")[0].appendChild(scr);
 ') .
-		'<noscript>' . $noscript . '</noscript>'
-		)
-		);
+				'<noscript>' . $noscript . '</noscript>'
+				)
+				);
+	}
 }
