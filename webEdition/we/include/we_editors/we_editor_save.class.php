@@ -84,7 +84,7 @@ abstract class we_editor_save{
 					'we_responseTextType' => $we_responseTextType,
 					//FIXME:we_JavaScript is evaled
 					'we_JavaScript' => $we_JavaScript,
-					'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
+					'we_cmd5' => [we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5)], // this is we_responseJS through save-template-question
 					'we_responseJS' => $we_responseJS,
 					'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs),
 			])]), we_html_element::htmlBody());
