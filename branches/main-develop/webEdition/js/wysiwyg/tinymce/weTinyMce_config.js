@@ -33,7 +33,7 @@ if(WE().consts.IS_FRONTEND_EDIT){
 	WE().consts.dirs.WE_JS_TINYMCE_DIR = consts.dirs.WE_JS_TINYMCE_DIR;
 	WE().consts.linkPrefix.TYPE_INT_PREFIX = consts.linkPrefix.TYPE_INT_PREFIX;
 	WE().consts.linkPrefix.TYPE_OBJ_PREFIX = consts.linkPrefix.TYPE_OBJ_PREFIX;
-	
+
 }
 
 WE().layout.we_tinyMCE = {
@@ -68,14 +68,14 @@ function TinyMceConfObject(args) {
 		lastY : 0,
 		lastW : 0,
 		lastH: 0
-	},
+	};
 	this.tinyGl = {
 		removedInlinePictures: args.removedInlinePictures
 	};
 	this.weFullscrenParams = args.weFullscrenParams;
 	this.weFullscrenParams.screenWidth = screen.availWidth-10;
 	this.weFullscrenParams.screenHeight = screen.availHeight - 70;
-	this.weFullscrenParams.contentCss = args.weFullscrenParams.contentCss + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,args.weFullscrenParams.contentCss ? true : ''),
+	this.weFullscrenParams.contentCss = args.weFullscrenParams.contentCss + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,args.weFullscrenParams.contentCss ? true : '');
 	this.weImageStartID = args.weImageStartID;
 	this.weGalleryTemplates = args.weGalleryTemplates;
 	this.weClassNames_urlEncoded = args.weCssClasses;
@@ -83,7 +83,7 @@ function TinyMceConfObject(args) {
 	this.weRemoveFirstParagraph = args.weRemoveFirstParagraph;
 	this.wePopupGl = args.wePopupGl;
 	this.language = args.language;
-	this.mode = 'exact',
+	this.mode = 'exact';
 	this.elements = args.elements;
 	this.theme = 'advanced';
 	//this.dialog_type = 'modal';
@@ -102,7 +102,7 @@ function TinyMceConfObject(args) {
 	this.toolbarRows = args.toolbarRows;
 	this.theme_advanced_toolbar_location = args.buttonpos; //external: toolbar floating on top of textarea
 	this.theme_advanced_fonts = args.fontnames;
-	this.theme_advanced_font_sizes = args.fontsizes,
+	this.theme_advanced_font_sizes = args.fontsizes;
 	this.theme_advanced_styles = args.tinyCssClasses;
 	this.theme_advanced_blockformats = args.formats;
 	this.theme_advanced_toolbar_align = 'left';
@@ -120,18 +120,18 @@ function TinyMceConfObject(args) {
 	this.editor_css = args.editorCss;
 	this.content_css = args.contentCssFirst;
 	//this.content_css = args.fontawsomeCss + ',' + args.contentCssFirst + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,true) + (args.contentCssLast ? ',' + args.contentCssLast : ''),
-	this.popup_css_add = args.popupCssAdd; 
+	this.popup_css_add = args.popupCssAdd;
 	this.template_templates = args.templates;
 	this.skin = 'o2k7';
 	this.skin_variant = 'silver';
 	this.paste_text_sticky = true;
 	this.paste_auto_cleanup_on_paste = true;
-	
+
 	this.setup = WE().layout.we_tinyMCE.setupEditor;
 	this.oninit = WE().layout.we_tinyMCE.initEditor;
-	
+
 	this.paste_preprocess = WE().layout.we_tinyMCE.do.afterPastePlugin;
-};
+}
 
 WE().layout.we_tinyMCE.getTinyConfObject = function(args){
 	return new TinyMceConfObject(args);
@@ -211,7 +211,7 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 		} catch(e){}
 
 		//FIXME: change this & every call to an object/array element call!
-		if(typeof window['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){ // FIXME: can this work? 
+		if(typeof window['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){ // FIXME: can this work?
 			try{
 				window['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
 			} catch(e){
@@ -247,5 +247,5 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 			}
 		}
 	}
-	
+
 };

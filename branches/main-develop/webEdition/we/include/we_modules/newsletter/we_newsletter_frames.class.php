@@ -318,7 +318,7 @@ class we_newsletter_frames extends we_modules_frame{
 							"ncmd" => "",
 							"nopt" => ""])
 					)
-				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_newsletter::getItems($pid)]));
+				), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_newsletter::getItems($pid)]));
 	}
 
 	private function getHTMLSendQuestion(){
@@ -828,7 +828,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$content .= we_html_element::htmlHiddens(['block' . $counter . '_Groups' => $selected,
 					'block' . $counter . '_Pack' => $block->Pack]) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 1, $selected, true, ['class' => 'newSelect', 'style' => 'width:440px;',
-						"onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=true"]), g_l('modules_newsletter', '[block_lists]'));
+						"onchange" => "populateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=true"]), g_l('modules_newsletter', '[block_lists]'));
 
 			switch($block->Type){
 				case we_newsletter_block::DOCUMENT:

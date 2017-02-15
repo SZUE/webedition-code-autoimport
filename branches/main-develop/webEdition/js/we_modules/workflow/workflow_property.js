@@ -28,8 +28,15 @@
 'use strict';
 
 var loaded;
+
+var workflow = WE().util.getDynamicVar(document, 'loadVarWorkflowProp', 'data-workflow');
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function getNumOfDocs() {
+	return workflow.noDocs;
 }
 
 function we_cmd() {
@@ -114,12 +121,12 @@ function submitForm() {
 }
 
 function setStatus(val) {
-	document.we_form[uid + "_Status"].value = val;
+	document.we_form[workflow.uid + "_Status"].value = val;
 
 }
 
 function getStatusContol() {
-	return document.we_form[uid + "_Status"].value;
+	return document.we_form[workflow.uid + "_Status"].value;
 }
 
 function clickCheck(a) {
@@ -161,43 +168,44 @@ function delTask() {
 
 
 function checkData() {
+	var txt, j, userempty;
 	var nsteps = document.we_form.wsteps;
 	var ntasks = document.we_form.wtasks;
-	if (document.we_form[uid + "_Text"].value === "") {
+	if (document.we_form[workflow.uid + "_Text"].value === "") {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.name_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if (document.we_form[uid + "_Folders"].value === "" && document.we_form[uid + "_Type"].value == 1) {
+	if (document.we_form[workflow.uid + "_Folders"].value === "" && document.we_form[workflow.uid + "_Type"].value == 1) {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.folders_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if (document.we_form[uid + "_ObjectFileFolders"].value === "" && document.we_form[uid + "_Type"].value == 2) {
+	if (document.we_form[workflow.uid + "_ObjectFileFolders"].value === "" && document.we_form[workflow.uid + "_Type"].value == 2) {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.folders_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if ((document.we_form[uid + "_DocType"].value === 0 && document.we_form[uid + "_Categories"].value === "") && document.we_form[uid + "_Type"].value === 0) {
+	if ((document.we_form[workflow.uid + "_DocType"].value === 0 && document.we_form[workflow.uid + "_Categories"].value === "") && document.we_form[workflow.uid + "_Type"].value === 0) {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 
 		return false;
 	}
 
-	if (document.we_form[uid + "_Objects"].value === "" && document.we_form[uid + "_Type"].value == 2) {
+	if (document.we_form[workflow.uid + "_Objects"].value === "" && document.we_form[workflow.uid + "_Type"].value == 2) {
 		top.we_showMessage(WE().consts.g_l.workflow.prop.objects_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
-	var txt, j;
+
 	for (var i = 0; i < nsteps.value; i++) {
-		if (document.we_form[uid + '_step' + i + '_Worktime'].value === "") {
+		if (document.we_form[workflow.uid + '_step' + i + '_Worktime'].value === "") {
 			txt = WE().consts.g_l.workflow.prop.worktime_empty;
 			top.we_showMessage(txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		userempty = true;
 		for (j = 0; j < ntasks.value; j++) {
-			if (document.we_form[uid + '_task_' + i + '_' + j + '_userid'].value !== 0) {
+			if (document.we_form[workflow.uid + '_task_' + i + '_' + j + '_userid'].value !== 0) {
 				userempty = false;
 			}
 		}

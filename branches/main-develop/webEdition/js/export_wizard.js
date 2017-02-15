@@ -55,18 +55,18 @@ function we_submit() {
 		case 3:
 			top.body.document.we_form.selDocs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.FILE_TABLE].join(',');
 			top.body.document.we_form.selTempl.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.TEMPLATES_TABLE].join(',');
-			if(WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'){
-				top.body.we_form.selObjs.value=top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE].join(',');
+			if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
+				top.body.we_form.selObjs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE].join(',');
 			}
-			if(WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE'){
-				top.body.we_form.selClasses.value=top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_TABLE].join(',');
+			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
+				top.body.we_form.selClasses.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_TABLE].join(',');
 			}
 			top.body.we_form.submit();
 			break;
 	}
 }
 
-function setHead(tab){ // step 3
+function setHead(tab) { // step 3
 	var c = ['#DDDDDD', '#DDDDDD', '#DDDDDD', '#DDDDDD'];
 	var fw = ['normal', 'normal', 'normal', 'normal'];
 	var elFt, elTt, elOt, elOft;
@@ -74,7 +74,7 @@ function setHead(tab){ // step 3
 	fw[tab] = 'bold';
 
 
-	switch (tab){
+	switch (tab) {
 		case 0:
 			top.table = WE().consts.tables.FILE_TABLE;
 			break;
@@ -89,19 +89,19 @@ function setHead(tab){ // step 3
 			break;
 	}
 
-	window.setTimeout(top.startTree,100);
+	window.setTimeout(top.startTree, 100);
 	elFt = top.body.document.getElementById(WE().consts.tables.FILE_TABLE);
 	elFt.style.backgroundColor = c[0];
 	elFt.style.fontWeight = fw[0];
 	elTt = top.body.document.getElementById(WE().consts.tables.TEMPLATES_TABLE);
 	elTt.style.backgroundColor = c[1];
 	elTt.style.fontWeight = fw[1];
-	if(WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE'){
+	if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
 		elOft = top.body.document.getElementById(WE().consts.tables.OBJECT_FILES_TABLE);
 		elOft.style.backgroundColor = c[2];
 		elOft.style.fontWeight = fw[2];
 	}
-	if(WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE'){
+	if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
 		elOt = top.body.document.getElementById(WE().consts.tables.OBJECT_TABLE);
 		elOt.style.backgroundColor = c[3];
 		elOt.style.fontWeight = fw[3];
@@ -109,10 +109,10 @@ function setHead(tab){ // step 3
 }
 
 function setState(a) { // step 4
-	var new_state = (top.body.document.getElementsByName(a)[0].checked == true ? false : true);
+	var new_state = (top.body.document.getElementsByName(a)[0].checked ? false : true);
 
-	if(a === '_handle_templates'){
-		if(new_state === true){
+	if (a === '_handle_templates') {
+		if (new_state === true) {
 			top.body.document.getElementsByName('handle_document_linked')[0].value = 0;
 			top.body.document.getElementsByName('handle_object_linked')[0].value = 0;
 
@@ -126,8 +126,8 @@ function setState(a) { // step 4
 		top.body.document.getElementsByName('_handle_object_linked')[0].disabled = new_state;
 		setLabelState('label__handle_object_linked', new_state);
 	}
-	if(a === '_handle_classesfff'){
-		if(new_state === true){
+	if (a === '_handle_classesfff') {
+		if (new_state === true) {
 			top.body.document.getElementsByName('handle_object_includes')[0].value = 0;
 			top.body.document.getElementsByName('_handle_object_includes')[0].checked = false;
 		}
@@ -139,8 +139,8 @@ function setState(a) { // step 4
 	}
 }
 
-function doNext(step, nextStep, frameset){ // set frameset as dynvar anload
-	switch(parseInt(step)){
+function doNext(step, nextStep, frameset) { // set frameset as dynvar anload
+	switch (parseInt(step)) {
 		case 0:
 		case 4:
 			top.body.document.we_form.submit();
@@ -148,7 +148,7 @@ function doNext(step, nextStep, frameset){ // set frameset as dynvar anload
 		case 1:
 			top.we_submit(); // is this correct?
 			break;
-		case 2: 
+		case 2:
 			top.body.document.we_form.step.value = nextStep;
 			top.body.document.we_form.submit();
 			break;
@@ -157,8 +157,8 @@ function doNext(step, nextStep, frameset){ // set frameset as dynvar anload
 			top.body.document.we_submit();
 			break;
 		case 7:
-			top.body.document.we_form.target='load';
-			top.body.document.we_form.pnt.value='load';
+			top.body.document.we_form.target = 'load';
+			top.body.document.we_form.pnt.value = 'load';
 			top.body.document.we_form.submit();
 			break;
 		default:
@@ -166,8 +166,8 @@ function doNext(step, nextStep, frameset){ // set frameset as dynvar anload
 	}
 }
 
-function doBack(step){
-	switch(parseInt(step)){
+function doBack(step) {
+	switch (parseInt(step)) {
 		case 1:
 			top.body.document.we_form.step.value = 0;
 			top.body.document.we_form.submit();
@@ -176,20 +176,20 @@ function doBack(step){
 			top.body.document.we_form.step.value = 1;
 			top.body.document.we_form.submit();
 			break;
-		case 3: 
-			top.body.document.we_form.step.value=2;
+		case 3:
+			top.body.document.we_form.step.value = 2;
 			top.body.we_submit();
 			break;
-		
+
 	}
 }
 
-function doCancel(){
+function doCancel() {
 	top.close();
 }
 
-function setLabelState(l, disable){ // step 4
-		top.body.getElementById(l).style.color = disable ? 'grey' : 'black';
+function setLabelState(l, disable) { // step 4
+	top.body.getElementById(l).style.color = disable ? 'grey' : 'black';
 }
 
 function we_cmd() {
@@ -226,10 +226,10 @@ function we_cmd() {
 			top.close();
 			break;
 		case 'startTree_delayed':
-			window.setTimeout(top.startTree,100);
+			window.setTimeout(top.startTree, 100);
 			break;
 		case 'setTable':
-			switch(args[1].art){
+			switch (args[1].art) {
 				case 'objects':
 					top.table = WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE' ? WE().consts.tables.OBJECT_FILES_TABLE : '';
 					break;

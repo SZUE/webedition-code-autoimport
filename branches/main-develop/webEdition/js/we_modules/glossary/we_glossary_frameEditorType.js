@@ -43,21 +43,21 @@ function AllItems() {
 		}
 	}
 }
-function SubmitForm() {
+function submitForm() {
 	document.we_form.submit();
 }
 
 function next() {
 	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) + Rows;
-	SubmitForm();
+	submitForm();
 }
 function prev() {
 	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) - Rows;
-	SubmitForm();
+	submitForm();
 }
 function jump(val) {
 	document.we_form.Offset.value = val;
-	SubmitForm();
+	submitForm();
 }
 
 function loadHeaderFooter(cmd) {

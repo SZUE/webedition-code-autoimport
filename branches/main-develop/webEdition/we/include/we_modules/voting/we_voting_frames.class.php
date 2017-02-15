@@ -130,27 +130,21 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	function getHTMLVariant(){
-		$prefix = '';
+	private function getHTMLVariant(){
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
 		$del_but1 = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
 		// IMI: replace inline js
-		$Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
-				(we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
+		/* $Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
+		  (we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
-		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();'));
+		  $sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();')); */
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
 
-		$variant_js = ' function callAnswerLimit() {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			}
-
-			function setMultiEdits() {';
+		$variant_js = 'function setMultiEdits() {';
 
 		if($this->View->voting->IsFolder == 1){
-			return $js . we_html_element::jsElement($variant_js . '}');
+			return we_html_element::jsElement($variant_js . '}');
 		}
 		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",window,1,"",520 ,true);
 answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",500 ,true);
@@ -227,7 +221,7 @@ iptable_label.addVariant();';
 		$variant_js .= 'iptable_label.showVariant(0);
 	}';
 
-		return $js . we_html_element::jsElement($variant_js);
+		return we_html_element::jsElement($variant_js);
 	}
 
 	function getHTMLTab1(){
@@ -245,7 +239,7 @@ iptable_label.addVariant();';
 		);
 
 		$parts = [
-				['headline' => g_l('modules_voting', '[property]'),
+			['headline' => g_l('modules_voting', '[property]'),
 				'html' => we_html_element::htmlHiddens([
 					'owners_name' => '',
 					'owners_count' => 0,
@@ -258,12 +252,12 @@ iptable_label.addVariant();';
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1],
-				['headline' => '',
+			['headline' => '',
 				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-				['headline' => '',
+			['headline' => '',
 				'html' => $table->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			]
@@ -357,7 +351,7 @@ iptable_label.addVariant();';
 		$displaySuccessor = ($this->View->voting->AllowSuccessor ? 'block' : 'none');
 
 		$parts = [
-				['headline' => g_l('modules_voting', '[headline_datatype]'),
+			['headline' => g_l('modules_voting', '[headline_datatype]'),
 				'html' =>
 				we_html_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') . we_html_element::htmlBr() .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') . we_html_element::htmlBr() .
@@ -632,14 +626,14 @@ function refreshTexts(){
 		$export_box->setCol(4, 0, ['padding-top:5px;'], $ok);
 
 		return [
-				['headline' => g_l('modules_voting', '[inquiry]'),
+			['headline' => g_l('modules_voting', '[inquiry]'),
 				"html" => $js .
 				we_html_element::htmlHidden('scores_changed', 0) .
 				$table->getHTML() .
 				we_html_element::htmlBr() . $butt,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-				['headline' => g_l('modules_voting', '[export]'),
+			['headline' => g_l('modules_voting', '[export]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, 520) .
 				$export_box->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
@@ -651,16 +645,7 @@ function refreshTexts(){
 		$t = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
-		return we_html_element::jsElement('
-var table = WE().consts.tables.FILE_TABLE;
-function toggle(id){
-	var elem = document.getElementById(id);
-	elem.style.display = (elem.style.display == "none"?"block":"none");
-}
-function setVisible(id,visible){
-	var elem = document.getElementById(id);
-	elem.style.display = (visible==true?"block":"none");
-}') .
+		return we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js') .
 				we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 				(!$this->View->voting->IsFolder ?
 				(
@@ -703,7 +688,7 @@ function setVisible(id,visible){
 											"cmd" => "no_cmd"]
 										)
 								)
-						), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_voting_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+						), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_voting_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 
@@ -792,12 +777,12 @@ function setVisible(id,visible){
 		}
 
 		$headline = [
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
 		];
 
 		$content = [];
@@ -842,12 +827,12 @@ function setVisible(id,visible){
 				}
 
 				$content[] = [
-						['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
-						['dat' => $data['ip']],
-						['dat' => $data['agent']],
-						['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
-						['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
-						['dat' => $mess],
+					['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
+					['dat' => $data['ip']],
+					['dat' => $data['agent']],
+					['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
+					['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
+					['dat' => $mess],
 				];
 			}
 
@@ -894,18 +879,18 @@ function setVisible(id,visible){
 
 
 		$headline = [
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-session]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-id]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerID]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerText]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-successor]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-additionalfields]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-session]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-id]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerID]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerText]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-successor]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-additionalfields]'))],
 		];
 
 		$content = [];
@@ -958,17 +943,17 @@ function setVisible(id,visible){
 				}
 
 				$content[] = [['dat' => $data['votingsession']],
-						['dat' => $data['voting']],
-						['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
-						['dat' => $data['ip']],
-						['dat' => $data['agent']],
-						['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
-						['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
-						['dat' => $mess],
-						['dat' => $data['answer']],
-						['dat' => $data['answertext']],
-						['dat' => $data['successor']],
-						['dat' => $addDataString],
+					['dat' => $data['voting']],
+					['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
+					['dat' => $data['ip']],
+					['dat' => $data['agent']],
+					['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
+					['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
+					['dat' => $mess],
+					['dat' => $data['answer']],
+					['dat' => $data['answertext']],
+					['dat' => $data['successor']],
+					['dat' => $addDataString],
 				];
 			}
 
@@ -1015,13 +1000,13 @@ function setVisible(id,visible){
 
 
 		$headline = [['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerID]'))],
-				['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerText]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerID]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[answerText]'))],
 		];
 
 		$content = [];
@@ -1066,13 +1051,13 @@ function setVisible(id,visible){
 				}
 
 				$content[] = [['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
-						['dat' => $data['ip']],
-						['dat' => $data['agent']],
-						['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
-						['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
-						['dat' => $mess],
-						['dat' => $data['answer']],
-						['dat' => $data['answertext']],
+					['dat' => $data['ip']],
+					['dat' => $data['agent']],
+					['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
+					['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
+					['dat' => $mess],
+					['dat' => $data['answer']],
+					['dat' => $data['answertext']],
 				];
 			}
 

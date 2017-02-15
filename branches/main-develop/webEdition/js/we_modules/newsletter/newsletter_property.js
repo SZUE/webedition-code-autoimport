@@ -62,7 +62,7 @@ function getGroupsNum() {
 	return document.we_form.groups.value;
 }
 
-function PopulateVar(p, dest) {
+function populateVar(p, dest) {
 	var arr = [];
 
 	for (var i = 0; i < p.length; i++) {
@@ -72,7 +72,7 @@ function PopulateVar(p, dest) {
 	dest.value = arr.join();
 }
 
-function PopulateMultipleVar(p, dest) {
+function populateMultipleVar(p, dest) {
 	var arr = [],
 		c = 0;
 
@@ -151,10 +151,6 @@ function inSelectBox(p, val) {
 }
 
 function markEMails() {
-}
-
-function getNumOfDocs() {
-	return 0;
 }
 
 function switchRadio(a, b, x, c) {
@@ -458,7 +454,7 @@ function we_cmd() {
 		case "import_black":
 		case "export_black":
 			document.we_form.ncmd.value = args[0];
-			PopulateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+			populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
 			submitForm("black_list");
 			break;
 		case "search_email":

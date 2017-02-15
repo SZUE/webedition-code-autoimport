@@ -378,7 +378,7 @@ function closeAllType(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 
 			return $this->getHTMLDocument(
-					we_html_element::htmlBody(), we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => we_export_treeMain::getItems($pid)])
+					we_html_element::htmlBody(), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_export_treeMain::getItems($pid)])
 			);
 		}
 		return '';

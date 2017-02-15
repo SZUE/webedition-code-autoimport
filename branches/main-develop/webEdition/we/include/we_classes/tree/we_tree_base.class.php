@@ -101,7 +101,7 @@ container.prototype.frames={
 };
 ' . $this->getJSStartTree()
 			) . ($this->autoload ? we_base_jsCmd::singleCmd('loadTree', [
-				'pid' => 0,
+				'clear' => 1,
 				'items' => static::getItems(0, 0, $this->Tree->default_segment),
 				'sorted' => $this->addSorted
 			]) : '');

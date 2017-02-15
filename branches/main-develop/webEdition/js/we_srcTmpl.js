@@ -274,10 +274,10 @@ function myReplace(text, replaceby, caseIns) {
 
 function executeEditButton() {
 	if (document.getElementById('weTagGroupSelect').value == 'snippet_custom') {
-		YUIdoAjax(document.getElementById('codesnippet_custom').value);
+		doAjax(document.getElementById('codesnippet_custom').value);
 
 	} else if (document.getElementById('weTagGroupSelect').value == 'snippet_standard') {
-		YUIdoAjax(document.getElementById('codesnippet_standard').value);
+		doAjax(document.getElementById('codesnippet_standard').value);
 
 	} else {
 		var _sel = document.getElementById('tagSelection');
@@ -287,7 +287,7 @@ function executeEditButton() {
 	}
 }
 
-function YUIdoAjax(value) {
+function doAjax(value) {
 	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSnippetCode", 'we_cmd[1]=' + value, function (weResponse) {
 		if (weResponse.DataArray.data) {
 			document.getElementById('tag_edit_area').value = weResponse.DataArray.data;

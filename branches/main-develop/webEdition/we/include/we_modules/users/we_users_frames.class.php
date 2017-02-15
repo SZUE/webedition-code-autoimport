@@ -45,7 +45,7 @@ class we_users_frames extends we_modules_frame{
 				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
 							"cmd" => "no_cmd"])
 					)
-				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_users::getItems($pid, $offset, $this->Tree->default_segment)])
+				), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_users::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

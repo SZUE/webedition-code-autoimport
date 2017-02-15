@@ -128,7 +128,7 @@ abstract class we_wizard_code{
 				break;
 		}
 
-		$select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"WE().layout.button.enable(document, 'btn_direction_right_applyCode')\">\n";
+		$select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"doAjax(this.value);\" onchange=\"WE().layout.button.enable(document, 'btn_direction_right_applyCode')\">\n";
 		foreach($options as $option){
 			if($option['type'] === 'optgroup' && !empty($option['value'])){
 				$select .= '<optgroup label="' . $option['name'] . '">';

@@ -138,7 +138,7 @@ function submitForm(){
 	f.method = "post";
 	f.submit();
 }'
-				) . we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+				) . we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

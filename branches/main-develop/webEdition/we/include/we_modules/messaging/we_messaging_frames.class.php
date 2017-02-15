@@ -103,7 +103,7 @@ class we_messaging_frames extends we_modules_frame{
 		//$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		if($pid !== false){
-			$jscmd->addCmd('loadTree', ['pid' => intval($pid), 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]);
+			$jscmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]);
 		}
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(), $head .

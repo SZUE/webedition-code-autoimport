@@ -61,19 +61,19 @@ function setVisible(id, visible) {
 
 function populateVars() {
 	if (window.categories_edit !== undefined && document.we_form.CategoriesCount !== undefined) {
-		document.we_form.CategoriesCount.value = categories_edit.itemCount;
+		document.we_form.CategoriesCount.value = window.categories_edit.itemCount;
 	}
 	if (window.sort_edit !== undefined && document.we_form.SortCount !== undefined) {
-		document.we_form.SortCount.value = sort_edit.itemCount;
+		document.we_form.SortCount.value = window.sort_edit.itemCount;
 	}
 	if (window.specificCustomersEdit !== undefined && document.we_form.specificCustomersEditCount !== undefined) {
-		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
+		document.we_form.specificCustomersEditCount.value = window.specificCustomersEdit.itemCount;
 	}
 	if (window.blackListEdit !== undefined && document.we_form.blackListEditCount !== undefined) {
-		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
+		document.we_form.blackListEditCount.value = window.blackListEdit.itemCount;
 	}
 	if (window.whiteListEdit !== undefined && document.we_form.whiteListEditCount !== undefined) {
-		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
+		document.we_form.whiteListEditCount.value = window.whiteListEdit.itemCount;
 	}
 }
 
@@ -203,7 +203,7 @@ function setStaticSelection(value) {
 		case WE().consts.navigation.DYN_CATEGORY:
 			setVisible("dynUrl", true);
 			setVisible("dynamic_LinkSelectionDiv", true);
-			setLinkSelection("dynamic_", WE().consts.navigation.LSELECTION_INTERN);
+			top.setLinkSelection("dynamic_", WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_CATLINK:
 			setVisible("dynUrl", false);
@@ -214,14 +214,14 @@ function setStaticSelection(value) {
 			setVisible("catLink", false);
 			setVisible(value, true);
 			setVisible("LinkSelectionDiv", true);
-			setLinkSelection("", WE().consts.navigation.LSELECTION_INTERN);
+			top.setLinkSelection("", WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_URLLINK:
 			setVisible("dynUrl", false);
 			setVisible("staticSelect", false);
 			setVisible("staticUrl", true);
 			setVisible("LinkSelectionDiv", false);
-			setLinkSelection("", WE().consts.navigation.LSELECTION_EXTERN);
+			top.setLinkSelection("", WE().consts.navigation.LSELECTION_EXTERN);
 			break;
 		case WE().consts.navigation.STYPE_DOCLINK:
 		case WE().consts.navigation.STYPE_OBJLINK:
@@ -284,7 +284,7 @@ function clearFields() {
 	we_cmd("setHot");
 	var st = document.we_form.DynamicSelection;
 	if (st.selectedIndex > -1) {
-		removeAllCats();
+		top.removeAllCats();
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "enabled");
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_SortField", "enabled");
 		if (st.options[st.selectedIndex].value === WE().consts.navigation.DYN_CLASS && document.we_form.ClassID.options.length < 1) {

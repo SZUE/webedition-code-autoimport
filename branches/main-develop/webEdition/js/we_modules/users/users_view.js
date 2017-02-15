@@ -103,9 +103,6 @@ function we_cmd() {
 			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
-		case "updateTitle":
-			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
-			break;
 		case "setCgroup":
 			cgroup = args[1];
 			break;

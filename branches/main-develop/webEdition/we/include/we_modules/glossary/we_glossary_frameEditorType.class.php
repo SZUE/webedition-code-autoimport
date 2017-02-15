@@ -239,7 +239,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 
 	private static function getHTMLPreferences($Search, $Type, $Language){
 
-		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
+		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm();");
 		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
 
 		$rows = [10 => 10, 25 => 25, 50 => 50, 100 => 100];
@@ -267,7 +267,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
-		<td>' . we_html_tools::htmlSelect("Rows", $rows, 1, $Search->Rows, "", ['onchange' => "SubmitForm();"]) . '</td>
+		<td>' . we_html_tools::htmlSelect("Rows", $rows, 1, $Search->Rows, "", ['onchange' => "submitForm();"]) . '</td>
 		<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 		<td></td>
 		<td>' . $newButton . '</td>
@@ -313,7 +313,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (we_base_permission::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; submitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
 			</tr>
 			</table>
@@ -323,7 +323,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; submitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
 			</tr>
 			</table>
@@ -333,7 +333,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; submitForm(); }") . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
 			</tr>
 			</table>

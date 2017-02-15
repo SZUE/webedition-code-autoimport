@@ -320,7 +320,7 @@ function we_cmd() {
 			break;
 		case "image_convertGIF":
 		case "image_convertPNG":
-			ImageEditTools().deactivateAll();
+			ImageEditTools.deactivateAll();
 			window.parent.we_cmd.apply(caller, args);
 			break;
 		case "spellcheck":
