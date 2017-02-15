@@ -4,9 +4,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev: 13204 $
- * $Author: mokraemer $
- * $Date: 2017-01-01 20:30:03 +0100 (So, 01. Jan 2017) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -56,8 +56,9 @@ function we_submitForm(target, url) {
 
 	var sel = "";
 	for (var i = 1; i <= top.treeData.len; i++) {
-		if (top.treeData[i].checked)
+		if (top.treeData[i].checked){
 			sel += (top.treeData[i].name + ",");
+		}
 	}
 	if (!sel) {
 		top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -97,7 +98,7 @@ function update_rcpts() {
 }
 
 function do_send() {
-	rcpt_s = encodeURI(document.compose_form.mn_recipients.value);
+	var rcpt_s = encodeURI(document.compose_form.mn_recipients.value);
 	document.compose_form.rcpts_string.value = rcpt_s;
 	document.compose_form.submit();
 }

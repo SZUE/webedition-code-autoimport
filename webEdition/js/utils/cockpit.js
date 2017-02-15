@@ -140,7 +140,7 @@ var le_dragInit = function (oMouseEvt) {
 		for (var j = 0; j < oCurrCell.childNodes.length; j++) {
 			var oChildNode = oCurrCell.childNodes[j];
 			if (oChildNode.tagName == 'DIV') {
-				oWidget.c[iCountDiv] = new setHandler(oChildNode);
+				oWidget.c[iCountDiv] = new SetHandler(oChildNode);
 				iCountDiv++;
 			}
 		}
@@ -231,7 +231,7 @@ var oWidget = {
 	}
 };
 
-var setHandler = function (oDiv) {
+var SetHandler = function (oDiv) {
 	this._dragStart = function () {
 		oWidget.adaptOffset(this);
 		this.origNextSibling = this.node.nextSibling;

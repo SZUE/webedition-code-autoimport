@@ -5,5 +5,6 @@
 	"curly":true,
 	"browser":true,
 	"jquery":true,
+	"node":true,
   "predef": [ "WE" ]
 }

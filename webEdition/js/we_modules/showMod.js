@@ -48,16 +48,16 @@ function we_cmd() {
 			top.content.hot = false;
 			break;
 		case 'loadTree':
-			var pid = args[1].pid;
+			var clear = args[1].clear;
 			var items = args[1].items;
 			var sorted = args[1].sorted;
-			if (!pid) {
+			if (clear) {
 				top.content.treeData.clear();
 				top.content.treeData.add(top.content.node.prototype.rootEntry(0, 'root', 'root'));
 			}
 
 			for (var i = 0; i < items.length; i++) {
-				if (!pid || top.content.treeData.indexOfEntry(items[i].id) < 0) {
+				if (clear || top.content.treeData.indexOfEntry(items[i].id) < 0) {
 					if (sorted) {
 						top.content.treeData.addSort(new top.content.node(items[i]));
 					} else {
@@ -84,9 +84,11 @@ function we_cmd() {
 			var yes = args, no = args;
 			yes[0] = 'exit_doc_question_yes';
 			no[0] = 'exit_doc_question_no';
-			WE().util.showConfirm(caller, "", WE().consts.g_l.alert.exit_doc_question['tools'], yes, no);
+			WE().util.showConfirm(caller, "", WE().consts.g_l.alert.exit_doc_question.tools, yes, no);
 			break;
-
+		case "updateTitle":
+			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
+			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

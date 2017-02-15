@@ -1068,7 +1068,6 @@ var weCollectionEdit = {
 					'&we_cmd[index]=' + encodeURIComponent(index) +
 					'&we_cmd[notReplace]=' + encodeURIComponent(notReplace) +
 					'&we_cmd[message]=' + encodeURIComponent(message);
-				;
 				//postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
 				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetValidItemsByID", postData, this.ajaxCallbackGetValidItemsByID);
@@ -1081,9 +1080,9 @@ var weCollectionEdit = {
 	},
 	ajaxCallbackGetValidItemsByID: function (weResponse) {
 		var respArr = weResponse.DataArray.items,
-			index = respArr = weResponse.DataArray.index,
-			message = respArr = weResponse.DataArray.message,
-			notReplace = respArr = weResponse.DataArray.notReplace;
+			index = weResponse.DataArray.index,
+			message = weResponse.DataArray.message,
+			notReplace = weResponse.DataArray.notReplace;
 		if (respArr.length === -1) { // option deactivated: check doublettes for single insert too
 			document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
 			document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;

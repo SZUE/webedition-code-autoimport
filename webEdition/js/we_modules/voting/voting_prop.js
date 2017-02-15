@@ -24,6 +24,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+var owners_label,
+				question_edit,
+				answers_edit;
+
+var table = WE().consts.tables.FILE_TABLE;
+
+function toggle(id) {
+	var elem = document.getElementById(id);
+	elem.style.display = (elem.style.display == "none" ? "block" : "none");
+}
+
+function setVisible(id, visible) {
+	var elem = document.getElementById(id);
+	elem.style.display = (visible == true ? "block" : "none");
+}
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -129,4 +144,8 @@ function submitForm(target, action, method, form) {
 	f.method = (method ? method : "post");
 
 	f.submit();
+}
+
+function callAnswerLimit() {
+	top.we_showMessage(WE().consts.g_l.voting.answer_limit, WE().consts.message.WE_MESSAGE_ERROR, window);
 }

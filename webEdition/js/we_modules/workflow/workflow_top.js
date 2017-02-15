@@ -87,12 +87,10 @@ function we_cmd() {
 				break;
 			}
 			top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
-			chk = top.content.editor.edbody.checkData();
-			if (!chk) {
+			if (!top.content.editor.edbody.checkData()) {
 				return;
 			}
-			num = top.content.editor.edbody.getNumOfDocs();
-			if (num > 0) {
+			if (top.content.editor.edbody.getNumOfDocs() > 0) {
 				WE().util.showConfirm(window, "", WE().consts.g_l.workflow.view.save_question, [
 					"save_workflow_do"]);
 				return;

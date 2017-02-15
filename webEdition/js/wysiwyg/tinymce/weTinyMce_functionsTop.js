@@ -24,35 +24,35 @@
  */
 'use strict';
 
-WE().layout.we_tinyMCE.do.afterPastePlugin = function(pl, o) {
+WE().layout.we_tinyMCE.do.afterPastePlugin = function (pl, o) {
 	var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
 	if (o.content.match(pattImg)) {
 		o.content = o.content.replace(pattImg, '');
 		top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject.removedInlinePictures, WE().consts.message.WE_MESSAGE_ERROR);
 	}
-	var patScript=/<script[^>]*.*< ?\/script[^>]*>/gi;
+	var patScript = /<script[^>]*.*< ?\/script[^>]*>/gi;
 	o.content.replace(patScript, "");
-	var patStyle=/<style[^>]*.*< ?\/style[^>]*>/gi;
+	var patStyle = /<style[^>]*.*< ?\/style[^>]*>/gi;
 	//o.content.replace(patStyle, '');
 };
 
-WE().layout.we_tinyMCE.do.beforePastePlugin = function(ed) {
+WE().layout.we_tinyMCE.do.beforePastePlugin = function (ed) {
 	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
 };
 
-WE().layout.we_tinyMCE.do.onKeyUp = function(ed) {
+WE().layout.we_tinyMCE.do.onKeyUp = function (ed) {
 	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
 };
 
-WE().layout.we_tinyMCE.do.onChange = function(ed) {
+WE().layout.we_tinyMCE.do.onChange = function (ed) {
 	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
 };
 
-WE().layout.we_tinyMCE.do.onClick = function(ed) {
+WE().layout.we_tinyMCE.do.onClick = function (ed) {
 	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
 };
 
-WE().layout.we_tinyMCE.do.onSaveContent = function(ed, o) {
+WE().layout.we_tinyMCE.do.onSaveContent = function (ed, o) {
 	ed.weEditorFrameIsHot = false;
 	// if is popup and we click on ok
 	if (ed.editorLevel === "popup" && ed.isDirty()) {
@@ -84,35 +84,37 @@ WE().layout.we_tinyMCE.do.onSaveContent = function(ed, o) {
 	 */
 };
 
-WE().layout.we_tinyMCE.do.onKeyDown = function(ed, e){
+WE().layout.we_tinyMCE.do.onKeyDown = function (ed, e) {
 	var conf = ed.settings;
 
-	if(e.ctrlKey || e.metaKey){
-		switch(e.keyCode){
+	if (e.ctrlKey || e.metaKey) {
+		switch (e.keyCode) {
 			case 68:
 			case 79:
 			case 82:
 			case 87:
 				//set keyCode = -1 to just let WE-keyListener cancel event
-				if(e.keyCode !== 87 || conf.weIsFullscreen || conf.settings.weIsInPopup){
+				if (e.keyCode !== 87 || conf.weIsFullscreen || conf.settings.weIsInPopup) {
 					e.keyCode = -1;
 				}
+				/* falls through */
 			case 83:
 				e.stopPropagation();
 				e.preventDefault();
-				WE().handler.dealWithKeyboardShortCut(e,window);
+				WE().handler.dealWithKeyboardShortCut(e, window);
 				return false;
 			case 87:
-				if(conf.weIsFullscreen || conf.weIsInPopup){
+				if (conf.weIsFullscreen || conf.weIsInPopup) {
 					e.keyCode = -1;
 				}
+				/* falls through */
 			default:
-				//let tiny do its job
+			//let tiny do its job
 		}
 	}
 };
 
-WE().layout.we_tinyMCE.do.onDblClick = function(ed, e) {
+WE().layout.we_tinyMCE.do.onDblClick = function (ed, e) {
 	var openDialogsOnDblClick = true;
 
 	if (openDialogsOnDblClick) {
@@ -124,9 +126,9 @@ WE().layout.we_tinyMCE.do.onDblClick = function(ed, e) {
 		}
 		return;
 	}
-	
+
 	// old reaction on dblclick: open linked doc/image in multieditor or external
-	var match,src, href;
+	var match, src, href, regex;
 	var frameControler = WE().layout.weEditorFrameController;
 
 	if (!frameControler) {
@@ -134,7 +136,7 @@ WE().layout.we_tinyMCE.do.onDblClick = function(ed, e) {
 	}
 
 	if (ed.selection.getNode().nodeName === "IMG" && (src = ed.dom.getAttrib(ed.selection.getNode(), "src", ""))) {
-		var regex = new RegExp('[^" >]*\?id=(\d+)[^" >]*');
+		regex = new RegExp('[^" >]*\?id=(\d+)[^" >]*');
 		if ((match = src.match(regex))) {
 			if (match[1] && parseInt(match[1]) !== 0) {
 				frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[1], "");
@@ -144,7 +146,7 @@ WE().layout.we_tinyMCE.do.onDblClick = function(ed, e) {
 		}
 	}
 	if (ed.selection.getNode().nodeName === "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))) {
-		var regex = new RegExp("(" + WE().consts.linkPrefix.TYPE_INT_PREFIX + "|" + WE().consts.linkPrefix.TYPE_OBJ_PREFIX + '|)(\d+)[^" >]*');
+		regex = new RegExp("(" + WE().consts.linkPrefix.TYPE_INT_PREFIX + "|" + WE().consts.linkPrefix.TYPE_OBJ_PREFIX + '|)(\d+)[^" >]*');
 		if ((match = href.match(regex))) {
 			if (match[1]) {
 				switch (match[1]) {
@@ -162,7 +164,7 @@ WE().layout.we_tinyMCE.do.onDblClick = function(ed, e) {
 	}
 };
 
-WE().layout.we_tinyMCE.do.onNodeChange = function(ed, cm, n) {
+WE().layout.we_tinyMCE.do.onNodeChange = function (ed, cm, n) {
 	var pc, tmp;
 	var td = ed.dom.getParent(n, "td");
 
@@ -176,9 +178,9 @@ WE().layout.we_tinyMCE.do.onNodeChange = function(ed, cm, n) {
 			ed.selection.setContent(pc.innerHTML);
 		}
 	}
-}
+};
 
-WE().layout.we_tinyMCE.do.onPostRender = function(ed, cm) {
+WE().layout.we_tinyMCE.do.onPostRender = function (ed, cm) {
 	var win = ed.settings.win;
 
 	ed.settings.win.addEventListener("resize", function (e) {
@@ -189,7 +191,7 @@ WE().layout.we_tinyMCE.do.onPostRender = function(ed, cm) {
 	}
 };
 
-WE().layout.we_tinyMCE.do.onPostProcess = function(ed, o) {
+WE().layout.we_tinyMCE.do.onPostProcess = function (ed, o) {
 	var c = document.createElement("div");
 	c.innerHTML = o.content;
 	var first = c.firstChild;
@@ -200,8 +202,8 @@ WE().layout.we_tinyMCE.do.onPostProcess = function(ed, o) {
 			c.innerHTML = '';
 		} else if (ed.settings.weRemoveFirstParagraph === '1' && first.nodeName == 'P') {
 			var useDiv = false,
-				div = document.createElement('div'),
-				attribs = ['style', 'class', 'dir'];
+							div = document.createElement('div'),
+							attribs = ['style', 'class', 'dir'];
 			div.innerHTML = first.innerHTML;
 
 			for (i = 0; i < attribs.length; i++) {
@@ -233,15 +235,15 @@ WE().layout.we_tinyMCE.do.onPostProcess = function(ed, o) {
 	o.content = c.innerHTML;
 };
 
-WE().layout.we_tinyMCE.do.onDrop = function(e, ed) {
+WE().layout.we_tinyMCE.do.onDrop = function (e, ed) {
 	if (e.dataTransfer && e.dataTransfer.getData('text')) {
 		var data = e.dataTransfer.getData('text').split(',');
 
 		// dragging from WE (when permitted) comes with transfer text starting with "dragItem": we handle it
-		if(data[0] && data[0] === 'dragItem' && data[1] === WE().consts.tables.FILE_TABLE){
+		if (data[0] && data[0] === 'dragItem' && data[1] === WE().consts.tables.FILE_TABLE) {
 			e.preventDefault();
 			e.stopPropagation();
-			if(data[3] === WE().consts.contentTypes.IMAGE){
+			if (data[3] === WE().consts.contentTypes.IMAGE) {
 				ed.execCommand('mceWeimage', true, data[2]);
 			} else {
 				ed.execCommand('mceWelink', true, data[2]);
@@ -259,13 +261,13 @@ WE().layout.we_tinyMCE.do.onDrop = function(e, ed) {
 	return false;
 };
 
-WE().layout.we_tinyMCE.do.onCopyCut = function(ed, isCut) {
+WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 	var selection = ed.getWin().getSelection();
 	var tmpDiv = ed.getDoc().createElement('div');
 
 	tmpDiv.appendChild(selection.getRangeAt(0).cloneContents());
 
-	if (tmpDiv.firstElementChild !== null){
+	if (tmpDiv.firstElementChild !== null) {
 		tmpDiv.firstElementChild.setAttribute('we-tiny', '1');
 		// mark tmpDiv too: in FF tmpDiv is written to clipboard when using selection.selectAllChildren(tmpDiv)!
 		tmpDiv.setAttribute('name', 'we-tiny-tmpDiv');
@@ -288,7 +290,7 @@ WE().layout.we_tinyMCE.do.onCopyCut = function(ed, isCut) {
 			tmpDiv = null;
 			ed.settings.win.tinyMCE.activeEditor.selection.moveToBookmark(WE().layout.we_tinyMCE.vars.bm);
 			WE().layout.we_tinyMCE.vars.bm = null;
-			if(isCut){
+			if (isCut) {
 				ed.settings.win.tinyMCE.activeEditor.selection.setContent('');
 			}
 			// we mus repaint tiny-path too
@@ -296,7 +298,7 @@ WE().layout.we_tinyMCE.do.onCopyCut = function(ed, isCut) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function(ed) {
+WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function (ed) {
 	if (!ed.weEditorFrameIsHot && ed.editorLevel === 'inline' && ed.isDirty()) {
 		try {
 			ed.weEditorFrame.setEditorIsHot(true);
@@ -306,30 +308,30 @@ WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function(ed) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinyWeResizeEditor = function(render, name, win) {
+WE().layout.we_tinyMCE.functions.tinyWeResizeEditor = function (render, name, win) {
 	var el = win.tinyMCE.DOM.get(name + "_toolbargroup");
 	var h = el ? el.parentNode.offsetHeight : 0;
 	if ((render || !el) && --win.tinyMCE.weResizeLoops && h < 24) {
-		window.setTimeout(tinyWeResizeEditor, 10, true);
+		window.setTimeout(WE().layout.we_tinyMCE.functions.tinyWeResizeEditor, 10, true);
 		return;
 	}
 
 	win.tinyMCE.DOM.setStyle(
-		win.tinyMCE.DOM.get(name + "_ifr"),
-		"height",
-		(win.innerHeight - h - 60) + "px"
-		);
+					win.tinyMCE.DOM.get(name + "_ifr"),
+					"height",
+					(win.innerHeight - h - 60) + "px"
+					);
 };
 
-WE().layout.we_tinyMCE.functions.customNodeFilter_A = function(nodes) {
-	for(var i = 0; i < nodes.length; i++){
+WE().layout.we_tinyMCE.functions.customNodeFilter_A = function (nodes) {
+	for (var i = 0; i < nodes.length; i++) {
 		if (!nodes[i].attr("href") && !nodes[i].attr("id")) {
 			nodes[i].attr("id", nodes[i].attr("name"));
 		}
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinySetEditorLevel = function(ed) {
+WE().layout.we_tinyMCE.functions.tinySetEditorLevel = function (ed) {
 	/* set EditorFrame.setEditorIsHot(true) */
 
 	// we look for editorLevel and weEditorFrameController just once at editor init
@@ -357,15 +359,15 @@ WE().layout.we_tinyMCE.functions.tinySetEditorLevel = function(ed) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.getDocumentCss = function(win, preKomma){
+WE().layout.we_tinyMCE.functions.getDocumentCss = function (win, preKomma) {
 	var doc = win.document;
-	var styles=[];
-	if(doc.styleSheets){
-		for(var i=0;i<doc.styleSheets.length;i++){
-			if(doc.styleSheets[i].href && doc.styleSheets[i].href.indexOf("&wysiwyg=0")===-1 && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
+	var styles = [];
+	if (doc.styleSheets) {
+		for (var i = 0; i < doc.styleSheets.length; i++) {
+			if (doc.styleSheets[i].href && doc.styleSheets[i].href.indexOf("&wysiwyg=0") === -1 && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length === 0 || doc.styleSheets[i].media.mediaText.indexOf("all") >= 0 || doc.styleSheets[i].media.mediaText.indexOf("screen") >= 0)) {
 				styles.push(doc.styleSheets[i].href);
 			}
 		}
 	}
-	return styles.length?((preKomma?",":"")+styles.join(",")):"";
+	return styles.length ? ((preKomma ? "," : "") + styles.join(",")) : "";
 };

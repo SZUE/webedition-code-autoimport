@@ -55,7 +55,7 @@ class we_search_frames extends we_modules_frame{
 				we_html_element::htmlBody($attr, we_html_element::htmlForm(['name' => 'we_form'
 						], we_html_element::htmlHiddens(['pnt' => 'cmd',
 							'cmd' => 'no_cmd'])
-				)), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+				)), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

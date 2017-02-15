@@ -69,6 +69,7 @@ function we_cmd() {
 			break;
 		case "closeDeletedDocuments":
 			closeDeletedDocuments(args[1], args[2]);
+			break;
 		default:
 			if (top.we_cmd) {
 				top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

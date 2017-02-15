@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_voting_voting extends we_base_model{
+
 //voting status codes
 
 	const SUCCESS = 1;
@@ -113,26 +115,26 @@ class we_voting_voting extends we_base_model{
 			'LogData' => we_base_request::RAW,
 			'RestrictIP' => we_base_request::BOOL,
 			'BlackList' => we_base_request::RAW,
-			];
+		];
 
 		if($votingID){
 			$this->ID = $votingID;
 			$this->load($votingID);
 		}
 
-		$this->QASet = $this->QASet ? : [0 => ['question' => '',
+		$this->QASet = $this->QASet ?: [0 => ['question' => '',
 				'answers' => [0 => '',
 					1 => ''
-					]
-		]
+				]
+			]
 		];
 
-		$this->QASetAdditions = $this->QASetAdditions ? : [0 => ['imageID' => '', 'mediaID' => '', 'successorID' => '']		];
+		$this->QASetAdditions = $this->QASetAdditions ?: [0 => ['imageID' => '', 'mediaID' => '', 'successorID' => '']];
 
-		$this->Valid = ($this->Valid? : time() + 31536000); //365 days
+		$this->Valid = ($this->Valid ?: time() + 31536000); //365 days
 		$this->Active = ($this->Valid < time() && $this->ActiveTime ? 0 : $this->Active);
-		$this->Scores = ($this->Scores? : []);
-		$this->PublishDate = ($this->PublishDate ? : time());
+		$this->Scores = ($this->Scores ?: []);
+		$this->PublishDate = ($this->PublishDate ?: time());
 	}
 
 	function load($id = 0, $isAdvanced = false){
@@ -175,7 +177,7 @@ class we_voting_voting extends we_base_model{
 			}
 		}
 
-		$this->ParentID = $this->ParentID ? : 0;
+		$this->ParentID = $this->ParentID ?: 0;
 		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners))){
 			$this->Owners[] = $_SESSION['user']['ID'];
 		}
@@ -250,7 +252,7 @@ class we_voting_voting extends we_base_model{
 	}
 
 	function evalPath($id = 0, we_database_base $db = null){
-		$db_tmp = $db? : new DB_WE();
+		$db_tmp = $db ?: new DB_WE();
 		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
@@ -354,7 +356,7 @@ class we_voting_voting extends we_base_model{
 		$owners_sql = '';
 		if(!we_base_permission::hasPerm('ADMINISTRATOR')){
 			$userids = [$_SESSION['user']['ID']
-				];
+			];
 			we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);
 
 			$sqlarr = [];
@@ -595,7 +597,7 @@ class we_voting_voting extends we_base_model{
 				'cookie' => $this->cookieDisabled() ? 0 : 1,
 				'fallback' => $this->FallbackActive,
 				'status' => $status
-				];
+			];
 			$this->saveField('LogData', true);
 		}
 	}
@@ -648,7 +650,7 @@ class we_voting_voting extends we_base_model{
 		$logQuery = ($this->IsFolder ?
 				'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
 				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
-			);
+				);
 
 		$this->db->query($logQuery);
 		$this->LogData = [];
@@ -665,7 +667,7 @@ class we_voting_voting extends we_base_model{
 				'answertext' => $this->db->f('answertext'),
 				'successor' => $this->db->f('successor'),
 				'additionalfields' => $this->db->f('additionalfields'),
-				];
+			];
 		}
 		return $this->LogData;
 	}
@@ -699,19 +701,19 @@ class we_voting_voting extends we_base_model{
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
 				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => $votingsession,
-				'voting' => $this->ID,
-				'time' => sql_function('UNIX_TIMESTAMP()'),
-				'ip' => $_SERVER['REMOTE_ADDR'],
-				'agent' => $_SERVER['HTTP_USER_AGENT'],
-				'userid' => $userid,
-				'cookie' => $cookieStatus,
-				'fallback' => $this->FallbackActive,
-				'answer' => $answer,
-				'answertext' => $answertext,
-				'successor' => $successor,
-				'additionalfields' => $additionalfields,
-				'status' => $status,
-				]));
+					'voting' => $this->ID,
+					'time' => sql_function('UNIX_TIMESTAMP()'),
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'agent' => $_SERVER['HTTP_USER_AGENT'],
+					'userid' => $userid,
+					'cookie' => $cookieStatus,
+					'fallback' => $this->FallbackActive,
+					'answer' => $answer,
+					'answertext' => $answertext,
+					'successor' => $successor,
+					'additionalfields' => $additionalfields,
+					'status' => $status,
+		]));
 
 		return true;
 	}
@@ -740,19 +742,19 @@ class we_voting_voting extends we_base_model{
 		}
 		foreach($LogData as $ld){
 			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => '',
-					'voting' => $this->ID,
-					'time' => $ld['time'],
-					'ip' => $ld['ip'],
-					'agent' => $ld['agent'],
-					'userid' => 0,
-					'cookie' => $ld['cookie'],
-					'fallback' => $ld['fallback'],
-					'answer' => '',
-					'answertext' => '',
-					'successor' => '',
-					'additionalfields' => '',
-					'status' => $ld['status'],
-					]));
+						'voting' => $this->ID,
+						'time' => $ld['time'],
+						'ip' => $ld['ip'],
+						'agent' => $ld['agent'],
+						'userid' => 0,
+						'cookie' => $ld['cookie'],
+						'fallback' => $ld['fallback'],
+						'answer' => '',
+						'answertext' => '',
+						'successor' => '',
+						'additionalfields' => '',
+						'status' => $ld['status'],
+			]));
 		}
 		$this->LogData = '';
 		$this->saveField('LogData', false);
@@ -772,6 +774,7 @@ class we_voting_voting extends we_base_model{
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
 	save_changed_voting:"' . g_l('modules_voting', '[save_changed_voting]') . '",
 	successorID_text:"' . g_l('modules_voting', '[successorID_text]') . '",
+	answer_limit:"' . g_l('modules_voting', '[answer_limit]') . '",
 };
 ';
 	}

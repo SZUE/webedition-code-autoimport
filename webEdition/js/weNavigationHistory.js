@@ -41,7 +41,7 @@ var weNavigationHistory = function () {
 				this.documentHistory = [];
 			}
 
-			this.documentHistory.push(new weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
+			this.documentHistory.push(new NavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
 			while (this.documentHistory.length > 50) {
 				this.documentHistory.shift();
 			}
@@ -105,7 +105,7 @@ var weNavigationHistory = function () {
 	};
 };
 
-var weNavigationHistoryEntry = function (table, id, ct, editcmd, url, parameters) {
+var NavigationHistoryEntry = function (table, id, ct, editcmd, url, parameters) {
 
 	this.table = table;
 	this.id = id;

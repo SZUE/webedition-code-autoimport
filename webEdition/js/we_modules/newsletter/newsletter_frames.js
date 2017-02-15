@@ -1,4 +1,4 @@
-/* global WE, top,inSelectBox,addElement,PopulateVar,submitForm */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -92,7 +92,7 @@ function set_import(val) {
 		document.we_form.seb.value = 0;
 	}
 
-	PopulateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
 	submitForm("black_list");
 }
 
@@ -103,7 +103,7 @@ function set_export(val) {
 		document.we_form.sib.value = 0;
 	}
 
-	PopulateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
 	submitForm("black_list");
 }
 
