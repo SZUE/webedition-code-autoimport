@@ -1310,7 +1310,7 @@ function we_cmd() {
 			}
 			return 0;
 		case "setIconOfDocClass":
-			WE().util.setIconOfDocClass(document, args[1]);
+			WE().util.setIconOfDocClass(caller.document, args[1]);
 			break;
 		case 'updateMainTree':
 			updateMainTree(args[1], args[2], args[3]);
