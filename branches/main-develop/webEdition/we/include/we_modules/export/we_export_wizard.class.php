@@ -164,27 +164,27 @@ class we_export_wizard{
 		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . 'export_frameset.php', 'top.content', 'top.content.editor.edbody', 'top.load');
 
 		$js = we_html_element::jsScript(JS_DIR . 'export_wizard.js') . $this->Tree->getJSTreeCode();
-/* TODO: maybe send this vars as dynvars so we have the defaults here
-			we_html_element::jsElement('
-var step = 0;
+		/* TODO: maybe send this vars as dynvars so we have the defaults here
+		  we_html_element::jsElement('
+		  var step = 0;
 
-var activetab=0;
-var selection="auto";
+		  var activetab=0;
+		  var selection="auto";
 
-var extype="' . we_import_functions::TYPE_WE_XML . '";
-var type="doctype";
-var categories="";
-var doctype="";
-var classname="";
-var dir="";
+		  var extype="' . we_import_functions::TYPE_WE_XML . '";
+		  var type="doctype";
+		  var categories="";
+		  var doctype="";
+		  var classname="";
+		  var dir="";
 
-var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
-var filename="";
-var export_to="server";
-var path="/";'
-		);
- *
- */
+		  var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
+		  var filename="";
+		  var export_to="server";
+		  var path="/";'
+		  );
+		 *
+		 */
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "top.body.location='" . $this->frameset . '?pnt=body' . $args . "&step=' + step;"]
 				, we_html_element::htmlIFrame('header', $this->frameset . '?pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
@@ -253,10 +253,10 @@ var path="/";'
 			  "noline"	=> 1)
 			 */
 
-				["html" => we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($extype == we_import_functions::TYPE_WE_XML && $wexpotEnabled), "extype", g_l('export', '[wxml_export]'), true, "defaultfont", "", !$wexpotEnabled, g_l('export', '[txt_wxml_export]'), 0, 500),
+			["html" => we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($extype == we_import_functions::TYPE_WE_XML && $wexpotEnabled), "extype", g_l('export', '[wxml_export]'), true, "defaultfont", "", !$wexpotEnabled, g_l('export', '[txt_wxml_export]'), 0, 500),
 				'noline' => 1
 			],
-				["html" => we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($extype == we_import_functions::TYPE_GENERIC_XML && we_base_permission::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', '[gxml_export]'), true, "defaultfont", "", !we_base_permission::hasPerm("GENERICXML_EXPORT"), g_l('export', '[txt_gxml_export]'), 0, 500),
+			["html" => we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($extype == we_import_functions::TYPE_GENERIC_XML && we_base_permission::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', '[gxml_export]'), true, "defaultfont", "", !we_base_permission::hasPerm("GENERICXML_EXPORT"), g_l('export', '[txt_gxml_export]'), 0, 500),
 				'noline' => 1]
 		];
 
@@ -291,7 +291,7 @@ var path="/";'
 		$selection = $this->exportVars["selection"];
 		$parts = [["html" => we_html_forms::radiobutton("auto", ($selection === "auto" ? true : false), "selection", g_l('export', '[auto_selection]'), true, "defaultfont", "", false, g_l('export', (($this->exportVars['extype'] === 'csv') ? '[txt_auto_selection_csv]' : '[txt_auto_selection]')), 0, 500),
 			'noline' => 1],
-				["html" => we_html_forms::radiobutton("manual", ($selection === "manual" ? true : false), "selection", g_l('export', '[manual_selection]'), true, "defaultfont", "", false, g_l('export', (($this->exportVars['extype'] === 'csv') ? '[txt_manual_selection_csv]' : '[txt_manual_selection]')), 0, 500),
+			["html" => we_html_forms::radiobutton("manual", ($selection === "manual" ? true : false), "selection", g_l('export', '[manual_selection]'), true, "defaultfont", "", false, g_l('export', (($this->exportVars['extype'] === 'csv') ? '[txt_manual_selection_csv]' : '[txt_manual_selection]')), 0, 500),
 				'noline' => 1]
 		];
 
@@ -321,9 +321,9 @@ var path="/";'
 
 	private function getHTMLStep2a(){
 		$weSuggest = & weSuggest::getInstance();
-
-		$js = we_base_jsCmd::singleCmd('load_frame', ['frame' => 'footer', 'location' => $this->frameset . '?pnt=footer&step=2']);
-
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('load_frame', ['frame' => 'footer', 'location' => $this->frameset . '?pnt=footer&step=2']);
+		$js = '';
 		$parts = [];
 		$showdocs = false;
 		if(!isset($this->exportVars["extype"]) || (isset($this->exportVars["extype"]) && $this->exportVars["extype"] != "csv")){
@@ -348,11 +348,11 @@ var path="/";'
 			$parts[] = ["headline" => "", "html" => $classname, 'space' => we_html_multiIconBox::SPACE_SMALL];
 		}
 
-		$category = $this->getHTMLCategory();
+		$category = $this->getHTMLCategory($jsCmd);
 		$parts[] = ["headline" => "", "html" => $category, 'space' => we_html_multiIconBox::SPACE_SMALL, 'noline' => 1];
 
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $this->baseJS . $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $this->baseJS . $jsCmd->getCmds() . $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 						'name' => 'we_form'], $hiddens .
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
 					)
@@ -383,7 +383,8 @@ var path="/";'
 				"selection" => "manual",
 				"step" => 2]);
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+						'name' => 'we_form'], $hiddens .
 //we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
 					)
@@ -402,13 +403,13 @@ var path="/";'
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 540),
 			'noline' => 1
 			],
-				["headline" => "",
+			["headline" => "",
 				"html" => $header->getHtml() . we_html_element::htmlDiv(["id" => "treetable", "class" => "blockWrapper", 'style' => "position: relative;width: 540px; height: 250px; border:1px #dce6f2 solid;"], ""),
 			]
 		];
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::cssLink(CSS_DIR . 'tree.css') . $this->baseJS . $jsCmd->getCmds(),
-				we_html_element::htmlBody(["class" => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::cssLink(CSS_DIR . 'tree.css') . $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody([
+					"class" => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
 							"pnt" => "body",
 							"step" => 4,
 							"selDocs" => '',
@@ -467,14 +468,15 @@ var path="/";'
 
 		$parts = [["headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED],
-				["headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(),
+			["headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED],
-				["headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
-				["headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(['style' => 'padding-right:5px;'], g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50),
+			["headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
+			["headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(['style' => 'padding-right:5px;'], g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50),
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
+		return we_html_tools::getHtmlTop('', '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
 							"pnt" => "body",
 							"step" => 7]) .
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[options]'))
@@ -544,7 +546,8 @@ var path="/";'
 
 		$parts[] = ["headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED];
 
-		return we_html_tools::getHtmlTop('', '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
+		return we_html_tools::getHtmlTop('', '', '', $this->baseJS . $jsCmd->getCmds(), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
+						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens([
 							"pnt" => "load",
 							"cmd" => "export",
 							"step" => 7]) .
@@ -635,19 +638,19 @@ var path="/";'
 		$table = new we_html_table(["width" => '100%', 'class' => 'default'], 3, 1);
 //print $step;
 
-$js = $js2 = '';
-/*
-		switch($step){
-			case 1:
-			case 2:
-			case 4:
-				$js = $js2 = '';
+		$js = $js2 = '';
+		/*
+		  switch($step){
+		  case 1:
+		  case 2:
+		  case 4:
+		  $js = $js2 = '';
 
-				break;
-			default:
-				$js = $js2 = '';
-		}
-*/
+		  break;
+		  default:
+		  $js = $js2 = '';
+		  }
+		 */
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $js, we_html_element::htmlBody(["id" => "eHeaderBody"], $js2 .
 					$table->getHtml() .
 					we_html_element::htmlForm(['name' => 'we_form', "target" => "load", "action" => $this->frameset], we_html_element::htmlHiddens(["pnt" => "load",
@@ -675,43 +678,37 @@ $js = $js2 = '';
 			case 0:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, '', '', 0, 0, '', '', true) .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(0);"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(0);"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 1:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.doBack(1);") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(1);"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(1);"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 2:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.doBack(2);") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(2, " . ($this->exportVars["selection"] == "auto" ? 7 : 3) . ");"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(2, " . ($this->exportVars["selection"] == "auto" ? 7 : 3) . ");"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 3:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.doBack(3);") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(3);"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(3);"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 4:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.body.document.we_form.target='body';top.body.document.we_form.pnt.value='body';top.body.document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? 2 : 3) . ";top.body.document.we_form.submit();") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(4);"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(4);"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 7:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.body.document.we_form.target='body';top.body.document.we_form.pnt.value='body';top.body.document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? 2 : 3) . ";top.body.document.we_form.submit();") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(4);"),
-						we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(4);"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 				);
 				break;
 			case 10:
@@ -721,16 +718,14 @@ $js = $js2 = '';
 				} else if($step == 99 && $show_controls){
 					$buttons = we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?x=y&pnt=body&step=0';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=0';") .
-							we_html_button::create_button(we_html_button::NEXT, '', '', 0, 0, '', '', true),
-							we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
+							we_html_button::create_button(we_html_button::NEXT, '', '', 0, 0, '', '', true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.doCancel();")
 					);
 				}
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:top.load.location='" . $this->frameset . '?pnt=load&cmd=back&step=' . $step . "';") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(" . $step . ");"),
-						we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.doCancel();')
+						we_html_button::create_button(we_html_button::NEXT, "javascript:top.doNext(" . $step . ");"), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.doCancel();')
 				);
 		}
 
@@ -1087,7 +1082,7 @@ switch (args[0]) {
 		return null;
 	}
 
-	private function getHTMLCategory(){
+	private function getHTMLCategory(we_base_jsCmd $jsCmd){
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
@@ -1131,7 +1126,7 @@ switch (args[0]) {
 			$cats->isEditable = false;
 		}
 		return '<table class="default"><tr><td></td><td>' .
-			$hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont") .
+			$hiddens . we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('export', '[categories]'), "left", "defaultfont") .
 			'</td></tr></table>';
 	}
 

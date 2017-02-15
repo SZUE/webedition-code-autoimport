@@ -123,11 +123,11 @@ class we_docTypes extends we_class{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, [], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 	}
 
-	private function formCategory(){
+	private function formCategory(we_base_jsCmd $jsCmd){
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'dt_add_cat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", '"we/category"', CATEGORY_TABLE);
-		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
+		return we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('weClass', '[category]'));
 	}
 
 	public function addCat(array $ids){
@@ -162,13 +162,13 @@ class we_docTypes extends we_class{
 		return $this->formInputField('', 'DocType', '', 24, 520, 32);
 	}
 
-	public function formDocTypeTemplates(){
+	public function formDocTypeTemplates(we_base_jsCmd $jsCmd){
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . TEMPLATES_TABLE . "','','','add_dt_template', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
 		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", 'ContentType', TEMPLATES_TABLE);
-		return $templ->get();
+		return $templ->get($jsCmd);
 	}
 
-	public function formDocTypeDefaults(){
+	public function formDocTypeDefaults(we_base_jsCmd $jsCmd){
 		return '
 <table class="default">
 	<tr><td colspan="3" style="padding-bottom:5px;">' . $this->formDirChooser(409) . '</td></tr>
@@ -182,7 +182,7 @@ class we_docTypes extends we_class{
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
 	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formLangLinks(521) . '</td></tr>
-	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
+	<tr><td colspan="3">' . $this->formCategory($jsCmd) . '</td></tr>
 </table>';
 	}
 

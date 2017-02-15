@@ -112,12 +112,13 @@ function setTab(tab) {
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
+		$jsCmd = new we_base_jsCmd();
 		$weSuggest = & weSuggest::getInstance();
 		//FIXME: folder don't have a tree to start.
 		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"], we_html_element::htmlForm([
-					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties())
+					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($jsCmd))
 		);
-		return $this->getHTMLDocument($body, $this->View->getJSProperty());
+		return $this->getHTMLDocument($body, $this->View->getJSProperty() . $jsCmd->getCmds());
 	}
 
 	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
@@ -143,7 +144,7 @@ function setTab(tab) {
 		$progressbar = new we_progressBar($progress, 200);
 		$progressbar->addText($text, we_progressBar::TOP, "current_description");
 
-		$table2->setCol(0, 4, ["id" => "progress"], $progressbar->getHtml('','display: none'));
+		$table2->setCol(0, 4, ["id" => "progress"], $progressbar->getHtml('', 'display: none'));
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())
@@ -151,7 +152,7 @@ function setTab(tab) {
 		);
 	}
 
-	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
+	function getHTMLProperties(we_base_jsCmd $jsCmd, $preselect = ""){// TODO: move to weExportView
 		$this->SelectionTree->init($this->frameset, 'top.content.editor.edbody', 'top.content.editor.edbody', $this->cmdFrame);
 
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
@@ -172,14 +173,14 @@ function addLog(text){
 	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
 }
 ') .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1($jsCmd), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_LOG ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 	}
 
-	function getHTMLTab1(){
+	private function getHTMLTab1(we_base_jsCmd $jsCmd){
 		$parts = [
-				[
+			[
 				'headline' => g_l('export', '[property]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=true;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
@@ -263,7 +264,7 @@ function closeAllType(){
 			);
 		}
 
-		$table->setColContent(3, 0, $this->getHTMLCategory());
+		$table->setColContent(3, 0, $this->getHTMLCategory($jsCmd));
 
 		$selectionTypeHtml = $table->getHTML();
 
@@ -341,7 +342,7 @@ function closeAllType(){
 
 	private function getHTMLTab3(){
 		return [
-				[
+			[
 				'headline' => '',
 				'html' => we_html_element::htmlDiv(['class' => 'blockWrapper', 'style' => 'width: 650px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'], ''),
 			]
@@ -668,7 +669,7 @@ if (top.content.editor.edbody.addLog){
 		return $weSuggest->getHTML();
 	}
 
-	function getHTMLCategory(){
+	private function getHTMLCategory(we_base_jsCmd $jsCmd){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
@@ -712,7 +713,7 @@ if (top.content.editor.edbody.addLog){
 		if(!we_base_permission::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
-		return $hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont");
+		return $hiddens . we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('export', '[categories]'), "left", "defaultfont");
 	}
 
 }

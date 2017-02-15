@@ -40,7 +40,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 		$this->disabledDelReason = $reason;
 	}
 
-	function get(){
+	function get(we_base_jsCmd $jsCmd){
 		$table = new we_html_table(['class' => 'default', "width" => abs($this->width - 20)], 1, 4);
 
 		$this->nr = 0;
@@ -101,8 +101,8 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 			$table2->addRow(1);
 			$table2->setCol(1, 0, ['class' => 'addButton'], $this->addbut);
 		}
-
-		return $table2->getHtml() . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"chooserFileIcon");');
+$jsCmd->addCmd('setIconOfDocClass', 'chooserFileIcon');
+		return $table2->getHtml();
 	}
 
 }

@@ -588,7 +588,7 @@ class we_object extends we_document{
 			'</div>';
 	}
 
-	function getFieldHTML($name, $identifier){
+	function getFieldHTML(we_base_jsCmd $jsCmd, $name, $identifier){
 		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ?: we_objectFile::TYPE_INPUT;
 		$content = '<tr>
 			<td  class="weMultiIconBoxHeadline" style="width:100px;vertical-align:top" >' . g_l('weClass', '[name]') . '</td>
@@ -1012,7 +1012,7 @@ class we_object extends we_document{
 
 		$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('weClass', '[fieldusers]') . '</td>
 			<td class="defaultfont" >' .
-			$this->formUsers1($name, $identifier) .
+			$this->formUsers1($jsCmd, $name, $identifier) .
 			'</td></tr>';
 
 		return $content;
@@ -1259,7 +1259,7 @@ class we_object extends we_document{
 		$this->setElement($name . 'users', implode(',', $users));
 	}
 
-	function formUsers1($name, $nr = 0){
+	private function formUsers1(we_base_jsCmd $jsCmd, $name, $nr = 0){
 		$users = $this->getElement($name . 'users') ? makeArrayFromCSV($this->getElement($name . 'users')) : [];
 		$content = '<table class="default" style="width:388px;margin:5px;" >';
 		if($users){
@@ -1286,11 +1286,12 @@ class we_object extends we_document{
 		$cmd = "object_add_user_to_field," . $GLOBALS['we_transaction'] . "," . $nr . ",," . $name;
 		$addbut = we_html_element::htmlHiddens([$idname => 0, $textname => ""]) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'" . $textname . "','','" . $idname . "','" . $cmd . "','','',1)");
 
+		$jsCmd->addCmd('setIconOfDocClass', 'userIcon');
 		return '<table class="default"><tr><td>' .
-			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,\'userIcon\');');
+			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 	}
 
-	function formUsers($canChange = true){
+	private function formUsers(we_base_jsCmd $jsCmd, $canChange = true){
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = we_unserialize($this->UsersReadOnly);
 		$content = '<table class="default" style="width:388px;margin:5px;">';
@@ -1326,8 +1327,8 @@ class we_object extends we_document{
 		$content = '<table class="default">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
 			($canChange ? '<tr><td style="text-align:right;padding-top:1em;">' . $delallbut . $addbut . '</td></tr>' : "") . '</table>';
-
-		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), "left", "defaultfont") . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"userIcon");');
+$jsCmd->addCmd('setIconOfDocClass', 'userIcon');
+		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), "left", "defaultfont");
 	}
 
 	function del_all_users($name){
@@ -1431,7 +1432,7 @@ class we_object extends we_document{
 			'<br/>' . $other->getHtml();
 	}
 
-	function formDefault(){
+	private function formDefault(we_base_jsCmd $jsCmd){
 		$select2 = $select = '';
 
 		if(($anz = $this->getElement('Defaultanzahl', 'dat', -1)) >= 0){
@@ -1557,10 +1558,10 @@ class we_object extends we_document{
 	<tr><td colspan="3" class="withBigSpace">' . $select2 . '</td></tr>
 	<tr><td colspan="3" class="withBigSpace">' . $this->formTriggerDocument(true) . '</td></tr>
 	<tr><td class="defaultfont" style="vertical-align:top" colspan="3">' . g_l('global', '[categorys]') . '</td></tr>
-	<tr><td colspan="3" class="withBigSpace">' . $this->formCategory() . '</td></tr>
+	<tr><td colspan="3" class="withBigSpace">' . $this->formCategory($jsCmd) . '</td></tr>
 	<tr><td colspan="3" ' . ($this->RestrictUsers ? 'class="withBigSpace"' : '') . '>' . $this->formRestrictUsers() . '</td></tr>' .
 			($this->RestrictUsers ?
-			'<tr><td colspan="3" >' . $this->formUsers() . '</td></tr>' :
+			'<tr><td colspan="3" >' . $this->formUsers($jsCmd) . '</td></tr>' :
 			'') .
 			'</table>';
 	}
@@ -1581,7 +1582,7 @@ class we_object extends we_document{
 </table>';
 	}
 
-	private function formWorkspaces(){
+	private function formWorkspaces(we_base_jsCmd $jsCmd){
 //remove not existing workspaces - deal with templates as well
 		$arr = makeArrayFromCSV($this->Workspaces);
 		$defaultArr = makeArrayFromCSV($this->DefaultWorkspaces);
@@ -1610,7 +1611,7 @@ class we_object extends we_document{
 		$obj = new we_chooser_multiDirTemplateAndDefault(450, $this->Workspaces, "object_del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, 'we_' . $this->Name . '_Templates', "", get_ws(TEMPLATES_TABLE), 'we_' . $this->Name . '_DefaultWorkspaces', $this->DefaultWorkspaces);
 		$obj->CanDelete = true;
 		$obj->create = 1;
-		$content = $obj->get();
+		$content = $obj->get($jsCmd);
 
 		if(!empty($GLOBALS['WE_DEL_WORKSPACE_ERROR'])){
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
@@ -1624,10 +1625,10 @@ class we_object extends we_document{
 			we_html_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
 	}
 
-	function formCSS(){
+	private function formCSS(we_base_jsCmd $jsCmd){
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . FILE_TABLE . "','','','object_add_css','','','" . we_base_ContentTypes::CSS . "', 1,1)");
 		$css = new we_chooser_multiDir(510, $this->CSS, "object_del_css", $addbut, "", "ContentType", FILE_TABLE);
-		return $css->get();
+		return $css->get($jsCmd);
 	}
 
 	function formCopyDocument(){
@@ -2152,7 +2153,7 @@ class we_object extends we_document{
 		return id_to_path($this->CSS, FILE_TABLE, null, true);
 	}
 
-	public function getPropertyPage(){
+	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 			$parts = [['headline' => g_l('weClass', '[path]'),
 				'html' => $this->formPath(),
@@ -2160,7 +2161,7 @@ class we_object extends we_document{
 				'icon' => 'path.gif'
 				],
 				['headline' => g_l('modules_object', '[default]'),
-					'html' => $this->formDefault(),
+					'html' => $this->formDefault($jsCmd),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'default.gif'
 				],
@@ -2170,7 +2171,7 @@ class we_object extends we_document{
 					'icon' => 'charset.gif'
 				],
 				['headline' => g_l('weClass', '[CSS]'),
-					'html' => $this->formCSS(),
+					'html' => $this->formCSS($jsCmd),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'css.gif'
 				],
@@ -2182,7 +2183,7 @@ class we_object extends we_document{
 			];
 		} else {
 			$parts = [['headline' => g_l('weClass', '[workspaces]'),
-				'html' => $this->formWorkspaces(),
+				'html' => $this->formWorkspaces($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => 'workspace.gif'
 				],

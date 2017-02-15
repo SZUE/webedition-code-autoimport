@@ -295,7 +295,7 @@ abstract class we_base_variants{
 		}
 	}
 
-	public static function getVariantsEditorMultiBoxArrayObjectFile(we_objectFile $model){
+	public static function getVariantsEditorMultiBoxArrayObjectFile(we_base_jsCmd $jsCmd,we_objectFile $model){
 		$variantFields = $model->getVariantFields();
 
 		$count = we_base_variants::getNumberOfVariants($model);
@@ -314,7 +314,7 @@ abstract class we_base_variants{
 		<td style="width:200px"><span class="defaultfont"><b>Name</b></span></td>
 </tr>
 <tr>
-		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', [], true, true) . '</td>
+		<td>' . $model->getFieldHTML($jsCmd, we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', [], true, true) . '</td>
 		<td>
 			<table class="defaultfont lowContrast" style="text-align:right;width:120px">
 				<tr>
@@ -552,7 +552,7 @@ abstract class we_base_variants{
 		return $elements;
 	}
 
-	public static function edit($isObject, $command, we_document $we_doc){
+	public static function edit(we_base_jsCmd $jsCmd,$isObject, $command, we_document $we_doc){
 		switch($command){
 			case 'insert_variant':
 				self::insertVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -575,7 +575,7 @@ abstract class we_base_variants{
 		}
 		$GLOBALS['we_editmode'] = true;
 
-		echo we_html_multiIconBox::getHTML('', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30);
+		return we_html_multiIconBox::getHTML('', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($jsCmd,$we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30);
 	}
 
 	public static function getTemplateCode(we_template $we_doc){
@@ -604,7 +604,7 @@ abstract class we_base_variants{
 			]
 		];
 
-		echo we_class::hiddenTrans() .
+		return we_class::hiddenTrans() .
 		we_html_multiIconBox::getHTML('template_variant', $parts, 30);
 	}
 
