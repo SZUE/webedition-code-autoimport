@@ -40,6 +40,12 @@ class we_base_jsCmd{
 		self::$active = $this;
 	}
 
+	function __destruct(){
+		if($this->cmds){
+			t_e(self::$traces);
+		}
+	}
+
 	public function addCmd($cmd, $data = ''){
 		$values = func_get_args();
 		if(count($values) <= 2){
