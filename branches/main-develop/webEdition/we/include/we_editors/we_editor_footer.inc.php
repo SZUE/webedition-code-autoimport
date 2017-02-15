@@ -38,8 +38,8 @@ function getControlElement($type, $name){
 	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
-				$GLOBALS['we_doc']->controlElement[$type][$name] :
-				false);
+			$GLOBALS['we_doc']->controlElement[$type][$name] :
+			false);
 	}
 	return false;
 }
@@ -87,14 +87,15 @@ if($canWeSave &&
 }
 
 // publish for templates to save in version
-$pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? ['publishWhenSave'] : [];
+$pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? [
+	['publishWhenSave']] : [];
 
 $doc = [
 	'we_transaction' => $we_transaction,
 	'ID' => intval($we_doc->ID),
 	'Path' => $we_doc->Path,
 	'Text' => $we_doc->Text,
-	'Table'=>$we_doc->Table,
+	'Table' => $we_doc->Table,
 	'contentType' => $we_doc->ContentType,
 	'editFilename' => preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path),
 	'makeSameDocCheck' => intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))),
@@ -130,10 +131,10 @@ if(inWorkflow($we_doc)){
 					<?php
 					echo we_html_element::htmlHidden('sel', $we_doc->ID);
 					$_SESSION['weS']['seemForOpenDelSelector'] = ['ID' => $we_doc->ID,
-	'Table' => $we_doc->Table
-					 ];
+						'Table' => $we_doc->Table
+					];
 
-if($we_doc->userCanSave()){
+					if($we_doc->userCanSave()){
 
 						switch($_SESSION['weS']['we_mode']){
 							default:

@@ -40,12 +40,12 @@ we_cmd_modules.customer = function (args, url, caller) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:????
-			window.we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url);
 			return true;
 		case "customer_applyWeDocumentCustomerFilterFromFolder":
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			}
 			return true;
 	}

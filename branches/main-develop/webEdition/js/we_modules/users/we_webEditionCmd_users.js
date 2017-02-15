@@ -99,14 +99,14 @@ we_cmd_modules.users = function (args, url, caller) {
 			}
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			}
 			break;
 		case "chooseAddress":
 			new (WE().util.jsWindow)(caller, url, "chooseAddress", WE().consts.size.dialog.smaller, WE().consts.size.dialog.small, true, true, true, true);
 			break;
 		case "users_changeR":
-			window.we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url);
 			break;
 		default:
 			return false;

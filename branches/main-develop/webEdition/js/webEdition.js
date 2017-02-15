@@ -683,7 +683,7 @@ var WebEdition = {
 				var yesBut = {
 					text: (yesText ? yesText : WE().consts.g_l.message_reporting.yes),
 					icons: {
-						primary: "fa fa-lg fa-check fa-ok"
+						primary: "fa fa-check fa-ok"
 					},
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
@@ -697,7 +697,7 @@ var WebEdition = {
 				var noBut = {
 					text: (noText ? noText : WE().consts.g_l.message_reporting.no),
 					icons: {
-						primary: "fa fa-lg fa-close fa-cancel"
+						primary: "fa fa-close fa-cancel"
 					},
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
@@ -711,7 +711,7 @@ var WebEdition = {
 				var cancelBut = {
 					text: WE().consts.g_l.message_reporting.cancel,
 					icons: {
-						primary: "fa fa-lg fa-close fa-ban"
+						primary: "fa fa-close fa-ban"
 					},
 					click: function () {
 						var ab = this.ownerDocument.defaultView.$("#alertBox");
@@ -816,7 +816,7 @@ var WebEdition = {
 						buttons: [{
 								text: WE().consts.g_l.message_reporting.ok,
 								icons: {
-									primary: "fa fa-lg fa-check fa-ok"
+									primary: "fa fa-check fa-ok"
 								},
 								click: function () {
 									this.ownerDocument.defaultView.$("#alertBox").dialog("close");
@@ -1008,7 +1008,7 @@ function we_repl(target, url) {
 	}
 }
 
-function doSave(url, trans, cmd) {
+function doSave(url, trans) {
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
 	if (_EditorFrame.getEditorAutoRebuild()) {
@@ -1016,14 +1016,14 @@ function doSave(url, trans, cmd) {
 	}
 	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(window.load, url, cmd);
+		we_repl(window.load, url);
 	}
 }
 
-function doPublish(url, trans, cmd) {
+function doPublish(url, trans) {
 	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(window.load, url, cmd);
+		we_repl(window.load, url);
 	}
 }
 
@@ -1244,7 +1244,7 @@ function we_showInNewTab(args, url) {
 	var ctrl = WE().layout.weEditorFrameController;
 	var nextWindow;
 	if ((nextWindow = ctrl.getFreeWindow())) {
-		we_repl(nextWindow.getDocumentReference(), url, args[0]);
+		we_repl(nextWindow.getDocumentReference(), url);
 		// activate tab
 		var pos = (args[0] === "open_cockpit" ? 0 : undefined);
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ', pos);
@@ -1435,10 +1435,10 @@ var we_cmd_modules = {
 				break;
 			case "changeLanguageRecursive":
 			case "changeTriggerIDRecursive":
-				we_repl(window.load, url, args[0]);
+				we_repl(window.load, url);
 				break;
 			case "logout":
-				we_repl(window.load, url, args[0]);
+				we_repl(window.load, url);
 				break;
 			case "dologout":
 				// before the command 'logout' is executed, ask if unsaved changes should be saved
@@ -1472,10 +1472,10 @@ var we_cmd_modules = {
 				loadCloseFolder(args);
 				break;
 			case "reload_editfooter":
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url);
 				break;
 			case "reload_edit_header":
-				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editHeader, url, args[0]);
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editHeader, url);
 				break;
 			case "rebuild":
 				new (WE().util.jsWindow)(caller, url, "rebuild", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);
@@ -1662,11 +1662,11 @@ var we_cmd_modules = {
 				WE().layout.weEditorFrameController.closeAllButActiveDocument(activeId);
 				break;
 			case "open_url_in_editor":
-				we_repl(window.load, url, args[0]);
+				we_repl(window.load, url);
 				break;
 			case "publish":
 			case "unpublish":
-				doPublish(url, args[1], args[0]);
+				doPublish(url, args[1]);
 				break;
 			case "publishWhenSave":
 				WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave();
@@ -1681,7 +1681,7 @@ var we_cmd_modules = {
 					args[1] = _EditorFrame.getEditorTransaction();
 				}
 
-				doSave(url, args[1], args[0]);
+				doSave(url, args[1]);
 				break;
 			case "we_selector_delete":
 				new (WE().util.jsWindow)(caller, url, "we_del_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
@@ -1734,7 +1734,7 @@ var we_cmd_modules = {
 				open_wysiwyg_window(args, url);
 				break;
 			case "start_multi_editor":
-				we_repl(window.load, url, args[0]);
+				we_repl(window.load, url);
 				break;
 			case "customValidationService":
 				new (WE().util.jsWindow)(caller, url, "we_customizeValidation", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, false, true);
@@ -2208,7 +2208,7 @@ function switchEditPage(args, url) {
 				args[2] = _we_activeTransaction;
 			}
 			url += "&we_transaction=" + args[2];
-			we_repl(_sendToFrame, url, args[0]);
+			we_repl(_sendToFrame, url);
 		}
 	}
 }
@@ -2276,7 +2276,7 @@ function addToCollection(args, url) {
 		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
 
 		if (args[2] != 1) {
-			we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+			we_repl(document.getElementsByName("treeheader")[0], url);
 		}
 	}
 }
@@ -2287,7 +2287,7 @@ function we_cmd_move(args, url) {
 			WE().session.deleteMode = args[1];
 		}
 		if (args[2] != 1) {
-			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url);
 		}
 	} else {
 		if (WE().session.deleteMode != args[1]) {
@@ -2312,7 +2312,7 @@ function we_cmd_move(args, url) {
 		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
 
 		if (args[2] != 1) {
-			we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+			we_repl(document.getElementsByName("treeheader")[0], url);
 		}
 	}
 }
@@ -2323,7 +2323,7 @@ function we_cmd_delete(args, url) {
 			WE().session.deleteMode = args[1];
 		}
 		if (args[2] != 1) {
-			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url);
 		}
 		return;
 	}
@@ -2349,7 +2349,7 @@ function we_cmd_delete(args, url) {
 	WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
 
 	if (args[2] != 1) {
-		we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+		we_repl(document.getElementsByName("treeheader")[0], url);
 	}
 
 }
@@ -2465,7 +2465,7 @@ function doReloadCmd(args, url, hot) {
 				}
 				url += "&we_transaction=" + args[2];
 			}
-			we_repl(_visibleEditorFrame, url, args[0]);
+			we_repl(_visibleEditorFrame, url);
 		}
 	}
 }

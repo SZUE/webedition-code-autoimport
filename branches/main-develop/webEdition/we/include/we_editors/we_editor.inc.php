@@ -103,14 +103,14 @@ function processEditorCmd($we_doc, $cmd0){
 		case 'doctype_changed':
 			$we_doc->changeDoctype('', true);
 			$jsCmd = new we_base_jsCmd();
-			$jsCmd->addCmd('reload_editfooter');
-			$jsCmd->addCmd('reload_edit_header');
+			$jsCmd->addCmd('reload_editfooter', $GLOBALS['we_transaction']);
+			$jsCmd->addCmd('reload_edit_header', $GLOBALS['we_transaction']);
 			return $jsCmd->getCmds();
 		case 'template_changed':
 			$we_doc->changeTemplate();
 			$jsCmd = new we_base_jsCmd();
-			$jsCmd->addCmd('reload_editfooter');
-			$jsCmd->addCmd('reload_edit_header');
+			$jsCmd->addCmd('reload_editfooter', $GLOBALS['we_transaction']);
+			$jsCmd->addCmd('reload_edit_header', $GLOBALS['we_transaction']);
 			return $jsCmd->getCmds();
 		case 'remove_image':
 			$we_doc->remove_image(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -154,7 +154,7 @@ function processEditorCmd($we_doc, $cmd0){
 			$_SESSION['weS']['EditPageNr'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$we_doc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-				return we_base_jsCmd::singleCmd('reload_editfooter');
+				return we_base_jsCmd::singleCmd('reload_editfooter',$GLOBALS['we_transaction']);
 			}
 			break;
 		case 'delete_link':
@@ -363,7 +363,7 @@ function doUnpublish($we_doc, $we_transaction){
 		}
 //	When unpublishing a document stay where u are.
 //	uncomment the following line to switch to preview page.
-		$GLOBALS['we_responseJS'][] = ['reload_editfooter'];
+		$GLOBALS['we_responseJS'][] = ['reload_editfooter',$we_transaction];
 		$jsCmd->add('setEditorDocumentId', $we_doc->ID);
 		$we_doc->getUpdateTreeScript(true, $jsCmd); // save/ rename a document
 	} else {
@@ -618,7 +618,7 @@ if(
 										case we_base_constants::WE_EDITPAGE_PREVIEW:
 											if($_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
 												$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction];
-												$GLOBALS['we_responseJS'][] = ['reload_editfooter']; // reload the footer with the buttons
+												$GLOBALS['we_responseJS'][] = ['reload_editfooter',$we_transaction]; // reload the footer with the buttons
 											}
 									}
 								} else {
@@ -660,7 +660,7 @@ if(
 								if($we_doc->ContentType === we_base_ContentTypes::FOLDER){
 									$we_JavaScript[] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction];
 								}
-								$we_JavaScript[] = ['reload_editfooter'];
+								$we_JavaScript[] = ['reload_editfooter',$we_transaction];
 							}
 							$we_JavaScript[] = ['we_setPath', $we_doc->Path, $we_doc->Text, intval($we_doc->ID), ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published'))];
 
@@ -712,7 +712,7 @@ if(
 
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 				we_schedpro::trigger_schedule();
-				$we_JavaScript[]= ['setEditorDocumentId', $we_doc->ID ]; // save/ rename a document
+				$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID]; // save/ rename a document
 			}
 			we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
 					]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
