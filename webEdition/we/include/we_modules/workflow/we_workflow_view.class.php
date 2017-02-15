@@ -111,7 +111,7 @@ class we_workflow_view extends we_modules_view{
 		return $out;
 	}
 
-	function getProperties(){
+	function getProperties(we_base_jsCmd $jsCmd){
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
 		if($this->show){
@@ -122,7 +122,7 @@ class we_workflow_view extends we_modules_view{
 					$parts = [$this->getWorkflowHeaderMultiboxParts(143),
 						$parts[] = ['headline' => g_l('modules_workflow', '[type]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => $this->getWorkflowTypeHTML()],
+						'html' => $this->getWorkflowTypeHTML($jsCmd)],
 							['headline' => g_l('modules_workflow', '[specials]'),
 							'space' => we_html_multiIconBox::SPACE_MED,
 							'html' => '<br/>' .
@@ -161,66 +161,66 @@ class we_workflow_view extends we_modules_view{
 		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, ["onclick" => "we_cmd(\"workflow_edit\")"], "value", 200);
 	}
 
-	function getWorkflowTypeHTML(){
+	private function getWorkflowTypeHTML(we_base_jsCmd $jsCmd){
 		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, $this->workflowDef->Type == we_workflow_workflow::FOLDER, $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
-				$this->getFoldersHTML(),
+				$this->getFoldersHTML($jsCmd),
 				], 25) .
 			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, $this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY, $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
 				$this->getDocTypeHTML(),
-				$this->getCategoryHTML(),
+				$this->getCategoryHTML($jsCmd),
 				], 25) .
 			(defined('OBJECT_TABLE') ?
 			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
-				$this->getObjectHTML(),
-				$this->getObjCategoryHTML(),
-				$this->getObjectFileFoldersHTML(),
+				$this->getObjectHTML($jsCmd),
+				$this->getObjCategoryHTML($jsCmd),
+				$this->getObjectFileFoldersHTML($jsCmd),
 				], 25) :
 			'');
 	}
 
-	function getFoldersHTML(){
+	private function getFoldersHTML(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_folders');");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', $delallbut . $addbut, '', 'ContentType', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
-		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
+		return we_html_tools::htmlFormElementTable($dirs->get($jsCmd), g_l('modules_workflow', '[dirs]'));
 	}
 
-	function getCategoryHTML(){
+	private function getCategoryHTML(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_cat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
-		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
+		return we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('modules_workflow', '[categories]'));
 	}
 
-	function getObjCategoryHTML(){
+	private function getObjCategoryHTML(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_objcat')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
-		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
+		return we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('modules_workflow', '[categories]'));
 	}
 
-	function getObjectHTML(){
+	private function getObjectHTML(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objects')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','add_object')", '', 0, 0, "", "", (!we_base_permission::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", $delallbut . $addbut, "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
-		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[classes]'));
+		return we_html_tools::htmlFormElementTable($cats->get($jsCmd), g_l('modules_workflow', '[classes]'));
 	}
 
-	function getObjectFileFoldersHTML(){
+	private function getObjectFileFoldersHTML(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','add_object_file_folder','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", $delallbut . $addbut, "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
 
-		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
+		return we_html_tools::htmlFormElementTable($dirs->get($jsCmd), g_l('modules_workflow', '[dirs]'));
 	}
 
 	function getStatusHTML(){

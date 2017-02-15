@@ -1360,7 +1360,7 @@ class we_customer_EIWizard{
 		$custs->isEditable = we_base_permission::hasPerm('EDIT_CUSTOMER');
 		$jsCmd->addCmd('set_topVar', ['name' => 'customers', 'value' => '', 'fromInput' => 1]);
 
-		return $hiddens . $custs->get();
+		return $hiddens . $custs->get($jsCmd);
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){

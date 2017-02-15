@@ -59,10 +59,6 @@ class we_chooser_multiDir{
 		$this->fields[] = $ct;
 	}
 
-	function printIt(){
-		echo $this->get();
-	}
-
 	function getLine($lineNr){
 		switch($lineNr){
 			case 0:
@@ -97,7 +93,7 @@ class we_chooser_multiDir{
 		return $this->onchangeSetHot ? "we_cmd('setHot');" : '';
 	}
 
-	function get(){
+	function get(we_base_jsCmd $jsCmd){
 		$out = '<table class="default" style="width:' . abs($this->width - 20) . 'px">';
 
 		$this->nr = 0;
@@ -118,10 +114,11 @@ class we_chooser_multiDir{
 		}
 		$out .= '</table>';
 
+		$jsCmd->addCmd('setIconOfDocClass', 'chooserFileIcon');
 
 		return '<table class="default" style="width:' . $this->width . 'px">
 <tr><td><div class="multichooser">' . $out . '</div></td></tr>
-' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"chooserFileIcon");');
+' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>';
 	}
 
 }

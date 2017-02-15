@@ -25,12 +25,12 @@
 class we_import_wizard extends we_import_wizardBase{
 	var $TemplateID = 0;
 
-	private function formCategory2($obj, $categories){
+	private function formCategory2(we_base_jsCmd $jsCmd, $obj, $categories){
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','add_" . $obj . "Cat')", '', 0, 0, '', '', (!we_base_permission::hasPerm('EDIT_KATEGORIE')));
 		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', '"we/category"', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField('v[" . $obj . "Categories]');
-		return $cats->get();
+		return $cats->get($jsCmd);
 	}
 
 	/**
@@ -509,7 +509,7 @@ class we_import_wizard extends we_import_wizardBase{
 	 */
 	protected function getGXMLImportStep1(){
 		global $DB_WE;
-
+		$jsCmd = new we_base_jsCmd();
 		$v = we_base_request::_(we_base_request::STRING, 'v', []);
 
 		if(isset($v['docType']) && $v['docType'] != -1 && we_base_request::_(we_base_request::BOOL, 'doctypeChanged')){
@@ -633,8 +633,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$templateElement .= "<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $weSuggest->getHTML() . "</div>";
 
-
-		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
+		$docCategories = $this->formCategory2($jsCmd, 'doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(['class' => 'default'], 2, 2);
 		$docCats->setCol(0, 0, ['style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'], g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, ['style' => 'width:150px;'], $docCategories);
@@ -680,7 +679,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$objClass->setCol(0, 0, ['style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'], g_l('import', '[class]'));
 		$objClass->setCol(0, 1, ['style' => 'width:150px;'], $CLselect->getHTML());
 
-		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
+		$objCategories = $this->formCategory2($jsCmd, 'obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(['class' => 'default'], 2, 2);
 		$objCats->setCol(0, 0, ['style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'], g_l('import', '[categories]'));
 		$objCats->setCol(0, 1, ['style' => 'width:150px;'], $objCategories);
@@ -709,7 +708,7 @@ class we_import_wizard extends we_import_wizardBase{
 		if(defined('OBJECT_TABLE')){
 			$parts[] = ['headline' => $radioObjs,
 				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') . ' ' .
-					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
+				we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			];
@@ -718,12 +717,10 @@ class we_import_wizard extends we_import_wizardBase{
 		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
-		$content = JQUERY .
+		return [$jsCmd->getCmds(), JQUERY .
 			$hdns .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
-
-		return ['', $content];
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'))];
 	}
 
 	/**
@@ -1145,6 +1142,7 @@ class we_import_wizard extends we_import_wizardBase{
 		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 		$upload_error = false;
+		$jsCmd = new we_base_jsCmd();
 
 		$btnStateNext = 'enabled';
 		$btnStateBack = 'enabled';
@@ -1283,7 +1281,7 @@ class we_import_wizard extends we_import_wizardBase{
 		$seaPu->setCol(1, 0, [], we_html_forms::checkboxWithHidden(!empty($v["doc_search"]), 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 		$seaPu->setCol(0, 0, [], we_html_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
-		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
+		$docCategories = $this->formCategory2($jsCmd, "doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(['class' => 'default'], 1, 2);
 		$docCats->setCol(0, 0, ['style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"], g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, ['style' => 'width:150px;'], $docCategories);
@@ -1341,7 +1339,7 @@ class we_import_wizard extends we_import_wizardBase{
 			$objSeaPu = new we_html_table(['class' => 'default'], 2, 1);
 			$objSeaPu->setCol(1, 0, [], we_html_forms::checkboxWithHidden(!empty($v["obj_search"]), 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 			$objSeaPu->setCol(0, 0, [], we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
-			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
+			$objCategories = $this->formCategory2($jsCmd, "obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(['class' => 'default'], 1, 2);
 			$objCats->setCol(0, 0, ['style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"], g_l('import', '[categories]'));
 			$objCats->setCol(0, 1, ['style' => 'width:150px;'], $objCategories);
@@ -1400,12 +1398,9 @@ class we_import_wizard extends we_import_wizardBase{
 			}
 		}
 
-
-		$content = JQUERY .
+		return [$jsCmd->getCmds(), JQUERY .
 			$hdns . we_html_element::htmlHiddens(['v[btnState_next]' => $btnStateNext, 'v[btnState_back]' => $btnStateBack]) .
-			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
-
-		return ['', $content];
+			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'))];
 	}
 
 	protected function getCSVImportStep3(){

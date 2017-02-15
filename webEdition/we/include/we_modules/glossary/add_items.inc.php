@@ -129,6 +129,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$List[] = $Value;
 			}
 		}
+		//FIMXE: old js
 		?>
 			<script><!--
 				function setDialog() {
@@ -195,8 +196,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				}
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
+
+				echo we_html_element::jsScript(JS_DIR . 'weCombobox.js');
+				//FIMXE: old js
 				?>
-				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
 					<script><!--
 				var Combobox = new weCombobox();
 

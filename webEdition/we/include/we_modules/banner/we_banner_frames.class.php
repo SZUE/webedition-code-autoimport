@@ -94,7 +94,8 @@ function setTab(tab){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
-		return $this->getHTMLDocument($this->View->getProperties());
+		$jsCmd = new we_base_jsCmd();
+		return $this->getHTMLDocument($this->View->getProperties($jsCmd), $jsCmd->getCmds());
 	}
 
 	protected function getHTMLCmd(){

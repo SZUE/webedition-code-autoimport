@@ -78,7 +78,7 @@ class we_banner_view extends we_modules_view{
 		return parent::getActualHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
 
-	function getProperties(){
+	function getProperties(we_base_jsCmd $jsCmd){
 		$weSuggest = & weSuggest::getInstance();
 		$out = '
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">' .
@@ -112,7 +112,7 @@ class we_banner_view extends we_modules_view{
 				}
 				if(defined('CUSTOMER_TABLE')){
 					$parts[] = ['headline' => g_l('modules_banner', '[customers]'),
-						'html' => $this->formCustomer(),
+						'html' => $this->formCustomer($jsCmd),
 						'space' => we_html_multiIconBox::SPACE_MED
 					];
 				}
@@ -131,19 +131,19 @@ class we_banner_view extends we_modules_view{
 					'html' => $this->formTagName(),
 					'space' => we_html_multiIconBox::SPACE_MED
 					],
-						['headline' => g_l('modules_banner', '[pages]'),
-						'html' => $this->formFiles(),
+					['headline' => g_l('modules_banner', '[pages]'),
+						'html' => $this->formFiles($jsCmd),
 						'space' => we_html_multiIconBox::SPACE_MED
 					],
-						['headline' => g_l('modules_banner', '[dirs]'),
-						'html' => $this->formFolders(),
+					['headline' => g_l('modules_banner', '[dirs]'),
+						'html' => $this->formFolders($jsCmd),
 						'space' => we_html_multiIconBox::SPACE_MED
 					],
-						['headline' => g_l('modules_banner', '[categories]'),
-						'html' => $this->formCategories(),
+					['headline' => g_l('modules_banner', '[categories]'),
+						'html' => $this->formCategories($jsCmd),
 						'space' => we_html_multiIconBox::SPACE_MED
 					],
-						['headline' => g_l('modules_banner', '[doctypes]'),
+					['headline' => g_l('modules_banner', '[doctypes]'),
 						'html' => $this->formDoctypes(),
 						'space' => we_html_multiIconBox::SPACE_MED]
 				];
@@ -166,6 +166,7 @@ class we_banner_view extends we_modules_view{
 		}
 
 		$out .= we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+			$jsCmd->getCmds() .
 			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, ($wepos === 'down')) .
 			'</form></body></html>';
 
@@ -518,30 +519,30 @@ class we_banner_view extends we_modules_view{
 		return $code;
 	}
 
-	function formFiles(){
+	private function formFiles(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_files')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document',0,'" . FILE_TABLE . "','','','add_file','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
 		$dirs = new we_chooser_multiDir(495, $this->banner->FileIDs, "del_file", $delallbut . $addbut, "", 'ContentType', FILE_TABLE);
 
-		return $dirs->get();
+		return $dirs->get($jsCmd);
 	}
 
-	function formFolders(){
+	private function formFolders(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_folders')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
 
 		$dirs = new we_chooser_multiDir(495, $this->banner->FolderIDs, "del_folder", $delallbut . $addbut, "", "ContentType", FILE_TABLE);
 
-		return $dirs->get();
+		return $dirs->get($jsCmd);
 	}
 
-	function formCategories(){
+	private function formCategories(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
-		return $cats->get();
+		return $cats->get($jsCmd);
 	}
 
 	function formDoctypes(){
@@ -583,22 +584,22 @@ class we_banner_view extends we_modules_view{
 		$clickslink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'clicks desc\'){this.document.we_form.elements.order.value=\'clicks\';}else{this.document.we_form.elements.order.value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';
 		$ratelink = '<a href="javascript:if(this.document.we_form.elements.order.value==\'rate desc\'){this.document.we_form.elements.order.value=\'rate\';}else{this.document.we_form.elements.order.value=\'rate desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[rate]') . '</a>';
 		$headline = [['dat' => $pathlink],
-				['dat' => $viewslink],
-				['dat' => $clickslink],
-				['dat' => $ratelink]
+			['dat' => $viewslink],
+			['dat' => $clickslink],
+			['dat' => $ratelink]
 		];
 		$rows = [[['dat' => g_l('modules_banner', '[all]')],
-				['dat' => $GLOBALS["lv"]->getAllviews()],
-				['dat' => $GLOBALS["lv"]->getAllclicks()],
-				['dat' => $GLOBALS["lv"]->getAllrate() . "%", 'style' => "text-align:right"]
+			['dat' => $GLOBALS["lv"]->getAllviews()],
+			['dat' => $GLOBALS["lv"]->getAllclicks()],
+			['dat' => $GLOBALS["lv"]->getAllrate() . "%", 'style' => "text-align:right"]
 			]
 		];
 		while($GLOBALS["lv"]->next_record()){
 			$rows[] = [['dat' => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . '" target="_blank">') . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . ($GLOBALS["lv"]->f("page") ? '' : '</a>'),
 				FILE_TABLE],
-					['dat' => $GLOBALS["lv"]->f("views")],
-					['dat' => $GLOBALS["lv"]->f("clicks")],
-					['dat' => $GLOBALS["lv"]->f("rate") . "%", 'style' => "text-align:right"]
+				['dat' => $GLOBALS["lv"]->f("views")],
+				['dat' => $GLOBALS["lv"]->f("clicks")],
+				['dat' => $GLOBALS["lv"]->f("rate") . "%", 'style' => "text-align:right"]
 			];
 		}
 
@@ -640,11 +641,11 @@ class we_banner_view extends we_modules_view{
 </table>';
 	}
 
-	function formCustomer(){
+	private function formCustomer(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer','','','',1)");
 		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "setHot", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
-		return $obj->get();
+		return $obj->get($jsCmd);
 	}
 
 	function formPath($leftsize = 120){

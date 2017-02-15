@@ -211,13 +211,13 @@ class we_collection extends we_root{
 		}
 	}
 
-	public function getPropertyPage(){
+	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_element::jsScript(JS_DIR . 'collection.js') .
 			JQUERY .
 			we_html_multiIconBox::getHTML('PropertyPage', [
 					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!we_base_permission::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
+					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 

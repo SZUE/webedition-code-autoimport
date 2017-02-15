@@ -170,11 +170,11 @@ abstract class we_dialog_doctypeEdit{
 					'space' => we_html_multiIconBox::SPACE_MED
 				],
 				["headline" => g_l('global', '[templates]'),
-					"html" => $we_doc->formDocTypeTemplates(),
+					"html" => $we_doc->formDocTypeTemplates($jsCmd),
 					'space' => we_html_multiIconBox::SPACE_MED
 				],
 				["headline" => g_l('weClass', '[defaults]'),
-					"html" => $we_doc->formDocTypeDefaults(),
+					"html" => $we_doc->formDocTypeDefaults($jsCmd),
 					'space' => we_html_multiIconBox::SPACE_MED
 				]
 			];

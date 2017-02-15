@@ -175,15 +175,15 @@ class we_document extends we_root{
 			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
 
-	function formCategory(){
+	protected function formCategory(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('delete_all_cats')", '', 0, 0, '', '', $this->Category ? false : true);
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"we/category"', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
-		return $cats->get();
+		return $cats->get($jsCmd);
 	}
 
-	function formNavigation(){
+	protected function formNavigation(we_base_jsCmd $jsCmd){
 		$isSee = $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE;
 		$navItems = $this->getNavigationItems();
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('module_navigation_edit_navi',0)", '', 0, 22, '', '', (we_base_permission::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
@@ -213,7 +213,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return $navis->get();
+		return $navis->get($jsCmd);
 	}
 
 	function addCat(array $ids){

@@ -135,7 +135,7 @@ class we_schedpro{
 		])]);
 	}
 
-	function getHTML($isobj = false){
+	function getHTML(we_base_jsCmd $jsCmd, $isobj = false){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" onchange="changeSchedOption(this,' . $this->nr . ');">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
@@ -182,7 +182,7 @@ class we_schedpro{
 				if(!we_base_permission::hasPerm("EDIT_KATEGORIE")){
 					$cats->isEditable = false;
 				}
-				$extracont = $cats->get();
+				$extracont = $cats->get($jsCmd);
 				$extraheadl = g_l('modules_schedule', '[categories]');
 				break;
 			case self::DIR:

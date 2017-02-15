@@ -647,7 +647,7 @@ class we_folder extends we_root{
 		return ($cnt ? getServerProtocol() . ':' : '') . $ret;
 	}
 
-	public function getPropertyPage(){
+	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		$parts = [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2]
 		];
 
@@ -676,7 +676,7 @@ class we_folder extends we_root{
 		}
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-			$parts[] = ['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
+			$parts[] = ['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd) . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
 			if(we_base_permission::hasPerm("ADMINISTRATOR")){
 				$parts[] = ["headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => we_html_multiIconBox::SPACE_MED2, "forceRightHeadline" => 1];
 			}

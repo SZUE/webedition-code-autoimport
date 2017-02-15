@@ -351,14 +351,14 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @param string $categories csv value with category IDs
 	 * @param boolean $catAnd if the categories should be connected with AND
 	 */
-	static function formCategory($categories, $catAnd){
+	private static function formCategory(we_base_jsCmd $jsCmd, $categories, $catAnd){
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', '[catAnd]'), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$upperTable = '<table class="default" style="width:495px;"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
-		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get();
+		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get($jsCmd);
 	}
 
 	/**
@@ -367,7 +367,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @return string
 	 * @param string $doctypes csv value with doctype IDs
 	 */
-	static function formDoctypes($doctypes){
+	private static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 		$DTselect = g_l('global', '[doctypes]') . "<br/><br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">';
@@ -387,13 +387,13 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @param string $folders csv value with directory IDs
 	 * @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	 */
-	static function formFolders($folders, $thumnailpage = false, $width = 495){
+	private static function formFolders(we_base_jsCmd $jsCmd, $folders, $thumnailpage = false, $width = 495){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
 
 		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut . $addbut, '', 'ContentType', FILE_TABLE);
 
-		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . '<br/><br/>' . $dirs->get();
+		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . '<br/><br/>' . $dirs->get($jsCmd);
 	}
 
 	/**
@@ -454,7 +454,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
-
+		$jsCmd = new we_base_jsCmd();
 
 		$ws = get_ws(FILE_TABLE, true);
 		if($ws && !in_array(0, $ws) && (!$folders)){
@@ -465,9 +465,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
 			'');
 
-		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/><br/>' .
-			we_rebuild_wizard::formDoctypes($doctypes) . '<br/><br/>' .
-			we_rebuild_wizard::formFolders($folders);
+		$filter_content = self::formCategory($jsCmd, $categories, $catAnd) . '<br/><br/>' .
+			self::formDoctypes($doctypes) . '<br/><br/>' .
+			self::formFolders($jsCmd, $folders);
 
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && we_base_permission::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!we_base_permission::hasPerm('REBUILD_ALL')) && we_base_permission::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
@@ -495,7 +495,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 			}
 		}
-		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="folders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js') . $jsCmd->getCmds(), 'WE().session.rebuild.folders="folders";',
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .

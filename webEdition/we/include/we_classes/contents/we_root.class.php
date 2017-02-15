@@ -360,7 +360,7 @@ abstract class we_root extends we_class{
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictOwners ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
-	function formOwners($canChange = true){
+	private function formOwners(we_base_jsCmd $jsCmd, $canChange = true){
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
@@ -387,19 +387,19 @@ abstract class we_root extends we_class{
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td style="text-align:right;padding-top:2px;">' . $delallbut . $addbut . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"userIcon");');
-
+' . ($canChange ? '<tr><td style="text-align:right;padding-top:2px;">' . $delallbut . $addbut . '</td></tr>' : "") . '</table>';
+		$jsCmd->addCmd('setIconOfDocClass', 'userIcon');
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
 
-	function formCreatorOwners(){
+	function formCreatorOwners(we_base_jsCmd $jsCmd){
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table class="default">
 <tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
-			'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+			'<tr><td style="padding-top:2px;">' . $this->formOwners($jsCmd, $canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 
@@ -1532,7 +1532,7 @@ abstract class we_root extends we_class{
 	}
 
 //FIXME: make abstract
-	public function getPropertyPage(){
+	public function getPropertyPage(we_base_jsCmd $jsCmd){
 
 	}
 

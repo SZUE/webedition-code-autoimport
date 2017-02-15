@@ -469,22 +469,22 @@ class we_objectFile extends we_document{
 	}
 
 	/*
-	function publishFromInsideDocument(){
-		$this->publish();
-		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
-		}
-		$GLOBALS['we_JavaScript'][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
-	}
+	  function publishFromInsideDocument(){
+	  $this->publish();
+	  if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
+	  $GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
+	  }
+	  $GLOBALS['we_JavaScript'][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+	  }
 
-	function unpublishFromInsideDocument(){
-		$this->unpublish();
-		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
-		}
-		$GLOBALS["we_JavaScript"][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
-	}
-*/
+	  function unpublishFromInsideDocument(){
+	  $this->unpublish();
+	  if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
+	  $GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
+	  }
+	  $GLOBALS["we_JavaScript"][] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+	  }
+	 */
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
@@ -591,7 +591,7 @@ class we_objectFile extends we_document{
 		return $tableInfo2;
 	}
 
-	function getFieldHTML($name, $type, array $attribs, $editable = true, $variant = false){
+	function getFieldHTML(we_base_jsCmd $jsCmd, $name, $type, array $attribs, $editable = true, $variant = false){
 		switch($type){
 			case self::TYPE_INPUT:
 				return $this->getInputFieldHTML($type, $name, $attribs, $editable, $variant);
@@ -1391,7 +1391,7 @@ class we_objectFile extends we_document{
 		return $out ? id_to_path($out, FILE_TABLE, $db, true) : [];
 	}
 
-	private function formWorkspaces(){
+	private function formWorkspaces(we_base_jsCmd $jsCmd){
 		$classWsTmpl = $this->classData['WorkspacesTemplates'];
 
 		$values = self::getPossibleWorkspaces($this->classData['Workspaces'], $this->DB_WE);
@@ -1418,7 +1418,7 @@ class we_objectFile extends we_document{
 
 		$obj->isEditable = true;
 
-		return $obj->get();
+		return $obj->get($jsCmd);
 	}
 
 	/* 	private function getTemplateFromWs($wsID){
@@ -2735,7 +2735,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		return id_to_path($this->CSS, FILE_TABLE, null, true);
 	}
 
-	public function getPropertyPage(){
+	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 			$parts = [["headline" => g_l('weClass', '[path]'),
 				"html" => $this->formPath(),
@@ -2772,13 +2772,11 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				'icon' => "lang.gif"
 			];
 
-
 			$parts[] = ["headline" => g_l('global', '[categorys]'),
-				"html" => $this->formCategory(),
+				"html" => $this->formCategory($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "cat.gif"
 			];
-
 
 			$parts[] = ["headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
@@ -2786,13 +2784,11 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				'icon' => "copy.gif"
 			];
 
-
 			$parts[] = ["headline" => g_l('weClass', '[owners]'),
-				"html" => $this->formCreatorOwners(),
+				"html" => $this->formCreatorOwners($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "user.gif"
 			];
-
 
 			$parts[] = ["headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
@@ -2801,7 +2797,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 			];
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = [["headline" => g_l('weClass', '[workspaces]'),
-				"html" => $this->formWorkspaces(),
+				"html" => $this->formWorkspaces($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1,
 				'icon' => "workspace.gif"
