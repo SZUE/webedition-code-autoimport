@@ -42,7 +42,7 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]]; // wird in Templ eingef�gt
 		}
-		$we_JavaScript[] = ['reload_editfooter'];
+		$we_JavaScript[] = ['reload_editfooter',$we_transaction];
 		$we_JavaScript[] = ["setEditorDocumentId", $we_doc->ID];
 		$we_JavaScript[] = $we_doc->getUpdateTreeScript(true, null, true);
 	} else {

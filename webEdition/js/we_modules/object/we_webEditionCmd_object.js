@@ -111,7 +111,7 @@ we_cmd_modules.object = function (args, url, caller) {
 			}
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			}
 			break;
 
@@ -121,11 +121,11 @@ we_cmd_modules.object = function (args, url, caller) {
 		case "object_ws_from_class":
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				window.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			}
 			break;
 		case "object_obj_search":
-			window.we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url);
 			break;
 		case 'fieldHref_selectIntHref_callback':
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);

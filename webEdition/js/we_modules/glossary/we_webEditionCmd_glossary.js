@@ -75,7 +75,7 @@ we_cmd_modules.glossary = function (args, url, caller) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		case "unlock"://FIXME:???
-			window.we_repl(window.load, url, args[0]);
+			window.we_repl(window.load, url);
 			break;
 		default:
 			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {
