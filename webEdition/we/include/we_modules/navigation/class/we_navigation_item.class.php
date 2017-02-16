@@ -196,16 +196,17 @@ class we_navigation_item{
 		}
 
         if(isset($id) && ($this->docid == $id)){
-					if(isset($_SERVER['REQUEST_URI'])){
-						$urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
-						$path_parts=pathinfo($urlPath);
-					}
+            if(isset($_SERVER['REQUEST_URI'])){
+			    $urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
+				$path_parts=pathinfo($urlPath);
+			}
+
             $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
                 (isset($_SERVER['REQUEST_URI']) ? //Fix #11246
                     rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
                     '');
 
-            if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri)!==false)){
+            if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
                 static $uri = null;
                 static $uriarrq = array();
                 $refarrq = array();
@@ -249,7 +250,7 @@ class we_navigation_item{
                 return $allfound;
             }
 
-            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (stripos($this->href, $cleanRequestUri)!==false)){
+            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
                 $this->setCurrent($weNavigationItems);
                 return true;
             }
