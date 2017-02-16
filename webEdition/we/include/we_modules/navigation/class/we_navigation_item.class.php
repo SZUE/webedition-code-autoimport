@@ -196,9 +196,13 @@ class we_navigation_item{
 		}
 
         if(isset($id) && ($this->docid == $id)){
+					if(isset($_SERVER['REQUEST_URI'])){
+						$urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
+						$path_parts=pathinfo($urlPath);
+					}
             $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
                 (isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-                    rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide(pathinfo($urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH), PATHINFO_BASENAME)) ? pathinfo($urlPath, PATHINFO_DIRNAME) : $urlPath), '/') :
+                    rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
                     '');
 
             if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri)!==false)){
@@ -241,7 +245,7 @@ class we_navigation_item{
                 } elseif($this->current){
                     $this->unsetCurrent($weNavigationItems);
                 }
-                
+
                 return $allfound;
             }
 
