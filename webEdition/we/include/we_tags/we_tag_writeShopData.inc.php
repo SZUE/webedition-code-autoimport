@@ -129,7 +129,7 @@ function we_tag_writeShopData(array $attribs){
 		$orderDocID = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $DB_WE->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
 		if(!$orderDocID){
 			$data = $dat;
-			unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
+			unset($data['we_shoptitle'], $data['we_shopdescription'], $data[WE_SHOP_ARTICLE_CUSTOM_FIELD], $data['shopvat'], $data[WE_SHOP_CATEGORY_FIELD_NAME], $data['WE_VARIANT']);
 			//add document first
 			$DB_WE->query('INSERT INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
 					'DocID' => $docid,

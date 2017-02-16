@@ -122,13 +122,13 @@ function we_tag_shopField(array $attribs){
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, ['name', 'type', 'value', 'values', 'checked', 'mode']);
-			$newAtts['name'] = 'we_sscf[' . $name . ']';
+			$newAtts['name'] = WE_SHOP_CART_CUSTOM_FIELD . '[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+				substr($lang, 0, 2) :
+				array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
@@ -149,18 +149,18 @@ function we_tag_shopField(array $attribs){
 
 			$content = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$content.='<option value="--" ' . ($savedVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$content .= '<option value="--" ' . ($savedVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$content.='<option value="' . $countrykey . '" ' . ($savedVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+				$content .= '<option value="' . $countrykey . '" ' . ($savedVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
 			unset($countryvalue);
 
 			if(!empty($topCountries) && !empty($shownCountries)){
-				$content.='<option value="-" disabled="disabled">----</option>';
+				$content .= '<option value="-" disabled="disabled">----</option>';
 			}
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
-				$content.='<option value="' . $countrykey2 . '" ' . ($savedVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+				$content .= '<option value="' . $countrykey2 . '" ' . ($savedVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
 			unset($countryvalue2);
 
@@ -168,13 +168,13 @@ function we_tag_shopField(array $attribs){
 
 		case 'language':
 			$newAtts = removeAttribs($attribs, ['name', 'type', 'value', 'values', 'checked', 'mode']);
-			$newAtts['name'] = 'we_sscf[' . $name . ']';
+			$newAtts['name'] = WE_SHOP_CART_CUSTOM_FIELD . '[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+				substr($lang, 0, 2) :
+				array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
@@ -192,7 +192,7 @@ function we_tag_shopField(array $attribs){
 			setlocale(LC_ALL, $oldLocale);
 			$content = '';
 			foreach($frontendLL as $langkey => &$langvalue){
-				$content.='<option value="' . $langkey . '" ' . ($savedVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
+				$content .= '<option value="' . $langkey . '" ' . ($savedVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 			}
 			unset($langvalue);
 			return getHtmlTag('select', $newAtts, $content, true);

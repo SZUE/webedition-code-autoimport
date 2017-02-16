@@ -42,7 +42,7 @@ class we_base_jsCmd{
 
 	function __destruct(){
 		if($this->cmds){
-			t_e(self::$traces);
+			t_e('unprinted commands', $this->cmds, self::$traces);
 		}
 	}
 
