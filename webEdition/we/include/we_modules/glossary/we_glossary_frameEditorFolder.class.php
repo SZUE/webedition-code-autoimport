@@ -22,9 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
+abstract class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
-	function Header($weGlossaryFrames){
+	public static function Header($weGlossaryFrames){
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(g_l('modules_glossary', '[overview]'), true, 1);
 		$frontendL = getWeFrontendLanguagesForBackend();
@@ -32,7 +32,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5)]);
 	}
 
-	function Body($weGlossaryFrames){
+	public static function Body($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_folder&cmdid=' . $cmdid . '";
@@ -44,7 +44,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
-	function getHTMLOverview($weGlossaryFrames){
+	private static function getHTMLOverview($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		$list = [we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,

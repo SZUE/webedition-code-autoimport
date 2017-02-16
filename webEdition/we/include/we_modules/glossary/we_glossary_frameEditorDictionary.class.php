@@ -24,6 +24,7 @@
  */
 class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
+//FIXME: this calss is never used, maybe this is class is still usefull?
 	function Header(we_glossary_frames $weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
@@ -41,8 +42,8 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=view_dictionary&cmdid=' . $cmdid . '";' .
-					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
-				we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30))
+								'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
+						we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30))
 		);
 	}
 
@@ -54,9 +55,10 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	<tr><td>' . we_html_element::htmlTextarea(['name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'], implode("\n", we_glossary_glossary::getDictionary($language))) . '</td></tr>
 </table>';
 
-		return [["headline" => g_l('modules_glossary', '[dictionary]'),
-			"html" => $content,
-			'space' => we_html_multiIconBox::SPACE_MED
+		return [[
+		"headline" => g_l('modules_glossary', '[dictionary]'),
+		"html" => $content,
+		'space' => we_html_multiIconBox::SPACE_MED
 			]
 		];
 	}

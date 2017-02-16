@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_frameEditorItem extends we_glossary_frameEditor{
+abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 	public static function Header(we_glossary_frames $weGlossaryFrames){
 
@@ -140,7 +140,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		return array_merge($parts, self::getHTMLLinkAttributes($glossary));
 	}
 
-	function getHTMLAbbreviation(we_glossary_glossary $glossary){
+	private static function getHTMLAbbreviation(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_ABBREVATION){
 			$text = html_entity_decode($glossary->Text);
 			$title = html_entity_decode($glossary->Title);
@@ -389,8 +389,6 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 	// ---> Helper Methods
 
-
-
 	private static function getLangField($name, $value, $title, $width){
 		$name = md5($name);
 		$langs = array_keys(getWELangs());
@@ -405,7 +403,6 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	}
 
 	private static function getRevRel($name, $value, $title, $width){
-
 		$name = md5($name);
 		$options = ['' => '',
 			'contents' => 'contents',

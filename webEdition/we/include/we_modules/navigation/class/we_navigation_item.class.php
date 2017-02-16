@@ -183,6 +183,7 @@ class we_navigation_item{
 	 * @return bool
 	 */
 	function isCurrent(we_navigation_items $weNavigationItems){
+//FIXME do we need this any more since $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_obj'] in case of OBJECT_FILES_TABLE ??
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
@@ -197,7 +198,14 @@ class we_navigation_item{
 		}
 
 		if(isset($id) && ($this->docid == $id)){
-			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : (isset($_SERVER['REQUEST_URI']) ? parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) : ''); //Fix #11057
+			if(isset($_SERVER['REQUEST_URI'])){
+				$urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
+				$path_parts = pathinfo($urlPath);
+			}
+			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
+					(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+					rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
+					'');
 			if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri) !== false)){
 				static $uri = null;
 				static $uriarrq = [];
@@ -226,13 +234,6 @@ class we_navigation_item{
 					$tmpUriarrq = $uriarrq;
 					$tmpRefarrq = $refarrq;
 				}
-				$allfound = true;
-				//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
-				foreach($tmpRefarrq as $key => $val){
-					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
-				}
-
-
 				$allfound = true;
 				//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
 				foreach($tmpRefarrq as $key => $val){
@@ -405,7 +406,8 @@ class we_navigation_item{
 			foreach($fields as $field){
 				switch($field){
 					case 'link' :
-						$useFields = ['href',
+						$useFields = [
+							'href',
 							'title',
 							'target',
 							'lang',
@@ -415,7 +417,7 @@ class we_navigation_item{
 							'rel',
 							'rev',
 							'link_attribute'
-							];
+						];
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
@@ -511,7 +513,7 @@ if (window.screen) {
 				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, ['name', 'target', 'onClick', 'onclick'
-			]);
+		]);
 
 		$attributes['target'] = 'we_ll_' . $this->id;
 		$attributes['onclick'] = $js;

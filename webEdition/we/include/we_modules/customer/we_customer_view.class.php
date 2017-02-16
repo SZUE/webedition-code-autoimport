@@ -130,17 +130,11 @@ class we_customer_view extends we_modules_view{
 			case 'new_customer':
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
-				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-						'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
-				);
+				$jscmd->addCmd('loadHeaderFooter', $this->customer->Username);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
-				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-						'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
-				);
+				$jscmd->addCmd('loadHeaderFooter', $this->customer->Username);
 				break;
 			case 'save_customer':
 				return $this->saveCustomer($jscmd);

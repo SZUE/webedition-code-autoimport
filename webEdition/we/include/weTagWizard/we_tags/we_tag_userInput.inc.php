@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -44,7 +45,7 @@ $fontnames = new weTagData_choiceAttribute('fontnames', [new weTagDataOption('ar
 	new weTagDataOption('times'),
 	new weTagDataOption('verdana'),
 	new weTagDataOption('wingdings'),
-	], false, true, '');
+		], false, true, '');
 $parentid = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, true, 'customer');
 $quality = new weTagData_selectAttribute('quality', [new weTagDataOption('0'),
 	new weTagDataOption('1'),
@@ -57,7 +58,7 @@ $quality = new weTagData_selectAttribute('quality', [new weTagDataOption('0'),
 	new weTagDataOption('8'),
 	new weTagDataOption('9'),
 	new weTagDataOption('10'),
-	], false, 'customer');
+		], false, 'customer');
 $keepratio = new weTagData_selectAttribute('keepratio', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 $maximize = new weTagData_selectAttribute('maximize', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 $bordercolor = new weTagData_textAttribute('bordercolor', false, 'customer');
@@ -68,7 +69,7 @@ $inputclass = new weTagData_textAttribute('inputclass', false, 'customer');
 $checkboxtext = new weTagData_textAttribute('checkboxtext', false, 'customer');
 $doc = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	], false, '');
+		], false, '');
 $minyear = new weTagData_textAttribute('minyear');
 $maxyear = new weTagData_textAttribute('maxyear');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
@@ -80,7 +81,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption(
 	new weTagDataOption('radio', false, '', [$name, $property, $checked, $editable, $value], [$name]),
 	new weTagDataOption('choice', false, '', [$name, $property, $editable, $size, $maxlength, $value, $values, $class, $style], [$name]),
 	new weTagDataOption('select', false, '', [$name, $property, $editable, $size, $value, $values, $class, $style], [$name]),
-	new weTagDataOption('hidden', false, '', [$name, $property], [$name]),
+	new weTagDataOption('hidden', false, '', [$name, $property, $value], [$name]),
 	new weTagDataOption('print', false, '', [$name, $property], [$name]),
 	new weTagDataOption('date', false, '', [$name, $property, $editable, $format, $value, $minyear, $maxyear, $hidden], [$name]),
 	new weTagDataOption('password', false, '', [[]]),
