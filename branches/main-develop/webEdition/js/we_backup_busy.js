@@ -31,7 +31,7 @@ function doExport() {
 		WE().util.showMessage(WE().consts.g_l.backupWizard.save_not_checked, WE().consts.message.WE_MESSAGE_WARNING, window);
 	} else {
 		top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&operation_mode=busy&step=2";
-		top.body.we_submitForm("cmd", WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php");
+		top.body.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd");
 	}
 }
 

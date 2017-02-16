@@ -27,18 +27,19 @@
  */
 'use strict';
 
+var navi = WE().util.getDynamicVar(document, 'loadVarNavi', 'data-nav');
 var categories_edit;
 
 function onSelectionClassChangeJS(value) {
 	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputFolderPath", {
 		table: WE().consts.tables.OBJECT_FILES_TABLE,
-		basedir: classPaths[value],
+		basedir: navi.classPaths[value],
 		required: true
 
 	});
-	document.we_form.elements.FolderID.value = classDirs[value];
-	document.we_form.elements.FolderPath.value = classPaths[value];
-	document.we_form.elements.FolderPath.disabled = !hasClassSubDirs[value];
+	document.we_form.elements.FolderID.value = navi.classDirs[value];
+	document.we_form.elements.FolderPath.value = navi.classPaths[value];
+	document.we_form.elements.FolderPath.disabled = !navi.hasClassSubDirs[value];
 	top.content.we_cmd('populateWorkspaces');
 	window.we_cmd("setHot");
 }
@@ -107,7 +108,6 @@ function onFolderSelectionChangeJS(value) {
 			break;
 	}
 
-
 	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputLinkPath", set);
 }
 
@@ -145,7 +145,7 @@ function addCat(paths) {
 		if (paths[i] !== "") {
 			found = false;
 			for (j = 0; j < categories_edit.itemCount; j++) {
-				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == paths[i]) {
+				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value === paths[i]) {
 					found = true;
 				}
 			}

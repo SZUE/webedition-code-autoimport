@@ -24,22 +24,38 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-function clearBlockLog() {
-	if (window.confirm(WE().consts.g_l.prefs.clear_log_question)) {
-		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearlog=1";
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "clear_blocklog_yes":
+			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearlog=1";
+			break;
+		case "clear_block_entry_yes":
+			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearEntry=" + args[1];
+			break;
+		case "clear_log_yes":
+			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_log&clearlog=1";
+			break;
+		default :
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			break;
 	}
+}
+
+function clearBlockLog() {
+	WE().util.showConfirm(window, "", WE().consts.g_l.prefs.clear_log_question, ["clear_blocklog_yes"]);
 }
 
 function clearEntry(id, ip) {
 	var txt = WE().consts.g_l.prefs.clear_block_entry_question;
-
-	if (window.confirm(txt.replace(/%s/, ip))) {
-		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearEntry=" + id;
-	}
+	WE().util.showConfirm(window, "", txt.replace(/%s/, ip), ["clear_block_entry_yes", id]);
 }
 
 function clearLog() {
-	if (window.confirm(WE().consts.g_l.prefs.clear_log_question)) {
-		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_log&clearlog=1";
-	}
+	WE().util.showConfirm(window, "", WE().consts.g_l.prefs.clear_log_question, ["clear_log_yes"]);
 }

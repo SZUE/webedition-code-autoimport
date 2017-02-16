@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -64,10 +65,7 @@ foreach($messaging->selected_set as $key => $val){
 	}
 }
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-		var transaction="' . $transaction . '";
-') .
-	we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
-	we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/showFolder.js') .
-	we_base_jsCmd::singleCmd('doHighLight', $passed_dls), we_html_element::htmlBody(['style' => "margin:5px 7px;"], '<table style="width:99%" class="default">' . $tab . '</table>')
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
+		we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/showFolder.js', '', ['id' => 'loadVarFolder', 'data-folder' => setDynamicVar(['transaction' => $transaction])]) .
+		we_base_jsCmd::singleCmd('doHighLight', $passed_dls), we_html_element::htmlBody(['style' => "margin:5px 7px;"], '<table style="width:99%" class="default">' . $tab . '</table>')
 );
