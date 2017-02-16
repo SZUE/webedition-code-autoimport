@@ -181,6 +181,7 @@ class we_navigation_item{
      * @return bool
      */
     function isCurrent(we_navigation_items $weNavigationItems){
+//FIXME do we need this any more since $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_obj'] in case of OBJECT_FILES_TABLE ??
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
@@ -195,7 +196,11 @@ class we_navigation_item{
 		}
 
         if(isset($id) && ($this->docid == $id)){
-            $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : (isset($_SERVER['REQUEST_URI']) ? parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) : ''); //Fix #11057
+            $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
+                (isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+                    rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide(pathinfo($urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH), PATHINFO_BASENAME)) ? pathinfo($urlPath, PATHINFO_DIRNAME) : $urlPath), '/') :
+                    '');
+
             if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri)!==false)){
                 static $uri = null;
                 static $uriarrq = array();
@@ -236,6 +241,7 @@ class we_navigation_item{
                 } elseif($this->current){
                     $this->unsetCurrent($weNavigationItems);
                 }
+                t_e('warning', 'allfound', $weNavigationItems);
                 return $allfound;
             }
 
