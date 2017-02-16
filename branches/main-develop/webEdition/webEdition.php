@@ -246,6 +246,7 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 		'data-session' => setDynamicVar($session),
 		'data-consts' => setDynamicVar($const),
 	]) .
+	we_html_element::jsScript(JS_DIR .'we_webEditionCmd_base.js').
 	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
 	JQUERY .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
