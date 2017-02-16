@@ -22,9 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_frameEditorException extends we_glossary_frameEditor{
+abstract class we_glossary_frameEditorException extends we_glossary_frameEditor{
 
-	function Header(we_glossary_frames $weGlossaryFrames){
+	public static function Header(we_glossary_frames $weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(g_l('modules_glossary', '[exception]'), true, 1);
@@ -34,7 +34,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[exception]'), (isset($frontendL[$cmdid]) ? $frontendL[$cmdid] : "-"));
 	}
 
-	function Body(we_glossary_frames $weGlossaryFrames){
+	public static function Body(we_glossary_frames $weGlossaryFrames){
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder ? 1 :
 			we_base_request::_(we_base_request::INT, 'tabnr', 1));
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');

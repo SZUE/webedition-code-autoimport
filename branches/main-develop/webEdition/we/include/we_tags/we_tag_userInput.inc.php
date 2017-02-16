@@ -645,7 +645,7 @@ function we_tag_userInput(array $attribs, $content){
 			return getHtmlTag('input', [
 				'type' => 'hidden',
 				'name' => $fieldname,
-				'value' => oldHtmlspecialchars($content),
+				'value' => oldHtmlspecialchars(weTag_getAttribute('value', $attribs, $content, we_base_request::STRING)),
 				'xml' => $xml,
 			]);
 		case 'print' :
