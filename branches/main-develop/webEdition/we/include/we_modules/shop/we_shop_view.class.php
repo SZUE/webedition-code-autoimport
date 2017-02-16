@@ -620,7 +620,7 @@ function CalendarChanged(field,oldval,val) {
 					$orderDocID = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $id . ' AND type="' . $type . '" AND variant="' . $this->db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
 					if(!$orderDocID){
 						$data = $serialDoc;
-						unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
+						unset($data['we_shoptitle'], $data['we_shopdescription'], $data[WE_SHOP_ARTICLE_CUSTOM_FIELD], $data['shopvat'], $data[WE_SHOP_CATEGORY_FIELD_NAME], $data['WE_VARIANT']);
 						//add document first
 						$this->db->query('INSERT INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
 								'DocID' => $id,
