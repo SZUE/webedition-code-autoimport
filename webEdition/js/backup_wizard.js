@@ -333,7 +333,7 @@ function startImport(isFileReady) {
 		if (isFileReady || document.we_form.we_upload_file.value) {
 			startBusy();
 			top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
-			document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php";
+			document.we_form.action = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd";
 			document.we_form.submit();
 		} else {
 			WE().util.showMessage(WE().consts.g_l.backupWizard.nothing_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
@@ -343,7 +343,7 @@ function startImport(isFileReady) {
 			startBusy();
 			top.body.delete_backup_enabled = WE().layout.button.switch_button_state(top.body.document, "delete_backup", "disabled");
 			top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
-			document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php";
+			document.we_form.action = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd";
 			document.we_form.submit();
 		} else {
 			WE().util.showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
@@ -377,7 +377,7 @@ function doClick(opt) {
 
 function reloadFrame() {
 	if (backup.reload < 3) {
-		top.cmd.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php?cmd=" + backup.mode + "&reload=" + backup.reload;
+		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd&cmd=" + backup.mode + "&reload=" + backup.reload;
 	} else {
 		WE().util.showMessage(WE().consts.g_l.backupWizard.error_timeout, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
@@ -388,7 +388,7 @@ function run(type, percent, desc) {
 	if (top.cmd.reloadTimer) {
 		clearTimeout(top.cmd.reloadTimer);
 	}
-	top.cmd.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_backup_cmd.php?cmd=" + type;
+	top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd&cmd=" + type;
 }
 
 function updateProgress(percent, desc) {

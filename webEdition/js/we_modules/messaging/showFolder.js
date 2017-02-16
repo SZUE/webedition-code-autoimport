@@ -1,4 +1,4 @@
-/* global WE, top, transaction,array_rm_elem */
+/* global WE, top, array_rm_elem */
 
 /**
  * webEdition CMS
@@ -31,6 +31,7 @@ var sel_color = "#006DB8",
 	default_color = "#ffffff";
 
 var passed_dls = [];
+var folder = WE().util.getDynamicVar(document, 'loadVarFolder', 'data-folder');
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -49,7 +50,7 @@ function we_cmd() {
 }
 
 function showContent(id) {
-	top.content.editor.edbody.messaging_msg_view.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + transaction;
+	top.content.editor.edbody.messaging_msg_view.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + folder.transaction;
 }
 
 function check(elem, groupSel) {

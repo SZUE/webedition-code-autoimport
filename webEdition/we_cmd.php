@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -61,6 +62,9 @@ function findInclude($cmd){
 			return true;
 		case 'backupLog':
 			we_backup_wizard::showLog();
+			return true;
+		case 'backup_cmd':
+			we_backup_cmd::getHTML();
 			return true;
 		case 'newMsg':
 			we_messaging_message::showNewMsg();
@@ -320,7 +324,8 @@ function findInclude($cmd){
 			we_dialog_copyFolder::getDialog();
 			return true;
 		case 'copyWeDocumentCustomerFilter':
-			return 'we_modules/customer/we_customer_copyWeDocumentFilter.inc.php';
+			we_customer_copyWeDocumentFilter::getDialog();
+			return true;
 		case 'changeLanguageRecursive':
 		case 'changeTriggerIDRecursive':
 			we_document::changeRecursiveRequest($cmd);

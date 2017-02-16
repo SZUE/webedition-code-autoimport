@@ -110,13 +110,11 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 					we_cmd.apply(window, editorSave.we_cmd5[i]);
 				}
 			}
-			if (editorSave.isPublished) {
-				if (isEditInclude) {
-					top.we_showMessage(WE().consts.g_l.alert.changed_include, WE().consts.message.WE_MESSAGE_NOTICE, window);
-					weWindow.top.we_cmd("reload_editpage");
-					weWindow.edit_include.close();
-					top.close();
-				}
+			if (isEditInclude) {
+				top.we_showMessage(WE().consts.g_l.alert.changed_include, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				weWindow.top.we_cmd("reload_editpage");
+				weWindow.edit_include.close();
+				top.close();
 			}
 		}
 	} else {
