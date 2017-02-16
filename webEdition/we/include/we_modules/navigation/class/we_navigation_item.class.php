@@ -241,7 +241,7 @@ class we_navigation_item{
                 } elseif($this->current){
                     $this->unsetCurrent($weNavigationItems);
                 }
-                t_e('warning', 'allfound', $weNavigationItems);
+                
                 return $allfound;
             }
 
