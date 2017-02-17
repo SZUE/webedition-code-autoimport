@@ -932,6 +932,10 @@ class we_wysiwyg_editor{
 			'weGalleryTemplates' => $this->galleryTemplates,
 			'weCssClasses' => urlencode($this->cssClasses),
 			'weRemoveFirstParagraph' => $this->removeFirstParagraph ? 1 : 0,
+			'weContentCssParts' => [
+				'start' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor, 
+				'end' => ($this->contentCss ? $this->contentCss : '')
+			],
 			'wePopupGl' => [ // move to consts.g_l
 					'btnOk' => ['text' => g_l('button', '[ok][value]'), 'alt' => g_l('button', '[ok][alt]')],
 					'btnCancel' => ['text' => g_l('button', '[cancel][value]'), 'alt' => g_l('button', '[cancel][alt]')],
@@ -943,7 +947,7 @@ class we_wysiwyg_editor{
 			'cssClassesJS' => explode(',', $this->cssClasses),
 			'language' => $lang,
 			'elements' => $this->name,
-			'toolbarRows' => $this->toolbarRows,
+			'weToolbarRows' => $this->toolbarRows,
 			'xml' => $this->xml,
 			'className' => $this->className,
  			'origName' => $this->origName,
@@ -956,9 +960,6 @@ class we_wysiwyg_editor{
 			'formats' => $this->formats,
 			'statuspos' => $this->statuspos,
 			'editorCss' => we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css'),
-			'fontawsomeCss' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'),
-			'contentCssFirst' => we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor,
-			'contentCssLast' => ($this->contentCss ? $this->contentCss : ''),
 			'popupCssAdd' => we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css'),
 			'templates' => (in_array('template', $this->usedCommands) && $this->templates ? $this->getTemplates() : '')
 		];
