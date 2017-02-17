@@ -20,7 +20,9 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			ini_set('session.gc_divisor', 100);
 			ini_set('session.hash_function', 1); //set sha-1 which will generate 40 bytes of session_id
 			ini_set('session.hash_bits_per_character', 4);
-			session_set_save_handler($this, true);
+			if(!session_set_save_handler($this, true)){
+				return false;
+			}
 			$this->DB = new DB_WE();
 			$this->execTime = intval(get_cfg_var('max_execution_time'));
 			$this->execTime = max(min(60, $this->execTime), 5); //time might be wrong (1&1); make exectime at least 5 seconds which is quite small
