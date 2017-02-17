@@ -356,28 +356,17 @@ function log_error_message($type, $message, $file, $line, $skipBT = false){
 				}
 			}
 		} else {
-			$hasI = function_exists('mysqli_connect') ? 'i' : '';
-			$err = 'mysql' . $hasI . '_error';
-			$query = 'mysql' . $hasI . '_query';
-			$insert = 'mysql' . $hasI . '_insert_id';
-			$close = 'mysql' . $hasI . '_close';
-
-			if($hasI){
-				$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE) or die('Cannot log error! Could not connect: ' . $err());
-			} else {
-				$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . $err());
-				mysql_select_db($link, DB_DATABASE) or die('Cannot log error! Could not select database.');
-			}
-			if($query($link, $query) === FALSE){
+			$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE) or die('Cannot log error! Could not connect: ' . mysqli_error());
+			if(mysqli_query($link, $query) === FALSE){
 				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $line, $skipBT);
 				//die('Cannot log error! Query failed: ' . mysql_error());
 			} else {
-				$id = $insert($link);
+				$id = mysqli_insert_id($link);
 				foreach($logVars as $var){
-					$query($link, 'UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
+					mysqli_query($link, 'UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
-			$close($link);
+			mysqli_close($link);
 		}
 	} else {
 		mail_error_message($type, 'Cannot log error! Database connection not known: ' . $message, $file, $line, $skipBT);

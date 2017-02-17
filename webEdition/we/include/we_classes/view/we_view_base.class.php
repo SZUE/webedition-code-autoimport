@@ -30,7 +30,7 @@ abstract class we_view_base{
 	protected $doc;
 
 	public function __call($method_name, $params){
-		return call_user_method_array($method_name, $this->doc, $params);
+		return call_user_func_array([$this->doc, $method_name], $params);
 	}
 
 	public function __get($name){

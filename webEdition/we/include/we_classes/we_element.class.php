@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_element{
-
 	var $ClassName = __CLASS__;
 	var $DID = 0;
 	var $Name = '';
@@ -106,40 +105,40 @@ class we_element{
 	}
 
 	function linkProps(){
+		$this->DID = $this->Link->DID;
+		$this->Name = $this->Link->Name;
+		$this->Type = $this->Link->Type;
 
-		$this->DID = &$this->Link->DID;
-		$this->Name = &$this->Link->Name;
-		$this->Type = &$this->Link->Type;
-
-		$this->CID = &$this->Content->CID;
-		$this->BDID = &$this->Content->BDID;
-		$this->Dat = &$this->Content->Dat;
-		$this->LanguageID = &$this->Content->LanguageID;
+		$this->CID = $this->Content->CID;
+		$this->BDID = $this->Content->BDID;
+		$this->Dat = $this->Content->Dat;
+		$this->LanguageID = $this->Content->LanguageID;
 	}
 
 	function getElement(){
 		return ($this->linked ?
 			[$this->Name => ["id" => $this->CID,
 				"bdid" => $this->BDID,
-					"languageid" => $this->LanguageID,
-					"cid" => $this->CID,
-					"type" => $this->Type,
-					"dat" => $this->Dat
-					]
+				"languageid" => $this->LanguageID,
+				"cid" => $this->CID,
+				"type" => $this->Type,
+				"dat" => $this->Dat
+			]
 			] :
 			[$this->Name => ["dat" => $this->Dat,
 				"type" => $this->Type,
-					"len" => $this->Len
-					]
+				"len" => $this->Len
+			]
 			]
 			);
 	}
 
 	function getObjectElement(){
-		return [$this->Name => ["dat" => base64_decode($this->Dat),
-				"type" => $this->Type,
-				"len" => $this->Len
-				]
+		return [$this->Name => [
+				'dat' => base64_decode($this->Dat),
+				'type' => $this->Type,
+				'len' => $this->Len
+			]
 		];
 	}
 
