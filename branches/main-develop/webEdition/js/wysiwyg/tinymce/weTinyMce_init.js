@@ -29,6 +29,9 @@ initVars.win = window;
 var tinyMceConfObjects = tinyMceConfObjects ? tinyMceConfObjects : {};
 tinyMceConfObjects[initVars.weFieldNameClean] = WE().layout.we_tinyMCE.getTinyConfObject(initVars);
 
+// to be temporarily compatible with we_object
+window['tinyMceConfObject__' + initVars.weFieldNameClean] = tinyMceConfObjects[initVars.weFieldNameClean];
+
 tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject);
 tinyMCE.PluginManager.load = initVars.win.tinyPluginManager;
 

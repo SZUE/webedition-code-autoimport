@@ -30,7 +30,7 @@ var weTextarea_count = 0;
 
 //FIXME: change/remove this!
 var we_textarea = function (name, value, autobr, autobrName, showAutobr, attribs, xml) {
-	showSpell = false;
+	this.showSpell = false;
 	this.TAName = name;
 	this.name = "weTextarea" + (weTextarea_count++);
 	this.obj = this.name + "Object";

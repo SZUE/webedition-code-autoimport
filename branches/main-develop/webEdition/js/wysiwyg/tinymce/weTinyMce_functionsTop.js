@@ -353,7 +353,12 @@ WE().layout.we_tinyMCE.functions.tinySetEditorFrame = function(ed) {
 	}
 };
 
+// set wrapper fn to editor-js and save styles there: return saved styles when not empty
 WE().layout.we_tinyMCE.functions.getDocumentCss = function (win, preKomma) {
+	if(win.wysiwyg_documentCss){
+		return win.wysiwyg_documentCss === -1 ? '' : (preKomma ? ',' : '') + win.wysiwyg_documentCss;
+	}
+
 	var doc = win.document;
 	var styles = [];
 	if (doc.styleSheets) {
@@ -363,5 +368,23 @@ WE().layout.we_tinyMCE.functions.getDocumentCss = function (win, preKomma) {
 			}
 		}
 	}
-	return styles.length ? ((preKomma ? "," : "") + styles.join(",")) : "";
+	win.wysiwyg_documentCss = styles.length ? styles.join(',') : -1;
+
+	return win.wysiwyg_documentCss !== -1 ? ((preKomma ? ',' : '') + win.wysiwyg_documentCss) : '';
+};
+
+WE().layout.we_tinyMCE.functions.setContentCss = function (ed) {
+	var conf = ed.settings;
+
+	conf.content_css = conf.weContentCssParts.start // always exists
+			+ WE().layout.we_tinyMCE.functions.getDocumentCss((conf.editorType === 'inlineTrue' ? conf.win : conf.win.opener), true)
+			+ (conf.weContentCssParts.end ? ',' + conf.weContentCssParts.end : '');
+};
+
+WE().layout.we_tinyMCE.functions.setToolbarRows = function (ed) {
+	var conf = ed.settings;
+
+	for(var i = 0; i < conf.weToolbarRows.length; i++){
+		ed.settings[conf.weToolbarRows[i].name] = conf.weToolbarRows[i].value;
+	}
 };
