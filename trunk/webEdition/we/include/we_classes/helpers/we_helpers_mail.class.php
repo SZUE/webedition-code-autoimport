@@ -254,8 +254,8 @@ class we_helpers_mail extends Zend_Mail{
 						}
 						$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
-						$filename = (explode('?', basename($url))[0]);
-						$fileParts = pathinfo($filename);
+						$filename = (explode('?', basename($url)));
+						$fileParts = pathinfo($filename[0]);
 						$ext = $fileParts['extension'];
 
 						if(!in_array($ext, $this->embedImages)){
