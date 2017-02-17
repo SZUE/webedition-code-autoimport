@@ -29,6 +29,11 @@
 
 var dialogVars = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
 var isWeDialog = true;
+var dialogLoaded = false;
+
+function weDialogBase_setLoaded(){
+	dialogLoaded = true;
+}
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

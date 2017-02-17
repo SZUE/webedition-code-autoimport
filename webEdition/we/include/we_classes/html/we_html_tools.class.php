@@ -191,8 +191,8 @@ this.selectedIndex = 0;' .
 		$out = '';
 
 		for($f = 0; $f < $anz; $f++){
-			$bgcol = (!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : '';
-			$out .= '<td class="' . $class . '" style="' . ($bgcol ? 'background-color:' . $bgcol . '; ' : '') .
+			$bgcolor = (!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : '';
+			$out .= '<td class="' . $class . '" style="' . ($bgcolor ? 'background-color:' . $bgcolor . '; ' : '') .
 				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
 				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .

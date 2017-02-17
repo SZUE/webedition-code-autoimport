@@ -111,7 +111,7 @@ class we_dialog_base{
 	}
 
 	function getFramesetHTML(){
-		return we_html_element::htmlBody(['id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()'],
+		return we_html_element::htmlBody(['onload' => 'weDialogBase_setLoaded();', 'id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()'],
 				we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 				we_html_element::htmlIFrame('we_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		);

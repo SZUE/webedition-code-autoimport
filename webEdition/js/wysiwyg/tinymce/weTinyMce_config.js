@@ -43,6 +43,7 @@ WE().layout.we_tinyMCE = {
 };
 
 function TinyMceConfObject(args) {
+	this.editorType = args.editorType;
 	this.weLanguage = args.weLanguage;
 	this.weIsFullscreen = args.weIsFullscreen;
 	this.weIsInPopup = args.weIsInPopup;
@@ -53,7 +54,6 @@ function TinyMceConfObject(args) {
 	this.weFieldNameClean = args.weFieldNameClean;
 	this.win = args.win;
 	this.toolbarRows = args.toolbarRows;
-
 	this.doctype = '<!DOCTYPE html>';
 	this.fix_list_elements = true;
 	this.wePluginClasses = {
@@ -72,10 +72,7 @@ function TinyMceConfObject(args) {
 	this.tinyGl = {
 		removedInlinePictures: args.removedInlinePictures
 	};
-	this.weFullscrenParams = args.weFullscrenParams;
-	this.weFullscrenParams.screenWidth = screen.availWidth-10;
-	this.weFullscrenParams.screenHeight = screen.availHeight - 70;
-	this.weFullscrenParams.contentCss = args.weFullscrenParams.contentCss + WE().layout.we_tinyMCE.functions.getDocumentCss(args.win,args.weFullscrenParams.contentCss ? true : '');
+	this.fullscreen_readyConfig = args.fullscreen_readyConfig;
 	this.weImageStartID = args.weImageStartID;
 	this.weGalleryTemplates = args.weGalleryTemplates;
 	this.weClassNames_urlEncoded = args.weCssClasses;
@@ -142,7 +139,6 @@ WE().layout.we_tinyMCE.setupEditor = function(ed){
 
 	// add some editor props
 	ed.weEditorFrameIsHot = false;
-	ed.editorLevel = '';
 
 	// add toolbar definitions to settings
 	for(var i = 0; i < conf.toolbarRows.length; i++){
@@ -153,20 +149,19 @@ WE().layout.we_tinyMCE.setupEditor = function(ed){
 
 	// add event listeners
 	ed.onInit.add(WE().layout.we_tinyMCE.onInitEditor);
-
 	ed.onKeyDown.add(WE().layout.we_tinyMCE.do.onKeyDown);
 	ed.onDblClick.add(WE().layout.we_tinyMCE.do.onDblClick);
 	ed.onPostProcess.add(WE().layout.we_tinyMCE.do.onPostProcess);
 
-	if(conf.weIsInPopup){
+	if(conf.editorType !== 'inlineTrue'){
 		ed.onPostRender.add(WE().layout.we_tinyMCE.do.onPostRender); //still no solution for relative scaling when inlineedit=true
 	}
 
 	if(!conf.weIsFrontendEdit){
-		WE().layout.we_tinyMCE.functions.tinySetEditorLevel(ed); // find a simpler way to establish editorLevel...
+		WE().layout.we_tinyMCE.functions.tinySetEditorFrame(ed); // find a simpler way to establish editorLevel...
 		try {
 			// do we need this on setup?
-			ed.weEditorFrameIsHot = ed.editorLevel === "inline" ? ed.weEditorFrame.EditorIsHot : false;
+			ed.weEditorFrameIsHot = conf.editorType !== 'inlineTrue' ? ed.weEditorFrame.EditorIsHot : false;
 		} catch (e) {}
 
 		ed.onPaste.add(WE().layout.we_tinyMCE.do.beforePastePlugin);
@@ -182,7 +177,7 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 
 	// set some controls
 	ed.pasteAsPlainText = 1;
-	ed.controlManager.setActive('pastetext', 1);
+	ed.controlManager.setActive('pastetext', 0);
 	//ed.execCommand("mceWevisualaid", true);
 
 	// custom node filters
@@ -193,13 +188,21 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 	ed.dom.bind(ed.getWin(), 'copy', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, false);});
 	ed.dom.bind(ed.getWin(), 'cut', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, true);});
 
-	// when not inlineedit: get content from opener document
-	var openerDocument = !conf.weIsInPopup ? '' : (conf.weIsFrontendEdit ? top.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document);
-	if(conf.weIsInPopup){
+	// when not inlineeditTrue: get content from opener document
+	var openerDocument = conf.editorType === 'inlineTrue' ? '' : (conf.weIsFrontendEdit ? top.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document);
+
+	if(conf.editorType === 'inlineFalse'){ // TODO: use WE() for const
 		try{
 			ed.setContent(openerDocument.getElementById(conf.weName).value);
 		}catch(e){}
 	}
+	if(conf.editorType === 'fullscreen'){ // TODO: use WE() for const
+		try{
+			ed.setContent(openerDocument.getElementById(conf.weName + '_ifr').contentDocument.body.innerHTML);
+		}catch(e){}
+	}
+	
+	
 
 	/* ALL THIS EDITOR-REGISTERING STUFF IS NOT WORKING AT THE TIME! */
 	if(conf.weFieldName){

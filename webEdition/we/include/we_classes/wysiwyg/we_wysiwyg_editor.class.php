@@ -26,23 +26,29 @@
 
 class we_wysiwyg_editor{
 
+	private $editorType = 1;
+	private $readyConfig = [];
+
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
 	private $fieldName_clean = '';
 	var $width = 600;
 	var $height = 400;
+	private $origWidth = 0;
+	private $origHeight = 0;
 	var $ref = '';
-	var $propstring = '';
+	var $propString = '';
 	var $elements = [];
 	var $value = '';
+	private $contextmenu = '';
 	var $restrictContextmenu = '';
 	private $tinyPlugins = [];
 	private $wePlugins = ['wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak',
 		'wespellchecker', 'welink', 'wefullscreen', 'wegallery'];
 	private $createContextmenu = true;
 	private $filteredElements = [];
-	private $bgcol = '';
+	private $bgcolor = '';
 	private $buttonpos = '';
 	private $tinyParams = '';
 	private $templates = '';
@@ -56,7 +62,7 @@ class we_wysiwyg_editor{
 	private $cssClasses = '';
 	private $cssClassesJS = '';
 	private $tinyCssClasses = '';
-	var $Language = '';
+	private $language = '';
 	private $imagePath;
 	private $image_languagePath;
 	private $baseHref = '';
@@ -73,6 +79,7 @@ class we_wysiwyg_editor{
 	private $toolbarRows = [];
 	private $usedCommands = [];
 	private $fontsizes = '1 (8px)=xx-small,2 (10px)=x-small,3 (12px)=small,4 (14px)=medium,5 (18px)=large,6 (24px)=x-large,7 (36px)=xx-large'; // tinyMCE default!
+
 	private static $allFormats = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote', 'samp'];
 	private static $fontstrings = ['andale mono' => "Andale Mono='andale mono','times new roman',times;",
 		'arial' => 'Arial=arial,helvetica,sans-serif;',
@@ -104,34 +111,97 @@ class we_wysiwyg_editor{
 	const MIN_WIDTH_POPUP = 100;
 	const MIN_HEIGHT_POPUP = 100;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
-		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
-		$this->restrictContextmenu = $contextmenu ? ',' . urldecode($contextmenu) . ',' : '';
-		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
-		$this->name = $name;
-		if(preg_match('|^.+\[.+\]$|i', $this->name)){
-			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '${1}', $this->name);
-			$this->fieldName_clean = str_replace(['-', '.', '#', ' '], ['_minus_', '_dot_', '_sharp_', '_blank_'], $this->fieldName);
-		};
-		$this->origName = $origName;
-		$this->bgcol = $bgcol;
-		if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
-			$this->bgcol = substr($this->bgcol, 1);
-		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
-			$this->bgcol = '';
-		}
-		$this->tinyParams = str_replace(['\'', '&#34;', '&#8216;', '&#8217;'], '"', trim(urldecode($tinyParams), ' ,'));
-		$this->templates = trim($templates, ',');
-		$this->xml = $xml ? "xhtml" : "html";
-		$this->removeFirstParagraph = $removeFirstParagraph;
-		$this->inlineedit = $inlineedit;
-		$this->fullscreen = $fullscreen;
-		$this->className = $className;
-		$this->buttonpos = $buttonpos;
-		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
-		$this->outsideWE = $outsideWE;
+	const TYPE_INLINE_TRUE = 'inlineTrue';
+	const TYPE_INLINE_FALSE = 'inlineFalse';
+	const TYPE_FULLSCREEN = 'fullscreen';
+	const TYPE_EDITBUTTON = 'editButton';
 
-		$this->fontnamesCSV = $fontnames ? : self::getAttributeOptions('fontnames', false, false, false);
+	function __construct(array $readyConfig = [], $editorType = '', $name = '', $width = 600, $height = 400, $value = '', $propString = '', $bgcolor = '', $fullscreen = '', $className = '', $fontnamesCsv = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
+		$this->editorType = $editorType ? : self::TYPE_INLINE_TRUE;
+		$this->readyConfig = $readyConfig;
+
+		if(in_array($this->editorType, [self::TYPE_INLINE_FALSE, self::TYPE_FULLSCREEN])){
+			if(empty($this->readyConfig)){
+				t_e('attempt to initialize wysiwyg editor type "' . $this->editorType . '" without readyConfig');
+				exit();
+			}
+
+			// we only init props that we need in function getInlineHTML
+			$this->width = '100%';
+			$this->height = '100%';
+			$this->name = $this->readyConfig['name'];
+			$this->buttonpos = $this->readyConfig['buttonpos'];
+			$this->readyConfig['editorType'] = $this->editorType;
+
+			//$this->name = $this->readyConfig['name'] = $this->readyConfig['weName'] = $this->readyConfig['elements'] = ($this->editorType === self::TYPE_FULLSCREEN ? 'wysiwygFullscreen_textarea' : $this->name);
+
+		} else {
+			$this->name = $name;
+			$this->width = $width;
+			$this->height = $height;
+			$this->value = $value;
+			$this->propString = $propString;
+			$this->bgcolor = $bgcolor;
+			$this->fullscreen = $fullscreen; // replace by editorType
+			$this->className = $className;
+			$this->fontnamesCsv = $fontnamesCsv;
+			$this->outsideWE = $outsideWE; // != $isFrontendEdit
+			$this->xml = $xml;
+			$this->removeFirstParagraph = $removeFirstParagraph;
+			$this->inlineedit = $inlineedit; // replace by editorType
+			$this->baseHref = $baseHref;
+			$this->charset = $charset;
+			$this->cssClasses = $cssClasses;
+			$this->language = $language;
+			$this->showSpell = $spell;
+			$this->isFrontendEdit = $isFrontendEdit;
+			$this->buttonpos = $buttonpos;
+			$this->htmlSpecialchars = $oldHtmlspecialchars;
+			$this->contentCss = $contentCss;
+			$this->origName = $origName; // obsolete?
+			$this->tinyParams = $tinyParams;
+			$this->contextmenu = $contextmenu;
+			$this->isInPopup = $isInPopup; // replace by editorType
+			$this->templates = $templates;
+			$this->formats = $formats;
+			$this->imageStartID = $imageStartID;
+			$this->galleryTemplates = $galleryTemplates;
+			$this->fontsizes = $fontsizes;
+
+			$this->preprocessProps();
+			$this->setToolbarElements();
+			$this->setFilteredElements();
+			$this->setToolbarRows();
+		}
+	}
+
+	private function preprocessProps(){
+		if(preg_match('|^.+\[.+\]$|i', $this->name)){
+			$this->fieldName_clean = str_replace(['-', '.', '#', ' '], ['_minus_', '_dot_', '_sharp_', '_blank_'], $this->fieldName);
+		}
+
+		if(preg_match('%^.+_te?xt\[.+\]$%i', $this->name)){
+			$this->fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '${1}', $this->name);
+		} else if(preg_match('|^.+_input\[.+\]$|i', $this->name)){
+			$this->fieldName = preg_replace('/^.+_input\[(.+)\]$/', '${1}', $this->name);
+		} else if(preg_match('|^we_ui.+\[.+\]$|i', $this->name)){//we_user_input
+			$this->fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '${1}', $this->name);
+		}
+		$this->fieldName_clean = str_replace(['-', '.', '#', ' '], ['_minus_', '_dot_', '_sharp_', '_blank_'], $this->fieldName);
+
+		$this->origWidth = $this->width0;
+		$this->origHeight = $this->height;
+
+		$this->hiddenValue = $this->value;
+		$this->propString = $this->propString ? ',' . $this->propString . ',' : '';
+
+		if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcolor)){
+			$this->bgcolor = substr($this->bgcolor, 1);
+		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcolor) && !preg_match('/^[a-z]*$/i', $this->bgcolor)){
+			$this->bgcolor = '';
+		}
+
+		$this->fontnamesCSV = $this->fontnamesCSV ? : self::getAttributeOptions('fontnames', false, false, false);
 		$fontsArr = explode(',', $this->fontnamesCSV);
 		natsort($fontsArr);
 		foreach($fontsArr as $font){
@@ -139,22 +209,28 @@ class we_wysiwyg_editor{
 			$this->fontnames .= (array_key_exists($f, self::$fontstrings)) ? self::$fontstrings[$f] : ucfirst($f) . '=' . $f . ';';
 		}
 
-		$this->fontsizes = $fontsizes ? : $this->fontsizes;
+		$this->xml = $this->xml ? "xhtml" : "html";
 
-		if($formats){
-			$tmp = '';
-			foreach(explode(',', $formats) as $f){
-				if(in_array(trim($f, ', '), self::$allFormats)){
-					$tmp .= trim($f, ', ') . ',';
+		$this->charset ? : DEFAULT_CHARSET;
+		$charsets = we_base_charsetHandler::inst()->getAll();
+		if($this->charset !== DEFAULT_CHARSET && $charsets && is_array($charsets)){
+			$found = false;
+			$tmp = strtolower($this->charset);
+			foreach($charsets as $v){
+				if(!empty($v['charset'])){
+					if(strtolower($v['charset']) === $tmp){
+						$found = true;
+						break;
+					}
 				}
 			}
-			$this->formats = trim($tmp, ',');
-		} else {
-			$this->formats = self::getAttributeOptions('formats', false, false, false);
+			if(!$found){
+				$this->charset = '';
+			}
 		}
 
-		if($cssClasses){
-			$cc = explode(',', $cssClasses);
+		if($this->cssClasses){
+			$cc = explode(',', $this->cssClasses);
 			$tf = '';
 			$jsCl = '';
 			$csvCl = '';
@@ -169,39 +245,38 @@ class we_wysiwyg_editor{
 			$this->tinyCssClasses = rtrim($tf, ';');
 		}
 
-		$this->contentCss = ($contentCss === '/' ? '' : $contentCss);
+		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
+		$this->contentCss = ($this->contentCss === '/' ? '' : $this->contentCss);
+		$this->restrictContextmenu = $this->contextmenu ? ',' . urldecode($this->contextmenu) . ',' : '';
+		$this->createContextmenu = trim($this->contextmenu, " ,'") === 'none' || trim($this->contextmenu, " ,'") === 'false' ? false : true;
+		$this->templates = trim($this->templates, ',');
 
-		$this->Language = $Language;
-		$this->showSpell = $spell;
-		$this->htmlSpecialchars = $oldHtmlspecialchars;
-		$this->isFrontendEdit = $isFrontendEdit;
+		if($this->formats){
+			$tmp = '';
+			foreach(explode(',', $this->formats) as $f){
+				if(in_array(trim($f, ', '), self::$allFormats)){
+					$tmp .= trim($f, ', ') . ',';
+				}
+			}
+			$this->formats = trim($tmp, ',');
+		} else {
+			$this->formats = self::getAttributeOptions('formats', false, false, false);
+		}
 
-		$this->imagePath = IMAGE_DIR . 'wysiwyg/';
-		$this->image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
+		$this->imageStartID = intval($this->imageStartID);
 
-		$this->baseHref = $baseHref ? : we_base_util::getGlobalPath();
-		$this->charset = $charset;
-
-		$this->width = $width ? : $this->width;
-		$this->height = $height ? : $this->height;
-		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
-		$this->hiddenValue = $value;
-		$this->isInPopup = $isInPopup;
-		$this->imageStartID = intval($imageStartID);
-
-		foreach(explode(',', $galleryTemplates) as $id){
+		foreach(explode(',', trim($this->galleryTemplates, ',')) as $id){
 			if($id && is_numeric(trim($id))){
 				$this->galleryTemplates .= $id . ',';
 			}
 		}
-		$this->galleryTemplates = trim($this->galleryTemplates, ',');
+
+		$this->fontsizes = $this->fontsizes ? : $this->fontsizesDefault;
+		$this->imagePath = IMAGE_DIR . 'wysiwyg/';
+		$this->image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
+		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 
 		//FIXME: what to do with scripts??
-
-		$this->setToolbarElements();
-		$this->setFilteredElements();
-		$this->setToolbarRows();
-		$this->value = $value;
 	}
 
 	public function getIsFrontendEdit(){
@@ -508,7 +583,7 @@ class we_wysiwyg_editor{
 			new we_wysiwyg_ToolbarButton($this, "search"),
 			new we_wysiwyg_ToolbarButton($this, "replace"),
 			$sepCon,
-			($this->fullscreen ?
+			($this->fullscreen ? // FIXME: disable fullscreen btn in editor when fullscreen
 					false :
 					new we_wysiwyg_ToolbarButton($this, "fullscreen")
 			),
@@ -550,7 +625,10 @@ class we_wysiwyg_editor{
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
 
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . "'+WE().layout.we_tinyMCE.functions.getDocumentCss(window," . ($this->contentCss ? 'true' : 'false') . "),'" . $this->origName . "','" . urlencode($this->tinyParams) . "','" . urlencode($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');");
+		$readyConfig = urlencode(json_encode($this->getDynamicVars()));
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $readyConfig . "', " . $width . ", " . $height . ");");
+
+		//return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propString . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcolor . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->language . "','" . $this->contentCss . "'+WE().layout.we_tinyMCE.functions.getDocumentCss(window," . ($this->contentCss ? 'true' : 'false') . "),'" . $this->origName . "','" . urlencode($this->tinyParams) . "','" . urlencode($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');");
 	}
 
 	static function parseInternalImageSrc($value){
@@ -634,23 +712,6 @@ class we_wysiwyg_editor{
 		}
 
 		return $ret;
-	}
-
-	private function getToolbarRows(){
-		$tmpElements = $this->filteredElements;
-		$rownr = 0;
-		$rows = [$rownr => []
-		];
-
-		foreach($tmpElements as $elem){
-			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
-				$rownr++;
-				$rows[$rownr] = [];
-				continue;
-			}
-			$rows[$rownr][] = $elem;
-		}
-		return $rows;
 	}
 
 	private function setToolbarRows(){
@@ -833,6 +894,10 @@ class we_wysiwyg_editor{
 	}
 
 	private function getDynamicVars(){
+		if(in_array($this->editorType, [self::TYPE_INLINE_FALSE, self::TYPE_FULLSCREEN])){
+			return $this->readyConfig;
+		}
+
 		list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 		$editorLangSuffix = (array_search($GLOBALS['WE_LANGUAGE'], getWELangs())) === 'de' ? 'de_' : '';
 
@@ -846,46 +911,28 @@ class we_wysiwyg_editor{
 				(in_array('table', $this->usedCommands) ? 'wetable,' : '') .
 				'weutil,wepaste,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
+
 		return [
+			'editorType' => $this->editorType,
+			'weCharset' => $this->charset,
+			'weOrigWidth' => $this->origWidth,
+			'weOrigHeight' =>$this->origHeight,
 			'weLanguage' => array_search($GLOBALS['WE_LANGUAGE'], getWELangs()),
 			'weIsFullscreen' => $this->fullscreen,
-			'weIsInPopup' => $this->isInPopup,
+			'weIsInPopup' => true,//$this->isInPopup,
 			'weIsFrontendEdit' => $this->isFrontendEdit,
 			'weName' => $this->name,
+			'name' => $this->name,
 			'weFieldName' => $this->fieldName,
 			'weFieldNameClean' => $this->fieldName_clean,
 			'editorLangSuffix' => $editorLangSuffix,
-			'removedInlinePictures' => g_l('wysiwyg', '[removedInlinePictures]'),
-			'weFullscrenParams' => [
-					'outsideWE' => $this->outsideWE ? 1 : 0,
-					'isInPopup' => $this->isInPopup ? 1 : 0,
-					'xml' => $this->xml ? 1 : 0,
-					'removeFirstParagraph' => $this->removeFirstParagraph ? 1 : 0,
-					'baseHref' => urlencode($this->baseHref),
-					'charset' => $this->charset,
-					'cssClasses' => urlencode($this->cssClasses),
-					'fontnames' => urlencode($this->fontnamesCSV),
-					'bgcolor' => $this->bgcol,
-					'language' => $this->language,
-
-					'className' => $this->className,
-					'propString' => trim($this->propstring),
-					'contentCss' => urlencode($this->contentCss),
-					'origName' => urlencode($this->origName),
-					'tinyParams' => urlencode($this->tinyParams),
-					'contextmenu' => urlencode(trim($this->restrictContextmenu, ',')),
-					'templates' => $this->templates,
-					'formats' => $this->formats,
-					'galleryTemplates' => $this->galleryTemplates,
-					'formats' => urlencode($this->formats),
-					'fontsizes' => urlencode($this->fontsizes),
-					'imageStartID' => $this->imageStartID
-				],
+			'removedInlinePictures' => g_l('wysiwyg', '[removedInlinePictures]'), // // move to consts.g_l
+			'fullscreen_readyConfig' => '',
 			'weImageStartID' => intval($this->imageStartID),
 			'weGalleryTemplates' => $this->galleryTemplates,
 			'weCssClasses' => urlencode($this->cssClasses),
 			'weRemoveFirstParagraph' => $this->removeFirstParagraph ? 1 : 0,
-			'wePopupGl' => [
+			'wePopupGl' => [ // move to consts.g_l
 					'btnOk' => ['text' => g_l('button', '[ok][value]'), 'alt' => g_l('button', '[ok][alt]')],
 					'btnCancel' => ['text' => g_l('button', '[cancel][value]'), 'alt' => g_l('button', '[cancel][alt]')],
 					'btnDelete' => ['text' => g_l('button', '[delete][value]'), 'alt' => g_l('button', '[delete][alt]')],
@@ -910,7 +957,7 @@ class we_wysiwyg_editor{
 			'statuspos' => $this->statuspos,
 			'editorCss' => we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css'),
 			'fontawsomeCss' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'),
-			'contentCssFirst' => we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol,
+			'contentCssFirst' => we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor,
 			'contentCssLast' => ($this->contentCss ? $this->contentCss : ''),
 			'popupCssAdd' => we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css'),
 			'templates' => (in_array('template', $this->usedCommands) && $this->templates ? $this->getTemplates() : '')
@@ -965,7 +1012,10 @@ class we_wysiwyg_editor{
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
-		return we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '', ['id' => 'loadVarWeTinyMce_init', 'data-dynvars' => setDynamicVar($this->getDynamicVars())]) .
+		$config = $this->getDynamicVars();
+		$config['fullscreen_readyConfig'] = $this->editorType === self::TYPE_INLINE_TRUE ? urlencode(json_encode($config)) : '';
+
+		return we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '', ['id' => 'loadVarWeTinyMce_init', 'data-dynvars' => setDynamicVar($config)]) .
 				getHtmlTag('textarea', ['wrap' => "off",
 				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
 					'id' => $this->name,

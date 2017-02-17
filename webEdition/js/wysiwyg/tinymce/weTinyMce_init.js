@@ -34,8 +34,5 @@ tinyMCE.PluginManager.load = initVars.win.tinyPluginManager;
 
 // try to move this to tiny setup or init
 tinyMCE.weResizeLoops = 100;
-tinyMCE.weResizeEditor = function(render){
-	WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(render, initVars.elements, window);
-};
 
 tinyMCE.init(window.tinyMceConfObjects[initVars.weFieldNameClean]);

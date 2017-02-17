@@ -55,7 +55,7 @@ WE().layout.we_tinyMCE.do.onClick = function (ed) {
 WE().layout.we_tinyMCE.do.onSaveContent = function (ed, o) {
 	ed.weEditorFrameIsHot = false;
 	// if is popup and we click on ok
-	if (ed.editorLevel === "popup" && ed.isDirty()) {
+	if (ed.settings.editorType !== "inlineTrue" && ed.isDirty()) {
 		try {
 			ed.weEditorFrame.setEditorIsHot(true);
 		} catch (e) {
@@ -183,12 +183,13 @@ WE().layout.we_tinyMCE.do.onNodeChange = function (ed, cm, n) {
 WE().layout.we_tinyMCE.do.onPostRender = function (ed, cm) {
 	var win = ed.settings.win;
 
+	// move this to setup!
 	ed.settings.win.addEventListener("resize", function (e) {
-		ed.settings.win.tinyMCE.weResizeEditor();
+		WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, false);
 	});
-	if (typeof ed.settings.win.tinyMCE.weResizeEditor === "function") {
-		ed.settings.win.tinyMCE.weResizeEditor(true);
-	}
+	
+
+	WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, true);
 };
 
 WE().layout.we_tinyMCE.do.onPostProcess = function (ed, o) {
@@ -299,7 +300,7 @@ WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 };
 
 WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function (ed) {
-	if (!ed.weEditorFrameIsHot && ed.editorLevel === 'inline' && ed.isDirty()) {
+	if (!ed.weEditorFrameIsHot && ed.settings.editorType === 'inlineTrue' && ed.isDirty()) {
 		try {
 			ed.weEditorFrame.setEditorIsHot(true);
 		} catch (e) {
@@ -308,11 +309,16 @@ WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function (ed) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinyWeResizeEditor = function (render, name, win) {
+WE().layout.we_tinyMCE.functions.tinyWeResizeEditor = function(ed, render) {
+	var win = ed.settings.win;
+	var name = ed.settings.elements;
 	var el = win.tinyMCE.DOM.get(name + "_toolbargroup");
 	var h = el ? el.parentNode.offsetHeight : 0;
-	if ((render || !el) && --win.tinyMCE.weResizeLoops && h < 24) {
-		window.setTimeout(WE().layout.we_tinyMCE.functions.tinyWeResizeEditor, 10, true);
+
+	// TODO: add busy
+
+	if ((render || !el) && --win.tinyMCE.weResizeLoops && win.top.dialogLoaded === false/*&& h < 24*/) {
+		window.setTimeout(WE().layout.we_tinyMCE.functions.tinyWeResizeEditor, 10, ed, true);
 		return;
 	}
 
@@ -331,31 +337,19 @@ WE().layout.we_tinyMCE.functions.customNodeFilter_A = function (nodes) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinySetEditorLevel = function (ed) {
+WE().layout.we_tinyMCE.functions.tinySetEditorFrame = function(ed) {
 	/* set EditorFrame.setEditorIsHot(true) */
 
-	// we look for editorLevel and weEditorFrameController just once at editor init
-	ed.editorLevel = '';
 	ed.weEditorFrame = null;
 	// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
 	ed.weEditorFrameIsHot = false;
 
-	//FIXME: this doesn't work: we need to know wheter it is inline, popup or fullscreen and wheter we are on a document/object in multieditor
-	//simply mark inline-false-popup and fullscreen with some js var and then check for multieditor on the respective level
-
-	// FIXME: why doesn't ed not know it's level after init: tell it it's level and done!
-	if (ed.settings.win._EditorFrame !== undefined) {
-		ed.editorLevel = "inline";
-		ed.weEditorFrame = ed.settings.win._EditorFrame;
-	} else if (ed.settings.win.opener !== null && ed.settings.win.opener.top.WebEdition && ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController !== undefined && ed.settings.win.isWeDialog === undefined) {
-		ed.editorLevel = "popup";
-		ed.weEditorFrame = ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController;
-	} else if (ed.settings.win.isWeDialog) {
-		ed.editorLevel = "fullscreen";
-		ed.weEditorFrame = null;
-	} else {
-		ed.editorLevel = "popup";
-		ed.weEditorFrame = null;
+	// FIXME: make weTinyMce pass through _EditorFrame if there!
+	switch(ed.settings.editorType){
+		case 'inlineTrue':
+			ed.weEditorFrame = ed.settings.win._EditorFrame !== undefined ? ed.settings.win._EditorFrame : null;
+		case 'inlineFalse':
+			ed.weEditorFrame = ed.settings.win.opener && ed.settings.win.opener.top.WebEdition && ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController ? ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController : null;
 	}
 };
 

@@ -1,12 +1,12 @@
-/* global WE, top */
+/* global WE, top,weDoOk */
 
 /**
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 13357 $
+ * $Author: lukasimhof $
+ * $Date: 2017-02-13 22:29:45 +0100 (Mo, 13 Feb 2017) $
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -26,8 +26,10 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 'use strict';
-document.addEventListener("keyup", doKeyDown, true);
 
+var payload = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
+
+document.addEventListener("keyup", doKeyDown, true);
 function doKeyDown(e) {top.console.log(e.charCode);
 	switch (e.charCode) {
 		case 27:
@@ -36,12 +38,23 @@ function doKeyDown(e) {top.console.log(e.charCode);
 	}
 }
 
-function weDoOk() {
-	//top.opener.tinyMCECallRegisterDialog({}, "unregisterDialog"); // FIXME: register dialog
+function weTinyDialog_doOk() {
 	top.WefullscreenDialog.writeback();
 	top.close();
 }
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		default:
+			window.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
 }
