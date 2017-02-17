@@ -59,7 +59,7 @@ tinyMCEPopup = {
 		setTimeout(function () {
 			var b = a.dom.getViewPort(window);
 			a.editor.windowManager.resizeBy(a.getWindowArg("mce_width") - b.w, a.getWindowArg("mce_height") - b.h, a.id || window)
-		}, 10)
+		}, 10);
 	},
 	executeOnLoad: function (s) {
 		this.onInit.add(function () {

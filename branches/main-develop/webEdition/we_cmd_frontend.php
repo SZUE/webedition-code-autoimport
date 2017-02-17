@@ -25,9 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'open_wysiwyg_window':
-		we_dialog_wysiwygWindow::getDialog();
-		exit();
-
+	case 'writeBack_inlineFalse':
 	case 'open_dialog_abbr':
 	case 'open_dialog_acronym':
 	case 'open_dialog_lang':
@@ -36,7 +34,6 @@ switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'open_dialog_image':
 	case 'open_dialog_hyperlink':
 	case 'open_dialog_fullscreen':
-		
 		$noInternals = we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
 				we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend') ||
 				!isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] === '';
@@ -68,9 +65,12 @@ switch($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 				echo we_dialog_hyperlink::getDialog($noInternals);
 				return;
 			case 'open_dialog_fullscreen':
-				echo we_dialog_fullscreen::getDialog($noInternals);
+				echo we_dialog_wysiwyg::getDialog($noInternals, we_wysiwyg_editor::TYPE_FULLSCREEN);
 				return;
-		}
+			case 'open_wysiwyg_window':
+			case 'writeBack_inlineFalse':
+				echo we_dialog_wysiwyg::getDialog(false, we_wysiwyg_editor::TYPE_INLINE_FALSE);
+			}
 
 	default:
 		exit();

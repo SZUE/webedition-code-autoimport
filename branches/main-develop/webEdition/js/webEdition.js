@@ -1585,25 +1585,25 @@ function we_cmd_delete(args, url) {
 
 }
 
-function open_wysiwyg_window(args, url) {
+function open_wysiwyg_window(args, caller) {
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 	}
+
 	var wyw = args[2];
 	wyw = Math.max((wyw ? wyw : 0), 400);
 	var wyh = args[3];
 	wyh = Math.max((wyh ? wyh : 0), 300);
 	if (window.screen) {
 		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
-		screen_height = screen_height - 40;
+		screen_height = screen_height - 100;
 		var screen_width = screen.availWidth - 10;
 		wyw = Math.min(screen_width, wyw);
 		wyh = Math.min(screen_height, wyh);
 	}
-	// set new width & height
-	url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
-	url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - args[10]));
-	new (WE().util.jsWindow)(window, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd_frontend.php?we_cmd[0]=open_wysiwyg_window&we_dialog_args[readyConfig]=' + args[1];
+	new (WE().util.jsWindow)(caller, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
 }
 
 function we_cmd_new_document(url) {

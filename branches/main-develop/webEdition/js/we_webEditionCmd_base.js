@@ -445,7 +445,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=delFrag&currentID=" + args[1], "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
 			break;
 		case "open_wysiwyg_window":
-			open_wysiwyg_window(args, url);
+			open_wysiwyg_window(args, caller);
 			break;
 		case "start_multi_editor":
 			we_repl(window.load, url);

@@ -35,10 +35,10 @@ header('Pragma: ', true);
 body {
 font-size: 12px;
 <?php
-$bgcol = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');
-$bgcol = preg_match('/^[a-f0-9]{6}$/i', $bgcol) ? '#' . $bgcol : $bgcol;
-echo $bgcol ? '
-background-color: ' . $bgcol . ' !important;
+$bgcolor = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');
+$bgcolor = preg_match('/^[a-f0-9]{6}$/i', $bgcolor) ? '#' . $bgcolor : $bgcolor;
+echo $bgcolor ? '
+background-color: ' . $bgcolor . ' !important;
 background-image: none !important;
 ' : '';
 ?>

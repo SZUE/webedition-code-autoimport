@@ -47,18 +47,22 @@ function we_cmd() {
 			break;
 		case 'wysiwyg_writeBack':
 			var openerDoc = payload.isFrontendEdit ? top.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document;
-top.console.log(payload);
+
 			try{
 				openerDoc.getElementById(payload.name).value = payload.textareaValue;
-			} catch(err){}
+			} catch(err){
+				WE().t_e('we_cmd "wysiwyg_writeBack": could not write back to textarea', err);
+			}
 			try{
 				openerDoc.getElementById('div_wysiwyg_' + payload.name).innerHTML = payload.divValue;
-			} catch(err){}
+			} catch(err){
+				WE().t_e('we_cmd "wysiwyg_writeBack": could not write back to preview div', err);
+			}
 			try{
 				WE().layout.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
 			} catch(err){}
 
-			//top.close();
+			top.close();
 			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
