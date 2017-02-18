@@ -63,8 +63,8 @@ function TinyMceConfObject(args) {
 		weabbr : args.editorLangSuffix + 'weabbr',
 		weacronym : args.editorLangSuffix + 'weacronym'
 	};
-	this.weFullscreenState = { // send as array
-		fullscreen : false,
+	this.weInlineFalse_dialogMaximization = {
+		isMaximized : false,
 		lastX : 0,
 		lastY : 0,
 		lastW : 0,
@@ -83,11 +83,11 @@ function TinyMceConfObject(args) {
 	this.weWordCounter = 0;
 	this.weRemoveFirstParagraph = args.weRemoveFirstParagraph;
 	this.wePopupGl = args.wePopupGl;
+	this.weTinyParams = args.weTinyParams;
 	this.language = args.language;
 	this.mode = 'exact';
 	this.elements = args.elements;
 	this.theme = 'advanced';
-	//this.dialog_type = 'modal';
 	this.accessibility_warnings = false;
 	this.relative_urls = false; //important!
 	this.convert_urls = false; //important!
@@ -132,13 +132,12 @@ function TinyMceConfObject(args) {
 WE().layout.we_tinyMCE.setupEditor = function(ed){
 	var conf = ed.settings;
 
-	// add some editor props
 	ed.weEditorFrameIsHot = false;
 
+	// add some settings
 	WE().layout.we_tinyMCE.functions.setContentCss(ed);
 	WE().layout.we_tinyMCE.functions.setToolbarRows(ed);
-
-	// add tinyParams. we need them as name/value pairs: for this we need them in JSON-syntax
+	WE().layout.we_tinyMCE.functions.setTinyParams(ed);
 
 	// add event listeners
 	ed.onInit.add(WE().layout.we_tinyMCE.onInitEditor);
@@ -153,7 +152,7 @@ WE().layout.we_tinyMCE.setupEditor = function(ed){
 	if(!conf.weIsFrontendEdit){
 		WE().layout.we_tinyMCE.functions.tinySetEditorFrame(ed); // find a simpler way to establish editorLevel...
 		try {
-			// do we need this on setup?
+			// do we need this on setup? => if opening dialog inlineFale sets base document hot, than we need ist...
 			ed.weEditorFrameIsHot = conf.editorType !== 'inlineTrue' ? ed.weEditorFrame.EditorIsHot : false;
 		} catch (e) {}
 
@@ -171,27 +170,22 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 	// set some controls
 	ed.pasteAsPlainText = 1;
 	ed.controlManager.setActive('pastetext', 0);
+	if(conf.editorType === 'fullscreen'){
+		ed.controlManager.setDisabled('wefullscreen', 1);
+	}
 	//ed.execCommand("mceWevisualaid", true);
 
 	// custom node filters
 	ed.serializer.addNodeFilter("a", WE().layout.we_tinyMCE.functions.customNodeFilter_A);
 
-	// add listeners for events ed ha sno public events for
+	// add listeners for events ed has no public events for
 	ed.dom.bind(ed.getWin(), 'drop', function(e) {return WE().layout.we_tinyMCE.do.onDrop(e, ed);});
 	ed.dom.bind(ed.getWin(), 'copy', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, false);});
 	ed.dom.bind(ed.getWin(), 'cut', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, true);});
 
 	// when not inlineeditTrue: get content from opener document => move to fn
-	var openerDocument = conf.editorType === 'inlineTrue' ? '' : (conf.weIsFrontendEdit ? top.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document);
-	if(conf.editorType === 'inlineFalse'){ // TODO: use WE() for const
-		try{
-			ed.setContent(openerDocument.getElementById(conf.weName).value);
-		}catch(e){}
-	}
-	if(conf.editorType === 'fullscreen'){ // TODO: use WE() for const
-		try{
-			ed.setContent(openerDocument.getElementById(conf.weName + '_ifr').contentDocument.body.innerHTML);
-		}catch(e){}
+	if(conf.editorType !== 'inlineTrue'){
+		WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent(ed);
 	}
 
 	/* ALL THIS EDITOR-REGISTERING STUFF IS NOT WORKING AT THE TIME! */

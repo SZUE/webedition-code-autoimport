@@ -385,6 +385,37 @@ WE().layout.we_tinyMCE.functions.setToolbarRows = function (ed) {
 	var conf = ed.settings;
 
 	for(var i = 0; i < conf.weToolbarRows.length; i++){
-		ed.settings[conf.weToolbarRows[i].name] = conf.weToolbarRows[i].value;
+		conf[conf.weToolbarRows[i].name] = conf.weToolbarRows[i].value;
+	}
+};
+
+WE().layout.we_tinyMCE.functions.setTinyParams = function (ed) {
+	var conf = ed.settings;
+
+	for(var i = 0; i < conf.weTinyParams.length; i++){
+		conf[conf.weTinyParams[i].name] = conf.weTinyParams[i].value;
+	}
+};
+
+WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent = function (ed) {
+	var conf = ed.settings;
+	if(conf.editorType === 'inlineTrue'){
+		return;
+	}
+
+	// FIXME: why use visible EditorFrame when we can use opener? obsolete?
+	//var openerDocument = conf.weIsFrontendEdit ? conf.win.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document;
+	var openerDocument = conf.win.opener.document;
+
+	switch(conf.editorType){
+		case 'inlineFalse': // TODO: use WE() for consts
+			try{
+				ed.setContent(openerDocument.getElementById(conf.weName).value);
+			}catch(e){}
+			break;
+		case 'fullscreen':
+			try{
+				ed.setContent(openerDocument.getElementById(conf.weName + '_ifr').contentDocument.body.innerHTML);
+			}catch(e){}
 	}
 };
