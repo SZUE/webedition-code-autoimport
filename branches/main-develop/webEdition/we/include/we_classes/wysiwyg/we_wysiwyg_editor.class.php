@@ -132,9 +132,6 @@ class we_wysiwyg_editor{
 			$this->name = $this->readyConfig['name'];
 			$this->buttonpos = $this->readyConfig['buttonpos'];
 			$this->readyConfig['editorType'] = $this->editorType;
-
-			//$this->name = $this->readyConfig['name'] = $this->readyConfig['weName'] = $this->readyConfig['elements'] = ($this->editorType === self::TYPE_FULLSCREEN ? 'wysiwygFullscreen_textarea' : $this->name);
-
 		} else {
 			$this->name = $name;
 			$this->width = $width;
@@ -247,6 +244,7 @@ class we_wysiwyg_editor{
 
 		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
 		$this->contentCss = ($this->contentCss === '/' ? '' : $this->contentCss);
+		$this->tinyParams = array_map(function($el){list($k, $v) = explode(':', $el, 2); return ['name' => $k, 'value' => trim($v, "'")];}, explode("',", trim(str_replace(' ', '', $this->tinyParams), ' ,')));
 		$this->restrictContextmenu = $this->contextmenu ? ',' . urldecode($this->contextmenu) . ',' : '';
 		$this->createContextmenu = trim($this->contextmenu, " ,'") === 'none' || trim($this->contextmenu, " ,'") === 'false' ? false : true;
 		$this->templates = trim($this->templates, ',');
@@ -932,6 +930,7 @@ class we_wysiwyg_editor{
 			'weGalleryTemplates' => $this->galleryTemplates,
 			'weCssClasses' => urlencode($this->cssClasses),
 			'weRemoveFirstParagraph' => $this->removeFirstParagraph ? 1 : 0,
+			'weTinyParams' => $this->tinyParams,
 			'weContentCssParts' => [
 				'start' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor, 
 				'end' => ($this->contentCss ? $this->contentCss : '')
