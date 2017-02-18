@@ -59,7 +59,7 @@ class we_docTypes extends we_class{
 			}
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
-			$this->checkRemoteLanguage($this->Table, false);
+			$this->checkRemoteLanguage(DOC_TYPES_TABLE, false);
 		}
 
 		return we_class::we_save($resave);
@@ -96,8 +96,8 @@ class we_docTypes extends we_class{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
-			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
+				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ?: 'de_DE');
+			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
 				$this->Language = $h['Language'];
 				$ParentID = $h['ParentID'];
 			}
@@ -106,7 +106,7 @@ class we_docTypes extends we_class{
 	}
 
 	private function formLangLinks(){
-		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language ?: $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$languages = getWeFrontendLanguagesForBackend();
 
@@ -114,7 +114,7 @@ class we_docTypes extends we_class{
 			$htmlzw = '';
 			foreach($languages as $langkey => $lang){
 				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE);
-				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? : 0));
+				$htmlzw .= $this->formDocTypes3($lang, $langkey, ($LDID ?: 0));
 				$langkeys[] = $langkey;
 			}
 			return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ['onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
@@ -254,7 +254,8 @@ class we_docTypes extends we_class{
 		}
 		$tlist = array_filter(array_unique($tlist));
 		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2(0, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', [0, g_l('weClass', '[none]')]);
+		return $this->formSelect2(0, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', [
+				0, g_l('weClass', '[none]')]);
 	}
 
 	private function formIsDynamic(){
@@ -281,19 +282,19 @@ class we_docTypes extends we_class{
 	 * @return         string
 	 */
 	public static function getDoctypeQuery(we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 
 		$paths = [];
 		$ws = get_ws(FILE_TABLE, true);
 		if(!$ws){
 			return ['join' => '',
 				'where' => '1 ORDER BY dt.DocType'
-				];
+			];
 		}
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
 			return ['join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON (CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%") AND f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1 )',
 				'where' => 'ISNULL(dtf.ID) OR !ISNULL(f.ID) ORDER BY dt.DocType'
-				];
+			];
 		}
 
 		$db->query('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
@@ -303,9 +304,9 @@ class we_docTypes extends we_class{
 		return ($paths ?
 			['join' => '',
 			'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
-				] : ['join' => '',
+			] : ['join' => '',
 			'where' => '1 ORDER BY dt.DocType'
-				]);
+		]);
 	}
 
 	public static function getJSLangConsts(){

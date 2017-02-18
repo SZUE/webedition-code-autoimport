@@ -22,6 +22,7 @@
  * @package database
  * @internal
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @deprecated
  */
 class DB_WE extends we_database_base{
 
