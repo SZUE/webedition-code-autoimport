@@ -638,6 +638,8 @@ we/include/we_classes/dialog/we_dialog_fullscreenEdit.class.php
 we/include/we_classes/dialog/we_dialog_color.class.php
 we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/dialog/we_dialog_Hyperlink.class.php
+we/include/we_classes/dialog/we_dialog_fullscreen.class.php
+we/include/we_classes/dialog/we_dialog_wysiwygWindow.class.php
 we/include/we_classes/csv.inc.php
 we/include/we_classes/contents/we_quicktimeDocument.class.php
 we/include/we_classes/charsetHandler.class.php
@@ -809,6 +811,7 @@ js/md5.js
 js/images.js
 js/exit_doc_question.js
 js/dialogs/we_dialog_fullscreenEdit.js
+js/dialogs/we_dialog_fullscreen.js
 js/attachKeyListener.js
 index.html
 images/wysiwyg/wysiwyg_dis.gif
