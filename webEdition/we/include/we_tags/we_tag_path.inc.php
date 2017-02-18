@@ -49,62 +49,81 @@ function we_tag_path(array $attribs){
 	$class = $class ? ' class="' . $class . '"' : '';
 	$style = $style ? ' style="' . $style . '"' : '';
 
-	$path = '';
-	$q = ' Text IN ("' . implode('","', array_map('escape_sql_query', $indexArray)) . '")';
-	$show = $doc->getElement($field);
-	if(!in_array($doc->Text, $indexArray)){
-		$show = $show? : $doc->Text;
-		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
-	}
+	$path = (!in_array($doc->Text, $indexArray) ?
+		$sep . ($oldHtmlspecialchars ? oldHtmlspecialchars(($doc->getElement($field) ?: $doc->Text)) : ($doc->getElement($field) ?: $doc->Text)) :
+		'');
+
+	$q = '"' . implode('","', array_map('escape_sql_query', $indexArray)) . '"';
+	$mdf = md5($dirfield);
+	$mf = md5($field);
 	while($pID){
-		list($fileID, $filePath, $fText) = (getHash('SELECT ID,Path,Text FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND ' . $q . ' AND Published>0 LIMIT 1', NULL, MYSQLI_NUM)? :
-				array(0, '', '')
+		list($fileID, $filePath, $fileName, $show) = (getHash('SELECT
+	f.ID,f.Path,f.Text,c.Dat
+FROM ' .
+				FILE_TABLE . ' f LEFT JOIN ' .
+				LINK_TABLE . ' l ON (l.DID=f.ID AND l.DocumentTable="tblFile" AND l.nHash=x\'' . $mdf . '\') LEFT JOIN ' .
+				CONTENT_TABLE . ' c ON c.ID=l.CID
+WHERE
+	f.ParentID=' . intval($pID) . ' AND
+	f.IsFolder=0 AND
+	f.Text IN (' . $q . ') AND
+	f.Published>0 LIMIT 1', NULL, MYSQL_NUM) ?:
+			array(0, '', '')
 			);
 		if($fileID){
-			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($dirfield) . '\'');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
+				$show = f('SELECT
+	c.Dat FROM ' .
+					LINK_TABLE . ' l JOIN ' .
+					CONTENT_TABLE . ' c ON c.ID=l.CID
+WHERE
+	l.DocumentTable="tblFile" AND
+	l.DID=' . intval($fileID) . ' AND
+	l.nHash=x\'' . $mf . '\'');
 			}
-			$show = $show? : $fText;
-			if($fileID != $doc->ID){
-				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
-				$link_post = '</a>';
-			} else {
-				$link_pre = $link_post = '';
-			}
+			$show = $show ?: $fileName;
+			$link_pre = ($fileID != $doc->ID ? '<a href="' . $filePath . '"' . $class . $style . '>' : '');
 		} else {
-			$link_pre = $link_post = '';
-			$show = $fText;
+			$link_pre = '';
+			//set show empty, we get it when we query the parent
+			$show = '';
 		}
-		if($max){
-			$show = cutText($show, $max);
-		}
-		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
-		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
+		//for multidomains we stop if we find a "document root"
+		list($pID, $realPID, $folderName) = getHash('SELECT IF(urlMap,0,ParentID),ParentID,Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), null, MYSQL_NUM);
+		//if no name is given, take the folder name
+		$show = $show ?: $folderName;
+
+		$cutted = ($max ? cutText($show, $max) : $show);
+
+		$path = (!$pID && $hidehome ? '' : $sep) .
+			$link_pre .
+			($oldHtmlspecialchars ? oldHtmlspecialchars($cutted) : $cutted) .
+			($link_pre ? '</a>' : '') . $path;
 	}
 
 	if($hidehome){
 		return $path;
 	}
 
-	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ' . $q . ' AND Published>0 LIMIT 1', null);
-	$fileID = $hash ? $hash['ID'] : 0;
-	$filePath = ($hash ? $hash['Path'] : '');
 
-	if($fileID){
-		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
-		if(!$show){
-			$show = $home;
-		}
-		$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
-		$link_post = '</a>';
-	} else {
-		$link_pre = $link_post = '';
-		$show = $home;
-	}
-	if($max){
-		$show = cutText($show, $max);
-	}
+	list($fileID, $filePath, $show) = getHash('SELECT
+	f.ID,
+	f.Path,
+	c.Dat
+FROM ' .
+			FILE_TABLE . ' f LEFT JOIN ' .
+			LINK_TABLE . ' l ON (l.DID=f.ID AND l.DocumentTable="tblFile" AND l.nHash=x\'' . $mf . '\') LEFT JOIN ' .
+			CONTENT_TABLE . ' c ON c.ID=l.CID
+WHERE
+	f.ParentID=' . $realPID . ' AND
+	f.IsFolder=0 AND
+	f.Text IN (' . $q . ') AND
+	f.Published>0 LIMIT 1', null, MYSQL_NUM) ?: array(0, '');
 
-	return $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
+	$show = $show ?: $home;
+	$link_pre = ($fileID ? '<a href="' . $filePath . '"' . $class . $style . '>' : '');
+
+	$cutted = ($max ? cutText($show, $max) : $show);
+
+	return $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($cutted) : $cutted) . ($link_pre ? '</a>' : '') . $path;
 }
