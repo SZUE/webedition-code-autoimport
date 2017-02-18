@@ -206,7 +206,7 @@ class we_navigation_item{
 					(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
 					rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
 					'');
-			if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri) !== false)){
+            if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
 				static $uri = null;
 				static $uriarrq = [];
 				$refarrq = [];
@@ -248,7 +248,7 @@ class we_navigation_item{
 				return $allfound;
 			}
 
-			if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (stripos($this->href, $cleanRequestUri) !== false)){
+            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
 				$this->setCurrent($weNavigationItems);
 				return true;
 			}
