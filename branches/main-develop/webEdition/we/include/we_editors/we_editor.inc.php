@@ -364,7 +364,7 @@ function doUnpublish($we_doc, $we_transaction){
 //	When unpublishing a document stay where u are.
 //	uncomment the following line to switch to preview page.
 		$GLOBALS['we_responseJS'][] = ['reload_editfooter',$we_transaction];
-		$jsCmd->add('setEditorDocumentId', $we_doc->ID);
+		$jsCmd->addCmd('setEditorDocumentId', $we_doc->ID);
 		$we_doc->getUpdateTreeScript(true, $jsCmd); // save/ rename a document
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);

@@ -106,8 +106,10 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 				for (i = 0; i < editorSave.we_responseJS.length; i++) {
 					we_cmd.apply(window, editorSave.we_responseJS[i]);
 				}
-				for (i = 0; i < editorSave.we_cmd5.length; i++) {
-					we_cmd.apply(window, editorSave.we_cmd5[i]);
+				if (editorSave.we_cmd5) {
+					for (i = 0; i < editorSave.we_cmd5.length; i++) {
+						we_cmd.apply(window, editorSave.we_cmd5[i]);
+					}
 				}
 			}
 			if (isEditInclude) {
