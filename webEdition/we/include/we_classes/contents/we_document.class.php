@@ -1455,16 +1455,9 @@ class we_document extends we_root{
 		$charsets[''] = '';
 		asort($charsets);
 
-		$name = 'Charset';
-
-		$inputName = 'we_' . $this->Name . "_txt[$name]";
-
-
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . we_html_tools::htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, [
-				"onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');",
-				"onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"], "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_txt[Charset]', $charsets, 1, $value, false, [ "onchange" => "_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_editpage');"], 'value') . '</td></tr>' .
 			'</table>';
 	}
 
