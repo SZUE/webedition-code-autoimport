@@ -109,7 +109,7 @@ function we_tag_form(array $attribs){
 			break;
 		case 'object' :
 		case 'document' :
-			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START']))){
+			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START'])) && isset($_SESSION)){
                 unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
 			}
 
@@ -227,7 +227,7 @@ function we_tag_form(array $attribs){
 			$formAttribs['action'] = $we_form_action;
 
 
-			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+			if(empty($GLOBALS['we_editmode'])){
 				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
 			}
 	}
