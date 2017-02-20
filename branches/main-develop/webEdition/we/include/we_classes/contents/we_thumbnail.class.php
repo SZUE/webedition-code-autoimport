@@ -44,6 +44,9 @@ class we_thumbnail{
 	const OPTION_GRAY = 'Gray';
 	const OPTION_SEPIA = 'Sepia';
 	const OPTION_DEFAULT = 'default';
+	const FORMAT_PNG = 'png';
+	const FORMAT_JPG = 'jpg';
+	const FORMAT_GIF = 'GIF';
 
 	/**
 	 * ID of the thumbnail

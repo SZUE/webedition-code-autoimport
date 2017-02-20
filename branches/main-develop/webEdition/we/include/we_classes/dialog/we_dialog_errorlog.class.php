@@ -243,7 +243,7 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 		];
 
 		echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js'
-			) . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '	<div id="info" style="display: block;">' .
+			) . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '<div id="info" style="display: block;">' .
 				we_html_element::htmlDiv(['style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'], $size && $data ? self::getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
 				we_html_element::htmlDiv(['style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'], we_html_multiIconBox::getHTML('', $parts, 30, $buttons)) . '
 	</div>

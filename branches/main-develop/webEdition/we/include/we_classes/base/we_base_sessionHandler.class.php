@@ -24,7 +24,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			$this->DB = new DB_WE();
 			$this->execTime = intval(get_cfg_var('max_execution_time'));
 			$this->execTime = max(min(60, $this->execTime), 5); //time might be wrong (1&1); make exectime at least 5 seconds which is quite small
-			$this->id = uniqid('', true);
+			$this->id = md5(uniqid('', true));
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
 				$key = $_SERVER['DOCUMENT_ROOT'] . (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
 				if(SYSTEM_WE_SESSION_CRYPT === 2){
@@ -60,7 +60,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 
 	public function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
 		$sessID = $this->DB->escape(self::getSessionID(session_id()));
-		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid=NULL,lockTime=NULL WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND lockid=x\'' . $this->id . '\'');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
 		return true;
@@ -72,7 +72,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		if(f('SELECT 1 FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"')){//session exists
 			$max = $this->execTime * 10;
 			while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" ' . ( --$max ? 'AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()' : ''), '', $this->DB)) &&
-			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
+			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid=x\'' . $this->id . '\',lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND (lockid IS NULL OR lockid=x\'' . $this->id . '\' OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
 			$this->DB->affected_rows()
 			) && $data){
 				if($max){
@@ -85,7 +85,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			if(!$max){
 				$this->releaseError = getHash('SELECT sessionName,session_id,lockTime,lockid,touch,NOW() FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//set this session our session
-				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid=x\'' . $this->id . '\',lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//we need this construct, since the session is not restored now, so we don't have mich debug data
 			}
 			self::$acquireLock = microtime(true) - $lock;
@@ -114,7 +114,8 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		$sessID = self::getSessionID($sessID);
 		if(md5($sessID . $sessData, true) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
-				we_database_base::arraySetter(['lockid' => $lock ? $this->id : '',
+				we_database_base::arraySetter([
+					'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
 					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 					]) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
@@ -128,7 +129,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(['sessionName' => $this->sessionName,
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'lockid' => $lock ? $this->id : '',
+				'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 				]));
 		return true;

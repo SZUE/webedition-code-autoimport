@@ -95,7 +95,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 	} else {
 		switch($settingname){
 			case 'Format':
-				$setArray[$settingname] = 'jpg';
+				$setArray[$settingname] = we_thumbnail::FORMAT_JPG;
 				break;
 			default:
 				$setArray[$settingname] = 0;
@@ -263,7 +263,7 @@ function build_dialog($selected_setting = 'ui'){
 			$thumbnail_format = ($id != -1) ? $allData['Format'] : -1;
 
 			// Define available formats
-			$thumbnails_formats = ['none' => g_l('thumbnails', '[format_original]'), 'gif' => g_l('thumbnails', '[format_gif]'), 'jpg' => g_l('thumbnails', '[format_jpg]'), 'png' => g_l('thumbnails', '[format_png]')];
+			$thumbnails_formats = ['none' => g_l('thumbnails', '[format_original]'), we_thumbnail::FORMAT_GIF => g_l('thumbnails', '[format_gif]'), we_thumbnail::FORMAT_JPG => g_l('thumbnails', '[format_jpg]'), we_thumbnail::FORMAT_PNG => g_l('thumbnails', '[format_png]')];
 			$thumbnail_format_select_attribs = ['name' => 'Format', 'id' => 'Format', 'class' => 'weSelect', 'style' => 'width: 225px;', 'onchange' => 'changeFormat()'];
 
 			if($id == -1){

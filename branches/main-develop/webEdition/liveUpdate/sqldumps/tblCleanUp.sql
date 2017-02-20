@@ -2,9 +2,9 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblCleanUp (
-  Path char(255) NOT NULL default '',
+  Path varchar(1024) NOT NULL default '',
   `Date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (Path),
+  PRIMARY KEY (Path),
   KEY `Date` (`Date`)
 ) ENGINE=MyISAM;
 

@@ -1,13 +1,13 @@
 CREATE TABLE ###TBLPREFIX###tblthumbnails (
   ID int unsigned NOT NULL auto_increment,
-  Name varchar(255) NOT NULL default '',
-  `Date` int unsigned NOT NULL default '0',
-  Format char(3) NOT NULL default '',
+  Name varchar(255) NOT NULL DEFAULT '',
+  `Date` int unsigned NOT NULL DEFAULT '0',
+  Format ENUM('','jpg','png','gif') NOT NULL DEFAULT '',
   Height smallint unsigned default NULL,
   Width smallint unsigned default NULL,
-	`Options` set('Ratio','Maxsize','Interlace','Fitinside','Crop','Unsharp','GaussBlur','Negate','Gray','Sepia') COLLATE latin1_german1_ci NOT NULL DEFAULT 'Unsharp',
+	`Options` set('Ratio','Maxsize','Interlace','Fitinside','Crop','Unsharp','GaussBlur','Negate','Gray','Sepia') NOT NULL DEFAULT 'Unsharp',
 	description tinytext NOT NULL,
-  `Directory` varchar(1024) NOT NULL default '',
+  `Directory` varchar(1024) NOT NULL DEFAULT '',
   `Quality` tinyint unsigned NOT NULL DEFAULT  '8',
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
