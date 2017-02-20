@@ -62,8 +62,10 @@ function we_tag_write(array $attribs){
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
 	$language = weTag_getAttribute('language', $attribs, -1, we_base_request::STRING);
 
-	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
-
+	if(!we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
+		$GLOBALS['ERROR']['write'][$type][$name] = 9;
+		return;
+	}
 		switch($type){
 			case 'document':
 				$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
@@ -243,7 +245,7 @@ function we_tag_write(array $attribs){
 			$phpmail->buildMessage();
 			$phpmail->Send();
 		}
-	}
+
 	if(!empty($GLOBALS['WE_SESSION_START'])){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
 	}
