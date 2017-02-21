@@ -85,13 +85,13 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	}
 
 	function get(we_base_jsCmd $jsCmd){
-		$out = '<table class="default" style="height:18px;width:' . abs($this->width - 10) . 'px;" id="' . $this->rowPrefix . 'CatTable">' .
+		$out = '<table class="default" style="height:18px;width: 100%;" id="' . $this->rowPrefix . 'CatTable">' .
 			$this->getTableRows() .
 			'</table>';
 		$jsCmd->addCmd('setIconOfDocClass', 'chooserFileIcon');
-		
-		return '<table class="default" style="width:' . $this->width . 'px;">
-<tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>
+
+		return '<table class="default">
+<tr><td><div style="background-color:white;" class="multichooser"'.($this->width?' style="width:' . $this->width . 'px"':'').'>' . $out . '</div></td></tr>
 ' . ($this->addbut ? ('<tr><td style="text-align:right;padding-top:2px;">' . $this->addbut . '</td></tr>') : '') . '</table>';
 	}
 

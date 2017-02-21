@@ -267,10 +267,10 @@ class we_binaryDocument extends we_document{
 
 				switch($type){
 					case 'textarea':
-						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px']);
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:500px;height:150px;border: #AAAAAA solid 1px']);
 						break;
 					case 'wysiwyg':
-						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px']);
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:500px;height:150px;border: #AAAAAA solid 1px']);
 						break;
 					case 'date':
 						$inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $tagName . ']', abs($this->getElement($tagName)), true), $tagName);

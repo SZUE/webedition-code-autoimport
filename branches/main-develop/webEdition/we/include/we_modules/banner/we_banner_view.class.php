@@ -644,7 +644,7 @@ class we_banner_view extends we_modules_view{
 	private function formCustomer(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer','','','',1)");
-		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "setHot", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
+		$obj = new we_chooser_multiDir(500, $this->banner->Customers, "setHot", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 		return $obj->get($jsCmd);
 	}
 

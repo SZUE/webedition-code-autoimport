@@ -1288,7 +1288,7 @@ class we_object extends we_document{
 
 		$jsCmd->addCmd('setIconOfDocClass', 'userIcon');
 		return '<table class="default"><tr><td>' .
-			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
+			'<div class="multichooser">' . $content . '</div></td></tr><tr><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 	}
 
 	private function formUsers(we_base_jsCmd $jsCmd, $canChange = true){
@@ -1578,7 +1578,7 @@ $jsCmd->addCmd('setIconOfDocClass', 'userIcon');
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		return '<table class="default">
-	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="pathOfDocumentChanged(true);"') . '</td><td></td><td></td></tr>
+	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 0, 255, 'onchange="pathOfDocumentChanged(true);"') . '</td><td></td><td></td></tr>
 </table>';
 	}
 
