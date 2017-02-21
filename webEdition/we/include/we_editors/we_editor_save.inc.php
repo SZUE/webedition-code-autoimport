@@ -22,5 +22,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: move to .class file
-we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
 ]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
