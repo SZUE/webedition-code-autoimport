@@ -132,13 +132,13 @@ class we_document extends we_root{
 	 * Form Functions
 	 */
 
-	function formInGlossar(){
+	protected function formInGlossar(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) ?
 			we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 			'');
 	}
 
-	function formIsSearchable(){
+	protected function formIsSearchable(){
 		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
@@ -178,7 +178,7 @@ class we_document extends we_root{
 	protected function formCategory(we_base_jsCmd $jsCmd){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('delete_all_cats')", '', 0, 0, '', '', $this->Category ? false : true);
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
-		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(0, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"we/category"', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get($jsCmd);
 	}
@@ -193,7 +193,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', we_base_ContentTypes::FOLDER, 'we/navigation');
+		$navis = new we_chooser_multiFile(0, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', we_base_ContentTypes::FOLDER, 'we/navigation');
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $path){
@@ -1412,7 +1412,7 @@ class we_document extends we_root{
 		if(empty($props) || $props['mode'] === 'none' /* || !$values */ || $props['type'] !== 'textfield'){
 			$name = in_array($field, explode(',', we_metadata_metaData::STANDARD_FIELDS)) ? g_l('weClass', '[' . $field . ']') : $field;
 
-			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange="_EditorFrame.setEditorIsHot(true);"');
+			return $this->formInputField('txt', $field, $name, 40, 0, '', 'onchange="_EditorFrame.setEditorIsHot(true);"');
 		}
 
 		$leading = $props['csv'] ? '-- ' . g_l('buttons_global', '[add][value]') . ' -- ' : '-- ' . g_l('buttons_global', '[select][value]') . ' --';

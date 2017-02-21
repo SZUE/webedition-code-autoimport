@@ -214,7 +214,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					<td class="defaultfont">&nbsp;</td>
 					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
-				<tr><td>' . $this->formInGlossar(100) . '</td></tr>
+				<tr><td>' . $this->formInGlossar() . '</td></tr>
 			</table></td>
 	</tr></table>';
 	}

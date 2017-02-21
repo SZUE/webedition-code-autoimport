@@ -96,7 +96,8 @@ switch($cmd0){
 		$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID]; // save/ rename a document
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::TEMPLATE:
-				if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8)){
+				$doAutomaticRebuild = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8));
+				if($doAutomaticRebuild){
 // if  we_cmd[8] is set, it means that 'automatic rebuild' was clicked
 // so we need to check we_cmd[3] (means save immediately) and we_cmd[4] (means rebuild immediately)
 					$_REQUEST['we_cmd'][3] = 1;

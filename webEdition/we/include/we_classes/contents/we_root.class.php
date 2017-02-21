@@ -351,7 +351,7 @@ abstract class we_root extends we_class{
 		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, $button);
 	}
 
-	function formRestrictOwners($canChange){
+	private function formRestrictOwners($canChange){
 		if($canChange){
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
@@ -364,7 +364,7 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
-		$content = '<table class="default" style="width:370px;margin:2px 0px;">
+		$content = '<table class="default" style="margin:2px 0px;">
 <colgroup><col style="width:20px;"/><col style="width:351px;"/><col style="width:100px;"/><col style="width:26px;"/></colgroup>';
 		if($owners){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
@@ -392,7 +392,7 @@ abstract class we_root extends we_class{
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
 
-	function formCreatorOwners(we_base_jsCmd $jsCmd){
+	protected function formCreatorOwners(we_base_jsCmd $jsCmd){
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table class="default">

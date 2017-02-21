@@ -508,7 +508,7 @@ class we_objectFile extends we_document{
 </table>';
 	}
 
-	public function formIsSearchable(){
+	protected function formIsSearchable(){
 		return we_html_forms::checkboxWithHidden($this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
