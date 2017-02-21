@@ -154,9 +154,9 @@ if($doctable){
 	$where[] = 'h.DocumentTable IN(' . implode(',', $doctable) . ')';
 }
 
-if($mode == we_base_constants::MODE_SEE){
-	$where[] = ' ContentType!="' . we_base_ContentTypes::FOLDER . '" ';
-}
+/*if($mode == we_base_constants::MODE_SEE){
+	$where[] = ' f.ContentType!="' . we_base_ContentTypes::FOLDER . '" ';
+}*/
 
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
