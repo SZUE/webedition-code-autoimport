@@ -74,6 +74,7 @@ we_cmd_modules.object = function (args, url, caller) {
 		case "object_remove_image_at_class":
 		case "object_delete_link_at_class":
 		case "object_change_multiobject_at_class":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			WE().util.we_sbmtFrm(top.load, url);
 			break;
 		case "object_change_link_at_object":
@@ -99,6 +100,7 @@ we_cmd_modules.object = function (args, url, caller) {
 		case "object_delete_meta_at_object":
 		case "object_reload_entry_at_object":
 		case "object_delete_link_at_object":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			url += "#f" + (parseInt(args[1]) - 1);
 			WE().util.we_sbmtFrm(top.load, url);
 			break;
