@@ -112,7 +112,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this). '&what=$what&rootDirID=' . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
+		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this). '&what='.$what.'&rootDirID=' . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function getFramsetJSFile(){

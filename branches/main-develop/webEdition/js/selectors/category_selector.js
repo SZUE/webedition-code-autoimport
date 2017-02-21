@@ -261,7 +261,7 @@ function queryString(what, id, o, we_editCatID) {
 	if (!o) {
 		o = top.fileSelect.data.order;
 	}
-	return top.fileSelect.options.formtarget + 'what=' + what + '&rootDirID=' + top.fileSelect.options.rootDirID + '&table=' + top.fileSelect.options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
+	return top.fileSelect.options.formtarget + '&what=' + what + '&rootDirID=' + top.fileSelect.options.rootDirID + '&table=' + top.fileSelect.options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }
 
 function weonclick(e) {
