@@ -591,7 +591,7 @@ class we_objectFile extends we_document{
 		return $tableInfo2;
 	}
 
-	function getFieldHTML(we_base_jsCmd $jsCmd, $name, $type, array $attribs, $editable = true, $variant = false){
+	function getFieldHTML($name, $type, array $attribs, $editable = true, $variant = false){
 		switch($type){
 			case self::TYPE_INPUT:
 				return $this->getInputFieldHTML($type, $name, $attribs, $editable, $variant);
