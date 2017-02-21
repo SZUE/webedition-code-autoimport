@@ -255,18 +255,23 @@ abstract class we_editor_functions{
 		include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
 						'' : WE_INCLUDES_PATH) .
 				$we_include);
-		$contents = ob_get_clean();
+		$docContents = ob_get_clean();
 		//usedElementNames is set after include
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 //  SEEM the file
 //  but only, if we are not in the template-editor
-		if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE){
-			$contents = we_SEEM::parseDocument($contents);
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::TEMPLATE:
+				$contents = $docContents;
+				break;
+			default:
+				$contents = we_SEEM::parseDocument($docContents);
 
-			$contents = (strpos($contents, '</head>') ?
-					str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
-					$insertReloadFooter . $contents);
+				$contents = (strpos($contents, '</head>') ?
+						str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
+						$insertReloadFooter . $contents);
 		}
+
 		switch($we_doc->Extension){
 			case '.js':
 			case '.css':
@@ -285,18 +290,18 @@ abstract class we_editor_functions{
 		ob_start();
 		//FIXME: eval, document was included, what needs to evaluated
 		eval('?>' . str_replace('<?xml', '<?= \'<?xml\'; ?>', $contents));
-		$contents = ob_get_clean();
+		$evaled = ob_get_clean();
 //
 // --> Glossary Replacement
 //
 
-		if(defined('GLOSSARY_TABLE') && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && isset($we_doc->InGlossar) && $we_doc->InGlossar == 0){
-			$contents = we_glossary_replace::replace($contents, $we_doc->Language);
-		}
+		$glossarHTML = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) ?
+				we_glossary_replace::replace($evaled, $we_doc->Language) :
+				$evaled);
 
 		if(!empty($GLOBALS['we_editmode'])){
 			$matches = [];
-			preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
+			preg_match_all('|<form( name="we_form")|i', $glossarHTML, $matches, PREG_PATTERN_ORDER);
 			if($matches && !empty($matches[0])){
 				//find the number of we-forms
 				$all = count($matches[0]);
@@ -305,16 +310,14 @@ abstract class we_editor_functions{
 					//sth very bad must have happend to have 2 we forms in one page
 					$warn = $no . ' ' . g_l('parser', '[form][we]');
 					t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-					$contents = preg_replace('|<form|', '<p class="bold" style="background-color:red;color:white;">' . htmlentities($warn) . '</p><form', $contents, 1);
 				}
 				if($all - $no){
 					$warn = $no . ' ' . g_l('parser', '[form][duplicate]');
 					t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-					$contents = preg_replace('|<form|', '<p class="bold" style="background-color:red;color:white;">' . htmlentities($warn) . '</p><form', $contents, 1);
 				}
 			}
 		}
-		we_base_file::save($fullName, $contents);
+		we_base_file::save($fullName, $glossarHTML);
 
 		header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . (empty($GLOBALS['CHARSET']) ? DEFAULT_CHARSET : $GLOBALS['CHARSET']) . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
 	}
@@ -520,17 +523,18 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 						break;
 					}
 				default:
-					$tmpCntnt = we_SEEM::parseDocument($contents);
+					$tmpCnt = we_SEEM::parseDocument($contents);
 
 // insert $reloadFooter at right place
-					$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCntnt) :
-							$insertReloadFooter . $tmpCntnt;
+					$tmpCntHTML = (strpos($tmpCnt, '</head>')) ?
+							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCnt) :
+							$insertReloadFooter . $tmpCnt;
 
 // --> Start Glossary Replacement
 
 					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && we_glossary_replace::useAutomatic());
-					echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
+
+					echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntHTML, $GLOBALS['we_doc']->Language) : $tmpCntHTML);
 			}
 		} else {
 //  These files were edited only in source-code mode, so no seeMode is needed.
