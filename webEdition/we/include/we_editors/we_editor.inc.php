@@ -37,7 +37,8 @@ $we_doc = we_document::initDoc(isset($_SESSION['weS']['we_data'][$we_transaction
 
 $wasNew = false;
 $GLOBALS['we_responseJS'] = [];
-$insertReloadFooter = we_editor_functions::processEditorCmd($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
+$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+$insertReloadFooter = we_editor_functions::processEditorCmd($we_doc, $cmd0);
 
 //	if document is locked - only Preview mode is possible. otherwise show warning.
 we_editor_functions::documentLocking($we_doc);
@@ -50,7 +51,7 @@ we_editor_functions::documentLocking($we_doc);
  * We need to do this, because, when the pages has for example jsp. content, it will be parsed right!
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
-$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+
 if(
 		(
 		$cmd0 != 'save_document' &&
@@ -81,7 +82,7 @@ $we_JavaScript = [];
 
 $showAlert = $isClose = $wasSaved = $saveTemplate = false;
 
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+switch($cmd0){
 	case 'save_document':
 		if(!$we_doc->ContentType){
 			exit(' ContentType Missing !!! ');
