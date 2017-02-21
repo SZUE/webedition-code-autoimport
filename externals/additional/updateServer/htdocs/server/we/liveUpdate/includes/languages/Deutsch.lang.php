@@ -1,4 +1,5 @@
 <?php
+
 $lang['license']['undefinedError'] = 'Undefinierter Fehler';
 
 $lang['upgrade']['headline'] = 'Upgrade von webEdition';
@@ -47,88 +48,91 @@ $lang['upgrade']['notepad_headline'] = 'Willkommen bei webEdition';
 //$lang['upgrade']['notepad_text'] = 'Das Cockpit ist eine der Neuerungen in Version 5. Sie k&ouml;nnen im Cockpit-Men&uuml; verschiedene Widgets ausw&auml;hlen. Jedes Widget ist &uuml;ber die obere Leiste Eigenschaften konfigurierbar und kann frei positioniert werden.';
 $lang['upgrade']['notepad_text'] = '';
 
-$lang['update']['headline'] = 'Update';
-$lang['update']['nightly'] = 'nightly Build';
-$lang['update']['nightly-build'] = 'nightly Build';
-$lang['update']['alpha'] = 'Alpha';
-$lang['update']['beta'] = 'Beta';
-$lang['update']['rc'] = 'RC';
-$lang['update']['release'] = 'offizieller Release';
-$lang["update"]['retired'] = '=&gt; zur&uuml;ckgezogener Release!';
-$lang['update']['installedVersion'] = 'Momentan installierte Version';
-$lang['update']['newestVersionSameBranch'] = '<br/>Neueste Version aus dem selben Entwicklungszweig';
-$lang['update']['newestVersion'] = '<br/>Aktuellste verf&uuml;gbare Version';
-$lang['update']['updateAvailableText'] = 'Ihre installierte Version ist nicht mehr auf dem neuesten Stand. Bitte w&auml;hlen Sie aus der Liste die Version aus, die Sie installieren wollen.';
-$lang['update']['updatetoVersion'] = 'Update auf Version:';
-$lang['update']['suggestCurrentVersion'] = 'Wir empfehlen Ihnen, immer die aktuellste webEdition Version zu verwenden.';
-$lang['update']['noUpdateNeeded'] = 'Derzeit ist kein Update verf&uuml;gbar. Sie haben bereits die aktuellste Version installiert.';
-$lang['update']['repeatUpdatePossible'] = 'Wenn Sie m&ouml;chten, k&ouml;nnen Sie eine Update-Wiederholung durchf&uuml;hren. Dabei werden alle webEdition Programmdateien neu eingespielt.<br />Achtung, dieser Vorgang kann unter Umst&auml;nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml;tigt.</b>';
-$lang['update']['repeatUpdateNeeded'] = '<b>Bevor Sie auf die neue Version updaten k&ouml;nnen, m&uuml;ssen Sie eine Updatewiederholung Ihrer jetzigen Version durchf&uuml;hren</b>, da Ihre SVN-Revision niedriger ist als die in der Datenbank f&uuml;r Ihre Version hinterlegte. <br />Achtung, dieser Vorgang kann unter Umst&auml;nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml;tigt.</b>';
-$lang['update']['repeatUpdateNotPossible'] = 'Die installierte Version ist neuer als die f&uuml;r Updates verf&uuml;gbare Version. <b>Eine Update-Wiederholung daher nicht m&ouml;glich.</b> Falls Sie nightly Builds bzw. Alpha, Beta oder RCs updaten wollen, so aktivieren Sie bitte die entsprechende Option im Reiter "Pre-Release Versionen"';
-$lang['update']['noUpdateForLanguagesText'] = 'Sie haben die Version %s installiert. Momentan ist kein Update m&ouml;glich, da nicht f&uuml;r alle installierten Sprachen ein Update vorliegt.';
-$lang['update']['installedLanguages'] = 'Folgende Sprachen sind auf Ihrem System installiert';
-$lang['update']['updatePreventingLanguages'] = 'Folgende Sprachen verhindern ein Update:';
-$lang['update']['confirmUpdateText'] = 'Sie haben derzeit Version&nbsp;%s installiert und m&ouml;chten ein Update zur Version&nbsp;%s durchf&uuml;hren.';
-$lang['update']['confirmUpdateSysReqNoCheck'] = '<b>Achtung</b><br/>Die Systemvoraussetzungen k&ouml;nnen bei einem Update von Version %s nicht &uuml;berpr&uuml;ft werden.';
-$lang['update']['confirmUpdateVersionDetails'] = 'Details zu den einzelnen Versionen entnehmen Sie bitte der <a target="_blank" href="http://www.webedition.org/de/dokumentation-community/versionshistorie/">Versionshistorie</a>.';
-$lang['update']['confirmRepeatUpdateText'] = 'Sie haben momentan Version&nbsp;%s installiert und m&ouml;chten diese Version erneut einspielen. ';
-$lang['update']['confirmRepeatUpdateMessage'] = 'Bei einer Update Wiederholung werden alle webEdition Programmdateien durch die Original webEdition Dateien ersetzt. Dieser Vorgang kann unter Umst&auml;nden einige Zeit in Anspruch nehmen.';
-$lang['update']['finished'] = 'Update abgeschlossen';
-$lang['update']['spenden'] = 'Diese webEdition Version wurde erm&ouml;glicht durch die Arbeit des gemeinn&uuml;tzigen webEdition e.V. Unterst&uuml;tzen Sie die kostenlose und freiwillige Arbeit der der Vereins- und Community-Mitglieder.
-<br>Erm&ouml;glichen Sie durch Ihre Spende, dass:<ul>
+$lang['update'] = [
+	'headline' => 'Update',
+	'nightly' => 'nightly Build',
+	'nightly-build' => 'nightly Build',
+	'alpha' => 'Alpha',
+	'beta' => 'Beta',
+	'rc' => 'RC',
+	'release' => 'offizieller Release',
+	'retired' => '=&gt, zur&uuml,ckgezogener Release!',
+	'installedVersion' => 'Momentan installierte Version',
+	'newestVersionSameBranch' => '<br/>Neueste Version aus dem selben Entwicklungszweig',
+	'newestVersion' => '<br/>Aktuellste verf&uuml,gbare Version',
+	'updateAvailableText' => 'Ihre installierte Version ist nicht mehr auf dem neuesten Stand. Bitte w&auml,hlen Sie aus der Liste die Version aus, die Sie installieren wollen.',
+	'updatetoVersion' => 'Update auf Version:',
+	'suggestCurrentVersion' => 'Wir empfehlen Ihnen, immer die aktuellste webEdition Version zu verwenden.',
+	'noUpdateNeeded' => 'Derzeit ist kein Update verf&uuml,gbar. Sie haben bereits die aktuellste Version installiert.',
+	'repeatUpdatePossible' => 'Wenn Sie m&ouml,chten, k&ouml,nnen Sie eine Update-Wiederholung durchf&uuml,hren. Dabei werden alle webEdition Programmdateien neu eingespielt.<br />Achtung, dieser Vorgang kann unter Umst&auml,nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml,tigt.</b>',
+	'repeatUpdateNeeded' => '<b>Bevor Sie auf die neue Version updaten k&ouml,nnen, m&uuml,ssen Sie eine Updatewiederholung Ihrer jetzigen Version durchf&uuml,hren</b>, da Ihre SVN-Revision niedriger ist als die in der Datenbank f&uuml,r Ihre Version hinterlegte. <br />Achtung, dieser Vorgang kann unter Umst&auml,nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml,tigt.</b>',
+	'repeatUpdateNotPossible' => 'Die installierte Version ist neuer als die f&uuml,r Updates verf&uuml,gbare Version. <b>Eine Update-Wiederholung daher nicht m&ouml,glich.</b> Falls Sie nightly Builds bzw. Alpha, Beta oder RCs updaten wollen, so aktivieren Sie bitte die entsprechende Option im Reiter "Pre-Release Versionen"',
+	'noUpdateForLanguagesText' => 'Sie haben die Version %s installiert. Momentan ist kein Update m&ouml,glich, da nicht f&uuml,r alle installierten Sprachen ein Update vorliegt.',
+	'installedLanguages' => 'Folgende Sprachen sind auf Ihrem System installiert',
+	'updatePreventingLanguages' => 'Folgende Sprachen verhindern ein Update:',
+	//FIXME: lang
+	'confirmMainDevel' => 'Sie wollen gerade eine webEdition Version installieren, die ausschliesslich fuer Entwickler gedacht ist. Haeufig sind hier Funktionen nicht vollstaendig. Wollen Sie wirklich auf diese Version updaten?',
+	'confirmUpdateText' => 'Sie haben derzeit Version&nbsp,%s installiert und m&ouml,chten ein Update zur Version&nbsp,%s durchf&uuml,hren.',
+	'confirmUpdateSysReqNoCheck' => '<b>Achtung</b><br/>Die Systemvoraussetzungen k&ouml,nnen bei einem Update von Version %s nicht &uuml,berpr&uuml,ft werden.',
+	'confirmUpdateVersionDetails' => 'Details zu den einzelnen Versionen entnehmen Sie bitte der <a target="_blank" href="http://www.webedition.org/de/dokumentation-community/versionshistorie/">Versionshistorie</a>.',
+	'confirmRepeatUpdateText' => 'Sie haben momentan Version&nbsp,%s installiert und m&ouml,chten diese Version erneut einspielen. ',
+	'confirmRepeatUpdateMessage' => 'Bei einer Update Wiederholung werden alle webEdition Programmdateien durch die Original webEdition Dateien ersetzt. Dieser Vorgang kann unter Umst&auml,nden einige Zeit in Anspruch nehmen.',
+	'finished' => 'Update abgeschlossen',
+	'spenden' => 'Diese webEdition Version wurde erm&ouml,glicht durch die Arbeit des gemeinn&uuml,tzigen webEdition e.V. Unterst&uuml,tzen Sie die kostenlose und freiwillige Arbeit der der Vereins- und Community-Mitglieder.
+<br>Erm&ouml,glichen Sie durch Ihre Spende, dass:<ul>
 <li>der webEdition e.V. professionelle Entwickler einstellen kann</li>
 <li>die Beseitigung von Fehlern sowie die Entwicklung<br>
 neuer Features beschleunigt wird</li>
 <li>die Weiterentwicklung von webEdition langfristig<br>
-gesichert wird</li></ul>';
+gesichert wird</li></ul>',
+	'confirmUpdateWarning6300' => 'Die webEdition Version 6.3.x f&uuml,hrt grundlegende Neuerungen in der webEdition Infrastruktur ein. Dabei kann es durchaus zu Problemen nach einem Update kommen. Beachten Sie unbedingt diese <a href="http://www.webedition.org/de/dokumentation-community/versionshistorie/version-6.3.0.0" target="_blank">Hinweise zu Version 6.3.x</a>. Installieren Sie bitte immer die letzte verf&uuml,gbare Version dieser Serie.<br><b>Wichtig:</b><br>Nach dem Update sollte die Spracheinstellungen jedes einzelnen Backend-Users in der Benutzerverwaltung &uuml,berpr&uuml,ft werden:<br>1. Schritt: Men&uuml, Extras-> Einstellungen->Allgemein, pr&uuml,fen und setzen Sie Backend Sprache und Backend Zeichensatz, speichern!<br>2. Schritt Benutzerverwaltung, je User: Tab "Einstellungen, dort "Oberfl&auml,che", pr&uuml,fen und setzten von Backend Sprache und Backend Zeichensatz.',
+	'ReqWarnung' => 'Warnung!',
+	'ReqWarnungText' => 'Ihr System erf&uuml,llt nicht alle Softwarevoraussetzungen:',
+	'ReqWarnungKritisch' => 'Update blockierend: ',
+	'ReqWarnungHinweis' => 'Hinweis: ',
+	'ReqWarnungPCREold1' => 'Ihre PCRE-Version (',
+	'ReqWarnungPCREold2' => ') ist veraltet. Dies kann zu Problemen f&uuml,hren.',
+	'ReqWarnungPHPextension' => 'Eine notwendige PHP-Extension fehlt auf Ihrem Server, es fehlt: ',
+	'ReqWarnungPHPextensionND' => 'Die notwendigen PHP-Extensions k&ouml,nnen nicht &uuml,berpr&uuml,ft werden ',
+	'ReqWarnungNoCheck' => 'Die Erf&uuml,llung der aktuellen Systemvoraussetzungen auf Ihrem Server kann nicht &uuml,berpr&uuml,ft werden. Bitte pr&uuml,fen Sie die Systemvoraussetzungen unter <a href="http://www.webedition.org/de/dokumentation-community/systemvoraussetzungen.php" target="_blank">Systemvoraussetzungen</a><br/>Wir empfehlen, <b>nach der manuellen Pr&uuml,fung der Systemvoraussetzungen oben,</b> zun&auml,chst auf die <b>Version 6.1.0.2</b> upzudaten, da dort die Voraussetzungen geringer sind und bei einem anschließenden Update auf die aktuelle Version automatisch &uuml,berpr&uuml,ft werden k&ouml,nnen.',
+	'ReqWarnungMySQL4' => 'F&uuml,r die gew&uuml,nschte Version wird mindestens MySQL Version 4.1 ben&ouml,tigt. Die Voraussetzung ist nicht erf&uuml,llt.',
+	'ReqWarnungMySQL5' => 'F&uuml,r die gew&uuml,nschte Version wird mindestens MySQL Version 5.0 ben&ouml,tigt. Die Voraussetzung ist nicht erf&uuml,llt.',
+	'ReqWarnungMySQL55' => 'F&uuml,r die gew&uuml,nschte Version wird mindestens MySQL Version 5.5 ben&ouml,tigt. Die Voraussetzung ist nicht erf&uuml,llt.',
+	'ReqWarnungSDKdb' => 'SDK DB-Operationen und WE-APPS mit Datenbanknutzung sind nicht verf&uuml,gbar, es fehlen die PHP Extensions PDO und PDO_mysql',
+	'ReqWarnungMbstring' => 'MultiByte String Unterst&uuml,tzung (PHP-Extension mbstring) ist nicht verf&uuml,gbar. Damit sind utf-8 Sites nicht realisierbar, SDK und Apps nicht nutzbar und in zuk&uuml,nftigen Versionen die gesamte Funktion von webEdition gef&auml,hrdet.',
+	'ReqWarnungGdlib' => 'Die PHP GDlib-Funktionen (PHP-Extension gd) sind auf diesem Server nicht verf&uuml,gbar, daher sind einige Bildbearbeitungs- und Bildvorschaufunktionen nur eingeschr&auml,nkt nutzbar.',
+	'ReqWarnungExif' => "Die exif PHP Extension ist auf diesem Server nicht verf&uuml,gbar, daher sind EXIF-Metadaten f&uuml,r Bilder nicht nutzbar.",
+	'ReqWarnungPHPversion' => 'Es wird mindestens PHP in der Version 5.2.4 ben&ouml,tigt. Festgestellt wurde Version ',
+	'ReqWarnungPHPversionForV640' => 'F&uuml,r ein Update auf webEdition-Versionen neuer als 6.3.9.0 wird PHP mindestens in der Version 5.3.7 ben&ouml,tigt. Festgestellt wurde Version ',
+];
 
-$lang['update']['confirmUpdateWarning6300'] = 'Die webEdition Version 6.3.x f&uuml;hrt grundlegende Neuerungen in der webEdition Infrastruktur ein. Dabei kann es durchaus zu Problemen nach einem Update kommen. Beachten Sie unbedingt diese <a href="http://www.webedition.org/de/dokumentation-community/versionshistorie/version-6.3.0.0" target="_blank">Hinweise zu Version 6.3.x</a>. Installieren Sie bitte immer die letzte verf&uuml;gbare Version dieser Serie.<br><b>Wichtig:</b><br>Nach dem Update sollte die Spracheinstellungen jedes einzelnen Backend-Users in der Benutzerverwaltung &uuml;berpr&uuml;ft werden:<br>1. Schritt: Men&uuml; Extras-> Einstellungen->Allgemein, pr&uuml;fen und setzen Sie Backend Sprache und Backend Zeichensatz, speichern!<br>2. Schritt Benutzerverwaltung, je User: Tab "Einstellungen, dort "Oberfl&auml;che", pr&uuml;fen und setzten von Backend Sprache und Backend Zeichensatz.';
-
-$lang['update']['ReqWarnung'] = 'Warnung!';
-$lang['update']['ReqWarnungText'] = 'Ihr System erf&uuml;llt nicht alle Softwarevoraussetzungen:';
-$lang['update']['ReqWarnungKritisch'] = 'Update blockierend: ';
-$lang['update']['ReqWarnungHinweis'] = 'Hinweis: ';
-$lang['update']['ReqWarnungPCREold1'] = 'Ihre PCRE-Version (';
-$lang['update']['ReqWarnungPCREold2'] = ') ist veraltet. Dies kann zu Problemen f&uuml;hren.';
-$lang['update']['ReqWarnungPHPextension'] = 'Eine notwendige PHP-Extension fehlt auf Ihrem Server, es fehlt: ';
-$lang['update']['ReqWarnungPHPextensionND'] = 'Die notwendigen PHP-Extensions k&ouml;nnen nicht &uuml;berpr&uuml;ft werden ';
-$lang['update']['ReqWarnungNoCheck'] = 'Die Erf&uuml;llung der aktuellen Systemvoraussetzungen auf Ihrem Server kann nicht &uuml;berpr&uuml;ft werden. Bitte pr&uuml;fen Sie die Systemvoraussetzungen unter <a href="http://www.webedition.org/de/dokumentation-community/systemvoraussetzungen.php" target="_blank">Systemvoraussetzungen</a><br/>Wir empfehlen, <b>nach der manuellen Pr&uuml;fung der Systemvoraussetzungen oben,</b> zun&auml;chst auf die <b>Version 6.1.0.2</b> upzudaten, da dort die Voraussetzungen geringer sind und bei einem anschließenden Update auf die aktuelle Version automatisch &uuml;berpr&uuml;ft werden k&ouml;nnen.';
-$lang['update']['ReqWarnungMySQL4'] = 'F&uuml;r die gew&uuml;nschte Version wird mindestens MySQL Version 4.1 ben&ouml;tigt. Die Voraussetzung ist nicht erf&uuml;llt.';
-$lang['update']['ReqWarnungMySQL5'] = 'F&uuml;r die gew&uuml;nschte Version wird mindestens MySQL Version 5.0 ben&ouml;tigt. Die Voraussetzung ist nicht erf&uuml;llt.';
-$lang['update']['ReqWarnungMySQL55'] = 'F&uuml;r die gew&uuml;nschte Version wird mindestens MySQL Version 5.5 ben&ouml;tigt. Die Voraussetzung ist nicht erf&uuml;llt.';
-$lang['update']['ReqWarnungSDKdb'] = 'SDK DB-Operationen und WE-APPS mit Datenbanknutzung sind nicht verf&uuml;gbar, es fehlen die PHP Extensions PDO und PDO_mysql';
-$lang['update']['ReqWarnungMbstring'] = 'MultiByte String Unterst&uuml;tzung (PHP-Extension mbstring) ist nicht verf&uuml;gbar. Damit sind utf-8 Sites nicht realisierbar, SDK und Apps nicht nutzbar und in zuk&uuml;nftigen Versionen die gesamte Funktion von webEdition gef&auml;hrdet.';
-$lang['update']['ReqWarnungGdlib'] = 'Die PHP GDlib-Funktionen (PHP-Extension gd) sind auf diesem Server nicht verf&uuml;gbar, daher sind einige Bildbearbeitungs- und Bildvorschaufunktionen nur eingeschr&auml;nkt nutzbar.';
-$lang['update']['ReqWarnungExif'] = "Die exif PHP Extension ist auf diesem Server nicht verf&uuml;gbar, daher sind EXIF-Metadaten f&uuml;r Bilder nicht nutzbar.";
-$lang['update']['ReqWarnungPHPversion'] = 'Es wird mindestens PHP in der Version 5.2.4 ben&ouml;tigt. Festgestellt wurde Version ';
-$lang['update']['ReqWarnungPHPversionForV640'] = 'F&uuml;r ein Update auf webEdition-Versionen neuer als 6.3.9.0 wird PHP mindestens in der Version 5.3.7 ben&ouml;tigt. Festgestellt wurde Version ';
-
-$lang['installer']['headline'] = 'Installation wird durchgef&uuml;hrt';
-$lang['installer']['headlineConfirmInstallation'] = 'Installation best&auml;tigen';
-$lang['installer']['confirmInstallation'] = 'ACHTUNG !<br>W&auml;hrend des Update-Vorgangs k&ouml;nnen Daten besch&auml;digt werden. Wenn Sie ohne ein Backup fortfahren besteht die Gefahr, dass Sie Daten verlieren.<br />Wollen Sie mit der Installation fortfahren?';
-$lang['installer']['downloadInstaller'] = 'Installer herunterladen';
-$lang['installer']['getChanges'] = 'Ben&ouml;tigte Dateien ermitteln';
-$lang['installer']['downloadChanges'] = 'Dateien herunterladen';
+$lang['installer'] = [
+	'headline' => 'Installation wird durchgef&uuml,hrt',
+	'headlineConfirmInstallation' => 'Installation best&auml,tigen',
+	'confirmInstallation' => 'ACHTUNG !<br>W&auml,hrend des Update-Vorgangs k&ouml,nnen Daten besch&auml,digt werden. Wenn Sie ohne ein Backup fortfahren besteht die Gefahr, dass Sie Daten verlieren.<br />Wollen Sie mit der Installation fortfahren?',
+	'downloadInstaller' => 'Installer herunterladen',
+	'getChanges' => 'Ben&ouml,tigte Dateien ermitteln',
+	'downloadChanges' => 'Dateien herunterladen',
 // installer::_getDownloadFilesResponse()
-$lang["installer"]["amountFilesDownloaded"] = "%s von %s Dateien wurden heruntergeladen.";
-
-$lang['installer']['prepareChanges'] = 'Dateien vorbereiten';
-$lang['installer']['updateDatabase'] = 'Datenbank aktualisieren';
-$lang['installer']['copyFiles'] = 'Dateien installieren';
-$lang['installer']['executePatches'] = 'Patche ausf&uuml;hren';
-$lang['installer']['finishInstallation'] = 'Installation abschliessen';
-$lang['installer']['downloadFilesTotal'] = 'Dieses Update ben&ouml;tigt %s neue Dateien';
-$lang['installer']['downloadFilesFiles'] = 'Dateien';
-$lang['installer']['downloadFilesPatches'] = 'Patches';
-$lang['installer']['downloadFilesQueries'] = 'Datenbankanfragen';
-$lang['installer']['updateDatabaseNotice'] = 'Hinweis beim Schritt: Datenbank aktualisieren';
-$lang['installer']['tableExists'] = 'Tabelle existiert bereits';
-$lang['installer']['tableChanged'] = 'Tabelle wurde aktualisiert';
-$lang['installer']['entryAlreadyExists'] = 'Eintr&auml;ge sind schon vorhanden';
-$lang['installer']['errorExecutingQuery'] = 'Einige Datenbankanfragen konnten nicht durchgef&uuml;hrt werden.';
-$lang['installer']['amountFilesCopied'] = '%s Dateien installiert';
-$lang['installer']['amountPatchesExecuted'] = '%s Patch(es) eingespielt';
-$lang['installer']['finished'] = 'Die Installation ist beendet. Um alle &Auml;nderungen zu &uuml;bernehmen, wird webEdition nun neu gestartet.';
+	"amountFilesDownloaded" => "%s von %s Dateien wurden heruntergeladen.",
+	'prepareChanges' => 'Dateien vorbereiten',
+	'updateDatabase' => 'Datenbank aktualisieren',
+	'copyFiles' => 'Dateien installieren',
+	'executePatches' => 'Patche ausf&uuml,hren',
+	'finishInstallation' => 'Installation abschliessen',
+	'downloadFilesTotal' => 'Dieses Update ben&ouml,tigt %s neue Dateien',
+	'downloadFilesFiles' => 'Dateien',
+	'downloadFilesPatches' => 'Patches',
+	'downloadFilesQueries' => 'Datenbankanfragen',
+	'updateDatabaseNotice' => 'Hinweis beim Schritt: Datenbank aktualisieren',
+	'tableExists' => 'Tabelle existiert bereits',
+	'tableChanged' => 'Tabelle wurde aktualisiert',
+	'entryAlreadyExists' => 'Eintr&auml,ge sind schon vorhanden',
+	'errorExecutingQuery' => 'Einige Datenbankanfragen konnten nicht durchgef&uuml,hrt werden.',
+	'amountFilesCopied' => '%s Dateien installiert',
+	'amountPatchesExecuted' => '%s Patch(es) eingespielt',
+	'finished' => 'Die Installation ist beendet. Um alle &Auml,nderungen zu &uuml,bernehmen, wird webEdition nun neu gestartet.',
+];
 
 $lang['languages']['headline'] = 'Sprachinstallation';
 $lang['languages']['installLamguages'] = 'Folgende Sprachen k&ouml;nnen installiert werden.<br />Besonders <i>hervorgehobene</i> Sprachen sind bereits auf dem System installiert, die Installation kann aber wiederholt werden.<br /><b>Wichtiger Hinweis:</b> Als <font color="red">[beta]</font> markierte Sprachen k&ouml;nnen unvollst&auml;ndig und unter Umst&auml;nden fehlerhaft sein. Sie k&ouml;nnen sich jedoch gern an das Projektteam wenden um diese &Uuml;bersetzungen zu vervollst&auml;ndigen.';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This template is shown, when there is no update available. It is possible
  * to start an updaterepeat.
@@ -7,7 +8,7 @@ $selectList = '';
 
 if(version_compare(phpversion(), "4.3.0") == -1){
 	$maxVersionNumber = "5099";
-}elseif(version_compare(phpversion(), "5.6.0") == -1){
+} elseif(version_compare(phpversion(), "5.6.0") == -1){
 	$maxVersionNumber = "7099";
 }
 $shownversions = [];
@@ -101,28 +102,36 @@ function toggleNextButton() {
 	}
 
 }
+function checkSelectIsMainDevel(elem){
+	if(elem.selectedIndex!==-1 && elem.options[elem.selectedIndex].text.search(/main-develop/i)>0 ){
+	if(!confirm("' . $GLOBALS['lang']['update']['confirmMainDevel'] . '")){
+	elem.selectedIndex=-1;
+	}
+	}
+}
+
 </script>
 <form name="we_form">
 
 	' . updateUtil::getCommonFormFields('update', 'confirmUpdate') . '
 
 	' . $GLOBALS['lang']['update']['updateAvailableText'] . '<br /><br />' .
-	$clientVersionText .
-	$maxBranchVersionText .
-	'<br />
+		$clientVersionText .
+		$maxBranchVersionText .
+		'<br />
 	' . $GLOBALS['lang']['update']['updatetoVersion'] . '<br/>
-	<select  id="clientTargetVersionNumber" name="clientTargetVersionNumber" size="' . $selectsize . '" >
+	<select id="clientTargetVersionNumber" name="clientTargetVersionNumber" size="' . $selectsize . '" onchange="checkSelectIsMainDevel(this);">
 		' . $selectList . '
 	</select>';
 if(!isset($_SESSION['clientPhpExtensions'])){
-	$liveUpdateResponse['Code'] .='
+	$liveUpdateResponse['Code'] .= '
 		<input type="hidden" name="clientPhpVersion" value="\'.phpversion(). \'" />
 		<input type="hidden" name="clientPcreVersion" value="\'.$pcreV. \'" />
 		<input type="hidden" name="clientPhpExtensions" value="\'.base64_encode(serialize(get_loaded_extensions())). \'" />
 		<input type="hidden" name="clientMySQLVersion" value="\'.getMysqlVer(false). \'" />';
 }
 
-$liveUpdateResponse['Code'] .='<br />\'.$diskquotawarning. \'
+$liveUpdateResponse['Code'] .= '<br />\'.$diskquotawarning. \'
 	<div class="messageDiv">
 
 		' . $GLOBALS['lang']['upgrade']['confirmUpdateWarning'] . $confirmUpdateHint . $GLOBALS['lang']['upgrade']['confirmUpdateWarningEnd'] . '
