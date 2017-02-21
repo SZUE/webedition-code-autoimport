@@ -48,6 +48,9 @@ function we_cmd() {
 		case "moveTreeEntries":
 			moveTreeEntries(args[1]);
 			break;
+		case "start_multi_editor":
+			top.we_cmd("start_multi_editor");
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

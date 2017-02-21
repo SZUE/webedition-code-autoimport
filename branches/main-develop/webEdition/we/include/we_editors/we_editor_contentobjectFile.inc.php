@@ -60,9 +60,8 @@ $we_doc = $GLOBALS['we_doc'];
 
 $jsGUI = new we_gui_OrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 echo $jsGUI->getJS() .
- we_html_element::jsScript(JS_DIR . 'multiIconBox.js');
-
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+ we_html_element::jsScript(JS_DIR . 'multiIconBox.js').
+		we_editor_script::get();
 ?>
 </head>
 

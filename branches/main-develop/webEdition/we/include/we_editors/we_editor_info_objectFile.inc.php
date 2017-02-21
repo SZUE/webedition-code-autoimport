@@ -86,10 +86,8 @@ if(defined('WORKFLOW_TABLE')){
 		];
 }
 
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo we_html_tools::getHtmlTop('','','',we_editor_script::get());
 ?>
-</head>
 <body class="weEditorBody" onunload="doUnload()">
 	<?= we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . we_html_multiIconBox::getHTML("", $parts, 30); ?>
 </body>

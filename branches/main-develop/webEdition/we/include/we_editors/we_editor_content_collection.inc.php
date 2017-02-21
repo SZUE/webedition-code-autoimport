@@ -23,13 +23,8 @@
  */
 $weSuggest = & weSuggest::getInstance();
 
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
-echo we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($GLOBALS['we_doc']->getJSDynamic())]);
+echo we_html_tools::getHtmlTop('','','',we_editor_script::get().we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($GLOBALS['we_doc']->getJSDynamic())]));
 ?>
-
-</head>
 <body class="weEditorBody" onload="weCollectionEdit.init();">
 	<form name="we_form"><?=
 		we_class::hiddenTrans() .

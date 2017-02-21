@@ -21,30 +21,29 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-?></head>
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get());
+?>
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .
 		we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 		we_html_multiIconBox::getHTML("weImgProp", [['icon' => "upload.gif",
-	"headline" => "",
-				"html" => $GLOBALS['we_doc']->formUpload(),
-				'space' => we_html_multiIconBox::SPACE_MED2
-			 ],
-		['icon' => "attrib.gif",
-		"headline" => g_l('weClass', '[attribs]'),
+		"headline" => "",
+		"html" => $GLOBALS['we_doc']->formUpload(),
+		'space' => we_html_multiIconBox::SPACE_MED2
+			],
+			['icon' => "attrib.gif",
+				"headline" => g_l('weClass', '[attribs]'),
 				"html" => $GLOBALS['we_doc']->formProperties(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			 ],
-		['icon' => "meta.gif",
-		"headline" => g_l('weClass', '[metadata]'),
+			],
+			['icon' => "meta.gif",
+				"headline" => g_l('weClass', '[metadata]'),
 				"html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			 ]
-	], 20) .
- we_html_element::htmlHidden("we_complete_request", 1);
+			]
+				], 20) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

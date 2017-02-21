@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -49,19 +50,12 @@ switch(we_base_request::_(we_base_request::STRING, 'do')){
 }
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() .
- $we_doc->getSearchJS() .
- (isset($javascript) ? we_html_element::jsElement($javascript) : '');
-
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
-
-echo '</head>
-<body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', [
-	['html' => $we_doc->getSearchDialog()],
-	['html' => $we_doc->getSearch()],
-	]
-	, 30) .
- '</body>
-</html>';
+echo we_html_tools::getHtmlTop('', '', '', $we_doc->getSearchJS() .
+		(isset($javascript) ? we_html_element::jsElement($javascript) : '') .
+		we_editor_script::get(), '<body class="weEditorBody" onunload="doUnload()">' .
+		we_html_multiIconBox::getHTML('', [
+			['html' => $we_doc->getSearchDialog()],
+			['html' => $we_doc->getSearch()],
+				]
+				, 30) .
+		'</body>');

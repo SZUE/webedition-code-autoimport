@@ -380,7 +380,6 @@ abstract class we_editor_functions{
 						'showAlert' => $showAlert,
 						'we_responseText' => $we_responseText,
 						'we_responseTextType' => $we_responseTextType,
-						//FIXME:we_JavaScript is evaled
 						'we_JavaScript' => $we_JavaScript,
 						'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
 						'we_responseJS' => $we_responseJS,

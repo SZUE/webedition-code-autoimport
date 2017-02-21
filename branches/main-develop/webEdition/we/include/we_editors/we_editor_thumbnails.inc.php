@@ -21,11 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo we_html_tools::getHtmlTop('','','',we_editor_script::get());
 ?>
-
-</head>
 <body class="weEditorBody" onload="doScrollTo();">
 	<form name="we_form"><?= we_class::hiddenTrans(); ?>
 		<?php

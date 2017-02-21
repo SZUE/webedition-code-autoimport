@@ -817,10 +817,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			'html' => self::getDocumentStatus($this->documentDef->ID),
 		];
 
-		ob_start();
-		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
-		return ob_end_clean() .
+		return we_editor_script::get().
 				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				'</head>
 		<body class="weEditorBody" onunload="doUnload()">

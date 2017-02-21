@@ -88,13 +88,13 @@ abstract class we_base_move{
 
 		//move folders first
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE IsFolder=1 AND ID IN (' . $allIds . ') AND ParentID NOT IN(' . $allIds . ') ' .
-			(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? ' AND IsClassFolder=0' : '')
-			. ' ORDER BY Path');
+				(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? ' AND IsClassFolder=0' : '')
+				. ' ORDER BY Path');
 		$ids = $DB_WE->getAll(true);
 		foreach($ids as $id){
 			$folder = (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? //4076
-				new we_class_folder() :
-				new we_folder());
+					new we_class_folder() :
+					new we_folder());
 			$folder->initByID($id, $table);
 			$folder->ParentID = $targetDirectoryID;
 			$folder->Path = $folder->getPath();
@@ -113,8 +113,8 @@ abstract class we_base_move{
 
 //continue with single files
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE IsFolder=0 AND ID IN (' . $allIds . ') AND ParentID NOT IN(' . $allIds . ') ' .
-			(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? ' AND IsClassFolder=0' : '')
-			. ' ORDER BY Path');
+				(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? ' AND IsClassFolder=0' : '')
+				. ' ORDER BY Path');
 		$ids = $DB_WE->getAll(true);
 
 		switch($table){
@@ -142,9 +142,9 @@ abstract class we_base_move{
 					$isPublished = ($row['Published'] ? true : false);
 					if(
 					// move document file
-						(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)) ||
-						// move published document file
-						(($isPublished) && file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
+							(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)) ||
+							// move published document file
+							(($isPublished) && file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
 						$notMovedItems[] = ['ID' => $id,
 							'Text' => $fileName,
 							'Path' => $oldPath,
@@ -167,8 +167,8 @@ abstract class we_base_move{
 
 					// update table
 					$DB_WE->query('UPDATE ' . FILE_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => intval($parentID),
-							'Path' => $newPath . '/' . $fileName
-						]) . ' WHERE ID=' . intval($id));
+								'Path' => $newPath . '/' . $fileName
+							]) . ' WHERE ID=' . intval($id));
 				}
 				break;
 
@@ -210,8 +210,8 @@ abstract class we_base_move{
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 
 		if(($table == TEMPLATES_TABLE && !we_base_permission::hasPerm("MOVE_TEMPLATE")) ||
-			($table == FILE_TABLE && !we_base_permission::hasPerm("MOVE_DOCUMENT")) ||
-			(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !we_base_permission::hasPerm("MOVE_OBJECTFILES"))){
+				($table == FILE_TABLE && !we_base_permission::hasPerm("MOVE_DOCUMENT")) ||
+				(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !we_base_permission::hasPerm("MOVE_OBJECTFILES"))){
 			we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
 		}
 		$jsCmd = new we_base_jsCmd();
@@ -302,11 +302,14 @@ abstract class we_base_move{
 
 
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$js = ($retVal ? //	document moved -> go to seeMode startPage
-				we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
-				we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+			if($retVal){
+				$jsCmd->addMsg(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addCmd('start_multi_editor');
+			} else {
+				$jsCmd->addMsg(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+			}
 
-			echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() . we_html_element::jsElement($js));
+			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'move.js') . $jsCmd->getCmds());
 			exit();
 		}
 
@@ -352,19 +355,19 @@ abstract class we_base_move{
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move('" . $type . "');"), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left") . '</div></div>' . we_html_element::htmlHidden("sel", "") .
-					'</form>');
+							'</form>');
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
-			we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');"), $body);
+				we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');"), $body);
 	}
 
 	public static function getMoveInfo(){
 		if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_files_nok'])){
-			$table = new we_html_table(['style' => 'margin:10px;', "class" => "default defaultfont"], 1, 2);
+			$table = new we_html_table(['style' => 'margin:10px;', 'class' => 'default defaultfont'], 1, 2);
 			foreach($_SESSION['weS']['move_files_nok'] as $i => $data){
 				$table->addRow();
-				$table->setCol($i, 0, ['style' => 'padding-top:2px;'], (isset($data['ContentType']) ? we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $data['ContentType'] . '"))') : ''));
+				$table->setCol($i, 0, ['style' => 'padding-top:2px;', 'class' => 'moveIcon', 'data-contenttype' => (empty($data['ContentType']) ? '' : $data['ContentType']), 'data-extension' => ''], ' ');
 				$table->setCol($i, 1, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
 			}
 		}
@@ -379,10 +382,10 @@ abstract class we_base_move{
 				'space' => we_html_multiIconBox::SPACE_SMALL],
 		];
 
-		$buttons = new we_html_table(['style' => "text-align:right", "class" => "default defaultfont"], 1, 1);
-		$buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"));
-		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => "weDialogBody"], we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
-			)
+		$buttons = new we_html_table(['style' => 'text-align:right', 'class' => 'default defaultfont'], 1, 1);
+		$buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
+		echo we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('setIconOfDocClass', 'moveIcon'), we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
+				)
 		);
 	}
 

@@ -30,8 +30,8 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
-echo we_html_tools::getHtmlTop('', isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo we_html_tools::getHtmlTop('', isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '') .
+ we_editor_script::get();
 
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
@@ -116,7 +116,7 @@ function we_getCodeMirror2Code(&$options){
 
 	$maineditor = '';
 	$editors = we_base_request::_(we_base_request::JSON, 'activeEditors', []);
-	if(true||empty($editors['CodeMirror'])){ //load js only if not present in browser
+	if(true || empty($editors['CodeMirror'])){ //load js only if not present in browser
 		$maineditor = we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/lib/codemirror.js');
 
 		$parser_js = [
@@ -129,9 +129,9 @@ function we_getCodeMirror2Code(&$options){
 			'addon/fold/foldgutter.js',
 			'addon/fold/markdown-fold.js',
 			'addon/fold/xml-fold.js',
-/*			'addon/hint/css-hint.js',
-			'addon/hint/html-hint.js',
-			'addon/hint/javascript-hint.js',*/
+			/* 			'addon/hint/css-hint.js',
+			  'addon/hint/html-hint.js',
+			  'addon/hint/javascript-hint.js', */
 			'addon/hint/show-hint.js',
 			'addon/hint/xml-hint.js',
 			'addon/mode/overlay.js',
@@ -149,18 +149,18 @@ function we_getCodeMirror2Code(&$options){
 			$maineditor .= we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/' . $js);
 		}
 		$maineditor .= we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') .
-			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
-			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
-			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
 	}
 
 
 	// CodeMirror will be used; we add css to the page
 	$maineditor .= we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/lib/codemirror.css') .
-		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
-		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
-		we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
-		we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
+			we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
 
 	$options = [//these are the CodeMirror options
 		'mode' => $mode,
@@ -190,11 +190,11 @@ function we_getCodeMirror2Code(&$options){
 	];
 
 	$maineditor .= //($hasCompletion && $useCompletion ?		 :		''		) .
-		//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
-		($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
-		we_html_element::cssElement(
-			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
-			we_getCSSIds() : '') . '
+			//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
+			($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
+			we_html_element::cssElement(
+					($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+					we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,
 .weOpenTag:hover:after,
@@ -283,10 +283,10 @@ function getTagWizzard($we_doc){
 		<td id="tagSelectCol" style="width: 250px;">' . $tagselect . we_wizard_code::getSelect() . we_wizard_code::getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
 		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(['name' => 'we_' . $we_doc->Name . '_TagWizardCode',
-			'id' => 'tag_edit_area',
-			'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
-			'class' => 'defaultfont'
-			], $we_doc->TagWizardCode) . '</td>
+				'id' => 'tag_edit_area',
+				'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
+				'class' => 'defaultfont'
+					], $we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
 ';
@@ -308,22 +308,22 @@ function getTagWizzard($we_doc){
 	return
 			[$selectedGroup,
 				[
-				[],
+					[],
 					["headline" => "", "html" => $tagWizardHtml,]
-			]
+				]
 	];
 }
 
 $code = ($we_doc instanceof we_htmlDocument ?
-	$we_doc->getDocumentCode() :
-	$we_doc->getElement('data')
-	);
+		$we_doc->getDocumentCode() :
+		$we_doc->getElement('data')
+		);
 
 $maineditor = '<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
-	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
-	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
-	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
-	. oldHtmlspecialchars($code) . '</textarea>';
+		'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
+		'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
+		((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
+		. oldHtmlspecialchars($code) . '</textarea>';
 $options = [];
 switch($_SESSION['prefs']['editorMode']){
 	case 'java':
@@ -363,8 +363,8 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
 	<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
 	<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button('replace', 'javascript:cmReplace(null);') . '</div>' .
-			we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
-			'</div>' : ''
+				we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+				'</div>' : ''
 		) . '
 						</td>
 						<td style="text-align:right" class="defaultfont">' .
