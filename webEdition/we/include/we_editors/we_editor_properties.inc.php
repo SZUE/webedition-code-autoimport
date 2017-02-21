@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,26 +25,24 @@
 $weSuggest = & weSuggest::getInstance();
 
 $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
-	//	send charset, if one is set:
-	$we_doc->getElement('Charset', 'dat', DEFAULT_CHARSET) :
-	$GLOBALS['WE_BACKENDCHARSET']);
+		//	send charset, if one is set:
+		$we_doc->getElement('Charset', 'dat', DEFAULT_CHARSET) :
+		$GLOBALS['WE_BACKENDCHARSET']);
 
 $jsCmd = new we_base_jsCmd();
 we_html_tools::headerCtCharset('text/html', $charset);
-echo we_html_tools::getHtmlTop('', $charset);
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $page = we_html_element::htmlBody([
-		'class' => "weEditorBody",
-		'onload' => "doScrollTo()",
-		'onunload' => "doUnload()"
-		], '<form name="we_form" method="post" action="" onsubmit="return false;">' .
-		we_class::hiddenTrans() .
-		$GLOBALS['we_doc']->getPropertyPage($jsCmd) .
-		we_html_element::htmlHidden("we_complete_request", 1) .
-		'</form>'
+			'class' => "weEditorBody",
+			'onload' => "doScrollTo()",
+			'onunload' => "doUnload()"
+				], '<form name="we_form" method="post" action="" onsubmit="return false;">' .
+				we_class::hiddenTrans() .
+				$GLOBALS['we_doc']->getPropertyPage($jsCmd) .
+				we_html_element::htmlHidden("we_complete_request", 1) .
+				'</form>'
 );
 
-echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
- $jsCmd->getCmds() .
- '</head>' . $page . '</html>';
+echo we_html_tools::getHtmlTop('', $charset, '', we_editor_script::get() .
+		we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+		$jsCmd->getCmds(), $page);

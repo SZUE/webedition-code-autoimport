@@ -26,8 +26,7 @@ if(!empty($we_doc->elements["Charset"]["dat"]) && $we_doc->EditPageNr == we_base
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 $jsCmd = new we_base_jsCmd();
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+
 switch($we_doc->ContentType){
 	case we_base_ContentTypes::WEDOCUMENT:
 	case we_base_ContentTypes::OBJECT_FILE:
@@ -41,9 +40,8 @@ switch($we_doc->ContentType){
 		$inner = $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
 		break;
 }
-echo $jsCmd->getCmds();
+echo we_html_tools::getHtmlTop('','','',we_editor_script::get().$jsCmd->getCmds());
 ?>
-</head>
 <body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .

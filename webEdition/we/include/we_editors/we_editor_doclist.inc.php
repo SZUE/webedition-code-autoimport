@@ -22,18 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-
-echo we_html_tools::getHtmlTop();
-
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
 $doclistView = new we_doclist_view($GLOBALS['we_doc']->getDoclistModel());
 $doclistSearch = $doclistView->searchclass;
 
-echo $doclistView->getSearchJS();
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get() . $doclistView->getSearchJS());
 ?>
-</head>
-
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3) {
 			search(true);
 		}" onload="setTimeout(weSearch.init, 200)" onresize="weSearch.sizeScrollContent();">
@@ -46,8 +39,8 @@ echo $doclistView->getSearchJS();
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
 		echo $doclistView->getHTMLforDoclist([
-				['html' => $doclistView->getSearchDialog()],
-				['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
+			['html' => $doclistView->getSearchDialog()],
+			['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
 		]) .
 		we_html_element::htmlHiddens(['obj' => 1,
 			'we_complete_request' => 1

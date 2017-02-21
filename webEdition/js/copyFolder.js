@@ -26,7 +26,9 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 'use strict';
-var lastCFolder;
+var lastCFolder,
+				categories_edit;
+
 function removeAllCats() {
 	if (categories_edit.itemCount > 0) {
 		while (categories_edit.itemCount > 0) {
@@ -104,6 +106,11 @@ function we_cmd() {
 			break;
 		case "we_selector_category":
 			new (WE().util.jsWindow)(caller, url, "we_cateditor", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			break;
+		case 'setCategories_edit':
+			categories_edit = new (WE().util.multi_edit)("categories", window, 0, args[1], 478, false);
+			categories_edit.addVariant();
+			categories_edit.showVariant(0);
 			break;
 		default:
 			window.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

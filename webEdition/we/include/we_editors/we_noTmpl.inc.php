@@ -44,8 +44,8 @@ echo we_html_element::htmlDocType();
 		<title><?= $we_doc->getElement('Title') ?></title>
 		<?php
 		if(!empty($GLOBALS['we_editmode'])){
-			echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
-			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+			echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			we_editor_script::get();
 		} else {
 			echo we_tag('textarea', ['name' => 'HEAD']);
 		}
@@ -56,11 +56,11 @@ echo we_html_element::htmlDocType();
 			<form name="we_form" method="post"><?php
 				echo we_class::hiddenTrans();
 				$foo = '<html><head>' .
-					($we_doc->getElement('Keywords') ?
+						($we_doc->getElement('Keywords') ?
 						we_html_element::htmlMeta(['name' => 'keywords', 'content' => $we_doc->getElement('Keywords')]) : '') .
-					($we_doc->getElement('Charset') ?
+						($we_doc->getElement('Charset') ?
 						we_html_tools::htmlMetaCtCharset($we_doc->getElement('Charset')) : '') .
-					($we_doc->getElement('Description') ?
+						($we_doc->getElement('Description') ?
 						we_html_element::htmlMeta(['name' => 'description', 'content' => $we_doc->getElement('Description')]) : '');
 
 				$foo = '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement('Title'))) . '

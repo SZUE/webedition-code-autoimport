@@ -77,7 +77,7 @@ function getTemplTag($type, $name, $isField = false){
 			return $isField ? '<we:field type="date" name="' . $name . '"/>' : '<we:var type="date" name="' . $name . '"/>';
 		case 'object':
 			return (!in_array($name, $GLOBALS["usedIDs"]) ?
-				getObjectTags($name, $isField) : '');
+					getObjectTags($name, $isField) : '');
 		case we_objectFile::TYPE_MULTIOBJECT:
 			return getMultiObjectTags($name);
 	}
@@ -117,10 +117,8 @@ function getTmplTableRow($type, $name, $isField = false){
 
 $cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]'));
-
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo '</head><body class="weDialogBody"><form name="we_form">';
+echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]'), '', '', we_editor_script::get()) .
+ '<body class="weDialogBody"><form name="we_form">';
 $tmpl = new we_object_createTemplate();
 
 $tmpl->we_new();
@@ -200,7 +198,7 @@ $content .= '
 $_SESSION['weS']['content'] = $content;
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action=WE().consts.dirs.WE_MODULES_DIR+'object/we_object_createTemplatecmd.php';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+				we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action=WE().consts.dirs.WE_MODULES_DIR+'object/we_object_createTemplatecmd.php';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
 
@@ -208,6 +206,6 @@ echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generat
  we_html_element::htmlHiddens(["SID" => $tmpl->Name,
 	"we_cmd[3]" => $cmd3,
 	"we_cmd[2]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2)
- ]) . '
+]) . '
 </form>
 </body></html>';

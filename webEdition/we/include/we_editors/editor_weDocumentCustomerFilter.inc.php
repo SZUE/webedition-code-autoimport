@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -34,23 +35,22 @@ if($we_doc->ClassName != 'we_imageDocument' && we_base_permission::hasPerm('CAN_
 	$parts[] = ['headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $view->getFilterHTML(),
 		'space' => we_html_multiIconBox::SPACE_MED
-		];
+	];
 }
 
 
 $parts[] = ['headline' => g_l('modules_customer', '[one_customer]'),
 	'html' => formWebuser(we_base_permission::hasPerm("CAN_CHANGE_DOCS_CUSTOMER")),
 	'space' => we_html_multiIconBox::SPACE_MED
- ];
+];
 
 
 
-echo we_html_tools::getHtmlTop() .
-require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get()) .
+ '<body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
  we_class::hiddenTrans() .
  (!($we_doc instanceof we_imageDocument) && we_base_permission::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
-	we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
+		we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
  we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
  we_html_element::htmlHidden("we_complete_request", 1) . '</form>
 </body>

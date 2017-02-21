@@ -24,26 +24,22 @@
 we_html_tools::protect();
 
 $versionsView = new we_versions_view($GLOBALS['we_doc']->versionsModel);
-
-echo we_html_tools::getHtmlTop();
-
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
 $content = $versionsView->getVersionsOfDoc();
 $foundItems = count($content);
 
-echo $versionsView->getJS() .
- we_html_element::cssLink(CSS_DIR . 'we_versions.css', ['media' => 'screen']) .
- we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', ['media' => 'print']);
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get() .
+		$versionsView->getJS() .
+		we_html_element::cssLink(CSS_DIR . 'we_versions.css', ['media' => 'screen']) .
+		we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', ['media' => 'print'])
+);
 ?>
-</head>
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3)
 			search(true);" onload="init();" onresize="sizeScrollContent();">
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
 		<?php
 		echo $versionsView->getHTMLforVersions([
-				["html" => "<div id='searchTable'>" . $versionsView->getBodyTop() . '</div>'],
-				["html" => "<div id='parametersTop'>" . $versionsView->getParameterTop($foundItems) . '</div>' . $versionsView->tblList($content, $versionsView->makeHeadLines()) . "<div id='parametersBottom'>" . $versionsView->getParameterBottom($foundItems) . "</div>"]
+			["html" => "<div id='searchTable'>" . $versionsView->getBodyTop() . '</div>'],
+			["html" => "<div id='parametersTop'>" . $versionsView->getParameterTop($foundItems) . '</div>' . $versionsView->tblList($content, $versionsView->makeHeadLines()) . "<div id='parametersBottom'>" . $versionsView->getParameterBottom($foundItems) . "</div>"]
 		]) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>

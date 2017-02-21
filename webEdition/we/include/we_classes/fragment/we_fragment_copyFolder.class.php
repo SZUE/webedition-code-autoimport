@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fragment_copyFolder extends we_fragment_base{
+
 	var $copyToPath = "";
 	private $text = '';
 
@@ -125,8 +126,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 					exit('Error importing File: ' . $this->data['Path']);
 				}
 				$this->text = addslashes(($this->data['IsWeFile'] && $this->data['num'] ?
-					sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
-					sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])))
+						sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
+						sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])))
 				);
 
 				return;
@@ -260,7 +261,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					if($GLOBALS['we_doc']->DocType && $this->data['CreateDoctypes']){
 						// check if a doctype was created from prior doc
 						if(!(isset($_SESSION['weS']['WE_CREATE_DOCTYPE']) &&
-							isset($_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
+								isset($_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
 
 							$dt = new we_docTypes();
 
@@ -467,7 +468,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 								$pathTo = $this->getNewPath($path);
 								$idTo = path_to_id($pathTo, FILE_TABLE, $GLOBALS['DB_WE']) ?: '##WEPATH##' . $pathTo . ' ###WEPATH###';
 								$destTag = preg_replace('/' .
-									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
+										$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
 						}
 					}
@@ -514,7 +515,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				case 'href':
 					$regs = [];
 					if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs) && // is a we:href field
-						!in_array($regs[1], $hrefs)){//already scanned?
+							!in_array($regs[1], $hrefs)){//already scanned?
 						$hrefs[] = $regs[1];
 						$int = intval($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK));
 						if($int){
@@ -640,55 +641,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
 			$jsCmd->addCmd('close');
 		}
-	}
-
-	static function formCreateTemplateDirChooser(){
-		$path = '/';
-		$myid = 0;
-
-		$weSuggest = & weSuggest::getInstance();
-		$weSuggest->setAcId('Template');
-		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$weSuggest->setInput('foo', $path, [], true);
-		$weSuggest->setLabel(g_l('copyFolder', '[destdir]'));
-		$weSuggest->setMaxResults(10);
-		$weSuggest->setRequired(true);
-		$weSuggest->setResult('CreateTemplateInFolderID', $myid);
-		$weSuggest->setSelector(weSuggest::DirSelector);
-		$weSuggest->setTable(TEMPLATES_TABLE);
-		$weSuggest->setWidth(370);
-		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','setCreateTemplate')", '', 0, 0, "", "", true, false));
-
-		return $weSuggest->getHTML();
-	}
-
-	static function formCreateCategoryChooser(){
-		// IMI: replace inline js
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);')");
-		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
-
-		$js = we_html_element::jsElement('
-var categories_edit = new (WE().util.multi_edit)("categories",window,0,"' . $del_but . '",478,false);
-categories_edit.addVariant();
-categories_edit.showVariant(0);
-');
-
-		$table = new we_html_table([
-			'id' => 'CategoriesBlock',
-			'style' => 'display: block;',
-			'class' => 'default',
-			], 5, 2);
-
-		$table->setCol(1, 0, ['class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'], g_l('copyFolder', '[categories]'));
-		$table->setCol(1, 1, ['class' => 'defaultfont'], we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
-		$table->setCol(2, 0, ['colspan' => 2], we_html_element::htmlDiv(['id' => 'categories',
-				'class' => 'blockWrapper',
-				'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
-		]));
-
-		$table->setCol(4, 0, ['colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'], we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
-
-		return $table->getHtml() . $js;
 	}
 
 }

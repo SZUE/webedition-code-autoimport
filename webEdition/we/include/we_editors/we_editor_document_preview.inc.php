@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,4 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop(5);
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-?>
-</head>
-
-<body class="weEditorBody" style="margin:20px;"><?= $we_doc->getHtml(true); ?></body>
-</html>
+echo we_html_tools::getHtmlTop(5, '', '', we_editor_script::get(), we_html_element::htmlBody(['class' => "weEditorBody", 'style' => "margin:20px;"], $we_doc->getHtml(true)));

@@ -23,14 +23,12 @@
  */
 define("WE_EDIT_IMAGE", true);
 
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get());
 ?>
-</head>
 <body class="weEditorBody" style="padding:20px;" onload="<?=
 			(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-				'WE().layout.we_setPath(_EditorFrame,"' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
-				'');
+					'WE().layout.we_setPath(_EditorFrame,"' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
+					'');
 			?>">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		$headline = g_l('weClass', '[image]');
@@ -50,17 +48,17 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <option value="image_focus">' . g_l('weClass', '[image_focus]') . '&hellip;</option>
 </optgroup>
 <optgroup label="' . g_l('weClass', '[convert]') . '">' .
-			((in_array('jpg', $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
-			(($gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
-			(($gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
-			'</optgroup>
+				((in_array('jpg', $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
+				(($gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
+				(($gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
+				'</optgroup>
 </select>'
 		) .
 		we_html_element::htmlDiv(['id' => 'focus_info', 'style' => 'margin-top:10px; display:none'], we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
 		'<table class="default">
 ' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?
-			'<tr><td style="padding-bottom:20px;"></td></tr>' :
-			''
+				'<tr><td style="padding-bottom:20px;"></td></tr>' :
+				''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '
 <div id="cursorVal" style="display:none">
 <input type="number" id="x_focus" value="' . round(floatval($focus[0]), 2) . '" step="0.01" min="-1" max="1" onchange="setFocusPositionByValue();" />

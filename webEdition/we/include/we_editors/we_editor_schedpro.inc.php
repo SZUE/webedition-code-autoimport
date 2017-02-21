@@ -26,8 +26,6 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 }
 
 $jsCmd = new we_base_jsCmd();
-echo we_html_tools::getHtmlTop();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $parts = [];
 
@@ -41,12 +39,13 @@ foreach($we_doc->schedArr as $i => $sched){
 $parts[] = ['headline' => '',
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_schedule,fa-plus,fa-lg fa-clock-o', "javascript:we_cmd('schedule_add')"),
 ];
-echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
- we_schedpro::getMainJS($we_doc) .
- $jsCmd->getCmds();
+
+echo we_html_tools::getHtmlTop('', '', '', we_editor_script::get() .
+		we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+		we_schedpro::getMainJS($we_doc) .
+		$jsCmd->getCmds());
 ?>
-</head>
-<body  class="weEditorBody" onload="checkFooter();doScrollTo();" onunload="doUnload();">
+<body class="weEditorBody" onload="checkFooter();doScrollTo();" onunload="doUnload();">
 	<form name="we_form" onsubmit="return false"><?php
 		echo we_class::hiddenTrans() .
 		we_html_multiIconBox::getHTML('', $parts, 20) .

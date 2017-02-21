@@ -51,10 +51,9 @@ if($we_doc->CSS){
 
 //	---> Loading some Javascript
 
-echo $jsGUI->getJS();
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo $jsGUI->getJS().
+		we_editor_script::get();
 ?>
-
 </head>
 
 <body onunload="doUnload()" class="weEditorBody" onload="doScrollTo();">
@@ -86,7 +85,6 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  </div>' .
 		we_html_multiIconBox::_getBoxEnd();
 
-		$js = '';
 		foreach(array_keys($sort) as $identifier){
 			$uniqid = "entry_" . $identifier;
 
@@ -102,13 +100,11 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
 			'</span>
 		</div></div>';
-			$js .= 'classEntry.add(document, \'' . $uniqid . '\', null);';
+			$jsCmd->addCmd('addClassEntry', $uniqid);
 		}
 		echo $jsCmd->getCmds() .
-		we_html_element::jsElement($js .
-				$jsGUI->getDisableButtonJS()
-		) .
-		we_html_element::htmlHidden("we_complete_request", 1);
+		//we_html_element::jsElement($jsGUI->getDisableButtonJS()) .
+		we_html_element::htmlHidden('we_complete_request', 1);
 		?>
 	</form>
 </body>
