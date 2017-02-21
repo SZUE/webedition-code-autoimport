@@ -255,7 +255,7 @@ function queryString(what, id, o) {
 	if (!o) {
 		o = top.fileSelect.data.order;
 	}
-	return top.fileSelect.options.formtarget + 'what=' + what + '&table=' + top.fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + top.fileSelect.data.currentType;
+	return top.fileSelect.options.formtarget + '&what=' + what + '&table=' + top.fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + top.fileSelect.data.currentType;
 }
 
 function fillIDs() {
