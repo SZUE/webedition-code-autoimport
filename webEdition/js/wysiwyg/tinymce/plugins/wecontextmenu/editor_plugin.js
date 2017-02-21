@@ -138,7 +138,7 @@
 
 		_getMenu: function (ed) {
 			var t = this, m = t._menu, se = ed.selection, col = se.isCollapsed(), el = se.getNode() || ed.getBody(), p,
-				cm_cmds = {}, c = 0, sep = false, small_cm = false, lastgroup = '', menu_item = null, restrict = ed.settings.we_restrict_contextmenu,
+				cm_cmds = {}, c = 0, sep = false, small_cm = false, lastgroup = '', menu_item = null, restrict = ed.settings.weContextmenuCommands,
 				item = null, is_active_items = false, active_items = {}, active_groups = {}, set_tableprops_active = false;
 
 			if (m) {
@@ -272,7 +272,7 @@
 						['separator', '', 'top', false, true]
 						);
 
-					//verify commands, restrict cm-items when param we_restrict_contextmenu not empty, and count cm-items
+					//verify commands, restrict cm-items when param weContextmenuCommands not empty, and count cm-items
 					for (var i = 0; i < items.length; i++) {
 						if (ed.controlManager.controls[ed.editorId + '_' + items[i][0]] && (!restrict || restrict[items[i][0]])) {
 							cm_cmds[items[i][0]] = true;

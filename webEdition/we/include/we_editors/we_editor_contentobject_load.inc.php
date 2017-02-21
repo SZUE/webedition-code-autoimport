@@ -92,7 +92,8 @@ echo we_editor_script::get();
 </div>';
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
-		we_html_element::jsElement('reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
+		we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
+		//we_html_element::jsElement('reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}
@@ -214,9 +215,9 @@ echo we_editor_script::get();
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
-	confName = "tinyMceConfObject__' . $field . 'default";
-if(typeof target[confName] === \'object\'){
-		target.tinyMceInitialize(target[confName]);
+	confname = "' . $field . 'default";
+if(typeof target.tinyMceConfObjects[confname] === \'object\'){
+	WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confname]);
 }';
 				}
 				echo $ret ? we_html_element::jsElement($ret) : '';
@@ -237,9 +238,9 @@ if(typeof target[confName] === \'object\'){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
-	confName = "tinyMceConfObject__' . $field . 'default";
-if(typeof target[confName] === \'object\'){
-		target.tinyMceInitialize(target[confName]);
+	confname = "' . $field . 'default";
+if(typeof target.tinyMceConfObjects[confname] === \'object\'){
+		WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confname]);
 }';
 				}
 				echo $ret ? we_html_element::jsElement($ret) : '';

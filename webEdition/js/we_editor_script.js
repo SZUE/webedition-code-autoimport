@@ -519,28 +519,29 @@ if (doc.useSEE_MODE) {
 function reinitTiny(confName, transaction, isIEOpera) {
 	var target = _EditorFrame.getContentEditor();
 	var confObject;
+
 	/* if tinyMCE-field: re-write confObject on visible field and re-init editor
 	 * ff and chrome only: on ie and opera we reload edit tab when saving properties
 	 */
-	if ((confObject = typeof target[confName] === 'object' ? target[confName] : false)) {
+	if ((confObject = typeof target.tinyMceConfObjects[confName] === 'object' ? target.tinyMceConfObjects[confName] : false)) {
 		if (isIEOpera) {
-			if (typeof target[confName] === 'object') {
+			if (typeof target.tinyMceConfObjects[confName] === 'object') {
 				for (var prop in confObject) {
 					if (prop !== "setup") {
-						target[confName][prop] = confObject[prop];
+						target.tinyMceConfObjects[confName][prop] = confObject[prop];
 					}
 				}
-				target.tinyMceInitialize(target[confName]);
+				WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confName]);
 			} else {
 				setScrollTo();
 				top.we_cmd("switch_edit_page", 1, transaction);
 			}
 		} else {
-			target[confName] = confObject;
-			target.tinyMceInitialize(target[confName]);
+			target.tinyMceConfObjects[confName] = confObject;
+			WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confName]);
 		}
-	} else if (typeof target[confName] === 'object') {
-		target[confName] = undefined;
+	} else if (typeof target.tinyMceConfObjects[confName] === 'object') {
+		target.tinyMceConfObjects[confName] = undefined;
 	}
 
 }

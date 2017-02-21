@@ -28,7 +28,7 @@ WE().layout.we_tinyMCE.do.afterPastePlugin = function (pl, o) {
 	var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
 	if (o.content.match(pattImg)) {
 		o.content = o.content.replace(pattImg, '');
-		top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject.removedInlinePictures, WE().consts.message.WE_MESSAGE_ERROR);
+		top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[pl.editor.settings.language].we.ed_removedInlinePictures, WE().consts.message.WE_MESSAGE_ERROR);
 	}
 	var patScript = /<script[^>]*.*< ?\/script[^>]*>/gi;
 	o.content.replace(patScript, "");
@@ -36,29 +36,26 @@ WE().layout.we_tinyMCE.do.afterPastePlugin = function (pl, o) {
 	//o.content.replace(patStyle, '');
 };
 
-WE().layout.we_tinyMCE.do.beforePastePlugin = function (ed) {
-	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
-};
-
-WE().layout.we_tinyMCE.do.onKeyUp = function (ed) {
-	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
-};
-
 WE().layout.we_tinyMCE.do.onChange = function (ed) {
-	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
+	WE().layout.we_tinyMCE.functions.setHot(ed);
 };
 
-WE().layout.we_tinyMCE.do.onClick = function (ed) {
-	WE().layout.we_tinyMCE.functions.setHotEditorAndFrame(ed);
-};
+WE().layout.we_tinyMCE.do.onSaveContent = function (ed) {
+	var conf = ed.settings;
 
-WE().layout.we_tinyMCE.do.onSaveContent = function (ed, o) {
-	ed.weEditorFrameIsHot = false;
-	// if is popup and we click on ok
-	if (ed.settings.editorType !== "inlineTrue" && ed.isDirty()) {
-		try {
-			ed.weEditorFrame.setEditorIsHot(true);
-		} catch (e) {
+	if(!conf.weSynchronizeHot.doSyncHot){
+		return;
+	}
+
+	if(conf.weEditorType === "inlineTrue"){
+		conf.weSynchronizeHot.doOnChange = ed.onChange.add(WE().layout.we_tinyMCE.do.onChange);
+		conf.weSynchronizeHot.doOnKeyUp = ed.onKeyUp.add(WE().layout.we_tinyMCE.do.onKeyUp);
+		WE().layout.we_tinyMCE.functions.setSyncHot(ed);
+	} else {
+		if (conf.weSynchronizeHot.isEditorHot) {
+			try {
+				ed.settings.weWin.we_cmd('setHot');
+			} catch (e) {}
 		}
 	}
 
@@ -89,28 +86,41 @@ WE().layout.we_tinyMCE.do.onKeyDown = function (ed, e) {
 
 	if (e.ctrlKey || e.metaKey) {
 		switch (e.keyCode) {
-			case 68:
-			case 79:
-			case 82:
-			case 87:
+			case 67: // c
+				// we disable synchronizeHot during copy/cut: onChange will set hot
+				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
+				conf.weSynchronizeHot.doSyncHot = false;
+				break;
+			case 88: 
+				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
+				break;
+			case 68: // d
+			case 79: // o
+			case 82: // r
 				//set keyCode = -1 to just let WE-keyListener cancel event
-				if (e.keyCode !== 87 || conf.weIsFullscreen || conf.settings.weIsInPopup) {
+				if (conf.weEditorType !== 'inlineTrue') {
 					e.keyCode = -1;
 				}
 				/* falls through */
-			case 83:
+			case 83: // s
 				e.stopPropagation();
 				e.preventDefault();
 				WE().handler.dealWithKeyboardShortCut(e, window);
 				return false;
 			case 87:
-				if (conf.weIsFullscreen || conf.weIsInPopup) {
+				if (conf.weEditorType !== 'inlineTrue') {
 					e.keyCode = -1;
 				}
 				/* falls through */
 			default:
 			//let tiny do its job
 		}
+	}
+};
+
+WE().layout.we_tinyMCE.do.onKeyUp = function (ed, e) {
+	if (!e.ctrlKey && !e.metaKey){
+		WE().layout.we_tinyMCE.functions.setHot(ed);
 	}
 };
 
@@ -142,7 +152,7 @@ WE().layout.we_tinyMCE.do.onDblClick = function (ed, e) {
 				frameControler.openDocument(WE().consts.tables.FILE_TABLE, match[1], "");
 			}
 		} else {
-			new (WE().util.jsWindow)(ed.settings.win, src, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
+			new (WE().util.jsWindow)(ed.settings.weWin, src, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 		}
 	}
 	if (ed.selection.getNode().nodeName === "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))) {
@@ -159,7 +169,7 @@ WE().layout.we_tinyMCE.do.onDblClick = function (ed, e) {
 				}
 			}
 		} else {
-			new (WE().util.jsWindow)(ed.settings.win, href, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
+			new (WE().util.jsWindow)(ed.settings.weWin, href, "_blank", WE().consts.size.dialog.fullScreen, WE().consts.size.dialog.fullScreen, true, true, true);
 		}
 	}
 };
@@ -181,15 +191,17 @@ WE().layout.we_tinyMCE.do.onNodeChange = function (ed, cm, n) {
 };
 
 WE().layout.we_tinyMCE.do.onPostRender = function (ed, cm) {
-	var win = ed.settings.win;
-
 	// move this to setup!
-	ed.settings.win.addEventListener("resize", function (e) {
+	ed.settings.weWin.addEventListener("resize", function (e) {
 		WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, false);
 	});
 	
 
 	WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, true);
+};
+
+WE().layout.we_tinyMCE.do.onUnloadWysiwygDialog = function(ed){
+	WE().layout.we_tinyMCE.functions.registerDialog(ed, ed.settings.weWin, 'closeAll', '');
 };
 
 WE().layout.we_tinyMCE.do.onPostProcess = function (ed, o) {
@@ -264,7 +276,7 @@ WE().layout.we_tinyMCE.do.onDrop = function (e, ed) {
 
 WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 	var selection = ed.getWin().getSelection();
-	var tmpDiv = ed.getDoc().createElement('div');
+	var tmpDiv = top.document.createElement('div');
 
 	tmpDiv.appendChild(selection.getRangeAt(0).cloneContents());
 
@@ -280,7 +292,7 @@ WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 		// - remove tmpDiv, and
 		// - reselect original selection using bookmark
 
-		WE().layout.we_tinyMCE.vars.bm = ed.settings.win.tinyMCE.activeEditor.selection.getBookmark();
+		WE().layout.we_tinyMCE.vars.bm = ed.settings.weWin.tinyMCE.activeEditor.selection.getBookmark();
 		tmpDiv.style.position = 'absolute';
 		tmpDiv.style.left = '-99999px';
 		ed.getBody().appendChild(tmpDiv);
@@ -288,45 +300,65 @@ WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 
 		ed.getWin().setTimeout(function () {
 			ed.getBody().removeChild(tmpDiv);
-			tmpDiv = null;
-			ed.settings.win.tinyMCE.activeEditor.selection.moveToBookmark(WE().layout.we_tinyMCE.vars.bm);
+			ed.settings.weWin.tinyMCE.activeEditor.selection.moveToBookmark(WE().layout.we_tinyMCE.vars.bm);
 			WE().layout.we_tinyMCE.vars.bm = null;
+			tmpDiv = null;
+			ed.settings.weSynchronizeHot.doSyncHot = ed.settings.weSynchronizeHot.tmpDoSyncHot;
 			if (isCut) {
-				ed.settings.win.tinyMCE.activeEditor.selection.setContent('');
+				ed.settings.weWin.tinyMCE.activeEditor.selection.setContent('');
 			}
 			// we mus repaint tiny-path too
 		}, 100);
 	}
 };
 
-WE().layout.we_tinyMCE.functions.setHotEditorAndFrame = function (ed) {
-	if (!ed.weEditorFrameIsHot && ed.settings.editorType === 'inlineTrue' && ed.isDirty()) {
-		try {
-			ed.weEditorFrame.setEditorIsHot(true);
-		} catch (e) {
+WE().layout.we_tinyMCE.functions.tinyMceInitialize = function(win, confObject) {
+	if (typeof win.tinyMCE === 'object' && typeof confObject === 'object') {
+		if (win.tinyMCE.get(confObject.elements)) { // true when we reinitialize tiny instance
+			win.tinyMCE.execCommand('mceRemoveControl', false, confObject.elements);
 		}
-		ed.weEditorFrameIsHot = true;
+
+		win.tinyMCE.init(confObject);
 	}
 };
 
+WE().layout.we_tinyMCE.functions.setHot = function (ed) {
+	var conf = ed.settings;
+
+	if(!conf.weSynchronizeHot.doSyncHot){
+		return;
+	}
+
+	if (conf.weEditorType === 'inlineTrue'&& !conf.weSynchronizeHot.isEditorHot) {
+		try {
+			ed.settings.weWin.we_cmd('setHot');
+		} catch (e) {}
+	}
+
+	conf.weSynchronizeHot.isEditorHot = true;
+	ed.onChange.remove(conf.weSynchronizeHot.doOnChange);
+	ed.onKeyUp.remove(conf.weSynchronizeHot.doOnKeyUp);
+};
+
 WE().layout.we_tinyMCE.functions.tinyWeResizeEditor = function(ed, render) {
-	var win = ed.settings.win;
+	var conf = ed.settings;
 	var name = ed.settings.elements;
-	var el = win.tinyMCE.DOM.get(name + "_toolbargroup");
+	var el = conf.weWin.tinyMCE.DOM.get(name + "_toolbargroup");
 	var h = el ? el.parentNode.offsetHeight : 0;
 
 	// TODO: add busy
 
-	if ((render || !el) && --win.tinyMCE.weResizeLoops && win.top.dialogLoaded === false/*&& h < 24*/) {
+	if ((render || !el) && --ed.settings.weResizeLoops && conf.weWin.top.dialogLoaded === false/*&& h < 24*/) {
 		window.setTimeout(WE().layout.we_tinyMCE.functions.tinyWeResizeEditor, 10, ed, true);
 		return;
 	}
 
-	win.tinyMCE.DOM.setStyle(
-					win.tinyMCE.DOM.get(name + "_ifr"),
-					"height",
-					(win.innerHeight - h - 60) + "px"
-					);
+	conf.weWin.tinyMCE.DOM.setStyle(
+		conf.weWin.tinyMCE.DOM.get(name + "_ifr"),
+		"height",
+		(conf.weWin.innerHeight - h - 60) + "px"
+	);
+	ed.settings.weResizeLoops = 100;
 };
 
 WE().layout.we_tinyMCE.functions.customNodeFilter_A = function (nodes) {
@@ -337,19 +369,22 @@ WE().layout.we_tinyMCE.functions.customNodeFilter_A = function (nodes) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinySetEditorFrame = function(ed) {
-	/* set EditorFrame.setEditorIsHot(true) */
+WE().layout.we_tinyMCE.functions.setSyncHot = function(ed) {
+	var conf = ed.settings;
 
-	ed.weEditorFrame = null;
-	// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
-	ed.weEditorFrameIsHot = false;
+	conf.weSynchronizeHot.isEditorHot = false;
+	conf.weSynchronizeHot.doOnChange = null;
 
-	// FIXME: make weTinyMce pass through _EditorFrame if there!
-	switch(ed.settings.editorType){
-		case 'inlineTrue':
-			ed.weEditorFrame = ed.settings.win._EditorFrame !== undefined ? ed.settings.win._EditorFrame : null;
-		case 'inlineFalse':
-			ed.weEditorFrame = ed.settings.win.opener && ed.settings.win.opener.top.WebEdition && ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController ? ed.settings.win.opener.top.WebEdition.layout.weEditorFrameController : null;
+	if(!ed.settings.weIsFrontend){
+		switch(ed.settings.weEditorType){
+			case 'inlineTrue':
+				conf.weSynchronizeHot.doSyncHot = (ed.settings.weWin._EditorFrame !== undefined);
+				break;
+			case 'inlineFalse':
+			case 'fullscreen':
+				conf.weSynchronizeHot.doSyncHot = (ed.settings.weWin.opener._EditorFrame !== undefined);
+				break;
+		}
 	}
 };
 
@@ -377,7 +412,7 @@ WE().layout.we_tinyMCE.functions.setContentCss = function (ed) {
 	var conf = ed.settings;
 
 	conf.content_css = conf.weContentCssParts.start // always exists
-			+ WE().layout.we_tinyMCE.functions.getDocumentCss((conf.editorType === 'inlineTrue' ? conf.win : conf.win.opener), true)
+			+ WE().layout.we_tinyMCE.functions.getDocumentCss((conf.weEditorType === 'inlineTrue' ? conf.weWin : conf.weWin.opener), true)
 			+ (conf.weContentCssParts.end ? ',' + conf.weContentCssParts.end : '');
 };
 
@@ -399,15 +434,13 @@ WE().layout.we_tinyMCE.functions.setTinyParams = function (ed) {
 
 WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent = function (ed) {
 	var conf = ed.settings;
-	if(conf.editorType === 'inlineTrue'){
+	if(conf.weEditorType === 'inlineTrue'){
 		return;
 	}
 
-	// FIXME: why use visible EditorFrame when we can use opener? obsolete?
-	//var openerDocument = conf.weIsFrontendEdit ? conf.win.opener.document : WE().layout.weEditorFrameController.getVisibleEditorFrame().document;
-	var openerDocument = conf.win.opener.document;
+	var openerDocument = conf.weWin.opener.document;
 
-	switch(conf.editorType){
+	switch(conf.weEditorType){
 		case 'inlineFalse': // TODO: use WE() for consts
 			try{
 				ed.setContent(openerDocument.getElementById(conf.weName).value);
@@ -417,5 +450,79 @@ WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent = function (ed) {
 			try{
 				ed.setContent(openerDocument.getElementById(conf.weName + '_ifr').contentDocument.body.innerHTML);
 			}catch(e){}
+	}
+};
+
+WE().layout.we_tinyMCE.functions.registerDialog = function (ed, win, action, dialogType) {
+	if(!(win && ed && action)){
+		return;
+	}
+
+	var reg = ed.settings.weRegisteredDialogs; 
+	dialogType = dialogType ? dialogType : 'dialog';
+
+	switch(action){
+		case 'register':
+			switch(dialogType){
+				case 'dialog':
+					if (reg.dialog) {
+						try {
+							WE().util.jsWindow.prototype.closeAll(reg.dialog);
+						} catch (err) {
+						}
+					}
+					if (reg.secondaryDialog) {
+						try {
+							WE().util.jsWindow.prototype.closeAll(reg.secondaryDialog);
+						} catch (err) {}
+					}
+					reg.dialog = win;
+					break;
+				case 'secondaryDialog':
+					if (reg.secondaryDialog) {
+						try {
+							WE().util.jsWindow.prototype.closeAll(reg.secondaryDialog);
+						} catch (err) {}
+					}
+					reg.secondaryDialog = win;
+					break;
+			}
+			break;
+		case 'unregister':
+			switch(dialogType){
+				case 'dialog':
+					if (reg.dialog && reg.dialog === win) {
+						try {
+							reg.dialog = null;
+						} catch (err) {}
+						if (reg.secondaryDialog) {
+							try {
+								WE().util.jsWindow.prototype.closeAll(reg.secondaryDialog);
+							} catch (err) {}
+							reg.secondaryDialog = null;
+						}
+					}
+					break;
+				case 'secondaryDialog':
+					if (reg.secondaryDialog && reg.secondaryDialog === win) {
+						reg.secondaryDialog = null;
+					}
+					break;
+			}
+			break;
+		case 'closeAll':
+			if (reg.dialog) {
+				try {
+					WE().util.jsWindow.prototype.closeAll(reg.dialog);
+				} catch (err) {
+				}
+			}
+			if (reg.secondaryDialog) {
+				try {
+					WE().util.jsWindow.prototype.closeAll(reg.secondaryDialog);
+				} catch (err) {
+				}
+			}
+			break;
 	}
 };
