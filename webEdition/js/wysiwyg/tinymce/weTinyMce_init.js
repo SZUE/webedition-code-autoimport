@@ -37,7 +37,7 @@ tinyMCE.PluginManager.load = tinyPluginManager;
 WE().layout.we_tinyMCE.functions.tinyMceInitialize(window, confObject);
 
 function tinyPluginManager(n, u, cb, s) {
-	var t = this, url = u;top.console.log('t', t);
+	var t = this, url = u;
 	function loadDependencies() {
 		var dependencies = t.dependencies(n);
 		tinymce.each(dependencies, function (dep) {
