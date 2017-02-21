@@ -1,4 +1,3 @@
-we/include/we_classes/database/we_database_mssql.class.php 
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -479,6 +478,7 @@ we/include/we_editors/we_fileupload.inc.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/we_exit_multi_doc_question.inc.php
 we/include/we_editors/we_exit_doc_question.inc.php
+we/include/we_editors/we_editor_save.class.php
 we/include/we_editors/we_editor_publish.inc.php
 we/include/we_editors/we_editPasswd.inc.php
 we/include/we_editors/we_document_move_question.inc.php
@@ -630,16 +630,17 @@ we/include/we_classes/helpers/we_errorHandling.inc.php
 we/include/we_classes/fileupload/we_fileupload_uploader_include.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_importfile.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_base.class.php
+we/include/we_classes/dialog/we_dialog_wysiwygWindow.class.php
 we/include/we_classes/dialog/we_dialog_table.class.php
 we/include/we_classes/dialog/we_dialog_specialChar.class.php
 we/include/we_classes/dialog/we_dialog_rule.class.php
 we/include/we_classes/dialog/we_dialog_importRtf.class.php
 we/include/we_classes/dialog/we_dialog_fullscreenEdit.class.php
+we/include/we_classes/dialog/we_dialog_fullscreen.class.php
 we/include/we_classes/dialog/we_dialog_color.class.php
 we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/dialog/we_dialog_Hyperlink.class.php
-we/include/we_classes/dialog/we_dialog_fullscreen.class.php
-we/include/we_classes/dialog/we_dialog_wysiwygWindow.class.php
+we/include/we_classes/database/we_database_mssql.class.php
 we/include/we_classes/csv.inc.php
 we/include/we_classes/contents/we_quicktimeDocument.class.php
 we/include/we_classes/charsetHandler.class.php
