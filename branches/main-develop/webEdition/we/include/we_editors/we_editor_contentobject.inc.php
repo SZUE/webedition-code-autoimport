@@ -30,6 +30,8 @@ we_html_tools::protect();
 $charset = (!empty($we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
 		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
+$jsCmd = new we_base_jsCmd();
+
 echo we_html_tools::getHtmlTop('', $charset, 5);
 
 //	---> initialize some vars
@@ -91,7 +93,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			echo '<div id="' . $uniqid . '" class="objectFileElement">
 <div id="f' . $uniqid . '" class="default">
 <table cellpadding="6" style="float:left;">' .
-			$we_doc->getFieldHTML($we_doc->getElement('wholename' . $identifier), $uniqid) .
+			$we_doc->getFieldHTML($jsCmd, $we_doc->getElement('wholename' . $identifier), $uniqid) .
 			'</table>
 		<span class="defaultfont clearfix" style="width:180px;">' .
 			we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
@@ -100,10 +102,11 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
 			'</span>
 		</div></div>';
-			$js.='classEntry.add(document, \'' . $uniqid . '\', null);';
+			$js .= 'classEntry.add(document, \'' . $uniqid . '\', null);';
 		}
-		echo we_html_element::jsElement($js .
-			$jsGUI->getDisableButtonJS()
+		echo $jsCmd->getCmds() .
+		we_html_element::jsElement($js .
+				$jsGUI->getDisableButtonJS()
 		) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
