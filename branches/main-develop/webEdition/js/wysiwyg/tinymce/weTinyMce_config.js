@@ -191,9 +191,9 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 		} catch(e){}
 
 		//FIXME: change this & every call to an object/array element call!
-		if(typeof window['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){ // FIXME: can this work?
+		if(typeof conf.weWin['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){
 			try{
-				window['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
+				conf.weWin['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
 			} catch(e){
 				//nothing
 			}
