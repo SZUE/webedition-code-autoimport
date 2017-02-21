@@ -404,15 +404,9 @@ function we_tag_userInput(array $attribs, $content){
 				$ret = we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 			}
-			return $ret .
-				(!$inlineedit ?
-				//FIXME: does tiny really use weButtons?!
-				STYLESHEET_MINIMAL .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_registerDialogs.js') :
-				''
-				) .
-				we_html_forms::weTextarea($fieldname, ($content ?: $value), $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+			$ret .= (!$inlineedit ? STYLESHEET_MINIMAL : '');
 
+			return $ret;
 		case 'checkbox' :
 			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',

@@ -438,7 +438,7 @@ class we_selector_category extends we_selector_file{
 					"width" => 450,
 					"height" => 130,
 					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
-					], true, 'autobr', true, true, true, true, true, ""));
+					], true, 'autobr', true, true, true, true, true, $GLOBALS['WE_BACKENDCHARSET']));
 			$table->setCol(5, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 

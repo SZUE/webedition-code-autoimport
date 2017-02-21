@@ -30,7 +30,7 @@
 var payload = WE().util.getDynamicVar(document, 'loadVarDialog', 'data-vars');
 
 document.addEventListener("keyup", doKeyDown, true);
-function doKeyDown(e) {top.console.log(e.charCode);
+function doKeyDown(e) {
 	switch (e.charCode) {
 		case 27:
 			top.close();
@@ -44,7 +44,7 @@ function weTinyDialog_doOk() {
 }
 
 function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
+	return;
 }
 
 function we_cmd() {

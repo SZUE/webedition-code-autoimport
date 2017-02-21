@@ -36,7 +36,9 @@ function weDialogBase_setLoaded(){
 }
 
 function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
+	if(WE() && WE().util){
+		WE().util.jsWindow.prototype.closeAll(window);
+	}
 }
 
 function weSaveToGlossaryFn() {

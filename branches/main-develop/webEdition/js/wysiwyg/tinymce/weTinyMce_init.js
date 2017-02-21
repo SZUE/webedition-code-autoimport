@@ -23,19 +23,48 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+
 var initVars = WE().util.getDynamicVar(document, 'loadVarWeTinyMce_init', 'data-dynvars');
-initVars.win = window;
-
+var confObject = null;
 var tinyMceConfObjects = tinyMceConfObjects ? tinyMceConfObjects : {};
-tinyMceConfObjects[initVars.weFieldNameClean] = WE().layout.we_tinyMCE.getTinyConfObject(initVars);
 
-// to be temporarily compatible with we_object
-window['tinyMceConfObject__' + initVars.weFieldNameClean] = tinyMceConfObjects[initVars.weFieldNameClean];
+initVars.weWin = window;
+tinyMceConfObjects[initVars.weFieldNameClean] = confObject = WE().layout.we_tinyMCE.getTinyConfObject(initVars);
 
 tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject);
-tinyMCE.PluginManager.load = initVars.win.tinyPluginManager;
+tinyMCE.PluginManager.load = tinyPluginManager;
 
-// try to move this to tiny setup or init
-tinyMCE.weResizeLoops = 100;
+WE().layout.we_tinyMCE.functions.tinyMceInitialize(window, confObject);
 
-tinyMCE.init(window.tinyMceConfObjects[initVars.weFieldNameClean]);
+function tinyPluginManager(n, u, cb, s) {
+	var t = this, url = u;top.console.log('t', t);
+	function loadDependencies() {
+		var dependencies = t.dependencies(n);
+		tinymce.each(dependencies, function (dep) {
+			var newUrl = t.createUrl(u, dep);
+			t.load(newUrl.resource, newUrl, undefined, undefined);
+		});
+		if (cb) {
+			if (s) {
+				cb.call(s);
+			} else {
+				cb.call(tinymce.ScriptLoader);
+			}
+		}
+	}
+	if (t.urls[n]) {
+		return;
+	}
+	if (typeof u === "object") {
+		url = u.resource.indexOf("we") === 0 ? WE().consts.dirs.WE_JS_TINYMCE_DIR + "plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
+	}
+	if (url.indexOf("/") !== 0 && url.indexOf("://") === -1) {
+		url = tinymce.baseURL + "/" + url;
+	}
+	t.urls[n] = url.substring(0, url.lastIndexOf("/"));
+	if (t.lookup[n]) {
+		loadDependencies();
+	} else {
+		tinymce.ScriptLoader.add(url, loadDependencies, s);
+	}
+};

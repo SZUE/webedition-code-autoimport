@@ -28,10 +28,11 @@
 		init: function (d, e) {
 			d.addCommand('mceWefullscreen', function () {
 				var a = d.selection;
-				var readyConfig = d.getParam('fullscreen_readyConfig');
-				var editorType = d.getParam('editorType');
+				var readyConfig = d.getParam('weFullscreen_readyConfig');
+				var weEditorType = d.getParam('weEditorType');
+				var language = d.getParam('language');
 
-				switch(editorType){
+				switch(weEditorType){
 					case 'fullscreen':
 						return;
 					case 'inlineFalse':
@@ -49,14 +50,14 @@
 							window.moveTo(0, 0);
 							d.controlManager.setActive('wefullscreen', 1);
 							document.getElementsByClassName('mce_wefullscreen')[1].className = 'mceIcon mce_wefullscreen_var mce_we_fa';
-							document.getElementsByClassName('mce_wefullscreen')[0].title = (WE().consts.g_l.tinyMceTranslationObject ? WE().consts.g_l.tinyMceTranslationObject.de.we.tt_wefullscreen_reset : '');
+							document.getElementsByClassName('mce_wefullscreen')[0].title = (WE().consts.g_l.tinyMceTranslationObject ? WE().consts.g_l.tinyMceTranslationObject[language].we.tt_wefullscreen_reset : '');
 						} else {
 							d.controlManager.setActive('wefullscreen', 0);
 							var v = document.getElementsByClassName('mce_wefullscreen_var');
 							if (v) {
 								v[0].className = 'mceIcon mce_wefullscreen mce_we_fa';
 							}
-							document.getElementsByClassName('mce_wefullscreen')[0].title = (WE().consts.g_l.tinyMceTranslationObject ? WE().consts.g_l.tinyMceTranslationObject.de.we.tt_wefullscreen_set : '');
+							document.getElementsByClassName('mce_wefullscreen')[0].title = (WE().consts.g_l.tinyMceTranslationObject ? WE().consts.g_l.tinyMceTranslationObject[language].we.tt_wefullscreen_set : '');
 							window.resizeTo(weInlineFalse_dialogMaximization.lastW, weInlineFalse_dialogMaximization.lastH);
 							window.moveTo(weInlineFalse_dialogMaximization.lastX, weInlineFalse_dialogMaximization.lastY);
 							weInlineFalse_dialogMaximization.isMaximized = false;

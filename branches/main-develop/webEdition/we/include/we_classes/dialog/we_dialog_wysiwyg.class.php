@@ -42,7 +42,7 @@ class we_dialog_wysiwyg extends we_dialog_base{
 		$this->editorType = $editorType;
 		$this->readyConfig = (array) json_decode($this->args['readyConfig']);
 
-		$this->charset = $this->readyConfig['weCharset']; // TODO: make these normal props
+		$this->charset = $this->readyConfig['weCharset'];
 		if(!$this->charset){
 			t_e('charset not found for wysiwyg', $this->charset);
 			exit();
@@ -53,20 +53,10 @@ class we_dialog_wysiwyg extends we_dialog_base{
 		
 		if($this->editorType === we_wysiwyg_editor::TYPE_FULLSCREEN){
 			$this->JsOnly = true; // means: on clicking ok do js only (not submit form to cmd_frame)
-			$this->pageNr = $this->numPages = 1;
+			$this->pageNr = $this->numPages = 1; // obsolete?
 			$this->dialogTitle = g_l('wysiwyg', '[fullscreen_editor]');
-		} else {
-			
+			$this->bodyId = weFullscreenDialog;
 		}
-
-
-		// depending on type = inlineFalse or fullsccreen we must set: some args (width, height, isfullscreen) and props to manage ok-action
-		// => we_what, we_cmd[0], $jsOnly and $page
-
-		/*
-		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
-		// we need all fields to initialize we_wysiwyg_editor
-		*/
 	}
 
 	protected function getJs(){
@@ -80,17 +70,10 @@ class we_dialog_wysiwyg extends we_dialog_base{
 
 		// FIXME: add div around editor when fullscreen
 		return we_html_element::htmlDiv(['style' => 'position:absolute;top:0;bottom:0px;left:0px;right:0px;overflow:hidden;margin:0px'],
-				we_wysiwyg_editor::getHeaderHTML(false, $this->noInternals) .
+				we_wysiwyg_editor::getHeaderHTML($this->noInternals) .
 				we_html_element::htmlHiddens([
-						//'we_dialog_args[readyConfig]' => '', // Fno need to send this => FIXME: is overwritten by base
-						//'we_cmd[0]' => $this->editorType === we_wysiwyg_editor::TYPE_INLINE_FALSE ? 'writeBack_inlineFalse' : ''
 					]) . $e->getHTML()
 			);
-	}
-
-	protected function getCancelBut(){
-		return ($this->editorType !== we_wysiwyg_editor::TYPE_FULLSCREEN) ? parent::getCancelBut() :
-			we_html_button::create_button(we_html_button::CANCEL, "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
 	}
 
 	function cmdFunction(){

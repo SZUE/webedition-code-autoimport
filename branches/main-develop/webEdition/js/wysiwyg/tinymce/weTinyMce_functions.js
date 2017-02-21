@@ -28,25 +28,7 @@
 var tinyEditors = {};
 var tinyEditorsInPopup = {};
 
-/* Re-/Initialize TinyMCE:
- * param (object) confObject: initialize Tiny instance using confObject
- *
- * If there is allready an instance applied to the textarea defined in confObject
- * this editor will be removed and re-initialized
- */
-function tinyMceInitialize(confObject) {
-	if (typeof tinyMCE === 'object') {
-		if (typeof confObject === 'object') {
-			if (tinyMCE.get(confObject.elements)) {
-				tinyMCE.execCommand('mceRemoveControl', false, confObject.elements);
-			}
-			tinyMCE.init(confObject);
-		}
-	}
-}
-
 //FIXME check if we can return/use undefined instead of the string "undefined". Maybe we will get some errors, which would otherwise silently ignored -> frameid=getId()+"xx"; can result in "undefinedxx" - not in an error.
-
 function TinyWrapper(fieldname) {
 	if (!(this instanceof TinyWrapper)) {
 		return new TinyWrapper(fieldname);
@@ -172,57 +154,3 @@ function TinyWrapper(fieldname) {
 		return undefined;
 	};
 }
-
-function tinyMCECallRegisterDialog(win, action) {
-	if (top.isRegisterDialogHere !== undefined) {
-		try {
-			top.weRegisterTinyMcePopup(win, action);
-		} catch (err) {
-		}
-	} else {
-		if (top.opener.isRegisterDialogHere !== undefined) {
-			try {
-				top.opener.weRegisterTinyMcePopup(win, action);
-			} catch (err) {
-			}
-		} else {
-			try {
-				top.opener.tinyMCECallRegisterDialog(win, action);
-			} catch (err) {
-			}
-		}
-	}
-}
-
-var tinyPluginManager = function (n, u, cb, s) {
-	var t = this, url = u;
-	function loadDependencies() {
-		var dependencies = t.dependencies(n);
-		tinymce.each(dependencies, function (dep) {
-			var newUrl = t.createUrl(u, dep);
-			t.load(newUrl.resource, newUrl, undefined, undefined);
-		});
-		if (cb) {
-			if (s) {
-				cb.call(s);
-			} else {
-				cb.call(tinymce.ScriptLoader);
-			}
-		}
-	}
-	if (t.urls[n]) {
-		return;
-	}
-	if (typeof u === "object") {
-		url = u.resource.indexOf("we") === 0 ? WE().consts.dirs.WE_JS_TINYMCE_DIR + "plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
-	}
-	if (url.indexOf("/") !== 0 && url.indexOf("://") === -1) {
-		url = tinymce.baseURL + "/" + url;
-	}
-	t.urls[n] = url.substring(0, url.lastIndexOf("/"));
-	if (t.lookup[n]) {
-		loadDependencies();
-	} else {
-		tinymce.ScriptLoader.add(url, loadDependencies, s);
-	}
-};

@@ -43,26 +43,25 @@ WE().layout.we_tinyMCE = {
 };
 
 function TinyMceConfObject(args) {
-	// all settings that are not original tinyMce have prefix 'we'
-	this.editorType = args.editorType;
-	this.weLanguage = args.weLanguage; // set tiny setting language directly
-	this.weIsFullscreen = args.weIsFullscreen;  // obsolete: check and delete
-	this.weIsInPopup = args.weIsInPopup; // obsolete: check and delete
-	this.weIsFrontendEdit = args.weIsFrontendEdit; // use just one of them
-	this.weIsFrontend = args.weIsFrontendEdit;
-	this.weName = args.weName; // obsolete? same as elements
+	this.weEditorType = args.weEditorType;
+	this.weIsFrontend = args.weIsFrontend;
+	this.weName = args.weName;
 	this.weFieldName = args.weFieldName;
 	this.weFieldNameClean = args.weFieldNameClean;
 	this.weContentCssParts = args.weContentCssParts;
-	this.win = args.win; // => weWin
+	this.weWin = args.weWin;
 	this.weToolbarRows = args.weToolbarRows;
-	this.we_restrict_contextmenu = args.contextmenuCommands;
-	this.wePluginClasses = { // send as array
-		weadaptbold : args.editorLangSuffix + 'weadaptbold',
-		weadaptitalic : args.editorLangSuffix + 'weadaptitalic',
-		weabbr : args.editorLangSuffix + 'weabbr',
-		weacronym : args.editorLangSuffix + 'weacronym'
-	};
+	this.weContextmenuCommands = args.weContextmenuCommands;
+	this.weFullscreen_readyConfig = args.weFullscreen_readyConfig;
+	this.weImageStartID = args.weImageStartID;
+	this.weGalleryTemplates = args.weGalleryTemplates;
+	this.weClassNames_urlEncoded = args.weCssClasses;
+	this.weRemoveFirstParagraph = args.weRemoveFirstParagraph;
+	this.weTinyParams = args.weTinyParams;
+	this.wePluginClasses = args.wePluginClasses;
+	this.weWordCounter = 0;
+	this.weResizeLoops = 100;
+
 	this.weInlineFalse_dialogMaximization = {
 		isMaximized : false,
 		lastX : 0,
@@ -70,42 +69,44 @@ function TinyMceConfObject(args) {
 		lastW : 0,
 		lastH: 0
 	};
-	this.tinyGl = { // send as array => weTinyGl
-		removedInlinePictures: args.removedInlinePictures
+	this.weRegisteredDialogs = {
+		dialog : null,
+		secondaryDialog : null
+	};
+	this.weSynchronizeHot = {
+		doSyncHot : false,
+		tmpDoSyncHot : false,
+		isEditorHot  : false,
+		doOnChange : null,
+		doOnKeyUp : null
 	};
 
 	this.doctype = '<!DOCTYPE html>';
-	this.fix_list_elements = true;
-	this.fullscreen_readyConfig = args.fullscreen_readyConfig;
-	this.weImageStartID = args.weImageStartID;
-	this.weGalleryTemplates = args.weGalleryTemplates;
-	this.weClassNames_urlEncoded = args.weCssClasses;
-	this.weWordCounter = 0;
-	this.weRemoveFirstParagraph = args.weRemoveFirstParagraph;
-	this.wePopupGl = args.wePopupGl;
-	this.weTinyParams = args.weTinyParams;
 	this.language = args.language;
 	this.mode = 'exact';
 	this.elements = args.elements;
 	this.theme = 'advanced';
+	this.skin = 'o2k7';
+	this.skin_variant = 'silver';
+	this.editor_css = args.editor_css;
+	this.popup_css_add = args.popup_css_add;
+	this.body_class = (args.weClassName ? args.weClassName + ' ' : '') + 'wetextarea tiny-wetextarea wetextarea-' + args.weOrigName;
+	this.plugins = args.plugins;
 	this.accessibility_warnings = false;
 	this.relative_urls = false; //important!
 	this.convert_urls = false; //important!
-	//this.force_br_newlines = true;
 	this.force_p_newlines = 0; // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
-	//this.forced_root_block = '';
 	this.entity_encoding = 'named';
 	this.entities = '160,nbsp';
-	this.element_format = args.xml;
-	this.body_class = (args.className ? args.className + ' ' : '') + 'wetextarea tiny-wetextarea wetextarea-' + args.origName;
-	this.plugins = args.plugins;
-	this.theme_advanced_toolbar_location = args.buttonpos; //external: toolbar floating on top of textarea
-	this.theme_advanced_fonts = args.fontnames;
-	this.theme_advanced_font_sizes = args.fontsizes;
-	this.theme_advanced_styles = args.tinyCssClasses;
-	this.theme_advanced_blockformats = args.formats;
+	this.fix_list_elements = true;
+	this.element_format = args.element_format;
+	this.theme_advanced_toolbar_location = args.theme_advanced_toolbar_location; //external: toolbar floating on top of textarea
 	this.theme_advanced_toolbar_align = 'left';
-	this.theme_advanced_statusbar_location = args.statuspos;
+	this.theme_advanced_fonts = args.theme_advanced_fonts;
+	this.theme_advanced_font_sizes = args.theme_advanced_font_sizes;
+	this.theme_advanced_styles = args.theme_advanced_styles;
+	this.theme_advanced_blockformats = args.theme_advanced_blockformats;
+	this.theme_advanced_statusbar_location = args.theme_advanced_statusbar_location;
 	this.theme_advanced_resizing = false;
 	this.theme_advanced_default_foreground_color = '#FF0000';
 	this.theme_advanced_default_background_color = '#FFFF99';
@@ -116,13 +117,11 @@ function TinyMceConfObject(args) {
 	this.custom_elements = 'we-gallery';
 	this.visual = true;
 	this.extended_valid_elements = '@[we-tiny]';
-	this.editor_css = args.editorCss;
-	this.popup_css_add = args.popupCssAdd;
-	this.template_templates = args.templates;
-	this.skin = 'o2k7';
-	this.skin_variant = 'silver';
 	this.paste_text_sticky = true;
 	this.paste_auto_cleanup_on_paste = true;
+	this.template_templates = args.template_templates;
+	//this.force_br_newlines = true;
+	//this.forced_root_block = '';
 
 	this.setup = WE().layout.we_tinyMCE.setupEditor;
 	this.oninit = WE().layout.we_tinyMCE.initEditor;
@@ -132,36 +131,28 @@ function TinyMceConfObject(args) {
 WE().layout.we_tinyMCE.setupEditor = function(ed){
 	var conf = ed.settings;
 
-	ed.weEditorFrameIsHot = false;
-
-	// add some settings
 	WE().layout.we_tinyMCE.functions.setContentCss(ed);
 	WE().layout.we_tinyMCE.functions.setToolbarRows(ed);
 	WE().layout.we_tinyMCE.functions.setTinyParams(ed);
+	WE().layout.we_tinyMCE.functions.setSyncHot(ed);
 
-	// add event listeners
-	ed.onInit.add(WE().layout.we_tinyMCE.onInitEditor);
 	ed.onKeyDown.add(WE().layout.we_tinyMCE.do.onKeyDown);
 	ed.onDblClick.add(WE().layout.we_tinyMCE.do.onDblClick);
 	ed.onPostProcess.add(WE().layout.we_tinyMCE.do.onPostProcess);
+	ed.onNodeChange.add(WE().layout.we_tinyMCE.do.onNodeChange);
 
-	if(conf.editorType !== 'inlineTrue'){
+	if(conf.weEditorType !== 'inlineTrue'){
 		ed.onPostRender.add(WE().layout.we_tinyMCE.do.onPostRender); //still no solution for relative scaling when inlineedit=true
+		conf.weWin.addEventListener('unload', function(e){WE().layout.we_tinyMCE.do.onUnloadWysiwygDialog(ed);}, false);
 	}
 
-	if(!conf.weIsFrontendEdit){
-		WE().layout.we_tinyMCE.functions.tinySetEditorFrame(ed); // find a simpler way to establish editorLevel...
-		try {
-			// do we need this on setup? => if opening dialog inlineFale sets base document hot, than we need ist...
-			ed.weEditorFrameIsHot = conf.editorType !== 'inlineTrue' ? ed.weEditorFrame.EditorIsHot : false;
-		} catch (e) {}
-
-		ed.onPaste.add(WE().layout.we_tinyMCE.do.beforePastePlugin);
+	if(!conf.weIsFrontendEdit && conf.weSynchronizeHot.doSyncHot){
+		conf.weSynchronizeHot.doOnChange = ed.onChange.add(WE().layout.we_tinyMCE.do.onChange);
+		conf.weSynchronizeHot.doOnKeyUp = ed.onKeyDown.add(WE().layout.we_tinyMCE.do.onKeyUp);
 		ed.onSaveContent.add(WE().layout.we_tinyMCE.do.onSaveContent);
-		ed.onNodeChange.add(WE().layout.we_tinyMCE.do.onNodeChange);
-		// ed.onChange.add(WE().layout.we_tinyMCE.do.onChange);
-		// ed.onClick.add(WE().layout.we_tinyMCE.do.onClick);
 	}
+
+	ed.onInit.add(WE().layout.we_tinyMCE.onInitEditor);
 };
 
 WE().layout.we_tinyMCE.onInitEditor = function(ed){
@@ -170,7 +161,7 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 	// set some controls
 	ed.pasteAsPlainText = 1;
 	ed.controlManager.setActive('pastetext', 0);
-	if(conf.editorType === 'fullscreen'){
+	if(conf.weEditorType === 'fullscreen'){
 		ed.controlManager.setDisabled('wefullscreen', 1);
 	}
 	//ed.execCommand("mceWevisualaid", true);
@@ -180,17 +171,19 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 
 	// add listeners for events ed has no public events for
 	ed.dom.bind(ed.getWin(), 'drop', function(e) {return WE().layout.we_tinyMCE.do.onDrop(e, ed);});
+
+	// FIXME: replace copy/cut by keyDown
 	ed.dom.bind(ed.getWin(), 'copy', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, false);});
 	ed.dom.bind(ed.getWin(), 'cut', function(e) {WE().layout.we_tinyMCE.do.onCopyCut(ed, true);});
 
-	// when not inlineeditTrue: get content from opener document => move to fn
-	if(conf.editorType !== 'inlineTrue'){
+	// when not inlineTrue: get content from opener document => move to fn
+	if(conf.weEditorType !== 'inlineTrue'){
 		WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent(ed);
 	}
 
 	/* ALL THIS EDITOR-REGISTERING STUFF IS NOT WORKING AT THE TIME! */
 	if(conf.weFieldName){
-		conf.win.tinyEditors[conf.weFieldName] = ed;
+		conf.weWin.tinyEditors[conf.weFieldName] = ed;
 
 		var hasOpener = false;
 		try{
