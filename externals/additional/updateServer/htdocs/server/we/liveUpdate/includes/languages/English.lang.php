@@ -85,15 +85,12 @@ $lang['update']['ReqWarnungPCREold2'] = ') is outdated. This can lead to some pr
 $lang['update']['ReqWarnungPHPextension'] = 'A required PHP extension is missing: ';
 $lang['update']['ReqWarnungPHPextensionND'] = 'The required PHP extensions can not be checked';
 $lang['update']['ReqWarnungNoCheck'] = 'It can not be determined if your system meets the current system requirements for the update. Please check the system requirements yourself at <a href="http://www.webedition.org/de/dokumentation-community/systemvoraussetzungen.php" target="_blank">Systemrecommandations</a><br/>We recommend, <b>after manually checking the system requirements above,</b> to update first to <b>version 6.1.0.2</b>. The requirements in this version are lower and be checked in later updates automatically.';
-$lang['update']['ReqWarnungMySQL4'] = 'For the desired version, MySQL version 4.1 or higher is required. benötigt. This requirement is not met.';
-$lang['update']['ReqWarnungMySQL5'] = 'For the desired version, MySQL version 5.0 or higher is required. benötigt. This requirement is not met.';
-$lang['update']['ReqWarnungMySQL55'] = 'For the desired version, MySQL version 5.5 or higher is required. benötigt. This requirement is not met.';
+$lang['update']['ReqWarnungMySQL'] = 'For the desired version, MySQL version %s or higher is required. This requirement is not met.';
 $lang['update']['ReqWarnungSDKdb'] = 'SDK DB operations and WE-APPS using database access are not availlable, the PHP extensions PDO und PDO_mysql are not available';
 $lang['update']['ReqWarnungMbstring'] = 'MultiByte String support (PHP extension mbstring) is not available. Therefore utf-8 sites are not possible, SDK und Apps are not usuable and future versions of webEdition may not work at all.';
 $lang['update']['ReqWarnungGdlib'] = 'The PHP GDlib funktions (PHP extension gd) are not available, therefore, many image manipulation and preview functions are not available.';
 $lang['update']['ReqWarnungExif'] = "The exif PHP extension is not available, therefore, EXIF metadata for images are nut usuable.";
-$lang['update']['ReqWarnungPHPversion'] = 'PHP version 5.2.4 or newer is required for the update. Determined was version ';
-$lang['update']['ReqWarnungPHPversionForV640'] = 'PHP version 5.3.7 or newer is required for the update to a webEdition version newer than 6.3.9.0. Determined was PHP version ';
+$lang['update']['ReqWarnungPHPversion'] = 'PHP version %s or newer is required for the update. Determined version is ';
 
 $lang['update']['spenden'] = 'This webEdition version was made possible by the work of the charitable foundation webEdition e.V. Support the work of the foundation and its members with your donation<br/>
 It allows the foundation to employ professional developers which make it <br/>

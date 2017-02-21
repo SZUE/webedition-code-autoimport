@@ -6,10 +6,10 @@
  */
 $selectList = '';
 
-if(version_compare(phpversion(), "4.3.0") == -1){
+if(version_compare($_SESSION['clientPhpVersion'], "4.3.0") == -1){
 	$maxVersionNumber = "5099";
-} elseif(version_compare(phpversion(), "5.6.0") == -1){
-	$maxVersionNumber = "7099";
+} elseif(version_compare($_SESSION['clientPhpVersion'], "5.6.0") == -1){
+	$maxVersionNumber = "7071";
 }
 $shownversions = [];
 foreach($GLOBALS['updateServerTemplateData']['possibleVersions'] as $number => $version){

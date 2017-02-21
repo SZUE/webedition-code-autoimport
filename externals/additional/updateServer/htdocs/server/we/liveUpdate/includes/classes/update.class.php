@@ -13,56 +13,56 @@ class update extends updateBase{
 		}
 		sort($apps);
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' SET date=NOW(),' .
-			we_database_base::arraySetter([
-				"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),
-				'installedSvnRevision' => (isset($_SESSION['clientSubVersion']) ? $_SESSION['clientSubVersion'] : ''),
-				'installedVersionBranch' => (isset($_SESSION['clientVersionBranch']) ? $_SESSION['clientVersionBranch'] : ''),
-				'clientPhpVersion' => (isset($_SESSION['clientPhpVersion']) ? $_SESSION['clientPhpVersion'] : ''),
-				'clientPhpExtensions' => (isset($_SESSION['clientPhpExtensions']) ? $_SESSION['clientPhpExtensions'] : ''),
-				'clientPcreVersion' => (isset($_SESSION['clientPcreVersion']) ? $_SESSION['clientPcreVersion'] : ''),
-				'clientMySqlVersion' => (isset($_SESSION['clientMySQLVersion']) ? $_SESSION['clientMySQLVersion'] : ''),
-				'clientServerSoftware' => (isset($_SESSION['clientServerSoftware']) ? $_SESSION['clientServerSoftware'] : ''),
-				'clientEncoding' => (isset($_SESSION['clientEncoding']) ? $_SESSION['clientEncoding'] : ''),
-				'clientSysLng' => (isset($_SESSION['clientSyslng']) ? $_SESSION['clientSyslng'] : ''),
-				'clientLng' => (isset($_SESSION['clientLng']) ? $_SESSION['clientLng'] : ''),
-				'clientExtension' => (isset($_SESSION['clientExtension']) ? $_SESSION['clientExtension'] : ''),
-				'clientDomain' => (isset($_SESSION['clientDomain']) ? base64_encode($_SESSION['clientDomain']) : ''),
-				'installedLanguages' => (isset($_SESSION['clientInstalledLanguages']) ? implode(',', $_SESSION['clientInstalledLanguages']) : ''),
-				'installedModules' => (isset($_SESSION['clientInstalledModules']) ? implode(',', $_SESSION['clientInstalledModules']) : ''),
-				'installedAppMeta' => implode(',', $apps),
-				'installedDbCharset' => (isset($_SESSION['clientDBcharset']) ? $_SESSION['clientDBcharset'] : ''),
-				'installedDbCollation' => (isset($_SESSION['clientDBcollation']) ? $_SESSION['clientDBcollation'] : ''),
-				'testUpdate' => (isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : '')
-			])
+				we_database_base::arraySetter([
+					"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),
+					'installedSvnRevision' => (isset($_SESSION['clientSubVersion']) ? $_SESSION['clientSubVersion'] : ''),
+					'installedVersionBranch' => (isset($_SESSION['clientVersionBranch']) ? $_SESSION['clientVersionBranch'] : ''),
+					'clientPhpVersion' => (isset($_SESSION['clientPhpVersion']) ? $_SESSION['clientPhpVersion'] : ''),
+					'clientPhpExtensions' => (isset($_SESSION['clientPhpExtensions']) ? $_SESSION['clientPhpExtensions'] : ''),
+					'clientPcreVersion' => (isset($_SESSION['clientPcreVersion']) ? $_SESSION['clientPcreVersion'] : ''),
+					'clientMySqlVersion' => (isset($_SESSION['clientMySQLVersion']) ? $_SESSION['clientMySQLVersion'] : ''),
+					'clientServerSoftware' => (isset($_SESSION['clientServerSoftware']) ? $_SESSION['clientServerSoftware'] : ''),
+					'clientEncoding' => (isset($_SESSION['clientEncoding']) ? $_SESSION['clientEncoding'] : ''),
+					'clientSysLng' => (isset($_SESSION['clientSyslng']) ? $_SESSION['clientSyslng'] : ''),
+					'clientLng' => (isset($_SESSION['clientLng']) ? $_SESSION['clientLng'] : ''),
+					'clientExtension' => (isset($_SESSION['clientExtension']) ? $_SESSION['clientExtension'] : ''),
+					'clientDomain' => (isset($_SESSION['clientDomain']) ? base64_encode($_SESSION['clientDomain']) : ''),
+					'installedLanguages' => (isset($_SESSION['clientInstalledLanguages']) ? implode(',', $_SESSION['clientInstalledLanguages']) : ''),
+					'installedModules' => (isset($_SESSION['clientInstalledModules']) ? implode(',', $_SESSION['clientInstalledModules']) : ''),
+					'installedAppMeta' => implode(',', $apps),
+					'installedDbCharset' => (isset($_SESSION['clientDBcharset']) ? $_SESSION['clientDBcharset'] : ''),
+					'installedDbCollation' => (isset($_SESSION['clientDBcollation']) ? $_SESSION['clientDBcollation'] : ''),
+					'testUpdate' => (isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : '')
+				])
 		);
 		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 	}
 
 	static function updateLogAvail($verarray){
 		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET ' .
-			we_database_base::arraySetter([
-				'installedSvnRevisionDB' => (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']),
-				'newestVersion' => $verarray['version'],
-				'newestVersionStatus' => $verarray['type'],
-				'newestSvnRevision' => $verarray['svnrevision'],
-				'newestVersionBranch' => (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch'])
-			]) .
-			' WHERE id=' . intval($_SESSION['db_log_id']));
+				we_database_base::arraySetter([
+					'installedSvnRevisionDB' => (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']),
+					'newestVersion' => $verarray['version'],
+					'newestVersionStatus' => $verarray['type'],
+					'newestSvnRevision' => $verarray['svnrevision'],
+					'newestVersionBranch' => (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch'])
+				]) .
+				' WHERE id=' . intval($_SESSION['db_log_id']));
 	}
 
 	static function updateLogTarget(){
 		$version = $_SESSION['clientTargetVersionNumber'];
 
 		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET ' .
-			we_database_base::arraySetter([
-				'updatedVersion' => $version,
-				'updatedVersionName' => update::getVersionName($version),
-				'updatedVersionStatus' => update::getVersionType($version),
-				'updatedSvnRevision' => update::getSubVersion($version),
-				'updatedVersionBranch' => update::getOnlyVersionBranch($version),
-				'success' => 1,
-			]) .
-			'WHERE id=' . intval($_SESSION['db_log_id']));
+				we_database_base::arraySetter([
+					'updatedVersion' => $version,
+					'updatedVersionName' => update::getVersionName($version),
+					'updatedVersionStatus' => update::getVersionType($version),
+					'updatedSvnRevision' => update::getSubVersion($version),
+					'updatedVersionBranch' => update::getOnlyVersionBranch($version),
+					'success' => 1,
+				]) .
+				'WHERE id=' . intval($_SESSION['db_log_id']));
 	}
 
 	static function updateLogFinish($success){
@@ -70,9 +70,7 @@ class update extends updateBase{
 	}
 
 	static function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
-		$phpversionOK = true;
-		$phpversionOkForV640 = true;
-		$mysqlversionOK = true;
+		$mysqlversionFail = '';
 		$pcreversionOK = true;
 		$phpExtensionsDetectable = true;
 		$phpExtensionsOK = true;
@@ -84,8 +82,8 @@ class update extends updateBase{
 		foreach($phpextensions as &$extens){
 			$extens = strtolower($extens);
 		}
-		$phpextensionsMissing = array();
-		$phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'iconv', 'libxml', 'mysqli', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib');
+		$phpextensionsMissing = [];
+		$phpextensionsMin = ['ctype', 'date', 'dom', 'filter', 'iconv', 'libxml', 'mysqli', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib'];
 
 		if(count($phpextensions) > 3){
 			foreach($phpextensionsMin as $exten){
@@ -119,24 +117,23 @@ class update extends updateBase{
 		}
 
 		if($phpV != '' && version_compare($phpV, '5.2.4', '<')){
-			$phpversionOK = false;
-		} else if($phpV != '' && version_compare($phpV, '5.3.7', '<') && $_SESSION['clientTargetVersionNumber'] > 6390){
-			$phpversionOkForV640 = false;
+			$phpversionFail = '5.2.4';
+		} elseif($phpV != '' && version_compare($phpV, '5.6.0', '<') && $_SESSION['clientTargetVersionNumber'] > 7071){
+			$phpversionFail = '5.6.0';
+		} elseif($phpV != '' && version_compare($phpV, '5.3.7', '<') && $_SESSION['clientTargetVersionNumber'] > 6390){
+			$phpversionFail = '5.3.7';
+		} else {
+			$phpversionFail = '';
 		}
 
 		if($mysqlV != ''){
-			if(version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
-			$mysqlversionOK = false;
-			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL4'];
-		}
-		if(version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
-			$mysqlversionOK = false;
-			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL5'];
-		}
-		if(version_compare($mysqlV, '5.5', '<') && $_SESSION['clientTargetVersionNumber'] >= 6430){
-			$mysqlversionOK = false;
-			$DBtext = $GLOBALS['lang']['update']['ReqWarnungMySQL55'];
-		}
+			if(version_compare($mysqlV, '5.5', '<') && $_SESSION['clientTargetVersionNumber'] >= 6430){
+				$mysqlversionFail = '5.5';
+			}elseif(version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
+				$mysqlversionFail = '5.0';
+			}elseif(version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
+				$mysqlversionFail = '4.1';
+			}
 		}
 
 		if(!empty($phpextensionsMissing)){
@@ -145,25 +142,21 @@ class update extends updateBase{
 		if($pcreV != '' && version_compare($pcreV, 7, '<')){
 			$pcreversionOK = false;
 		}
-		if($sdkDbOK && $mysqlversionOK && $phpExtensionsOK && $pcreversionOK && $mbstringAvailable && $gdlibAvailable && $exifAvailable && $phpversionOK && $phpversionOkForV640 && $phpExtensionsDetectable){
+		if($sdkDbOK && !$mysqlversionFail && $phpExtensionsOK && $pcreversionOK && $mbstringAvailable && $gdlibAvailable && $exifAvailable && !$phpversionFail && $phpExtensionsDetectable){
 			$output = '';
 			return 1;
 		}
 		$output = '<div class="messageDiv">';
-		if(!$phpExtensionsOK || !$phpversionOK || $phpversionOkForV640 || !$mysqlversionOK){
-			$output .='<p><b>' . $GLOBALS['lang']['update']['ReqWarnung'] . '</b></p><p>' . $GLOBALS['lang']['update']['ReqWarnungText'] . '</p><ul>';
+		if(!$phpExtensionsOK || $phpversionFail || $mysqlversionFail){
+			$output .= '<p><b>' . $GLOBALS['lang']['update']['ReqWarnung'] . '</b></p><p>' . $GLOBALS['lang']['update']['ReqWarnungText'] . '</p><ul>';
 		} else {
-			$output .='<ul>';
+			$output .= '<ul>';
 		}
-		if(!$mysqlversionOK){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . $DBtext . '</li>';
+		if($mysqlversionFail){
+			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungMySQL'], $mysqlversionFail) . '</li>';
 		}
-		if(!$phpversionOK){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPversion'] . '<b>' . $phpV . '</b></li>';
-		}
-
-		if(!$phpversionOkForV640){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPversionForV640'] . '<b>' . $phpV . '</b></li>';
+		if($phpversionFail){
+			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungPHPversion'], $phpversionFail) . '<b>' . $phpV . '</b></li>';
 		}
 
 		if(!$phpExtensionsOK){
@@ -193,8 +186,7 @@ class update extends updateBase{
 
 		$output .= '</ul></div>';
 
-		return ($phpExtensionsOK && $phpversionOK && $phpversionOkForV640 && $mysqlversionOK ?
-				1 : 0);
+		return ($phpExtensionsOK && !$phpversionFail && !$mysqlversionFail);
 	}
 
 	/**
@@ -214,7 +206,7 @@ class update extends updateBase{
 		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE type="release"'));
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE .
-				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE type="release" AND version=' . $row['maxVersion']));
+						(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE type="release" AND version=' . $row['maxVersion']));
 	}
 
 	static function getMaxVersionNumberForBranch($branch){
@@ -229,8 +221,8 @@ class update extends updateBase{
 		$maxVersion = self::getMaxVersionNumberForBranch($branch);
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
-					" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
-					" type='release' AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
+						" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
+						" type='release' AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){
@@ -241,7 +233,7 @@ class update extends updateBase{
 			'type' => $_SESSION['clientVersionSupp'],
 			'typeversion' => $_SESSION['clientVersionSuppVersion'],
 			'branch' => $_SESSION['clientVersionBranch'],
-			];
+		];
 
 		return static::getFormattedVersionString(0, $showBranch, $showBranchIfTrunk, $versionArray);
 	}
@@ -286,7 +278,7 @@ class update extends updateBase{
 		$clientSyslng = ($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT ?
 				str_replace('_UTF-8', '', $_SESSION['clientSyslng']) :
 				$_SESSION['clientSyslng']
-			);
+				);
 
 		if(!is_array($_SESSION["clientInstalledLanguages"])){
 			$_SESSION["clientInstalledLanguages"] = unserialize(urldecode(base64_decode(print_r($_SESSION["clientInstalledLanguages"], true))));
@@ -302,12 +294,12 @@ class update extends updateBase{
 		}
 
 		return updateUtil::getChangesArrayByQueries([
-				// query for all needed changes - software
-				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' ORDER BY version DESC',
+					// query for all needed changes - software
+					'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' ORDER BY version DESC',
 // query for needed changes language
-				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery .
-				($theLanguages ? ' AND language IN("' . implode('","', $theLanguages) . '")' : ' AND 0 ') .
-				' ORDER BY version DESC'
+					'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery .
+					($theLanguages ? ' AND language IN("' . implode('","', $theLanguages) . '")' : ' AND 0 ') .
+					' ORDER BY version DESC'
 		]);
 	}
 
