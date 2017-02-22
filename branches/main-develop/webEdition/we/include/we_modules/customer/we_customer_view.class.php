@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_customer_view extends we_modules_view{
-
 	var $customer;
 	var $settings;
 
@@ -45,10 +44,10 @@ class we_customer_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = []){
 		return we_html_element::htmlHiddens(['cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
-					'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
-					'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
-					'activ_sort' => (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : ''),
-					'branch' => we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'))
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'activ_sort' => (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : ''),
+				'branch' => we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'))
 		]);
 	}
 
@@ -58,13 +57,13 @@ class we_customer_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return
-				parent::getJSTop() .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title='" . $title . "'");
+			parent::getJSTop() .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js', '', ['id' => 'loadVarCustomer_property', 'data-customer' => setDynamicVar([
-						'username' => $this->customer->Username
+					'username' => $this->customer->Username
 		])]);
 	}
 
@@ -103,12 +102,12 @@ class we_customer_view extends we_modules_view{
 				'>' => '&gt;', '<' => '&lt;']);
 			if($newone){
 				$jscmd->addCmd('loadTree', ['clear' => false, 'items' => [[
-					'id' => $this->customer->ID,
-					'typ' => "item",
-					'parentid' => 0,
-					'text' => $tt,
-					'disable' => 0,
-					'tooltip' => (($this->customer->Forename || $this->customer->Surname ) ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "")
+						'id' => $this->customer->ID,
+						'typ' => "item",
+						'parentid' => 0,
+						'text' => $tt,
+						'disable' => 0,
+						'tooltip' => (($this->customer->Forename || $this->customer->Surname ) ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "")
 				]]]);
 			} else {
 				$jscmd->addCmd('updateTreeEntry', [
@@ -178,11 +177,9 @@ class we_customer_view extends we_modules_view{
 						break;
 					default:
 						$this->customer->loadPresistents();
-
-						echo we_html_element::jsElement('
-opener.submitForm();
-opener.opener.top.content.editor.edbody.refreshForm();
-close();');
+						$jscmd->addCmd('submitForm');
+						$jscmd->addCmd('refreshForm');
+						$jscmd->addCmd('close');
 				}
 
 				break;
@@ -228,15 +225,7 @@ close();');
 					return;
 				}
 				$this->customer->loadPresistents();
-				echo we_html_element::jsElement('
-opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
-opener.submitForm();
-if(opener.opener.document.we_form && opener.opener.document.we_form.branch){
-	window.opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
-	window.opener.opener.refreshForm();
-}
-close();');
-
+				$jscmd->addCmd('setNewBranchName',g_l('modules_customer', '[other]') ,g_l('modules_customer', '[common]'));
 				break;
 			case 'add_sort':
 				$cout = 0;
@@ -263,7 +252,7 @@ close();');
 				break;
 			case 'del_sort_field':
 				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false &&
-						($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
+					($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
 
 					unset($this->settings->SortView[$i][$j]);
 				}
@@ -354,7 +343,7 @@ close();');
 
 			for($i = 0; $i < $counter; $i++){
 				$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i) ?:
-						g_l('modules_customer', '[sort_name]') . '_' . $i;
+					g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
 				$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
@@ -369,8 +358,8 @@ close();');
 					}
 					if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
 						$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-								str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
-								$field);
+							str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
+							$field);
 					}
 					if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
 						$new['function'] = $func;
@@ -433,10 +422,10 @@ close();');
 		}
 
 		if($this->customer->isProperty($field) ||
-				$this->customer->isProtected($field) ||
-				$this->customer->isProperty($new_field_name) ||
-				$this->customer->isProtected($new_field_name) ||
-				($branch == g_l('modules_customer', '[other]') && $this->settings->isReserved($new_field_name))){
+			$this->customer->isProtected($field) ||
+			$this->customer->isProperty($new_field_name) ||
+			$this->customer->isProtected($new_field_name) ||
+			($branch == g_l('modules_customer', '[other]') && $this->settings->isReserved($new_field_name))){
 			return self::ERR_SAVE_PROPERTY;
 		}
 
@@ -534,9 +523,9 @@ close();');
 					}
 				}
 				$condition .= ($condition ?
-						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
-						' (' . implode(' OR ', $conditionarr) . ')'
-						);
+					' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
+					' (' . implode(' OR ', $conditionarr) . ')'
+					);
 			}
 		}
 
@@ -693,7 +682,7 @@ close();');
 			case 'dateTime':
 				try{
 					$value = $value && $value != '0000-00-00' ? new DateTime($value) : 0;
-				}catch(Exception $e){
+				} catch (Exception $e){
 					$value = 0;
 				}
 				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
@@ -716,8 +705,8 @@ close();');
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
-						we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . $field . "','','refreshForm','', '', '" . we_base_ContentTypes::IMAGE . "', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();") .
-						'</td>
+					we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . $field . "','','refreshForm','', '', '" . we_base_ContentTypes::IMAGE . "', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();") .
+					'</td>
 	</tr>
 </table>';
 			default:
@@ -759,7 +748,7 @@ close();');
 						break;
 					case 'failedLogins':
 						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast',
-											'id' => 'FailedCustomerLogins'], intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
+									'id' => 'FailedCustomerLogins'], intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
 						break;
 					case 'resetFailed':
 						$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
@@ -826,7 +815,7 @@ close();');
 				break;
 			case g_l('modules_customer', '[orderTab]'):
 				$parts = [[
-				'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
+					'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
 					]
 				];
 				break;
@@ -836,7 +825,7 @@ close();');
 				$objectStr = '';
 				if($DB_WE->num_rows()){
 					$objectStr .= '<table class="defaultfont" style="width:600px;">' .
-							'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record(MYSQL_ASSOC)){
 						$objectStr .= '<tr>
 	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "');") . '</td>
@@ -857,28 +846,28 @@ close();');
 			case g_l('modules_customer', '[documentTab]'):
 				$DB_WE = new DB_WE();
 				$DB_WE->query('SELECT f.ID,f.Path,f.ContentType,f.Text,f.Published,f.ModDate,c1.Dat AS title,c2.Dat AS description' .
-						' FROM ' .
-						FILE_TABLE . ' f LEFT JOIN ' .
-						LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
-						CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
-						LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
-						CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
-						' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
+					' FROM ' .
+					FILE_TABLE . ' f LEFT JOIN ' .
+					LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
+					CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
+					LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
+					CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
+					' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
 
 				if($DB_WE->num_rows()){
 					$documentStr = '<table class="defaultfont" style="width:600px;">' .
-							'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
-							'</tr>';
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
+						'</tr>';
 					while($DB_WE->next_record()){
 						$documentStr .= '<tr>' .
-								'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "');") . '</td>' .
-								'<td>' . $DB_WE->f('ID') . '</td>' .
-								'<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>' .
-								'<td class="defaultfont ' .
-								($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : '') : '')
-								. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-								'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
-								'</tr>';
+							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "');") . '</td>' .
+							'<td>' . $DB_WE->f('ID') . '</td>' .
+							'<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>' .
+							'<td class="defaultfont ' .
+							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : '') : '')
+							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
+							'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
+							'</tr>';
 					}
 					$documentStr .= '</table>';
 				} else {

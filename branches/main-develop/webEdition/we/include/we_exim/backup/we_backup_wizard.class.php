@@ -860,6 +860,7 @@ class we_backup_wizard{
 	finished:"'.g_l('backup', '[finished]').'",
 	finished_success:"' . g_l('backup', '[finished_success]') . '",
 	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
+	import_file_found:"'.str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')).'",
 	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
   newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
 	nothing_selected:"' . g_l('backup', '[nothing_selected]') . '",

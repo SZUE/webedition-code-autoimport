@@ -102,13 +102,25 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "switchPage":
 			document.we_form.cmd.value = args[0];
 			document.we_form.branch.value = args[1];
 			submitForm();
+			break;
+		case "submitForm":
+			submitForm();
+			break;
+		case "setNewBranchName":
+			opener.document.we_form.branch.value = args[1];
+			submitForm();
+			if (window.opener.document.we_form && window.opener.document.we_form.branch) {
+				window.opener.document.we_form.branch.value = args[2];
+				window.opener.refreshForm();
+			}
+			caller.close();
 			break;
 		case 'refreshForm':
 			refreshForm();
@@ -119,7 +131,7 @@ function we_cmd() {
 }
 
 function resetLogins(id) {
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetFailedCustomerLogins&cns=customer","custid=" + id, function (weResponse) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetFailedCustomerLogins&cns=customer", "custid=" + id, function (weResponse) {
 		if (weResponse) {
 			if (weResponse.DataArray.data === "true") {
 				document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;

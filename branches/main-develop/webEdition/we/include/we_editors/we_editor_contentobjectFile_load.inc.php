@@ -32,8 +32,6 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we
 
 $identifier = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new we_gui_OrderContainer();
-
 $we_doc = new we_objectFile();
 
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -112,7 +110,7 @@ echo we_html_tools::getHtmlTop('', $charset, 5,$header.we_editor_script::get());
 	</div>
 </div>';
 
-			echo $jsGUI->getResponse('reload', $identifier, $content);
+			echo we_gui_OrderContainer::getResponse('reload', $identifier, $content);
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;

@@ -28,8 +28,7 @@ we_html_tools::protect();
 $charset = (!empty($GLOBALS['we_doc']->Charset) ? //	send charset which might be determined in template
 	$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
 
-
-we_html_tools::headerCtCharset('text/html', $charset);
+//we_html_tools::headerCtCharset('text/html', $charset);
 
 $editMode = (isset($previewMode) && $previewMode == 1 ? 0 : 1);
 $parts = $GLOBALS['we_doc']->getFieldsHTML($editMode);
@@ -48,50 +47,43 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 }
 $weSuggest = &weSuggest::getInstance();
 
-echo we_html_tools::getHtmlTop('', $charset, 5);
+$jsCmd = new we_base_jsCmd();
+
+$head = '';
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
-		echo we_html_element::cssLink(id_to_path($cs));
+		$head .= we_html_element::cssLink(id_to_path($cs));
 	}
 }
-$jsCmd = new we_base_jsCmd();
-$we_doc = $GLOBALS['we_doc'];
 
-$jsGUI = new we_gui_OrderContainer();
-echo $jsGUI->getJS() .
- we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
- we_editor_script::get();
-?>
-</head>
+$content = '';
+if($editMode){
+	$content .= we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
+		'<div id="orderContainer"></div>' .
+		we_html_multiIconBox::_getBoxEnd();
+	foreach($parts as $part){
+		$content .= '<div id="' . $part['name'] . '" class="objectFileElement"><div id="f' . $part['name'] . '" class="default defaultfont">' . $part["html"] . '</div></div>';
+		$jsCmd->addCmd('orderContainerAdd', $part['name']);
+	}
+} else {
+	$content .= we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
+}
 
-<body class="weEditorBody" onload="doScrollTo();" onunload="doUnload()">
-	<form name="we_form" method="post"><?php
-		echo we_class::hiddenTrans();
+echo we_html_tools::getHtmlTop('', $charset, 5, $head . we_html_element::jsScript(JS_DIR . '/weOrderContainer.js') .
+	we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+	we_editor_script::get() .
+	$jsCmd->getCmds(), we_html_element::htmlBody([
+		'onunload' => "doUnload()",
+		'class' => "weEditorBody",
+		'onload' => "doScrollTo();"
+		], we_html_element::htmlForm([
+			'name' => "we_form",
+			'method' => "post"
+			] . we_class::hiddenTrans() .
+			$content .
+			we_html_element::htmlHidden("we_complete_request", 1)
+		)
+	)
+);
 
-		if($editMode){
-			echo we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
-			$jsGUI->getContainer() .
-			we_html_multiIconBox::_getBoxEnd();
-			foreach($parts as $part){
-
-				echo '<div id="' . $part['name'] . '" class="objectFileElement">
-	<div id="f' . $part['name'] . '" class="default defaultfont">
-' . $part["html"] . '
-</div>
-</div>';
-				$jsCmd->addCmd('orderContainerAdd', $part['name']);
-			}
-		} else {
-			/* if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-			  $msg = '';
-			  } */
-			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
-		}
-
-		echo $jsCmd->getCmds();
-		we_html_element::htmlHidden("we_complete_request", 1);
-		?>
-	</form>
-</body>
-</html>
