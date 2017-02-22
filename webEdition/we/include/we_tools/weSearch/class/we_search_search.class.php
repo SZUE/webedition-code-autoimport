@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_search extends we_search_base{
+
 	//for doclist!
 	/**
 	 * @var integer: number of searchfield-rows
@@ -91,8 +92,8 @@ class we_search_search extends we_search_base{
 		$searchForContentType = $model->getProperty('currentSearchForContentType');
 
 		$searchText = (is_array($searchText) ?
-			array_map('trim', $searchText) :
-			[]);
+				array_map('trim', $searchText) :
+				[]);
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)); //init activTab like this
 
@@ -113,9 +114,9 @@ class we_search_search extends we_search_base{
 				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($result);
 			}
 		} elseif(
-			($model->IsFolder != 1 && ( ($whichSearch === we_search_view::SEARCH_DOCS && $tab === 1) || ($whichSearch === we_search_view::SEARCH_TMPL && $tab === 2) || ($whichSearch === we_search_view::SEARCH_ADV && $tab === 3)) || ($whichSearch === we_search_view::SEARCH_MEDIA && $tab === 5) ) ||
-			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
-			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
+				($model->IsFolder != 1 && ( ($whichSearch === we_search_view::SEARCH_DOCS && $tab === 1) || ($whichSearch === we_search_view::SEARCH_TMPL && $tab === 2) || ($whichSearch === we_search_view::SEARCH_ADV && $tab === 3)) || ($whichSearch === we_search_view::SEARCH_MEDIA && $tab === 5) ) ||
+				(we_base_request::_(we_base_request::INT, 'cmdid')) ||
+				(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
 
 			$this->createTempTable();
@@ -206,7 +207,8 @@ class we_search_search extends we_search_base{
 			while($this->next_record()){
 				if(!empty($this->Record['VersionID'])){
 
-					$versionsFound[] = [$this->Record['ContentType'],
+					$versionsFound[] = [
+						$this->Record['ContentType'],
 						$this->Record['docID'],
 						$this->Record['VersionID']
 					];
@@ -232,8 +234,7 @@ class we_search_search extends we_search_base{
 				while($this->next_record()){
 					if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 						$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
-						$result[] = array_merge(['Table' => $table
-							], $this->Record);
+						$result[] = array_merge(['Table' => $table], $this->Record);
 					}
 				}
 			}
@@ -672,38 +673,38 @@ class we_search_search extends we_search_base{
 				break;
 			case "geparkt" :
 				$ret = ($table == VERSIONS_TABLE ?
-					'v.status="unpublished"' :
-					'(WETABLE.Published=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+						'v.status="unpublished"' :
+						'(WETABLE.Published=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "veroeffentlicht" :
 				$ret = ($table == VERSIONS_TABLE ?
-					'v.status="published"' :
-					'(WETABLE.Published >=WETABLE.ModDate AND WETABLE.Published !=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+						'v.status="published"' :
+						'(WETABLE.Published >=WETABLE.ModDate AND WETABLE.Published !=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "geaendert" :
 				$ret = ($table == VERSIONS_TABLE ?
-					'v.status="saved"' :
-					'(WETABLE.Published<WETABLE.ModDate AND WETABLE.Published!=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+						'v.status="saved"' :
+						'(WETABLE.Published<WETABLE.ModDate AND WETABLE.Published!=0 AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
 				break;
 			case "veroeff_geaendert" :
 				$ret = '((WETABLE.Published>=WETABLE.ModDate OR WETABLE.Published < WETABLE.ModDate AND WETABLE.Published !=0) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )';
 				break;
 			case "geparkt_geaendert" :
 				$ret = ($table === VERSIONS_TABLE ?
-					'v.status!="published"' :
-					'((WETABLE.Published=0 OR WETABLE.Published< WETABLE.ModDate) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )');
+						'v.status!="published"' :
+						'((WETABLE.Published=0 OR WETABLE.Published< WETABLE.ModDate) AND WETABLE.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )');
 				break;
 			case "dynamisch" :
 				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-					'(WETABLE.IsDynamic=1 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+						'(WETABLE.IsDynamic=1 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
 				break;
 			case "statisch" :
 				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-					'(WETABLE.IsDynamic=0 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+						'(WETABLE.IsDynamic=0 AND WETABLE.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
 				break;
 			case "deleted" :
 				$ret = ($table !== VERSIONS_TABLE ? '' :
-					'v.status="deleted"' );
+						'v.status="deleted"' );
 				break;
 			case "default":
 				$ret = 1;
@@ -760,10 +761,10 @@ class we_search_search extends we_search_base{
 						}
 					}
 					$where[] = ($mtof ?
-						'WETABLE.ID IN (' . implode(',', $arr) . ') ' :
-						($myIds[0] ?
-						'WETABLE.ID IN (' . implode(',', $myIds[0]) . ') ' :
-						' 0 '));
+							'WETABLE.ID IN (' . implode(',', $arr) . ') ' :
+							($myIds[0] ?
+							'WETABLE.ID IN (' . implode(',', $myIds[0]) . ') ' :
+							' 0 '));
 				}
 			}
 		}
@@ -775,10 +776,11 @@ class we_search_search extends we_search_base{
 		$db = new DB_WE();
 		switch($table){
 			case FILE_TABLE:
-				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash!=x\'' . md5("completeData") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(FILE_TABLE)) . '"');
+				$ws = we_selector_file::getWsQuery(FILE_TABLE, false);
+				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) JOIN ' . FILE_TABLE . ' f ON (l.DID=f.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash!=x\'' . md5("completeData") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(FILE_TABLE)) . '"' . $ws);
 				$contents = $db->getAll(true);
 
-				$db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
+				$db->query('SELECT t.DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' t JOIN ' . FILE_TABLE . ' f ON (t.DocumentID=f.ID) WHERE t.DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND t.docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1' . $ws);
 				$contents = array_unique(array_merge($contents, $db->getAll(true)));
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
@@ -788,14 +790,16 @@ class we_search_search extends we_search_base{
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
+				$ws = we_selector_file::getWsQuery(FILE_TABLE, false);
+				;
 				//FIXME: versions are searched even if the field is not checked!
 				$contents = [];
 
-				$db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
+				$db->query('SELECT ID,documentElements FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""' . $ws);
 				while($db->next_record()){
 					$elements = we_unserialize((substr_compare($db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($db->f('documentElements')), ENT_QUOTES) :
-						gzuncompress($db->f('documentElements')))
+							html_entity_decode(urldecode($db->f('documentElements')), ENT_QUOTES) :
+							gzuncompress($db->f('documentElements')))
 					);
 
 					if(is_array($elements)){
@@ -806,7 +810,7 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									if(isset($v['dat']) &&
-										stristr((is_array($v['dat']) ? we_serialize($v['dat'], SERIALIZE_PHP) : $v['dat']), $keyword)){
+											stristr((is_array($v['dat']) ? we_serialize($v['dat'], SERIALIZE_PHP) : $v['dat']), $keyword)){
 										$contents[] = $db->f('ID');
 									}
 							}
@@ -816,6 +820,7 @@ class we_search_search extends we_search_base{
 
 				return ($contents ? ' WETABLE.ID IN (' . implode(',', $contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$ws = we_selector_file::getWsQuery(OBJECT_FILES_TABLE, false);
 				$Ids = $regs = [];
 
 				$classes = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
@@ -840,14 +845,14 @@ class we_search_search extends we_search_base{
 					}
 					$where = [];
 					foreach($fields as $v){
-						$where[] = $v['name'] . ' LIKE "%' . $db->escape(trim($keyword)) . '%"';
+						$where[] = 'o.' . $v['name'] . ' LIKE "%' . $db->escape(trim($keyword)) . '%"';
 					}
 
-					$db->query('SELECT OF_ID FROM ' . $db->escape($obj_table) . ' WHERE ' . implode(' OR ', $where));
+					$db->query('SELECT o.OF_ID FROM ' . $db->escape($obj_table) . ' o JOIN ' . OBJECT_FILES_TABLE . ' of WHERE ' . implode(' OR ', $where) . $ws);
 					$Ids = array_merge($Ids, $db->getAll(true));
 				}
 				//only saved objects
-				$db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND docTable="tblObjectFiles" AND Active=1');
+				$db->query('SELECT t.DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' t JOIN ' . OBJECT_FILES_TABLE . ' of ON (of.ID=t.DocumentID) WHERE t.DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND t.docTable="tblObjectFiles" AND t.Active=1' . $ws);
 				$Ids = array_merge($Ids, $db->getAll(true));
 
 				return ($Ids ? ' WETABLE.ID IN (' . implode(',', $Ids) . ')' : '');
@@ -1058,8 +1063,8 @@ class we_search_search extends we_search_base{
 
 				//first check published documents
 				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' sr JOIN `' . LINK_TABLE . '` l ON (sr.docID=l.DID AND sr.docTable=l.DocumentTable) JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID= l.DID') .
-					' SET sr.SiteTitle=c.Dat' .
-					' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ' AND ' . $where));
+						' SET sr.SiteTitle=c.Dat' .
+						' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ' AND ' . $where));
 
 				//check unpublished documents
 				$titles = [];
@@ -1352,7 +1357,7 @@ class we_search_search extends we_search_base{
 		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
 		// doppelte Eintr�ge aus array entfernen
 		$_SESSION['weS']['weSearch']['countChilds'] = array_values(
-			array_unique($_SESSION['weS']['weSearch']['countChilds']));
+				array_unique($_SESSION['weS']['weSearch']['countChilds']));
 
 		return $_SESSION['weS']['weSearch']['countChilds'];
 	}
@@ -1439,7 +1444,7 @@ class we_search_search extends we_search_base{
 								}
 							}
 							$contentTypes = $contentTypes ?:
-								[we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION];
+									[we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION];
 							$where[] = 'WETABLE.ContentType IN ("' . implode('","', $contentTypes) . '")';
 							break;
 						case 'IsUsed':

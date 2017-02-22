@@ -425,7 +425,7 @@ WE().consts.g_l.fileselector = {
 
 				$path .= $part;
 				if($includingFolders){
-					$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+					$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
 				} else {
 					$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 				}
@@ -433,7 +433,7 @@ WE().consts.g_l.fileselector = {
 			}
 			$path .= $last;
 			if($includingFolders){
-				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+				$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
 				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 			} else {
 				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
