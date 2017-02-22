@@ -22,17 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_gui_OrderContainer{
+abstract class we_gui_OrderContainer{
 
-	function getJS(){
-		return we_html_element::jsScript(JS_DIR . '/weOrderContainer.js');
-	}
-
-	function getContainer(){
-		return '<div id="orderContainer"></div>';
-	}
-
-	function getCmd($mode, $uniqueid = false, $afterid = false){
+	private static function getCmd($mode, $uniqueid = false, $afterid = false){
 		$afterid = ($afterid ? "'" . $afterid . "'" : "null");
 
 		switch(strtolower($mode)){
@@ -54,8 +46,8 @@ class we_gui_OrderContainer{
 		}
 	}
 
-	function getResponse($mode, $uniqueid, $string = "", $afterid = false){
-		if(!($cmd = $this->getCmd($mode, $uniqueid, $afterid))){
+	public static function getResponse($mode, $uniqueid, $string = "", $afterid = false){
+		if(!($cmd = self::getCmd($mode, $uniqueid, $afterid))){
 			return "";
 		}
 
@@ -66,13 +58,13 @@ class we_gui_OrderContainer{
 			we_html_element::jsElement('
 var container=_EditorFrame.getContentEditor().orderContainer;' .
 				$cmd .
-				$this->getDisableButtonJS()
+				self::getDisableButtonJS()
 		);
 	}
 
 // end: getResponse
 
-	function getDisableButtonJS(){
+	private static function getDisableButtonJS(){
 		return '';
 //FIXME: this doesn't work
 		/* return '

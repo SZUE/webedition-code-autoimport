@@ -57,9 +57,9 @@ abstract class we_backup_preparer{
 				 */
 				'requestTime' => 0,
 				'lastMem' => 0,
-				],
+			],
 			'retry' => 0,
-			];
+		];
 
 		self::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
 		$_SESSION['weS']['weBackupVars']['tables'] = self::getTables($_SESSION['weS']['weBackupVars']['handle_options']);
@@ -266,7 +266,7 @@ abstract class we_backup_preparer{
 	}
 
 	public static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
-		$dir = ($dir ? : $_SERVER['DOCUMENT_ROOT']);
+		$dir = ($dir ?: $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}
@@ -394,19 +394,14 @@ abstract class we_backup_preparer{
 		return -1;
 	}
 
-	static function isOtherXMLImport($format){
+	private static function isOtherXMLImport($format){
 
 		$cmd = new we_base_jsCmd();
 		switch($format){
 			case 'weimport':
 				if(we_base_permission::hasPerm('WXML_IMPORT')){
-					return we_html_element::jsElement('
-if(window.confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
-	top.opener.top.we_cmd("import");
-	top.close();
-} else {
-	top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
-}');
+					return we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .
+						we_base_jsCmd::singleCmd('import_file_found');
 				}
 				$cmd->addMsg(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING);
 				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
@@ -426,22 +421,16 @@ if(window.confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]
 		$mess = '';
 
 		if(!($_SESSION['weS']['weBackupVars']['backup_file'])){
-			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
-				$mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(), we_base_file::SZ_MB));
-			} else {
-				$mess = g_l('backup', '[file_missing]');
-			}
+			$mess = (isset($_SESSION['weS']['weBackupVars']['options']['upload']) ?
+				sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(), we_base_file::SZ_MB)) :
+				g_l('backup', '[file_missing]'));
 		} else if(!is_readable($_SESSION['weS']['weBackupVars']['backup_file'])){
-
 			$mess = g_l('backup', '[file_not_readable]');
 		} else if($_SESSION['weS']['weBackupVars']['options']['format'] != 'xml' && $_SESSION['weS']['weBackupVars']['options']['format'] != 'sql'){
-
 			$mess = g_l('backup', '[format_unknown]');
 		} else if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
-
 			return self::isOtherXMLImport($_SESSION['weS']['weBackupVars']['options']['xmltype']);
 		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION && !we_base_file::hasGzip()){
-
 			$mess = g_l('backup', '[cannot_split_file_ziped]');
 		} else {
 			$mess = g_l('backup', '[unspecified_error]');

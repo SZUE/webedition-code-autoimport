@@ -426,6 +426,14 @@ function we_cmd() {
 		case "importFinished":
 			finishedImport(args[1].doRebuild, args[1].file);
 			break;
+		case "import_file_found":
+			if (window.confirm(WE().consts.g_l.backupWizard.import_file_found)) {
+				top.opener.top.we_cmd("import");
+				top.close();
+			} else {
+				top.body.location = WE().consts.dirs + "we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
+			}
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
