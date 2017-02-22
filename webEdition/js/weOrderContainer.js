@@ -133,7 +133,7 @@ var weOrderContainer = function (id) {
 
 	this.del = function (id) {
 		var node = null,
-						i, pos;
+			i, pos;
 		for (i = 0; i < this.elements.length; i++) {
 			if (this.elements[i].id == id) {
 				this.elements.splice(i, 1);
@@ -157,8 +157,8 @@ var weOrderContainer = function (id) {
 
 	this.up = function (id) {
 		var up = null,
-						down = null,
-						temp;
+			down = null,
+			temp;
 
 		for (var i = 1; i < this.position.length; i++) {
 			if (this.position[i] == id) {
@@ -180,8 +180,8 @@ var weOrderContainer = function (id) {
 
 	this.down = function (id) {
 		var up = null,
-						down = null,
-						temp;
+			down = null,
+			temp;
 
 		for (var i = 0; i < this.position.length - 1; i++) {
 			if (this.position[i] == id) {
@@ -236,6 +236,8 @@ var weOrderContainer = function (id) {
 
 };
 
+var orderContainer = new weOrderContainer("orderContainer");
+
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
@@ -243,8 +245,8 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-		case 'addClassEntry':
-			classEntry.add(document, args[1], null);
+		case 'orderContainerAdd':
+			orderContainer.add(document, args[1], null);
 			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

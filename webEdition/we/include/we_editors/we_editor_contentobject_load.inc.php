@@ -29,7 +29,7 @@ $cmd = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 $id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new we_gui_OrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
+$jsGUI = new we_gui_OrderContainer();
 
 $we_doc = new we_object();
 
@@ -42,36 +42,23 @@ $we_doc->we_initSessDat($we_dt);
 $charset = (!empty($we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
 	$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
-we_html_tools::headerCtCharset('text/html', $charset);
-
-//
-//	---> Output the HTML Header
-//
-
-echo we_html_tools::getHtmlTop('', $charset, 5);
+//we_html_tools::headerCtCharset('text/html', $charset);
 
 
-//
 //	---> Loading the Stylesheets
-//
-
+$head='';
 if($we_doc->CSS){
 	$cssArr = makeArrayFromCSV($we_doc->CSS);
 	foreach($cssArr as $cs){
 		$path = id_to_path($cs);
 		if($path){
-			echo we_html_element::cssLink($path);
+			$head.=we_html_element::cssLink($path);
 		}
 	}
 }
-
-echo we_editor_script::get();
+echo we_html_tools::getHtmlTop('', $charset, 5,$head.we_editor_script::get());
 ?>
-</head>
-
-<body>
-
-	<?php
+<body><?php
 
 	function reloadElement($jsGUI, $we_transaction, $we_doc, $id){
 		$identifier = array_pop(explode('_', $id, 2));
@@ -92,7 +79,7 @@ echo we_editor_script::get();
 </div>';
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
-		we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
+		we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",' . intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) . ');');
 		//we_html_element::jsElement('reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

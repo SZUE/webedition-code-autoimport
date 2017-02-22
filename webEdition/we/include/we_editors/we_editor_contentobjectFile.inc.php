@@ -26,7 +26,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 we_html_tools::protect();
 
 $charset = (!empty($GLOBALS['we_doc']->Charset) ? //	send charset which might be determined in template
-		$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
+	$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
 
 
 we_html_tools::headerCtCharset('text/html', $charset);
@@ -40,7 +40,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 				$parts[] = ["headline" => "",
 					"html" => '*' . g_l('global', '[required_fields]'),
 					"name" => str_replace('.', '', uniqid('', true)),
-					];
+				];
 				break;
 			}
 		}
@@ -55,13 +55,13 @@ if($GLOBALS['we_doc']->CSS){
 		echo we_html_element::cssLink(id_to_path($cs));
 	}
 }
-
+$jsCmd = new we_base_jsCmd();
 $we_doc = $GLOBALS['we_doc'];
 
-$jsGUI = new we_gui_OrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
+$jsGUI = new we_gui_OrderContainer();
 echo $jsGUI->getJS() .
- we_html_element::jsScript(JS_DIR . 'multiIconBox.js').
-		we_editor_script::get();
+ we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+ we_editor_script::get();
 ?>
 </head>
 
@@ -73,7 +73,6 @@ echo $jsGUI->getJS() .
 			echo we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd();
-			$js = '';
 			foreach($parts as $part){
 
 				echo '<div id="' . $part['name'] . '" class="objectFileElement">
@@ -81,16 +80,17 @@ echo $jsGUI->getJS() .
 ' . $part["html"] . '
 </div>
 </div>';
-				$js.='objectEntry.add(document, \'' . $part['name'] . '\', null);';
+				$jsCmd->addCmd('orderContainerAdd', $part['name']);
 			}
-			echo we_html_element::jsElement($js);
 		} else {
 			/* if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			  $msg = '';
 			  } */
 			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
-		echo we_html_element::htmlHidden("we_complete_request", 1);
+
+		echo $jsCmd->getCmds();
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

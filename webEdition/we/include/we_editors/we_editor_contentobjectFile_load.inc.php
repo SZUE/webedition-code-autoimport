@@ -32,7 +32,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we
 
 $identifier = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new we_gui_OrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
+$jsGUI = new we_gui_OrderContainer();
 
 $we_doc = new we_objectFile();
 
@@ -47,31 +47,18 @@ $charset = (!empty($we_doc->elements["Charset"]["dat"]) ? //	send charset which 
 		$we_doc->elements["Charset"]["dat"] :
 		DEFAULT_CHARSET);
 
-we_html_tools::headerCtCharset('text/html', $charset);
+//we_html_tools::headerCtCharset('text/html', $charset);
 
-//
-//	---> Output the HTML Header
-//
-
-echo we_html_tools::getHtmlTop('', $charset, 5);
-
-
-//
 //	---> Loading the Stylesheets
-//
-
+$header='';
 if($we_doc->CSS){
 	$cssArr = makeArrayFromCSV($we_doc->CSS);
 	foreach($cssArr as $cs){
-		echo we_html_element::cssLink(id_to_path($cs));
+		$header.= we_html_element::cssLink(id_to_path($cs));
 	}
 }
-
-echo we_editor_script::get();
-?>
-</head>
-
-<body><?php
+echo we_html_tools::getHtmlTop('', $charset, 5,$header.we_editor_script::get());
+?><body><?php
 	switch($cmd){
 		case "object_reload_entry_at_object":
 		case 'object_up_meta_at_object':
@@ -125,7 +112,7 @@ echo we_editor_script::get();
 	</div>
 </div>';
 
-			echo $jsGUI->getResponse('reload', $identifier, $content, false);
+			echo $jsGUI->getResponse('reload', $identifier, $content);
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;

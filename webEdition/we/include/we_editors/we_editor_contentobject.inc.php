@@ -35,7 +35,7 @@ $jsCmd = new we_base_jsCmd();
 echo we_html_tools::getHtmlTop('', $charset, 5);
 
 //	---> initialize some vars
-$jsGUI = new we_gui_OrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
+$jsGUI = new we_gui_OrderContainer();
 
 
 //	---> Loading the Stylesheets
@@ -72,7 +72,7 @@ echo $jsGUI->getJS().
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		echo $we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart($uniquename) .
-		$jsGUI->getContainer([]) .
+		$jsGUI->getContainer() .
 		'<div id="' . $uniquename . '_div">
  <table style="margin-left:30px;margin-bottom:15px;" class="default">
  <tr>
@@ -100,7 +100,7 @@ echo $jsGUI->getJS().
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
 			'</span>
 		</div></div>';
-			$jsCmd->addCmd('addClassEntry', $uniqid);
+			$jsCmd->addCmd('orderContainerAdd', $uniqid);
 		}
 		echo $jsCmd->getCmds() .
 		//we_html_element::jsElement($jsGUI->getDisableButtonJS()) .
