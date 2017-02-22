@@ -33,7 +33,7 @@ class we_navigation_items{
 
 	private static $cache = [];
 	var $items;
-	var $templates;
+	private $templates;
 	var $rootItem = 0;
 	var $hasCurrent = false;
 	var $currentRules = [];

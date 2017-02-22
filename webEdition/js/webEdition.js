@@ -1233,7 +1233,7 @@ function we_openMediaReference(id) {
 				break;
 			default:
 				if (ref.isTempPossible && ref.referencedIn === 'main' && ref.isModified) {
-					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);// FIXME: GL()
 				} else {
 					WE().layout.weEditorFrameController.openDocument(ref.table, ref.id, ref.ct);
 				}

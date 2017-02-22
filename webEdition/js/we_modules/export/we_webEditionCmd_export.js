@@ -37,9 +37,6 @@ we_cmd_modules.export = function (args, url, caller) {
 		case "start_export":
 			WE().layout.pushCmdToModule(args);
 			return true;
-		case "unlock"://FIXME:???
-			window.we_repl(window.load, url);
-			return true;
 	}
 	return false;
 };

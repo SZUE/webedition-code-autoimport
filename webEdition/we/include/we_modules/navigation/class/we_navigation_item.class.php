@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -142,7 +140,7 @@ class we_navigation_item{
 	/**
 	 * @param $item
 	 */
-	function addItem(&$item){
+	function addItem(we_navigation_items &$item){
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
@@ -203,16 +201,16 @@ class we_navigation_item{
 				$path_parts = pathinfo($urlPath);
 			}
 			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
-					(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-					rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
-					'');
-            if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
+				(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
+				'');
+			if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
 				static $uri = null;
 				static $uriarrq = [];
 				$refarrq = [];
 
-				$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
-				$ref = parse_url(str_replace('&amp;', '&', $this->href));
+				$uri = ($uri === null ? parse_url(strtr($_SERVER['REQUEST_URI'], ['&amp;' => '&'])) : $uri);
+				$ref = parse_url(strtr($this->href, ['&amp;' => '&']));
 				if(!empty($uri['query']) && !$uriarrq){
 					parse_str($uri['query'], $uriarrq);
 				}
@@ -248,7 +246,7 @@ class we_navigation_item{
 				return $allfound;
 			}
 
-            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
+			if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
 				$this->setCurrent($weNavigationItems);
 				return true;
 			}
@@ -338,10 +336,10 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (!empty($this->$fieldname) ?
-					$this->$fieldname :
-					(!empty($this->attributes[$fieldname]) ?
-					$this->attributes[$fieldname] :
-					''));
+				$this->$fieldname :
+				(!empty($this->attributes[$fieldname]) ?
+				$this->attributes[$fieldname] :
+				''));
 			switch($fieldname){
 				case 'title':
 					return oldHtmlspecialchars($val);
@@ -421,12 +419,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-										oldHtmlspecialchars($this->$field) :
-										$this->$field);
+									oldHtmlspecialchars($this->$field) :
+									$this->$field);
 							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-										$this->attributes[$field] :
-										oldHtmlspecialchars($this->attributes[$field]));
+									$this->attributes[$field] :
+									oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -502,15 +500,15 @@ if (window.screen) {
 		}
 
 		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((!empty($this->attributes['popup_status'])) ? 'yes' : 'no') .
-				',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
-				',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
-				',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
-				',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
-				',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
-				(empty($this->attributes['popup_width']) ? '' : ',width=' . $this->attributes['popup_width'] ) .
-				(empty($this->attributes['popup_height']) ? '' : ',height=' . $this->attributes['popup_height']) .
-				'\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+			',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
+			',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
+			',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
+			',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
+			',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
+			(empty($this->attributes['popup_width']) ? '' : ',width=' . $this->attributes['popup_width'] ) .
+			(empty($this->attributes['popup_height']) ? '' : ',height=' . $this->attributes['popup_height']) .
+			'\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, ['name', 'target', 'onClick', 'onclick'
 		]);
