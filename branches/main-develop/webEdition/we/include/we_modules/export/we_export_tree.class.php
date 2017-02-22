@@ -244,7 +244,7 @@ var openFolders= {
 		self::getTreeItems($table, $parentFolder, $treeItems, $openFolders, new DB_WE());
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {
-	top.we_showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);
+	top.we_showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);// FIXME: GL()
 }' .
 				($parentFolder ? '' :
 					$this->topFrame . '.treeData.clear();' .

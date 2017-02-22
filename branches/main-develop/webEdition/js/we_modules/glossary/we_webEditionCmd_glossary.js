@@ -74,9 +74,6 @@ we_cmd_modules.glossary = function (args, url, caller) {
 		case "delete_glossary":
 			WE().layout.pushCmdToModule(args);
 			return true;
-		case "unlock"://FIXME:???
-			window.we_repl(window.load, url);
-			break;
 		default:
 			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {
 				var tempargs = args[0].split("\XYZ");

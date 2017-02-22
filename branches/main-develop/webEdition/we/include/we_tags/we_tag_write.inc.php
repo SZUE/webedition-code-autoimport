@@ -62,8 +62,10 @@ function we_tag_write(array $attribs){
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
 	$language = weTag_getAttribute('language', $attribs, -1, we_base_request::STRING);
 
-	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
-
+	if(!we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
+		$GLOBALS['ERROR']['write'][$type][$name] = 9;
+		return;
+	}
 		switch($type){
 			case 'document':
 				$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
@@ -166,8 +168,8 @@ function we_tag_write(array $attribs){
 			$ret = $GLOBALS['we_' . $type][$name]->we_save();
 			if($ret && $publish && !$doworkflow){
 				$ret = ($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc']) ? // on static HTML Documents we have to do it different
-						$GLOBALS['we_doc']->we_publish() :
-						$GLOBALS['we_' . $type][$name]->we_publish());
+					$GLOBALS['we_doc']->we_publish() :
+					$GLOBALS['we_' . $type][$name]->we_publish());
 			}
 
 			if($ret){
@@ -238,15 +240,17 @@ function we_tag_write(array $attribs){
 			$phpmail->buildMessage();
 			$phpmail->Send();
 		}
-	}
+
 	if(!empty($GLOBALS['WE_SESSION_START'])){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
+	} else {
+		$GLOBALS['ERROR']['write'][$type][$name] = 9;
 	}
 }
 
 function weTagWriteGetObjName($objname, $type, $name, $onpredefinedname){
 	if($GLOBALS['we_' . $type][$name]->Text === ''){
-		return $objname? : (1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE)));
+		return $objname ?: (1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE)));
 	}
 	switch($onpredefinedname){
 		case 'appendto':
@@ -254,7 +258,7 @@ function weTagWriteGetObjName($objname, $type, $name, $onpredefinedname){
 		case 'infrontof':
 			return $objname . ($objname ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
 		case 'overwrite':
-			return $objname? : $GLOBALS['we_' . $type][$name]->Text;
+			return $objname ?: $GLOBALS['we_' . $type][$name]->Text;
 		default:
 			return $objname;
 	}

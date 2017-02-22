@@ -36,9 +36,6 @@ we_cmd_modules.voting = function (args, url, caller) {
 		case "delete_voting":
 			WE().layout.pushCmdToModule(args);
 			return true;
-		case "unlock"://FIXME:???
-			window.we_repl(window.load, url);
-			return true;
 	}
 	return false;
 };

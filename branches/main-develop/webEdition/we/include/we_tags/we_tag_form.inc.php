@@ -65,8 +65,8 @@ function we_tag_form(array $attribs){
 	$formAttribs['method'] = $method;
 
 	$we_form_action = ($id ?
-			($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-			($action ? : $_SERVER['SCRIPT_NAME']));
+		($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+		($action ?: $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = [];
@@ -86,14 +86,14 @@ function we_tag_form(array $attribs){
 					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'type',
 						'value' => (
 						isset($GLOBALS['lv']->classID) ?
-							we_shop_shop::OBJECT :
-							($GLOBALS['lv'] instanceof we_listview_document ?
-								we_shop_shop::DOCUMENT :
-								(isset($GLOBALS['we_obj']->ID) ?
-									we_shop_shop::OBJECT :
-									we_shop_shop::DOCUMENT
-								)
-							))
+						we_shop_shop::OBJECT :
+						($GLOBALS['lv'] instanceof we_listview_document ?
+						we_shop_shop::DOCUMENT :
+						(isset($GLOBALS['we_obj']->ID) ?
+						we_shop_shop::OBJECT :
+						we_shop_shop::DOCUMENT
+						)
+						))
 						]
 					) .
 					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
@@ -110,8 +110,8 @@ function we_tag_form(array $attribs){
 			break;
 		case 'object' :
 		case 'document' :
-			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START']))){
-                unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
+			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START'])) && isset($_SESSION)){
+				unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
 			}
 
 			$formAttribs['onsubmit'] = $onsubmit;
@@ -142,14 +142,14 @@ function we_tag_form(array $attribs){
 				$typetmp = ($type === 'object') ? 'Object' : 'Document';
 
 				if(empty($GLOBALS['we_editmode'])){
-					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
+					$ret .= getHtmlTag('form', $formAttribs, '', false, true) .
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml]) .
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
 							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					]);
 				}
 			} elseif(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
-					$ret.=getHtmlTag('form', $formAttribs, '', false, true);
+				$ret .= getHtmlTag('form', $formAttribs, '', false, true);
 			}
 			break;
 		case 'formmail' :
@@ -210,10 +210,10 @@ function we_tag_form(array $attribs){
 				'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
 				'captchaname' => $captchaname,
 				] as $name => $val){
-					$ret.=$val ? getHtmlTag('input', ['type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml]) : '';
+					$ret .= $val ? getHtmlTag('input', ['type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml]) : '';
 				}
 
-				$ret.= '</div>';
+				$ret .= '</div>';
 			}
 			break;
 		default :
@@ -229,7 +229,7 @@ function we_tag_form(array $attribs){
 
 
 			if(empty($GLOBALS['we_editmode'])){
-				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
+				$ret .= getHtmlTag('form', $formAttribs, '', false, true);
 			}
 	}
 	return $ret;
