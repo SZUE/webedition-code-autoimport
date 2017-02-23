@@ -69,7 +69,7 @@ foreach(array_keys($sort) as $identifier){
 //	---> Loading some Javascript
 echo we_html_tools::getHtmlTop('', $charset, 5, $head .
 	we_html_element::jsScript(JS_DIR . '/weOrderContainer.js') .
-	we_editor_script::get() .
+	we_editor_script::get(true) .
 	$jsCmd->getCmds(), we_html_element::htmlBody([
 		'onunload' => "doUnload()",
 		'class' => "weEditorBody",
@@ -92,6 +92,5 @@ echo we_html_tools::getHtmlTop('', $charset, 5, $head .
 			we_html_multiIconBox::_getBoxEnd() .
 			$content .
 			we_html_element::htmlHidden('we_complete_request', 1)
-		) .
-	we_wysiwyg_editor::getHTMLConfigurationsTag()
+		)
 ));
