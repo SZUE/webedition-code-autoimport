@@ -356,7 +356,7 @@ class we_wysiwyg_editor{
 		return $asArray ? $options : implode(',', $options);
 	}
 
-	static function getHTMLHeader($frontendEdit = false){
+	static function getHTMLHeader($frontendEdit = false, $loadConfigs = false){
 		if(defined('WE_WYSIWG_HEADER')){
 			return '';
 		}
@@ -375,7 +375,10 @@ class we_wysiwyg_editor{
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
 				($frontendEdit ? $frontendHeader  : '') .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '', ($loadConfigs ? ['id' => 'loadVar_tinyConfigs',
+						'data-dialogProperties' => setDynamicVar(self::$dataDialogProperties),
+						'data-configurations' => setDynamicVar(self::$dataConfigurations),
+					] : []));
 	}
 
 	function getAllCmds(){
