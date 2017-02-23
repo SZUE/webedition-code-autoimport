@@ -325,7 +325,7 @@ WE().layout.we_tinyMCE.functions.initEditor = function(win, rawConfObj) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function(win) {
+WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function (win) {
 	var rawConfObj;
 	var dialogProps = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-dialogProperties');
 
@@ -345,6 +345,9 @@ WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function(win) {
 
 			if(rawConfObj.weEditorType === 'inlineTrue'){
 				WE().layout.we_tinyMCE.functions.initEditor(win, rawConfObj);
+			} else {
+				// we register weName of editors type = inlineFalse, so tinyWrapper can find their previewDiv even before the popup is setup
+				win.tinyEditors[rawConfObj.weFieldName] = rawConfObj.weName;
 			}
 		}
 	}
@@ -478,6 +481,30 @@ WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent = function (ed) {
 			try{
 				ed.setContent(openerDocument.getElementById(conf.weName + '_ifr').contentDocument.body.innerHTML);
 			}catch(e){}
+	}
+};
+
+WE().layout.we_tinyMCE.functions.callCustomInit = function (ed) {
+	var conf = ed.settings;
+	var weDoc_window;
+
+	switch(conf.weEditorType){
+		case 'inlineTrue':
+			weDoc_window = conf.weWin;
+			weDoc_window.tinyEditors[conf.weFieldName] = ed;
+			break;
+		case 'inlineFalse':
+			weDoc_window = conf.weWin.opener;
+			weDoc_window.tinyEditorsInlineFalse[conf.weFieldName] = ed;
+			break;
+		default:
+			return;
+	}
+
+	if(typeof weDoc_window['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){
+		try{
+			weDoc_window['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
+		} catch(e){}
 	}
 };
 

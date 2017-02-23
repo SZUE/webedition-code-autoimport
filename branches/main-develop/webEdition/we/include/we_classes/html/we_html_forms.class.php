@@ -220,14 +220,11 @@ abstract class we_html_forms{
 				$previewDivContent = $hiddenTextareaContent = strtr(we_document::parseInternalLinks($value, 0), ['##|r##' => "\r", '##|n##' => "\n"]);
 			}
 
-			$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '${1}', $name) : '';
-
 			$bgcolor = preg_match('/^[a-f0-9]{6}$/i', $bgcolor) ? '#' . $bgcolor : $bgcolor;
 			$bgStyle = $bgcolor ? ' style="background-color: ' . $bgcolor . ' !important; background-image: none !important;"' : '';
 
 			return $out .
 				we_html_element::htmlTextArea(['name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none', 'class' => 'wetextarea'], $hiddenTextareaContent) .
-				($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
 				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="border-bottom:0px;">' . $e->getHTML() . '</div>' : '') . '<div class="wysiwygPreview tbButtonWysiwygBorder ' . ($class ?: "") . ' wetextarea tiny-wetextarea wetextarea-' . $origName . '" ' . $bgStyle . ' id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="border-top:0px;">' . $e->getHTML() . '</div>' : '');
 		}
 

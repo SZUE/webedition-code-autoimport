@@ -180,53 +180,8 @@ WE().layout.we_tinyMCE.onInitEditor = function(ed){
 		WE().layout.we_tinyMCE.functions.wysiwygDialog_setContent(ed);
 	}
 
-	/* ALL THIS EDITOR-REGISTERING STUFF IS NOT WORKING AT THE TIME! */
-	if(conf.weFieldName){
-		conf.weWin.tinyEditors[conf.weFieldName] = ed;
-
-		var hasOpener = false;
-		try{
-			hasOpener = opener ? true : false;
-		} catch(e){}
-
-		//FIXME: change this & every call to an object/array element call!
-		if(typeof conf.weWin['we_tinyMCE_' + conf.weFieldNameClean + '_init'] === 'function'){
-			try{
-				conf.weWin['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
-			} catch(e){
-				//nothing
-			}
-		} else if(hasOpener){
-			if(WE().layout.weEditorFrameController){
-				//we are in backend
-				var editor = WE().layout.weEditorFrameController.ActiveEditorFrameId;
-				var wedoc = null;
-				try{
-					wedoc = opener.top.bm_content_frame.frames[editor].frames["contenteditor_" + editor];
-					wedoc.tinyEditorsInPopup[conf.weFieldName] = ed;
-					wedoc['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
-				}catch(e){
-					//opener.console.log("no external init function for ' . $this->fieldName . ' found");
-				}
-				try{
-					wedoc = opener.top.bm_content_frame.frames[editor].frames["editor_" + editor];
-					wedoc.tinyEditorsInPopup[conf.weFieldName] = ed;
-					wedoc['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
-				}catch(e){
-					//opener.console.log("no external init function for ' . $this->fieldName . ' found");
-				}
-			} else{
-				//we are in frontend
-				try{
-					window.opener.tinyEditorsInPopup[conf.weFieldName] = ed;
-					window.opener['we_tinyMCE_' + conf.weFieldNameClean + '_init'](ed);
-				}catch(e){
-					//opener.console.log("no external init function for ' . $this->fieldName . ' defined");
-				}
-			}
-		}
-	}
-
+	// call custom init if there: we_tinyMCE_FIELDNAME_init(ed)
+	WE().layout.we_tinyMCE.functions.callCustomInit(ed);
 };
 
 WE().layout.we_tinyMCE.getTinyConfObject = function(args){
