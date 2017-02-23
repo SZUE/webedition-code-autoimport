@@ -31,7 +31,7 @@ class we_dialog_gallery extends we_dialog_base{
 			'tmpl',
 			'templateIDs'
 		];
-		$this->JsOnly = true;
+		$this->onOkJsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[addGallery]');
 		$this->noInternals = $noInternals;
 

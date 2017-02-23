@@ -29,7 +29,7 @@ class we_dialog_lang extends we_dialog_base{
 
 		$this->changeableArgs = ["lang"
 		];
-		$this->JsOnly = true;
+		$this->onOkJsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[language_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();

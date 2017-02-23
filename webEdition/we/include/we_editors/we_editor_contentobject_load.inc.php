@@ -198,8 +198,8 @@ switch($cmd){
 				$ret .= '
 var target = _EditorFrame.getContentEditor(),
 	confname = "' . $field . 'default";
-if(typeof target.tinyMceConfObjects[confname] === \'object\'){
-	WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confname]);
+if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
+	WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
 }';
 			}
 			echo we_gui_OrderContainer::getResponse('up', $uniqid) .
@@ -221,8 +221,8 @@ if(typeof target.tinyMceConfObjects[confname] === \'object\'){
 				$ret .= '
 var target = _EditorFrame.getContentEditor(),
 	confname = "' . $field . 'default";
-if(typeof target.tinyMceConfObjects[confname] === \'object\'){
-		WE().layout.we_tinyMCE.functions.tinyMceInitialize(target, target.tinyMceConfObjects[confname]);
+if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
+		WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
 }';
 			}
 			echo we_gui_OrderContainer::getResponse('down', $uniqid) .

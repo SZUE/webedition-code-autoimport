@@ -766,6 +766,7 @@ lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resource
 js/wysiwyg/tinymce/weTinyMceFunctions.js
 js/wysiwyg/tinymce/weTinyMceDialogs.js
 js/wysiwyg/tinymce/weTinyMce_registerDialogs.js
+js/wysiwyg/tinymce/weTinyMce_functions.js
 js/wysiwyg/tinymce/plugins/welink/js/welink_insert.js
 js/wysiwyg/tinymce/plugins/welink/js/welink_init.js
 js/wysiwyg/tinymce/plugins/weimage/js/image_insert.js

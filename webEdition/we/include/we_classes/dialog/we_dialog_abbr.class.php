@@ -27,7 +27,7 @@ class we_dialog_abbr extends we_dialog_base{
 	public function __construct($noInternals = true){
 		parent::__construct($noInternals);
 
-		$this->JsOnly = true;
+		$this->onOkJsOnly = true;
 		$this->changeableArgs = [
 			'title',
 			'lang',

@@ -40,7 +40,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 	}
 
 	function getDialogButtons(){
-		if($this->pageNr == $this->numPages && $this->JsOnly == false){
+		if($this->pageNr == $this->numPages && $this->onOkJsOnly == false){
 			$back = $this->getBackBut();
 			$ok = we_html_button::create_button(we_html_button::OK, "javascript:weCheckAcFields()");
 			$okBut = $back ? $back . $ok : $ok;

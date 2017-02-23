@@ -131,12 +131,10 @@ abstract class we_html_forms{
 		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : '', we_base_request::STRING));
 		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs, '', we_base_request::STRING));
 		$bgcolor = weTag_getAttribute('bgcolor', $attribs, '', we_base_request::STRING);
-		$wrap = weTag_getAttribute('wrap', $attribs, false, we_base_request::BOOL);
 		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, we_base_request::BOOL);
 		$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
 		$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);
 		$id = weTag_getAttribute('id', $attribs, weTag_getAttribute('pass_id', $attribs, '', we_base_request::STRING), we_base_request::STRING);
-		$tabindex = weTag_getAttribute('tabindex', $attribs, '', we_base_request::STRING);
 		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
 		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, we_base_request::BOOL);
 		$buttonpos = weTag_getAttribute('buttonpos', $attribs, '', we_base_request::STRING);
@@ -196,7 +194,7 @@ abstract class we_html_forms{
 		if($wysiwyg){
 			$commands = ($showmenues ? $commands : str_replace(['formatblock,', 'fontname,', 'fontsize,',], '', $commands ?: implode(',', we_wysiwyg_editor::getAllCmds())));
 			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ?: implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
-			$out = we_wysiwyg_editor::getHeaderHTML($isFrontendEdit);
+			$out = $isFrontendEdit ? we_wysiwyg_editor::getHTMLHeader($isFrontendEdit) : ''; // obsolet?
 			$lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ?: 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
