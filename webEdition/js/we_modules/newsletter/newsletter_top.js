@@ -228,6 +228,9 @@ function we_cmd() {
 		case "syncNewsletterTitle":
 			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements.Text.value);
 			break;
+		case "setHot":
+			// do nothing
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

@@ -433,6 +433,7 @@ class we_newsletter_frames extends we_modules_frame{
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === 'save_settings'){
 			$this->View->processCommands($jscmd);
 			$closeflag = true;
+			$jscmd->addCmd('settings_close');
 		}
 
 		$js = $jscmd->getCmds() . $this->View->getJSProperty();
@@ -491,7 +492,7 @@ class we_newsletter_frames extends we_modules_frame{
 					], 'value', 308));
 		}
 
-		$close = we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();');
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('settings_close')");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
 		$radios_code = '';
@@ -520,14 +521,13 @@ class we_newsletter_frames extends we_modules_frame{
 		$gml_table->setCol(2, 0, [], $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, ['style' => 'text-align:right'], $deselect);
 
-		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form'], $this->View->getHiddens() .
+		$body = we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form'], $this->View->getHiddens() .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml() .
 						$radios_code .
 						$gml_table->getHtml(), g_l('modules_newsletter', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)
 				)
-				. ($closeflag ? we_html_element::jsElement('top.close();') : "")
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -893,16 +893,7 @@ class we_newsletter_frames extends we_modules_frame{
 					$content .= we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(["cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=true;",
 								'style' => "width:440px;"], oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
-						we_html_element::jsElement('
-function extraInit(){
-	if(typeof weWysiwygInitializeIt == "function"){
-		weWysiwygInitializeIt();
-	}
-	loaded = true;
-}
-window.onload=extraInit;');
-
+						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]'));
 					break;
 
 				case we_newsletter_block::ATTACHMENT:
@@ -1041,7 +1032,7 @@ window.onload=extraInit;');
 			$this->View->getHiddensProperty();
 
 		switch($this->View->page){
-			case 0:
+			case we_newsletter_frames::TAB_PROPERTIES:
 				$out .= we_html_element::htmlHiddens(['home' => 0, "fromPage" => 0]);
 
 				if($this->View->newsletter->IsFolder == 0){
@@ -1051,18 +1042,19 @@ window.onload=extraInit;');
 
 				$out .= $this->getHTMLNewsletterHeader();
 				break;
-			case 1:
+			case we_newsletter_frames::TAB_MAILING:
 				$out .= $this->View->getHiddensPropertyPage() .
 					$this->View->getHiddensContentPage() .
 					we_html_element::htmlHiddens(["fromPage" => 1, "ncustomer" => '', "nfile" => '', "ngroup" => '']) .
 					$this->getHTMLNewsletterGroups($jsCmd);
 				break;
-			case 2:
+			case we_newsletter_frames::TAB_EDIT:
 				$out .= JQUERY .
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensPropertyPage() .
 					we_html_element::htmlHiddens(["fromPage" => 2, "blockid" => 0]) .
 					$this->getHTMLNewsletterBlocks();
+				$js .= we_wysiwyg_editor::isWysiwygInstances() ? we_wysiwyg_editor::getHTMLHeader(false, true): '';
 				break;
 			default:
 				$out .= $this->View->getHiddensPropertyPage() .
@@ -1076,7 +1068,7 @@ window.onload=extraInit;');
 					'name' => 'we_form', "method" => "post", "onsubmit" => "return false;"], $out
 				)
 		);
-//$this->getHTMLDocumentHeader();
+
 		return $this->getHTMLDocument($body, $js . $jsCmd->getCmds());
 	}
 
@@ -1090,22 +1082,6 @@ window.onload=extraInit;');
 		$title = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'title', '')));
 		$firstname = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'firstname', '')));
 		$lastname = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'lastname', '')));
-
-		switch($type){
-			case 2:
-				$js = 'opener.setAndSave(document.we_form.id.value,document.we_form.emailfield.value,document.we_form.htmlmail.value,document.we_form.salutation.value,document.we_form.title.value,document.we_form.firstname.value,document.we_form.lastname.value);
-					close();';
-				break;
-			case 1:
-				$js = 'opener.editIt(document.we_form.group.value,document.we_form.id.value,document.we_form.emailfield.value,document.we_form.htmlmail.value,document.we_form.salutation.value,document.we_form.title.value,document.we_form.firstname.value,document.we_form.lastname.value);
-				close();';
-				break;
-			default:
-				$js = 'opener.add(document.we_form.group.value,document.we_form.emailfield.value,document.we_form.htmlmail.value,document.we_form.salutation.value,document.we_form.title.value,document.we_form.firstname.value,document.we_form.lastname.value);
-				close();';
-		}
-
-		$js = we_html_element::jsElement('function save(){' . $js . '}');
 
 		$row = 0;
 		$table = new we_html_table(['class' => 'default'], 12, 3);
@@ -1143,10 +1119,10 @@ window.onload=extraInit;');
 
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
-		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('editEmails_save', " . intval($type) . ")");
 
-		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"], we_html_element::htmlForm([
-					'name' => 'we_form', "onsubmit" => "save();return false;"], we_html_element::htmlHidden("group", $group) .
+		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "we_cmd('editEmails_onload')"], we_html_element::htmlForm([
+					'name' => 'we_form', "onsubmit" => "we_cmd('editEmails_save', " . intval($type) . ");return false;"], we_html_element::htmlHidden("group", $group) .
 					($type ?
 					we_html_element::htmlHidden("id", $id) :
 					""
@@ -1157,7 +1133,7 @@ window.onload=extraInit;');
 				)
 		);
 
-		return $this->getHTMLDocument($body, $js);
+		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
 	private function getHTMLPreview(){

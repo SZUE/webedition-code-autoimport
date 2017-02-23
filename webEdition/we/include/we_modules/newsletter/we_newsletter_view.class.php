@@ -192,9 +192,8 @@ var frameSet="' . $this->frameset . '";
 	}
 
 	function getJSProperty($load = ''){
-		return
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load, ['loadVarNewsletter_property', 'data-nlView' => setDynamicVar([
+		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load, ['id' => 'loadVarNewsletter_property', 'data-nlView' => setDynamicVar([
 					'checkMail' => !empty($this->settings['reject_save_malformed']),
 					'uid' => (isset($this->uid) ? $this->uid : ""),
 				])]

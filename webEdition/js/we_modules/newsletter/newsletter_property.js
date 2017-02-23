@@ -25,6 +25,7 @@
  */
 'use strict';
 var nlView = WE().util.getDynamicVar(document, 'loadVarNewsletter_property', 'data-nlView');
+
 function set_state_edit_delete_recipient(control) {
 	var p = document.forms[0].elements[control];
 	var i = p.length;
@@ -468,6 +469,28 @@ function we_cmd() {
 		case "blocks_selectTemplateCallback":
 			document.we_form.elements['block' + args[2] + '_use_def_template'].checked = false;
 			we_cmd('setHot');
+			break;
+		case 'settings_close':
+			caller.close();
+			break;
+		case 'editEmails_onload':
+			caller.document.we_form.emailfield.select();
+			caller.document.we_form.emailfield.focus();
+			break;
+		case 'editEmails_save':
+			switch(args[1]){
+				case 2:
+					caller.opener.setAndSave(caller.document.we_form.id.value, caller.document.we_form.emailfield.value, caller.document.we_form.htmlmail.value, caller.document.we_form.salutation.value, caller.document.we_form.title.value, caller.document.we_form.firstname.value, caller.document.we_form.lastname.value);
+					caller.close();
+					break;
+				case 1:
+					caller.opener.editIt(caller.document.we_form.group.value, caller.document.we_form.id.value, caller.document.we_form.emailfield.value, caller.document.we_form.htmlmail.value, caller.document.we_form.salutation.value, caller.document.we_form.title.value, caller.document.we_form.firstname.value, caller.document.we_form.lastname.value);
+					caller.close();
+					break;
+				default:
+					caller.opener.add(caller.document.we_form.group.value, caller.document.we_form.emailfield.value, caller.document.we_form.htmlmail.value, caller.document.we_form.salutation.value, caller.document.we_form.title.value, caller.document.we_form.firstname.value, caller.document.we_form.lastname.value);
+					caller.close();
+			}
 			break;
 		default:
 			// go to newsletter_top.js
