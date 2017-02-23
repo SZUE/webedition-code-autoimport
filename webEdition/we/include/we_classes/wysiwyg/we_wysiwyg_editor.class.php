@@ -1040,12 +1040,28 @@ class we_wysiwyg_editor{
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
-		return getHtmlTag('textarea', ['wrap' => "off",
+		return /*$this->getHTMLSupportText() .*/ getHtmlTag('textarea', ['wrap' => "off",
 				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
 					'id' => $this->name,
 					'name' => $this->name,
 					'class' => 'wetextarea'
 					], strtr($editValue, ['\n' => '', '&' => '&amp;']), true);
 	}
+	
+	/* TODO: add tutorial for TinyWrapper and adding additional event listeners to webEdition documentation */
+	/*
+	private function getHTMLSupportText(){
+		return '
+<!--  
+--- tinyMCE ---
+* To adress this instance of tinyMCE by your template JavaScript use the webedition wrapper object: "TinyWrapper(\'' . $this->fieldName . '\')"
+* Place "function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){// custom code}" to your JavaScript to add additional event listeners to this editor.
+* Learn more about manipulating tiny instances from the webEdition Documentation.
+-->
+';
+	}
+	 * 
+	 */
+
 
 }

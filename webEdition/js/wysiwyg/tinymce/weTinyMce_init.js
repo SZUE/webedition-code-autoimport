@@ -30,7 +30,7 @@ $(function () {
 
 var tinyMceRawConfigurations = tinyMceRawConfigurations ? tinyMceRawConfigurations : {};
 var tinyEditors = tinyEditors ? tinyEditors : {};
-var tinyEditorsInPopup = tinyEditorsInPopup ? tinyEditorsInPopup : {};
+var tinyEditorsInlineFalse = tinyEditorsInlineFalse ? tinyEditorsInlineFalse : {};
 var tinyWrappers = tinyWrappers ? tinyWrappers : {};
 
 tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject);

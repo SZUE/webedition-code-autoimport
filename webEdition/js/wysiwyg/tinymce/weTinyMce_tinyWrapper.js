@@ -30,17 +30,17 @@ WE().layout.we_tinyMCE.getTinyWrapper = function(win, fieldname){
 
 function TinyWrapper(win, fieldname) {
 	var win = win;
-	var fn = fieldname;
+	var fieldname = fieldname;
 
 	var tinyEditors = win.tinyEditors;
-	var tinyEditorsInPopup = win.tinyEditorsInPopup;
+	var tinyEditorsInlineFalse = win.tinyEditorsInlineFalse;
 	var tinymce = win.tinymce;
 	var doc = win.document;
-	var isInlineedit = typeof tinyEditors[fn] === 'object';
-	var id = isInlineedit ? tinyEditors[fn].id : (tinyEditors[fn] === undefined ? undefined : tinyEditors[fn]);
+	var isInlineTrue = typeof tinyEditors[fieldname] === 'object';
+	var id = isInlineTrue ? tinyEditors[fieldname].id : (tinyEditors[fieldname] === undefined ? undefined : tinyEditors[fieldname]);
 
 	this.getFieldName = function () {
-		return fn;
+		return fieldname;
 	};
 
 	this.getId = function () {
@@ -48,37 +48,65 @@ function TinyWrapper(win, fieldname) {
 	};
 
 	this.getIsInlineedit = function () {
-		return isInlineedit;
+		return isInlineTrue;
+	};
+
+	this.isInlineTrue = function () {
+		return isInlineTrue;
+	};
+	
+	this.isEditorInitialized = function () {
+		if (typeof tinyEditors[fieldname] === 'object') {
+			return true;
+		}
+
+		if (tinyEditorsInlineFalse[fieldname] !== undefined) {
+			try {
+				// if we can getContent editor is alive
+				tinyEditorsInlineFalse[fieldname].getContent();
+				return true;
+			} catch (err) {
+				// if it failed editor inlineFalse is not opened
+				delete tinyEditorsInlineFalse[fieldname];
+				return false;
+			}
+		}
+
+		return false;
 	};
 
 	this.getEditorInPopup = function () {
-		if (tinyEditorsInPopup[fn] !== undefined) {
-			try {
-				tinyEditorsInPopup[fn].getContent();
-				return tinyEditorsInPopup[fn];
-			} catch (err) {
-				delete tinyEditorsInPopup[fn];
-				return undefined;
-			}
-		} else {
+		if(isInlineTrue) {
 			return undefined;
 		}
+
+		if(this.isEditorInitialized()) {
+			return tinyEditorsInlineFalse[fieldname];
+		}
+		
+		return undefined;
 	};
 
 	this.getEditor = function (tryPopup) {
-		tryPopup = !tryPopup ? false : tryPopup;
+		tryPopup = tryPopup === false ? false : true;
 		if (tryPopup) {
 			return this.getEditorInPopup();
 		}
 
-		return tinyEditors[fn] === undefined ? undefined : (typeof tinyEditors[fn] === 'object' ? tinyEditors[fn] : undefined);
+		return tinyEditors[fieldname] === undefined ? undefined : (typeof tinyEditors[fieldname] === 'object' ? tinyEditors[fieldname] : undefined);
 	};
 
+	// why do we return textarea only if inlineFalse
 	this.getTextarea = function () {
-		return tinyEditors[fn] === undefined ? undefined : (typeof tinyEditors[fn] === 'object' ? 'undefined' : doc.getElementById(tinyEditors[fn]));
+		return tinyEditors[fieldname] === undefined ? undefined : (typeof tinyEditors[fieldname] === 'object' ? undefined : doc.getElementById(tinyEditors[fieldname]));
 	};
+
+	this.getPreviewDiv = function () {
+		return this.getDív();
+	};
+
 	this.getDiv = function () {
-		return tinyEditors[fn] === undefined ? undefined : (typeof tinyEditors[fn] === 'object' ? undefined : doc.getElementById('div_wysiwyg_' + tinyEditors[fn]));
+		return tinyEditors[fieldname] === undefined ? undefined : (typeof tinyEditors[fieldname] === 'object' ? undefined : doc.getElementById('div_wysiwyg_' + tinyEditors[fieldname]));
 	};
 
 	this.getIFrame = function () {
@@ -95,41 +123,42 @@ function TinyWrapper(win, fieldname) {
 		}
 	};
 
-	this.getContent = function (forcePopup) {
+	this.getContent = function (forcePopup) { // forcePopup means we return unsynchronized content from popup if opened
 		forcePopup = forcePopup === undefined ? false : forcePopup;
-		if (!isInlineedit) {
+		if (!isInlineTrue) {
 			if (forcePopup) {
 				try {
-					return tinyEditorsInPopup[fn].getContent();
+					return tinyEditorsInlineFalse[fieldname].getContent();
 				} catch (err) {
 				}
 			}
+			// if not forcePopup or if it failed, we return content from previewDiv
 			try {
-				return doc.getElementById(tinyEditors[fn]).value;
+				return doc.getElementById(tinyEditors[fieldname]).value;
 			} catch (err) {
 			}
 		} else {
 			try {
-				return tinyEditors[fn].getContent();
+				return tinyEditors[fieldname].getContent();
 			} catch (err) {
 			}
 		}
 	};
 
 	this.setContent = function (cnt) {
-		if (!isInlineedit) {
+		if (!isInlineTrue) { // we try to set content both in previewDiv/textarea and editor if opened
 			try {
-				doc.getElementById(tinyEditors[fn]).value = cnt;
-				doc.getElementById('div_wysiwyg_' + tinyEditors[fn]).innerHTML = cnt;
+				doc.getElementById(tinyEditors[fieldname]).value = cnt;
+				doc.getElementById('div_wysiwyg_' + tinyEditors[fieldname]).innerHTML = cnt;
 			} catch (err) {
 			}
 			try {
-				tinyEditorsInPopup[fn].setContent(cnt);
+				tinyEditorsInlineFalse[fieldname].setContent(cnt);
 			} catch (err) {
 			}
 		} else {
 			try {
-				tinyEditors[fn].setContent(cnt);
+				tinyEditors[fieldname].setContent(cnt);
 			} catch (err) {
 			}
 		}
