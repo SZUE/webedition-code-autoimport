@@ -237,18 +237,3 @@ var weOrderContainer = function (id) {
 };
 
 var orderContainer = new weOrderContainer("orderContainer");
-
-function we_cmd() {
-	/*jshint validthis:true */
-	var caller = (this && this.window === this ? this : window);
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case 'orderContainerAdd':
-			orderContainer.add(document, args[1], null);
-			break;
-		default:
-			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
-	}
-}

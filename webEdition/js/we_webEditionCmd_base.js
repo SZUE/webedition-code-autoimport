@@ -570,11 +570,11 @@ we_cmd_modules.base = function (args, url, caller) {
 		case 'collection_insertFiles_rpc':
 			// TODO: make some tests and return with alert when not ok
 			postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '') +
-				'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
-				'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
-				'&we_cmd[full]=0' +
-				'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
-				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+							'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
+							'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
+							'&we_cmd[full]=0' +
+							'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
+							'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData);
 
 			break;
@@ -722,7 +722,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			} else {
 				var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], table);
 				we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: table, transaction: verifiedTransaction},
-					{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+								{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 			}
 			break;
 		case 'wedoc_setPropertyOrElement_rpc':
@@ -731,12 +731,12 @@ we_cmd_modules.base = function (args, url, caller) {
 			}
 
 			postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id) +
-				'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
-				'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
-				'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
-				'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
-				'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
-				'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+							'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
+							'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
+							'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
+							'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
+							'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
+							'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPropertyOrElement&cns=document" + postData);
 			break;
@@ -779,6 +779,9 @@ we_cmd_modules.base = function (args, url, caller) {
 			if (args[4]) {
 				this.we_cmd('setHot');
 			}
+			break;
+		case 'open_cockpit':
+			we_showInNewTab(args, url);
 			break;
 		default:
 			//WE().t_e('no command matched to request', args[0]);
