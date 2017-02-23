@@ -1604,7 +1604,7 @@ function open_wysiwyg_window(args, caller) {
 		wyh = Math.min(screen_height, wyh);
 	}
 
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd_frontend.php?we_cmd[0]=open_wysiwyg_window&we_dialog_args[readyConfig]=' + args[1];
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd_frontend.php?we_cmd[0]=open_wysiwyg_window&we_dialog_args[dialogProperties]=' + args[1];
 	new (WE().util.jsWindow)(caller, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
 }
 

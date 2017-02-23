@@ -104,7 +104,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 				return parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu);
 			case 'insertgallery':
 				return (parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu))
-					&& !$this->editor->getIsFrontendEdit() && we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION);
+					&& !$this->editor->getIsFrontend() && we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION);
 			case 'insertdate':
 			case 'inserttime':
 				return $this->editor->setPlugin('insertdatetime', parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu));
@@ -144,7 +144,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			case 'replace':
 				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
 			case 'fullscreen':
-				return !$this->editor->getIsFrontendEdit() && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
+				return !$this->editor->getIsFrontend() && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
 			case 'editsource':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu);
 			case 'template':

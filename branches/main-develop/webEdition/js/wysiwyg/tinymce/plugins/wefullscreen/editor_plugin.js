@@ -28,7 +28,7 @@
 		init: function (d, e) {
 			d.addCommand('mceWefullscreen', function () {
 				var a = d.selection;
-				var readyConfig = d.getParam('weFullscreen_readyConfig');
+				var dialogProperties = d.getParam('weDialogProperties');
 				var weEditorType = d.getParam('weEditorType');
 				var language = d.getParam('language');
 
@@ -66,7 +66,7 @@
 						break; 
 					case 'inlineTrue':
 						d.windowManager.open({
-							file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_fullscreen&we_dialog_args[readyConfig]=' + readyConfig,
+							file: '/webEdition/we_cmd_frontend.php?we_cmd[0]=open_dialog_fullscreen&we_dialog_args[dialogProperties]=' + dialogProperties,
 							popup_css: false,
 							width: screen.availWidth - 20,
 							height: screen.availHeight - 70,

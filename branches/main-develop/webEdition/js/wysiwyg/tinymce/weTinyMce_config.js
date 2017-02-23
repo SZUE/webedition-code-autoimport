@@ -52,7 +52,7 @@ function TinyMceConfObject(args) {
 	this.weWin = args.weWin;
 	this.weToolbarRows = args.weToolbarRows;
 	this.weContextmenuCommands = args.weContextmenuCommands;
-	this.weFullscreen_readyConfig = args.weFullscreen_readyConfig;
+	this.weDialogProperties = args.weDialogProperties;
 	this.weImageStartID = args.weImageStartID;
 	this.weGalleryTemplates = args.weGalleryTemplates;
 	this.weClassNames_urlEncoded = args.weCssClasses;
@@ -124,7 +124,6 @@ function TinyMceConfObject(args) {
 	//this.forced_root_block = '';
 
 	this.setup = WE().layout.we_tinyMCE.setupEditor;
-	this.oninit = WE().layout.we_tinyMCE.initEditor;
 	this.paste_preprocess = WE().layout.we_tinyMCE.do.afterPastePlugin;
 }
 

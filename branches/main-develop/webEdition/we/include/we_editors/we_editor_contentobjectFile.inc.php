@@ -83,7 +83,8 @@ echo we_html_tools::getHtmlTop('', $charset, 5, $head . we_html_element::jsScrip
 			], we_class::hiddenTrans() .
 			$content .
 			we_html_element::htmlHidden("we_complete_request", 1)
-		)
+		) .
+		we_wysiwyg_editor::getHTMLConfigurationsTag()
 	)
 );
 

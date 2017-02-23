@@ -880,6 +880,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		//FIXME: check this new field to determine if all data has been transmitted
 		echo we_html_element::htmlHidden("we_complete_request", 1) .
 		'</form>' .
+		we_wysiwyg_editor::getHTMLConfigurationsTag() .
 		($fullPoster ? '</body></html>' : '');
 	}
 }

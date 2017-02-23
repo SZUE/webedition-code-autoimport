@@ -23,57 +23,73 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_wysiwyg extends we_dialog_base{
-	protected $writeToFrontend = false;
+	protected $isFrontend = false;
 	protected $name = '';
 	protected $fieldName = '';
-	protected $readyConfig = [];
+	protected $dialogProperties = [];
 	protected $editorType = '';
 
-	public static function getDialog($nointernals = false, $editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
-		$inst = new we_dialog_wysiwyg($nointernals, $editorType);
-		$inst->initByHttp($editorType);
+	public function __construct($noInternals = true, $editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
+		parent::__construct($noInternals);
 
-		return $inst->getHTML();
+		$this->editorType = $editorType;
+		if($this->editorType === we_wysiwyg_editor::TYPE_INLINE_FALSE){
+			$this->dialogTitle = 'WYSIWYG-Editor';
+		} else {
+			$this->onOkJsOnly = true;
+			$this->dialogTitle = g_l('wysiwyg', '[fullscreen_editor]');
+			$this->bodyId = weFullscreenDialog;
+		}
+
+		$this->initByHttp();
 	}
 
 	public function initByHttp($editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
 		parent::initByHttp();
 
-		$this->editorType = $editorType;
-		$this->readyConfig = (array) json_decode($this->args['readyConfig']);
+		$this->dialogProperties = (array) json_decode($this->args['dialogProperties']);
 
-		$this->charset = $this->readyConfig['weCharset'];
+		$this->charset = $this->dialogProperties['weCharset'];
 		if(!$this->charset){
 			t_e('charset not found for wysiwyg', $this->charset);
 			exit();
 		}
 
-		$this->name = $this->readyConfig['weName'];
-		$this->fieldName = $this->readyConfig['weFieldName'];
-		
-		if($this->editorType === we_wysiwyg_editor::TYPE_FULLSCREEN){
-			$this->JsOnly = true; // means: on clicking ok do js only (not submit form to cmd_frame)
-			$this->pageNr = $this->numPages = 1; // obsolete?
-			$this->dialogTitle = g_l('wysiwyg', '[fullscreen_editor]');
-			$this->bodyId = weFullscreenDialog;
-		}
+		$this->name = $this->dialogProperties['weName'];
+		$this->fieldName = $this->dialogProperties['weFieldName'];
+	}
+
+	public static function getDialog($nointernals = false, $editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
+		$inst = new we_dialog_wysiwyg($nointernals, $editorType);
+		$inst->initByHttp();
+
+		return $inst->getHTML();
 	}
 
 	protected function getJs(){
 		return parent::getJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_wysiwyg.js', 'self.focus();');
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_wysiwyg.js', 'self.focus();') .
+			we_wysiwyg_editor::getHTMLHeader($this->noInternals);
 	}
 
 	function getDialogContentHTML(){
-		$e = new we_wysiwyg_editor($this->readyConfig, $this->editorType);
+		$e = new we_wysiwyg_editor($this->dialogProperties, $this->editorType);
 
-		// FIXME: add div around editor when fullscreen
-		return we_html_element::htmlDiv(['style' => 'position:absolute;top:0;bottom:0px;left:0px;right:0px;overflow:hidden;margin:0px'],
-				we_wysiwyg_editor::getHeaderHTML($this->noInternals) .
-				we_html_element::htmlHiddens([
-					]) . $e->getHTML()
-			);
+		return we_html_element::htmlDiv(['style' => 'position:absolute;top:0;bottom:0px;left:0px;right:0px;overflow:hidden;margin:0px'], $e->getHTML());
+	}
+	
+	function getDialogHTML(){
+		if($this->editorType === we_wysiwyg_editor::TYPE_FULLSCREEN){
+			return parent::getDialogHTML();
+		}
+		$dialogContent = we_html_tools::htmlDialogLayout($this->getDialogContentHTML(), '<i class="fa fa-2x fa-spinner fa-pulse"></i>', $this->getDialogButtons());
+
+		return $this->getFormHTML() . $dialogContent . we_html_element::htmlHidden('we_what', 'cmd') . $this->getHiddenArgs() . '</form>';
+	}
+
+	function getBodyEndpart(){
+		return we_wysiwyg_editor::getHTMLConfigurationsTag();
 	}
 
 	function cmdFunction(){
@@ -81,7 +97,7 @@ class we_dialog_wysiwyg extends we_dialog_base{
 			case 'writeBack_inlineFalse':
 			case 'open_wysiwyg_window':
 				// do we need this twice?
-				if(!$this->writeToFrontend){
+				if(!$this->isFrontend){
 					if(preg_match('%^(.+_te?xt)\[.+\]$%i', $this->name)){
 						$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '${1}', $this->name);
 					} else if(preg_match('|^(.+_input)\[.+\]$|i', $this->name)){
@@ -102,7 +118,7 @@ class we_dialog_wysiwyg extends we_dialog_base{
 					"\xe2\x80\xa9" => '',
 				];
 				$taValue = strtr($value, $replacements);
-				$divValue = $this->writeToFrontend ? $taValue : strtr(we_document::parseInternalLinks($value, 0), $replacements);
+				$divValue = $this->isFrontend ? $taValue : strtr(we_document::parseInternalLinks($value, 0), $replacements);
 
 				return we_html_tools::getHtmlTop($this->fieldName, $this->charset, '', 
 						we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('wysiwyg_writeBack')", [
@@ -110,7 +126,7 @@ class we_dialog_wysiwyg extends we_dialog_base{
 								'data-payload' => setDynamicVar(['textareaValue' => $taValue,
 									'divValue' => $divValue,
 									'name' => $this->name,
-									'isFrontendEdit' => $this->writeToFrontend ? 1 : 0])
+									'isFrontendEdit' => $this->isFrontend ? 1 : 0])
 							]), we_html_element::htmlBody()
 						);
 		}

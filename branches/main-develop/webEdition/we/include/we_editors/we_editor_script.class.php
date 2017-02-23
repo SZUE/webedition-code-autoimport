@@ -30,7 +30,7 @@ abstract class we_editor_script{
 			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
 				//no wysiwyg
 			} else {
-				$ret = we_wysiwyg_editor::getHeaderHTML();
+				$ret = we_wysiwyg_editor::getHTMLHeader();
 			}
 		}
 		$hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();

@@ -92,5 +92,6 @@ echo we_html_tools::getHtmlTop('', $charset, 5, $head .
 			we_html_multiIconBox::_getBoxEnd() .
 			$content .
 			we_html_element::htmlHidden('we_complete_request', 1)
-		)
+		) .
+	we_wysiwyg_editor::getHTMLConfigurationsTag()
 ));

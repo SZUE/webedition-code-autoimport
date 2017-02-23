@@ -26,7 +26,7 @@
 
 class we_wysiwyg_editor{
 	private $editorType = 1;
-	private $readyConfig = [];
+	private $dialogProperties = [];
 	private $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -98,6 +98,9 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = ['0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small',
 		'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit'];
 
+	public static $dataConfigurations = [];
+	public static $dataDialogProperties = ['isDialog' => false];
+	
 	const CONDITIONAL = true;
 	const MIN_WIDTH_INLINE = 100;
 	const MIN_HEIGHT_INLINE = 100;
@@ -109,22 +112,24 @@ class we_wysiwyg_editor{
 	const TYPE_FULLSCREEN = 'fullscreen';
 	const TYPE_EDITBUTTON = 'editButton';
 
-	function __construct(array $readyConfig = [], $editorType = '', $name = '', $width = 600, $height = 400, $value = '', $propString = '', $bgcolor = '', $className = '', $fontnamesCsv = '', $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $language = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
+	function __construct(array $dialogProperties = [], $editorType = '', $name = '', $width = 600, $height = 400, $value = '', $propString = '', $bgcolor = '', $className = '', $fontnamesCsv = '', $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $language = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
 		$this->editorType = $editorType ? : self::TYPE_INLINE_TRUE;
-		$this->readyConfig = $readyConfig;
+		$this->dialogProperties = $dialogProperties;
 
 		if(in_array($this->editorType, [self::TYPE_INLINE_FALSE, self::TYPE_FULLSCREEN])){
-			if(empty($this->readyConfig)){
-				t_e('attempt to initialize wysiwyg editor type "' . $this->editorType . '" without readyConfig');
-				exit();
+			if(empty($this->dialogProperties)){
+				t_e('attempt to initialize wysiwyg editor type "' . $this->editorType . '" without dialogProperties');
+				//exit();
 			}
 
 			// we only init props that we need in function getInlineHTML
 			$this->width = '100%';
 			$this->height = '100%';
-			$this->name = $this->readyConfig['weName'];
-			$this->buttonpos = $this->readyConfig['theme_advanced_toolbar_location'];
-			$this->readyConfig['weEditorType'] = $this->editorType;
+			$this->name = $this->dialogProperties['weName'];
+			$this->buttonpos = $this->dialogProperties['theme_advanced_toolbar_location'];
+			$this->charset['weEditorType'] = $this->dialogProperties['weCharset'];
+
+			self::$dataDialogProperties = ['isDialog' => true, 'weEditorType' => $this->editorType, 'weFieldname' => $this->dialogProperties['weFieldName']];
 		} else {
 			$this->name = $name;
 			$this->width = $width;
@@ -265,7 +270,7 @@ class we_wysiwyg_editor{
 		//FIXME: what to do with scripts??
 	}
 
-	public function getIsFrontendEdit(){
+	public function getIsFrontend(){
 		return $this->isFrontendEdit;
 	}
 
@@ -351,7 +356,7 @@ class we_wysiwyg_editor{
 		return $asArray ? $options : implode(',', $options);
 	}
 
-	static function getHeaderHTML($loadDialogRegistry = false, $frontendEdit = false){
+	static function getHTMLHeader($frontendEdit = false){
 		if(defined('WE_WYSIWG_HEADER')){
 			return '';
 		}
@@ -370,7 +375,7 @@ class we_wysiwyg_editor{
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
 				($frontendEdit ? $frontendHeader  : '') .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_functions.js');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '');
 	}
 
 	function getAllCmds(){
@@ -593,23 +598,6 @@ class we_wysiwyg_editor{
 				array_pop($this->filteredElements);
 			}
 		}
-	}
-
-	function getHTML(){
-		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
-	}
-
-	private function getEditButtonHTML(){
-		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
-
-		$param4 = !$this->isFrontendEdit ? '' : 'frontend';
-		$width = we_base_util::convertUnits($this->width);
-		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
-		$height = we_base_util::convertUnits($this->height);
-		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
-
-		$readyConfig = urlencode(json_encode($this->getDynamicVars()));
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $readyConfig . "', " . $width . ", " . $height . ");");
 	}
 
 	static function parseInternalImageSrc($value){
@@ -885,11 +873,24 @@ class we_wysiwyg_editor{
 		return $templates_new;
 		//return 'template_templates : [' . implode(',', $templates) . '],';
 	}
+	
+	private function getPropertiesDialog($forEditorType = ''){
+		return [
+			'weEditorType' => $forEditorType,
+			'weCharset' => $this->charset,
+			'weName' => $this->name,
+			'weFieldName' => $this->fieldName,
+			'theme_advanced_toolbar_location' => $this->buttonpos
+		];
+	}
 
-	private function getDynamicVars(){
+	private function getPropertiesEditor(){
+		/*
 		if(in_array($this->editorType, [self::TYPE_INLINE_FALSE, self::TYPE_FULLSCREEN])){
-			return $this->readyConfig;
+			return $this->dialogProperties;
 		}
+		 * 
+		 */
 
 		return [
 			'weEditorType' => $this->editorType,
@@ -899,7 +900,7 @@ class we_wysiwyg_editor{
 			'weOrigName' => $this->origName,
 			'weFieldName' => $this->fieldName,
 			'weFieldNameClean' => $this->fieldName_clean,
-			'weFullscreen_readyConfig' => '',
+			'weDialogProperties' => '',
 			'weImageStartID' => intval($this->imageStartID),
 			'weGalleryTemplates' => $this->galleryTemplates,
 			'weCssClasses' => urlencode($this->cssClasses),
@@ -936,7 +937,7 @@ class we_wysiwyg_editor{
 	}
 
 	private static function getFrontendHeaderConsts(){
-		return ['g_l' => ['tinyMceTranslationObject' => self::getTinyMceTranslationObject()],
+		return ['g_l' => ['tinyMceTranslationObject' => self::getTranslationObject()],
 				'tables' => ['FILE_TABLE' => FILE_TABLE, 'OBJECT_FILES_TABLE' => OBJECT_FILES_TABLE],
 				'dirs' => ['WE_JS_TINYMCE_DIR' => WE_JS_TINYMCE_DIR],
 				'linkPrefix' => ['TYPE_INT_PREFIX' => we_base_link::TYPE_INT_PREFIX,
@@ -944,7 +945,7 @@ class we_wysiwyg_editor{
 			];
 	}
 
-	public static function getTinyMceTranslationObject(){
+	public static function getTranslationObject(){
 		return [array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) => ['we' => [
 					'group_link' => g_l('wysiwyg', '[links]'),
 					'group_copypaste' => g_l('wysiwyg', '[import_text]'),
@@ -981,7 +982,44 @@ class we_wysiwyg_editor{
 		];
 	}
 
-	private function getInlineHTML(){
+	function getHTML(){
+		switch($this->editorType){
+			case self::TYPE_EDITBUTTON:
+				self::$dataConfigurations[] = $this->getPropertiesEditor();
+				return $this->getHTMLEditButton();
+			case self::TYPE_INLINE_TRUE:
+				$configuration = $this->getPropertiesEditor();
+				$configuration['weDialogProperties'] = urlencode(json_encode($this->getPropertiesDialog(self::TYPE_FULLSCREEN)));
+				self::$dataConfigurations[] = $configuration;
+				/* fall through */
+			case self::TYPE_INLINE_FALSE:
+			case self::TYPE_FULLSCREEN:
+				return $this->getHTMLEditor();
+		}
+	}
+
+	public static function getHTMLConfigurationsTag(){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('we-dataTiny', false, ['id' => 'loadVar_tinyConfigs',
+				'data-dialogProperties' => setDynamicVar(self::$dataDialogProperties),
+				'data-configurations' => setDynamicVar(self::$dataConfigurations),
+			]));
+	}
+
+	private function getHTMLEditButton(){
+		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
+
+		$param4 = !$this->isFrontendEdit ? '' : 'frontend';
+		$width = we_base_util::convertUnits($this->width);
+		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
+		$height = we_base_util::convertUnits($this->height);
+		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
+
+		$dialogProperties = urlencode(json_encode($this->getPropertiesDialog(self::TYPE_INLINE_FALSE)));
+
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $dialogProperties . "', " . $width . ", " . $height . ");");
+	}
+
+	private function getHTMLEditor(){
 		$editValue = self::parseInternalImageSrc($this->value);
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
@@ -992,11 +1030,7 @@ class we_wysiwyg_editor{
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
-		$config = $this->getDynamicVars();
-		$config['weFullscreen_readyConfig'] = ($this->editorType === self::TYPE_INLINE_TRUE ? urlencode(json_encode($config)) : '');
-
-		return we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '', ['id' => 'loadVarWeTinyMce_init', 'data-dynvars' => setDynamicVar($config)]) .
-				getHtmlTag('textarea', ['wrap' => "off",
+		return getHtmlTag('textarea', ['wrap' => "off",
 				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
 					'id' => $this->name,
 					'name' => $this->name,

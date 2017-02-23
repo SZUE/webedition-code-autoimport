@@ -233,7 +233,7 @@ abstract class we_base_jsConstants{
 	contentTypes:' . json_encode($ctLngs) . ',
 	selectors:{
 	},
-	tinyMceTranslationObject: ' . json_encode(we_wysiwyg_editor::getTinyMceTranslationObject()) . ',
+	tinyMceTranslationObject: ' . json_encode(we_wysiwyg_editor::getTranslationObject()) . ',
 	weCollection:{
 		element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
 		info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"

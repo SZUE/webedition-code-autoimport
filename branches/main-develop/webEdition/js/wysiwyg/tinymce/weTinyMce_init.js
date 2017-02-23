@@ -24,17 +24,24 @@
  */
 'use strict';
 
-var initVars = WE().util.getDynamicVar(document, 'loadVarWeTinyMce_init', 'data-dynvars');
-var confObject = null;
-var tinyMceConfObjects = tinyMceConfObjects ? tinyMceConfObjects : {};
+$(function () {
+	WE().layout.we_tinyMCE.functions.initAllFromDataAttribute(window);
+});
 
-initVars.weWin = window;
-tinyMceConfObjects[initVars.weFieldNameClean] = confObject = WE().layout.we_tinyMCE.getTinyConfObject(initVars);
+var tinyMceRawConfigurations = tinyMceRawConfigurations ? tinyMceRawConfigurations : {};
+var tinyEditors = tinyEditors ? tinyEditors : {};
+var tinyEditorsInPopup = tinyEditorsInPopup ? tinyEditorsInPopup : {};
+var tinyWrappers = tinyWrappers ? tinyWrappers : {};
 
 tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject);
 tinyMCE.PluginManager.load = tinyPluginManager;
 
-WE().layout.we_tinyMCE.functions.tinyMceInitialize(window, confObject);
+function TinyWrapper(fieldname) {
+	if (!tinyWrappers[fieldname]) {
+		tinyWrappers[fieldname] =  new WE().layout.we_tinyMCE.getTinyWrapper(window, fieldname);
+	}
+	return tinyWrappers[fieldname];
+};
 
 function tinyPluginManager(n, u, cb, s) {
 	var t = this, url = u;

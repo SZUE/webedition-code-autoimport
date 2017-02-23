@@ -312,13 +312,41 @@ WE().layout.we_tinyMCE.do.onCopyCut = function (ed, isCut) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.tinyMceInitialize = function(win, confObject) {
-	if (typeof win.tinyMCE === 'object' && typeof confObject === 'object') {
-		if (win.tinyMCE.get(confObject.elements)) { // true when we reinitialize tiny instance
-			win.tinyMCE.execCommand('mceRemoveControl', false, confObject.elements);
+WE().layout.we_tinyMCE.functions.initEditor = function(win, rawConfObj) {
+	if (typeof win.tinyMCE === 'object' && typeof rawConfObj === 'object') {
+		var confObj = WE().layout.we_tinyMCE.getTinyConfObject(rawConfObj);
+		confObj.weWin = win;
+
+		if (win.tinyMCE.get(confObj.elements)) { // true when we reinitialize tiny instance
+			win.tinyMCE.execCommand('mceRemoveControl', false, confObj.elements);
 		}
 
-		win.tinyMCE.init(confObject);
+		win.tinyMCE.init(confObj);
+	}
+};
+
+WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function(win) {
+	var rawConfObj;
+	var dialogProps = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-dialogProperties');
+
+	if(dialogProps && dialogProps.isDialog){
+		rawConfObj = win.opener.tinyMceRawConfigurations[dialogProps.weFieldname];
+		rawConfObj.weEditorType = dialogProps.weEditorType;
+		WE().layout.we_tinyMCE.functions.initEditor(win, rawConfObj);
+
+		return;
+	}
+
+	var configurations = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-configurations');
+	if(configurations && configurations.length){
+		for(var i = 0; i < configurations.length; i++){
+			rawConfObj = configurations[i];
+			win.tinyMceRawConfigurations[rawConfObj.weFieldName] = rawConfObj;
+
+			if(rawConfObj.weEditorType === 'inlineTrue'){
+				WE().layout.we_tinyMCE.functions.initEditor(win, rawConfObj);
+			}
+		}
 	}
 };
 

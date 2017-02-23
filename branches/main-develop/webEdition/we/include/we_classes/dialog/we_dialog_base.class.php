@@ -33,7 +33,7 @@ class we_dialog_base{
 	var $changeableArgs = [];
 	var $pageNr = 1;
 	var $numPages = 1;
-	var $JsOnly = false;
+	var $onOkJsOnly = false;
 	var $charset = '';
 	var $tinyMCEPopupManagment = true;
 
@@ -82,7 +82,7 @@ class we_dialog_base{
 	}
 
 	function getHTML(){
-		if($this->JsOnly){
+		if($this->onOkJsOnly){
 			$this->what = 'dialog';
 		}
 
@@ -113,8 +113,13 @@ class we_dialog_base{
 	function getFramesetHTML(){
 		return we_html_element::htmlBody(['onload' => 'weDialogBase_setLoaded();', 'id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()'],
 				we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-				we_html_element::htmlIFrame('we_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+				we_html_element::htmlIFrame('we_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+				$this->getBodyEndpart()
 		);
+	}
+	
+	function getBodyEndpart(){
+		// to be overwritten
 	}
 
 	protected function getNextBut(){
@@ -145,7 +150,7 @@ class we_dialog_base{
 	}
 
 	function getDialogButtons(){
-		if($this->pageNr == $this->numPages && $this->JsOnly == false){
+		if($this->pageNr == $this->numPages && $this->onOkJsOnly == false){
 			$back = $this->getBackBut();
 			$ok = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ':we_form');
 			$okBut = $back ? $back . $ok : $ok;
@@ -175,7 +180,7 @@ class we_dialog_base{
 			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : we_html_element::htmlHidden("we_cmd[$i]", '');
 		}
 
-		$target = (!$this->JsOnly ? ' target="we_cmd_frame"' : '');
+		$target = (!$this->onOkJsOnly ? ' target="we_cmd_frame"' : '');
 
 		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . '>' . $hiddens;
 	}
@@ -199,7 +204,7 @@ class we_dialog_base{
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset, '', we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', '', [
 					'id' => 'loadVarDialog',
 					'data-vars' => setDynamicVar([
-						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->JsOnly),
+						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->onOkJsOnly),
 						'pluginName' => $this->tinyDialogName
 				])]) .
 			self::getTinyMceJS() .

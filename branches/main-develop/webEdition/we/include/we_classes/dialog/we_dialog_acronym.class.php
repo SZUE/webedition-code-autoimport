@@ -32,7 +32,7 @@ class we_dialog_acronym extends we_dialog_base{
 			"class",
 			"style"
 		];
-		$this->JsOnly = true;
+		$this->onOkJsOnly = true;
 		$this->dialogTitle = g_l('wysiwyg', '[acronym_title]');
 		$this->noInternals = $noInternals;
 

@@ -443,11 +443,11 @@ class we_selector_category extends we_selector_file{
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js'), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
+			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js') . we_wysiwyg_editor::getHTMLHeader(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . __CLASS__ . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() .
-				'</div></form>' : '' ) .
+				'</div></form>' . we_wysiwyg_editor::getHTMLConfigurationsTag() : '' ) .
 			'</body>');
 	}
 

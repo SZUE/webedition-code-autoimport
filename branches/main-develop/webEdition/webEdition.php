@@ -265,6 +265,7 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 	we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_config.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_functionsTop.js') .
+	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_tinyWrapper.js') .
 	we_main_headermenu::css() .
 	we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
