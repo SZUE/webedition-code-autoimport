@@ -32,6 +32,14 @@ class we_listview_shopOrder extends we_listview_base{
 	var $Path = '';
 	var $docID = 0;
 	var $hidedirindex = false;
+	private static $replArray = [
+			'OrderID' => 'ID',
+			'OrderIntID' => 'ID',
+			'IntOrderID' => 'ID',
+			'CustomerIntID' => 'customerID',
+			'IntCustomerID' => 'customerID',
+			'CustomerID' => 'customerID',
+		];
 
 	/**
 	 * @desc    constructor of class
@@ -51,24 +59,17 @@ class we_listview_shopOrder extends we_listview_base{
 			//do nothing inside we
 			return;
 		}
+
 		$this->docID = $docID;
 		$this->condition = $condition;
 		$this->hidedirindex = $hidedirindex;
+
+
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
 		$this->Path = $this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-
-		$replArray = [
-			'OrderID' => 'ID',
-			'OrderIntID' => 'ID',
-			'IntOrderID' => 'ID',
-			'CustomerIntID' => 'customerID',
-			'IntCustomerID' => 'customerID',
-			'CustomerID' => 'customerID',
-		];
-
-		$this->condition = strtr($this->condition, $replArray);
-		$this->order = strtr($this->order, $replArray);
+		$this->condition = strtr($this->condition, self::$replArray);
+		$this->order = strtr($this->order, self::$replArray);
 
 		if($this->order){
 			$orderstring = ' ORDER BY ' . $this->order . ' ' .

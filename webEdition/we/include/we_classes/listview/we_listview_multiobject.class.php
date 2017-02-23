@@ -54,8 +54,14 @@ class we_listview_multiobject extends we_listview_objectBase{
 	 *
 	 */
 	public function __construct($name, $rows = 9999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = '', $condition = '', $triggerID = '', $cols = '', $seeMode = true, $searchable = true, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'false', $docID = 0, $languages = '', $hidedirindex = false, $objectseourls = false){
-
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
+		$this->triggerID = $triggerID;
+		$this->condition = $condition;
+		$this->searchable = $searchable;
+		$this->docID = $docID; //Bug #3720
+		$this->languages = $languages;
+		$this->objectseourls = $objectseourls;
+		$this->hidedirindex = $hidedirindex;
 
 		$data = 0;
 		$found = false;
@@ -64,7 +70,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 			if(($dat = $GLOBALS['lv']->f($name))){
 				$data = we_unserialize($dat);
 			}
-			$found=true;
+			$found = true;
 		} elseif(!empty($GLOBALS['we_lv_array'])){
 			//find last we_listview_object in stack
 			foreach(array_reverse($GLOBALS['we_lv_array']) as $cur){
@@ -72,11 +78,12 @@ class we_listview_multiobject extends we_listview_objectBase{
 					if(($dat = $cur->f($name))){
 						$data = we_unserialize($dat);
 					}
-					$found=true;
+					$found = true;
 					break;
 				}
 			}
 		}
+
 		if(!$found && $GLOBALS['we_doc']->getElement($name)){
 			$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		}
@@ -85,6 +92,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		if(empty($objects)){
 			return;
 		}
+
 		$this->objects = $objects;
 		//FIXME: can we use defaultsArray?!
 		$this->classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID IN (' . implode(',', $objects) . ') LIMIT 1');
@@ -93,15 +101,6 @@ class we_listview_multiobject extends we_listview_objectBase{
 			$this->anz_all = 0;
 			return;
 		}
-		$this->triggerID = $triggerID;
-		$this->condition = $condition;
-		$this->searchable = $searchable;
-		$this->docID = $docID; //Bug #3720
-
-		$this->condition = $this->condition;
-		$this->languages = $languages ?: (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
-		$this->objectseourls = $objectseourls;
-		$this->hidedirindex = $hidedirindex;
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -243,7 +242,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				$this->DB_WE->Record = ['WE_PATH' => '',
 					'WE_TEXT' => '',
 					'WE_ID' => '',
-					];
+				];
 				$this->count++;
 				return true;
 			}
