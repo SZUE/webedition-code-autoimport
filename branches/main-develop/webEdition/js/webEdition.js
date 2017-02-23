@@ -271,13 +271,13 @@ var WebEdition = {
 						return;
 					}
 					var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SelectorSuggest" +
-						"&we_cmd[table]=" + el.getAttribute('data-table') +
-						"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
-						"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
-						"&we_cmd[max]=" + el.getAttribute('data-max') +
-						"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
-						"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
-						"&we_cmd[query]=" + request.term;
+									"&we_cmd[table]=" + el.getAttribute('data-table') +
+									"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
+									"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
+									"&we_cmd[max]=" + el.getAttribute('data-max') +
+									"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
+									"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
+									"&we_cmd[query]=" + request.term;
 					$.getJSON(target, request, function (weResponse, status, xhr) {
 						el.cache[term] = weResponse.DataArray.suggest;
 						response(weResponse.DataArray.suggest);
@@ -313,14 +313,14 @@ var WebEdition = {
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
 					}
 					if (
-						!this.getAttribute("disabled") &&
-						this.offsetParent !== null /*returns null if parent is hidden*/ && (
-							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-							this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-							)
-						) {
+									!this.getAttribute("disabled") &&
+									this.offsetParent !== null /*returns null if parent is hidden*/ && (
+													this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+													!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+													this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+													(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+													)
+									) {
 						this.classList.add("weMarkInputError");
 					} else {
 						this.classList.remove("weMarkInputError");
@@ -352,8 +352,8 @@ var WebEdition = {
 			openSelectionToEdit: function (win, elID) {
 				var el = win.document.getElementById(elID);
 				var table = el.getAttribute('data-table'),
-					id = el.result.value,
-					type = el.result.getAttribute('data-contenttype');
+								id = el.result.value,
+								type = el.result.getAttribute('data-contenttype');
 
 				if (table && id && type) {
 					WE().layout.openToEdit(table, id, type);
@@ -364,14 +364,14 @@ var WebEdition = {
 				var isValid = true;
 				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
 					if (
-						!this.getAttribute("disabled") &&
-						this.offsetParent !== null /*returns null if parent is hidden*/ && (
-							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-							(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
-							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-							)
-						) {
+									!this.getAttribute("disabled") &&
+									this.offsetParent !== null /*returns null if parent is hidden*/ && (
+													this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+													!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+													(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
+													(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+													)
+									) {
 						this.classList.add("weMarkInputError");
 						isValid = false;
 					} else {
@@ -409,9 +409,9 @@ var WebEdition = {
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
 			doc.cookie = name + "=" + encodeURI(value) +
-				((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-				((path === undefined) ? "" : "; path=" + path) +
-				((domain === undefined) ? "" : "; domain=" + domain);
+							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+							((path === undefined) ? "" : "; path=" + path) +
+							((domain === undefined) ? "" : "; domain=" + domain);
 		},
 		weGetCookie: function (doc, name) {
 			var cname = name + "=";
@@ -482,7 +482,7 @@ var WebEdition = {
 		getTreeIcon: function (contentType, open, extension) {
 			var simplepre = '<span class="fa-stack fa-lg fileicon">';
 			var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
-				post = '</span>';
+							post = '</span>';
 			switch (contentType) {
 				case 'cockpit':
 					return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
@@ -732,9 +732,9 @@ var WebEdition = {
 					maxWidth: 400,
 					closeOnEscape: false,
 					buttons: (WE().session.isMac ?
-						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
-						(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
-						)
+									(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
+									(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
+									)
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;
@@ -937,9 +937,9 @@ var WebEdition = {
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
 			return (el ?
-				this.decodeDynamicVar(el, dataname) :
-				null
-				);
+							this.decodeDynamicVar(el, dataname) :
+							null
+							);
 		},
 		decodeDynamicVar: function (el, dataname) {
 			var data = el.getAttribute(dataname);
@@ -952,7 +952,7 @@ var WebEdition = {
 				data: data,
 				success: success,
 				dataType: "json"
-					//timeout: 2000
+								//timeout: 2000
 			}).fail(function (jqxhr, textStatus, error) {
 				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText, this.url);
 			});
@@ -976,7 +976,7 @@ function doClickWithParameters(id, ct, table, parameters) {
 function doExtClick(url) {
 	// split url in url and parameters !
 	var parameters = "",
-		_position = 0;
+					_position = 0;
 
 	if ((_position = url.indexOf("?")) !== -1) {
 		parameters = url.substring(_position);
@@ -993,8 +993,8 @@ function we_repl(target, url) {
 			if (target.name === "load" || target.name === "load2") {
 				if (top.lastUsedLoadFrame === target.name) {
 					target = (target.name === "load" ?
-						window.load2 :
-						window.load);
+									window.load2 :
+									window.load);
 				}
 				top.lastUsedLoadFrame = target.name;
 			}
@@ -1197,12 +1197,12 @@ function wecmd_editDocument(args, url) {
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 		// use Editor Frame
 		nextWindow.initEditorFrameData(
-			{
-				EditorType: "model",
-				EditorEditorTable: args[1],
-				EditorDocumentId: args[2],
-				EditorContentType: args[3]
-			}
+						{
+							EditorType: "model",
+							EditorEditorTable: args[1],
+							EditorDocumentId: args[2],
+							EditorContentType: args[3]
+						}
 		);
 		// set Window Active and show it
 		ctrl.setActiveEditorFrame(nextWindow.FrameId);
@@ -1302,6 +1302,8 @@ function we_cmd() {
 	//log this, as it might be an error
 	//WE().t_e('cmd opens new tab', args, url);
 	//finally open new window
+	//make this only a fallback - everthing should be catched, so we add an error for now!
+	WE().t_e('js-command not found, open a new window', args);
 	we_showInNewTab(args, url);
 }
 
@@ -1360,8 +1362,8 @@ function getHotDocumentsString() {
 
 		for (i = 0; i < hotDocumentsOfCt[ct].length; i++) {
 			ulCtElem += "<li>" + (hotDocumentsOfCt[ct][i].getEditorDocumentText() ?
-				hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
-				"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
+							hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
+							"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
 		}
 
 		ret += "<li>" + WE().consts.g_l.contentTypes[ct] + "<ul>" + ulCtElem + "</ul></li>";
@@ -1455,10 +1457,10 @@ function collection_insertFiles(args) {
 
 	if (collection && ids) {
 		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-			editor = null,
-			index = args[3] !== undefined ? args[3] : -1,
-			recursive = args[5] !== undefined ? args[5] : false,
-			transaction, frameId, candidate;
+						editor = null,
+						index = args[3] !== undefined ? args[3] : -1,
+						recursive = args[5] !== undefined ? args[5] : false,
+						transaction, frameId, candidate;
 
 		for (frameId in usedEditors) {
 			candidate = usedEditors[frameId];
@@ -1608,7 +1610,7 @@ function open_wysiwyg_window(args, caller) {
 
 function we_cmd_new_document(url) {
 	var ctrl = WE().layout.weEditorFrameController,
-		nextWindow, nextContent;
+					nextWindow, nextContent;
 	if ((nextWindow = ctrl.getFreeWindow())) {
 		nextContent = nextWindow.getDocumentReference();
 		// activate tab and set it status loading ...
@@ -1682,7 +1684,7 @@ function doReloadCmd(args, url, hot) {
 	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
 		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
-			(args[1] ? '#f' + args[1] : '');
+						(args[1] ? '#f' + args[1] : '');
 	} else if (args[0] === "remove_image" && args[2]) {
 		url += '#f' + args[2];
 	}

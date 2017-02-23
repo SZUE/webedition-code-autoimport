@@ -32,8 +32,8 @@ var _controller = WE().layout.weEditorFrameController;
 var _EditorFrame = _controller.getEditorFrame(window.parent.name);
 if (!_EditorFrame) {
 	_EditorFrame = (doc.we_transaction ?
-		_controller.getEditorFrameByTransaction(doc.we_transaction) :
-		_controller.getEditorFrame());
+					_controller.getEditorFrameByTransaction(doc.we_transaction) :
+					_controller.getEditorFrame());
 
 }
 
@@ -44,15 +44,15 @@ function seeMode_dealWithLinks() {
 		var _href = _aTags[i].href;
 
 		if (!(_href.indexOf("javascript:") === 0 ||
-			_href.indexOf("#") === 0 ||
-			(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
-			_href.indexOf(WE().consts.linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
-			_href.indexOf(WE().consts.linkPrefix.TYPE_INT_PREFIX) === 0 ||
-			_href.indexOf(WE().consts.linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
-			_href.indexOf("?") === 0 ||
-			_href === ""
-			)
-			) {
+						_href.indexOf("#") === 0 ||
+						(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_INT_PREFIX) === 0 ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
+						_href.indexOf("?") === 0 ||
+						_href === ""
+						)
+						) {
 			_aTags[i].href = "javascript:seeMode_clickLink(\'" + _aTags[i].href + "\')";
 
 		}
@@ -65,7 +65,7 @@ function seeMode_clickLink(url) {
 
 function showhideLangLink(allnames, allvalues, deselect) {
 	var arr = allvalues.split(","),
-		e, w;
+					e, w;
 
 	for (var v in arr) {
 		w = allnames + '[' + arr[v] + ']';
@@ -88,9 +88,9 @@ function doScrollTo() {
 
 function translate(c) {
 	var f = c.form,
-		n = c.name,
-		n2 = n.replace(/tmp_/, "we_"),
-		t, check;
+					n = c.name,
+					n2 = n.replace(/tmp_/, "we_"),
+					t, check;
 	n = n2.replace(/^(.+)#.+\]$/, "$1]");
 	t = f.elements[n];
 	check = f.elements[n2].value;
@@ -364,6 +364,9 @@ function we_cmd() {
 				caller.document.we_form.elements[args[2]].value = '';
 			}
 			break;
+		case 'orderContainerAdd':
+			window.orderContainer.add(document, args[1], null);
+			break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
@@ -382,8 +385,8 @@ function we_cmd() {
 function fields_are_valid() {
 	if (doc.isWEObject) {
 		var theInputs = document.getElementsByTagName("input"),
-			theType,
-			theVal;
+						theType,
+						theVal;
 
 		for (var i = 0; i < theInputs.length; i++) {
 
@@ -456,8 +459,8 @@ function metaFieldSelectProposal(sel, inputName, isCsv) {
 	_EditorFrame.setEditorIsHot(true);
 
 	var valInput = document.forms[0].elements[inputName].value,
-		newVal = valInput,
-		valSel = sel.options[sel.selectedIndex].value;
+					newVal = valInput,
+					valSel = sel.options[sel.selectedIndex].value;
 
 	if (isCsv) {
 		switch (valSel) {
