@@ -256,11 +256,6 @@ function we_cmd() {
 			top.content.hot = true;
 			submitForm();
 			break;
-		case "_switchPage":
-			document.we_form.ncmd.value = args[0];
-			document.we_form.page.value = args[1];
-			submitForm();
-			break;
 		case "set_import":
 		case "reset_import":
 		case "set_export":
