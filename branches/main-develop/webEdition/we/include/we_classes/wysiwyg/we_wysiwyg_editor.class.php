@@ -98,8 +98,9 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = ['0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small',
 		'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit'];
 
-	public static $dataConfigurations = [];
-	public static $dataDialogProperties = ['isDialog' => false];
+	private static $dataConfigurations = [];
+	private static $dataDialogProperties = ['isDialog' => false];
+	private static $countInstances = 0;
 	
 	const CONDITIONAL = true;
 	const MIN_WIDTH_INLINE = 100;
@@ -989,11 +990,13 @@ class we_wysiwyg_editor{
 		switch($this->editorType){
 			case self::TYPE_EDITBUTTON:
 				self::$dataConfigurations[] = $this->getPropertiesEditor();
+				self::$countInstances++;
 				return $this->getHTMLEditButton();
 			case self::TYPE_INLINE_TRUE:
 				$configuration = $this->getPropertiesEditor();
 				$configuration['weDialogProperties'] = urlencode(json_encode($this->getPropertiesDialog(self::TYPE_FULLSCREEN)));
 				self::$dataConfigurations[] = $configuration;
+				self::$countInstances++;
 				/* fall through */
 			case self::TYPE_INLINE_FALSE:
 			case self::TYPE_FULLSCREEN:
@@ -1006,6 +1009,10 @@ class we_wysiwyg_editor{
 				'data-dialogProperties' => setDynamicVar(self::$dataDialogProperties),
 				'data-configurations' => setDynamicVar(self::$dataConfigurations),
 			]));
+	}
+	
+	public static function isWysiwygInstances(){
+		return self::$countInstances !== 0;
 	}
 
 	private function getHTMLEditButton(){
