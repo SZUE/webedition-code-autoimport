@@ -26,7 +26,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 we_html_tools::protect();
 
 $charset = (!empty($GLOBALS['we_doc']->Charset) ? //	send charset which might be determined in template
-	$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
+		$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
 
 //we_html_tools::headerCtCharset('text/html', $charset);
 
@@ -80,7 +80,7 @@ echo we_html_tools::getHtmlTop('', $charset, 5, $head . we_html_element::jsScrip
 		], we_html_element::htmlForm([
 			'name' => "we_form",
 			'method' => "post"
-			] . we_class::hiddenTrans() .
+			], we_class::hiddenTrans() .
 			$content .
 			we_html_element::htmlHidden("we_complete_request", 1)
 		)
