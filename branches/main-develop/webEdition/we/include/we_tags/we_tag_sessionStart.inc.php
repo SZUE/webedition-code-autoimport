@@ -39,7 +39,7 @@ function we_tag_sessionStart(array $attribs){
 	if(!empty($_REQUEST['we_webUser_logout'])){
 		if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID'])){
 			if(( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID=x\'' . sha1($_SESSION['webuser']['AutoLoginID']) . '\'');
 				setcookie('_we_autologin', '', (time() - 3600), '/');
 			}
 			$GLOBALS['WE_LOGOUT'] = true;
@@ -188,7 +188,8 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 
 			if($persistentlogins && !empty($_REQUEST['s']['AutoLogin']) && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
-				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(['AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter([
+						'AutoLoginID' => sql_function('x\'' . sha1($_SESSION['webuser']['AutoLoginID']) . '\''),
 						'WebUserID' => $_SESSION['webuser']['ID'],
 						'LastIp' => $_SERVER['REMOTE_ADDR']
 				]));
@@ -212,7 +213,7 @@ function wetagsessionStartdoAutoLogin(){
 		$hook->executeHook();
 
 		$wasRegistered = $_SESSION['webuser']['registered'];
-		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', null, MYSQL_ASSOC);
+		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID=x\'' .sha1($autologinSeek) . '\'', null, MYSQL_ASSOC);
 		if($u){
 			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
@@ -226,9 +227,9 @@ function wetagsessionStartdoAutoLogin(){
 			$_SESSION['webuser']['registered'] = true;
 			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter([
-					'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+					'AutoLoginID' => sql_function('x\'' . sha1($_SESSION['webuser']['AutoLoginID']) . '\''),
 					'LastIp' => $_SERVER['REMOTE_ADDR'],
-				]) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
+				]) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID=x\'' . sha1($autologinSeek) . '\''
 			);
 
 			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
