@@ -48,8 +48,10 @@ class we_listview_category extends we_listview_base{
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $parentID, $catID, $cols, $parentidname, $hidedirindex){
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols);
-		$this->parentID = we_base_request::_(we_base_request::INT, $parentidname, intval($parentID));
 		$this->catID = trim($catID);
+		$this->hidedirindex = $hidedirindex;
+
+		$this->parentID = we_base_request::_(we_base_request::INT, $parentidname, intval($parentID));
 
 		if(stripos($this->order, " desc") !== false){//was #3849
 			$this->order = str_ireplace(" desc", "", $this->order);
@@ -60,11 +62,9 @@ class we_listview_category extends we_listview_base{
 
 		$orderstring = $this->order ? (' ORDER BY ' . $this->order . ($this->desc ? ' DESC' : '')) : '';
 
-		$this->hidedirindex = $hidedirindex;
-
 		$tail = ($this->catID ?
-			'ID IN(' . implode(',', array_map('intval', explode(",", $this->catID))) . ')' :
-			'ParentID=' . intval($this->parentID)
+				'ID IN(' . implode(',', array_map('intval', explode(",", $this->catID))) . ')' :
+				'ParentID=' . intval($this->parentID)
 			);
 
 

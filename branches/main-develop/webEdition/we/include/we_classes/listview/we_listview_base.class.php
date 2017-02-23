@@ -72,35 +72,38 @@ abstract class we_listview_base{
 	 *
 	 */
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
-		self::$lvNr++;
-
-		$this->name = $name ?: (self::$lvNr);
-		//? strange setting - comes from we_tag_search
-		$this->search = trim(str_replace(['"', '\\"'], '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
-		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
-		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
-		$this->cols = (($cols == '' && ($calendar === 'month' || $calendar === 'month_table')) ? 7 : $cols);
-		$this->offset = abs($offset);
-		$this->start = abs(we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0));
-		if($this->start == 0){
-			$this->start += $this->offset;
-		}
 		$this->order = $order;
 		$this->desc = $desc;
 		$this->cats = trim($cats);
 		$this->categoryids = trim($categoryids);
 		$this->catOr = $catOr;
-		$this->workspaceID = $workspaceID ?: '';
+		$this->workspaceID = $workspaceID ? : '';
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
+		$this->offset = abs($offset);
+
+
+		self::$lvNr++;
+
+		$this->name = $name ? : (self::$lvNr);
+		//? strange setting - comes from we_tag_search
+		$this->search = trim(str_replace(['"', '\\"'], '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
+		$this->DB_WE = new DB_WE();
+		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
+		$this->cols = (($cols == '' && ($calendar === 'month' || $calendar === 'month_table')) ? 7 : $cols);
+		$this->start = abs(we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0));
+		if($this->start == 0){
+			$this->start += $this->offset;
+		}
 		$this->stop_next_row = false;
 
-		$this->calendar_struct = ['calendar' => $calendar,
-			'defaultDate' => '',
+		$this->calendar_struct = [
+			'calendar' => $calendar,
+			'defaultDate' => ($calendar ? ($date ? strtotime($date) : time()) : ''),
 			'date' => -1,
 			'calendarCount' => '',
-			'datefield' => '',
+			'datefield' => ($calendar ? ($datefield ? : '###Published###') : ''),
 			'start_date' => '',
 			'end_date' => '',
 			'storage' => [],
@@ -108,15 +111,12 @@ abstract class we_listview_base{
 			'count' => 0,
 			'weekstart' => 0
 		];
-		if($calendar != ''){
-			$this->calendar_struct['datefield'] = $datefield ?: '###Published###';
-			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
-			if($weekstart){
-				$wdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-				$match = array_search($weekstart, $wdays);
-				if($match !== false){
-					$this->calendar_struct['weekstart'] = $match;
-				}
+
+		if($calendar && $weekstart){
+			$wdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+			$match = array_search($weekstart, $wdays);
+			if($match !== false){
+				$this->calendar_struct['weekstart'] = $match;
 			}
 		}
 	}
@@ -286,7 +286,7 @@ abstract class we_listview_base{
 			}
 			$newdate = $year . '-' . $month . '-' . $day;
 
-			$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
+			$attribs['href'] = we_tag('url', ['id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex]);
 			$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
@@ -298,7 +298,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
+		$attribs['href'] = we_tag('url', ['id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex]);
 		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
@@ -406,7 +406,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
+		$attribs['href'] = we_tag('url', ['id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex]);
 		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		$attribs['rel'] = 'next';
 		if($only){

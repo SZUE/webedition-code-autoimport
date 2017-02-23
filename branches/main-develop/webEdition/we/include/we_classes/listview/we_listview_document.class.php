@@ -76,6 +76,12 @@ class we_listview_document extends we_listview_base{
 		$this->searchable = $searchable;
 		$this->subfolders = $subfolders;
 		$this->customers = $customers;
+		$this->languages = $languages;
+		$this->condition = $condition;
+		$this->numorder = $numorder;
+		$this->hidedirindex = $hidedirindex;
+		$this->triggerID = $triggerID;
+
 		$this->customerArray = [];
 		if($this->table == VFILE_TABLE){
 			$id = $this->id = 0;
@@ -89,12 +95,9 @@ class we_listview_document extends we_listview_base{
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
 		}
 
-		$this->condition = $condition;
-
 		$cond_where = // #3763
 			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ? '(' . $condition_sql . ')' : '');
 
-		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
 		$where_lang = ($langArray ? 'f.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' : '');
@@ -104,10 +107,7 @@ class we_listview_document extends we_listview_base{
 			$this->desc = true;
 		}
 
-		$this->numorder = $numorder;
-		$this->hidedirindex = $hidedirindex;
 		$this->order = trim($this->order);
-		$this->triggerID = $triggerID;
 		$random = false;
 
 		$order = [];
@@ -176,7 +176,7 @@ class we_listview_document extends we_listview_base{
 		$cust = '';
 		if($this->customers && $this->customers !== '*'){
 			foreach(explode(',', $this->customers) as $cid){
-				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE);//array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
+				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE); //array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
@@ -294,7 +294,7 @@ class we_listview_document extends we_listview_base{
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . implode(',', array_unique($idListArray)) . ')');
 //			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
-				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();//array_merge($this->DB_WE->getRecord(), $encrypted);
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord(); //array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 			unset($idListArray);
 		}

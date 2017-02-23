@@ -33,6 +33,16 @@ class we_listview_shopOrderitem extends we_listview_base{
 	var $docID = 0;
 	var $orderID = 0;
 	var $hidedirindex = false;
+	private static $replArray = [
+		'OrderID' => 'orderID',
+		'OrderIntID' => 'orderID',
+		'IntOrderID' => 'orderID',
+		'ArticleIntID' => 'orderDocID',
+		'IntArticleID' => 'orderDocID', //prevents accidential replacements
+		'ArticleID' => 'orderDocID',
+		'IntQuantity' => 'quantity', //prevents accidential replacements
+		'Quantity' => 'quantity',
+	];
 
 	/**
 	 * @desc    constructor of class
@@ -47,7 +57,6 @@ class we_listview_shopOrderitem extends we_listview_base{
 	 *
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $orderID, $hidedirindex){
-
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 		if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
 			//do nothing inside we
@@ -62,31 +71,18 @@ class we_listview_shopOrderitem extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
+		$this->condition = strtr($this->condition, self::$replArray);
+		$this->order = strtr($this->order, self::$replArray);
 
-		$replArray = [
-			'OrderID' => 'orderID',
-			'OrderIntID' => 'orderID',
-			'IntOrderID' => 'orderID',
-			'ArticleIntID' => 'orderDocID',
-			'IntArticleID' => 'orderDocID', //prevents accidential replacements
-			'ArticleID' => 'orderDocID',
-			'IntQuantity' => 'quantity', //prevents accidential replacements
-			'Quantity' => 'quantity',
-		];
-
-		$this->condition = strtr($this->condition, $replArray);
-		$this->order = strtr($this->order, $replArray);
-
-		if($this->order){
-			$orderstring = ' ORDER BY ' . $this->order . ' ' .
-				($this->desc && (!preg_match('|.+ desc$|i', $this->order)) ? ' DESC' : '');
-		} else {
-			$orderstring = ' ORDER BY ID' . ($this->desc ? ' DESC' : '');
-		}
+		$orderstring = ' ORDER BY ' .
+			($this->order ?
+				$this->order . ' ' . ($this->desc && (!preg_match('|.+ desc$|i', $this->order)) ? ' DESC' : '') :
+				'ID' . ($this->desc ? ' DESC' : '')
+			);
 
 		$where = ($this->condition ?
-			' WHERE ' . $this->condition . ($this->orderID ? ' AND orderID=' . $this->orderID : '') :
-			($this->orderID ? ' WHERE orderID=' . $this->orderID : ''));
+				' WHERE ' . $this->condition . ($this->orderID ? ' AND orderID=' . $this->orderID : '') :
+				($this->orderID ? ' WHERE orderID=' . $this->orderID : ''));
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_ITEM_TABLE . $where, '', $this->DB_WE);
 

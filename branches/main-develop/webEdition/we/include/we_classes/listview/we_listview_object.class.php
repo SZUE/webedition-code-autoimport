@@ -59,17 +59,15 @@ class we_listview_object extends we_listview_objectBase{
 
 		$this->classID = intval($classID);
 		$this->triggerID = $triggerID;
-
 		$this->seeMode = $seeMode; //	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID;
 		$this->customers = $customers;
-		$this->customerArray = [];
-
 		$this->condition = $condition;
-		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
+		$this->languages = $languages;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
+		$this->customerArray = [];
 
 		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
