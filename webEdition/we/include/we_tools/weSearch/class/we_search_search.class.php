@@ -461,6 +461,7 @@ class we_search_search extends we_search_base{
 		$titles = array();
 
 		//check unpublished documents
+		/* FIXME: in 7.1 we can search for JSON-String. Here this takes too long
 		$db2->query('SELECT DocumentID, DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active=1 AND DocumentObject LIKE "%' . $db2->escape(trim($keyword)) . '%"');
 		while($db2->next_record()){
 			$tempDoc = we_unserialize($db2->f('DocumentObject'));
@@ -470,7 +471,7 @@ class we_search_search extends we_search_base{
 					$titles[] = $db2->f('DocumentID');
 				}
 			}
-		}
+		}*/
 
 		return ' (WETABLE.ID IN (SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5("Title") . '\' AND c.Dat LIKE "%' . $db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
 	}
