@@ -140,7 +140,7 @@ class we_navigation_item{
     /**
      * @param $item
      */
-    function addItem(&$item){
+    function addItem(we_navigation_item &$item){
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
