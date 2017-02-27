@@ -23,18 +23,49 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_main_cockpit{
+	const iDefCols = 2;
+
+	private static function getFullDefaultConfig(){
+		$aPrefs = [
+			'sct' => we_widget_sct::getDefaultConfig(),
+			'rss' => we_widget_rss::getDefaultConfig(),
+			'mfd' => we_widget_mfd::getDefaultConfig(),
+			'shp' => we_widget_shp::getDefaultConfig(),
+			'msg' => we_widget_msg::getDefaultConfig(),
+			'fdl' => we_widget_fdl::getDefaultConfig(),
+			'usr' => we_widget_usr::getDefaultConfig(),
+			'upb' => we_widget_upb::getDefaultConfig(),
+			'mdc' => we_widget_mdc::getDefaultConfig(),
+			'pad' => we_widget_pad::getDefaultConfig(),
+		];
+
+		$jsoCfg = [
+			'iDlgWidth' => 480,
+			'_noResizeTypes' => ['pad'],
+		];
+
+		foreach($aPrefs as $type => $prefs){
+			$jsoCfg[$type . '_props_'] = [
+				'width' => intval($prefs["width"]),
+				'height' => intval($prefs["height"]),
+				'res' => $prefs["res"],
+				'cls' => $prefs["cls"],
+				'iDlgHeight' => intval($prefs["dlgHeight"]),
+			];
+		}
+
+		return $jsoCfg;
+	}
 
 	public static function getEditor(){
-		include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
-		we_html_tools::protect();
-
+		$aCfgProps = we_main_cockpit::getDefaultCockpit();
 		if(we_base_permission::hasPerm('CAN_SEE_QUICKSTART')){
 			$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 			$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home');
 			if(!$bResetProps && $iLayoutCols){
 				$aDat = array_filter((we_unserialize(we_base_preferences::getUserPref('cockpit_dat')) ?: $aCfgProps)) ?: $aCfgProps;
-				$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss')) ?: $aTopRssFeeds;
+				$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss')) ?: we_widget_rss::getTopFeeds();
 				if(count($aDat) > $iLayoutCols){
 					while(count($aDat) > $iLayoutCols){
 						$aDelCol = array_pop($aDat);
@@ -47,14 +78,14 @@ abstract class we_main_cockpit{
 				}
 				$iDatLen = count($aDat);
 			} else {
-				$iLayoutCols = $iDefCols;
-				$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
+				$iLayoutCols = self::iDefCols;
+				$_SESSION['prefs']['cockpit_amount_columns'] = self::iDefCols;
 
-				we_base_preferences::setUserPref('cockpit_amount_columns', $iDefCols);
+				we_base_preferences::setUserPref('cockpit_amount_columns', self::iDefCols);
 				we_base_preferences::setUserPref('cockpit_dat', we_serialize($aCfgProps, SERIALIZE_JSON));
-				we_base_preferences::setUserPref('cockpit_rss', we_serialize($aTopRssFeeds, SERIALIZE_JSON));
+				we_base_preferences::setUserPref('cockpit_rss', we_serialize(we_widget_rss::getTopFeeds(), SERIALIZE_JSON));
 				$aDat = $aCfgProps;
-				$aTrf = $aTopRssFeeds;
+				$aTrf = we_widget_rss::getTopFeeds();
 				$iDatLen = count($aDat);
 			}
 			$cockpit = [
@@ -62,7 +93,7 @@ abstract class we_main_cockpit{
 				'transact' => md5(uniqid(__FILE__, true)),
 				'_trf' => [],
 				'homeData' => [],
-				'oCfg' => $jsoCfg,
+				'oCfg' => self::getFullDefaultConfig(),
 				'widgetData' => []
 			];
 			foreach($aTrf as $aRssFeed){
@@ -105,7 +136,8 @@ abstract class we_main_cockpit{
 							break;
 					}
 
-					$iWidth = ((!$aProps[2]) ? $small : $large);
+					$iWidth = ((!$aProps[2]) ? we_widget_base::WIDTH_SMALL : we_widget_base::WIDTH_LARGE);
+					$newSCurrId = '';
 					if(!in_array($aProps[0], $aDiscard)){
 						switch($aProps[0]){
 							case 'usr':
@@ -120,7 +152,7 @@ abstract class we_main_cockpit{
 								break;
 						}
 
-						$iWidth = ((!$aProps[2]) ? $small : $large);
+						$iWidth = ((!$aProps[2]) ? we_widget_base::WIDTH_SMALL : we_widget_base::WIDTH_LARGE);
 						if(!in_array($aProps[0], $aDiscard)){
 							switch($aProps[0]){
 								case 'upb':
@@ -134,15 +166,17 @@ abstract class we_main_cockpit{
 									break;
 							}
 							$newSCurrId = 'm_' . $iCurrId;
-							include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 						}
 					}
 					if($aProps[2]){
 						$bExtendedCol = true;
 					}
-					if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
-						include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-						$widget = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+					$className = 'we_widget_' . $aProps[0];
+					if(class_exists($className)){
+						$widgetInst = new $className($newSCurrId, $aProps);
+						list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $iWidth);
+						$cfg = $className::getDefaultConfig();
+						$widget = we_widget_base::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $cfg["height"], $cfg["isResizable"]);
 						$s2 .= we_html_element::htmlDiv(["id" => "m_" . $iCurrId, "class" => "le_widget"], $widget);
 					}
 				}
@@ -161,8 +195,8 @@ abstract class we_main_cockpit{
 			$oTblWidgets->setCol(0, 0, [], we_html_element::htmlDiv(["id" => "modules"], '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 			// this is the clone widget
-			$oClone = we_base_widget::create("clone", "_reCloneType_", null, ['', ''], "white", 0, "", 100, 60);
-			$cockpit['widgetData'] = we_base_widget::getJson();
+			$oClone = we_widget_base::create("clone", "_reCloneType_", null, ['', ''], "white", 0, "", 100, 60);
+			$cockpit['widgetData'] = we_widget_base::getJson();
 
 			echo
 			we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
@@ -187,6 +221,125 @@ abstract class we_main_cockpit{
 					'<img class="blank_editor_logo" src="/webEdition/images/backgrounds/bg-editor.png" alt="logo"/>'
 			));
 		}
+	}
+
+	public static function processCommand(){
+		$cmd1 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2);
+		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
+			case "loadTree" :
+				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
+					echo we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (we_base_request::_(we_base_request::STRING, 'openFolders') ?: "") . "&we_cmd[4]=top'");
+				}
+				break;
+			case 'dialog':
+				array_splice($_REQUEST['we_cmd'], 0, 3);
+				$cmd1::showDialog();
+				break;
+			case 'save' :
+				we_base_preferences::setUserPref('cockpit_dat', $cmd1);
+				we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
+				header('Content-Type: application/json; charset=UTF-8');
+
+				echo json_encode(['OK'], JSON_UNESCAPED_UNICODE);
+
+				exit();
+			case 'reload':
+				$mod = we_base_request::_(we_base_request::STRING, 'mod');
+				array_splice($_REQUEST['we_cmd'], 0, 2);
+				$className = 'we_widget_' . $mod;
+				$widget = new $className();
+				$widget->showPreview();
+				break;
+			case 'add' :
+				$aCfgProps = self::getDefaultCockpit();
+				$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
+				$className = 'we_widget_' . $cmd1;
+				$cfg = $className::getDefaultConfig();
+
+				$aProps = [
+					$cmd1,
+					$cfg['cls'],
+					$cfg['res'],
+					$cfg['csv'],
+				];
+				foreach($aCfgProps as $a){
+					foreach($a as $arr){
+						if($arr[0] == $aProps[0]){
+							$aProps[3] = $arr[3];
+							break 2;
+						}
+					}
+				}
+				$iCurrId = str_replace('m_', '', $newSCurrId);
+				$className = 'we_widget_' . $aProps[0];
+				$widgetInst = new $className($newSCurrId);
+				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $cfg['width']);
+
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
+						['onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
+						], we_html_element::htmlDiv(['id' => 'content'], $oTblDiv) .
+						we_html_element::htmlSpan(['id' => 'prefix'], $aLang[0]) .
+						we_html_element::htmlSpan(['id' => 'postfix'], $aLang[1]) .
+						we_html_element::htmlSpan(['id' => 'csv'], (isset($aProps[3]) ? $aProps[3] : '')))
+				);
+				break;
+
+			//added to fix bug #6538
+			case 'reset_home':
+				$id = intval($_SESSION['user']['ID']);
+				//delete user's cockpit preferences from db
+				$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns",""),(' . $id . ',"cockpit_rss","")');
+				we_main_cockpit::getEditor();
+				break;
+		}
+	}
+
+	public static function getDefaultCockpit(){
+		// define shortcuts
+		$shortCuts = (defined('FILE_TABLE') && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS') ? '1' : '0') .
+			(defined('TEMPLATES_TABLE') && (we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ? '1' : '0') .
+			(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES') ? '1' : '0') .
+			(defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTS') ? '1' : '0');
+
+		$shortCuts_left = [];
+		$shortCuts_right = [];
+
+		if(defined('FILE_TABLE') && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
+			$shortCuts_left[] = 'open_document';
+			$shortCuts_left[] = 'new_document';
+		}
+
+		if(defined('TEMPLATES_TABLE') && we_base_permission::hasPerm('NEW_TEMPLATE')){
+			$shortCuts_left[] = 'new_template';
+		}
+		$shortCuts_left[] = 'new_directory';
+		if(defined('FILE_TABLE') && we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
+			$shortCuts_left[] = 'unpublished_pages';
+		}
+		if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES')){
+			$shortCuts_right[] = 'unpublished_objects';
+		}
+		if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm('NEW_OBJECTFILE')){
+			$shortCuts_right[] = 'new_object';
+		}
+
+		if(defined('OBJECT_TABLE') && we_base_permission::hasPerm('NEW_OBJECT')){
+			$shortCuts_right[] = 'new_class';
+		}
+		if(we_base_permission::hasPerm('EDIT_SETTINGS')){
+			$shortCuts_right[] = 'preferences';
+		}
+
+		return [
+			[
+				["pad", "blue", 1, base64_encode(g_l('cockpit', '[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020'],
+				["mfd", "green", 1, $shortCuts . ';0;5;00;']
+			],
+			[
+				["rss", "yellow", 1, base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1'],
+				["sct", "red", 1, implode(',', $shortCuts_left) . ';' . implode(',', $shortCuts_right)]
+			]
+		];
 	}
 
 }

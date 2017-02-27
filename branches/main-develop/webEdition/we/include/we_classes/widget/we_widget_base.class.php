@@ -27,8 +27,46 @@
  *
  * Use this class to add a widget to the Cockpit.
  */
-abstract class we_base_widget{
+abstract class we_widget_base{
+	const WIDTH_SMALL = 202;
+	const WIDTH_LARGE = 432;
+
 	static $json = [];
+
+	abstract public function __construct($curID = '', $aProps = []);
+
+	abstract public function getInsertDiv($iCurrId, $iWidth);
+
+	abstract public static function getDefaultConfig();
+
+	abstract public static function showDialog();
+
+	abstract public function showPreview();
+
+	static function getDialogPrefs(){
+		$jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js', '', ['id' => 'loadVarDlg_prefs', 'data-prefs' => setDynamicVar([
+					'_sObjId' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
+		])]);
+
+		$oSctCls = new we_html_select([
+			"name" => "sct_cls",
+			'class' => 'defaultfont',
+			'style' => "width:120px;border:#AAAAAA solid 1px"
+		]);
+		$oSctCls->insertOption(0, "white", g_l('cockpit', '[white]'));
+		$oSctCls->insertOption(1, "lightCyan", g_l('cockpit', '[lightcyan]'));
+		$oSctCls->insertOption(2, "blue", g_l('cockpit', '[blue]'));
+		$oSctCls->insertOption(3, "green", g_l('cockpit', '[green]'));
+		$oSctCls->insertOption(4, "orange", g_l('cockpit', '[orange]'));
+		$oSctCls->insertOption(5, "yellow", g_l('cockpit', '[yellow]'));
+		$oSctCls->insertOption(6, "red", g_l('cockpit', '[red]'));
+
+		$oSelCls = new we_html_table(['class' => 'default'], 1, 2);
+		$oSelCls->setCol(0, 0, ["width" => 130, 'class' => 'defaultfont'], g_l('cockpit', '[bgcolor]'));
+		$oSelCls->setCol(0, 1, null, $oSctCls->getHTML());
+
+		return [$jsFile, $oSelCls, $oSctCls->getHTML()];
+	}
 
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),

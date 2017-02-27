@@ -343,7 +343,8 @@ function findInclude($cmd){
 		case 'customValidationService':
 			return 'we_editors/customizeValidation.inc.php'; //  edit parameters
 		case 'widget_cmd':
-			return 'we_widgets/cmd.inc.php';
+			we_main_cockpit::processCommand();
+			return true;
 		case 'tool_weSearch_edit':
 			$_REQUEST['tool'] = 'weSearch';
 			return 'we_tools/tools_frameset.php';

@@ -28,7 +28,6 @@ var fdl = WE().util.getDynamicVar(document, 'loadVarFdl', 'data-fdl');
 
 
 function init() {
-	//var _fo = document.forms[0];
 	initPrefs();
 }
 

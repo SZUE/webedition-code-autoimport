@@ -81,6 +81,7 @@ abstract class we_autoloader{
 		'versions' => 'we_versions',
 		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
+		'widget' => 'we_classes/widget',
 		'wizard' => 'we_classes/wizard',
 		'workflow' => 'we_modules/workflow',
 		'wysiwyg' => 'we_classes/wysiwyg',

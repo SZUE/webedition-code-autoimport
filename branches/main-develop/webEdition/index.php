@@ -72,14 +72,12 @@ function printHeader($login, $status = 200, $js = ''){
 	echo we_html_tools::getHtmlTop('', '', '', '', '', false) .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
-	we_html_element::jsElement(we_message_reporting::jsString());
-
-	if($login != we_users_user::LOGIN_OK){
-		echo we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
-		we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]);
-	}
-
-	echo we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
+	we_html_element::jsElement(we_message_reporting::jsString()) .
+	($login != we_users_user::LOGIN_OK ?
+		we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
+		we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
+		'') .
+	we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
 	we_html_element::jsElement('
 	isLoginScreen = true;
 	cookieBackup = document.cookie;
@@ -310,7 +308,7 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 		we_html_element::htmlDiv(['id' => 'picCopy'], 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
-	echo we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
+	echo we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == LOGIN_OK && $headerjs) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
 }
 session_write_close();
 flush();

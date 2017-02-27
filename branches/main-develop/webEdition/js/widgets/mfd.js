@@ -81,8 +81,8 @@ function delUser(iUsrId) {
 	}
 	var _fo = document.forms[0];
 
-	_fo.action = '/webEdition/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-		prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
+	_fo.action = WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=mfd&we_cmd[]=' +
+		prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
 		';' + getBinary('display_opt') + ';' + sUsers;
 	_fo.method = 'post';
 	_fo.submit();
@@ -134,8 +134,8 @@ function addUserToField() {
 		}
 	}
 	if (!bUsrExists) {//FIXME change this path!
-		_fo.action = '/webEdition/we/include/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-			prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
+		_fo.action = WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=mfd&we_cmd[]=' +
+			prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
 			_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
 		_fo.submit();
