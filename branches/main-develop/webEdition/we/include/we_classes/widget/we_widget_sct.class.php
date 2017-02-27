@@ -137,15 +137,16 @@ class we_widget_sct extends we_widget_base{
 			$col++;
 		}
 
-		$this->sc = $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");');
+		$this->sc = $sSctOut;
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(["id" => "m_" . $iCurrId . "_inline",
 				'style' => "width:100%;height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
 				], $this->sc);
 		$aLang = [g_l('cockpit', '[shortcuts]'), ''];
+		$jsCmd->addCmd('setIconOfDocClass', 'sctFileIcon');
 		return [$oTblDiv, $aLang];
 	}
 
@@ -153,6 +154,7 @@ class we_widget_sct extends we_widget_base{
 		return
 			[
 				'width' => self::WIDTH_SMALL,
+				'expanded' => 0,
 				'height' => 210,
 				'res' => 0,
 				'cls' => 'red',
@@ -291,7 +293,9 @@ class we_widget_sct extends we_widget_base{
 					'type' => 'sct',
 					'tb' => g_l('cockpit', '[shortcuts]'),
 					//'iconClass' =>
-			])]), we_html_element::htmlBody(
+			])]) .
+			we_base_jsCmd::singleCmd('setIconOfDocClass', 'sctFileIcon')
+			, we_html_element::htmlBody(
 				['style' => 'margin:10px 15px;',
 				"onload" => "if(parent!=self)init();"
 				], we_html_element::htmlDiv(["id" => "sct"

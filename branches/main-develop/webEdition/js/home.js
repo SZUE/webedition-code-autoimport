@@ -45,6 +45,21 @@ _EditorFrame.initEditorFrameData({
 });
 
 
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "loadRSS":
+			executeAjaxRequest.apply(caller, args[1]);
+			break;
+		default:
+			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
 function startCockpit() {
 	for (var i = 0; i < cockpit.widgetData.length; i++) {
 		setLabel.apply(window, cockpit.widgetData[i]);
@@ -179,24 +194,6 @@ function setPrefs(_pid, sBit, sTitleEnc) {
 	iframeWin._ttlB64Esc = sTitleEnc;
 }
 
-function findInArray(arrayToSearch, searchValue, optionalMatchFn) {
-	var retVal = -1;
-	for (var i = 0; i < arrayToSearch.length; i++) {
-		if (optionalMatchFn !== null && optionalMatchFn !== undefined) {
-			if (optionalMatchFn(arrayToSearch[i], searchValue)) {
-				retVal = i;
-				break;
-			}
-		} else {
-			if (arrayToSearch[i] === searchValue) {
-				retVal = i;
-				break;
-			}
-		}
-	}
-	return retVal;
-}
-
 function saveSettings() {
 	var aDat = [];
 	for (var i = 0; i < _iLayoutCols; i++) {
@@ -206,7 +203,7 @@ function saveSettings() {
 			aDat[i][iPos] = [];
 			var aRef = ['type', 'cls', 'res', 'csv'];
 			for (var tp in aSoc[iPos]) {
-				var idx = findInArray(aRef, tp);
+				var idx = aRef.indexOf(tp);
 				if (idx > -1) {
 					aDat[i][iPos][idx] = aSoc[iPos][tp];
 				}
@@ -223,12 +220,11 @@ function saveSettings() {
 }
 
 function hasExpandedWidget(node) {
+	var currentChild;
 	for (var i = 0; i < node.childNodes.length; i++) {
-		var currentChild = node.childNodes[i];
-		if (currentChild.className === 'le_widget') {
-			if (document.getElementById(currentChild.getAttribute('id') + '_res').value === "1") {
-				return true;
-			}
+		currentChild = node.childNodes[i];
+		if (currentChild.className === 'le_widget' && document.getElementById(currentChild.getAttribute('id') + '_res').value === "1") {
+			return true;
 		}
 	}
 	return false;
@@ -298,7 +294,6 @@ function setWidgetWidth(id, w) {
 }
 
 function resizeWidget(id) {
-	//var _type = document.getElementById(id + '_type').value;
 	var w = (resizeIdx('get', id) === "0") ? 'cls_expand' : 'cls_collapse';
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
@@ -368,7 +363,7 @@ function fadeTrans(wizId, start, end, ms) {
 }
 
 function toggle(wizId, wizType, prefix, postfix) {
-	var defRes = cockpit.oCfg[wizType + '_props_'].res;
+	var defRes = cockpit.oCfg[wizType].res;
 	var props = {
 		prefix: prefix,
 		postfix: postfix,
@@ -385,7 +380,7 @@ function toggle(wizId, wizType, prefix, postfix) {
 
 function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 	var cNodeReceptor = document.getElementById(wizId + '_content');
-	var wizTheme = cockpit.oCfg[wizType + "_props_"].cls;
+	var wizTheme = cockpit.oCfg[wizType].cls;
 	cNodeReceptor.innerHTML = cNode;
 	document.getElementById(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
@@ -396,15 +391,11 @@ function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 }
 
 function createWidget(typ, row, col) {
-// for IE
-	if (typ === 'pad') {
-		document.getElementById('c_' + col).className = 'cls_expand';
-	}
-//EOF for IE
 	var domNode = document.getElementById('c_' + col);
 	var asoc = getColumnAsoc('c_' + col);
 	var properties = getWidgetProps('type');
 	var idx = properties.length /*+ 1*/;
+
 	while (document.getElementById('m_' + idx) !== null) {
 		idx++;
 	}
@@ -428,6 +419,12 @@ function createWidget(typ, row, col) {
 	divClone.className = 'le_widget'; // for IE
 	divClone.innerHTML = sClonedNode;
 	divClone.style.display = 'none';
+
+	var widget = divClone.getElementsByClassName("widget")[0];
+	widget.classList.remove("cls_collapse");
+	widget.classList.remove("cls_expand");
+	widget.classList.add((cockpit.oCfg[typ].expanded ? "cls_expand" : "cls_collapse"));
+
 	if (asoc.length && row) {
 		domNode.insertBefore(divClone, document.getElementById(asoc[row - 1].id));
 	} else { // add to empty col - before wildcard!
@@ -437,7 +434,7 @@ function createWidget(typ, row, col) {
 			_td.childNodes[0]
 			);
 	}
-	if (findInArray(cockpit.oCfg._noResizeTypes, typ) > -1) {
+	if (!cockpit.oCfg[typ].isResizable) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
 		var oPc = document.getElementById(new_id + '_ico_pc');
 		if (oPrc) {
@@ -458,25 +455,6 @@ function createWidget(typ, row, col) {
 	le_dragInit(tableNode);
 	saveSettings();
 }
-
-function implode(arr, delimeter, enclosure) {
-	if (delimeter === undefined) {
-		delimeter = ',';
-	}
-	if (enclosure === undefined) {
-		enclosure = "'";
-	}
-	var out = '';
-	for (var i = 0; i < arr.length; i++) {
-		if (i !== 0) {
-			out += delimeter;
-		}
-		out += enclosure + encodeURI(arr[i]) + enclosure;
-	}
-	return out;
-}
-
-/** Enable disable the spinning wheel  **/
 
 /**
  * show the spinning wheel for a widget
@@ -580,7 +558,6 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
 	});
 }
 
-
 /**
  * Old ajax functions using an iframe
  */
@@ -592,13 +569,6 @@ function rpc(a, b, c, d, e, wid, path) {
 
 	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
-	//FIXME: use executeAjaxRequest for all widgets
-	switch (sType) {
-		case 'rss':
-			WE().layout.cockpitFrame.executeAjaxRequest(a, b, c, d, e, wid, path);
-			return false;
-		default:
-	}
 	path = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?mod=' + sType;
 	args.unshift("widget_cmd", "reload");
 	var _tmpForm = document.createElement("form");
@@ -675,7 +645,7 @@ function propsWidget(wid, ref) {
 			uri += '&';
 		}
 	}
-	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, cockpit.oCfg.iDlgWidth, cockpit.oCfg[wid + '_props_'].iDlgHeight, true, true, true);
+	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, WE().consts.size.dialog.small, cockpit.oCfg[wid].dlgHeight, true, true, true);
 }
 
 function closeAllModalWindows() {
@@ -774,8 +744,8 @@ function getDimension(theString, styleClassElement) {
 	return dim;
 }
 
-function transmit(doc, type, id) {
+function transmit(win, type, id) {
 	if (WE().layout.cockpitFrame) {
-		WE().layout.cockpitFrame.pushContent(type, id, doc.document.getElementById('content').innerHTML, doc.document.getElementById('prefix').innerHTML, doc.document.getElementById('postfix').innerHTML, doc.document.getElementById('csv').innerHTML);
+		WE().layout.cockpitFrame.pushContent(type, id, win.document.getElementById('content').innerHTML, win.document.getElementById('prefix').innerHTML, win.document.getElementById('postfix').innerHTML, win.document.getElementById('csv').innerHTML);
 	}
 }

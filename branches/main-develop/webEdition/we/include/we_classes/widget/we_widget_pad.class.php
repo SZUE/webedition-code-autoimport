@@ -28,7 +28,7 @@ class we_widget_pad extends we_widget_base{
 
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
 		$iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query([
@@ -57,6 +57,7 @@ class we_widget_pad extends we_widget_base{
 	public static function getDefaultConfig(){
 		return [
 			'width' => self::WIDTH_LARGE,
+			'expanded' => 1,
 			'height' => 307,
 			'res' => 1,
 			'cls' => 'blue',

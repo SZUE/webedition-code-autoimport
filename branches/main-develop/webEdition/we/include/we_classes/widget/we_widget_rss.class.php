@@ -29,7 +29,7 @@ class we_widget_rss extends we_widget_base{
 		$this->rssDat = $aProps[3];
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		if(!empty($this->rssDat)){
 			list($rssUri, $rssCont, $rssNumItems, $rssTb, $rssTitle) = explode(',', $this->rssDat);
 		} else {//use default if data is corrupt
@@ -51,13 +51,8 @@ class we_widget_rss extends we_widget_base{
 		$sTbPrefix = implode(' - ', $aLabelPrefix);
 		$aLang = [$sTbPrefix, ''];
 
-		$oTblDiv = we_html_element::jsElement("
-window.addEventListener('load',
-	function() {
-		WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($rssUri) . "', '" . $rssCont . "', '" . $rssNumItems . "', '" . $rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
-	},
-	true
-);") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
+		$oTblDiv = '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
+		$jsCmd->addCmd('loadRSS', [base64_decode($rssUri), $rssCont, $rssNumItems, $rssTb, $sTbPrefix, 'm_' . $iCurrId]);
 		return [$oTblDiv, $aLang];
 	}
 
@@ -74,6 +69,7 @@ window.addEventListener('load',
 	public static function getDefaultConfig(){
 		return [
 			'width' => self::WIDTH_SMALL,
+			'expanded' => 0,
 			'height' => 307,
 			'res' => 0,
 			'cls' => 'yellow',
@@ -83,45 +79,29 @@ window.addEventListener('load',
 		];
 	}
 
-	private static function htmlClipElement($smalltext, $text, $content){
-		$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
-		$js = we_html_element::jsElement('
-var state_' . $unique . '=0;
-function clip_' . $unique . '(){
-	var text_' . $unique . '="' . addslashes($text) . '";
-	var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
-	var oText=document.getElementById("' . $unique . '");
-	var oDiv=document.getElementById("div_' . $unique . '");
-	var oBtn=document.getElementById("btn_' . $unique . '");
-
-	if(state_' . $unique . '==0){
-		oText.innerHTML=text_' . $unique . ';
-		oDiv.style.display="block";
-		oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:clip_' . $unique . '();') . '\';
-		state_' . $unique . '=1;
-	}else{
-		oText.innerHTML=textsmall_' . $unique . ';
-		oDiv.style.display="none";
-		oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();') . '\';
-		state_' . $unique . '=0;
-	}
-}');
+	private static function htmlClipElement(array &$dynvar, $smalltext, $text, $content){
+		static $unique = 0;
+		$unique++;
+		$dynvar['clip'][$unique] = [
+			'state' => 0,
+			'text' => $text,
+			'textsmall' => $smalltext
+		];
 
 		$oClip = new we_html_table(['class' => 'default'], 1, 3);
-		$oClip->setCol(0, 0, ["width" => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique], we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
-		$oClip->setCol(0, 1, ["width" => 10]);
-		$oClip->setCol(0, 2, null, we_html_element::htmlSpan(["id" => $unique,
+		$oClip->setCol(0, 0, ['width' => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique], we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip(' . $unique . ');'));
+		$oClip->setCol(0, 1, ['width' => 10]);
+		$oClip->setCol(0, 2, null, we_html_element::htmlSpan(["id" => 'clip_'.$unique,
 				'class' => 'defaultfont',
 				'style' => "cursor:pointer;",
-				"onclick" => "clip_" . $unique . "();"
+				"onclick" => "clip(" . $unique . ");"
 				], addslashes($smalltext)));
 
-		return $js . $oClip->getHTML() . we_html_element::htmlDiv(["id" => "div_" . $unique, 'style' => "display:none;"], we_html_element::htmlBr() . $content);
+		return  $oClip->getHTML() . we_html_element::htmlDiv(["id" => "div_" . $unique, 'style' => "display:none;"], we_html_element::htmlBr() . $content);
 	}
 
 	public static function showDialog(){
-		list($jsFile, $oSelCls) = self::getDialogPrefs();
-
+		$dynVar = [];
 		$oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 
 		$oSctRss = new we_html_select(['name' => "sct_rss", 'class' => 'defaultfont', "onchange" => "onChangeSctRss(this);"]);
@@ -142,14 +122,14 @@ function clip_' . $unique . '(){
 		$oBtnNewFeed->setCol(0, 3, ['style' => 'width:10px;']);
 		$oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
-		$oNewFeed = new we_html_table(["width" => 390, 'class' => 'default'], 3, 1);
+		$oNewFeed = new we_html_table(['width' => 390, 'class' => 'default'], 3, 1);
 		$oNewFeed->setCol(0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
 		$oNewFeed->setCol(1, 0, ['style' => 'width:5px;']);
 		$oNewFeed->setCol(2, 0, ['style' => "text-align:right"], $oBtnNewFeed->getHTML());
 
 		$rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss .
 			we_html_element::htmlBr() .
-			self::htmlClipElement(g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
+			self::htmlClipElement($dynVar, g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
 
 		$oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_content_rem]'), we_html_tools::TYPE_INFO, 410);
 		$oChbxContTitle = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[title]'), true, "defaultfont", "", false, "", 0, 0);
@@ -175,10 +155,10 @@ function clip_' . $unique . '(){
 		$oRssContR->setCol(1, 0, ["colspan" => 3, 'style' => 'vertical-align:bottom;'], $oChbxContPubDate . $oChbxContCategory);
 
 		$oSelectRssCont = new we_html_table(['class' => 'default'], 1, 2);
-		$oSelectRssCont->setCol(0, 0, ["width" => 165], $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
+		$oSelectRssCont->setCol(0, 0, ['width' => 165], $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
 		$oSelectRssCont->setCol(0, 1, ["height" => "100%", 'style' => 'vertical-align:top;'], $oRssContR->getHTML());
 
-		$rssConf = $oRemRssConf . we_html_element::htmlBr() . self::htmlClipElement(g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
+		$rssConf = $oRemRssConf . we_html_element::htmlBr() . self::htmlClipElement($dynVar, g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
 
 		$oRemLabel = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_label_rem]'), we_html_tools::TYPE_INFO, 410);
 		$oChbxTb[0] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[label_rssfeed]'), true, "defaultfont", "", false, "", 0, 0);
@@ -191,33 +171,30 @@ function clip_' . $unique . '(){
 		$oRdoTitle[1] = we_html_forms::radiobutton(0, 0, "rdo_title", g_l('cockpit', '[personalized]'), true, "defaultfont", "", false, "", 0, "");
 
 		$oTitleTb = new we_html_table(['class' => 'default'], 2, 1);
-		$oTitleTb->setCol(0, 0, ["width" => 165], $oRdoTitle[0]);
-		$oTitleTb->setCol(1, 0, ["width" => 165], $oRdoTitle[1]);
+		$oTitleTb->setCol(0, 0, ['width' => 165], $oRdoTitle[0]);
+		$oTitleTb->setCol(1, 0, ['width' => 165], $oRdoTitle[1]);
 
 		$oEditTb = new we_html_table(['class' => 'default'], 6, 2);
-		$oEditTb->setCol(0, 0, ["width" => 165], $oChbxTb[0]);
-		$oEditTb->setCol(1, 0, ["width" => 165, 'style' => 'vertical-align:top;'], $oChbxTb[1]);
-		$oEditTb->setCol(1, 1, ["width" => 165], $oTitleTb->getHTML());
-		$oEditTb->setCol(2, 0, ["width" => 165], $oChbxTb[2]);
-		$oEditTb->setCol(3, 0, ["width" => 165], $oChbxTb[3]);
-		$oEditTb->setCol(4, 0, ["width" => 165], $oChbxTb[4]);
-		$oEditTb->setCol(5, 0, ["width" => 165], $oChbxTb[5]);
+		$oEditTb->setCol(0, 0, ['width' => 165], $oChbxTb[0]);
+		$oEditTb->setCol(1, 0, ['width' => 165, 'style' => 'vertical-align:top;'], $oChbxTb[1]);
+		$oEditTb->setCol(1, 1, ['width' => 165], $oTitleTb->getHTML());
+		$oEditTb->setCol(2, 0, ['width' => 165], $oChbxTb[2]);
+		$oEditTb->setCol(3, 0, ['width' => 165], $oChbxTb[3]);
+		$oEditTb->setCol(4, 0, ['width' => 165], $oChbxTb[4]);
+		$oEditTb->setCol(5, 0, ['width' => 165], $oChbxTb[5]);
 
-		$rssLabel = $oRemLabel . we_html_element::htmlBr() . self::htmlClipElement(g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
+		$rssLabel = $oRemLabel . we_html_element::htmlBr() . self::htmlClipElement($dynVar, g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
 
-		$parts = [
-			["headline" => "", "html" => $rssUri,],
-			["headline" => "", "html" => $rssConf,],
-			["headline" => "", "html" => $rssLabel,],
-			["headline" => "", "html" => $oSelCls->getHTML(),]
-		];
+		list($jsFile, $oSelCls) = self::getDialogPrefs($dynVar);
 
-		$save_button = we_html_button::create_button(we_html_button::SAVE, 'javascript:save();');
-		$preview_button = we_html_button::create_button(we_html_button::PREVIEW, 'javascript:preview();');
-		$cancel_button = we_html_button::create_button(we_html_button::CLOSE, 'javascript:exit_close();');
-		$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();'), we_html_button::create_button(we_html_button::PREVIEW, 'javascript:preview();'), we_html_button::create_button(we_html_button::CLOSE, 'javascript:exit_close();'));
 
-		$sTblWidget = we_html_multiIconBox::getHTML('rssProps', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'));
+		$sTblWidget = we_html_multiIconBox::getHTML('rssProps', [
+				["html" => $rssUri,],
+				["html" => $rssConf,],
+				["html" => $rssLabel,],
+				["html" => $oSelCls->getHTML(),]
+				], 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'));
 
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', $jsFile .
 			we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
@@ -226,10 +203,130 @@ function clip_' . $unique . '(){
 	}
 
 	public function showPreview(){
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-				"function init() {
-	WE().layout.cockpitFrame.executeAjaxRequest('" . implode("', '", we_base_request::_(we_base_request::STRING, 'we_cmd')) . "');
-}"), we_html_element::htmlBody(['onload' => 'init()']));
+		echo we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('loadRSS', we_base_request::_(we_base_request::STRING, 'we_cmd'))
+			, we_html_element::htmlBody(['onload' => 'init()']));
+	}
+
+	public static function getRSSContent($sRssUri, $sCfgBinary, $iNumItems, $sTbBinary, $tmpTitle){
+
+		$bCfgTitle = (bool) $sCfgBinary{0};
+		$bCfgLink = (bool) $sCfgBinary{1};
+		$bCfgDesc = (bool) $sCfgBinary{2};
+		$bCfgContEnc = (bool) $sCfgBinary{3};
+		$bCfgPubDate = (bool) $sCfgBinary{4};
+		$bCfgCategory = (bool) $sCfgBinary{5};
+		switch($iNumItems){
+			case 11:
+				$iNumItems = 15;
+				break;
+			case 12:
+				$iNumItems = 20;
+				break;
+			case 13:
+				$iNumItems = 25;
+				break;
+			case 14:
+				$iNumItems = 50;
+				break;
+		}
+
+		$bTbLabel = (bool) $sTbBinary{0};
+		$bTbTitel = (bool) $sTbBinary{1};
+		$bTbDesc = (bool) $sTbBinary{2};
+		$bTbLink = (bool) $sTbBinary{3};
+		$bTbPubDate = (bool) $sTbBinary{4};
+		$bTbCopyright = (bool) $sTbBinary{5};
+
+		//Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
+		//daher Umstellung den Inhalt des Feeds selbst zu holen
+		$parsedurl = parse_url($sRssUri);
+		$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
+		$http_request->executeHttpRequest();
+		$http_response = new we_http_response($http_request->getHttpResponseStr());
+		while(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
+			$parsedurl = parse_url($http_response->http_headers['Location']);
+			$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
+			$http_request->executeHttpRequest();
+			$http_response = new we_http_response($http_request->getHttpResponseStr());
+		}
+		$feeddata = $http_response->http_body;
+
+		$oRssParser = new we_xml_rss($feeddata, null, 'UTF-8'); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+		$tmp = $oRssParser->parse();
+		$sRssOut = "";
+
+		$iCurrItem = 0;
+		foreach($oRssParser->getItems() as $item){
+			$bShowTitle = ($bCfgTitle && isset($item['title']));
+			$bShowLink = ($bCfgLink && isset($item['link']));
+			$bShowDesc = ($bCfgDesc && isset($item['description']));
+			$bShowContEnc = ($bCfgContEnc && isset($item['content:encoded']));
+			$bShowPubdate = ($bCfgPubDate && isset($item['pubdate']));
+			$bShowCategory = ($bCfgCategory && isset($item['category']));
+
+			$sLink = (($bCfgLink && isset($item['link'])) && !$bShowTitle) ? " &nbsp;" .
+				we_html_element::htmlA(['href' => $item['link'], 'target' => '_blank'], g_l('cockpit', '[more]')) : "";
+			if($bShowContEnc){
+				$contEnc = new we_html_table(['class' => 'default'], 1, 1);
+				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
+			}
+
+			$sRssOut .= ($bShowTitle ?
+				($bShowLink ? we_html_element::htmlA(["href" => $item['link'], "target" => "_blank"], we_html_element::htmlB($item['title'])) :
+				we_html_element::htmlB($item['title'])) .
+				($bShowPubdate ? ' ' : we_html_element::htmlBr()) :
+				'') .
+				($bShowPubdate ?
+				g_l('cockpit', '[published]') . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
+				'') .
+				($bShowCategory ?
+				($bShowPubdate ? we_html_element::htmlBr() : "") .
+				g_l('cockpit', '[category]') . ": " . $item['category'] :
+				'') .
+				($bShowPubdate || $bShowCategory ?
+				we_html_element::htmlBr() :
+				'') .
+				($bShowDesc ?
+				$item['description'] . $sLink . we_html_element::htmlBr() :
+				"") .
+				($bShowContEnc ?
+				$contEnc->getHTML() :
+				(!$bShowDesc ?
+				$sLink . we_html_element::htmlBr() :
+				'')
+				) .
+				($bShowDesc || $bShowContEnc ?
+				we_html_element::htmlBr() :
+				"");
+			if($iNumItems){
+				$iCurrItem++;
+				if($iCurrItem == $iNumItems){
+					break;
+				}
+			}
+		}
+
+		$aTb = [];
+		if($bTbLabel){
+			$aTb[] = g_l('cockpit', '[rss_feed]');
+		}
+		if($bTbTitel){
+			$aTb[] = $tmpTitle ?: ((isset($oRssParser->channel["title"])) ? $oRssParser->channel["title"] : "");
+		}
+		if($bTbDesc){
+			$aTb[] = (isset($oRssParser->channel["description"])) ? str_replace(["\n", "\r"], '', $oRssParser->channel["description"]) : '';
+		}
+		if($bTbLink){
+			$aTb[] = (isset($oRssParser->channel["link"])) ? $oRssParser->channel["link"] : '';
+		}
+		if($bTbPubDate){
+			$aTb[] = (isset($oRssParser->channel["pubdate"])) ? (date(g_l('date', '[format][default]'), strtotime($oRssParser->channel["pubdate"]))) : "";
+		}
+		if($bTbCopyright){
+			$aTb[] = (isset($oRssParser->channel["copyright"])) ? $oRssParser->channel["copyright"] : "";
+		}
+		$title = implode(' - ', $aTb);
+		return [$title, $sRssOut];
 	}
 
 }
