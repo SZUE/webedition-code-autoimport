@@ -29,19 +29,13 @@ class we_widget_mdc extends we_widget_base{
 
 	//FIXME: $aProps
 	public function __construct($curID = '', $aProps = []){
+		$DB_WE = $GLOBALS['DB_WE'];
 		$this->mdc = "";
 		if(!$curID){//preview requested
-			$all = explode(';', we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1));
-			list($dir, $dt_tid, $cats) = (count($all) > 1 ?
-				$all :
-				[$all[0], '', '']);
-
 			$this->splitMdc = [
 				0, //unused - compatibility
 				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-				$dir,
-				$dt_tid,
-				$cats
+				we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 1)
 			];
 		} else {
 			$this->splitMdc = explode(';', $aProps[3]);
@@ -102,6 +96,8 @@ class we_widget_mdc extends we_widget_base{
 				'style' => "width:100%;height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
 				], $this->mdc);
 		$aLang = [($this->splitMdc[0]) ? base64_decode($this->splitMdc[0]) : g_l('cockpit', (empty($this->splitMdc[1][1]) ? '[my_documents]' : '[my_objects]')), ""];
+		$jsCmd->addCmd('setIconOfDocClass', 'mdcIcon');
+
 		return [$oTblDiv, $aLang];
 	}
 
@@ -171,17 +167,11 @@ class we_widget_mdc extends we_widget_base{
 		$selection = (bool) $selBinary{0};
 		$selType = (bool) $selBinary{1};
 
-		$selTable = FILE_TABLE;
-
 		if($selection){
-			$selType = ($selType) ? "selObjs" : "selDocs";
-			if(defined('OBJECT_FILES_TABLE')){
-				$selTable = ($selType) ? OBJECT_FILES_TABLE : FILE_TABLE;
-			}
-
-			$_SESSION['weS']['exportVars_session'][$selType] = $sCsv;
+			$_SESSION['weS']['exportVars_session'][($selType ? "selObjs" : "selDocs")] = $sCsv;
 		}
 
+		$selTable = ($selType && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE;
 		$docTypes = [0 => g_l('cockpit', '[no_entry]')];
 
 		$dtq = we_docTypes::getDoctypeQuery($DB_WE);
@@ -268,18 +258,16 @@ class we_widget_mdc extends we_widget_base{
 	public function showPreview(){
 
 		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
-
-		echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
-				'id' => 'loadVarPreview',
-				'data-preview' => setDynamicVar([
-					'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
-					'type' => 'mdc',
-					'tb' => ($cmd4 ?: g_l('cockpit', (($this->binary{1} ? '[my_objects]' : '[my_documents]')))),
-					'iconClass' => 'mdcIcon'
-			])]), we_html_element::htmlBody(
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('initPreview', [
+			'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+			'type' => 'mdc',
+			'tb' => ($cmd4 ?: g_l('cockpit', (($this->binary{1} ? '[my_objects]' : '[my_documents]')))),
+		]);
+		$jsCmd->addCmd('setIconOfDocClass', 'mdcIcon');
+		echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', $jsCmd->getCmds(), we_html_element::htmlBody(
 				[
 				'style' => 'margin:10px 15px;',
-				"onload" => "if(parent!=self){init();}"
 				], we_html_element::htmlDiv([
 					"id" => "mdc"
 					], $this->mdc)));

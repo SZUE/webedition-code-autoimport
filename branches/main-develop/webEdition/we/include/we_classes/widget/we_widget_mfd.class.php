@@ -204,8 +204,8 @@ ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 		$oTblDiv = we_html_element::htmlDiv(['id' => 'm_' . $iCurrId . '_inline',
 				'style' => 'width:100%;height:' . ($cfg["height"]) . 'px;overflow:auto;',
 				], we_html_element::htmlDiv(['id' => 'mfd_data'], $this->lastModified)
-			);
-		$jsCmd->addCmd('setIconOfDocClass','mfdIcon');
+		);
+		$jsCmd->addCmd('setIconOfDocClass', 'mfdIcon');
 		$aLang = [g_l('cockpit', '[last_modified]'), ""];
 		return [$oTblDiv, $aLang];
 	}
@@ -352,14 +352,15 @@ ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 	}
 
 	public function showPreview(){
-		echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
-				'id' => 'loadVarPreview',
-				'data-preview' => setDynamicVar([
-					'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
-					'type' => 'mfd',
-					'tb' => g_l('cockpit', '[last_modified]'),
-					'iconClass' => 'mfdIcon'
-			])]), we_html_element::htmlBody(
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('initPreview', [
+			'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+			'type' => 'mfd',
+			'tb' => g_l('cockpit', '[last_modified]'),
+		]);
+		$jsCmd->addCmd('setIconOfDocClass', 'mfdIcon');
+
+		echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', $jsCmd->getCmds(), we_html_element::htmlBody(
 				['style' => 'margin:10px 15px;',
 				"onload" => 'init();'
 				], we_html_element::htmlDiv(['id' => 'mfd'], we_html_element::htmlDiv(['id' => 'mfd_data'], $this->lastModified)

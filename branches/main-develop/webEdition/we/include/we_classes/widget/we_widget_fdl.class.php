@@ -133,15 +133,14 @@ class we_widget_fdl extends we_widget_base{
 	}
 
 	public function showPreview(){
-		echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $this->maxRows . ')', '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
-				'id' => 'loadVarPreview',
-				'data-preview' => setDynamicVar([
-					'id' => $this->newSCurrId,
-					'type' => 'fdl',
-					'tb' => g_l('cockpit', '[kv_failedLogins][headline]')
-					//'iconClass' =>
-			])]), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
-				"onload" => "if(parent!=self){init();}"
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('initPreview', [
+			'id' => $this->newSCurrId,
+			'type' => 'fdl',
+			'tb' => g_l('cockpit', '[kv_failedLogins][headline]')
+		]);
+		echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $this->maxRows . ')', '', '', $jsCmd->getCmds(), we_html_element::htmlBody([
+				'style' => 'margin:10px 15px;',
 				], we_html_element::htmlDiv(["id" => "fdl"
 					], we_html_element::htmlDiv(['id' => 'fdl_data'], $this->failedLoginHTML)
 		)));

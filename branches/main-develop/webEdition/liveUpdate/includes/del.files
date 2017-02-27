@@ -749,6 +749,7 @@ js/wysiwyg/tinymce/plugins/welink/js/welink_init.js
 js/wysiwyg/tinymce/plugins/weimage/js/image_insert.js
 js/wysiwyg/tinymce/plugins/weimage/js/image_init.js
 js/wizard_code.js
+js/widgets/preview.js
 js/we_vtabs.js
 js/we_versionsRebuild_finish.js
 js/we_textarea_include.inc.php

@@ -55,6 +55,10 @@ function we_cmd() {
 		case "loadRSS":
 			executeAjaxRequest.apply(caller, args[1]);
 			break;
+		case "initPreview":
+			var preview = args[1];
+			rpcHandleResponse(preview.type, preview.id, caller.document.getElementById(preview.type), preview.tb);
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

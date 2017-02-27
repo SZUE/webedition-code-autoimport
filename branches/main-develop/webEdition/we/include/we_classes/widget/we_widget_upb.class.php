@@ -197,15 +197,15 @@ class we_widget_upb extends we_widget_base{
 	}
 
 	public function showPreview(){
-		echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
-				'id' => 'loadVarPreview',
-				'data-preview' => setDynamicVar([
-					'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
-					'type' => 'upb',
-					'tb' => g_l('cockpit', ($this->bTypeDoc && $this->bTypeObj ? '[upb_docs_and_objs]' : ($this->bTypeDoc ? '[upb_docs]' : ($this->bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]')))),
-					'iconClass' => 'upbIcon'
-			])]), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
-				"onload" => 'if(parent!=self){init();}'
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('initPreview', [
+			'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+			'type' => 'upb',
+			'tb' => g_l('cockpit', ($this->bTypeDoc && $this->bTypeObj ? '[upb_docs_and_objs]' : ($this->bTypeDoc ? '[upb_docs]' : ($this->bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]')))),
+		]);
+		$jsCmd->addCmd('setIconOfDocClass', 'upbIcon');
+
+		echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', $jsCmd->getCmds(), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
 				], we_html_element::htmlDiv(["id" => "upb"
 					], $this->ct)));
 	}

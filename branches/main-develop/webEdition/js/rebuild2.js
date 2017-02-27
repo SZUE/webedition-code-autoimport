@@ -65,7 +65,7 @@ function we_cmd() {
 			var catsToAdd = args[1].allIDs;
 			cats = makeArrayFromCSV(f.categories.value);
 			for (i = 0; i < catsToAdd.length; i++) {
-				if (!WE().util.in_array(catsToAdd[i], cats)) {
+				if (cats.indexOf(catsToAdd[i]) === -1) {
 					cats.push(catsToAdd[i]);
 				}
 			}
@@ -96,7 +96,7 @@ function we_cmd() {
 			var foldersToAdd = args[1].allIDs;
 			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
 			for (i = 0; i < foldersToAdd.length; i++) {
-				if (!WE().util.in_array(foldersToAdd[i], folders)) {
+				if (folders.indexOf(foldersToAdd[i]) === -1) {
 					folders.push(foldersToAdd[i]);
 				}
 			}

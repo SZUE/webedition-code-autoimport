@@ -436,14 +436,6 @@ var WebEdition = {
 				return a & a;
 			}, 0);
 		},
-		in_array: function (needle, haystack) {
-			for (var i = 0; i < haystack.length; i++) {
-				if (haystack[i] == needle) {
-					return true;
-				}
-			}
-			return false;
-		},
 		we_sbmtFrm: function (target, url, source) {
 			if (source === undefined) {
 				source = WE().layout.weEditorFrameController.getVisibleEditorFrame();

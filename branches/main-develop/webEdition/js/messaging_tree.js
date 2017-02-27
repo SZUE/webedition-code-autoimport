@@ -341,7 +341,7 @@ function delete_menu_entries(ids) {
 	var cont = new container();
 	del_parents = [];
 	for (i = 1; i <= t.len; i++) {
-		if (!WE().util.in_array(t[i].id, ids)) {
+		if (ids.indexOf(t[i].id) === -1) {
 			cont.add(t[i]);
 		} else {
 			del_parents = del_parents.concat([String(t[i].parentid)]);
