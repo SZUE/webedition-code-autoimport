@@ -24,7 +24,6 @@
 'use strict';
 
 function init() {
-	//_fo = document.forms[0];
 	initPrefs();
 }
 

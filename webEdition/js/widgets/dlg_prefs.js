@@ -27,10 +27,11 @@
 var prefs = WE().util.getDynamicVar(document, 'loadVarDlg_prefs', 'data-prefs');
 var _sCls_ = opener.document.getElementById(prefs._sObjId + '_cls').value;
 
-var _fo, _sInitCls, _oSctCls;
+var _sInitCls, _oSctCls;
 var _iInitCls = 0;
 
 function initPrefs() {
+	var _fo = document.forms[0];
 	_oSctCls = _fo.elements.sct_cls;
 	var iSctClsLen = _oSctCls.length;
 	_sInitCls = _sCls_;
@@ -58,12 +59,12 @@ function exitPrefs() {
 	}
 }
 
-function we_cmd(){
+function we_cmd() {
 	/*jshint validthis:true */
 	//var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//	var url = WE().util.getWe_cmdArgsUrl(args);
-	switch(args[0]){
+	switch (args[0]) {
 		case 'addUserToField':
 			addUserToField();
 			break;

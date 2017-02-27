@@ -476,17 +476,6 @@ function implode(arr, delimeter, enclosure) {
 	return out;
 }
 
-function composeUri(args) {
-	var uri = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/' + args[0] + '.php?';
-	for (var i = 1; i < args.length; i++) {
-		uri += 'we_cmd[' + (i - 1) + ']=' + args[i];
-		if (i < (args.length - 1)) {
-			uri += '&';
-		}
-	}
-	return uri;
-}
-
 /** Enable disable the spinning wheel  **/
 
 /**
@@ -679,7 +668,13 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 }
 
 function propsWidget(wid, ref) {
-	var uri = composeUri(arguments);
+	var uri = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_' + arguments[0] + '&';
+	for (var i = 1; i < arguments.length; i++) {
+		uri += 'we_cmd[]=' + arguments[i];
+		if (i < (arguments.length - 1)) {
+			uri += '&';
+		}
+	}
 	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, cockpit.oCfg.iDlgWidth, cockpit.oCfg[wid + '_props_'].iDlgHeight, true, true, true);
 }
 

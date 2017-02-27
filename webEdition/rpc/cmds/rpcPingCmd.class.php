@@ -52,8 +52,8 @@ class rpcPingCmd extends we_rpc_cmd{
 			if($d){
 				foreach($d as $aProps){
 					if($aProps[0] === 'mfd'){
-						$lastModified = include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
-						$resp->setData('mfd_data', $lastModified);
+						$widget = new we_widget_mfd();
+						$resp->setData('mfd_data', $widget->getLastModified());
 					}
 				}
 			}

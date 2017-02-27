@@ -38,18 +38,20 @@ class rpcWidgetCmd extends we_rpc_cmd{
 				$mod = we_base_request::_(we_base_request::STRING, 'mod');
 				array_shift($_REQUEST['we_cmd']);
 				array_shift($_REQUEST['we_cmd']);
-				include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $mod . '.inc.php');
+
 				break;
 			case 'add' :
-				include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 				$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
+				$className = 'we_widget_' . $cmd2;
+				$cfg = $className::getDefaultConfig();
 
 				$aProps = [
 					$cmd2,
-					$aPrefs[$cmd2]['cls'],
-					$aPrefs[$cmd2]['res'],
-					$aPrefs[$cmd2]['csv'],
+					$cfg['cls'],
+					$cfg['res'],
+					$cfg['csv'],
 				];
+				$aCfgProps = we_main_cockpit::getDefaultCockpit();
 				foreach($aCfgProps as $a){
 					foreach($a as $arr){
 						if($arr[0] == $aProps[0]){
@@ -67,9 +69,10 @@ class rpcWidgetCmd extends we_rpc_cmd{
 					case 'msg':
 						$transact = md5(uniqid(__FUNCTION__, true));
 					default:
-						include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 				}
-				include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
+				$className = 'we_widget_' . $aProps[0];
+				$widgetInst=new $className($iCurrId);
+				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $iWidth);
 
 				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
 						['onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'

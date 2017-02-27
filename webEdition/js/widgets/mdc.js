@@ -105,7 +105,7 @@ function exit_close() {
 function we_submit() {
 	var bSelection = _fo.Selection.selectedIndex;
 	var bSelType = _fo.headerSwitch.selectedIndex;
-	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + window.btoa(_fo.title.value) + ';' +
+	_fo.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=mdc&we_cmd[]=' + prefs._sObjId + '&we_cmd[]=' + window.btoa(_fo.title.value) + ';' +
 		(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
 	_fo.method = 'post';
 	_fo.submit();
