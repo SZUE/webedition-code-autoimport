@@ -69,9 +69,9 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-square-o');
 				}
 				this[i].checked = 0;
-				var pos = top.content.editor.edbody.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
+				var pos = treeData.frames.top.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
 				if (pos > -1) {
-					top.content.editor.edbody.SelectedItems[treeData.frames.top.table].splice(pos, 1);
+					treeData.frames.top.SelectedItems[treeData.frames.top.table].splice(pos, 1);
 				}
 
 				this[i].applylayout();
@@ -83,7 +83,7 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-check-square-o');
 				}
 				this[i].checked = 1;
-				top.content.editor.edbody.SelectedItems[treeData.frames.top.table].push(this[i].id);
+				treeData.frames.top.SelectedItems[treeData.frames.top.table].push(this[i].id);
 				this[i].applylayout();
 				break;
 			}

@@ -67,7 +67,7 @@ function check(elem, groupSel) {
 
 		window.parent.entries_selected = [];
 		doSelectMessage(id);
-	} else if (WE().util.in_array(id, window.parent.entries_selected)) {
+	} else if (window.parent.entries_selected.indexOf(id) !== -1) {
 		unSelectMessage(id);
 	} else {
 		doSelectMessage(id);

@@ -49,7 +49,7 @@ weTagWizard = function (tagName) {
 
 			if (this.reqAttributes[this.allAttributes[i]]) {
 				// no need to change these elements
-			} else if (this.typeAttributeRequires[newType] && WE().util.in_array(this.allAttributes[i], this.typeAttributeRequires[newType])) {
+			} else if (this.typeAttributeRequires[newType] && this.typeAttributeRequires[newType].indexOf(this.allAttributes[i]) !== -1) {
 				this.setLabelRequired(this.allAttributes[i], true);
 			} else {
 				this.setLabelRequired(this.allAttributes[i], false);
@@ -63,7 +63,7 @@ weTagWizard = function (tagName) {
 
 			// show the correct attributes
 			for (i = 0; i < this.allAttributes.length; i++) {
-				if (WE().util.in_array(this.allAttributes[i], this.typeAttributeAllows[newType])) {
+				if (this.typeAttributeAllows[newType].indexOf(this.allAttributes[i]) !== -1) {
 
 					if (this.allAttributes[i] != this.typeAttributeId) {
 						hasAttributes = true;
@@ -170,7 +170,7 @@ weTagWizard = function (tagName) {
 				} else {
 
 					// check if attribute is required by the value of the type-Attribut
-					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, this.typeAttributeRequires[typeValue])) {
+					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && this.typeAttributeRequires[typeValue].indexOf(fieldId) !== -1) {
 						this.missingFields.push(fieldName);
 					}
 				}
@@ -216,20 +216,20 @@ weTagWizard = function (tagName) {
 	};
 
 	/*this.editMultiSelector = function (cmdObj) {
-		var selItems = cmdObj.selectedItems,
-			textName = cmdObj.textName,
-			val = weTextInput.getValue(cmdObj.textFieldId),
-			selItem;
+	 var selItems = cmdObj.selectedItems,
+	 textName = cmdObj.textName,
+	 val = weTextInput.getValue(cmdObj.textFieldId),
+	 selItem;
 
-		for (var selId in cmdObj.selectedItems) {
-			selItem = selItems[selId];
-			if (val) {
-				val += ",";
-			}
-			val += selItem[textName];
-		}
-		weTextInput.setValue(cmdObj.textFieldId, val);
-	};*/
+	 for (var selId in cmdObj.selectedItems) {
+	 selItem = selItems[selId];
+	 if (val) {
+	 val += ",";
+	 }
+	 val += selItem[textName];
+	 }
+	 weTextInput.setValue(cmdObj.textFieldId, val);
+	 };*/
 };
 
 function closeOnEscape() {
@@ -306,7 +306,7 @@ function we_cmd() {
 				var values = window.document.getElementById(args[3]).value ? window.document.getElementById(args[3]).value.split(',') : [];
 
 				for (i = 0; i < sel.length; i++) {
-					if (!WE().util.in_array(sel[i], values)) {
+					if (values.indexOf(sel[i]) === -1) {
 						values.push(sel[i]);
 					}
 				}

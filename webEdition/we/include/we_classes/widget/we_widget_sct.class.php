@@ -286,18 +286,16 @@ class we_widget_sct extends we_widget_base{
 	}
 
 	public function showPreview(){
-		echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', we_html_element::jsScript(JS_DIR . 'widgets/preview.js', '', [
-				'id' => 'loadVarPreview',
-				'data-preview' => setDynamicVar([
-					'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
-					'type' => 'sct',
-					'tb' => g_l('cockpit', '[shortcuts]'),
-					//'iconClass' =>
-			])]) .
-			we_base_jsCmd::singleCmd('setIconOfDocClass', 'sctFileIcon')
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('initPreview', [
+			'id' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+			'type' => 'sct',
+			'tb' => g_l('cockpit', '[shortcuts]'),
+		]);
+		$jsCmd->addCmd('setIconOfDocClass', 'sctFileIcon');
+		echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', $jsCmd->getCmds()
 			, we_html_element::htmlBody(
 				['style' => 'margin:10px 15px;',
-				"onload" => "if(parent!=self)init();"
 				], we_html_element::htmlDiv(["id" => "sct"
 					], $this->sc)));
 	}

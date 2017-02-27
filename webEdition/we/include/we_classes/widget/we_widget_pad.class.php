@@ -411,7 +411,7 @@ var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
 var _ttlB64Esc=escape(window.btoa(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 				[
-				"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'toggleTblValidity();'
+				"onload" => 'toggleTblValidity();'
 				], we_html_element::htmlForm(['style' => "display:inline;"], we_html_element::htmlDiv(
 						["id" => "pad"], $notepad .
 						we_html_element::htmlHidden("mark", "")

@@ -78,7 +78,7 @@ function add_thumbnail() {
 		top.we_showMessage(WE().consts.g_l.thumbnail.hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (name === "") {
 		top.we_showMessage(WE().consts.g_l.thumbnail.empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-	} else if (WE().util.in_array(name, thumbnails.thumbnail_names)) {
+	} else if (thumbnails.thumbnail_names.indexOf(name) !== -1) {
 		top.we_showMessage(WE().consts.g_l.thumbnail.exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&newthumbnail=" + encodeURI(name);
