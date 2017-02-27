@@ -73,8 +73,8 @@ class we_widget_fdl extends we_widget_base{
 		$this->failedLoginHTML = we_html_element::jsElement('function ajaxCallbackResetLogins(weResponse){
 	if ( weResponse ) {
 		if (weResponse.DataArray.data == "true") {
-			' . ( $this->newSCurrId ? 'WE().layout.cockpitFrame.rpc("","","","","","' . $this->newSCurrId . '");' : '' ) .
-				we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+			' . ( $this->newSCurrId ? 'WE().layout.cockpitFrame.rpc("","","","","","' . $this->newSCurrId . '");' : '' ) . '
+			top.we_showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins,WE().consts.message.WE_MESSAGE_NOTICE, window);
 			self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
 		}
 	}
@@ -82,7 +82,7 @@ class we_widget_fdl extends we_widget_base{
 			$failedLoginsTable->getHtml();
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 
 		$oTblDiv = we_html_element::htmlDiv([
@@ -97,6 +97,7 @@ class we_widget_fdl extends we_widget_base{
 	public static function getDefaultConfig(){
 		return [
 			'width' => self::WIDTH_LARGE,
+			'expanded' => 1,
 			'height' => 210,
 			'res' => 1,
 			'cls' => 'orange',

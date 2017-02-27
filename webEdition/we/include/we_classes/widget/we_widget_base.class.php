@@ -35,7 +35,7 @@ abstract class we_widget_base{
 
 	abstract public function __construct($curID = '', $aProps = []);
 
-	abstract public function getInsertDiv($iCurrId, $iWidth);
+	abstract public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd);
 
 	abstract public static function getDefaultConfig();
 
@@ -43,10 +43,9 @@ abstract class we_widget_base{
 
 	abstract public function showPreview();
 
-	static function getDialogPrefs(){
-		$jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js', '', ['id' => 'loadVarDlg_prefs', 'data-prefs' => setDynamicVar([
-					'_sObjId' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
-		])]);
+	static function getDialogPrefs(array $dynVar = []){
+		$dynVar['_sObjId'] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+		$jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js', '', ['id' => 'loadVarDlg_prefs', 'data-prefs' => setDynamicVar($dynVar)]);
 
 		$oSctCls = new we_html_select([
 			"name" => "sct_cls",
@@ -120,7 +119,7 @@ abstract class we_widget_base{
 				str_replace("'", "\'", $aLabel[1])
 			];
 		}
-		return we_html_element::htmlDiv(["id" => $iId . "_bx", "class" => 'widget bgc_' . $sCls . ' ' . ($w > 400 ? 'cls_expand' : 'cls_collapse')], $oTb->getHtml() .
+		return we_html_element::htmlDiv(["id" => $iId . "_bx", "class" => 'widget bgc_' . $sCls . ' ' . ($w > self::WIDTH_SMALL ? 'cls_expand' : 'cls_collapse')], $oTb->getHtml() .
 				we_html_element::htmlDiv(["id" => $iId . "_lbl", "class" => "label widgetTitle",]) .
 				we_html_element::htmlDiv(["id" => $iId . "_wrapper", "class" => "content"], we_html_element::htmlDiv(["id" => $iId . "_content"], $oContent) .
 					we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .

@@ -26,7 +26,7 @@ abstract class we_main_cockpit{
 	const iDefCols = 2;
 
 	private static function getFullDefaultConfig(){
-		$aPrefs = [
+		return  [
 			'sct' => we_widget_sct::getDefaultConfig(),
 			'rss' => we_widget_rss::getDefaultConfig(),
 			'mfd' => we_widget_mfd::getDefaultConfig(),
@@ -38,29 +38,13 @@ abstract class we_main_cockpit{
 			'mdc' => we_widget_mdc::getDefaultConfig(),
 			'pad' => we_widget_pad::getDefaultConfig(),
 		];
-
-		$jsoCfg = [
-			'iDlgWidth' => 480,
-			'_noResizeTypes' => ['pad'],
-		];
-
-		foreach($aPrefs as $type => $prefs){
-			$jsoCfg[$type . '_props_'] = [
-				'width' => intval($prefs["width"]),
-				'height' => intval($prefs["height"]),
-				'res' => $prefs["res"],
-				'cls' => $prefs["cls"],
-				'iDlgHeight' => intval($prefs["dlgHeight"]),
-			];
-		}
-
-		return $jsoCfg;
 	}
 
 	public static function getEditor(){
 //make sure we know which browser is used
-		$aCfgProps = we_main_cockpit::getDefaultCockpit();
+		$aCfgProps = self::getDefaultCockpit();
 		if(we_base_permission::hasPerm('CAN_SEE_QUICKSTART')){
+			$jsCmd = new we_base_jsCmd();
 			$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 			$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home');
 			if(!$bResetProps && $iLayoutCols){
@@ -174,7 +158,7 @@ abstract class we_main_cockpit{
 					$className = 'we_widget_' . $aProps[0];
 					if(class_exists($className)){
 						$widgetInst = new $className($newSCurrId, $aProps);
-						list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $iWidth);
+						list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $jsCmd);
 						$cfg = $className::getDefaultConfig();
 						$widget = we_widget_base::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $cfg["height"], $cfg["isResizable"]);
 						$s2 .= we_html_element::htmlDiv(["id" => "m_" . $iCurrId, "class" => "le_widget"], $widget);
@@ -201,7 +185,8 @@ abstract class we_main_cockpit{
 			echo
 			we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
 				we_html_element::cssLink(CSS_DIR . 'home.css') .
-				we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)])
+				we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)]) .
+				$jsCmd->getCmds()
 				, we_html_element::htmlBody(['onload' => "startCockpit();",], we_html_element::htmlDiv(["id" => "rpcBusy", 'style' => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
 					) . we_html_element::htmlDiv(["id" => "widgets"], "") .
 					$oTblWidgets->getHtml() .
@@ -255,6 +240,7 @@ abstract class we_main_cockpit{
 				$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 				$className = 'we_widget_' . $cmd1;
 				$cfg = $className::getDefaultConfig();
+				$jsCmd = new we_base_jsCmd();
 
 				$aProps = [
 					$cmd1,
@@ -273,10 +259,10 @@ abstract class we_main_cockpit{
 				$iCurrId = str_replace('m_', '', $newSCurrId);
 				$className = 'we_widget_' . $aProps[0];
 				$widgetInst = new $className($newSCurrId);
-				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $cfg['width']);
+				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $jsCmd);
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
-						['onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}') . $jsCmd->getCmds(), we_html_element::htmlBody(
+						['onload' => 'WE().layout.cockpitFrame.transmit(window,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
 						], we_html_element::htmlDiv(['id' => 'content'], $oTblDiv) .
 						we_html_element::htmlSpan(['id' => 'prefix'], $aLang[0]) .
 						we_html_element::htmlSpan(['id' => 'postfix'], $aLang[1]) .
@@ -289,7 +275,7 @@ abstract class we_main_cockpit{
 				$id = intval($_SESSION['user']['ID']);
 				//delete user's cockpit preferences from db
 				$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES (' . $id . ',"cockpit_dat",""),(' . $id . ',"cockpit_amount_columns",""),(' . $id . ',"cockpit_rss","")');
-				we_main_cockpit::getEditor();
+				self::getEditor();
 				break;
 		}
 	}

@@ -43,6 +43,25 @@ function initPrefs() {
 	}
 }
 
+function clip(unique) {
+	var oText = document.getElementById("clip_" + unique);
+	var oDiv = document.getElementById("div_" + unique);
+	var oBtn = document.getElementById("btn_" + unique).getElementsByTagName("i")[0];
+
+	if (prefs.clip[unique].state) {
+		oText.innerHTML = prefs.clip[unique].textsmall;
+		oDiv.style.display = "none";
+		oBtn.classList.remove("fa-caret-down");
+		oBtn.classList.add("fa-caret-right");
+	} else {
+		oText.innerHTML = prefs.clip[unique].text;
+		oDiv.style.display = "block";
+		oBtn.classList.remove("fa-caret-right");
+		oBtn.classList.add("fa-caret-down");
+	}
+	prefs.clip[unique].state = !prefs.clip[unique].state;
+}
+
 function savePrefs() {
 	window.opener.setTheme(prefs._sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 }

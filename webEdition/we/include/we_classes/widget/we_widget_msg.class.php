@@ -48,7 +48,7 @@ class we_widget_msg extends we_widget_base{
 		$this->count['todo'] = $messaging->used_msgobjs['we_todo']->get_newmsg_count();
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		$msg_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_MESSAGE . ");";
 		$todo_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_TODO . ");";
 		$oTblCont = new we_html_table(["id" => "m_" . $iCurrId . "_inline", 'style' => "width:100%;",], 2, 2);
@@ -72,6 +72,7 @@ class we_widget_msg extends we_widget_base{
 	public static function getDefaultConfig(){
 		return [
 			'width' => self::WIDTH_SMALL,
+			'expanded' => 0,
 			'height' => 100,
 			'res' => 0,
 			'cls' => 'lightCyan',

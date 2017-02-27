@@ -220,11 +220,11 @@ $(function () {
 			);
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId,we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(
 				['id' => 'm_' . $iCurrId . '_inline',
-				'style' => "width:" . $iWidth . "px;height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
+				'style' =>"height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
 				], we_html_element::htmlDiv(['id' => 'shp_data'], $this->shopDashboard)
 		);
 		$aLang = [g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $this->interval, ""];
@@ -234,6 +234,7 @@ $(function () {
 	public static function getDefaultConfig(){
 		return [
 			'width' => self::WIDTH_LARGE,
+			'expanded' => 1,
 			'height' => 212,
 			'res' => 1,
 			'cls' => 'lightCyan',

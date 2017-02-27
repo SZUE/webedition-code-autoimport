@@ -119,12 +119,8 @@ class we_widget_upb extends we_widget_base{
 
 			while($db->next_record()){
 				$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont ' . ($db->f("Published") != '-' ? 'changed' : "notpublished") . '" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
-				$row = [['dat' => $path],
-					/* array('dat' => $db->f("Creator") ? : '-'),
-					  array('dat' => $db->f('CreationDate')),
-					  array('dat' => $db->f("Modifier") ? : '-'),
-					  array('dat' => $db->f("Modified")),
-					  array('dat' => $db->f("Published")), */
+				$row = [
+					['dat' => $path],
 				];
 				if(defined('WORKFLOW_TABLE')){
 					if($db->f("wforder")){
@@ -143,15 +139,17 @@ class we_widget_upb extends we_widget_base{
 		$this->ct = '<table class="default">' . implode('', $cont) . '</table>';
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(["id" => "m_" . $iCurrId . "_inline",
-				'style' => "width:" . $iWidth . "px;height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
-				], $this->ct) . we_html_element::jsElement("WE().util.setIconOfDocClass(document,'upbIcon');");
+				'style' => "height:" . ($cfg["height"] - 25) . "px;overflow:auto;"
+				], $this->ct);
 
 		$sTb = g_l('cockpit', ($this->bTypeDoc && $this->bTypeObj ? '[upb_docs_and_objs]' : ($this->bTypeDoc ? '[upb_docs]' : ($this->bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));
-		$aLang = [$sTb, ""];
-		return [$oTblDiv, $aLang];
+
+		$jsCmd->addCmd('setIconOfDocClass', 'upbIcon');
+
+		return [$oTblDiv, [$sTb, ""]];
 	}
 
 	public static function getDefaultConfig(){
@@ -160,6 +158,7 @@ class we_widget_upb extends we_widget_base{
 
 		return [
 			'width' => self::WIDTH_SMALL,
+			'expanded' => 0,
 			'height' => 210,
 			'res' => 0,
 			'cls' => 'lightCyan',

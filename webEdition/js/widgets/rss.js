@@ -136,10 +136,10 @@ function displayRssFeed(sUri, bOnChange) {
 	var sRssCfgBinary = getBinary('conf');
 	var sRssCfgSelIdx = _fo.elements.sct_conf.selectedIndex;
 	if (!bOnChange || (_sLastPreviewUri !== '' && sUri != _sLastPreviewUri) || (_sLastPreviewUri === '' && sUri != _sInitUri) ||
-					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
+		_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
-		WE().layout.cockpitFrame.rpc(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
+		WE().layout.cockpitFrame.executeAjaxRequest(sUri, sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
 	}
 }
 
@@ -148,11 +148,11 @@ function resetRssFeed() {
 	var iSctConfSel = _fo.elements.sct_conf.selectedIndex;
 	var iRdoTitleSel = (_fo.elements.rdo_title.checked) ? 0 : 1;
 	if ((_sLastPreviewUri !== '' && _sInitUri != _sLastPreviewUri) ||
-					(getBinary('conf') != _sInitRssCfg) ||
-					(getBinary('tb') != _sInitTbCfg) ||
-					(_iInitRssCfgNumEntries != iSctConfSel) ||
-					(_iInitTbTitlePers != iRdoTitleSel)) {
-		WE().layout.cockpitFrame.rpc(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
+		(getBinary('conf') != _sInitRssCfg) ||
+		(getBinary('tb') != _sInitTbCfg) ||
+		(_iInitRssCfgNumEntries != iSctConfSel) ||
+		(_iInitTbTitlePers != iRdoTitleSel)) {
+		WE().layout.cockpitFrame.executeAjaxRequest(_sInitUri, _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
 	}
 }
 
@@ -185,7 +185,7 @@ function save() {
 	var oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	var oRdoTitle = _fo.elements.rdo_title;
 	oCsv_.value = window.btoa(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
-					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);
+		',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);
 	if (_bIsHotTopRssFeeds) {
 		var oSctRss = _fo.elements.sct_rss;
 		var aNewTopRssFeeds = [];

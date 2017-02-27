@@ -165,7 +165,7 @@ abstract class we_base_jsConstants{
 		},
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
 		ext_doc_selected:"' . g_l('SEEM', '[ext_doc_selected]') . '",
-		found_in_workflow:"'. g_l('alert', '[found_in_workflow]').'",
+		found_in_workflow:"' . g_l('alert', '[found_in_workflow]') . '",
 		image_edit_null_not_allowed:"' . g_l('weClass', '[image_edit_null_not_allowed]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",
@@ -178,8 +178,8 @@ abstract class we_base_jsConstants{
 		move:"' . g_l('alert', '[move]') . '",
 		move_exit_open_docs_continue:"' . g_l('alert', '[move_exit_open_docs_continue]') . '",
 		move_exit_open_docs_question:"' . g_l('alert', '[move_exit_open_docs_question]') . '",
-		newWEAvailable:"'.g_l('sysinfo', '[newWEAvailable]') .'",
-		pwd_startupRegExFailed:"'.	g_l('global', '[pwd][startupRegExFailed]').'",
+		newWEAvailable:"' . g_l('sysinfo', '[newWEAvailable]') . '",
+		pwd_startupRegExFailed:"' . g_l('global', '[pwd][startupRegExFailed]') . '",
 		revert_publish_question:"' . we_message_reporting::prepareMsgForJS(g_l('weEditorInfo', '[revert_publish_question]')) . '",
 		same_master_template:"' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[same_master_template]')) . '",
 	},
@@ -204,6 +204,9 @@ abstract class we_base_jsConstants{
 		reduce_size: "' . g_l('cockpit', '[reduce_size]') . '",
 		reset_settings: "' . g_l('alert', '[cockpit_reset_settings]') . '",
 		tabName:"' . g_l('cockpit', '[cockpit]') . '",
+		fdl:{
+			kv_failedLogins:"' . g_l('cockpit', '[kv_failedLogins][deleted]') . '",
+		},
 		mfd:{
 			last_modified:"' . g_l('cockpit', '[last_modified]') . '",
 		},

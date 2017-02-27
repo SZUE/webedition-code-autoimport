@@ -199,12 +199,13 @@ ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 		$this->lastModified .= '</table>';
 	}
 
-	public function getInsertDiv($iCurrId, $iWidth){
+	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(['id' => 'm_' . $iCurrId . '_inline',
 				'style' => 'width:100%;height:' . ($cfg["height"]) . 'px;overflow:auto;',
 				], we_html_element::htmlDiv(['id' => 'mfd_data'], $this->lastModified)
-			) . we_html_element::jsElement("WE().util.setIconOfDocClass(document,'mfdIcon');");
+			);
+		$jsCmd->addCmd('setIconOfDocClass','mfdIcon');
 		$aLang = [g_l('cockpit', '[last_modified]'), ""];
 		return [$oTblDiv, $aLang];
 	}
@@ -217,6 +218,7 @@ ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 
 		return [
 			'width' => self::WIDTH_LARGE,
+			'expanded' => 1,
 			'height' => 210,
 			'res' => 1,
 			'cls' => 'lightCyan',
