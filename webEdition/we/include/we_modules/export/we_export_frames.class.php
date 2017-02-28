@@ -65,6 +65,7 @@ class we_export_frames extends we_modules_frame{
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return parent::getHTMLEditorHeader(0);
 		}
+		$jsCmd = new we_base_jsCmd();
 
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
@@ -75,20 +76,17 @@ class we_export_frames extends we_modules_frame{
 
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('
-function setTab(tab) {
-	parent.edbody.toggle("tab"+top.content.activ_tab);
-	parent.edbody.toggle("tab"+tab);
-	top.content.activ_tab=tab;
-}' .
-				($this->View->export->ID ? '' : 'top.content.activ_tab=1;') .
-				($this->View->export->IsFolder == 1 ? 'top.content.activ_tab=1;' : ''));
+			we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js');
+
+		if(!$this->View->export->ID || $this->View->export->IsFolder){
+			$jsCmd->addCmd('setTab', 1);
+		}
+
 
 		$table = new we_html_table(['style' => 'width:100%;margin-top:3px', 'class' => 'default'], 1, 1);
 
 		$table->setCol(0, 0, ['class' => "small", 'style' => 'vertical-align:top;padding-left:15px;'], we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
-		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
@@ -99,11 +97,10 @@ function setTab(tab) {
 						)
 					) .
 					$we_tabs->getHTML()
-				) .
-				we_html_element::jsElement($extraJS)
+				)
 		);
 
-		return $this->getHTMLDocument($body, $tabsHead);
+		return $this->getHTMLDocument($body, $tabsHead . $jsCmd->getCmds());
 	}
 
 	protected function getHTMLEditorBody(){
