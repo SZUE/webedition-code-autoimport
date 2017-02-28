@@ -208,6 +208,9 @@ function we_cmd() {
 	}
 
 	switch (args[0]) {
+		case "setFocus":
+			setFocus();
+			break;
 		case "we_users_selector":
 			new (WE().util.jsWindow)(caller, url, "browse_users", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true);
 			break;
@@ -478,7 +481,7 @@ function we_cmd() {
 			caller.document.we_form.emailfield.focus();
 			break;
 		case 'editEmails_save':
-			switch(args[1]){
+			switch (args[1]) {
 				case 2:
 					caller.opener.setAndSave(caller.document.we_form.id.value, caller.document.we_form.emailfield.value, caller.document.we_form.htmlmail.value, caller.document.we_form.salutation.value, caller.document.we_form.title.value, caller.document.we_form.firstname.value, caller.document.we_form.lastname.value);
 					caller.close();

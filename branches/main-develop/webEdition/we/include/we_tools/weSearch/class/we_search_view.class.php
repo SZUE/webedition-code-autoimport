@@ -1359,7 +1359,7 @@ top.content.hot=false;');
 		]);
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js');
 	}

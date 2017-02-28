@@ -28,7 +28,7 @@
 var loaded = false;
 var table = WE().consts.tables.FILE_TABLE;
 var props = WE().util.getDynamicVar(document, 'loadVarViewProp', 'data-prop');
-
+var categories_edit;
 
 function setFieldValue(fieldNameTo, fieldFrom) {
 	if (document.we_form.DynamicSelection.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
@@ -112,6 +112,9 @@ function we_cmd() {
 			break;
 		case "rebuildNavi":
 			//new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,0,true);
+			break;
+		case "categoriesEdit":
+			categoriesEdit.apply(caller, args[1]);
 			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -362,4 +365,214 @@ function setCustomerFilter(sel) {
 		} catch (e) {
 		}
 	}
+}
+
+function onSelectionClassChangeJS(value) {
+	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputFolderPath", {
+		table: WE().consts.tables.OBJECT_FILES_TABLE,
+		basedir: props.classPaths[value],
+		required: true
+
+	});
+	document.we_form.elements.FolderID.value = props.classDirs[value];
+	document.we_form.elements.FolderPath.value = props.classPaths[value];
+	document.we_form.elements.FolderPath.disabled = !props.hasClassSubDirs[value];
+	top.content.we_cmd('populateWorkspaces');
+	window.we_cmd("setHot");
+}
+
+function onSelectionTypeChangeJS(value) {
+	if (document.we_form.elements.Selection.value === WE().consts.navigation.SELECTION_STATIC) {
+		onFolderSelectionChangeJS(value);
+		return;
+	}
+	switch (value) {
+		case WE().consts.navigation.DYN_CLASS:
+			if ((WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE")) {
+				document.we_form.elements.ClassID.selectedIndex = 0;
+				onSelectionClassChangeJS(document.we_form.elements.ClassID.options[0].value);
+			}
+			break;
+		default:
+			WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputFolderPath", {
+				table: value === WE().consts.navigation.DYN_DOCTYPE ? WE().consts.tables.FILE_TABLE : WE().consts.tables.CATEGORY_TABLE,
+				basedir: "",
+				required: value !== WE().consts.navigation.DYN_DOCTYPE
+			}
+			);
+	}
+	WE().layout.weSuggest.checkRequired(window, "yuiAcInputFolderPath");
+}
+
+function onFolderSelectionChangeJS(value) {
+	var linktype = '';
+	switch (value) {
+		case WE().consts.navigation.STYPE_DOCLINK:
+		case WE().consts.navigation.STYPE_OBJLINK:
+		case WE().consts.navigation.STYPE_CATLINK:
+			linktype = value;
+			break;
+		default:
+			linktype = WE().consts.navigation.STYPE_DOCLINK;
+	}
+
+	var set = {};
+	switch (linktype) {
+		case WE().consts.navigation.STYPE_DOCLINK:
+			set = {
+				table: WE().consts.tables.FILE_TABLE,
+				contenttypes: [
+					WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML,
+					WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE,
+					WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION,
+					WE().consts.contentTypes.FLASH
+				].join(",")
+			};
+			break;
+		case WE().consts.navigation.STYPE_OBJLINK:
+			set = {
+				table: WE().consts.tables.OBJECT_FILES_TABLE,
+				contenttypes: [WE().consts.contentTypes.FOLDER,
+					WE().consts.contentTypes.OBJECT_FILE].join(",")
+			};
+			break;
+		case WE().consts.navigation.STYPE_CATLINK:
+			set = {
+				table: WE().consts.tables.CATEGORY_TABLE,
+				contenttypes: ''
+			};
+			break;
+	}
+
+	WE().layout.weSuggest.updateSelectorConfig(window, "yuiAcInputLinkPath", set);
+}
+
+function fieldChooserBut(cmd) {
+	var st = document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value;
+	var s = (st === WE().consts.navigation.DYN_DOCTYPE ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value);
+	window.we_cmd('openFieldSelector', cmd, st, s, 0);
+}
+
+function categoriesEdit(size, elements, delBut) {
+	categories_edit = new (WE().util.multi_edit)("categories", window, 0, delBut, size, false);
+	categories_edit.addVariant();
+	document.we_form.CategoriesControl.value = categories_edit.name;
+	for (var i = 0; i < elements.length; i++) {
+		categories_edit.addItem();
+		categories_edit.setItem(0, (categories_edit.itemCount - 1), elements[i]);
+	}
+	categories_edit.showVariant(0);
+}
+
+function removeAllCats() {
+	window.we_cmd("setHot");
+	if (categories_edit.itemCount > 0) {
+		while (categories_edit.itemCount > 0) {
+			categories_edit.delItem(categories_edit.itemCount);
+		}
+	}
+}
+
+function addCat(paths) {
+	window.we_cmd("setHot");
+	var found = false;
+	var j = 0;
+	for (var i = 0; i < paths.length; i++) {
+		if (paths[i] !== "") {
+			found = false;
+			for (j = 0; j < categories_edit.itemCount; j++) {
+				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value === paths[i]) {
+					found = true;
+				}
+			}
+			if (!found) {
+				categories_edit.addItem();
+				categories_edit.setItem(0, (categories_edit.itemCount - 1), paths[i]);
+			}
+		}
+	}
+	categories_edit.showVariant(0);
+}
+
+function setLinkSelection(prefix, value) {
+	setVisible(prefix + "intern", (value === WE().consts.navigation.LSELECTION_INTERN));
+	setVisible(prefix + "extern", (value !== WE().consts.navigation.LSELECTION_INTERN));
+}
+
+function setFields(cmd) {
+	var list = document.we_form.fields.options;
+
+	var fields = [];
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].selected) {
+			fields.push(list[i].value);
+		}
+	}
+	opener[cmd](fields.join(","));
+	window.close();
+}
+
+function selectItem() {
+	if (document.we_form.fields.selectedIndex > -1) {
+		WE().layout.button.switch_button_state(document, "save", "enabled");
+	}
+}
+
+function mark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "inline";
+}
+
+function unmark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "none";
+}
+
+function initNavHeader() {
+	weTabs.setFrameSize();
+	document.getElementById('tab_' + top.content.activ_tab).className = 'tabActive';
+}
+
+function setTab(tab) {
+	switch (tab) {
+		case WE().consts.tabs.navigation.PREVIEW:	// submit the information to preview screen
+			parent.edbody.document.we_form.cmd.value = "";
+			if (top.content.activ_tab !== tab || (top.content.activ_tab === WE().consts.tabs.navigation.PREVIEW && tab === WE().consts.tabs.navigation.PREVIEW)) {
+				parent.edbody.document.we_form.pnt.value = WE().consts.tabs.navigation.PREVIEW;
+				parent.edbody.document.we_form.tabnr.value = WE().consts.tabs.navigation.PREVIEW;
+				parent.edbody.submitForm();
+			}
+			break;
+
+		default: // just toggle content to show
+			if (top.content.activ_tab !== WE().consts.tabs.navigation.PREVIEW) {
+				parent.edbody.toggle("tab" + top.content.activ_tab);
+				parent.edbody.toggle("tab" + tab);
+				top.content.activ_tab = tab;
+				window.focus();
+			} else {
+				parent.edbody.document.we_form.pnt.value = "edbody";
+				parent.edbody.document.we_form.tabnr.value = tab;
+				parent.edbody.submitForm();
+			}
+			break;
+	}
+	window.focus();
+	top.content.activ_tab = tab;
+}
+
+function setInitialTabs(id, isFolder) {
+	if (id) {
+		top.content.activ_tab = WE().consts.tabs.navigation.PROPERTIES;
+	}
+	if (isFolder) {
+		if (top.content.activ_tab !== WE().consts.tabs.navigation.PROPERTIES && top.content.activ_tab !== WE().consts.tabs.navigation.CUSTOMER) {
+			top.content.activ_tab = WE().consts.tabs.navigation.PROPERTIES;
+		}
+	}
+}
+
+function showPreview() {
+	document.we_form.pnt.value = "previewIframe";
+	submitForm("preview");
 }

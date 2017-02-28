@@ -194,7 +194,7 @@ class we_banner_view extends we_modules_view{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js', "parent.document.title='" . $title . "';");
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_property.js', 'self.focus();');
 	}
 

@@ -53,7 +53,7 @@ class we_glossary_view extends we_modules_view{
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js', "parent.document.title='" . $title . "';");
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
 	}
 
