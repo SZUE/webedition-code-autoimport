@@ -99,9 +99,13 @@ class we_import_files{
 	}
 
 	function _getContent(){
-		$funct = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 1);
-
-		return $this->$funct();
+		switch(we_base_request::_(we_base_request::INT, 'step', 1)){
+			default:
+			case 1:
+				return $this->getStep1();
+			case 2:
+				return $this->getStep2();
+		}
 	}
 
 	function getStep1(){
@@ -137,27 +141,27 @@ class we_import_files{
 		$fileupload->setFieldParentID(['setField' => true,
 			'preset' => ($this->parentID ?: 0),
 			'setFixed' => false,
-			]);
+		]);
 
 		// create Start Screen ##############################################################################
 		$parts = [
-				$fileupload->getFormParentID('we_form'),
-				$fileupload->getFormSameName(),
-				$fileupload->getFormCategories(),
+			$fileupload->getFormParentID('we_form'),
+			$fileupload->getFormSameName(),
+			$fileupload->getFormCategories(),
 		];
 
 		if(we_base_permission::hasPerm("NEW_GRAFIK")){
 			$parts = array_merge($parts, [
-					$fileupload->getFormImportMeta(),
-					$fileupload->getFormIsSearchable()
+				$fileupload->getFormImportMeta(),
+				$fileupload->getFormIsSearchable()
 			]);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$parts = array_merge($parts, [
-						$fileupload->getFormThumbnails(),
-						$fileupload->getFormImageResize(),
-						$fileupload->getFormImageRotate(),
-						$fileupload->getFormImageQuality()
+					$fileupload->getFormThumbnails(),
+					$fileupload->getFormImageResize(),
+					$fileupload->getFormImageRotate(),
+					$fileupload->getFormImageQuality()
 				]);
 			} else {
 				$parts[] = [
@@ -265,14 +269,14 @@ class we_import_files{
 				'fu_doc_categories' => $this->categories,
 				'fu_doc_isSearchable' => $this->imgsSearchable,
 				'fu_doc_importMetadata' => $this->importMetadata,
-				], $moreHiddens));
+					], $moreHiddens));
 	}
 
 	function _getFrameset(){
 		$step = we_base_request::_(we_base_request::INT, 'step', -1);
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody']
-		, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+				, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		);
 

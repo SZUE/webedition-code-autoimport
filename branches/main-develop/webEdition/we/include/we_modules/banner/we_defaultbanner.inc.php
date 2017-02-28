@@ -29,7 +29,7 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 			'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
 			]));
 
-	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
+	echo we_base_jsCmd::singleCmd('close') . '</head><body></body></html>';
 	exit();
 }
 $weSuggest = & weSuggest::getInstance();

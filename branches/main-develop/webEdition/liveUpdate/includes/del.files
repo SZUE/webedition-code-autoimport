@@ -398,6 +398,7 @@ we/include/we_import_files.inc.php
 we/include/we_import/we_wizard.inc.php
 we/include/we_import/we_wiz_import.inc.php
 we/include/we_import/we_wiz_frameset.php
+we/include/we_import/we_import_wizardBase.class.php
 we/include/we_import/we_import_frameset.inc.php
 we/include/we_import/we_import_CSVFix.class.php
 we/include/we_import/importFunctions.class.inc.php
