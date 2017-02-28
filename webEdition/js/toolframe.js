@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition SDK
  *
@@ -28,3 +30,19 @@ top.weToolWindow = true;
 
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
+
+function setTab(tool) {
+	if (top.content.hot) {
+		if (window.confirm(WE().consts.g_l.alert.discard_changed_data)) {
+			top.content.hot = false;
+			current = tool;
+			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
+		} else {
+			top.navi.weTabs.setActiveTab(current);
+		}
+	} else {
+		top.content.hot = false;
+		current = tool;
+		top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
+	}
+}

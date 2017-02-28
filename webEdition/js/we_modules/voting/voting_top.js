@@ -152,7 +152,17 @@ function we_cmd() {
 		case "home":
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
+		case "setTab":
+			top.content.activ_tab = args[1];
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
+}
+
+function setTab(tab) {
+	parent.edbody.toggle("tab" + top.content.activ_tab);
+	parent.edbody.toggle("tab" + tab);
+	top.content.activ_tab = tab;
+	self.focus();
 }

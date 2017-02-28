@@ -567,22 +567,7 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ?: DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
 			we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('
-var activ_tab = 1;
-
-function toggle(id) {
-	var elem = document.getElementById(id);
-	elem.style.display = (elem.style.display == "none" ? "block" : "none");
-}
-
-function previewVersion(table,ID,version, newID) {
-	top.opener.top.we_cmd("versions_preview", table,ID,version, newID);
-}
-function setTab(tab) {
-	toggle("tab" + activ_tab);
-	toggle("tab" + tab);
-	activ_tab = tab;
-}'), we_html_element::htmlBody(['class' => "weDialogBody"], '
+			we_html_element::jsScript(JS_DIR . 'versions_preview.js'), we_html_element::htmlBody(['class' => "weDialogBody"], '
 	<div id="eHeaderBody">' . $this->getTabsBody() . '</div>
 	<div id="content">
 		<div id="tab1" style="display:block;width:100%;">' . $this->contentDiff . '</div>

@@ -47,6 +47,9 @@ function we_cmd() {
 		case "we_selector_category":
 			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
+		case "setTab":
+			top.content.activ_tab = args[1];
+			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -58,4 +61,16 @@ function submitForm(target, action, method) {
 	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch");
 	f.method = (method ? method : "post");
 	f.submit();
+}
+
+function setTab(tab) {
+	switch (tab) {
+		default: // just toggle content to show
+			parent.edbody.document.we_form.pnt.value = "edbody";
+			parent.edbody.document.we_form.tabnr.value = tab;
+			parent.edbody.submitForm();
+			break;
+	}
+	self.focus();
+	top.content.activ_tab = tab;
 }

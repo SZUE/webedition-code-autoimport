@@ -74,10 +74,7 @@ class we_workflow_frames extends we_modules_frame{
 
 		$extraHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('
-function setTab(tab){
-	top.content.editor.edbody.we_cmd("switchPage",tab);
-}');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
 
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()',
 				'onload' => "weTabs.setFrameSize();document.getElementById('tab_" . $page . "').className='tabActive';",

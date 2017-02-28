@@ -91,18 +91,8 @@ class we_search_frames extends we_modules_frame{
 		$tabNr = $this->getTab();
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('top.content.activ_tab = ' . $tabNr . ';
-function setTab(tab) {
-	switch (tab) {
-		default: // just toggle content to show
-			parent.edbody.document.we_form.pnt.value = "edbody";
-			parent.edbody.document.we_form.tabnr.value = tab;
-			parent.edbody.submitForm();
-		break;
-	}
-	self.focus();
-	top.content.activ_tab=tab;
-}');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js') .
+			we_base_jsCmd::singleCmd('setTab', $tabNr);
 
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(
