@@ -59,6 +59,9 @@ function we_cmd() {
 			var preview = args[1];
 			rpcHandleResponse(preview.type, preview.id, caller.document.getElementById(preview.type), preview.tb);
 			break;
+		case 'initGauge':
+			new Gauge(WE().layout.cockpitFrame.document.getElementById(args[1]), args[2]);
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -310,18 +313,10 @@ function resizeWidget(id) {
 
 function initWidget(_id) {
 	var oNode = document.getElementById(_id + '_type');
-	if (oNode && oNode.value === "sct") {
-		var _width = "100%";
-		if (resizeIdx('get', _id) === "1") {
-			_width = "46%";
-		}
-
-		var _elem = document.getElementById(_id);
-		var _inlineDivs = _elem.getElementsByTagName('div');
-		for (var i = 0; i < _inlineDivs.length; i++) {
-			if (_inlineDivs[i].className === "sct_row") {
-				_inlineDivs[i].style.width = _width;
-			}
+	if (oNode) {
+		var fn = window["initWidget_" + oNode.value];
+		if (fn) {
+			fn.call(this, _id);
 		}
 	}
 }
