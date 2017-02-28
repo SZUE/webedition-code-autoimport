@@ -34,6 +34,7 @@ var allFields = [
 var resetFields = [
 	"NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"
 ];
+var categories_edit;
 
 function switchType(value) {
 	// 1st hide all
@@ -87,7 +88,6 @@ function addCat(paths, ids) {
 	categories_edit.showVariant(0);
 	document.we_form.CategoriesCount.value = categories_edit.itemCount;
 }
-
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -151,4 +151,11 @@ function we_cmd() {
 		default:
 			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
+}
+
+function initCat() {
+	categories_edit = new (WE().util.multi_edit)("categories", window, 0, ruleData.trashButton, 400, false);
+	categories_edit.addVariant();
+	document.we_form.CategoriesControl.value = categories_edit.name;
+	categories_edit.showVariant(0);
 }

@@ -191,12 +191,12 @@ var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
-	function getJSProperty($load = ''){
+	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load, ['id' => 'loadVarNewsletter_property', 'data-nlView' => setDynamicVar([
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', '', ['id' => 'loadVarNewsletter_property', 'data-nlView' => setDynamicVar(array_merge($jsVars, [
 					'checkMail' => !empty($this->settings['reject_save_malformed']),
 					'uid' => (isset($this->uid) ? $this->uid : ""),
-				])]
+				]))]
 		);
 	}
 
@@ -852,20 +852,20 @@ self.close();');
 		return $we_doc;
 	}
 
-	/*function we_includeEntity(&$we_doc, $tmpid){
-		if($tmpid != "" && $tmpid != 0){
-			$path = id_to_path($tmpid, TEMPLATES_TABLE);
-		}
+	/* function we_includeEntity(&$we_doc, $tmpid){
+	  if($tmpid != "" && $tmpid != 0){
+	  $path = id_to_path($tmpid, TEMPLATES_TABLE);
+	  }
 
-		$path = ($path ? TEMPLATES_PATH . $path : $we_doc->TemplatePath);
+	  $path = ($path ? TEMPLATES_PATH . $path : $we_doc->TemplatePath);
 
-		if(file_exists($path)){
-			include($path);
-		} else {
-			echo STYLESHEET .
-			'<div class="defaultfont lowContrast" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
-		}
-	}*/
+	  if(file_exists($path)){
+	  include($path);
+	  } else {
+	  echo STYLESHEET .
+	  '<div class="defaultfont lowContrast" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
+	  }
+	  } */
 
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = '', $title = '', $firstname = '', $lastname = '', $customerid = 0){
 		if(!isset($this->newsletter->blocks[$pblk])){
@@ -1245,13 +1245,15 @@ self.close();');
 		update_time_limit(0);
 		update_mem_limit(128);
 
-		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : [];
+		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : [
+];
 
 		if($select == self::MAILS_FILE){
 			return $extern;
 		}
 
-		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : [];
+		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : [
+];
 		if($select == self::MAILS_EMAILS){
 			return $list;
 		}

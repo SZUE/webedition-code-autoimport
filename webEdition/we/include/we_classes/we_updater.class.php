@@ -48,64 +48,7 @@ abstract class we_updater{
 		return;
 	}
 
-	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
-		$db = $db ?: new DB_WE();
-		$db->delTable(PREFS_TABLE . '_old');
-		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
-			//make a backup
-			$db->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
-			$db->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
-
-			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
-			$db->query('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1');
-			$queries = $db->getAll();
-			$keys = array_keys($queries[0]);
-			foreach($keys as $key){
-				switch($key){
-					case 'userID':
-					case 'key':
-					case 'value':
-						continue;
-					default:
-						$GLOBALS['DB_WE']->delCol(PREFS_TABLE, $key);
-				}
-			}
-
-			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
-			foreach($queries as $q){
-				we_users_user::writePrefs($q['userID'], $db, $q);
-			}
-
-			$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-			$users = $db->getAll(true);
-			if($users){
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-			}
-			$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-			$users = $db->getAll(true);
-			if($users){
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
-			}
-			$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-			$users = $db->getAll(true);
-			if($users){
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
-			}
-			$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
-			$users = $db->getAll(true);
-			if($users){
-				$db->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
-				$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $db);
-			}
-		}
-		return true;
-	}
-
-	//FIXME: this has to be done in multisteps
 	private static function updateObjectFilesX(we_database_base $db = null, $pos = 0){
-		//FIXME: this takes long, so try to remove this
 		if(!defined('OBJECT_X_TABLE')){
 			return false;
 		}
@@ -398,10 +341,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	public static function fixHistory(we_database_base $db = null){ //called from 6370/update6370.php
-		return;
-	}
-
 	public static function meassure($name){
 		static $last = 0;
 		static $times = [];
@@ -611,8 +550,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateShop(we_database_base $db){
-		//FIXME: weShippingControl, weShipping should not be objects!!!
-
 		//convert 1st gen values
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db))){
 			$zw = we_unserialize(
@@ -759,7 +696,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		return ['text' => 'Shop ' . $pos . ' / ' . $max, 'pos' => ($pos + $maxStep)];
 		//what about variants?! how do they apply?
 		//old not used: IntPayment_Type
-		//FIXME strSerial may contain we_wedoc_ & OF_... & may contain numeric entries
+		//strSerial may contain we_wedoc_ & OF_... & may contain numeric entries
 		/* 	 */
 	}
 
@@ -776,8 +713,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		switch($what){
 			default:
 			case '':
-				self::updateUsers($db);
-				self::meassure('updateUsers');
 				self::fixInconsistentTables($db);
 				self::meassure('fixInconsistentTables');
 				if(defined('WE_GLOSSARY_MODULE_PATH')){
@@ -788,8 +723,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('updateFileLink');
 				self::updateCats($db);
 				self::meassure('updateCats');
-				/* self::fixHistory();
-				  self::meassure('fixHistory'); */
 				self::updateContentTable($db);
 				self::meassure('updateContent');
 				self::updateDateInContent($db);

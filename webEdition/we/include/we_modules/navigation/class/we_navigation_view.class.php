@@ -43,7 +43,7 @@ class we_navigation_view extends we_modules_view{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		$objFields = [];
 		if(defined('OBJECT_TABLE') && $this->Model->DynamicSelection === we_navigation_navigation::DYN_CLASS){
 			$class = new we_object();
@@ -55,12 +55,13 @@ class we_navigation_view extends we_modules_view{
 			}
 		}
 
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js', '', ['id' => 'loadVarViewProp', 'data-prop' => setDynamicVar([
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js', '', ['id' => 'loadVarViewProp', 'data-prop' => setDynamicVar(array_merge(
+						$jsVars, [
 					'weNavTitleField' => $objFields,
 					'IsFolder' => intval($this->Model->IsFolder),
 					'selfNaviPath' => $this->Model->Path,
 					'selfNaviId' => $this->Model->ID,
-		])]);
+		]))]);
 	}
 
 	function getEditNaviPosition(){
@@ -81,7 +82,7 @@ class we_navigation_view extends we_modules_view{
 				$this->Model = new we_navigation_navigation();
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
-				$jscmd->addCmd('editLoad',$this->Model->Text);
+				$jscmd->addCmd('editLoad', $this->Model->Text);
 				break;
 			case 'module_navigation_edit':
 				if(!we_base_permission::hasPerm('EDIT_NAVIGATION')){
@@ -97,7 +98,7 @@ class we_navigation_view extends we_modules_view{
 					$_REQUEST['home'] = true;
 					break;
 				}
-				$jscmd->addCmd('editLoad',$this->Model->Text,$this->Model->ID);
+				$jscmd->addCmd('editLoad', $this->Model->Text, $this->Model->ID);
 				break;
 			case 'module_navigation_save':
 				if(!we_base_permission::hasPerm('EDIT_NAVIGATION') && !we_base_permission::hasPerm('EDIT_NAVIGATION')){
@@ -219,7 +220,7 @@ class we_navigation_view extends we_modules_view{
 				$delaycmd = we_base_request::_(we_base_request::STRING, 'delayCmd');
 
 				$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
-				$jscmd->addCmd('saveReload',$this->Model->IsFolder==1);
+				$jscmd->addCmd('saveReload', $this->Model->IsFolder == 1);
 				if($delaycmd){
 					$jscmd->addCmd('we_cmd', $delaycmd);
 					unset($_REQUEST['delayCmd']);

@@ -42,7 +42,7 @@ class we_users_view extends we_modules_view{
 		])]);
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js');
 	}
 

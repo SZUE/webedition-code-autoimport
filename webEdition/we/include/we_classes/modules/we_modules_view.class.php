@@ -50,7 +50,7 @@ class we_modules_view implements we_modules_viewIF{
 		return '';
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		return '';
 	}
 

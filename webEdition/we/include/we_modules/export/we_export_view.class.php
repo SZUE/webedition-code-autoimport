@@ -60,7 +60,7 @@ class we_export_view extends we_modules_view{
 		return  we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
 	}
 
-	function getJSProperty(){
+	function getJSProperty(array $jsVars = []){
 		$selected = '';
 		$opened = '';
 		$arr = [FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl"];

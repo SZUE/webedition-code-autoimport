@@ -186,11 +186,12 @@ class we_navigation_ruleFrames{
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
 		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js', '', ['id' => 'loadVarNavigationRules', 'data-rules' => setDynamicVar([
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js', 'initCat();', ['id' => 'loadVarNavigationRules', 'data-rules' => setDynamicVar([
 						'dependencies' => [
 							we_navigation_navigation::DYN_CLASS => ["ClassID", "WorkspaceID", "Categories"],
 							we_navigation_navigation::DYN_DOCTYPE => ["FolderID", "DoctypeID", "Categories"]
-						]
+						],
+						'trashButton' => we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;')
 				])]), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)",
 					'class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
 							'cmd' => '',
@@ -200,11 +201,8 @@ class we_navigation_ruleFrames{
 		));
 	}
 
-	function getHTMLCategory(){
-		// IMI: replace inline js
+	private function getHTMLCategory(){
 		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths, top.fileSelect.data.allIDs);')");
-		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
-
 
 		$table = new we_html_table(['id' => 'CategoriesBlock', 'style' => 'display: block;', 'class' => 'default withSpace'], 2, 1);
 
@@ -220,13 +218,7 @@ class we_navigation_ruleFrames{
 			we_html_element::htmlHiddens([
 				'CategoriesControl' => 0,
 				'CategoriesCount' => 0
-			]) .
-			we_html_element::jsElement('
-var categories_edit = new (WE().util.multi_edit)("categories",window,0,"' . $del_but . '",400,false);
-categories_edit.addVariant();
-document.we_form.CategoriesControl.value = categories_edit.name;
-categories_edit.showVariant(0);
-		');
+			]);
 	}
 
 	public function process(we_base_jsCmd $jscmd){

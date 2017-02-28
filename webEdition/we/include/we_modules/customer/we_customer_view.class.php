@@ -61,10 +61,11 @@ class we_customer_view extends we_modules_view{
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title='" . $title . "'");
 	}
 
-	function getJSProperty(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js', '', ['id' => 'loadVarCustomer_property', 'data-customer' => setDynamicVar([
+	function getJSProperty(array $jsVars = []){
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js', '', ['id' => 'loadVarCustomer_property', 'data-customer' => setDynamicVar(array_merge(
+						$jsVars, [
 					'username' => $this->customer->Username
-		])]);
+		]))]);
 	}
 
 	function getJSSearch(){
@@ -225,7 +226,7 @@ class we_customer_view extends we_modules_view{
 					return;
 				}
 				$this->customer->loadPresistents();
-				$jscmd->addCmd('setNewBranchName',g_l('modules_customer', '[other]') ,g_l('modules_customer', '[common]'));
+				$jscmd->addCmd('setNewBranchName', g_l('modules_customer', '[other]'), g_l('modules_customer', '[common]'));
 				break;
 			case 'add_sort':
 				$cout = 0;
