@@ -37,8 +37,17 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep' . we_base_request::_(we_base_request::INT, "step", "0");
-		return self::getPage(self::$step());
+		switch(we_base_request::_(we_base_request::INT, "step", "0")){
+			default:
+			case 0:
+				return self::getPage(self::getStep0());
+			case 1:
+				return self::getPage(self::getStep1());
+			case 2:
+				return self::getPage(self::getStep2());
+			case 3:
+				return self::getPage(self::getStep3());
+		}
 	}
 
 	/**
@@ -95,7 +104,7 @@ abstract class we_versions_wizard{
 	 *
 	 * @return string
 	 */
-	static function getStep0(){
+	private static function getStep0(){
 		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
@@ -195,7 +204,7 @@ set_button_state(false);';
 	 *
 	 * @return string
 	 */
-	static function getStep1(){
+	private static function getStep1(){
 		switch(we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS)){
 			case self::DELETE_VERSIONS:
 				return self::getDelete1();
@@ -204,7 +213,7 @@ set_button_state(false);';
 		}
 	}
 
-	static function getDelete1(){
+	private static function getDelete1(){
 		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
@@ -405,7 +414,7 @@ set_button_state(false);';
 		];
 	}
 
-	static function getReset1(){
+	private static function getReset1(){
 		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::RAW, "type", self::RESET_VERSIONS);
 
@@ -624,7 +633,7 @@ set_button_state(false);';
 	 *
 	 * @return string
 	 */
-	static function getStep2(){
+	private static function getStep2(){
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
 		switch($type){
@@ -635,7 +644,7 @@ set_button_state(false);';
 		}
 	}
 
-	static function getStep3(){
+	private static function getStep3(){
 		$version = new we_versions_version();
 
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
