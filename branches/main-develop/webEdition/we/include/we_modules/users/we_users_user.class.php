@@ -2126,28 +2126,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('
-var activeTab = ' . self::TAB_DATA . ';
-function setTab(tab) {
-	switch(tab) {
-		case ' . self::TAB_DATA . ':
-			top.content.editor.edbody.switchPage(tab);
-			break;
-		case ' . self::TAB_PERMISSION . ':
-		case ' . self::TAB_WORKSPACES . ':
-		case ' . self::TAB_SETTINGS . ':
-			if(top.content.editor.edbody.switchPage(tab)==false){
-				window.setTimeout(resetTabs,50);
-			}
-			break;
-	}
-	activeTab=tab;
-}
-
-function resetTabs(){
-		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
-		top.content.editor.edheader.weTabs.setActiveTab(' . self::TAB_DATA . ');
-}') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js') .
 			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 

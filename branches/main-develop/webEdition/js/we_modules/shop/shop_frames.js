@@ -24,6 +24,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+
+const TAB_ADMIN1 = 0;
+const TAB_ADMIN2 = 1;
+const TAB_ADMIN3 = 2;
+
+var shp = WE().util.getDynamicVar(document, 'loadVarShop', 'data-shop');
+
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
@@ -44,5 +52,22 @@ function we_cmd() {
 		default:
 			// not needed yet
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
+function setTab(tab) {
+	switch (tab) {
+		case TAB_ADMIN1:
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_article_extend&typ=document";
+			break;
+		case TAB_ADMIN2:
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_article_extend&typ=object&ViewClass=" + shp.classid;
+			break;
+
+		case TAB_ADMIN3:
+			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR + "shop/edit_shop_revenueTop.php?ViewYear=" + shp.yearTrans;
+			// treeData.yearshop
+			break;
+
 	}
 }

@@ -91,12 +91,10 @@ function startTree(pid,offset){
 			$this->customJSFile() .
 			we_html_element::jsElement('
 var treeData = new container();
-var we_scrollY = {};
 container.prototype.topFrame="' . $this->topFrame . '";
 container.prototype.treeFrame="' . $this->treeFrame . '";
 container.prototype.frameset="' . $this->frameset . '";
 container.prototype.frames={
-	top:' . $this->topFrame . ',
 	tree:' . $this->treeFrame . '
 };
 ' . $this->getJSStartTree()

@@ -66,6 +66,9 @@ function we_cmd() {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
+		case "setTab":
+			top.content.activ_tab = args[1];
+			break;
 		case "new_export_group":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -130,7 +133,7 @@ function we_cmd() {
 			if (top.content.editor.edheader.setTab) {
 				top.content.editor.edheader.setTab(3);
 			}
-				top.content.editor.edfooter.setProgress(0);
+			top.content.editor.edfooter.setProgress(0);
 			if (top.content.editor.edbody.clearLog) {
 				top.content.editor.edbody.clearLog();
 			}
@@ -201,4 +204,10 @@ function we_cmd() {
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
 	}
+}
+
+function setTab(tab) {
+	parent.edbody.toggle("tab" + top.content.activ_tab);
+	parent.edbody.toggle("tab" + tab);
+	top.content.activ_tab = tab;
 }

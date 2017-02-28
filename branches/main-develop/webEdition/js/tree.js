@@ -30,7 +30,6 @@
 var wasdblclick = false,
 	tout = null,
 	hot = false,
-	we_scrollY = {},
 	treeData;
 
 var container = function () {
@@ -40,6 +39,7 @@ var container = function () {
 	this.table = "";
 	this.selection = "";
 	this.selection_table = "";
+	this.we_scrollY = {}
 	return this;
 };
 
@@ -469,15 +469,15 @@ function info(text) {
 
 function setScrollY() {
 	var el;
-	if (top.we_scrollY && (el = top.document.getElementById("treetable"))) {
-		top.we_scrollY[treeData.table] = el.scrollTop;
+	if (top.treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		top.treeData.we_scrollY[treeData.table] = el.scrollTop;
 	}
 }
 
 function scrollToY() {
 	var el;
-	if (top.we_scrollY && (el = top.document.getElementById("treetable"))) {
-		el.scrollTop = (top.we_scrollY[treeData.table] ? top.we_scrollY[treeData.table] : 0);
+	if (top.treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		el.scrollTop = (top.treeData.we_scrollY[treeData.table] ? top.treeData.we_scrollY[treeData.table] : 0);
 	}
 }
 

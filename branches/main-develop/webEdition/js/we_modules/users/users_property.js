@@ -25,6 +25,11 @@
  */
 'use strict';
 var loaded = false;
+const TAB_DATA = 0;
+const TAB_PERMISSION = 1;
+const TAB_WORKSPACES = 2;
+const TAB_SETTINGS = 3;
+
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 
@@ -56,6 +61,28 @@ function we_submitForm(target, url) {
 		return true;
 	}
 	return false;
+}
+
+var activeTab = TAB_DATA;
+function setTab(tab) {
+	switch (tab) {
+		case TAB_DATA:
+			top.content.editor.edbody.switchPage(tab);
+			break;
+		case TAB_PERMISSION:
+		case TAB_WORKSPACES:
+		case TAB_SETTINGS:
+			if (top.content.editor.edbody.switchPage(tab) == false) {
+				window.setTimeout(resetTabs, 50);
+			}
+			break;
+	}
+	activeTab = tab;
+}
+
+function resetTabs() {
+	top.content.editor.edbody.document.we_form.tab.value = TAB_DATA;
+	top.content.editor.edheader.weTabs.setActiveTab(TAB_DATA);
 }
 
 function switchPage(page) {
