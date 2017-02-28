@@ -40,11 +40,15 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case 'setHot':
-			top.content.document.getElementById("mark").style.display = "inline";
+			var doc = top.content;
+			doc = doc.document.getElementById("mark") ? doc : doc.editor.edheader;
+			doc.document.getElementById("mark").style.display = "inline";
 			top.content.hot = true;
 			break;
 		case 'unsetHot':
-			top.content.document.getElementById("mark").style.display = "none";
+			var doc = top.content;
+			doc = doc.document.getElementById("mark") ? doc : doc.editor.edheader;
+			doc.document.getElementById("mark").style.display = "none";
 			top.content.hot = false;
 			break;
 		case 'loadTree':

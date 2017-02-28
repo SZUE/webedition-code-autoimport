@@ -235,3 +235,8 @@ function setInitialTabs(id, isFolder) {
 		}
 	}
 }
+
+function showPreview() {
+	document.we_form.pnt.value = "previewIframe";
+	submitForm("preview");
+}
