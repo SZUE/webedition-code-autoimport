@@ -89,8 +89,8 @@ function we_cmd() {
 			we_cmd.apply(caller, args);
 			break;
 		case "exit_doc_question_yes":
-			//save the document
-			/*falls through*/
+		//save the document
+		/*falls through*/
 		case "module_navigation_save":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
@@ -268,6 +268,9 @@ function we_cmd() {
 		case "module_navigation_do_reset_customer_filter":
 			top.we_repl(window.load, url);
 			return true;
+		case 'module_navigation_progress_reset_customer_filter':
+			new (WE().util.jsWindow)(window, url, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' + encodeURI(WE().consts.g_l.navigation.view.reset_customerfilter_done_message), 'resave', WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true);
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 

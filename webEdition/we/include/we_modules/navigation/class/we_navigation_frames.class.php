@@ -729,11 +729,7 @@ class we_navigation_frames extends we_modules_frame{
 </tr>
 </table>';
 
-		return we_html_element::jsElement('
-function showPreview() {
-	document.we_form.pnt.value="previewIframe";
-	submitForm("preview");
-}') . $this->View->getCommonHiddens(['pnt' => 'preview', 'tabnr' => 'preview']) . we_html_tools::htmlDialogLayout($out, g_l('navigation', '[preview]'));
+		return $this->View->getCommonHiddens(['pnt' => 'preview', 'tabnr' => 'preview']) . we_html_tools::htmlDialogLayout($out, g_l('navigation', '[preview]'));
 	}
 
 	private function getHTMLEditorPreviewIframe(){
