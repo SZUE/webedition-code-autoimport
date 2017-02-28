@@ -28,6 +28,22 @@ var _sCsvInit_;
 var _bPrev = false;
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
+function initWidget_sct(_id) {
+	var _width = "100%";
+	if (resizeIdx('get', _id) === "1") {
+		_width = "46%";
+	}
+
+	var _elem = document.getElementById(_id);
+	var _inlineDivs = _elem.getElementsByTagName('div');
+	for (var i = 0; i < _inlineDivs.length; i++) {
+		if (_inlineDivs[i].className === "sct_row") {
+			_inlineDivs[i].style.width = _width;
+		}
+	}
+}
+
+
 function addEntry(sText, sValue) {
 	var _fo = document.forms[0];
 	var oSctPool = _fo.elements.sct_pool;
@@ -105,15 +121,15 @@ function sortSelect(obj) {
 		return;
 	}
 	o = o.sort(
-					function (a, b) {
-						if ((a.text + '') < (b.text + '')) {
-							return -1;
-						}
-						if ((a.text + '') > (b.text + '')) {
-							return 1;
-						}
-						return 0;
-					}
+		function (a, b) {
+			if ((a.text + '') < (b.text + '')) {
+				return -1;
+			}
+			if ((a.text + '') > (b.text + '')) {
+				return 1;
+			}
+			return 0;
+		}
 	);
 	for (i = 0; i < o.length; i++) {
 		obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
@@ -298,7 +314,7 @@ function removeOption(obj) {
 function getCsv() {
 	var _fo = document.forms[0];
 	var aSct = [],
-					aSctLen = [];
+		aSctLen = [];
 	aSct[0] = _fo.list11;
 	aSctLen[0] = aSct[0].length;
 	aSct[1] = _fo.list21;

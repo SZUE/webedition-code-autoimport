@@ -70,16 +70,7 @@ class we_widget_fdl extends we_widget_base{
 		}
 		$this->newSCurrId = $curID ?: we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 
-		$this->failedLoginHTML = we_html_element::jsElement('function ajaxCallbackResetLogins(weResponse){
-	if ( weResponse ) {
-		if (weResponse.DataArray.data == "true") {
-			' . ( $this->newSCurrId ? 'WE().layout.cockpitFrame.rpc("","","","","","' . $this->newSCurrId . '");' : '' ) . '
-			top.we_showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins,WE().consts.message.WE_MESSAGE_NOTICE, window);
-			self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
-		}
-	}
-}') .
-			$failedLoginsTable->getHtml();
+		$this->failedLoginHTML = $failedLoginsTable->getHtml();
 	}
 
 	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){

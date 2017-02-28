@@ -26,6 +26,7 @@ class we_widget_shp extends we_widget_base{
 	private $shopDashboard = '';
 	private $newSCurrId = '';
 	private $interval = '';
+	private $jsConfig = [];
 
 	public function __construct($curID = '', $aProps = []){
 		if(!$curID){//preview requested
@@ -132,61 +133,61 @@ FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi
 
 			//2. row
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled_order]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled_order]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right;color:red;"], ($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
 
 			//3. row
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][cnt_articles]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][cnt_articles]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right"], ($amountArticles > 0 ? $amountArticles : 0));
 
 			//4. row
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][articles_order]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][articles_order]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => 'text-align:right;padding-bottom:2ex;'], we_base_util::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
 		}
 
 		if($bAverageOrder){
 			//order volume
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][order_volume]')));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][order_volume]')));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right"], we_html_element::htmlB(we_base_util::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
 
 			//canceled volume
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right;color:red;"], we_base_util::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 
 			//revenue
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right"], we_html_element::htmlB(we_base_util::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
 
 			//payed volume
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", 'style' => "color:green;"], g_l('cockpit', '[shop_dashboard][payed]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont", 'style' => "color:green;"], g_l('cockpit', '[shop_dashboard][payed]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right;color:green;"], we_base_util::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
 
 			//unpayed volume
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][unpayed]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont", 'style' => "color:red;"], g_l('cockpit', '[shop_dashboard][unpayed]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right;color:red;"], we_base_util::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
 
 			//volume per order
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][order_value_order]'));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][order_value_order]'));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right"], we_base_util::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
 
 			//need some space
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], "&nbsp;");
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], "&nbsp;");
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont"], "&nbsp;");
 		}
 
 		if($bCustomer){
 			//new customer
 			$shopDashboardTable->addRow();
-			$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
+			$shopDashboardTable->setCol(++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
 			$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => "text-align:right"], we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
 		}
 
@@ -197,27 +198,21 @@ FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi
 			//note: canvas doesn't support CSS width/height....
 			'<canvas id="' . $this->newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 			'</div><br style="clear:both;"/>' .
-			($bTarget ?
-			we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
-			we_html_element::jsElement("
-$(function () {
-	new Gauge(WE().layout.cockpitFrame.document.getElementById('" . $this->newSCurrId . "_chart_div'), {
-		value: " . we_base_util::formatNumber(($total - $canceled)) . ",
-		label: 'Ziel in " . $currency . "',
-		unitsLabel: ' " . $currency . "',
-		min: 0,
-		max: " . ($sRevenueTarget * 2) . ",
-		minorTicks: 5, // small ticks inside each major tick
-		greenFrom: " . ($sRevenueTarget * 1.1) . ",
-		greenTo: " . ($sRevenueTarget * 2) . ",
-		yellowFrom: " . ($sRevenueTarget * 0.9) . ",
-		yellowTo: " . ($sRevenueTarget * 1.1) . ",
-		redFrom: 0,
-		redTo: " . ($sRevenueTarget * 0.9) . "
-	} );
-});") :
-			''
-			);
+			($bTarget ? we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') : '' );
+		$this->jsConfig = [
+			'value' => we_base_util::formatNumber(($total - $canceled)),
+			'label' => 'Ziel in ' . $currency,
+			'unitsLabel' => ' ' . $currency,
+			'min' => 0,
+			'max' => ($sRevenueTarget * 2),
+			'minorTicks' => 5, // small ticks inside each major tick
+			'greenFrom' => ($sRevenueTarget * 1.1),
+			'greenTo' => ($sRevenueTarget * 2),
+			'yellowFrom' => ($sRevenueTarget * 0.9),
+			'yellowTo' => ($sRevenueTarget * 1.1),
+			'redFrom' => 0,
+			'redTo' => ($sRevenueTarget * 0.9)
+		];
 	}
 
 	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
@@ -228,6 +223,7 @@ $(function () {
 				], we_html_element::htmlDiv(['id' => 'shp_data'], $this->shopDashboard)
 		);
 		$aLang = [g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $this->interval, ""];
+		$jsCmd->addCmd('initGauge', $this->newSCurrId . '_chart_div',$this->jsConfig);
 		return [$oTblDiv, $aLang];
 	}
 
@@ -306,10 +302,7 @@ $(function () {
 			]
 		];
 
-		$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
-		$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();");
-		$cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
-		$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:save();"), we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();"), we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();"));
 
 		$sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop");
 
@@ -328,6 +321,7 @@ $(function () {
 			'type' => 'shp',
 			'tb' => g_l('cockpit', '[shop_dashboard][headline]') . ':&nbsp;' . $this->interval
 		]);
+		$jsCmd->addCmd('initGauge', $this->newSCurrId . '_chart_div',$this->jsConfig);
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $this->interval, '', '', $jsCmd->getCmds(), we_html_element::htmlBody([
 				'style' => 'margin:10px 15px;',
 				], we_html_element::htmlDiv(["id" => "shp"

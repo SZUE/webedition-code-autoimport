@@ -1,4 +1,4 @@
-/* global WE, top,weCombobox */
+/* global WE, top,weCombobox, prefs */
 
 /**
  * webEdition CMS
@@ -339,6 +339,7 @@ function getBitString() {
 }
 
 function getTitle() {
+	var _fo = document.forms[0];
 	var oSctTitle = _fo.elements.sct_title;
 	return oSctTitle[oSctTitle.selectedIndex].value;
 }
