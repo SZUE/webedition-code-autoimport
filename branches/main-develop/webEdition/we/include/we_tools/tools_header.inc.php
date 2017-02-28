@@ -41,23 +41,4 @@ foreach($menuItems as $menuItem){
 	}
 }
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-	we_html_element::jsElement('
-var current = "' . $tool . '";
-function setTab(tool) {
-	if (top.content.hot) {
-		if (window.confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
-			top.content.hot = false;
-			current = tool;
-			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
-		} else {
-			top.navi.weTabs.setActiveTab(current);
-		}
-	} else {
-		top.content.hot = false;
-		current = tool;
-		top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
-	}
-}
-'), we_html_element::htmlBody([], '<div id="main">' . $we_tabs->getHTML() . '</div>'));
+echo '<div id="main">' . $we_tabs->getHTML() . '</div>';

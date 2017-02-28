@@ -196,7 +196,7 @@ class we_shop_frames extends we_modules_frame{
 		$tab_head = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
 				we_html_element::jsElement('
-function setTab(tab) {
+ltab) {
 	switch (tab) {
 		case ' . self::TAB_OVERVIEW . ':
 			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '";

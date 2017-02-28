@@ -70,10 +70,7 @@ class we_banner_frames extends we_modules_frame{
 
 		$extraHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsElement('
-function setTab(tab){
-	top.content.editor.edbody.we_cmd("switchPage",tab);
-}');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js');
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([

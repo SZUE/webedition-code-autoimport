@@ -120,3 +120,7 @@ function we_cmd() {
 
 	}
 }
+
+function setTab(tab) {
+	top.content.editor.edbody.we_cmd("switchPage", tab);
+}
