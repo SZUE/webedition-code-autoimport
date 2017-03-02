@@ -31,22 +31,23 @@ var _controller = WE().layout.weEditorFrameController;
 
 var _EditorFrame = _controller.getEditorFrame(window.parent.name);
 if (!_EditorFrame) {
-	_EditorFrame = (doc.we_transaction ?
+	_EditorFrame = (doc && doc.we_transaction ?
 					_controller.getEditorFrameByTransaction(doc.we_transaction) :
 					_controller.getEditorFrame());
 
 }
 
-if (doc && doc.cmd) {
-	top.we_cmd.apply(window, [doc.cmd]);
-	doc.cmd = false;
-}
+if (doc) {
+	if (doc.cmd) {
+		top.we_cmd.apply(window, [doc.cmd]);
+		doc.cmd = false;
+	}
 
-if (doc && doc.useSEE_MODE) {
-	// add event-Handler, replace links after load
-	window.addEventListener("load", seeMode_dealWithLinks, false);
+	if (doc.useSEE_MODE) {
+		// add event-Handler, replace links after load
+		window.addEventListener("load", seeMode_dealWithLinks, false);
+	}
 }
-
 
 function seeMode_dealWithLinks() {
 	var _aTags = document.getElementsByTagName("a");
@@ -519,7 +520,6 @@ function changeOption(elem) {
 	//elem.selectedIndex=0;
 }
 
-
 function reinitTiny(confName, transaction, isIEOpera) {
 	var target = _EditorFrame.getContentEditor();
 	var rawConfObject;
@@ -529,22 +529,22 @@ function reinitTiny(confName, transaction, isIEOpera) {
 	 */
 	if ((rawConfObject = typeof target.tinyMceRawConfigurations[confName] === 'object' ? target.tinyMceRawConfigurations[confName] : false)) {
 		/* // probably obsolete, when we use rawConfObj
-		if (isIEOpera) {
-			if (typeof target.tinyMceRawConfigurations[confName] === 'object') {
-				for (var prop in rawConfObject) {
-					if (prop !== "setup") {
-						target.tinyMceRawConfigurations[confName][prop] = rawConfObject[prop];
-					}
-				}
-				WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confName], true);
-			} else {
-				setScrollTo();
-				top.we_cmd("switch_edit_page", 1, transaction);
-			}
-		} else {
-		*/
-			target.tinyMceRawConfigurations[confName] = rawConfObject;
-			WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confName], true);
+		 if (isIEOpera) {
+		 if (typeof target.tinyMceRawConfigurations[confName] === 'object') {
+		 for (var prop in rawConfObject) {
+		 if (prop !== "setup") {
+		 target.tinyMceRawConfigurations[confName][prop] = rawConfObject[prop];
+		 }
+		 }
+		 WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confName], true);
+		 } else {
+		 setScrollTo();
+		 top.we_cmd("switch_edit_page", 1, transaction);
+		 }
+		 } else {
+		 */
+		target.tinyMceRawConfigurations[confName] = rawConfObject;
+		WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confName], true);
 		//}
 	} else if (typeof target.tinyMceRawConfigurations[confName] === 'object') {
 		target.tinyMceRawConfigurations[confName] = undefined;
