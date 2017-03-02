@@ -26,6 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 'use strict';
+var cFilter = WE().util.getDynamicVar(document, 'loadcfilter', 'data-cfilter');
 
 function getById(id) {
 	return document.getElementById(id);
@@ -88,6 +89,20 @@ function addToMultiEdit(_multEdit, paths, ids) {
 		}
 	}
 	_multEdit.showVariant(0);
+}
+
+function updateView() {
+	switch (cFilter.type) {
+		case "document":
+			updateView_document();
+			break;
+		case "navigation":
+			updateView_navigation();
+			break;
+		default:
+			updateView_base();
+			break;
+	}
 }
 
 function updateView_base() {

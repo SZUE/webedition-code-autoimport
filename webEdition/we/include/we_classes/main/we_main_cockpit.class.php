@@ -26,7 +26,7 @@ abstract class we_main_cockpit{
 	const iDefCols = 2;
 
 	private static function getFullDefaultConfig(){
-		return  [
+		return [
 			'sct' => we_widget_sct::getDefaultConfig(),
 			'rss' => we_widget_rss::getDefaultConfig(),
 			'mfd' => we_widget_mfd::getDefaultConfig(),
@@ -213,7 +213,7 @@ abstract class we_main_cockpit{
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 			case "loadTree" :
 				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-					echo we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (we_base_request::_(we_base_request::STRING, 'openFolders') ?: "") . "&we_cmd[4]=top'");
+					echo we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . (we_base_request::_(we_base_request::STRING, 'openFolders') ?: "") . '&we_cmd[4]=top']), we_html_element::htmlBody());
 				}
 				break;
 			case 'dialog':

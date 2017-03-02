@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
-//FIXME: this calss is never used, maybe this is class is still usefull?
+//FIXME: this class is never used, maybe this is class is still usefull?
 	function Header(we_glossary_frames $weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
