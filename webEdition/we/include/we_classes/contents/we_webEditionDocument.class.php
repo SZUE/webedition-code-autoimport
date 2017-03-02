@@ -174,11 +174,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				$GLOBALS['we_editmode'] = false;
 				break;
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_editors/validateDocument.inc.php';
+				return new we_editor_validateDocument($this);
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return new we_editor_variants($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
+				return new editor_weDocumentCustomerFilter($this);
 			default:
 				return parent::editor();
 		}

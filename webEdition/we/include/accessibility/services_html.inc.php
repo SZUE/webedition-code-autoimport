@@ -31,15 +31,16 @@ $validationService[] = new validationService($i++, 'default', 'xhtml', g_l('vali
 
 
 /*
-$service['bobby'] = [
-                        'name'     => g_l('validation','[service_bobby]'),
-                        'host'     => 'bobby.watchfire.com',
-                        'path'     => '/bobby/bobbyServlet',
-                        'method'   => 'get',
-                        'varname'  => 'URL',
-                        'checkvia' => 'url',
-                        'ctype' => 'text/html',
-                        'additionalVars' => ''
-                    ];
-*/
+  $service['bobby'] = [
+  'name'     => g_l('validation','[service_bobby]'),
+  'host'     => 'bobby.watchfire.com',
+  'path'     => '/bobby/bobbyServlet',
+  'method'   => 'get',
+  'varname'  => 'URL',
+  'checkvia' => 'url',
+  'ctype' => 'text/html',
+  'additionalVars' => ''
+  ];
+ */
 
+return $validationService;

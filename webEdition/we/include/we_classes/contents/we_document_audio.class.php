@@ -35,7 +35,7 @@ class we_document_audio extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return 'we_editors/we_editor_document_preview.inc.php';
+				return new we_editor_document_preview($this);
 			default:
 				return parent::editor();
 		}
