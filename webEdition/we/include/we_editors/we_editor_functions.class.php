@@ -247,15 +247,20 @@ abstract class we_editor_functions{
 
 	public static function includeEditor($we_doc, $we_transaction, $insertReloadFooter){//this is really unclear what is done here
 		$we_include = $we_doc->editor();
-		ob_start();
 		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 //remove all already parsed names
 			$we_doc->resetUsedElements();
 		}
-		include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
-						'' : WE_INCLUDES_PATH) .
-				$we_include);
-		$docContents = ob_get_clean();
+		if(is_object($we_include)){
+			$docContents = $we_include->show();
+		} else {
+			ob_start();
+			include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
+							'' : WE_INCLUDES_PATH) .
+					$we_include);
+			$docContents = ob_get_clean();
+		}
+
 		//usedElementNames is set after include
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 //  SEEM the file
@@ -501,17 +506,22 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 		  } */
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
-		if($_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
+		if(is_object($we_include) || $_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 
-			ob_start();
 			if(!defined('WE_CONTENT_TYPE_SET')){
 				$charset = $we_doc->getElement('Charset') ?: DEFAULT_CHARSET; //	send charset which might be determined in template
 				define('WE_CONTENT_TYPE_SET', 1);
 				we_html_tools::headerCtCharset('text/html', $charset);
 			}
-			$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC);
-			include($we_include);
-			$contents = ob_get_clean();
+
+			if(is_object($we_include)){
+				$contents = $we_include->show();
+			} else {
+				ob_start();
+				$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC);
+				include($we_include);
+				$contents = ob_get_clean();
+			}
 
 //  SEEM the file
 //  but only, if we are not in the template-editor
@@ -537,7 +547,11 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 			}
 		} else {
 //  These files were edited only in source-code mode, so no seeMode is needed.
-			include((preg_match('#^' . WEBEDITION_DIR . 'we/#', $we_include) ? $_SERVER['DOCUMENT_ROOT'] : WE_INCLUDES_PATH) . $we_include);
+			if(is_object($we_include)){
+				echo $we_include->show();
+			} else {
+				include((preg_match('#^' . WEBEDITION_DIR . 'we/#', $we_include) ? $_SERVER['DOCUMENT_ROOT'] : WE_INCLUDES_PATH) . $we_include);
+			}
 			echo $insertReloadFooter;
 		}
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session

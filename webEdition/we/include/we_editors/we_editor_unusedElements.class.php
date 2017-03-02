@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,46 +22,48 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$db = $GLOBALS['DB_WE'];
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'we_editor_script.js');
+class we_editor_unusedElements extends we_editor_base{
 
-$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
-$remove = we_base_request::_(we_base_request::INT, 'weg');
-if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remove)){
-	$delS = $delB = [];
-	foreach($remove as $rem => $blockcnt){
-		if($blockcnt){
-			$delB[] = $rem;
-		} else {
-			$delS[] = $rem;
+	private function doRemove(){
+		$db = $GLOBALS['DB_WE'];
+
+//$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
+		$remove = we_base_request::_(we_base_request::INT, 'weg');
+		if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remove)){
+			$delS = $delB = [];
+			foreach($remove as $rem => $blockcnt){
+				if($blockcnt){
+					$delB[] = $rem;
+				} else {
+					$delS[] = $rem;
+				}
+			}
+
+			if($delS){
+				$db->query(
+						'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
+				);
+			}
+			if($delB){
+				$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . LINK_TABLE . ' l WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
+				$db->query(
+						'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND SUBSTRING_INDEX(l.Name,"__",1) IN ("' . implode('","', $strs) . '")'
+				);
+			}
 		}
 	}
-	if($delS){
-		$db->query(
-			'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
-		);
-	}
-	if($delB){
-		$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . LINK_TABLE . ' l WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
-		$db->query(
-			'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND SUBSTRING_INDEX(l.Name,"__",1) IN ("' . implode('","', $strs) . '")'
-		);
-	}
-}
-?>
-</head>
-<body class="weEditorBody">
-	<form name="we_form" method="post">
-		<?php
-		echo we_class::hiddenTrans();
 
-		$tp = new we_tag_tagParser($GLOBALS['we_doc']->getTemplateCode(true, true));
-		$relevantTags = ['normal' => [],
+	public function show(){
+
+		$this->doRemove();
+		$db = $GLOBALS['DB_WE'];
+
+		$tp = new we_tag_tagParser($this->we_doc->getTemplateCode(true, true));
+		$relevantTags = [
+			'normal' => [],
 			'block' => [],
 		];
 //FIXME: we need to get the names of blocks
-		$context = '';
 		foreach($tp->getTagsWithAttributes(true) as $tag){
 			if(!empty($tag['attribs']['name'])){
 				$isBlock = !empty($tag['attribs']['weblock']);
@@ -87,10 +90,10 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 			}
 		}
 
-		$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
+		//$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
 
 		if(!empty($relevantTags['normal']) || !empty($relevantTags['block'])){
-			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
+			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
 
 			foreach($obsolete as &$ob){
 				$bl = explode('blk_', $ob['Name'], 2);
@@ -102,8 +105,8 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 			}
 			usort($obsolete, function($a, $b){
 				return $a['block'] == $b['block'] ?
-					strcmp($a['real'], $b['real']) :
-					strcmp($a['block'], $b['block']);
+						strcmp($a['real'], $b['real']) :
+						strcmp($a['block'], $b['block']);
 			});
 		} else {
 			$obsolete = [];
@@ -129,38 +132,35 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 		}
 
 		$parts = [
-				['headline' => g_l('weClass', '[unusedElementsTab]'),
+			['headline' => g_l('weClass', '[unusedElementsTab]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
 			],
-				['html' => $table->getHtml() .
+			['html' => $table->getHtml() .
 				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: WE().util.showConfirm(window, '','" . g_l('weClass', '[unusedElements][delete]') . "',['setDoReload','delete']);") : ''),
 			],
-			/*
-			  array(
-			  'headline' => 'Obsolete Elemente',
-			  'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
-			  ),
-			  array(
-			  'headline' => 'debug',
-			  'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
-			  ),
-			  array(
-			  'headline' => 'Gefundene Elemente',
-			  'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
-			  ),
-			  array(
-			  'headline' => 'Elemente in DB',
-			  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
-			  ), */
+				/*
+				  array(
+				  'headline' => 'Obsolete Elemente',
+				  'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
+				  ),
+				  array(
+				  'headline' => 'debug',
+				  'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
+				  ),
+				  array(
+				  'headline' => 'Gefundene Elemente',
+				  'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
+				  ),
+				  array(
+				  'headline' => 'Elemente in DB',
+				  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
+				  ), */
 		];
 
+		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20) .
+						we_html_element::htmlHiddens([
+							'do' => ''
+						]), we_html_element::jsScript(JS_DIR . 'we_editor_script.js'));
+	}
 
-		echo we_html_multiIconBox::getHTML('', $parts, 20) .
-		we_html_element::htmlHiddens([
-			'we_complete_request' => 1,
-			'do' => ''
-		]);
-		?>
-	</form>
-</body>
-</html>
+}
