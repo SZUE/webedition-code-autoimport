@@ -256,9 +256,6 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 	}
 
 	public static function showFrameSet(){
-		//loads config in global scope
-		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
-
 		$tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // generate the tabs
@@ -279,7 +276,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 						'validTabs' => $validTabs,
 			])]), we_html_element::htmlBody(['id' => 'weMainBody', 'onload' => 'weTabs.setFrameSize()', 'onresize' => 'weTabs.setFrameSize()']
 						, we_html_element::htmlDiv(['style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;']
-								, we_html_element::htmlExIFrame('navi', '<div id="main" >' . $we_tabs->getHTML() . '</div>', 'right:0px;') .
+								, we_html_element::htmlExIFrame('navi', '<div id="main">' . $we_tabs->getHTML() . '</div>', 'right:0px;') .
 								we_html_element::htmlIFrame('content', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=editor_preferences&" . ($tabname ? "tabname=" . $tabname : ""), 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
 								we_html_element::htmlExIFrame('we_preferences_footer', self::getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 		)));
