@@ -198,10 +198,12 @@ class we_customer_view extends we_modules_view{
 			case 'move_field_up':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
 				$this->moveField($field, true);
+				$jscmd->addCmd('refreshForm');
 				break;
 			case 'move_field_down':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
 				$this->moveField($field, false);
+				$jscmd->addCmd('refreshForm');
 				break;
 			case 'save_branch':
 				$branch_new = we_base_request::_(we_base_request::STRING, 'name', '');
@@ -928,7 +930,6 @@ class we_customer_view extends we_modules_view{
 			$this->db->moveCol(CUSTOMER_TABLE, $field, $fields[$pos + $chng]);
 			$this->customer->loadPresistents();
 		}
-		echo we_html_element::jsElement('opener.top.content.editor.edbody.refreshForm();');
 	}
 
 	public function getHomeScreen(){

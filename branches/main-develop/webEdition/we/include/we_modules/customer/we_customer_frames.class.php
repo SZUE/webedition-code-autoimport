@@ -150,7 +150,7 @@ class we_customer_frames extends we_modules_frame{
 
 		return $this->getHTMLDocument($body, we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_header.js', '', ['id' => 'loadVarCustomerHeader', 'data-customerHeader' => setDynamicVar($allTabs)])
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', '', ['id' => 'loadVarCustomerHeader', 'data-customerHeader' => setDynamicVar($allTabs)])
 		);
 	}
 

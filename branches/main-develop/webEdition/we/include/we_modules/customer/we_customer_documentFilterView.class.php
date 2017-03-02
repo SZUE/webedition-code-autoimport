@@ -28,6 +28,11 @@
  */
 class we_customer_documentFilterView extends we_customer_filterView{
 
+	public function __construct(&$filter, $width = 0){
+		parent::__construct($filter, $width);
+		$this->viewType = 'document';
+	}
+
 	/**
 	 * Gets the HTML and Javascript for the filter
 	 *
@@ -124,15 +129,6 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		<td style="padding-left:17px;">' . $ok_button . '</td>
 	</tr>
 </table>';
-	}
-
-	/**
-	 * Creates the content for the JavaScript updateView() function
-	 *
-	 * @return string
-	 */
-	function createUpdateViewScript(){
-		return 'updateView_document();';
 	}
 
 }

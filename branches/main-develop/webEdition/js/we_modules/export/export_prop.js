@@ -79,3 +79,47 @@ function submitForm(target, action, method) {
 	f.method = (method ? method : "post");
 	f.submit();
 }
+
+function toggle(id) {
+	var elem = document.getElementById(id);
+	if (elem.style.display == "none")
+		elem.style.display = "";
+	else
+		elem.style.display = "none";
+}
+
+function clearLog() {
+	top.content.editor.edbody.document.getElementById("log").innerHTML = "";
+}
+
+function addLog(text) {
+	top.content.editor.edbody.document.getElementById("log").innerHTML += text + "<br/>";
+	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
+}
+
+function closeAllSelection() {
+	var elem = document.getElementById("auto");
+	elem.style.display = "none";
+	elem = document.getElementById("manual");
+	elem.style.display = "none";
+}
+
+function closeAllType() {
+	var elem = document.getElementById("doctype");
+	elem.style.display = "none";
+	if (WE().consts.tables.OBJECT_TABLE) {
+		elem = document.getElementById("classname");
+		elem.style.display = "none";
+	}
+}
+
+function formFileChooser() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "browse_server":
+			new (WE().util.jsWindow)(window, url, "server_selector", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true);
+			break;
+	}
+}

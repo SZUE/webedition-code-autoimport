@@ -31,6 +31,23 @@ var scrollToVal = 0;
 
 WE().util.loadConsts(document, "g_l.customer");
 
+
+var aTabs = WE().util.getDynamicVar(document, 'loadVarCustomerHeader', 'data-customerHeader');
+
+function setTab(tab) {
+	top.content.activ_tab = tab;
+	window.parent.edbody.we_cmd("switchPage", tab);
+}
+
+function loaded() {
+	weTabs.setFrameSize();
+	if (top.content.activ_tab) {
+		document.getElementById(aTabs[top.content.activ_tab]).className = "tabActive";
+	} else {
+		document.getElementById("common").className = "tabActive";
+	}
+}
+
 function setHot() {
 	hot = true;
 }

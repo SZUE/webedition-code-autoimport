@@ -40,6 +40,7 @@ class we_customer_filterView{
 	 * @var integer
 	 */
 	protected $width = 0;
+	protected $viewType = 'base';
 
 	/**
 	 * Constructor
@@ -61,10 +62,7 @@ class we_customer_filterView{
 	 * @return string
 	 */
 	function getFilterHTML($ShowModeNone = false){
-		$script = '
-function updateView() {' .
-			$this->createUpdateViewScript() . '
-}';
+		$script = '';
 		$mode = $this->filter->getMode();
 
 		// ################# Radio buttons ###############
@@ -97,28 +95,22 @@ function updateView() {' .
 
 		$space = '<div style="height:4px;"></div>';
 
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js') . $modeRadioOff . $space . $modeRadioAll . $space . $modeRadioSpecific . $space . $specificCustomersSelect . $space . $modeRadioFilter . $filterCustomers . $blackListSelect . $whiteListSelect . $space . $modeRadioNone . we_html_element::jsElement($script);
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js', '', [
+				'id' => 'loadcfilter',
+				'data-cfilter' => setDynamicVar([
+					'type' => $this->viewType
+			])]) . $modeRadioOff . $space . $modeRadioAll . $space . $modeRadioSpecific . $space . $specificCustomersSelect . $space . $modeRadioFilter . $filterCustomers . $blackListSelect . $whiteListSelect . $space . $modeRadioNone . we_html_element::jsElement($script);
 	}
 
 	public function getFilterCustomers(){
 		$this->filter->setMode(we_customer_abstractFilter::FILTER);
 
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js') . we_html_element::jsElement('
-function updateView() {' .
-				$this->createUpdateViewScript() . '
-}
-') .
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js', '', [
+				'id' => 'loadcfilter',
+				'data-cfilter' => setDynamicVar([
+					'type' => $this->viewType
+			])]) .
 			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
-	}
-
-	/**
-	 * Creates the content for the JavaScript updateView() function
-	 *
-	 * @return string
-	 */
-	function createUpdateViewScript(){
-
-		return 'updateView_base();';
 	}
 
 	/**
@@ -218,7 +210,7 @@ EO_SCRIPT;
 
 		if(!$startEmpty && empty($filter)){
 			$filter = [
-					[
+				[
 					'logic' => '',
 					'field' => 'id',
 					'operation' => 0,

@@ -72,11 +72,7 @@ class we_glossary_view extends we_modules_view{
 				}
 				$this->Glossary = new we_glossary_glossary();
 				$this->Glossary->Type = array_pop(explode('_', $cmd, 4));
-
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";
-');
+				$jscmd->addCmd('reloadHeaderFooter', $this->Glossary->Text);
 				break;
 
 			case "glossary_edit_acronym":
@@ -91,10 +87,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary($cmdid);
-
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";');
+				$jscmd->addCmd('reloadHeaderFooter', $this->Glossary->Text);
 				break;
 
 			case 'populateWorkspaces':
@@ -173,8 +166,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 
 				$StateBefore = ($this->Glossary->ID ?
-						f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
-						0);
+					f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
+					0);
 
 				$isNew = $this->Glossary->ID == 0;
 
@@ -218,14 +211,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$message .= sprintf(g_l('modules_glossary', '[item_saved]'), $this->Glossary->Text);
 
 					$jscmd->addMsg($message, we_message_reporting::WE_MESSAGE_NOTICE);
-					echo we_html_element::jsElement('
-if(top.makeNewEntryCheck==1) {
-	top.content.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
-} else {
-	top.content.editor.edheader.location.reload();
-}
-top.content.hot=false;
-');
+					$jscmd->addCmd('doAfterSave', $this->Glossary->Type, $this->Glossary->Language);
 
 					// --> Save to Cache
 

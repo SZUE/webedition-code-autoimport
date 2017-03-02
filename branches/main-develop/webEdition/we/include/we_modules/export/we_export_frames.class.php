@@ -154,22 +154,7 @@ class we_export_frames extends we_modules_frame{
 
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
-		return we_html_element::jsElement('
-function toggle(id){
-	var elem = document.getElementById(id);
-	if(elem.style.display == "none") elem.style.display = "";
-	else elem.style.display = "none";
-}
-
-function clearLog(){
-	top.content.editor.edbody.document.getElementById("log").innerHTML = "";
-}
-
-function addLog(text){
-	top.content.editor.edbody.document.getElementById("log").innerHTML+= text+"<br/>";
-	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
-}
-') .
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') .
 			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1($jsCmd), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_LOG ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
@@ -205,32 +190,6 @@ function addLog(text){
 			"html" => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
-
-		$js = we_html_element::jsElement('
-function formFileChooser() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-switch (args[0]) {
-		case "browse_server":
-			new (WE().util.jsWindow)(window, url,"server_selector",WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,false,true);
-		break;
-	}
-}
-function closeAllSelection(){
-	var elem = document.getElementById("auto");
-	elem.style.display = "none";
-	elem = document.getElementById("manual");
-	elem.style.display = "none";
-}
-
-function closeAllType(){
-	var elem = document.getElementById("doctype");
-	elem.style.display = "none";
-	' . (defined('OBJECT_TABLE') ? '
-	elem = document.getElementById("classname");
-	elem.style.display = "none";' : '') . '
-}');
 
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
 		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
@@ -277,7 +236,7 @@ function closeAllType(){
 		);
 
 		$parts[] = ["headline" => g_l('export', '[selection]'),
-			"html" => $js . $table->getHtml(),
+			"html" => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
@@ -366,7 +325,7 @@ function closeAllType(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd'"));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . '&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd']));
 		}
 		return '';
 	}

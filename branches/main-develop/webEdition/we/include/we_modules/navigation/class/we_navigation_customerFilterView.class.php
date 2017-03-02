@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,6 +28,11 @@
  */
 class we_navigation_customerFilterView extends we_customer_filterView{
 
+	public function __construct(&$filter, $width = 0){
+		parent::__construct($filter, $width);
+		$this->viewType = 'navigation';
+	}
+
 	/**
 	 * Gets the HTML and Javascript for the filter
 	 *
@@ -41,15 +45,6 @@ class we_navigation_customerFilterView extends we_customer_filterView{
 			) . $this->getDiv(
 				'<div style="border-top: 1px solid #AFB0AF;margin-bottom: 5px;"></div>' . parent::getFilterHTML(true), 'MainFilterDiv', !$filter->getUseDocumentFilter()
 		);
-	}
-
-	/**
-	 * Creates the content for the JavaScript updateView() function
-	 *
-	 * @return string
-	 */
-	function createUpdateViewScript(){
-		return 'updateView_navigation();';
 	}
 
 }

@@ -67,8 +67,6 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 }';
 }
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($js));
-
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_element::htmlHidden('ok', 1);
 
 foreach($_REQUEST['we_cmd'] as $k => $v){
@@ -260,6 +258,6 @@ $cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascri
 $okbut = we_html_button::create_button(we_html_button::OK, "javascript:okFn();");
 $buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancel_button);
 $out .= we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
-	'</form></body></html>';
+	'</form></body>';
 
-echo $out;
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($js),$out);

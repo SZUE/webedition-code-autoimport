@@ -43,11 +43,11 @@ function doNextAction() {
 	top.body.document.we_form.submit();
 }
 
-function selectWeSelect_doOnselect(sel){
+function selectWeSelect_doOnselect(sel) {
 	sel.form.elements.xml_to.value = sel.options[sel.selectedIndex].value;
 	sel.form.elements.xml_from.value = 1;
 	sel.form.elements.dataset.value = sel.options[sel.selectedIndex].text;
-	if(sel.options[sel.selectedIndex].value == 1) {
+	if (sel.options[sel.selectedIndex].value == 1) {
 		sel.form.elements.xml_from.disabled = true;
 		sel.form.elements.xml_to.disabled = true;
 	} else {
@@ -64,6 +64,9 @@ function we_cmd() {
 	var arg = args[1]; // we use this when using named params
 
 	switch (args[0]) {
+		case "setProgress":
+			top.footer.setProgress(args[1]);
+			break;
 		case "uploader_callback":
 			we_cmd('set_radio_importFrom', '', 1);
 			doNextAction();
@@ -82,11 +85,11 @@ function we_cmd() {
 			break;
 		case "selectCharset_onchange":
 			top.body.document.we_form.elements.the_charset.value = arg.select.options[arg.select.selectedIndex].value;
-			arg.select.selectedIndex=-1;
+			arg.select.selectedIndex = -1;
 			break;
 		case "chooser_onChange":
 			top.body.document.we_form.elements[args[2]].value = args[1].options[args[1].selectedIndex].value;
-			args[1].selectedIndex=0;
+			args[1].selectedIndex = 0;
 			break;
 		case "we_selector_file":
 			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
@@ -109,10 +112,10 @@ function we_cmd() {
 			top.frames[arg.frame].location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=' + arg.pnt + '&art=' + arg.art + '&cmd=' + arg.cmd + '&step=' + arg.step;
 			break;
 		case "process_cmd_load":
-			top.load.location = WE().consts.dirs.WEBEDITION_DIR +'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
+			top.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
 			break;
 		case "load_processCmd":
-			switch(arg.cmd){
+			switch (arg.cmd) {
 				case 'export_next':
 					top.body.document.we_form.step.value++;
 					top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + arg.art + "&step=" + top.body.document.we_form.step.value;
@@ -147,27 +150,27 @@ function we_cmd() {
 					top.body.document.we_form.submit();
 					break;
 				case 'do_import':
-					if((arg.fstart < arg.fcount)){
+					if ((arg.fstart < arg.fcount)) {
 						top.load.document.we_form.cmd.value = 'do_import';
 					} else {
 						top.load.document.we_form.cmd.value = 'import_end';
 					}
-					if (top.footer.setProgress){
+					if (top.footer.setProgress) {
 						top.footer.setProgress(arg.percent);
 					}
 					top.load.document.we_form.submit();
 					break;
 				case 'import_end':
-					if(top.opener && top.opener.content && top.opener.top.content.applySort){
+					if (top.opener && top.opener.content && top.opener.top.content.applySort) {
 						top.opener.top.content.applySort();
 					}
-					top.footer.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=eifooter&art=' + arg.art +  '&step=6';
+					top.footer.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=eifooter&art=' + arg.art + '&step=6';
 					top.load.document.we_form.submit();
 					break;
 			}
 			break;
 		case "change_filter":
-			switch (args[1]){
+			switch (args[1]) {
 				case "add_filter":
 				case "del_filter":
 				case "del_all_filters":

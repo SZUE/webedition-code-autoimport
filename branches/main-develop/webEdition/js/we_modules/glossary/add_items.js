@@ -28,10 +28,9 @@ var retry = 0;
 var to;
 var counter = 0;
 var table;
-var Combobox;
-
+var Combobox = new weCombobox();
 WE().util.loadConsts(document, "g_l.glossary");
-
+var doc = WE().util.getDynamicVar(document, 'loadAddItems', 'data-doc');
 function applyOnEnter() {
 	top.frames.glossarycheck.checkForm();
 	return true;
@@ -45,7 +44,6 @@ var customAdapter = function () {
 	this.getSelectedText = function () {
 	};
 };
-
 function spellcheck() {
 	retry = 0;
 	if (document.spellchecker.isReady()) {
@@ -67,19 +65,15 @@ function findNext() {
 				suggs = suggs + "";
 				var suggA = suggs.split("|");
 				top.frames.glossarycheck.addRow(temp, suggA);
-
 				clearTimeout(to);
 				to = window.setTimeout(findNext, 250);
-
 			} else if (document.spellchecker.isWorking()) {
 				clearTimeout(to);
 				to = window.setTimeout(findNext, 250);
-
 			} else if (retry < 7) {
 				clearTimeout(to);
 				to = window.setTimeout(findNext, 250);
 				retry++;
-
 			} else {
 				if (top.frames.glossarycheck.document.getElementById("spinner").style.display != "none") {
 					fadeout("spinner", 80, 10, 10);
@@ -102,9 +96,7 @@ function getTextOnly(text) {
 	var newtext = text.replace(/(<([^>]+)>)/ig, " ");
 	newtext = newtext.replace(/\&([^; ]+);/ig, " ");
 	newtext = newtext.replace("&amp;", "&");
-
 	return newtext;
-
 }
 
 function fade(id, opacity) {
@@ -130,7 +122,7 @@ function we_save_document() {
 }
 
 function we_reloadEditPage() {
-	top.opener.top.we_cmd('switch_edit_page', doc.EditPageNr, transaction, 'save_document');
+	top.opener.top.we_cmd('switch_edit_page', doc.EditPageNr, doc.transaction, 'save_document');
 }
 
 function getTextColumn(text, colspan) {
@@ -205,9 +197,7 @@ function getTitleColumn(word, suggestions, title) {
 		html += '</optgroup>';
 	}
 	html += '</select>';
-
 	td.innerHTML = html;
-
 	return td;
 }
 
@@ -228,16 +218,13 @@ function addRow(word, suggestions) {
 	tr.appendChild(getInnerColumn(' '));
 	tr.appendChild(getLanguageColumn(word, ''));
 	table.appendChild(tr);
-
 	Combobox.init('suggest_' + counter, 'wetextinput');
 	Combobox.init('lang_' + counter, 'wetextinput');
-
 	counter++;
 }
 
 function addPredefinedRow(word, suggestions, type, title, lang) {
 	var tr = document.createElement('tr');
-
 	tr = document.createElement('tr');
 	tr.appendChild(getTextColumn(word, 1));
 	tr.appendChild(getInnerColumn(' '));
@@ -247,14 +234,10 @@ function addPredefinedRow(word, suggestions, type, title, lang) {
 	tr.appendChild(getInnerColumn(' '));
 	tr.appendChild(getLanguageColumn(word, lang));
 	table.appendChild(tr);
-
 	Combobox.init('suggest_' + counter, 'wetextinput');
 	Combobox.init('lang_' + counter, 'wetextinput');
-
 	disableItem(counter, type);
-
 	counter++;
-
 }
 
 function disableItem(id, value) {
@@ -346,4 +329,52 @@ function checkForm() {
 		}
 	}
 	document.forms[0].submit();
+}
+
+
+function getLanguageColumn(word, lang) {
+	var td = document.createElement('td');
+	var cont = '<select class="defaultfont" name="item[' + word + '][lang]" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
+		'<option value="' + lang + '">' + lang + '</option>' +
+		'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
+		'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
+		'</optgroup>' +
+		'<optgroup label="' + WE().consts.g_l.glossary.languages + '">';
+	for (var i = 0; i < doc.langs; i++) {
+		cont += '<option value="' + doc.langs[i] + '">' + doc.langs[i] + "</option>";
+	}
+	td.innerHTML = cont + '</optgroup>' +
+		'</select>';
+	return td;
+}
+
+
+
+function activateButtons() {
+	if (counter === 0) {
+		var tr = document.createElement('tr');
+		tr.appendChild(getTextColumn(WE().consts.g_l.glossary.all_words_identified, 7));
+		table.appendChild(tr);
+		WE().layout.button.hide(document, 'execute');
+		if (doc.cmd3 !== "checkOnly") {
+			WE().layout.button.enable(document, 'publish');
+			WE().layout.button.show(document, 'publish');
+		}
+
+	} else {
+		WE().layout.button.enable(document, 'execute');
+	}
+
+}
+
+function getActionColumn(word, type) {
+	var td = document.createElement('td');
+	var html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">';
+	for (var key in doc.modes) {
+		html += '<option value="' + key + '"' + (type === key ? ' selected="selected"' : '') + '>' + doc.modes[key] + "</option>";
+	}
+
+
+	td.innerHTML = html + '</select>';
+	return td;
 }

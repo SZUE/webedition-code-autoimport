@@ -761,6 +761,7 @@ js/we_modules/navigation/navigation_frame.js
 js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
 js/we_modules/customer/customer_treeHeader.js
+js/we_modules/customer/customer_header.js
 js/we_modules/banner/banner_cmd.js
 js/we_lcmd.js
 js/we_exit_multi_doc_question.js
