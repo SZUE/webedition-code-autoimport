@@ -168,9 +168,9 @@ class we_class_folder extends we_folder{
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			//no break
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_editors/we_editor_properties.inc.php';
+				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_editors/we_editor_info.inc.php';
+				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:

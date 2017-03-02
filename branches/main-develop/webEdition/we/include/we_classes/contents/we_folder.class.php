@@ -378,9 +378,9 @@ class we_folder extends we_root{
 			default:
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_editors/we_editor_properties.inc.php';
+				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_editors/we_editor_info.inc.php';
+				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_DOCLIST:

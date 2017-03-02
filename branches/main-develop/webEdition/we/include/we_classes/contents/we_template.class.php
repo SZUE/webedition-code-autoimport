@@ -25,6 +25,7 @@
 /* a class for handling templates */
 
 class we_template extends we_document{
+
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
@@ -89,9 +90,9 @@ class we_template extends we_document{
 			default:
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return "we_editors/we_editor_properties.inc.php";
+				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return "we_editors/we_editor_info.inc.php";
+				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
 				return "we_editors/we_srcTmpl.inc.php";
@@ -107,11 +108,11 @@ class we_template extends we_document{
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				$GLOBALS["we_editmode"] = true;
-				return 'we_editors/we_editor_variants.inc.php';
+				return new we_editor_variants($this);
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return "we_editors/we_editor_versions.inc.php";
+				return new we_editor_versions($this);
 			case we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS:
-				return 'we_editors/we_editor_unusedElements.inc.php';
+				return new we_editor_unusedElements($this);
 		}
 	}
 
@@ -287,10 +288,10 @@ we_templateInit();?>';
 			$code = preg_replace(['%(<body[^>]*)>%i',
 				'%(<head[^>]*>)%i',
 				'%(</body[^>]*>)%i',
-				], ['${1}<?= (!empty($GLOBALS[\'we_editmode\']) ? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
+					], ['${1}<?= (!empty($GLOBALS[\'we_editmode\']) ? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
 				'${1}<?php we_templateHead();?>',
 				'<?php we_templatePostContent(true);?>${1}'
-				], $code);
+					], $code);
 
 			$code = str_replace($repl, array_keys($repl), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
@@ -547,7 +548,7 @@ we_templateInit();?>';
 		}
 
 		return [$count, we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('TemplateDocuments', $path, 1, '', false, ['style' => 'margin-right: 20px;'], 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
+					we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
 		)];
 	}
 
@@ -573,7 +574,7 @@ we_templateInit();?>';
 		}
 
 		return [count($elems), we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('TemplateUsedTemplates', $path, 1, '', false, ['style' => 'margin-right: 20px;']), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateUsedTemplates'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
+					we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
 		)];
 	}
 
@@ -599,7 +600,7 @@ we_templateInit();?>';
 		}
 
 		return [count($elems), we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, ['style' => 'margin-right: 20px;']), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . TEMPLATES_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::TEMPLATE . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
+					we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
 		)];
 	}
 
@@ -734,10 +735,10 @@ we_templateInit();?>';
 					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
-						(isset($masterTags[$name]['content']) ?
-						$masterTags[$name]['content'] :
-						'') :
-						$code), $masterTemplateCode);
+							(isset($masterTags[$name]['content']) ?
+							$masterTags[$name]['content'] :
+							'') :
+							$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -839,9 +840,9 @@ we_templateInit();?>';
 		if(($tmp = $this->getElement('allVariants'))){
 			$tmp = we_unserialize($tmp, '');
 			$this->setElement('allVariants', (is_array($tmp) ?
-					$tmp :
-					$this->readAllVariantFields($this->getElement('completeData'))
-				), 'variants');
+							$tmp :
+							$this->readAllVariantFields($this->getElement('completeData'))
+					), 'variants');
 		}
 	}
 
@@ -861,7 +862,7 @@ we_templateInit();?>';
 					break;
 				case 'url':
 					if((empty($tag['attribs']['type']) || $tag['attribs']['type'] === 'document') &&
-						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
@@ -885,7 +886,7 @@ we_templateInit();?>';
 					break;
 				case 'sessionfield':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' &&
-						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
@@ -914,8 +915,8 @@ we_templateInit();?>';
 			}
 		}
 		return (empty($this->MediaLinks) ?
-			true :
-			parent::registerMediaLinks(false, true));
+				true :
+				parent::registerMediaLinks(false, true));
 	}
 
 	// .tmpl mod
@@ -926,17 +927,17 @@ we_templateInit();?>';
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
-				]
+					['icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
+						]
 		);
 	}
 
 	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$extra = '<tr><td colspan="3" style="padding-bottom:4px;">' .
-			$this->formInputField('', 'Display', g_l('navigation', '[display]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : "we_cmd('setHot'); ") . '"')
-			. '</td></tr>';
+				$this->formInputField('', 'Display', g_l('navigation', '[display]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : "we_cmd('setHot'); ") . '"')
+				. '</td></tr>';
 		return parent::formPath($disablePath, $notSetHot, $extra);
 	}
 
@@ -949,8 +950,8 @@ we_templateInit();?>';
 				if(($weTag = weTagData::getTagData($tagName))){
 					if($css){
 						$ret[] = '.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), [
-								'"' => '\'',
-								"\n" => ' ']) . '";}';
+									'"' => '\'',
+									"\n" => ' ']) . '";}';
 					} else {
 						$allTags['we:' . $tagName] = ['we' => $weTag->getAttributesForCM()];
 					}

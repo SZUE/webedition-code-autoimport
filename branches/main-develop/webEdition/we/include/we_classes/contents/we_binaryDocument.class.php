@@ -26,6 +26,7 @@
 
 class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
+
 	protected $html = '';
 
 	/**
@@ -68,17 +69,17 @@ class we_binaryDocument extends we_document{
 			default:
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_editors/we_editor_properties.inc.php';
+				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_IMAGEEDIT:
-				return 'we_editors/we_image_imageedit.inc.php';
+				return new we_image_imageedit(this);
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_editors/we_editor_info.inc.php';
+				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_editors/we_editor_binaryContent.inc.php';
+				return new we_editor_binaryContent($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_editors/we_editor_versions.inc.php';
+				return new we_editor_versions($this);
 		}
 	}
 
@@ -119,25 +120,25 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-			($size == -1 ?
-			we_base_file::load($file) :
-			we_base_file::loadPart($file, 0, $size)
-			) :
-			'');
+				($size == -1 ?
+				we_base_file::load($file) :
+				we_base_file::loadPart($file, 0, $size)
+				) :
+				'');
 	}
 
 	protected function i_writeDocument(){
 		$file = $this->getElement('data');
 		if(!($file && file_exists($file)) ||
-			$this->i_pathNotValid()
+				$this->i_pathNotValid()
 		){
 			return false;
 		}
 		$sitePath = $this->getSitePath();
 		$realPath = $this->getRealPath();
 		if(!we_base_file::checkAndMakeFolder(dirname($sitePath), true) ||
-			!we_base_file::checkAndMakeFolder(dirname($realPath), true) ||
-			($file != $sitePath && !we_base_file::copyFile($file, $sitePath))){
+				!we_base_file::checkAndMakeFolder(dirname($realPath), true) ||
+				($file != $sitePath && !we_base_file::copyFile($file, $sitePath))){
 			return false;
 		}
 		if(!we_base_file::makeHardLink($file, $realPath)){
@@ -314,11 +315,11 @@ class we_binaryDocument extends we_document{
 		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-			'' :
-			g_l('metadata', '[supported_types]') . ': ' .
-			'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-			(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
-			'</a>');
+				'' :
+				g_l('metadata', '[supported_types]') . ': ' .
+				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
+				'</a>');
 
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
 
@@ -349,7 +350,7 @@ class we_binaryDocument extends we_document{
 		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[protected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
-	function formReferences(){
+	function formReferences(we_base_jsCmd $jsCmd){
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
@@ -369,7 +370,7 @@ class we_binaryDocument extends we_document{
 			$cna = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
 			$ca = (isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0) + $cna;
 			$num += $ca;
-			//FIXME:g_l
+
 			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
 			$cc = 0;
 			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : []) as $v){
@@ -384,19 +385,19 @@ class we_binaryDocument extends we_document{
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
 
-		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('MediaReferences', $values, 1, '', false, [
-], 'value', 388), '', 'left', 'defaultfont', '', $button);
+		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('MediaReferences', $values, 1, '', false, [], 'value', 388), '', 'left', 'defaultfont', '', $button);
 
 		return ['form' => $form, 'num' => $num];
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_multiIconBox::getHTML('PropertyPage', [
-				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				//['icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]]
+					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					//['icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 
