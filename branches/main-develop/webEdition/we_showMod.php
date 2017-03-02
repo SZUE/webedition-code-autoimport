@@ -53,7 +53,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 		])]) . JQUERY);
 	?>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
-		<div id="alertBox"></div>
+		<dialog id="alertBox"></dialog>
 		<?php
 		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
 

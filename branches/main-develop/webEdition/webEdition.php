@@ -283,7 +283,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 		checkPwd(<?= intval(empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])); ?>);
 		updateCheck(<?= (empty($versionInfo) ? '0,0,0' : '1,\'' . $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')\',\'' . $versionInfo['date'] . '\'') ?>);
 		self.focus();" onbeforeunload ="return doUnload();">
-	<div id="alertBox"></div>
+	<dialog id="alertBox"></dialog>
 	<div id="headerDiv"><?php
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);

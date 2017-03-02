@@ -445,8 +445,10 @@ we/include/we_editors/we_recover_backup.php
 we/include/we_editors/we_rebuild.inc.php
 we/include/we_editors/we_preferences_header.php
 we/include/we_editors/we_preferences_header.inc.php
+we/include/we_editors/we_preferences_frameset.inc.php
 we/include/we_editors/we_preferences_footer.php
 we/include/we_editors/we_preferences_footer.inc.php
+we/include/we_editors/we_preferences.php
 we/include/we_editors/we_make_backup.php
 we/include/we_editors/we_make_backup.inc.php
 we/include/we_editors/we_init_doc.inc.php
@@ -458,6 +460,7 @@ we/include/we_editors/we_exit_doc_question.inc.php
 we/include/we_editors/we_editor_script.inc.php
 we/include/we_editors/we_editor_save.class.php
 we/include/we_editors/we_editor_publish.inc.php
+we/include/we_editors/we_editor_footer.inc.php
 we/include/we_editors/we_editPasswd.inc.php
 we/include/we_editors/we_document_move_question.inc.php
 we/include/we_editors/we_backup_cmd.php

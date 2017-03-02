@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -54,7 +55,7 @@ class we_base_preferences{
 		foreach($GLOBALS['config_files'] as &$config){
 			$config['content'] = we_base_file::load($config['filename']);
 			$config['contentBak'] = $config['content'];
-			$config['contentDef'] = we_base_file::load($config['filename'] . '.default')? : '<?php ';
+			$config['contentDef'] = we_base_file::load($config['filename'] . '.default') ?: '<?php ';
 		}
 		//finally add old session prefs
 		$GLOBALS['config_files']['oldPrefs'] = isset($_SESSION['prefs']) ? $_SESSION['prefs'] : [];
@@ -87,7 +88,7 @@ class we_base_preferences{
 			// Read the global configuration file
 			$file_name = $GLOBALS['config_files']['conf_' . $conf]['filename'];
 			//if we don't have content, make sure, we have at least an php-tag
-			$oldContent = (trim(str_replace('?>', '', $GLOBALS['config_files']['conf_' . $conf]['contentBak']), "\n ")? : "<?php \n");
+			$oldContent = (trim(str_replace('?>', '', $GLOBALS['config_files']['conf_' . $conf]['contentBak']), "\n ") ?: "<?php \n");
 
 			if($file && $file != $file_name){//=> this is intentended only for we_conf_global
 				//we have the data from a backup file. We need to change e.g. DB-Settings, HTTP-User, ...
@@ -168,7 +169,7 @@ class we_base_preferences{
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-					self::makeDefine($key, $value, $active, $comment, $encode);
+						self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
 				$match = [];
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -181,10 +182,10 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = '', $encode = false){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
+				($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
 				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-					(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
-			) . ');';
+				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
+				) . ');';
 	}
 
 	private static function _addSlashes($in){
@@ -243,7 +244,7 @@ $GLOBALS[\'weFrontendLanguages\'] = [
 ];
 
 $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
-				, 'w+'
+						, 'w+'
 		);
 	}
 
@@ -252,6 +253,43 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 		if(!file_exists($file) || !is_file($file)){
 			self::we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), ['de_DE', 'en_GB']);
 		}
+	}
+
+	public static function showFrameSet(){
+		//loads config in global scope
+		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+
+		$tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
+
+// generate the tabs
+		$we_tabs = new we_tabs();
+		$validTabs = [];
+
+		foreach($GLOBALS['tabs'] as $name => $list){
+			list($icon, $perm) = $list;
+			if(empty($perm) || we_base_permission::hasPerm($perm)){
+				$we_tabs->addTab(($icon ? '<i class="fa fa-lg ' . $icon . '"></i> ' : '') . g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name), "'" . $name . "'");
+				$validTabs[] = $name;
+			}
+		}
+
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+				we_html_element::jsScript(JS_DIR . 'preferences_frameset.js', 'self.focus();', ['id' => 'loadVarPreferences_frameset', 'data-prefData' => setDynamicVar([
+						'tabs' => array_keys($GLOBALS['tabs']),
+						'validTabs' => $validTabs,
+			])]), we_html_element::htmlBody(['id' => 'weMainBody', 'onload' => 'weTabs.setFrameSize()', 'onresize' => 'weTabs.setFrameSize()']
+						, we_html_element::htmlDiv(['style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;']
+								, we_html_element::htmlExIFrame('navi', '<div id="main" >' . $we_tabs->getHTML() . '</div>', 'right:0px;') .
+								we_html_element::htmlIFrame('content', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=editor_preferences&" . ($tabname ? "tabname=" . $tabname : ""), 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
+								we_html_element::htmlExIFrame('we_preferences_footer', self::getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
+		)));
+	}
+
+	private static function getPreferencesFooter(){
+		$okbut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();');
+		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()');
+
+		return we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%;'], we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
 	}
 
 	public static function getJSLangConsts(){

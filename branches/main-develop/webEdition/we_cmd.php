@@ -145,7 +145,11 @@ function findInclude($cmd){
 			we_dialog_info::getFullDialog();
 			return true;
 		case 'openPreferences':
-			return 'we_editors/we_preferences_frameset.inc.php';
+			we_base_preferences::showFrameSet();
+			return true;
+		case 'editor_preferences':
+			we_editor_preferences::show();
+			return true;
 		case 'editThumbs':
 			return 'we_editors/we_thumbnails.inc.php';
 		case 'editNewCollection':
@@ -189,7 +193,8 @@ function findInclude($cmd){
 			return 'we_editors/we_editor_header.inc.php';
 		case 'load_edit_footer':
 		case 'reload_editfooter':
-			return 'we_editors/we_editor_footer.inc.php';
+			we_editor_footer::show();
+			return true;
 		case 'do_import':
 			return 'we_editors/we_import_editor.inc.php';
 		//case 'delete_alias':
