@@ -21,8 +21,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
 require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
+
+we_html_tools::protect();
+
 //
 //	---> Initalize the document
 //
