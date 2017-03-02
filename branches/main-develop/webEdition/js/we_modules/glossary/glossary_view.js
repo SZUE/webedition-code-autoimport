@@ -109,6 +109,12 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 
 			break;
+		case "reloadHeaderFooter":
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&text=" + encodeURI(args[1]);
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";
+
+			break;
+
 		case "save_exception":
 		case "save_glossary":
 			exc = top.content.editor.edbody.document.we_form.cmdid.value;
@@ -133,6 +139,14 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			top.content.usetHot();
+			break;
+		case "doAfterSave":
+			if (top.makeNewEntryCheck == 1) {
+				top.content.we_cmd("new_glossary_" + args[1], args[2]);
+			} else {
+				top.content.editor.edheader.location.reload();
+			}
+			top.content.hot = false;
 			break;
 		case "glossary_edit_acronym":
 		case "glossary_edit_abbreviation":
