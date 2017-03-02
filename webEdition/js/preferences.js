@@ -603,7 +603,7 @@ function updatePrefs() {
 		childs[i].className = "tabNormal";
 	}
 
-	window.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_preferences.php";
+	window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editor_preferences";
 	window.setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
 
 }

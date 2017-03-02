@@ -663,7 +663,7 @@ var WebEdition = {
 			if (win.top.top.$) {
 				ab = win.top.top.$("#alertBox");
 				if (!ab.length) {
-					var alertDiv = win.top.top.document.createElement('div');
+					var alertDiv = win.top.top.document.createElement('dialog');
 					alertDiv.id = "alertBox";
 					win.top.top.document.body.appendChild(alertDiv);
 					ab = win.top.top.$("#alertBox");
@@ -790,7 +790,7 @@ var WebEdition = {
 				if (win.top.top.$) {
 					ab = win.top.top.$("#alertBox");
 					if (!ab.length) {
-						var alertDiv = win.top.top.document.createElement('div');
+						var alertDiv = win.top.top.document.createElement('dialog');
 						alertDiv.id = "alertBox";
 						win.top.top.document.body.appendChild(alertDiv);
 						ab = win.top.top.$("#alertBox");
