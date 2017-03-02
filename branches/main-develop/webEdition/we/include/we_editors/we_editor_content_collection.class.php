@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$weSuggest = & weSuggest::getInstance();
+class we_editor_content_collection extends we_editor_base{
 
-echo we_html_tools::getHtmlTop('','','',we_editor_script::get().we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($GLOBALS['we_doc']->getJSDynamic())]));
-?>
-<body class="weEditorBody" onload="weCollectionEdit.init();">
-	<form name="we_form"><?=
-		we_class::hiddenTrans() .
-		$GLOBALS['we_doc']->formCollection() .
-		we_html_element::htmlHidden("we_complete_request", 1);
-		?>
-	</form>
-</body>
-</html>
+	public function show(){
+		//$weSuggest = & weSuggest::getInstance();
+		return $this->getPage($this->we_doc->formCollection(), we_editor_script::get() . we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($this->we_doc->getJSDynamic())]));
+	}
+
+}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,6 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//FIXME: move to .class file
-we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
-]), isset($isClose) && $isClose, (isset($showAlert) && $showAlert), !empty($GLOBALS["publish_doc"]));
+class we_editor_save extends we_editor_base{
+
+	public function show(){
+		//FIXME: this will be printed instantly
+		we_editor_functions::saveInc($GLOBALS['we_transaction'], $this->we_doc, $GLOBALS['we_responseText'], $GLOBALS['we_responseTextType'], $GLOBALS['we_JavaScript'], !empty($GLOBALS['wasSaved']), !empty($GLOBALS['saveTemplate']), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+						]), isset($GLOBALS['isClose']) && $GLOBALS['isClose'], (isset($GLOBALS['showAlert']) && $GLOBALS['showAlert']), !empty($GLOBALS["publish_doc"]));
+	}
+
+}

@@ -47,7 +47,7 @@ class we_textDocument extends we_document{
 				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
-				return 'we_editors/we_srcTmpl.inc.php';
+				return new we_editor_srcTmpl($this);
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				if($GLOBALS['we_EDITOR']){
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . we_base_file::getUniqueId() . $this->Extension;
@@ -55,9 +55,9 @@ class we_textDocument extends we_document{
 					return $GLOBALS['we_file_to_delete_after_include'];
 				}
 				$GLOBALS['we_editmode'] = false;
-				return 'we_templates/we_srcTmpl.inc.php';
+				return new we_editor_srcTmpl($this);
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_editors/validateDocument.inc.php';
+				return new we_editor_validateDocument($this);
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return new we_editor_versions($this);
 		}

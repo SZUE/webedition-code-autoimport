@@ -95,7 +95,7 @@ class we_template extends we_document{
 				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
-				return "we_editors/we_srcTmpl.inc.php";
+				return new we_editor_srcTmpl($this);
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();

@@ -22,4 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop(5, '', '', we_editor_script::get(), we_html_element::htmlBody(['class' => "weEditorBody", 'style' => "margin:20px;"], $we_doc->getHtml(true)));
+class we_editor_document_preview extends we_editor_base{
+
+	public function show(){
+		return $this->getPage($this->we_doc->getHtml(true), we_editor_script::get());
+	}
+
+}

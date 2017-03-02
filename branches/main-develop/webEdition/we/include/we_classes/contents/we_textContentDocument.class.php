@@ -48,9 +48,9 @@ abstract class we_textContentDocument extends we_textDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
-				return 'we_editors/we_editor_schedpro.inc.php';
+				return new we_editor_schedpro($this);
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_editors/validateDocument.inc.php';
+				return new we_editor_validateDocument($this);
 			default:
 				return parent::editor();
 		}

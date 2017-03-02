@@ -453,17 +453,17 @@ class we_objectFile extends we_document{
 			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_editors/we_editor_info_objectFile.inc.php';
+				return new we_editor_info_objectFile($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_editors/we_editor_contentobjectFile.inc.php';
+				return new we_editor_contentobjectFile($this);
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_showObject.inc.php';
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
-				return 'we_editors/we_editor_schedpro.inc.php';
+				return new we_editor_schedpro($this);
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return new we_editor_variants($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
+				return new editor_weDocumentCustomerFilter($this);
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return new we_editor_versions($this);
 		}

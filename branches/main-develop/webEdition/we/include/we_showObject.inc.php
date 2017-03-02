@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -34,8 +35,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @param    msg		string
  */
 function showContent(){
-	$previewMode = 1;
-	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_contentobjectFile.inc.php');
+	$editor = new we_editor_contentobjectFile($GLOBALS['we_doc']);
+	$editor->setPreview();
+	echo $editor->show();
 	exit;
 }
 
