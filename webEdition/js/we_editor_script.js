@@ -37,6 +37,17 @@ if (!_EditorFrame) {
 
 }
 
+if (doc && doc.cmd) {
+	top.we_cmd.apply(window, [doc.cmd]);
+	doc.cmd = false;
+}
+
+if (doc && doc.useSEE_MODE) {
+	// add event-Handler, replace links after load
+	window.addEventListener("load", seeMode_dealWithLinks, false);
+}
+
+
 function seeMode_dealWithLinks() {
 	var _aTags = document.getElementsByTagName("a");
 
@@ -506,16 +517,6 @@ function changeOption(elem) {
 		we_cmd(cmnd, doc.we_transaction);
 	}
 	//elem.selectedIndex=0;
-}
-
-if (doc.cmd) {
-	top.we_cmd.apply(window, [doc.cmd]);
-	doc.cmd = false;
-}
-
-if (doc.useSEE_MODE) {
-	// add event-Handler, replace links after load
-	window.addEventListener("load", seeMode_dealWithLinks, false);
 }
 
 
