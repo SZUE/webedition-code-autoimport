@@ -430,7 +430,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 			(isset($internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px"> ' . g_l('weClass', '[document]') . '</td>
-		<td style="vertical-align:top"> ' . $internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
+		<td style="vertical-align:top"> ' . $internal_link . '</td>
 	</tr>' : '') . '
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[emaillink]') . '</td>
@@ -527,7 +527,8 @@ class we_dialog_hyperlink extends we_dialog_base{
 
 	function getJSDynamic(){
 		return ['editname' => (isset($this->args["editname"]) ? $this->args["editname"] : ''),
-			'classNames' => (!empty($this->args["cssClasses"]) ? implode(',', $this->args['cssClasses']) : 'getFromTiny')
+			'classNames' => (!empty($this->args["cssClasses"]) ? implode(',', $this->args['cssClasses']) : 'getFromTiny'),
+			'is_frontend' => $this->noInternals
 		];
 	}
 
