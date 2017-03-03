@@ -408,7 +408,7 @@ var WebEdition = {
 	},
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
-			doc.cookie = name + "=" + encodeURI(value) +
+			doc.cookie = name + "=" + encodeURIComponent(value) +
 							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
 							((path === undefined) ? "" : "; path=" + path) +
 							((domain === undefined) ? "" : "; domain=" + domain);
@@ -424,7 +424,7 @@ var WebEdition = {
 					if (end === -1) {
 						end = dc.length;
 					}
-					return dc.substring(begin, end);
+					return decodeURIComponent(dc.substring(begin, end));
 				}
 			}
 			return null;
