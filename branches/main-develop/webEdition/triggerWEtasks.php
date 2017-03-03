@@ -34,4 +34,5 @@ $tooltasks = we_tool_lookup::getExternTriggeredTasks();
 foreach($tooltasks as $task){
 	include($task);
 }
+we_base_file::cleanTempFiles();
 ?>OK

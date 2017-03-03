@@ -23,42 +23,34 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_cache_file implements we_cache_base{
+	/* private static function loadMeta(){
+	  return we_unserialize(we_base_file::load(WE_CACHE_PATH . 'we_cache_meta'));
+	  }
 
-	private static function loadMeta(){
-		return we_unserialize(we_base_file::load(WE_CACHE_PATH . 'we_cache_meta'));
-	}
-
-	private static function saveMeta(array $data){
-		return we_base_file::save(WE_CACHE_PATH . 'we_cache_meta', we_serialize($data, SERIALIZE_JSON));
-	}
+	  private static function saveMeta(array $data){
+	  return we_base_file::save(WE_CACHE_PATH . 'we_cache_meta', we_serialize($data, SERIALIZE_JSON));
+	  } */
 
 	public static function load($entry){
-		static $t = 0;
-		$t = $t? : time();
-		static $meta = false;
-		$meta = $meta? : self::loadMeta();
-		if(!$meta || !isset($meta[$entry]) || $meta[$entry] < $t){
-			$meta = false;
-			return false;
-		}
-		return we_unserialize(we_base_file::load(WE_CACHE_PATH . 'we_cache_data_' . $entry));
+		/* static $t = 0;
+		  $t = $t ?: time();
+		  static $meta = false;
+		  $meta = $meta ?: self::loadMeta();
+		  if(!$meta || !isset($meta[$entry]) || $meta[$entry] < $t){
+		  $meta = false;
+		  return false;
+		  } */
+		return !file_exists(WE_CACHE_PATH . 'we_cache_' . $entry) ? false : we_unserialize(we_base_file::load(WE_CACHE_PATH . 'we_cache_' . $entry));
 	}
 
-	public static function save($entry, array $data, $expiry = 1800){
-		$meta = self::loadMeta();
-		$meta[$entry] = time() + $expiry;
-		self::saveMeta($meta);
+	public static function save($entry, array $data, $expiry = 3600){
 		$ser = we_serialize($data, SERIALIZE_JSON);
-		we_base_file::save(WE_CACHE_PATH . 'we_cache_data_' . $entry, (strlen($ser) > 1024 ? gzcompress($ser, 6) : $ser));
+		we_base_file::save(WE_CACHE_PATH . 'we_cache_' . $entry, (strlen($ser) > 1024 ? gzcompress($ser, 6) : $ser));
+		we_base_file::insertIntoCleanUp(WE_CACHE_DIR . 'we_cache_' . $entry, $expiry);
 	}
 
 	public static function clean($pattern = ''){
 		foreach(glob(WE_CACHE_PATH . 'we_cache_' . $pattern . '*') as $file){
-			unlink($file);
-		}
-		//clean old zend as well
-		//FIXME: remove in 7.1
-		foreach(glob(WE_CACHE_PATH . 'zend_cache---*') as $file){
 			unlink($file);
 		}
 	}

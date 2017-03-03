@@ -43,7 +43,7 @@ class we_editor_info extends we_editor_base{
 <div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>' :
 				''),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'iconX' => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->we_doc->ContentType . '",true,"' . (isset($this->we_doc->Extension) ? $this->we_doc->Extension : '') . '"))')
+				'iconX' => '<span class="docIcon" data-contenttype="' . $this->we_doc->ContentType . '" data-extension="' . (isset($this->we_doc->Extension) ? $this->we_doc->Extension : '') . '"></span>'
 			],
 			['headline' => '',
 				'html' => '
@@ -71,6 +71,8 @@ class we_editor_info extends we_editor_base{
 				'icon' => 'cal.gif'
 			]
 		];
+		
+		$this->jsCmd->addCmd('setIconOfDocClass', 'docIcon');
 
 		if($this->we_doc->ContentType !== we_base_ContentTypes::FOLDER){
 			switch($this->we_doc->Table){
