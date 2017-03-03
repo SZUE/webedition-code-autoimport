@@ -164,7 +164,7 @@ class we_helpers_mail extends Zend_Mail{
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
 		} else {
-			$this->setFrom('noreply', 'noreply');
+			$this->setFrom(WE_DEFAULT_EMAIL, WE_DEFAULT_EMAIL);
 		}
 
 		$this->setSubject($subject);
