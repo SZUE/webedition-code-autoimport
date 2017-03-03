@@ -83,7 +83,13 @@ function storeTreeWidth(module, w) {
 	var newTime = ablauf.getTime() + 30758400000;
 	ablauf.setTime(newTime);
 
-	var moduleVals = JSON.parse(WE().util.weGetCookie(window.document, "treewidth_modules"));
+	var moduleVals;
+	try {
+		moduleVals = JSON.parse(WE().util.weGetCookie(window.document, "treewidth_modules"));
+	} catch (e) {
+
+	}
+	moduleVals = moduleVals ? moduleVals : [];
 	moduleVals[module] = w;
 
 	WE().util.weSetCookie(window.document, "treewidth_modules", JSON.stringify(moduleVals), ablauf, WE().consts.dirs.WEBEDITION_DIR);
