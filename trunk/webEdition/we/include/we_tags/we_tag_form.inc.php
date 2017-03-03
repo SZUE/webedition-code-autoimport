@@ -21,7 +21,7 @@
 function we_parse_tag_form($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');
 ?>' . $content .
-			'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
+		'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
 }
 
 function we_tag_form(array $attribs){
@@ -65,8 +65,8 @@ function we_tag_form(array $attribs){
 	$formAttribs['method'] = $method;
 
 	$we_form_action = ($id ?
-					($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-					($action ? : $_SERVER['SCRIPT_NAME']));
+		($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+		($action ?: $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = array();
@@ -83,34 +83,34 @@ function we_tag_form(array $attribs){
 			$formAttribs['name'] = 'form' . $articleID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
-							'value' => (
-								isset($GLOBALS['lv']->classID) ?
-									we_shop_shop::OBJECT :
-									($GLOBALS['lv'] instanceof we_listview_document ?
-											we_shop_shop::DOCUMENT :
-											(isset($GLOBALS['we_obj']->ID) ?
-												we_shop_shop::OBJECT :
-												we_shop_shop::DOCUMENT
-											)
-									)
-							)
-						)) .
-						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-							'value' => $articleID
-						)) .
-						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'we_variant',
-							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : '')
-						)) .
-						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 
-							'value' => time()
-						));
+					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
+						'value' => (
+						isset($GLOBALS['lv']->classID) ?
+						we_shop_shop::OBJECT :
+						($GLOBALS['lv'] instanceof we_listview_document ?
+						we_shop_shop::DOCUMENT :
+						(isset($GLOBALS['we_obj']->ID) ?
+						we_shop_shop::OBJECT :
+						we_shop_shop::DOCUMENT
+						)
+						)
+						)
+					)) .
+					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
+						'value' => $articleID
+					)) .
+					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'we_variant',
+						'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : '')
+					)) .
+					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't',
+						'value' => time()
+				));
 			}
 			break;
 		case 'object' :
 		case 'document' :
 			if(!(isset($_REQUEST['edit_' . $type]) && empty($GLOBALS['WE_SESSION_START'])) && isset($_SESSION)){
-                unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
+				unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
 			}
 
 			$formAttribs['onsubmit'] = $onsubmit;
@@ -139,14 +139,14 @@ function we_tag_form(array $attribs){
 				$typetmp = ($type === 'object') ? 'Object' : 'Document';
 
 				if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
-					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
-							getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
-							getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
-								'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
+					$ret .= getHtmlTag('form', $formAttribs, '', false, true) .
+						getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
+						getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
+							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					));
 				}
 			} elseif(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
-					$ret.=getHtmlTag('form', $formAttribs, '', false, true);
+				$ret .= getHtmlTag('form', $formAttribs, '', false, true);
 			}
 			break;
 		case 'formmail' :
@@ -185,34 +185,34 @@ function we_tag_form(array $attribs){
 				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $recipientArray) . ')');
 				$ids = $GLOBALS['DB_WE']->getAll(true);
 
-				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-						'<div class="weHide" style="display: none;">';
-				foreach(array(
-			'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
-			'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
-			'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
-			'recipient' => ($ids ? implode(',', $ids) : ''),
-			'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
-			'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
-			'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
-			'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
-			'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
-			'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
-			'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
-			'confirm_mail' => $confirmmail,
-			'pre_confirm' => $preconfirm,
-			'post_confirm' => $postconfirm,
-			'we_remove' => $remove,
-			'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
-			'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
-			'captchaname' => $captchaname,
-				) as $name => $val){
+				$ret = getHtmlTag('form', $formAttribs, '', false, true);
+				$data = array_filter(array(
+					'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
+					'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
+					'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
+					'recipient' => ($ids ? implode(',', $ids) : ''),
+					'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
+					'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
+					'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
+					'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
+					'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
+					'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
+					'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
+					'confirm_mail' => $confirmmail,
+					'pre_confirm' => $preconfirm,
+					'post_confirm' => $postconfirm,
+					'we_remove' => $remove,
+					'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
+					'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
+					'captchaname' => $captchaname,
+				));
+				$ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => 'data-jwt', 'value' => we_helpers_jwt::encode(we_serialize($data, SERIALIZE_JSON), sha1(SECURITY_ENCRYPTION_KEY)),
+					'xml' => $xml));
+				/*foreach($data as $name => $val){
 					if($val){
-						$ret.=getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
+						$ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
 					}
-				}
-
-				$ret.= '</div>';
+				}*/
 			}
 			break;
 		default :
@@ -228,7 +228,7 @@ function we_tag_form(array $attribs){
 
 
 			if(empty($GLOBALS['we_editmode'])){
-				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
+				$ret .= getHtmlTag('form', $formAttribs, '', false, true);
 			}
 	}
 	return $ret;
