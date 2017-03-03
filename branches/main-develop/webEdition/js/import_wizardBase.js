@@ -168,6 +168,41 @@ function we_cmd() {
 		case 'fileupload_doOnFileSelect':
 			top.setFormField('v[rdofloc]', true, 'radio', 1);
 			break;
+		case 'cycle':
+			top.cycle();
+			break;
+		case 'we_import':
+			top.we_import(args[1], args[2], args[3]);
+			break;
+		case 'set_button_state': 
+			top.set_button_state();
+			break;
+		case 'finish':{
+			top.finish(args[1]);
+			break;
+		}
+		case 'doOnImportFinished':
+			top.doOnImportFinished(args[1]['progressText']);
+			break;
+		case 'addLog_buffered':
+			if(!args[1]){
+				return;
+			}
+
+			for(var i = 0; i < args[1].length; i++){
+				top.addLog(args[1][i]);
+			}
+		case 'setProgress_footer':
+			top.wizbusy.setProgress(Math.floor(args[1]));
+			break;
+		case 'setProgressText_footer':
+			top.wizbusy.setProgressText(args[1], args[2]);
+			break;
+		case 'call_delayed':
+			if(args[1]['function'] && args[1]['delay']){
+				setTimeout(args[1]['function'], args[1]['delay'], args[1]['param_1'],  args[1]['param_2'],  args[1]['param_3']);
+			};
+			break;
 		default:
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -706,6 +741,21 @@ function toggleField(form, fieldName, value) {
 		addField(form, 'hidden', fieldName, value);
 	}
 }
+
+function finish(rebuild) {
+	var std = top.wizbusy.document.getElementById('standardDiv');
+	if(std !== undefined){
+		std.style.display = 'none';
+	}
+	var cls = top.wizbusy.document.getElementById('closeDiv');
+	if(cls !== undefined){
+		 cls.style.display = 'block';
+	}
+	if(rebuild) {
+		new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('import', '[finished_success]') . '","rebuildwin",WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,0,true);
+	}
+}
+
 function cycle() {
 	var cf = window.document.we_form;
 	var bf = top.wizbody.document.we_form;
@@ -718,15 +768,30 @@ function cycle() {
 }
 
 function we_import(mode, cid, reload) {
-	if (reload == 1) {
+	if (reload) {
 		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=WXMLImport&noload=1';
 	}
 
-	var we_form = window.document.we_form;
+	var we_form = top.wizcmd.document.we_form;
 	we_form.elements['v[mode]'].value = mode;
 	we_form.elements['v[cid]'].value = cid;
 	we_form.target = 'wizcmd';
 	we_form.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizcmd';
 	we_form.method = 'post';
 	we_form.submit();
+}
+
+function doOnImportFinished(progressText) {
+	top.wizbusy.setProgressText('pb1', progressText);
+	top.wizbusy.setProgress(100);
+	top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) {
+		WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
+	}
+	if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
+		var progress = top.wizbusy.document.getElementById('progress');
+		if(progress !== undefined){
+			progress.style.display = 'none';
+		}
+	}
 }

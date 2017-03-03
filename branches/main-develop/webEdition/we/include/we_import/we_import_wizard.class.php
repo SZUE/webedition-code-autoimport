@@ -137,31 +137,18 @@ class we_import_wizard{
 	}
 
 	private function getWizBusy(){
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addCmd('set_button_state');
+		$pb = '';
+
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
 			$WE_PB = new we_progressBar(0, 200);
 			$WE_PB->addText($text = g_l('import', '[import_progress]'), we_progressBar::TOP, "pb1");
-			$pb = we_progressBar::getJSCode() .
-				we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
-			$js = we_html_element::jsElement('
-function finish(rebuild) {
-	var std = top.wizbusy.document.getElementById("standardDiv");
-	if(std!==undefined){
-		std.style.display = "none";
-	}
-	var cls = top.wizbusy.document.getElementById("closeDiv");
-	if(cls!==undefined){
-		 cls.style.display = "block";
-	}
-	if(rebuild) {
-		new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('import', '[finished_success]') . '","rebuildwin",WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,0,true);
-	}
-}
-
-top.wizcmd.cycle();
-top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : '') . ');'
-			);
-		} else {
-			$pb = $js = '';
+			$pb = we_progressBar::getJSCode() . we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
+			
+			// make jsCmd => we need a minimal we_cmd on this frame
+			$jsCmd->addCmd('cycle');
+			$jsCmd->addCmd('we_import', 1, '-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : ''), false);
 		}
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel');", '', 0, 0, '', '', false, false);
@@ -172,16 +159,15 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
-		$content->setCol(0, 0, null, $pb);
-		$content->setCol(0, 1, ['style' => "text-align:right"], '
-<div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10) . '</div>
-<div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
+		$content->setCol(0, 0, null, '');
+		$content->setCol(0, 1, ['style' => "text-align:right"],
+				we_html_element::htmlDiv(['id' => 'standardDiv'], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10)) .
+				we_html_element::htmlDiv(['id' => 'closeDiv', 'style' => 'display:none;'], $closeButton)
 		);
 
-		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["class" => "weDialogButtonsBody",
-				"onload" => "top.set_button_state();",
-				'style' => 'overflow:hidden;'
-				], $content->getHtml() . $js
+		echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() . $pb, we_html_element::htmlBody(["class" => "weDialogButtonsBody",
+					'style' => 'overflow:hidden;'
+				], $content->getHtml()
 			)
 		);
 	}
@@ -239,24 +225,20 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 							$this->getHdns("attrs", $attrs);
 					}
 
+					$jsCmd->addCmd('setProgressText_footer', 'pb1', g_l('import', '[prepare_progress]'));
+					$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => -1]);
 
-
-					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h) .
-						we_html_element::jsElement('top.wizbusy.setProgressText("pb1","' . g_l('import', '[prepare_progress]') . '");setTimeout(we_import,15,1,-1);');
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h);
 					break;
 
 				case -1:
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
-
-							echo we_html_element::jsElement('
-if (top.wizbody && top.wizbody.addLog){
-	top.wizbody.addLog("");
-	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '");
-	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[prepare]')) . '");
-	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[import]')) . '");
-}');
-							flush();
+							$jsCmd->addCmd('addLog_buffered', [
+									we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")),
+									we_html_element::htmlB(g_l('import', '[prepare]')),
+									we_html_element::htmlB(g_l('import', '[import]'))
+								]);
 
 							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
 							we_base_file::createLocalFolderByPath($path);
@@ -333,7 +315,9 @@ if (top.wizbody && top.wizbody.addLog){
 					$h .= we_html_element::htmlHiddens(["v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
 							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path]);
 
-					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h) . we_html_element::jsElement("setTimeout(we_import,15,1,0);");
+					$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => 0]);
+
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h);
 					break;
 
 				case $v['numFiles']:
@@ -356,11 +340,7 @@ if (top.wizbody && top.wizbody.addLog){
 								$xmlExIm->loadPerserves();
 								$this->xmlExImSetOpt(xmlExImSetOpt, $v);
 								if($xmlExIm->RefTable->current == 0){
-									echo we_html_element::jsElement('
-if (top.wizbody.addLog){
-	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
-}');
-									flush();
+									$jsCmd->addCmd('addLog_buffered', [we_html_element::htmlB(g_l('import', '[update_links]'))]);
 								}
 
 								$ref = null;
@@ -375,21 +355,20 @@ if (top.wizbody.addLog){
 								if($ref){
 									$xmlExIm->savePerserves();
 
-									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount() . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
+									$jsCmd->addCmd('setProgressText_footer', 'pb1', g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount());
+									$jsCmd->addCmd('setProgress_footer', (int) ((($v['cid'] + $xmlExIm->RefTable->current + 1) / ($xmlExIm->RefTable->getCount() + $v["numFiles"])) * 100));
+									$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => $v['cid']]);
 
-
-									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
-											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
+									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens);
 								} else {
 									//FIXME: if update needs more steps they must be handled here
 									we_updater::doUpdate('internal');
-									$JScript = "
-top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
-setTimeout(we_import,15,1," . $v['numFiles'] . ");";
-								}
-								$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens . we_html_element::jsElement($JScript));
 
+									$jsCmd->addCmd('finish', $xmlExIm->options['rebuild']);
+									$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => $v['numFiles']]);
+								}
+
+								$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens);
 								$xmlExIm->unsetPerserves();
 							} else { // do import
 								$xmlExIm = new we_exim_XMLImport();
@@ -426,28 +405,19 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ?:
 												(g_l('import', '[' . $ref->ContentType . ']', true) ?: '' )
 											) . '  ' . $path_info;
-
-										echo we_html_element::jsElement(
-											'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes($progress_text) . '");
-											}');
-										flush();
+										$jsCmd->addCmd('addLog_buffered', [$progress_text]);
 									} else {
 										$status = g_l('import', '[skip]');
-										echo we_html_element::jsElement(
-											'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]')) . '<br/>");
-											}');
+										$jsCmd->addCmd('addLog_buffered', [g_l('import', '[skip]') . '<br/>']);
 									}
 
 									$counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2);
 
-									$JScript = "
-top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
-top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
+									$jsCmd->addCmd('setProgressText_footer', 'pb1', $status . ' - ' . $counter_text);
+									$jsCmd->addCmd('setProgress_footer', (int) (((intval($v['cid']) + 1) / (2 * intval($v["numFiles"]))) * 100));
+									$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => ($v["cid"] + 1)]);
 
-									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
-											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
+									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens);
 								}
 							}
 							break 2;
@@ -555,14 +525,11 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						}
 					}
 
+					$jsCmd->addCmd('setProgressText_footer', 'pb1', g_l('import', '[import]'));
+					$jsCmd->addCmd('setProgress_footer', (int) (((intval($v['cid']) + 1) / intva($v["numFiles"])) * 100));
+					$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => ($v["cid"] + 1)]);
 
-					$JScript = "
-top.wizbusy.setProgressText('pb1','" . g_l('import', '[import]') . "');
-top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
-
-
-					$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
-							we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens);
 					break;
 			} // end switch
 		} else if($mode != 1){
@@ -576,29 +543,15 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') . $jsCmd->getCmds(), we_html_element::htmlBody(['style' => 'overflow:hidden;'], $out));
 	}
 
-	private function importFinished($v, $type){
-		switch($type){
+	private function importFinished(we_base_jsCmd $jsCmd, $v, $type){
+		$jsCmd->addCmd('doOnImportFinished', ['progressText' => g_l('import', '[finish_progress]')]);
 
-			default:
-				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
-top.wizbusy.setProgress(100);
-top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
-if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
-if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
-progress = top.wizbusy.document.getElementById('progress');
-if(progress!==undefined){
-		progress.style.display = 'none';
-	}
-}" .
-					($v['type'] == we_import_functions::TYPE_WE_XML ? "
-if (top.wizbody && top.wizbody.addLog) {
-	top.wizbody.addLog(\"" . addslashes(we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "\");
-}" :
-					we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close,100);'
-					);
+		if($type = we_import_functions::TYPE_WE_XML){
+			$jsCmd->addCmd('addLog_buffered', [we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))]);
+		} else {
+			$jsCmd->addMsg(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addCmd('call_delayed', ['function' => 'close', 'delay' => 100]);
 		}
-
-		return we_html_element::jsElement($JScript);
 	}
 
 	private function formCategory2(we_base_jsCmd $jsCmd, $obj, $categories){
