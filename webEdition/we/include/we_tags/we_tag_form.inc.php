@@ -43,7 +43,7 @@ function we_tag_form(array $attribs){
 	$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
 	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::WEFILELIST);
 	$onsubmit = weTag_getAttribute('onSubmit', $attribs, weTag_getAttribute('onsubmit', $attribs, '', we_base_request::JS), we_base_request::JS);
-	$remove = weTag_getAttribute('remove', $attribs, '', we_base_request::RAW);
+	$remove = weTag_getAttribute('remove', $attribs, '', we_base_request::STRING_LIST);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 	$formname = weTag_getAttribute('name', $attribs, 'we_global_form', we_base_request::STRING);
 	if(array_key_exists('nameid', $attribs)){ // Bug #3153
@@ -154,8 +154,8 @@ function we_tag_form(array $attribs){
 			break;
 		case 'formmail' :
 			$confirmmail = weTag_getAttribute('confirmmail', $attribs, false, we_base_request::BOOL);
-			$preconfirm = weTag_getAttribute('preconfirm', $attribs, '', we_base_request::STRING);
-			$postconfirm = weTag_getAttribute('postconfirm', $attribs, '', we_base_request::STRING);
+			$preconfirm = $confirmmail ? weTag_getAttribute('preconfirm', $attribs, '', we_base_request::STRING) : '';
+			$postconfirm = $confirmmail ? weTag_getAttribute('postconfirm', $attribs, '', we_base_request::STRING) : '';
 			$onsuccess = weTag_getAttribute('onsuccess', $attribs, 0, we_base_request::INT);
 			$onerror = weTag_getAttribute('onerror', $attribs, 0, we_base_request::INT);
 			$onmailerror = weTag_getAttribute('onmailerror', $attribs, 0, we_base_request::INT);
@@ -163,8 +163,6 @@ function we_tag_form(array $attribs){
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs, 0, we_base_request::INT);
 			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::EMAILLIST);
 
-			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
-			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';
 			if($enctype){
 				$formAttribs['enctype'] = $enctype;
 			}
@@ -188,32 +186,34 @@ function we_tag_form(array $attribs){
 				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $recipientArray) . ')');
 				$ids = $GLOBALS['DB_WE']->getAll(true);
 
-				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-					'<div class="weHide" style="display: none;">';
-				foreach([
-				'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
-				'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
-				'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
-				'recipient' => ($ids ? implode(',', $ids) : ''),
-				'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
-				'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
-				'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
-				'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
-				'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
-				'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
-				'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
-				'confirm_mail' => $confirmmail,
-				'pre_confirm' => $preconfirm,
-				'post_confirm' => $postconfirm,
-				'we_remove' => $remove,
-				'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
-				'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
-				'captchaname' => $captchaname,
-				] as $name => $val){
-					$ret .= $val ? getHtmlTag('input', ['type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml]) : '';
-				}
-
-				$ret .= '</div>';
+				$ret = getHtmlTag('form', $formAttribs, '', false, true);
+				$data = array_filter([
+					'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
+					'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
+					'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
+					'recipient' => ($ids ? implode(',', $ids) : ''),
+					'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
+					'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
+					'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
+					'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
+					'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
+					'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
+					'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
+					'confirm_mail' => $confirmmail,
+					'pre_confirm' => $preconfirm,
+					'post_confirm' => $postconfirm,
+					'we_remove' => $remove,
+					'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
+					'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
+					'captchaname' => $captchaname,
+				]);
+				$ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => 'data-jwt', 'value' => we_helpers_jwt::encode(we_serialize($data, SERIALIZE_JSON), sha1(SECURITY_ENCRYPTION_KEY)),
+					'xml' => $xml));
+				/* foreach($data as $name => $val){
+				  if($val){
+				  $ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
+				  }
+				  } */
 			}
 			break;
 		default :

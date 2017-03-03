@@ -266,7 +266,7 @@ class we_navigation_item{
 			//item is determined
 			return $this->visible;
 		}
-		$this->visible = $this->linkValid;
+		$visible = $this->linkValid;
 
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$filter = new we_navigation_customerFilter();
@@ -274,7 +274,7 @@ class we_navigation_item{
 			$this->customerAccess = $filter->customerHasAccess();
 			$this->visible &= $this->customerAccess;
 		}
-		return $this->visible;
+		return ($this->visible = $visible);
 	}
 
 	public function setLevel(){
