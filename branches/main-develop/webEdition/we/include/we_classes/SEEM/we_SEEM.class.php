@@ -1051,8 +1051,6 @@ abstract class we_SEEM{
 
 			echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['style' => 'background-color:#F3F7FF;'], $table->getHtml()));
 		}
-
-		echo we_html_element::jsElement('parent.openedWithWE=true;');
 	}
 
 	public static function getExtDocHeader(){
