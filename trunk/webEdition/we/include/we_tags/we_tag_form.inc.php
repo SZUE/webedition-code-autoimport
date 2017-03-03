@@ -151,8 +151,8 @@ function we_tag_form(array $attribs){
 			break;
 		case 'formmail' :
 			$confirmmail = weTag_getAttribute('confirmmail', $attribs, false, we_base_request::BOOL);
-			$preconfirm = weTag_getAttribute('preconfirm', $attribs, '', we_base_request::STRING);
-			$postconfirm = weTag_getAttribute('postconfirm', $attribs, '', we_base_request::STRING);
+			$preconfirm = $confirmmail ? weTag_getAttribute('preconfirm', $attribs, '', we_base_request::STRING) : '';
+			$postconfirm = $confirmmail ? weTag_getAttribute('postconfirm', $attribs, '', we_base_request::STRING) : '';
 			$onsuccess = weTag_getAttribute('onsuccess', $attribs, 0, we_base_request::INT);
 			$onerror = weTag_getAttribute('onerror', $attribs, 0, we_base_request::INT);
 			$onmailerror = weTag_getAttribute('onmailerror', $attribs, 0, we_base_request::INT);
@@ -160,8 +160,6 @@ function we_tag_form(array $attribs){
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs, 0, we_base_request::INT);
 			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::EMAILLIST);
 
-			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
-			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';
 			if($enctype){
 				$formAttribs['enctype'] = $enctype;
 			}
@@ -208,11 +206,11 @@ function we_tag_form(array $attribs){
 				));
 				$ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => 'data-jwt', 'value' => we_helpers_jwt::encode(we_serialize($data, SERIALIZE_JSON), sha1(SECURITY_ENCRYPTION_KEY)),
 					'xml' => $xml));
-				/*foreach($data as $name => $val){
-					if($val){
-						$ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
-					}
-				}*/
+				/* foreach($data as $name => $val){
+				  if($val){
+				  $ret .= getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
+				  }
+				  } */
 			}
 			break;
 		default :
