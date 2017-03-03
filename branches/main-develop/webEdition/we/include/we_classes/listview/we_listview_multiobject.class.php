@@ -65,8 +65,8 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 		$data = 0;
 		$found = false;
-		//check if current lv is of we_listview_object
-		if(!empty($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_object){
+		//check if current lv is of we_listview_object/we_listview_multiobject
+		if(!empty($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_objectBase){
 			if(($dat = $GLOBALS['lv']->f($name))){
 				$data = we_unserialize($dat);
 			}
@@ -74,7 +74,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		} elseif(!empty($GLOBALS['we_lv_array'])){
 			//find last we_listview_object in stack
 			foreach(array_reverse($GLOBALS['we_lv_array']) as $cur){
-				if($cur instanceof we_listview_object){
+				if($cur instanceof we_listview_objectBase){
 					if(($dat = $cur->f($name))){
 						$data = we_unserialize($dat);
 					}

@@ -142,7 +142,7 @@ function we_tag_listview(array $attribs){
 	$we_lv_date = we_base_request::_(we_base_request::STRING, 'we_lv_date_' . $name, ($date ?: date('Y-m-d')));
 	$we_lv_weekstart = we_base_request::_(we_base_request::STRING, 'we_lv_weekstart_' . $name, $weekstart);
 
-	$we_lv_cats = ($we_lv_cats === 'we_doc' ? we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']) : $we_lv_cats);
+	$we_lv_cats = ($we_lv_cats === 'we_doc' ? we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']) : path_to_id($we_lv_cats, CATEGORY_TABLE, null, true));
 
 	switch($type){
 		case 'document':

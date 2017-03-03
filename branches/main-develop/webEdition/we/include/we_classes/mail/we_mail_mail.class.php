@@ -164,7 +164,7 @@ class we_mail_mail extends we_mail_znd{
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
 		} else {
-			$this->setFrom('noreply', 'noreply');
+			$this->setFrom(WE_DEFAULT_EMAIL, WE_DEFAULT_EMAIL);
 		}
 
 		$this->setSubject($subject);
