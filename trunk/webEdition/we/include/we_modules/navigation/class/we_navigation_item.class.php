@@ -62,25 +62,25 @@ class we_navigation_item{
 	var $customers;
 	var $items = array();
 
-    /**
-     * we_navigation_item constructor.
-     * @param $id
-     * @param $docid
-     * @param $table
-     * @param $text
-     * @param $display
-     * @param $href
-     * @param $type
-     * @param $icon
-     * @param $attributes
-     * @param $limitaccess
-     * @param string $customers
-     * @param int $CurrentOnUrlPar
-     * @param int $CurrentOnAnker
-     * @param int $currentOnCat
-     * @param string $catParam
-     */
-    function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = ''){
+	/**
+	 * we_navigation_item constructor.
+	 * @param $id
+	 * @param $docid
+	 * @param $table
+	 * @param $text
+	 * @param $display
+	 * @param $href
+	 * @param $type
+	 * @param $icon
+	 * @param $attributes
+	 * @param $limitaccess
+	 * @param string $customers
+	 * @param int $CurrentOnUrlPar
+	 * @param int $CurrentOnAnker
+	 * @param int $currentOnCat
+	 * @param string $catParam
+	 */
+	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = ''){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
@@ -130,27 +130,27 @@ class we_navigation_item{
 		}
 	}
 
-    function __wakeup(){
+	function __wakeup(){
 		//need to reset customer access if the object was serialized (in cache)
 		$this->customerAccess = true;
 		$this->visible = -1;
 		//leave linkValid, since on publish the cache is regenerated
 	}
 
-    /**
-     * @param $item
-     */
-    function addItem(we_navigation_item &$item){
+	/**
+	 * @param $item
+	 */
+	function addItem(we_navigation_item &$item){
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
 		$item->position = count($this->items);
 	}
 
-    /**
-     * @param we_navigation_items $weNavigationItems
-     */
-    function setCurrent(we_navigation_items &$weNavigationItems){
+	/**
+	 * @param we_navigation_items $weNavigationItems
+	 */
+	function setCurrent(we_navigation_items &$weNavigationItems){
 		$this->current = true;
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
@@ -159,11 +159,11 @@ class we_navigation_item{
 		}
 	}
 
-    /**
-     * @param we_navigation_items $weNavigationItems
-     * @param bool $self
-     */
-    function unsetCurrent(we_navigation_items &$weNavigationItems, $self = true){
+	/**
+	 * @param we_navigation_items $weNavigationItems
+	 * @param bool $self
+	 */
+	function unsetCurrent(we_navigation_items &$weNavigationItems, $self = true){
 		if($self){
 			$this->current = false;
 		}
@@ -176,11 +176,11 @@ class we_navigation_item{
 		}
 	}
 
-    /**
-     * @param we_navigation_items $weNavigationItems
-     * @return bool
-     */
-    function isCurrent(we_navigation_items $weNavigationItems){
+	/**
+	 * @param we_navigation_items $weNavigationItems
+	 * @return bool
+	 */
+	function isCurrent(we_navigation_items $weNavigationItems){
 //FIXME do we need this any more since $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_obj'] in case of OBJECT_FILES_TABLE ??
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -195,66 +195,66 @@ class we_navigation_item{
 				break;
 		}
 
-        if(isset($id) && ($this->docid == $id)){
-            if(isset($_SERVER['REQUEST_URI'])){
-			    $urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
-				$path_parts=pathinfo($urlPath);
+		if(isset($id) && ($this->docid == $id)){
+			if(isset($_SERVER['REQUEST_URI'])){
+				$urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
+				$path_parts = pathinfo($urlPath);
 			}
 
-            $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
-                (isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-                    rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
-                    '');
+			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
+				(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
+				'');
 
-            if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
-                static $uri = null;
-                static $uriarrq = array();
-                $refarrq = array();
+			if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
+				static $uri = null;
+				static $uriarrq = array();
+				$refarrq = array();
 
-                $uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
-                $ref = parse_url(str_replace('&amp;', '&', $this->href));
-                if(!empty($uri['query']) && !$uriarrq){
-                    parse_str($uri['query'], $uriarrq);
-                }
-                if(!empty($ref['query'])){
-                    parse_str($ref['query'], $refarrq);
-                }
-                if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
-                    //remove other param tha "anchors" or catParams respectively
-                    $tmpUriarrq = $tmpRefarrq = array();
-                    if($this->CurrentOnAnker){
-                        $tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
-                        $tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
-                    }
-                    if($this->currentOnCat){
-                        $tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
-                        $tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
-                    }
-                } else {
-                    $tmpUriarrq = $uriarrq;
-                    $tmpRefarrq = $refarrq;
-                }
+				$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
+				$ref = parse_url(str_replace('&amp;', '&', $this->href));
+				if(!empty($uri['query']) && !$uriarrq){
+					parse_str($uri['query'], $uriarrq);
+				}
+				if(!empty($ref['query'])){
+					parse_str($ref['query'], $refarrq);
+				}
+				if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
+					//remove other param tha "anchors" or catParams respectively
+					$tmpUriarrq = $tmpRefarrq = array();
+					if($this->CurrentOnAnker){
+						$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
+						$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
+					}
+					if($this->currentOnCat){
+						$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
+						$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
+					}
+				} else {
+					$tmpUriarrq = $uriarrq;
+					$tmpRefarrq = $refarrq;
+				}
 
-                $allfound = true;
-                //current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
-                foreach($tmpRefarrq as $key => $val){
-                    $allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
-                }
+				$allfound = true;
+				//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
+				foreach($tmpRefarrq as $key => $val){
+					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
+				}
 
-                if($allfound){
-                    $this->setCurrent($weNavigationItems);
-                } elseif($this->current){
-                    $this->unsetCurrent($weNavigationItems);
-                }
+				if($allfound){
+					$this->setCurrent($weNavigationItems);
+				} elseif($this->current){
+					$this->unsetCurrent($weNavigationItems);
+				}
 
-                return $allfound;
-            }
+				return $allfound;
+			}
 
-            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri)!==false)){
-                $this->setCurrent($weNavigationItems);
-                return true;
-            }
-        }
+			if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
+				$this->setCurrent($weNavigationItems);
+				return true;
+			}
+		}
 
 		if($this->current){
 			$this->unsetCurrent($weNavigationItems);
@@ -262,35 +262,35 @@ class we_navigation_item{
 		return false;
 	}
 
-    /**
-     * @return bool|int
-     */
-    public function isVisible(){
+	/**
+	 * @return bool|int
+	 */
+	public function isVisible(){
 		if($this->visible != -1){
 			//item is determined
 			return $this->visible;
 		}
-		$this->visible = $this->linkValid;
+		$visible = $this->linkValid;
 
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$filter = new we_navigation_customerFilter();
 			$filter->initByNavItem($this);
 			$this->customerAccess = $filter->customerHasAccess();
-			$this->visible &=$this->customerAccess;
+			$visible &= $this->customerAccess;
 		}
-		return $this->visible;
+		return ($this->visible = $visible);
 	}
 
-    public function setLevel(){
+	public function setLevel(){
 		self::$currentPosition[$this->level] = 0;
 	}
 
-    /**
-     * @param $weNavigationItems
-     * @param bool $depth
-     * @return string
-     */
-    function writeItem(&$weNavigationItems, $depth = false){
+	/**
+	 * @param $weNavigationItems
+	 * @param bool $depth
+	 * @return string
+	 */
+	function writeItem(&$weNavigationItems, $depth = false){
 		if(!isset(self::$currentPosition[$this->level])){
 			self::$currentPosition[$this->level] = 0;
 		}
@@ -321,7 +321,7 @@ class we_navigation_item{
 		self::$currentPosition[$this->level] ++;
 		ob_start();
 
-        //FIXME:eval
+		//FIXME:eval
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_clean();
 
@@ -330,20 +330,20 @@ class we_navigation_item{
 		return $executeContent;
 	}
 
-    /**
-     * @param $attribs
-     * @return string
-     */
-    function getNavigationField($attribs){
+	/**
+	 * @param $attribs
+	 * @return string
+	 */
+	function getNavigationField($attribs){
 		$fieldname = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 		$compl = weTag_getAttribute('complete', $attribs, '', we_base_request::STRING);
 		// name
 		if($fieldname){
 			$val = (!empty($this->$fieldname) ?
-					$this->$fieldname :
-					(!empty($this->attributes[$fieldname]) ?
-						$this->attributes[$fieldname] :
-						''));
+				$this->$fieldname :
+				(!empty($this->attributes[$fieldname]) ?
+				$this->attributes[$fieldname] :
+				''));
 			switch($fieldname){
 				case 'title':
 					return oldHtmlspecialchars($val);
@@ -393,11 +393,11 @@ class we_navigation_item{
 		return $code;
 	}
 
-    /**
-     * @param $attribs
-     * @return array
-     */
-    function getNavigationFieldAttributes($attribs){
+	/**
+	 * @param $attribs
+	 * @return array
+	 */
+	function getNavigationFieldAttributes($attribs){
 		$attr = weTag_getAttribute('attributes', $attribs, '', we_base_request::STRING);
 		if($attr){
 			$fields = makeArrayFromCSV($attr);
@@ -423,12 +423,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-										oldHtmlspecialchars($this->$field) :
-										$this->$field);
+									oldHtmlspecialchars($this->$field) :
+									$this->$field);
 							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-										$this->attributes[$field] :
-										oldHtmlspecialchars($this->attributes[$field]));
+									$this->attributes[$field] :
+									oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -473,10 +473,10 @@ class we_navigation_item{
 		return $attribs;
 	}
 
-    /**
-     * @param $attributes
-     */
-    function getPopupJs(&$attributes){
+	/**
+	 * @param $attributes
+	 */
+	function getPopupJs(&$attributes){
 		$js = 'var we_winOpts;';
 
 		if(!empty($this->attributes['popup_center']) && !empty($this->attributes['popup_width']) && !empty($this->attributes['popup_height'])){
