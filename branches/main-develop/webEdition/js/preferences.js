@@ -462,7 +462,7 @@ function show_seem_chooser(val) {
 			}
 			break;
 		case 'object':
-			if (WE().consts.tables.OBJECT_FILES_TABLE) {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				if (document.getElementById('selectordummy')) {
 					document.getElementById('selectordummy').style.display = 'none';
 				}
@@ -504,7 +504,7 @@ function selectSidebarDoc() {
 function select_seem_start() {
 	var myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
 	if (document.getElementById('seem_start_type').value == 'object') {
-		if (WE().consts.tables.OBJECT_FILES_TABLE) {
+		if (WE().consts.modules.active.indexOf("object") > 0) {
 			window.parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
 	} else {

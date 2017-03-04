@@ -141,7 +141,7 @@ function show_seem_chooser(val) {
 			document.getElementById('seem_start_weapp').style.display = 'none';
 			break;
 		case 'object':
-			if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				document.getElementById('seem_start_document').style.display = 'none';
 				document.getElementById('seem_start_weapp').style.display = 'none';
 				document.getElementById('seem_start_object').style.display = 'block';

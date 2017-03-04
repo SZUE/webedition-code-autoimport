@@ -107,7 +107,7 @@ function closeAllSelection() {
 function closeAllType() {
 	var elem = document.getElementById("doctype");
 	elem.style.display = "none";
-	if (WE().consts.tables.OBJECT_TABLE) {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		elem = document.getElementById("classname");
 		elem.style.display = "none";
 	}

@@ -88,14 +88,14 @@ function doClicked(checked, opt) {
 				}
 				break;
 			case 30:
-				if (WE().consts.tables.SHOP_ORDER_TABLE && WE().consts.tables.CUSTOMER_TABLE && !document.we_form.handle_customer.checked) {
+				if (WE().consts.modules.active.indexOf("shop") > 0 && WE().consts.modules.active.indexOf("customer") > 0 && !document.we_form.handle_customer.checked) {
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
 					WE().util.showMessage(WE().consts.g_l.backupWizard.shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 35:
-				if (WE().consts.tables.WORKFLOW_TABLE && !document.we_form.handle_user.checked || !document.we_form.handle_core.checked) {
+				if (WE().consts.modules.active.indexOf("workflow") > 0 && !document.we_form.handle_user.checked || !document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_user.value = 1;
@@ -104,14 +104,14 @@ function doClicked(checked, opt) {
 				}
 				break;
 			case 40:
-				if (WE().consts.tables.MESSAGES_TABLE && !document.we_form.handle_user.checked) {
+				if (WE().consts.modules.active.indexOf("messaging") > 0 && !document.we_form.handle_user.checked) {
 					document.we_form.handle_user.value = 1;
 					document.we_form.handle_user.checked = true;
 					WE().util.showMessage(WE().consts.g_l.backupWizard.todo_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 45:
-				if (WE().consts.tables.NEWSLETTER_TABLE && WE().consts.tables.CUSTOMER_TABLE && !document.we_form.handle_customer.checked || !document.we_form.handle_core.checked || !document.we_form.handle_object.checked) {
+				if (WE().consts.modules.active.indexOf("newsletter") > 0 && WE().consts.modules.active.indexOf("customer") > 0 && !document.we_form.handle_customer.checked || !document.we_form.handle_core.checked || !document.we_form.handle_object.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_object.value = 1;
@@ -122,7 +122,7 @@ function doClicked(checked, opt) {
 				}
 				break;
 			case 50:
-				if (WE().consts.tables.BANNER_TABLE && !document.we_form.handle_core.checked) {
+				if (WE().consts.modules.active.indexOf("banner") > 0 && !document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
 					WE().util.showMessage(WE().consts.g_l.backupWizard.banner_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -136,19 +136,19 @@ function doClicked(checked, opt) {
 		tmpMess;
 	switch (opt) {
 		case 10:
-			if (WE().consts.tables.WORKFLOW_TABLE && document.we_form.elements.handle_workflow.checked) {
+			if (WE().consts.modules.active.indexOf("workflow") > 0 && document.we_form.elements.handle_workflow.checked) {
 				document.we_form.elements.handle_workflow.checked = false;
 				mess += "\n-" + WE().consts.g_l.backupWizard.workflow_data;
 			}
-			if (WE().consts.tables.NEWSLETTER_TABLE && document.we_form.elements.handle_newsletter.checked) {
+			if (WE().consts.modules.active.indexOf("newsletter") > 0 && document.we_form.elements.handle_newsletter.checked) {
 				document.we_form.elements.handle_newsletter.checked = false;
 				mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
 			}
-			if (WE().consts.tables.BANNER_TABLE && document.we_form.elements.handle_banner.checked) {
+			if (WE().consts.modules.active.indexOf("banner") > 0 && document.we_form.elements.handle_banner.checked) {
 				document.we_form.elements.handle_banner.checked = false;
 				mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
 			}
-			if (WE().consts.tables.SCHEDULE_TABLE && document.we_form.elements.handle_schedule.checked) {
+			if (WE().consts.modules.active.indexOf("schedule") > 0 && document.we_form.elements.handle_schedule.checked) {
 				document.we_form.elements.handle_schedule.checked = false;
 				mess += "\n-" + WE().consts.g_l.backupWizard.schedule_data;
 			}
@@ -176,8 +176,8 @@ function doClicked(checked, opt) {
 			break;
 
 		case 11:
-			if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
-				if (WE().consts.tables.SCHEDULE_TABLE && document.we_form.elements.handle_schedule.checked) {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
+				if (WE().consts.modules.active.indexOf("schedule") > 0 && document.we_form.elements.handle_schedule.checked) {
 					document.we_form.elements.handle_schedule.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.schedule_data;
 				}
@@ -196,7 +196,7 @@ function doClicked(checked, opt) {
 			}
 			break;
 		case 12:
-			if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				if (document.we_form.elements.handle_versions_binarys.checked) {
 					document.we_form.elements.handle_versions_binarys.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.versions_binarys_data;
@@ -215,12 +215,12 @@ function doClicked(checked, opt) {
 			}
 			break;
 		case 20:
-			if (WE().consts.tables.WORKFLOW_TABLE) {
+			if (WE().consts.modules.active.indexOf("workflow") > 0) {
 				if (document.we_form.elements.handle_workflow.checked) {
 					document.we_form.elements.handle_workflow.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.workflow_data;
 				}
-				if (WE().consts.tables.MESSAGES_TABLE && document.we_form.elements.handle_todo.checked) {
+				if (WE().consts.modules.active.indexOf("messaging") > 0 && document.we_form.elements.handle_todo.checked) {
 					document.we_form.elements.handle_todo.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.todo_data;
 				}
@@ -231,12 +231,12 @@ function doClicked(checked, opt) {
 			}
 			break;
 		case 25:
-			if (WE().consts.tables.CUSTOMER_TABLE) {
-				if (WE().consts.tables.SHOP_ORDER_TABLE && document.we_form.elements.handle_shop.checked) {
+			if (WE().consts.modules.active.indexOf("customer") > 0) {
+				if (WE().consts.modules.active.indexOf("shop") > 0 && document.we_form.elements.handle_shop.checked) {
 					document.we_form.elements.handle_shop.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.shop_data;
 				}
-				if (WE().consts.tables.NEWSLETTER_TABLE && document.we_form.elements.handle_newsletter.checked) {
+				if (WE().consts.modules.active.indexOf("newsletter") > 0 && document.we_form.elements.handle_newsletter.checked) {
 					document.we_form.elements.handle_newsletter.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
 				}

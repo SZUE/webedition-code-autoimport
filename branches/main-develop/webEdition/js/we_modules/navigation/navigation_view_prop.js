@@ -152,14 +152,14 @@ function closeAllSelection() {
 
 function closeAllType() {
 	setVisible("doctype", false);
-	if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		setVisible("classname", false);
 	}
 }
 
 function closeAllStats() {
 	setVisible("docLink", false);
-	if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		setVisible("objLink", false);
 		setVisible("objLinkWorkspace", false);
 	}
@@ -388,7 +388,7 @@ function onSelectionTypeChangeJS(value) {
 	}
 	switch (value) {
 		case WE().consts.navigation.DYN_CLASS:
-			if ((WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE")) {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				document.we_form.elements.ClassID.selectedIndex = 0;
 				onSelectionClassChangeJS(document.we_form.elements.ClassID.options[0].value);
 			}

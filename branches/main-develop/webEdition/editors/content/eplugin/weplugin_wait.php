@@ -26,6 +26,7 @@ we_html_tools::protect();
 
 $callback = we_base_request::_(we_base_request::JS, 'callback');
 
+//leave js
 echo we_html_tools::getHtmlTop('', '', '',
 	we_html_element::jsElement('
 var g_l={

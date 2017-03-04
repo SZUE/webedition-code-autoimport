@@ -101,7 +101,7 @@ WE().layout.sidebar = {
 		});
 	},
 	openObject: function (obj) {
-		if (WE().consts.tables.OBJECT_FILES_TABLE) {
+		if (WE().consts.modules.active.indexOf("object") > 0) {
 			this._open({
 				table: WE().consts.tables.OBJECT_FILES_TABLE,
 				ct: "objectFile"
@@ -114,7 +114,7 @@ WE().layout.sidebar = {
 		});
 	},
 	openClass: function (obj) {
-		if (WE().consts.tables.OBJECT_TABLE) {
+		if (WE().consts.modules.active.indexOf("object") > 0) {
 			this._open({
 				table: WE().consts.tables.OBJECT_TABLE,
 				ct: "object"

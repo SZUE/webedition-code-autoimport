@@ -48,7 +48,7 @@ window.setInterval(function () {
 				}
 			}
 
-			if (WE().consts.tables.MESSAGES_TABLE) {
+			if (WE().consts.modules.active.indexOf("messaging") > 0) {
 				if (top.header_msg_update) {
 					var newmsg_count = result.DataArray.newmsg_count;
 					var newtodo_count = result.DataArray.newtodo_count;
