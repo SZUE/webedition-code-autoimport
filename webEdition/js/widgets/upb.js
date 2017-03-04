@@ -49,7 +49,7 @@ function init() {
 function getBinary() {
 	var _fo = document.forms[0];
 	var oChbx = _fo.elements.chbx_type;
-	if (WE().consts.tables.FILE_TABLE && WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE' && WE().util.hasPerm('CAN_SEE_OBJECTFILES')) {
+	if (WE().consts.tables.FILE_TABLE && WE().consts.modules.active.indexOf("object") > 0 && WE().util.hasPerm('CAN_SEE_OBJECTFILES')) {
 		var iChbxLen = oChbx.length;
 		var sBinary = '';
 		for (var i = 0; i < iChbxLen; i++) {

@@ -69,7 +69,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true);
 			break;
 		case 'add_docCat':
-			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				caller.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
 			found = false;
@@ -174,10 +174,11 @@ function we_cmd() {
 		case 'we_import':
 			top.we_import(args[1], args[2], args[3]);
 			break;
-		case 'set_button_state': 
+		case 'set_button_state':
 			top.set_button_state();
 			break;
-		case 'finish':{
+		case 'finish':
+		{
 			top.finish(args[1]);
 			break;
 		}
@@ -185,11 +186,11 @@ function we_cmd() {
 			top.doOnImportFinished(args[1]['progressText']);
 			break;
 		case 'addLog_buffered':
-			if(!args[1]){
+			if (!args[1]) {
 				return;
 			}
 
-			for(var i = 0; i < args[1].length; i++){
+			for (var i = 0; i < args[1].length; i++) {
 				top.addLog(args[1][i]);
 			}
 		case 'setProgress_footer':
@@ -199,9 +200,10 @@ function we_cmd() {
 			top.wizbusy.setProgressText(args[1], args[2]);
 			break;
 		case 'call_delayed':
-			if(args[1]['function'] && args[1]['delay']){
-				setTimeout(args[1]['function'], args[1]['delay'], args[1]['param_1'],  args[1]['param_2'],  args[1]['param_3']);
-			};
+			if (args[1]['function'] && args[1]['delay']) {
+				setTimeout(args[1]['function'], args[1]['delay'], args[1]['param_1'], args[1]['param_2'], args[1]['param_3']);
+			}
+			;
 			break;
 		default:
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -564,7 +566,7 @@ function doNext_GXMLImportStep1() {
 		f.elements['v[we_TemplateID]'].value = f.elements.noDocTypeTemplateId.value;
 	}
 
-	if (WE().consts.tables.OBJECT_TABLE) {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		if ((f.elements['v[import_type]'][0].checked && f.elements['v[we_TemplateID]'].value !== "0") || (f.elements['v[import_type]'][1].checked)) {
 			f.step.value = 2;
 			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
@@ -630,7 +632,7 @@ function handleEvent_CSVImportStep_2(evt) {
 					f.elements['v[we_TemplateID]'].value = f.elements.DocTypeTemplateId.value;
 				}
 			}
-			if (WE().consts.tables.OBJECT_TABLE) {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				if (f.elements['v[import_from]'].value !== '/' && ((f.elements['v[import_type]'][0].checked && f.elements['v[we_TemplateID]'].value !== "0") || (f.elements['v[import_type]'][1].checked))) {
 					f.step.value = 3;
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
@@ -744,15 +746,15 @@ function toggleField(form, fieldName, value) {
 
 function finish(rebuild) {
 	var std = top.wizbusy.document.getElementById('standardDiv');
-	if(std !== undefined){
+	if (std !== undefined) {
 		std.style.display = 'none';
 	}
 	var cls = top.wizbusy.document.getElementById('closeDiv');
-	if(cls !== undefined){
-		 cls.style.display = 'block';
+	if (cls !== undefined) {
+		cls.style.display = 'block';
 	}
-	if(rebuild) {
-		new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('import', '[finished_success]') . '","rebuildwin",WE().consts.size.dialog.small,WE().consts.size.dialog.tiny,true,0,true);
+	if (rebuild) {
+		new (WE().util.jsWindow)(top.opener, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('import', '[finished_success]') . '", "rebuildwin", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, 0, true);
 	}
 }
 
@@ -784,13 +786,13 @@ function we_import(mode, cid, reload) {
 function doOnImportFinished(progressText) {
 	top.wizbusy.setProgressText('pb1', progressText);
 	top.wizbusy.setProgress(100);
-	top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
-	if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) {
+	top.opener.top.we_cmd('load', top.opener.top.treeData.table, 0);
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) {
 		WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
 	}
-	if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
+	if (top.wizbusy && top.wizbusy.document.getElementById('progress')) {
 		var progress = top.wizbusy.document.getElementById('progress');
-		if(progress !== undefined){
+		if (progress !== undefined) {
 			progress.style.display = 'none';
 		}
 	}

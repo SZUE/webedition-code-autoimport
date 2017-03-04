@@ -164,11 +164,11 @@ function we_cmd() {
 					top.content.editor.edbody.document.we_form.selDocs_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.FILE_TABLE];
 					top.content.editor.edbody.document.we_form.selTempl_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.TEMPLATES_TABLE];
 
-					if (WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE") {
+					if (WE().consts.modules.active.indexOf("object") > 0) {
 						top.content.editor.edbody.document.we_form.selObjs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE].join(",");
 						top.content.editor.edbody.document.we_form.selObjs_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.OBJECT_FILES_TABLE];
 					}
-					if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
+					if (WE().consts.modules.active.indexOf("object") > 0) {
 						top.content.editor.edbody.document.we_form.selClasses.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_TABLE].join(",");
 						top.content.editor.edbody.document.we_form.selClasses_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.OBJECT_TABLE];
 					}

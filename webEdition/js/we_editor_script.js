@@ -337,7 +337,7 @@ function we_cmd() {
 			break;
 		case "spellcheck":
 			if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(caller, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
+				new (WE().util.jsWindow)(caller, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
 			}
 			break;
 		case "updateCollectionItem":

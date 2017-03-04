@@ -1,4 +1,4 @@
-/* global WE, CropTool, _EditorFrame */
+/* global WE, CropTool, _EditorFrame, top */
 
 /**
  * webEdition SDK
@@ -55,10 +55,10 @@ function we_submit() {
 		case 3:
 			top.body.document.we_form.selDocs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.FILE_TABLE].join(',');
 			top.body.document.we_form.selTempl.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.TEMPLATES_TABLE].join(',');
-			if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				top.body.we_form.selObjs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE].join(',');
 			}
-			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
+			if (WE().consts.modules.active.indexOf("object") > 0) {
 				top.body.we_form.selClasses.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_TABLE].join(',');
 			}
 			top.body.we_form.submit();
@@ -96,12 +96,12 @@ function setHead(tab) { // step 3
 	elTt = top.body.document.getElementById(WE().consts.tables.TEMPLATES_TABLE);
 	elTt.style.backgroundColor = c[1];
 	elTt.style.fontWeight = fw[1];
-	if (WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE') {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		elOft = top.body.document.getElementById(WE().consts.tables.OBJECT_FILES_TABLE);
 		elOft.style.backgroundColor = c[2];
 		elOft.style.fontWeight = fw[2];
 	}
-	if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
+	if (WE().consts.modules.active.indexOf("object") > 0) {
 		elOt = top.body.document.getElementById(WE().consts.tables.OBJECT_TABLE);
 		elOt.style.backgroundColor = c[3];
 		elOt.style.fontWeight = fw[3];
@@ -231,7 +231,7 @@ function we_cmd() {
 		case 'setTable':
 			switch (args[1].art) {
 				case 'objects':
-					top.table = WE().consts.tables.OBJECT_FILES_TABLE !== 'OBJECT_FILES_TABLE' ? WE().consts.tables.OBJECT_FILES_TABLE : '';
+					top.table = WE().consts.modules.active.indexOf("object")>0 ? WE().consts.tables.OBJECT_FILES_TABLE : '';
 					break;
 				case 'docs':
 					top.table = WE().consts.tables.FILE_TABLE;
