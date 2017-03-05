@@ -1,6 +1,12 @@
 <?php
-//NOTE you are inside the constructor of weTagData.class.php
-$this->Exists =false;
+/**
+ * //NOTE you are inside the constructor of weTagData.class.php
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+*/$this->Exists =false;
 /* TODO
 $this->NeedsEndTag = true;
 $this->Groups[] = 'if_tags';

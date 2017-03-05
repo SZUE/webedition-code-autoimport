@@ -1,7 +1,12 @@
 <?php
-
-//NOTE you are inside the constructor of weTagData.class.php
-
+/**
+ * //NOTE you are inside the constructor of weTagData.class.php
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ */
 $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
@@ -18,13 +23,12 @@ if(defined('WE_SHOP_VAT_TABLE')){
 			new weTagDataOption('is_fallback_to_prefs'),
 			new weTagDataOption('is_country_fallback_to_prefs')
 			], false, '');
-
 	}
 
 	$options = [];
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){
-		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
+		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory . ')', $vat->id);
 	}
 	$this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
 

@@ -63,13 +63,23 @@ class weTagData{
 	private function __construct($tagName){
 		$this->Name = $tagName;
 		try{
+			$file = 'we_tag_' . $tagName . '.inc.php';
+			$fileAlt = 'we_tag_' . str_replace('Not', '', $tagName) . '.inc.php';
 			// include the selected tag, its either normal, or custom tag
-			if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
+			if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/' . $file)){
 				$this->Exists = true;
-				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
-			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/' . $file);
+			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/' . $fileAlt)){
 				$this->Exists = true;
-				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/' . $fileAlt);
+			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/' . $file)){
+				$this->Exists = true;
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/' . $file);
+				$this->Groups[] = 'custom';
+				$this->noDocuLink = true;
+			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/' . $fileAlt)){
+				$this->Exists = true;
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/' . $fileAlt);
 				$this->Groups[] = 'custom';
 				$this->noDocuLink = true;
 			} else {
@@ -228,8 +238,8 @@ class weTagData{
 		$attribs = [];
 		foreach($this->UsedAttributes as $attrib){
 			$attribs[] = ($idPrefix ?
-					$attrib->getIdName() :
-					$attrib->getName()
+				$attrib->getIdName() :
+				$attrib->getName()
 				);
 		}
 		return $attribs;
