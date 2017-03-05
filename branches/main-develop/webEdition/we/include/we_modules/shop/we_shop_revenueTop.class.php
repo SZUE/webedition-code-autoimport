@@ -43,8 +43,8 @@ abstract class we_shop_revenueTop{
 
 	private static function getTitleLink($text, $orderKey){
 		$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
-		$href = $_SERVER['SCRIPT_NAME'] .
-				'?ViewYear=' . $GLOBALS['selectedYear'] .
+		$href = WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_revenueTop'.
+				'&ViewYear=' . $GLOBALS['selectedYear'] .
 				'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 				'&orderBy=' . $orderKey .
 				'&actPage=' . $GLOBALS['actPage'] .
@@ -54,8 +54,8 @@ abstract class we_shop_revenueTop{
 	}
 
 	private static function getPagerLink(){
-		return $_SERVER['SCRIPT_NAME'] .
-				'?ViewYear=' . $GLOBALS['selectedYear'] .
+		return WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_revenueTop'.
+				'&ViewYear=' . $GLOBALS['selectedYear'] .
 				'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 				'&orderBy=' . $GLOBALS['orderBy'] .
 				(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
