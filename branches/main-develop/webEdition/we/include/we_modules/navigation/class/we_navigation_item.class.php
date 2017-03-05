@@ -140,7 +140,7 @@ class we_navigation_item{
 	/**
 	 * @param $item
 	 */
-	function addItem(we_navigation_items &$item){
+	function addItem(we_navigation_item &$item){
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
@@ -196,13 +196,15 @@ class we_navigation_item{
 		}
 
 		if(isset($id) && ($this->docid == $id)){
-			if(isset($_SERVER['REQUEST_URI'])){
-				$urlPath = parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH);
-				$path_parts = pathinfo($urlPath);
-			}
+			$urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
+				urldecode($_SERVER['REDIRECT_URL']) :
+				(isset($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
+				'');
+			$path_parts = pathinfo($urlLookingFor);
 			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
 				(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlPath), '/') :
+				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlLookingFor), '/') :
 				'');
 			if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
 				static $uri = null;
@@ -272,7 +274,7 @@ class we_navigation_item{
 			$filter = new we_navigation_customerFilter();
 			$filter->initByNavItem($this);
 			$this->customerAccess = $filter->customerHasAccess();
-			$this->visible &= $this->customerAccess;
+			$visible &= $this->customerAccess;
 		}
 		return ($this->visible = $visible);
 	}
