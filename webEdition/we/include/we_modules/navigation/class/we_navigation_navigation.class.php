@@ -814,9 +814,7 @@ class we_navigation_navigation extends we_base_model{
 
 	function initByRawData($data){
 		foreach($data as $key => $value){
-			if(!is_numeric($key)){
-				$this->$key = in_array($key, $this->serializedFields) ? we_unserialize($value) : $value;
-			}
+			$this->$key = in_array($key, $this->serializedFields) ? we_unserialize($value) : $value;
 		}
 	}
 

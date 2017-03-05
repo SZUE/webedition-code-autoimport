@@ -403,7 +403,7 @@ class we_navigation_items{
 		$ids = array();
 
 		$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
-		while($db->next_record()){
+		while($db->next_record(MYSQLI_ASSOC)){
 			$tmpItem = $db->getRecord();
 			$tmpItem['Name'] = $tmpItem['Text'];
 			self::$Storage['items'][] = $tmpItem;
