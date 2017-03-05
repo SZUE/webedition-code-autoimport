@@ -40,8 +40,8 @@ abstract class we_shop_articleExtend{
 	/*	 * ************ fuction for orders  ************** */
 
 	private static function getTitleLinkObj($text, $orderKey){
-		$href = $_SERVER['SCRIPT_NAME'] .
-				'?typ=' . self::$typeObj.
+		$href = WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
+				'&typ=' . self::$typeObj.
 				'&orderBy=' . $orderKey .
 				'&ViewClass=' . self::$classid.
 				'&actPage=' . self::$actPage .
@@ -52,8 +52,8 @@ abstract class we_shop_articleExtend{
 
 	private static function getPagerLinkObj(){
 
-		return $_SERVER['SCRIPT_NAME'] .
-				'?typ=' . self::$typeObj.
+		return WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
+				'&typ=' . self::$typeObj.
 				'&orderBy=' . self::$orderBy .
 				'&ViewClass=' . self::$classid .
 				'&actPage=' . self::$actPage .
@@ -62,8 +62,8 @@ abstract class we_shop_articleExtend{
 
 	private static function getTitleLinkDoc($text, $orderKey){
 
-		$href = $_SERVER['SCRIPT_NAME'] .
-				'?typ=' . self::$typeDoc .
+		$href = WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
+				'&typ=' . self::$typeDoc .
 				'&orderBy=' . $orderKey .
 				'&actPage=' . self::$actPage .
 				( (self::$orderBy == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
@@ -81,8 +81,8 @@ abstract class we_shop_articleExtend{
 	}
 
 	private static function getPagerLinkDoc(){
-		return $_SERVER['SCRIPT_NAME'] .
-				'?typ=' .self::$typeDoc .
+		return WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
+				'&typ=' .self::$typeDoc .
 				'&orderBy=' . self::$orderBy .
 				'&actPage=' . self::$actPage .
 				(we_base_request::_(we_base_request::BOOL, 'orderdesc') ? '&orderDesc=1' : '' );
@@ -99,7 +99,7 @@ abstract class we_shop_articleExtend{
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
+		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend&typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
 
 		if($fe){
 			$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' WHERE ID IN (' . implode(',', $fe) . ')');

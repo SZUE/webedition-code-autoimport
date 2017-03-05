@@ -44,7 +44,7 @@ class we_cache_file implements we_cache_base{
 	}
 
 	public static function save($entry, array $data, $expiry = 3600){
-		$ser = we_serialize($data, SERIALIZE_JSON);
+		$ser = we_serialize($data, SERIALIZE_PHP); //keep this php, since encoding etc. works better & faster in all modes
 		we_base_file::save(WE_CACHE_PATH . 'we_cache_' . $entry, (strlen($ser) > 1024 ? gzcompress($ser, 6) : $ser));
 		we_base_file::insertIntoCleanUp(WE_CACHE_DIR . 'we_cache_' . $entry, $expiry);
 	}
