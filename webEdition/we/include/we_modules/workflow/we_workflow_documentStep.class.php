@@ -163,7 +163,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc, $this->db);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
@@ -195,7 +195,7 @@ class we_workflow_documentStep extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc, $this->db);
 			return true;
 		}
 		return false;
@@ -209,7 +209,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc, $this->db);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
@@ -241,7 +241,7 @@ class we_workflow_documentStep extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc, $this->db);
 			return true;
 		}
 		return false;
@@ -255,7 +255,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_CANCELED;
 			$this->finishDate = time();
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc, $this->db);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
@@ -268,7 +268,7 @@ class we_workflow_documentStep extends we_workflow_base{
 				$this->finishDate = time();
 			}
 			//insert into document Log
-			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc, $this->db);
 			return true;
 		}
 		return false;

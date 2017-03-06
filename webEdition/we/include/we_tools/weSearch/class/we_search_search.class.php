@@ -129,13 +129,12 @@ class we_search_search extends we_search_base{
 					$workspaces = get_ws($table, true);
 				}
 
-				$where = $this->getSearchString($table, $tables, $opAND, $searchFields, $whichSearch, $searchForField, $searchText, $location, $searchForContentType, $DB_WE, $view);
-
-				if($where){
+				if(($searchWhere = $this->getSearchString($table, $tables, $opAND, $searchFields, $whichSearch, $searchForField, $searchText, $location, $searchForContentType, $DB_WE, $view))){
+					$whereQuery = $searchWhere;
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
 						// FIXME: search for Text shoukd come without AND!!
-						$where[] = we_search_search::ofFolderAndChildsOnly($folderID, $table);
+						$whereQuery[] = we_search_search::ofFolderAndChildsOnly($folderID, $table,$DB_WE);
 					}
 
 					if($table === VERSIONS_TABLE){
@@ -146,10 +145,9 @@ class we_search_search extends we_search_base{
 					}
 
 					if($workspaces){
-						$where[] = we_search_search::ofFolderAndChildsOnly($workspaces, $table);
+						$whereQuery[] = we_search_search::ofFolderAndChildsOnly($workspaces, $table,$DB_WE);
 					}
 
-					$whereQuery = $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
 					$restrictUserQuery = '(WETABLE.RestrictOwners IN(0,' . intval($_SESSION['user']["ID"]) . ') OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
@@ -170,14 +168,12 @@ class we_search_search extends we_search_base{
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
 							$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = true;
-							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
-							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
-							if(!empty($workspacesTblFile)){
-								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= (implode(' AND ', $where) . ' AND ' . self::ofFolderAndChildsOnly($workspacesTblFile[0], $table));
-							}
-							if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= (implode(' AND ', $where) . ' AND ' . self::ofFolderAndChildsOnly($workspacesObjFile[0], $table));
-							}
+
+							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))' .
+									(empty($workspacesObjFile) ? '' : ' AND ' . (implode(' AND ', $searchWhere) . ' AND ' . self::ofFolderAndChildsOnly($workspacesObjFile, OBJECT_FILES_TABLE,$DB_WE)));
+
+							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))'.
+							(empty($workspacesTblFile) ? '' : ' AND ' . (implode(' AND ', $searchWhere) . ' AND ' . self::ofFolderAndChildsOnly($workspacesTblFile, FILE_TABLE,$DB_WE)));
 
 							/* 	if(!$isCheckedFileTable && $isCheckedObjFileTable){
 							  $_SESSION['weS']['weSearch']['onlyDocs'] = false;
@@ -191,9 +187,9 @@ class we_search_search extends we_search_base{
 							  } */
 							break;
 					}
-					$whereQuery = implode(' AND ', array_filter($whereQuery));
-					$this->setwhere($whereQuery);
-					$this->insertInTempTable($whereQuery, $table);
+					$where = implode(' AND ', array_filter($whereQuery));
+					$this->setwhere($where);
+					$this->insertInTempTable($where, $table);
 
 					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
 					if($whichSearch === we_search_view::SEARCH_MEDIA){
@@ -1326,41 +1322,25 @@ class we_search_search extends we_search_base{
 		return '';
 	}
 
-	private static function ofFolderAndChildsOnly($folderID, $table){//move this to view class; or verse visa
-		$DB_WE = new DB_WE();
+	private static function ofFolderAndChildsOnly($folderID, $table, we_database_base $DB_WE){//move this to view class; or verse visa
 		$_SESSION['weS']['weSearch']['countChilds'] = [];
-		//fix #2940
-		if(is_array($folderID)){
-			foreach($folderID as $k){
-				$childsOfFolderId = self::getChildsOfParentId($k, $table, $DB_WE);
-				$ids = implode(',', $childsOfFolderId);
-			}
-			return 'WETABLE.ParentID IN (' . $ids . ')';
-		}
-		$childsOfFolderId = self::getChildsOfParentId($folderID, $table, $DB_WE);
+		$ids = array();
+		self::getChildsOfParentId((is_array($folderID) ? $folderID : array($folderID)), $ids, $table, $DB_WE);
 
-		return 'WETABLE.ParentID IN (' . implode(',', $childsOfFolderId) . ')';
+		return $ids ? 'WETABLE.ParentID IN (' . implode(',', array_unique($ids)) . ')' : '';
 	}
 
-	private static function getChildsOfParentId($folderID, $table, we_database_base $DB_WE){
+	private static function getChildsOfParentId(array $folders, array &$ret, $table, we_database_base $DB_WE){
 		if($table === VERSIONS_TABLE){ //we don't have parents & folders
-			return $_SESSION['weS']['weSearch']['countChilds'];
+			return;
 		}
 
-		$DB_WE->query('SELECT ID FROM `' . $DB_WE->escape($table) . '` WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
-		$ids = $DB_WE->getAll(true);
-		$_SESSION['weS']['weSearch']['countChilds'] = array_merge($_SESSION['weS']['weSearch']['countChilds'], $ids);
+		$ret = array_merge($ret, $folders);
+		$ids = $DB_WE->getAllq('SELECT ID FROM `' . $DB_WE->escape($table) . '` WHERE ParentID IN(' . implode(',', $folders) . ') AND IsFolder=1', true);
 
-		foreach($ids as $id){
-			self::getChildsOfParentId($id, $table, $DB_WE);
+		if($ids){
+			self::getChildsOfParentId($ids, $ret, $table, $DB_WE);
 		}
-
-		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
-		// doppelte Eintr�ge aus array entfernen
-		$_SESSION['weS']['weSearch']['countChilds'] = array_values(
-				array_unique($_SESSION['weS']['weSearch']['countChilds']));
-
-		return $_SESSION['weS']['weSearch']['countChilds'];
 	}
 
 	/* static function checkRightTempTable(){
