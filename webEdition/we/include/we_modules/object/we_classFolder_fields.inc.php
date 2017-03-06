@@ -22,37 +22,38 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$jsCmd = new we_base_jsCmd();
 switch(we_base_request::_(we_base_request::STRING, 'do')){
 	case 'delete':
-		$javascript = $we_doc->deleteObjects();
+		$we_doc->deleteObjects($jsCmd);
 		break;
 	case 'unpublish':
-		$javascript = $we_doc->publishObjects(false);
+		$we_doc->publishObjects($jsCmd, false);
 		break;
 	case 'publish':
-		$javascript = $we_doc->publishObjects();
+		$we_doc->publishObjects($jsCmd);
 		break;
 	case 'unsearchable':
-		$javascript = $we_doc->setObjectProperty('IsSearchable', false);
+		$we_doc->setObjectProperty('IsSearchable', false);
 		break;
 	case 'searchable':
-		$javascript = $we_doc->setObjectProperty('IsSearchable', true);
+		$we_doc->setObjectProperty('IsSearchable', true);
 		break;
 	case 'copychar':
-		$javascript = $we_doc->setObjectProperty('Charset');
+		$we_doc->setObjectProperty('Charset');
 		break;
 	case 'copyws':
-		$javascript = $we_doc->setObjectProperty('Workspaces');
+		$we_doc->setObjectProperty('Workspaces');
 		break;
 	case 'copytid':
-		$javascript = $we_doc->setObjectProperty('TriggerID');
+		$we_doc->setObjectProperty('TriggerID');
 		break;
 }
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop('', '', '', $we_doc->getSearchJS() .
-		(isset($javascript) ? we_html_element::jsElement($javascript) : '') .
-		we_editor_script::get(), '<body class="weEditorBody" onunload="doUnload()">' .
+		we_editor_script::get() .
+		$jsCmd->getCmds(), '<body class="weEditorBody" onunload="doUnload()">' .
 		we_html_multiIconBox::getHTML('', [
 			['html' => $we_doc->getSearchDialog()],
 			['html' => $we_doc->getSearch()],

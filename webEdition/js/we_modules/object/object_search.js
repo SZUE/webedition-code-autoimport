@@ -59,3 +59,18 @@ function toggleShowVisible(c) {
 	document.we_form.elements.SearchStart.value = 0;
 	top.we_cmd("reload_editpage");
 }
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "setStart":
+			window.document.we_form.elements.SearchStart.value = args[1];
+			break;
+		default:
+			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}

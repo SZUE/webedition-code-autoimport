@@ -62,6 +62,23 @@ we_cmd_modules.base = function (args, url, caller) {
 		case 'updateMainTree':
 			updateMainTree(args[1], args[2], args[3]);
 			break;
+		case "closeDeletedEntries":
+			table = args[1];
+			var ids = args[2];
+			if (top.treeData && top.treeData.table === table) {
+				for (var i = 0; i < ids.length; i++) {
+					top.treeData.deleteEntry(ids[i]);
+				}
+				top.drawTree();
+			}
+			var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+			for (frameId in usedEditors) {
+				if (table === usedEditors[frameId].getEditorEditorTable() && (ids.indexOf(usedEditors[frameId].getEditorDocumentId()) !== -1)) {
+					usedEditors[frameId].setEditorIsHot(false);
+					WE().layout.weEditorFrameController.closeDocument(frameId);
+				}
+			}
+			break;
 		case "loadVTab":
 			var op = top.treeData.makeFoldersOpenString();
 			window.parent.we_cmd("load", args[1], 0, op, top.treeData.table);
@@ -272,7 +289,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			if (args[1].currentID == args[2]) {
 				top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
-				document.we_form.elements[args[1].JSIDName].value = '';
+				caller.document.we_form.elements[args[1].JSIDName].value = '';
 				window.opener.document.we_form.elements[args[1].JSTextName].value = '';
 			}
 			break;
@@ -285,7 +302,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			doReloadCmd(args, url, true);
 			break;
 		case "setDoReload":
-			document.we_form.elements.do.value = args[1];
+			caller.document.we_form.elements.do.value = args[1];
 			args[0] = 'reload_editpage';
 			args[1] = '';
 			doReloadCmd(args, WE().util.getWe_cmdArgsUrl(args), true);
