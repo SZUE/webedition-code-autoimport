@@ -77,7 +77,7 @@ class we_binaryDocument extends we_document{
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return new we_editor_binaryContent($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return new editor_weDocumentCustomerFilter($this);
+				return new we_editor_weDocumentCustomerFilter($this);
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return new we_editor_versions($this);
 		}

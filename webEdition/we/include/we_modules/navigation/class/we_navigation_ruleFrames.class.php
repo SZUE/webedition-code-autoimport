@@ -217,7 +217,6 @@ class we_navigation_ruleFrames{
 		return $table->getHtml() .
 			we_html_element::htmlHiddens([
 				'CategoriesControl' => 0,
-				'CategoriesCount' => 0
 			]);
 	}
 

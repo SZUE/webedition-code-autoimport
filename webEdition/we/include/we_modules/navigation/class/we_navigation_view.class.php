@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_view extends we_modules_view{
+
 	var $icon_pattern = '';
 	var $page = 1;
 
@@ -34,8 +35,8 @@ class we_navigation_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = []){
 		return
-			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(['vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+				parent::getCommonHiddens($cmds) .
+				we_html_element::htmlHiddens(['vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
 		]);
 	}
 
@@ -56,11 +57,11 @@ class we_navigation_view extends we_modules_view{
 		}
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js', '', ['id' => 'loadVarViewProp', 'data-prop' => setDynamicVar(array_merge(
-						$jsVars, [
-					'weNavTitleField' => $objFields,
-					'IsFolder' => intval($this->Model->IsFolder),
-					'selfNaviPath' => $this->Model->Path,
-					'selfNaviId' => $this->Model->ID,
+									$jsVars, [
+						'weNavTitleField' => $objFields,
+						'IsFolder' => intval($this->Model->IsFolder),
+						'selfNaviPath' => $this->Model->Path,
+						'selfNaviId' => $this->Model->ID,
 		]))]);
 	}
 
@@ -385,11 +386,11 @@ class we_navigation_view extends we_modules_view{
 
 		$categories = [];
 
-		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
-			for($i = 0; $i < $cnt; $i++){
-				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
-					$categories[] = $cat;
-				}
+		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl'))){
+			$i = 0;
+			while(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+				$categories[] = $cat;
+				$i++;
 			}
 			$this->Model->Categories = $categories;
 		}
@@ -397,7 +398,7 @@ class we_navigation_view extends we_modules_view{
 		if(($field = we_base_request::_(we_base_request::STRING, 'SortField')) !== false){
 			if($field){
 				$this->Model->Sort = [['field' => $field,
-					'order' => we_base_request::_(we_base_request::STRING, 'SortOrder')
+				'order' => we_base_request::_(we_base_request::STRING, 'SortOrder')
 					]
 				];
 			} else {

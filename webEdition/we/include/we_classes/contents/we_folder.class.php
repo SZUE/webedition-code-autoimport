@@ -383,7 +383,7 @@ class we_folder extends we_root{
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return new editor_weDocumentCustomerFilter($this);
+				return new we_editor_weDocumentCustomerFilter($this);
 			case we_base_constants::WE_EDITPAGE_DOCLIST:
 				return new we_editor_doclist($this);
 		}

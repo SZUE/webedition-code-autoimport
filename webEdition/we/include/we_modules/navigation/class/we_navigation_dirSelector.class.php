@@ -25,10 +25,11 @@
 class we_navigation_dirSelector extends we_selector_directory{
 
 	public function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = '', $FolderText = ''){
+		$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"' . we_base_ContentTypes::FOLDER . '","we/navigation") AS ContentType';
 		parent::__construct($id, NAVIGATION_TABLE, stripslashes($JSIDName), stripslashes($JSTextName), $JSCommand, $order, '', $we_editDirID, $FolderText);
 		$this->title = g_l('fileselector', '[navigationDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
-		$this->fields.=',Charset';
+		$this->fields .= ',Charset';
 	}
 
 	protected function printHeaderHeadlines(){
@@ -57,10 +58,10 @@ class we_navigation_dirSelector extends we_selector_directory{
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
 		$makefolderState = we_base_permission::hasPerm("EDIT_NAVIGATION");
 		return parent::printHeaderTable($weCmd, '<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
-					'makefolderState' => $makefolderState
-				]) .
-				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", '', 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>');
+							'makefolderState' => $makefolderState
+						]) .
+						we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", '', 0, 0, "", "", $makefolderState ? false : true) .
+						'</td>');
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){

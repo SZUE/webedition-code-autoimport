@@ -59,24 +59,6 @@ function setVisible(id, visible) {
 	}
 }
 
-function populateVars() {
-	if (window.categories_edit !== undefined && document.we_form.CategoriesCount !== undefined) {
-		document.we_form.CategoriesCount.value = window.categories_edit.itemCount;
-	}
-	if (window.sort_edit !== undefined && document.we_form.SortCount !== undefined) {
-		document.we_form.SortCount.value = window.sort_edit.itemCount;
-	}
-	if (window.specificCustomersEdit !== undefined && document.we_form.specificCustomersEditCount !== undefined) {
-		document.we_form.specificCustomersEditCount.value = window.specificCustomersEdit.itemCount;
-	}
-	if (window.blackListEdit !== undefined && document.we_form.blackListEditCount !== undefined) {
-		document.we_form.blackListEditCount.value = window.blackListEdit.itemCount;
-	}
-	if (window.whiteListEdit !== undefined && document.we_form.whiteListEditCount !== undefined) {
-		document.we_form.whiteListEditCount.value = window.whiteListEdit.itemCount;
-	}
-}
-
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
@@ -276,7 +258,6 @@ function setFolderSelection(value) {
 
 function submitForm(target, action, method) {
 	var f = window.document.we_form;
-	populateVars();
 	f.target = (target ? target : "edbody");
 	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation");
 	f.method = (method ? method : "post");

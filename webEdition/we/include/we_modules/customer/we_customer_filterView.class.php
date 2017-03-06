@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_customer_filterView{
+
 	/**
 	 * filter for view
 	 *
@@ -62,30 +64,31 @@ class we_customer_filterView{
 	 * @return string
 	 */
 	function getFilterHTML($ShowModeNone = false){
-		$script = '';
 		$mode = $this->filter->getMode();
 
 		// ################# Radio buttons ###############
 		$modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $mode === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 		$modeRadioNone = ($ShowModeNone ?
-			we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $mode === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "we_cmd('setHot');updateView();") :
-			'');
+				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $mode === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "we_cmd('setHot');updateView();") :
+				'');
 
 		$modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $mode === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 		$modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $mode === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 		$modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "we_cmd('setHot');updateView();");
 
+		$filters = [
+			'specificCustomersEdit' => [],
+			'blackListEdit' => [],
+			'whiteListEdit' => [],
+		];
 		// ################# Selector for specific customers ###############
-		list($specificCustomersSelect, $myscript) = $this->getMultiEdit('specificCustomersEdit', $this->filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
-		$script .= $myscript;
+		list($specificCustomersSelect, $filters['specificCustomersEdit'] ) = $this->getMultiEdit('specificCustomersEdit', $this->filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
 		// ################# Selector blacklist ###############
 
-		list($blackListSelect, $myscript) = $this->getMultiEdit('blackListEdit', $this->filter->getBlackList(), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
-		$script .= $myscript;
+		list($blackListSelect, $filters['blackListEdit']) = $this->getMultiEdit('blackListEdit', $this->filter->getBlackList(), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
 		// ################# Selector for whitelist ###############
 
-		list($whiteListSelect, $myscript) = $this->getMultiEdit('whiteListEdit', $this->filter->getWhiteList(), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
-		$script .= $myscript;
+		list($whiteListSelect, $filters['whiteListEdit']) = $this->getMultiEdit('whiteListEdit', $this->filter->getWhiteList(), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
 		// ################# customer filter ###############
 
 		$filterCustomers = we_customer_filterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $mode === we_customer_abstractFilter::FILTER, 25);
@@ -95,22 +98,26 @@ class we_customer_filterView{
 
 		$space = '<div style="height:4px;"></div>';
 
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js', '', [
-				'id' => 'loadcfilter',
-				'data-cfilter' => setDynamicVar([
-					'type' => $this->viewType
-			])]) . $modeRadioOff . $space . $modeRadioAll . $space . $modeRadioSpecific . $space . $specificCustomersSelect . $space . $modeRadioFilter . $filterCustomers . $blackListSelect . $whiteListSelect . $space . $modeRadioNone . we_html_element::jsElement($script);
+		return $modeRadioOff . $space . $modeRadioAll . $space . $modeRadioSpecific . $space . $specificCustomersSelect . $space . $modeRadioFilter . $filterCustomers . $blackListSelect . $whiteListSelect . $space . $modeRadioNone .
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js', 'initFilters();', [
+					'id' => 'loadcfilter',
+					'data-cfilter' => setDynamicVar([
+						'delButton' => we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;we_cmd('setHot');"),
+						'type' => $this->viewType,
+						'filterWidth' => $this->width,
+						'filters' => $filters
+		])]);
 	}
 
 	public function getFilterCustomers(){
 		$this->filter->setMode(we_customer_abstractFilter::FILTER);
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js', '', [
-				'id' => 'loadcfilter',
-				'data-cfilter' => setDynamicVar([
-					'type' => $this->viewType
+					'id' => 'loadcfilter',
+					'data-cfilter' => setDynamicVar([
+						'type' => $this->viewType
 			])]) .
-			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
+				we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
 
 	/**
@@ -143,39 +150,20 @@ class we_customer_filterView{
 			$settings->load();
 			$settingsSQL = $settings->treeTextFormatSQL;
 		}
-		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;we_cmd('setHot');"));
-		$script = <<<EO_SCRIPT
-
-var $name = new (WE().util.multi_edit)("{$name}MultiEdit",window,0,"$delBut",$this->width,false);
-$name.addVariant();
-$name.addVariant();
-document.we_form.{$name}Control.value = $name.name;
-
-EO_SCRIPT;
-
 
 		if($data){
 			$db = new DB_WE();
-			$data = $db->getAllq('SELECT ID,' . $settingsSQL . ' AS Text FROM ' . CUSTOMER_TABLE . ' WHERE ID IN (' . implode(',', $data) . ') ORDER BY Text', false);
-			foreach($data as $dat){
-				$script .= $name . '.addItem();' .
-					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $dat['Text'] . '");' .
-					$name . '.setItem(1,(' . $name . '.itemCount-1),"' . $dat['ID'] . '");';
-			}
+			$items = $db->getAllq('SELECT ID,' . $settingsSQL . ' AS Text FROM ' . CUSTOMER_TABLE . ' WHERE ID IN (' . implode(',', $data) . ') ORDER BY Text', false);
+		} else {
+			$items = [];
 		}
 
-		$script .= $name . '.showVariant(0);';
+		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('multiedit_delAll','customer','" . $name . "');") . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','multiedit_addItem,customer," . $name . "','','','',1);");
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','multiedit_addItem,customer," . $name . "','','','',1);");
-		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('multiedit_delAll','customer','" . $name . "');") . $addbut;
-
-		$select = we_html_element::htmlHiddens([$name . 'Control' => we_base_request::_(we_base_request::RAW, $name . 'Control', 0),
-				$name . 'Count' => (isset($data) ? count($data) : '0')
-			]) .
-			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
-			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-			'<div style="width:' . ($this->width + 13) . 'px;text-align:right">' . $buttonTable . '</div>';
-		return [self::getDiv($select, $name . 'Div', $isVisible, 22), $script];
+		$select = ($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
+				'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
+				'<div style="width:' . ($this->width + 13) . 'px;text-align:right">' . $buttonTable . '</div>';
+		return [we_html_element::htmlHiddens([$name . 'Control' => we_base_request::_(we_base_request::STRING, $name . 'Control', 0),]) . self::getDiv($select, $name . 'Div', $isVisible, 22), $items];
 	}
 
 	private function getHTMLCustomerFilter($startEmpty = false){
@@ -231,44 +219,44 @@ EO_SCRIPT;
 			$adv_row .= '
 <tr id="filterRow_' . $i . '">
 	<td style="padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:64px;">' .
-				(($i == 0) ? '' : we_html_tools::htmlSelect('filterLogic_' . $i, $filter_logic, 1, $value['logic'], false, ['onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"])) . '</td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:64px;">' .
+					(($i == 0) ? '' : we_html_tools::htmlSelect('filterLogic_' . $i, $filter_logic, 1, $value['logic'], false, ['onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"])) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont leftFilterInput"]) . '</td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont leftFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont middleFilterInput"]) . '</td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, ['onchange' => "we_cmd('setHot');", 'class' => "defaultfont middleFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="we_cmd(\'setHot\');" class="defaultfont rightFilterInput"/></td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="we_cmd(\'setHot\');" class="defaultfont rightFilterInput"/></td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($i + 1) . ")") . '</td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($i + 1) . ")") . '</td>
 	<td style="padding-left:5px;padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:25px;">' .
-				(($i != 0 || $startEmpty) ? we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($i)") : '') . '</td>
+					((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:25px;">' .
+					(($i != 0 || $startEmpty) ? we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($i)") : '') . '</td>
 </tr>';
 			$i++;
 		}
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filter.js', '', ['id' => 'loadVarCustomerFilter', 'data-customerFilter' => setDynamicVar([
-					'filter' => [
-						'logic' => we_html_tools::htmlSelect('', $filter_logic),
-						'args' => we_html_tools::htmlSelect('', $filter_args),
-						'op' => we_html_tools::htmlSelect('', $filter_op),
-					],
-					'buttons' => [
-						'add' => we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(__CNT__)"),
-						'trash' => we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)"),
-					]
+						'filter' => [
+							'logic' => we_html_tools::htmlSelect('', $filter_logic),
+							'args' => we_html_tools::htmlSelect('', $filter_args),
+							'op' => we_html_tools::htmlSelect('', $filter_op),
+						],
+						'buttons' => [
+							'add' => we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(__CNT__)"),
+							'trash' => we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)"),
+						]
 			])]) . '
 <table class="default" style="width:' . $this->width . 'px;height:50px;">
 	<tbody id="filterTable">
 		' . $adv_row . '
 	</tbody>
 </table>' .
-			($filter ? '' : '<div>' . we_html_button::create_button(we_html_button::PLUS, "javascript:addRow();") . '</div>');
+				($filter ? '' : '<div>' . we_html_button::create_button(we_html_button::PLUS, "javascript:addRow();") . '</div>');
 	}
 
 	/* #########################################################################################

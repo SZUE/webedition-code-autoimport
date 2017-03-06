@@ -23,11 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_category extends we_selector_file{
+
 	private $we_editCatID = '';
 	private $EntryText = '';
 	private $noChoose = false;
 
 	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
+		$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder,IF(EXISTS(SELECT * FROM ' . CATEGORY_TABLE . ' cc WHERE cc.ParentID=' . CATEGORY_TABLE . '.ID),"we/categories","we/category") AS ContentType';
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID);
 		$this->title = g_l('fileselector', '[catSelector][title]');
 
@@ -65,7 +67,7 @@ class we_selector_category extends we_selector_file{
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js');
 	}
 
 	protected function getFsQueryString($what){
@@ -80,11 +82,11 @@ class we_selector_category extends we_selector_file{
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select></td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.setRootDir();", '', 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-tag', "javascript:top.goBackDir();", '', 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
-			($this->userCanEditCat() ?
-			'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', '', 0, 0, '', '', false, false) . '</td>' : '') .
-			($this->userCanEditCat() ?
-			'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', '', 0, 0, '', '', false, false) . '</td>' : '') .
-			'</tr>
+				($this->userCanEditCat() ?
+				'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', '', 0, 0, '', '', false, false) . '</td>' : '') .
+				($this->userCanEditCat() ?
+				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', '', 0, 0, '', '', false, false) . '</td>' : '') .
+				'</tr>
 </table>';
 	}
 
@@ -123,10 +125,10 @@ class we_selector_category extends we_selector_file{
 			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
-					'Category' => $txt,
-					'ParentID' => intval($this->dir),
-					'Text' => $txt,
-					'Path' => $Path,
+						'Category' => $txt,
+						'ParentID' => intval($this->dir),
+						'Text' => $txt,
+						'Path' => $Path,
 			]));
 			$folderID = $this->db->getInsertId();
 			$weCmd->addCmd('updateSelectData', [
@@ -169,12 +171,12 @@ class we_selector_category extends we_selector_file{
 			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
-					'Category' => $txt,
-					'ParentID' => intval($this->dir),
-					'Text' => $txt,
-					'Path' => $Path,
-				]) .
-				' WHERE ID=' . intval($this->we_editCatID));
+						'Category' => $txt,
+						'ParentID' => intval($this->dir),
+						'Text' => $txt,
+						'Path' => $Path,
+					]) .
+					' WHERE ID=' . intval($this->we_editCatID));
 			$this->renameChildrenPath($this->we_editCatID);
 			$weCmd->addCmd('updateSelectData', [
 				'currentPath' => $Path,
@@ -211,7 +213,7 @@ class we_selector_category extends we_selector_file{
 	function CatInUse($id, $IsDir, we_database_base $db = null){
 		$db = $db ?: new DB_WE();
 		if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db) ||
-			(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db))){
+				(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db))){
 			return true;
 		}
 		if($IsDir){
@@ -323,14 +325,14 @@ class we_selector_category extends we_selector_file{
 	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = false){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'we_selector_category' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return '<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
-			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
-			($isMainChooser ?
-			we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
-			) .
-			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
-			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>';
+				we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
+				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
+				($isMainChooser ?
+				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
+				) .
+				we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
+				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+				'</body>';
 	}
 
 	function printChangeCatHTML(){
@@ -365,13 +367,13 @@ class we_selector_category extends we_selector_file{
 			$path = ($parentid ? $targetPath : '') . '/' . $category;
 		}
 		$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter([
-				'Category' => $category,
-				'Text' => $category,
-				'Path' => $path,
-				'ParentID' => $parentid,
-				'Title' => $title,
-				'Description' => $description,
-			]) . ' WHERE ID=' . $catId);
+					'Category' => $category,
+					'Text' => $category,
+					'Path' => $path,
+					'ParentID' => $parentid,
+					'Title' => $title,
+					'Description' => $description,
+				]) . ' WHERE ID=' . $catId);
 
 		if($updateok){
 			$this->renameChildrenPath($catId);
@@ -432,23 +434,23 @@ class we_selector_category extends we_selector_file{
 			$table->setCol(3, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 			$table->setCol(4, 0, ['style' => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[description]') . "</b>");
 			$table->setCol(4, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, [
-					"bgcolor" => "white",
-					"inlineedit" => "true",
-					"wysiwyg" => "true",
-					"width" => 450,
-					"height" => 130,
-					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
-					], true, 'autobr', true, true, true, true, true, $GLOBALS['WE_BACKENDCHARSET']));
+						"bgcolor" => "white",
+						"inlineedit" => "true",
+						"wysiwyg" => "true",
+						"width" => 450,
+						"height" => 130,
+						'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
+							], true, 'autobr', true, true, true, true, true, $GLOBALS['WE_BACKENDCHARSET']));
 			$table->setCol(5, 1, ["colspan" => 2, 'style' => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js') . we_wysiwyg_editor::getHTMLHeader(false, true), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
+				we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js') . we_wysiwyg_editor::getHTMLHeader(false, true), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . __CLASS__ . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() .
-				'</div></form>' : '' ) .
-			'</body>');
+						'</div></form>' : '' ) .
+				'</body>');
 	}
 
 }

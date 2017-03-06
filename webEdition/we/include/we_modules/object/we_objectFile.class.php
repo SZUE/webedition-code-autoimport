@@ -463,7 +463,7 @@ class we_objectFile extends we_document{
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return new we_editor_variants($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return new editor_weDocumentCustomerFilter($this);
+				return new we_editor_weDocumentCustomerFilter($this);
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return new we_editor_versions($this);
 		}

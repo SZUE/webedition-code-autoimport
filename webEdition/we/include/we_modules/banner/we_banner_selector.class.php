@@ -25,6 +25,7 @@
 class we_banner_selector extends we_selector_file{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
+		$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/banner") AS ContentType';
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
 		$this->title = g_l('fileselector', '[bannerSelector][title]');
 	}
@@ -53,7 +54,7 @@ class we_banner_selector extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setSelectorData($weCmd);
 
-		$weCmd->addCmd('setButtons', [['RootDirButs' ,intval($this->dir) !== 0]]);
+		$weCmd->addCmd('setButtons', [['RootDirButs', intval($this->dir) !== 0]]);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -61,7 +62,8 @@ class we_banner_selector extends we_selector_file{
 	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
-				$this->printSetDirHTML();
+				$jsCmd = new we_base_jsCmd();
+				$this->printSetDirHTML($jsCmd);
 				break;
 			default:
 				parent::printHTML($what);

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_rule extends we_base_model{
+
 	var $Table = NAVIGATION_RULE_TABLE;
 	var $ContentType = we_base_ContentTypes::NAVIGATIONRULE;
 	var $ClassName = __CLASS__;
@@ -46,7 +47,7 @@ class we_navigation_rule extends we_base_model{
 		'ClassID' => we_base_request::INT,
 		'Categories' => we_base_request::INTLIST,
 		'WorkspaceID' => we_base_request::INT
-	 ];
+	];
 
 	public function __construct($persData = []){
 		parent::__construct(NAVIGATION_RULE_TABLE, null, false, true);
@@ -91,13 +92,12 @@ class we_navigation_rule extends we_base_model{
 	}
 
 	function processVariables(){
-		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
+		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl'))){
 			$categories = [];
-
-			for($i = 0; $i < $cnt; $i++){
-				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
-					$categories[] = $cat;
-				}
+			$i = 0;
+			while(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+				$categories[] = $cat;
+				$i++;
 			}
 
 			$this->Categories = path_to_id($categories, CATEGORY_TABLE, $GLOBALS['DB_WE']);
