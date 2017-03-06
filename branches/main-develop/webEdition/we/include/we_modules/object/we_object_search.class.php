@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_search extends we_search_base{
+
 	var $height;
 	var $searchname;
 	var $searchlocation;
@@ -90,9 +91,7 @@ class we_object_search extends we_search_base{
 				if($cur != 'ID' && substr($cur, 0, 3) != 'OF_' && stripos($cur, we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur, "object") !== 0){
 					$regs = explode('_', $cur, 2);
 					if(count($regs) == 2){
-						$opts .= '<option value="' . $cur . '" '
-							. (($select == $cur) ? "selected" : "") . '>'
-							. $regs[1] . '</option>';
+						$opts .= '<option value="' . $cur . '" ' . (($select == $cur) ? "selected" : "") . '>' . $regs[1] . '</option>';
 					}
 					$all[] = $cur;
 				}
@@ -108,9 +107,9 @@ class we_object_search extends we_search_base{
 
 	function getJSinWEsearchobj($name){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'object/object_search.js', '', ['loadVarObject_search', 'data-searchObj' => setDynamicVar([
-					'anzahl' => $this->anzahl,
-					'name' => $name,
-				])]
+						'anzahl' => $this->anzahl,
+						'name' => $name,
+					])]
 		);
 	}
 

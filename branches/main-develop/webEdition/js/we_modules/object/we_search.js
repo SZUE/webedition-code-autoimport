@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -51,4 +53,31 @@ function changeitanyway(f) {
 	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
 	document.we_form_search.todo.value = "changemeta";
 	document.we_form_search.submit();
+}
+
+function changeit(f) {
+	var x = f.split("_");
+	if (!x.length > 1) {
+		return;
+	}
+	switch (x[0]) {
+		case 'meta':
+			document.we_form_search.target = 'load';
+			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.todo.value = 'changemeta';
+			document.we_form_search.submit();
+			break;
+		case 'date':
+			document.we_form_search.target = 'load';
+			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.todo.value = 'changedate';
+			document.we_form_search.submit();
+			break;
+		case 'checkbox':
+			document.we_form_search.target = 'load';
+			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.todo.value = 'changecheckbox';
+			document.we_form_search.submit();
+			break;
+	}
 }

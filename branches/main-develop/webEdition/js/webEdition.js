@@ -1310,29 +1310,28 @@ function objectAssign(target, src) {
 }
 
 function updateMainTree(select, attribs, adv) {
-	if (top.treeData) {
-		if (select) {
-			top.treeData.selection_table = attribs.table;
-			top.treeData.selection = attribs.id;
-		} else {
-			top.treeData.unselectNode();
-		}
-		if (top.treeData.table === attribs.table) {
-			if (top.treeData[top.treeData.indexOfEntry(attribs.parentid)]) {
+	if (!top.treeData || top.treeData.table !== attribs.table) {
+		return;
+	}
+	if (select) {
+		top.treeData.selection_table = attribs.table;
+		top.treeData.selection = attribs.id;
+	} else {
+		top.treeData.unselectNode();
+	}
 
-				/*var visible = (top.treeData.indexOfEntry(attribs.parentid) !== -1 ?
-				 top.treeData[top.treeData.indexOfEntry(attribs.parentid)].open :
-				 0);*/
-				if (top.treeData.indexOfEntry(attribs.id) !== -1) {
-					top.treeData.updateEntry(attribs);
-				} else {
-					top.treeData.addSort(new top.node(objectAssign(attribs, adv)));
-				}
-				top.drawTree();
-			} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
-				top.treeData.deleteEntry(attribs.id);
-			}
+	if (top.treeData[top.treeData.indexOfEntry(attribs.parentid)]) {
+		/*var visible = (top.treeData.indexOfEntry(attribs.parentid) !== -1 ?
+		 top.treeData[top.treeData.indexOfEntry(attribs.parentid)].open :
+		 0);*/
+		if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+			top.treeData.updateEntry(attribs);
+		} else {
+			top.treeData.addSort(new top.node(objectAssign(attribs, adv)));
 		}
+		top.drawTree();
+	} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+		top.treeData.deleteEntry(attribs.id);
 	}
 }
 
