@@ -1046,7 +1046,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		foreach($logs as $v){
 			$content[] = array(
 				array(
-					'dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
+					'dat' => '<div class="middlefont">' . $v['Event'] . '</div>',
 					'height' => '',
 					'align' => '',
 				),
