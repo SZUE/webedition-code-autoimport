@@ -173,7 +173,7 @@ class we_listview_search extends we_listview_base{
 				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
-		$this->anz_all = f('SELECT COUNT(DISTINCT i.ID,i.WorkspaceID) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(DISTINCT i.ID,i.ClassID) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query(
 			'SELECT i.Category,i.ID,i.ID AS DID,i.ID AS OID,i.ClassID,i.Text,COALESCE(wsp.Path,"/") AS Workspace,i.WorkspaceID,i.Title,i.Description,COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ') AS Path,i.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
