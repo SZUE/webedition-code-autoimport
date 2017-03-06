@@ -139,3 +139,20 @@ function updateView_navigation() {
 	var wecf_useDocumentFilterCheckbox = f.check_wecf_useDocumentFilter;  // with underscore (_) its the checkbox, otherwise the hidden field
 	getById('MainFilterDiv').style.display = wecf_useDocumentFilterCheckbox.checked ? 'none' : 'block';
 }
+
+function initFilters() {
+	var curFilter, i;
+	for (var filter in cFilter.filters) {
+		curFilter = cFilter.filters[filter];
+		window[filter] = new (WE().util.multi_edit)(filter + "MultiEdit", window, 0, cFilter.delButton, cFilter.filterWidth, false);
+		window[filter].addVariant();
+		window[filter].addVariant();
+		document.we_form[filter + "Control"].value = window[filter].name;
+		for (i = 0; i < curFilter.length; i++) {
+			window[filter].addItem()
+			window[filter].setItem(0, i, curFilter[i].Text);
+			window[filter].setItem(1, i, curFilter[i].ID);
+		}
+		window[filter].showVariant(0);
+	}
+}

@@ -23,9 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_dirSelector extends we_selector_directory{
+
 	var $fields = "ID,ParentID,Text,Path,IsFolder";
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0){
+		$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"we/folder","we/newsletter") AS ContentType';
 		$table = NEWSLETTER_TABLE;
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple);
 	}
@@ -69,7 +71,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			]);
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
 
 		$this->setWriteSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
@@ -104,7 +106,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			}
 		}
 
-		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
 		$weCmd->addCmd('updateSelectData', ['makeNewFolder' => false]);
 
 		$this->printCmdAddEntriesHTML($weCmd);
@@ -114,8 +116,8 @@ class we_newsletter_dirSelector extends we_selector_directory{
 
 	protected function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
-			self::getWsQuery(NEWSLETTER_TABLE) .
-			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+				self::getWsQuery(NEWSLETTER_TABLE) .
+				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
@@ -131,13 +133,13 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
-		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
 		$weCmd->addCmd('writeBody');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
 	}
 
 	protected function printHeaderHeadlines(){

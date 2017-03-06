@@ -57,7 +57,8 @@ class we_users_selector extends we_selector_file{
 	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
-				$this->printSetDirHTML();
+				$jsCmd = new we_base_jsCmd();
+				$this->printSetDirHTML($jsCmd);
 				break;
 			default:
 				parent::printHTML($what);
@@ -77,10 +78,10 @@ class we_users_selector extends we_selector_file{
 		}
 		$upath = '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' .
-			$this->db->escape($this->table) .
-			' WHERE ParentID=' . intval($this->dir) .
-			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
-			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
+				$this->db->escape($this->table) .
+				' WHERE ParentID=' . intval($this->dir) .
+				($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
+				$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
 	protected function getFramsetJSFile(){

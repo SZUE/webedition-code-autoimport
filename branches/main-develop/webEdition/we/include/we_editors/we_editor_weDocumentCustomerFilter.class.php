@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class editor_weDocumentCustomerFilter extends we_editor_base{
+class we_editor_weDocumentCustomerFilter extends we_editor_base{
 
 	private function formWebuser($canChange){
 		if(!$this->we_doc->WebUserID){
@@ -43,8 +43,6 @@ class editor_weDocumentCustomerFilter extends we_editor_base{
 
 		$textname = 'wetmp_' . $this->we_doc->Name . '_WebUserID';
 		$idname = 'we_' . $this->we_doc->Name . '_WebUserID';
-
-
 
 		$weSuggest = & weSuggest::getInstance();
 		$weSuggest->setAcId("Customer");

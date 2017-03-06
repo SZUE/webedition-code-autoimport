@@ -251,7 +251,7 @@ class we_widget_mdc extends we_widget_base{
 				], we_html_element::htmlForm(
 					"", we_html_element::htmlHiddens(["table" => "",
 						"FolderID" => 0,
-						"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
+						"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesControl', 0)
 					]) . $sTblWidget)));
 	}
 

@@ -68,7 +68,6 @@ function we_cmd() {
 			}
 
 			doc.categories_edit.showVariant(0);
-			doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
 			break;
 		case 'delRule':
 			doc.weSelect.removeOption('navigationRules', args[1], args[2]);

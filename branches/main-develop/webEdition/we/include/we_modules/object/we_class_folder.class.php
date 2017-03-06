@@ -174,7 +174,7 @@ class we_class_folder extends we_folder{
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return new editor_weDocumentCustomerFilter($this);
+				return new we_editor_weDocumentCustomerFilter($this);
 		}
 	}
 

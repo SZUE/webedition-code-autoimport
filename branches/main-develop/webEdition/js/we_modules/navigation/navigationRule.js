@@ -74,7 +74,6 @@ function removeAllCats() {
 			categories_edit.delItem(categories_edit.itemCount);
 		}
 	}
-	document.we_form.CategoriesCount.value = categories_edit.itemCount;
 }
 
 function addCat(paths, ids) {
@@ -86,7 +85,6 @@ function addCat(paths, ids) {
 		}
 	}
 	categories_edit.showVariant(0);
-	document.we_form.CategoriesCount.value = categories_edit.itemCount;
 }
 
 function we_cmd() {

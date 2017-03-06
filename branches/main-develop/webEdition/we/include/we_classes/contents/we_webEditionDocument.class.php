@@ -178,7 +178,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return new we_editor_variants($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return new editor_weDocumentCustomerFilter($this);
+				return new we_editor_weDocumentCustomerFilter($this);
 			default:
 				return parent::editor();
 		}

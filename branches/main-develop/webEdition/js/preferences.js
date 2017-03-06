@@ -37,6 +37,13 @@ function checkAllRevert() {
 	var checkbox = document.getElementById("version_all");
 	checkbox.checked = false;
 }
+function checkAll(val) {
+	var isChecked = (val.checked) ? 1 : 0;
+	var elems = document.querySelectorAll("input[type=checkbox][name^=newconf\\[VERS]");
+	for (var i = 0; i < elems.length; i++) {
+		elems[i].checked = isChecked;
+	}
+}
 
 function openVersionWizard() {
 	window.parent.opener.top.we_cmd("versions_wizard");
@@ -65,7 +72,7 @@ function set_xhtml_field(val, field) {
 
 function handle_message_reporting_click() {
 	var val = 0,
-		fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
+					fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
 	for (var i = 0; i < fields.length; i++) {
 
 		if (document.getElementById(fields[i]).checked) {
@@ -211,9 +218,9 @@ function setDefaultLocale(Value) {
 
 function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient,
-		i = p.length,
-		edit_enabled,
-		delete_enabled;
+					i = p.length,
+					edit_enabled,
+					delete_enabled;
 	if (i === 0) {
 		edit_enabled = WE().layout.button.switch_button_state(document, 'edit', 'disabled');
 		delete_enabled = WE().layout.button.switch_button_state(document, 'delete', 'disabled');
@@ -282,8 +289,8 @@ function formmailBlockOnOff() {
 
 function set_state() {
 	var _new_state = (document.getElementsByName('newconf[useproxy]')[0].checked === true ?
-		false :
-		true);
+					false :
+					true);
 
 	document.getElementsByName('newconf[proxyhost]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
@@ -524,6 +531,12 @@ function we_cmd() {
 		case "browse_server":
 			new (WE().util.jsWindow)(caller, url, "browse_server", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, false, true);
 			break;
+		case "show_seem_chooser":
+			show_seem_chooser(args[1]);
+			break;
+		case "initLocale":
+			initLocale(args[1]);
+			break;
 		case "we_selector_directory":
 		case "we_selector_image":
 		case "we_selector_document":
@@ -577,7 +590,7 @@ function reloadUsedEditors(force) {
 	for (var frameId in _usedEditors) {
 
 		if (force || ((_usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.TEMPLATES_TABLE || _usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.FILE_TABLE) &&
-			_usedEditors[frameId].getEditorEditPageNr() == WE().consts.global.WE_EDITPAGE_CONTENT)) {
+						_usedEditors[frameId].getEditorEditPageNr() == WE().consts.global.WE_EDITPAGE_CONTENT)) {
 
 			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 				_usedEditors[frameId].setEditorReloadNeeded(true);
