@@ -39,7 +39,6 @@ abstract class we_workflow_log{
 		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'RefID' => $workflowDocID,
 					'userID' => $userID,
-					'logDate' => sql_function('UNIX_TIMESTAMP()'),
 					'Type' => $type,
 					'Description' => $description
 		)));
@@ -49,12 +48,12 @@ abstract class we_workflow_log{
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 		$db = new DB_WE();
 
-		$q = 'FROM ' . WORKFLOW_LOG_TABLE . ' log JOIN ' . WORKFLOW_DOC_TABLE . ' doc ON log.RefID=doc.ID JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE wf.Type IN(' . $wfType . ') AND doc.documentID=' . intval($docID) . ' ORDER BY log.logDate ' . $db->escape($order) . ',doc.ID DESC';
+		$q = 'FROM ' . WORKFLOW_LOG_TABLE . ' log JOIN ' . WORKFLOW_DOC_TABLE . ' doc ON log.RefID=doc.ID JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID LEFT JOIN ' . USER_TABLE . ' u ON log.userID=u.ID WHERE wf.Type IN(' . $wfType . ') AND doc.documentID=' . intval($docID) . ' ORDER BY log.logDate ' . $db->escape($order) . ',doc.ID DESC';
 
 		$db->query('SELECT 1 ' . $q);
 		$GLOBALS['ANZ_LOGS'] = $db->num_rows();
 
-		$db->query('SELECT log.* ' . $q . ' LIMIT ' . $offset . ', ' . self::NUMBER_LOGS);
+		$db->query('SELECT log.*,DATE_FORMAT(log.logDate, "'.g_l('date', '[format][mysql]') . '") AS Datum,u.First,u.Second,u.username ' . $q . ' LIMIT ' . $offset . ', ' . self::NUMBER_LOGS);
 		$hash = $db->getAll();
 
 		foreach($hash as $k => $v){
@@ -94,7 +93,7 @@ abstract class we_workflow_log{
 
 	static function clearLog($stamp = 0){
 		$db = new DB_WE();
-		$db->query('DELETE FROM ' . WORKFLOW_LOG_TABLE . ' ' . ($stamp ? 'WHERE logDate<' . intval($stamp) : ''));
+		$db->query('DELETE FROM ' . WORKFLOW_LOG_TABLE . ' ' . ($stamp ? 'WHERE logDate<FROM_UNIXTIME(' . intval($stamp) . ')' : ''));
 	}
 
 }

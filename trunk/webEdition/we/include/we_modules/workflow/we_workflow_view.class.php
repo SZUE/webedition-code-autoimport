@@ -1044,7 +1044,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$anz = $GLOBALS['ANZ_LOGS'];
 
 		foreach($logs as $v){
-			$foo = getHash('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . intval($v['userID']), $db);
 			$content[] = array(
 				array(
 					'dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
@@ -1057,12 +1056,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					'align' => '',
 				),
 				array(
-					'dat' => '<div class="middlefont"><nobr>' . date(g_l('weEditorInfo', '[date_format]'), $v['logDate']) . '</nobr></div>',
+					'dat' => '<div class="middlefont"><nobr>' . $v['Datum'] . '</nobr></div>',
 					'height' => '',
 					'align' => 'right',
 				),
 				array(
-					'dat' => '<div class="middlefont">' . ((!empty($foo['First'])) ? $foo['First'] : '-') . ' ' . ((!empty($foo['Second'])) ? $foo['Second'] : '-') . ((!empty($foo['username'])) ? ' (' . $foo['username'] . ')' : '') . '</div>',
+					'dat' => '<div class="middlefont">' . ((!empty($v['First'])) ? $v['First'] : '-') . ' ' . ((!empty($v['Second'])) ? $v['Second'] : '-') . ((!empty($v['username'])) ? ' (' . $v['username'] . ')' : '') . '</div>',
 					'height' => '',
 					'align' => 'left',
 				),
