@@ -138,16 +138,16 @@ function check_required($required){
 }
 
 function error_page(){
-	if(($errorpage = we_base_request::_(we_base_request::URL, 'error_page'))){
-		redirect($errorpage);
+	if(($errorpage = we_base_request::_(we_base_request::INT, 'error_page')) && ($url = we_folder::getUrlFromID($errorpage))){
+		redirect($url);
 	} else {
 		print_error(g_l('global', '[email_notallfields]'));
 	}
 }
 
 function ok_page(){
-	if(($ok_page = we_base_request::_(we_base_request::URL, 'ok_page'))){
-		redirect($ok_page);
+	if(($errorpage = we_base_request::_(we_base_request::INT, 'ok_page')) && ($url = we_folder::getUrlFromID($errorpage))){
+		redirect($url);
 	} else {
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		exit();
@@ -173,8 +173,8 @@ function check_captcha(){
 }
 
 if(!check_captcha()){
-	if(($errorpage = we_base_request::_(we_base_request::URL, 'captcha_error_page'))){
-		redirect($errorpage);
+	if(($errorpage = we_base_request::_(we_base_request::INT, 'captcha_error_page')) && ($url = we_folder::getUrlFromID($errorpage))){
+		redirect($url);
 	} else {
 		print_error(g_l('global', '[captcha_invalid]'));
 	}
@@ -190,8 +190,8 @@ $email = we_base_request::_(we_base_request::EMAIL, 'email');
 
 if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de> format
 	if(!$email){
-		if(($foo = we_base_request::_(we_base_request::URL, 'mail_error_page'))){
-			redirect($foo);
+		if(($errorpage = we_base_request::_(we_base_request::INT, 'mail_error_page')) && ($url = we_folder::getUrlFromID($errorpage))){
+			redirect($url);
 		} else {
 			print_error(g_l('global', '[email_invalid]'));
 		}
