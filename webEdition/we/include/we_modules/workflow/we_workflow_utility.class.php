@@ -37,6 +37,7 @@ abstract class we_workflow_utility{
 	}
 
 	public static function insertDocInWorkflow($docID, $table, $workflowID, $userID, $desc){
+		$db = new DB_WE();
 		$desc = nl2br($desc);
 		$type = self::getTypeForTable($table);
 		//create new workflow document
@@ -47,7 +48,7 @@ abstract class we_workflow_utility{
 				$doc->steps[0]->start($desc);
 			}
 			//insert into document history
-			we_workflow_log::logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_INSERTED, $desc);
+			we_workflow_log::logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_INSERTED, $desc, $db);
 			$doc->save();
 			return true;
 		}
