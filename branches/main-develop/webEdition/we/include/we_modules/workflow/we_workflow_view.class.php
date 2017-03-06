@@ -957,8 +957,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$anz = $GLOBALS['ANZ_LOGS'];
 
 		foreach($logs as $v){
-			$foo = getHash('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . intval($v['userID']), $db);
-			$content[] = [['dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
+			$content[] = [['dat' => '<div class="middlefont">' . $v['Event'] . '</div>',
 				'height' => '',
 				'align' => '',
 				],
@@ -966,7 +965,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					'height' => '',
 					'align' => '',
 				],
-				['dat' => '<div class="middlefont"><nobr>' . date(g_l('weEditorInfo', '[date_format]'), $v['logDate']) . '</nobr></div>',
+				['dat' => '<div class="middlefont"><nobr>' . $v['Datum']  . '</nobr></div>',
 					'height' => '',
 					'align' => 'right',
 				],

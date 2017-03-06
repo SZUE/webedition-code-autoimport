@@ -52,6 +52,9 @@ class we_category extends we_base_model{
 	}
 
 	static function getCatSQLTail($catCSV, $alias, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $categoryids = ''){
+		//FIXME: this will give us all cats, including subcats, check what we really want:
+		//SELECT c2.ID FROM `tblCategorys` c1 LEFT JOIN tblCategorys c2 ON (c2.Path LIKE CONCAT(c1.Path,"/%") OR c1.ID=c2.ID) WHERE c1.ID IN (XX,YY,ZZ)
+
 		$db = $db ? : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
