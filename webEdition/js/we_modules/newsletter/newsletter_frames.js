@@ -107,3 +107,22 @@ function set_export(val) {
 	submitForm("black_list");
 }
 
+function clearLog() {
+	var f = self.document.we_form;
+	f.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter";
+	f.method = "post";
+	f.submit();
+}
+
+
+function ask(start, group) {
+	//WE().util.showConfirm(window,"","' . g_l('modules_newsletter', '[continue_camp]') . '");
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qsend&start=" + start + "&grp=" + group, "send_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, false);
+}
+
+function no() {
+	doSend(0, 0);
+}
+function cancel() {
+	window.close();
+}
