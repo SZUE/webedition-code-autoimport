@@ -36,7 +36,7 @@ abstract class validation{
 	static function saveService(validationService $validationService){
 		// before saving check if another validationservice has this name
 		if(f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
-					AND PK_tblvalidationservices != ' . intval($validationService->id) . ' LIMIT 1')){
+AND ID!=' . intval($validationService->id) . ' LIMIT 1')){
 			$GLOBALS['errorMessage'] = g_l('validation', '[edit_service][servicename_already_exists]');
 			return false;
 		}
@@ -55,7 +55,7 @@ abstract class validation{
 				'active' => $validationService->active
 		]);
 		$query = ($validationService->id != 0 ?
-				'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet . ' WHERE PK_tblvalidationservices=' . intval($validationService->id) :
+				'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet . ' WHERE ID=' . intval($validationService->id) :
 				'INSERT INTO ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet);
 
 		if($GLOBALS['DB_WE']->query($query)){
@@ -67,7 +67,7 @@ abstract class validation{
 
 	static function deleteService($validationService){
 		if($validationService->id != 0){
-			if($GLOBALS['DB_WE']->query('DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . intval($validationService->id))){
+			if($GLOBALS['DB_WE']->query('DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE ID=' . intval($validationService->id))){
 				return true;
 			}
 			return false;
@@ -90,7 +90,7 @@ abstract class validation{
 
 		$GLOBALS['DB_WE']->query($query);
 		while($GLOBALS['DB_WE']->next_record()){
-			$ret[] = new validationService($GLOBALS['DB_WE']->f('PK_tblvalidationservices'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
+			$ret[] = new validationService($GLOBALS['DB_WE']->f('ID'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
 		}
 		return $ret;
 	}

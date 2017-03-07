@@ -1,5 +1,8 @@
+###ONCOL(PK_tblvalidationservices,###TBLPREFIX###tblvalidationservices) ALTER TABLE ###TBLPREFIX###tblvalidationservices CHANGE COLUMN PK_tblvalidationservices ID smallint unsigned NOT NULL auto_increment;###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblvalidationservices (
-  PK_tblvalidationservices smallint unsigned NOT NULL auto_increment,
+  ID smallint unsigned NOT NULL auto_increment,
   category enum('xhtml','links','css','accessibility') NOT NULL,
   name tinytext NOT NULL,
   host tinytext NOT NULL,
@@ -11,5 +14,5 @@ CREATE TABLE ###TBLPREFIX###tblvalidationservices (
   ctype enum('text/html','text/css') NOT NULL,
   fileEndings tinytext NOT NULL default '',
   active tinyint unsigned NOT NULL default '0',
-  PRIMARY KEY  (PK_tblvalidationservices)
+  PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
