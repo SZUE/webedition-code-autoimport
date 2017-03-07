@@ -362,7 +362,7 @@ function doClick(id) {
 function loadData() {
 	treeData.clear();
 	treeData.startloc = 0;
-	treeData.add(node.prototype.rootEntry(0, "root", "root"));
+	treeData.add(Node.prototype.rootEntry(0, "root", "root"));
 }
 
 function translate(inp) {

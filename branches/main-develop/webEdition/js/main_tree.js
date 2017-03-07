@@ -27,7 +27,7 @@
  */
 'use strict';
 
-node.prototype.getLayout = function () {
+Node.prototype.getLayout = function () {
 	if (this.typ === "threedots") {
 		return treeData.node_layouts.threedots;
 	}

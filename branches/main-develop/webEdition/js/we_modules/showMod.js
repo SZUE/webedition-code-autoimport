@@ -59,7 +59,7 @@ function we_cmd() {
 			var sorted = args[1].sorted;
 			if (clear) {
 				top.content.treeData.clear();
-				top.content.treeData.add(top.content.node.prototype.rootEntry(0, 'root', 'root'));
+				top.content.treeData.add(top.content.Node.prototype.rootEntry(0, 'root', 'root'));
 			}
 
 			for (var i = 0; i < items.length; i++) {
