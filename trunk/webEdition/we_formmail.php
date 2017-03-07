@@ -330,6 +330,7 @@ if($mimetype === 'text/html'){
 	$phpmail->addTextPart($we_txt);
 }
 $phpmail->buildMessage();
+t_e($mimetype,$mimetype === 'text/html',$we_html,$we_txt,$phpmail);
 if($phpmail->Send()){
 	$wasSent = true;
 }
