@@ -234,6 +234,7 @@ class we_base_request{
 				//in lists, we don't accept quotes
 				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
 				return;
+				//FIXME: what is the idea behin this? where is the difference to STRING?
 			case self::HTML:
 				$var = filter_var(htmlspecialchars_decode($var), FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
