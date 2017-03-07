@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_frames extends we_modules_frame{
+
 	const TAB_DOCUMENTS = 1;
 	const TAB_TEMPLATES = 2;
 	const TAB_MEDIA = 5;
@@ -40,7 +41,7 @@ class we_search_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
@@ -52,10 +53,10 @@ class we_search_frames extends we_modules_frame{
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody($attr, we_html_element::htmlForm(['name' => 'we_form'
-						], we_html_element::htmlHiddens(['pnt' => 'cmd',
-							'cmd' => 'no_cmd'])
-				)), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+						we_html_element::htmlBody($attr, we_html_element::htmlForm(['name' => 'we_form'
+										], we_html_element::htmlHiddens(['pnt' => 'cmd',
+											'cmd' => 'no_cmd'])
+						)), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 
@@ -90,36 +91,36 @@ class we_search_frames extends we_modules_frame{
 
 		$tabNr = $this->getTab();
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js') .
-			we_base_jsCmd::singleCmd('setTab', $tabNr);
+				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js') .
+				we_base_jsCmd::singleCmd('setTab', $tabNr);
 
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(
-				['id' => 'eHeaderBody',
-				'onload' => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
-				'onresize' => 'weTabs.setFrameSize()'
-				], '<div id="main"><div id="headrow">&nbsp;' .
-				we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' . $Text . '<div id="mark"><i class="fa fa-asterisk modified"></i></div>') .
-				'</div>' .
-				$we_tabs->getHTML() .
-				'</div>');
+						['id' => 'eHeaderBody',
+					'onload' => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
+					'onresize' => 'weTabs.setFrameSize()'
+						], '<div id="main"><div id="headrow">&nbsp;' .
+						we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' . $Text . '<div id="mark"><i class="fa fa-asterisk modified"></i></div>') .
+						'</div>' .
+						$we_tabs->getHTML() .
+						'</div>');
 
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
 	protected function getHTMLEditorBody(){
 		$body = we_html_element::htmlBody(
-				['class' => 'weEditorBody',
-				'onkeypress' => 'if(event.keyCode==13 || event.keyCode==3){weSearch.search(true);}',
-				'onload' => 'loaded=1;setTimeout(weSearch.init,200);',
-				'onresize' => 'weSearch.sizeScrollContent();'
-				], we_html_element::htmlForm(['name' => 'we_form',
-					'onsubmit' => 'return false'
-					], $this->getHTMLProperties() .
-					we_html_element::htmlHiddens(['predefined' => $this->View->Model->predefined,
-						'savedSearchName' => $this->View->Model->Text
-				]))
+						['class' => 'weEditorBody',
+					'onkeypress' => 'if(event.keyCode==13 || event.keyCode==3){weSearch.search(true);}',
+					'onload' => 'loaded=1;setTimeout(weSearch.init,200);',
+					'onresize' => 'weSearch.sizeScrollContent();'
+						], we_html_element::htmlForm(['name' => 'we_form',
+							'onsubmit' => 'return false'
+								], $this->getHTMLProperties() .
+								we_html_element::htmlHiddens(['predefined' => $this->View->Model->predefined,
+									'savedSearchName' => $this->View->Model->Text
+						]))
 		);
 
 		$whichSearch = we_search_view::SEARCH_DOCS;
@@ -161,16 +162,16 @@ class we_search_frames extends we_modules_frame{
 		$tabNr = $this->getTab();
 
 		return $this->View->getCommonHiddens(['cmd' => '',
-				'pnt' => 'edbody',
-				'tabnr' => $tabNr,
-				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			]) .
-			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')], $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
-			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')], $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
-			we_html_element::htmlDiv(['id' => 'tab5', 'style' => ($tabNr == self::TAB_MEDIA ? 'display: block;' : 'display: none')], $tabNr == self::TAB_MEDIA ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
-			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_ADVANCED ? 'display: block;' : 'display: none')], $tabNr == self::TAB_ADVANCED ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
-			we_html_element::htmlDiv(['id' => 'tab4', 'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')], $this->getHTMLSearchtool($this->getHTMLGeneral()));
+					'pnt' => 'edbody',
+					'tabnr' => $tabNr,
+					'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+				]) .
+				we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
+				we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')], $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
+				we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')], $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
+				we_html_element::htmlDiv(['id' => 'tab5', 'style' => ($tabNr == self::TAB_MEDIA ? 'display: block;' : 'display: none')], $tabNr == self::TAB_MEDIA ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
+				we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_ADVANCED ? 'display: block;' : 'display: none')], $tabNr == self::TAB_ADVANCED ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
+				we_html_element::htmlDiv(['id' => 'tab4', 'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')], $this->getHTMLSearchtool($this->getHTMLGeneral()));
 	}
 
 	private function getHTMLGeneral(){
@@ -178,9 +179,9 @@ class we_search_frames extends we_modules_frame{
 		$this->View->Model->Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 
 		return [['headline' => g_l('searchtool', '[general]'),
-			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
-			'space' => we_html_multiIconBox::SPACE_MED,
-			'noline' => 1
+		'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+		'space' => we_html_multiIconBox::SPACE_MED,
+		'noline' => 1
 		]];
 	}
 
@@ -202,8 +203,8 @@ class we_search_frames extends we_modules_frame{
 		</div>';
 
 		return [['headline' => g_l('searchtool', '[text]'),
-			'html' => $searchField_block,
-			'space' => we_html_multiIconBox::SPACE_MED
+		'html' => $searchField_block,
+		'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
@@ -229,12 +230,12 @@ class we_search_frames extends we_modules_frame{
 
 		$searchResult_block = '<div>
 		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
-			$this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+				$this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return [['headline' => g_l('searchtool', '[text]'),
-			'html' => $searchField_block,
-			'space' => we_html_multiIconBox::SPACE_MED
+		'html' => $searchField_block,
+		'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
@@ -266,8 +267,8 @@ class we_search_frames extends we_modules_frame{
 		</div>';
 
 		return [['headline' => g_l('searchtool', '[text]'),
-			'html' => $searchField_block,
-			'space' => we_html_multiIconBox::SPACE_MED
+		'html' => $searchField_block,
+		'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $searchDirChooser_block,
@@ -299,12 +300,12 @@ class we_search_frames extends we_modules_frame{
 
 		$searchResult_block = '<div>
       <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
-			$this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+				$this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return [['headline' => g_l('searchtool', '[text]'),
-			'html' => $searchFields_block,
-			'space' => we_html_multiIconBox::SPACE_MED
+		'html' => $searchFields_block,
+		'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $searchCheckboxes_block,
@@ -334,10 +335,10 @@ class we_search_frames extends we_modules_frame{
 			}
 
 			$out .= $rightContent .
-				'<div style="clear:both;' . ($i < (count($content) - 1) && (!isset($c['noline'])) ?
-				'border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;' :
-				'margin:10px 0;'
-				) . '"></div>';
+					'<div style="clear:both;' . ($i < (count($content) - 1) && (!isset($c['noline'])) ?
+					'border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;' :
+					'margin:10px 0;'
+					) . '"></div>';
 		}
 
 		return '<div class="multiIcon">' . $out . '</div>';
@@ -351,7 +352,7 @@ class we_search_frames extends we_modules_frame{
 				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [[], 'tool_weSearch_save']
+							we_html_button::SAVE => [[], 'tool_weSearch_save']
 				]);
 
 			default:

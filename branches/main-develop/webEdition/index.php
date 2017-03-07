@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -33,7 +34,7 @@ if(we_base_permission::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), [1, 'on', 'yes', 'true', true])) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
+			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
 	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : '';
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
@@ -46,7 +47,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	define('WE_VERSION_UPDATE', 1);
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
-	we_base_file::delete(WE_CACHE_PATH . 'newwe_version.json');
+	we_cache_file::clean('newwe_version*');
 }
 we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 
@@ -74,9 +75,9 @@ function printHeader($login, $status = 200, $js = ''){
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement(we_message_reporting::jsString()) .
 	($login != we_users_user::LOGIN_OK ?
-		we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
-		we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
-		'') .
+			we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
+			we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
+			'') .
 	we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
 	we_html_element::jsElement('
 	isLoginScreen = true;
@@ -133,7 +134,7 @@ function showMessage(message, prio, win){
 		}
 	}
 }' .
-		$js) .
+			$js) .
 	'</head>';
 }
 
@@ -163,7 +164,7 @@ $count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tb
 
 if($count >= we_base_constants::LOGIN_FAILED_NR){
 	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
+			we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
 	exit();
 }
 
@@ -192,19 +193,19 @@ function getError($reason, $cookie = false){
 	$tmp = ini_get('session.save_path');
 
 	$error = we_html_element::htmlB($reason) .
-		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
-		( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
-		'') .
-		(!ini_get('session.use_cookies') ?
-		( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
-		'') .
-		(ini_get('session.cookie_path') != '/' ?
-		( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
-		'') .
-		($cookie && $error_count == 0 ?
-		( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
-		'') .
-		we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
+			(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+			'') .
+			(!ini_get('session.use_cookies') ?
+			( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+			'') .
+			(ini_get('session.cookie_path') != '/' ?
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+			'') .
+			($cookie && $error_count == 0 ?
+			( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+			'') .
+			we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
 	$layout = new we_html_table(['style' => 'width: 100%; height: 75%;'], 1, 1);
 	$layout->setCol(0, 0, ['style' => 'text-align:center;vertical-align:middle'], we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(['class' => 'defaultfont'], $error), g_l('alert', '[phpError]')));
@@ -232,8 +233,8 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * *************************************************************************** */
 
 	$hidden_values = we_html_element::htmlHiddens([
-			'checkLogin' => session_id(),
-			'indexDate' => date('d.m.Y, H:i:s')]);
+				'checkLogin' => session_id(),
+				'indexDate' => date('d.m.Y, H:i:s')]);
 
 	/*	 * ***********************************************************************
 	 * BUILD DIALOG
@@ -289,8 +290,8 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate>(NOW() - INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
 			$body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
-				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
-				we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case we_users_user::LOGIN_DENIED_SECURITY:
 			$body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
@@ -305,7 +306,7 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 
 
 	$layout = we_html_element::htmlForm(['action' => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'], $hidden_values . $dialogtable) .
-		we_html_element::htmlDiv(['id' => 'picCopy'], 'Copyright &copy; nw7.eu / Fotolia.com');
+			we_html_element::htmlDiv(['id' => 'picCopy'], 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
 	echo we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == LOGIN_OK && $headerjs) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
@@ -331,11 +332,10 @@ if($cnt > we_base_constants::ERROR_LOG_MAX_ITEM_COUNT){
 }
 
 //updatecheck
-if(!file_exists(WE_CACHE_PATH . 'newwe_version.json')){
-	we_base_file::save(WE_CACHE_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php?vers=' .
-			WE_VERSION .
-			'&supp=' . WE_VERSION_SUPP .
-			'&branch=' . WE_VERSION_BRANCH .
-			(WE_VERSION_SUPP != "release" ? '&beta=true' : ''), $stat));
-	we_base_file::insertIntoCleanUp(WE_CACHE_DIR . 'newwe_version.json', 7 * 86400);
+if(!we_cache_file::load('newwe_version')){
+	we_cache_file::save('newwe_version', we_unserialize(getHTTP('https://update.webedition.org', '/server/we/latest.php?vers=' .
+					WE_VERSION .
+					'&supp=' . WE_VERSION_SUPP .
+					'&branch=' . WE_VERSION_BRANCH .
+					(WE_VERSION_SUPP != "release" ? '&beta=true' : ''), $stat)), 7 * 86400, SERIALIZE_JSON);
 }

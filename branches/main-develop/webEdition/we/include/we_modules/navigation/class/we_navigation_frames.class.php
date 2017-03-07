@@ -27,7 +27,6 @@ class we_navigation_frames extends we_modules_frame{
 	var $Model;
 	public $Table = NAVIGATION_TABLE;
 	private $jsVars = [];
-	private $jsCmd = null;
 
 	const TAB_PROPERTIES = '1'; //make sure to keep 1
 	const TAB_CONTENT = '2';
@@ -117,7 +116,7 @@ class we_navigation_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
@@ -170,7 +169,7 @@ class we_navigation_frames extends we_modules_frame{
 										$we_tabs->getHTML() . '</div>')
 						), we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 						we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-						we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js')
+						we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js')
 		);
 	}
 
@@ -180,7 +179,6 @@ class we_navigation_frames extends we_modules_frame{
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
-		$this->jsCmd = new we_base_jsCmd();
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties())), $this->View->getJSProperty($this->jsVars) .
 						$this->jsCmd->getCmds());
@@ -956,7 +954,7 @@ class we_navigation_frames extends we_modules_frame{
 		$body = we_html_element::htmlBody(
 						['class' => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
-		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
+		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js'));
 	}
 
 	private function getHTMLCount(){

@@ -65,9 +65,9 @@ function we_cmd() {
 			for (var i = 0; i < items.length; i++) {
 				if (clear || top.content.treeData.indexOfEntry(items[i].id) < 0) {
 					if (sorted) {
-						top.content.treeData.addSort(new top.content.node(items[i]));
+						top.content.treeData.addSort(new top.content.Node(items[i]));
 					} else {
-						top.content.treeData.add(new top.content.node(items[i]));
+						top.content.treeData.add(new top.content.Node(items[i]));
 					}
 				}
 			}

@@ -36,16 +36,16 @@ class we_users_frames extends we_modules_frame{
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			//use this to get js code
-			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
-							"cmd" => "no_cmd"])
-					)
-				), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_users::getItems($pid, $offset, $this->Tree->default_segment)])
+						we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
+											"cmd" => "no_cmd"])
+								)
+						), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_users::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 
@@ -73,23 +73,23 @@ class we_users_frames extends we_modules_frame{
 		$weSuggest = & weSuggest::getInstance();
 
 		$user_object = (isset($_SESSION["user_session_data"]) ?
-			$_SESSION["user_session_data"] :
-			new we_users_user());
+				$_SESSION["user_session_data"] :
+				new we_users_user());
 
 		$js = $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
 		$content = we_html_element::htmlHiddens([
-				'cmd' => '',
-				"tab" => $tab,
-				"oldtab" => $tab,
-				"perm_branch" => $permBranch,
-				"old_perm_branch" => $permBranch,
-				"obj_name" => $user_object->Name,
-				"uid" => $user_object->ID,
-				"ctype" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')),
-				"ctable" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')),
-				"sd" => 0]);
+					'cmd' => '',
+					"tab" => $tab,
+					"oldtab" => $tab,
+					"perm_branch" => $permBranch,
+					"old_perm_branch" => $permBranch,
+					"obj_name" => $user_object->Name,
+					"uid" => $user_object->ID,
+					"ctype" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')),
+					"ctable" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')),
+					"sd" => 0]);
 
 		if($user_object){
 			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
@@ -104,10 +104,10 @@ class we_users_frames extends we_modules_frame{
 		}
 
 		$form = we_html_element::htmlForm(['name' => 'we_form',
-				'method' => 'post',
-				'autocomplete' => 'off',
-				'onsubmit' => 'return false'
-				], $content);
+					'method' => 'post',
+					'autocomplete' => 'off',
+					'onsubmit' => 'return false'
+						], $content);
 		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'], $form), $js);
 	}
 
@@ -142,17 +142,17 @@ class we_users_frames extends we_modules_frame{
 		foreach($array_and as $value){
 			$value = $DB_WE->escape($value);
 			$condition .= ($condition ? ' AND ' : '') .
-				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
+					'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_or as $value){
 			$value = $DB_WE->escape($value);
 			$condition .= ($condition ? ' OR ' : '') .
-				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
+					'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_not as $value){
 			$value = $DB_WE->escape($value);
 			$condition .= ($condition ? ' AND NOT ' : '') .
-				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
+					'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 
 		$DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY username');
@@ -167,19 +167,19 @@ class we_users_frames extends we_modules_frame{
 		}
 
 		$buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+						we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 		);
 
 		$content = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('keyword', 24, $keyword, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
-			) . '<div style="height:20px;"></div>' .
-			we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
+						we_html_tools::htmlTextInput('keyword', 24, $keyword, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
+				) . '<div style="height:20px;"></div>' .
+				we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'style' => "margin:10px 20px;"], we_html_element::htmlForm(['name' => 'we_form',
-						'method' => 'post'], we_html_element::htmlHiddens([
-							'mod' => 'users',
-							'pnt' => 'search']) .
-						we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons))
+									'method' => 'post'], we_html_element::htmlHiddens([
+											'mod' => 'users',
+											'pnt' => 'search']) .
+										we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons))
 		));
 	}
 
@@ -187,8 +187,8 @@ class we_users_frames extends we_modules_frame{
 		switch($what){
 			case 'edfooter':
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [['NEW_GROUP', 'NEW_USER', 'SAVE_USER', 'SAVE_GROUP'], 'save_user'],
-						we_html_button::DELETE => [['DELETE_USER', 'DELETE_GROUP'], 'delete_user']
+							we_html_button::SAVE => [['NEW_GROUP', 'NEW_USER', 'SAVE_USER', 'SAVE_GROUP'], 'save_user'],
+							we_html_button::DELETE => [['DELETE_USER', 'DELETE_GROUP'], 'delete_user']
 				]);
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
