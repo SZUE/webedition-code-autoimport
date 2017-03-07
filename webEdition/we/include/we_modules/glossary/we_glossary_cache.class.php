@@ -59,7 +59,7 @@ class we_glossary_cache{
 	 * @abstract
 	 */
 	public static function cacheIdToFilename($id){
-		return WE_CACHE_PATH . 'glossar_' . $id . '.php';
+		return WE_CACHE_PATH . 'glossar_' . $id;
 	}
 
 	/**
