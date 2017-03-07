@@ -37,6 +37,7 @@ class we_base_request{
 	const URL = 'url';
 	const EMAIL = 'email'; //add email_list
 	const STRING = 'string';
+	//encode html for inner-tag-transport
 	const HTML = 'html';
 
 	/**

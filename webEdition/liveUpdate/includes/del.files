@@ -209,6 +209,8 @@ we/include/we_modules/object/we_object_properties.inc.php
 we/include/we_modules/object/we_object_listviewMultiobject.class.php
 we/include/we_modules/object/we_object_listviewBase.class.php
 we/include/we_modules/object/we_object_listview.class.php
+we/include/we_modules/object/we_object_createTemplatecmd.php
+we/include/we_modules/object/we_object_createTemplate.inc.php
 we/include/we_modules/object/we_objectFile_properties.inc.php
 we/include/we_modules/object/we_objectFile.inc.php
 we/include/we_modules/object/we_objectEx.inc.php

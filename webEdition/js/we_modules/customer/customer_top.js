@@ -40,7 +40,7 @@ function setTab(tab) {
 }
 
 function loaded() {
-	weTabs.setFrameSize();
+	window.weTabs.setFrameSize();
 	if (top.content.activ_tab) {
 		document.getElementById(aTabs[top.content.activ_tab]).className = "tabActive";
 	} else {

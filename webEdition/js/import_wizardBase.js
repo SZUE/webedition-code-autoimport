@@ -115,8 +115,8 @@ function we_cmd() {
 			break;
 		case 'delete_Cat':
 			var obj = args[1],
-				cat = args[2],
-				reload = !args[3];
+							cat = args[2],
+							reload = !args[3];
 
 			if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
 				if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
@@ -183,16 +183,17 @@ function we_cmd() {
 			break;
 		}
 		case 'doOnImportFinished':
-			top.doOnImportFinished(args[1]['progressText']);
+			top.doOnImportFinished(args[1].progressText);
 			break;
 		case 'addLog_buffered':
 			if (!args[1]) {
 				return;
 			}
 
-			for (var i = 0; i < args[1].length; i++) {
+			for (i = 0; i < args[1].length; i++) {
 				top.addLog(args[1][i]);
 			}
+			break;
 		case 'setProgress_footer':
 			top.wizbusy.setProgress(Math.floor(args[1]));
 			break;
@@ -200,10 +201,9 @@ function we_cmd() {
 			top.wizbusy.setProgressText(args[1], args[2]);
 			break;
 		case 'call_delayed':
-			if (args[1]['function'] && args[1]['delay']) {
-				setTimeout(args[1]['function'], args[1]['delay'], args[1]['param_1'], args[1]['param_2'], args[1]['param_3']);
+			if (args[1]['function'] && args[1].delay) {
+				setTimeout(args[1].function, args[1].delay, args[1].param_1, args[1].param_2, args[1].param_3);
 			}
-			;
 			break;
 		default:
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -242,7 +242,7 @@ function set_button_state() {
 function weChangeDocType(f) {
 	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=ChangeDocType', 'cns=importExport&docType=' + f.value, function (weResponse) {
 		var node, prop,
-			elems = weResponse.DataArray.elements;
+						elems = weResponse.DataArray.elements;
 
 		for (var i = 0; i < elems.length; i++) {
 			if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
@@ -289,8 +289,8 @@ function setFormField(name, value, type, index, frame) {
 
 function handleEvent(evt) {
 	var step = parseInt(top.wizbody.document.we_form.elements.step.value),
-		type = top.wizbody.document.we_form.elements.type.value,
-		task = 'get' + type + '_step_' + step;
+					type = top.wizbody.document.we_form.elements.type.value,
+					task = 'get' + type + '_step_' + step;
 
 	switch (task) {
 		case 'getFileImport_step_1':
@@ -370,7 +370,7 @@ function handleEvent_step_1(evt, type) {
 
 	if (type === 'GXMLImport') {
 		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value :
-			f.elements.docTypeTemplateId.value);
+						f.elements.docTypeTemplateId.value);
 	}
 
 	switch (evt) {
@@ -518,8 +518,8 @@ function doNext_FileImportStep1() {
 
 function doNext_WXMLImportStep1() {
 	var f = top.wizbody.document.we_form,
-		fs = f.elements['v[fserver]'].value,
-		fl = 'placeholder.xml';
+					fs = f.elements['v[fserver]'].value,
+					fl = 'placeholder.xml';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) == '..') {
@@ -585,9 +585,9 @@ function doNext_GXMLImportStep1() {
 
 function doNext_CSVImportStep1() {
 	var f = top.wizbody.document.we_form,
-		fvalid = true,
-		fs = f.elements['v[fserver]'].value,
-		fl = 'placeholder.xml';
+					fvalid = true,
+					fs = f.elements['v[fserver]'].value,
+					fl = 'placeholder.xml';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs != '/') {
 		if (fs.match(/\.\./) === '..') {
@@ -763,7 +763,7 @@ function cycle() {
 	var bf = top.wizbody.document.we_form;
 	for (var i = 0; i < bf.elements.length; i++) {
 		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
-			(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
+						(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
 			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
 		}
 	}
@@ -787,7 +787,7 @@ function doOnImportFinished(progressText) {
 	top.wizbusy.setProgressText('pb1', progressText);
 	top.wizbusy.setProgress(100);
 	top.opener.top.we_cmd('load', top.opener.top.treeData.table, 0);
-	if (WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) {
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart !== undefined) {
 		WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
 	}
 	if (top.wizbusy && top.wizbusy.document.getElementById('progress')) {

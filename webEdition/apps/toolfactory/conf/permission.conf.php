@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
 $perm_group_name = "toolfactory";
 $perm_group_title[$perm_group_name] = g_l('apps', '[toolfactory][name]');

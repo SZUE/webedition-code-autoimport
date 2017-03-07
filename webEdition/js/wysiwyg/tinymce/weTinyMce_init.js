@@ -41,7 +41,7 @@ function TinyWrapper(fieldname) {
 		tinyWrappers[fieldname] =  new WE().layout.we_tinyMCE.getTinyWrapper(window, fieldname);
 	}
 	return tinyWrappers[fieldname];
-};
+}
 
 function tinyPluginManager(n, u, cb, s) {
 	var t = this, url = u;
@@ -74,4 +74,4 @@ function tinyPluginManager(n, u, cb, s) {
 	} else {
 		tinymce.ScriptLoader.add(url, loadDependencies, s);
 	}
-};
+}

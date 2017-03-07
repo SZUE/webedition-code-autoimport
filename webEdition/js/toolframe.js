@@ -32,6 +32,7 @@ var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 
 function setTab(tool) {
+	var current;
 	if (top.content.hot) {
 		if (window.confirm(WE().consts.g_l.alert.discard_changed_data)) {
 			top.content.hot = false;

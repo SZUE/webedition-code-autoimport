@@ -37,7 +37,7 @@ function toggle(id) {
 
 function setVisible(id, visible) {
 	var elem = document.getElementById(id);
-	elem.style.display = (visible == true ? "block" : "none");
+	elem.style.display = (visible ? "block" : "none");
 }
 
 function doUnload() {

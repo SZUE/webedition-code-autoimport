@@ -118,9 +118,12 @@ class we_shop_view extends we_modules_view{
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_DATES_TABLE . ' WHERE ID=' . $bid);
 				$jscmd->addCmd('deleteTreeEntry', $bid);
+				$jscmd->addCmd('showDeleteOrder', $bid);
 
-				return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds() .
-								we_html_element::jsElement('top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=' . $bid . '";'), we_html_element::htmlBody());
+				return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', '', ['id' => 'loadVarShop', 'data-shop' => setDynamicVar([
+										'bid' => $bid,
+							])]) .
+								$jscmd->getCmds(), we_html_element::htmlBody());
 			}
 		}
 		echo we_html_tools::getHtmlTop() . $jscmd->getCmds();
