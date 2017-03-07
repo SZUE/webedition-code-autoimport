@@ -24,15 +24,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
-var _oCsv_;
-var _sInitCsv_;
-var _sInitTitle;
-var _sInitBin;
-var _sPadInc = 'pad/pad';
-var _oSctDate;
-var _aRdo = ['sort', 'display', 'date', 'prio'];
-var _lastPreviewCsv = '';
+var _oCsv_,
+				_sInitCsv_,
+				_sInitTitle,
+				_sInitBin,
+				_sPadInc = 'pad/pad',
+				_oSctDate,
+				_aRdo = ['sort', 'display', 'date', 'prio'],
+				_lastPreviewCsv = '',
+				_sCls_ = parent.document.getElementById(widget.sObjId + '_cls').value,
+				_ttlB64Esc = escape(window.btoa(widget.sTb));
 
 function weEntity2char(weString) {
 	weString = weString.replace('&lt;', '<');
@@ -47,7 +50,7 @@ function weChar2entity(weString) {
 }
 
 function getCls() {
-	return window.parent.document.getElementById(_sObjId + '_cls').value;
+	return window.parent.document.getElementById(widget.sObjId + '_cls').value;
 }
 // displays the note dialog on click on a note
 function selectNote(id) {
@@ -86,7 +89,7 @@ function deleteNote() {
 	var fo = document.forms[0];
 	var mark = fo.elements.mark.value;
 	var q_ID = document.getElementById(mark + '_ID').value;
-	WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId);
+	WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + widget.sInitProps), q_ID, 'delete', '', _ttlB64Esc, widget.sObjId);
 }
 
 function isHotNote() {
@@ -220,17 +223,17 @@ function toggleTblValidity() {
 }
 
 function init() {
-	window.parent.rpcHandleResponse(_sType, _sObjId, document.getElementById(_sType), _sTb);
+	window.parent.rpcHandleResponse(widget.sType, widget.sObjId, document.getElementById(widget.sType), widget.sTb);
 }
 
 // saves a note, using the function rpc() in home.inc.php (750)
 function saveNote() {
 	var fo = document.forms[0],
-		_id = fo.elements.mark.value,
-		weValidFrom, weValidUntil;
+					_id = fo.elements.mark.value,
+					weValidFrom, weValidUntil;
 	var q_init = (_id !== '' ?
-		getInitialQueryById(_id) :
-		{Validity: 'always', ValidFrom: '', ValidUntil: '', Priority: 'low', Title: '', Text: ''});
+					getInitialQueryById(_id) :
+					{Validity: 'always', ValidFrom: '', ValidUntil: '', Priority: 'low', Title: '', Text: ''});
 	var q_curr = getCurrentQuery();
 	var hot = false;
 	var idx = ['Title', 'Text', 'Priority', 'Validity', 'ValidFrom', 'ValidUntil'];
@@ -263,7 +266,7 @@ function saveNote() {
 				return false;
 			}
 			var q_ID = document.getElementById(_id + '_ID').value;
-			WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
+			WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + widget.sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, widget.sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 		} else {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
@@ -289,7 +292,7 @@ function saveNote() {
 			top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
-		WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + _sInitProps), csv, 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
+		WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + widget.sInitProps), csv, 'insert', '', _ttlB64Esc, widget.sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 	} else {
 		top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
@@ -345,15 +348,15 @@ function getTitle() {
 }
 
 function save() {
-	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(widget.sObjId + '_csv');
 	var sTitleEnc = window.btoa(getTitle());
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
-		(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
-		WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, _sObjId);
+					(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
+		WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, widget.sObjId);
 	}
-	window.opener.setPrefs(_sObjId, sBit, sTitleEnc);
+	window.opener.setPrefs(widget.sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	WE().layout.weNavigationHistory.navigateReload();
 	window.close();

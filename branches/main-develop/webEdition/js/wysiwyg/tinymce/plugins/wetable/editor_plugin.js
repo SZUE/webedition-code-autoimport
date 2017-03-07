@@ -389,7 +389,7 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 			buildGrid();
 
 			// Restore the selection to the closest table position
-			row = grid[Math.min(grid.length - 1, startPos.y)];
+			var row = grid[Math.min(grid.length - 1, startPos.y)];
 			if (row) {
 				selection.select(row[Math.min(row.length - 1, startPos.x)].elm, true);
 				selection.collapse(true);
@@ -453,7 +453,7 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 		}
 
 		function merge(cell, cols, rows) {
-			var startX, startY, endX, endY, x, y, startCell, endCell, cell, children, count;
+			var startX, startY, endX, endY, x, y, startCell, endCell, children, count,pos;
 
 			// Use specified cell and cols/rows
 			if (cell) {
@@ -752,7 +752,8 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 				}
 			var selectedRows = getSelectedRows(),
 				targetRow = selectedRows[before ? 0 : selectedRows.length - 1],
-				targetCellCount = targetRow.cells.length;
+				targetCellCount = targetRow.cells.length,
+				i;
 
 			// Calc target cell count
 			each(grid, function(row) {
@@ -869,7 +870,7 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 			}
 
 		function setEndCell(cell) {
-			var startX, startY, endX, endY, maxX, maxY, colSpan, rowSpan;
+			var startX, startY, endX, endY, maxX, maxY, colSpan, rowSpan,x,y;
 
 			endPos = getPos(cell);
 
@@ -1226,7 +1227,7 @@ moveCursorToRow(ed, sourceNode, targetRow, upBool);
 
 				// WE 7.0.1.0: added together with tabs
 				function getNeighboringCell(table, cell, direction) {
-					var cells = [], x = 0, i, j, cell, nextCell;
+					var cells = [], x = 0, i, j, nextCell;
 					direction = direction || 'next';
 
 					for (i = 0; i < table.rows.length; i++){

@@ -1,4 +1,4 @@
-/* global tinyMCEPopup */
+/* global tinyMCEPopup, tinymce */
 'use strict';
 
 tinyMCEPopup.requireLangPack();
@@ -78,7 +78,7 @@ function doUpdate(s) {
 
 
 function updateAction() {
-	var el, inst = ed, tdElm, trElm, tableElm, formObj = document.forms[0], i, cell, row;
+	var el, inst = ed, tdElm, trElm, tableElm, formObj = document.forms[0], i, cell, rows;
 
 	if (!AutoValidator.validate(formObj)) {
 		tinyMCEPopup.alert(AutoValidator.getErrorMessages(formObj).join('. ') + '.');
@@ -124,7 +124,7 @@ function updateAction() {
 			break;
 
 		case "row":
-			var cell = trElm.firstChild;
+			cell = trElm.firstChild;
 
 			if (cell.nodeName !== "TD" && cell.nodeName !== "TH") {
 				cell = nextCell(cell);
@@ -152,7 +152,7 @@ function updateAction() {
 				col += cell.getAttribute("colspan") ? cell.getAttribute("colspan") : 1;
 			} while ((cell = nextCell(cell)) !== null);
 
-			for (var i = 0; i < rows.length; i++) {
+			for (i = 0; i < rows.length; i++) {
 				cell = rows[i].firstChild;
 
 				if (cell.nodeName !== "TD" && cell.nodeName !== "TH") {
@@ -172,10 +172,10 @@ function updateAction() {
 			break;
 
 		case "all":
-			var rows = tableElm.getElementsByTagName("tr");
+			rows = tableElm.getElementsByTagName("tr");
 
 			for (i = 0; i < rows.length; i++) {
-				var cell = rows[i].firstChild;
+				cell = rows[i].firstChild;
 
 				if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
 					cell = nextCell(cell);
