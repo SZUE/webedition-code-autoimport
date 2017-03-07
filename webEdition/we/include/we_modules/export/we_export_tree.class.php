@@ -248,7 +248,7 @@ var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.ed
 ' .
 				($parentFolder ? '' :
 					'win.treeData.clear();' .
-					'win.treeData.add(win.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+					'win.treeData.add(win.Node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 				) .
 				$this->getJSLoadTree(!$parentFolder, $treeItems)
 			), we_html_element::htmlBody(["bgcolor" => "#ffffff"])

@@ -834,11 +834,11 @@ function loadCloseFolder(args) {
 			if (weResponse.DataArray.items) {
 				if (!weResponse.DataArray.parentFolder) {
 					top.treeData.clear();
-					top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
+					top.treeData.add(top.Node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
 				}
 				for (var i = 0; i < weResponse.DataArray.items.length; i++) {
 					if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-						top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+						top.treeData.add(new top.Node(weResponse.DataArray.items[i]));
 					}
 				}
 			}
@@ -1041,7 +1041,7 @@ function updateMainTree(select, attribs, adv) {
 		if (top.treeData.indexOfEntry(attribs.id) !== -1) {
 			top.treeData.updateEntry(attribs);
 		} else {
-			top.treeData.addSort(new top.node(objectAssign(attribs, adv)));
+			top.treeData.addSort(new top.Node(objectAssign(attribs, adv)));
 		}
 		top.drawTree();
 	} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {

@@ -86,12 +86,8 @@ if (top.content.viewclass != "' . $mode . '") {
 	top.content.set_frames("' . $mode . '");
 }');
 			case 'refresh_mwork':
-				$out .= $this->refresh_work($jscmd, true);
+				$out = $this->refresh_work($jscmd, true);
 			/* FALLTHROUGH */
-			case 'show_message':
-				if(isset($id)){
-					$out .= we_html_element::jsElement('top.content.editor.edbody.messaging_msg_view.location=WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id . '";');
-				}
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'new_message':
@@ -227,7 +223,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";');
 						$out .= we_html_element::jsElement('
 top.content.treeData.clear();
 top.content.treeData.startloc=0;
-top.content.treeData.add(top.content.node.prototype.rootEntry(0,"root","root"));');
+top.content.treeData.add(top.content.Node.prototype.rootEntry(0,"root","root"));');
 
 						foreach($this->messaging->available_folders as $folder){
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){

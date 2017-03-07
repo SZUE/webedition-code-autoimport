@@ -27,7 +27,7 @@
  */
 'use strict';
 
-node.prototype.showSegment = function () {
+Node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 

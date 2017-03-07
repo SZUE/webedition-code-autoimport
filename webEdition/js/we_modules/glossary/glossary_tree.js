@@ -60,7 +60,7 @@ function doClick(id, typ) {
 function info(text) {
 }
 
-node.prototype.showSegment = function () {
+Node.prototype.showSegment = function () {
 	var parentnode = this.get(this.parentid);
 	parentnode.clear();
 	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;

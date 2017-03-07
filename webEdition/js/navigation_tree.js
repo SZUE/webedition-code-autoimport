@@ -56,7 +56,7 @@ function reloadGroup(pid, offset) {
 	}
 }
 
-node.prototype.showSegment = function () {
+Node.prototype.showSegment = function () {
 	reloadGroup(this.parentid, this.offset);
 };
 

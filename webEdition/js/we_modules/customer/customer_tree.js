@@ -60,7 +60,7 @@ container.prototype.openClose = function (id) {
 	}
 };
 
-node.prototype.showSegment = function () {
+Node.prototype.showSegment = function () {
 	var sort = "";
 	var parentnode = this.get(this.parentid);
 	parentnode.clear();
@@ -68,7 +68,7 @@ node.prototype.showSegment = function () {
 	window.we_cmd("load", parentnode.id, this.offset, sort);
 };
 
-node.prototype.getLayout = function () {
+Node.prototype.getLayout = function () {
 	if (this.typ === "threedots") {
 		return treeData.node_layouts.threedots;
 	}
