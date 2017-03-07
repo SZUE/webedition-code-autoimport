@@ -1112,6 +1112,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_modules/newsletter/cache
 !we/include/we_modules/navigation/layout
 !we/include/we_modules/navigation/conf
+!we/include/we_modules/glossary/cache
 !we/include/we_message_reporting
 !we/include/we_logging
 !we/include/we_language/Spanish_UTF-8
