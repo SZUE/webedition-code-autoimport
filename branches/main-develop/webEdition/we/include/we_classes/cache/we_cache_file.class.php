@@ -50,8 +50,12 @@ class we_cache_file implements we_cache_base{
 	}
 
 	public static function clean($pattern = ''){
+		$files = [];
 		foreach(glob(WE_CACHE_PATH . 'we_cache_' . $pattern . '*') as $file){
 			unlink($file);
+		}
+		if($files){
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path IN ("' . implode('","', $files) . '")');
 		}
 	}
 
