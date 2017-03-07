@@ -262,13 +262,11 @@ if($email){
 	if($useConfirmMail){
 		$we_html_confirm = $we_html;
 		$we_txt_confirm = $we_txt;
-		if(($pre = we_base_request::_(we_base_request::HTML, 'pre_confirm'))){
-			contains_bad_str($pre);
+		if(($pre = we_base_request::_(we_base_request::RAW, 'pre_confirm'))){
 			$we_html_confirm = $pre . getHtmlTag('br') . $we_html_confirm;
 			$we_txt_confirm = we_helpers_mail::getTextContent($pre) . "\n\n" . $we_txt_confirm;
 		}
-		if(($post = we_base_request::_(we_base_request::HTML, 'post_confirm'))){
-			contains_bad_str($post);
+		if(($post = we_base_request::_(we_base_request::RAW, 'post_confirm'))){
 			$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $post;
 			$we_txt_confirm = $we_txt_confirm . "\n\n" . we_helpers_mail::getTextContent($post);
 		}
@@ -330,7 +328,6 @@ if($mimetype === 'text/html'){
 	$phpmail->addTextPart($we_txt);
 }
 $phpmail->buildMessage();
-t_e($mimetype,$mimetype === 'text/html',$we_html,$we_txt,$phpmail);
 if($phpmail->Send()){
 	$wasSent = true;
 }
