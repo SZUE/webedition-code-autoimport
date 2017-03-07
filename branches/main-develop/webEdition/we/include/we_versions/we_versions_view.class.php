@@ -99,7 +99,7 @@ class we_versions_view{
 		$currentSearchFields = $this->Model->getProperty('currentSearchFields');
 		$currentLocation = $this->Model->getProperty('currentLocation');
 
-		$out = '<table class="default" id="defSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';">
+		$out = '<table class="default" id="defSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';"><tbody>
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
@@ -461,7 +461,7 @@ class we_versions_view{
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 		$anzahl = $this->Model->getProperty('currentAnzahl');
 
-		$out = '<table cellpadding="5" style="width:100%" id="contentTable">';
+		$out = '<table cellpadding="5" style="width:100%" id="contentTable"><tbody>';
 
 		$anz = count($content);
 		$x = $searchstart + $anzahl;

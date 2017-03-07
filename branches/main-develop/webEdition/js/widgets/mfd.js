@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -39,7 +39,7 @@ function exit_close() {
 		var aCsv = _sInitCsv_.split(';');
 		WE().layout.cockpitFrame.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -106,7 +106,7 @@ function init() {
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_oSctNumEntries = _fo.elements.sct_amount_entries;
-	initPrefs();
+	top.initPrefs();
 	WE().util.setIconOfDocClass(document, 'mfdUIcon');
 }
 
@@ -134,7 +134,7 @@ function addUserToField() {
 		}
 	}
 	if (!bUsrExists) {//FIXME change this path!
-		_fo.action = WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_mfd&we_cmd[]=' +
+		_fo.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_mfd&we_cmd[]=' +
 						prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
 						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
@@ -146,7 +146,7 @@ function save() {
 	if (isNoError()) {
 		var sCsv = getCsv();
 		_oCsv_.value = sCsv;
-		savePrefs();
+		top.savePrefs();
 		window.opener.saveSettings();
 		if ((!_bPrev && sCsv != _sInitCsv_) || (_bPrev && sCsv != _sLastPreviewCsv)) {
 			refresh(false);
@@ -161,7 +161,7 @@ function save() {
 function preview() {
 	if (isNoError()) {
 		_bPrev = true;
-		previewPrefs();
+		top.previewPrefs();
 		refresh(true);
 	} else {
 		top.we_showMessage(WE().consts.g_l.cockpit.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);

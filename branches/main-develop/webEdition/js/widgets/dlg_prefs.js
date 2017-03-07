@@ -85,7 +85,7 @@ function we_cmd() {
 	//	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]) {
 		case 'addUserToField':
-			addUserToField();
+			top.addUserToField();
 			break;
 	}
 }

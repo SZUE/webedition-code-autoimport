@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 /**
  * webEdition CMS
  *
@@ -41,7 +43,7 @@ var WelangDialog = { // TODO: clean code by using more vars
 		this.elm = this.inst.selection.getNode();
 		this.sel = this.inst.selection.getContent({format : 'text'});
 
-		var printAsSelection = '';
+		//var printAsSelection = '';
 
 		if(this.sel === ''){
 			// no selection, but cursor inside SPAN with lang-attribute (the only case where lang-Button is active without selection):

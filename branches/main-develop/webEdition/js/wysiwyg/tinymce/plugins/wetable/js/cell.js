@@ -177,9 +177,9 @@ function updateAction() {
 			for (i = 0; i < rows.length; i++) {
 				var cell = rows[i].firstChild;
 
-				if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
+				if (cell.nodeName !== "TD" && cell.nodeName !== "TH"){
 					cell = nextCell(cell);
-
+				}
 				do {
 					cell = updateCell(cell, true);
 				} while ((cell = nextCell(cell)) !== null);
@@ -196,8 +196,9 @@ function updateAction() {
 
 function nextCell(elm) {
 	while ((elm = elm.nextSibling) !== null) {
-		if (elm.nodeName === "TD" || elm.nodeName === "TH")
+		if (elm.nodeName === "TD" || elm.nodeName === "TH"){
 			return elm;
+		}
 	}
 
 	return null;
@@ -211,8 +212,9 @@ function updateCell(td, skip_id) {
 	var doc = inst.getDoc();
 	var dom = ed.dom;
 
-	if (!skip_id)
+	if (!skip_id){
 		dom.setAttrib(td, 'id', formObj.id.value);
+	}
 
 	dom.setAttrib(td, 'align', formObj.align.value);
 	dom.setAttrib(td, 'vAlign', formObj.valign.value);
@@ -236,26 +238,26 @@ function updateCell(td, skip_id) {
 		td.style.borderColor = formObj.bordercolor.value;
 		td.style.borderStyle = td.style.borderStyle === "" ? "solid" : td.style.borderStyle;
 		td.style.borderWidth = td.style.borderWidth === "" ? "1px" : td.style.borderWidth;
-	} else
+	} else{
 		td.style.borderColor = '';
-
+	}
 	td.style.backgroundColor = formObj.bgcolor.value;
 
-	if (formObj.backgroundimage.value !== "")
+	if (formObj.backgroundimage.value !== ""){
 		td.style.backgroundImage = "url('" + formObj.backgroundimage.value + "')";
-	else
+	}else{
 		td.style.backgroundImage = '';
-
+	}
 	if (curCellType != celltype) {
 		// changing to a different node type
 		var newCell = doc.createElement(celltype);
 
-		for (var c = 0; c < td.childNodes.length; c++)
+		for (var c = 0; c < td.childNodes.length; c++){
 			newCell.appendChild(td.childNodes[c].cloneNode(1));
-
-		for (var a = 0; a < td.attributes.length; a++)
+		}
+		for (var a = 0; a < td.attributes.length; a++){
 			ed.dom.setAttrib(newCell, td.attributes[a].name, ed.dom.getAttrib(td, td.attributes[a].name));
-
+		}
 		td.parentNode.replaceChild(newCell, td);
 		td = newCell;
 	}
@@ -279,17 +281,17 @@ function changedSize() {
 	var st = ed.dom.parseStyle(formObj.style.value);
 
 	var width = formObj.width.value;
-	if (width !== "")
+	if (width !== ""){
 		st.width = getCSSSize(width);
-	else
+	}else{
 		st.width = "";
-
+	}
 	var height = formObj.height.value;
-	if (height !== "")
+	if (height !== ""){
 		st.height = getCSSSize(height);
-	else
+	}else{
 		st.height = "";
-
+	}
 	formObj.style.value = ed.dom.serializeStyle(st);
 }
 
@@ -307,17 +309,17 @@ function changedStyle() {
 	var formObj = document.forms[0];
 	var st = ed.dom.parseStyle(formObj.style.value);
 
-	if (st['background-image'])
+	if (st['background-image']){
 		formObj.backgroundimage.value = st['background-image'].replace(new RegExp("url\\('?([^']*)'?\\)", 'gi'), "$1");
-	else
+	}else{
 		formObj.backgroundimage.value = '';
-
-	if (st.width)
+	}
+	if (st.width){
 		formObj.width.value = trimSize(st.width);
-
-	if (st.height)
+	}
+	if (st.height){
 		formObj.height.value = trimSize(st.height);
-
+	}
 	if (st['background-color']) {
 		formObj.bgcolor.value = st['background-color'];
 		updateColor('bgcolor_pick', 'bgcolor');

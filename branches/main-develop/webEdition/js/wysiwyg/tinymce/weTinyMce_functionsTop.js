@@ -91,7 +91,7 @@ WE().layout.we_tinyMCE.do.onKeyDown = function (ed, e) {
 				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
 				conf.weSynchronizeHot.doSyncHot = false;
 				break;
-			case 88: 
+			case 88:
 				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
 				break;
 			case 68: // d
@@ -195,7 +195,7 @@ WE().layout.we_tinyMCE.do.onPostRender = function (ed, cm) {
 	ed.settings.weWin.addEventListener("resize", function (e) {
 		WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, false);
 	});
-	
+
 
 	WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, true);
 };
@@ -442,9 +442,9 @@ WE().layout.we_tinyMCE.functions.getDocumentCss = function (win, preKomma) {
 WE().layout.we_tinyMCE.functions.setContentCss = function (ed) {
 	var conf = ed.settings;
 
-	conf.content_css = conf.weContentCssParts.start // always exists
-			+ WE().layout.we_tinyMCE.functions.getDocumentCss((conf.weEditorType === 'inlineTrue' ? conf.weWin : conf.weWin.opener), true)
-			+ (conf.weContentCssParts.end ? ',' + conf.weContentCssParts.end : '');
+	conf.content_css = conf.weContentCssParts.start +// always exists
+			WE().layout.we_tinyMCE.functions.getDocumentCss((conf.weEditorType === 'inlineTrue' ? conf.weWin : conf.weWin.opener), true)+
+			(conf.weContentCssParts.end ? ',' + conf.weContentCssParts.end : '');
 };
 
 WE().layout.we_tinyMCE.functions.setToolbarRows = function (ed) {
@@ -513,7 +513,7 @@ WE().layout.we_tinyMCE.functions.registerDialog = function (ed, win, action, dia
 		return;
 	}
 
-	var reg = ed.settings.weRegisteredDialogs; 
+	var reg = ed.settings.weRegisteredDialogs;
 	dialogType = dialogType ? dialogType : 'dialog';
 
 	switch(action){

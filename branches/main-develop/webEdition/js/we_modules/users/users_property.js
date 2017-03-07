@@ -72,7 +72,7 @@ function setTab(tab) {
 		case TAB_PERMISSION:
 		case TAB_WORKSPACES:
 		case TAB_SETTINGS:
-			if (top.content.editor.edbody.switchPage(tab) == false) {
+			if (!top.content.editor.edbody.switchPage(tab)) {
 				window.setTimeout(resetTabs, 50);
 			}
 			break;

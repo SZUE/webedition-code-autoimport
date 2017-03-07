@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -43,7 +43,7 @@ function init() {
 	} else {
 		oChbxType.checked = (parseInt(sCsv.charAt(0))) ? true : false;
 	}
-	initPrefs();
+	top.initPrefs();
 }
 
 function getBinary() {
@@ -67,7 +67,7 @@ function save() {
 	if ((!_bPrev && _sInitCsv_ != sCsv) || (_bPrev && _sLastPrevCsv != sCsv)) {
 		WE().layout.cockpitFrame.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
-	previewPrefs();
+	top.previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
@@ -76,7 +76,7 @@ function preview() {
 	_bPrev = true;
 	var sCsv = getBinary();
 	_sLastPrevCsv = sCsv;
-	previewPrefs();
+	top.previewPrefs();
 	WE().layout.cockpitFrame.rpc(sCsv, '', '', '', '', prefs._sObjId);
 }
 
@@ -84,6 +84,6 @@ function exit_close() {
 	if (_sInitCsv_ != getBinary() && _bPrev) {
 		WE().layout.cockpitFrame.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }

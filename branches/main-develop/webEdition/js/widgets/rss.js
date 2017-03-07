@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -91,7 +91,7 @@ function init() {
 	_iInitTbTitlePers = aCsv[4];
 	var oRdoTitle = _fo.elements.rdo_title;
 	oRdoTitle[aCsv[4]].checked = true;
-	initPrefs();
+	top.initPrefs();
 }
 
 function onChangeSctRss(obj) {
@@ -170,7 +170,7 @@ function getBinary(postfix) {
 
 function exit_close() {
 	resetRssFeed();
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -212,7 +212,7 @@ function preview() {
 		top.we_showMessage(WE().consts.g_l.cockpit.invalid_url, WE().consts.message.WE_MESSAGE_ERROR, window);
 		//return;
 	}
-	previewPrefs();
+	top.previewPrefs();
 	displayRssFeed(sUri, false);
 }
 

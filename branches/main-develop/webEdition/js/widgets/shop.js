@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -37,7 +37,7 @@ function init() {
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_fo.elements.revenueTarget.value = widget.sInitNum;
-	initPrefs();
+	top.initPrefs();
 }
 
 function getBinary(postfix) {
@@ -68,7 +68,7 @@ function exit_close() {
 		var aCsv = _sInitCsv_.split(';');
 		WE().layout.cockpitFrame.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -76,7 +76,7 @@ function save() {
 	if (isNoError()) {
 		var sCsv = getCsv();
 		_oCsv_.value = sCsv;
-		//savePrefs();
+		//top.savePrefs();
 		window.opener.saveSettings();
 		if ((!_bPrev && sCsv != _sInitCsv_) || (_bPrev && sCsv != _sLastPreviewCsv)) {
 			refresh(false);
@@ -101,7 +101,7 @@ function isNoError() {
 function preview() {
 	if (isNoError()) {
 		_bPrev = true;
-		previewPrefs();
+		top.previewPrefs();
 		refresh(true);
 	} else {
 		WE().util.showMessage(WE().consts.g_l.cockpit.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);

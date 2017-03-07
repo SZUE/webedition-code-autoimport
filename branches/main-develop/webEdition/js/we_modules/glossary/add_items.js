@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,weCombobox */
 
 /**
  * webEdition CMS

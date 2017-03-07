@@ -370,8 +370,9 @@ function block(e) {
 				// Is it's Opera or older FF use key handler
 				if (tinymce.isOpera || /Firefox\/2/.test(navigator.userAgent)) {
 					ed.onKeyDown.addToTop(function (ed, e) {
-						if (((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45))
+						if (((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45)){
 							grabContent(e);
+						}
 					});
 				} else {
 					// Grab contents on paste event on Gecko and WebKit
@@ -422,10 +423,11 @@ function block(e) {
 			function process(items) {
 				each(items, function (v) {
 					// Remove or replace
-					if (v.constructor == RegExp)
+					if (v.constructor == RegExp){
 						h = h.replace(v, '');
-					else
+					}else{
 						h = h.replace(v[0], v[1]);
+					}
 				});
 			}
 
@@ -654,8 +656,9 @@ function block(e) {
 			if (o.wordContent) {
 				// Remove named anchors or TOC links
 				each(dom.select('a', o.node), function (a) {
-					if (!a.href || a.href.indexOf('#_Toc') != -1)
+					if (!a.href || a.href.indexOf('#_Toc') != -1){
 						dom.remove(a, 1);
+					}
 				});
 
 				if (getParam(ed, "paste_convert_middot_lists")) {
@@ -689,11 +692,12 @@ function block(e) {
 						// Remove all of the existing styles
 						dom.setAttrib(el, 'style', '');
 
-						if (styleProps && npc > 0)
+						if (styleProps && npc > 0){
 							dom.setStyles(el, newStyle); // Add back the stored subset of styles
-						else // Remove empty span tags that do not have class attributes
-						if (el.nodeName == 'SPAN' && !el.className)
+						}else{ // Remove empty span tags that do not have class attributes
+						if (el.nodeName == 'SPAN' && !el.className){
 							dom.remove(el, true);
+						}}
 					});
 				}
 			}
@@ -728,26 +732,26 @@ function block(e) {
 				var sib, val = '', type, html, idx, parents;
 
 				// Get text node value at beginning of paragraph
-				for (sib = p.firstChild; sib && sib.nodeType == 3; sib = sib.nextSibling)
+				for (sib = p.firstChild; sib && sib.nodeType == 3; sib = sib.nextSibling){
 					val += sib.nodeValue;
-
+				}
 				val = p.innerHTML.replace(/<\/?\w+[^>]*>/gi, '').replace(/&nbsp;/g, '\u00a0');
 
 				// Detect unordered lists look for bullets
-				if (/^(__MCE_ITEM__)+[\u2022\u00b7\u00a7\u00d8o\u25CF]\s*\u00a0*/.test(val))
+				if (/^(__MCE_ITEM__)+[\u2022\u00b7\u00a7\u00d8o\u25CF]\s*\u00a0*/.test(val)){
 					type = 'ul';
-
+				}
 				// Detect ordered lists 1., a. or ixv.
-				if (/^__MCE_ITEM__\s*\w+\.\s*\u00a0+/.test(val))
+				if (/^__MCE_ITEM__\s*\w+\.\s*\u00a0+/.test(val)){
 					type = 'ol';
-
+				}
 				// Check if node value matches the list pattern: o&nbsp;&nbsp;
 				if (type) {
 					margin = parseFloat(p.style.marginLeft || 0);
 
-					if (margin > lastMargin)
+					if (margin > lastMargin){
 						levels.push(margin);
-
+					}
 					if (!listElm || type != lastType) {
 						listElm = dom.create(type);
 						dom.insertAfter(listElm, p);
@@ -768,10 +772,11 @@ function block(e) {
 						var html = span.innerHTML.replace(/<\/?\w+[^>]*>/gi, '');
 
 						// Remove span with the middot or the number
-						if (type == 'ul' && /^__MCE_ITEM__[\u2022\u00b7\u00a7\u00d8o\u25CF]/.test(html))
+						if (type == 'ul' && /^__MCE_ITEM__[\u2022\u00b7\u00a7\u00d8o\u25CF]/.test(html)){
 							dom.remove(span);
-						else if (/^__MCE_ITEM__[\s\S]*\w+\.(&nbsp;|\u00a0)*\s*/.test(html))
+						}else if (/^__MCE_ITEM__[\s\S]*\w+\.(&nbsp;|\u00a0)*\s*/.test(html)){
 							dom.remove(span);
+						}
 					});
 
 					html = p.innerHTML;
@@ -788,14 +793,16 @@ function block(e) {
 
 					lastMargin = margin;
 					lastType = type;
-				} else
+				} else{
 					listElm = lastMargin = 0; // End list element
+				}
 			});
 
 			// Remove any left over makers
 			html = o.node.innerHTML;
-			if (html.indexOf('__MCE_ITEM__') != -1)
+			if (html.indexOf('__MCE_ITEM__') != -1){
 				o.node.innerHTML = html.replace(/__MCE_ITEM__/g, '');
+			}
 		},
 
 		/**
@@ -805,9 +812,9 @@ function block(e) {
 			var ed = this.editor, r = ed.selection.getRng();
 
 			// First delete the contents seems to work better on WebKit when the selection spans multiple list items or multiple table cells.
-			if (!ed.selection.isCollapsed() && r.startContainer != r.endContainer)
+			if (!ed.selection.isCollapsed() && r.startContainer != r.endContainer){
 				ed.getDoc().execCommand('Delete', false, null);
-
+			}
 			ed.execCommand('mceInsertContent', false, h, {skip_undo: skip_undo});
 		},
 
@@ -828,10 +835,11 @@ function block(e) {
 
 			function process(items) {
 				each(items, function (v) {
-					if (v.constructor == RegExp)
+					if (v.constructor == RegExp){
 						content = content.replace(v, "");
-					else
+					}else{
 						content = content.replace(v[0], v[1]);
+					}
 				});
 			}
 

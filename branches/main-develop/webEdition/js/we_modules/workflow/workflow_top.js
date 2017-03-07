@@ -29,10 +29,19 @@
 
 WE().util.loadConsts(document, "g_l.workflow");
 
+var hot = false;
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
 
+function setHot() {
+	hot = true;
+}
+
+function usetHot() {
+	hot = false;
+}
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -40,7 +49,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] !== "save_workflow") {
+	if (top.hot && args[0] !== "save_workflow") {
 		var hotConfirmMsg = window.confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
@@ -51,7 +60,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_workflow":
-			if (!hot) {
+			if (!top.hot) {
 				top.opener.top.we_cmd('exit_modules');
 			}
 			break;
