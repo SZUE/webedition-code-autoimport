@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, prefs, _oSctCls */
 
 /**
  * webEdition CMS
@@ -60,7 +60,7 @@ function ajaxCallbackResetLogins(weResponse) {
 		if (weResponse.DataArray.data === "true") {
 			refresh();
 			top.we_showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			top.setTheme(_sObjId, _oSctCls[_oSctCls.selectedIndex].value);
+			top.setTheme(prefs._sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 		}
 	}
 }

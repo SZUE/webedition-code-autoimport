@@ -32,16 +32,16 @@ class we_widget_pad extends we_widget_base{
 		list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
 		$iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query([
-				'mod' => 'pad',
-				'we_cmd' => [
-					0 => 'widget_cmd',
-					1 => 'reload',
-					2 => $pad_csv . ' ',
-					3 => ' ',
-					4 => 'home',
-					5 => $aProps[1] . ' ',
-					6 => $pad_header_enc . ' ',
-					7 => 'm_' . $iCurrId,
+					'mod' => 'pad',
+					'we_cmd' => [
+						0 => 'widget_cmd',
+						1 => 'reload',
+						2 => $pad_csv . ' ',
+						3 => ' ',
+						4 => 'home',
+						5 => $aProps[1] . ' ',
+						6 => $pad_header_enc . ' ',
+						7 => 'm_' . $iCurrId,
 		]]);
 		$iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 		$iFrmPadAtts['style'] = 'width:100%;height:287px';
@@ -118,7 +118,7 @@ class we_widget_pad extends we_widget_base{
 		$prio->setCol(2, 2, null, '<i class="fa fa-dot-circle-o" style="color:green"></i>');
 
 		$oSctValid = we_html_tools::htmlSelect("sct_valid", [g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-				], 1, g_l('cockpit', '[always]'), false, ['style' => "width:120px;", 'onchange' => ""], 'value', 120);
+						], 1, g_l('cockpit', '[always]'), false, ['style' => "width:120px;", 'onchange' => ""], 'value', 120);
 
 
 		list($pad_header_enc, ) = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -133,8 +133,8 @@ class we_widget_pad extends we_widget_base{
 		$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($options), 1, "", false, ['id' => "title", 'onchange' => ""], 'value');
 
 		$parts = [["headline" => g_l('cockpit', '[sorting]'),
-			"html" => $sort->getHTML(),
-			'space' => we_html_multiIconBox::SPACE_MED
+		"html" => $sort->getHTML(),
+		'space' => we_html_multiIconBox::SPACE_MED
 			],
 			["headline" => g_l('cockpit', '[display]'),
 				"html" => $display->getHTML(),
@@ -158,11 +158,11 @@ class we_widget_pad extends we_widget_base{
 		$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-			$jsFile .
-			we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
-				["class" => "weDialogBody", "onload" => "initDlg();"
-				], we_html_element::htmlForm(["onsubmit" => "return false;"
-					], we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));
+				$jsFile .
+				we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
+						["class" => "weDialogBody", "onload" => "initDlg();"
+						], we_html_element::htmlForm(["onsubmit" => "return false;"
+								], we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));
 	}
 
 	private static function convertDate($date){
@@ -172,8 +172,8 @@ class we_widget_pad extends we_widget_base{
 	private static function getDateSelector($label, $name, $btn){
 		//FIXME: convert this to we_html_tools::getDateSelector
 		return we_html_element::htmlSpan(['class' => 'default', 'id' => $name . '_cell'], $label .
-				we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" class="wetextinput datepicker" readonly="readonly"', "text", 70, 0) .
-				we_html_button::create_button(we_html_button::CALENDAR, "javascript:$('#" . $name . "').datepicker('show');", null, null, null, null, null, null, false, $btn)
+						we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" class="wetextinput datepicker" readonly="readonly"', "text", 70, 0) .
+						we_html_button::create_button(we_html_button::CALENDAR, "javascript:$('#" . $name . "').datepicker('show');", null, null, null, null, null, null, false, $btn)
 		);
 	}
 
@@ -280,11 +280,11 @@ class we_widget_pad extends we_widget_base{
 					$q_ValidUntil = "3000-01-01";
 				}
 				$DB_WE->query('UPDATE ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(['Title' => $entTitle,
-						'Text' => $entText,
-						'Priority' => $q_Priority,
-						'Valid' => $q_Valid,
-						'ValidFrom' => $q_ValidFrom,
-						'ValidUntil' => $q_ValidUntil]) . ' WHERE ID = ' . intval($q_ID));
+							'Text' => $entText,
+							'Priority' => $q_Priority,
+							'Valid' => $q_Valid,
+							'ValidFrom' => $q_ValidFrom,
+							'ValidUntil' => $q_ValidUntil]) . ' WHERE ID = ' . intval($q_ID));
 				break;
 			case 'insert' :
 				list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -298,14 +298,14 @@ class we_widget_pad extends we_widget_base{
 				$entTitle = strtr(base64_decode($q_Title), ["'" => '&#039;', '"' => '&quot;']);
 				$entText = strtr(base64_decode($q_Text), ["'" => '&#039;', '"' => '&quot;']);
 				$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(['WidgetName' => $title,
-						'UserID' => intval($_SESSION['user']['ID']),
-						'CreationDate' => sql_function('CURDATE()'),
-						'Title' => $entTitle,
-						'Text' => $entText,
-						'Priority' => $q_Priority,
-						'Valid' => $q_Valid,
-						'ValidFrom' => $q_ValidFrom,
-						'ValidUntil' => $q_ValidUntil
+							'UserID' => intval($_SESSION['user']['ID']),
+							'CreationDate' => sql_function('CURDATE()'),
+							'Title' => $entTitle,
+							'Text' => $entText,
+							'Priority' => $q_Priority,
+							'Valid' => $q_Valid,
+							'ValidFrom' => $q_ValidFrom,
+							'ValidUntil' => $q_ValidUntil
 				]));
 				break;
 		}
@@ -329,7 +329,7 @@ class we_widget_pad extends we_widget_base{
 
 // validity settings
 		$sctValid = we_html_tools::htmlSelect("sct_valid", [g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-				], 1, g_l('cockpit', '[always]'), false, ['style' => "width:100px;", 'onchange' => "toggleTblValidity()"], 'value', 100, 'middlefont');
+						], 1, g_l('cockpit', '[always]'), false, ['style' => "width:100px;", 'onchange' => "toggleTblValidity()"], 'value', 100, 'middlefont');
 		$oTblValidity = self::getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from") . ' ' . self::getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until");
 		$oTblPeriod = new we_html_table(["width" => "100%", 'class' => 'default'], 1, 2);
 		$oTblPeriod->setCol(0, 0, ['class' => "middlefont"], $sctValid);
@@ -361,11 +361,11 @@ class we_widget_pad extends we_widget_base{
 		$oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
 		$oTblProps->setCol(6, 0, ['class' => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'], g_l('cockpit', '[note]'));
 		$oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea([
-				'name' => 'props_text',
-				'id' => 'previewCode',
-				'style' => 'width:100%;height:70px;',
-				'class' => 'wetextinput',
-				], ""));
+					'name' => 'props_text',
+					'id' => 'previewCode',
+					'style' => 'width:100%;height:70px;',
+					'class' => 'wetextinput',
+						], ""));
 		$oTblProps->setCol(8, 0, ["colspan" => 3], $buttons);
 
 // Button: add note
@@ -375,46 +375,40 @@ class we_widget_pad extends we_widget_base{
 		$oPad = new we_html_table([
 			'style' => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
 			'class' => 'default'
-			], 1, 1);
+				], 1, 1);
 
 		$oPad->setCol(0, 0, ["colspan" => 3, "class" => "cl_notes"], we_html_element::htmlDiv(["id" => "notices"
-				], self::getNoteList('SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
+						], self::getNoteList('SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) .
-					($bDisplay ?
-						" AND (
+								($bDisplay ?
+										" AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			) OR (
 				Valid = 'period' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\") AND ValidUntil >= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			)
 		)" : ''
-					) .
-					' ORDER BY ' . $q_sort, $bDate, $bDisplay)));
+								) .
+								' ORDER BY ' . $q_sort, $bDate, $bDisplay)));
 
 		$notepad = $oPad->getHTML() .
-			we_html_element::htmlDiv(["id" => "props"], $oTblProps->getHTML()) .
-			we_html_element::htmlDiv(["id" => "view"], $oTblBtnProps);
+				we_html_element::htmlDiv(["id" => "props"], $oTblProps->getHTML()) .
+				we_html_element::htmlDiv(["id" => "view"], $oTblBtnProps);
 
+		$isHome = ($command === "home");
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::cssLink(CSS_DIR . 'pad.css') .
-			we_html_element::jsElement("
-var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
-" .
-				(($command === "home") ? "
-var _sTb='" . $title . "';
-var _sInitProps='" . $sInitProps . "';
-" : "
-var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
-var _sType='pad';
-var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-") . "
-var _ttlB64Esc=escape(window.btoa(_sTb));
-") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
-				[
-				"onload" => 'toggleTblValidity();'
-				], we_html_element::htmlForm(['style' => "display:inline;"], we_html_element::htmlDiv(
-						["id" => "pad"], $notepad .
-						we_html_element::htmlHidden("mark", "")
+				we_html_element::jsScript(JS_DIR . 'widgets/pad.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar([
+						'sObjId' => we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5),
+						'sTb' => ($isHome ? $title : g_l('cockpit', '[notes]') . " - " . $title ),
+						'sType' => 'pad',
+						'sInitProps' => ($isHome ? $sInitProps : '')
+			])]), we_html_element::htmlBody(
+						[
+					"onload" => 'toggleTblValidity();'
+						], we_html_element::htmlForm(['style' => "display:inline;"], we_html_element::htmlDiv(
+										["id" => "pad"], $notepad .
+										we_html_element::htmlHidden("mark", "")
 		))));
 	}
 

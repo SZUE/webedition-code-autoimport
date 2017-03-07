@@ -1,4 +1,4 @@
-/* global tinyMCEPopup */
+/* global tinyMCEPopup, AutoValidator, tinymce */
 'use strict';
 
 tinyMCEPopup.requireLangPack();
@@ -8,9 +8,7 @@ var action, orgTableWidth, orgTableHeight, dom = tinyMCEPopup.editor.dom;
 function insertTable() {
 	var formObj = document.forms[0];
 	var inst = tinyMCEPopup.editor, dom = inst.dom;
-	var cols = 2, rows = 2, border = 0, cellpadding = -1, cellspacing = -1, align, width, height, className, caption, frame, rules;
 	var html = '', capEl, elm;
-	var cellLimit, rowLimit, colLimit;
 
 	tinyMCEPopup.restoreSelection();
 
@@ -22,29 +20,29 @@ function insertTable() {
 	elm = dom.getParent(inst.selection.getNode(), 'table');
 
 	// Get form data
-	cols = formObj.elements.cols.value;
-	rows = formObj.elements.rows.value;
-	border = formObj.elements.border.value !== "" ? formObj.elements.border.value : 0;
-	cellpadding = formObj.elements.cellpadding.value !== "" ? formObj.elements.cellpadding.value : "";
-	cellspacing = formObj.elements.cellspacing.value !== "" ? formObj.elements.cellspacing.value : "";
-	align = getSelectValue(formObj, "align");
-	frame = getSelectValue(formObj, "tframe");
-	rules = getSelectValue(formObj, "rules");
-	width = formObj.elements.width.value;
-	height = formObj.elements.height.value;
-	bordercolor = formObj.elements.bordercolor.value;
-	bgcolor = formObj.elements.bgcolor.value;
-	className = getSelectValue(formObj, "class");
-	id = formObj.elements.id.value;
-	summary = formObj.elements.summary.value;
-	style = formObj.elements.style.value;
-	dir = formObj.elements.dir.value;
-	lang = formObj.elements.lang.value;
-	background = formObj.elements.backgroundimage.value;
-	caption = formObj.elements.caption.checked;
+	var cols = formObj.elements.cols.value,
+	rows = formObj.elements.rows.value,
+	border = formObj.elements.border.value !== "" ? formObj.elements.border.value : 0,
+	cellpadding = formObj.elements.cellpadding.value !== "" ? formObj.elements.cellpadding.value : "",
+	cellspacing = formObj.elements.cellspacing.value !== "" ? formObj.elements.cellspacing.value : "",
+	align = getSelectValue(formObj, "align"),
+	frame = getSelectValue(formObj, "tframe"),
+	rules = getSelectValue(formObj, "rules"),
+	width = formObj.elements.width.value,
+	height = formObj.elements.height.value,
+	bordercolor = formObj.elements.bordercolor.value,
+	bgcolor = formObj.elements.bgcolor.value,
+	className = getSelectValue(formObj, "class"),
+	id = formObj.elements.id.value,
+	summary = formObj.elements.summary.value,
+	style = formObj.elements.style.value,
+	dir = formObj.elements.dir.value,
+	lang = formObj.elements.lang.value,
+	background = formObj.elements.backgroundimage.value,
+	caption = formObj.elements.caption.checked,
 
-	cellLimit = tinyMCEPopup.getParam('table_cell_limit', false);
-	rowLimit = tinyMCEPopup.getParam('table_row_limit', false);
+	cellLimit = tinyMCEPopup.getParam('table_cell_limit', false),
+	rowLimit = tinyMCEPopup.getParam('table_row_limit', false),
 	colLimit = tinyMCEPopup.getParam('table_col_limit', false);
 
 	// Validate table size
@@ -334,7 +332,7 @@ function init() {
 		//cols = cols;
 		rows = rowsAr.length;
 
-		st = dom.parseStyle(dom.getAttrib(elm, "style"));
+		var st = dom.parseStyle(dom.getAttrib(elm, "style"));
 		border = trimSize(getStyle(elm, 'border', 'borderWidth'));
 		cellpadding = dom.getAttrib(elm, 'cellpadding', "");
 		cellspacing = dom.getAttrib(elm, 'cellspacing', "");

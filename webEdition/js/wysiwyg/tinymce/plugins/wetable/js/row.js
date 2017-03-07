@@ -52,13 +52,14 @@ function init() {
 			document.getElementById('backgroundimage').style.width = '180px';
 		}
 		updateColor('bgcolor_pick', 'bgcolor');
-	} else
+	} else{
 		tinyMCEPopup.dom.hide('action');
-}
+}}
 
 function updateAction() {
 	var inst = tinyMCEPopup.editor, dom = inst.dom, trElm, tableElm, formObj = document.forms[0];
-	var action = getSelectValue(formObj, 'action');
+	var action = getSelectValue(formObj, 'action'),
+					rows,i;
 
 	if (!AutoValidator.validate(formObj)) {
 		tinyMCEPopup.alert(AutoValidator.getErrorMessages(formObj).join('. ') + '.');
@@ -95,18 +96,18 @@ function updateAction() {
 			break;
 
 		case "all":
-			var rows = tableElm.getElementsByTagName("tr");
+			rows = tableElm.getElementsByTagName("tr");
 
-			for (var i=0; i<rows.length; i++){
+			for (i=0; i<rows.length; i++){
 				updateRow(rows[i], true);
 			}
 			break;
 
 		case "odd":
 		case "even":
-			var rows = tableElm.getElementsByTagName("tr");
+			rows = tableElm.getElementsByTagName("tr");
 
-			for (var i=0; i<rows.length; i++) {
+			for (i=0; i<rows.length; i++) {
 				if ((i % 2 === 0 && action === "odd") || (i % 2 !== 0 && action === "even")){
 					updateRow(rows[i], true, true);
 				}
