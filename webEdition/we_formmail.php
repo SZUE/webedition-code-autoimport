@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@ require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
 abstract class we_base_formmail{
-
 	const WE_DEFAULT_SUBJECT = 'webEdition mailform';
 
 	private static $data = [];
@@ -38,8 +36,8 @@ abstract class we_base_formmail{
 		$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
 		echo we_html_tools::getHtmlTop('', '', '', '', getHtmlTag('body', ['class' => 'weEditorBody'], '', false, true) .
-				we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], $content), $headline) .
-				'</body>');
+			we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], $content), $headline) .
+			'</body>');
 
 		exit();
 	}
@@ -68,7 +66,7 @@ abstract class we_base_formmail{
 						$blocked = true;
 						// insert in block table
 						$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(['ip' => $_SERVER['REMOTE_ADDR'],
-									'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
+								'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
 						]));
 					}
 				}
@@ -86,7 +84,7 @@ abstract class we_base_formmail{
 		$jwt = we_base_request::_(we_base_request::STRING, 'data-jwt');
 		try{
 			$ser = we_helpers_jwt::decode($jwt, sha1(SECURITY_ENCRYPTION_KEY));
-		}catch(Exception $e){
+		} catch (Exception $e){
 			self::print_error('Email dispatch blocked / Email Versand blockiert (mixed)!');
 		}
 		$data = we_unserialize($ser);
@@ -162,8 +160,8 @@ abstract class we_base_formmail{
 			self::redirect($url);
 		} else {
 			echo we_html_tools::getHtmlTop('', '', '', '', getHtmlTag('body', ['class' => 'weEditorBody'], '', false, true) .
-					we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!'), '') .
-					'</body>');
+				we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!'), '') .
+				'</body>');
 			exit();
 		}
 	}
@@ -182,8 +180,8 @@ abstract class we_base_formmail{
 
 	private static function check_captcha(){
 		return ($name = empty(self::$data['captchaname']) ? '' : self::$data['captchaname'] ?
-				we_captcha_captcha::check($name) :
-				true); // Fix: #10297
+			we_captcha_captcha::check($name) :
+			true); // Fix: #10297
 	}
 
 	private static function addFiles(we_mail_mail $phpmail){
@@ -294,15 +292,13 @@ abstract class we_base_formmail{
 				$we_txt_confirm = $we_txt;
 				if(!empty(self::$data['pre_confirm'])){
 					$pre = self::$data['pre_confirm'];
-					self::contains_bad_str($pre);
 					$we_html_confirm = $pre . getHtmlTag('br') . $we_html_confirm;
-					$we_txt_confirm = $pre . "\n\n" . $we_txt_confirm;
+					$we_txt_confirm = we_mail_mail::getTextContent($pre) . "\n\n" . $we_txt_confirm;
 				}
 				if(!empty(self::$data['post_confirm'])){
 					$post = self::$data['post_confirm'];
-					self::contains_bad_str($post);
 					$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $post;
-					$we_txt_confirm = $we_txt_confirm . "\n\n" . $post;
+					$we_txt_confirm = $we_txt_confirm . "\n\n" . we_mail_mail::getTextContent($post);
 				}
 			}
 		}
@@ -346,7 +342,7 @@ abstract class we_base_formmail{
 		self::addFiles($phpmail);
 
 		$phpmail->addAddressList($recipientsList);
-		if($mimetype === 'text/html'){
+		if($mimetype === we_mail_mime::TYPE_HTML){
 			$phpmail->addHTMLPart($we_html);
 		} else {
 			$phpmail->addTextPart($we_txt);
@@ -364,7 +360,7 @@ abstract class we_base_formmail{
 				}
 				$phpmail = new we_mail_mail($email, $subject, $from);
 				$phpmail->setCharSet($charset);
-				if($mimetype === 'text/html'){
+				if($mimetype === we_mail_mime::TYPE_HTML){
 					$phpmail->addHTMLPart($we_html_confirm);
 				} else {
 					$phpmail->addTextPart($we_txt_confirm);

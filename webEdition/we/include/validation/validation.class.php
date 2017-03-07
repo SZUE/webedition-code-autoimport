@@ -33,7 +33,7 @@ abstract class validation{
 		return $cats;
 	}
 
-	static function saveService($validationService){
+	static function saveService(validationService $validationService){
 		// before saving check if another validationservice has this name
 		if(f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
 					AND PK_tblvalidationservices != ' . intval($validationService->id) . ' LIMIT 1')){
