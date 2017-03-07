@@ -28,6 +28,8 @@
 const TAB_ADMIN1 = 0;
 const TAB_ADMIN2 = 1;
 const TAB_ADMIN3 = 2;
+const TAB_OVERVIEW = 0;
+const TAB_ORDERLIST = 1;
 
 var shp = WE().util.getDynamicVar(document, 'loadVarShop', 'data-shop');
 
@@ -67,6 +69,12 @@ function setTab(tab) {
 		case TAB_ADMIN3:
 			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR + "shop/edit_shop_revenueTop.php?ViewYear=" + shp.yearTrans;
 			// treeData.yearshop
+			break;
+		case TAB_OVERVIEW:
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=" + shp.bid;
+			break;
+		case TAB_ORDERLIST:
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=customerOrderList&cid=" + shp.cid;
 			break;
 
 	}
