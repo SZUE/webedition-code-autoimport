@@ -133,8 +133,8 @@ class we_helpers_mail extends Zend_Mail{
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
 				$tr = ($_sender && !empty($_sender['email']) && !$suhosin ?
-						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-						new Zend_Mail_Transport_Sendmail());
+					new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+					new Zend_Mail_Transport_Sendmail());
 
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -266,7 +266,7 @@ class we_helpers_mail extends Zend_Mail{
 						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 						}
-						$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
+						$this->basedir = ($this->basedir ?: $_SERVER['DOCUMENT_ROOT']) .
 							((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
 							((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . $filename);
@@ -314,8 +314,11 @@ class we_helpers_mail extends Zend_Mail{
 	}
 
 	public function parseHtml2TextPart($html){
+		$this->AltBody = self::getTextContent($html);
+	}
 
-		$this->AltBody = trim(strip_tags(preg_replace(array(
+	public static function getTextContent($html){
+		return trim(strip_tags(preg_replace(array(
 			'-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
@@ -326,6 +329,9 @@ class we_helpers_mail extends Zend_Mail{
 					), strtr($html, array(
 			"\n" => '',
 			"\r" => '',
+			'</tr>' => "\n",
+			'</td>' => '  ',
+			'</th>' => '  ',
 			'</h1>' => "\n\n",
 			'</h2>' => "\n\n",
 			'</h3>' => "\n\n",
@@ -400,7 +406,7 @@ class we_helpers_mail extends Zend_Mail{
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
 	public static function get_mime_type($ext, $name = '', $filepath = ''/* , $useLegacy = false */){
-		return (we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION) ? : 'application/octet-stream') . '; name="' . $name . '"';
+		return (we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION) ?: 'application/octet-stream') . '; name="' . $name . '"';
 	}
 
 	/*	 * ******************************************

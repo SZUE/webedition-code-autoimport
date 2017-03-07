@@ -265,12 +265,12 @@ if($email){
 		if(($pre = we_base_request::_(we_base_request::HTML, 'pre_confirm'))){
 			contains_bad_str($pre);
 			$we_html_confirm = $pre . getHtmlTag('br') . $we_html_confirm;
-			$we_txt_confirm = $pre . "\n\n" . $we_txt_confirm;
+			$we_txt_confirm = we_helpers_mail::getTextContent($pre) . "\n\n" . $we_txt_confirm;
 		}
 		if(($post = we_base_request::_(we_base_request::HTML, 'post_confirm'))){
 			contains_bad_str($post);
 			$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $post;
-			$we_txt_confirm = $we_txt_confirm . "\n\n" . $post;
+			$we_txt_confirm = $we_txt_confirm . "\n\n" . we_helpers_mail::getTextContent($post);
 		}
 	}
 }
