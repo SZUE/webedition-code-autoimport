@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -334,7 +334,7 @@ function getCsv() {
 
 function preview() {
 	_bPrev = true;
-	previewPrefs();
+	top.previewPrefs();
 	WE().layout.cockpitFrame.rpc(getCsv(), '', '', '', '', prefs._sObjId);
 }
 
@@ -342,7 +342,7 @@ function exit_close() {
 	if (_sCsvInit_ != getCsv() && _bPrev) {
 		WE().layout.cockpitFrame.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -361,7 +361,7 @@ function init() {
 			iOpt++;
 		}
 	}
-	initPrefs();
+	top.initPrefs();
 }
 
 function deleteEntry(sValue) {

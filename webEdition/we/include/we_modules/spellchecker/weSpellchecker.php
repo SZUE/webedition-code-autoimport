@@ -35,21 +35,19 @@ if($editname !== false){
   var mode = "<?= $_mode; ?>";
   var editname = "<?= $editname; ?>";
  */
-echo we_html_tools::getHtmlTop('','','',
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js').
-
-we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
- we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js'));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+		we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+		we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+		we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+		we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js') .
+		we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+		we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js'));
 ?>
 <body class="weDialogBody" onload="setDialog()"><?php
-	$_preview = '<div id="preview" class="defaultfont"></div>';
+$_preview = '<div id="preview" class="defaultfont"></div>';
 
 
-	$_leftPanel = '<div id="searchPanel">
+$_leftPanel = '<div id="searchPanel">
 		<input class="wetextinput" name="search" id="search" />
 		<br />
 		<label for="suggestion" class="defaultfont">' . g_l('modules_spellchecker', '[suggestion]') . '</label>
@@ -58,49 +56,48 @@ we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 	</div>';
 
 
-	$_buttonsleft = [we_html_button::create_button('ignore', "javascript:findNext();", '', 0, 0, '', '', true, false),
-		we_html_button::create_button('change', "javascript:changeWord();", '', 0, 0, '', '', true, false),
-		we_html_button::create_button(we_html_button::ADD, "javascript:add();", '', 0, 0, '', '', true, false),
-		we_html_button::create_button('check', "javascript:WE().layout.button.disable(document, \"check\");setTimeout(spellcheck,100);", '', 0, 0, '', '', true, false)
-	];
+$_buttonsleft = [we_html_button::create_button('ignore', "javascript:findNext();", '', 0, 0, '', '', true, false),
+	we_html_button::create_button('change', "javascript:changeWord();", '', 0, 0, '', '', true, false),
+	we_html_button::create_button(we_html_button::ADD, "javascript:add();", '', 0, 0, '', '', true, false),
+	we_html_button::create_button('check', "javascript:WE().layout.button.disable(document, \"check\");setTimeout(spellcheck,100);", '', 0, 0, '', '', true, false)
+];
 
-	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';
 
-	$buttons = [we_html_button::create_button('apply', "javascript:apply();self.close();"),
-		we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
-	];
-	$_buttons_bottom = we_html_button::position_yes_no_cancel($buttons[0], null, $buttons[1]);
+$buttons = [we_html_button::create_button('apply', "javascript:apply();self.close();"),
+	we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+];
+$_buttons_bottom = we_html_button::position_yes_no_cancel($buttons[0], null, $buttons[1]);
 
-	$_selectCode = '<select name="dictSelect" id="dictSelect" onchange="selectDict(this.value)">';
+$_selectCode = '<select name="dictSelect" id="dictSelect" onchange="selectDict(this.value)">';
 
-	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
-	$i = 0;
-	while(false !== ($entry = $_dir->read())){
-		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
-			$_name = str_replace('.zip', '', $entry);
-			if(in_array($_name, $spellcheckerConf['active'])){
-				$_selectCode .= '<option value="' . $_name . '" ' . ((isset($_SESSION['weS']['dictLang']) && $_SESSION['weS']['dictLang'] == $_name) ? 'selected' : '') . '>' . $_name . '</option>';
-			}
+$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
+$i = 0;
+while(false !== ($entry = $_dir->read())){
+	if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
+		$_name = str_replace('.zip', '', $entry);
+		if(in_array($_name, $spellcheckerConf['active'])){
+			$_selectCode .= '<option value="' . $_name . '" ' . ((isset($_SESSION['weS']['dictLang']) && $_SESSION['weS']['dictLang'] == $_name) ? 'selected' : '') . '>' . $_name . '</option>';
 		}
 	}
-	$_dir->close();
+}
+$_dir->close();
 
-	$_selectCode .= '</select>';
+$_selectCode .= '</select>';
 
-	$parts = [['headline' => '',
-		'html' => $_preview,
-		],
-		['headline' => '',
-			'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
-		],
-		['headline' => g_l('modules_spellchecker', '[dictionary]'),
-			'html' => $_selectCode,
-			'space' => we_html_multiIconBox::SPACE_MED
-		]
-	];
+$parts = [['headline' => '',
+ 'html' => $_preview,
+	],
+	['headline' => '',
+		'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
+	],
+	['headline' => g_l('modules_spellchecker', '[dictionary]'),
+		'html' => $_selectCode,
+		'space' => we_html_multiIconBox::SPACE_MED
+	]
+];
 
 
-	echo '<div id="spinner" style="text-align:center">
+echo '<div id="spinner" style="text-align:center">
 			<div style="padding-top: 30%;">
 				<i class="fa fa-2x fa-spinner fa-pulse"></i><br />
 				<div id="statusText" class="small" style="color: black;">' . g_l('modules_spellchecker', '[download]') . '</div>
@@ -111,11 +108,9 @@ we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	<input name="' . ($_mode === 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
 	<div id="mainPanel">' .
-	we_html_multiIconBox::getHTML('', $parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
+ we_html_multiIconBox::getHTML('', $parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
-	</form>' .
-	$_applet .
-	'<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php"></iframe>';
-	?>
+	</form>';
+?>
 </body>
 </html>

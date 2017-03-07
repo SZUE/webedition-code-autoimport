@@ -26,12 +26,12 @@
 'use strict';
 
 var sel_color = "#697ace",
-	default_color = "#000000",
-	entries_selected,
-	delta_sel = [],
-	addrbook_sel,
-	current_sel,
-	transaction;
+				default_color = "#000000",
+				entries_selected,
+				delta_sel = [],
+				addrbook_sel,
+				current_sel,
+				transaction;
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -138,8 +138,8 @@ function array_rm_elem(arr, elem, tdim_off) {
 
 	// Locate elem in arr
 	index = (tdim_off < 0 ?
-		arr.indexOf(elem) :
-		array_two_dim_search(elem, arr, tdim_off));
+					arr.indexOf(elem) :
+					array_two_dim_search(elem, arr, tdim_off));
 
 
 	// Delete entry from entries_selected
@@ -220,9 +220,8 @@ function save_addrbook() {
 }
 
 function dump_entries(u_type) {
-	var i;
-	var new_arr = current_sel;
-	var pos;
+	var i, pos, val,
+					new_arr = current_sel;
 
 	for (i = 0; i < current_sel.length; i++) {
 		if (current_sel[i][0] == u_type) {
@@ -237,10 +236,8 @@ function dump_entries(u_type) {
 }
 
 function delta_sel_add(user_type) {
-	var i;
-	var opt;
-	var tarr;
-	var len = delta_sel.length;
+	var i, opt, tarr,
+					len = delta_sel.length;
 
 	dump_entries(user_type);
 
@@ -258,10 +255,9 @@ function delta_sel_add(user_type) {
 }
 
 function rm_sel_user() {
-	var sel_elems = get_sel_elems(document.usel.usel_currentsel);
-	var i;
-	var pos = -1;
-	var val;
+	var i, val,
+					sel_elems = get_sel_elems(document.usel.usel_currentsel),
+					pos = -1;
 
 	for (i = 0; i < sel_elems.length; i++) {
 		pos = array_two_dim_search(sel_elems[i], current_sel, 1);
@@ -272,10 +268,10 @@ function rm_sel_user() {
 }
 
 function rm_addrbook_entry() {
-	var sel_elems = get_sel_elems(document.usel.usel_addrbook);
-	var i;
-	var pos = -1;
-	var val;
+	var i, val,
+					sel_elems = get_sel_elems(document.usel.usel_addrbook),
+					pos = -1;
+
 	for (i = 0; i < sel_elems.length; i++) {
 		pos = array_two_dim_search(sel_elems[i], addrbook_sel, 1);
 		val = document.usel.usel_addrbook.options[pos].value;
@@ -285,8 +281,8 @@ function rm_addrbook_entry() {
 }
 
 function add_toaddr() {
-	var sel_elems = get_sel_elems(document.usel.usel_currentsel);
-	var i, curr_offset, addrbook_sel;
+	var i, curr_offset, addrbook_sel,opt,
+					sel_elems = get_sel_elems(document.usel.usel_currentsel);
 
 	for (i = 0; i < sel_elems.length; i++) {
 		curr_offset = array_two_dim_search(String(sel_elems[i]), current_sel, 1);
@@ -302,11 +298,11 @@ function add_toaddr() {
 
 function add_addr2sel() {
 	var i,
-		addr_offset,
-		opt,
-		current_sel,
-		sel_elems = get_sel_elems(document.usel.usel_addrbook),
-		len = sel_elems.length;
+					addr_offset,
+					opt,
+					current_sel,
+					sel_elems = get_sel_elems(document.usel.usel_addrbook),
+					len = sel_elems.length;
 
 	for (i = 0; i < len; i++) {
 		addr_offset = array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1);

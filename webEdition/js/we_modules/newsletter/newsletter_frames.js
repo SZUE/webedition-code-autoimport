@@ -108,7 +108,7 @@ function set_export(val) {
 }
 
 function clearLog() {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	f.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter";
 	f.method = "post";
 	f.submit();

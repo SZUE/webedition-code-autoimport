@@ -48,9 +48,9 @@ function init() {
 		selectByValue(formObj, 'dir', dir);
 
 		// Resize some elements
-		if (isVisible('backgroundimagebrowser'))
+		if (isVisible('backgroundimagebrowser')){
 			document.getElementById('backgroundimage').style.width = '180px';
-
+		}
 		updateColor('bgcolor_pick', 'bgcolor');
 	} else
 		tinyMCEPopup.dom.hide('action');
@@ -97,9 +97,9 @@ function updateAction() {
 		case "all":
 			var rows = tableElm.getElementsByTagName("tr");
 
-			for (var i=0; i<rows.length; i++)
+			for (var i=0; i<rows.length; i++){
 				updateRow(rows[i], true);
-
+			}
 			break;
 
 		case "odd":
@@ -130,9 +130,9 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 	var doc = inst.getDoc();
 
 	// Update row element
-	if (!skip_id)
+	if (!skip_id){
 		dom.setAttrib(tr_elm, 'id', formObj.id.value);
-
+	}
 	dom.setAttrib(tr_elm, 'align', getSelectValue(formObj, 'align'));
 	dom.setAttrib(tr_elm, 'vAlign', getSelectValue(formObj, 'valign'));
 	dom.setAttrib(tr_elm, 'lang', formObj.lang.value);
@@ -149,11 +149,11 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 	tr_elm.style.height = getCSSSize(formObj.height.value);
 	tr_elm.style.backgroundColor = formObj.bgcolor.value;
 
-	if (formObj.backgroundimage.value !== "")
+	if (formObj.backgroundimage.value !== ""){
 		tr_elm.style.backgroundImage = "url('" + formObj.backgroundimage.value + "')";
-	else
+	}else{
 		tr_elm.style.backgroundImage = '';
-
+	}
 	// Setup new rowtype
 	if (curRowType != rowtype && !skip_parent) {
 		// first, clone the node we are working on
@@ -164,18 +164,18 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 		var dest = rowtype;
 		var newParent = null;
 		for (var i = 0; i < theTable.childNodes.length; i++) {
-			if (theTable.childNodes[i].nodeName.toLowerCase() == dest)
+			if (theTable.childNodes[i].nodeName.toLowerCase() == dest){
 				newParent = theTable.childNodes[i];
-		}
+		}}
 
 		if (newParent === null) {
 			newParent = doc.createElement(dest);
 
-			if (theTable.firstChild.nodeName === 'CAPTION')
+			if (theTable.firstChild.nodeName === 'CAPTION'){
 				inst.dom.insertAfter(newParent, theTable.firstChild);
-			else
+			}else{
 				theTable.insertBefore(newParent, theTable.firstChild);
-		}
+		}}
 
 		// append the row to the new parent
 		newParent.appendChild(newRow);
@@ -203,14 +203,14 @@ function changedStyle() {
 	var formObj = document.forms[0], dom = tinyMCEPopup.editor.dom;
 	var st = dom.parseStyle(formObj.style.value);
 
-	if (st['background-image'])
+	if (st['background-image']){
 		formObj.backgroundimage.value = st['background-image'].replace(new RegExp("url\\('?([^']*)'?\\)", 'gi'), "$1");
-	else
+	}else{
 		formObj.backgroundimage.value = '';
-
-	if (st.height)
+	}
+	if (st.height){
 		formObj.height.value = trimSize(st.height);
-
+	}
 	if (st['background-color']) {
 		formObj.bgcolor.value = st['background-color'];
 		updateColor('bgcolor_pick','bgcolor');
@@ -222,11 +222,11 @@ function changedSize() {
 	var st = dom.parseStyle(formObj.style.value);
 
 	var height = formObj.height.value;
-	if (height !== "")
+	if (height !== ""){
 		st.height = getCSSSize(height);
-	else
+	}else{
 		st.height = "";
-
+	}
 	formObj.style.value = dom.serializeStyle(st);
 }
 

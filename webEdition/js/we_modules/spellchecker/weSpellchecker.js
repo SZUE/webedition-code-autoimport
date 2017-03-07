@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, tinyMCEPopup */
 
 /**
  * webEdition SDK
@@ -28,7 +28,7 @@
 'use strict';
 
 WE().util.loadConsts(document, "g_l.spellcheck");
-
+/*
 var orginal;
 var editPanel;
 var to;
@@ -45,7 +45,7 @@ var customAdapter = function () {
 };
 
 function setDialog() {
-	var text;
+	var text,mode;
 	if (mode === 'tinyMce') {
 		editorObj = tinyMCEPopup.editor;
 		text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
@@ -60,7 +60,6 @@ function setDialog() {
 	orginal = text;
 	editPanel = document.getElementById('preview');
 	editPanel.innerHTML = text;
-	window.setTimeout(setAppletCode, 1000);
 }
 
 function getTextFromWysiwyg() {
@@ -194,7 +193,7 @@ function getTextOnly(text) {
 }
 
 function selectDict(dict) {
-	hiddenCmd.dispatch("setLangDict", dict);
+//	hiddenCmd.dispatch("setLangDict", dict);
 }
 
 function reloadDoc() {
@@ -274,9 +273,9 @@ function findNext() {
 function add() {
 	if (document.spellchecker.isReady) {
 		document.spellchecker.addWord(currentWord);
-		hiddenCmd.dispatch("addWord", currentWord);
+		//hiddenCmd.dispatch("addWord", currentWord);
 		findNext();
 	} else {
 		top.we_showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
-}
+}*/

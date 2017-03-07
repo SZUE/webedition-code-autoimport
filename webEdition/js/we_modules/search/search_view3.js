@@ -71,6 +71,6 @@ function setTab(tab) {
 			parent.edbody.submitForm();
 			break;
 	}
-	self.focus();
+	window.focus();
 	top.content.activ_tab = tab;
 }

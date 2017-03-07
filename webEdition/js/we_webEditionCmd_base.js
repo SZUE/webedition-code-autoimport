@@ -25,7 +25,7 @@
 'use strict';
 
 we_cmd_modules.base = function (args, url, caller) {
-	var postData, table, win, EditorFrame;
+	var postData, table, win, EditorFrame, frameId;
 	switch (args[0]) {
 		case "exit_doc_question":
 			//next args editorFrameId, table, next_cmd
@@ -166,10 +166,10 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "changeLanguageRecursive":
 		case "changeTriggerIDRecursive":
-			we_repl(window.load, url);
+			top.we_repl(window.load, url);
 			break;
 		case "logout":
-			we_repl(window.load, url);
+			top.we_repl(window.load, url);
 			break;
 		case "dologout":
 			// before the command 'logout' is executed, ask if unsaved changes should be saved
@@ -184,7 +184,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "exit_multi_doc_question_yes":
 			var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (var frameId in allHotDocuments) {
+			for (frameId in allHotDocuments) {
 				if (allHotDocuments[frameId].getEditorIsHot()) {
 					allHotDocuments[frameId].setEditorIsHot(false);
 				}
@@ -203,10 +203,10 @@ we_cmd_modules.base = function (args, url, caller) {
 			loadCloseFolder(args);
 			break;
 		case "reload_editfooter":
-			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url);
+			top.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url);
 			break;
 		case "reload_edit_header":
-			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editHeader, url);
+			top.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editHeader, url);
 			break;
 		case "rebuild":
 			new (WE().util.jsWindow)(caller, url, "rebuild", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true);
@@ -357,9 +357,9 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "revert_published":
 			doReloadCmd(args, url, false);
-			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			_EditorFrame.setEditorIsHot(false);
-			_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
+			EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			EditorFrame.setEditorIsHot(false);
+			EditorFrame.getDocumentReference().frames.editFooter.location.reload();
 
 			break;
 		case "edit_document_with_parameters":
@@ -393,7 +393,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().layout.weEditorFrameController.closeAllButActiveDocument(activeId);
 			break;
 		case "open_url_in_editor":
-			we_repl(window.load, url);
+			top.we_repl(window.load, url);
 			break;
 		case "publish":
 		case "unpublish":
@@ -403,13 +403,13 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave();
 			break;
 		case "save_document":
-			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames[1]) {
-				_EditorFrame.getEditorFrameWindow().frames[1].focus();
+			EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			if (EditorFrame && EditorFrame.getEditorFrameWindow().frames && EditorFrame.getEditorFrameWindow().frames[1]) {
+				EditorFrame.getEditorFrameWindow().frames[1].focus();
 			}
 
 			if (!args[1]) {
-				args[1] = _EditorFrame.getEditorTransaction();
+				args[1] = EditorFrame.getEditorTransaction();
 			}
 
 			doSave(url, args[1]);
@@ -465,7 +465,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			open_wysiwyg_window(args, caller);
 			break;
 		case "start_multi_editor":
-			we_repl(window.load, url);
+			top.we_repl(window.load, url);
 			break;
 		case "customValidationService":
 			new (WE().util.jsWindow)(caller, url, "we_customizeValidation", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, false, true);
@@ -723,7 +723,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			doExtClick(args[1]);
 			break;
 		case 'tag_weimg_insertImage':
-			var table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE;
+			table = args[6] ? args[6] : WE().consts.tables.FILE_TABLE;
 			var tab = args[7] ? args[7] : 1;
 			var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], table, tab, args[5]);
 
@@ -798,7 +798,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			}
 			break;
 		case 'open_cockpit':
-			we_showInNewTab(args, url);
+			top.we_showInNewTab(args, url);
 			break;
 		default:
 			//WE().t_e('no command matched to request', args[0]);
@@ -846,4 +846,376 @@ function loadCloseFolder(args) {
 		}
 		top.scrollToY();
 	});
+}
+
+function we_cmd_delete_single_document(url) {
+	var ctrl = WE().layout.weEditorFrameController;
+	var cType = ctrl.getActiveEditorFrame().getEditorContentType();
+	var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+
+	if (ctrl.getActiveDocumentReference()) {
+		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
+			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+		} else {
+			WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
+		}
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}
+
+function doReloadCmd(args, url, hot) {
+	if (hot) {
+		// set Editor hot
+		var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+		_EditorFrame.setEditorIsHot(true);
+	}
+	if (top.setScrollTo) {
+		window.setScrollTo();
+	}
+	// get editor root frame of active tab
+	var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+	// get visible frame for displaying editor page
+	var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+
+	// focus visible editor frame
+	if (_visibleEditorFrame) {
+		_visibleEditorFrame.focus();
+	}
+
+	url += getActiveEditors();
+
+	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
+	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
+		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
+						(args[1] ? '#f' + args[1] : '');
+	} else if (args[0] === "remove_image" && args[2]) {
+		url += '#f' + args[2];
+	}
+
+	if (_currentEditorRootFrame) {
+		if (!WE().util.we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
+			if (args[0] !== "update_image") {
+				// add we_transaction, if not set
+				if (!args[2]) {
+					args[2] = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
+				}
+				url += "&we_transaction=" + args[2];
+			}
+			top.we_repl(_visibleEditorFrame, url);
+		}
+	}
+}
+
+function wecmd_editDocument(args, url) {
+	try {
+		if ((window.treeData !== undefined) && treeData) {
+			treeData.unselectNode();
+			if (args[1]) {
+				treeData.selection_table = args[1];
+			}
+			if (args[2]) {
+				treeData.selection = args[2];
+			}
+			if (treeData.selection_table === treeData.table) {
+				treeData.selectNode(treeData.selection);
+			}
+		}
+	} catch (e) {
+	}
+	url += getActiveEditors();
+
+	var ctrl = WE().layout.weEditorFrameController;
+	var nextWindow, nextContent;
+	if ((nextWindow = ctrl.getFreeWindow())) {
+		nextContent = nextWindow.getDocumentReference();
+		// activate tab and set state to loading
+		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+		// use Editor Frame
+		nextWindow.initEditorFrameData(
+						{
+							EditorType: "model",
+							EditorEditorTable: args[1],
+							EditorDocumentId: args[2],
+							EditorContentType: args[3]
+						}
+		);
+		// set Window Active and show it
+		ctrl.setActiveEditorFrame(nextWindow.FrameId);
+		ctrl.toggleFrames();
+		if (nextContent.frames && nextContent.frames[1]) {
+			if (!WE().util.we_sbmtFrm(nextContent, url)) {
+				top.we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
+			}
+		} else {
+			top.we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
+		}
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
+	}
+}
+
+function we_cmd_new_document(url) {
+	var ctrl = WE().layout.weEditorFrameController,
+					nextWindow, nextContent;
+	if ((nextWindow = ctrl.getFreeWindow())) {
+		nextContent = nextWindow.getDocumentReference();
+		// activate tab and set it status loading ...
+		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+		nextWindow.updateEditorTab();
+		// set Window Active and show it
+		ctrl.setActiveEditorFrame(nextWindow.getFrameId());
+		ctrl.toggleFrames();
+		// load new document editor
+		top.we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
+	} else {
+		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
+	}
+}
+
+function open_wysiwyg_window(args, caller) {
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
+		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
+	}
+
+	var wyw = args[2];
+	wyw = Math.max((wyw ? wyw : 0), 400);
+	var wyh = args[3];
+	wyh = Math.max((wyh ? wyh : 0), 300);
+	if (window.screen) {
+		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
+		screen_height = screen_height - 100;
+		var screen_width = screen.availWidth - 10;
+		wyw = Math.min(screen_width, wyw);
+		wyh = Math.min(screen_height, wyh);
+	}
+
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd_frontend.php?we_cmd[0]=open_wysiwyg_window&we_dialog_args[dialogProperties]=' + args[1];
+	new (WE().util.jsWindow)(caller, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+}
+
+function addToCollection(args, url) {
+	if (WE().session.seemode) {
+		//
+	} else {
+		if (WE().session.deleteMode != args[1]) {
+			WE().session.deleteMode = args[1];
+		}
+		if (!WE().session.deleteMode && treeData.state == treeData.tree_states.select) {
+			treeData.setState(treeData.tree_states.edit);
+			drawTree();
+		}
+		window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+		window.document.getElementById("treetable").classList.add('collectionSelector');
+		WE().layout.tree.toggle(true);
+		var width = WE().layout.tree.getWidth();
+		WE().layout.tree.widthBeforeDeleteMode = width;
+		if (width < WE().consts.size.tree.moveWidth) {
+			WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+		}
+		WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
+
+		if (args[2] != 1) {
+			top.we_repl(document.getElementsByName("treeheader")[0], url);
+		}
+	}
+}
+
+function updateMainTree(select, attribs, adv) {
+	if (!top.treeData || top.treeData.table !== attribs.table) {
+		return;
+	}
+	if (select) {
+		top.treeData.selection_table = attribs.table;
+		top.treeData.selection = attribs.id;
+	} else {
+		top.treeData.unselectNode();
+	}
+
+	if (top.treeData[top.treeData.indexOfEntry(attribs.parentid)]) {
+		/*var visible = (top.treeData.indexOfEntry(attribs.parentid) !== -1 ?
+		 top.treeData[top.treeData.indexOfEntry(attribs.parentid)].open :
+		 0);*/
+		if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+			top.treeData.updateEntry(attribs);
+		} else {
+			top.treeData.addSort(new top.node(objectAssign(attribs, adv)));
+		}
+		top.drawTree();
+	} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
+		top.treeData.deleteEntry(attribs.id);
+	}
+}
+
+function getHotDocumentsString() {
+	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
+	var ct, ulCtElem, i;
+	var ret = "";
+	var hotDocumentsOfCt = {};
+	for (var frameId in allHotDocuments) {
+		ct = allHotDocuments[frameId].getEditorContentType();
+		if (!hotDocumentsOfCt[ct]) {
+			hotDocumentsOfCt[ct] = [];
+		}
+		hotDocumentsOfCt[ct].push(allHotDocuments[frameId]);
+	}
+
+	for (ct in hotDocumentsOfCt) {
+		ulCtElem = "";
+
+		for (i = 0; i < hotDocumentsOfCt[ct].length; i++) {
+			ulCtElem += "<li>" + (hotDocumentsOfCt[ct][i].getEditorDocumentText() ?
+							hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
+							"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
+		}
+
+		ret += "<li>" + WE().consts.g_l.contentTypes[ct] + "<ul>" + ulCtElem + "</ul></li>";
+	}
+	return ret;
+}
+
+function collection_insertFiles(args) {
+	if (args[1] === undefined || args[2] === undefined) {
+		return;
+	}
+
+	var collection = parseInt(args[2]);
+	var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
+		args[1].currentID] : args[1]));
+
+	if (collection && ids) {
+		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+						editor = null,
+						index = args[3] !== undefined ? args[3] : -1,
+						recursive = args[5] !== undefined ? args[5] : false,
+						transaction, frameId, candidate;
+
+		for (frameId in usedEditors) {
+			candidate = usedEditors[frameId];
+			if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection) {
+				if (candidate.getEditorEditPageNr() == 1) {
+					editor = candidate;
+				} else {
+					transaction = candidate.getEditorTransaction();
+				}
+				break;
+			}
+		}
+
+		if (editor) {
+			// FIXME: we need a consize distinction between index and position
+			//var index = editor.getContentEditor().weCollectionEdit.getItemId(editor.getContentEditor().document.getElementById('collectionItem_staticIndex_' + index))
+			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
+		} else {
+			var position = args[4] !== undefined ? args[4] : index;
+			we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);
+		}
+	}
+}
+
+function we_cmd_move(args, url) {
+	if (WE().session.seemode) {
+		if (WE().session.deleteMode != args[1]) {
+			WE().session.deleteMode = args[1];
+		}
+		if (args[2] != 1) {
+			top.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url);
+		}
+	} else {
+		if (WE().session.deleteMode != args[1]) {
+			WE().session.deleteMode = args[1];
+		}
+		if (!WE().session.deleteMode && treeData.state == treeData.tree_states.selectitem) {
+			treeData.setState(treeData.tree_states.edit);
+			drawTree();
+		}
+		window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+		window.document.getElementById("treetable").classList.add('moveSelector');
+		WE().layout.tree.toggle(true);
+		var width = WE().layout.tree.getWidth();
+
+		WE().layout.tree.widthBeforeDeleteMode = width;
+
+		if (width < WE().consts.size.tree.moveWidth) {
+			WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+		}
+		WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+		WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
+
+		if (args[2] != 1) {
+			top.we_repl(document.getElementsByName("treeheader")[0], url);
+		}
+	}
+}
+
+function we_cmd_delete(args, url) {
+	if (WE().session.seemode) {
+		if (WE().session.deleteMode != args[1]) {
+			WE().session.deleteMode = args[1];
+		}
+		if (args[2] != 1) {
+			top.we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url);
+		}
+		return;
+	}
+	if (WE().session.deleteMode != args[1]) {
+		WE().session.deleteMode = args[1];
+	}
+	if (!WE().session.deleteMode && treeData.state == treeData.tree_states.select) {
+		treeData.setState(treeData.tree_states.edit);
+		drawTree();
+	}
+	window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
+	window.document.getElementById("treetable").classList.add('deleteSelector');
+	WE().layout.tree.toggle(true);
+	var width = WE().layout.tree.getWidth();
+
+	WE().layout.tree.widthBeforeDeleteMode = width;
+
+	if (width < WE().consts.size.tree.deleteWidth) {
+		WE().layout.tree.setWidth(WE().consts.size.tree.deleteWidth);
+	}
+	WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+	WE().layout.sidebar.widthBeforeDeleteMode = WE().layout.sidebar.getWidth();
+
+	if (args[2] != 1) {
+		top.we_repl(document.getElementsByName("treeheader")[0], url);
+	}
+
+}
+
+function doSave(url, trans) {
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
+	// _EditorFrame.setEditorIsHot(false);
+	if (_EditorFrame.getEditorAutoRebuild()) {
+		url += "&we_cmd[8]=1";
+	}
+	if (!WE().util.we_sbmtFrm(window.load, url)) {
+		url += "&we_transaction=" + trans;
+		we_repl(window.load, url);
+	}
+}
+
+function doPublish(url, trans) {
+	if (!WE().util.we_sbmtFrm(window.load, url)) {
+		url += "&we_transaction=" + trans;
+		we_repl(window.load, url);
+	}
+}
+
+function doExtClick(url) {
+	// split url in url and parameters !
+	var parameters = "",
+					_position = 0;
+
+	if ((_position = url.indexOf("?")) !== -1) {
+		parameters = url.substring(_position);
+		url = url.substring(0, _position);
+	}
+
+	WE().layout.weEditorFrameController.openDocument('', '', '', '', '', url, '', '', parameters);
 }

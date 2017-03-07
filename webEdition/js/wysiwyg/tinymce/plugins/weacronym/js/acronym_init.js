@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 /**
  * webEdition CMS
  *
@@ -41,7 +43,7 @@ var WeacronymDialog = { // TODO: clean code by using more vars
 		this.elm = this.inst.selection.getNode();
 		this.sel = this.inst.selection.getContent({format : 'text'});
 
-		var printAsSelection = '';
+//		var printAsSelection = '';
 
 		if(this.sel === ''){
 			// no selection, but cursor inside ACRONYM (the only case where acronym-Button is active without selection):
@@ -90,7 +92,7 @@ var WeacronymDialog = { // TODO: clean code by using more vars
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
 
 				var visual = this.inst.hasVisual ? ' class="mceItemWeAcronym"' : '';
-				var content = '<acronym lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + sel + '</acronym>' + blank;
+				var content = '<acronym lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + this.sel + '</acronym>' + blank;
 				this.inst.execCommand('mceInsertContent', false, content);
 			}
 		}

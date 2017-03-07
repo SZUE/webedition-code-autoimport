@@ -38,15 +38,17 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
+	var doc;
+
 	switch (args[0]) {
 		case 'setHot':
-			var doc = top.content;
+			doc = top.content;
 			doc = doc.document.getElementById("mark") ? doc : doc.editor.edheader;
 			doc.document.getElementById("mark").style.display = "inline";
 			top.content.hot = true;
 			break;
 		case 'unsetHot':
-			var doc = top.content;
+			doc = top.content;
 			doc = doc.document.getElementById("mark") ? doc : doc.editor.edheader;
 			doc.document.getElementById("mark").style.display = "none";
 			top.content.hot = false;

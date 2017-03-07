@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -24,21 +26,21 @@
 'use strict';
 
 function init() {
-	initPrefs();
+	top.initPrefs();
 }
 
 function save() {
-	previewPrefs();
+	top.previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
 
 function preview() {
-	previewPrefs();
+	top.previewPrefs();
 }
 
 function exit_close() {
-	previewPrefs();
-	exitPrefs();
+	top.previewPrefs();
+	top.exitPrefs();
 	window.close();
 }

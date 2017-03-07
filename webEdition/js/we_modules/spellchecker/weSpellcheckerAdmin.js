@@ -30,17 +30,17 @@
 WE().util.loadConsts(document, "g_l.spellcheck");
 /*			dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
  ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
-checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
-			finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+ checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
+ finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
  */
 var activ_tab = 0;
 
 function loadTable() {
-	if (hiddenCmd.dispatch) {
-		hiddenCmd.dispatch("refresh");
-	} else {
-		window.setTimeout(loadTable, 1000);
-	}
+	/*if (hiddenCmd.dispatch) {
+	 hiddenCmd.dispatch("refresh");
+	 } else {
+	 window.setTimeout(loadTable, 1000);
+	 }*/
 }
 function setTab(tab) {
 	toggle("tab" + activ_tab);
@@ -83,7 +83,6 @@ function showDictSelector() {
 	setVisible("addButt", false);
 	document.getElementById("selector").style.height = "100px";
 	setVisible("dictSelector", true);
-	window.setTimeout(setAppletCode, 1000);
 }
 
 function hideDictSelector() {
@@ -93,22 +92,15 @@ function hideDictSelector() {
 }
 
 function checkApplet() {
-	if (appletActiv && document.spellchecker.uploadFinished && document.spellchecker.uploadFinished()) {
-		if (document.spellchecker.packingFinished()) {
-			top.we_showMessage(WE().consts.g_l.spellcheck.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		}
-		hideDictSelector();
-		appletActiv = false;
-		loadTable();
-		return;
-	}
-
-	window.setTimeout(checkApplet, 2000);
+	top.we_showMessage(WE().consts.g_l.spellcheck.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	hideDictSelector();
+	loadTable();
+	return;
 }
 
 function deleteDict(name) {
 	if (window.confirm(WE().util.sprintf(WE().consts.g_l.spellcheck.ask_dict_del, name))) {
-		hiddenCmd.dispatch("deleteDict", name);
+		//hiddenCmd.dispatch("deleteDict", name);
 	}
 }
 

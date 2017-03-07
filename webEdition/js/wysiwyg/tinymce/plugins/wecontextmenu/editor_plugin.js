@@ -185,7 +185,7 @@
 				'table_col': [null, 'table.col', 'table']
 			};
 
-			var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
+			//var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
 
 			var items = [];
 			items.push(
@@ -271,9 +271,9 @@
 						['replace', 'replace', 'top'],
 						['separator', '', 'top', false, true]
 						);
-
+					var i;
 					//verify commands, restrict cm-items when param weContextmenuCommands not empty, and count cm-items
-					for (var i = 0; i < items.length; i++) {
+					for (i = 0; i < items.length; i++) {
 						if (ed.controlManager.controls[ed.editorId + '_' + items[i][0]] && (!restrict || restrict[items[i][0]])) {
 							cm_cmds[items[i][0]] = true;
 							c++;
@@ -320,7 +320,7 @@
 					}
 
 					//display top menu
-					for (var i = 0; i < items.length; i++) {
+					for (i = 0; i < items.length; i++) {
 						if (items[i][0] in cm_cmds) {
 							menu_item = ed.controlManager.controls[ed.editorId + '_' + items[i][0]];
 							if ((small_cm || menu_item && items[i][2] !== 'top') && (small_cm || menu_item.active || items[i][0] in active_items || items[i][2] in active_groups)) {

@@ -57,7 +57,7 @@ function changeitanyway(f) {
 
 function changeit(f) {
 	var x = f.split("_");
-	if (!x.length > 1) {
+	if (x.length < 2) {
 		return;
 	}
 	switch (x[0]) {

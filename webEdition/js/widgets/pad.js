@@ -311,7 +311,7 @@ function initDlg() {
 	for (i = oSctTitle.length - 1; i >= 0; i--) {
 		oSctTitle.options[i].selected = (oSctTitle.options[i].text == _sInitTitle) ? true : false;
 	}
-	initPrefs();
+	top.initPrefs();
 	var ComboBox = new weCombobox();
 	ComboBox.init('title');
 }
@@ -363,7 +363,7 @@ function preview() {
 	var sTitleEnc = window.btoa(getTitle());
 	var sBit = getBitString();
 	WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, prefs._sObjId);
-	previewPrefs();
+	top.previewPrefs();
 	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
 }
 
@@ -371,6 +371,6 @@ function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
 		WE().layout.cockpitFrame.rpc(_sInitCsv_, '', '', '', window.btoa(_sInitTitle), prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }

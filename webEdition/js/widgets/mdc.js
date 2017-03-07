@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top, prefs */
 
 /**
  * webEdition CMS
@@ -31,7 +31,7 @@ var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sIni
 function toggle(id) {
 	var elem = document.getElementById(id);
 	if (elem) {
-		if (elem.style.display == 'none') {
+		if (elem.style.display === 'none') {
 			elem.style.display = 'block';
 		} else {
 			elem.style.display = 'none';
@@ -83,7 +83,7 @@ function preview() {
 	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
-	previewPrefs();
+	top.previewPrefs();
 	WE().layout.cockpitFrame.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
 }
 
@@ -97,7 +97,7 @@ function exit_close() {
 	if ((sInitTitle !== '' && sInitTitle !== sTitle) || aInitCsv[1] !== sSel + sSwitch || aInitCsv[2] !== sCsv) {
 		WE().layout.cockpitFrame.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -179,7 +179,7 @@ function init(tab, title, sBinary, _sCsv) {
 	table = tab;
 	_sInitTitle_ = title;
 	_fo = document.forms[0];
-	initPrefs();
+	top.initPrefs();
 	categories_edit = new (WE().util.multi_edit)("categories", window, 0, widget.cats.del, 390, false);
 	categories_edit.addVariant();
 	document.we_form.CategoriesControl.value = categories_edit.name;

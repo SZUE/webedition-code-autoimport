@@ -26,23 +26,23 @@
 'use strict';
 
 function init() {
-	initPrefs();
+	top.initPrefs();
 }
 
 function save() {
-	savePrefs();
-	previewPrefs();
+	top.savePrefs();
+	top.previewPrefs();
 	window.opener.saveSettings();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
 
 function preview() {
-	previewPrefs();
+	top.previewPrefs();
 }
 
 function exit_close() {
-	previewPrefs();
-	exitPrefs();
+	top.previewPrefs();
+	top.exitPrefs();
 	window.close();
 }

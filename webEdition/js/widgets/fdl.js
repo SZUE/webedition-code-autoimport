@@ -28,26 +28,26 @@ var fdl = WE().util.getDynamicVar(document, 'loadVarFdl', 'data-fdl');
 
 
 function init() {
-	initPrefs();
+	top.initPrefs();
 }
 
 function save() {
-	savePrefs();
-	previewPrefs();
+	top.savePrefs();
+	top.previewPrefs();
 	refresh();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
 
 function preview() {
-	previewPrefs();
+	top.previewPrefs();
 	refresh();
 }
 
 function exit_close() {
 	//previewPrefs();
 	refresh();
-	exitPrefs();
+	top.exitPrefs();
 	window.close();
 }
 
@@ -57,10 +57,10 @@ function refresh() {
 
 function ajaxCallbackResetLogins(weResponse) {
 	if (weResponse) {
-		if (weResponse.DataArray.data == "true") {
+		if (weResponse.DataArray.data === "true") {
 			refresh();
 			top.we_showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			self.setTheme(_sObjId, _oSctCls[_oSctCls.selectedIndex].value);
+			top.setTheme(_sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 		}
 	}
 }
