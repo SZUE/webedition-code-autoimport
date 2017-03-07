@@ -25,12 +25,13 @@
  */
 //FIXME: this class is used in WE & uses Zend!!!
 class we_mail_mail extends we_mail_znd{
+
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
 	 * @var String
 	 */
-	protected $ContentType = 'text/html';
+	protected $ContentType = we_mail_mime::TYPE_HTML;
 
 	/**
 	 * Flag for embed images
@@ -221,7 +222,7 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function addHTMLPart($val){
-		$this->ContentType = 'text/html';
+		$this->ContentType = we_mail_mime::TYPE_HTML;
 		$this->Body = $val;
 	}
 
@@ -277,7 +278,7 @@ class we_mail_mail extends we_mail_znd{
 			}
 
 			if($this->isUseBaseHref){//Bug #3735
-				if($this->ContentType === 'text/html' && !strpos($this->Body, "<base")){
+				if($this->ContentType === we_mail_mime::TYPE_HTML && !strpos($this->Body, "<base")){
 					$this->Body = str_replace('</head>', "<base href='" . getServerUrl() . "' />\n</head>", $this->Body);
 				}
 			}
@@ -318,15 +319,24 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function parseHtml2TextPart($html){
+		$this->AltBody = self::getTextContent($html);
+	}
 
-		$this->AltBody = trim(strip_tags(preg_replace(['-<br[^>]*>-s',
+	public static function getTextContent($html){
+		return trim(strip_tags(preg_replace([
+			'-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-					], ["\n",
+					], [
+			"\n",
 			"\n\n",
 			''
-					], strtr($html, ["\n" => '',
+					], strtr($html, [
+			"\n" => '',
 			"\r" => '',
+			'</tr>' => "\n",
+			'</td>' => '  ',
+			'</th>' => '  ',
 			'</h1>' => "\n\n",
 			'</h2>' => "\n\n",
 			'</h3>' => "\n\n",
@@ -427,7 +437,7 @@ class we_mail_mail extends we_mail_znd{
 		$this->setSubject($this->internal_subject);
 	}
 
-	public function setContentType($val = 'text/plain'){
+	public function setContentType($val = we_mail_mime::TYPE_TEXT){
 		$this->ContentType = $val;
 	}
 

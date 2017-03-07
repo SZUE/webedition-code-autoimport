@@ -141,7 +141,7 @@ function we_tag_sendMail(array $attribs, $content){
 		$phpmail->setIsUseBaseHref($useBaseHref);
 	}
 	$phpmail->setCharSet($charset);
-	if($mimetype != 'text/html'){
+	if($mimetype != we_mail_mime::TYPE_HTML){
 		$phpmail->setTextPartOutOfHTML($codes);
 	} else {
 		$phpmail->addHTMLPart($codes);
