@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_glossary_cache{
+
 	/**
 	 * language of the cache
 	 *
@@ -39,7 +41,7 @@ class we_glossary_cache{
 	 *
 	 * @var string
 	 */
-	private $content = '';
+	private $content = [];
 
 	/**
 	 * Constructor
@@ -51,36 +53,12 @@ class we_glossary_cache{
 	}
 
 	/**
-	 * get the cache filename of a given cache id
-	 *
-	 * @param string $id
-	 * @return string
-	 * @access public
-	 * @abstract
-	 */
-	public static function cacheIdToFilename($id){
-		return WE_CACHE_PATH . 'glossar_' . $id;
-	}
-
-	/**
-	 * checks if the cache file is valid
-	 *
-	 * @return boolean
-	 */
-	function isValid(){
-		$cacheFilename = self::cacheIdToFilename($this->language);
-		return file_exists($cacheFilename) && is_file($cacheFilename);
-	}
-
-	/**
 	 * deletes the cache file
 	 *
 	 * @return boolean
 	 */
 	function clear(){
-		if($this->isValid()){
-			return unlink(self::cacheIdToFilename($this->language));
-		}
+		we_cache_file::clean('glossar_' . $this->language);
 		return true;
 	}
 
@@ -111,7 +89,7 @@ class we_glossary_cache{
 			$Title = oldHtmlspecialchars($Title, ENT_QUOTES);
 
 			$temp = ['Fullword' => $DB_WE->f('Fullword')
-				];
+			];
 
 			if($Title){
 				$temp['title'] = $Title;
@@ -238,8 +216,8 @@ class we_glossary_cache{
 				}
 
 				$temp['href'] .= ($urladd ? '?' . implode('&', $urladd) : '') .
-					// Anchor
-					(!empty($Attributes['anchor']) ?
+						// Anchor
+						(!empty($Attributes['anchor']) ?
 						'#' . $Attributes['anchor'] :
 						'');
 
@@ -252,8 +230,8 @@ class we_glossary_cache{
 					$height = (!empty($Attributes['popup_height']) ? $Attributes['popup_height'] : 100);
 
 					$temp['onclick'] = 'var we_winOpts=\'\';' .
-						// popup_center
-						(!empty($Attributes['popup_center']) ? '
+							// popup_center
+							(!empty($Attributes['popup_center']) ? '
 if (window.screen) {
 	var w=' . $width . ';
 	var h=' . $height . ';
@@ -270,31 +248,31 @@ if (window.screen) {
 ' .
 // popup_xposition
 							(!empty($Attributes['popup_xposition']) ?
-								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
-								'') .
+							"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
+							'') .
 							// popup_yposition
 							(!empty($Attributes['popup_yposition']) ?
-								"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
-								'')
-						) .
-						// popup_width
-						strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width .
-							// popup_height
-							",height=" . $height .
-							// popup_status
-							",status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') .
-							// popup_scrollbars
-							",scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') .
-							// popup_menubar
-							",menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') .
-							// popup_resizable
-							",resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') .
-							// popup_location
-							",location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') .
-							// popup_toolbar
-							",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
-							"';" .
-							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", ['\'' => '@@@we@@@']);
+							"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
+							'')
+							) .
+							// popup_width
+							strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width .
+									// popup_height
+									",height=" . $height .
+									// popup_status
+									",status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') .
+									// popup_scrollbars
+									",scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') .
+									// popup_menubar
+									",menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') .
+									// popup_resizable
+									",resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') .
+									// popup_location
+									",location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') .
+									// popup_toolbar
+									",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
+									"';" .
+									"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", ['\'' => '@@@we@@@']);
 
 					$temp['href'] = '#';
 				}
@@ -308,7 +286,7 @@ if (window.screen) {
 			we_glossary_glossary::TYPE_ABBREVATION => [],
 			we_glossary_glossary::TYPE_FOREIGNWORD => [],
 			we_glossary_glossary::TYPE_TEXTREPLACE => [],
-			];
+		];
 
 		foreach($Items as $Text => $Value){
 			$prefix = '';
@@ -344,7 +322,7 @@ if (window.screen) {
 						$prefix .= ($Attribute === 'attribute' ? $Val : ' ' . $Attribute . '="' . $Val . '"');
 					}
 				} else {
-					$prefix .=$AttributeList['title'];
+					$prefix .= $AttributeList['title'];
 				}
 				if($Tag != ''){
 					$prefix .= '>';
@@ -359,16 +337,8 @@ if (window.screen) {
 			}
 		}
 
-		$cacheFilename = self::cacheIdToFilename($this->language);
-
-		// Create Cache Directory if it not exists
-		if(!is_dir(dirname($cacheFilename))){
-			if(!we_base_file::createLocalFolderByPath(dirname($cacheFilename))){
-				return false;
-			}
-		}
-
-		return we_base_file::save($cacheFilename, we_serialize($content, SERIALIZE_JSON, false, 9));
+		we_cache_file::save('glossar_' . $this->language, $content, SERIALIZE_JSON);
+		return $content;
 	}
 
 	/**
@@ -378,15 +348,11 @@ if (window.screen) {
 	 */
 	function get($type){
 		if(!$this->content){
-			$cacheFilename = self::cacheIdToFilename($this->language);
 
-			if(!file_exists($cacheFilename) || !is_file($cacheFilename)){
-				if(!self::write()){
-					return [];
-				}
+			$this->content = we_cache_file::load('glossar_' . $this->language);
+			if($this->content === false){
+				$this->content = self::write();
 			}
-			$data = we_base_file::load($cacheFilename);
-			$this->content = $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : '';
 		}
 		return ($this->content && !empty($this->content[$type]) ?
 				$this->content[$type] :

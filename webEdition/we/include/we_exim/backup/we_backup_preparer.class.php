@@ -260,7 +260,6 @@ abstract class we_backup_preparer{
 	static function getFileLists(){
 		$list = [];
 		self::getFileList($list, TEMPLATES_PATH, true, false);
-		self::getFileList($list, WE_CACHE_PATH, true, false);
 		self::getSiteFiles($list);
 		return $list;
 	}
