@@ -75,7 +75,6 @@ function reloadElement($we_transaction, $we_doc, $id){
 
 	echo we_gui_OrderContainer::getResponse('reload', $uniqid, $content) .
 		we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",' . intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) . ');');
-	//we_html_element::jsElement('reinitTiny("tinyMceConfObject__' . $wholename . 'default","' . $we_transaction . '",'.intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()).');');
 }
 
 echo we_html_tools::getHtmlTop('', $charset, 5, $head . we_editor_script::get());

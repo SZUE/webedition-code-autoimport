@@ -1,4 +1,4 @@
-/* global WE, top,initDragWidgets,le_dragInit */
+/* global WE, top,initDragWidgets,le_dragInit,Gauge */
 
 /**
  * webEdition CMS
@@ -316,7 +316,7 @@ function initWidget(_id) {
 	if (oNode) {
 		var fn = window["initWidget_" + oNode.value];
 		if (fn) {
-			fn.call(this, _id);
+			fn.call(window, _id);
 		}
 	}
 }

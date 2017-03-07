@@ -82,10 +82,11 @@ function submitForm(target, action, method) {
 
 function toggle(id) {
 	var elem = document.getElementById(id);
-	if (elem.style.display == "none")
+	if (elem.style.display == "none") {
 		elem.style.display = "";
-	else
+	} else {
 		elem.style.display = "none";
+	}
 }
 
 function clearLog() {

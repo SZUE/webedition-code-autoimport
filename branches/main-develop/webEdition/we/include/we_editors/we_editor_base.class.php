@@ -27,16 +27,21 @@ abstract class we_editor_base{
 	protected $jsCmd = null;
 	protected $we_doc = null;
 	protected $charset = '';
+	protected $title = '';
 
 	public function __construct(we_root $we_doc){
 		$this->jsCmd = new we_base_jsCmd();
 		$this->we_doc = $we_doc;
 	}
 
+	public function getJsCmd(){
+		return $this->jsCmd;
+	}
+
 	public abstract function show();
 
 	protected function getPage($form, $header, $bodyAttr = [], $formAttr = []){
-		return we_html_tools::getHtmlTop('', $this->charset, '', $header .
+		return we_html_tools::getHtmlTop($this->title, $this->charset, '', $header .
 						$this->jsCmd->getCmds(), we_html_element::htmlBody(array_merge(
 										[
 							'class' => "weEditorBody",

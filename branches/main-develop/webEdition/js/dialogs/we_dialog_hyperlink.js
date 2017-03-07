@@ -31,7 +31,7 @@ var editname = vars.editname;
 var classNames = vars.classNames === 'getFromTiny' ? top.opener.weclassNames_tinyMce : vars.classNames;
 
 if(!vars.is_frontend){
-	document.we_form.onsubmit = function() {return false;}
+	document.we_form.onsubmit = function() {return false;};
 }
 
 var weAcCheckLoop = 0;

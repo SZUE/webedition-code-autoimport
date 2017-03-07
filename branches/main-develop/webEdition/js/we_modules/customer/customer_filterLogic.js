@@ -149,7 +149,7 @@ function initFilters() {
 		window[filter].addVariant();
 		document.we_form[filter + "Control"].value = window[filter].name;
 		for (i = 0; i < curFilter.length; i++) {
-			window[filter].addItem()
+			window[filter].addItem();
 			window[filter].setItem(0, i, curFilter[i].Text);
 			window[filter].setItem(1, i, curFilter[i].ID);
 		}

@@ -1132,29 +1132,6 @@ function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	}
 }
 
-function loadCloseFolder(args) {
-	WE().util.rpc(WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&'), null, function (weResponse) {
-		if (weResponse && weResponse.Success) {
-			if (weResponse.DataArray.treeName) {
-				top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
-			}
-			if (weResponse.DataArray.items) {
-				if (!weResponse.DataArray.parentFolder) {
-					top.treeData.clear();
-					top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
-				}
-				for (var i = 0; i < weResponse.DataArray.items.length; i++) {
-					if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-						top.treeData.add(new top.node(weResponse.DataArray.items[i]));
-					}
-				}
-			}
-			top.drawTree();
-		}
-		top.scrollToY();
-	});
-}
-
 function getActiveEditors() {
 	var activeEditors = {};
 	for (var ed in WE().layout.editors) {
@@ -1614,24 +1591,6 @@ function we_cmd_new_document(url) {
 		we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
 	} else {
 		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
-	}
-}
-
-function we_cmd_delete_single_document_question(url) {
-	var ctrl = WE().layout.weEditorFrameController;
-	var cType = ctrl.getActiveEditorFrame().getEditorContentType();
-	var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
-	var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
-
-	if (ctrl.getActiveDocumentReference()) {
-		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
-			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
-		} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
-			var url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-			WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
-		}
-	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -65,7 +66,12 @@ switch($cmd){
 	case 'object_preview_objectFile':
 		return 'we_showObject.inc.php';
 	case 'object_create_tmpfromClass':
-		return 'we_modules/object/we_object_createTemplate.inc.php';
+		$editor = new we_editor_createObjectTemplate();
+		echo $editor->show();
+		return true;
+	case 'object_createTemplatecmd':
+		we_editor_createObjectTemplate::cmd();
+		return true;
 	case 'object_editObjectTextArea':
 		return 'we_editors/we_editta.inc.php';
 }

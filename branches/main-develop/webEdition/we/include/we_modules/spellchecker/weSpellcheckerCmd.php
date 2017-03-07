@@ -1,4 +1,5 @@
 <?php
+exit();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_users_util::canEditModule(we_base_moduleInfo::GLOSSARY) ? null : [false];
@@ -69,9 +70,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		if($cmd1 !== false){
 			$_SESSION['weS']['dictLang'] = $cmd1;
 		}
-		echo we_html_element::jsElement('
-				top.document.we_form.submit();
-			');
+		echo 'top.document.we_form.submit();';
 		break;
 
 	case 'removeDictFile':
@@ -149,10 +148,10 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 		}
 
-		echo we_html_element::jsElement(
+		echo
 			we_message_reporting::getShowMessageCall($_mess, $_messType) .
 			'parent.loadTable();
-				');
+				';
 		break;
 
 	case 'refresh':
@@ -199,9 +198,9 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		}
 		$_dir->close();
 
-		echo we_html_element::jsElement('
+		echo '
 parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_replace("|\r?\n|", '', $table->getHtml())) . '";
-');
+';
 		break;
 
 	default:

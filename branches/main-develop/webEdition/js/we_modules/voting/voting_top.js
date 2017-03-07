@@ -164,5 +164,5 @@ function setTab(tab) {
 	parent.edbody.toggle("tab" + top.content.activ_tab);
 	parent.edbody.toggle("tab" + tab);
 	top.content.activ_tab = tab;
-	self.focus();
+	window.focus();
 }

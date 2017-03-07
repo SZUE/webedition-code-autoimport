@@ -30,7 +30,6 @@ WE().util.loadConsts(document, "g_l.users");
 
 var usersData = WE().util.getDynamicVar(document, 'loadVarUsersView', 'data-users');
 
-var cgroup = usersData.cgroup;
 parent.document.title = usersData.modTitle;
 
 var loaded = 0;
@@ -66,7 +65,7 @@ function we_cmd() {
 		case "new_user":
 			top.content.editor.edbody.focus();
 			if (!saveBeforeNextCmd(args)) {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_user&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_user&cgroup=" + usersData.cgroup;
 			}
 			break;
 		case "check_user_display":
@@ -80,12 +79,12 @@ function we_cmd() {
 			break;
 		case "new_group":
 			if (!saveBeforeNextCmd(args)) {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_group&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_group&cgroup=" + usersData.cgroup;
 			}
 			break;
 		case "new_alias":
 			if (!saveBeforeNextCmd(args)) {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_alias&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_alias&cgroup=" + usersData.cgroup;
 			}
 			break;
 		case "save_user":
@@ -97,14 +96,19 @@ function we_cmd() {
 			}
 			break;
 		case "delete_user":
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=delete_user";
+			WE().util.showConfirm(window, "", WE().util.sprintf( WE().consts.g_l.users.view.delete_alert[usersData.Type],usersData.Text),["delete_user_do"]);
+			break;
+		case "delete_user_do":
+			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			break;
-		case "setCgroup":
-			cgroup = args[1];
+		case "setUserData":
+			usersData.cgroup = args[1];
+			usersData.Type = args[2];
+			usersData.Text = args[3];
 			break;
 		case 'loadUsersContent':
 			var home = args[1].home !== undefined ? "&home=1" : "";

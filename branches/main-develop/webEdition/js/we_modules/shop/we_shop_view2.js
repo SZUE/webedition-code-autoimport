@@ -62,6 +62,9 @@ function we_cmd() {
 		case "doClickShopOrder":
 			top.opener.top.content.doClick(args[1], "shop", WE().consts.tables.SHOP_ORDER_TABLE);
 			break;
+		case 'showDeleteOrder':
+			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=" + args[1];
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

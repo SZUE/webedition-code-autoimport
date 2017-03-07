@@ -37,8 +37,10 @@ class we_users_view extends we_modules_view{
 		}
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', '', ['id' => 'loadVarUsersView', 'data-users' => setDynamicVar([
-					'modTitle' => $title,
-					'cgroup' => ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0)
+						'modTitle' => $title,
+						'cgroup' => intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])),
+						'Type' => we_users_user::TYPE_USER,
+						'Text' => '',
 		])]);
 	}
 
@@ -123,9 +125,7 @@ class we_users_view extends we_modules_view{
 		$_SESSION["user_session_data"] = $user_object;
 
 		$jscmd->addCmd('usetHot');
-		if($user_object->Type == 1){
-			$jscmd->addCmd('setCgroup', $user_object->ID);
-		}
+		$jscmd->addCmd('setUserData', $user_object->Type == we_users_user::TYPE_USER_GROUP ? $user_object->ID : $user_object->ParentID, $user_object->Type ?: we_users_user::TYPE_USER, $user_object->Path);
 		$jscmd->addCmd('loadUsersContent', ['oldtab' => 0]);
 	}
 
@@ -226,8 +226,8 @@ class we_users_view extends we_modules_view{
 			return;
 		}
 		$foo = ($user_object->ID ?
-			getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-			['ParentID' => 0]);
+				getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+				['ParentID' => 0]);
 
 		$ret = $user_object->saveToDB();
 		$_SESSION['user_session_data'] = $user_object;
@@ -283,9 +283,7 @@ class we_users_view extends we_modules_view{
 				break;
 		}
 
-		if($user_object->Type == we_users_user::TYPE_USER){
-			$jscmd->addCmd('setCgroup', $user_object->ParentID);
-		}
+		$jscmd->addCmd('setUserData', $user_object->Type == we_users_user::TYPE_USER_GROUP ? $user_object->ID : $user_object->ParentID, $user_object->Type ?: we_users_user::TYPE_USER, $user_object->Path);
 		$jscmd->addCmd('updateTitle', $user_object->Path);
 		echo $jscmd->getCmds() . we_html_element::jsElement($ret);
 	}
@@ -333,37 +331,6 @@ class we_users_view extends we_modules_view{
 			}
 		}
 
-		switch($user_object->Type){
-			case we_users_user::TYPE_USER_GROUP:
-				$question = sprintf(g_l('modules_users', '[delete_alert_group]'), $user_object->Text);
-				break;
-			case we_users_user::TYPE_ALIAS:
-				$question = sprintf(g_l('modules_users', '[delete_alert_alias]'), $user_object->Text);
-				break;
-			case we_users_user::TYPE_USER:
-			default:
-				$question = sprintf(g_l('modules_users', '[delete_alert_user]'), $user_object->Text);
-				break;
-		}
-		echo we_html_element::jsElement('
-		if(window.confirm("' . $question . '")){
-			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
-		}');
-	}
-
-	private function do_delete(we_base_jsCmd $jscmd){
-		if(empty($_SESSION['user_session_data'])){
-			return;
-		}
-		$user_object = $_SESSION["user_session_data"];
-		if(!we_base_permission::hasPerm('DELETE_USER') && $user_object->Type == we_users_user::TYPE_USER){
-			$jscmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
-			return;
-		}
-		if(!we_base_permission::hasPerm('DELETE_GROUP') && $user_object->Type == we_users_user::TYPE_USER_GROUP){
-			$jscmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
-			return;
-		}
 		if($user_object->deleteMe()){
 			$cmd = new we_base_jsCmd();
 			$cmd->addCmd('deleteTreeEntry', $user_object->ID);
@@ -399,7 +366,7 @@ class we_users_view extends we_modules_view{
 
 			if($found || we_base_permission::hasPerm('ADMINISTRATOR')){
 				$jscmd->addCmd('display_user', $uid);
-			}else{
+			} else {
 				$jscmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 		}
@@ -417,10 +384,8 @@ class we_users_view extends we_modules_view{
 				return $this->display_user($jscmd);
 			case 'save_user':
 				return $this->save_user($jscmd);
-			case 'delete_user':
+			case 'delete_user_do':
 				return $this->delete_user($jscmd);
-			case 'do_delete':
-				return $this->do_delete($jscmd);
 			case 'check_user_display':
 				return $this->check_user_display($jscmd);
 		}
@@ -434,8 +399,8 @@ class we_users_view extends we_modules_view{
 
 	public function getHomeScreen(){
 		$content = we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) .
-			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
-			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
+				we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
+				we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
 
 		return parent::getActualHomeScreen('users', "user.gif", $content);
 	}

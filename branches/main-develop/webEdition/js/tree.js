@@ -39,7 +39,7 @@ var container = function () {
 	this.table = "";
 	this.selection = "";
 	this.selection_table = "";
-	this.we_scrollY = {}
+	this.we_scrollY = {};
 	return this;
 };
 
@@ -243,7 +243,7 @@ container.prototype = {
 				attribs.published = 1;
 			}
 
-			this.addSort(new node(attribs));
+			this.addSort(new Node(attribs));
 			drawTree();
 		}
 	},
@@ -403,7 +403,7 @@ function treeStartDrag(evt, type, table, id, ct, path) { // TODO: throw out setD
 }
 
 
-var node = function (attribs) {
+var Node = function (attribs) {
 	for (var aname in attribs) {
 		var val = attribs[aname];
 		this[aname] = val;
@@ -412,9 +412,9 @@ var node = function (attribs) {
 	return this;
 };
 
-node.prototype = {
+Node.prototype = {
 	rootEntry: function (id, text, rootstat, offset) {
-		return new node({
+		return new Node({
 			id: id,
 			text: text,
 			open: 1,

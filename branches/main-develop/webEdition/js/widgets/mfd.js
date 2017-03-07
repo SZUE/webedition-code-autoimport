@@ -81,16 +81,16 @@ function delUser(iUsrId) {
 	}
 	var _fo = document.forms[0];
 
-	_fo.action = WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_mfd&we_cmd[]=' +
-		prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
-		';' + getBinary('display_opt') + ';' + sUsers;
+	_fo.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_mfd&we_cmd[]=' +
+					prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
+					';' + getBinary('display_opt') + ';' + sUsers;
 	_fo.method = 'post';
 	_fo.submit();
 }
 
 function getCsv() {
 	return getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.value +
-		';' + getBinary('display_opt') + ';' + widget.sUsers;
+					';' + getBinary('display_opt') + ';' + widget.sUsers;
 }
 
 function refresh(bRender) {
@@ -135,8 +135,8 @@ function addUserToField() {
 	}
 	if (!bUsrExists) {//FIXME change this path!
 		_fo.action = WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=dialog&we_cmd[2]=we_widget_mfd&we_cmd[]=' +
-			prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
-			_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
+						prefs._sObjId + '&we_cmd[]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
+						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
 		_fo.submit();
 	}
