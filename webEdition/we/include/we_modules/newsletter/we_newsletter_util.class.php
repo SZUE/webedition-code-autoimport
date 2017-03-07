@@ -376,6 +376,7 @@ abstract class we_newsletter_util{
 			} else {
 				$phpmail->addTextPart(trim($mailtext));
 			}
+			//what about attachments/inlines??
 			$phpmail->buildMessage();
 			$phpmail->Send();
 			$GLOBALS['WE_DOUBLEOPTIN'] = 1;

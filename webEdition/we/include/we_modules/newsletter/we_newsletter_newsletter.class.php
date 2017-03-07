@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_newsletter_newsletter extends we_newsletter_base{
+
 	const SAVE_PATH_NOK = -10;
 	const MALFORMED_SENDER = -1;
 	const MALFORMED_REPLY = -2;
@@ -218,13 +220,13 @@ class we_newsletter_newsletter extends we_newsletter_base{
 
 		foreach($this->MediaLinks as $element => $remObj){
 			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $this->ID,
-					'DocumentTable' => stripTblPrefix($this->table),
-					'type' => 'media',
-					'remObj' => $remObj,
-					'remTable' => stripTblPrefix(FILE_TABLE),
-					'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
-					'position' => 0,
-					'isTemp' => 0
+						'DocumentTable' => stripTblPrefix($this->table),
+						'type' => 'media',
+						'remObj' => $remObj,
+						'remTable' => stripTblPrefix(FILE_TABLE),
+						'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
+						'position' => 0,
+						'isTemp' => 0
 			]));
 		}
 	}
@@ -397,8 +399,8 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 */
 	function addLog($log, $param = ''){
 		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(['NewsletterID' => $this->ID,
-				'Log' => $log,
-				'Param' => $param
+					'Log' => $log,
+					'Param' => $param
 		]));
 	}
 
@@ -486,17 +488,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	test_email_question:"' . g_l('modules_newsletter', '[test_email_question]') . '",
 };
 ';
-	}
-
-	public static function getFromCache($filename){
-		$buffer = we_base_file::load(WE_CACHE_DIR . 'nl_' . basename($filename));
-		return $buffer ? we_unserialize($buffer) : [];
-	}
-
-	public static function saveToCache(array $content, $filename){
-		$saveName = WE_CACHE_DIR . 'nl_' . basename($filename);
-		we_base_file::insertIntoCleanUp($saveName, 86400);
-		return we_base_file::save($saveName, we_serialize($content, SERIALIZE_PHP));
 	}
 
 }

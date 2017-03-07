@@ -472,23 +472,23 @@ class we_newsletter_frames extends we_modules_frame{
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [
 							], "value", 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [
 							], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [
 							], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [
 							], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [
 							], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [
 							], 'value', 308));
 		}
@@ -1770,28 +1770,8 @@ self.focus();');
 		flush();
 
 		if($gcount <= $egc){
-			$cc = 0;
-			while(true){
-				if(file_exists(WE_CACHE_DIR . 'nl_' . $blockcache . "_p_" . $cc)){
-					we_base_file::delete(WE_CACHE_DIR . 'nl_' . $blockcache . "_p_" . $cc);
-				} else {
-					break;
-				}
-				if(file_exists(WE_CACHE_DIR . 'nl_' . $blockcache . "_h_" . $cc)){
-					$buffer = we_newsletter_newsletter::getFromCache($blockcache . "_h_" . $cc);
-					if(isset($buffer['inlines'])){
-						foreach($buffer['inlines'] as $fn){
-							if(file_exists($fn)){
-								we_base_file::delete($fn);
-							}
-						}
-					}
-					we_base_file::delete(WE_CACHE_DIR . 'nl_' . $blockcache . "_h_" . $cc);
-				} else {
-					break;
-				}
-				$cc++;
-			}
+			we_cache_file::clean('nl_' . $blockcache . '*');
+
 			echo we_html_element::jsElement('
 				top.send_control.location="about:blank";
 				top.send_body.setProgress(100);
@@ -1813,7 +1793,7 @@ self.focus();');
 
 		$content = "";
 
-		$emails = we_newsletter_newsletter::getFromCache($emailcache . "_" . $egc);
+		$emails = we_cache_file::load('nl_' . $emailcache . '_' . $egc);
 		$end = count($emails);
 
 		for($j = $start; $j < $end; $j++){
@@ -1842,8 +1822,8 @@ self.focus();');
 			}
 
 			foreach($user_blocks as $user_block){
-				$html_block = we_newsletter_newsletter::getFromCache($blockcache . "_h_" . $user_block);
-				$plain_block = we_newsletter_newsletter::getFromCache($blockcache . "_p_" . $user_block);
+				$html_block = we_cache_file::load('nl_' . $blockcache . "_h_" . $user_block);
+				$plain_block = we_cache_file::load('nl_' . $blockcache . "_p_" . $user_block);
 
 				$contentDefault .= $html_block["default" . $iscustomer];
 				$content_plainDefault .= $plain_block["default" . $iscustomer];
@@ -1869,11 +1849,7 @@ self.focus();');
 				$contentFN .= $html_block["firstname" . $iscustomer];
 				$contentFN_plain .= $plain_block["firstname" . $iscustomer];
 
-				foreach($html_block["inlines"] as $k => $v){
-					if(!in_array($k, array_keys($inlines))){
-						$inlines[$k] = $v;
-					}
-				}
+				$inlines = array_merge($inlines, $html_block['inlines']);
 			}
 
 			if($salutation && $lastname && ($salutation == $this->View->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
@@ -1971,7 +1947,7 @@ self.focus();');
 			foreach($atts as $att){
 				$phpmail->doaddAttachment($att);
 			}
-
+//FIXME: what about inlines?
 			$domain = '';
 			$not_malformed = ($this->View->settings["reject_malformed"]) ? $this->View->newsletter->check_email($email) : true;
 			$verified = ($this->View->settings["reject_not_verified"]) ? $this->View->newsletter->check_domain($email, $domain) : true;
@@ -2030,7 +2006,8 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 			flush();
 		}
 
-		we_base_file::delete(WE_CACHE_DIR . 'nl_' . $emailcache . "_" . $egc);
+		we_cache_file::clean('nl_' . $emailcache . "_" . $egc);
+
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
 						'setTimeout(function (doc) {doc.we_form.submit();},' . $this->View->settings["send_wait"] . ',document);' :
