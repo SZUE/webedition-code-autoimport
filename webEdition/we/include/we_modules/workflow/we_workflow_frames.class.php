@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
+
 	const TAB_PROPERTIES = 0;
 	const TAB_OVERVIEW = 1;
 
@@ -73,20 +74,20 @@ class we_workflow_frames extends we_modules_frame{
 		$textPost = '/' . $text;
 
 		$extraHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
+				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
 
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()',
-				'onload' => "weTabs.setFrameSize();document.getElementById('tab_" . $page . "').className='tabActive';",
-				'id' => 'eHeaderBody',
-				], we_html_element::htmlDiv(
-					['id' => 'main'], we_html_element::htmlDiv(
-						['id' => 'headrow'], we_html_element::htmlNobr(
-							we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-					)) .
-					$we_tabs->getHTML()
-				)
+					'onload' => "weTabs.setFrameSize();document.getElementById('tab_" . $page . "').className='tabActive';",
+					'id' => 'eHeaderBody',
+						], we_html_element::htmlDiv(
+								['id' => 'main'], we_html_element::htmlDiv(
+										['id' => 'headrow'], we_html_element::htmlNobr(
+												we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+												we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+								)) .
+								$we_tabs->getHTML()
+						)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -102,9 +103,9 @@ class we_workflow_frames extends we_modules_frame{
 		$table2->setCol(0, 1, ['class' => 'defaultfont'], $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody([
-				'id' => 'footerBody',
-				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-				], we_html_element::htmlForm($attribs = [], $table2->getHtml())
+					'id' => 'footerBody',
+					'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+						], we_html_element::htmlForm($attribs = [], $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_frames.js'));
@@ -112,30 +113,30 @@ class we_workflow_frames extends we_modules_frame{
 
 	private function getHTMLLog($docID, $type = 0){
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_workflow_view::getLogForDocument($docID, $type))
+						we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_workflow_view::getLogForDocument($docID, $type))
 		);
 	}
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
-							'wcmd' => '',
-							'wopt' => ''])
-					)
-				), we_html_element::jsElement('
+						we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
+											'wcmd' => '',
+											'wopt' => ''])
+								)
+						), we_html_element::jsElement('
 function submitForm(){
 	var f = self.document.we_form;
 	f.target = "cmd";
 	f.method = "post";
 	f.submit();
 }'
-				) . we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+						) . we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

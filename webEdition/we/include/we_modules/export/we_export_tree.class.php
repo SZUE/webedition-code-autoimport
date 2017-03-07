@@ -40,7 +40,7 @@ win.treeData.table=win.table;';
 		foreach($treeItems as $item){
 
 			$js .= ($clear ? '' : 'if(win.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-				 'win.treeData.add(new win.node({';
+				 'win.treeData.add(new win.Node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems .= strtolower($k) . ':' .

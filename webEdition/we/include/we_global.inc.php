@@ -1121,7 +1121,7 @@ function setDynamicVar($data){
 }
 
 function updateAvailable(){
-	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json') ?: ''), true);
+	$versionInfo = we_cache_file::load('newwe_version');
 	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
 			  //in branched mode, we compare svn revisions
 			  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])

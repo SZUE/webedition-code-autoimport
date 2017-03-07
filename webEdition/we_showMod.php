@@ -93,21 +93,20 @@ switch($mod){
 		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : [false];
 		we_html_tools::protect($protect);
 }
-$jscmd = new we_base_jsCmd();
 
 switch($mod){
 	case 'banner':
 		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 	case 'weSearch':
 		$weFrame = new we_search_frames();
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 	case 'shop':
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->View->processCommands($jscmd);
-		$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
+		$weFrame->View->processCommands($weFrame->jsCmd);
+		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	case 'customer':
 		switch($what){
@@ -122,27 +121,27 @@ switch($mod){
 				break;
 			default:
 				$weFrame = new we_customer_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-				$weFrame->process($jscmd);
+				$weFrame->process();
 		}
 		break;
 	case 'users':
 		$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 
 	case 'export':
 		$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 
 	case 'glossary':
 		$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 
 	case 'voting':
 		$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 
 	case 'navigation':
@@ -152,11 +151,11 @@ switch($mod){
 			case 'ruleFrameset':
 				we_html_tools::protect(['EDIT_NAVIAGTION_RULES']);
 				$weFrame = new we_navigation_ruleFrames();
-				$weFrame->process($jscmd);
+				$weFrame->process();
 				break;
 			default:
 				$weFrame = new we_navigation_frames('');
-				$weFrame->process($jscmd);
+				$weFrame->process();
 				break;
 		}
 		break;
@@ -164,7 +163,7 @@ switch($mod){
 	case 'workflow':
 		$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
 		$weFrame = new we_workflow_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		echo $weFrame->getHTML($what, $mode, $type);
 		return;
 	case 'messaging':
@@ -174,7 +173,7 @@ switch($mod){
 		$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
 
 		$weFrame = new we_messaging_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
-		$weFrame->process($jscmd);
+		$weFrame->process();
 		break;
 
 	case 'newsletter':
@@ -220,8 +219,8 @@ switch($mod){
 			default:
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
 				ob_start();
-				$weFrame->View->processCommands($jscmd);
-				$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
+				$weFrame->View->processCommands($weFrame->jsCmd);
+				$GLOBALS['extraJS'] = ob_get_clean();
 		}
 
 		break;

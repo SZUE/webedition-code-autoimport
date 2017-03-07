@@ -24,8 +24,8 @@
  */
 class we_navigation_cache{
 
-	public static function getNavigationFilename($id){
-		return WE_CACHE_PATH . 'navigation_' . $id;
+	public static function getNavigationFilename($id, $full = true){
+		return ($full ? WE_CACHE_PATH : '') . 'navigation_' . $id;
 	}
 
 	static function delNavigationTree($id){
@@ -50,24 +50,19 @@ class we_navigation_cache{
 
 	static function saveCacheNavigation($id, $naviItemes){
 		//FIMXE: currently we need the classes, so we are unable to serialize as json!
-		we_base_file::save(self::getNavigationFilename($id), we_serialize($naviItemes->items, SERIALIZE_PHP, false, 9));
+		we_cache_file::save(self::getNavigationFilename($id, false), $naviItemes->items, 0, SERIALIZE_PHP);
 	}
 
 	static function getCacheFromFile($parentid){
-		return (file_exists(($cache = self::getNavigationFilename($parentid))) ?
-			we_unserialize(we_base_file::load($cache)) :
-			false);
+		return we_cache_file::load(self::getNavigationFilename($parentid, false));
 	}
 
 	static function getCachedRule(){
-		return (file_exists(($cache = WE_CACHE_PATH . 'navigation_rules')) ?
-			we_unserialize(we_base_file::load($cache)) :
-			false);
+		return we_cache_file::load('navigation_rules');
 	}
 
 	static function saveRules($rules){
-		//FIMXE:	currently we need the classes, so we are unable to serialize as json!
-		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules', we_serialize($rules, SERIALIZE_PHP, false, 9));
+		we_cache_file::save('navigation_rules', $rules, 0, SERIALIZE_PHP);
 	}
 
 	/**
@@ -78,10 +73,8 @@ class we_navigation_cache{
 			unlink(WE_CACHE_PATH . 'cleannav');
 			$force = true;
 		}
-		if($force && ($files = glob(WE_CACHE_PATH . 'navigation_*'))){
-			foreach($files as $file){
-				unlink($file);
-			}
+		if($force){
+			we_cache_file::clean('navigation_*');
 		}
 	}
 

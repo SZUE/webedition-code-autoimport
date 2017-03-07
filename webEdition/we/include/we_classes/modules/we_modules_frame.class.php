@@ -25,6 +25,7 @@
 //TODO in modulesFrames: set module-settings as class properties instead of looping them through as method parameters!
 
 abstract class we_modules_frame{
+
 	var $module;
 	var $db;
 	var $frameset;
@@ -38,10 +39,13 @@ abstract class we_modules_frame{
 	protected $treeDefaultWidth = 200;
 	protected $treeWidth = 0;
 	protected $hasIconbar = false;
+	//FIXME: make this protected again
+	public $jsCmd = null;
 
 	function __construct($frameset){
 		$this->db = new DB_WE();
 		$this->frameset = $frameset;
+		$this->jsCmd = new we_base_jsCmd();
 	}
 
 	public function getHTMLDocumentHeader($charset = ''){
@@ -52,9 +56,10 @@ abstract class we_modules_frame{
 
 	function getHTMLDocument($body, $extraHead = ''){
 		return $this->getHTMLDocumentHeader() .
-			$extraHead .
-			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
-			'</head>' . $body . '</html>';
+				$extraHead .
+				(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
+				$this->jsCmd->getCmds() .
+				'</head>' . $body . '</html>';
 	}
 
 	function getJSCmdCode(){
@@ -82,10 +87,11 @@ abstract class we_modules_frame{
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			default:
+				$GLOBALS['extraJS']=$this->jsCmd->getCmds().$GLOBALS['extraJS'];
 				$ret = (empty($GLOBALS['extraJS']) ?
-					'' :
-					$this->getHTMLDocument(we_html_element::htmlBody(), $GLOBALS['extraJS'])
-					);
+						'' :
+						$this->getHTMLDocument(we_html_element::htmlBody(), $GLOBALS['extraJS'])
+						);
 				unset($GLOBALS['extraJS']);
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
 				return $ret;
@@ -96,18 +102,18 @@ abstract class we_modules_frame{
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
-			//FIXME: throw some of these functions out again and use generic version of main-window functions
-			we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
-			we_main_headermenu::css() .
-			$extraHead;
+				//FIXME: throw some of these functions out again and use generic version of main-window functions
+				we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
+				we_main_headermenu::css() .
+				$extraHead;
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => 'startTree();'], we_html_element::htmlExIFrame('header', self::getHTMLHeader(
-						(isset($this->toolDir) ?
-						$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
-						WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
-				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
-				$this->getHTMLResize($extraUrlParams) .
-				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
+										(isset($this->toolDir) ?
+										$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
+										WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
+						($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
+						$this->getHTMLResize($extraUrlParams) .
+						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -119,12 +125,12 @@ abstract class we_modules_frame{
 		$menu = $jmenu->getHTML();
 
 		return we_html_element::htmlDiv(['class' => 'menuDiv'], $menu .
-				we_html_element::htmlDiv(['id' => 'moduleMessageConsole'], we_main_headermenu::createMessageConsole('moduleFrame', false))
-			) . we_html_element::jsElement(
-				'top._console_ = new (WE().layout.messageConsoleView)("moduleFrame", this.window );
+						we_html_element::htmlDiv(['id' => 'moduleMessageConsole'], we_main_headermenu::createMessageConsole('moduleFrame', false))
+				) . we_html_element::jsElement(
+						'top._console_ = new (WE().layout.messageConsoleView)("moduleFrame", this.window );
 top._console_.register();
 window.document.body.addEventListener("onunload",	top._console_.unregister);'
-				);
+		);
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
@@ -135,11 +141,11 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 </div>';
 
 		$content = we_html_element::htmlDiv(['id' => 'moduleContent'], we_html_element::htmlDiv(['id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'], we_html_element::htmlDiv([
-						'id' => 'vtabs'], $incDecTree) .
-					$this->getHTMLLeft()
-				) .
-				we_html_element::htmlDiv(['id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'], we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
-				)
+									'id' => 'vtabs'], $incDecTree) .
+								$this->getHTMLLeft()
+						) .
+						we_html_element::htmlDiv(['id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'], we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
+						)
 		);
 
 		return we_html_element::htmlDiv(['id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'], $content);
@@ -149,18 +155,18 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 		return we_html_element::htmlDiv(['id' => 'left', 'name' => 'left'], we_html_element::htmlDiv(['id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')], $this->getHTMLTreeheader()) .
-				$this->getHTMLTree() .
-				($this->showTreeFooter ? we_html_element::htmlDiv(['id' => 'treefooter', 'class' => 'editfooter'], $this->getHTMLTreefooter()) :
-				''
-				)
+						$this->getHTMLTree() .
+						($this->showTreeFooter ? we_html_element::htmlDiv(['id' => 'treefooter', 'class' => 'editfooter'], $this->getHTMLTreefooter()) :
+						''
+						)
 		);
 	}
 
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv([
-				'id' => 'tree',
-				'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
-				], $extraHead . $this->Tree->getHTMLConstruct()
+					'id' => 'tree',
+					'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
+						], $extraHead . $this->Tree->getHTMLConstruct()
 		);
 	}
 
@@ -176,22 +182,22 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 
 	protected function getHTMLSearchTreeFooter(){
 		$hiddens = we_html_element::htmlHiddens([
-				'pnt' => 'cmd',
-				'cmd' => 'show_search']);
+					'pnt' => 'cmd',
+					'cmd' => 'show_search']);
 
 		$table = $hiddens .
-			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
-			we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('show_search')");
+				we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
+				we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('show_search')");
 
 		return we_html_element::jsElement($this->View->getJSSubmitFunction()) .
-			we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table));
+				we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table));
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(['class' => 'moduleEditor'], we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
+						we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
+						we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -247,25 +253,24 @@ window.document.body.addEventListener("onunload",	top._console_.unregister);'
 	/* process vars & commands
 	 */
 
-	public function process(we_base_jsCmd $jscmd){
+	public function process(){
 		ob_start();
 		$this->View->processVariables();
-		$this->View->processCommands($jscmd);
-		$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
+		$this->View->processCommands($this->jsCmd);
+		$GLOBALS['extraJS'] = ob_get_clean();
 	}
 
 	public static function showNotActivatedMsg(){
 		$title = sprintf(g_l('moduleActivation', '[headline]'), $GLOBALS['moduleName']);
-echo we_html_tools::getHtmlTop($title, '', '', '', we_html_element::htmlBody([
-		'class' => "weDialogBody",
-		'onload' => "self.focus();",
-		'onblur' => "self.close();"
-		], '<table style="width:100%" class="default defaultfont">
+		echo we_html_tools::getHtmlTop($title, '', '', '', we_html_element::htmlBody([
+					'class' => "weDialogBody",
+					'onload' => "self.focus();",
+					'onblur' => "self.close();"
+						], '<table style="width:100%" class="default defaultfont">
 <tr><td colspan="2"><strong>' . $title . '</strong></td></tr>
 <tr><td style="vertical-align:top"><span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
 </table>
 '));
-
 	}
 
 }
