@@ -24,7 +24,8 @@
  */
 class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
-	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = []){
+	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = [
+]){
 
 		if(($table === TEMPLATES_TABLE && !we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ||
 			($table === FILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')) ||
@@ -76,27 +77,27 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 		$queryTable = $table;
 		switch($table){
 			case FILE_TABLE:
-				$elem .=',Published,Extension,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
+				$elem .= ',Published,Extension,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$elem .=',st.DID IS NOT NULL AS inSchedule';
-					$queryTable.=' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName IN ("we_webEditionDocument","we_htmlDocument") AND st.Active=1)';
+					$elem .= ',st.DID IS NOT NULL AS inSchedule';
+					$queryTable .= ' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName IN ("we_webEditionDocument","we_htmlDocument") AND st.Active=1)';
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$elem .=',Published,IsClassFolder,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
+				$elem .= ',Published,IsClassFolder,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$elem .=',st.DID IS NOT NULL AS inSchedule';
-					$queryTable.=' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName="we_objectFile" AND st.Active=1)';
+					$elem .= ',st.DID IS NOT NULL AS inSchedule';
+					$queryTable .= ' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName="we_objectFile" AND st.Active=1)';
 				}
 				break;
 			case TEMPLATES_TABLE:
-				$elem .=',Extension,1 AS isPublished';
+				$elem .= ',Extension,1 AS isPublished';
 				break;
 			case VFILE_TABLE:
-				$elem .=',remTable,1 AS isPublished,1 AS IsFolder';
+				$elem .= ',remTable,1 AS isPublished,1 AS IsFolder';
 				break;
 			default:
-				$elem.=',1 AS isPublished';
+				$elem .= ',1 AS isPublished';
 				break;
 		}
 
@@ -219,8 +220,8 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			}
 
 			$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?
-					explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
-					[]);
+				explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
+				[]);
 
 
 			if($parentFolder){
@@ -235,7 +236,8 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 				return $resp;
 			}
-			$Tree = new we_tree_main("webEdition.php", "top", "top", "top.load");
+
+			$Tree = new we_tree_main(null, "webEdition.php", "top", "top", "top.load");
 			$treeItems = [];
 			$this->getItems($openFolders, $parentpaths, $wsQuery, $treeItems, $table, $parentFolder, $offset, $Tree->default_segment);
 
