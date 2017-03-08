@@ -159,7 +159,7 @@ class we_widget_mdc extends we_widget_base{
 	public static function showDialog(){
 		$DB_WE = $GLOBALS['DB_WE'];
 		list($jsFile, $oSelCls) = self::getDialogPrefs();
-
+		$jsCmd = new we_base_jsCmd();
 		$widgetData = [];
 
 		list($sTitle, $selBinary, $sCsv) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', ';;', 1));
@@ -205,7 +205,7 @@ class we_widget_mdc extends we_widget_base{
 			$seltype['classname'] = g_l('cockpit', '[objects]');
 		}
 
-		$tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
+		$tree = new we_export_tree($jsCmd, 'treeCmd.php', 'top', 'top', 'cmd');
 
 		$captions = [];
 		if(we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
@@ -246,7 +246,8 @@ class we_widget_mdc extends we_widget_base{
 		$sTblWidget = we_html_multiIconBox::getHTML("mdcProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', $jsFile .
-			we_html_element::jsScript(JS_DIR . 'widgets/mdc.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar($widgetData)]), we_html_element::htmlBody(
+			we_html_element::jsScript(JS_DIR . 'widgets/mdc.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar($widgetData)]) .
+			$jsCmd->getCmds(), we_html_element::htmlBody(
 				["class" => "weDialogBody", "onload" => "init('" . $selTable . "','" . $sTitle . "','" . $selBinary . "','" . $sCsv . "');"
 				], we_html_element::htmlForm(
 					"", we_html_element::htmlHiddens(["table" => "",

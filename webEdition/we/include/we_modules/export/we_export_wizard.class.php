@@ -161,9 +161,10 @@ class we_export_wizard{
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
 			$args .= "&we_cmd[1]=" . $cmd1;
 		}
-		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . 'export_frameset.php', 'top.content', 'top.content.editor.edbody', 'top.load');
+		$jsCmd = new we_base_jsCmd();
+		$this->Tree = new we_export_tree($jsCmd, WE_EXPORT_MODULE_DIR . 'export_frameset.php', 'top.content', 'top.content.editor.edbody', 'top.load');
 
-		$js = we_html_element::jsScript(JS_DIR . 'export_wizard.js') . $this->Tree->getJSTreeCode();
+		$js = we_html_element::jsScript(JS_DIR . 'export_wizard.js') . $this->Tree->getJSTreeCode() . $jsCmd->getCmds();
 		/* TODO: maybe send this vars as dynvars so we have the defaults here
 		  we_html_element::jsElement('
 		  var step = 0;

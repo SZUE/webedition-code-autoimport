@@ -25,8 +25,8 @@
 class we_messaging_tree extends we_tree_base{
 	private $transaction;
 
-	function __construct($frameset, $topFrame, $treeFrame, $cmdFrame, $transaction){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	function __construct(we_base_jsCmd $jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame, $transaction){
+		parent::__construct($jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame);
 		$this->transaction = $transaction;
 	}
 

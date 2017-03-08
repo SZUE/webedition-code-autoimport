@@ -24,8 +24,8 @@
  */
 class we_tree_customer extends we_tree_base{
 
-	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	public function __construct(we_base_jsCmd $jsCmd, $frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame);
 		$this->addSorted = false;
 	}
 

@@ -30,7 +30,7 @@ class we_banner_frames extends we_modules_frame{
 		$this->treeDefaultWidth = 224;
 
 		$this->View = new we_banner_view($frameset);
-		$this->Tree = new we_banner_tree($this->frameset, $this->topFrame, $this->treeFrame, $this->cmdFrame);
+		$this->Tree = new we_banner_tree($this->jsCmd, $this->frameset, $this->topFrame, $this->treeFrame, $this->cmdFrame);
 	}
 
 	function getHTML($what = '', $mode = '', $step = 0){
@@ -39,8 +39,8 @@ class we_banner_frames extends we_modules_frame{
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-							we_html_button::SAVE => [['EDIT_BANNER'], 'save_banner']
-								], we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
+						we_html_button::SAVE => [['EDIT_BANNER'], 'save_banner']
+						], we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:
@@ -69,19 +69,19 @@ class we_banner_frames extends we_modules_frame{
 		}
 
 		$extraHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js');
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js');
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
-							'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
-												we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
-												we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-												)
-										)
-								) .
-								$we_tabs->getHTML()
+					'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
+							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
+							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							)
 						)
+					) .
+					$we_tabs->getHTML()
+				)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -103,10 +103,10 @@ class we_banner_frames extends we_modules_frame{
 		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment)]);
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
-											"cmd" => "no_cmd"])
-								)
-				));
+				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
+							"cmd" => "no_cmd"])
+					)
+		));
 	}
 
 	function getHTMLDCheck(){
