@@ -25,7 +25,7 @@
 class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = [
-]){
+	]){
 
 		if(($table === TEMPLATES_TABLE && !we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ||
 			($table === FILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')) ||
@@ -236,8 +236,9 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 				return $resp;
 			}
+			$jsCmd = new we_base_jsCmd();
 
-			$Tree = new we_tree_main(null, "webEdition.php", "top", "top", "top.load");
+			$Tree = new we_tree_main($jsCmd, "webEdition.php", "top", "top", "top.load");
 			$treeItems = [];
 			$this->getItems($openFolders, $parentpaths, $wsQuery, $treeItems, $table, $parentFolder, $offset, $Tree->default_segment);
 

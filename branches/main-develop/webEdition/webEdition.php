@@ -277,7 +277,7 @@ foreach($jsWeCmd as $cur){
 
 list($jsTree, $treeHtml) = getWebEdition_Tree($jsCmd);
 
-$head .= $jsCmd->getCmds();
+$head .= $jsTree . $jsCmd->getCmds();
 $versionInfo = empty($_SESSION['perms']['ADMINISTRATOR']) ? [] : updateAvailable();
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
