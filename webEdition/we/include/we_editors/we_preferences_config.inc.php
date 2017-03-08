@@ -183,6 +183,7 @@ $GLOBALS['configs'] = array(
 		'SECURITY_ENCRYPTION_KEY' => array('This is the encryption key used for password, if set to symmetric mode', we_base_request::STRING, ''),
 		'SECURITY_SESSION_PASSWORD' => array('Determine if a userpassword is allowed to be stored in current session', we_base_request::INT, we_customer_customer::STORE_PASSWORD),
 		'SECURITY_USER_PASS_REGEX' => array('Regex used to compare user password', we_base_request::STRING, we_users_user::DEFAULT_PASS_REGEX),
+		'SECURITY_USER_PASS_DESC' => array('Userfriendly description of how the password should be chosen', we_base_request::STRING, 'Enter a password with at least 6 and at most 20 characters.'),
 //internal
 		'CONF_SAVED_VERSION' => array('config file version', we_base_request::INT, str_replace(array('$Rev$'), '', WE_SVNREV)),
 	),

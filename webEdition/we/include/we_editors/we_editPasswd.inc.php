@@ -30,6 +30,7 @@ function getContent(){
 						<table class="default">
 							<tr><td class="defaultfont">' . g_l('global', '[oldPass]') . '</td></tr>
 							<tr><td style="padding-bottom:5px;">' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
+							<tr><td>' .we_html_tools::htmlAlertAttentionBox( SECURITY_USER_PASS_DESC , we_html_tools::TYPE_INFO). '</td></tr>
 							<tr><td class="defaultfont">' . g_l('global', '[newPass]') . '</td></tr>
 							<tr><td style="padding-bottom:5x;"><div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' . we_html_tools::htmlTextInput('newpasswd', 20, '', 32, 'onchange="setPwdErr(comparePwd(\'newpasswd\',\'newpasswd2\'));"', 'password', 200) . '</td></tr>
 							<tr><td class="defaultfont"><div id="badPwd2" style="display:none;" class="arrow_box">' . g_l('global', '[pass_not_confirmed]') . '</div>' . g_l('global', '[newPass2]') . '</td></tr>
