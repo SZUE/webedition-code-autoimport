@@ -48,11 +48,13 @@ abstract class we_tree_base{
 	protected $autoload = true;
 	protected $addSorted = true;
 	protected $extraClasses = '';
+	protected $jsCmd;
 
 //Initialization
 
-	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+	public function __construct(we_base_jsCmd $jsCmd, $frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		$this->db = new DB_WE();
+		$this->jsCmd = $jsCmd;
 		if($frameset && $topFrame && $treeFrame && $cmdFrame){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}
@@ -87,6 +89,14 @@ function startTree(pid,offset){
 	 */
 
 	public function getJSTreeCode(){
+		if($this->autoload){
+			$this->jsCmd->addCmd('loadTree', [
+				'clear' => 1,
+				'items' => static::getItems(0, 0, $this->default_segment),
+				'sorted' => $this->addSorted
+			]);
+		}
+
 		return we_html_element::jsScript(JS_DIR . 'tree.js') .
 			$this->customJSFile() .
 			we_html_element::jsElement('
@@ -98,11 +108,7 @@ container.prototype.frames={
 	tree:' . $this->treeFrame . '
 };
 ' . $this->getJSStartTree()
-			) . ($this->autoload ? we_base_jsCmd::singleCmd('loadTree', [
-				'clear' => 1,
-				'items' => static::getItems(0, 0, $this->Tree->default_segment),
-				'sorted' => $this->addSorted
-			]) : '');
+		);
 	}
 
 	abstract protected function customJSFile();

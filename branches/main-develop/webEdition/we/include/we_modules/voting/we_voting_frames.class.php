@@ -32,7 +32,7 @@ class we_voting_frames extends we_modules_frame{
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = "voting";
-		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_voting_tree($this->jsCmd, $this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_voting_view($frameset);
 	}
 

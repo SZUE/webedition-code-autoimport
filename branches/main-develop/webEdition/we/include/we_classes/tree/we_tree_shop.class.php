@@ -24,8 +24,8 @@
  */
 class we_tree_shop extends we_tree_base{
 
-	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	public function __construct(we_base_jsCmd $jsCmd, $frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame);
 		$this->addSorted = false;
 	}
 
@@ -40,7 +40,7 @@ class we_tree_shop extends we_tree_base{
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){
 		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
-		$db=new DB_WE();
+		$db = new DB_WE();
 		$items = [];
 		$db->query("SELECT
 o.ID,
@@ -54,7 +54,7 @@ o.DateShipping IS NOT NULL AS isShipped
 FROM " . SHOP_ORDER_TABLE . ' o WHERE
 o.DateOrder BETWEEN "' . ($year - 1) . '-12-31" AND "' . ($year + 1) . '-01-01"
 ORDER BY o.ID DESC');
-		$l=[];
+		$l = [];
 		while($db->next_record()){
 			//added for #6786
 			$style = 'default';

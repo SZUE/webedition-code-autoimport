@@ -24,8 +24,8 @@
  */
 class we_export_tree extends we_tree_base{
 
-	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	public function __construct(we_base_jsCmd $jsCmd, $frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame);
 		$this->autoload = false;
 	}
 
@@ -40,7 +40,7 @@ win.treeData.table=win.table;';
 		foreach($treeItems as $item){
 
 			$js .= ($clear ? '' : 'if(win.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-				 'win.treeData.add(new win.Node({';
+				'win.treeData.add(new win.Node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems .= strtolower($k) . ':' .
@@ -250,7 +250,8 @@ var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.ed
 					'win.treeData.clear();' .
 					'win.treeData.add(win.Node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 				) .
-				$this->getJSLoadTree(!$parentFolder, $treeItems)
+				$this->getJSLoadTree(!$parentFolder, $treeItems) .
+				$this->jsCmd->getCmds()
 			), we_html_element::htmlBody(["bgcolor" => "#ffffff"])
 		);
 	}
@@ -260,7 +261,8 @@ var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.ed
 //added for export module.
 		$treeFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.body', 5);
 		$cmdFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.cmd', 6);
-		$tree = new we_export_tree('export_frameset.php', $topFrame, $treeFrame, $cmdFrame);
+		$jsCmd = new we_base_jsCmd();
+		$tree = new we_export_tree($jsCmd, 'export_frameset.php', $topFrame, $treeFrame, $cmdFrame);
 
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 

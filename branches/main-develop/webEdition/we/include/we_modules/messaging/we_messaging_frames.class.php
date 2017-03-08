@@ -42,7 +42,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
 		$this->View = new we_messaging_view($framset, $this->transaction, $this->weTransaction);
-		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->weTransaction);
+		$this->Tree = new we_messaging_tree($this->jsCmd, $this->frameset, "top.content", "top.content", "top.content.cmd", $this->weTransaction);
 	}
 
 	function getHTML($what = '', $mode = '', $step = 0){
