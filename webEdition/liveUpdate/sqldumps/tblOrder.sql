@@ -1,3 +1,4 @@
+/*FIXME: in later versions we have to drop  SHOP_TABLE . '_old' */
 CREATE TABLE ###TBLPREFIX###tblOrder (
 	ID int unsigned NOT NULL auto_increment,
 	shopname tinytext NOT NULL DEFAULT '',

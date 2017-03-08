@@ -1294,7 +1294,7 @@ class we_object extends we_document{
 
 	private function formUsers(we_base_jsCmd $jsCmd, $canChange = true){
 		$users = makeArrayFromCSV($this->Users);
-		$usersReadOnly = we_unserialize($this->UsersReadOnly);
+		$usersReadOnly = makeArrayFromCSV($this->UsersReadOnly);
 		$content = '<table class="default" style="width:388px;margin:5px;">';
 
 		if($users){
@@ -2136,7 +2136,7 @@ class we_object extends we_document{
 		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		$ownersReadOnly = we_unserialize($this->UsersReadOnly);
+		$ownersReadOnly = makeArrayFromCSV($this->UsersReadOnly);
 		$readers = [];
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
