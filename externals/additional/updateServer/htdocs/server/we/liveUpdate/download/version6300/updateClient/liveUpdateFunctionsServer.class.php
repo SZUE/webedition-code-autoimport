@@ -3,6 +3,7 @@
 //version6300
 //code aus 6300
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
+
 	var $QueryLog = array('success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
@@ -833,7 +834,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * Functions for error handler, etc
 	 */
 
-
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
@@ -858,9 +858,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate($what, $pos){
+	static function weUpdaterDoUpdate($what, $progress = array()){
 		if(method_exists('we_updater', 'doUpdate')){
-			return we_updater::doUpdate($what, $pos);
+			return we_updater::doUpdate($what, $progress);
 		}
 
 		return true;

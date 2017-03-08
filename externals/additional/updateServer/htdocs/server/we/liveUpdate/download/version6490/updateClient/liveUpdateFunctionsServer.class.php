@@ -3,6 +3,7 @@
 //version7000
 //code aus 7000
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -17,9 +18,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -95,8 +96,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-			preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
-			$content);
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
+				$content);
 	}
 
 	/**
@@ -853,9 +854,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate($what, $pos){
+	static function weUpdaterDoUpdate($what, $progress = array()){
 		if(method_exists('we_updater', 'doUpdate')){
-			return we_updater::doUpdate($what, $pos);
+			return we_updater::doUpdate($what, $progress);
 		}
 
 		return true;

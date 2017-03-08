@@ -129,9 +129,9 @@ class update extends updateBase{
 		if($mysqlV != ''){
 			if(version_compare($mysqlV, '5.5', '<') && $_SESSION['clientTargetVersionNumber'] >= 6430){
 				$mysqlversionFail = '5.5';
-			}elseif(version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
+			} elseif(version_compare($mysqlV, 5, '<') && $_SESSION['clientTargetVersionNumber'] >= 6200){
 				$mysqlversionFail = '5.0';
-			}elseif(version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
+			} elseif(version_compare($mysqlV, 4, '<') && $_SESSION['clientTargetVersionNumber'] < 6200){
 				$mysqlversionFail = '4.1';
 			}
 		}
@@ -146,45 +146,21 @@ class update extends updateBase{
 			$output = '';
 			return 1;
 		}
-		$output = '<div class="messageDiv">';
-		if(!$phpExtensionsOK || $phpversionFail || $mysqlversionFail){
-			$output .= '<p><b>' . $GLOBALS['lang']['update']['ReqWarnung'] . '</b></p><p>' . $GLOBALS['lang']['update']['ReqWarnungText'] . '</p><ul>';
-		} else {
-			$output .= '<ul>';
-		}
-		if($mysqlversionFail){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungMySQL'], $mysqlversionFail) . '</li>';
-		}
-		if($phpversionFail){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungPHPversion'], $phpversionFail) . '<b>' . $phpV . '</b></li>';
-		}
-
-		if(!$phpExtensionsOK){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPextension'] . '<b>' . implode(',', $phpextensionsMissing) . '</b></li>';
-		}
-		if(!$phpExtensionsDetectable){
-			$output .= '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPextensionND'] . '<b>' . $phpextensionsstring . '</b></li>';
-		}
-		if(!$pcreversionOK){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungPCREold1'] . $pcreV . $GLOBALS['lang']['update']['ReqWarnungPCREold2'] . '</li>';
-		}
-		if(!$sdkDbOK){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungSDKdb'] . '</li>';
-		}
-		if(!$mbstringAvailable){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungMbstring'] . '</li>';
-		}
-		if(!$gdlibAvailable){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungGdlib'] . '</li>';
-		}
-		if(!$exifAvailable){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungExif'] . '</li>';
-		}
-		if($_SESSION['clientVersionNumber'] < 6100){
-			$output .= '<li>' . $GLOBALS['lang']['update']['ReqWarnungNoCheck'] . '</li>';
-		}
-
-		$output .= '</ul></div>';
+		$output = '<div class="messageDiv">' .
+				(!$phpExtensionsOK || $phpversionFail || $mysqlversionFail ?
+				'<p><b>' . $GLOBALS['lang']['update']['ReqWarnung'] . '</b></p><p>' . $GLOBALS['lang']['update']['ReqWarnungText'] . '</p>' : '') .
+				'<ul>' .
+				($mysqlversionFail ? '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungMySQL'], $mysqlversionFail) . '</li>' : '') .
+				($phpversionFail ? '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . sprintf($GLOBALS['lang']['update']['ReqWarnungPHPversion'], $phpversionFail) . '<b>' . $phpV . '</b></li>' : '' ) .
+				(!$phpExtensionsOK ? '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungKritisch'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPextension'] . '<b>' . implode(',', $phpextensionsMissing) . '</b></li>' : '') .
+				(!$phpExtensionsDetectable ? '<li><b>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . '</b>' . $GLOBALS['lang']['update']['ReqWarnungPHPextensionND'] . '<b>' . $phpextensionsstring . '</b></li>' : '') .
+				(!$pcreversionOK ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungPCREold1'] . $pcreV . $GLOBALS['lang']['update']['ReqWarnungPCREold2'] . '</li>' : '') .
+				(!$sdkDbOK ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungSDKdb'] . '</li>' : '') .
+				(!$mbstringAvailable ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungMbstring'] . '</li>' : '') .
+				(!$gdlibAvailable ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungGdlib'] . '</li>' : '') .
+				(!$exifAvailable ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungHinweis'] . $GLOBALS['lang']['update']['ReqWarnungExif'] . '</li>' : '') .
+				($_SESSION['clientVersionNumber'] < 6100 ? '<li>' . $GLOBALS['lang']['update']['ReqWarnungNoCheck'] . '</li>' : '') .
+				'</ul></div>';
 
 		return ($phpExtensionsOK && !$phpversionFail && !$mysqlversionFail);
 	}

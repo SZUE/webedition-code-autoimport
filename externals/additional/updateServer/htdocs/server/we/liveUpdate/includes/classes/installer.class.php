@@ -590,7 +590,7 @@ foreach($allFiles as $file) {
 }
 
 if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
-	$redo=$liveUpdateFnc::weUpdaterDoUpdate(empty($_REQUEST["what"])?"":$_REQUEST["what"],intval(empty($_REQUEST["pos"])?"":$_REQUEST["pos"]));
+	$redo=$liveUpdateFnc::weUpdaterDoUpdate(empty($_REQUEST["progress"])?"":$_REQUEST["progress"]["what"],empty($_REQUEST["pos"])?array():$_REQUEST["progress"]);
 }
 
 if ($success) {
@@ -601,7 +601,8 @@ if ($success) {
 	}
 	if(is_array($redo)){
 		$message.="<div>Update ".$redo["text"]."</div>";
-		echo "<script>top.frames.updatecontent.param=\"&what=".$redo["what"]."&pos=".$redo["pos"]."\";</script>";
+		unset($redo["text"]);
+		echo "<script>top.frames.updatecontent.param=\"&".http_build_query(array("progress"=>$redo))."\";</script>";
 	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}else{
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
