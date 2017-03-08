@@ -51,13 +51,13 @@ class we_search_frames extends we_modules_frame{
 			$attr['onload'] = "top.content.treeData.selectNode('" . ($_SESSION['weS']['weSearch']['modelidForTree']) . "');";
 			unset($_SESSION['weS']['weSearch']['modelidForTree']);
 		}
+		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)]);
 
 		return $this->getHTMLDocument(
 						we_html_element::htmlBody($attr, we_html_element::htmlForm(['name' => 'we_form'
 										], we_html_element::htmlHiddens(['pnt' => 'cmd',
 											'cmd' => 'no_cmd'])
-						)), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_search_tree::getItems($pid, $offset, $this->Tree->default_segment)])
-		);
+		)));
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
@@ -90,10 +90,11 @@ class we_search_frames extends we_modules_frame{
 		$we_tabs->addTab(g_l('searchtool', '[properties]'), false, self::TAB_PROPERTIES, ['id' => 'tab_4', 'style' => 'display:' . $displayFolder]);
 
 		$tabNr = $this->getTab();
+		$this->jsCmd->addCmd('setTab', $tabNr);
+
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js') .
-				we_base_jsCmd::singleCmd('setTab', $tabNr);
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js');
 
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(

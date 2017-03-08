@@ -24,11 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-var loaded = false;
-const TAB_DATA = 0;
-const TAB_PERMISSION = 1;
-const TAB_WORKSPACES = 2;
-const TAB_SETTINGS = 3;
+var loaded = false,
+				TAB_DATA = 0,
+				TAB_PERMISSION = 1,
+				TAB_WORKSPACES = 2,
+				TAB_SETTINGS = 3;
 
 function we_submitForm(target, url) {
 	var f = window.document.we_form;

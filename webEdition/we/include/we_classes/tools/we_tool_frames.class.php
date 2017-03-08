@@ -131,18 +131,19 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::STRING, "pid")) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 		$class = $this->toolClassName . 'TreeDataSource';
 
 		$loader = new $class($this->TreeSource);
+		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => $loader->getItems($pid, $offset, $this->Tree->default_segment, '')]);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(['pnt' => 'cmd',
 											'cmd' => 'no_cmd'])
 								)
-						), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => $loader->getItems($pid, $offset, $this->Tree->default_segment, '')]));
+		));
 	}
 
 	/* protected function getHTMLExitQuestion(){
