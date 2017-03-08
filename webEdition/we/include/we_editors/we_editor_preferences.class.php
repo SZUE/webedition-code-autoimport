@@ -1043,7 +1043,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$default = self::get_value('locale_default');
 				$locales = self::get_value('locale_locales');
 
-				self::$jsCmd->addCmd('initLocale',$default);
+				self::$jsCmd->addCmd('initLocale', $default);
 
 				$hidden_fields = we_html_element::htmlHidden('newconf[locale_default]', $default, 'locale_default') .
 						we_html_element::htmlHidden('newconf[locale_locales]', implode(',', array_keys($locales)), 'locale_locales');
@@ -1908,20 +1908,20 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$customer_table->setCol($row, 0, ['class' => 'defaultfont', 'width' => '20px'], '');
 				$customer_table->setCol($row, 1, ['class' => 'defaultfont', 'colspan' => 5], g_l('prefs', '[security][customer][disableLogins]') . ':');
 				$customer_table->setCol($row, 6, ['width' => 300]);
-				$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
+				$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
 				$customer_table->setCol($row, 2, ['width' => '20px']);
 				$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, self::get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 				$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'width:2em;text-align:center'], '/');
 				$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, self::get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 				$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-				$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
+				$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
 				$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, self::get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 				$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'text-align:center;'], '/');
 				$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, self::get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 				$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-				$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
+				$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
 				$weSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 				$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -1935,11 +1935,11 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 
 				$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $weSuggest->getHTML());
 
-				$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
+				$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
 				$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, self::get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 				$customer_table->setCol($row, 4, [], 's');
 
-				$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
+				$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
 
 				$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', [g_l('prefs', '[no]'), g_l('prefs', '[yes]')], 1, self::get_value('SECURITY_DELETE_SESSION')));
 
@@ -1972,6 +1972,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 					['headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
 					['headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, self::get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'),
 						'space' => we_html_multiIconBox::SPACE_MED],
+					['headline' => g_l('prefs', '[security][userPassRegex][desc]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_DESC]', 0, get_value('SECURITY_USER_PASS_DESC'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED],
 				];
 				return self::create_dialog('settings_security', $settings);
 

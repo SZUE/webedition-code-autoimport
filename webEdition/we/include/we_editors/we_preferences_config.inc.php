@@ -181,6 +181,7 @@ $GLOBALS['configs'] = [// Create array for needed configuration variables
 		'SECURITY_ENCRYPTION_KEY' => ['This is the encryption key used for password, if set to symmetric mode', we_base_request::STRING, ''],
 		'SECURITY_SESSION_PASSWORD' => ['Determine if a userpassword is allowed to be stored in current session', we_base_request::INT, we_customer_customer::STORE_PASSWORD],
 		'SECURITY_USER_PASS_REGEX' => ['Regex used to compare user password', we_base_request::STRING, we_users_user::DEFAULT_PASS_REGEX],
+		'SECURITY_USER_PASS_DESC' => ['Userfriendly description of how the password should be chosen', we_base_request::STRING, 'Enter a password with at least 6 and at most 20 characters.'],
 //internal
 		'CONF_SAVED_VERSION' => ['config file version', we_base_request::INT, str_replace(['$Rev$'], '', WE_SVNREV)],
 	],

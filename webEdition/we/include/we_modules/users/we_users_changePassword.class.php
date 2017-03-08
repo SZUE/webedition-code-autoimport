@@ -27,16 +27,17 @@ abstract class we_users_changePassword{
 	private static function getContent(){
 		return '
 		<form action="' . $_SERVER['REQUEST_URI'] . '" method="post">' .
-			we_html_tools::htmlDialogLayout('
+				we_html_tools::htmlDialogLayout('
 						<table class="default">
 							<tr><td class="defaultfont">' . g_l('global', '[oldPass]') . '</td></tr>
 							<tr><td style="padding-bottom:5px;">' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
+							<tr><td>' . we_html_tools::htmlAlertAttentionBox(SECURITY_USER_PASS_DESC, we_html_tools::TYPE_INFO) . '</td></tr>
 							<tr><td class="defaultfont">' . g_l('global', '[newPass]') . '</td></tr>
 							<tr><td style="padding-bottom:5x;"><div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' . we_html_tools::htmlTextInput('newpasswd', 20, '', 32, 'onchange="setPwdErr(comparePwd(\'newpasswd\',\'newpasswd2\'));"', 'password', 200) . '</td></tr>
 							<tr><td class="defaultfont"><div id="badPwd2" style="display:none;" class="arrow_box">' . g_l('global', '[pass_not_confirmed]') . '</div>' . g_l('global', '[newPass2]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, 'onchange="setPwdErr(comparePwd(\'newpasswd\',\'newpasswd2\'));"', 'password', 200) . '</td></tr>
 						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:document.forms[0].submit();'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'))
-			) . we_html_element::htmlHidden('cmd', 'ok') . '</form>';
+				) . we_html_element::htmlHidden('cmd', 'ok') . '</form>';
 	}
 
 	private static function getLoad(){
@@ -75,9 +76,9 @@ top.document.forms[0].elements.newpasswd2.select();';
 
 	public static function showDialog(){
 		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
-					'pwdCheck' => SECURITY_USER_PASS_REGEX
+						'pwdCheck' => SECURITY_USER_PASS_REGEX
 			])]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;') .
-				self::getLoad()
+						self::getLoad()
 		));
 	}
 
