@@ -310,7 +310,7 @@ if(we_backup_preparer::prepareImport() === true){
 		print "\nUpdate...\n";
 	}
 
-	we_updater::doUpdate();
+	we_updater::doUpdate('internal');
 } else {
 	print we_backup_preparer::getErrorMessage();
 }
