@@ -148,13 +148,13 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
-			treeData.setState(treeData.tree_states.select);
+			top.treeData.setState(top.treeData.tree_states.select);
 			top.treeData.unselectNode();
 			top.drawTree();
 			break;
 		case "mv":
 			we_cmd('move', 1, args[2]);
-			treeData.setState(treeData.tree_states.selectitem);
+			top.treeData.setState(treeData.tree_states.selectitem);
 			top.treeData.unselectNode();
 			top.drawTree();
 			break;//add_to_collection
@@ -275,9 +275,9 @@ we_cmd_modules.base = function (args, url, caller) {
 			document.we_form.CreateTemplate.checked = true;
 			break;
 		case "setTab":
-			if (treeData !== undefined) {
+			if (top.treeData !== undefined) {
 				WE().layout.vtab.setActiveTab(args[1]);
-				treeData.table = args[1];
+				top.treeData.table = args[1];
 			} else {
 				window.setTimeout(we_cmd, 500, "setTab", args[1]);
 			}
@@ -510,7 +510,7 @@ we_cmd_modules.base = function (args, url, caller) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 				break;
 			}
-			treeData.unselectNode();
+			top.treeData.unselectNode();
 			if (args[5] !== undefined) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 			} else {
@@ -522,7 +522,7 @@ we_cmd_modules.base = function (args, url, caller) {
 		case "exit_addToCollection":
 			WE().session.deleteMode = false;
 			if (!WE().session.seemode) {
-				treeData.setState(treeData.tree_states.edit);
+				top.treeData.setState(top.treeData.tree_states.edit);
 				drawTree();
 				var cl = window.document.getElementById("bm_treeheaderDiv").classList;
 				cl.remove('deleteSelector');
@@ -556,8 +556,8 @@ we_cmd_modules.base = function (args, url, caller) {
 		case "reset_home_do":
 //FIXME: currently this doesn't work
 			WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
-			if ((window.treeData !== undefined) && window.treeData) {
-				window.treeData.unselectNode();
+			if ((top.treeData !== undefined) && top.treeData) {
+				top.treeData.unselectNode();
 			}
 			break;
 		case "new_widget":
@@ -909,16 +909,16 @@ function doReloadCmd(args, url, hot) {
 
 function wecmd_editDocument(args, url) {
 	try {
-		if ((window.treeData !== undefined) && treeData) {
-			treeData.unselectNode();
+		if (top.treeData) {
+			top.treeData.unselectNode();
 			if (args[1]) {
-				treeData.selection_table = args[1];
+				top.treeData.selection_table = args[1];
 			}
 			if (args[2]) {
-				treeData.selection = args[2];
+				top.treeData.selection = args[2];
 			}
-			if (treeData.selection_table === treeData.table) {
-				treeData.selectNode(treeData.selection);
+			if (top.treeData.selection_table === top.treeData.table) {
+				top.treeData.selectNode(treeData.selection);
 			}
 		}
 	} catch (e) {
@@ -1001,8 +1001,8 @@ function addToCollection(args, url) {
 		if (WE().session.deleteMode != args[1]) {
 			WE().session.deleteMode = args[1];
 		}
-		if (!WE().session.deleteMode && treeData.state == treeData.tree_states.select) {
-			treeData.setState(treeData.tree_states.edit);
+		if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.select) {
+			top.treeData.setState(top.treeData.tree_states.edit);
 			drawTree();
 		}
 		window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
@@ -1127,8 +1127,8 @@ function we_cmd_move(args, url) {
 		if (WE().session.deleteMode != args[1]) {
 			WE().session.deleteMode = args[1];
 		}
-		if (!WE().session.deleteMode && treeData.state == treeData.tree_states.selectitem) {
-			treeData.setState(treeData.tree_states.edit);
+		if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.selectitem) {
+			top.treeData.setState(top.treeData.tree_states.edit);
 			drawTree();
 		}
 		window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
@@ -1164,8 +1164,8 @@ function we_cmd_delete(args, url) {
 	if (WE().session.deleteMode != args[1]) {
 		WE().session.deleteMode = args[1];
 	}
-	if (!WE().session.deleteMode && treeData.state == treeData.tree_states.select) {
-		treeData.setState(treeData.tree_states.edit);
+	if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.select) {
+		top.treeData.setState(top.treeData.tree_states.edit);
 		drawTree();
 	}
 	window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
