@@ -31,6 +31,8 @@ class we_cache_file implements we_cache_base{
 	  return we_base_file::save(WE_CACHE_PATH . 'we_cache_meta', we_serialize($data, SERIALIZE_JSON));
 	  } */
 
+	//NOTE: cleanup of old entries is done via we_base_file::cleanTempFiles which is called on startup & via cron-job
+
 	public static function load($entry){
 		/* static $t = 0;
 		  $t = $t ?: time();
