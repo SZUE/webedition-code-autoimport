@@ -2,7 +2,7 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblCleanUp (
-  Path varchar(1024) NOT NULL default '',
+  Path varchar(400) NOT NULL default '',
   `Date` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY (Path),
   KEY `Date` (`Date`)
@@ -10,4 +10,3 @@ CREATE TABLE ###TBLPREFIX###tblCleanUp (
 
 /* query separator */
 ###UPDATEDROPKEY(Path,###TBLPREFIX###tblCleanUp)###
-
