@@ -135,7 +135,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "change_passwd":
-			new (WE().util.jsWindow)(caller, url, "we_change_passwd", WE().consts.size.dialog.tiny, WE().consts.size.dialog.tiny, true, false, true, false);
+			new (WE().util.jsWindow)(caller, url, "we_change_passwd", WE().consts.size.dialog.tiny, WE().consts.size.dialog.smaller, true, false, true, false);
 			break;
 		case "update":
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);

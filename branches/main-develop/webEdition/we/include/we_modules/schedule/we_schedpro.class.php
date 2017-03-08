@@ -326,7 +326,7 @@ class we_schedpro{
 		return $table;
 	}
 
-	function processSchedule($id, $schedFile, $now, we_database_base $DB_WE){
+	private static function processSchedule($id, $schedFile, $now, we_database_base $DB_WE){
 		usort($schedFile['value'], function ($a, $b){
 			if($a['lasttime'] == $b['lasttime']){
 				return 0;
@@ -598,7 +598,7 @@ class we_schedpro{
 		];
 	}
 
-	function getPrevTimestamp($s, $now = 0){
+	private static function getPrevTimestamp($s, $now = 0){
 		if(!$now){
 			$now = time();
 		}
