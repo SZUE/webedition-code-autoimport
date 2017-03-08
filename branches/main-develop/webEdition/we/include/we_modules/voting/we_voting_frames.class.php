@@ -82,11 +82,12 @@ class we_voting_frames extends we_modules_frame{
 				$we_tabs->addTab(g_l('modules_voting', '[result]'), false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
 			}
 		}
-
+		if($this->View->voting->ID){
+			$this->jsCmd->addCmd('setTab', 1);
+		}
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js') .
-				($this->View->voting->ID ? '' : we_base_jsCmd::singleCmd('setTab', 1));
+				we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js');
 
 		/* $table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 
@@ -672,6 +673,7 @@ function refreshTexts(){
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_voting_tree::getItems($pid, $offset, $this->Tree->default_segment)]);
 
 		return $this->getHTMLDocument(
 						we_html_element::htmlBody([], we_html_element::htmlForm(
@@ -680,8 +682,7 @@ function refreshTexts(){
 											"cmd" => "no_cmd"]
 										)
 								)
-						), we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_voting_tree::getItems($pid, $offset, $this->Tree->default_segment)])
-		);
+				));
 	}
 
 	private function getHTMLExportCsvMessage(){

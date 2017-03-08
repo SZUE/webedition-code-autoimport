@@ -123,6 +123,7 @@ class we_workflow_frames extends we_modules_frame{
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)]);
 
 		return $this->getHTMLDocument(
 						we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
@@ -136,7 +137,7 @@ function submitForm(){
 	f.method = "post";
 	f.submit();
 }'
-						) . we_base_jsCmd::singleCmd('loadTree', ['clear' => !$pid, 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
+						)
 		);
 	}
 
@@ -151,8 +152,8 @@ function submitForm(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
-		$jsCmd = new we_base_jsCmd();
-		return $this->getHTMLDocument($this->View->getProperties($jsCmd), $this->View->getJSProperty() . $jsCmd->getCmds());
+
+		return $this->getHTMLDocument($this->View->getProperties($this->jsCmd), $this->View->getJSProperty());
 	}
 
 }

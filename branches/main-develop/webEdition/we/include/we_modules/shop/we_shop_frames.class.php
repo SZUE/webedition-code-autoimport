@@ -499,7 +499,8 @@ class we_shop_frames extends we_modules_frame{
 			$weShopStatusMails->save();
 
 			//	Close window when finished
-			return we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('close'), we_html_element::htmlBody());
+			$this->jsCmd->addCmd('close');
+			return we_html_tools::getHtmlTop('', '', '',$this->jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 	}
 
@@ -687,8 +688,9 @@ class we_shop_frames extends we_modules_frame{
 						'pref_name' => 'payment_details',
 			]));
 
+			$this->jsCmd->addCmd('close');
 			//	Close window when finished
-			return we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('close'), we_html_element::htmlBody());
+			return we_html_tools::getHtmlTop('', '', '', $this->jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 	}
 
@@ -1000,15 +1002,14 @@ class we_shop_frames extends we_modules_frame{
 			['html' => $formVat,],
 		];
 
-		$jscmd = new we_base_jsCmd();
 		if(isset($jsMessage)){
-			$jscmd->addMsg($jsMessage, $jsMessageType);
+			$this->jsCmd->addMsg($jsMessage, $jsMessageType);
 			if($saveSuccess && $onsaveClose){
-				$jscmd->addCmd('close');
+				$this->jsCmd->addCmd('close');
 			}
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', $jscmd->getCmds() .
+		return we_html_tools::getHtmlTop('', '', '', $this->jsCmd->getCmds() .
 						we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody([
 							'class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));
@@ -1288,12 +1289,11 @@ class we_shop_frames extends we_modules_frame{
 			$catsTableHtml = $catsDirTableHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
 		}
 
-		$jscmd = new we_base_jsCmd();
 		if(isset($jsMessage)){
-			$jscmd->addMsg($jsMessage, $jsMessageType);
+			$this->jsCmd->addMsg($jsMessage, $jsMessageType);
 		}
 		if($saveSuccess && $onsaveClose){
-			$jscmd->addCmd('close');
+			$this->jsCmd->addCmd('close');
 		}
 
 		$parts = [
@@ -1330,7 +1330,7 @@ class we_shop_frames extends we_modules_frame{
 			//'html' => $debug_output
 		]];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds(), we_html_element::htmlBody([
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $this->jsCmd->getCmds(), we_html_element::htmlBody([
 							'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
 								we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(

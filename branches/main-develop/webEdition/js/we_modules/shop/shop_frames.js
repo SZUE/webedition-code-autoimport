@@ -25,11 +25,11 @@
  */
 'use strict';
 
-const TAB_ADMIN1 = 0;
-const TAB_ADMIN2 = 1;
-const TAB_ADMIN3 = 2;
-const TAB_OVERVIEW = 0;
-const TAB_ORDERLIST = 1;
+var TAB_ADMIN1 = 0,
+				TAB_ADMIN2 = 1,
+				TAB_ADMIN3 = 2,
+				TAB_OVERVIEW = 0,
+				TAB_ORDERLIST = 1;
 
 var shp = WE().util.getDynamicVar(document, 'loadVarShop', 'data-shop');
 
