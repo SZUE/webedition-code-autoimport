@@ -286,6 +286,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 				'3'=>'Passwort aus Datenbank und Anmeldedialog speichern (Password, _Password)',
 		),),
 		'userPassRegex'=>array(
+			'desc'=>'Textuelle Beschreibung der RegEx',
 			'title'=>'RegEx zur Überprüfung des Benutzerpasswortes',
 	),),
 	'seem'=>'SEE-Mode',

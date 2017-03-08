@@ -286,6 +286,7 @@ The difference between symmetric encryption and hash is, that it is possible to 
 				'3'=>'save password from both database and login (Password, _Password)',
 		),),
 		'userPassRegex'=>array(
+			'desc'=>'Textual representation of the regex',
 			'title'=>'RegEx for user password validation',
 	),),
 	'seem'=>'seeModus',
