@@ -911,6 +911,7 @@ var weclassNames_tinyMce = [' . $this->cssClassesJS . '];
 
 //FIXME: if possible change this to an array/object element!
 var tinyMceConfObject__' . $this->fieldName_clean . ' = {
+	weRefactured: false,
 	doctype: "<!DOCTYPE html>",
 	fix_list_elements:true,
 	wePluginClasses : {
