@@ -43,6 +43,7 @@ WE().layout.we_tinyMCE = {
 };
 
 function TinyMceConfObject(args) {
+	this.weRefactured = true;
 	this.weEditorType = args.weEditorType;
 	this.weIsFrontend = args.weIsFrontend;
 	this.weName = args.weName;
