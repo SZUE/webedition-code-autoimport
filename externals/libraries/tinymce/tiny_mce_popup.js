@@ -310,7 +310,6 @@ tinyMCEPopup.resizeToInnerSize = function () {
 		elem.style.marginRight = 0;
 	}
 
-	var a = this;
 	setTimeout(function () {
 		if (a.dom) {
 			var b = a.dom.getViewPort(window), pw;
@@ -326,7 +325,15 @@ tinyMCEPopup.resizeToInnerSize = function () {
 	//replace buttons
 	if (top.isWeDialog === undefined) {
 		var btn, tmp;
-		var g_l = WE().consts.g_l.tinyMceTranslationObject[a.editor.getParam("language", "")].we.dialog_btns;
+
+		var g_l;
+
+		if(a.editor.getParam('weRefactured', '')){
+			g_l = WE().consts.g_l.tinyMceTranslationObject[a.editor.getParam("language", "")].we.dialog_btns;
+		} else {
+			g_l = a.editor.getParam('wePopupGl', '');
+		}
+
 		var buttonsDiv = document.createElement("div");
 		buttonsDiv.style.float = 'right';
 
@@ -373,9 +380,36 @@ tinyMCEPopup.resizeToInnerSize = function () {
 		}
 		try {
 			document.getElementsByClassName('mceActionPanel')[0].appendChild(buttonsDiv);
-		} catch (e) {
+		} catch (e) {}
+
+		if(!a.editor.getParam('weRefactured', '')){
+			//tinyMCEPopup.onclose does not work, so we set attribute onbeforeunload (does not work in Opera)
+			if ((a.dom.getAttrib(document.body, "id") === "table" || a.dom.getAttrib(document.body, "id") === "styleprops"
+							|| a.dom.getAttrib(document.body, "id") === "tablecell" || a.dom.getAttrib(document.body, "id") === "tablerow")
+							&& top.opener !== "undefined") {
+				a.dom.setAttrib(document.body, "onbeforeunload", "top.opener.tinyMCECallRegisterDialog({},'unregisterSecondaryDialog')");
+			}
 		}
 	}
+};
+
+// tinyMCEPopup.onclose does not work and onbeforeunload does not work on Opera, so we overwrite tinyMCEPopup.close
+tinyMCEPopup.tmpClose = tinyMCEPopup.close;
+tinyMCEPopup.close = function () {
+	var a = this;
+
+	if(!a.editor.getParam('weRefactured', '')){
+		var action = "unregisterSecondaryDialog";
+		try {
+			var action = t.document.body.id === "weFullscreenDialog" ? "unregisterDialog" : action;
+		} catch (err) {
+		}
+		try {
+			top.opener.tinyMCECallRegisterDialog({}, action);
+		} catch (err) {
+		}
+	}
+	tinyMCEPopup.tmpClose();
 };
 
 tinyMCEPopup.init();
@@ -385,52 +419,73 @@ tinyMCEPopup.onInit.add(function () {
 	var t = this;
 	var id = '';
 
-	window.addEventListener('unload', tinyMCEPopup.doUnregisterDialog, false);
+	if(t.opener.tinymce.activeEditor.getParam('weRefactured', '')){
+		window.addEventListener('unload', tinyMCEPopup.doUnregisterDialog, false);
 
-	try {
-		id = t.document.body.id ? t.document.body.id : '';
-	} catch (err) {
-	}
+		try {
+			id = t.document.body.id ? t.document.body.id : '';
+		} catch (err) {
+		}
 
-	var action = "register";
-	var dialogType = 'dialog';
-	switch (id) {
-		case("weDocSelecterInt"):
-		case("colorpicker"):
-			dialogType = 'secondaryDialog';
-			break;
-		/*
-		case("weFullscreenDialog"):
-			dialogType = 'dialog';
-			break;
-		*/
-		default:
-			dialogType = 'dialog';
-			action = "register";
-	}
-	
-	tinyMCEPopup.weDialogType = dialogType;
-	tinyMCEPopup.weEditor = tinyMCEPopup.editor;
+		var action = "register";
+		var dialogType = 'dialog';
+		switch (id) {
+			case("weDocSelecterInt"):
+			case("colorpicker"):
+				dialogType = 'secondaryDialog';
+				break;
+			/*
+			case("weFullscreenDialog"):
+				dialogType = 'dialog';
+				break;
+			*/
+			default:
+				dialogType = 'dialog';
+				action = "register";
+		}
 
-	/*
-	 try{
-	 action = t.weSelectorWindow ? "registerFileSelector" : action;
-	 } catch(err){}
+		tinyMCEPopup.weDialogType = dialogType;
+		tinyMCEPopup.weEditor = tinyMCEPopup.editor;
 
-	 if(action == "registerFileSelector" && typeof(top.opener.isWeDialog) != "undefined"){
-	 try{
-	 top.opener.top.opener.tinyMCECallRegisterDialog(t,"registerSecondaryDialog");
-	 } catch(err){}
-	 return
-	 }
-	 */
-	try {
-		WE().layout.we_tinyMCE.functions.registerDialog(tinyMCEPopup.weEditor, t, action, dialogType);
+		try {
+			WE().layout.we_tinyMCE.functions.registerDialog(tinyMCEPopup.weEditor, t, action, dialogType);
+			return;
+		} catch (err) {
+		}
+
 		return;
-	} catch (err) {
-	}
+	} else {
 
-	return;
+		try {
+			id = t.document.body.id ? t.document.body.id : (t.isFullScreen ? 'weFullscreenDialog' : '');
+		} catch (err) {
+		}
+
+		var action = "registerDialog";
+		switch (id) {
+			case("weDocSelecterInt"):
+				// no break
+			case("colorpicker"):
+				action = "registerSecondaryDialog";
+				break;
+			case("weFullscreenDialog"):
+				action = "registerFullscreenDialog";
+				break;
+			case("weDialogInnerFrame"):
+				action = "skip";
+				break;
+			default:
+				action = "registerDialog";
+		}
+
+		try {
+			top.opener.tinyMCECallRegisterDialog(t, action);
+			return;
+		} catch (err) {
+		}
+
+		return;
+	}
 });
 
 tinyMCEPopup.doUnregisterDialog = function(e){
