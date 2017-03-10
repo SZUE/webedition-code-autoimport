@@ -32,6 +32,7 @@
  */
 
 abstract class we_autoloader{
+
 	private static $domains = [
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
@@ -166,6 +167,9 @@ abstract class we_autoloader{
 			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
 		],
+		WEBEDITION_DIR . 'liveUpdate/classes' => [
+			'liveUpdateFrames' => 'liveUpdateFrames.class.php'
+		]
 	];
 
 	public static function loadZend($class_name){
@@ -217,7 +221,7 @@ abstract class we_autoloader{
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				$path = (substr($path, 0, 1) === '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
+				$path = (substr($path, 0, 1) === '/' ? $_SERVER['DOCUMENT_ROOT'] . $path . '/' : WE_INCLUDES_PATH . $path . '/');
 				include_once($path . $array[$class_name]);
 				return true;
 			}
