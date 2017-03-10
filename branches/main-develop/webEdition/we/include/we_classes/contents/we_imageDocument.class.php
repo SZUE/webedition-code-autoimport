@@ -70,7 +70,7 @@ class we_imageDocument extends we_binaryDocument{
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		//if focus changed, rebuild thumbs
 		if($this->ID && ($focus = $this->getElement('focus'))){
-			$oldFocus = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DocumentTable="tblFile" AND l.DID=' . $this->ID . ' AND l.nHash=x\'' . md5('focus') . '\'');
+			$oldFocus = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="tblFile" AND c.DID=' . $this->ID . ' AND c.nHash=x\'' . md5('focus') . '\'');
 			$docChanged |= ($focus == '[0,0]' && !$oldFocus ? false : ($oldFocus != $focus));
 		}
 		if(parent::we_save($resave, $skipHook)){

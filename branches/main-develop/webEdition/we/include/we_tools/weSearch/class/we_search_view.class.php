@@ -724,7 +724,7 @@ top.content.hot=false;');
 					$tagName = $defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($result[$f]["docID"])){
-						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+						$DB_WE->query('SELECT a.ID,c.Dat FROM ' . FILE_TABLE . ' f  LEFT JOIN ' . CONTENT_TABLE . " c ON (c.DID=f.ID) WHERE c.DID=" . intval($result[$f]["docID"]) . ' AND c.nHash=x\'' . md5($tagName) . '\' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$tagName] = '';
 						while($DB_WE->next_record()){
 							$metafields[$tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);

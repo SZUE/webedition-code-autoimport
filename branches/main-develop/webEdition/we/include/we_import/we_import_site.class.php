@@ -136,7 +136,7 @@ class we_import_site{
 	 * @return	array
 	 */
 	private static function _getFieldsFromTemplate($tid){
-		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($tid) . ' AND l.nHash=x\'' . md5("completeData") . '\'');
+		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . intval($tid) . ' AND c.nHash=x\'' . md5("completeData") . '\'');
 		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$records = $regs = [];
@@ -1019,7 +1019,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// check if there is allready a template with the same content
 
 
-		$newTemplateID = f('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE c.Dat="' . $GLOBALS['DB_WE']->escape($templateCode) . '" AND l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
+		$newTemplateID = f('SELECT c.DID FROM ' . CONTENT_TABLE . ' c ON WHERE c.Dat="' . $GLOBALS['DB_WE']->escape($templateCode) . '" AND c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" LIMIT 1');
 
 		if(!$newTemplateID){
 			// create Template

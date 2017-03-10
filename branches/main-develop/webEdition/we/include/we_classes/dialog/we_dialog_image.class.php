@@ -209,7 +209,7 @@ class we_dialog_image extends we_dialog_base{
 						$align = $preserveData ? $align : $imgObj->getElement('align');
 						$border = $preserveData ? $border : $imgObj->getElement('border');
 						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement('longdescid', 'bdid') ? (id_to_path($imgObj->getElement('longdescid', 'bdid')) . '?id=' . $imgObj->getElement('longdescid', 'bdid')) : $longdesc);
-						$alt = $preserveData ? $alt : f('SELECT c.Dat as Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5("alt") . '\'', '', $this->db);
+						$alt = $preserveData ? $alt : f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND c.DID=' . intval($fileID) . ' AND c.nHash=x\'' . md5("alt") . '\'', '', $this->db);
 					}
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
 					break;

@@ -248,7 +248,7 @@ class we_search_search extends we_search_base{
 			switch(addTblPrefix($result[$k]['docTable'])){
 				case FILE_TABLE:
 					if($result[$k]['Published'] >= $result[$k]['ModDate'] && $result[$k]['Published'] != 0){
-						$result[$k]['Description'] = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($result[$k]["docID"]) . ' AND l.nHash=x\'' . md5('Description') . '\' AND l.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
+						$result[$k]['Description'] = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($result[$k]["docID"]) . ' AND c.nHash=x\'' . md5('Description') . '\' AND c.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
 						break;
 					}
 					$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($result[$k]["docID"]) . ' AND docTable="tblFile" AND Active = 1', '', $DB_WE);
@@ -458,7 +458,7 @@ class we_search_search extends we_search_base{
 			}
 		}*/
 
-		return ' (WETABLE.ID IN (SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5("Title") . '\' AND c.Dat LIKE "%' . $db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
+		return ' (WETABLE.ID IN (SELECT c.DID FROM ' . CONTENT_TABLE . ' c WHERE c.nHash=x\'' . md5("Title") . '\' AND c.Dat LIKE "%' . $db2->escape(trim($keyword)) . '%" AND c.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
 	}
 
 	function searchCategory($keyword, $table){
@@ -612,7 +612,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 		$n = array_map('md5', $names);
-		$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND (l.Name IN (x\'' . implode('\',x\'', $n) . '\') AND c.Dat LIKE "%' . $db->escape($keyword) . '%")');
+		$db->query('SELECT c.DID FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND (c.Name IN (x\'' . implode('\',x\'', $n) . '\') AND c.Dat LIKE "%' . $db->escape($keyword) . '%")');
 		$IDs = $db->getAll(true);
 
 		return $IDs ? 'WETABLE.ID IN (' . implode(',', $IDs) . ')' : '0';
@@ -656,7 +656,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5($searchField) . '\' ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$db->query('SELECT c.DID FROM ' . CONTENT_TABLE . ' c WHERE c.nHash=x\'' . md5($searchField) . '\' ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$IDs = $db->getAll(true);
 
 		return $IDs ? 'WETABLE.ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : ' 0 ';
@@ -774,7 +774,7 @@ class we_search_search extends we_search_base{
 		switch($table){
 			case FILE_TABLE:
 				$ws = we_selector_file::getWsQuery(FILE_TABLE, false);
-				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) JOIN ' . FILE_TABLE . ' f ON (l.DID=f.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash!=x\'' . md5("completeData") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(FILE_TABLE)) . '"' . $ws);
+				$db->query('SELECT c.DID FROM ' . CONTENT_TABLE . ' c JOIN ' . FILE_TABLE . ' f ON (c.DID=f.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND c.nHash!=x\'' . md5("completeData") . '\' AND c.DocumentTable="' . $db->escape(stripTblPrefix(FILE_TABLE)) . '"' . $ws);
 				$contents = $db->getAll(true);
 
 				$db->query('SELECT t.DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' t JOIN ' . FILE_TABLE . ' f ON (t.DocumentID=f.ID) WHERE t.DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND t.docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1' . $ws);
@@ -782,7 +782,7 @@ class we_search_search extends we_search_base{
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case TEMPLATES_TABLE:
-				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash=x\'' . md5("data") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
+				$db->query('SELECT c.DID FROM ' . CONTENT_TABLE . ' c WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND c.nHash=x\'' . md5("data") . '\' AND c.DocumentTable="' . $db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
 				$contents = $db->getAll(true);
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
@@ -863,8 +863,8 @@ class we_search_search extends we_search_base{
 		$useState = intval($useState);
 		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = [];
 
-		$fields = $holdAllLinks ? 'fl.ID,fl.DocumentTable,fl.remObj,fl.isTemp,l.Name AS element' : 'DISTINCT fl.remObj';
-		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' fl ' . ($holdAllLinks ? ' LEFT JOIN ' . LINK_TABLE . ' l ON l.nHash=fl.nHash AND l.DocumentTable=fl.DocumentTable AND l.DID=fl.remObj' : '') . ' WHERE fl.type="media" AND fl.remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND fl.remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND fl.position=0');
+		$fields = $holdAllLinks ? 'fl.ID,fl.DocumentTable,fl.remObj,fl.isTemp,c.Name AS element' : 'DISTINCT fl.remObj';
+		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' fl ' . ($holdAllLinks ? ' LEFT JOIN ' . CONTENT_TABLE . ' c ON c.nHash=fl.nHash AND c.DocumentTable=fl.DocumentTable AND c.DID=fl.remObj' : '') . ' WHERE fl.type="media" AND fl.remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND fl.remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND fl.position=0');
 
 		if($holdAllLinks){
 			$types = [FILE_TABLE => g_l('global', '[documents]'),
@@ -1059,9 +1059,9 @@ class we_search_search extends we_search_base{
 				$this->db->query('INSERT INTO ' . SEARCHRESULT_TABLE . ' (UID,docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ' . $_SESSION['user']['ID'] . ',ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . $where);
 
 				//first check published documents
-				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' sr JOIN `' . LINK_TABLE . '` l ON (sr.docID=l.DID AND sr.docTable=l.DocumentTable) JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID= l.DID') .
+				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' sr JOIN ' . CONTENT_TABLE . ' c ON (sr.docID=c.DID AND sr.docTable=c.DocumentTable) ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID= c.DID') .
 						' SET sr.SiteTitle=c.Dat' .
-						' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ' AND ' . $where));
+						' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND c.nHash=x\'' . md5("Title") . '\' AND c.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND c.DID IN ' . $tmpTableWhere : ' AND ' . $where));
 
 				//check unpublished documents
 				$titles = [];
@@ -1109,7 +1109,7 @@ class we_search_search extends we_search_base{
 		if(!f('SELECT 1 FROM ' . SEARCHRESULT_TABLE . ' WHERE UID=' . $_SESSION['user']['ID'] . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '"')){
 			return;
 		}
-		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN ' . SEARCHRESULT_TABLE . ' t ON t.docID=l.DID WHERE t.UID=' . $_SESSION['user']['ID'] . ' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.nHash=x\'' . md5("title") . '\' AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$this->db->query('SELECT c.DID,c.Dat FROM ' . CONTENT_TABLE . ' c ON JOIN ' . SEARCHRESULT_TABLE . ' t ON t.docID=c.DID WHERE t.UID=' . $_SESSION['user']['ID'] . ' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '" AND c.nHash=x\'' . md5("title") . '\' AND c.Type="attrib" AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$titles = $this->db->getAll();
 		if(is_array($titles) && $titles){
 			foreach($titles as $k => $v){
@@ -1119,7 +1119,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN ' . SEARCHRESULT_TABLE . ' t ON t.docID=l.DID WHERE t.UID=' . $_SESSION['user']['ID'] . ' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND l.nHash=x\'' . md5("alt") . '\' AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$this->db->query('SELECT c.DID,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . SEARCHRESULT_TABLE . ' t ON t.docID=c.DID WHERE t.UID=' . $_SESSION['user']['ID'] . ' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND c.nHash=x\'' . md5("alt") . '\' AND c.Type="attrib" AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$alts = $this->db->getAll();
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
@@ -1131,7 +1131,7 @@ class we_search_search extends we_search_base{
 
 		/*
 		  $startTime = microtime(true);
-		  $this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN '.SEARCHRESULT_TABLE.' t ON t.docID=l.DID WHERE t.UID=' . $_SESSION['user']['ID'] .' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND l.nHash=x\''.md5("filesize").'\' AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		  $this->db->query('SELECT c.DID, c.Dat FROM ' . CONTENT_TABLE . ' c JOIN '.SEARCHRESULT_TABLE.' t ON t.docID=l.DID WHERE t.UID=' . $_SESSION['user']['ID'] .' AND t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND l.nHash=x\''.md5("filesize").'\' AND c.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		  $filesizes = $this->db->getAll();
 		  if(is_array($filesizes) && $filesizes){
 		  foreach($filesizes as $v){

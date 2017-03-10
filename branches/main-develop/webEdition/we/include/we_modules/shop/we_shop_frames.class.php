@@ -60,7 +60,7 @@ class we_shop_frames extends we_modules_frame{
 		$resultO = array_shift($fe);
 
 // wether the resultset ist empty?
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
+		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1', '', $this->db);
 
 		$c = 0;
 		$iconBarTable = new we_html_table(['class' => 'iconBar'], 1, 4);
@@ -142,7 +142,7 @@ class we_shop_frames extends we_modules_frame{
 		$resultO = array_shift($fe);
 
 // wether the resultset ist empty?
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '" LIMIT 1', '', $DB_WE);
+		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1', '', $DB_WE);
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_showMod.php?mod=shop&home=1&pnt=edbody'; //same as in getHTMLRight()
@@ -222,7 +222,7 @@ class we_shop_frames extends we_modules_frame{
 		$resultO = array_shift($fe);
 
 // wether the resultset ist empty?
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
+		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1', '', $this->db);
 
 // grep the last element from the year-set, wich is the current year
 		$yearTrans = f('SELECT DATE_FORMAT(MAX(DateOrder),"%Y") AS DateOrd FROM ' . SHOP_ORDER_TABLE, '', $this->db);
@@ -500,7 +500,7 @@ class we_shop_frames extends we_modules_frame{
 
 			//	Close window when finished
 			$this->jsCmd->addCmd('close');
-			return we_html_tools::getHtmlTop('', '', '',$this->jsCmd->getCmds(), we_html_element::htmlBody());
+			return we_html_tools::getHtmlTop('', '', '', $this->jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 	}
 

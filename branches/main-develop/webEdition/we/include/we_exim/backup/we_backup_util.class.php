@@ -125,8 +125,6 @@ abstract class we_backup_util{
 				return g_l('backup', '[' . $prefix . '_content]');
 			case FILE_TABLE:
 				return g_l('backup', '[' . $prefix . '_files]');
-			case LINK_TABLE:
-				return g_l('backup', '[' . $prefix . '_links]');
 			case TEMPLATES_TABLE:
 				return g_l('backup', '[' . $prefix . '_templates]');
 			case TEMPORARY_DOC_TABLE:

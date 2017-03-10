@@ -54,7 +54,7 @@ class we_shop_view extends we_modules_view{
 		$resultO = array_shift($fe);
 
 		// whether the resultset is empty?
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
+		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1', '', $this->db);
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view.js', '', ['id' => 'loadVarShop_view', 'data-viewData' => setDynamicVar([
 						'isDocument' => intval($resultD),
@@ -618,10 +618,8 @@ WHERE o.ID=' . $bid);
 				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
 				// first get all shop documents
-				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND l.DocumentTable!="tblTemplates" ' .
-						(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
-								'')
+				$this->db->query('SELECT c.dat AS shopTitle, c.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . FILE_TABLE . ' f ON f.ID=c.DID WHERE c.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND c.DocumentTable!="tblTemplates" ' .
+						(we_base_request::_(we_base_request::BOOL, 'searchArticle') ? ' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' : '')
 				);
 
 				while($this->db->next_record()){
@@ -1103,7 +1101,7 @@ WHERE o.ID=' . $bid);
 
 		$resultO = array_shift($fe);
 
-		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');
+		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1');
 
 
 		$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>' .

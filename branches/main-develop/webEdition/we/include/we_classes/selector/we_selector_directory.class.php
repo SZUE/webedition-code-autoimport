@@ -464,7 +464,7 @@ class we_selector_directory extends we_selector_file{
 							}
 						}
 					} else {
-						$query = $this->db->query('SELECT l.Name,c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
+						$query = $this->db->query('SELECT c.Name,c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($this->id) . ' AND c.DocumentTable!="tblTemplates"');
 						$metainfos = $this->db->getAllFirst(false);
 					}
 			}

@@ -38,12 +38,12 @@ abstract class we_navigation_dynList{
 		}
 		$sort = empty($order) ? [] : $order[0];
 
-		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' .
-			($sort ? ' JOIN ' . LINK_TABLE . ' ls ON (ls.DID=f.ID AND ls.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' cs ON (cs.ID=ls.CID)' : ''
-			) . 'WHERE (f.IsFolder=0 AND f.Published>0) AND l.nHash=x\'' . md5($field) . '\' AND f.ParentID=' . $dirID .
+		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . CONTENT_TABLE . ' c ON (f.ID=c.DID AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") ' .
+			($sort ? ' JOIN ' . CONTENT_TABLE . ' cs ON (cs.DID=f.ID AND cs.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '")' : ''
+			) . 'WHERE (f.IsFolder=0 AND f.Published>0) AND c.nHash=x\'' . md5($field) . '\' AND f.ParentID=' . $dirID .
 			($doctype ? ' AND f.DocType=' . $db->escape($doctype) : '') .
 			($cats ? (' AND (' . implode(" $catlogic ", $cats) . ')') : '') .
-			($sort ? (' AND ls.nHash=x\'' . md5($sort['field']) . '\' ORDER BY IFNULL(cs.Dat,cs.BDID) ' . $sort['order']) : '') .
+			($sort ? (' AND cs.nHash=x\'' . md5($sort['field']) . '\' ORDER BY IFNULL(cs.Dat,cs.BDID) ' . $sort['order']) : '') .
 			'  LIMIT ' . $count);
 
 		return $db->getAll();

@@ -141,7 +141,7 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET c.BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
+				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c SET c.BDID=0 WHERE c.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id));
 
 				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
@@ -283,11 +283,11 @@ abstract class we_base_delete{
 	public static function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
 		$DB_WE = $DB_WE ?: new DB_WE();
 
-		if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
+		if(!f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
 			return true;
 		}
 
-		return $DB_WE->query('DELETE l,c FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+		return $DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 	}
 
 	private static function getHasPerm($idInfos, $table){

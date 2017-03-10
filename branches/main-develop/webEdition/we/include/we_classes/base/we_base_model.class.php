@@ -101,13 +101,10 @@ class we_base_model{
 			$this->isnew = true;
 		}
 		switch($this->table){
-			case LINK_TABLE:
+			case CONTENT_TABLE:
 				if($this->nHash){
 					$this->nHash = md5($this->Name, true);
 				}
-				break;
-			case CONTENT_TABLE:
-				$this->dHash = md5($this->Dat, true);
 				break;
 		}
 

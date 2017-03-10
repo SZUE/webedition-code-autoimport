@@ -40,14 +40,12 @@ class we_editor_unusedElements extends we_editor_base{
 			}
 
 			if($delS){
-				$db->query(
-						'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
+				$db->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
 				);
 			}
 			if($delB){
-				$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . LINK_TABLE . ' l WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
-				$db->query(
-						'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND SUBSTRING_INDEX(l.Name,"__",1) IN ("' . implode('","', $strs) . '")'
+				$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
+				$db->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND SUBSTRING_INDEX(c.Name,"__",1) IN ("' . implode('","', $strs) . '")'
 				);
 			}
 		}
@@ -90,10 +88,10 @@ class we_editor_unusedElements extends we_editor_base{
 			}
 		}
 
-		//$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
+		//$allFields = $db->getAllq('SELECT c.Type,c.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . CONTENT_TABLE . ' c ON WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND c.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY c.nHash');
 
 		if(!empty($relevantTags['normal']) || !empty($relevantTags['block'])){
-			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
+			$obsolete = $db->getAllq('SELECT c.Type,c.Name,HEX(c.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . CONTENT_TABLE . ' c ON WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND c.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(c.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY c.nHash ORDER BY c.Name');
 
 			foreach($obsolete as &$ob){
 				$bl = explode('blk_', $ob['Name'], 2);

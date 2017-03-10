@@ -189,7 +189,7 @@ class we_shop_Basket{
 			case we_shop_shop::DOCUMENT:
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-				$DB_WE->query('SELECT l.Name,IF(c.BDID>0,c.BDID,c.Dat) AS Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$DB_WE->query('SELECT c.Name,IF(c.BDID>0,c.BDID,c.Dat) AS Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$Record = $DB_WE->getAllFirst(false);
 
 				if($variant){

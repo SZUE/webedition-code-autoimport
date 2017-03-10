@@ -36,7 +36,7 @@ class we_helpers_scss extends \Leafo\ScssPhp\Compiler{
 		if(isset($this->importCache[$path])){
 			$tree = $this->importCache[$path];
 		} else {
-			$code = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.nHash=x\'' . md5('data') . '\' AND l.DocumentTable="tblFile" AND l.DID=' . intval($path));
+			$code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c ON WHERE c.Type="txt" AND c.nHash=x\'' . md5('data') . '\' AND c.DocumentTable="tblFile" AND c.DID=' . intval($path));
 			self::$includedFiles[] = $path;
 			$parser = new \Leafo\ScssPhp\Parser($fname, false);
 			$tree = $parser->parse($code);

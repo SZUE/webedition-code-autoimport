@@ -234,7 +234,7 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	public function getLogString($prefix = ''){
-		if($this->table == LINK_TABLE && empty($this->nHash)){
+		if($this->table == CONTENT_TABLE && empty($this->nHash)){
 			$this->nHash = md5($this->Name);
 		}
 		$id_val = '';

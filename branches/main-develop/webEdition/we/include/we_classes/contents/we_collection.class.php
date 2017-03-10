@@ -623,10 +623,11 @@ class we_collection extends we_root{
 		}
 
 		$itemsCsv = implode(',', array_keys($items));
-		$orCustomElement = ' OR (l.nHash=x\'' . md5('elemIMG') . '\' AND (c.Dat!="" OR c.BDID != 0) )';
 		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
-			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
-				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) OR (l.type="txt" AND l.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') ) ' . $orCustomElement . ')'
+			$this->DB_WE->query('SELECT
+	c.DID, c.Name, c.type, c.Dat, c.BDID FROM ' . CONTENT_TABLE . ' c
+WHERE
+	c.DocumentTable="tblFile" AND c.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((c.type="attrib" AND c.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) OR (c.type="txt" AND c.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') )  OR (c.nHash=x\'' . md5('elemIMG') . '\' AND (c.Dat!="" OR c.BDID != 0) ))'
 			);
 
 			while($this->DB_WE->next_record()){

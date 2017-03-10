@@ -453,7 +453,7 @@ abstract class we_export_functions{
 		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$DB_WE = new DB_WE();
 
-			$template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $DB_WE);
+			$template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . intval($we_doc->TemplateID) . ' AND c.nHash=x\'' . md5("completeData") . '\'', '', $DB_WE);
 			$tag_parser = new we_tag_tagParser($template_code);
 			$tags = $tag_parser->getAllTags();
 			$regs = $records = [];

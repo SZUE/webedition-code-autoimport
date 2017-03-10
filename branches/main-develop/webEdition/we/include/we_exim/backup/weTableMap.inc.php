@@ -24,7 +24,6 @@
 return [
 	'core' => [
 		strtolower(stripTblPrefix(FILE_TABLE)) => FILE_TABLE,
-		strtolower(stripTblPrefix(LINK_TABLE)) => LINK_TABLE,
 		strtolower(stripTblPrefix(LANGLINK_TABLE)) => LANGLINK_TABLE,
 		strtolower(stripTblPrefix(TEMPLATES_TABLE)) => TEMPLATES_TABLE,
 		strtolower(stripTblPrefix(CONTENT_TABLE)) => CONTENT_TABLE,

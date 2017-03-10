@@ -145,7 +145,7 @@ class we_import_wizard{
 			$WE_PB = new we_progressBar(0, 200);
 			$WE_PB->addText($text = g_l('import', '[import_progress]'), we_progressBar::TOP, "pb1");
 			$pb = we_progressBar::getJSCode() . we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
-			
+
 			// make jsCmd => we need a minimal we_cmd on this frame
 			$jsCmd->addCmd('cycle');
 			$jsCmd->addCmd('we_import', 1, '-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : ''), false);
@@ -1389,7 +1389,7 @@ class we_import_wizard{
 		$records = $dateFields = [];
 
 		if($v['import_type'] === 'documents'){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . intval($v['we_TemplateID']) . ' AND c.nHash=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 			$regs = [];
@@ -1959,7 +1959,7 @@ class we_import_wizard{
 		$records = $dateFields = [];
 
 		if(we_base_request::_(we_base_request::STRING, 'v', '', "import_type") === "documents"){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND c.nHash=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();

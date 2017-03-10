@@ -63,8 +63,7 @@ function we_tag_path(array $attribs){
 	f.ID,f.Path,f.Text,c.Dat
 FROM ' .
 				FILE_TABLE . ' f LEFT JOIN ' .
-				LINK_TABLE . ' l ON (l.DID=f.ID AND l.DocumentTable="tblFile" AND l.nHash=x\'' . $mdf . '\') LEFT JOIN ' .
-				CONTENT_TABLE . ' c ON c.ID=l.CID
+				CONTENT_TABLE . ' c ON (c.DID=f.ID AND c.DocumentTable="tblFile" AND c.nHash=x\'' . $mdf . '\')
 WHERE
 	f.ParentID=' . intval($pID) . ' AND
 	f.IsFolder=0 AND
@@ -75,14 +74,11 @@ WHERE
 
 		if($fileID){
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT
-	c.Dat FROM ' .
-					LINK_TABLE . ' l JOIN ' .
-					CONTENT_TABLE . ' c ON c.ID=l.CID
+				$show = f('SELECT	c.Dat FROM ' .CONTENT_TABLE . ' c
 WHERE
-	l.DocumentTable="tblFile" AND
-	l.DID=' . intval($fileID) . ' AND
-	l.nHash=x\'' . $mf . '\'');
+	c.DocumentTable="tblFile" AND
+	c.DID=' . intval($fileID) . ' AND
+	c.nHash=x\'' . $mf . '\'');
 			}
 			$show = $show ?: $fileName;
 			$link_pre = ($fileID != $doc->ID ? '<a href="' . $filePath . '"' . $class . $style . '>' : '');
@@ -115,8 +111,7 @@ WHERE
 	c.Dat
 FROM ' .
 			FILE_TABLE . ' f LEFT JOIN ' .
-			LINK_TABLE . ' l ON (l.DID=f.ID AND l.DocumentTable="tblFile" AND l.nHash=x\'' . $mf . '\') LEFT JOIN ' .
-			CONTENT_TABLE . ' c ON c.ID=l.CID
+			CONTENT_TABLE . ' c ON (c.DID=f.ID AND c.DocumentTable="tblFile" AND c.nHash=x\'' . $mf . '\')
 WHERE
 	f.ParentID=' . $realPID . ' AND
 	f.IsFolder=0 AND

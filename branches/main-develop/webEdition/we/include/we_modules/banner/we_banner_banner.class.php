@@ -299,7 +299,7 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	private static function getImageInfos($fileID, we_database_base $db){
-		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
+		$db->query('SELECT c.Name, c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.Type="attrib" AND c.DID=' . intval($fileID));
 		return $db->getAllFirst(false);
 	}
 

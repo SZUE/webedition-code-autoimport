@@ -330,14 +330,15 @@ class we_exim_contentProvider{
 			foreach($elements_ids as $ck){
 				switch($object->ClassName){
 					case 'we_backup_tableAdv':
-						$contentObj = new we_element(false, $object->elements[$ck]);
+						$contentObj = new we_element($object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){
 							$contentObj->$okey = trim($ov);
 						}
 						break;
 
 					default:
-						$options = ['ClassName' => 'we_element',
+						$options = [
+							'ClassName' => 'we_element',
 							'Name' => $ck,
 							];
 
@@ -355,7 +356,7 @@ class we_exim_contentProvider{
 							$options['BDID'] = $object->elements[$ck]['bdid'];
 						}
 
-						$contentObj = new we_element(false, $options);
+						$contentObj = new we_element($options);
 				}
 
 				self::object2xml($contentObj, $file);
