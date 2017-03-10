@@ -800,6 +800,7 @@ liveUpdate/sqldumps/tblWebAdmin.sql
 liveUpdate/sqldumps/tblObjectLink.sql
 liveUpdate/sqldumps/tblNewsletterPrefs.sql
 liveUpdate/sqldumps/tblMsgSettings.sql
+liveUpdate/sqldumps/tblLink.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblAnzeigePrefs.sql
@@ -1224,3 +1225,4 @@ apps/toolfactory/hook/custom_hooks/dummy
 !cms
 !apps/toolfactory/service/views
 !apps/toolfactory/pattern
+

@@ -104,7 +104,7 @@ class we_selector_document extends we_selector_directory{
 
 		switch($this->table){
 			case FILE_TABLE:
-				$this->db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.nHash=x\'' . md5("Title") . '\'');
+				$this->db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f ' . CONTENT_TABLE . ' c ON (f.ID=c.DID) WHERE c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND c.nHash=x\'' . md5("Title") . '\'');
 				$this->titles = $this->db->getAllFirst(false);
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -318,7 +318,7 @@ class we_selector_document extends we_selector_directory{
 						$result['ContentType'] = we_base_ContentTypes::COLLECTION;
 						break;
 					case FILE_TABLE:
-						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
+						$this->db->query('SELECT l.Name, c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($this->id) . ' AND c.DocumentTable!="tblTemplates"');
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):

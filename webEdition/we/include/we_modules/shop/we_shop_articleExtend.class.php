@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function orderBy($a, $b){
 	static $ob = false;
 	if($ob === false){
@@ -32,18 +31,20 @@ function orderBy($a, $b){
 }
 
 abstract class we_shop_articleExtend{
+
 	private static $typeObj;
 	private static $typeDoc;
 	private static $orderBy;
 	private static $classid;
 	private static $actPage;
+
 	/*	 * ************ fuction for orders  ************** */
 
 	private static function getTitleLinkObj($text, $orderKey){
-		$href = WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
-				'&typ=' . self::$typeObj.
+		$href = WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend' .
+				'&typ=' . self::$typeObj .
 				'&orderBy=' . $orderKey .
-				'&ViewClass=' . self::$classid.
+				'&ViewClass=' . self::$classid .
 				'&actPage=' . self::$actPage .
 				( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
@@ -52,8 +53,8 @@ abstract class we_shop_articleExtend{
 
 	private static function getPagerLinkObj(){
 
-		return WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
-				'&typ=' . self::$typeObj.
+		return WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend' .
+				'&typ=' . self::$typeObj .
 				'&orderBy=' . self::$orderBy .
 				'&ViewClass=' . self::$classid .
 				'&actPage=' . self::$actPage .
@@ -62,7 +63,7 @@ abstract class we_shop_articleExtend{
 
 	private static function getTitleLinkDoc($text, $orderKey){
 
-		$href = WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
+		$href = WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend' .
 				'&typ=' . self::$typeDoc .
 				'&orderBy=' . $orderKey .
 				'&actPage=' . self::$actPage .
@@ -81,8 +82,8 @@ abstract class we_shop_articleExtend{
 	}
 
 	private static function getPagerLinkDoc(){
-		return WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend'.
-				'&typ=' .self::$typeDoc .
+		return WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend' .
+				'&typ=' . self::$typeDoc .
 				'&orderBy=' . self::$orderBy .
 				'&actPage=' . self::$actPage .
 				(we_base_request::_(we_base_request::BOOL, 'orderdesc') ? '&orderDesc=1' : '' );
@@ -99,7 +100,7 @@ abstract class we_shop_articleExtend{
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . WEBEDITION_DIR. 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend&typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
+		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_article_extend&typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
 
 		if($fe){
 			$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' WHERE ID IN (' . implode(',', $fe) . ')');
@@ -192,7 +193,7 @@ abstract class we_shop_articleExtend{
 
 					// :: then do the query for objects
 					$DB_WE->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,obx.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
-FROM ' . OBJECT_X_TABLE .self::$classid . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID
+FROM ' . OBJECT_X_TABLE . self::$classid . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID
 WHERE of.IsFolder=0
 ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 					// build the table
@@ -240,7 +241,7 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 				break;
 			case 'document': //start output doc
 				self::$orderBy = we_base_request::_(we_base_request::RAW, 'orderBy', 'sql');
-				$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
+				$entries = f('SELECT COUNT(Name) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\''); // Pager: determine the number of records;
 				$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the number of records;
 				$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
 				$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
@@ -248,7 +249,7 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 				if($entries){ // Pager: Number of records not empty?
 					$topInfo = ($entries ?: g_l('modules_shop', '[noRecord]'));
 					// :: then do the query for documents
-					$DB_WE->query('SELECT c.dat AS `sql`,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' ORDER BY dd'); // get the shop-documents from DB;
+					$DB_WE->query('SELECT c.dat AS `sql`,c.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod FROM ' . CONTENT_TABLE . ' c JOIN ' . FILE_TABLE . ' f ON f.ID=c.DID WHERE c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND c.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' ORDER BY dd'); // get the shop-documents from DB;
 					// for the articlelist, we need also all these article, so save them in array
 					$orderRows = $DB_WE->getAll();
 					// we need functionalitty to order these

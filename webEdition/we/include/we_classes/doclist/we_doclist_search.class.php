@@ -155,7 +155,7 @@ class we_doclist_search extends we_search_search{
 		foreach($result as $k => $v){
 			$result[$k]['Description'] = '';
 			if($result[$k]['Table'] == FILE_TABLE && $result[$k]['Published'] >= $result[$k]['ModDate'] && $result[$k]['Published'] != 0){
-				$result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($result[$k]['docID']) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
+				$result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . CONTENT_TABLE . ' c ON (f.ID=c.DID) WHERE f.ID=' . intval($result[$k]['docID']) . ' AND c.nHash=x\'' . md5("Description") . '\' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
 			} else {
 				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($result[$k]["docID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
 					$tempDoc = we_unserialize($obj);

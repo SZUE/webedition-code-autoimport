@@ -100,7 +100,7 @@ class we_textDocument extends we_document{
 		if($this->ContentType === we_base_ContentTypes::HTACCESS && $this->ParentID == 0){
 			//pretest new htaccess file
 			$doc = parent::i_getDocumentToSave();
-			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . $this->ID . ' AND DocumentTable="tblFile" AND l.nHash=x\'' . md5("data") . '\'', '', $this->DB_WE) : '');
+			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . $this->ID . ' AND c.DocumentTable="tblFile" AND c.nHash=x\'' . md5("data") . '\'', '', $this->DB_WE) : '');
 			$ok = we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $doc);
 			$st = '';
 			$data = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'triggerWEtasks.php', $st);

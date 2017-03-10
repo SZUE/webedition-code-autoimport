@@ -294,7 +294,6 @@ abstract class we_backup_cmd{
 			do{
 				$start = microtime(true);
 				switch($_SESSION['weS']['weBackupVars']['current_table']){
-					case LINK_TABLE:
 					case CONTENT_TABLE:
 					case NEWSLETTER_LOG_TABLE:
 					case HISTORY_TABLE:

@@ -493,7 +493,7 @@ class we_banner_view extends we_modules_view{
 	function formTagName(){
 
 		$tagnames = [];
-		$this->db->query('SELECT c.Dat AS templateCode, l.DID AS DID FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.Dat LIKE "%<we:banner %"');
+		$this->db->query('SELECT c.Dat AS templateCode, c.DID AS DID FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.Dat LIKE "%<we:banner %"');
 		$foo = [];
 		while($this->db->next_record()){
 			preg_match_all('|(<we:banner [^>]+>)|U', $this->db->f('templateCode'), $foo, PREG_SET_ORDER);

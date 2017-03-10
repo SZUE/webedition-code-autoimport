@@ -285,7 +285,7 @@ class we_thumbnail{
 			'Quality' => ''
 		];
 		if(!$foo['ID']){
-			t_e('thumbnail name `' . $thumbName . '` not found.');
+			t_e('thumbnail name "' . $thumbName . '" not found.');
 		}
 		$this->init($foo['ID'], $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $foo['Date'], $foo['Quality']);
 		return ($this->thumbID && $this->thumbName);
@@ -574,8 +574,8 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getImageData($getBinary = false, $onlyFocus = false){
-		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-			' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.nHash=x\'' . md5("focus") . '\'' : ''));
+		$this->db->query('SELECT c.Name,c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($this->imageID) .
+			' AND c.DocumentTable="tblFile"' . ($onlyFocus ? ' AND c.nHash=x\'' . md5("focus") . '\'' : ''));
 
 		while($this->db->next_record()){
 			switch($this->db->f('Name')){

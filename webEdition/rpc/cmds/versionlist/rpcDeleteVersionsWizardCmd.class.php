@@ -32,7 +32,7 @@ class rpcDeleteVersionsWizardCmd extends we_rpc_cmd{
 
 		$db = $GLOBALS['DB_WE'];
 
-		$db->query('DELETE FROM `' . VERSIONS_TABLE . '` WHERE ' . $_SESSION['weS']['versions']['deleteWizardWhere']);
+		$db->query('DELETE FROM ' . VERSIONS_TABLE . ' WHERE ' . $_SESSION['weS']['versions']['deleteWizardWhere']);
 
 		unset($_SESSION['weS']['versions']['deleteWizardWhere']);
 

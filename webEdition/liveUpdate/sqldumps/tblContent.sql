@@ -8,15 +8,27 @@
 /* query separator */
 ###UPDATEDROPCOL(IsBinary,###TBLPREFIX###tblContent)###
 /* query separator */
+###ONCOL(dHash,###TBLPREFIX###tblContent)UPDATE ###TBLPREFIX###tblContent SET BDID=Dat,Dat=NULL WHERE Dat!="" AND ID IN (SELECT CID FROM ###TBLPREFIX###tblLink WHERE DocumentTable='tblFile'  AND nHash IN (x'b435e227d5dd201e1768b2bcb2e0aa81',x'eaae26a6fb20ed3ef54fb23bfa0b1fcc',x'11b4278c7e5a79003db77272c1ed2cf5',x'5e8b6e54ab9f39e8df3a49d1fa478324',x'58b79779851d8d14bbd71d6bd2ad0cba',x'09d2a3e9b7efc29e9a998d7ae84cca87',x'b6b8646a49103a66f9d9e2aae212bdbe',x'fe40feec71672d515faa242b1cff2165',x'c6e9ec12d4d8b4e75e596aaf47772a3d'));
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblContent (
   ID int unsigned NOT NULL auto_increment,
+  DID int unsigned NOT NULL default '0',
+  `Type` enum('attrib','block','checkbox','collection','customer','date','formfield','href','img','input','LanguageDocName','link','linklist','object','txt','variant','variants','video') NOT NULL default 'txt',
+  `Name` varchar(255) NOT NULL default '',
+	nHash binary(16) NOT NULL,
+  DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
   BDID int unsigned NOT NULL default '0',
   Dat longtext default NULL,
-	dHash binary(16) NOT NULL,
   PRIMARY KEY (ID),
   KEY BDID (BDID),
-	KEY dHash(dHash)
+	KEY nHash(nHash,DocumentTable)
 ) ENGINE=MyISAM;
 
 /* query separator */
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblContent SET BDID=Dat,Dat=NULL,dHash=x'00000000000000000000000000000000' WHERE ID IN (SELECT CID FROM ###TBLPREFIX###tblLink WHERE DocumentTable='tblFile' AND nHash IN (x'b435e227d5dd201e1768b2bcb2e0aa81',x'eaae26a6fb20ed3ef54fb23bfa0b1fcc',x'11b4278c7e5a79003db77272c1ed2cf5',x'5e8b6e54ab9f39e8df3a49d1fa478324',x'58b79779851d8d14bbd71d6bd2ad0cba',x'09d2a3e9b7efc29e9a998d7ae84cca87',x'b6b8646a49103a66f9d9e2aae212bdbe',x'fe40feec71672d515faa242b1cff2165',x'c6e9ec12d4d8b4e75e596aaf47772a3d')) AND dHash!=x'00000000000000000000000000000000';
+###UPDATEDROPKEY(dHash,###TBLPREFIX###tblContent)###
+/* query separator */
+###UPDATEDROPCOL(dHash,###TBLPREFIX###tblContent)###
+
+/* query separator */
+###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblContent ADD UNIQUE KEY nHash(DID,DocumentTable,nHash);

@@ -622,7 +622,7 @@ we_templateInit();?>';
 				if(!empty($parse['id'])){
 					$id = intval($parse['id']);
 					if(!isset($codes[$id])){
-						$codes[$id] = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE DocumentTable="tblTemplates" AND nHash=x\'' . md5('completeData') . '\' AND l.DID=' . $id);
+						$codes[$id] = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="tblTemplates" AND c.nHash=x\'' . md5('completeData') . '\' AND c.DID=' . $id);
 					}
 					$code = str_replace($regs[0], $codes[$id], $code);
 				}

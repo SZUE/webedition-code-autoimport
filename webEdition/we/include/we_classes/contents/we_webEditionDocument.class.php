@@ -461,7 +461,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.nHash=x\'' . md5($completeCode ? 'completeData' : 'data') . '\'', '', $this->DB_WE);
+		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . intval($this->TemplateID) . ' AND c.nHash=x\'' . md5($completeCode ? 'completeData' : 'data') . '\'', '', $this->DB_WE);
 	}
 
 	protected function getFieldTypes($templateCode, $useTextarea = false){
@@ -1019,7 +1019,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if($this->InWebEdition){
-			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
+			//FIXME: check if we can add more for the like query e.g. type?
+			return ($this->hasVariants = (f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
 		$tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME);
 		if(is_array($tmp)){

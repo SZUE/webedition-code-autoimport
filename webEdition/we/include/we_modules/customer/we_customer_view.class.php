@@ -851,10 +851,8 @@ class we_customer_view extends we_modules_view{
 				$DB_WE->query('SELECT f.ID,f.Path,f.ContentType,f.Text,f.Published,f.ModDate,c1.Dat AS title,c2.Dat AS description' .
 					' FROM ' .
 					FILE_TABLE . ' f LEFT JOIN ' .
-					LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
-					CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
-					LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
-					CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
+					CONTENT_TABLE . ' c1 ON (c1.DID=f.ID AND c1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND c1.Name="Title") LEFT JOIN ' .
+					CONTENT_TABLE . ' c2 ON (c2.DID=f.ID AND c2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND c2.Name="Description") ' .
 					' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
 
 				if($DB_WE->num_rows()){

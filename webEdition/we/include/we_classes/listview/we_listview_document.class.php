@@ -142,8 +142,8 @@ class we_listview_document extends we_listview_base{
 					break;
 				default:
 					$cnt = count($this->joins);
-					$this->joins[] = ' JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=f.ID JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
-					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.nHash=x\'' . md5($ord) . '\'';
+					$this->joins[] = ' JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON (cc' . $cnt . '.DID=f.ID)';
+					$this->orderWhere[] = 'cc' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND cc' . $cnt . '.nHash=x\'' . md5($ord) . '\'';
 					if($this->search){
 						$order[] = 'ranking';
 					}
@@ -272,7 +272,7 @@ class we_listview_document extends we_listview_base{
 
 		$this->DB_WE->query(
 			'SELECT f.ID,f.WebUserID' . $extraSelect .
-			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
+			' FROM ' . FILE_TABLE . ' f JOIN ' . CONTENT_TABLE . ' c ON (f.ID=c.DID AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") ' . $joinstring .
 			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
 			' WHERE ' . $where . ' ' . $orderstring . $limit
 		);
@@ -302,7 +302,7 @@ class we_listview_document extends we_listview_base{
 		$this->DB_WE->query(
 			'SELECT f.ID,f.WebUserID' .
 			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
-			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
+			' FROM ' . FILE_TABLE . ' f JOIN ' . CONTENT_TABLE . ' c ON (f.ID=c.DID AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") ' .
 			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0)' : '') .
 			$joinstring .
 			' WHERE ' . $where . ' ' . $orderstring);
@@ -325,7 +325,7 @@ class we_listview_document extends we_listview_base{
 
 			if(!$this->calendar_struct['calendar'] || $fetch){
 				$id = $this->IDs[$count];
-				$this->DB_WE->query('SELECT l.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$this->DB_WE->query('SELECT c.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . CONTENT_TABLE . ' WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = array_merge($this->DB_WE->getAllFirst(false), getHash('SELECT
 	ID AS WE_ID,
 	ParentID AS WE_PARENTID,

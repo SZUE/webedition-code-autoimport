@@ -60,15 +60,19 @@ function we_tag_listdir(array $attribs){
 	$desc = weTag_getAttribute('desc', $attribs, false, we_base_request::BOOL);
 	$searchable = weTag_getAttribute('searchable', $attribs, false, we_base_request::BOOL);
 
-	$indexes = ' Text IN ("' . implode('","', $index) . '")';
+	$indexes = ' ';
 	$db = new DB_WE();
 
-	$db->query('SELECT ID,Text,IsFolder,Path,IF(IsFolder,(SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=f.ID AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') LIMIT 1),0) AS FolderIndex,
-(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.nHash=IF(f.IsFolder,x\'' . md5($dirfield) . '\',x\'' . md5($name) . '\')) AS name,
-' . ($sort ?
-			'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.nHash=x\'' . md5($sort) . '\')' :
-			'Text') . ' AS sort
-FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID) . ' ORDER BY ' . ($sort ? 'sort' : 'Text') . ($desc ? ' DESC' : ''));
+	$db->query('SELECT f.ID,f.Text,f.IsFolder,f.Path,IF(f.IsFolder,pI.ID,0) AS FolderIndex,
+c.Dat AS name,
+' . ($sort ? 'sc.Dat' : 'Text') . ' AS sort
+FROM ' .
+			FILE_TABLE . ' f JOIN ' .
+			CONTENT_TABLE . ' c ON (c.DID=f.ID AND c.nHash=IF(f.IsFolder,x\'' . md5($dirfield) . '\',x\'' . md5($name) . '\')) LEFT JOIN ' .
+			($sort ? CONTENT_TABLE . ' sc ON (sc.DID=f.ID AND sc.nHash=x\'' . md5($sort) . '\') LEFT JOIN ' : '') .
+			FILE_TABLE . ' pI ON (pI.ParentID=f.ID AND pI.IsFolder=0 AND pI.Text IN ("' . implode('","', $index) . '") AND (pI.Published>0 ' . ($searchable ? 'AND pI.IsSearchable=1' : '') . '))
+
+WHERE ((f.Published>0 ' . ($searchable ? 'AND f.IsSearchable=1' : '') . ') OR (f.IsFolder=1)) AND f.ParentID=' . intval($dirID) . ' GROUP BY f.ID ORDER BY ' . ($sort ? 'sort' : 'f.Text') . ($desc ? ' DESC' : ''));
 
 	while($db->next_record(MYSQL_ASSOC)){
 		$id = intval($db->f('IsFolder') ?

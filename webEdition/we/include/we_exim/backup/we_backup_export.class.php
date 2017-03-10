@@ -62,7 +62,6 @@ abstract class we_backup_export{
 				case LANGLINK_TABLE:
 				case RECIPIENTS_TABLE:
 				case HISTORY_TABLE:
-				case LINK_TABLE:
 				case CONTENT_TABLE:
 				case PREFS_TABLE:
 				case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):

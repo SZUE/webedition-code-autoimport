@@ -18,6 +18,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define('LINK_TABLE', TBL_PREFIX . 'tblLink');
+
 abstract class we_updater{
 
 	static function replayUpdateDB($specFile = ''){
@@ -62,7 +64,6 @@ abstract class we_updater{
 		]);
 
 		$maxStep = 15;
-
 
 		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
 			$db->delCol(OBJECT_TABLE, 'strOrder');
@@ -232,12 +233,7 @@ abstract class we_updater{
 	private static function upgradeTblLink(we_database_base $db){
 		//added in 7.0
 		if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\' LIMIT 1')){
-			if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
-				//md5 is binary in mysql <5.5.3
-				$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=md5(Name)');
-			} else {
-				$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=unhex(md5(Name))');
-			}
+			$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=unhex(md5(Name))');
 			$db->delKey(LINK_TABLE, 'PRIMARY');
 			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash)');
 		}
@@ -253,7 +249,7 @@ abstract class we_updater{
   KEY DID (DID,DocumentTable(5))
 )');
 			$db->query('TRUNCATE WE_tmp');
-			$db->query('INSERT INTO WE_tmp (SELECT DID,MAX(CID),DocumentTable,nHash FROM ' . LINK_TABLE . ' group by nHash,DID having count(1)>1 )');
+			$db->query('INSERT INTO WE_tmp (SELECT DID,MAX(CID),DocumentTable,nHash FROM ' . LINK_TABLE . ' group by nHash,DID having COUNT(1)>1 )');
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE (DID,DocumentTable,nHash) IN (SELECT DID,DocumentTable,nHash FROM WE_tmp) AND CID NOT IN (SELECT CID FROM WE_tmp)');
 			//finally delete key
 			$db->delKey(LINK_TABLE, 'tmpHash');
@@ -262,42 +258,11 @@ abstract class we_updater{
 		}
 	}
 
-	/* 	private function correctTblFile(we_database_base $db){
-	  //added in 7.0.1
-	  if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID', 'Filename', 'Extension'), 'UNIQUE KEY')){
-	  if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
-	  $db->delKey(FILE_TABLE, 'Path');
-	  }
-	  //we need an temporary key
-	  $db->addKey(FILE_TABLE, 'KEY Path(Path)');
-	  //first cleanup really invalid entries
-	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=ID AND DocumentTable="tblFile")');
-	  $safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
-	  if($safeDel){
-	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $safeDel) . ')');
-	  }
-
-	  $ids = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")');
-	  if($ids){
-	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $ids) . ')');
-	  }
-
-	  //check if we still have bad entries
-	  $problems = $db->getAllq('SELECT f1.ID AS fail,f1.Path AS `Name1`,f2.ID as other,f2.Path AS `Name2`,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AS origOk,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile") AS otherOk,f2.ContentType,f1.CreationDate AS `create1`,f2.CreationDate AS `create2`,f1.ModDate AS `mod1`,f2.ModDate AS `mod2` FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID<f2.ID');
-
-	  if($problems){
-	  t_e('we can\'t upgrade table due to file-list', $problems);
-	  } else {
-	  //finally add a new unique key, del temp index
-	  $db->addKey(FILE_TABLE, 'UNIQUE KEY ParentID(ParentID,Filename,Extension)');
-	  }
-	  }
-	  }
-	 */
-
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
 		$db = $db ?: $GLOBALS['DB_WE'];
-		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
+
+		if($db->isTabExist(LINK_TABLE)){
+			$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
 UNION
@@ -308,13 +273,12 @@ UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="object" AND Name LIKE "%_path"
 ', true);
 
-		if(($del = $db->getAll(true))){
-			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
+			if(($del = $db->getAll(true))){
+				$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
+			}
+			self::upgradeTblLink($db);
+			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 		}
-		self::upgradeTblLink($db);
-		//self::correctTblFile($db);
-
-		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
 		//FIXME: this has to be integrated in we_delete code!
 		if(defined('SCHEDULE_TABLE')){
@@ -398,23 +362,29 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		return true;
 	}
 
-	public static function updateContentTable(we_database_base $db){
-		//we only add hashes here, nothing more
-		if(!f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'')){
-			return;
+	public static function updateContentTable(we_database_base $db, array $progress = []){
+		$init = $progress = ($progress ?: [
+			'pos' => 0,
+			'maxID' => 0,
+			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE DocumentTable="" AND nHash=x\'00\'')
+		]);
+		$maxStep = 2000;
+
+		//FIXME!!!! LINK_TABLE
+		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
+			$db->addKey(CONTENT_TABLE, 'UNIQUE KEY nHash(DID,DocumentTable,nHash)');
+			return false;
 		}
 
-		if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
-			//md5 is binary in mysql <5.5.3
-			$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=md5(Dat) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
-		} else {
-			$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=unhex(md5(Dat)) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
-		}
-		return;
+		$db->query('UPDATE ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID SET c.DID=l.DID,c.Type=l.Type,c.Name=l.Name,c.nHash=l.nHash,c.DocumentTable=l.DocumentTable WHERE ID>' . $init['pos'] . ' ORDER BY c.ID LIMIT ' . $maxStep);
+
+		$progress['pos'] = f('SELECT MIN(ID) FROM ' . CONTENT_TABLE . ' WHERE DocumentTable="" AND nHash=x\'00\'');
+
+		array_merge($progress, ['text' => 'Content ' . $progress['pos'] . ' / ' . $progress['max']]);
 	}
 
 	private static function updateDateInContent(we_database_base $db){
-		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=x\'00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND Dat IS NOT NULL AND dHash!=x\'00\'');
+		$db->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=Dat,Dat=NULL WHERE DocumentTable="tblFile" AND type="date" AND Dat IS NOT NULL');
 	}
 
 	private static function updateVersionsTable(we_database_base $db){
@@ -711,8 +681,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('updateFileLink');
 				self::updateCats($db);
 				self::meassure('updateCats');
-				self::updateContentTable($db);
-				self::meassure('updateContent');
 				self::updateDateInContent($db);
 				self::meassure('updateContentDate');
 				self::updateVersionsTable($db);
@@ -725,13 +693,20 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('customer');
 				self::updateSetting($db);
 				self::meassure('setting');
+			case 'content':
+				$ret = self::updateContentTable($db, $progress);
+				if($ret){
+					self::meassure(-1);
+					return array_merge($ret, ['what' => 'content']);
+				}
+				self::meassure('updateContent');
+				break;
 			case 'object':
-				$what = 'object';
 				if(defined('OBJECT_X_TABLE')){
 					$ret = self::updateObjectFilesX($db, $progress);
 					if($ret){
 						self::meassure(-1);
-						return array_merge($ret, ['what' => $what]);
+						return array_merge($ret, ['what' => 'object']);
 					}
 					self::meassure('updateObjectFilesX');
 				}
@@ -741,12 +716,11 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					self::meassure('shop');
 				}
 			case 'shop':
-				$what = 'shop';
 				if(defined('SHOP_TABLE')){
 					$ret = self::updateShop2($db, $progress);
 					if($ret){
 						self::meassure(-1);
-						return array_merge($ret, ['what' => $what]);
+						return array_merge($ret, ['what' => 'shop']);
 					}
 					self::meassure('shop');
 				}
