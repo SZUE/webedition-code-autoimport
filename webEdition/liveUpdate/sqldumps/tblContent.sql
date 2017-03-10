@@ -31,4 +31,4 @@ CREATE TABLE ###TBLPREFIX###tblContent (
 ###UPDATEDROPCOL(dHash,###TBLPREFIX###tblContent)###
 
 /* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblContent ADD UNIQUE KEY nHash(DID,DocumentTable,nHash);
+###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblContent ADD UNIQUE KEY prim(DID,DocumentTable,nHash);

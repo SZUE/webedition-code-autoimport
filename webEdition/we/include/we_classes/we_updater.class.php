@@ -366,19 +366,20 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$init = $progress = ($progress ?: [
 			'pos' => 0,
 			'maxID' => 0,
-			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE DocumentTable="" AND nHash=x\'00\'')
+			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'')
 		]);
-		$maxStep = 2000;
+		$maxStep = 100;
 
 		//FIXME!!!! LINK_TABLE
 		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
-			$db->addKey(CONTENT_TABLE, 'UNIQUE KEY nHash(DID,DocumentTable,nHash)');
+			$db->addKey(CONTENT_TABLE, 'UNIQUE KEY prim(DID,DocumentTable,nHash)');
 			return false;
 		}
 
-		$db->query('UPDATE ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID SET c.DID=l.DID,c.Type=l.Type,c.Name=l.Name,c.nHash=l.nHash,c.DocumentTable=l.DocumentTable WHERE ID>' . $init['pos'] . ' ORDER BY c.ID LIMIT ' . $maxStep);
+		$tmp = ' FROM ' . LINK_TABLE . ' l WHERE l.CID=c.ID';
+		$db->query('UPDATE ' . CONTENT_TABLE . ' c SET c.DID=(SELECT l.DID' . $tmp . '),c.Type=(SELECT l.Type' . $tmp . '),c.Name=(SELECT l.Name' . $tmp . '),c.nHash=(SELECT l.nHash' . $tmp . '),c.DocumentTable=(SELECT l.DocumentTable' . $tmp . ') WHERE c.ID>' . $init['pos'] . ' ORDER BY c.ID LIMIT ' . $maxStep);
 
-		$progress['pos'] = f('SELECT MIN(ID) FROM ' . CONTENT_TABLE . ' WHERE DocumentTable="" AND nHash=x\'00\'');
+		$progress['pos'] = f('SELECT MIN(ID) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'');
 
 		array_merge($progress, ['text' => 'Content ' . $progress['pos'] . ' / ' . $progress['max']]);
 	}
