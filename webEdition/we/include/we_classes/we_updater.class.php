@@ -377,11 +377,12 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 
 		$tmp = ' FROM ' . LINK_TABLE . ' l WHERE l.CID=c.ID';
-		$db->query('UPDATE ' . CONTENT_TABLE . ' c SET c.DID=(SELECT l.DID' . $tmp . '),c.Type=(SELECT l.Type' . $tmp . '),c.Name=(SELECT l.Name' . $tmp . '),c.nHash=(SELECT l.nHash' . $tmp . '),c.DocumentTable=(SELECT l.DocumentTable' . $tmp . ') WHERE c.ID>' . $init['pos'] . ' ORDER BY c.ID LIMIT ' . $maxStep);
+		$db->query('UPDATE ' . CONTENT_TABLE . ' c SET c.DID=(SELECT l.DID' . $tmp . '),c.Type=(SELECT l.Type' . $tmp . '),c.Name=(SELECT l.Name' . $tmp . '),c.nHash=(SELECT l.nHash' . $tmp . '),c.DocumentTable=(SELECT l.DocumentTable' . $tmp . ') WHERE c.ID>' . $init['maxID'] . ' ORDER BY c.ID LIMIT ' . $maxStep);
 
-		$progress['pos'] = f('SELECT MIN(ID) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'');
+		$progress['maxID'] = f('SELECT MIN(ID) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'');
+		$progress['pos'] = max($progress['pos'] + $maxStep, $progress['max']);
 
-		array_merge($progress, ['text' => 'Content ' . $progress['pos'] . ' / ' . $progress['max']]);
+		return array_merge($progress, ['text' => 'Content ' . $progress['pos'] . ' / ' . $progress['max']]);
 	}
 
 	private static function updateDateInContent(we_database_base $db){
