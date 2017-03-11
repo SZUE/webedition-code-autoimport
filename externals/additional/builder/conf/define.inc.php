@@ -1,1 +1,1 @@
-../update/htdocs/server/we/conf/define.inc.php
+../../update/server/we/conf/define.inc.php
