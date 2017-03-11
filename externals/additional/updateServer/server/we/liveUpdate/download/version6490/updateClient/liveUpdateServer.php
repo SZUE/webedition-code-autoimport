@@ -47,7 +47,7 @@ if(isset($_REQUEST['update_cmd'])){
 	if($_REQUEST['update_cmd'] == 'checkConnection'){
 
 		$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
-		$liveUpdateResponse = new liveUpdateResponseServer();
+		$liveUpdateResponse = new liveUpdateResponse();
 
 		if($liveUpdateResponse->initByHttpResponse($response)){
 
@@ -101,7 +101,7 @@ if(isset($_REQUEST['update_cmd'])){
 	 */
 	if($response){
 
-		$liveUpdateResponse = new liveUpdateResponseServer();
+		$liveUpdateResponse = new liveUpdateResponse();
 
 		print ($liveUpdateResponse->initByHttpResponse($response) ?
 				$liveUpdateResponse->getOutput() :
