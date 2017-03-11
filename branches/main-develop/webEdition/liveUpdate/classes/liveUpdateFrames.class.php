@@ -130,11 +130,10 @@ class liveUpdateFrames{
 
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="' . WE_LANGUAGE . '" WHERE `key`="Language" AND value IN ("","' . implode('","', array_map('escape_sql_query', $langs)) . '")');
 
-			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders
 			foreach($langs as $lng){
 				if(strpos($lng, "..") === false && $lng != ""){
-					if($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)){
+					if(we_base_file::deleteLocalFolder(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng, true, true)){
 						$deletedLngs[] = $lng;
 					} else {
 						$notDeletedLngs[] = $lng;
