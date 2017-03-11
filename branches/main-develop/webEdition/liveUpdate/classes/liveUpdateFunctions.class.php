@@ -34,6 +34,16 @@ class liveUpdateFunctions{
 		'entryExists' => [],
 		'tableExists' => [], //needed from server functions
 	];
+	private $defaultEngine = '';
+	private $db;
+
+	public function __construct(){
+		$this->db = new DB_WE();
+		$this->defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value', $this->db);
+		if(!in_array(strtolower($this->defaultEngine), ['myisam', 'aria'])){
+			$this->defaultEngine = 'MyISAM';
+		}
+	}
 
 	/*
 	 * Functions for updatelog
@@ -405,11 +415,12 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getFieldsOfTable($tableName, we_database_base $db){
+	function getFieldsOfTable($tableName){
+		$db = $this->db;
 
 		$fieldsOfTable = [];
 		$db->query('DESCRIBE ' . $db->escape($tableName));
-
+		$pos = 0;
 		while($db->next_record()){
 			$fieldsOfTable[$db->f('Field')] = [
 				'Field' => $db->f('Field'),
@@ -417,7 +428,8 @@ class liveUpdateFunctions{
 				'Null' => $db->f('Null'),
 				'Key' => $db->f('Key'),
 				'Default' => $db->f('Default'),
-				'Extra' => $db->f('Extra')
+				'Extra' => $db->f('Extra'),
+				'Pos' => $pos++,
 			];
 		}
 		return $fieldsOfTable;
@@ -430,7 +442,7 @@ class liveUpdateFunctions{
 	 * @return array
 	 */
 	function getKeysFromTable($tableName, $lowerKeys = false){
-		$db = new DB_WE();
+		$db = $this->db;
 		$keysOfTable = [];
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
 		while($db->next_record()){
@@ -498,9 +510,9 @@ class liveUpdateFunctions{
 			}
 
 			if($isNew){
-				$queries[] = 'ALTER TABLE `' . $tableName . '` ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = 'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
-				$queries[] = 'ALTER TABLE `' . $tableName . '` MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = 'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
 		return $queries;
@@ -537,9 +549,13 @@ class liveUpdateFunctions{
 					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
-			$queries[] = 'ALTER TABLE ' . $tableName . ' ' . ($isNew ? '' : ' DROP ' . ($type === 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
+			$queries[] = ($isNew ? '' : ' DROP ' . ($type === 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
 		}
 		return $queries;
+	}
+
+	function getTableEngine($table){
+		return f('SHOW TABLE STATUS LIKE "' . $table . '"', 'Engine');
 	}
 
 	/**
@@ -573,10 +589,10 @@ class liveUpdateFunctions{
 			}
 		}
 
-		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path)));
+		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $this->defaultEngine, $this->getFileContent($path)));
 		$success = true;
 		foreach($queries as $query){
-			$success &= $this->executeUpdateQuery($query, $db);
+			$success &= $this->executeUpdateQuery($query);
 		}
 
 		return $success;
@@ -587,8 +603,8 @@ class liveUpdateFunctions{
 	 *
 	 * @param string $query
 	 */
-	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ?: new DB_WE());
+	function executeUpdateQuery($query){
+		$db = $this->db;
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
@@ -676,8 +692,8 @@ class liveUpdateFunctions{
 					$db->query(trim($tmpQuery));
 
 					// get information from existing and new table
-					$origTable = $this->getFieldsOfTable($tableName, $db);
-					$newTable = $this->getFieldsOfTable($tmpName, $db);
+					$origTable = $this->getFieldsOfTable($tableName);
+					$newTable = $this->getFieldsOfTable($tmpName);
 					if(empty($newTable)){
 						$this->QueryLog['error'][] = 'Update of table ' . $tableName . " failed (create temporary table was not successfull)\n-- $query --";
 						break;
@@ -694,7 +710,7 @@ class liveUpdateFunctions{
 					foreach($newTable as $fieldName => $newField){
 						$newField['last'] = $lastField;
 						if(isset($origTable[$fieldName])){ // field exists
-							if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
+							if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'] && $newField['Pos'] == $origTable[$fieldName]['Pos'])){
 								$changeFields[$fieldName] = $newField;
 							}
 						} else { // field does not exist
@@ -708,6 +724,9 @@ class liveUpdateFunctions{
 					// get all queries to add/change fields, keys
 					$alterQueries = [];
 
+					if($this->getTableEngine($tableName) != ($tmpEngine = $this->getTableEngine($tmpName))){
+						$alterQueries[] = 'ALTER TABLE `' . $tableName . '` ENGINE=' . $tmpEngine;
+					}
 					// get all queries to change existing fields
 					if($changeFields){
 						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
@@ -750,29 +769,28 @@ class liveUpdateFunctions{
 
 					//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
 					if(isset($origTableKeys['_temp'])){
-						$alterQueries = array_merge(['ALTER TABLE `' . $tableName . '` DROP INDEX _temp'], $alterQueries);
+						$alterQueries = array_merge(['DROP INDEX _temp'], $alterQueries);
 					}
+					t_e($alterQueries);
 					if($alterQueries){
 						// execute all queries
 						$success = true;
 						$duplicate = false;
-						foreach($alterQueries as $query){
-							if(!trim($query)){
-								continue;
-							}
-							if($db->query(trim($query))){
-								$this->QueryLog['success'][] = $query;
+
+						$query = 'ALTER TABLE `' . $tableName . '` ' . implode(',', $alterQueries);
+						if($db->query($query)){
+							$this->QueryLog['success'][] = $query;
+						} else {
+							//unknown why mysql don't show correct error
+							if($db->Errno == 1062 || $db->Errno == 0){
+								$duplicate = true;
+								$this->QueryLog['tableChanged'][] = $tableName;
 							} else {
-								//unknown why mysql don't show correct error
-								if($db->Errno == 1062 || $db->Errno == 0){
-									$duplicate = true;
-									$this->QueryLog['tableChanged'][] = $tableName;
-								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
-								}
-								$success = false;
+								$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 							}
+							$success = false;
 						}
+
 						if($success){
 							$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 						} else if($duplicate){
