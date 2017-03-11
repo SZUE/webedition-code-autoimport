@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo 0
-exit
+#echo 0
+#exit
 # disabled
 
 BASEDIR="/kunden/343047_10825/"
@@ -15,39 +15,45 @@ fi
 SN=$1
 
 FROM="trunk"
-if [ $2 == "hotfixes" ]
+if [ "$2" == "hotfixes" ]
 then
 	FROM="hotfixes"
 	# activate as soon as tag-repo is implemented
 	exit 0
 fi
-echo $FROM
+echo ${FROM}
 
-VERSIONDIR = $BASEDIR"sites/webedition.org/"
+VERSIONDIR=${BASEDIR}"sites/webedition.org/"
 
 # check if svn checkout exists
-SVNDIR=$BASEDIR"build/svn/"$FROM"/"
+SVNDIR=$BASEDIR"build/svn/"${FROM}"/"
 
 if [ -d $SVNDIR ];
 then
 	#echo "SVN dir '$SVNDIR' exists."
+	echo "SVN dir "${SVNDIR}" exists."
 else
-	echo "ERROR: SVN dir '$SVNDIR' does not exist! Aborting."
+	echo "ERROR: SVN dir "${SVNDIR}" does not exist! Aborting."
 	exit 0
 fi
 
+svn cleanup $SVNDIR
 svn update $SVNDIR
 TARGET=${BASEDIR}"sites/webedition.org/download/releases/"
 FILENAME="webEdition_"$SN".tgz"
 TARGETFILE=${TARGET}${FILENAME}
-if [ -f $TARGETFILE ];
+if [ -f ${TARGETFILE} ];
 then
-	rm -rf $TARGETFILE
+echo ${TARGETFILE}
 fi
+echo ${TARGETFILE}
 
 # remove old files from tmp:
-BUILDTRUNK=$BUILDDIR"trunk/"
-if [ -d $BUILDTRUNK ];
+BUILDTRUNK=${BUILDDIR}"trunk/"
+
+echo  ${BUILDTRUNK}
+
+if [ -d ${BUILDTRUNK} ];
 then
 	echo "removing old files from '$BUILDDIR'"
 	rm -rf $BUILDTRUNK
@@ -72,9 +78,9 @@ echo -e "Date: `date '+%Y/%m/%d %H:%M'`" >> $BUILDTRUNK"BUILD.txt"
 echo -e "Revision: "$SVNREV >> $BUILDTRUNK"BUILD.txt"
 
 # get we_version from release
-WEVERSION=$BASEDIR"sites/webedition.org/update/htdocs/files/we/version"$SN"/files/none/webEdition/we/include/we_version.php"
+WEVERSION=$BASEDIR"sites/webedition.org/update/files/we/version"$SN"/files/none/webEdition/we/include/we_version.php"
 rm -rf $BUILDTRUNK"webEdition/we/include/we_version.php"
-cp $WEVERSION $BUILDTRUNK"webEdition/we/include/"
+cp ${WEVERSION} ${BUILDTRUNK}"webEdition/we/include/"
 
 # create tarball
 echo "creating tarball"
@@ -97,6 +103,7 @@ sha1sum *.tgz > "SHA1SUMS"
 sha256sum *.tgz > "SHA256SUMS"
 md5sum *.tgz > "MD5SUMS"
 
+echo "release-tarball successfully built"
 echo 1
 
 

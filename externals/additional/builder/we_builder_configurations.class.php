@@ -29,21 +29,24 @@
 			'release' => array(
 				'targetBranchDir' => 'trunk',
 				'targetType' => 'release',
-				'targetVersion' => 6440,
-				'targetCompareVersion' => 6430,
-				'targetName' => 'webEdition 6.4.4',
+				'targetTypeversion' => 0, // 1
+				'targetVersion' => 7030,
+				'targetTakeSnapshot' => true,
+				//'targetCompareVersion' => 6430,
+				'targetName' => 'webEdition 7.0.3',
 				'builderCreateTag' => true,
-				'builderVersionsToDelete' => array(),
+				'builderVersionsToDelete' => array(7022, 7023),
 			),
 			'nightly' => array(
 				'targetBranchDir' => 'trunk',
 				'targetType' => 'nightly',
-				'targetVersion' => 6441,
-				'targetCompareVersion' => 6440,
-				'targetName' => '8.4.4.1 Nightly',
+				'targetVersion' => 7031,
+				'targetTakeSnapshot' => true,
+				//'targetCompareVersion' => 6430,
+				'targetName' => 'webEdition 7.0.3.1 Nightly',
 			)
 		),
-		'mgallery' => array(
+		'mgallery_blocked' => array(
 			'release' => array(
 				'targetBranchDir' => 'branches/mgallery',
 				'targetType' => 'rc',
@@ -64,8 +67,8 @@
 			'nightly' => array(
 				'targetBranchDir' => 'branches/main-develop',
 				'targetType' => 'nightly',
-				'targetVersion' => 7007,
-				'targetName' => '7.0.0.1 MAIN-DEVELOP',
+				'targetVersion' => 7081,
+				'targetName' => '7.0.8.1 MAIN-DEVELOP',
 				'targetTakeSnapshot' => true,
 			)
 		)

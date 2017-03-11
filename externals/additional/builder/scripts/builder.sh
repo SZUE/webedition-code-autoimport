@@ -4,7 +4,7 @@ BASEDIR=/kunden/343047_10825/
 HOME=/kunden/343047_10825/sites/webedition.org/nightlybuilder/
 
 SVN_DIR=${BASEDIR}build/svn/
-UPDATE_VERSIONS_DIR=${BASEDIR}sites/webedition.org/update/htdocs/files/we/
+UPDATE_VERSIONS_DIR=${BASEDIR}sites/webedition.org/update/files/we/
 
 GET_PARAM_PHP=${HOME}we_builder_bridge.php
 
@@ -100,7 +100,7 @@ fi
 # BUILD VERSION
 echo -en "Build version "${CONF_VERSION}": "
 RESPONSE=0
-RESPONSE="$(php56 -q we_builder.php -b ${BRANCH} -t ${TYPE})"
+RESPONSE="$(php56 -q ${HOME}we_builder.php -b ${BRANCH} -t ${TYPE})"
 
 if [ "${RESPONSE}" = "11" ]
 then
@@ -123,12 +123,12 @@ then
 	RESPONSE=0
 	RESPONSE=$(scripts/makeReleaseTarball.sh ${CONF_VERSION})
 
-	if [ ${RESPONSE} -eq 1 ]
-	then
+#	if [ ${RESPONSE} -eq 1 ] # we have too many echoes in tarballbuilder: supress them when not debug mode
+#	then
 		echo -e "     done\n"
-	else
-		echo -e "     failed\n"
-	fi
+#	else
+#		echo -e "     failed\n"
+#	fi
 else 
 	echo -e "     [no tarball for this configuration]"
 fi
@@ -207,7 +207,7 @@ if [ ${BUILD_NIGHTLY} == 1 ]
 then
 	echo -en "Build new nightly"${NIGHTLY_VERSION}": "
 	RESPONSE=0
-	RESPONSE="$(php56 -q we_builder.php -b ${BRANCH} -t ${NIGHTLY})"
+	RESPONSE="$(php56 -q ${HOME}we_builder.php -b ${BRANCH} -t ${NIGHTLY})"
 
 	if [ "${RESPONSE}" = "11" ]
 	then
@@ -272,7 +272,7 @@ else
 			if [ ${RESPONSE} -eq 1 ]
 			then
 				echo -e "...done\n"
-				rm -rf ${BASEDIR}"sites/webedition.org/update/htdocs/files/we/version"${v}
+				rm -rf ${BASEDIR}"sites/webedition.org/update/files/we/version"${v}
 			else
 				echo -e "...failed"
 				echo -e "Response:"

@@ -437,6 +437,7 @@ if($changesfiles){
 		}
 	}
 	if(!$builder['DB_WE']->query("UPDATE `v6_changes` SET changes = '" . $strChangesfiles . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files'")){
+		echo "failed";
 		exit();
 	}
 
