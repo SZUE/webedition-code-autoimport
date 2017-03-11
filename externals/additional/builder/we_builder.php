@@ -46,7 +46,7 @@ $builder = array(
 	'DB_WE' => $GLOBALS['DB_WE'],
 	'externalsDir' => 'externals',
 	'source' => '/kunden/343047_10825/build/svn/' . $configurations->get('targetBranchDir') . '/',
-	'destination' => '/kunden/343047_10825/sites/webedition.org/update/htdocs/files/we/',
+	'destination' => '/kunden/343047_10825/sites/webedition.org/update/files/we/',
 	'comparesource' => '/kunden/343047_10825/build/svn',
 );
 
