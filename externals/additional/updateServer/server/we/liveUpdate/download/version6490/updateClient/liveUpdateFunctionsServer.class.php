@@ -1,7 +1,5 @@
 <?php
 
-//version7000
-//code aus 7000
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 	var $QueryLog = array(
@@ -550,16 +548,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	}
 
 	/**
-	 * @deprecated since version now
-	 * @param string $path
-	 * @return boolean
-	 */
-	function isInsertQueriesFile($path){
-
-		//return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
-	}
-
-	/**
 	 * executes all queries in a single file
 	 * - there is one query, if create-statement
 	 * - many queris, if insert statements
@@ -569,19 +557,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-		static $db = null;
-		static $defaultEngine = '';
-		$db = $db ?: new DB_WE();
-		if(!$defaultEngine){
-			$db->query('show variables LIKE "default_storage_engine"');
-			$db->next_record();
-			$defaultEngine = $db->f('Value');
-			if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
-				$defaultEngine = 'myisam';
-			}
-		}
-
-		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $this->defaultEngine, $this->getFileContent($path)));
+		$queries = explode("/* query separator */", str_ireplace("ENGINE=MyISAM", 'ENGINE=' . $this->defaultEngine, $this->getFileContent($path)));
 		$success = true;
 		foreach($queries as $query){
 			$success &= $this->executeUpdateQuery($query);
@@ -841,31 +817,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		}
 	}
 
-	/**
-	 * returns array with all installed languages
-	 *
-	 * @return array
-	 */
-	public static function getInstalledLanguages(){
-		clearstatcache();
-
-		//	Get all installed Languages
-		$installedLanguages = [];
-		//	Look which languages are installed
-		$language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
-
-		while(false !== ($entry = $language_directory->read())){
-			if($entry != '.' && $entry != '..'){
-				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
-					$installedLanguages[] = $entry;
-				}
-			}
-		}
-		$language_directory->close();
-
-		return $installedLanguages;
-	}
-
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
@@ -895,17 +846,17 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
-	function removeDirOnlineInstaller(){
-		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
-			we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
+	static function weUpdaterDoUpdate($what, $progress = array()){
+		if(method_exists('we_updater', 'doUpdate')){
+			return we_updater::doUpdate($what, $progress);
 		}
 
 		return true;
 	}
 
-	static function weUpdaterDoUpdate($what, $progress = array()){
-		if(method_exists('we_updater', 'doUpdate')){
-			return we_updater::doUpdate($what, $progress);
+	function removeDirOnlineInstaller(){
+		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+			we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 		}
 
 		return true;

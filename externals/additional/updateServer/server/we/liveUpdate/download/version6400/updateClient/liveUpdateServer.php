@@ -51,11 +51,9 @@ if(isset($_REQUEST['update_cmd'])){
 
 		if($liveUpdateResponse->initByHttpResponse($response)){
 
-			if($liveUpdateResponse->isError()){
-				print liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message'));
-			} else {
-				print liveUpdateFrames::htmlConnectionSuccess();
-			}
+			print ($liveUpdateResponse->isError() ?
+					liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message')) :
+					liveUpdateFrames::htmlConnectionSuccess());
 		} else {
 			print liveUpdateFrames::htmlConnectionError();
 		}
@@ -79,7 +77,7 @@ if(isset($_REQUEST['update_cmd'])){
 			 */
 			print liveUpdateHttp::getServerSessionForm();
 			exit;
-		} else {
+		}
 			/*
 			 * $_REQUEST['liveUpdateSession'] exists => Session on server is up
 			 * prepare all needed variables to submit to the updateServer
@@ -96,7 +94,6 @@ if(isset($_REQUEST['update_cmd'])){
 			$parameters['reqArray'] = base64_encode(serialize($reqVars));
 
 			$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
-		}
 	}
 
 	/*
@@ -106,12 +103,9 @@ if(isset($_REQUEST['update_cmd'])){
 
 		$liveUpdateResponse = new liveUpdateResponseServer();
 
-		if($liveUpdateResponse->initByHttpResponse($response)){
-
-			print $liveUpdateResponse->getOutput();
-		} else {
-			print liveUpdateFrames::htmlConnectionError();
-		}
+		print ($liveUpdateResponse->initByHttpResponse($response) ?
+				$liveUpdateResponse->getOutput() :
+				liveUpdateFrames::htmlConnectionError());
 	} else {
 		/*
 		 * No response from the update-server. Error message
