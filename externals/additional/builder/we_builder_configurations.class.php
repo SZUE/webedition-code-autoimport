@@ -28,13 +28,13 @@
 		'trunk' => array(
 			'release' => array(
 				'targetBranchDir' => 'trunk',
-				'targetType' => 'release',
+				'targetType' => 'release', //'beta'
 				'targetTypeversion' => 0, // 1
 				'targetVersion' => 7030,
 				'targetTakeSnapshot' => true,
 				//'targetCompareVersion' => 6430,
 				'targetName' => 'webEdition 7.0.3',
-				'builderCreateTag' => true,
+				'builderCreateTag' => true, //false
 				'builderVersionsToDelete' => array(7022, 7023),
 			),
 			'nightly' => array(
@@ -44,6 +44,8 @@
 				'targetTakeSnapshot' => true,
 				//'targetCompareVersion' => 6430,
 				'targetName' => 'webEdition 7.0.3.1 Nightly',
+				//'builderCreateTag' => true,
+				//'builderVersionsToDelete' => array(6503),
 			)
 		),
 		'mgallery_blocked' => array(

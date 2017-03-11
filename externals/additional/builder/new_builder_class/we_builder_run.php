@@ -1,15 +1,5 @@
 #!/usr/local/bin/php5-56LATEST-CLI
 <?php
-/*
- * later: pack this script to class we_builder_builder and reduce index.php to...:
- *		$configuration = new we_builder_configuration;
- *		$builder new we_builder_builder($configuration);
- *		echo $builder->execute();
- *
- *
- */
-
-
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 
@@ -40,13 +30,19 @@ if(!$configurations->getActiveConfiguration()){
 	exit();
 }
 
+if(!($builder = new we_builder_builder($configutaions, $GLOBALS['DB_WE'], $debug))){
+	exit();
+}
+$builder->run();
+
+
 // array $builder contains props of a future class we_builder_class
 $builder = array(
 	'debug' => $debug,
 	'DB_WE' => $GLOBALS['DB_WE'],
 	'externalsDir' => 'externals',
 	'source' => '/kunden/343047_10825/build/svn/' . $configurations->get('targetBranchDir') . '/',
-	'destination' => '/kunden/343047_10825/sites/webedition.org/update/htdocs/files/we/',
+	'destination' => '/kunden/343047_10825/sites/webedition.org/update/files/we/',
 	'comparesource' => '/kunden/343047_10825/build/svn',
 );
 
@@ -253,7 +249,7 @@ if($configurations->get('targetTakeSnapshot')){
 		}
 		sort($modifiedfiles);
 	}
-	if(false&& $builder['debug']){
+	if(false && $builder['debug']){
 		echo "Scanned dir:\n" . implode("\n", $modifiedfiles) . "\n\n";
 	}
 	$targetRevision = getSvnLatestRevision($configurations->get('targetBranchDir'));
@@ -428,7 +424,7 @@ if($builder['debug']){
 if($changesfiles){
 	$strChangesfiles = implode(",\n", array_unique($changesfiles));
 	if($builder['debug']){
-	//	echo $strChangesfiles;
+		//echo $strChangesfiles;
 	}
 
 	if(!f("SELECT 1 FROM `v6_changes` WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files' LIMIT 1")){
@@ -437,7 +433,6 @@ if($changesfiles){
 		}
 	}
 	if(!$builder['DB_WE']->query("UPDATE `v6_changes` SET changes = '" . $strChangesfiles . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files'")){
-		echo "failed";
 		exit();
 	}
 
@@ -457,7 +452,7 @@ if($changesfiles){
 		}
 	}
 
-	//file_put_contents ('changes_new.txt', $strChangesfiles . "\n\n". $changessql);
+	file_put_contents ('changes_new.txt', $strChangesfiles . "\n\n". $changessql);
 
 	foreach($alllang as $langkey => $langdata){
 		$changeslang = [];

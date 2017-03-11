@@ -2,7 +2,7 @@
 
 #echo 0
 #exit
-# disabled
+#disabled
 
 BASEDIR="/kunden/343047_10825/"
 BUILDDIR=$BASEDIR"build/tmp/"
@@ -30,7 +30,6 @@ SVNDIR=$BASEDIR"build/svn/"${FROM}"/"
 
 if [ -d $SVNDIR ];
 then
-	#echo "SVN dir '$SVNDIR' exists."
 	echo "SVN dir "${SVNDIR}" exists."
 else
 	echo "ERROR: SVN dir "${SVNDIR}" does not exist! Aborting."
@@ -45,6 +44,7 @@ TARGETFILE=${TARGET}${FILENAME}
 if [ -f ${TARGETFILE} ];
 then
 echo ${TARGETFILE}
+																		#rm -rf $TARGETFILE
 fi
 echo ${TARGETFILE}
 
@@ -64,6 +64,7 @@ echo "copying files from '$SVNDIR'webEdition checkout to '$BUILDTRUNK'"
 mkdir $BUILDTRUNK
 cp -R $SVNDIR"webEdition" $BUILDTRUNK
 cp $SVNDIR"additional/setup/"* $BUILDTRUNK
+
 
 # remove all .svn subdirectories and .DS_Store files
 cd $BUILDTRUNK
