@@ -27,20 +27,21 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-	var $QueryLog = [
-		'success' => [],
-		'tableChanged' => [],
-		'error' => [],
-		'entryExists' => [],
-		'tableExists' => [], //needed from server functions
-	];
-	private $defaultEngine = '';
-	private $db;
+	protected $QueryLog = array(
+		'success' => array(),
+		'tableChanged' => array(),
+		'error' => array(),
+		'entryExists' => array(),
+		'tableExists' => array(), //needed from server functions
+	);
+	protected $defaultEngine = '';
+	protected $db;
+	protected $allowedEngines = array('myisam', 'aria');
 
 	public function __construct(){
 		$this->db = new DB_WE();
 		$this->defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value', $this->db);
-		if(!in_array(strtolower($this->defaultEngine), ['myisam', 'aria'])){
+		if(!in_array(strtolower($this->defaultEngine), $this->allowedEngines)){
 			$this->defaultEngine = 'MyISAM';
 		}
 	}
@@ -50,11 +51,11 @@ class liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter([
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'aktion' => $action,
 				'versionsnummer' => $version,
 				'error' => $errorCode
-		]));
+		)));
 	}
 
 	/**
@@ -141,13 +142,13 @@ class liveUpdateFunctions{
 			$dh = opendir($baseDir);
 			while(($entry = readdir($dh))){
 				if($entry != "" && $entry != "." && $entry != ".."){
-					$entry = $baseDir . "/" . $entry;
-					if(!is_dir($entry)){
-						$allFiles[] = $entry;
+					$_entry = $baseDir . "/" . $entry;
+					if(!is_dir($_entry)){
+						$allFiles[] = $_entry;
 					}
 
-					if(is_dir($entry)){
-						$this->getFilesOfDir($allFiles, $entry);
+					if(is_dir($_entry)){
+						$this->getFilesOfDir($allFiles, $_entry);
 					}
 				}
 			}
@@ -221,7 +222,8 @@ class liveUpdateFunctions{
 				if(substr($filePath, -4) === '.php' && function_exists('opcache_invalidate')){
 					opcache_invalidate($filePath, true);
 				}
-				if(!chmod($filePath, 0444)){
+				//FIXME: current user must write because of "prepare"
+				if(!chmod($filePath, 0644)){
 					return false;
 				}
 				return true;
@@ -255,8 +257,9 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
+		umask(0022);
 		// open_base_dir - seperate document-root from rest
-		$dirPath = rtrim(str_replace(['///', '//'], '/', $dirPath), '/');
+		$dirPath = rtrim(str_replace(array('///', '//'), '/', $dirPath), '/');
 
 		$dir = (defined('LIVEUPDATE_SOFTWARE_DIR') ? LIVEUPDATE_SOFTWARE_DIR : WEBEDITION_PATH);
 		if(strpos($dirPath, $dir) === 0){
@@ -315,7 +318,6 @@ class liveUpdateFunctions{
 		}
 
 		if($this->checkMakeDir(dirname($destination))){
-			if($this->deleteFile($destination)){
 				if(!isset($_SESSION['weS']['moveOk'])){
 					touch($source . 'x');
 					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
@@ -331,6 +333,7 @@ class liveUpdateFunctions{
 					return rename($source, $destination);
 				}
 				//rename seems to have problems - we do it old school way: copy, on success delete
+			if($this->deleteFile($destination)){
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
@@ -350,7 +353,7 @@ class liveUpdateFunctions{
 	function isPhpFile($path){
 
 		$pattern = "/\.([^\..]+)$/";
-		$matches = [];
+		$matches = array();
 		if(preg_match($pattern, $path, $matches)){
 			switch(strtolower($matches[1])){
 				case 'jpg':
@@ -418,11 +421,11 @@ class liveUpdateFunctions{
 	function getFieldsOfTable($tableName){
 		$db = $this->db;
 
-		$fieldsOfTable = [];
+		$fieldsOfTable = array();
 		$db->query('DESCRIBE ' . $db->escape($tableName));
 		$pos = 0;
 		while($db->next_record()){
-			$fieldsOfTable[$db->f('Field')] = [
+			$fieldsOfTable[$db->f('Field')] = array(
 				'Field' => $db->f('Field'),
 				'Type' => $db->f('Type'),
 				'Null' => $db->f('Null'),
@@ -430,7 +433,7 @@ class liveUpdateFunctions{
 				'Default' => $db->f('Default'),
 				'Extra' => $db->f('Extra'),
 				'Pos' => $pos++,
-			];
+			);
 		}
 		return $fieldsOfTable;
 	}
@@ -443,7 +446,7 @@ class liveUpdateFunctions{
 	 */
 	function getKeysFromTable($tableName, $lowerKeys = false){
 		$db = $this->db;
-		$keysOfTable = [];
+		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
 		while($db->next_record()){
 			if($db->f('Key_name') === 'PRIMARY'){
@@ -477,7 +480,7 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function getAlterTableForFields($fields, $tableName, $isNew = false){
-		$queries = [];
+		$queries = array();
 
 		foreach($fields as $fieldName => $fieldInfo){
 
@@ -505,12 +508,13 @@ class liveUpdateFunctions{
 					}
 				}
 				if(!$keyfound){
-					$extra .= ', ADD INDEX _temp (' . $fieldInfo['Field'] . ')';
+					$extra .= ' FIRST, ADD INDEX _temp (' . $fieldInfo['Field'] . ')';
 				}
 			}
 
 			if($isNew){
-				$queries[] = 'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
+				//Bug #4431, siehe unten
+				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
 				$queries[] = 'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
@@ -527,7 +531,7 @@ class liveUpdateFunctions{
 	 * @return array
 	 */
 	function getAlterTableForKeys($fields, $tableName, $isNew){
-		$queries = [];
+		$queries = array();
 
 		foreach($fields as $key => $indexes){
 			//escape all index fields
@@ -541,7 +545,7 @@ class liveUpdateFunctions{
 			}
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-			$myindexes = [];
+			$myindexes = array();
 			foreach($indexes as $index){
 				if(strpos($index, '(') === false){
 					$myindexes[] = '`' . $index . '`';
@@ -559,15 +563,6 @@ class liveUpdateFunctions{
 	}
 
 	/**
-	 * @deprecated since version now
-	 * @param string $path
-	 * @return boolean
-	 */
-	function isInsertQueriesFile($path){
-		//	return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
-	}
-
-	/**
 	 * executes all queries in a single file
 	 * - there is one query, if create-statement
 	 * - many queris, if insert statements
@@ -577,19 +572,7 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-		static $db = null;
-		static $defaultEngine = '';
-		$db = $db ?: new DB_WE();
-		if(!$defaultEngine){
-			$db->query('show variables LIKE "default_storage_engine"');
-			$db->next_record();
-			$defaultEngine = $db->f('Value');
-			if(!in_array(strtolower($defaultEngine), ['myisam', 'aria'])){
-				$defaultEngine = 'myisam';
-			}
-		}
-
-		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $this->defaultEngine, $this->getFileContent($path)));
+		$queries = explode("/* query separator */", str_ireplace("ENGINE=MyISAM", 'ENGINE=' . $this->defaultEngine, $this->getFileContent($path)));
 		$success = true;
 		foreach($queries as $query){
 			$success &= $this->executeUpdateQuery($query);
@@ -614,8 +597,8 @@ class liveUpdateFunctions{
 			return true;
 		}
 
-		$query = str_replace(['###TBLPREFIX###', '###UPDATEONLY###'], [LIVEUPDATE_TABLE_PREFIX, ''], trim($query));
-		$matches = [];
+		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
+		$matches = array();
 		if(preg_match('/###UPDATEDROPCOL\(([^,]*),([^)]*)\)###/', $query, $matches)){
 			$query = ($db->isColExist($matches[2], $matches[1]) ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
@@ -684,7 +667,7 @@ class liveUpdateFunctions{
 					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
 					$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
 					$db->query('SHOW CREATE TABLE ' . $db->escape($tableName));
-					list(, $orgTable) = ($db->next_record() ? $db->Record : ['', '']);
+					list(, $orgTable) = ($db->next_record() ? $db->Record : array('', ''));
 					$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
 
 					// create temptable
@@ -704,8 +687,8 @@ class liveUpdateFunctions{
 					$newTableKeys = $this->getKeysFromTable($tmpName);
 
 					// determine changed and new fields.
-					$changeFields = []; // array with changed fields
-					$addFields = []; // array with new fields
+					$changeFields = array(); // array with changed fields
+					$addFields = array(); // array with new fields
 					$lastField = 'FIRST';
 					foreach($newTable as $fieldName => $newField){
 						$newField['last'] = $lastField;
@@ -722,10 +705,10 @@ class liveUpdateFunctions{
 					// determine new keys
 					// moved down after change and addfields
 					// get all queries to add/change fields, keys
-					$alterQueries = [];
+					$alterQueries = array();
 
-					if($this->getTableEngine($tableName) != ($tmpEngine = $this->getTableEngine($tmpName))){
-						$alterQueries[] = 'ALTER TABLE `' . $tableName . '` ENGINE=' . $tmpEngine;
+					if(!in_array(strtolower($this->getTableEngine($tableName)), $this->allowedEngines)){
+						$this->db->query('ALTER TABLE `' . $tableName . '` ENGINE=' . $this->defaultEngine);
 					}
 					// get all queries to change existing fields
 					if($changeFields){
@@ -736,8 +719,8 @@ class liveUpdateFunctions{
 					}
 
 					//new position to determine new keys
-					$addKeys = [];
-					$changedKeys = [];
+					$addKeys = array();
+					$changedKeys = array();
 					foreach($newTableKeys as $keyName => $indexes){
 						$lkeyName = strtolower($keyName);
 						if(isset($origTableKeys[$lkeyName])){
@@ -769,9 +752,8 @@ class liveUpdateFunctions{
 
 					//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
 					if(isset($origTableKeys['_temp'])){
-						$alterQueries = array_merge(['DROP INDEX _temp'], $alterQueries);
+						$alterQueries = array_merge(array('DROP INDEX _temp'), $alterQueries);
 					}
-					t_e($alterQueries);
 					if($alterQueries){
 						// execute all queries
 						$success = true;
@@ -796,7 +778,7 @@ class liveUpdateFunctions{
 						} else if($duplicate){
 							if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
 								$db->query($orgTable);
-								$db->lock([$tableName => 'write', $backupName => 'read']);
+								$db->lock(array($tableName => 'write', $backupName => 'read'));
 								foreach($alterQueries as $query){
 									if(trim($query) && !$db->query(trim($query))){
 										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
@@ -845,7 +827,7 @@ class liveUpdateFunctions{
 	 */
 	function clearQueryLog(){
 		foreach($this->QueryLog as &$cur){
-			$cur = [];
+			$cur = array();
 		}
 	}
 
@@ -876,13 +858,14 @@ class liveUpdateFunctions{
 
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
-			$all = [];
+			$all = array();
 			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
-				$delFiles = [];
+				$delFiles = array();
 				foreach($all as $cur){
 					$recursive = false;
 					if($cur{0} === '!'){
 						$cur = substr($cur, 1);
+						$recursive = true;
 					}
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){
@@ -902,6 +885,14 @@ class liveUpdateFunctions{
 		return true;
 	}
 
+	static function weUpdaterDoUpdate($what, $progress = array()){
+		if(method_exists('we_updater', 'doUpdate')){
+			return we_updater::doUpdate($what, $progress);
+		}
+
+		return true;
+	}
+
 	function removeDirOnlineInstaller(){
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
 			we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
@@ -910,13 +901,6 @@ class liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate($what = '', $pos = ''){
-		if(method_exists('we_updater', 'doUpdate')){
-			we_updater::doUpdate();
-		}
-
-		return true;
-	}
 
 	/**
 	 * This file sets another errorhandler - to make specific error-messages
@@ -929,12 +913,12 @@ class liveUpdateFunctions{
 	 */
 	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
-		$GLOBALS['liveUpdateError'] = [
+		$GLOBALS['liveUpdateError'] = array(
 			"errorNr" => $errno,
 			"errorString" => $errstr,
 			"errorFile" => $errfile,
 			"errorLine" => $errline,
-		];
+		);
 		if(function_exists('error_handler')){
 			if(strpos($errstr, 'MYSQL-ERROR') !== 0){
 				//don't handle mysql errors, they're handled by updatelog - since some of them are "wanted"
