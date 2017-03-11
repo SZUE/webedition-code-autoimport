@@ -347,9 +347,9 @@ if ($success) {
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '<br />' .
-			count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
-			count($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
-			count($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
+				count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
+				count($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
+				count($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
 
 		$progress = installer::getInstallerProgressPercent();
 
@@ -558,22 +558,19 @@ if ($success) {
 		$repeatUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
 
 		$retArray = [
-			'Type' => 'eval',
+			'Type' => 'eval', //'ExecutePatches',
+			'Repeat' => installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '__MSG__'),
+			'Next' => installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '__MSG__'),
+			'Error' => installer::getErrorMessageResponsePart('$errorFile', '{$GLOBALS["errorDetail"]}'),
+			'RepeatText' => sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])),
 			'Code' => '<?php
 
 ' . updateUtil::getOverwriteClassesCode() . '
 
-$delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
-if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
-	if(is_file($delDir . "deleted.files")){
-		unlink($delDir . "deleted.files");
-	}
-	$liveUpdateFnc->removeObsoleteFiles($delDir);
-}
-if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
-	$liveUpdateFnc->removeDirOnlineInstaller();
-}
 
+if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
+	$redo=$liveUpdateFnc::weUpdaterDoUpdate((empty($_REQUEST["progress"])?"":$_REQUEST["progress"]["what"]),(empty($_REQUEST["progress"])?array():$_REQUEST["progress"]));
+}
 $allFiles = array();
 $liveUpdateFnc->getFilesOfDir($allFiles, LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/");
 
@@ -589,22 +586,34 @@ foreach($allFiles as $file) {
 	unlink($file);
 }
 
-if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
-	$redo=$liveUpdateFnc::weUpdaterDoUpdate(empty($_REQUEST["progress"])?"":$_REQUEST["progress"]["what"],empty($_REQUEST["pos"])?array():$_REQUEST["progress"]);
-}
-
 if ($success) {
 	$message="";
 	if($allFiles){
-		$message = "<div>" . $message . "</div>".
-		"<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])) . '</div>";
+		$message = "<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])) . '</div>";
 	}
+
 	if(is_array($redo)){
 		$message.="<div>Update ".$redo["text"]."</div>";
 		unset($redo["text"]);
 		echo "<script>top.frames.updatecontent.param=\"&".http_build_query(array("progress"=>$redo))."\";</script>";
 	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}else{
+
+$delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
+if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
+	if(is_file($delDir . "deleted.files")){
+		unlink($delDir . "deleted.files");
+	}
+	$liveUpdateFnc->removeObsoleteFiles($delDir);
+}
+if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
+	$liveUpdateFnc->removeDirOnlineInstaller();
+}
+
+
+
+
+
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}
 } else {
@@ -648,9 +657,9 @@ if ($success) {
 		//bug #6305: bei 6.2.7 (ev. auch anderen) wird bein Nachinstallieren von Sprachen nicht $_SESSION['clientTargetVersionNumber'] gesetzt
 		//dann findet er auch nicht das downzuloadende Installer-Vereichnis und alles kommt leer an
 		$suchInstallerVersion = (!empty($_SESSION['clientTargetVersionNumber']) ?
-			$_SESSION['clientTargetVersionNumber'] :
-			$_SESSION['clientVersionNumber']
-			);
+				$_SESSION['clientTargetVersionNumber'] :
+				$_SESSION['clientVersionNumber']
+				);
 
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
@@ -866,12 +875,12 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 			} else {
 				break;
 			}
-		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-			updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-			updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
-			);
+				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
+				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+				);
 
 
 		// :IMPORTANT:
