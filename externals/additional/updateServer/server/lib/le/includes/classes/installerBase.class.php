@@ -13,8 +13,7 @@ class installerBase{
 		error_log("Overwrite this:");
 		error_log(__FILE__ . ": " . __CLASS__ . "::" . __FUNCTION__);
 
-		return array(
-		);
+		return [];
 	}
 
 	/**

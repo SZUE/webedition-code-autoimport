@@ -12,7 +12,6 @@ class updateUtilBase{
 	 * @return string
 	 */
 	static function serializeResponseArray($responseArray){
-
 		return base64_encode(serialize($responseArray));
 	}
 
@@ -25,7 +24,6 @@ class updateUtilBase{
 	 * @return string
 	 */
 	static function getResponseString($array){
-
 		$responseArray = array();
 
 		foreach($array as $key => $value){
@@ -308,7 +306,6 @@ if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveU
 }
 
 $liveUpdateFnc = new liveUpdateFunctionsServer();
-$liveUpdateRsp = new liveUpdateResponseServer();
 
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\')) {
 	require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');

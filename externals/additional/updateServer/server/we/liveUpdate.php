@@ -5,7 +5,7 @@
 // error logging
 ini_set("log_errors", 1);
 ini_set("error_reporting", E_ALL);
-ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors.log.php");
+ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors_update.log.php");
 
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
@@ -102,12 +102,9 @@ if(isset($_REQUEST['update_cmd'])){
 	//error_log($_REQUEST['update_cmd']." > ".$_REQUEST['detail']);
 	// handling request
 	switch($_REQUEST['update_cmd']){
-
-
 		case 'notification':
 			require_once(SHARED_DIR . '/includes/notification.inc.php');
 			break;
-
 
 		case 'checkConnection':
 			require_once(SHARED_DIR . '/includes/connection.inc.php');
@@ -139,10 +136,8 @@ if(isset($_REQUEST['update_cmd'])){
 
 
 // check databases
-} else {
-	if($db_versioning_down){
+} elseif($db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
-	}
 }

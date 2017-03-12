@@ -3,16 +3,9 @@
  * $Id$
  */
 // error logging
-//ini_set("log_errors", 0);
 ini_set("log_errors", 1);
 ini_set("error_reporting", E_ALL);
-ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors.log");
-/*
-  error_log(print_r($_REQUEST,1));
-  if(isset($_REQUEST["reqArray"]) && !empty($_REQUEST["reqArray"])) {
-  error_log(print_r(unserialize(base64_decode($_REQUEST["reqArray"])),1));
-  }
- */
+ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors_install.log.php");
 
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
@@ -99,12 +92,9 @@ if(isset($_REQUEST['update_cmd'])){
 	}
 
 	switch($_REQUEST['update_cmd']){
-
-
 		case 'notification':
 			require_once(SHARED_DIR . '/includes/notification.inc.php');
 			break;
-
 
 		case 'checkConnection':
 			require_once(SHARED_DIR . '/includes/connection.inc.php');
