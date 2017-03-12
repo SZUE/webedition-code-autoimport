@@ -2,7 +2,7 @@
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
-	var $QueryLog = array(
+	protected $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
@@ -10,13 +10,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		'tableExists' => array(), //needed from server functions
 	);
 
-	private $defaultEngine = '';
-	private $db;
+	protected $defaultEngine = '';
+	protected $db;
+	protected $allowedEngines = array('myisam', 'aria');
 
 	public function __construct(){
 		$this->db = new DB_WE();
 		$this->defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value', $this->db);
-		if(!in_array(strtolower($this->defaultEngine), array('myisam', 'aria'))){
+		if(!in_array(strtolower($this->defaultEngine), $this->allowedEngines)){
 			$this->defaultEngine = 'MyISAM';
 		}
 	}
@@ -693,8 +694,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					// get all queries to add/change fields, keys
 					$alterQueries = array();
 
-					if($this->getTableEngine($tableName) != ($tmpEngine = $this->getTableEngine($tmpName))){
-						$this->db->query('ALTER TABLE `' . $tableName . '` ENGINE=' . $tmpEngine);
+					if(!in_array(strtolower($this->getTableEngine($tableName)), $this->allowedEngines)){
+						$this->db->query('ALTER TABLE `' . $tableName . '` ENGINE=' . $this->defaultEngine);
 					}
 					// get all queries to change existing fields
 					if($changeFields){
