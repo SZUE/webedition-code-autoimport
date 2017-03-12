@@ -3,8 +3,8 @@
  * $Id$
  */
 // include config files
-require_once(LIVEUPDATE_SERVER_DIR . "/includes/conf/conf.inc.php");
-require_once(LIVEUPDATE_SERVER_DIR . "/includes/conf/define.inc.php");
+require_once(LIVEUPDATE_SERVER_DIR . '/includes/conf/conf.inc.php');
+require_once(LIVEUPDATE_SERVER_DIR . '/includes/conf/define.inc.php');
 
 // include system classes
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/banner.class.php');

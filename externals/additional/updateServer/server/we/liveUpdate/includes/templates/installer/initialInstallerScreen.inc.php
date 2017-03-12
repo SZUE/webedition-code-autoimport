@@ -56,7 +56,6 @@ $content = \'
 <script>
 	activateLiInstallerStep("' . $firstStep . '");
 </script>
-<!-- <a href="javascript:proceedUrl();">weiter</a> -->
 <script>
 	proceedUrl();
 </script>

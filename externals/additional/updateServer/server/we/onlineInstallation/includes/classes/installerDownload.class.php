@@ -12,12 +12,11 @@ class installerDownload extends installer{
 	 */
 	static function getInstallationStepNames(){
 
-		return array(
-			'determineInstallerFiles',
+		return ['determineInstallerFiles',
 			'downloadInstallerFiles',
 			'prepareInstallerFiles',
 			'copyInstallerFiles',
-		);
+			];
 	}
 
 	/**
