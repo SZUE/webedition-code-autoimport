@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $liveUpdateResponse['Type'] = 'template';
 $liveUpdateResponse['Headline'] = $GLOBALS['lang']['notification']['installerVersionFailed']['headline'];
 $liveUpdateResponse['Content'] = '

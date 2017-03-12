@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 /*
  * deactivate php wsdl-caching for development:
  */

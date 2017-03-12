@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class CopyApplicationFiles extends leStep{
 	var $EnabledButtons = array("reload");

@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class CleanUp extends leStep{
 	var $EnabledButtons = array();

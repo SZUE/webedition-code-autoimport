@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class updateUtil extends updateUtilBase{
 

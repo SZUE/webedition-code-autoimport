@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 /**
  * This template is shown, when there is no update available. It is possible

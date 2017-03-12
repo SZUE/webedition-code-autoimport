@@ -1,7 +1,7 @@
 <?php
-
-//version6000
-//code aus 6201
+/**
+ * $Id$
+ */
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 	/**

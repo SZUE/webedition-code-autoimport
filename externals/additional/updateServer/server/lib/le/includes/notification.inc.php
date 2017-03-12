@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // execute command
 switch($_REQUEST['detail']){
 

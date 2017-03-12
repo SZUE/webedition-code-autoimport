@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class FinishApplicationInstallation extends leStep{
 	var $EnabledButtons = array("next");

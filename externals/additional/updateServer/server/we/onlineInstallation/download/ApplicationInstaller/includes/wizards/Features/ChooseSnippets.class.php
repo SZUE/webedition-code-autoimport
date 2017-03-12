@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class ChooseSnippets extends leStep{
 

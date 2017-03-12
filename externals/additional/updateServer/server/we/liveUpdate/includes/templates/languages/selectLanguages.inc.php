@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 /**
  * returns html checkbox for webEdition

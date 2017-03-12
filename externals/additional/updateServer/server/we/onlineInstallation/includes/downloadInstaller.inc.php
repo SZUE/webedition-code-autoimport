@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $downloadInstaller = new installerDownload();
 
 // execute command

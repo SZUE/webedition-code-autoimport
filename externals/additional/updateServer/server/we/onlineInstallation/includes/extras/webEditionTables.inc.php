@@ -1,6 +1,8 @@
 <?php
-$GLOBALS["allTables"] = array(
-	"tblAnzeigePrefs",
+/**
+ * $Id$
+ */
+$GLOBALS["allTables"] = ["tblAnzeigePrefs",
 	"tblbanner",
 	"tblbannerclicks",
 	"tblbannerprefs",
@@ -96,4 +98,4 @@ $GLOBALS["allTables"] = array(
 	"tblObject_28",
 	"tblObject_29",
 	"tblObject_30",
-);
+ ];

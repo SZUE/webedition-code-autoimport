@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown, when something is not available at the moment
  */
 $liveUpdateResponse['Type'] = 'template';

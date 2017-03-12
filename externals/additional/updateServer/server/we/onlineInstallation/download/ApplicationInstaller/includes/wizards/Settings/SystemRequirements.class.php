@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class SystemRequirements extends leStep{
 

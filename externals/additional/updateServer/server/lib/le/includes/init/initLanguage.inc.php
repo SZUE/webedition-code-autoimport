@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // Available Languages
 // Default encoding: UTF-8
 $AvailableLanguages = array(

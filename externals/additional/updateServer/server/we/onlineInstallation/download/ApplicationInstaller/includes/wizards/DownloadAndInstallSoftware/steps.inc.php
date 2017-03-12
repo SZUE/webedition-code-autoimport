@@ -1,6 +1,8 @@
 <?php
-$leInstallerSteps = array(
-	'PrepareApplicationInstallation',
+/**
+ * $Id$
+ */
+$leInstallerSteps = ['PrepareApplicationInstallation',
 	'DetermineApplicationFiles',
 	'DownloadApplicationFiles',
 	'UpdateApplicationDatabase',
@@ -8,5 +10,5 @@ $leInstallerSteps = array(
 	'CopyApplicationFiles',
 	'WriteApplicationConfiguration',
 	'FinishApplicationInstallation',
-);
+ ];
 

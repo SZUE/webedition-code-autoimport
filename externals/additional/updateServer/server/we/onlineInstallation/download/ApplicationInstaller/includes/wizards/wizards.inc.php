@@ -1,9 +1,11 @@
 <?php
-$leInstallerWizards = array(
-	'Settings',
+/**
+ * $Id$
+ */
+$leInstallerWizards = ['Settings',
 	'Features',
 	'Summary',
 	'DownloadAndInstallSoftware',
 	'FinishInstallation',
-);
+ ];
 

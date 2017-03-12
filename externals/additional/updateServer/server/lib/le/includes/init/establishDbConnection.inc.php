@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * Establish connection to databases containing versioning and register
  * information
  */

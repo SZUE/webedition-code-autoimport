@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $snippet = new downloadSnippet();
 
 // execute command

@@ -1,7 +1,7 @@
 <?php
-
-//version6300
-//code aus 6300
+/**
+ * $Id$
+ */
 class liveUpdateResponseServer extends liveUpdateResponse{
 
 	function executePatches(){

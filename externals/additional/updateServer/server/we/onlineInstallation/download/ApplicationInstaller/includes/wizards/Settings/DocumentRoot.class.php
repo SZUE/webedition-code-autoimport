@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class DocumentRoot extends leStep{
 

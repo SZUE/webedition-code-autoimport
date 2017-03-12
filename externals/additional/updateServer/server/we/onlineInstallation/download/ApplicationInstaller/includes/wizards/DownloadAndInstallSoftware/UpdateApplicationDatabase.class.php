@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class UpdateApplicationDatabase extends leStep{
 	var $EnabledButtons = array("reload");

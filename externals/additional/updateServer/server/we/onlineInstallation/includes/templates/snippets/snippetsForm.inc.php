@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $liveUpdateResponse['Type'] = 'executeOnline';
 $liveUpdateResponse['Code'] = '
 <?php

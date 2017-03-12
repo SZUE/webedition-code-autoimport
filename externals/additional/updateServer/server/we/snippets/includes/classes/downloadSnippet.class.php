@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class downloadSnippet extends installer{
 	static  $LanguageIndex = "downloadSnippet";

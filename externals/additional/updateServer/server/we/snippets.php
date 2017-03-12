@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
 

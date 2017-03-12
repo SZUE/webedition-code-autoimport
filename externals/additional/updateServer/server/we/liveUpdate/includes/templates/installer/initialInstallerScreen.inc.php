@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown, when any form of installation should start.
  */
 // use a banner if needed

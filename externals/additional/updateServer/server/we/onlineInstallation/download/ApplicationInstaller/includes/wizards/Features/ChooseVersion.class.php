@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class ChooseVersion extends leStep{
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $lang['license']['undefinedError'] = 'Undefined Error';
 
 $lang['upgrade']['headline'] = 'Upgrade webEdition';

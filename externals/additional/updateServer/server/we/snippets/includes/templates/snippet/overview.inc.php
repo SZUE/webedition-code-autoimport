@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 if($_SESSION['clientImportType'] == "detail"){
 	$AvailableImports = downloadSnippet::getDetailImports();
 } else {

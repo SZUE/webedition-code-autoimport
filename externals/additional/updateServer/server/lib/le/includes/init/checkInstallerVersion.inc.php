@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * check online installer version
  * it has to be at least 2.7.0.0 or newer
  */

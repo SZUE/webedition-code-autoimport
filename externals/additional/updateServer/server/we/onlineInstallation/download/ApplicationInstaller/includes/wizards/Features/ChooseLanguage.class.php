@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class ChooseLanguage extends leStep{
 

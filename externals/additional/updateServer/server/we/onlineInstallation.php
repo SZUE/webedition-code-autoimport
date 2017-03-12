@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // error logging
 //ini_set("log_errors", 0);
 ini_set("log_errors", 1);

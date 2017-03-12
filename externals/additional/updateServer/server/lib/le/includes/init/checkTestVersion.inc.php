@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * check if its test from us
  */
 if(isset($clientRequestVars['testUpdate']) && $clientRequestVars['testUpdate']){

@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown, before installation starts
  */
 $liveUpdateResponse['Type'] = 'eval';

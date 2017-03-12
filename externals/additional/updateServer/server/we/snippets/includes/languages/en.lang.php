@@ -1,8 +1,7 @@
 <?php
-//
-// ---> installer
-//
-// installer common
+/**
+ * $Id$
+ */
 $lang["installer"]["errorAtStep"] = "Error during step: ";
 
 // installApplication::getPrepareApplicationInstallationResponse()

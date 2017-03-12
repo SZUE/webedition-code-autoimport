@@ -1,5 +1,7 @@
 <?php
-$leInstallerSteps = array(
-	'Summary',
-);
+/**
+ * $Id$
+ */
+$leInstallerSteps = ['Summary',
+	];
 

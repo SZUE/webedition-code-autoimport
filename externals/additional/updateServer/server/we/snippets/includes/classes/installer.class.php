@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class installer extends installerBase{
 	static $LanguageIndex = "installer";

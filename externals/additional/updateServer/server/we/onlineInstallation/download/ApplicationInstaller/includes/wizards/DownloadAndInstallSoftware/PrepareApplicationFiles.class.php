@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class PrepareApplicationFiles extends leStep{
 	var $EnabledButtons = array("reload");

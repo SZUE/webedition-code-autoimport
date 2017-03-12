@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 /*
  * simple script that checks for the latest webEdition version available
  *

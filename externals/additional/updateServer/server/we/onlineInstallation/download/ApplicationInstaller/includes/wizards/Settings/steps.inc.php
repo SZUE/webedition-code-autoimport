@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $leInstallerSteps = array(
 	//'ImportantAnnouncement',
 	'LicenceAgreement',

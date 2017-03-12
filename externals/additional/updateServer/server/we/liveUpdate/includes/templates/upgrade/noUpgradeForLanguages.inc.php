@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This file is the template for the update screen, if there are updates
  * available which cannot be installed - due to installed langugages
  *

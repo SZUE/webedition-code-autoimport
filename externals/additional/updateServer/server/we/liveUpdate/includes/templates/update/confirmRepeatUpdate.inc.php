@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown to confirm an update repeat
  */
 $ReqOK = update::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);

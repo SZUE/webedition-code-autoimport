@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 	/*
 	 * Start the session on the server and store alwayws needed data here

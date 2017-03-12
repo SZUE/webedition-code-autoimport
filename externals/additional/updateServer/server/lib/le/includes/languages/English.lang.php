@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $lang['update']['headline'] = 'Update';
 
 $lang['notification']['headline'] = 'Message from Live Update Server';

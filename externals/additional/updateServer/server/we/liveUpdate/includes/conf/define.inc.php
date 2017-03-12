@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // set the live update template dir
 define("LIVEUPDATE_SERVER_TEMPLATE_DIR", LIVEUPDATE_SERVER_DIR . '/includes/templates');
 

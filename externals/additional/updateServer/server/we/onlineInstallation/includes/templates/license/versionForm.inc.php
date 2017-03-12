@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $Output = '<br /><br />';
 
 $AvailableVersions = $GLOBALS['updateServerTemplateData']['AvailableVersions'];

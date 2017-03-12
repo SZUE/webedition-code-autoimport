@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // 1st check if software is installed correct
 // execute command
 

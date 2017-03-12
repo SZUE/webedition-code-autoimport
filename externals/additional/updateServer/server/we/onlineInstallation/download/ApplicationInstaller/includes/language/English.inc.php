@@ -1,7 +1,7 @@
 <?php
-//
-// ---> Wizards
-//
+/**
+ * $Id$
+ */
 
 $lang["Wizard"]["Settings"]["title"] = "Settings";
 $lang["Wizard"]["Features"]["title"] = "Choose features";

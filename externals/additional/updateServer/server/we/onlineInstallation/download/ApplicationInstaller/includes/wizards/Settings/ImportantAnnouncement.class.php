@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class ImportantAnnouncement extends leStep{
 	var $EnabledButtons = array("next");

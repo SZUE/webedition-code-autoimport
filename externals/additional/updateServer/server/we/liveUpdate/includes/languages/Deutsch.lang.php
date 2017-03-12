@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 $lang['license']['undefinedError'] = 'Undefinierter Fehler';
 

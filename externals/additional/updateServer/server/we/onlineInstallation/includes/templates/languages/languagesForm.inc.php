@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $installAbleLanguages = $GLOBALS['updateServerTemplateData']['installAbleLanguages'];
 
 $Output = '<table class="leContentTable">

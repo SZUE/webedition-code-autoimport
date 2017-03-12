@@ -1,7 +1,7 @@
 <?php
-//
-// ---> installer
-//
+/**
+ * $Id$
+ */
 // installer common
 $lang["installer"]["errorAtStep"] = "Error during step: ";
 

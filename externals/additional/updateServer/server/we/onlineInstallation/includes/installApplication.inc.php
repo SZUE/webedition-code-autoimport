@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $installer = new installApplication();
 
 

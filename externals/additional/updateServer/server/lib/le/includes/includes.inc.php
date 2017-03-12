@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 // include config files
 
 require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.php');

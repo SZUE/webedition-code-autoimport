@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This file contains an array with changes necessary during registration of webEdition
  * AND
  * changes needed for the onlineInstaller to downgrade this version to a demo version

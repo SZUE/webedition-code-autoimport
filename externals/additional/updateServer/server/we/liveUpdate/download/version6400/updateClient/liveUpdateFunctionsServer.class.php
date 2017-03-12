@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 

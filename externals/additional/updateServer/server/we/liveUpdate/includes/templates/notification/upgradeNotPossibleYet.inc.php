@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown, until webEdition version 4 is published
  */
 $liveUpdateResponse['Type'] = 'template';

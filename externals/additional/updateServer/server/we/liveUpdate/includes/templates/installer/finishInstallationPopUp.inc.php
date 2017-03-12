@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 

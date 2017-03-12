@@ -1,4 +1,7 @@
-<?php exit;?>
+<?php /**
+ * $Id$
+ */
+exit;?>
 These templates are included from the updateserver. They are either included
 from the updateserver directly (->direct output), or included with output
 buffering activated and returned to the updateclient which prints them. With

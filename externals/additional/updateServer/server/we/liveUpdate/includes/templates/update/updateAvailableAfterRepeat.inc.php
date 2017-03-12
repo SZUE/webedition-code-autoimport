@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * This template is shown, when there is an update available. But the SVN-REvision ist not high enough It is possible
  * to start an updaterepeat.
  */

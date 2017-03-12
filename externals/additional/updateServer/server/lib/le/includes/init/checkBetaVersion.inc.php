@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * check if its beta
  */
 // not possible for too old versions

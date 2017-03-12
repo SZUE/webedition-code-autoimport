@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 class LicenceAgreement extends leStep{
 	//var $EnabledButtons = array("next");

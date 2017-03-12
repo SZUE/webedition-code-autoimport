@@ -1,5 +1,8 @@
 <?php
 /**
+ * $Id$
+ */
+/**
  * Prepare global needed Variables for the LiveUpdate
  */
 $updateServerTemplateData = array();

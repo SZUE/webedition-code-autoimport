@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 
 	header("Content-type: text/css");
 

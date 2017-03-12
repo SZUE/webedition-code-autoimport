@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Id$
+ */
 $desiredLanguagesStr = "<ul>";
 
 foreach($_SESSION['clientDesiredLanguages'] as $lng){
