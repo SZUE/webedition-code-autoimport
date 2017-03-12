@@ -20,10 +20,6 @@ foreach($GLOBALS['updateServerTemplateData']['installationSteps'] as $installati
 
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-$refreshButton = $we_button->create_button("image:btn_function_reload", "javascript:proceedUrl();");
-
 ' . updateUtil::getOverwriteClassesCode() . '
 
 $liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage'][$_SESSION['update_cmd']]['start'] . '", "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 0);
@@ -46,7 +42,7 @@ $content = \'
 	<td id="tdProgressBar">
 		' . progressBar::getProgressBarHtml() . '
 	</td>
-	<td align="right" id="tdRefreshButton">\' . $refreshButton . \'</td>
+	<td align="right" id="tdRefreshButton"><button type="button" class="weBtn" onclick="proceedUrl();">' . $GLOBALS['lang']['button']['refresh'] . '</button></td>
 </tr>
 </table>
 <script>

@@ -9,6 +9,7 @@ $lang['button'] = [
 	'back' => 'zurück',
 	'backup' => 'Backup',
 	'cancel' => 'Abbrechen',
+	'refresh'=>'Aktualisieren'
 ];
 
 $lang['upgrade']['headline'] = 'Upgrade von webEdition';

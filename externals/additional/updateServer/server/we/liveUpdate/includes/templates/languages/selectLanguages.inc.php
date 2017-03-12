@@ -28,7 +28,7 @@ function getCheckBox($name, $value, $text, $beta = false){
 		$text = "$text <font color='red'>[beta]</font>";
 		//error_log("found beta language ".$text.".");
 	}
-	return '\' . we_forms::checkbox("' . $value . '", false, "' . $name . '", "' . $text . '", false, "defaultfont") . \'';
+	return '<input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '"/><label for="' . $name . '">' . $text . '</label>';
 }
 
 $missingLanguages = $GLOBALS['updateServerTemplateData']['missingLanguages'];

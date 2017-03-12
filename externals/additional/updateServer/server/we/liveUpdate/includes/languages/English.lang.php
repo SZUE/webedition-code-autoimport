@@ -9,6 +9,7 @@ $lang['button'] = [
 	'back' => 'Back',
 	'backup' => 'Backup',
 	'cancel' => 'Abort',
+	'refresh' => 'Refresh'
 ];
 
 $lang['upgrade']['headline'] = 'Upgrade webEdition';
@@ -78,7 +79,7 @@ $lang['update']['repeatUpdateNotPossible'] = 'Your installed version is newer th
 $lang['update']['noUpdateForLanguagesText'] = 'You are running webEdition vesrion %s. There is no update available currently, as the update is not available for all your installed languages.';
 $lang['update']['installedLanguages'] = 'The following languages are installed on your system';
 $lang['update']['updatePreventingLanguages'] = 'These languages prevent the update:';
-	$lang['update']['confirmMainDevel']='You have selected a webEdition version which is built only for developers. This version may have severe bugs. Are you really sure you want to install this version?';
+$lang['update']['confirmMainDevel'] = 'You have selected a webEdition version which is built only for developers. This version may have severe bugs. Are you really sure you want to install this version?';
 
 $lang['update']['confirmUpdateText'] = 'You are using version&nbsp;%s and want to update to version&nbsp;%s.';
 $lang['update']['confirmUpdateVersionDetails'] = 'Details to the versions can be found in our <a target="_blank" href="http://www.webedition.org/de/dokumentation-community/versionshistorie/">version history</a>.';

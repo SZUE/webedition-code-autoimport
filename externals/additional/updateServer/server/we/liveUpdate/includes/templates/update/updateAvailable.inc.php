@@ -84,9 +84,6 @@ if (!checkfreequota($testdiskquota)){
 } else {
 	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'] . '";
 }
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "javascript:document.we_form.submit()", true, "100", "22","", "", false);
-$repeatUpdateButton = $we_button->create_button("next", "?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '");
 
 $confirmCheckbox = we_forms::checkboxWithHidden(false, "confirmUpgrade", "' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningCheckbox'] . '", false, "defaultfont","toggleNextButton();");
 
@@ -115,10 +112,8 @@ function checkSelectIsMainDevel(elem){
 
 </script>
 <form name="we_form">
-
-	' . updateUtil::getCommonFormFields('update', 'confirmUpdate') . '
-
-	' . $GLOBALS['lang']['update']['updateAvailableText'] . '<br /><br />' .
+	' . updateUtil::getCommonFormFields('update', 'confirmUpdate') .
+	$GLOBALS['lang']['update']['updateAvailableText'] . '<br /><br />' .
 		$clientVersionText .
 		$maxBranchVersionText .
 		'<br />
@@ -136,17 +131,14 @@ if(!isset($_SESSION['clientPhpExtensions'])){
 
 $liveUpdateResponse['Code'] .= '<br />\'.$diskquotawarning. \'
 	<div class="messageDiv">
-
 		' . $GLOBALS['lang']['upgrade']['confirmUpdateWarning'] . $confirmUpdateHint . $GLOBALS['lang']['upgrade']['confirmUpdateWarningEnd'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningTitle'] . '</b><br />
-	\' . $confirmCheckbox . \' <br /><div id="nextButton" style="display:none;"> \' . $nextButton . \'<br /></div>
-
+	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button><br /></div>
 	' . $GLOBALS['lang']['update']['suggestCurrentVersion'] . '
-
 	<br />
 	<div class="messageDiv">
 		' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-		\' . $repeatUpdateButton . \'
+		<button type="button" class="weBtn" onclick="document.location=\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\'">' . $GLOBALS['lang']['button']['next'] . '</button>
 	</div>
 \';
 

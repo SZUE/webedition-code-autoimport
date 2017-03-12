@@ -63,9 +63,6 @@ if (!checkfreequota($testdiskquota)){
 	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'] . '";
 }
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "javascript:document.we_form.submit()");
-
 if( defined("PCRE_VERSION") ) {
 $pcreV = PCRE_VERSION;
 } else {$pcreV="";}
@@ -96,7 +93,7 @@ if($_SESSION['clientVersionNumber'] > $GLOBALS['updateServerTemplateData']['maxV
 
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['update']['repeatUpdateNeeded'] . '
-		\' . $nextButton . \'
+	<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button>
 	</div>';
 }
 $liveUpdateResponse['Code'] .= '

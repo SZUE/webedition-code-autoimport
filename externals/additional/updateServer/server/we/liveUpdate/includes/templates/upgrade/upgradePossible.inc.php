@@ -19,9 +19,6 @@ $versionList .= '</select>';
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "' . installer::getConfirmInstallationWindow() . '", true, "100", "22","", "", false);
-
 $confirmCheckbox = we_forms::checkboxWithHidden(false, "confirmUpgrade", "' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '", false, "defaultfont","toggleNextButton();");
 
 if( defined("PCRE_VERSION") ) {
@@ -50,57 +47,18 @@ function toggleNextButton() {
 		' . updateUtil::getCommonFormFields('upgrade', 'startUpgrade') . '
 		' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarning'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningTitle'] . '</b><br />
-	\' . $confirmCheckbox . \' <br /><div id="nextButton" style="display:none;"> \' . $nextButton . \'</div>';
+	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . '</button></div>';
 if(!isset($_SESSION['clientPhpExtensions'])){
-	$liveUpdateResponse['Code'] .='
+	$liveUpdateResponse['Code'] .= '
 		<input type="hidden" name="clientPhpVersion" value="\'.phpversion(). \'" />
 		<input type="hidden" name="clientPcreVersion" value="\'.$pcreV. \'" />
 		<input type="hidden" name="clientPhpExtensions" value="\'.base64_encode(serialize(get_loaded_extensions())). \'" />
 		<input type="hidden" name="clientMySQLVersion" value="\'.getMysqlVer(false). \'" />';
 }
-$liveUpdateResponse['Code'] .='
+$liveUpdateResponse['Code'] .= '
 
 </form>
 \';
 
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['upgrade']['headline']) . '", $content);
 ?>';
-?><?php
-/**
- * This template is shown, when something is not available at the moment
- */
-/*
-$versions = $GLOBALS['updateServerTemplateData']['possibleVersions'];
-
-$versionList = '<select class="wetextinput" name="clientTargetVersionNumber">';
-foreach ($versions as $key => $value) {
-
-	$versionList .= '<option value="' . $key . '">' . $value . '</option>';
-}
-$versionList .= '</select>';
-
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "' . installer::getConfirmInstallationWindow() . '");
-
-$content = \'
-<form name="we_form">
-	' . $GLOBALS['lang']['upgrade']['upgradePossibleText'] . '
-	<br />
-	<br />
-	' . $GLOBALS['lang']['upgrade']['upgradeToVersion'] . '
-
-	' . $versionList . '
-	<div class="messageDiv">
-		' . updateUtil::getCommonFormFields('upgrade', 'startUpgrade') . '
-		' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarning'] . '
-	</div>
-	\' . $nextButton . \'
-</form>
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['upgrade']['headline']) . '", $content);
-?>';
-*/
