@@ -2,7 +2,7 @@
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
-	protected $QueryLog = array(
+	public $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
