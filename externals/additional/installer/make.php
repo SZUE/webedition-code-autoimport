@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class le_OnlineInstaller_Make{
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class InstallFilesInstaller extends leStep{
 	var $EnabledButtons = array("reload");

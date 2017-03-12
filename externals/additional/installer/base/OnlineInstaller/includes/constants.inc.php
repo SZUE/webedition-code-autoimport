@@ -1,5 +1,9 @@
 <?php
 /**
+ * $Header$
+ */
+
+/**
  * Path Contants
  *
  */

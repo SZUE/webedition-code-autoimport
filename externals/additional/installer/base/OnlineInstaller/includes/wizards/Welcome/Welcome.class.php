@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class Welcome extends leStep{
 	var $EnabledButtons = array("next");

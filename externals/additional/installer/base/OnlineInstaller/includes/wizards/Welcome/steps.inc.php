@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 $leInstallerSteps = array();
 
 // Show only if not redirected from binary installer

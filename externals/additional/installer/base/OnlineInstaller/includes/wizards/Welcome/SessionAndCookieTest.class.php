@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class SessionAndCookieTest extends leStep{
 	var $AutoContinue = 15;

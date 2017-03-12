@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class ChooseApplication extends leStep{
 	var $EnabledButtons = array('next', 'back');

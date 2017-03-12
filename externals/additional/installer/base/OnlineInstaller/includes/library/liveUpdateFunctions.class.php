@@ -1,5 +1,6 @@
 <?php
 /**
+ * $Header$
  * webEdition CMS
  *
  * This source is part of webEdition CMS. webEdition CMS is

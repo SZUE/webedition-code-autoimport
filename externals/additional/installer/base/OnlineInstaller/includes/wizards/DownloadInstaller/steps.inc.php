@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 $leInstallerSteps = array(
 	'DetermineFilesInstaller',
 	'DownloadFilesInstaller',

@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: mysql.php,v 1.1.1.1 2004/07/21 14:22:04 holger.meyer Exp $
+ * $Header$
  *
  */
 

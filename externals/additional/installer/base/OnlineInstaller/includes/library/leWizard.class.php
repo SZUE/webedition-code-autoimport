@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class leWizard{
 	var $IsCurrent = false;

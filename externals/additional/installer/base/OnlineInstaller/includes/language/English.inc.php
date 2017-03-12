@@ -1,7 +1,7 @@
 <?php
-//
-// ---> Template
-//
+/**
+ * $Header$
+ */
 
 $lang["Template"]["headline"] = "webEdition Online Installer";
 $lang["Template"]["title"] = "webEdition Online Installer";

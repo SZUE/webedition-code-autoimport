@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class ConfigureInstaller extends leStep{
 	var $AutoContinue = 3;

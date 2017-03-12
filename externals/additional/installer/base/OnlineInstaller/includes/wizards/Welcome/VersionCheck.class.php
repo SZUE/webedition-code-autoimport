@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class VersionCheck extends leStep{
 	var $AutoContinue = 10;

@@ -1,5 +1,6 @@
 <?php
 /**
+ * $Header$
  * webEdition Installer
  *
  * @category   WE

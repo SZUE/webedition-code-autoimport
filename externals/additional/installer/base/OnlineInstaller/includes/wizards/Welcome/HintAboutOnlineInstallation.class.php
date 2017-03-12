@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class HintAboutOnlineInstallation extends leStep{
 	var $EnabledButtons = array('back');

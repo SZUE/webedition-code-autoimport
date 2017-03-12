@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 /**
  * LiveUpdateTemplates is a helper function taking care of the view of the

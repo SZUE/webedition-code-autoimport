@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 
 class ProxyServer extends leStep{
 

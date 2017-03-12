@@ -1,4 +1,7 @@
 <?php
+/**
+ * $Header$
+ */
 include("../includes/constants.inc.php");
 header("Content-type: text/css");
 
