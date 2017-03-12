@@ -138,7 +138,7 @@ $liveUpdateResponse['Code'] .= '<br />\'.$diskquotawarning. \'
 	<br />
 	<div class="messageDiv">
 		' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-		<button type="button" class="weBtn" onclick="document.location=\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\'">' . $GLOBALS['lang']['button']['next'] . '</button>
+		<button type="button" class="weBtn" onclick="document.location=\\\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\\\'">' . $GLOBALS['lang']['button']['next'] . '</button>
 	</div>
 \';
 
