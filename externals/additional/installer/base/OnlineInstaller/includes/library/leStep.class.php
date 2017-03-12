@@ -225,7 +225,7 @@ class leStep{
 		$reqVars['testUpdate'] = $leApplicationList[$_SESSION['leApplication']]['testUpdate'];
 		$parameters['reqArray'] = base64_encode(serialize($reqVars));
 		$response = liveUpdateHttp::getHttpResponse($GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'], $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'], $parameters);
-		$liveUpdateResponse = new liveUpdateResponse();
+		$liveUpdateResponse = new liveUpdateResponseServer();
 		$liveUpdateResponse->initByHttpResponse($response);
 
 		return $liveUpdateResponse;

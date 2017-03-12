@@ -16,7 +16,7 @@ class ConnectionCheck extends leStep{
 		$RetValue = LE_STEP_NEXT;
 
 		$Response = liveUpdateHttp::getHttpResponse($GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'], $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'], $Parameters);
-		$LiveUpdateResponse = new liveUpdateResponse();
+		$LiveUpdateResponse = new liveUpdateResponseServer();
 
 		if($LiveUpdateResponse->initByHttpResponse($Response)){
 			if($LiveUpdateResponse->isError()){
