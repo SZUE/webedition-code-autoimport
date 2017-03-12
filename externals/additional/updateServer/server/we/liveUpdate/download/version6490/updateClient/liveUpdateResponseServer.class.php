@@ -1,0 +1,1 @@
+../../liveUpdateResponseServer.class.php
