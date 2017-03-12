@@ -27,7 +27,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-	protected $QueryLog = array(
+	public $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
