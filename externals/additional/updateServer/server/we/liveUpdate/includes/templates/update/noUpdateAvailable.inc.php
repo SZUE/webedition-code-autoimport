@@ -7,11 +7,9 @@
  * to start an updaterepeat.
  */
 //what's this?
-if(isset($GLOBALS['updateServerTemplateData']['maxVersionNumber']['branch']) && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
-	$branchAvailText = '|' . $GLOBALS['updateServerTemplateData']['maxVersionNumber']['branch'];
-} else {
-	$branchAvailText = '';
-}
+$branchAvailText = (isset($GLOBALS['updateServerTemplateData']['maxVersionNumber']['branch']) && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate'] ?
+	'|' . $GLOBALS['updateServerTemplateData']['maxVersionNumber']['branch'] : '');
+
 
 //client version: text and version string
 $clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
@@ -30,39 +28,21 @@ if(isset($_SESSION['clientVersionBranch']) && $_SESSION['clientVersionBranch'] !
 $maxVersionComplete = update::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']);
 $maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']) . ':<br/>' . $maxVersionComplete . '.<br/>';
 
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "javascript:document.we_form.submit()");
-
-
-$content = \'
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'Headline' => $GLOBALS['lang']['update']['headline'],
+	'Header' => '',
+	'Content' => '
 <form name="we_form">
 	' . updateUtil::getCommonFormFields('update', 'confirmRepeatUpdate') . '
 	<input type="hidden" name="clientTargetVersionNumber" value="' . $_SESSION['clientVersionNumber'] . '" />
 	' . addslashes($GLOBALS['lang']['update']['noUpdateNeeded']) . '<br /><br />' .
 	$clientVersionText .
 	$maxBranchVersionText .
-	$maxVersionText . '<br />';
-if(updateUtilBase::version2number($_SESSION['clientVersionNumber']) > $GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']){
-	$liveUpdateResponse['Code'] .= '
-<div class="messageDiv">
-		' . $GLOBALS['lang']['update']['repeatUpdateNotPossible'] . '
-
-	</div>';
-} else {
-	$liveUpdateResponse['Code'] .= '
-
-	<div class="messageDiv">
-		' . $GLOBALS['lang']['update']['repeatUpdatePossible'] . '
-		\' . $nextButton . \'
-	</div>';
-}
-$liveUpdateResponse['Code'] .= '
-</form>
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['update']['headline']) . '", $content);
-?>';
-
+	$maxVersionText . '<br />
+<div class="messageDiv">' .
+	(updateUtilBase::version2number($_SESSION['clientVersionNumber']) > $GLOBALS['updateServerTemplateData']['maxVersionNumber']['version'] ?
+	$GLOBALS['lang']['update']['repeatUpdateNotPossible'] :
+	$GLOBALS['lang']['update']['repeatUpdatePossible'] . '<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button>') . '
+</div></form>'
+];

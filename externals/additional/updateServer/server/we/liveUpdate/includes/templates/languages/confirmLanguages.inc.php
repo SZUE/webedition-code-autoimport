@@ -2,30 +2,22 @@
 /**
  * $Id$
  */
-$desiredLanguagesStr = "<ul>";
+$desiredLanguagesStr = '';
 
 foreach($_SESSION['clientDesiredLanguages'] as $lng){
 	$desiredLanguagesStr .= "	<li>$lng</li>";
 }
-$desiredLanguagesStr .= "</ul>";
-
-// build response array
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-
-$submitButton = $we_button->create_button("next", "javascript:document.we_form.submit();");
-
-$content = \'
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'Headline' => $GLOBALS['lang']['languages']['headline'],
+	'Header' => '',
+	'Content' => '
 <form name="we_form">
 ' . updateUtil::getCommonFormFields('languages', 'startUpdate') . '
 ' . $GLOBALS['lang']['languages']['confirmInstallation'] . '
+	<ul>
 ' . $desiredLanguagesStr . '
-</form>
-\' . $submitButton . \'
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['languages']['headline']) . '", $content);
-?>';
-
+	</ul>
+<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button>
+</form>'
+];

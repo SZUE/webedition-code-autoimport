@@ -5,10 +5,6 @@
 /**
  * This template is shown, when any form of installation should start.
  */
-// use a banner if needed
-$bannerHtml = banner::getBannerHtml();
-$bannerHeader = banner::getBannerHeader();
-
 
 // get steps
 $stepList = '';
@@ -59,9 +55,8 @@ $content = \'
 <script>
 	proceedUrl();
 </script>
-' . $bannerHtml . '
 \';
 
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['installer']['headline']) . '", $content, "' . addslashes(progressBar::getProgressBarJs() . installer::getJsFunctions() . $bannerHeader) . '", "", 550, 500);
+print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['installer']['headline']) . '", $content, "' . addslashes(progressBar::getProgressBarJs() . installer::getJsFunctions() ) . '", "", 550, 500);
 
 ?>';

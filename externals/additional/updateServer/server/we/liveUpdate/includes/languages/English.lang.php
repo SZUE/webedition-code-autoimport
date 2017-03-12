@@ -3,6 +3,13 @@
  * $Id$
  */
 $lang['license']['undefinedError'] = 'Undefined Error';
+$lang['button'] = [
+	'ok' => 'OK',
+	'next' => 'Next',
+	'back' => 'Back',
+	'backup' => 'Backup',
+	'cancel' => 'Abort',
+];
 
 $lang['upgrade']['headline'] = 'Upgrade webEdition';
 $lang['upgrade']['upgradeToVersion'] = 'Upgrade to version';

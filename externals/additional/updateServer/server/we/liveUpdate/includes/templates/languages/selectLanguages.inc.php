@@ -53,30 +53,16 @@ for($i = 0; $i < count($newinstallAbleLanguages); $i++){
 // missingLanguages
 $missingStr = '';
 if(!empty($missingLanguages)){
-
-	$missingStr = "<ul>";
-	for($i = 0; $i < count($missingLanguages); $i++){
-
-		$missingStr .= "<li>" . $missingLanguages[$i] . "</li>";
+	foreach($missingLanguages as $cur){
+		$missingStr .= "<li>" . $cur . "</li>";
 	}
-	$missingStr .= "</ul>";
 }
 
-if($missingStr){
-	$missingStr = '<div class="messageDiv">' .
-		$GLOBALS['lang']['languages']['languagesNotReady'] . $missingStr .
-		'</div>';
-}
-
-// build response array
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-
-$submitButton = $we_button->create_button("next", "javascript:document.we_form.submit();");
-
-$content = \'
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'Headline' => $GLOBALS['lang']['languages']['headline'],
+	'Header' => '',
+	'Content' => '
 <form name="we_form">
 ' . updateUtil::getCommonFormFields('languages', 'confirmLanguages') . '
 
@@ -88,13 +74,10 @@ $content = \'
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . $GLOBALS['lang']['languages']['installLanguages'] . '</td>
-	<td>\' . $submitButton . \'</td>
+	<td><button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button></td>
 </tr>
 </table>
-
-' . $missingStr . '
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['languages']['headline']) . '", $content);
-?>';
-
+' . ($missingStr ? '<div class="messageDiv">' .
+	$GLOBALS['lang']['languages']['languagesNotReady'] . '<ul>' . $missingStr .
+	'</ul></div>' : '')
+];

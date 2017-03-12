@@ -48,12 +48,6 @@ if (!checkfreequota($testdiskquota)){
 	$diskquotawarning = "";
 }
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "' . installer::getConfirmInstallationWindow() . '");
-
-$ReqOK = ' . $ReqOK . ';
-if (!$ReqOK) {$nextButton = "";}
-
 $content = \'
 <form name="we_form">
 	' . updateUtil::getCommonFormFields('update', 'startRepeatUpdate') . '
@@ -62,7 +56,8 @@ $content = \'
 	<div class="messageDiv">
 	' . $GLOBALS['lang']['update']['confirmRepeatUpdateMessage'] . '
 	</div>\'.$diskquotawarning.\'
-	\' . $nextButton . \'</form><div style="margin-top:20px;">' . $GLOBALS['lang']['update']['spenden'] . '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+'.($ReqOK?'<button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . '</button>':'').'
+</form><div style="margin-top:20px;">' . $GLOBALS['lang']['update']['spenden'] . '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="BERPPPT588RAE">
                   <input type="image" src="https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Jetzt einfach, schnell und sicher online bezahlen – mit PayPal.">

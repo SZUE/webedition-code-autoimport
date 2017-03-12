@@ -10,8 +10,6 @@ require_once(LIVEUPDATE_SERVER_DIR . '/includes/conf/define.inc.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/extras/replaceCode.inc.php');
 
 // include system classes
-require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/banner.class.php');
-require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/debug.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/installationLog.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/installer.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/languages.class.php');

@@ -35,13 +35,11 @@ foreach($_SESSION['clientInstalledLanguages'] as $lng){
 	}
 }
 //$preventLngsList .='<li>'.print_r($_SESSION['clientInstalledLanguages'],1).'</li>';
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-
-$we_button = new we_button();
-$nextButton = $we_button->create_button("next", "javascript:document.we_form.submit()");
-
-$content = \'
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'Headline' => $GLOBALS['lang']['languages']['headline'],
+	'Header' => '',
+	'Content' => '
 <form name="we_form">
 	' . updateUtil::getCommonFormFields('update', 'confirmRepeatUpdate') . '
 	<input type="hidden" name="clientTargetVersionNumber" value="' . $_SESSION['clientVersionNumber'] . '" />
@@ -60,11 +58,7 @@ $content = \'
 </div>
 <div class="messageDiv">
 	' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-	\' . $nextButton . \'
+	<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button>
 </div>
 </form>
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['update']['headline']) . '", $content);
-?>';
-
+'];

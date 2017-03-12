@@ -86,7 +86,7 @@ class installer extends installerBase{
 	 * @return string
 	 */
 	static function getConfirmInstallationWindow(){
-		return 'javascript:window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'confirmInstallation') . '\', \'confirmUpdate' . time() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\')';
+		return "window.open(\'?" . updateUtil::getCommonHrefParameters('installer', 'confirmInstallation') . "\', \'confirmUpdate" . time() . "\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\')";
 	}
 
 	/**

@@ -2,8 +2,14 @@
 /**
  * $Id$
  */
-
 $lang['license']['undefinedError'] = 'Undefinierter Fehler';
+$lang['button'] = [
+	'ok' => 'OK',
+	'next' => 'weiter',
+	'back' => 'zurück',
+	'backup' => 'Backup',
+	'cancel' => 'Abbrechen',
+];
 
 $lang['upgrade']['headline'] = 'Upgrade von webEdition';
 $lang['upgrade']['upgradePossibleText'] = 'W&auml;hlen Sie aus der Liste aus, auf welche webEdition Version Sie updaten m&ouml;chten';
