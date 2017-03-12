@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  */
 // Load library files from online installer
 if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/library") && is_dir(LE_ONLINE_INSTALLER_PATH . "/includes/library")){

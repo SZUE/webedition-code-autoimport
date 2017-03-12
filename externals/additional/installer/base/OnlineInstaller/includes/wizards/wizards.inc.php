@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  */
 $leInstallerWizards = array(
 	'Welcome',

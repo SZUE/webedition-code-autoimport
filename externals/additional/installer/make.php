@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  */
 
 class le_OnlineInstaller_Make{

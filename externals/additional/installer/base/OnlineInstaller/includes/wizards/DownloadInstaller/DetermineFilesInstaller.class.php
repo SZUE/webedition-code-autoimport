@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  */
 
 class DetermineFilesInstaller extends leStep{

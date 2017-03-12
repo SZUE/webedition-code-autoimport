@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  * webEdition CMS
  *
  * This source is part of webEdition CMS. webEdition CMS is

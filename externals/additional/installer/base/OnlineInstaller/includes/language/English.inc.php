@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header$
+ * $Id$
  */
 
 $lang["Template"]["headline"] = "webEdition Online Installer";
