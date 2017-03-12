@@ -4,7 +4,6 @@
  */
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
-
 	public $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -12,7 +11,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		'entryExists' => array(),
 		'tableExists' => array(), //needed from server functions
 	);
-
 	protected $defaultEngine = '';
 	protected $db;
 	protected $allowedEngines = array('myisam', 'aria');
@@ -31,9 +29,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -109,8 +107,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
-				$content);
+			preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
+			$content);
 	}
 
 	/**
@@ -293,7 +291,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function moveFile($source, $destination){
 
-		if($source == $destination){
+		if($source == $destination || !file_exists($source)/* happens if update is retriggered */){
 			return true;
 		}
 		if(filesize($source) == 0){//assume error, add warning, keep file!
@@ -581,7 +579,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		// change fields when needed.
 
 
-		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausführen
 			return true;
 		}
 
@@ -753,16 +751,19 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$query = 'ALTER TABLE `' . $tableName . '` ' . implode(',', $alterQueries);
 						if($db->query($query)){
 							$this->QueryLog['success'][] = $query;
-							} else {
-								//unknown why mysql don't show correct error
-								if($db->Errno == 1062 || $db->Errno == 0){
+						} else {
+							//unknown why mysql don't show correct error
+							switch($db->Errno){
+								case 1062:
+								case 0:
 									$duplicate = true;
 									$this->QueryLog['tableChanged'][] = $tableName;
-								} else {
-								$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
-								}
-								$success = false;
+									break;
+								default:
+									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 							}
+							$success = false;
+						}
 						if($success){
 							$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 						} else if($duplicate){

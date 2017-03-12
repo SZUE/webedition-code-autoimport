@@ -4,7 +4,6 @@
  */
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
-
 	public $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -12,7 +11,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		'entryExists' => array(),
 		'tableExists' => array(), //needed from server functions
 	);
-
 	protected $defaultEngine = '';
 	protected $db;
 	protected $allowedEngines = array('myisam', 'aria');
@@ -24,6 +22,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$this->defaultEngine = 'MyISAM';
 		}
 	}
+
 	/*
 	 * Functions for updatelog
 	 */
@@ -104,8 +103,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
-				$content);
+			preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
+			$content);
 	}
 
 	/**
@@ -757,12 +756,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 							if($db->query(trim($_query))){
 								$this->QueryLog['success'][] = $_query;
 							} else {
-								//unknown why mysql don't show correct error
-								if($db->Errno == 1062 || $db->Errno == 0){
-									$duplicate = true;
-									$this->QueryLog['tableChanged'][] = $tableName;
-								} else {
-								$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
+								switch($db->Errno){ //unknown why mysql don't show correct error
+									case 1062:
+									case 0:
+										$duplicate = true;
+										$this->QueryLog['tableChanged'][] = $tableName;
+										break;
+									default:
+										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 								}
 								$success = false;
 							}
