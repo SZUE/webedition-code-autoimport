@@ -1,24 +1,23 @@
 <?php
+
 /**
  * $Id$
  */
-
 class installer extends installerBase{
 
 	/**
 	 * @return array
 	 */
 	static function getInstallationStepNames(){
-		return array(
-			'downloadInstaller',
+		return ['downloadInstaller',
 			'getChanges',
 			'downloadChanges',
-			'prepareChanges',
+			//'prepareChanges',
 			'updateDatabase',
 			'copyFiles',
 			'executePatches',
 			'finishInstallation'
-		);
+		];
 	}
 
 	/**
@@ -34,7 +33,7 @@ class installer extends installerBase{
 		// - queryfiles/queries per step
 		// - all files to prepare/prepareFiles per step
 		// each step
-		$installationSteps = installer::getInstallationStepNames();
+		$installationSteps = self::getInstallationStepNames();
 		$installationStepsTotal = count($installationSteps);
 
 		// downloads
@@ -44,9 +43,10 @@ class installer extends installerBase{
 		$querySteps = count($_SESSION['clientChanges']['queries']) / EXECUTE_QUERIES_PER_STEP;
 		$installationStepsTotal += $querySteps;
 		// prepare files
-		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
+/*		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
 		$installationStepsTotal += $prepareSteps;
-
+*/
+		$prepareSteps=0;
 		$currentStep = 0;
 
 		switch($_REQUEST['detail']){
@@ -62,9 +62,9 @@ class installer extends installerBase{
 			case 'downloadChanges':
 				$currentStep = 3 + ($_REQUEST['position'] / count($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
-			case 'prepareChanges':
+			/*case 'prepareChanges':
 				$currentStep = 4 + $dlSteps + ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
-				break;
+				break;*/
 			case 'updateDatabase':
 				$currentStep = 5 + $dlSteps + $prepareSteps + ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
 				break;
@@ -138,7 +138,7 @@ class installer extends installerBase{
 	static function getJsFunctions(){
 		return '<script><!--
 var decreaseSpeed = 1; // is set false, when script was successful, otherwise decrease speed
-var nextUrl = "?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
+var nextUrl = "?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
 
 function proceedUrl() {
 	if (!decreaseSpeed) {
@@ -180,7 +180,7 @@ function finishLiInstallerStep(stepId) {
 	 * @return string
 	 */
 	static function getInstallationScreenResponse(){
-		$GLOBALS['updateServerTemplateData']['installationSteps'] = installer::getInstallationStepNames();
+		$GLOBALS['updateServerTemplateData']['installationSteps'] = self::getInstallationStepNames();
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/initialInstallerScreen.inc.php');
 		return updateUtil::getResponseString($ret);
@@ -194,14 +194,39 @@ function finishLiInstallerStep(stepId) {
 	 */
 	static function getDownloadInstallerResponse(){
 
-		$files = installer::getInstallerFilesArray();
+		$files = self::getInstallerFilesArray();
 
-		$nextStep = installer::getNextUpdateDetail();
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($nextStep), $nextStep);
+		$nextStep = self::getNextUpdateDetail();
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($nextStep), $nextStep);
 
-		$retArray = installer::_getDownloadFilesResponse($files, $nextUrl);
+		$retArray = self::_getDownloadFilesResponse($files, $nextUrl);
 
 		return updateUtil::getResponseString($retArray);
+	}
+
+	/**
+	 * returns response string with orders for the client to download the files
+	 * in the filesArray and the nextCmd, $nextDetail to proceed
+	 *
+	 * @param array $filesArray
+	 * @param string $nextCmd
+	 * @param string $nextDetail
+	 * @return array
+	 */
+	static function getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0, $parts = []){
+		$endFile = ((empty($_REQUEST['position']) ? 0 : $_REQUEST['position']) + count($filesArray));
+		$maxFile = count(empty($_SESSION['clientChanges']['allChanges']) ? [] : $_SESSION['clientChanges']['allChanges']);
+		return [
+			'Type' => 'SaveFiles',
+			'Files' => $filesArray,
+			'Next' => self::getProceedNextCommandResponse($nextUrl, $progress),
+			'SuccessText' => sprintf($GLOBALS['lang']['installer']['amountFilesDownloaded'], $endFile, $maxFile),
+			'Parts' => $parts,
+			'Error' => [
+				'path' => self::getErrorMessage('', '__PATH__'),
+				'write' => self::getErrorMessage('', '__PATH__', 'notWritableError')
+			]
+		];
 	}
 
 	/**
@@ -217,14 +242,15 @@ function finishLiInstallerStep(stepId) {
 
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
-			$files = array();';
+			$files = array(';
 
 		foreach($filesArray as $path => $content){
 			$writeFilesCode .= '
-				$files[' . $path . '] = "' . $content . '";';
+				"' . $path . '" => "' . $content . '",';
 		}
+		$writeFilesCode .= ');';
 
-		return array(
+		return [
 			'Type' => 'eval',
 			'Code' => '<?php
 ' . updateUtil::getOverwriteClassesCode() . '
@@ -237,15 +263,15 @@ $successFiles = array(); // successfully saved files
 foreach ($files as $path => $content) {
 	if ($success) {
 
-		$testPath = ltrim(str_replace(LIVEUPDATE_CLIENT_DOCUMENT_DIR, "", $path), "/");
+		$testPath = ltrim($path, "/");
 		$testPath = strpos($testPath, "tmp/files") === 0 ? "/". ltrim(str_replace("tmp/files", "", $testPath), "/") : false;
 
-		if(!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content))) {
+		if(!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR.$path, $liveUpdateFnc->decodeCode($content))) {
 			$success = false;
-			' . installer::getErrorMessageResponsePart('', '$path') . '
+			' . self::getErrorMessageResponsePart('', '$path') . '
 		} else if($testPath && method_exists($liveUpdateFnc, "checkMakeFileWritable") && !$liveUpdateFnc->checkMakeFileWritable($testPath)) {
 			$success = false;
-			' . installer::getErrorMessageResponsePart('', '$testPath', 'notWritableError') . '
+			' . self::getErrorMessageResponsePart('', '$testPath', 'notWritableError') . '
 		} else {
 			$successFiles[] = $path;
 		}
@@ -265,80 +291,10 @@ if ($success) {
 		$message .= "<div>&hellip;$text</div>";
 	}*/
 
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
 }
-?>');
-	}
-
-	/**
-	 * returns response string with orders for the client to download the files
-	 * in the filesArray and the nextCmd, $nextDetail to proceed
-	 *
-	 * @param array $filesArray
-	 * @param string $nextCmd
-	 * @param string $nextDetail
-	 * @return array
-	 */
-	static function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
-
-		// prepare $filesArray (path => encodedContent) for the client
-		$writeFilesCode = '
-			$files = array();';
-
-		foreach($filesArray as $path => $content){
-			$writeFilesCode .= '
-				$files[' . $path . '] = "' . $content . '";';
-		}
-
-		return array(
-			'Type' => 'eval',
-			'Code' => '<?php
-
-' . updateUtil::getOverwriteClassesCode() . '
-
-' . $writeFilesCode . '
-
-$success = true; // all files fine
-$successFiles = array(); // successfully saved files
-
-foreach ($files as $path => $content) {
-	if ($success) {
-		if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-			$errorFile = $path;
-			$success = false;
-		}
-	}
-}
-
-$Content = "";
-for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-	$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
-}
-
-if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
-	$successFiles[] = $path;
-}
-
-for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-	$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
-}
-
-if ($success) {
-			$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
-			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
-
-	$message=sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
-	/*foreach ($successFiles as $path) {
-		$text = substr(basename(' . $Realname . '), -40);
-		$message .= "<div>&hellip;$text</div>";
-	}*/
-
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
-} else {
-	' . installer::getErrorMessageResponsePart() . '
-}
-?>');
+?>'];
 	}
 
 	/**
@@ -347,14 +303,14 @@ if ($success) {
 	 * @return string
 	 */
 	static function getGetChangesResponse($nextUrl = ''){
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '<br />' .
-				count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
-				count($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
-				count($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
+			count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
+			count($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
+			count($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
 
-		$progress = installer::getInstallerProgressPercent();
+		$progress = self::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -362,7 +318,7 @@ if ($success) {
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
-?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
+?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -377,8 +333,8 @@ $liveUpdateFnc->deleteDir($filesDir);
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -428,11 +384,11 @@ for ($i=' . $_REQUEST['position'] . '; $i<count($allFiles) && $i<' . ($_REQUEST[
 
 if ( count($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
 
-	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 } else { // proceed to next step.
 
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 }';
 
 		return updateUtil::getResponseString($retArray);
@@ -445,14 +401,14 @@ if ( count($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES
 	 *
 	 * @return string
 	 */
-	static function getPrepareChangesResponse(){
+	/*static function getPrepareChangesResponse(){
 
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -480,18 +436,18 @@ for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<count($allFiles) && $success && 
 }
 
 if (!$success) {
-	' . installer::getErrorMessageResponsePart() . '
+	' . self::getErrorMessageResponsePart() . '
 } else {
 	if ( count($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
-		?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '.') . '<?php
+		?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '.') . '<?php
 	} else {
-		?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '.') . '<?php
+		?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '.') . '<?php
 	}
 }
 ?>';
 
 		return updateUtil::getResponseString($retArray);
-	}
+	}*/
 
 	/**
 	 * returns response to copy new files to correct location
@@ -499,7 +455,7 @@ if (!$success) {
 	 * @return string
 	 */
 	static function getCopyFilesResponse(){
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -540,11 +496,11 @@ if ($success) {
 	//$message = "<div>" . $message . "</div>";
 	$message = "<div>' . sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], count($_SESSION['clientChanges']['files'])) . '</div>";
 
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 } else {
 
-	' . installer::getErrorMessageResponsePart() . '
+	' . self::getErrorMessageResponsePart() . '
 }
 ?>';
 		return updateUtil::getResponseString($retArray);
@@ -557,14 +513,14 @@ if ($success) {
 	 */
 	static function getExecutePatchesResponse(){
 
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
-		$repeatUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
 
 		$retArray = [
 			'Type' => 'eval', //'ExecutePatches',
-			'Repeat' => installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '__MSG__'),
-			'Next' => installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '__MSG__'),
-			'Error' => installer::getErrorMessageResponsePart('$errorFile', '{$GLOBALS["errorDetail"]}'),
+			'Repeat' => self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '__MSG__'),
+			'Next' => self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '__MSG__'),
+			'Error' => self::getErrorMessageResponsePart('$errorFile', '{$GLOBALS["errorDetail"]}'),
 			'RepeatText' => sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])),
 			'Code' => '<?php
 
@@ -599,7 +555,7 @@ if ($success) {
 		$message.="<div>Update ".$redo["text"]."</div>";
 		unset($redo["text"]);
 		echo "<script>top.frames.updatecontent.param=\"&".http_build_query(array("progress"=>$redo))."\";</script>";
-	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}else{
 
 $delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
@@ -617,10 +573,10 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 
 
 
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}
 } else {
-	' . installer::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
+	' . self::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
 }
 ?>'];
 
@@ -644,7 +600,7 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 	 */
 	static function getInstallerFilesArray(){
 
-		$availableInstallers = array();
+		$availableInstallers = [];
 
 		$d = dir(LIVEUPDATE_SERVER_DOWNLOAD_DIR);
 		while($entry = $d->read()){
@@ -660,16 +616,19 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 		//bug #6305: bei 6.2.7 (ev. auch anderen) wird bein Nachinstallieren von Sprachen nicht $_SESSION['clientTargetVersionNumber'] gesetzt
 		//dann findet er auch nicht das downzuloadende Installer-Vereichnis und alles kommt leer an
 		$suchInstallerVersion = (!empty($_SESSION['clientTargetVersionNumber']) ?
-				$_SESSION['clientTargetVersionNumber'] :
-				$_SESSION['clientVersionNumber']
-				);
+			$_SESSION['clientTargetVersionNumber'] :
+			$_SESSION['clientVersionNumber']
+			);
 
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
 
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php');
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php');
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php');
+		$fileArray = $liveUpdaterFiles = [];
+		updateUtilBase::getFilesOfDir($installerDir . '/updateClient', $liveUpdaterFiles);
+		foreach($liveUpdaterFiles as $file){
+			//filename is evaled, therefore it looks wired
+			$fileArray[str_replace($installerDir, "", $file)] = updateUtil::getFileContentEncoded($file);
+		}
 
 		return $fileArray;
 	}
@@ -681,6 +640,27 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 	 */
 	static function getUpdateClientUrl(){
 		return dirname($_SESSION['clientUpdateUrl']) . '/updateClient/liveUpdateServer.php';
+	}
+
+	static function getProceedNextCommandResponse($nextUrl, $progress){
+
+		$message = '';
+		if(!strpos($nextUrl, $_REQUEST['detail'])){
+			$NextUpdateDetail = static::getNextUpdateDetail();
+			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])){
+				$message .= '<br /><strong>' . $GLOBALS['lang']['installer'][$NextUpdateDetail] . '</strong><br/>';
+			}
+			$nextStep = [$_REQUEST['detail'], $NextUpdateDetail];
+		} else {
+			$nextStep = '';
+		}
+
+		return [
+			'message' => $message,
+			'progress' => $progress,
+			'nextUrl' => $nextUrl,
+			'nextStep' => $nextStep,
+		];
 	}
 
 	/**
@@ -695,10 +675,7 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 	 * @return string
 	 */
 	static function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
-
-		$activateStep = '';
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
-
 			$NextUpdateDetail = static::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])){
 				$message .= '<br /><strong>' . $GLOBALS['lang']['installer'][$NextUpdateDetail] . '</strong><br/>';
@@ -706,7 +683,9 @@ if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 
 			$activateStep = '
 			top.frames.updatecontent.finishLiInstallerStep("' . $_REQUEST['detail'] . '");
-			top.frames.updatecontent.activateLiInstallerStep("' . static::getNextUpdateDetail() . '");';
+			top.frames.updatecontent.activateLiInstallerStep("' . $NextUpdateDetail . '");';
+		} else {
+			$activateStep = '';
 		}
 
 		return '<script>
@@ -733,7 +712,7 @@ window.setTimeout("top.frames.updatecontent.proceedUrl();", 20);
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = '', $type = ''){
 		return '
-$errorMessage = ' . installer::getErrorMessage($headline, $message, $type) . ';
+$errorMessage = ' . self::getErrorMessage($headline, $message, $type) . ';
 
 $liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
 
@@ -811,7 +790,7 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 
 		$Paths = array_keys($_SESSION['clientChanges']['allChanges']);
 
-		$fileArray = array();
+		$fileArray = [];
 		$Position = $_REQUEST['position'];
 
 		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
@@ -821,10 +800,10 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
 
-		if((isset($_REQUEST['part']) && $_REQUEST['part'] > 0) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
+		if((!empty($_REQUEST['part'])) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 
 			// Check which part have to be transfered
-			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
+			$Part = empty($_REQUEST['part']) ? 0 : intval($_REQUEST['part']);
 
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
@@ -833,28 +812,30 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 			// filename on the client
 //			$Index = $Paths[$Position] . ".part" . $Part;
 			// value of the part -> must be base64_encoded
-			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
+			$Value = substr($Content, $Start, $Length);
 
-			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
+			$fileArray[$Paths[$Position] . 'part' . $Part] = $Value;
 
-			if($Start + $Length >= $FileSize){
+			if($Start + $Length >= $FileSize){//last step
 				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+					$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 					// :IMPORTANT:
-					return updateUtil::getResponseString(self::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
+					return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position],
+								'Count' => $Part]));
 				}
 				$Position++;
-				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=" . $Position;
+				$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(self::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
+				return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position - 1],
+							'Count' => $Part]));
 			}
 			$Part += 1;
-			$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&part=" . $Part . "&position=" . $Position;
+			$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
-			return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
+			return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
 
 
 			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
@@ -873,21 +854,21 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 				$ResponseSize += $FileSize;
 
-				$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$fileArray[$Paths[$Position]] = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 				$Position++;
 			} else {
 				break;
 			}
-		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-		$nextUrl = installer::getUpdateClientUrl() . '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
-				);
+		$nextUrl = self::getUpdateClientUrl() . '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
+			updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail()) :
+			updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+			);
 
 
 		// :IMPORTANT:
-		return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
+		return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
 	}
 
 }

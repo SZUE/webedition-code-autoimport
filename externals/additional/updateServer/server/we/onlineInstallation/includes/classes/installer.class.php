@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id$
  */
-
 class installer extends installerBase{
 	static $LanguageIndex = "installer";
 
@@ -18,11 +18,6 @@ class installer extends installerBase{
 	 * @return string
 	 */
 	static function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
-
-		$activateStep = '';
-
-		$appendMessageLogJs = "appendText";
-
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
 			$NextUpdateDetail = static::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang'][self::$LanguageIndex])){
@@ -30,20 +25,15 @@ class installer extends installerBase{
 			}
 		}
 
-		if(strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"])){
-			$activateStep = 'top.leStatus.update("leStatus", "' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");';
-		}
-
-		if(static::getUpdateDetailPosition() === 0){
-			$appendMessageLogJs = "replaceText";
-		}
-
+		$appendMessageLogJs = (static::getUpdateDetailPosition() === 0 ? "replaceText" : "appendText");
 		return '<script>
 			top.decreaseSpeed = false;
 			top.nextUrl = "' . $nextUrl . '";
 			top.leProgressBar.set("leProgress", "' . $progress . '");
 			top.leContent.' . $appendMessageLogJs . '("' . str_replace(["\r", "\n"], '', $message) . '\n");
-			' . $activateStep . '
+			' . (strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"]) ?
+			'top.leStatus.update("leStatus", "' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");' :
+			'') . '
 			window.setTimeout("top.leForm.proceedUrl();", 150);
 		</script>';
 	}
@@ -91,9 +81,7 @@ class installer extends installerBase{
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = ''){
 		return '
-
 		$errorMessage = ' . static::getErrorMessage($headline, $message) . ';
-
 		echo \'
 			<script>
 				top.leContent.appendErrorText("\' . $errorMessage . \'");
@@ -136,8 +124,7 @@ class installer extends installerBase{
 				$files[' . $path . '] = "' . $content . '";';
 		}
 
-		return array(
-			'Type' => 'eval',
+		return ['Type' => 'eval',
 			'Code' => '<?php
 
 	' . updateUtil::getOverwriteClassesCode() . '
@@ -155,9 +142,7 @@ class installer extends installerBase{
 				} else {
 					$errorFile = $path;
 					$success = false;
-
 				}
-
 			}
 		}
 
@@ -169,7 +154,6 @@ class installer extends installerBase{
 				$text = basename($path);
 				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
-
 			}
 
 			$message	.=	"</ul>".*/
@@ -179,7 +163,7 @@ class installer extends installerBase{
 		} else {
 			' . static::getErrorMessageResponsePart() . '
 		}
-?>');
+?>'];
 	}
 
 	/**
@@ -217,26 +201,20 @@ class installer extends installerBase{
 				if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
 					$errorFile = $path;
 					$success = false;
-
 				}
-
 			}
-
 		}
 
 		$Content = "";
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
-
 		}
 
 		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
 			$successFiles[] = $path;
-
 		}
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
-
 		}
 
 		if ($success) {
@@ -257,7 +235,6 @@ class installer extends installerBase{
 
 		} else {
 			' . static::getErrorMessageResponsePart() . '
-
 		}
 
 ?>';

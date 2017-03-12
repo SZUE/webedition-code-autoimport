@@ -36,7 +36,7 @@ switch($_REQUEST['detail']){
 
 		break;
 
-	case 'prepareChanges':
+	/*case 'prepareChanges':
 
 		// this is to check if current preparation speed is too fast
 		if(!isset($_SESSION['PREPARE_FILES_PER_STEP'])){
@@ -49,7 +49,7 @@ switch($_REQUEST['detail']){
 
 		// prepare changes - adjust tablenames and prefix
 		print installer::getPrepareChangesResponse();
-		break;
+		break;*/
 
 
 	case 'updateDatabase':
@@ -78,10 +78,3 @@ switch($_REQUEST['detail']){
 		print installer::getFinishInstallationPopUpResponse();
 		break;
 }
-/*
-} else {
-
-}
-*/
-
-

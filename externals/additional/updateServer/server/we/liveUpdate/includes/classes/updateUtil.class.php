@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id$
  */
-
 class updateUtil extends updateUtilBase{
 
 	/**
@@ -90,9 +90,9 @@ class updateUtil extends updateUtilBase{
 				}
 
 				foreach($changesDb as $change){
-					if(!isset($changes[$row['detail']]['LIVEUPDATE_CLIENT_DOCUMENT_DIR . "' . $clientPathPrefix . trim($change) . '"'])){
-						$changes[$row['detail']]['LIVEUPDATE_CLIENT_DOCUMENT_DIR . "' . $clientPathPrefix . trim($change) . '"'] = $pathPrefix . trim($change);
-						$changes['allChanges']['LIVEUPDATE_CLIENT_DOCUMENT_DIR . "' . $clientPathPrefix . trim($change) . '"'] = $pathPrefix . trim($change);
+					if(!isset($changes[$row['detail']][$clientPathPrefix . trim($change)])){
+						$changes[$row['detail']][$clientPathPrefix . trim($change)] = $pathPrefix . trim($change);
+						$changes['allChanges'][$clientPathPrefix . trim($change)] = $pathPrefix . trim($change);
 					}
 				}
 			}

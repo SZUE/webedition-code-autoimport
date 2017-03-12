@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id$
  */
-
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	public $QueryLog = array(
 		'success' => array(),
@@ -77,7 +77,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 *
 	 * @return string
 	 */
-	function preparePhpCode($content, $needle, $replace){
+	function preparePhpCode($content, $x = '', $y = ''){
 		return $this->checkReplaceDocRoot($content);
 	}
 

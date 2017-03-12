@@ -73,7 +73,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 *
 	 * @return string
 	 */
-	function preparePhpCode($content, $needle, $replace){
+	function preparePhpCode($content, $x = '', $y = ''){
 		return $this->checkReplaceDocRoot($content);
 	}
 
@@ -287,7 +287,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function moveFile($source, $destination){
 
-		if($source == $destination){
+		if($source == $destination || !file_exists($source)/* happens if update is retriggered */){
 			return true;
 		}
 		if(filesize($source) == 0){//assume error, add warning, keep file!
