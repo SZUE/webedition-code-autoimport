@@ -17,6 +17,6 @@ $liveUpdateResponse = [
 	<br />
 	' . $GLOBALS['lang']['installer']['finished'] . '
 </div>
-<button type="button" class="weBtn" onclick="top.opener.top.opener.top.we_cmd(\'dologout\');self.close();"><i class="fa fa-lg fa-check fa-ok"></i>' . $GLOBALS['lang']['button']['ok'] . '</button>
+<button type="button" class="weBtn" onclick="top.opener.top.opener.top.we_cmd(\'dologout\');self.close();"><i class="fa fa-lg fa-check fa-ok"></i> ' . $GLOBALS['lang']['button']['ok'] . '</button>
 '
 ];

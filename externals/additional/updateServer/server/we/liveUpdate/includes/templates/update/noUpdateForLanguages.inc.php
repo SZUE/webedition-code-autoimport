@@ -58,7 +58,7 @@ $liveUpdateResponse = [
 </div>
 <div class="messageDiv">
 	' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-	<button type="button" class="weBtn" onclick="document.we_form.submit();"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button>
+	<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>
 </div>
 </form>
 '];

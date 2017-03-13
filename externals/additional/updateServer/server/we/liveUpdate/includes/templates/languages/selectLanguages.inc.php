@@ -74,7 +74,7 @@ $liveUpdateResponse = [
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . $GLOBALS['lang']['languages']['installLanguages'] . '</td>
-	<td><button type="button" class="weBtn" onclick="document.we_form.submit();"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button></td>
+	<td><button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button></td>
 </tr>
 </table>
 ' . ($missingStr ? '<div class="messageDiv">' .
