@@ -6,13 +6,13 @@
 switch($_REQUEST['detail']){
 
 	case 'lookForUpgrade':
-		update::updateLogStart();
+		updateUpdate::updateLogStart();
 		// get all possible versions
-		$possibleVersions = update::getPossibleVersionsArray();
-		$SubVersions = update::getSubVersions();
-		$AlphaBetaVersions = update::getAlphaBetaVersions();
+		$possibleVersions = updateUpdate::getPossibleVersionsArray();
+		$SubVersions = updateUpdate::getSubVersions();
+		$AlphaBetaVersions = updateUpdate::getAlphaBetaVersions();
 		$_SESSION['SubVersions'] = $SubVersions;
-		$maxVersionNumber = update::checkForUpdate();
+		$maxVersionNumber = updateUpdate::checkForUpdate();
 		$verlog = array(
 			'version' => $maxVersionNumber,
 			'svnrevision' => $_SESSION['SubVersions'][$maxVersionNumber],
@@ -20,13 +20,13 @@ switch($_REQUEST['detail']){
 			'versionBranch' => $AlphaBetaVersions[$maxVersionNumber]['branch'],
 		);
 		if(isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] != '0000' && $_SESSION['clientSubVersion'] != ''){
-			$_SESSION['clientSubVersionDB'] = update::getSubVersion($_SESSION['clientVersionNumber']);
+			$_SESSION['clientSubVersionDB'] = updateUpdate::getSubVersion($_SESSION['clientVersionNumber']);
 			$verlog['svnrevisionDB'] = $_SESSION['clientSubVersionDB'];
 		} else {
 			$verlog['svnrevisionDB'] == '';
 		}
 
-		update::updateLogAvail($verlog);
+		updateUpdate::updateLogAvail($verlog);
 
 
 
@@ -34,7 +34,7 @@ switch($_REQUEST['detail']){
 		$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 
 		// get max version foreach language
-		$versionLngs = update::getVersionsLanguageArray(true);
+		$versionLngs = updateUpdate::getVersionsLanguageArray(true);
 
 		$lngVersions = array();
 		foreach($versionLngs as $version => $lngArray){
@@ -43,7 +43,7 @@ switch($_REQUEST['detail']){
 
 				if(!isset($lngVersions[$lngArray[$i]])){
 
-					$lngVersions[$lngArray[$i]] = updateUtil::number2version($version);
+					$lngVersions[$lngArray[$i]] = updateUtilUpdate::number2version($version);
 				}
 			}
 		}
@@ -52,10 +52,10 @@ switch($_REQUEST['detail']){
 		$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 		//error_log(print_r($lngVersions,true));
 		if(!empty($possibleVersions)){
-			print upgrade::getUpgradePossibleResponse();
+			print upgradeUpdate::getUpgradePossibleResponse();
 		} else {
 
-			print upgrade::getNoUpdateForLanguagesResponse();
+			print upgradeUpdate::getNoUpdateForLanguagesResponse();
 		}
 		break;
 
@@ -71,48 +71,48 @@ switch($_REQUEST['detail']){
 		$_SESSION['update_cmd'] = $_REQUEST['update_cmd'];
 
 		$_SESSION['clientTargetVersionNumber'] = $_REQUEST['clientTargetVersionNumber'];
-		$_SESSION['clientTargetSubVersionNumber'] = update::getSubVersion($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionType'] = update::getVersionType($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersion'] = updateUtil::number2version($_REQUEST['clientTargetVersionNumber']);
+		$_SESSION['clientTargetSubVersionNumber'] = updateUpdate::getSubVersion($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionType'] = updateUpdate::getVersionType($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersion'] = updateUtilUpdate::number2version($_REQUEST['clientTargetVersionNumber']);
 
 		// start Update -> get the screen and start downloading the installer
-		print installer::getInstallationScreenResponse();
+		print installerUpdate::getInstallationScreenResponse();
 		break;
 
 
 	case 'getChanges':
-		update::updateLogTarget();
+		updateUpdate::updateLogTarget();
 		// get all needed files for this update
-		$_SESSION['clientChanges'] = upgrade::getChangesForUpdate();
+		$_SESSION['clientChanges'] = upgradeUpdate::getChangesForUpdate();
 
 		// all files are recognized, continue with next step
-		print update::getGetChangesResponse();
+		print updateUpdate::getGetChangesResponse();
 		break;
 
 
 	case 'copyFiles':
 		// copy webEdition files at correct places
-		print upgrade::getCopyFilesResponse();
+		print upgradeUpdate::getCopyFilesResponse();
 		break;
 
 
 	case 'executePatches':
 		// make nothing here
-		print upgrade::getExecutePatchesResponse();
+		print upgradeUpdate::getExecutePatchesResponse();
 		break;
 
 
 	case 'finishInstallation':
 		// delete tmp dir and write new version number
-		print upgrade::getFinishInstallationResponse();
+		print upgradeUpdate::getFinishInstallationResponse();
 		break;
 
 	case 'finishUpgradePopUp':
-		print upgrade::getFinishUpgradePopUpResponse();
+		print upgradeUpdate::getFinishUpgradePopUpResponse();
 		break;
 
 
 	default:
-		print notification::getCommandNotKnownResponse();
+		print notificationUpdate::getCommandNotKnownResponse();
 		break;
 }

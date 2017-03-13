@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class updateUtilBase{
+abstract class updateUtilBase{
 
 	/**
 	 * return serialized version of the response
@@ -29,7 +29,7 @@ class updateUtilBase{
 		foreach($array as $key => $value){
 			$responseArray[ucfirst($key)] = $value;
 		}
-		return updateUtil::serializeResponseArray($responseArray);
+		return self::serializeResponseArray($responseArray);
 	}
 
 	/**
@@ -73,7 +73,7 @@ class updateUtilBase{
 
 	function getEncodedLiveUpdateResponseArrayFromFile($file){
 
-		return updateUtil::encodeCode(updateUtil::getLiveUpdateResponseArrayFromFile($file));
+		return self::encodeCode(self::getLiveUpdateResponseArrayFromFile($file));
 	}
 
 	/**
@@ -106,7 +106,7 @@ class updateUtilBase{
 	function getEncodedTemplateContentForResponse($file){
 		global $updateServerTemplateData;
 
-		return updateUtil::encodeCode((updateUtil::getTemplateContentForResponse($file)));
+		return self::encodeCode((self::getTemplateContentForResponse($file)));
 	}
 
 	/**
@@ -212,11 +212,11 @@ class updateUtilBase{
 	 */
 	function getInternalResponse($templatePath){
 
-		$liveUpdateResponse = updateUtil::getLiveUpdateResponseArrayFromFile($templatePath);
+		$liveUpdateResponse = self::getLiveUpdateResponseArrayFromFile($templatePath);
 
 		return '
 $newResponse = new liveUpdateResponse();
-$newResponse->initByHttpResponse("' . addslashes(updateUtil::getResponseString($liveUpdateResponse)) . '");
+$newResponse->initByHttpResponse("' . addslashes(self::getResponseString($liveUpdateResponse)) . '");
 print $newResponse->getOutput();
 		';
 	}
@@ -232,9 +232,9 @@ print $newResponse->getOutput();
 	 * @return string
 	 */
 	static function getFileContentEncoded($filePath){
-		$content = updateUtil::getFileContent($filePath);
+		$content = self::getFileContent($filePath);
 
-		return updateUtil::encodeCode($content);
+		return self::encodeCode($content);
 	}
 
 	/**

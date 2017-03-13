@@ -3,7 +3,7 @@
 /**
  * $Id$
  */
-class installer extends installerBase{
+class installerUpdate extends installerBase{
 
 	/**
 	 * @return array
@@ -86,7 +86,7 @@ class installer extends installerBase{
 	 * @return string
 	 */
 	static function getConfirmInstallationWindow(){
-		return "window.open('?" . updateUtil::getCommonHrefParameters('installer', 'confirmInstallation') . "', 'confirmUpdate" . time() . "', 'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no')";
+		return "window.open('?" . updateUtilUpdate::getCommonHrefParameters('installer', 'confirmInstallation') . "', 'confirmUpdate" . time() . "', 'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no')";
 	}
 
 	/**
@@ -138,7 +138,7 @@ class installer extends installerBase{
 	static function getJsFunctions(){
 		return '<script><!--
 var decreaseSpeed = 1; // is set false, when script was successful, otherwise decrease speed
-var nextUrl = "?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
+var nextUrl = "?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
 
 function proceedUrl() {
 	if (!decreaseSpeed) {
@@ -172,8 +172,8 @@ function finishLiInstallerStep(stepId) {
 	 * @return string
 	 */
 	static function getConfirmInstallationResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/confirmInstallation.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/confirmInstallation.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -182,8 +182,8 @@ function finishLiInstallerStep(stepId) {
 	static function getInstallationScreenResponse(){
 		$GLOBALS['updateServerTemplateData']['installationSteps'] = self::getInstallationStepNames();
 
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/initialInstallerScreen.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/initialInstallerScreen.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -197,11 +197,11 @@ function finishLiInstallerStep(stepId) {
 		$files = self::getInstallerFilesArray();
 
 		$nextStep = self::getNextUpdateDetail();
-		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($nextStep), $nextStep);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($nextStep), $nextStep);
 
 		$retArray = self::_getDownloadFilesResponse($files, $nextUrl);
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 	/**
@@ -238,8 +238,8 @@ function finishLiInstallerStep(stepId) {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	static function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
-
+	private static function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
+//FIXME: this currently cannot be modified, since it is used for initial download
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array(';
@@ -253,7 +253,7 @@ function finishLiInstallerStep(stepId) {
 		return [
 			'Type' => 'eval',
 			'Code' => '<?php
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 ' . $writeFilesCode . '
 
@@ -303,7 +303,7 @@ if ($success) {
 	 * @return string
 	 */
 	static function getGetChangesResponse($nextUrl = ''){
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		$nextUrl = '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '<br />' .
 			count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
@@ -312,7 +312,7 @@ if ($success) {
 
 		$progress = self::getInstallerProgressPercent();
 
-		return updateUtil::getResponseString([
+		return updateUtilUpdate::getResponseString([
 				'Type' => 'ChangesResponse',
 				'Next' => self::getProceedNextCommandResponse($nextUrl, $progress, $message),
 				'TargetVersion' => (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']),
@@ -331,11 +331,11 @@ if ($success) {
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
-		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 		$progress = self::getInstallerProgressPercent();
 
-		return updateUtil::getResponseString([
+		return updateUtilUpdate::getResponseString([
 				'Type' => 'DBUpdate',
 				'From' => $_REQUEST['position'],
 				'To' => ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']),
@@ -358,8 +358,8 @@ if ($success) {
 	 * @return string
 	 */
 	static function getCopyFilesResponse(){
-		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
-		return updateUtil::getResponseString([
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		return updateUtilUpdate::getResponseString([
 				'Type' => 'CopyFiles',
 				'Message' => sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], count($_SESSION['clientChanges']['files'])),
 				'Next' => self::getProceedNextCommandResponse($nextUrl, self::getInstallerProgressPercent()),
@@ -374,10 +374,10 @@ if ($success) {
 	 */
 	static function getExecutePatchesResponse(){
 
-		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
-		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
+		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
 
-		return updateUtil::getResponseString([
+		return updateUtilUpdate::getResponseString([
 				'Type' => 'ExecutePatches',
 				'Next' => self::getProceedNextCommandResponse($nextUrl, self::getInstallerProgressPercent()),
 				'Repeat' => self::getProceedNextCommandResponse($repeatUrl, self::getInstallerProgressPercent()),
@@ -424,14 +424,14 @@ if ($success) {
 			$_SESSION['clientVersionNumber']
 			);
 
-		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
+		$installerVersionDir = $availableInstallers[updateUtilUpdate::getNearestVersion($availableInstallers, $suchInstallerVersion)];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
 
 		$fileArray = $liveUpdaterFiles = [];
 		updateUtilBase::getFilesOfDir($installerDir . '/updateClient', $liveUpdaterFiles);
 		foreach($liveUpdaterFiles as $file){
 			//filename is evaled, therefore it looks wired
-			$fileArray[str_replace($installerDir, "", $file)] = updateUtil::getFileContentEncoded($file);
+			$fileArray[str_replace($installerDir, "", $file)] = updateUtilUpdate::getFileContentEncoded($file);
 		}
 
 		return $fileArray;
@@ -538,18 +538,18 @@ print \'
 		if(!$jsMessage){
 			$jsMessage = strip_tags($message);
 		}
-		update::updateLogFinish(1);
+		updateUpdate::updateLogFinish(1);
 		return '<script>
 top.frames["updatecontent"].setProgressBar("' . $progress . '");
 top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
-window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInstallationPopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
+window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('installer', 'finishInstallationPopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
 //			alert("' . $jsMessage . '");
 		</script>';
 	}
 
 	static function getFinishInstallationPopUpResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/finishInstallationPopUp.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/finishInstallationPopUp.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	static function getErrorMessageResponse($headline = '', $message = '', $type = ''){
@@ -611,7 +611,7 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 		$fileArray = [];
 		$Position = $_REQUEST['position'];
 
-		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+		$Content = updateUtilUpdate::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
 
 		// If file is too large to transfer in one request, split it!
@@ -636,24 +636,24 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 
 			if($Start + $Length >= $FileSize){//last step
 				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+					$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 
 					// :IMPORTANT:
-					return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position],
+					return updateUtilUpdate::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position],
 								'Count' => $Part]));
 				}
 				$Position++;
-				$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=" . $Position;
+				$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position - 1],
+				return updateUtilUpdate::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), ['Name' => $Paths[$Position - 1],
 							'Count' => $Part]));
 			}
 			$Part += 1;
-			$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&part=" . $Part . "&position=" . $Position;
+			$nextUrl = self::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
-			return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
+			return updateUtilUpdate::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
 
 
 			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
@@ -672,7 +672,7 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 				$ResponseSize += $FileSize;
 
-				$fileArray[$Paths[$Position]] = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$fileArray[$Paths[$Position]] = updateUtilUpdate::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 				$Position++;
 			} else {
 				break;
@@ -680,13 +680,13 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = self::getUpdateClientUrl() . '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-			updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail()) :
-			updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+			updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail()) :
+			updateUtilUpdate::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
 			);
 
 
 		// :IMPORTANT:
-		return updateUtil::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
+		return updateUtilUpdate::getResponseString(self::getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
 	}
 
 }

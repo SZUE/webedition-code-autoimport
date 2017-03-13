@@ -21,7 +21,7 @@ foreach($_SESSION['clientInstalledLanguages'] as $lng){
 $preventLngsList = '';
 foreach($updateServerTemplateData['availableVersions'] as $lng => $version){
 
-	if(updateUtil::version2number($version) == $_SESSION['clientVersionNumber']){
+	if(updateUtilUpdate::version2number($version) == $_SESSION['clientVersionNumber']){
 		$preventLngsList .= "
 		<li>$lng (-> $version)</li>";
 	}

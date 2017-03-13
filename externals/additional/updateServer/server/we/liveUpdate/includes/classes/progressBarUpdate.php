@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class progressBar extends progressBarBase{
+class progressBarUpdate extends progressBarBase{
 
 	/**
 	 * @return string

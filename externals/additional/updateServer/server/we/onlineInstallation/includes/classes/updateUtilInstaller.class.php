@@ -1,9 +1,9 @@
 <?php
+
 /**
  * $Id$
  */
-
-class updateUtil extends updateUtilBase{
+class updateUtilInstaller extends updateUtilBase{
 
 	/**
 	 * @param string $detail
@@ -26,22 +26,22 @@ class updateUtil extends updateUtilBase{
 	 * @param string $name
 	 * @return array
 	 */
-	static function getReplaceCode($name, $replacements = array()){
+	static function getReplaceCode($name, $replacements = []){
 
 		require(LIVEUPDATE_SERVER_DIR . "/includes/extras/replaceCode.inc.php");
 
-		$ret = array(
-			'path' => sprintf($replaceCode[$name]['path'][updateUtil::getNearestVersion($replaceCode[$name]['path'], $_SESSION['clientTargetVersionNumber'])], $_SESSION['clientExtension']),
+		$ret = [
+			'path' => sprintf($replaceCode[$name]['path'][self::getNearestVersion($replaceCode[$name]['path'], $_SESSION['clientTargetVersionNumber'])], $_SESSION['clientExtension']),
 			'needle' => (isset($replaceCode[$name]['needle']) ?
-				$replaceCode[$name]['needle'][updateUtil::getNearestVersion($replaceCode[$name]['needle'], $_SESSION['clientTargetVersionNumber'])] :
-				'')
-		);
+			$replaceCode[$name]['needle'][self::getNearestVersion($replaceCode[$name]['needle'], $_SESSION['clientTargetVersionNumber'])] :
+			'')
+		];
 
 		if(isset($replaceCode[$name]['replace'])){
-			$replace = $replaceCode[$name]['replace'][updateUtil::getNearestVersion($replaceCode[$name]['replace'], $_SESSION['clientTargetVersionNumber'])];
+			$replace = $replaceCode[$name]['replace'][self::getNearestVersion($replaceCode[$name]['replace'], $_SESSION['clientTargetVersionNumber'])];
 			$ret['replace'] = ($replacements ?
-					vsprintf($replace, $replacements) :
-					$replace);
+				vsprintf($replace, $replacements) :
+				$replace);
 		}
 		return $ret;
 	}

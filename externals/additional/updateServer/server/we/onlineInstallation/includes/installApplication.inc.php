@@ -82,7 +82,7 @@ switch($_REQUEST['detail']){
 
 	case 'writeApplicationConfiguration':
 
-		update::installLogStart();
+		updateInstaller::installLogStart();
 		print $installer->getWriteApplicationConfigurationResponse();
 
 		break;
@@ -90,7 +90,7 @@ switch($_REQUEST['detail']){
 
 	default:
 
-		print notification::getCommandNotKnownResponse();
+		print notificationInstaller::getCommandNotKnownResponse();
 
 		break;
 }

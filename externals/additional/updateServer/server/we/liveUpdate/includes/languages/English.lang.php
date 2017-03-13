@@ -142,7 +142,6 @@ $lang['languages']['finished'] = 'Installation of languages completed';
 
 $lang['notification']['upgradeNotPossibleYet'] = 'An update to version 5 is not possible until 04.06.2007';
 $lang['notification']['upgradeMaintenance'] = 'Due to maintenance, an update to webEdition version 5 is not possible at the moment.';
-// installer::_getDownloadFilesResponse()
 $lang["installer"]["amountFilesDownloaded"] = "%s of %s Files downloaded.";
 
 

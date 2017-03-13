@@ -12,20 +12,20 @@ $branchAvailText = (isset($GLOBALS['updateServerTemplateData']['maxVersionNumber
 
 
 //client version: text and version string
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
+$clientVersionComplete = updateUpdate::getFormattedVersionStringFromWeVersion(true, false);
 $clientVersionText = addslashes($GLOBALS['lang']['update']['installedVersion']) . ':<br />' . $clientVersionComplete . '.<br />';
 
 //newest version in branch: text and version string
 if(isset($_SESSION['clientVersionBranch']) && $_SESSION['clientVersionBranch'] != '' && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
-	$maxBranchVersion = update::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']);
-	$maxBranchVersionComplete = update::getFormattedVersionString($maxBranchVersion, true, true);
+	$maxBranchVersion = updateUpdate::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']);
+	$maxBranchVersionComplete = updateUpdate::getFormattedVersionString($maxBranchVersion, true, true);
 	$maxBranchVersionText = addslashes($GLOBALS['lang']['update']['newestVersionSameBranch']) . ':<br />' . $maxBranchVersionComplete . '.<br/>';
 } else {
 	$maxBranchVersionText = '';
 }
 
 //neweset version: text and versions string
-$maxVersionComplete = update::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']);
+$maxVersionComplete = updateUpdate::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']);
 $maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']) . ':<br/>' . $maxVersionComplete . '.<br/>';
 
 $liveUpdateResponse = [
@@ -34,7 +34,7 @@ $liveUpdateResponse = [
 	'Header' => '',
 	'Content' => '
 <form name="we_form">
-	' . updateUtil::getCommonFormFields('update', 'confirmRepeatUpdate') . '
+	' . updateUtilUpdate::getCommonFormFields('update', 'confirmRepeatUpdate') . '
 	<input type="hidden" name="clientTargetVersionNumber" value="' . $_SESSION['clientVersionNumber'] . '" />
 	' . addslashes($GLOBALS['lang']['update']['noUpdateNeeded']) . '<br /><br />' .
 	$clientVersionText .

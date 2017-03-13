@@ -7,7 +7,6 @@ $lang["Wizard"]["Settings"]["title"] = "Settings";
 $lang["Wizard"]["Features"]["title"] = "Choose features";
 $lang["Wizard"]["Summary"]["title"] = "Summary";
 $lang["Wizard"]["DownloadAndInstallSoftware"]["title"] = "Install application";
-$lang["Wizard"]["DownloadAndInstallSnippets"]["title"] = "Install additional data";
 $lang["Wizard"]["FinishInstallation"]["title"] = "Finish installation";
 
 
@@ -185,12 +184,6 @@ $lang["Step"]["ChooseVersion"]['beta'] = 'Beta';
 $lang["Step"]["ChooseVersion"]['rc'] = 'RC';
 $lang["Step"]["ChooseVersion"]['release'] = 'official Release';
 
-// ChooseSnippets
-$lang["Step"]["ChooseSnippets"]["title"] = "Additional data";
-$lang["Step"]["ChooseSnippets"]["headline"] = "Choose additional data";
-$lang["Step"]["ChooseSnippets"]["content"] = "This step will be executed by the LiveUpdate-Server";
-
-
 // Summary
 $lang["Step"]["Summary"]["title"] = "Summary";
 $lang["Step"]["Summary"]["headline"] = "Summary";
@@ -220,7 +213,6 @@ $lang["Step"]["Summary"]['proxyHost'] = "Host";
 $lang["Step"]["Summary"]['proxyPort'] = "Port";
 $lang["Step"]["Summary"]['proxyUsername'] = "Username";
 $lang["Step"]["Summary"]['proxyPassword'] = "Password";
-$lang["Step"]["Summary"]['snippets'] = "Additional data";
 $lang["Step"]["Summary"]['yes'] = "yes";
 $lang["Step"]["Summary"]['no'] = "no";
 $lang["Step"]["Summary"]['showPasswords'] = "Show passwords";

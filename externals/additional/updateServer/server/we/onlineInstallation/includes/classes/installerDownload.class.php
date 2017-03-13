@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class installerDownload extends installer{
+class installerDownload extends installerInstaller{
 
 	static $LanguageIndex = "installerDownload";
 
@@ -78,7 +78,7 @@ class installerDownload extends installer{
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
 
-		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+		$Content = updateUtilInstaller::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
 
 		// If file is too large to transfer in one request, split it!
@@ -97,28 +97,28 @@ class installerDownload extends installer{
 			$Index = $Paths[$Position] . ".part" . $Part;
 
 			// value of the part -> must be base64_encoded
-			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
+			$Value = updateUtilInstaller::encodeCode(substr($Content, $Start, $Length));
 
 			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+					$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
-					return updateUtil::getResponseString(static::_getDownloadFilesMergeResponse($fileArray, $nextUrl, static::getInstallerProgressPercent(), $Paths[$Position], $Part));
+					return updateUtilInstaller::getResponseString(static::_getDownloadFilesMergeResponse($fileArray, $nextUrl, static::getInstallerProgressPercent(), $Paths[$Position], $Part));
 				}
 				$Position++;
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
+				$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(static::_getDownloadFilesMergeResponse($fileArray, $nextUrl, static::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
+				return updateUtilInstaller::getResponseString(static::_getDownloadFilesMergeResponse($fileArray, $nextUrl, static::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 			}
 			$Part += 1;
-			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
+			$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
-			return updateUtil::getResponseString(static::_getDownloadFilesResponse($fileArray, $nextUrl, static::getInstallerProgressPercent()));
+			return updateUtilInstaller::getResponseString(static::_getDownloadFilesResponse($fileArray, $nextUrl, static::getInstallerProgressPercent()));
 
 
 			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
@@ -137,7 +137,7 @@ class installerDownload extends installer{
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 				$ResponseSize += $FileSize;
 
-				$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$fileArray[$Paths[$Position]] = updateUtilInstaller::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 				$Position++;
 			} else {
 				break;
@@ -145,12 +145,12 @@ class installerDownload extends installer{
 		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-						'?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
-						'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
+						'?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
+						'?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
 				);
 
 		// :IMPORTANT:
-		return updateUtil::getResponseString(static::_getDownloadFilesResponse($fileArray, $nextUrl, static::getInstallerProgressPercent()));
+		return updateUtilInstaller::getResponseString(static::_getDownloadFilesResponse($fileArray, $nextUrl, static::getInstallerProgressPercent()));
 	}
 
 	/**
@@ -162,7 +162,7 @@ class installerDownload extends installer{
 		$dir = LIVEUPDATE_SERVER_DOWNLOAD_DIR;
 
 		$clientDir = "";
-		updateUtil::getFilesOfDir($dir, $files);
+		updateUtilInstaller::getFilesOfDir($dir, $files);
 
 		// build array for downloading
 		$retFiles = array();
@@ -178,7 +178,7 @@ class installerDownload extends installer{
 
 	function getGetInstallerFilesResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$message = '<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>'
 				. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '</p>';
@@ -188,13 +188,13 @@ class installerDownload extends installer{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 		$filesDir = LE_INSTALLER_TEMP_PATH;
 		$liveUpdateFnc->deleteDir($filesDir);
 
 		?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -210,13 +210,13 @@ class installerDownload extends installer{
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$repeatUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 		$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
 
@@ -260,7 +260,7 @@ class installerDownload extends installer{
 		}
 		?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -270,12 +270,12 @@ class installerDownload extends installer{
 	 */
 	static function getCopyFilesResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 		$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
 		$preLength = strlen($filesDir);
@@ -307,7 +307,7 @@ class installerDownload extends installer{
 		}
 		?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 }

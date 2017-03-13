@@ -7,7 +7,7 @@ switch($_REQUEST['detail']){
 
 	case 'showLanguages':
 	case 'selectLanguages':
-		print languages::getSelectLanguagesResponse();
+		print languagesUpdate::getSelectLanguagesResponse();
 		break;
 
 	case 'confirmLanguages':
@@ -22,10 +22,10 @@ switch($_REQUEST['detail']){
 		if(!empty($desiredLanguages)){
 
 			$_SESSION['clientDesiredLanguages'] = $desiredLanguages;
-			print languages::getConfirmLanguagesResponse();
+			print languagesUpdate::getConfirmLanguagesResponse();
 		} else {
 
-			print languages::getNoLanguageSelectedResponse();
+			print languagesUpdate::getNoLanguageSelectedResponse();
 		}
 		break;
 
@@ -33,26 +33,26 @@ switch($_REQUEST['detail']){
 
 		$_SESSION['update_cmd'] = $_REQUEST['update_cmd'];
 		// start Update -> get the screen and start downloading the installer
-		print installer::getInstallationScreenResponse();
+		print installerUpdate::getInstallationScreenResponse();
 
 		break;
 
 	case 'getChanges':
 
 		// get all needed files for this update
-		$_SESSION['clientChanges'] = languages::getChangesForUpdate();
+		$_SESSION['clientChanges'] = languagesUpdate::getChangesForUpdate();
 
 		// all files are recognized, continue with next step
-		print languages::getGetChangesResponse();
+		print languagesUpdate::getGetChangesResponse();
 
 		break;
 
 	case 'finishInstallation':
 		// delete tmp dir and write new version number
-		print languages::getFinishInstallationResponse();
+		print languagesUpdate::getFinishInstallationResponse();
 		break;
 
 	default:
-		print notification::getCommandNotKnownResponse();
+		print notificationUpdate::getCommandNotKnownResponse();
 		break;
 }

@@ -11,29 +11,29 @@ switch($_REQUEST['detail']){
 		 * at least one Update exists, if its not a beta which needs to be updated and beta-switch is off
 		 */
 
-		update::updateLogStart();
-		if(($maxVersionNumber = update::checkForUpdate())){
+		updateUpdate::updateLogStart();
+		if(($maxVersionNumber = updateUpdate::checkForUpdate())){
 			$updateServerTemplateData['maxVersionNumber'] = $maxVersionNumber;
 
 			// get all possible versions
-			$possibleVersions = update::getPossibleVersionsArray();
-			$SubVersions = update::getSubVersions();
-			$AlphaBetaVersions = update::getAlphaBetaVersions();
+			$possibleVersions = updateUpdate::getPossibleVersionsArray();
+			$SubVersions = updateUpdate::getSubVersions();
+			$AlphaBetaVersions = updateUpdate::getAlphaBetaVersions();
 			$_SESSION['SubVersions'] = $SubVersions;
 			$_SESSION['AlphaBetaVersions'] = $AlphaBetaVersions;
 			foreach($possibleVersions as $key => &$value){
-				$value = update::getFormattedVersionString($key, true, false);
+				$value = updateUpdate::getFormattedVersionString($key, true, false);
 			}
 			$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 
 			// get max version foreach language
-			$versionLngs = update::getVersionsLanguageArray(true);
+			$versionLngs = updateUpdate::getVersionsLanguageArray(true);
 
 			$lngVersions = array();
 			foreach($versionLngs as $version => $lngArray){
 				for($i = 0; $i < count($lngArray); $i++){
 					if(!isset($lngVersions[$lngArray[$i]])){
-						$lngVersions[$lngArray[$i]] = updateUtil::number2version($version);
+						$lngVersions[$lngArray[$i]] = updateUtilUpdate::number2version($version);
 					}
 				}
 			}
@@ -47,37 +47,37 @@ switch($_REQUEST['detail']){
 				'versionBranch' => $_SESSION['AlphaBetaVersions'][$updateServerTemplateData['maxVersionNumber']]['branch'],
 			);
 			if(isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] != '0000' && $_SESSION['clientSubVersion'] != ''){
-				$_SESSION['clientSubVersionDB'] = update::getSubVersion($_SESSION['clientVersionNumber']);
+				$_SESSION['clientSubVersionDB'] = updateUpdate::getSubVersion($_SESSION['clientVersionNumber']);
 				$verlog['svnrevisionDB'] = $_SESSION['clientSubVersionDB'];
 			} else {
 				$verlog['svnrevisionDB'] = '';
 			}
 
-			update::updateLogAvail($verlog);
+			updateUpdate::updateLogAvail($verlog);
 
 			// is the update possible
 			if(empty($possibleVersions)){
-				print update::getNoUpdateForLanguagesResponse();
+				print updateUpdate::getNoUpdateForLanguagesResponse();
 				break;
 			}
 			if(isset($_SESSION['clientSubVersionDB']) && isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] < $_SESSION['clientSubVersionDB']){
-				$SubVersions = update::getSubVersions();
+				$SubVersions = updateUpdate::getSubVersions();
 				$_SESSION['SubVersions'] = $SubVersions;
-				$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
-				print update::getUpdateAvailableAfterRepeatResponse();
+				$updateServerTemplateData['maxVersionNumber'] = updateUpdate::getMaxVersionNumber();
+				print updateUpdate::getUpdateAvailableAfterRepeatResponse();
 				break;
 			}
-			print update::getUpdateAvailableResponse();
+			print updateUpdate::getUpdateAvailableResponse();
 			break;
 		}
 
 		// no new version available -> print correct template
-		$SubVersions = update::getSubVersions();
+		$SubVersions = updateUpdate::getSubVersions();
 		$_SESSION['SubVersions'] = $SubVersions;
-		$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
-		update::updateLogAvail($updateServerTemplateData['maxVersionNumber']);
+		$updateServerTemplateData['maxVersionNumber'] = updateUpdate::getMaxVersionNumber();
+		updateUpdate::updateLogAvail($updateServerTemplateData['maxVersionNumber']);
 
-		print update::getNoUpdateAvailableResponse();
+		print updateUpdate::getNoUpdateAvailableResponse();
 
 		break;
 
@@ -85,14 +85,14 @@ switch($_REQUEST['detail']){
 	case 'confirmUpdate':
 
 		$_SESSION['clientTargetVersionNumber'] = $_REQUEST['clientTargetVersionNumber'];
-		$_SESSION['clientTargetVersion'] = updateUtil::number2version($_REQUEST['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionName'] = update::getVersionName($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetSubVersionNumber'] = update::getSubVersion($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionType'] = update::getVersionType($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionOnlyType'] = update::getOnlyVersionType($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionOnlyTypeVersion'] = update::getOnlyVersionTypeVersion($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersion'] = updateUtilUpdate::number2version($_REQUEST['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionName'] = updateUpdate::getVersionName($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetSubVersionNumber'] = updateUpdate::getSubVersion($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionType'] = updateUpdate::getVersionType($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionOnlyType'] = updateUpdate::getOnlyVersionType($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionOnlyTypeVersion'] = updateUpdate::getOnlyVersionTypeVersion($_SESSION['clientTargetVersionNumber']);
 
-		$_SESSION['clientTargetFormattedVersionString'] = update::getFormattedVersionString($_SESSION['clientTargetVersionNumber'], true, false);
+		$_SESSION['clientTargetFormattedVersionString'] = updateUpdate::getFormattedVersionString($_SESSION['clientTargetVersionNumber'], true, false);
 
 		$Request = unserialize(base64_decode($_REQUEST['reqArray']));
 
@@ -114,13 +114,13 @@ switch($_REQUEST['detail']){
 			/*
 			 * Repeat the update
 			 */
-			print update::getConfirmRepeatUpdateResponse();
+			print updateUpdate::getConfirmRepeatUpdateResponse();
 			break;
 		}
 		/*
 		 * Normal update
 		 */
-		print update::getConfirmUpdateResponse();
+		print updateUpdate::getConfirmUpdateResponse();
 		break;
 
 	case 'startRepeatUpdate':
@@ -129,25 +129,25 @@ switch($_REQUEST['detail']){
 		$_SESSION['update_cmd'] = $_REQUEST['update_cmd'];
 
 		// start Update -> get the screen and start downloading the installer
-		print installer::getInstallationScreenResponse();
+		print installerUpdate::getInstallationScreenResponse();
 		break;
 	case 'getChanges':
-		update::updateLogTarget();
+		updateUpdate::updateLogTarget();
 		// get all needed files for this update
-		$_SESSION['clientChanges'] = update::getChangesForUpdate();
+		$_SESSION['clientChanges'] = updateUpdate::getChangesForUpdate();
 
 		// all files are recognized, continue with next step
-		print update::getGetChangesResponse();
+		print updateUpdate::getGetChangesResponse();
 		break;
 
 	case 'finishInstallation':
 		//error_log('testFI '.print_r($_SESSION,true)); Wird scheinbar nicht aufgerufen
 		// delete tmp dir and write new version number
-		print update::getFinishInstallationResponse();
+		print updateUpdate::getFinishInstallationResponse();
 		break;
 
 	default:
-		print notification::getCommandNotKnownResponse();
+		print notificationUpdate::getCommandNotKnownResponse();
 
 		break;
 }

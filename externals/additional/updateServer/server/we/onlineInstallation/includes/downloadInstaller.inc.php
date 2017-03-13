@@ -56,7 +56,7 @@ switch($_REQUEST['detail']){
 
 	default:
 
-		print notification::getCommandNotKnownResponse();
+		print notificationInstaller::getCommandNotKnownResponse();
 
 		break;
 }

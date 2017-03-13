@@ -55,13 +55,6 @@ class Summary extends leStep{
 			);
 		}
 
-		if(!empty($_SESSION['le_snippets'])){
-			$Summary[$this->Language['snippets']] = array();
-			foreach($_SESSION['le_snippets'] as $Key => $Value){
-				$Summary[$this->Language['snippets']][$Key] = $Value;
-			}
-		}
-
 		$Javascript = "";
 		$showPasswordsJS = "";
 		$hidePasswordsJS = "";

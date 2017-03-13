@@ -5,9 +5,9 @@
 /**
  * This template is shown to confirm an update repeat
  */
-$ReqOK = update::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);
+$ReqOK = updateUpdate::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);
 
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
+$clientVersionComplete = updateUpdate::getFormattedVersionStringFromWeVersion(true, false);
 
 $liveUpdateResponse = [
 	'Type' => 'template',
@@ -15,13 +15,13 @@ $liveUpdateResponse = [
 	'Header' => '',
 	'Content' => '
 <form name="we_form">
-	' . updateUtil::getCommonFormFields('update', 'startRepeatUpdate') . '
+	' . updateUtilUpdate::getCommonFormFields('update', 'startRepeatUpdate') . '
 	' . sprintf($GLOBALS['lang']['update']['confirmRepeatUpdateText'], $clientVersionComplete) . $ReqOut . '
 	<br />
 	<div class="messageDiv">
 	' . $GLOBALS['lang']['update']['confirmRepeatUpdateMessage'] . '
 	</div>
-' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>' : '') . '
+' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installerUpdate::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>' : '') . '
 </form><div style="margin-top:20px;">' . $GLOBALS['lang']['update']['spenden'] . '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="BERPPPT588RAE">

@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class languages extends languagesBase{
+class languagesInstaller extends languagesBase{
 
 	/**
 	 * returns form to choose Languages
@@ -13,10 +13,10 @@ class languages extends languagesBase{
 	static function getLanguagesFormResponse(){
 
 		// at least already installed languages can be reinstalled
-		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = update::getPossibleLanguagesArray();
+		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = updateInstaller::getPossibleLanguagesArray();
 
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/languagesForm.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilInstaller::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/languagesForm.inc.php');
+		return updateUtilInstaller::getResponseString($ret);
 	}
 
 	/**
@@ -33,7 +33,7 @@ class languages extends languagesBase{
 			'Type' => 'eval',
 			'Code' => '<?php return true; ?>',
 		);
-		return updateUtil::getResponseString($ret);
+		return updateUtilInstaller::getResponseString($ret);
 	}
 
 }

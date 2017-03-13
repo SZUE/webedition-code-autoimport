@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class upgrade{
+class upgradeUpdate{
 
 	/**
 	 * gathers all changes needed for an update and returns assoziative array
@@ -12,7 +12,7 @@ class upgrade{
 	 */
 	static function getChangesForUpdate(){
 
-		return updateUtil::getChangesArrayByQueries([
+		return updateUtilUpdate::getChangesArrayByQueries([
 				// query for all needed changes - software
 				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . '  WHERE version<=' . $_SESSION['clientTargetVersionNumber'] . ' ORDER BY version DESC',
 				// query for needed changes language
@@ -26,8 +26,8 @@ class upgrade{
 	 * @return string
 	 */
 	function getNoUpdateForLanguagesResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/noUpgradeForLanguages.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/noUpgradeForLanguages.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -36,8 +36,8 @@ class upgrade{
 	 * @return string
 	 */
 	function getUpgradePossibleResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/upgradePossible.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/upgradePossible.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -48,42 +48,42 @@ class upgrade{
 	 */
 	static function getCopyFilesResponse(){
 
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$nextUrl = installerUpdate::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(installerUpdate::getCommandNameForDetail(installerUpdate::getNextUpdateDetail()), installerUpdate::getNextUpdateDetail());
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
-		$zf_version = update::getZFversion($versionnumber);
+		$zf_version = updateUpdate::getZFversion($versionnumber);
 		$SubVersions = $_SESSION['SubVersions'];
 		$subversion = $SubVersions[$versionnumber];
-		$version_type = update::getOnlyVersionType($versionnumber);
-		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
-		$version_branch = update::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+		$version_type = updateUpdate::getOnlyVersionType($versionnumber);
+		$version_type_version = updateUpdate::getOnlyVersionTypeVersion($versionnumber);
+		$version_branch = updateUpdate::getOnlyVersionBranch($versionnumber);
+		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
 
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 $success = true;
 
 // we_version
-if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_version.php", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($we_version['replace']) . '") )) {
+if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_version.php", $liveUpdateFnc->decodeCode("' . updateUtilUpdate::encodeCode($we_version['replace']) . '") )) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesVersionError']) . '
+	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesVersionError']) . '
 }
 
 // we_conf.inc
 $confContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf.inc.php");
 if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf.inc.php", $confContent)) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
+	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
 }
 
 // we_conf_global.inc
 $confGlobalContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf_global.inc.php");
 if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf_global.inc.php", $confGlobalContent)) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
+	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
 }
 
 // now make some folders
@@ -91,17 +91,17 @@ if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/file
 // fragments
 if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/fragments")) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'fragments')) . '
+	' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'fragments')) . '
 }
 // tmp
 if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/tmp")) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'tmp')) . '
+	' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'tmp')) . '
 }
 // versions
 if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/versions")) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'versions')) . '
+	' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'versions')) . '
 }
 
 // custom_tags #1
@@ -109,7 +109,7 @@ if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/
 /*
 if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'weTagWizard/custom_tags')) . '
+	' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'weTagWizard/custom_tags')) . '
 }
 */
 
@@ -118,7 +118,7 @@ if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/
 /*
 if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_tags/custom_tags")) {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'custom_tags')) . '
+	' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'custom_tags')) . '
 }
 */
 
@@ -132,22 +132,22 @@ foreach ($liveUpdaterFiles as $liveUpdateFile) {
 
 	$liveUpdateFnc->checkMakeDir(dirname($newPath));
 	if (!copy($liveUpdateFile, $newPath)) {
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesFileError'], '$newPath')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesFileError'], '$newPath')) . '
 	}
 }
 
 // move tmpFolder to /webEdition6
 if ($success && rename(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition", LIVEUPDATE_SOFTWARE_DIR . "/webEdition6")) {
 	$message = "<div>' . $GLOBALS['lang']['upgrade']['copyFilesSuccess'] . '</div>";
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . installerUpdate::getProceedNextCommandResponsePart($nextUrl, installerUpdate::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 } else {
 	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesError']) . '
+	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesError']) . '
 }
 
 ?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 	/**
@@ -155,24 +155,24 @@ if ($success && rename(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition",
 	 */
 	static function getExecutePatchesResponse(){
 
-		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$nextUrl = installerUpdate::getUpdateClientUrl() . '?' . updateUtilUpdate::getCommonHrefParameters(installerUpdate::getCommandNameForDetail(installerUpdate::getNextUpdateDetail()), installerUpdate::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 $success = true;
 
 if (!$success) {
 
 	$message = "<div>' . $GLOBALS['lang']['upgrade']['executePatchesDatabase'] . '<br /><ul>$errorDetail</ul></div>";
-	' . installer::getErrorMessageResponsePart('', '$message') . '
+	' . installerUpdate::getErrorMessageResponsePart('', '$message') . '
 } else {
-	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], 3) . '</div>') . '<?php
+	?>' . installerUpdate::getProceedNextCommandResponsePart($nextUrl, installerUpdate::getInstallerProgressPercent(), '<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], 3) . '</div>') . '<?php
 }
 
 ?>';
-		return updateUtil::getResponseString($retArray);
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 	/**
@@ -183,14 +183,14 @@ if (!$success) {
 	 */
 	static function getFinishInstallationResponse(){
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
-		$zf_version = update::getZFversion($versionnumber);
+		$zf_version = updateUpdate::getZFversion($versionnumber);
 
 		$SubVersions = $_SESSION['SubVersions'];
 		$subversion = $SubVersions[$versionnumber];
-		$version_type = update::getOnlyVersionType($versionnumber);
-		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
-		$version_branch = update::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+		$version_type = updateUpdate::getOnlyVersionType($versionnumber);
+		$version_type_version = updateUpdate::getOnlyVersionTypeVersion($versionnumber);
+		$version_branch = updateUpdate::getOnlyVersionBranch($versionnumber);
+		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
 
 
 		// folder name for old webEdition folder (i.e. "webEdition5" for version 5.x or webEdition5light for light version)
@@ -199,7 +199,7 @@ if (!$success) {
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 $success = true;
 
@@ -214,7 +214,7 @@ if($success) {
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '")) {
 	if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/webEdition", LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'webEdition')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'webEdition')) . '
 	}
 }
 
@@ -222,7 +222,7 @@ if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName 
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition")) {
 	if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/webEdition6", LIVEUPDATE_SOFTWARE_DIR . "/webEdition")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'webEdition6')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'webEdition6')) . '
 	}
 }
 
@@ -230,7 +230,7 @@ if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition")) {
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we_backup")) {
 	if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we_backup", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'we_backup')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'we_backup')) . '
 	}
 }
 
@@ -238,7 +238,7 @@ if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup") 
 if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/we_tags/custom_tags")) {
 	if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/we_tags/custom_tags")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
 	}
 }
 
@@ -246,7 +246,7 @@ if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName .
 if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/weTagWizard/we_tags/custom_tags")) {
 	if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/weTagWizard/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
 	}
 }
 
@@ -254,7 +254,7 @@ if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName .
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 	if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'weTagWizard/custom_tags')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'weTagWizard/custom_tags')) . '
 	}
 }
 
@@ -262,7 +262,7 @@ if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/w
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/we_tags/custom_tags")) {
 	if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/we_tags/custom_tags")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'custom_tags')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'custom_tags')) . '
 	}
 }
 
@@ -270,7 +270,7 @@ if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/w
 if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/site")) {
 	if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/site", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site")) {
 		$success = false;
-		' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'site')) . '
+		' . installerUpdate::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'site')) . '
 	}
 }
 
@@ -291,12 +291,12 @@ if ($success) {
 // insert into log
 if ($success) {
 	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['upgrade']['finished'] . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
-	?>' . upgrade::getFinishUpgradeResponsePart("<div>" . $GLOBALS['lang']['upgrade']['finished'] . "</div>") . '<?php
+	?>' . upgradeUpdate::getFinishUpgradeResponsePart("<div>" . $GLOBALS['lang']['upgrade']['finished'] . "</div>") . '<?php
 } else {
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['finishInstallationError']) . '
+	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['finishInstallationError']) . '
 }
 ?>';
-		return updateUtil::getResponseString($retArray);
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 	/**
@@ -315,15 +315,15 @@ if ($success) {
 		return '<script>
 top.frames["updatecontent"].setProgressBar("' . $progress . '");
 top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
-window.open(\'?' . updateUtil::getCommonHrefParameters('upgrade', 'finishUpgradePopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
+window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('upgrade', 'finishUpgradePopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
 //			alert("' . $jsMessage . '");
 		</script>';
 	}
 
 	function getFinishUpgradePopUpResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/finishUpgradePopUp.inc.php');
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/finishUpgradePopUp.inc.php');
 		//error_log( updateUtil::getResponseString($ret) );
-		return updateUtil::getResponseString($ret);
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	// identify upgraded webEdition version for renaming old webEdition/ folder (i.e. to "webEdition4/")

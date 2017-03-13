@@ -13,10 +13,10 @@ if(isset($clientRequestVars['le_installer_version'])){
 if(isset($_SESSION['le_installer_version'])){
 	$currentVersion = str_replace(".", "", $_SESSION['le_installer_version']);
 	if($currentVersion < str_replace(".", "", MIN_INSTALLER_V)){
-		print notification::getInstallerVersionCheckResponse();
+		print notificationBase::getInstallerVersionCheckResponse();
 		exit;
 	}
 } else {
-	print notification::getInstallerVersionCheckResponse();
+	print notificationBase::getInstallerVersionCheckResponse();
 	exit;
 }

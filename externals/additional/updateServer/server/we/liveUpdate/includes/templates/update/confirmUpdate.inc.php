@@ -11,10 +11,10 @@
 $source = str_replace(".", "", $_SESSION['clientVersion']);
 $target = str_replace(".", "", $_SESSION['clientTargetVersion']);
 
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
-$clientTargetVersionComplete = update::getFormattedVersionString($target, true, false);
+$clientVersionComplete = updateUpdate::getFormattedVersionStringFromWeVersion(true, false);
+$clientTargetVersionComplete = updateUpdate::getFormattedVersionString($target, true, false);
 
-$ReqOK = update::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);
+$ReqOK = updateUpdate::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);
 //$ReqOK = update::checkRequirements($ReqOut,'','','','','');
 /* if($source < 5100 && $target >= 5100){
   } else {
@@ -33,11 +33,11 @@ $liveUpdateResponse = [
 	'Header' => '',
 	'Content' => '
 <form name="we_form">
-	' . updateUtil::getCommonFormFields('update', 'startUpdate') . '
+	' . updateUtilUpdate::getCommonFormFields('update', 'startUpdate') . '
 	' . sprintf($GLOBALS['lang']['update']['confirmUpdateText'], $clientVersionComplete, $clientTargetVersionComplete) . $ReqOut . '
 	<br />
 	<br />
-	' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>' : '') . '
+	' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installerUpdate::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>' : '') . '
 	</form>' . $weiterwarnung . '<div style="margin-top:20px;">' . $GLOBALS['lang']['update']['spenden'] . '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="BERPPPT588RAE">

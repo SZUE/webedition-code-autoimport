@@ -29,12 +29,12 @@ foreach($shownversions as $number){
 }
 
 //client version: text and version string
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
+$clientVersionComplete = updateUpdate::getFormattedVersionStringFromWeVersion(true, false);
 $clientVersionText = addslashes($GLOBALS['lang']['update']['installedVersion']) . ':<br />' . $clientVersionComplete . '.<br />';
 
 //maxBranchVersion: text + version string
 if(isset($_SESSION['clientVersionBranch']) && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
-	$maxBranchVersionComplete = update::getFormattedVersionString(update::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']), true, false);
+	$maxBranchVersionComplete = updateUpdate::getFormattedVersionString(updateUpdate::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']), true, false);
 	$maxBranchVersionText = addslashes($GLOBALS['lang']['update']['newestVersionSameBranch']) . ':<br/> ' . $maxBranchVersionComplete . '.<br/>';
 } else {
 	$maxBranchVersionText = '';
@@ -74,7 +74,7 @@ function checkSelectIsMainDevel(elem){
 
 </script>
 <form name="we_form">
-	' . updateUtil::getCommonFormFields('update', 'confirmUpdate') .
+	' . updateUtilUpdate::getCommonFormFields('update', 'confirmUpdate') .
 	$GLOBALS['lang']['update']['updateAvailableText'] . '<br /><br />' .
 		$clientVersionText .
 		$maxBranchVersionText .
@@ -100,7 +100,7 @@ $liveUpdateResponse['Code'] .= '<br />
 	<br />
 	<div class="messageDiv">
 		' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-		<button type="button" class="weBtn" onclick="document.location=\\\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\\\'">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>
+		<button type="button" class="weBtn" onclick="document.location=\\\'?' . updateUtilUpdate::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\\\'">' . $GLOBALS['lang']['button']['next'] . ' <i class="fa fa-lg fa-step-forward"></i></button>
 	</div>
 \';
 

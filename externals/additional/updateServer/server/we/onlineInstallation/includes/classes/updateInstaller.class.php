@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class update extends updateBase{
+class updateInstaller extends updateBase{
 
 	static function installLogStart(){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . INSTALLLOG_TABLE . ' (date) VALUES (NOW())');

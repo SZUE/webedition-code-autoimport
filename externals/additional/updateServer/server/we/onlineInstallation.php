@@ -116,7 +116,7 @@ if(isset($_REQUEST['update_cmd'])){
 			break;
 
 		default:
-			print notification::getNotAvailableAtTheMomentResponse();
+			print notificationUpdate::getNotAvailableAtTheMomentResponse();
 			break;
 	}
 

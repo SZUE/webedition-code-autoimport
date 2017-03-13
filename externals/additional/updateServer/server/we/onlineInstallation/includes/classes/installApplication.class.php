@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class installApplication extends installer{
+class installApplication extends installerInstaller{
 	static $LanguageIndex = "installApplication";
 
 	/**
@@ -97,7 +97,7 @@ class installApplication extends installer{
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
 
-		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+		$Content = updateUtilInstaller::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
 
 		// If file is too large to transfer in one request, split it!
@@ -114,28 +114,28 @@ class installApplication extends installer{
 
 			// filename on the client
 			// value of the part -> must be base64_encoded
-			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
+			$Value = updateUtilInstaller::encodeCode(substr($Content, $Start, $Length));
 
 			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+					$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
-					return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position], $Part));
+					return updateUtilInstaller::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position], $Part));
 				}
 				$Position++;
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
+				$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
+				return updateUtilInstaller::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 			}
 			$Part += 1;
-			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
+			$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
-			return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
+			return updateUtilInstaller::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
 
 
 			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
@@ -156,7 +156,7 @@ class installApplication extends installer{
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 				$ResponseSize += $FileSize;
 
-				$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$fileArray[$Paths[$Position]] = updateUtilInstaller::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 				$Position++;
 			} else {
 				break;
@@ -164,12 +164,12 @@ class installApplication extends installer{
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-				updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
-				updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
+				updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
+				updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
 			);
 
 		// :IMPORTANT:
-		return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
+		return updateUtilInstaller::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
 	}
 
 	/**
@@ -179,7 +179,7 @@ class installApplication extends installer{
 	 */
 	function getApplicationFiles(){
 		// query for versions
-		$startversion = updateUtil::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
+		$startversion = updateUtilInstaller::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
 
 		// get systemlanguage only
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
@@ -195,7 +195,7 @@ class installApplication extends installer{
 		}
 		array_unique($_SESSION['clientDesiredLanguages']);
 
-		return updateUtil::getChangesArrayByQueries([
+		return updateUtilInstaller::getChangesArrayByQueries([
 				// query for all needed changes - software
 				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE (version>=' . $startversion . ' AND version<=' . $_SESSION['clientTargetVersionNumber'] . ' ) AND (detail!="patches") ORDER BY version DESC',
 				// query for needed changes language
@@ -206,7 +206,7 @@ class installApplication extends installer{
 	}
 
 	function getPrepareApplicationInstallationResponse(){
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		// generate code to drop existing webEdition tables
 		require( LIVEUPDATE_SERVER_DIR . "/includes/extras/webEditionTables.inc.php");
@@ -224,7 +224,7 @@ if (!$liveUpdateFnc->executeDropQueries($dropQueries)) {
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 $message = "<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>";
 
@@ -251,7 +251,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 
 ?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
 ';
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -261,7 +261,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 	 */
 	function getApplicationFilesResponse($nextUrl = ''){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$message = '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '</p>
 <ul>
@@ -273,13 +273,13 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
-	' . updateUtil::getOverwriteClassesCode() . '
+	' . updateUtilInstaller::getOverwriteClassesCode() . '
 	$filesDir = LE_INSTALLER_TEMP_PATH;
 	$liveUpdateFnc->deleteDir($filesDir);
 
 ?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -293,13 +293,13 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$repeatUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 		$queryDir = LE_INSTALLER_TEMP_PATH . "/tmp/queries/";
 
@@ -365,7 +365,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 		}
 		';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -381,13 +381,13 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 			$_REQUEST['position'] = 0;
 		}
 
-		$repeatUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$repeatUrl = '?' . updateUtilInstaller::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 		$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
 
@@ -432,7 +432,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 		}
 		?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -442,12 +442,12 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 	 */
 	function getCopyApplicationFilesResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 $filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
 $preLength = strlen($filesDir);
@@ -482,7 +482,7 @@ if ($success) {
 }
 ?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 	/**
@@ -509,7 +509,7 @@ if ($success) {
 	 */
 	function getWriteApplicationConfigurationResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtilInstaller::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		if(empty($_SESSION["we_db_charset"]) || $_SESSION["we_db_charset"] == "utf8"){
 			$_SESSION['client_default_charset'] = 'UTF-8';
@@ -520,27 +520,27 @@ if ($success) {
 		}
 
 		// 1st step: missing files
-		$replaceVersionDemo = updateUtil::getReplaceCode('we_version_demo');
+		$replaceVersionDemo = updateUtilInstaller::getReplaceCode('we_version_demo');
 		// folder we_conf, we_conf.inc.php we_conf_global.inc.php
-		$replaceWeConfDemo = updateUtil::getReplaceCode('we_conf_demo');
-		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo', [$_SESSION['client_default_charset']]);
-		$replaceWeActiveModules = updateUtil::getReplaceCode('we_activeModules');
+		$replaceWeConfDemo = updateUtilInstaller::getReplaceCode('we_conf_demo');
+		$replaceWeConfGlobalDemo = updateUtilInstaller::getReplaceCode('we_conf_global_demo', [$_SESSION['client_default_charset']]);
+		$replaceWeActiveModules = updateUtilInstaller::getReplaceCode('we_activeModules');
 
 		// proxy settings
-		$replaceProxySettings = updateUtil::getReplaceCode('we_proxysettings');
+		$replaceProxySettings = updateUtilInstaller::getReplaceCode('we_proxysettings');
 
 		$_SESSION['clientInstalledModules'] = 'Install';
 		$licenceName = "GPL";
 		$version = $_SESSION['clientTargetVersion'];
 
 		$versionnumber = updateUtilBase::version2number($version);
-		$zf_version = update::getZFversion($versionnumber);
+		$zf_version = updateInstaller::getZFversion($versionnumber);
 		$SubVersions = $_SESSION['SubVersions'];
 		$subversion = $SubVersions[$versionnumber];
-		$version_type = update::getOnlyVersionType($versionnumber);
-		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
-		$version_branch = update::getOnlyVersionBranch($versionnumber);
-		$version_name = update::getVersionName($versionnumber); //imi
+		$version_type = updateInstaller::getOnlyVersionType($versionnumber);
+		$version_type_version = updateInstaller::getOnlyVersionTypeVersion($versionnumber);
+		$version_branch = updateInstaller::getOnlyVersionBranch($versionnumber);
+		$version_name = updateInstaller::getVersionName($versionnumber); //imi
 
 		$_SESSION['clientSyslngNEW'] = $_SESSION['clientSyslng'];
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
@@ -560,13 +560,13 @@ if ($success) {
 			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/include/weTagWizard/we_tags/custom_tags", 0770 ) ||
 			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/site", 0770 ) ||
 
-			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceVersionDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceVersionDemo['replace']) . '"), "' . $version . '", "' . $version_type . '", "' . $zf_version . '", "' . $subversion . '", "' . $version_type_version . '", "' . $version_branch . '", "' . $version_name . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
-			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfDemo['replace']) . '"), $_SESSION["le_db_host"], $_SESSION["le_db_database"], base64_encode($_SESSION["le_db_user"]), base64_encode($_SESSION["le_db_password"]), $_SESSION["le_db_connect"], $_SESSION["le_db_prefix"], $_SESSION["we_db_charset"], $_SESSION["we_db_collation"], "' . $licenceName . '", "' . $_SESSION['clientSyslngNEW'] . '", "' . $_SESSION['client_backend_charset'] . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
-			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfGlobalDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfGlobalDemo['replace']) . '"), "' . $_SESSION['client_default_charset'] . '", $_SESSION["we_db_charset"]), ".php","' . $_SESSION['clientExtension'] . '")) ||
+			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceVersionDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtilInstaller::encodeCode($replaceVersionDemo['replace']) . '"), "' . $version . '", "' . $version_type . '", "' . $zf_version . '", "' . $subversion . '", "' . $version_type_version . '", "' . $version_branch . '", "' . $version_name . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
+			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtilInstaller::encodeCode($replaceWeConfDemo['replace']) . '"), $_SESSION["le_db_host"], $_SESSION["le_db_database"], base64_encode($_SESSION["le_db_user"]), base64_encode($_SESSION["le_db_password"]), $_SESSION["le_db_connect"], $_SESSION["le_db_prefix"], $_SESSION["we_db_charset"], $_SESSION["we_db_collation"], "' . $licenceName . '", "' . $_SESSION['clientSyslngNEW'] . '", "' . $_SESSION['client_backend_charset'] . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
+			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfGlobalDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtilInstaller::encodeCode($replaceWeConfGlobalDemo['replace']) . '"), "' . $_SESSION['client_default_charset'] . '", $_SESSION["we_db_charset"]), ".php","' . $_SESSION['clientExtension'] . '")) ||
 
-			!$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "/webEdition/we/include/conf/we_active_integrated_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeActiveModules['replace']) . '")) ||
+			!$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "/webEdition/we/include/conf/we_active_integrated_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtilInstaller::encodeCode($replaceWeActiveModules['replace']) . '")) ||
 
-			(isset($_SESSION["le_proxy_use"]) && $_SESSION["le_proxy_use"] ? !$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "' . $replaceProxySettings['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceProxySettings['replace']) . '"), $_SESSION["le_proxy_host"], $_SESSION["le_proxy_port"], $_SESSION["le_proxy_username"], $_SESSION["le_proxy_password"])), ".php","' . $_SESSION['clientExtension'] . '") : false)  ||
+			(isset($_SESSION["le_proxy_use"]) && $_SESSION["le_proxy_use"] ? !$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "' . $replaceProxySettings['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtilInstaller::encodeCode($replaceProxySettings['replace']) . '"), $_SESSION["le_proxy_host"], $_SESSION["le_proxy_port"], $_SESSION["le_proxy_username"], $_SESSION["le_proxy_password"])), ".php","' . $_SESSION['clientExtension'] . '") : false)  ||
 
 			0
 			) {
@@ -577,14 +577,14 @@ if ($success) {
 			';
 
 
-		$tblPrefsQuery = updateUtil::getReplaceCode('insert_tblPrefs');
-		$tblUserQuery = updateUtil::getReplaceCode('insert_tblUser');
+		$tblPrefsQuery = updateUtilInstaller::getReplaceCode('insert_tblPrefs');
+		$tblUserQuery = updateUtilInstaller::getReplaceCode('insert_tblUser');
 
 		// here we must do somestuff
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+		' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 		// delete all downloaded files
 		$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp";
@@ -633,7 +633,7 @@ if ($success) {
 
 		?>';
 
-		return updateUtil::getResponseString($retArray);
+		return updateUtilInstaller::getResponseString($retArray);
 	}
 
 }

@@ -35,7 +35,6 @@ $lang["installer"]["amountFilesCopied"] = "Files %s to %s installed";
 $lang["installer"]["errorMoveFile"] = "Could not install file, please verify if PHP (Apache) has write permission in the webEdition directory (and files).";
 
 
-// installer::_getDownloadFilesResponse()
 $lang["installer"]["amountFilesDownloaded"] = "%s of %s Files downloaded.";
 
 // installerDownload::getPrepareInstallerFilesResponse()

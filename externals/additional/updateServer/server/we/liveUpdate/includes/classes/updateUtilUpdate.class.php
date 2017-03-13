@@ -3,7 +3,7 @@
 /**
  * $Id$
  */
-class updateUtil extends updateUtilBase{
+abstract class updateUtilUpdate extends updateUtilBase{
 
 	/**
 	 * returns always needed string for response
@@ -24,20 +24,20 @@ class updateUtil extends updateUtilBase{
 	 * @param string $name
 	 * @return array
 	 */
-	static function getReplaceCode($name, $replacements = array()){
+	static function getReplaceCode($name, $replacements = []){
 		global $replaceCode;
 
-		$ret = array();
-		$ret['path'] = sprintf($replaceCode[$name]['path'][updateUtil::getNearestVersion($replaceCode[$name]['path'], $_SESSION['clientVersionNumber'])], $_SESSION['clientExtension']);
+		$ret = [];
+		$ret['path'] = sprintf($replaceCode[$name]['path'][self::getNearestVersion($replaceCode[$name]['path'], $_SESSION['clientVersionNumber'])], $_SESSION['clientExtension']);
 
 		if(isset($replaceCode[$name]['needle'])){
-			$ret['needle'] = $replaceCode[$name]['needle'][updateUtil::getNearestVersion($replaceCode[$name]['needle'], $_SESSION['clientVersionNumber'])];
+			$ret['needle'] = $replaceCode[$name]['needle'][self::getNearestVersion($replaceCode[$name]['needle'], $_SESSION['clientVersionNumber'])];
 		} else {
 			$ret['needle'] = '';
 		}
 
 		if(isset($replaceCode[$name]['replace'])){
-			$replace = $replaceCode[$name]['replace'][updateUtil::getNearestVersion($replaceCode[$name]['replace'], $_SESSION['clientVersionNumber'])];
+			$replace = $replaceCode[$name]['replace'][self::getNearestVersion($replaceCode[$name]['replace'], $_SESSION['clientVersionNumber'])];
 
 			if(!empty($replacements)){
 				$replace = vsprintf($replace, $replacements);

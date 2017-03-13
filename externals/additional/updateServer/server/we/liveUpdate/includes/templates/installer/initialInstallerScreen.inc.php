@@ -20,7 +20,7 @@ foreach($GLOBALS['updateServerTemplateData']['installationSteps'] as $installati
 $liveUpdateResponse = [
 	'Type' => 'template',
 	'headline' => $GLOBALS['lang']['installer']['headline'],
-	'Header' => progressBar::getProgressBarJs() . installer::getJsFunctions(),
+	'Header' => progressBarUpdate::getProgressBarJs() . installerUpdate::getJsFunctions(),
 	'Content' => '
 <table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 <tr>
@@ -37,7 +37,7 @@ $liveUpdateResponse = [
 </tr>
 <tr>
 	<td id="tdProgressBar">
-		' . progressBar::getProgressBarHtml() . '
+		' . progressBarUpdate::getProgressBarHtml() . '
 	</td>
 	<td align="right" id="tdRefreshButton"><button type="button" class="weBtn" onclick="proceedUrl();"><i class="fa fa-lg fa-refresh"></i> ' . $GLOBALS['lang']['button']['refresh'] . '</button></td>
 </tr>

@@ -469,14 +469,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function executePatch($path){
 
 		if(file_exists($path)){
-
 			$code = $this->getFileContent($path);
 			$patchSuccess = eval('?>' . $code);
 			if($patchSuccess === false){
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		}
 		return true;
 	}

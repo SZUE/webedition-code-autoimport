@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class languages extends languagesBase{
+class languagesUpdate extends languagesBase{
 
 	/**
 	 * @return string
@@ -15,7 +15,7 @@ class languages extends languagesBase{
 
 		// get all possible languages
 		$vers = $_SESSION['clientVersionNumber'];
-		$versionLngs = update::getVersionsLanguageArray(false, $vers);
+		$versionLngs = updateUpdate::getVersionsLanguageArray(false, $vers);
 		if(!is_array($installAbleLanguages)){
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
 		}
@@ -29,7 +29,7 @@ class languages extends languagesBase{
 
 		// languages not existing for this version
 		$missingLanguages = array();
-		$allLanguages = languages::getExistingLanguages($vers >= LANGUAGELIMIT);
+		$allLanguages = self::getExistingLanguages($vers >= LANGUAGELIMIT);
 		foreach($allLanguages as $lang){
 			if(!in_array($lang, $installAbleLanguages)){
 				$missingLanguages[] = $lang;
@@ -38,24 +38,24 @@ class languages extends languagesBase{
 
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = $installAbleLanguages;
 		$GLOBALS['updateServerTemplateData']['missingLanguages'] = $missingLanguages;
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
 	 * @return string
 	 */
 	static function getNoLanguageSelectedResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/noLanguageSelected.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/noLanguageSelected.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
 	 * @return string
 	 */
 	static function getConfirmLanguagesResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/confirmLanguages.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/confirmLanguages.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class languages extends languagesBase{
 			$_SESSION['clientDesiredLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientDesiredLanguages'])));
 		}
 
-		return updateUtil::getChangesArrayByQueries([
+		return updateUtilUpdate::getChangesArrayByQueries([
 				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE (version<=' . $_SESSION['clientVersionNumber'] . ') ' .
 				($_SESSION['clientDesiredLanguages'] ? ' AND language IN("' . implode('","', $_SESSION['clientDesiredLanguages']) . '")' : ' AND 0 ') .
 				' ORDER BY version DESC'
@@ -77,7 +77,7 @@ class languages extends languagesBase{
 	 * @return string
 	 */
 	static function getGetChangesResponse(){
-		return installer::getGetChangesResponse();
+		return installerUpdate::getGetChangesResponse();
 	}
 
 	/**
@@ -97,15 +97,15 @@ class languages extends languagesBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
 $liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
 
-?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>");
-		return updateUtil::getResponseString($retArray);
+?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>");
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 }

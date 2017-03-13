@@ -3,7 +3,7 @@
 /**
  * $Id$
  */
-class installer extends installerBase{
+class installerInstaller extends installerBase{
 	static $LanguageIndex = "installer";
 
 	/**
@@ -127,7 +127,7 @@ class installer extends installerBase{
 		return ['Type' => 'eval',
 			'Code' => '<?php
 
-	' . updateUtil::getOverwriteClassesCode() . '
+	' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 	' . $writeFilesCode . '
 
@@ -189,7 +189,7 @@ class installer extends installerBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-	' . updateUtil::getOverwriteClassesCode() . '
+	' . updateUtilInstaller::getOverwriteClassesCode() . '
 
 	' . $writeFilesCode . '
 

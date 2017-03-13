@@ -7,19 +7,19 @@
  * to start an updaterepeat.
  */
 //client version: text and version string
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
+$clientVersionComplete = updateUpdate::getFormattedVersionStringFromWeVersion(true, false);
 $clientVersionText = addslashes($GLOBALS['lang']['update']['installedVersion']) . ':<br />' . $clientVersionComplete . '.<br />';
 
 //maxBranchVersion: text + version string
 if(isset($_SESSION['clientVersionBranch']) && $_SESSION['clientVersionBranch'] != '' && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
-	$maxBranchVersionComplete = update::getFormattedVersionString(update::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']), true, false);
+	$maxBranchVersionComplete = updateUpdate::getFormattedVersionString(updateUpdate::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']), true, false);
 	$maxBranchVersionText = addslashes($GLOBALS['lang']['update']['newestVersionSameBranch']) . ':<br/> ' . $maxBranchVersionComplete . '.<br/>';
 } else {
 	$maxBranchVersionText = '';
 }
 
 //maxVersion: text + version string
-$maxVersionComplete = update::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version'], true, false);
+$maxVersionComplete = updateUpdate::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version'], true, false);
 $maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']) . ':<br/> ' . $maxVersionComplete . '.';
 
 //error_log('getUpdateAvailableResponseAfterRepeat2');
@@ -34,7 +34,7 @@ $pcreV = PCRE_VERSION;
 
 $content = \'
 <form name="we_form">
-	' . updateUtil::getCommonFormFields('update', 'confirmRepeatUpdate') . '
+	' . updateUtilUpdate::getCommonFormFields('update', 'confirmRepeatUpdate') . '
 	<input type="hidden" name="clientTargetVersionNumber" value="' . $_SESSION['clientVersionNumber'] . '" />
 	<input type="hidden" name="clientPhpVersion" value="\'.phpversion(). \'" />
 	<input type="hidden" name="clientPcreVersion" value="\'.$pcreV. \'" />

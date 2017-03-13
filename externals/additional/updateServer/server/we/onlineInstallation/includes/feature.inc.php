@@ -7,7 +7,7 @@ switch($_REQUEST['detail']){
 
 	// get form with all possible languages
 	case 'languagesForm':
-		print languages::getLanguagesFormResponse();
+		print languagesInstaller::getLanguagesFormResponse();
 		break;
 
 
@@ -20,26 +20,22 @@ switch($_REQUEST['detail']){
 			$extraLanguages = $clientRequestVars['le_extraLanguages'];
 		}
 
-		print languages::getRegisterLanguagesResponse($defaultLanguage, $extraLanguages);
+		print languagesInstaller::getRegisterLanguagesResponse($defaultLanguage, $extraLanguages);
 		break;
 
 
 	// get form with all versions
 	case 'versionForm':
 
-		print license::getVersionFormResponse();
+		print licenseInstaller::getVersionFormResponse();
 		break;
 
 
 	// save the version in session
 	case 'registerVersion':
-		print license::getRegisterVersionResponse($clientRequestVars['le_version']);
+		print licenseInstaller::getRegisterVersionResponse($clientRequestVars['le_version']);
 		break;
 
 
-	// get form with all snippets
-	case 'snippetsForm':
-		print snippets::getSnippetsFormResponse();
-		break;
 }
 

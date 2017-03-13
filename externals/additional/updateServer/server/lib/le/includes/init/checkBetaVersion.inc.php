@@ -7,7 +7,7 @@
  */
 // not possible for too old versions
 if(isset($clientRequestVars['isBeta'])){
-	print notification::getLiveUpdateNotPossibleForOldBetaResponse();
+	print notificationUpdate::getLiveUpdateNotPossibleForOldBetaResponse();
 	exit;
 }
 
@@ -51,7 +51,7 @@ if(isset($clientRequestVars['betaVersion'])){
 		case '5908':
 		case '5909':
 			//$_SESSION['testUpdate'] = true;
-			print notification::getBetaExpiredResponse();
+			print notificationUpdate::getBetaExpiredResponse();
 			exit;
 			break;
 		/*

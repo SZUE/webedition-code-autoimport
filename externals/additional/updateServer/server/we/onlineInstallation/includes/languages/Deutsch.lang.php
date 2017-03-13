@@ -35,7 +35,6 @@ $lang["installer"]["amountFilesCopied"] = "%s von %s Dateien wurden installiert.
 $lang["installer"]["errorMoveFile"] = "Konnte Datei nicht installieren, bitte &uuml;berpr&uuml;fen Sie ob PHP (Apache) Schreibrecht auf das webEdition Verzeichnis (inkl. Dateien) hat.";
 
 
-// installer::_getDownloadFilesResponse()
 $lang["installer"]["amountFilesDownloaded"] = "%s von %s Dateien wurden heruntergeladen.";
 
 // installerDownload::getPrepareInstallerFilesResponse()

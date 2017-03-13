@@ -64,7 +64,7 @@ $liveUpdateResponse = [
 	'Header' => '',
 	'Content' => '
 <form name="we_form">
-' . updateUtil::getCommonFormFields('languages', 'confirmLanguages') . '
+' . updateUtilUpdate::getCommonFormFields('languages', 'confirmLanguages') . '
 
 ' . $GLOBALS['lang']['languages']['installLamguages'] . '<br/>
 

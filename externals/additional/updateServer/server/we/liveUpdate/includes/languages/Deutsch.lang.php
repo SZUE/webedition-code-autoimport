@@ -120,7 +120,6 @@ $lang['installer'] = [
 	'downloadInstaller' => 'Installer herunterladen',
 	'getChanges' => 'Ben&ouml;tigte Dateien ermitteln',
 	'downloadChanges' => 'Dateien herunterladen',
-// installer::_getDownloadFilesResponse()
 	"amountFilesDownloaded" => "%s von %s Dateien wurden heruntergeladen.",
 	'prepareChanges' => 'Dateien vorbereiten',
 	'updateDatabase' => 'Datenbank aktualisieren',

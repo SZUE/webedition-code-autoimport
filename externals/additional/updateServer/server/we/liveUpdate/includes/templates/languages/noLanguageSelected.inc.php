@@ -9,7 +9,7 @@ $liveUpdateResponse = [
 	'Header' => '',
 	'Content' => '
 <form name="we_form">
-' . updateUtil::getCommonFormFields('languages', 'selectLanguages') . '
+' . updateUtilUpdate::getCommonFormFields('languages', 'selectLanguages') . '
 
 ' . $GLOBALS['lang']['languages']['noLanguageSelectedText'] . '
 <br />

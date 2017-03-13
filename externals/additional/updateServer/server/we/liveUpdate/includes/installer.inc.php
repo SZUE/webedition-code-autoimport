@@ -11,7 +11,7 @@ switch($_REQUEST['detail']){
 	case 'confirmInstallation':
 
 		// opens pop-up to confirm update.
-		print installer::getConfirmInstallationResponse();
+		print installerUpdate::getConfirmInstallationResponse();
 
 		break;
 
@@ -20,7 +20,7 @@ switch($_REQUEST['detail']){
 		// as first step always load matching version of installer
 		// this is simply one step
 
-		print installer::getDownloadInstallerResponse();
+		print installerUpdate::getDownloadInstallerResponse();
 		break;
 
 	case 'downloadChanges':
@@ -32,7 +32,7 @@ switch($_REQUEST['detail']){
 		if(isset($_REQUEST['decreaseSpeed']) && $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] > 100){
 			$_SESSION['DOWNLOAD_KBYTES_PER_STEP'] -= 100;
 		}
-		print installer::getDownloadChangesResponse();
+		print installerUpdate::getDownloadChangesResponse();
 
 		break;
 
@@ -46,19 +46,19 @@ switch($_REQUEST['detail']){
 			$_SESSION['EXECUTE_QUERIES_PER_STEP'] --;
 		}
 
-		print installer::getUpdateDatabaseResponse();
+		print installerUpdate::getUpdateDatabaseResponse();
 		break;
 	case 'copyFiles':
 		// copy webEdition files at right position
-		print installer::getCopyFilesResponse();
+		print installerUpdate::getCopyFilesResponse();
 		break;
 
 	case 'executePatches':
 		// copy webEdition files at right position
-		print installer::getExecutePatchesResponse();
+		print installerUpdate::getExecutePatchesResponse();
 		break;
 
 	case 'finishInstallationPopUp':
-		print installer::getFinishInstallationPopUpResponse();
+		print installerUpdate::getFinishInstallationPopUpResponse();
 		break;
 }

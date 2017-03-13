@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class update extends updateBase{
+abstract class updateUpdate extends updateBase{
 
 	static function updateLogStart(){
 		$apps = [];
@@ -17,7 +17,7 @@ class update extends updateBase{
 		sort($apps);
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' SET date=NOW(),' .
 				we_database_base::arraySetter([
-					"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),
+					"installedVersion" => updateUtilUpdate::version2number($_SESSION['clientVersion']),
 					'installedSvnRevision' => (isset($_SESSION['clientSubVersion']) ? $_SESSION['clientSubVersion'] : ''),
 					'installedVersionBranch' => (isset($_SESSION['clientVersionBranch']) ? $_SESSION['clientVersionBranch'] : ''),
 					'clientPhpVersion' => (isset($_SESSION['clientPhpVersion']) ? $_SESSION['clientPhpVersion'] : ''),
@@ -59,10 +59,10 @@ class update extends updateBase{
 		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET ' .
 				we_database_base::arraySetter([
 					'updatedVersion' => $version,
-					'updatedVersionName' => update::getVersionName($version),
-					'updatedVersionStatus' => update::getVersionType($version),
-					'updatedSvnRevision' => update::getSubVersion($version),
-					'updatedVersionBranch' => update::getOnlyVersionBranch($version),
+					'updatedVersionName' => self::getVersionName($version),
+					'updatedVersionStatus' => self::getVersionType($version),
+					'updatedSvnRevision' => self::getSubVersion($version),
+					'updatedVersionBranch' => self::getOnlyVersionBranch($version),
 					'success' => 1,
 				]) .
 				'WHERE id=' . intval($_SESSION['db_log_id']));
@@ -247,7 +247,7 @@ class update extends updateBase{
 		// query for versions
 		$versionQuery = '';
 		if($_SESSION['clientVersionNumber'] == $_SESSION['clientTargetVersionNumber']){ // repeat Update
-			$startversion = updateUtil::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
+			$startversion = updateUtilUpdate::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
 			$versionQuery = '(version >= ' . $startversion . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ' )';
 		} else { // normal update
 			$versionQuery = '(version > ' . $_SESSION['clientVersionNumber'] . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ')';
@@ -272,7 +272,7 @@ class update extends updateBase{
 			$theLanguages = array_unique($theLanguages);
 		}
 
-		return updateUtil::getChangesArrayByQueries([
+		return updateUtilUpdate::getChangesArrayByQueries([
 					// query for all needed changes - software
 					'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' ORDER BY version DESC',
 // query for needed changes language
@@ -289,8 +289,8 @@ class update extends updateBase{
 	 * @return string
 	 */
 	static function getNoUpdateAvailableResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateAvailable.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateAvailable.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/**
@@ -300,30 +300,30 @@ class update extends updateBase{
 	 * @return string
 	 */
 	static function getNoUpdateForLanguagesResponse(){
-		return updateUtil::getResponseString(updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateForLanguages.inc.php'));
+		return updateUtilUpdate::getResponseString(updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateForLanguages.inc.php'));
 	}
 
 	/**
 	 * @return string
 	 */
 	static function getUpdateAvailableResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailable.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailable.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	static function getUpdateAvailableAfterRepeatResponse(){//error_log('getUpdateAvailableAfterRepeatResponse');
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailableAfterRepeat.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailableAfterRepeat.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	static function getConfirmUpdateResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmUpdate.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmUpdate.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	static function getConfirmRepeatUpdateResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmRepeatUpdate.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmRepeatUpdate.inc.php');
+		return updateUtilUpdate::getResponseString($ret);
 	}
 
 	/*
@@ -331,7 +331,7 @@ class update extends updateBase{
 	 */
 
 	static function getGetChangesResponse(){
-		return installer::getGetChangesResponse();
+		return installerUpdate::getGetChangesResponse();
 	}
 
 	/**
@@ -343,43 +343,43 @@ class update extends updateBase{
 	static function getFinishInstallationResponse(){
 		//error_log('getFinishInstallationResponse'); taucht nicht im Log des Servers auf
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
-		$zf_version = update::getZFversion($versionnumber);
+		$zf_version = self::getZFversion($versionnumber);
 		$SubVersions = $_SESSION['SubVersions'];
 		$subversion = $SubVersions[$versionnumber];
-		$version_name = update::getVersionName($versionnumber);
-		$version_type = update::getOnlyVersionType($versionnumber);
-		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
+		$version_name = self::getVersionName($versionnumber);
+		$version_type = self::getOnlyVersionType($versionnumber);
+		$version_type_version = self::getOnlyVersionTypeVersion($versionnumber);
 
-		$branch = update::getOnlyVersionBranch($versionnumber);
+		$branch = self::getOnlyVersionBranch($versionnumber);
 
 		$branchText = ($branch != 'trunk' ? '|' . $branch : '');
 
-		$AlphaBetaVersions = update::getAlphaBetaVersions();
+		$AlphaBetaVersions = self::getAlphaBetaVersions();
 		$loginfo = ' ' . $_SESSION['clientTargetVersion'] . ' ' . $GLOBALS['lang']['update'][$AlphaBetaVersions[$versionnumber]['type']] . ($AlphaBetaVersions[$versionnumber]['typeversion'] ? $AlphaBetaVersions[$versionnumber]['typeversion'] : '') . ' (SVN-Revision: ' . $SubVersions[$versionnumber] . $branchText . ')';
 
 
-		$we_version = updateUtil::getReplaceCode('we_version', [$_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $branch, $version_name]);
+		$we_version = updateUtilUpdate::getReplaceCode('we_version', [$_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $branch, $version_name]);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtilUpdate::getOverwriteClassesCode() . '
 
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
-if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtil::encodeCode($we_version['replace']) . '", "' . updateUtil::encodeCode($we_version['needle']) . '")	) {
+if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtilUpdate::encodeCode($we_version['replace']) . '", "' . updateUtilUpdate::encodeCode($we_version['needle']) . '")	) {
 
 	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
 
-	?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['update']['finished'] . "</div>") . '<?php
+	?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['update']['finished'] . "</div>") . '<?php
 
 } else {
-	' . installer::getErrorMessageResponsePart() . '
+	' . installerUpdate::getErrorMessageResponsePart() . '
 }
 ?>';
 		//static::updateLogFinish(1);
-		return updateUtil::getResponseString($retArray);
+		return updateUtilUpdate::getResponseString($retArray);
 	}
 
 }

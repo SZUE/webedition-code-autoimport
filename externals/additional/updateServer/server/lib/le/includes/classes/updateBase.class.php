@@ -52,15 +52,15 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleVersionsArray(){
-		$langVersions = update::getVersionsLanguageArray(true, 0, isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : false);
+		$langVersions = self::getVersionsLanguageArray(true, 0, isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : false);
 
 		$possibleVersions = [];
 
 		foreach($langVersions as $version => $lngArray){
 			if($version > $_SESSION['clientVersionNumber'] && count($lngArray) == count($_SESSION['clientInstalledLanguages'])){
-				$possibleVersions[$version] = updateUtil::number2version($version);
+				$possibleVersions[$version] = updateUtilBase::number2version($version);
 			} elseif($version > $_SESSION['clientVersionNumber']){
-				$possibleVersions[$version] = updateUtil::number2version($version);
+				$possibleVersions[$version] = updateUtilBase::number2version($version);
 			}
 		}
 		return $possibleVersions;

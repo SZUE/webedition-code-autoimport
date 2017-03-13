@@ -3,7 +3,7 @@
  * $Id$
  */
 
-class license extends licenseBase{
+class licenseInstaller extends licenseBase{
 
 	/**
 	 * returns form to choose version
@@ -12,16 +12,16 @@ class license extends licenseBase{
 	 */
 	static function getVersionFormResponse(){
 
-		$AvailableVersions = update::getVersionsLanguageArray(false);
+		$AvailableVersions = updateInstaller::getVersionsLanguageArray(false);
 		//$NotLiveVersions = update::getNotLiveVersions();
-		$SubVersions = update::getSubVersions();
-		$AlphaBetaVersions = update::getAlphaBetaVersions();
-		$VersionNames = update::getVersionNames();
+		$SubVersions = updateInstaller::getSubVersions();
+		$AlphaBetaVersions = updateInstaller::getAlphaBetaVersions();
+		$VersionNames = updateInstaller::getVersionNames();
 
 		$MatchingVersions = array();
 		$VersionsMissingLanguage = array();
 		foreach(array_keys($AvailableVersions) as $Version){
-			$MatchingVersions[$Version] = updateUtil::number2version($Version);
+			$MatchingVersions[$Version] = updateUtilInstaller::number2version($Version);
 		}
 		unset($MatchingVersions['betaLanguages']);
 		$GLOBALS['updateServerTemplateData']['AvailableVersions'] = $AvailableVersions;
@@ -34,8 +34,8 @@ class license extends licenseBase{
 		$_SESSION['SubVersions'] = $SubVersions;
 		$_SESSION['AlphaBetaVersions'] = $AlphaBetaVersions;
 
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/license/versionForm.inc.php');
-		return updateUtil::getResponseString($ret);
+		$ret = updateUtilInstaller::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/license/versionForm.inc.php');
+		return updateUtilInstaller::getResponseString($ret);
 	}
 
 	/**
@@ -46,10 +46,10 @@ class license extends licenseBase{
 	static function getRegisterVersionResponse($version){
 
 		$_SESSION['clientTargetVersionNumber'] = $version;
-		$_SESSION['clientTargetSubVersionNumber'] = update::getSubVersion($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionType'] = update::getVersionType($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersionBranch'] = update::getOnlyVersionBranch($_SESSION['clientTargetVersionNumber']);
-		$_SESSION['clientTargetVersion'] = updateUtil::number2version($version);
+		$_SESSION['clientTargetSubVersionNumber'] = updateInstaller::getSubVersion($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionType'] = updateInstaller::getVersionType($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersionBranch'] = updateInstaller::getOnlyVersionBranch($_SESSION['clientTargetVersionNumber']);
+		$_SESSION['clientTargetVersion'] = updateUtilInstaller::number2version($version);
 
 		$_SESSION['clientVersionNumber'] = $_SESSION['clientTargetVersionNumber'];
 		$_SESSION['clientVersion'] = $_SESSION['clientTargetVersion'];
@@ -58,7 +58,7 @@ class license extends licenseBase{
 			'Type' => 'eval',
 			'Code' => '<?php return true; ?>',
 		);
-		return updateUtil::getResponseString($ret);
+		return updateUtilInstaller::getResponseString($ret);
 	}
 
 }

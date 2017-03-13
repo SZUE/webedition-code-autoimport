@@ -7,6 +7,5 @@ $leInstallerSteps = ['ChooseLanguage',
 	'SoftwareRequirements',
 	//'Community',
 	//'CommunityRegistration',
-	//'ChooseSnippets', // not implemented yet
 	];
 

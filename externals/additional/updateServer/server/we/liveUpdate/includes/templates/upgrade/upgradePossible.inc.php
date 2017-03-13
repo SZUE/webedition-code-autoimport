@@ -42,10 +42,10 @@ function toggleNextButton() {
 
 	' . $versionList . '
 	<div class="messageDiv">
-		' . updateUtil::getCommonFormFields('upgrade', 'startUpgrade') . '
+		' . updateUtilUpdate::getCommonFormFields('upgrade', 'startUpgrade') . '
 		' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarning'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningTitle'] . '</b><br />
-	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button></div>';
+	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="' . installerUpdate::getConfirmInstallationWindow() . '"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button></div>';
 if(!isset($_SESSION['clientPhpExtensions'])){
 	$liveUpdateResponse['Code'] .= '
 		<input type="hidden" name="clientPhpVersion" value="\'.phpversion(). \'" />
