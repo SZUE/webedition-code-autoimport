@@ -29,7 +29,7 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			top.frames.updatecontent.decreaseSpeed = false;
 			top.frames.updatecontent.nextUrl = "' . $urls['nextUrl'] . '"+(top.frames.updatecontent.param?top.frames.updatecontent.param:"");
 			top.frames.updatecontent.setProgressBar("' . $urls['progress'] . '");
-			var msg="' . str_replace(["\r", "\n"], '', $msg . $urls['message']) . '\n";
+			var msg="' . str_replace(array("\r", "\n"), '', $msg . $urls['message']) . '\n";
 			top.frames.updatecontent.appendMessageLog(msg);' .
 			($urls['nextStep'] ? 'top.frames.updatecontent.finishLiInstallerStep("' . $urls['nextStep'][0] . '");
 			top.frames.updatecontent.activateLiInstallerStep("' . $urls['nextStep'][1] . '");' : '') . '
