@@ -184,7 +184,7 @@ class installer extends installerBase{
 
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
-		}
+}
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php

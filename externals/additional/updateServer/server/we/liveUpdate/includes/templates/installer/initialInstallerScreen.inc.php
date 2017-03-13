@@ -42,7 +42,7 @@ $content = \'
 	<td id="tdProgressBar">
 		' . progressBar::getProgressBarHtml() . '
 	</td>
-	<td align="right" id="tdRefreshButton"><button type="button" class="weBtn" onclick="proceedUrl();">' . $GLOBALS['lang']['button']['refresh'] . '</button></td>
+	<td align="right" id="tdRefreshButton"><button type="button" class="weBtn" onclick="proceedUrl();"><i class="fa fa-lg fa-refresh"></i>' . $GLOBALS['lang']['button']['refresh'] . '</button></td>
 </tr>
 </table>
 <script>

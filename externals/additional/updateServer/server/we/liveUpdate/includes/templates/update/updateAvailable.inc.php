@@ -133,12 +133,12 @@ $liveUpdateResponse['Code'] .= '<br />\'.$diskquotawarning. \'
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['upgrade']['confirmUpdateWarning'] . $confirmUpdateHint . $GLOBALS['lang']['upgrade']['confirmUpdateWarningEnd'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningTitle'] . '</b><br />
-	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button><br /></div>
+	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="document.we_form.submit();"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button><br /></div>
 	' . $GLOBALS['lang']['update']['suggestCurrentVersion'] . '
 	<br />
 	<div class="messageDiv">
 		' . addslashes($GLOBALS['lang']['update']['repeatUpdatePossible']) . '
-		<button type="button" class="weBtn" onclick="document.location=\\\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\\\'">' . $GLOBALS['lang']['button']['next'] . '</button>
+		<button type="button" class="weBtn" onclick="document.location=\\\'?' . updateUtil::getCommonHrefParameters('update', 'confirmRepeatUpdate') . '&clientTargetVersionNumber=' . $_SESSION['clientVersionNumber'] . '\\\'"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button>
 	</div>
 \';
 

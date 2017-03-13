@@ -14,7 +14,7 @@ $liveUpdateResponse = [
 ' . $GLOBALS['lang']['languages']['noLanguageSelectedText'] . '
 <br />
 <br />
-<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['back'] . '</button>
+<button type="button" class="weBtn" onclick="document.we_form.submit();"><i class="fa fa-lg fa-step-backward"></i>' . $GLOBALS['lang']['button']['back'] . '</button>
 </form>'
 ];
 

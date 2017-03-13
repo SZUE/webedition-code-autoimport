@@ -37,7 +37,7 @@ $liveUpdateResponse = [
 	' . sprintf($GLOBALS['lang']['update']['confirmUpdateText'], $clientVersionComplete, $clientTargetVersionComplete) . $ReqOut . '
 	<br />
 	<br />
-	' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '">' . $GLOBALS['lang']['button']['next'] . '</button>' : '') . '
+	' . ($ReqOK ? '<button type="button" class="weBtn" onclick="' . installer::getConfirmInstallationWindow() . '"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button>' : '') . '
 	</form>' . $weiterwarnung . '<div style="margin-top:20px;">' . $GLOBALS['lang']['update']['spenden'] . '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="BERPPPT588RAE">

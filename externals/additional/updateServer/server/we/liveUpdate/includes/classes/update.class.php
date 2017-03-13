@@ -368,11 +368,7 @@ class update extends updateBase{
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
-//FIXME: remove the following create code
-if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtil::encodeCode($we_version['replace']) . '", "' . updateUtil::encodeCode($we_version['needle']) . '") &&
-		$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup", 0770 ) &&
-		$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup/download", 0770 )
-	) {
+if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtil::encodeCode($we_version['replace']) . '", "' . updateUtil::encodeCode($we_version['needle']) . '")	) {
 
 	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
 

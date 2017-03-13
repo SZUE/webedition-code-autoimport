@@ -93,7 +93,7 @@ if($_SESSION['clientVersionNumber'] > $GLOBALS['updateServerTemplateData']['maxV
 
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['update']['repeatUpdateNeeded'] . '
-	<button type="button" class="weBtn" onclick="document.we_form.submit();">' . $GLOBALS['lang']['button']['next'] . '</button>
+	<button type="button" class="weBtn" onclick="document.we_form.submit();"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button>
 	</div>';
 }
 $liveUpdateResponse['Code'] .= '

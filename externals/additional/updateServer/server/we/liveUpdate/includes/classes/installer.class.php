@@ -43,10 +43,10 @@ class installer extends installerBase{
 		$querySteps = count($_SESSION['clientChanges']['queries']) / EXECUTE_QUERIES_PER_STEP;
 		$installationStepsTotal += $querySteps;
 		// prepare files
-/*		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
-		$installationStepsTotal += $prepareSteps;
-*/
-		$prepareSteps=0;
+		/* 		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
+		  $installationStepsTotal += $prepareSteps;
+		 */
+		$prepareSteps = 0;
 		$currentStep = 0;
 
 		switch($_REQUEST['detail']){
@@ -62,9 +62,9 @@ class installer extends installerBase{
 			case 'downloadChanges':
 				$currentStep = 3 + ($_REQUEST['position'] / count($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
-			/*case 'prepareChanges':
-				$currentStep = 4 + $dlSteps + ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
-				break;*/
+			/* case 'prepareChanges':
+			  $currentStep = 4 + $dlSteps + ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
+			  break; */
 			case 'updateDatabase':
 				$currentStep = 5 + $dlSteps + $prepareSteps + ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
 				break;
@@ -223,8 +223,8 @@ function finishLiInstallerStep(stepId) {
 			'SuccessText' => sprintf($GLOBALS['lang']['installer']['amountFilesDownloaded'], $endFile, $maxFile),
 			'Parts' => $parts,
 			'Error' => [
-				'path' => self::getErrorMessage('', '__PATH__'),
-				'write' => self::getErrorMessage('', '__PATH__', 'notWritableError')
+				'path' => self::getErrorMessageResponse('', '__PATH__'),
+				'write' => self::getErrorMessageResponse('', '__PATH__', 'notWritableError')
 			]
 		];
 	}
@@ -335,119 +335,24 @@ $liveUpdateFnc->deleteDir($filesDir);
 
 		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
 		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
+		$progress = self::getInstallerProgressPercent();
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
-
-' . updateUtil::getOverwriteClassesCode() . '
-
-$queryDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/queries/";
-
-$allFiles = array();
-$liveUpdateFnc->getFilesOfDir($allFiles, $queryDir);
-sort($allFiles);
-
-$message = "";
-
-for ($i=' . $_REQUEST['position'] . '; $i<count($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
-	// execute queries in each file
-	if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
-		$text = substr(basename($allFiles[$i]), -40);
-		$message .= "<div>&hellip;$text</div>";
-	} else {
-		$msg = $liveUpdateFnc->getQueryLog();
-		$fileName = basename($allFiles[$i]);
-
-		if ($msg["tableExists"]) {
-			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '</div>";
-			$liveUpdateFnc->insertQueryLogEntries("tableExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-		}
-
-		if ($msg["tableChanged"]) {
-			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '</div>";
-			$liveUpdateFnc->insertQueryLogEntries("tableChanged", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-		}
-
-		if ($msg["entryExists"]) {
-			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '</div>";
-			$liveUpdateFnc->insertQueryLogEntries("entryExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-		}
-
-		if ($msg["error"]) {
-			$message .= "<div class=\'errorDiv\'>Y' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '</div>";
-			$liveUpdateFnc->insertQueryLogEntries("error", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '", 1, "' . $_SESSION['clientVersion'] . '");
-		}
-
-		$liveUpdateFnc->clearQueryLog();
+		return updateUtil::getResponseString([
+				'Type' => 'DBUpdate',
+				'From' => $_REQUEST['position'],
+				'To' => ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']),
+				'ClientVersion' => $_SESSION['clientVersion'],
+				'Next' => self::getProceedNextCommandResponse($nextUrl, $progress),
+				'Repeat' => self::getProceedNextCommandResponse($repeatUrl, $progress),
+				'Lang' => [
+					'notice' => $GLOBALS['lang']['installer']['updateDatabaseNotice'],
+					'tableExists' => $GLOBALS['luSystemLanguage']['installer']['tableExists'],
+					'tableChanged' => $GLOBALS['luSystemLanguage']['installer']['tableChanged'],
+					'entryExists' => $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'],
+					'error' => $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery']
+				]
+		]);
 	}
-}
-
-if ( count($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
-
-	?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
-} else { // proceed to next step.
-
-	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-}';
-
-		return updateUtil::getResponseString($retArray);
-	}
-
-	/**
-	 * returns response for prepare the downloaded files
-	 * - overwrite doc_root, change extension
-	 * - rename (extension)
-	 *
-	 * @return string
-	 */
-	/*static function getPrepareChangesResponse(){
-
-		if(!isset($_REQUEST['position'])){
-			$_REQUEST['position'] = 0;
-		}
-
-		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
-		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
-
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
-
-' . updateUtil::getOverwriteClassesCode() . '
-
-$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
-
-$allFiles = array();
-$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
-sort($allFiles);
-
-//$message = "";
-$success = true;
-
-for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<count($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
-	$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
-	//$text = substr(basename($allFiles[$i]), -40);
-
-	//$message .= "<div>&hellip;$text</div>";
-
-	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
-		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-	}
-}
-
-if (!$success) {
-	' . self::getErrorMessageResponsePart() . '
-} else {
-	if ( count($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
-		?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '.') . '<?php
-	} else {
-		?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '.') . '<?php
-	}
-}
-?>';
-
-		return updateUtil::getResponseString($retArray);
-	}*/
 
 	/**
 	 * returns response to copy new files to correct location
@@ -456,54 +361,12 @@ if (!$success) {
 	 */
 	static function getCopyFilesResponse(){
 		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
-
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
-
-' . updateUtil::getOverwriteClassesCode() . '
-
-$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
-$preLength = strlen($filesDir);
-
-$success = true;
-
-$message = "";
-
-$allFiles = array();
-$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
-
-$donotcopy = array(
-	LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_delete.inc.php",
-	LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_publish.inc.php",
-	LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_save.inc.php",
-	LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_unpublish.inc.php",
-	LIVEUPDATE_SOFTWARE_DIR ."/webEdition/apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php"
-);
-
-		for ($i=0;$success && $i<count($allFiles);$i++) {
-				$text = substr(basename($allFiles[$i]), -40);
-				$message .= "<div>&hellip;$text</div>";
-
-			if (in_array(LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength),$donotcopy)) {
-				$success = $liveUpdateFnc->deleteFile($allFiles[$i]);
-	} else {
-		$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));
-	}
-}
-
-if ($success) {
-
-	//$message = "<div>" . $message . "</div>";
-	$message = "<div>' . sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], count($_SESSION['clientChanges']['files'])) . '</div>";
-
-	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
-} else {
-
-	' . self::getErrorMessageResponsePart() . '
-}
-?>';
-		return updateUtil::getResponseString($retArray);
+		return updateUtil::getResponseString([
+				'Type' => 'CopyFiles',
+				'Message' => sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], count($_SESSION['clientChanges']['files'])),
+				'Next' => self::getProceedNextCommandResponse($nextUrl, self::getInstallerProgressPercent()),
+				'Error' => self::getErrorMessageResponse()
+		]);
 	}
 
 	/**
@@ -516,71 +379,14 @@ if ($success) {
 		$nextUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail(self::getNextUpdateDetail()), self::getNextUpdateDetail());
 		$repeatUrl = self::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(self::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
 
-		$retArray = [
-			'Type' => 'eval', //'ExecutePatches',
-			'Repeat' => self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '__MSG__'),
-			'Next' => self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '__MSG__'),
-			'Error' => self::getErrorMessageResponsePart('$errorFile', '{$GLOBALS["errorDetail"]}'),
-			'RepeatText' => sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])),
-			'Code' => '<?php
-
-' . updateUtil::getOverwriteClassesCode() . '
-
-
-if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
-	$redo=$liveUpdateFnc::weUpdaterDoUpdate((empty($_REQUEST["progress"])?"":$_REQUEST["progress"]["what"]),(empty($_REQUEST["progress"])?array():$_REQUEST["progress"]));
-}
-$allFiles = array();
-$liveUpdateFnc->getFilesOfDir($allFiles, LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/");
-
-$success = true;
-$message = "";
-
-foreach($allFiles as $file) {
-	$message .= basename($file) . "<br />";
-	$success = $liveUpdateFnc->executePatch($file);
-	if (!$success) {
-		$errorFile .=" ". basename($file);
-	}
-	unlink($file);
-}
-
-if ($success) {
-	$message="";
-	if($allFiles){
-		$message = "<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])) . '</div>";
-	}
-
-	if(is_array($redo)){
-		$message.="<div>Update ".$redo["text"]."</div>";
-		unset($redo["text"]);
-		echo "<script>top.frames.updatecontent.param=\"&".http_build_query(array("progress"=>$redo))."\";</script>";
-	?>' . self::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-	}else{
-
-$delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
-if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
-	if(is_file($delDir . "deleted.files")){
-		unlink($delDir . "deleted.files");
-	}
-	$liveUpdateFnc->removeObsoleteFiles($delDir);
-}
-if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
-	$liveUpdateFnc->removeDirOnlineInstaller();
-}
-
-
-
-
-
-	?>' . self::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-	}
-} else {
-	' . self::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
-}
-?>'];
-
-		return updateUtil::getResponseString($retArray);
+		return updateUtil::getResponseString([
+				'Type' => 'ExecutePatches',
+				'Next' => self::getProceedNextCommandResponse($nextUrl, self::getInstallerProgressPercent()),
+				'Repeat' => self::getProceedNextCommandResponse($repeatUrl, self::getInstallerProgressPercent()),
+				'Message' => sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])),
+				'Error' => self::getErrorMessageResponse('__HEAD__', '__MSG__'),
+				]
+		);
 	}
 
 	/*	 * ********************************************************
@@ -748,6 +554,22 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 	static function getFinishInstallationPopUpResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/finishInstallationPopUp.inc.php');
 		return updateUtil::getResponseString($ret);
+	}
+
+	static function getErrorMessageResponse($headline = '', $message = '', $type = ''){
+		switch($type){
+			case "notWritableError":
+				$headline = $GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'];
+		}
+		return [
+			'headline' => $headline ?: '<br /><strong class="errorText">' . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>',
+			'message' => $message . ($message ? '' : '<br/>'),
+			'lang' => [
+				'errorMessage' => $GLOBALS['luSystemLanguage']['installer']['errorMessage'],
+				'errorIn' => $GLOBALS['luSystemLanguage']['installer']['errorIn'],
+				'errorLine' => $GLOBALS['luSystemLanguage']['installer']['errorLine']
+			]
+		];
 	}
 
 	/**
