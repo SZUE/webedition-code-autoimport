@@ -144,7 +144,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function gc($sessMaxLifeTime){
-		self::cleanSessions($this->db);
+		self::cleanSessions($this->DB);
 		return true;
 	}
 
