@@ -577,7 +577,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		// change fields when needed.
 
 
-		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausführen
 			return true;
 		}
 

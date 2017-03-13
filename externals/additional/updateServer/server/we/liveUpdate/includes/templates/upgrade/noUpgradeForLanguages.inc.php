@@ -34,12 +34,12 @@ foreach($_SESSION['clientInstalledLanguages'] as $lng){
 	}
 }
 
-$liveUpdateResponse['Type'] = 'template';
-$liveUpdateResponse['headline'] = $GLOBALS['lang']['upgrade']['headline'];
-$liveUpdateResponse['Content'] = '
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'headline' => $GLOBALS['lang']['upgrade']['headline'],
+	'Content' => '
 <div class="errorDiv">
 	' . $GLOBALS['lang']['upgrade']['noUpgradeForLanguages'] . '
 	' . $preventLngsList . '
 </div>
-';
-
+'];

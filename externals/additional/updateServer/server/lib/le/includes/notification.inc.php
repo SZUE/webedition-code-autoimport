@@ -6,15 +6,15 @@
 switch($_REQUEST['detail']){
 
 	case 'lostSession':
-		print notificationBase::getLostSessionResponse();
+		echo notificationBase::getLostSessionResponse();
 		break;
 
 	case 'databaseFailure':
-		print notificationBase::getDatabaseFailureResponse();
+		echo notificationBase::getDatabaseFailureResponse();
 		break;
 
 	default:
-		print notificationBase::getCommandNotKnownResponse();
+		echo notificationBase::getCommandNotKnownResponse();
 		break;
 }
 

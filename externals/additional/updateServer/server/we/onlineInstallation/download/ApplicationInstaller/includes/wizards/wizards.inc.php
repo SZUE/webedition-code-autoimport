@@ -2,10 +2,10 @@
 /**
  * $Id$
  */
-$leInstallerWizards = ['Settings',
+$leInstallerWizards = [
+	'Settings',
 	'Features',
 	'Summary',
 	'DownloadAndInstallSoftware',
 	'FinishInstallation',
- ];
-
+];

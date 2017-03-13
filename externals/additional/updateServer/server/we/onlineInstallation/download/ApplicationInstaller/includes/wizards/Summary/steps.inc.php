@@ -2,6 +2,6 @@
 /**
  * $Id$
  */
-$leInstallerSteps = ['Summary',
-	];
-
+$leInstallerSteps = [
+	'Summary',
+];

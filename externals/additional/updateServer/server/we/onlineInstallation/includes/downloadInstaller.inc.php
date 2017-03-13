@@ -60,4 +60,3 @@ switch($_REQUEST['detail']){
 
 		break;
 }
-

@@ -499,12 +499,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				}
 			}
 
-			if($isNew){
+			$queries[] = ($isNew ?
 				//Bug #4431, siehe unten
-				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			} else {
-				$queries[] = 'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			}
+				'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] :
+				'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] ) . " $null $default $extra";
 		}
 		return $queries;
 	}

@@ -16,8 +16,9 @@ foreach($versions as $key => $value){
 }
 $versionList .= '</select>';
 
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
+$liveUpdateResponse = [
+	'Type' => 'eval',
+	'Code' => '<?php
 
 if( defined("PCRE_VERSION") ) {
 $pcreV = PCRE_VERSION;
@@ -45,18 +46,16 @@ function toggleNextButton() {
 		' . updateUtilUpdate::getCommonFormFields('upgrade', 'startUpgrade') . '
 		' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarning'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningTitle'] . '</b><br />
-	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="' . installerUpdate::getConfirmInstallationWindow() . '"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button></div>';
-if(!isset($_SESSION['clientPhpExtensions'])){
-	$liveUpdateResponse['Code'] .= '
+	<input type="checkbox" id="confirmUpgrade" name="confirmUpgrade" value="1" onclick="toggleNextButton();"/><label for="confirmUpgrade">' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '</label> <br /><div id="nextButton" style="display:none;"><button type="button" class="weBtn" onclick="' . installerUpdate::getConfirmInstallationWindow() . '"><i class="fa fa-lg fa-step-forward"></i>' . $GLOBALS['lang']['button']['next'] . '</button></div>' .
+	(!isset($_SESSION['clientPhpExtensions']) ? '
 		<input type="hidden" name="clientPhpVersion" value="\'.phpversion(). \'" />
 		<input type="hidden" name="clientPcreVersion" value="\'.$pcreV. \'" />
 		<input type="hidden" name="clientPhpExtensions" value="\'.base64_encode(serialize(get_loaded_extensions())). \'" />
-		<input type="hidden" name="clientMySQLVersion" value="\'.getMysqlVer(false). \'" />';
-}
-$liveUpdateResponse['Code'] .= '
+		<input type="hidden" name="clientMySQLVersion" value="\'.getMysqlVer(false). \'" />' : ''
+	) . '
 
 </form>
 \';
 
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['upgrade']['headline']) . '", $content);
-?>';
+?>'];

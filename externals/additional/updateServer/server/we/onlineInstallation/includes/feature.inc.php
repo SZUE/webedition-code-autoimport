@@ -35,7 +35,5 @@ switch($_REQUEST['detail']){
 	case 'registerVersion':
 		print licenseInstaller::getRegisterVersionResponse($clientRequestVars['le_version']);
 		break;
-
-
 }
 

@@ -20,11 +20,9 @@ switch($_REQUEST['detail']){
 		}
 
 		if(!empty($desiredLanguages)){
-
 			$_SESSION['clientDesiredLanguages'] = $desiredLanguages;
 			print languagesUpdate::getConfirmLanguagesResponse();
 		} else {
-
 			print languagesUpdate::getNoLanguageSelectedResponse();
 		}
 		break;

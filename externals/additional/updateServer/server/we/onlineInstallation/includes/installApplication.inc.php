@@ -10,11 +10,8 @@ switch($_REQUEST['detail']){
 
 	// delete tables in this step and move folder
 	case 'prepareApplicationInstallation':
-
 		print $installer->getPrepareApplicationInstallationResponse();
-
 		break;
-
 
 	case 'determineApplicationFiles':
 
