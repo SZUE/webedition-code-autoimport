@@ -30,6 +30,9 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 if(defined('WORKFLOW_TABLE')){
 	echo we_workflow_utility::forceOverdueDocuments();
 }
+//clean old sessions
+we_base_sessionHandler::cleanSessions($GLOBALS['DB_WE']);
+
 $tooltasks = we_tool_lookup::getExternTriggeredTasks();
 foreach($tooltasks as $task){
 	include($task);

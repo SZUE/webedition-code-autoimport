@@ -40,7 +40,6 @@ function defaultReset(){
 			"action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
-		<tr><td style="padding:1em 0px;">' . SECURITY_USER_PASS_DESC . '</td></tr>
 		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]" placeholder="' . g_l('global', '[username]') . '"/></td></tr>
 		<tr><td>' . g_l('modules_users', '[email]') . '</td><td><input type="email" name="s[Email]"  placeholder="' . g_l('modules_users', '[email]') . '"/></td></tr>
 		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::OK, 'javascript:submit();') . '</td></tr>
@@ -58,6 +57,7 @@ function resetPwd(){
 			"action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
+		<tr><td colspan="2" style="padding:1em 0px;">' . SECURITY_USER_PASS_DESC . '</td></tr>
 		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass]') . '"/></td></tr>
 		<tr><td>' . g_l('global', '[newPass2]') . '</td><td><input type="password" name="s[Password2]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass2]') . '" /></td></tr>
 		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:submit();') . '</td></tr>

@@ -101,7 +101,7 @@ class we_wysiwyg_editor{
 	private static $dataConfigurations = [];
 	private static $dataDialogProperties = ['isDialog' => false];
 	private static $countInstances = 0;
-	
+
 	const CONDITIONAL = true;
 	const MIN_WIDTH_INLINE = 100;
 	const MIN_HEIGHT_INLINE = 100;
@@ -877,7 +877,7 @@ class we_wysiwyg_editor{
 		return $templates_new;
 		//return 'template_templates : [' . implode(',', $templates) . '],';
 	}
-	
+
 	private function getPropertiesDialog($forEditorType = ''){
 		return [
 			'weEditorType' => $forEditorType,
@@ -893,7 +893,7 @@ class we_wysiwyg_editor{
 		if(in_array($this->editorType, [self::TYPE_INLINE_FALSE, self::TYPE_FULLSCREEN])){
 			return $this->dialogProperties;
 		}
-		 * 
+		 *
 		 */
 
 		return [
@@ -911,7 +911,7 @@ class we_wysiwyg_editor{
 			'weRemoveFirstParagraph' => $this->removeFirstParagraph ? 1 : 0,
 			'weTinyParams' => $this->tinyParams,
 			'weContentCssParts' => [
-				'start' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor, 
+				'start' => we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcolor,
 				'end' => ($this->contentCss ? $this->contentCss : '')
 			],
 			'weToolbarRows' => $this->toolbarRows,
@@ -1010,7 +1010,7 @@ class we_wysiwyg_editor{
 				'data-configurations' => setDynamicVar(self::$dataConfigurations),
 			]));
 	}
-	
+
 	public static function isWysiwygInstances(){
 		return self::$countInstances !== 0;
 	}
@@ -1047,12 +1047,12 @@ class we_wysiwyg_editor{
 					'class' => 'wetextarea'
 					], strtr($editValue, ['\n' => '', '&' => '&amp;']), true);
 	}
-	
+
 	/* TODO: add tutorial for TinyWrapper and adding additional event listeners to webEdition documentation */
 	/*
 	private function getHTMLSupportText(){
 		return '
-<!--  
+<!--
 --- tinyMCE ---
 * To adress this instance of tinyMCE by your template JavaScript use the webedition wrapper object: "TinyWrapper(\'' . $this->fieldName . '\')"
 * Place "function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){// custom code}" to your JavaScript to add additional event listeners to this editor.
@@ -1060,7 +1060,7 @@ class we_wysiwyg_editor{
 -->
 ';
 	}
-	 * 
+	 *
 	 */
 
 

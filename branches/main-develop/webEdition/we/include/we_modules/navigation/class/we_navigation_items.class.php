@@ -324,7 +324,8 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-			((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
+			($last=$this->items['id' . $item->parentid]->getLastVisibleItem())&&
+			($last->id==$item->id)){
 			return $useTemplate['last'];
 		}
 
