@@ -1,4 +1,5 @@
 <?php
+
 /**
  * $Id$
  */
@@ -477,6 +478,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				return true;
 			}
 		}
+		return true;
+	}
+
+	static function weUpdaterDoUpdate($what, $progress = array()){
+		if(method_exists('we_updater', 'doUpdate')){
+			return we_updater::doUpdate($what, $progress);
+		}
+
 		return true;
 	}
 

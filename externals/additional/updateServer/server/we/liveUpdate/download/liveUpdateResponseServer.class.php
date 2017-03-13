@@ -81,37 +81,35 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 		return $this->getProgress('', $this->Next);
 	}
 
-	protected function executePatches(){//FIXME must be changed!
+	protected function executePatches(){
 		global $liveUpdateFnc;
 
-		if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
-			$redo = $liveUpdateFnc::weUpdaterDoUpdate((empty($_REQUEST["progress"]) ? "" : $_REQUEST["progress"]["what"]), (empty($_REQUEST["progress"]) ? array() : $_REQUEST["progress"]));
-		}
+		$redo = liveUpdateFunctionsServer::weUpdaterDoUpdate((empty($_REQUEST['progress']) ? '' : $_REQUEST['progress']['what']), (empty($_REQUEST['progress']) ? array() : $_REQUEST['progress']));
 		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/");
+		$liveUpdateFnc->getFilesOfDir($allFiles, LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/tmp/patches/');
 
 		$success = true;
-		$message = "";
+		$message = '';
 
 		foreach($allFiles as $file){
-			$message .= basename($file) . "<br />";
+			$message .= basename($file) . '<br />';
 			$success = $liveUpdateFnc->executePatch($file);
 			if(!$success){
-				$errorFile .= " " . basename($file);
+				$errorFile .= ' ' . basename($file);
 			}
 			unlink($file);
 		}
 
 		if($success){
-			$message = "";
+			$message = '';
 			if($allFiles){
-				$message = "<div>" . $this->Message . '</div>';
+				$message = '<div>' . $this->Message . '</div>';
 			}
 
 			if(is_array($redo)){
-				$message .= "<div>Update " . $redo["text"] . "</div>";
-				unset($redo["text"]);
-				return "<script>top.frames.updatecontent.param=\"&" . http_build_query(array("progress" => $redo)) . "\";</script>" .
+				$message .= '<div>Update ' . $redo['text'] . '</div>';
+				unset($redo['text']);
+				return '<script>top.frames.updatecontent.param="&' . http_build_query(array("progress" => $redo)) . '";</script>' .
 					$this->getProgress($message, $this->Repeat);
 			}
 
