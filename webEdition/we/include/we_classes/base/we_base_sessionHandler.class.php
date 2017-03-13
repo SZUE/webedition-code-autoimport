@@ -32,12 +32,12 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 						$_COOKIE['secure'] = we_users_user::getHashIV(30);
 						setcookie('secure', $_COOKIE['secure'], 0, '/');
 					}
-					$key.=$_COOKIE['secure'];
+					$key .= $_COOKIE['secure'];
 				}
 				// due to IE we can't use HTTP_ACCEPT_LANGUAGE, HTTP_ACCEPT_ENCODING - they change the string on each request
 				$this->crypt = hash('haval224,4', $key);
 				//double key size is needed
-				$this->crypt .=$this->crypt;
+				$this->crypt .= $this->crypt;
 			}
 		}
 		session_start();
@@ -144,9 +144,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function gc($sessMaxLifeTime){
+		self::cleanSessions();
+		return true;
+	}
+
+	public static function cleanSessions(){
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
 		$this->DB->query('OPTIMIZE TABLE ' . SESSION_TABLE);
-		return true;
 	}
 
 	private static function getSessionID($sessID){
@@ -188,12 +192,12 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		for($pos = 0; $pos < strlen($sessID); $pos++){
 			$tmp = ($tmp << $cnt) | strpos($sessStr, $sessID[$pos]);
 			if(($pos + 1) * $cnt % 4 == 0){
-				$newID.=dechex($tmp);
+				$newID .= dechex($tmp);
 				$tmp = 0;
 			}
 		}
 		if($tmp){//remaining part
-			$newID.=dechex($tmp);
+			$newID .= dechex($tmp);
 		}
 		$newID = substr(str_pad($newID, 40, '0'), 0, 40);
 
