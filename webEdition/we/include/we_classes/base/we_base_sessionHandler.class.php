@@ -144,13 +144,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function gc($sessMaxLifeTime){
-		self::cleanSessions();
+		self::cleanSessions($this->db);
 		return true;
 	}
 
-	public static function cleanSessions(){
-		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
-		$this->DB->query('OPTIMIZE TABLE ' . SESSION_TABLE);
+	public static function cleanSessions(we_database_base $db){
+		$db->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
+		$db->query('OPTIMIZE TABLE ' . SESSION_TABLE);
 	}
 
 	private static function getSessionID($sessID){
