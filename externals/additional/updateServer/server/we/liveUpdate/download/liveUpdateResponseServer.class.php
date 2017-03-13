@@ -37,10 +37,46 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 		</script>';
 	}
 
+	protected function checkfreequota(&$AnzMB){
+		$kB = str_repeat("0", 1024);
+		$MB = str_repeat($kB, 1024);
+
+		if(!is_dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp")){
+			mkdir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp");
+		}
+		$testfilename = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp/testquota.txt";
+
+		if(file_exists($testfilename)){
+			unlink($testfilename);
+		}
+		$allesOK = true;
+		for($i = 1; $i <= $AnzMB; $i++){
+			if(!file_put_contents($testfilename, $MB, FILE_APPEND)){
+				$allesOK = false;
+				break;
+			}
+		}
+		$AnzMB = $i - 1;
+		unlink($testfilename);
+		return $allesOK;
+	}
+
 	protected function changesResponse(){
 		global $liveUpdateFnc;
 		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 		$liveUpdateFnc->deleteDir($filesDir);
+
+		$testdiskquota = 100;
+		$diskquotawarning = checkfreequota($testdiskquota);
+
+		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+		$liveUpdateFnc->deleteDir($filesDir);
+		if(!$diskquotawarning){
+			return strtr($this->getErrorMsg(), array(
+				'__QUOTA__' => $testdiskquota
+			));
+		}
+
 		$liveUpdateFnc->insertUpdateLogEntry($this->LogMsg, $this->TargetVersion, 0);
 		return $this->getProgress('', $this->Next);
 	}

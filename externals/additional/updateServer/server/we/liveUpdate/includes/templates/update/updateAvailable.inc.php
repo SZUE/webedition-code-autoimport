@@ -49,44 +49,6 @@ if(isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
-function checkfreequota(&$AnzMB){
-	$kB= str_repeat("0",1024);
-	$MB= str_repeat($kB,1024);
-	$removedir = false;
-
-	if(!is_dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp")){
-		mkdir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp");
-		$removedir = true;
-	}
-	$testfilename = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp/testquota.txt";
-
-	if (file_exists($testfilename)){
-		unlink($testfilename);
-	}
-	$allesOK=true;
-	for ($i=1;$i<=$AnzMB;$i++){
-		if( !file_put_contents ( $testfilename ,$MB, FILE_APPEND) ) {
-			$allesOK=false;
-			break;
-		}
-	}
-	$AnzMB=$i-1;
-	unlink($testfilename);
-	if($removedir){
-		rmdir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp");
-	}
-	return $allesOK;
-}
-
-$testdiskquota = 100;
-if (!checkfreequota($testdiskquota)){
-	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning1'] . '".$testdiskquota."' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning2'] . '";
-} else {
-	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'] . '";
-}
-
-$confirmCheckbox = we_forms::checkboxWithHidden(false, "confirmUpgrade", "' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningCheckbox'] . '", false, "defaultfont","toggleNextButton();");
-
 $pcreV = (defined("PCRE_VERSION")?PCRE_VERSION:"");
 
 $content = \'
@@ -129,7 +91,7 @@ if(!isset($_SESSION['clientPhpExtensions'])){
 		<input type="hidden" name="clientMySQLVersion" value="\'.getMysqlVer(false). \'" />';
 }
 
-$liveUpdateResponse['Code'] .= '<br />\'.$diskquotawarning. \'
+$liveUpdateResponse['Code'] .= '<br />
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['upgrade']['confirmUpdateWarning'] . $confirmUpdateHint . $GLOBALS['lang']['upgrade']['confirmUpdateWarningEnd'] . '
 	</div><b>' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningTitle'] . '</b><br />

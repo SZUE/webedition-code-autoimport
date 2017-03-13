@@ -19,8 +19,6 @@ $versionList .= '</select>';
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
-$confirmCheckbox = we_forms::checkboxWithHidden(false, "confirmUpgrade", "' . $GLOBALS['lang']['upgrade']['confirmUpgradeWarningCheckbox'] . '", false, "defaultfont","toggleNextButton();");
-
 if( defined("PCRE_VERSION") ) {
 $pcreV = PCRE_VERSION;
 } else {$pcreV="";}

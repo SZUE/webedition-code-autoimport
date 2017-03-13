@@ -36,22 +36,6 @@ switch($_REQUEST['detail']){
 
 		break;
 
-	/*case 'prepareChanges':
-
-		// this is to check if current preparation speed is too fast
-		if(!isset($_SESSION['PREPARE_FILES_PER_STEP'])){
-			$_SESSION['PREPARE_FILES_PER_STEP'] = PREPARE_FILES_PER_STEP;
-		}
-
-		if(isset($_REQUEST['decreaseSpeed']) && $_SESSION['PREPARE_FILES_PER_STEP'] > 40){
-			$_SESSION['PREPARE_FILES_PER_STEP'] -= 20;
-		}
-
-		// prepare changes - adjust tablenames and prefix
-		print installer::getPrepareChangesResponse();
-		break;*/
-
-
 	case 'updateDatabase':
 		// this is to check if current query speed is too fast
 		if(!isset($_SESSION['EXECUTE_QUERIES_PER_STEP'])){

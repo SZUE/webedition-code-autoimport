@@ -27,42 +27,6 @@ $maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']) . ':<b
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
-function checkfreequota(&$AnzMB){
-	$kB= str_repeat("0",1024);
-	$MB= str_repeat($kB,1024);
-	$removedir = false;
-
-	if(!is_dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp")){
-		mkdir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp");
-		$removedir = true;
-	}
-	$testfilename = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp/testquota.txt";
-
-	if (file_exists($testfilename)){
-		unlink($testfilename);
-	}
-	$allesOK=true;
-	for ($i=1;$i<=$AnzMB;$i++){
-		if( !file_put_contents ( $testfilename ,$MB, FILE_APPEND) ) {
-			$allesOK=false;
-			break;
-		}
-	}
-	$AnzMB=$i-1;
-	unlink($testfilename);
-	if($removedir){
-		rmdir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "tmp");
-	}
-	return $allesOK;
-}
-
-$testdiskquota = 100;
-if (!checkfreequota($testdiskquota)){
-	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning1'] . '".$testdiskquota."' . $GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning2'] . '";
-} else {
-	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'] . '";
-}
-
 if( defined("PCRE_VERSION") ) {
 $pcreV = PCRE_VERSION;
 } else {$pcreV="";}
@@ -89,7 +53,7 @@ if($_SESSION['clientVersionNumber'] > $GLOBALS['updateServerTemplateData']['maxV
 
 	</div>';
 } else {
-	$liveUpdateResponse['Code'] .= ' <br/>\'.$diskquotawarning.\'<br/>
+	$liveUpdateResponse['Code'] .= ' <br/>
 
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['update']['repeatUpdateNeeded'] . '

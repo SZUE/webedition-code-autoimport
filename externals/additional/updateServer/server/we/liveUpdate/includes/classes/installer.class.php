@@ -317,6 +317,7 @@ if ($success) {
 				'Next' => self::getProceedNextCommandResponse($nextUrl, $progress, $message),
 				'TargetVersion' => (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']),
 				'LogMsg' => $GLOBALS['luSystemLanguage'][$_SESSION['update_cmd']]['start'],
+				'Error' => self::getErrorMessageResponse('',$GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning1'] . '__QUOTA__' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning2'])
 		]);
 	}
 
