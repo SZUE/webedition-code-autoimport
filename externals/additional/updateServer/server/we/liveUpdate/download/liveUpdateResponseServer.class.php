@@ -67,7 +67,7 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 		$liveUpdateFnc->deleteDir($filesDir);
 
 		$testdiskquota = 100;
-		$diskquotawarning = checkfreequota($testdiskquota);
+		$diskquotawarning = $this->checkfreequota($testdiskquota);
 
 		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 		$liveUpdateFnc->deleteDir($filesDir);
