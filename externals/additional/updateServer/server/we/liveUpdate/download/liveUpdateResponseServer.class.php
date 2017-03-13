@@ -4,7 +4,7 @@
  * $Id$
  */
 class liveUpdateResponseServer extends liveUpdateResponse{
-	/*Make sure all code is as compatible as possible
+	/* Make sure all code is as compatible as possible
 	 * NOTE: everthing that was packed on server side is available here
 	 */
 
@@ -35,6 +35,14 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			top.frames.updatecontent.activateLiInstallerStep("' . $urls['nextStep'][1] . '");' : '') . '
 			window.setTimeout("top.frames.updatecontent.proceedUrl();", 20);
 		</script>';
+	}
+
+	protected function changesResponse(){
+		global $liveUpdateFnc;
+		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+		$liveUpdateFnc->deleteDir($filesDir);
+		$liveUpdateFnc->insertUpdateLogEntry($this->LogMsg, $this->TargetVersion, 0);
+		return $this->getProgress('', $this->Next);
 	}
 
 	protected function executePatches(){//FIXME must be changed!
@@ -241,6 +249,8 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 		set_error_handler(array('liveUpdateFunctionsServer', 'liveUpdateErrorHandler'));
 
 		switch($this->Type){
+			case 'ChangesResponse':
+				return $this->changesResponse();
 			case 'SaveFiles':
 				return $this->saveFiles();
 			case 'DBUpdate':

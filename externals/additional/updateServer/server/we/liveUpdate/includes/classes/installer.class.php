@@ -312,15 +312,12 @@ if ($success) {
 
 		$progress = self::getInstallerProgressPercent();
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
-' . updateUtil::getOverwriteClassesCode() . '
-$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
-$liveUpdateFnc->deleteDir($filesDir);
-
-?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
-
-		return updateUtil::getResponseString($retArray);
+		return updateUtil::getResponseString([
+				'Type' => 'ChangesResponse',
+				'Next' => self::getProceedNextCommandResponse($nextUrl, $progress, $message),
+				'TargetVersion' => (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']),
+				'LogMsg' => $GLOBALS['luSystemLanguage'][$_SESSION['update_cmd']]['start'],
+		]);
 	}
 
 	/**
@@ -448,9 +445,7 @@ $liveUpdateFnc->deleteDir($filesDir);
 		return dirname($_SESSION['clientUpdateUrl']) . '/updateClient/liveUpdateServer.php';
 	}
 
-	static function getProceedNextCommandResponse($nextUrl, $progress){
-
-		$message = '';
+	static function getProceedNextCommandResponse($nextUrl, $progress, $message = ''){
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
 			$NextUpdateDetail = static::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])){

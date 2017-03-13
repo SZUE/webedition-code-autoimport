@@ -5,7 +5,6 @@
 /**
  * This template is shown, when any form of installation should start.
  */
-
 // get steps
 $stepList = '';
 $firstStep = '';
@@ -18,13 +17,11 @@ foreach($GLOBALS['updateServerTemplateData']['installationSteps'] as $installati
 	<li class="upcomingStep" id="' . $installationStep . '">' . $GLOBALS['lang']['installer'][$installationStep] . '</li>';
 }
 
-$liveUpdateResponse['Type'] = 'eval';
-$liveUpdateResponse['Code'] = '<?php
-' . updateUtil::getOverwriteClassesCode() . '
-
-$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage'][$_SESSION['update_cmd']]['start'] . '", "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 0);
-
-$content = \'
+$liveUpdateResponse = [
+	'Type' => 'template',
+	'headline' => $GLOBALS['lang']['installer']['headline'],
+	'Header' => progressBar::getProgressBarJs() . installer::getJsFunctions(),
+	'Content' => '
 <table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 <tr>
 	<td id="tdInstallerSteps" valign="top" rowspan="2">
@@ -50,9 +47,5 @@ $content = \'
 </script>
 <script>
 	proceedUrl();
-</script>
-\';
-
-print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['installer']['headline']) . '", $content, "' . addslashes(progressBar::getProgressBarJs() . installer::getJsFunctions() ) . '", "", 550, 500);
-
-?>';
+</script>'
+];
