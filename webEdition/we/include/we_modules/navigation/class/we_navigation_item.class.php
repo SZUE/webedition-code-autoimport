@@ -283,6 +283,15 @@ class we_navigation_item{
 		return ($this->visible = $visible);
 	}
 
+	public function getLastVisibleItem(){
+		for(end($this->items); current($this->items);prev($this->items)){
+			if(current($this->items)->isVisible()){
+				return current($this->items);
+			}
+		}
+		return false;
+	}
+
 	public function setLevel(){
 		self::$currentPosition[$this->level] = 0;
 	}
