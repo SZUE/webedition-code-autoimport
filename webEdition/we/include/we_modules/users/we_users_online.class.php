@@ -32,12 +32,13 @@ abstract class we_users_online{
 	public static function getUsers(){
 		global $DB_WE;
 		$row = [];
+		$isAdmin = we_base_permission::hasPerm('ADMINISTRATOR');
 
 		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User,Email FROM ' . USER_TABLE . ' WHERE Ping>((NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		while($DB_WE->next_record()){
 			$row [] = '<tr><td class="usrIcon"><i class="fa fa-user fa-2x"></i></td>' .
 				'<td class="middlefont we-user">' . htmlentities(($DB_WE->f('User') ?: $DB_WE->f('username')), ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']) . '</td>' .
-				($DB_WE->f('Email') ?
+				($isAdmin && $DB_WE->f('Email') ?
 				'<td><a href="mailto:' . rawurlencode($DB_WE->f('User') . '<' . $DB_WE->f('Email') . '>') . ');">' .
 				'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :
 				''
