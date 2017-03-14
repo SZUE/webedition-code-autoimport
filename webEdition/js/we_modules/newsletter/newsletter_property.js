@@ -283,7 +283,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "popPreview":
-			if (document.we_form.ncmd.value == "home") {
+			if (document.we_form.ncmd.value === "home") {
 				return;
 			}
 			if (top.content.hot) {
@@ -296,7 +296,7 @@ function we_cmd() {
 			popAndSubmit("newsletter_preview", "preview", 800, 800);
 			break;
 		case "popSend":
-			if (document.we_form.ncmd.value == "home") {
+			if (document.we_form.ncmd.value === "home") {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
@@ -417,7 +417,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "add_email":
-			var email = document.we_form.group = args[1];
+			document.we_form.group = args[1];
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "edit_email":
@@ -495,6 +495,9 @@ function we_cmd() {
 					caller.close();
 			}
 			break;
+		case "export_csv_window":
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk="+encodeURI(args[1]),"edit_email",WE().consts.size.dialog.smaller,WE().consts.size.dialog.tiny,true,true,true,true);
+		break;
 		default:
 			// go to newsletter_top.js
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

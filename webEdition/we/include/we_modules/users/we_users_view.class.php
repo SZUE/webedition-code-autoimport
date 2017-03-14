@@ -37,10 +37,10 @@ class we_users_view extends we_modules_view{
 		}
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', '', ['id' => 'loadVarUsersView', 'data-users' => setDynamicVar([
-						'modTitle' => $title,
-						'cgroup' => intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])),
-						'Type' => we_users_user::TYPE_USER,
-						'Text' => '',
+					'modTitle' => $title,
+					'cgroup' => intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])),
+					'Type' => we_users_user::TYPE_USER,
+					'Text' => '',
 		])]);
 	}
 
@@ -226,10 +226,10 @@ class we_users_view extends we_modules_view{
 			return;
 		}
 		$foo = ($user_object->ID ?
-				getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-				['ParentID' => 0]);
+			getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+			['ParentID' => 0]);
 
-		$ret = $user_object->saveToDB();
+		$ret = $user_object->saveToDB($jscmd);
 		$_SESSION['user_session_data'] = $user_object;
 
 		//	Save seem_startfile to DB when needed.
@@ -285,7 +285,7 @@ class we_users_view extends we_modules_view{
 
 		$jscmd->addCmd('setUserData', $user_object->Type == we_users_user::TYPE_USER_GROUP ? $user_object->ID : $user_object->ParentID, $user_object->Type ?: we_users_user::TYPE_USER, $user_object->Path);
 		$jscmd->addCmd('updateTitle', $user_object->Path);
-		echo $jscmd->getCmds() . we_html_element::jsElement($ret);
+		echo $jscmd->getCmds();
 	}
 
 	private function delete_user(we_base_jsCmd $jscmd){
@@ -399,8 +399,8 @@ class we_users_view extends we_modules_view{
 
 	public function getHomeScreen(){
 		$content = we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) .
-				we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
-				we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
+			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
+			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
 
 		return parent::getActualHomeScreen('users', "user.gif", $content);
 	}

@@ -63,7 +63,10 @@ function we_cmd() {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
-
+		case 'loadHeadFooter':
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader&page=" + args[1].page + '&txt=' + encodeURI(args[1].txt) + '&group=' + (args[1].folder ? 1 : 0);
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter&group=" + (args[1].folder ? 1 : 0);
+			break;
 		case "new_newsletter":
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
@@ -220,7 +223,7 @@ function we_cmd() {
 			// modified for use as selector callback: args[1] is reserved for selector results
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 			top.content.editor.edbody.document.we_form.page.value = args[2];
-			if(args[3] === 'setHot'){
+			if (args[3] === 'setHot') {
 				top.content.hot = true;
 			}
 			top.content.editor.edbody.submitForm();
@@ -228,8 +231,28 @@ function we_cmd() {
 		case "syncNewsletterTitle":
 			top.content.editor.edheader.weTabs.setTitlePath(top.content.editor.edbody.document.we_form.elements.Text.value);
 			break;
+		case "groups_changed":
+			top.content.editor.edfooter.document.we_form.gview.length = 0;
+			top.content.editor.edfooter.populateGroups();
+			break;
+		case "processAfterUpload":
+			switch (args[1].cmd) {
+				case 'do_upload_csv':
+					caller.opener.document.we_form["csv_file" + args[1].group].value = args[1].name;
+					caller.opener.we_cmd("import_csv");
+					break;
+				default:
+					caller.opener.document.we_form.csv_file.value = args[1].name;
+					caller.opener.document.we_form.sib.value = 0;
+					caller.opener.we_cmd("import_black");
+			}
+			caller.close();
+			break;
 		case "setHot":
 			// do nothing
+			break;
+		case "unsetHot":
+			top.content.hot = false;
 			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

@@ -42,7 +42,7 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		$arr = ['rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
 			'deadline' => $deadline,
 			'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
-			];
+		];
 		$res = $messaging->forward($arr);
 		$heading = g_l('modules_messaging', '[forwarding_todo]');
 		$action = g_l('modules_messaging', '[forwarded_to]');
@@ -51,7 +51,7 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		break;
 	case 'reject':
 		$arr = ['body' => we_base_request::_(we_base_request::STRING, 'mn_body')
-			];
+		];
 		$res = $messaging->reject($arr);
 		$heading = g_l('modules_messaging', '[rejecting_todo]');
 		$action = g_l('modules_messaging', '[rejected_to]');
@@ -65,32 +65,24 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 			'deadline' => $deadline,
 			'status' => 0,
 			'priority' => we_base_request::_(we_base_request::INT, 'mn_priority')
-			];
+		];
 		$res = $messaging->send($arr, "we_todo");
 		$heading = g_l('modules_messaging', '[creating_todo]');
 		$s_action = g_l('modules_messaging', '[todo_s_created]');
 		$n_action = g_l('modules_messaging', '[todo_n_created]');
 		break;
 }
-echo we_html_tools::getHtmlTop($heading) .
- we_html_element::jsElement('top.opener.top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
-if($res['ok']){
-	echo we_html_element::jsElement('
+
+$res['ok'] = array_map('oldHtmlspecialchars', $res['ok']);
+$res['failed'] = array_map('oldHtmlspecialchars', $res['failed']);
+$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
+
+echo we_html_tools::getHtmlTop($heading, '', '', we_html_element::jsElement('top.opener.top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";' .
+		($res['ok'] ? '
 if (opener && opener.top && opener.top.content) {
 	top.opener.top.content.update_messaging();
-}');
-}
-?>
-</head>
-
-<body class="weDialogBody">
-	<?php
-	$res['ok'] = array_map('oldHtmlspecialchars', $res['ok']);
-	$res['failed'] = array_map('oldHtmlspecialchars', $res['failed']);
-	$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
-
-
-	$tbl = '<table style="text-align:center">
+}' : '')
+	), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_tools::htmlDialogLayout('<table style="text-align:center">
 		    <tr>
 		      <td class="defaultfont" style="vertical-align:top">' . $s_action . ':</td>
 		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : implode("</li>\n<li>", $res['ok'])) . '</li></ul></td>
@@ -99,13 +91,10 @@ if (opener && opener.top && opener.top.content) {
 		        <td class="defaultfont" style="vertical-align:top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
-		(empty($res['err']) ? '' : '<tr>
+			(empty($res['err']) ? '' : '<tr>
 		        <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>
-	';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden");
-	?>
-</body>
-</html>
+	', $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden")
+));
