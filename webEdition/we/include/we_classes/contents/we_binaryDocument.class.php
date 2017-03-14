@@ -71,7 +71,7 @@ class we_binaryDocument extends we_document{
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return new we_editor_properties($this);
 			case we_base_constants::WE_EDITPAGE_IMAGEEDIT:
-				return new we_image_imageedit(this);
+				return new we_editor_imageedit($this);
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_CONTENT:
