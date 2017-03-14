@@ -104,9 +104,9 @@ class we_workflow_documentStep extends we_workflow_base{
 			if($workflowTask->userID){
 				//send todo to next user
 				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType === we_base_ContentTypes::OBJECT_FILE ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
-				$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . '</b></p><p>' . $desc . '</p><p>' . $path . "</p>";
+				/*$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . '</b></p><p>' . $desc . '</p><p>' . $path . "</p>";
 
-				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
+				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);*/
 				if($workflowTask->Mail){
 					$desc = strtr($desc, ['<br />' => "\n"]);
 					$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
