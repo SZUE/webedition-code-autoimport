@@ -185,9 +185,7 @@ class we_newsletter_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return we_html_element::jsElement('
-parent.document.title = "' . $title . '";
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
+		return we_html_element::jsElement('parent.document.title = "' . $title . '";') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
 	function getJSProperty(array $jsVars = []){

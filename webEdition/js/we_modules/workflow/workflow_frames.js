@@ -54,3 +54,10 @@ function clearLog() {
 	window.opener.top.content.cmd.submitForm();
 	close();
 }
+
+function submitForm() {
+	var f = self.document.we_form;
+	f.target = "cmd";
+	f.method = "post";
+	f.submit();
+}

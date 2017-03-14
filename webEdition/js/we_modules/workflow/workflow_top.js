@@ -64,6 +64,11 @@ function we_cmd() {
 				top.opener.top.we_cmd('exit_modules');
 			}
 			break;
+		case 'loadHeadFooter':
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&page=" + args[1].page + '&txt=' + encodeURI(args[1].txt) + (args[1].art ? "&art" + args[1].art : "");
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter" + (args[1].art ? "&art" + args[1].art : "");
+			break;
+
 		case "new_workflow":
 			top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 			top.content.editor.edbody.document.we_form.wid.value = args[1];
@@ -121,6 +126,9 @@ function we_cmd() {
 			 top.content.tree.location.reload(true);
 			 break;
 			 */
+		case "setHeadRow":
+			top.content.editor.edheader.document.getElementById("headrow").innerHTML = args[1];
+			break;
 		case "empty_log":
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			break;

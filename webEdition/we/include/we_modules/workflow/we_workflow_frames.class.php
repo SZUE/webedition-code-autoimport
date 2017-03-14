@@ -130,14 +130,7 @@ class we_workflow_frames extends we_modules_frame{
 											'wcmd' => '',
 											'wopt' => ''])
 								)
-						), we_html_element::jsElement('
-function submitForm(){
-	var f = self.document.we_form;
-	f.target = "cmd";
-	f.method = "post";
-	f.submit();
-}'
-						)
+						), we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_frames.js')
 		);
 	}
 
