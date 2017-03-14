@@ -68,7 +68,7 @@ class we_messaging_frames extends we_modules_frame{
 
 		if(!$this->messaging->check_folders()){
 			if(!we_messaging_messaging::createFolders($_SESSION['user']["ID"])){
-				$extraHead .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
+				$this->jsCmd->addMsg(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 		}
 
@@ -83,9 +83,7 @@ class we_messaging_frames extends we_modules_frame{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$extraHead .= we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
-			$this->Tree->getMsgJSTreeCode($this->messaging) .
-			we_html_element::jsElement('startTree();');
+		$extraHead .= $this->Tree->getMsgJSTreeCode($this->messaging) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js', 'startTree();');
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
 	}
@@ -105,7 +103,7 @@ class we_messaging_frames extends we_modules_frame{
 			$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]);
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(), $head		);
+		return $this->getHTMLDocument(we_html_element::htmlBody(), $head);
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
@@ -117,22 +115,8 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
-		$extraHead = we_html_element::jsElement('
-WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
-WE().util.loadConsts(document, "g_l.messaging");
-function doSearch() {
-	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
-}
-
-function launchAdvanced() {
-	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_search_advanced.php?we_transaction=' . $this->transaction . '","messaging_search_advanced",WE().consts.size.dialog.tiny,WE().consts.size.dialog.tiny,true,false,true,false);
-}
-
-function clearSearch() {
-	document.we_messaging_search.messaging_search_keyword.value = "";
-	doSearch();
-}
-');
+		$extraHead = we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging.js');
+		$this->jsCmd->addCmd('setTrans', $this->transaction);
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
 		$hidden = we_html_element::htmlHidden('we_transaction', $this->transaction);
@@ -168,20 +152,17 @@ function clearSearch() {
 		$t = $this->transaction != 'no_request' ? $this->transaction : $this->weTransaction;
 		$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $t) ? $t : 0);
 
-		$extraHead = we_html_element::jsElement('
-			function doSort(sortitem) {
-				entrstr = "";
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
-			}');
+		$extraHead = we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging.js');
+		$this->jsCmd->addCmd('setTrans', $this->transaction);
 
 		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? [[200, 'subject', '[subject]'],
-				[170, 'date', '[date]'],
-				[120, 'sender', '[from]'],
-				[70, 'isread', '[is_read]'],
+			[170, 'date', '[date]'],
+			[120, 'sender', '[from]'],
+			[70, 'isread', '[is_read]'],
 			] : [[200, 'subject', '[subject]'],
-				[170, 'deadline', '[deadline]'],
-				[120, 'priority', '[priority]'],
-				[70, 'status', '[status]'],
+			[170, 'deadline', '[deadline]'],
+			[120, 'priority', '[priority]'],
+			[70, 'status', '[status]'],
 		];
 
 		$table = new we_html_table(['style' => 'margin: 5px 0px 0px 0px',
