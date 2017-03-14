@@ -135,8 +135,9 @@ function we_tag_banner(array $attribs, $content){
 				we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 				($type === "cookie" ?
 				$noscript :
-				we_html_element::jsElement('r = Math.random();
-var scr = document.createElement("script");
+				we_html_element::jsElement('
+var r = Math.random(),
+scr = document.createElement("script");
 scr.setAttribute("src", ' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $did . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : ""));
 document.getElementsByTagName("head")[0].appendChild(scr);
 ') .

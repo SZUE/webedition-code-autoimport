@@ -469,15 +469,15 @@ function info(text) {
 
 function setScrollY() {
 	var el;
-	if (top.treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
-		top.treeData.we_scrollY[treeData.table] = el.scrollTop;
+	if (treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		treeData.we_scrollY[treeData.table] = el.scrollTop;
 	}
 }
 
 function scrollToY() {
 	var el;
-	if (top.treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
-		el.scrollTop = (top.treeData.we_scrollY[treeData.table] ? top.treeData.we_scrollY[treeData.table] : 0);
+	if (treeData.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		el.scrollTop = (treeData.we_scrollY[treeData.table] ? treeData.we_scrollY[treeData.table] : 0);
 	}
 }
 

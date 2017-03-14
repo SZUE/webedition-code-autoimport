@@ -33,8 +33,6 @@ abstract class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	}
 
 	public static function Body(we_glossary_frames $weGlossaryFrames){
-		$js = '';
-
 		$Temp = explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'));
 		$Language = $Temp[0] . "_" . $Temp[1];
 		$Type = $Temp[2];
@@ -44,7 +42,7 @@ abstract class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			switch(we_base_request::_(we_base_request::STRING, 'do')){
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . implode(',', $id) . ')')){
-						$js = 'delItems([' . implode(',', $id) . ']);';
+						$weGlossaryFrames->jsCmd->addCmd('delItems', $id);
 					}
 					$Cache->write();
 					break;
@@ -73,13 +71,13 @@ abstract class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Sort = we_base_request::_(we_base_request::STRING, 'Sort', 'ASC');
 		$Where = 'Language="' . $Language . '" AND Type="' . $Type . '"' .
 			(($kw = escape_sql_query(strtolower(we_base_request::_(we_base_request::STRING, 'Keyword')))) ?
-				' AND (
+			' AND (
 lcase(Text) LIKE "%' . $kw . '%" OR
 lcase(Title) LIKE "%' . $kw . '%" OR
 lcase(Description) LIKE "%' . $kw . '%"
 )' : '') .
 			(we_base_request::_(we_base_request::BOOL, 'GreenOnly') ?
-				' AND Published>0' : '');
+			' AND Published>0' : '');
 
 		$Search = new we_glossary_search(GLOSSARY_TABLE);
 		$Search->setFields(["*"]);
@@ -91,10 +89,10 @@ lcase(Description) LIKE "%' . $kw . '%"
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?
-				self::getHTMLPrevNext($Search) .
-				self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
-				self::getHTMLPrevNext($Search, true) :
-				we_html_element::htmlDiv(['style' => "margin:12px 5px;"], g_l('modules_glossary', '[no_entries_found]'))
+			self::getHTMLPrevNext($Search) .
+			self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
+			self::getHTMLPrevNext($Search, true) :
+			we_html_element::htmlDiv(['style' => "margin:12px 5px;"], g_l('modules_glossary', '[no_entries_found]'))
 			);
 
 		// ---> end of uilding content
@@ -105,7 +103,9 @@ lcase(Description) LIKE "%' . $kw . '%"
 					],
 					], 30));
 
-		return self::buildBody($weGlossaryFrames, we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');setRows(" . $Rows . ');' . $js) . $out);
+		$weGlossaryFrames->jsCmd->addCmd('loadHeaderFooter', 'type', we_base_request::_(we_base_request::STRING, 'cmdid'));
+		$weGlossaryFrames->jsCmd->addCmd('setRows', $Rows);
+		return self::buildBody($weGlossaryFrames, $out, we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js'));
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
@@ -282,12 +282,12 @@ lcase(Description) LIKE "%' . $kw . '%"
 		$max = min($Search->Offset + $Search->Rows, $sum);
 
 		$prev = ($Search->Offset > 0 ?
-				we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
-				we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true));
+			we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
+			we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true));
 
 		$next = ($Search->Offset + $Search->Rows >= $sum ?
-				we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true) :
-				we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
+			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true) :
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
 
 
 		$pages = $Search->getPages();
@@ -309,7 +309,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 	</tr>
 	' .
 			($extended ?
-				'<tr>
+			'<tr>
 		<td colspan="3">
 			<table class="default">
 			<tr>
@@ -339,7 +339,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 			</table>
 		</td>
 	</tr>' :
-				'') .
+			'') .
 			'</table>';
 	}
 

@@ -53,13 +53,16 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	public static function Body(we_glossary_frames $weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
-		$weSuggest = &weSuggest::getInstance();
 
-		$out = we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter("' . $weGlossaryFrames->View->Glossary->Type . '","' . ($weGlossaryFrames->View->Glossary->Type === "link" ? ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") : '') . '","' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ? ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") : '') . '");') .
-			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
+		$out = we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
-		return self::buildBody($weGlossaryFrames, $out);
+
+		$head = we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js');
+
+		$weGlossaryFrames->jsCmd->addCmd('loadHeaderFooter', $weGlossaryFrames->View->Glossary->Type, ($weGlossaryFrames->View->Glossary->Type === "link" ? ($weGlossaryFrames->View->Glossary->getAttribute('mode') ?: "intern") : ''), ($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ? ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ?: "intern") : ''));
+
+		return self::buildBody($weGlossaryFrames, $out, $head);
 	}
 
 	public static function Footer(we_glossary_frames $weGlossaryFrames){
@@ -87,18 +90,9 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('delete_glossary');"));
 			}
 		}
+		$weGlossaryFrames->jsCmd->addCmd('checkSaveNew');
 
-		$js = we_html_element::jsElement('
-if(top.makeNewEntryCheck==1) {
-	document.getElementById("makeNewEntry").checked = true;
-}
-if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
-	document.getElementById("publishWhenSave").checked = true;
-}');
-
-		$form = we_html_element::htmlForm([], $table2->getHtml() . $js);
-
-		return self::buildFooter($weGlossaryFrames, $form);
+		return self::buildFooter($weGlossaryFrames, we_html_element::htmlForm([], $table2->getHtml()));
 	}
 
 	private static function getHTMLTabProperties(we_glossary_glossary $glossary){
@@ -113,7 +107,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			we_html_element::htmlHidden('Published', $glossary->ID == 0 ? 1 : ($glossary->Published > 0 ? 1 : 0), 'Published');
 
 
-		$language = ($glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
+		$language = ($glossary->Language ?: $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>

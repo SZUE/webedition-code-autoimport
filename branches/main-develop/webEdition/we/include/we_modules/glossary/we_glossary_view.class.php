@@ -249,7 +249,7 @@ class we_glossary_view extends we_modules_view{
 				}
 				break;
 
-			case "switchPage":
+				case "switchPage":
 			default:
 				break;
 		}

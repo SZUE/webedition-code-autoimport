@@ -33,17 +33,17 @@ abstract class we_glossary_frameEditor{
 		);
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR.'glossary/glossary_header.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_header.js');
 
 		return $weGlossaryFrames->getHTMLDocument($body, $tabsHead);
 	}
 
-	protected static function buildBody(we_glossary_frames $weGlossaryFrames, $content = ""){
+	protected static function buildBody(we_glossary_frames $weGlossaryFrames, $content = "", $head = ""){
 
 		$hidden = $weGlossaryFrames->View->getCommonHiddens(['cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
 			'cmdid' => we_base_request::_(we_base_request::STRING, 'cmdid', ''),
 			'pnt' => 'edbody',
-			]);
+		]);
 
 		$form = we_html_element::htmlForm(['name' => 'we_form',
 				'onsubmit' => 'return false',
@@ -52,7 +52,7 @@ abstract class we_glossary_frameEditor{
 		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody',
 					'onload' => 'loaded=1;',
 					'onunload' => "doUnload()"
-					], $form), $weGlossaryFrames->View->getJSProperty());
+					], $form), $weGlossaryFrames->View->getJSProperty() . $head);
 	}
 
 	protected static function buildFooter(we_glossary_frames $weGlossaryFrames, $content = ""){

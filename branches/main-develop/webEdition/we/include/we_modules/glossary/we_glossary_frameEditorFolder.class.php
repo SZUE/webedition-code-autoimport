@@ -33,11 +33,8 @@ abstract class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 	}
 
 	public static function Body($weGlossaryFrames){
-		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_folder&cmdid=' . $cmdid . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_folder&cmdid=' . $cmdid . '"') .
-				we_html_element::htmlDiv(['id' => 'tab1', 'style' => ''], we_html_multiIconBox::getHTML('', self::getHTMLOverview($weGlossaryFrames), 30)));
+		$weGlossaryFrames->jsCmd->addCmd('loadHeaderFooter', 'folder', we_base_request::_(we_base_request::STRING, 'cmdid'));
+		return self::buildBody($weGlossaryFrames, we_html_element::htmlDiv(['id' => 'tab1', 'style' => ''], we_html_multiIconBox::getHTML('', self::getHTMLOverview($weGlossaryFrames), 30)), we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js'));
 	}
 
 	public static function Footer($weGlossaryFrames){
@@ -46,12 +43,13 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	private static function getHTMLOverview($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		$list = [we_glossary_glossary::TYPE_ABBREVATION,
+		$list = [
+			we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
 			we_glossary_glossary::TYPE_LINK,
 			we_glossary_glossary::TYPE_TEXTREPLACE,
-			];
+		];
 
 		$language = $GLOBALS['DB_WE']->escape(substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5));
 
@@ -64,10 +62,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 			$parts[] = ["headline" => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+top.content.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
 				"html" => '<table style="width:550px;" class="default defaultfont">
-						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
-						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
-						<tr><td style="text-align:right">' . $button . '</td></tr>
-						</table>',
+	<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
+	<tr><td style="text-align:right">' . $button . '</td></tr>
+</table>',
 				'space' => we_html_multiIconBox::SPACE_MED];
 		}
 
