@@ -51,19 +51,10 @@ $res = $messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->sele
 $messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
 
 $messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
-echo we_html_tools::getHtmlTop($heading,'','',we_html_element::jsElement('
+
+echo we_html_tools::getHtmlTop($heading, '', '', we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {
 				top.opener.top.content.update_messaging();
-			}'));
-?>
-
-<body class="weDialogBody">
-	<?php
-	$tbl = '<table style="text-align:center;width:100%" class="default">
+			}'), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_tools::htmlDialogLayout('<table style="text-align:center;width:100%" class="default">
 <tr><td class="defaultfont" style="text-align:center">' . $res['msg'] . '</td></tr>
-</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden");
-	?>
-</body>
-
-</html>
+</table>', $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden")));

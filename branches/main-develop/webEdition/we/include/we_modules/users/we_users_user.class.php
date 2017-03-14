@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
-
 	const TYPE_USER = 'user';
 	const TYPE_USER_GROUP = 'group';
 	const TYPE_ALIAS = 'alias';
@@ -339,7 +338,7 @@ class we_users_user{
 		}
 	}
 
-	function saveToDB(){
+	function saveToDB(we_base_jsCmd $jsCmd){
 		$db_tmp = new DB_WE();
 		$isnew = $this->ID ? false : true;
 		if($this->Type == self::TYPE_USER_GROUP && $this->ID != 0){
@@ -388,65 +387,65 @@ class we_users_user{
 
 		$_REQUEST['uid'] = $this->ID;
 
-		return $this->saveToSession();
+		$this->saveToSession($jsCmd);
+		return true;
 	}
 
-	function saveToSession(){
+	function saveToSession(we_base_jsCmd $jsCmd){
 		if($this->ID != $_SESSION['user']['ID']){
-			return '';
+			return;
 		}
 
-		$save_javascript = 'var _multiEditorreload = false;' .
-				$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
-				$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
-				$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case 'cockpit':
-					$save_javascript .= $this->rememberPreference(0, 'seem_start_file') .
-							$this->rememberPreference("cockpit", 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+					$this->rememberPreference($jsCmd, 0, 'seem_start_file');
+					$this->rememberPreference($jsCmd, "cockpit", 'seem_start_type');
+					$this->rememberPreference($jsCmd, '', 'seem_start_weapp');
 					break;
 				case 'object':
-					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
-							$this->rememberPreference('object', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+					$this->rememberPreference($jsCmd, isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file');
+					$this->rememberPreference($jsCmd, 'object', 'seem_start_type');
+					$this->rememberPreference($jsCmd, '', 'seem_start_weapp');
 					break;
 				case 'weapp':
-					$save_javascript .= $this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
-							$this->rememberPreference('weapp', 'seem_start_type') .
-							$this->rememberPreference(0, 'seem_start_file');
+					$this->rememberPreference($jsCmd, (isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp');
+					$this->rememberPreference($jsCmd, 'weapp', 'seem_start_type');
+					$this->rememberPreference($jsCmd, 0, 'seem_start_file');
 					break;
 				case 'document':
-					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
-							$this->rememberPreference('document', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+					$this->rememberPreference($jsCmd, isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file');
+					$this->rememberPreference($jsCmd, 'document', 'seem_start_type');
+					$this->rememberPreference($jsCmd, '', 'seem_start_weapp');
 					break;
 				default:
-					$save_javascript .= $this->rememberPreference('0', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp') .
-							$this->rememberPreference(0, 'seem_start_file');
+					$this->rememberPreference($jsCmd, '0', 'seem_start_type');
+					$this->rememberPreference($jsCmd, '', 'seem_start_weapp');
+					$this->rememberPreference($jsCmd, 0, 'seem_start_file');
 			}
 		}
 
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
-				$this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth') .
-				$this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight') .
-				$this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode') .
-				$this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont') .
-				$this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname') .
-				$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
-				$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt') .
-				$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
-				$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') /* .
-		  $this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
-		  $this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check') */;
+		$this->rememberPreference($jsCmd, isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth');
+		$this->rememberPreference($jsCmd, isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight'); /*
+		  $this->rememberPreference($jsCmd, isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .;
+		  $this->rememberPreference($jsCmd, isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check') */
 
-		return $save_javascript;
+
 	}
 
-	function mapPermissions(){
+	private function mapPermissions(){
 		$this->permissions_main_titles = [];
 		$this->permissions_slots = [];
 		$this->permissions_titles = [];
@@ -483,8 +482,8 @@ class we_users_user{
 					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : [];
 					foreach($perm_values[$perm_group_name] as $v){
 						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
-								$permissions[$v] :
-								0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
+							$permissions[$v] :
+							0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
 					}
 				}
 
@@ -499,15 +498,15 @@ class we_users_user{
 		}
 	}
 
-	function setPermissions(){
-		foreach($this->perm_branches as $val){
-			foreach($val as $k => $v){
-				$this->Permissions[$k] = $this->permissions_slots[$v];
-			}
-		}
-	}
+	/* private function setPermissions(){
+	  foreach($this->perm_branches as $val){
+	  foreach($val as $k => $v){
+	  $this->Permissions[$k] = $this->permissions_slots[$v];
+	  }
+	  }
+	  } */
 
-	function setPermission($perm_name, $perm_value){
+	private function setPermission($perm_name, $perm_value){
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $k => $v){
 				if($perm_name == $k){
@@ -517,7 +516,7 @@ class we_users_user{
 		}
 	}
 
-	function savePermissions(){
+	private function savePermissions(){
 		$permissions = [];
 		$isAdmin = false;
 		foreach($this->permissions_slots as $val){
@@ -539,7 +538,7 @@ class we_users_user{
 		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
 	}
 
-	function loadWorkspaces(){
+	private function loadWorkspaces(){
 		if($this->workSpace){
 			$this->workspaces[FILE_TABLE] = makeArrayFromCSV($this->workSpace);
 		}
@@ -560,7 +559,7 @@ class we_users_user{
 		}
 	}
 
-	function saveWorkspaces(){
+	private function saveWorkspaces(){
 		foreach($this->workspaces as $k => $v){
 			if(defined('CUSTOMER_TABLE') && $k == CUSTOMER_TABLE){
 				continue;
@@ -627,18 +626,18 @@ class we_users_user{
 		}
 	}
 
-	function getPreferenceSlotsFromDB(){
+	private function getPreferenceSlotsFromDB(){
 		$tmp = self::readPrefs($this->ID, $this->DB_WE);
 		$this->Preferences = array_intersect_key($tmp, array_flip($this->preference_slots));
 	}
 
-	function setPreference($name, $value){
+	private function setPreference($name, $value){
 		if(in_array($name, $this->preference_slots)){
 			$this->Preferences[$name] = $value;
 		}
 	}
 
-	function savePreferenceSlotsInDB($isnew = false){
+	private function savePreferenceSlotsInDB($isnew = false){
 		if($this->Type != self::TYPE_USER){
 			return;
 		}
@@ -668,103 +667,21 @@ class we_users_user{
 		$_SESSION["prefs"] = ($_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"]);
 	}
 
-	function rememberPreference($settingvalue, $settingname){
-		$save_javascript = '';
+	private function rememberPreference(we_base_jsCmd $jsCmd, $settingvalue, $settingname){
 		if(isset($settingvalue) && ($settingvalue != null)){
 			switch($settingname){
 				case 'Language'://FIXME: reload corrupt. fix when needless frames are eliminated
 					$_SESSION['prefs']['Language'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
-						$save_javascript = "
-if (top.frames[0]) {
-	top.frames[0].location.reload();
-}
-
-if (parent.frames[0]) {
-	parent.frames[0].location.reload();
-}
-
-// Tabs Module User
-if (top.content.editor.edheader) {
-	top.content.editor.edheader.location = top.content.editor.edheader.location +'?tab='+top.content.editor.edheader.activeTab;
-}
-
-// Editor Module User
-if (top.content.editor.edbody) {
-	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . we_base_request::_(we_base_request::INT, 'tab', 0) . "&perm_branch='+top.content.editor.edbody.opened_group;
-}
-
-// Save Module User
-if (top.content.editor.edfooter) {
-	top.content.editor.edfooter.location.reload();
-}
-if (top.opener.top.header) {
-	top.opener.top.header.location.reload();
-}
-
-// reload all frames of an editor
-// reload current document => reload all open Editors on demand
-var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-for (frameId in _usedEditors) {
-
-	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-		_usedEditors[frameId].setEditorReloadAllNeeded(true);
-		_usedEditors[frameId].setEditorIsActive(true);
-
-	} else {
-		_usedEditors[frameId].setEditorReloadAllNeeded(true);
-	}
-}
-_multiEditorreload = true;
-";
+						$jsCmd->addCmd('rememberPreference', 'Language', we_base_request::_(we_base_request::INT, 'tab', 0));
 					}
 					break;
 				case 'BackendCharset'://FIXME: reload corrupt. fix when needless frames are eliminated
 					$_SESSION['prefs']['BackendCharset'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_BACKENDCHARSET']){
-						$save_javascript = "
-if (top.frames[0]) {
-	top.frames[0].location.reload();
-}
-
-if (parent.frames[0]) {
-	parent.frames[0].location.reload();
-}
-
-// Tabs Module User
-if (top.content.editor.edheader) {
-	top.content.editor.edheader.location = top.content.editor.edheader.location +'?tab='+top.content.editor.edheader.activeTab;
-}
-
-// Editor Module User
-if (top.content.editor.edbody) {
-	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . we_base_request::_(we_base_request::INT, 'tab', 0) . "&perm_branch='+top.content.editor.edbody.opened_group;
-}
-
-// Save Module User
-if (top.content.editor.edfooter) {
-	top.content.editor.edfooter.location.reload();
-}
-if (top.opener.top.header) {
-	top.opener.top.header.location.reload();
-}
-
-// reload all frames of an editor
-// reload current document => reload all open Editors on demand
-var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-for (frameId in _usedEditors) {
-
-	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-		_usedEditors[frameId].setEditorReloadAllNeeded(true);
-		_usedEditors[frameId].setEditorIsActive(true);
-
-	} else {
-		_usedEditors[frameId].setEditorReloadAllNeeded(true);
-	}
-}
-_multiEditorreload = true;";
+						$jsCmd->addCmd('rememberPreference', 'BackendCharset', we_base_request::_(we_base_request::INT, 'tab', 0));
 					}
 					break;
 
@@ -814,9 +731,7 @@ _multiEditorreload = true;";
 
 						if($generate_java_script){
 							$height = we_base_request::_(we_base_request::INT, 'weHeight');
-							$save_javascript = '
-								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
-								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($height / 2) . ');';
+							$jsCmd->addCmd('rememberPreference', 'weWidth', [$settingvalue, $height]);
 						}
 					}
 					break;
@@ -827,11 +742,9 @@ _multiEditorreload = true;";
 					}
 					break;
 
-
 				case 'editorMode':
 					$_SESSION['prefs']['editorMode'] = $settingvalue;
 					break;
-
 
 				case 'editorFont':
 					if($settingvalue == 0){
@@ -841,26 +754,7 @@ _multiEditorreload = true;";
 					} else if(($settingvalue == 1) && we_base_request::_(we_base_request::STRING, 'editorFontname') && we_base_request::_(we_base_request::INT, 'editorFontsize')){
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
-
-					$save_javascript = '
-if ( !_multiEditorreload ) {
-	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-
-		for (frameId in _usedEditors) {
-
-			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-				}
-			}
-		}
-}
-_multiEditorreload = true;';
+					$jsCmd->addCmd('rememberPreference', 'reload', '');
 					break;
 
 				case 'editorFontname':
@@ -886,26 +780,7 @@ _multiEditorreload = true;';
 
 					if(empty($GLOBALS['editor_reloaded'])){
 						$GLOBALS['editor_reloaded'] = true;
-
-						$save_javascript = '
-if ( !_multiEditorreload ) {
-	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-
-		for (frameId in _usedEditors) {
-
-			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-				}
-			}
-		}
-}
-_multiEditorreload = true;';
+						$jsCmd->addCmd('rememberPreference', 'reload', '');
 					}
 					break;
 
@@ -948,26 +823,7 @@ _multiEditorreload = true;';
 					$_SESSION['prefs']['editorFontname'] = 'none';
 					$_SESSION['prefs']['editorFontsize'] = -1;
 					$_SESSION['prefs']['editorFont'] = 0;
-
-					$save_javascript = '
-if ( !_multiEditorreload ) {
-	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
-
-		for (frameId in _usedEditors) {
-
-			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-				} else {
-					_usedEditors[frameId].setEditorReloadNeeded(true);
-				}
-			}
-		}
-}
-_multiEditorreload = true;';
+					$jsCmd->addCmd('rememberPreference', 'reload', '');
 					break;
 
 				case 'force_glossary_check':
@@ -982,8 +838,6 @@ _multiEditorreload = true;';
 					break;
 			}
 		}
-
-		return $save_javascript;
 	}
 
 	function preserveState($tab, $sub_tab){
@@ -1219,23 +1073,23 @@ _multiEditorreload = true;';
 	/**
 	 * LAYOUT FUNCTIONS
 	 */
-	function formDefinition($tab, $perm_branch){
+	function formDefinition(we_base_jsCmd $jsCmd, $tab, $perm_branch){
 		$weSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case self::TAB_DATA:
 				return we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
-								'pwdCheck' => SECURITY_USER_PASS_REGEX
+							'pwdCheck' => SECURITY_USER_PASS_REGEX
 					])]) .
-						$this->formGeneralData();
+					$this->formGeneralData();
 			case self::TAB_PERMISSION:
-				return $this->formPermissions($perm_branch);
+				return $this->formPermissions($jsCmd, $perm_branch);
 			case self::TAB_WORKSPACES:
 				return $this->formWorkspace();
 			case self::TAB_SETTINGS:
-				return $this->formPreferences($perm_branch);
+				return $this->formPreferences($jsCmd, $perm_branch);
 		}
 		foreach(array_keys($this->extensions_slots) as $k){
-			return $this->extensions_slots[$k]->formDefinition($tab, $perm_branch);
+			return $this->extensions_slots[$k]->formDefinition($jsCmd, $tab, $perm_branch);
 		}
 		return $this->formGeneralData();
 	}
@@ -1288,8 +1142,8 @@ _multiEditorreload = true;';
 		$content .= '</select><br/><br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", '', 0, 0, "", "", true, false);
 
 		$parts = [['headline' => g_l('modules_users', '[group_data]'),
-		'html' => $tableObj->getHtml(),
-		'space' => we_html_multiIconBox::SPACE_MED
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('modules_users', '[user]'),
 				'html' => $content,
@@ -1338,8 +1192,8 @@ _multiEditorreload = true;';
 		]);
 
 		$parts = [['headline' => g_l('modules_users', '[general_data]'),
-		'html' => $tableObj->getHtml(),
-		'space' => we_html_multiIconBox::SPACE_MED
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
 			]
 		];
 
@@ -1347,9 +1201,9 @@ _multiEditorreload = true;';
 		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\'' . $this->Name . '_ParentID_Text\')[0].value,this.value);" required="required" autocomplete="off"');
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
-				(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !we_base_permission::hasPerm('EDIT_PASSWD') ?
-				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
+			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !we_base_permission::hasPerm('EDIT_PASSWD') ?
+			'****************' :
+			'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
@@ -1366,21 +1220,21 @@ _multiEditorreload = true;';
 
 
 		$CreatorIDtext = ($this->CreatorID ?
-				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
-				$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-				g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
-				'-');
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
+			'-');
 
 		$ModifierIDtext = ($this->ModifierID ?
-				($this->ModifierID == $this->ID ?
-				$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
-				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
-				$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-				g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
-				) :
-				'-');
+			($this->ModifierID == $this->ID ?
+			$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
+			) :
+			'-');
 		$tableObj = new we_html_table([], 5, 2, [[[['style' => 'padding-bottom:10px;width:280px;'], $username],
-		[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
+			[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
 			],
 			[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !we_base_permission::hasPerm("ADMINISTRATOR")))],
 				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
@@ -1410,7 +1264,7 @@ _multiEditorreload = true;';
 	 *
 	 * @return     string
 	 */
-	private function formPermissions($branch){
+	private function formPermissions(we_base_jsCmd $jsCmd, $branch){
 		// Set output text
 		// Create a object of the class dynamicControls
 		//FIXME: change we_html_dynamicControls
@@ -1421,9 +1275,6 @@ _multiEditorreload = true;';
 			'administrator'], true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
-function rebuildCheckboxClicked() {
-	toggleRebuildPerm(false);
-}
 
 function toggleRebuildPerm(disabledOnly) {';
 		if(isset($this->permissions_slots['rebuildpermissions']) && is_array($this->permissions_slots['rebuildpermissions'])){
@@ -1446,11 +1297,9 @@ function toggleRebuildPerm(disabledOnly) {';
 	}';
 				} else {
 					$handler = '
-	if (document.we_form.' . $this->Name . '_Permission_' . $pname . ') {
-		document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick = rebuildCheckboxClicked;
-	} else {
-		document.we_form." . $this->Name . "_Permission_" . $pname . ".onclick = top.content.setHot();
-	}
+	document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick =  (document.we_form.' . $this->Name . '_Permission_' . $pname . '?
+		rebuildCheckboxClicked:
+		top.content.setHot());
 	toggleRebuildPerm(true);";
 				}
 			}
@@ -1461,8 +1310,8 @@ function toggleRebuildPerm(disabledOnly) {';
 		}
 
 		$parts = [['headline' => '',
-		'html' => $content,
-		'noline' => 1
+			'html' => $content,
+			'noline' => 1
 			]
 		];
 
@@ -1471,16 +1320,16 @@ function toggleRebuildPerm(disabledOnly) {';
 		foreach($this->permissions_slots as $gname => $group){
 			foreach($group as $pname => $pvalue){
 				if($pname != 'ADMINISTRATOR'){
-					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;top.content.setHot();';
-					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;top.content.setHot();';
-					$defaultjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (!empty($this->permissions_defaults[$gname][$pname]) ? 'true' : 'false') . ';top.content.setHot();';
+					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;';
+					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;';
+					$defaultjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (!empty($this->permissions_defaults[$gname][$pname]) ? 'true' : 'false') . ';';
 				}
 			}
 		}
 
-		$button_uncheckall = we_html_button::create_button('uncheckall', 'javascript:' . $uncheckjs);
-		$button_checkall = we_html_button::create_button('checkall', 'javascript:' . $checkjs);
-		$button_default = we_html_button::create_button('default', 'javascript:' . $defaultjs);
+		$button_uncheckall = we_html_button::create_button('uncheckall', 'javascript:' . $uncheckjs . 'top.content.setHot();');
+		$button_checkall = we_html_button::create_button('checkall', 'javascript:' . $checkjs . 'top.content.setHot();');
+		$button_default = we_html_button::create_button('default', 'javascript:' . $defaultjs . 'top.content.setHot();');
 		$parts[] = ['headline' => '',
 			'html' => $button_default . $button_uncheckall . $button_checkall,
 		];
@@ -1496,7 +1345,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			];
 		}
 		if($this->ParentID){
-			$javascript .= 'showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');';
+			$jsCmd->addCmd('showParentPerms', ($this->ParentPerms ? 1 : 0));
 			$parts[] = ['headline' => '',
 				'html' => $this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
 			];
@@ -1637,28 +1486,29 @@ function toggleRebuildPerm(disabledOnly) {';
 		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
-	function formPreferences($branch = ''){
+	private function formPreferences(we_base_jsCmd $jsCmd, $branch = ''){
 		//FIXME: change we_html_dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
 		$groups = ['glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
-				//'editor' => g_l('prefs', '[tab][editor]'),
+			//'editor' => g_l('prefs', '[tab][editor]'),
 		];
 
 		$titles = $groups;
 
-		$multiboxes = ['glossary' => $this->formPreferencesGlossary(),
-			'ui' => $this->formPreferencesUI(),
-				//'editor' => $this->formPreferencesEditor(),
+		$multiboxes = [
+			'glossary' => $this->formPreferencesGlossary(),
+			'ui' => $this->formPreferencesUI($jsCmd),
+			//'editor' => $this->formPreferencesEditor(),
 		];
 
 		return we_html_multiIconBox::getHTML('', [['headline' => '',
 				'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
-					]
-						], 30);
+				]
+				], 30);
 	}
 
-	function formPreferencesGlossary(){
+	private function formPreferencesGlossary(){
 		$settings = [];
 		return [];
 		// Create checkboxes
@@ -1676,7 +1526,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		return $settings;
 	}
 
-	function formPreferencesUI(){
+	private function formPreferencesUI(we_base_jsCmd $jsCmd){
 		$settings = [];
 		// LANGUAGE
 		//	Look which languages are installed ...
@@ -1842,8 +1692,9 @@ function toggleRebuildPerm(disabledOnly) {';
 		$seem_html->setCol(1, 0, null, $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
 
 		if(we_base_permission::hasPerm('CHANGE_START_DOCUMENT')){
+			$jsCmd->addCmd('show_seem_chooser', $seem_start_type);
 			$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'),
-				'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'),
+				'html' => $seem_html->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_BIG
 			];
 		}
@@ -1916,7 +1767,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		// Build apply current window dimension
 		$window_current_dimension_table = '<div style="padding-left:90px;">' .
-				we_html_button::create_button('apply_current_dimension', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;") . '</div>';
+			we_html_button::create_button('apply_current_dimension', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;") . '</div>';
 
 		// Build final HTML code
 		$window_html = new we_html_table(['class' => 'default withBigSpace'], 3, 1);
@@ -1931,7 +1782,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$window_predefined_table = new we_html_table(['class' => 'withBigSpace', 'style' => 'text-align:right'], 2, 1);
 
 		$window_predefined_table->setCol(0, 0, null, we_html_button::create_button('res_800', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';") .
-				we_html_button::create_button('res_1024', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';"));
+			we_html_button::create_button('res_1024', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';"));
 		$window_predefined_table->setCol(1, 0, null, we_html_button::create_button('res_1280', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';") . we_html_button::create_button('res_1600', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';"));
 
 		// Build dialog
@@ -2068,8 +1919,8 @@ function toggleRebuildPerm(disabledOnly) {';
 </table>';
 
 		$parts = [["headline" => g_l('modules_users', '[alias_data]'),
-		"html" => $content,
-		'space' => we_html_multiIconBox::SPACE_MED
+			"html" => $content,
+			'space' => we_html_multiIconBox::SPACE_MED
 			], ["headline" => g_l('modules_users', '[rights_and_workspaces]'),
 				"html" =>
 				$this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', '[inherit]')) .
@@ -2087,7 +1938,7 @@ function toggleRebuildPerm(disabledOnly) {';
 <table class="default" style="width:500px;">
 	<tr>
 		<td class="defaultfont">' .
-				we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
 	</tr>
 </table>';
 	}
@@ -2126,9 +1977,9 @@ function toggleRebuildPerm(disabledOnly) {';
 
 
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js') .
-				'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js') .
+			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2252,9 +2103,9 @@ function toggleRebuildPerm(disabledOnly) {';
 	static function comparePasswords($username, $storedPassword, $clearPassword){
 		$matches = [];
 		$useSalt = (!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches) ?
-				//old md5
-				self::SALT_MD5 :
-				$matches[1]);
+			//old md5
+			self::SALT_MD5 :
+			$matches[1]);
 
 		switch($useSalt){
 			default:
@@ -2347,11 +2198,11 @@ function toggleRebuildPerm(disabledOnly) {';
 	public static function logLoginFailed($table, $user){
 		$db = $GLOBALS['DB_WE'];
 		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(['UserTable' => $table,
-					'Username' => $user,
-					'IP' => $_SERVER['REMOTE_ADDR'],
-					'Servername' => $_SERVER['SERVER_NAME'],
-					'Port' => $_SERVER['SERVER_PORT'],
-					'Script' => $_SERVER['SCRIPT_NAME']
+				'Username' => $user,
+				'IP' => $_SERVER['REMOTE_ADDR'],
+				'Servername' => $_SERVER['SERVER_NAME'],
+				'Port' => $_SERVER['SERVER_PORT'],
+				'Script' => $_SERVER['SCRIPT_NAME']
 		]));
 	}
 

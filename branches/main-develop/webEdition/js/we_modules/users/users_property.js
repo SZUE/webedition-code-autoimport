@@ -25,10 +25,11 @@
  */
 'use strict';
 var loaded = false,
-				TAB_DATA = 0,
-				TAB_PERMISSION = 1,
-				TAB_WORKSPACES = 2,
-				TAB_SETTINGS = 3;
+	TAB_DATA = 0,
+	TAB_PERMISSION = 1,
+	TAB_WORKSPACES = 2,
+	TAB_SETTINGS = 3,
+	multiEditorreload = false;
 
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
@@ -116,8 +117,92 @@ function we_cmd() {
 		case "we_newsletter_dirSelector":
 			new (WE().util.jsWindow)(caller, url, "we_navigation_dirselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
+		case "showParentPerms":
+			showParentPerms(args[1]);
+			break;
+		case "show_seem_chooser":
+			show_seem_chooser(args[1]);
+			break;
+		case "rememberPreference":
+			rememberPreference(args[1], args[2]);
+			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
+function rememberPreference(pref, spec) {
+	var frameId;
+	switch (pref) {
+		case 'Language':
+		case 'BackendCharset':
+			if (top.frames[0]) {
+				top.frames[0].location.reload();
+			}
+
+			if (parent.frames[0]) {
+				parent.frames[0].location.reload();
+			}
+
+// Tabs Module User
+			if (top.content.editor.edheader) {
+				top.content.editor.edheader.location = top.content.editor.edheader.location + '?tab=' + top.content.editor.edheader.activeTab;
+			}
+
+// Editor Module User
+			if (top.content.editor.edbody) {
+				top.content.editor.edbody.location = top.content.editor.edbody.location + '?tab=' + spec + '&perm_branch=' + top.content.editor.edbody.opened_group;
+			}
+
+// Save Module User
+			if (top.content.editor.edfooter) {
+				top.content.editor.edfooter.location.reload();
+			}
+			if (top.opener.top.header) {
+				top.opener.top.header.location.reload();
+			}
+
+// reload all frames of an editor
+// reload current document => reload all open Editors on demand
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+			for (frameId in _usedEditors) {
+
+				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
+
+				} else {
+					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				}
+			}
+			multiEditorreload = true;
+			return;
+		case 'reload':
+			if (multiEditorreload) {
+				return;
+			}
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+
+			for (frameId in _usedEditors) {
+
+				if ((_usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.TEMPLATES_TABLE || _usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.OBJECT_FILES_TABLE || _usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.FILE_TABLE) &&
+					_usedEditors[frameId].getEditorEditPageNr() === WE().consts.global.WE_EDITPAGE_CONTENT) {
+
+					if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+						_usedEditors[frameId].setEditorReloadNeeded(true);
+						_usedEditors[frameId].setEditorIsActive(true);
+					} else {
+						_usedEditors[frameId].setEditorReloadNeeded(true);
+					}
+				}
+			}
+
+			multiEditorreload = true;
+			return;
+		case 'weWidth':
+			top.opener.top.resizeTo(spec[0], spec[1]);
+			top.opener.top.moveTo((screen.width / 2) - (spec[0] / 2), (screen.height / 2) - (spec[1] / 2));
+			return;
 	}
 }
 
@@ -177,4 +262,8 @@ function delElement(elvalues, elem) {
 function addElement(elvalues) {
 	elvalues.value = "new";
 	switchPage(2);
+}
+
+function rebuildCheckboxClicked() {
+	toggleRebuildPerm(false);
 }
