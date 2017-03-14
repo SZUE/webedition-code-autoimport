@@ -27,6 +27,27 @@
 
 var Rows = 1;
 
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "loadHeaderFooter":
+			loadHeaderFooter(args[1], args[2]);
+			break;
+		case "setRows":
+			setRows(args[1]);
+			break;
+		case "delItems":
+			delItems(args[1]);
+			break;
+		default:
+			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
 function AllItems() {
 	var temp;
 	if (document.we_form.selectAll.value === "0") {
@@ -60,9 +81,9 @@ function jump(val) {
 	submitForm();
 }
 
-function loadHeaderFooter(cmd) {
-	top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_type&cmdid=" + cmd;
-	top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_type&cmdid=" + cmd;
+function loadHeaderFooter(type, cmd) {
+	top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_" + type + "&cmdid=" + cmd;
+	top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_" + type + "&cmdid=" + cmd;
 }
 
 function setRows(cnt) {
