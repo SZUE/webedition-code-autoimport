@@ -274,11 +274,25 @@ td.upbEntry{
 	cursor:pointer
 }
 
-#users_online td{
-	vertical-align:middle;
-	/*&.we-user{
-		font-family: $weFontBold;
-	}*/
+#users_online{
+	overflow:auto;
+	height:185px;
+	td{
+		vertical-align:middle;
+		/*&.we-user{
+			font-family: $weFontBold;
+		}*/
+		&.usrIcon{
+			width:30px;
+			margin-top:8px;
+		}
+	}
+	$userColors:red,blue,green,orange,darkgreen,darkblue,darkslategray,navy,tomato,orchid,darkorange,fuchsia,seagreen;
+	@for $i from 1 through length($userColors) {
+		tr:nth-child(#{$i}n+0) td.usrIcon{
+			color:nth($userColors, $i);
+		}
+	}
 }
 
 td{

@@ -25,6 +25,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $we_transaction);
+$si = we_base_request::_(we_base_request::STRING, "si");
+$so = we_base_request::_(we_base_request::STRING, 'so');
 
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement('
@@ -33,8 +35,6 @@ echo we_html_tools::getHtmlTop() .
 
 		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
 	}');
-$si = we_base_request::_(we_base_request::STRING, "si");
-$so = we_base_request::_(we_base_request::STRING, 'so');
 ?>
 <style>
 	.defaultfont a {

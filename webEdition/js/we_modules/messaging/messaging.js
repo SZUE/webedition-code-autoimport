@@ -27,6 +27,7 @@
  */
 'use strict';
 var transaction;
+WE().util.loadConsts(document, "g_l.messaging");
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -42,6 +43,22 @@ function we_cmd() {
 		case 'setTrans':
 			transaction = args[1];
 			break;
+		case 'updateViewClass':
+			if (top.content.viewclass !== args[1]) {
+				top.content.set_frames(args[1]);
+			}
+			break;
+		case "new_msg":
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_newmessage.php?we_transaction=" + transaction + "&mode=" + args[1], "messaging_new_message", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true, false);
+			break;
+		case "upd_tdo":
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "todo_edit_todo.php?we_transaction=" + transaction + "&mode=" + args[1], "messaging_new_todo", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, false, true, false);
+			break;
+		case "reset_right_v":
+			top.content.editor.edbody.entries_selected = [];
+			top.content.editor.edbody.messaging_messages_overview.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_show_folder_content.php?we_transaction=' + transaction;
+			top.content.editor.edbody.messaging_msg_view.location = "about:blank"
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -56,7 +73,7 @@ function we_submitForm(target, url) {
 
 	var sel = "";
 	for (var i = 1; i <= top.treeData.len; i++) {
-		if (top.treeData[i].checked){
+		if (top.treeData[i].checked) {
 			sel += (top.treeData[i].name + ",");
 		}
 	}
@@ -110,4 +127,22 @@ function save_settings() {
 function selectRecipient() {
 	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=" + transaction + "&rs=" + encodeURI(document.compose_form.mn_recipients.value), "messaging_usel", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
 	//	    opener.top.add_win(msg_usel);
+}
+
+function doSearch() {
+	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=" + transaction + "&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
+}
+
+function launchAdvanced() {
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_search_advanced.php?we_transaction=" + transaction, "messaging_search_advanced", WE().consts.size.dialog.tiny, WE().consts.size.dialog.tiny, true, false, true, false);
+}
+
+function clearSearch() {
+	document.we_messaging_search.messaging_search_keyword.value = "";
+	doSearch();
+}
+
+function doSort(sortitem) {
+	entrstr = "";
+	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=" + transaction;
 }

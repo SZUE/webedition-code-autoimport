@@ -31,37 +31,20 @@ abstract class we_users_online{
 
 	public static function getUsers(){
 		global $DB_WE;
-		$row = '';
-		$num = 0;
-		$colors = ['red',
-			'blue',
-			'green',
-			'orange',
-			'darkgreen',
-			'darkblue',
-			'darkslategray',
-			'navy',
-			'tomato',
-			'orchid',
-			'darkorange',
-			'fuchsia',
-			'seagreen'
-		];
-		$i = -1;
+		$row = [];
+
 		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User,Email FROM ' . USER_TABLE . ' WHERE Ping>((NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
-		$colorCount = count($colors);
 		while($DB_WE->next_record()){
-			$num++;
-			$row .= '<tr><td style="width:30px;margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
-				'<td class="middlefont we-user">' . htmlentities(($DB_WE->f('User')? : $DB_WE->f('username')), ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']) . '</td>' .
+			$row [] = '<tr><td class="usrIcon"><i class="fa fa-user fa-2x"></i></td>' .
+				'<td class="middlefont we-user">' . htmlentities(($DB_WE->f('User') ?: $DB_WE->f('username')), ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']) . '</td>' .
 				($DB_WE->f('Email') ?
-					'<td><a href="mailto:' . rawurlencode($DB_WE->f('User') . '<' . $DB_WE->f('Email') . '>') . ');">' .
-					'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :
-					''
+				'<td><a href="mailto:' . rawurlencode($DB_WE->f('User') . '<' . $DB_WE->f('Email') . '>') . ');">' .
+				'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :
+				''
 				) . '</tr>';
 		}
 
-		return [$num, '<div style="height:187px;overflow:auto;"><table style="width:100%" class="default">' . $row . '</table></div>'];
+		return [count($row), '<table style="width:100%" class="default">' . implode('', $row) . '</table>'];
 	}
 
 }

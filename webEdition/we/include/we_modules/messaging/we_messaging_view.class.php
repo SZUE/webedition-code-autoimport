@@ -62,7 +62,8 @@ class we_messaging_view extends we_modules_view{
 		switch(($mcmd = we_base_request::_(we_base_request::STRING, "mcmd", "goToDefaultCase"))){
 			case 'search_messages':
 			case 'show_folder_content':
-				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::INTLISTA, 'entrsel', []), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
+				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::INTLISTA, 'entrsel', [
+						]), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
 					$this->print_fc_html() .
 					$this->update_treeview();
 			case 'launch':
@@ -78,38 +79,34 @@ class we_messaging_view extends we_modules_view{
 						break 2;
 				}
 
+				$jscmd->addCmd('updateViewClass', $mode);
 				return $this->get_folder_content($f['ID'], '', [], '', 0) .
 					$this->print_fc_html() .
-					$this->update_treeview() .
-					we_html_element::jsElement('
-if (top.content.viewclass != "' . $mode . '") {
-	top.content.set_frames("' . $mode . '");
-}');
+					$this->update_treeview();
+
 			case 'refresh_mwork':
 				$out = $this->refresh_work($jscmd, true);
-			/* FALLTHROUGH */
+				/* FALLTHROUGH */
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'new_message':
-				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
+				$jscmd->addCmd('new_msg', we_base_request::_(we_base_request::STRING, 'mode'));
+				return;
 			case 'new_todo':
-				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
+				$jscmd->addCmd('upd_tdo', "new");
+				return;
 			case 'forward_todo':
-				return
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
+				$jscmd->addCmd('upd_tdo', "forward");
+				return;
 			case 'rej_todo':
-				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
+				$jscmd->addCmd('upd_tdo', "reject");
+				return;
 			case 'reset_right_view':
-				return we_html_element::jsElement('
-top.content.editor.edbody.entries_selected = [];
-top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-top.content.editor.edbody.messaging_msg_view.location="about:blank"
-				');
+				$jscmd->addCmd('reset_right_v');
+				return ;
 			case 'update_todo':
 				if($this->messaging->selected_message){
-					echo we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",WE().consts.size.dialog.medium,WE().consts.size.dialog.small,true,false,true,false);');
+					$jscmd->addCmd('upd_tdo', "reject");
 				}
 				break;
 			case 'todo_markdone':
