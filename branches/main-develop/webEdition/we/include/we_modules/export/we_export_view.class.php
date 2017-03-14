@@ -81,11 +81,9 @@ class we_export_view extends we_modules_view{
 		}
 
 		return we_html_element::jsElement('
-var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
-
 function start() {
 	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
-	setHead(top.content.editor.edbody.table);' : '') . '
+	setHead("' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '");' : '') . '
 }') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js');
 	}
 
