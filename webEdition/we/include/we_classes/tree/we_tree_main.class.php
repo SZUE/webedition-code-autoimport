@@ -30,10 +30,6 @@ class we_tree_main extends we_tree_base{
 		$this->extraClasses = 'withFooter';
 	}
 
-	function getJSStartTree(){
-		return 'treeData.table="' . FILE_TABLE . '";';
-	}
-
 	public static function getJSUpdateTreeScript($doc, $select = true, we_base_jsCmd $jsCmd = null, $asCmd = false){
 
 		switch($doc->ContentType){
@@ -84,7 +80,7 @@ class we_tree_main extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'main_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'main_tree.js', 'initTree();');
 	}
 
 	function getJSLoadTree(array $treeItems){

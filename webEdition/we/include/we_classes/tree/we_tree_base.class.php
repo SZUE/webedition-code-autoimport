@@ -69,19 +69,6 @@ abstract class we_tree_base{
 		$this->cmdFrame = $cmdFrame;
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(pid,offset){
-	treeData.frames={
-		top:' . $this->topFrame . ',
-		cmd:' . $this->cmdFrame . ',
-		tree:' . $this->treeFrame . '
-	};
-	pid = pid ? pid : 0;
-	offset = offset ? offset : 0;
-}';
-	}
-
 	/*
 	  the functions prints tree javascript
 	  should be placed in a frame which doesn't reloads
@@ -97,18 +84,7 @@ function startTree(pid,offset){
 			]);
 		}
 
-		return we_html_element::jsScript(JS_DIR . 'tree.js') .
-			$this->customJSFile() .
-			we_html_element::jsElement('
-var treeData = new container();
-container.prototype.topFrame="' . $this->topFrame . '";
-container.prototype.treeFrame="' . $this->treeFrame . '";
-container.prototype.frameset="' . $this->frameset . '";
-container.prototype.frames={
-	tree:' . $this->treeFrame . '
-};
-' . $this->getJSStartTree()
-		);
+		return we_html_element::jsScript(JS_DIR . 'tree.js') . $this->customJSFile();
 	}
 
 	abstract protected function customJSFile();

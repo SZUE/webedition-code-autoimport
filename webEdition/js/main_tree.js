@@ -1,4 +1,4 @@
-/* global treeData, node, container, drawTree*/
+/* global treeData, node, container, drawTree, WE*/
 
 /**
  * webEdition SDK
@@ -32,12 +32,12 @@ Node.prototype.getLayout = function () {
 		return treeData.node_layouts.threedots;
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
-					(this.selected ? "Selected" : "") +
-					(this.disabled ? "Disabled" : "") +
-					(this.checked ? "Checked" : "") +
-					(this.open ? "Open" : "") +
-					(this.typ === "item" && this.published === 0 ? "Notpublished" : "") +
-					(this.typ === "item" && this.published === -1 ? "Changed" : "");
+		(this.selected ? "Selected" : "") +
+		(this.disabled ? "Disabled" : "") +
+		(this.checked ? "Checked" : "") +
+		(this.open ? "Open" : "") +
+		(this.typ === "item" && this.published === 0 ? "Notpublished" : "") +
+		(this.typ === "item" && this.published === -1 ? "Changed" : "");
 
 	return treeData.node_layouts[layout_key];
 };
@@ -95,4 +95,10 @@ function doClick(id) {
 			WE().layout.weEditorFrameController.openDocument(table, id, ct);
 			break;
 	}
+}
+
+
+function initTree() {
+	treeData = new container();
+	treeData.table = WE().consts.tables.FILE_TABLE;
 }

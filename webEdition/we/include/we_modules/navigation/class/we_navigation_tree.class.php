@@ -25,7 +25,7 @@
 class we_navigation_tree extends we_tree_base{
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js', 'initTree();');
 	}
 
 	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){

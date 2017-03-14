@@ -379,3 +379,12 @@ function translate(inp) {
 	}
 	return inp;
 }
+
+function startTree() {
+	if (top.content.cmd === undefined) {
+		//FIXME: we have too much frames, this module is not separated well
+		window.setTimeout(startTree, 500);
+	} else {
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction=" + we_transaction;
+	}
+}

@@ -25,7 +25,7 @@
 class we_workflow_tree extends we_tree_base{
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'workflow_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'workflow_tree.js', 'initTree();');
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){

@@ -35,7 +35,7 @@ class we_newsletter_frames extends we_modules_frame{
 		parent::__construct($frameset);
 		$this->module = 'newsletter';
 		$this->View = new we_newsletter_view($frameset);
-		$this->Tree = new we_tree_newsletter($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_tree_newsletter($this->jsCmd, $this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 

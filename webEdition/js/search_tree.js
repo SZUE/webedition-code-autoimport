@@ -1,4 +1,4 @@
-/* global top, node, container, treeData,startTree,drawTree */
+/* global top, node, container, treeData,startTree,drawTree, WE, Node */
 
 /**
  * webEdition SDK
@@ -51,7 +51,7 @@ container.prototype.openClose = function (id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		top.content.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
+		top.content.cmd.location = top.getFrameset() + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

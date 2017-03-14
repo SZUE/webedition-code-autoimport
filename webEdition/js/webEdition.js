@@ -1298,3 +1298,11 @@ function updateCheck(avail, version, date) {
 		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.alert.newWEAvailable, version, date), WE().consts.message.WE_MESSAGE_INFO, window);
 	}
 }
+
+function getTreeDataWindow(){//FIXME: we use this function temporary until frames in modules are obsolete
+	return top;
+}
+
+function getFrameset() {//FIXME: we use this function temporary until frames in modules are obsolete
+	return WE().consts.dirs.WEBEDITION_DIR + "webedition.php";
+}

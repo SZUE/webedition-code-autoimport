@@ -31,23 +31,7 @@ class we_messaging_tree extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'messaging_tree.js');
-	}
-
-	function getJSStartTree(){
-		return '
-function startTree(){
-	treeData.frames={
-		top:top.content,
-		tree:' . $this->treeFrame . '
-	};
-	if(top.content.cmd===undefined){
-	//FIXME: we have too much frames, this module is not separated well
-		window.setTimeout(startTree,500);
-	}else{
-		top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
-	}
-}';
+		return we_html_element::jsScript(JS_DIR . 'messaging_tree.js', 'initTree();');
 	}
 
 	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){
