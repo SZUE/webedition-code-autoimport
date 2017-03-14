@@ -108,14 +108,9 @@ class we_workflow_documentStep extends we_workflow_base{
 
 				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
-					$targetUser = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
-					$fromUser = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
-					if($targetUser){
-						$desc = strtr($desc, ['<br />' => "\n"]);
-						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
-
-						we_mail($targetUser, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (!empty($fromUser['Email']) ? $fromUser['First'] . ' ' . $fromUser['Second'] . ' <' . $fromUser['Email'] . '>' : ''));
-					}
+					$desc = strtr($desc, ['<br />' => "\n"]);
+					$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
+					$this->sendMail($workflowTask->userID, g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : ''), $mess);
 				}
 			}
 		}

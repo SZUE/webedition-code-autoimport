@@ -118,8 +118,8 @@ class we_workflow_document extends we_workflow_base{
 			}
 			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
 			$mess = '<p><b>' . g_l('modules_workflow', '[auto_published]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
-			$deadline = time();
-			$this->sendTodo($this->userID, g_l('modules_workflow', '[auto_published]'), $mess, $deadline, 1);
+			/*$deadline = time();
+			$this->sendTodo($this->userID, g_l('modules_workflow', '[auto_published]'), $mess, $deadline);*/
 			$desc = str_replace('<br />', "\n", $desc);
 			$mess = g_l('modules_workflow', '[auto_published]') . "\n\n" . $desc . "\n\n" . $this->document->Path;
 			$this->sendMail($this->userID, g_l('modules_workflow', '[auto_published]') . ($this->workflow->EmailPath ? ' ' . $this->document->Path : ''), $mess);
@@ -138,8 +138,8 @@ class we_workflow_document extends we_workflow_base{
 
 			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
 			$mess = '<p><b>' . g_l('modules_workflow', '[todo_returned]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
-			$deadline = time() + 3600;
-			$this->sendTodo($this->userID, g_l('modules_workflow', '[todo_returned]'), $mess, $deadline, 1);
+			/*$deadline = time() + 3600;
+			$this->sendTodo($this->userID, g_l('modules_workflow', '[todo_returned]'), $mess, $deadline);*/
 			$desc = str_replace('<br />', "\n", $desc);
 			$mess = g_l('modules_workflow', '[todo_returned]') . "\n\n" . $desc . "\n\n" . $this->document->Path;
 			$this->sendMail($this->userID, g_l('modules_workflow', '[todo_returned]') . ($this->workflow->EmailPath ? ' ' . $this->document->Path : ''), $mess);

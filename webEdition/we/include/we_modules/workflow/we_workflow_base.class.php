@@ -82,17 +82,11 @@ class we_workflow_base{
 		return false;
 	}
 
-	function sendMessage($userID, $subject, $description){
-		$errs = [];
-		$rcpts = [f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db)];
-		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
-	}
-
 	function sendMail($userID, $subject, $description){
-		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
-		if($foo && we_check_email($foo)){
-			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]), $this->db);
-			we_mail($foo, correctUml($subject), $description, '', (!empty($this_user["Email"]) ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+		$toEmail = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
+		if($toEmail && we_check_email($toEmail)){
+			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
+			we_mail($toEmail, correctUml($subject), $description, '', (!empty($this_user["Email"]) ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 		}
 	}
 
@@ -104,7 +98,7 @@ class we_workflow_base{
 		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
 		$rcpts = [$foo]; /* user names */
 		$m = new we_messaging_todo();
-		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
+		$m->set_login_data($_SESSION['user']['ID'], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$data = ['subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5];
 
 		$res = $m->send($rcpts, $data);
