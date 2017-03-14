@@ -25,20 +25,7 @@
 class we_export_treeMain extends we_tree_base{
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js');
-	}
-
-	function getJSStartTree(){
-		return '
-function startTree(){
-	treeData.frames={
-		top:' . $this->topFrame . ',
-		cmd:' . $this->cmdFrame . ',
-		tree:' . $this->treeFrame . '
-	};
-	top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=0";
-	drawTree();
-}';
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js', 'initTree();');
 	}
 
 	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){

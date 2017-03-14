@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition SDK
  *
@@ -30,4 +32,8 @@
 function doClick(id) {
 	var item = top.content.treeData.get(id);
 	top.content.we_cmd('display_user', id, item.contenttype, item.table);
+}
+function initTree(loc) {
+	treeData = new container();
+	treeData.startloc = loc;
 }

@@ -30,12 +30,8 @@ class we_tree_shop extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'shop_tree.js');
-	}
-
-	function getJSStartTree(){
 		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
-		return parent::getJSStartTree() . 'treeData.yearshop = ' . $year . ';';
+		return we_html_element::jsScript(JS_DIR . 'shop_tree.js', 'initTree(' . $year . ');');
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){

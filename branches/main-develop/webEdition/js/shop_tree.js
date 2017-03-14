@@ -36,29 +36,29 @@ function drawTree() {
 container.prototype.drawShop = function (nf, ai, zweigEintrag) {
 	var perm = WE().util.hasPerm("EDIT_SHOP_ORDER");
 	return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span><span ' +
-					(perm ? 'onclick="doClick(' + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") + // make orders in tree clickable
-					">" +
-					WE().util.getTreeIcon('we/shop') +
-					(perm ?
-									"</a>" :
-									"") +
-					'<span class="shop ' + nf[ai].class + '">' + nf[ai].text + '</span>' +
-					"</span><br/>";
+		(perm ? 'onclick="doClick(' + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") + // make orders in tree clickable
+		">" +
+		WE().util.getTreeIcon('we/shop') +
+		(perm ?
+			"</a>" :
+			"") +
+		'<span class="shop ' + nf[ai].class + '">' + nf[ai].text + '</span>' +
+		"</span><br/>";
 };
 
 container.prototype.drawFolder = function (nf, ai, zweigEintrag) {
 	var perm = WE().util.hasPerm("EDIT_SHOP_ORDER");
 	return "<span onclick=\"top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
-					"<span " +
-					(perm ? "onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") +
-					">" +
-					WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, nf[ai].open) +
-					(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
-					"</span>" +
-					"<br/>" +
-					(nf[ai].open ?
-									this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai === nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
-									"");
+		"<span " +
+		(perm ? "onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") +
+		">" +
+		WE().util.getTreeIcon(WE().consts.contentTypes.FOLDER, nf[ai].open) +
+		(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
+		"</span>" +
+		"<br/>" +
+		(nf[ai].open ?
+			this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai === nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
+			"");
 };
 
 container.prototype.openClose = function (id, status) {
@@ -98,4 +98,9 @@ function doFolderClick(id, ct, table) {
 }
 function doYearClick(yearView) {
 	top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=editor&ViewYear=' + yearView;
+}
+
+function initTree(year) {
+	treeData = new container();
+	treeData.yearshop = year;
 }

@@ -25,7 +25,7 @@
 class we_voting_tree extends we_tree_base{
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js', 'initTree();');
 	}
 
 	public static function getItems($ParentID, $offset = 0, $segment = 500, $sort = false){

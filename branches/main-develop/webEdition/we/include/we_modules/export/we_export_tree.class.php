@@ -30,7 +30,15 @@ class we_export_tree extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js', 'initTree();') . we_html_element::jsElement('
+function startTree(){
+	treeData.frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.tree.treeData.table];
+}');
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
@@ -57,17 +65,6 @@ win.treeData.table=win.table;';
 win.drawTree();';
 
 		return $js;
-	}
-
-	function getJSStartTree(){
-		return 'function startTree(){
-	treeData.frames={
-		top:' . $this->topFrame . ',
-		cmd:' . $this->cmdFrame . ',
-		tree:' . $this->treeFrame . '
-	};
-	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.tree.treeData.table];
-}';
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){

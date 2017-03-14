@@ -25,19 +25,12 @@
 class we_tree_users extends we_tree_base{
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'users_tree.js');
-	}
+		$startloc = (we_base_permission::hasPerm("ADMINISTRATOR") ?
+			0 :
+			f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]))
+			);
 
-	function getJSStartTree(){
-		if(we_base_permission::hasPerm("NEW_USER") || we_base_permission::hasPerm("NEW_GROUP") || we_base_permission::hasPerm("SAVE_USER") || we_base_permission::hasPerm("SAVE_GROUP") || we_base_permission::hasPerm("DELETE_USER") || we_base_permission::hasPerm("DELETE_GROUP")){
-			$startloc = (we_base_permission::hasPerm("ADMINISTRATOR") ?
-				0 :
-				f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]))
-				);
-		}
-
-		return 'treeData.startloc=' . $startloc . ';' .
-			parent::getJSStartTree();
+		return we_html_element::jsScript(JS_DIR . 'users_tree.js', 'initTree(' . $startloc . ');');
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $sort = false){

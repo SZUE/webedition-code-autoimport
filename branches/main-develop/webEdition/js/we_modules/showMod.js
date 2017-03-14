@@ -31,6 +31,7 @@ var weTabs = new (WE().layout.we_tabs)(document, window);
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 var weModuleWindow = true;
+var current = moduleData.mod;
 
 function we_cmd() {
 	/*jshint validthis:true */
@@ -101,7 +102,6 @@ function we_cmd() {
 	}
 }
 
-var current = moduleData.mod;
 function setTab(module) {
 	if (top.content.hot) {
 		if (!window.confirm(WE().consts.g_l.alert.discard_changed_data)) {
@@ -114,4 +114,12 @@ function setTab(module) {
 	}
 	current = module;
 	top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
+}
+
+function getTreeDataWindow() {//FIXME: we use this function temporary until frames in modules are obsolete
+	return top.content;
+}
+
+function getFrameset() {//FIXME: we use this function temporary until frames in modules are obsolete
+	return WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + current;
 }

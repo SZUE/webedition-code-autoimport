@@ -30,7 +30,7 @@ class we_tree_customer extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js', 'initTree();');
 	}
 
 	public static function getItems($pid, $offset = 0, $segment = 500, $sort = false){
