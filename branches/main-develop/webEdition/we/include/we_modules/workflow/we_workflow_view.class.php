@@ -369,10 +369,8 @@ class we_workflow_view extends we_modules_view{
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
 				$this->page = self::PAGE_PROPERTIES;
-				echo we_html_element::jsElement('
-top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
-					');
+
+				$jscmd->addCmd('loadHeadFooter', ['page' => self::PAGE_PROPERTIES, 'txt' => '']);
 				break;
 			case 'add_cat':
 				$arr = $this->workflowDef->Categories;
@@ -491,10 +489,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$this->workflowDef->Objects = [];
 				break;
 			case 'reload':
-				echo we_html_element::jsElement('
-					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
-					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
-					');
+				$jscmd->addCmd('loadHeadFooter', ['page' => $this->page, 'txt' => $this->workflowDef->Text]);
 				break;
 			case 'workflow_edit':
 				$this->show = 0;
@@ -553,7 +548,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 							'published' => $this->workflowDef->Status
 						]);
 					}
-					echo we_html_element::jsElement('top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";');
+					$jscmd->addCmd('setHeadRow', we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)));
 					$jscmd->addMsg(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
@@ -562,10 +557,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->show = 1;
 					$this->page = self::PAGE_PROPERTIES;
 					$this->documentDef->load($id);
-					echo we_html_element::jsElement('
-					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
-					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter&art=1";
-					');
+					$jscmd->addCmd('loadHeadFooter', ['page' => self::PAGE_PROPERTIES, 'txt' => $this->documentDef->document->Text, 'art' => 1]);
 				}
 				break;
 			case 'delete_workflow':
@@ -965,7 +957,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					'height' => '',
 					'align' => '',
 				],
-				['dat' => '<div class="middlefont"><nobr>' . $v['Datum']  . '</nobr></div>',
+				['dat' => '<div class="middlefont"><nobr>' . $v['Datum'] . '</nobr></div>',
 					'height' => '',
 					'align' => 'right',
 				],
