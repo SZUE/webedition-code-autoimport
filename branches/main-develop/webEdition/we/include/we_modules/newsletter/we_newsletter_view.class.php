@@ -185,7 +185,7 @@ class we_newsletter_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return we_html_element::jsElement('parent.document.title = "' . $title . '";') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(array $jsVars = []){
@@ -654,7 +654,7 @@ class we_newsletter_view extends we_modules_view{
 				}
 
 				//print next command
-				$jscmd->addCmd('processAfterUpload',['cmd'=>$ncmd,'name'=>$tempName,'group'=>$group]);
+				$jscmd->addCmd('processAfterUpload', ['cmd' => $ncmd, 'name' => $tempName, 'group' => $group]);
 				break;
 
 			case "save_email_file":

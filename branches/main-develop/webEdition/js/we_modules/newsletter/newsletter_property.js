@@ -496,8 +496,32 @@ function we_cmd() {
 			}
 			break;
 		case "export_csv_window":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk="+encodeURI(args[1]),"edit_email",WE().consts.size.dialog.smaller,WE().consts.size.dialog.tiny,true,true,true,true);
-		break;
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=" + encodeURI(args[1]), "edit_email", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true, true);
+			break;
+		case "updateLog":
+			for (var i = 0; i < args[1].log.length; i++) {
+				updateText(args[1].log[i]);
+			}
+			top.send_body.setProgress(args[1].percent);
+			if (args[1].text) {
+				top.send_body.setProgressText("title", args[1].text);
+			}
+			if (args[1].percent === 100) {
+				top.send_control.location = "about:blank";
+			}
+			break;
+		case 'nextMails':
+			document.we_form.ecs.value = args[2];
+			top.send_control.document.we_form.ecs.value = args[2];
+			if (args[1]) {//wait
+				setTimeout(function (doc) {
+					doc.we_form.submit();
+				}, args[1], document);
+			} else {
+				document.we_form.submit();
+			}
+			break;
+
 		default:
 			// go to newsletter_top.js
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -726,4 +750,17 @@ function delEmailFile(eid, email) {
 
 function getStatusContol() {
 	return document.we_form[nlView.uid + "_Status"].value;
+}
+
+function updateText(text) {
+	top.send_body.document.we_form.details.value = top.send_body.document.we_form.details.value + "\n" + text;
+}
+
+function checkTimeout() {
+	return document.we_form.ecs.value;
+}
+
+function initControl() {
+	if (top.send_control.init)
+		top.send_control.init();
 }

@@ -46,7 +46,7 @@ class we_workflow_frames extends we_modules_frame{
 			case 'edit':
 				return $this->getHTMLEditorBody();
 			case 'frameset':
-				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . $this->View->getJSTop());
 			default:
 				return parent::getHTML($what, $mode, $type);
 		}

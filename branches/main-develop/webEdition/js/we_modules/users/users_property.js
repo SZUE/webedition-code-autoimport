@@ -132,7 +132,7 @@ function we_cmd() {
 }
 
 function rememberPreference(pref, spec) {
-	var frameId;
+	var frameId, _usedEditors;
 	switch (pref) {
 		case 'Language':
 		case 'BackendCharset':
@@ -164,7 +164,7 @@ function rememberPreference(pref, spec) {
 
 // reload all frames of an editor
 // reload current document => reload all open Editors on demand
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+			_usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
@@ -181,7 +181,7 @@ function rememberPreference(pref, spec) {
 			if (multiEditorreload) {
 				return;
 			}
-			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+			_usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 			for (frameId in _usedEditors) {
 

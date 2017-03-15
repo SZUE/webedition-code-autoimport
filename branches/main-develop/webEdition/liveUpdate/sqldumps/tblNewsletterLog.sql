@@ -24,6 +24,3 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
 
 /* query separator */
 ###UPDATEDROPCOL(LogTime,###TBLPREFIX###tblNewsletterLog)###
-
-/* query separator */
-###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###UserTable;

@@ -1,3 +1,5 @@
+###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###UserTable;
+/* query separator */
 ###ONCOL(Icon,###TBLPREFIX###tblUser) UPDATE ###TBLPREFIX###tblUser SET IsFolder=1 WHERE Type=1;###
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblUser)###
