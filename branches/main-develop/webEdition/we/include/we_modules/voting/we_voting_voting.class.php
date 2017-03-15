@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_voting_voting extends we_base_model{
-
 //voting status codes
 
 	const SUCCESS = 1;
@@ -444,8 +442,8 @@ class we_voting_voting extends we_base_model{
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){
 				$revotetime = ($this->RevoteTime < 0 ?
-						630720000 : //20 years
-						$this->RevoteTime);
+					630720000 : //20 years
+					$this->RevoteTime);
 				setcookie(md5('_we_voting_' . $this->ID), time(), time() + $revotetime);
 			} else {
 				if(!is_array($this->Revote)){
@@ -648,9 +646,9 @@ class we_voting_voting extends we_base_model{
 	 */
 	function loadDB($id = '0'){
 		$logQuery = ($this->IsFolder ?
-				'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
-				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
-				);
+			'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
+			'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
+			);
 
 		$this->db->query($logQuery);
 		$this->LogData = [];
@@ -699,20 +697,20 @@ class we_voting_voting extends we_base_model{
 		}
 		$cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
-				$_SESSION["webuser"]["ID"] : 0);
+			$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => $votingsession,
-					'voting' => $this->ID,
-					'time' => sql_function('UNIX_TIMESTAMP()'),
-					'ip' => $_SERVER['REMOTE_ADDR'],
-					'agent' => $_SERVER['HTTP_USER_AGENT'],
-					'userid' => $userid,
-					'cookie' => $cookieStatus,
-					'fallback' => $this->FallbackActive,
-					'answer' => $answer,
-					'answertext' => $answertext,
-					'successor' => $successor,
-					'additionalfields' => $additionalfields,
-					'status' => $status,
+				'voting' => $this->ID,
+				'time' => sql_function('UNIX_TIMESTAMP()'),
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'agent' => $_SERVER['HTTP_USER_AGENT'],
+				'userid' => $userid,
+				'cookie' => $cookieStatus,
+				'fallback' => $this->FallbackActive,
+				'answer' => $answer,
+				'answertext' => $answertext,
+				'successor' => $successor,
+				'additionalfields' => $additionalfields,
+				'status' => $status,
 		]));
 
 		return true;
@@ -742,18 +740,18 @@ class we_voting_voting extends we_base_model{
 		}
 		foreach($LogData as $ld){
 			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => '',
-						'voting' => $this->ID,
-						'time' => $ld['time'],
-						'ip' => $ld['ip'],
-						'agent' => $ld['agent'],
-						'userid' => 0,
-						'cookie' => $ld['cookie'],
-						'fallback' => $ld['fallback'],
-						'answer' => '',
-						'answertext' => '',
-						'successor' => '',
-						'additionalfields' => '',
-						'status' => $ld['status'],
+					'voting' => $this->ID,
+					'time' => $ld['time'],
+					'ip' => $ld['ip'],
+					'agent' => $ld['agent'],
+					'userid' => 0,
+					'cookie' => $ld['cookie'],
+					'fallback' => $ld['fallback'],
+					'answer' => '',
+					'answertext' => '',
+					'successor' => '',
+					'additionalfields' => '',
+					'status' => $ld['status'],
 			]));
 		}
 		$this->LogData = '';
@@ -764,17 +762,20 @@ class we_voting_voting extends we_base_model{
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.voting={
+	answer_limit:"' . g_l('modules_voting', '[answer_limit]') . '",
 	delete_alert:"' . g_l('modules_voting', '[delete_alert]') . '",
 	delete_ipdata_question:"' . g_l('modules_voting', '[delete_ipdata_question]') . '",
 	delete_log_question:"' . g_l('modules_voting', '[delete_log_question]') . '",
 	imageID_text:"' . g_l('modules_voting', '[imageID_text]') . '",
 	mediaID_text:"' . g_l('modules_voting', '[mediaID_text]') . '",
+	new_ip_add:"' . g_l('modules_voting', '[new_ip_add]') . '",
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[no_perms]')) . '",
+	not_valid_ip:"' . g_l('modules_voting', '[not_valid_ip]') . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_delete]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
 	save_changed_voting:"' . g_l('modules_voting', '[save_changed_voting]') . '",
 	successorID_text:"' . g_l('modules_voting', '[successorID_text]') . '",
-	answer_limit:"' . g_l('modules_voting', '[answer_limit]') . '",
+	result_delete_alert:"'.g_l('modules_voting', '[result_delete_alert]').'",
 };
 ';
 	}

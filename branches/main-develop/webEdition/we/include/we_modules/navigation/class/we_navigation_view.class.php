@@ -27,9 +27,8 @@ class we_navigation_view extends we_modules_view{
 	var $icon_pattern = '';
 	var $page = 1;
 
-	public function __construct($frameset){
-		$frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
-		parent::__construct($frameset);
+	public function __construct(){
+		parent::__construct();
 		$this->Model = new we_navigation_navigation();
 	}
 

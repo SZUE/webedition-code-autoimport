@@ -35,8 +35,8 @@ class we_shop_frames extends we_modules_frame{
 		$this->module = 'shop';
 		$this->treeDefaultWidth = 204;
 		$this->hasIconbar = true;
-		$this->Tree = new we_tree_shop($this->jsCmd, $this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_shop_view($frameset, 'top.content');
+		$this->Tree = new we_tree_shop($this->jsCmd, "top.content", "top.content", "top.content.cmd");
+		$this->View = new we_shop_view('top.content');
 	}
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();

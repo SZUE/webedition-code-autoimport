@@ -25,8 +25,8 @@
  */
 'use strict';
 var owners_label,
-				question_edit,
-				answers_edit;
+	question_edit,
+	answers_edit;
 
 var table = WE().consts.tables.FILE_TABLE;
 
@@ -148,4 +148,98 @@ function submitForm(target, action, method, form) {
 
 function callAnswerLimit() {
 	top.we_showMessage(WE().consts.g_l.voting.answer_limit, WE().consts.message.WE_MESSAGE_ERROR, window);
+}
+
+function removeAll() {
+	for (var i = 0; i < iptable_label.itemCount + 1; i++) {
+		top.content.editor.edbody.iptable_label.delItem(i);
+	}
+}
+
+function newIp() {
+	var ip = window.prompt(WE().consts.g_l.voting.new_ip_add, "");
+	var re = new RegExp("[a-zA-Z|,]");
+	if (ip.match(re) !== null) {
+		WE().util.showMessage(WE().consts.g_l.voting.not_valid_ip, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return;
+	}
+
+	var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
+
+	if (ip.match(re) !== null) {
+
+		var p = ip.split(".");
+		for (var i = 0; i < p.length; i++) {
+			var t = p[i];
+			t.replace("*", "");
+			if (parseInt(t) > 255) {
+				WE().util.showMessage(WE().consts.g_l.voting.not_valid_ip, WE().consts.message.WE_MESSAGE_ERROR, window);
+				return false;
+			}
+		}
+
+		top.content.editor.edbody.iptable_label.addItem();
+		top.content.editor.edbody.iptable_label.setItem(0, (top.content.editor.edbody.iptable_label.itemCount - 1), ip);
+		top.content.editor.edbody.iptable_label.showVariant(0);
+	} else {
+		WE().util.showMessage(WE().consts.g_l.voting.not_valid_ip, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}
+
+
+function refreshTexts() {
+	var t = document.getElementById("question_score");
+	t.innerHTML = document.we_form[question_edit.name + "_item0"].value;
+	for (i = 0; i < answers_edit.itemCount; i++) {
+		var t = document.getElementById("answers_score_" + i);
+		t.innerHTML = document.we_form[answers_edit.name + "_item" + i].value;
+	}
+}
+
+function checkValue(elem, oldval) {
+	var r = parseInt(elem.value);
+	if (isNaN(r)) {
+		elem.value = oldval;
+	} else {
+		elem.value = r;
+		document.we_form.scores_changed.value = 1;
+	}
+	refreshTotal();
+}
+
+function resetScores(max) {
+	if (!window.confirm(WE().consts.g_l.voting.result_delete_alert)) {
+		return;
+	}
+	var elems = document.we_form.elements;
+	for (var i = 0; i < elems.length; i++) {
+		if (elems[i].name.match(/^scores_/)) {
+			elems[i].value = 0;
+		}
+	}
+	document.we_form.scores_changed.value = 1;
+	refreshTotal();
+
+}
+
+function refreshTotal() {
+	var total = 0,
+		i;
+	var elems = document.we_form.elements;
+	for (i = 0; i < elems.length; i++) {
+		if (elems[i].name.match(/^scores_/)) {
+			total += parseInt(elems[i].value);
+		}
+	}
+
+	var t = document.getElementById("total");
+	t.innerHTML = total;
+
+	for (i = 0; i < elems.length; i++) {
+		if (elems[i].name.match(/^scores_/)) {
+			percent = (total != 0 ?
+				Math.round((parseInt(elems[i].value) / total) * 100) :
+				0);
+		}
+	}
 }

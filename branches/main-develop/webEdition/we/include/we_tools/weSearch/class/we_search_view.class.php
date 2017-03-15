@@ -42,8 +42,8 @@ class we_search_view extends we_modules_view{
 
 	//private $view = self::VIEW_LIST;
 
-	public function __construct($frameset = ''){
-		parent::__construct($frameset);
+	public function __construct(){
+		parent::__construct();
 		$this->Model = isset($_SESSION['weS'][$this->toolName . '_session']) ? $_SESSION['weS'][$this->toolName . '_session'] : new we_search_model();
 		//$this->Model = new we_search_model();
 		$this->yuiSuggest = & weSuggest::getInstance();
@@ -97,11 +97,7 @@ class we_search_view extends we_modules_view{
 				$this->Model->setPredefinedSearch($tab, $keyword, $tables);
 				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(0);
-
-				echo we_html_element::jsElement('if(top.content.editor){' .
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader' . ($tab !== 0 ? '&tab=' . $tab : '') . '&text=' . urlencode($this->Model->Text) . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
-}');
+				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text);
 				break;
 
 			case 'tool_weSearch_edit' : // get model from db
@@ -114,15 +110,7 @@ class we_search_view extends we_modules_view{
 					$_REQUEST['home'] = true;
 					break;
 				}
-				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader' .
-					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
-					urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
-if(top.content.treeData){
-	top.content.treeData.unselectNode();
-	top.content.treeData.selectNode("' . $this->Model->ID . '");
-}');
+				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text, $cmdid, $this->Model->ID);
 				break;
 
 			case 'tool_weSearch_save' :
@@ -183,9 +171,7 @@ if(top.content.treeData){
 							'tooltip' => $this->Model->ID
 						]);
 					}
-
-					$js = we_html_element::jsElement('top.content.editor.edheader.location.reload();
-top.content.hot=false;');
+					$jscmd->addCmd('loadHeaderFooter', $this->Model->activTab, $this->Model->Text, '', $this->Model->ID);
 					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 
 
@@ -194,8 +180,7 @@ top.content.hot=false;');
 						unset($_REQUEST['delayCmd']);
 					}
 				} else {
-					$js = we_html_element::jsElement('top.content.editor.edheader.location.reload();
-top.content.hot=false;');
+					$jscmd->addCmd('loadHeaderFooter', $this->Model->activTab, $this->Model->Text, '', $this->Model->ID);
 					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
@@ -1145,7 +1130,6 @@ top.content.hot=false;');
 				}
 
 				$out .= '</td></tr></table>' . '<div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';
-			//we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(self::makeMouseOverDivs($x, $content, $whichSearch)) . "';");
 		}
 
 		return $out .= $this->getNextPrev($this->searchclass->founditems, $whichSearch, true, true);

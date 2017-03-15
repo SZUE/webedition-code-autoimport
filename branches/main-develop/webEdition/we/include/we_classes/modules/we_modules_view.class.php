@@ -27,13 +27,11 @@
 
 class we_modules_view implements we_modules_viewIF{
 	var $db;
-	var $frameset;
 	var $topFrame;
 	var $Model;
 
-	public function __construct($frameset = '', $topframe = 'top.content'){
+	public function __construct($topframe = 'top.content'){
 		$this->db = new DB_WE();
-		$this->frameset = $frameset;
 		$this->topFrame = $topframe;
 	}
 
@@ -52,19 +50,6 @@ class we_modules_view implements we_modules_viewIF{
 
 	function getJSProperty(array $jsVars = []){
 		return '';
-	}
-
-	function getJSSubmitFunction(){
-		//only by customer + user
-		return '
-function submitForm(target,action,method,form) {
-	var f = form ? self.document.forms[form] : self.document.we_form;
-	f.target = target?target:"cmd";
-	f.action = action?action:"' . $this->frameset . '";
-	f.method = method?method:"post";
-
-	f.submit();
-}';
 	}
 
 	public function processCommands(we_base_jsCmd $jscmd){
