@@ -98,7 +98,7 @@ class liveUpdateFunctions{
 	 *
 	 * @return string
 	 */
-	function preparePhpCode($content, $needle, $replace){
+	function preparePhpCode($content, $x = '', $y = ''){
 		return $this->checkReplaceDocRoot($content);
 	}
 
@@ -308,7 +308,7 @@ class liveUpdateFunctions{
 	 */
 	function moveFile($source, $destination){
 
-		if($source == $destination){
+		if($source == $destination || !file_exists($source)/* happens if update is retriggered */){
 			return true;
 		}
 		if(filesize($source) == 0){//assume error, add warning, keep file!
@@ -512,12 +512,10 @@ class liveUpdateFunctions{
 				}
 			}
 
-			if($isNew){
+			$queries[] = ($isNew ?
 				//Bug #4431, siehe unten
-				$queries[] = 'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			} else {
-				$queries[] = 'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			}
+				'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] :
+				'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] ) . " $null $default $extra";
 		}
 		return $queries;
 	}
@@ -594,7 +592,7 @@ class liveUpdateFunctions{
 		// change fields when needed.
 
 
-		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausführen
 			return true;
 		}
 
@@ -665,6 +663,7 @@ class liveUpdateFunctions{
 					$tmpName = '__we_delete_update_temp_table__';
 					$backupName = trim($tableName, '`') . '_backup';
 
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
 					$db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
 					$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
 					//update enigine of table if it does not match
@@ -756,10 +755,13 @@ class liveUpdateFunctions{
 							$this->QueryLog['success'][] = $query;
 						} else {
 							//unknown why mysql don't show correct error
-							if($db->Errno == 1062 || $db->Errno == 0){
+							switch($db->Errno){
+								case 1062:
+								case 0:
 								$duplicate = true;
 								$this->QueryLog['tableChanged'][] = $tableName;
-							} else {
+									break;
+								default:
 								$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 							}
 							$success = false;
