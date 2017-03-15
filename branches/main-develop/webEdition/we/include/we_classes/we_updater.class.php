@@ -367,11 +367,13 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			'maxID' => 0,
 			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'')
 		]);
-		$maxStep = 100;
+		$maxStep = 1000;
 
 		//FIXME!!!! LINK_TABLE
 		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
-			$db->addKey(CONTENT_TABLE, 'UNIQUE KEY prim(DID,DocumentTable,nHash)');
+			if($db->addKey(CONTENT_TABLE, 'UNIQUE KEY prim(DID,DocumentTable,nHash)')){
+				$db->query('RENAME TABLE ' . LINK_TABLE . ' TO ' . LINK_TABLE . '_old');
+			}
 			return false;
 		}
 
