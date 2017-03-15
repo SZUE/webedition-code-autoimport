@@ -71,7 +71,7 @@ class we_editor_info extends we_editor_base{
 				'icon' => 'cal.gif'
 			]
 		];
-		
+
 		$this->jsCmd->addCmd('setIconOfDocClass', 'docIcon');
 
 		if($this->we_doc->ContentType !== we_base_ContentTypes::FOLDER){
@@ -214,7 +214,7 @@ class we_editor_info extends we_editor_base{
 				];
 			}
 		}
-		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20), we_html_element::jsScript(JS_DIR . 'we_editor_script.js'));
+		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20));
 	}
 
 }

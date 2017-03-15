@@ -418,7 +418,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
-		$html = we_html_element::jsElement('document._errorMessage=' . (empty($metaFields) ? '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"' : '""' )) .
+		$html = we_html_element::htmlSpan(['name' => '_errorMessage'], (empty($metaFields) ? g_l('rebuild', '[noFieldsChecked]') : '')) .
 			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
 			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>';
 

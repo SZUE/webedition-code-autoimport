@@ -67,6 +67,13 @@ function we_cmd() {
 			document.we_form.cat.value = args[1];
 			submitForm();
 			break;
+		case "updateLog":
+			for (var i = 0; i < args[1].log.length; i++) {
+				top.content.editor.edbody.addLog(args[1].log[i]);
+			}
+			top.content.editor.edfooter.setProgress(args[1].percent);
+			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
+			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -123,4 +130,9 @@ function formFileChooser() {
 			new (WE().util.jsWindow)(window, url, "server_selector", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 	}
+}
+
+function showEndStatus() {
+	WE().util.showMessage(WE().consts.g_l.exports.server_finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	top.content.editor.edfooter.hideProgress();
 }

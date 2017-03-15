@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition SDK
@@ -119,3 +119,10 @@ function decTree(module) {
 		toggleTree(module);
 	}
 }
+
+//FIXME: not quite the right place...
+$(function () {
+	top._console_ = new (WE().layout.messageConsoleView)("moduleFrame", window);
+	top._console_.register();
+	window.document.body.addEventListener("onunload", top._console_.unregister);
+});

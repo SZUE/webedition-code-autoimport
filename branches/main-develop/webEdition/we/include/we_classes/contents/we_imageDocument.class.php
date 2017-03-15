@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * class for handling image documents
  */
 class we_imageDocument extends we_binaryDocument{
-
 	const ALT_FIELD = '_img_custom_alt';
 	const TITLE_FIELD = '_img_custom_title';
 	const THUMB_FIELD = '_img_custom_thumb';
@@ -247,7 +245,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param string $src
 	 * @param string $src_over
 	 */
-	function getRollOverScript($src = '', $src_over = '', $useScript = true){
+	function getRollOverScript($src_over = '', $useStyle = true){
 		if(!$this->getElement('RollOverFlag')){
 			return '';
 		}
@@ -256,12 +254,13 @@ class we_imageDocument extends we_binaryDocument{
 			$this->setElement('name', 'ro_' . $this->Name, 'attrib');
 		}
 
-		$js = '
-var img' . self::$imgCnt . 'Over = new Image();
-var img' . self::$imgCnt . 'Out = new Image();
-img' . self::$imgCnt . 'Over.src = "' . ($src_over ?: f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID', 'bdid')), '', $this->DB_WE)) . '";
-img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
-		return ($useScript ? we_html_element::jsElement($js) : $js);
+		$css = '
+		img.rollImg' . self::$imgCnt . ':hover{
+			src="' . ($src_over ?: f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID', 'bdid')), '', $this->DB_WE)) . '";
+}
+';
+
+		return ($useStyle ? we_html_element::cssElement($css) : $css);
 	}
 
 	/**
@@ -269,11 +268,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 	 * @desc returns the rollover attribs as array
 	 */
 	function getRollOverAttribsArr($child = true){
-		return $this->getElement('RollOverFlag') ? [
-			'onmouseover' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Over.src; }',
-			'onmouseout' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Out.src;}',
-				] :
-				[];
+		return $this->getElement('RollOverFlag') ? 'roll' . self::$imgCnt : '';
 	}
 
 	/**
@@ -324,7 +319,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
 		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, [we_thumbnail::OPTION_INTERLACE], [
-					0, 0], $rotation);
+				0, 0], $rotation);
 
 		if(!$resized_image[0]){
 			return false;
@@ -377,8 +372,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 					if($thumbObj->isOriginal()){
 //						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists(WEBEDITION_PATH . '../' . $img_path) &&
-							// open a file
-							intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
+						// open a file
+						intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
 						//picture created after thumbnail definition was changed, so all is up-to-date
 					} else {
@@ -395,8 +390,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 			}
 
 			$src = $dyn ?
-					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
-					$img_path . '?m=' . $this->Published;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
+				$img_path . '?m=' . $this->Published;
 
 			switch($only){
 				case 'path':
@@ -534,14 +529,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 				if(isset($attribs['xml'])){
 					$aAtts['xml'] = $attribs['xml'];
 				}
+				$rollOverAttribsArr = $this->getRollOverAttribsArr();
+				if($rollOverAttribsArr){
+					$aAtts['class'] = (empty($aAtts['class']) ? '' : $aAtts['class'] . ' ') . $rollOverAttribsArr;
+				}
 
-				$aAtts = array_merge($aAtts, $this->getRollOverAttribsArr());
-
-				$this->html = ( trim($this->getRollOverScript($src)) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
+				$this->html = ( trim($this->getRollOverScript()) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
-						we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
-						$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
+					we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
+					$this->getRollOverScript() . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
 			return $this->html;
 		}
@@ -707,12 +704,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 		}
 
 		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->ID,
-					'size' => ['width' => $size,
-						'height' => $sizeH,
-					],
-					'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
-					'extension' => $this->Extension,
-				]) . '" />';
+				'size' => ['width' => $size,
+					'height' => $sizeH,
+				],
+				'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
+				'extension' => $this->Extension,
+			]) . '" />';
 	}
 
 	protected function getMetaDataReader($force = false){
@@ -883,9 +880,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(empty($_FILES['we_ui_' . $formname]) ||
-				!is_array($_FILES['we_ui_' . $formname]) ||
-				empty($_FILES['we_ui_' . $formname]['name']) ||
-				!is_array($_FILES['we_ui_' . $formname]['name'])
+			!is_array($_FILES['we_ui_' . $formname]) ||
+			empty($_FILES['we_ui_' . $formname]['name']) ||
+			!is_array($_FILES['we_ui_' . $formname]['name'])
 		){
 			return;
 		}
@@ -921,7 +918,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 					$unique = we_base_file::getUniqueId();
 					$tmp_Filename = $imgName . '_' . $unique . '_' .
-							preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
+						preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 					if($imgId){
 						$_SESSION[$imgDataId]['id'] = $imgId;
@@ -934,7 +931,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 					//image needs to be scaled
 					if(!empty($_SESSION[$imgDataId]['width']) ||
-							!empty($_SESSION[$imgDataId]['height'])){
+						!empty($_SESSION[$imgDataId]['height'])){
 						$imageData = we_base_file::load($_SESSION[$imgDataId]['serverPath']);
 						$thumb = new we_thumbnail();
 						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], [$_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0,
@@ -959,12 +956,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src ?: $this->Path) . '";';
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					//['icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				//['icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
 		]);
 	}
 

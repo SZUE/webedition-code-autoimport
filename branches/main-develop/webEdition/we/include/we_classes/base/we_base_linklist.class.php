@@ -142,8 +142,6 @@ class we_base_linklist{
 		$lattribs['rev'] = $rev;
 		$lattribs = array_filter($lattribs);
 
-		$rollOverAttribsArr = $this->rollAttribs;
-
 		if(is_array($tagAttr)){
 			foreach($tagAttr as $n => $v){
 				$lattribs[$n] = $v;
@@ -151,8 +149,8 @@ class we_base_linklist{
 		}
 
 		// overwrite rolloverattribs
-		foreach($rollOverAttribsArr as $n => $v){
-			$lattribs[$n] = $v;
+		if($this->rollAttribs){
+			$lattribs['class']= (empty($lattribs['class'])?'':$lattribs['class'].' ').$this->rollAttribs;
 		}
 
 		if(isset($jswinAttribs) && is_array($jswinAttribs) && !empty($jswinAttribs["jswin"])){ //popUp

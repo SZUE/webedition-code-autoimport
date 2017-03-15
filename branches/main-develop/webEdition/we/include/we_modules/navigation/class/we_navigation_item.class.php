@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -199,15 +197,15 @@ class we_navigation_item{
 
 		if(isset($id) && ($this->docid == $id)){
 			$urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
-					urldecode($_SERVER['REDIRECT_URL']) :
-					(isset($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
-					parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
-					'');
+				urldecode($_SERVER['REDIRECT_URL']) :
+				(isset($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
+				'');
 			$path_parts = pathinfo($urlLookingFor);
 			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
-					(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-					rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlLookingFor), '/') :
-					'');
+				(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlLookingFor), '/') :
+				'');
 			if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
 				static $uri = null;
 				static $uriarrq = [];
@@ -282,7 +280,7 @@ class we_navigation_item{
 	}
 
 	public function getLastVisibleItem(){
-		for(end($this->items); current($this->items);prev($this->items)){
+		for(end($this->items); current($this->items); prev($this->items)){
 			if(current($this->items)->isVisible()){
 				return current($this->items);
 			}
@@ -349,10 +347,10 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (!empty($this->$fieldname) ?
-					$this->$fieldname :
-					(!empty($this->attributes[$fieldname]) ?
-					$this->attributes[$fieldname] :
-					''));
+				$this->$fieldname :
+				(!empty($this->attributes[$fieldname]) ?
+				$this->attributes[$fieldname] :
+				''));
 			switch($fieldname){
 				case 'title':
 					return oldHtmlspecialchars($val);
@@ -409,7 +407,7 @@ class we_navigation_item{
 	function getNavigationFieldAttributes($attribs){
 		$attr = weTag_getAttribute('attributes', $attribs, '', we_base_request::STRING);
 		if($attr){
-			$fields = makeArrayFromCSV($attr);
+			$fields = explode(',',$attr);
 			unset($attribs['attributes']);
 			/* if(isset($fields['link_attribute'])){
 			  $link_attribute = $fields['link_attribute'];
@@ -432,12 +430,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-										oldHtmlspecialchars($this->$field) :
-										$this->$field);
+									oldHtmlspecialchars($this->$field) :
+									$this->$field);
 							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-										$this->attributes[$field] :
-										oldHtmlspecialchars($this->attributes[$field]));
+									$this->attributes[$field] :
+									oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -458,14 +456,12 @@ class we_navigation_item{
 							$imgObj = new we_imageDocument();
 							$imgObj->initByID($iconid);
 
-							$js = preg_replace(['|<[^>]+><!--|', '|//--><[^>]+>|', '-(\r\n|\n)-'], '', $imgObj->getRollOverScript('', '', false));
+//FIXME: how to move this to a place where it can be printed?
+//$css = $imgObj->getRollOverScript('', false);
 
-							$arr = $imgObj->getRollOverAttribsArr();
-							if(!empty($arr)){
-								$arr['onmouseover'] = $js . ';' . $arr['onmouseover'];
-								$arr['onmouseout'] = $js . ';' . $arr['onmouseout'];
-								$arr['name'] = $imgObj->getElement('name');
-								$attribs = array_merge($attribs, $arr);
+							$rollOverAttribsArr = $imgObj->getRollOverAttribsArr();
+							if($rollOverAttribsArr){
+								$attribs['class'] = (empty($attribs['class']) ? '' : $attribs['class'] . ' ') . $rollOverAttribsArr;
 							}
 						}
 						break;
@@ -513,15 +509,15 @@ if (window.screen) {
 		}
 
 		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((!empty($this->attributes['popup_status'])) ? 'yes' : 'no') .
-				',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
-				',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
-				',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
-				',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
-				',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
-				(empty($this->attributes['popup_width']) ? '' : ',width=' . $this->attributes['popup_width'] ) .
-				(empty($this->attributes['popup_height']) ? '' : ',height=' . $this->attributes['popup_height']) .
-				'\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+			',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
+			',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
+			',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
+			',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
+			',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
+			(empty($this->attributes['popup_width']) ? '' : ',width=' . $this->attributes['popup_width'] ) .
+			(empty($this->attributes['popup_height']) ? '' : ',height=' . $this->attributes['popup_height']) .
+			'\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, ['name', 'target', 'onClick', 'onclick'
 		]);
