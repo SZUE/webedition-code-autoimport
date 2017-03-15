@@ -1233,11 +1233,12 @@ class we_document extends we_root{
 					$linkAttribs[$k] = $v;
 				}
 			}
-
+			
 //   4th use Rollover attributes
-			foreach($rollOverAttribsArr as $n => $v){
-				$linkAttribs[$n] = $v;
+			if($rollOverAttribsArr){
+				$linkAttribs['class'] = (empty($linkAttribs['class']) ? '' : $linkAttribs['class'] . ' ') . $rollOverAttribsArr;
 			}
+
 //   override the href at last important !
 
 			$linkAdds = (isset($link['params']) ? $link['params'] : '' ) . (isset($link['anchor']) ? $link['anchor'] : '' );
@@ -1457,7 +1458,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_txt[Charset]', $charsets, 1, $value, false, [ "onchange" => "_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_editpage');"], 'value') . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_txt[Charset]', $charsets, 1, $value, false, ["onchange" => "_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_editpage');"], 'value') . '</td></tr>' .
 			'</table>';
 	}
 

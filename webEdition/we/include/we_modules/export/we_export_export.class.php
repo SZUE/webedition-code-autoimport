@@ -61,6 +61,7 @@ class we_export_export extends we_base_model{
 	var $ExportDepth;
 	var $Log = [];
 	var $ExportFilename;
+
 	//var $protected = ['ID', 'ParentID', 'IsFolder', 'Path', 'Text'];
 
 	/**
@@ -231,6 +232,7 @@ class we_export_export extends we_base_model{
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_delete]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_save]')) . '",
 	save_changed_export:"' . g_l('export', '[save_changed_export]') . '",
+	server_finished:"' . g_l('export', '[server_finished]') . '",
 };';
 	}
 
