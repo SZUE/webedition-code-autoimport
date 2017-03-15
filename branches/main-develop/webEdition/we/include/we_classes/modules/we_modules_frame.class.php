@@ -125,7 +125,7 @@ abstract class we_modules_frame{
 
 		return we_html_element::htmlDiv(['class' => 'menuDiv'], $menu .
 				we_html_element::htmlDiv(['id' => 'moduleMessageConsole'], we_main_headermenu::createMessageConsole('moduleFrame', false))
-			);
+		);
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
@@ -175,19 +175,6 @@ abstract class we_modules_frame{
 		//to be overridden
 	}
 
-	private function getJSSubmitFunction(){
-		//only by Search submit
-		return '
-function submitForm(target,action,method,form) {
-	var f = form ? self.document.forms[form] : self.document.we_form;
-	f.target = target?target:"cmd";
-	f.action = action?action:"' . $this->frameset . '";
-	f.method = method?method:"post";
-
-	f.submit();
-}';
-	}
-
 	protected function getHTMLSearchTreeFooter(){
 		$hiddens = we_html_element::htmlHiddens([
 				'pnt' => 'cmd',
@@ -197,8 +184,12 @@ function submitForm(target,action,method,form) {
 			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('show_search')");
 
-		return we_html_element::jsElement($this->getJSSubmitFunction()) .
-			we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table));
+		return we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm([
+					'name' => 'we_form_treefooter',
+					'target' => 'cmd',
+					'method' => 'post',
+					'onsubmit' => "we_cmd('show_search');return false;"
+					], $table));
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){

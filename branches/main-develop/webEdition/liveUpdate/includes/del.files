@@ -462,6 +462,7 @@ we/include/we_editors/we_fileupload.inc.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/we_exit_multi_doc_question.inc.php
 we/include/we_editors/we_exit_doc_question.inc.php
+we/include/we_editors/we_editta.inc.php
 we/include/we_editors/we_editor_versions.inc.php
 we/include/we_editors/we_editor_variants.inc.php
 we/include/we_editors/we_editor_unusedElements.inc.php
