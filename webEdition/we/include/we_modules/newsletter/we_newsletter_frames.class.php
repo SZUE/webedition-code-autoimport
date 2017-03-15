@@ -322,13 +322,6 @@ class we_newsletter_frames extends we_modules_frame{
 		));
 	}
 
-	private function getHTMLSendQuestion(){
-		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
-		);
-
-		return $this->getHTMLDocument($body);
-	}
-
 	private function getHTMLPrintLists(){
 		$emails = [];
 		$out = '';
@@ -1171,7 +1164,7 @@ class we_newsletter_frames extends we_modules_frame{
 		}
 
 		$js = $this->View->getJSProperty() .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js', 'self.focus();');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js', 'self.focus();');
 
 		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
 			case "import_black":
@@ -1608,7 +1601,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$_REQUEST['lnk'] = $link;
 
-		return $this->getHTMLDocument($this->getHTMLExportCsvMessage(true), we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js'));
+		return $this->getHTMLDocument($this->getHTMLExportCsvMessage(true), we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js'));
 	}
 
 	private function getHTMLSendWait(){
@@ -1650,23 +1643,27 @@ class we_newsletter_frames extends we_modules_frame{
 		}
 
 
-		$head = we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_frames.js') . we_html_element::jsElement('
-function yes(){
-	doSend(' . $offset . ',' . $step . ');
-}
-
-function doSend(start,group){
-	self.focus();
-	top.send_cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
-}
-self.focus();
-');
+		$head = we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js', '', ['id' => 'loadVarNewsletter', 'data-newsletter' => setDynamicVar([
+					'start' => $this->View->newsletter->Step,
+					'group' => $this->View->newsletter->Offset,
+					'nid' => $nid,
+					'test' => $test,
+					'blockcache' => $ret["blockcache"],
+					'emailcache' => $ret["emailcache"],
+					'ecount' => $ret["ecount"],
+					'gcount' => $ret["gcount"]
+			])]) .
+			(($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ?
+			we_base_jsCmd::singleCmd('ask_camp') :
+			we_base_jsCmd::singleCmd('cancel_camp'));
 
 		$body = we_html_element::htmlIFrame('send_body', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_body', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_cmd', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_cmd', 'position:absolute;width:0px;height:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_control', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_control&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
-		return $this->getHTMLDocument(we_html_element::htmlBody(["onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")], $body), $head);
+
+
+		return $this->getHTMLDocument(we_html_element::htmlBody([], $body), $head);
 	}
 
 	private function getHTMLSendBody(){
@@ -1680,12 +1677,12 @@ self.focus();
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea([
-								'name' => "details", "cols" => 60, "rows" => 15, 'style' => "width:530px;height:280px;"]), g_l('modules_newsletter', '[details]'), $footer)
-					) .
-					we_html_element::jsElement('
-									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
-									document.we_form.details.value=document.we_form.details.value+"\n"+"' . g_l('modules_newsletter', '[campaign_starts]') . '";
-							')
+								'name' => "details",
+								'style' => "width:530px;height:280px;"
+								], g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . "\n" .
+								g_l('modules_newsletter', '[campaign_starts]')
+							), g_l('modules_newsletter', '[details]'), $footer)
+					)
 		));
 	}
 
@@ -1727,28 +1724,9 @@ self.focus();
 				$start++;
 			}
 			$this->View->newsletter->addLog("retry");
-			echo "RETRY $nid: $egc-$ecs<br/>";
-			flush();
 		}
 
-
-		$js = we_html_element::jsElement('
-function updateText(text){
-	top.send_body.document.we_form.details.value=top.send_body.document.we_form.details.value+"\n"+text;
-}
-
-function checkTimeout(){
-	return document.we_form.ecs.value;
-}
-
-function initControl(){
-	if(top.send_control.init) top.send_control.init();
-}
-
-self.focus();');
-
-
-		echo $this->getHTMLDocument(we_html_element::htmlBody(['style' => 'margin:10px;', "onload" => "initControl()"], we_html_element::htmlForm([
+		$body = we_html_element::htmlBody(['style' => 'margin:10px;', "onload" => "initControl()"], we_html_element::htmlForm([
 					'name' => 'we_form',
 					"method" => "post"], we_html_element::htmlHiddens([
 						'mod' => 'newsletter',
@@ -1763,23 +1741,27 @@ self.focus();');
 						"ecs" => $ecs,
 						"reload" => 1])
 				)
-			), $js);
-		flush();
+		);
+		$progress_update = [
+			'log' => [],
+			'text' => '',
+			'percent' => 0
+		];
 
 		if($gcount <= $egc){
 			we_cache_file::clean('nl_' . $blockcache . '*');
+			$progress_update = [
+				'log' => [g_l('modules_newsletter', '[campaign_ends]')],
+				'text' => "<span style=\"color:#006699;text-weight:bold;\">" . g_l('modules_newsletter', '[finished]') . '</span>',
+				'percent' => 100
+			];
 
-			echo we_html_element::jsElement('
-				top.send_control.location="about:blank";
-				top.send_body.setProgress(100);
-				top.send_body.setProgressText("title","<span style=\"color:#006699;text-weight:bold;\">' . g_l('modules_newsletter', '[finished]') . '",2);
-				updateText("' . g_l('modules_newsletter', '[campaign_ends]') . '");
-			');
 			$this->View->db->query('UPDATE ' . NEWSLETTER_TABLE . ' SET Step=0,Offset=0 WHERE ID=' . $this->View->newsletter->ID);
 			if(!$test){
 				$this->View->newsletter->addLog("log_end_send");
 			}
-			return;
+			$this->jsCmd->addCmd('updateLog', $progress_update);
+			return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', 'self.focus();'));
 		}
 
 		if($start && !$test && !$reload){
@@ -1960,8 +1942,7 @@ self.focus();');
 						if($this->View->settings['log_sending']){
 							$this->View->newsletter->addLog("mail_failed", $email);
 						}
-						echo we_html_element::jsElement('updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[mail_failed]'), $email)) . '");');
-						flush();
+						$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[mail_failed]'), $email);
 					}
 					$this->View->db->query('UPDATE ' . NEWSLETTER_TABLE . ' SET Step=' . intval($egc) . ',Offset=' . intval($j) . ' WHERE ID=' . $this->View->newsletter->ID);
 				}
@@ -1969,48 +1950,32 @@ self.focus();');
 				if(!$test && $this->View->settings["log_sending"]){
 					$this->View->newsletter->addLog("email_malformed", $email);
 				}
-				echo we_html_element::jsElement('
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[email_malformed]'), $email)) . '");
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");');
-				flush();
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[email_malformed]'), $email);
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email);
 			} elseif(!$verified){
 				if(!$test && $this->View->settings["log_sending"]){
 					$this->View->newsletter->addLog("domain_nok", $email);
 				}
-				echo we_html_element::jsElement('
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[domain_nok]'), $domain)) . '");
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");');
-				flush();
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[domain_nok]'), $domain);
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email);
 			} elseif(!$not_black){
 				if(!$test && $this->View->settings["log_sending"]){
 					$this->View->newsletter->addLog("email_is_black", $email);
 				}
-				echo we_html_element::jsElement('
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[email_is_black]'), $email)) . '");
-updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");
-							');
-				flush();
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[email_is_black]'), $email);
+				$progress_update['log'][] = sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email);
 			}
 			$ecs++;
-
-			echo we_html_element::jsElement('
-document.we_form.ecs.value=' . $ecs . ';
-top.send_control.document.we_form.ecs.value=' . $ecs . ';');
-
-			$pro = ($ecount ? ($ecs / $ecount) * 100 : 0);
-
-			echo we_html_element::jsElement('top.send_body.setProgress(' . ((int) $pro) . ');');
-			flush();
 		}
+		$progress_update['percent'] = ($ecount ? ($ecs / $ecount) * 100 : 0);
 
 		we_cache_file::clean('nl_' . $emailcache . "_" . $egc);
 
+		$this->jsCmd->addCmd('updateLog', $progress_update);
+		$this->jsCmd->addCmd('nextMails', (!empty($this->View->settings['send_wait']) && intval($this->View->settings['send_wait']) && $egc && intval($this->View->settings['send_step']) && $egc < ceil($ecount / $this->View->settings["send_step"]) ? intval($this->View->settings["send_wait"]) : 0), $ecs);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
-		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
-				'setTimeout(function (doc) {doc.we_form.submit();},' . $this->View->settings["send_wait"] . ',document);' :
-				'document.we_form.submit();'
-		));
-		flush();
+
+		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', 'self.focus();'));
 	}
 
 	private function getHTMLSendControl(){

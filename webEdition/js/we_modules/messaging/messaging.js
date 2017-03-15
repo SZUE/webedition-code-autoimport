@@ -57,7 +57,7 @@ function we_cmd() {
 		case "reset_right_v":
 			top.content.editor.edbody.entries_selected = [];
 			top.content.editor.edbody.messaging_messages_overview.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_show_folder_content.php?we_transaction=' + transaction;
-			top.content.editor.edbody.messaging_msg_view.location = "about:blank"
+			top.content.editor.edbody.messaging_msg_view.location = "about:blank";
 			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -143,6 +143,6 @@ function clearSearch() {
 }
 
 function doSort(sortitem) {
-	entrstr = "";
+	var entrstr = "";
 	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=" + transaction;
 }

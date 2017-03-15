@@ -164,7 +164,7 @@ function newIp() {
 		return;
 	}
 
-	var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
+	re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
 
 	if (ip.match(re) !== null) {
 
@@ -188,11 +188,9 @@ function newIp() {
 
 
 function refreshTexts() {
-	var t = document.getElementById("question_score");
-	t.innerHTML = document.we_form[question_edit.name + "_item0"].value;
-	for (i = 0; i < answers_edit.itemCount; i++) {
-		var t = document.getElementById("answers_score_" + i);
-		t.innerHTML = document.we_form[answers_edit.name + "_item" + i].value;
+	document.getElementById("question_score").innerHTML = document.we_form[question_edit.name + "_item0"].value;
+	for (var i = 0; i < answers_edit.itemCount; i++) {
+		document.getElementById("answers_score_" + i).innerHTML = document.we_form[answers_edit.name + "_item" + i].value;
 	}
 }
 
@@ -237,7 +235,7 @@ function refreshTotal() {
 
 	for (i = 0; i < elems.length; i++) {
 		if (elems[i].name.match(/^scores_/)) {
-			percent = (total != 0 ?
+			percent = (total ?
 				Math.round((parseInt(elems[i].value) / total) * 100) :
 				0);
 		}

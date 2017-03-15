@@ -436,8 +436,8 @@ class we_export_frames extends we_modules_frame{
 			$hiddens = we_html_element::htmlHiddens(["pnt" => "cmd",
 					"all" => $all,
 					"cmd" => "do_export"]);
-
-			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') . we_base_jsCmd::singleCmd('updateLog', $progress_update), we_html_element::htmlBody([
+			$this->jsCmd->addCmd('updateLog', $progress_update);
+			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js'), we_html_element::htmlBody([
 						"bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens)
 					)
@@ -503,7 +503,8 @@ class we_export_frames extends we_modules_frame{
 				"cmd" => "do_export"]);
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') . we_base_jsCmd::singleCmd('updateLog', $progress_update), we_html_element::htmlBody([
+			$this->jsCmd->addCmd('updateLog', $progress_update);
+			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js'), we_html_element::htmlBody([
 						"bgcolor" => "#ffffff", 'style' => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 							'name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens)
 					)
@@ -523,8 +524,8 @@ class we_export_frames extends we_modules_frame{
 			$progress_update['log'][] = we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"));
 		}
 		$progress_update['percent'] = 100;
-
-		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') . we_base_jsCmd::singleCmd('updateLog', $progress_update), we_html_element::htmlBody(
+		$this->jsCmd->addCmd('updateLog', $progress_update);
+		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js'), we_html_element::htmlBody(
 					['style' => 'margin:5px;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
 						($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :

@@ -463,6 +463,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	add_email:"' . g_l('modules_newsletter', '[add_email]') . '",
 	all_list:"' . g_l('modules_newsletter', '[all_list]') . '",
 	ask_to_preserve:"' . g_l('modules_newsletter', '[ask_to_preserve]') . '",
+	continue_camp:"'.g_l('modules_newsletter', '[continue_camp]').'",
 	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '",
 	delete_group_question:	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
 	delete_question:"' . g_l('modules_newsletter', '[delete_question]') . '",

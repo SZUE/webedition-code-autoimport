@@ -35,7 +35,7 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (top.content.hot) {
 		switch (args[0]) {
@@ -230,7 +230,7 @@ function we_cmd() {
 			break;
 		case "loadHeaderFooter":
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=edheader&tab=" + args[1] + '&text=' + encodeURI(args[2]) + (args[3] ? '&cmdid=' + args[3] : '');
-			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=edfooter"
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=edfooter";
 			if (top.content.treeData) {
 				top.content.treeData.unselectNode();
 				if (args[4]) {

@@ -53,7 +53,7 @@ win.treeData.table=win.table;';
 			foreach($item as $k => $v){
 				$elems .= strtolower($k) . ':' .
 					(strtolower($k) === "checked" ?
-					'(WE().util.in_array("' . $item["id"] . '",win.SelectedItems.' . $item['table'] . ')?
+					'win.SelectedItems.' . $item['table'] . '.indexof("' . $item["id"] . '")>=0?
 	\'1\':
 	\'' . $v . '\'),
 ' :
@@ -61,7 +61,7 @@ win.treeData.table=win.table;';
 			}
 			$js .= rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js .= 'win.treeData.setState(win.treeData.tree_states["select"]);
+		$js .= 'win.treeData.setState(win.treeData.tree_states.select);
 win.drawTree();';
 
 		return $js;
@@ -70,23 +70,17 @@ win.drawTree();';
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement('
 var SelectedItems={
-	' . FILE_TABLE . ':[],
-	' . TEMPLATES_TABLE . ':[],' .
-				(defined('OBJECT_FILES_TABLE') ? ('
-	' . OBJECT_FILES_TABLE . ':[],
-	' . OBJECT_TABLE . ':[],
-	') : ''
-				) . '
+	WE().consts.tables.FILE_TABLE:[],
+	WE().consts.tables.TEMPLATES_TABLE:[],
+	WE().consts.tables.OBJECT_FILES_TABLE:[],
+	WE().consts.tables.OBJECT_TABLE:[],
 };
 
 var openFolders= {
-	' . FILE_TABLE . ':"",
-	' . TEMPLATES_TABLE . ':"",' .
-				(defined('OBJECT_FILES_TABLE') ? ('
-	' . OBJECT_FILES_TABLE . ':"",
-	' . OBJECT_TABLE . ':"",
-') : ''
-				) . '
+	WE().consts.tables.FILE_TABLE:"",
+	WE().consts.tables.TEMPLATES_TABLE:"",
+	WE().consts.tables.OBJECT_FILES_TABLE:"",
+	WE().consts.tables.OBJECT_TABLE:"",
 };') . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){

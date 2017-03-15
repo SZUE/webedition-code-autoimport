@@ -56,7 +56,7 @@ function clearLog() {
 }
 
 function submitForm() {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	f.target = "cmd";
 	f.method = "post";
 	f.submit();

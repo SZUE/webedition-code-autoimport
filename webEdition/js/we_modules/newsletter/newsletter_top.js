@@ -28,6 +28,7 @@
 var get_focus = 1;
 var hot = false;
 WE().util.loadConsts(document, "g_l.newsletter");
+var newsletter = WE().util.getDynamicVar(document, 'loadVarNewsletter', 'data-newsletter');
 
 function setHot() {
 	hot = true;
@@ -254,7 +255,113 @@ function we_cmd() {
 		case "unsetHot":
 			top.content.hot = false;
 			break;
+		case "ask_camp":
+			window.focus();
+			WE().util.showConfirm(window, "", WE().consts.g_l.newsletter.continue_camp, ['continue_camp_yesNo', newsletter.start, newsletter.group], ['continue_camp_yesNo', 0, 0]);
+			break;
+		case "cancel_camp":
+			doSend(0, 0);
+			break;
+		case "continue_camp_yesNo":
+			doSend(args[1], args[2]);
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
+}
+
+function doSend(start, group) {
+	window.focus();
+	top.send_cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send_cmd&nid=" + newsletter.nid + "&test=" + newsletter.test + "&blockcache=" + newsletter.blockcache + "&emailcache=" + newsletter.emailcache + "&ecount=" + newsletter.ecount + "&gcount=" + newsletter.gcount + "&start=" + start + "&egc=" + group;
+}
+
+
+function addBlack() {
+	var p = document.we_form.elements.blacklist_sel;
+	var newRecipient = window.prompt(WE().consts.g_l.newsletter.add_email, "");
+
+	if (newRecipient !== null) {
+		if (newRecipient.length > 0) {
+			if (newRecipient.length > 255) {
+				top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
+				return;
+			}
+
+			if (!inSelectBox(p, newRecipient)) {
+				addElement(p, "#", newRecipient, true);
+			} else {
+				top.we_showMessage(WE().consts.g_l.newsletter.email_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+			}
+		} else {
+			top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+		}
+	}
+}
+
+function deleteBlack() {
+	var p = document.we_form.elements.blacklist_sel;
+
+	if (p.selectedIndex >= 0) {
+		if (window.confirm(WE().consts.g_l.newsletter.email_delete)) {
+			p.options[p.selectedIndex] = null;
+		}
+	}
+}
+
+function deleteallBlack() {
+	var p = document.we_form.elements.blacklist_sel;
+
+	if (window.confirm(WE().consts.g_l.newsletter.email_delete_all)) {
+		p.options.length = 0;
+	}
+}
+
+function editBlack() {
+	var p = document.we_form.elements.blacklist_sel;
+	var index = p.selectedIndex;
+
+	if (index >= 0) {
+		var editRecipient = window.prompt(WE().consts.g_l.newsletter.edit_email, p.options[index].text);
+
+		if (editRecipient !== null) {
+			if (editRecipient !== "") {
+				if (editRecipient.length > 255) {
+					top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
+					return;
+				}
+				p.options[index].text = editRecipient;
+			} else {
+				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+			}
+		}
+	}
+}
+
+function set_import(val) {
+	document.we_form.sib.value = val;
+
+	if (val == 1) {
+		document.we_form.seb.value = 0;
+	}
+
+	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	submitForm("black_list");
+}
+
+function set_export(val) {
+	document.we_form.seb.value = val;
+
+	if (val == 1) {
+		document.we_form.sib.value = 0;
+	}
+
+	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	submitForm("black_list");
+}
+
+function clearLog() {
+	var f = window.document.we_form;
+	f.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter";
+	f.method = "post";
+	f.submit();
 }

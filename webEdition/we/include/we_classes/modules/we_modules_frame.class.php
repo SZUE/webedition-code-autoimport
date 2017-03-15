@@ -61,10 +61,6 @@ abstract class we_modules_frame{
 			'</head>' . $body . '</html>';
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'frameset':
@@ -100,7 +96,7 @@ abstract class we_modules_frame{
 	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->setTreeWidthFromCookie();
 
-		$extraHead = $this->getJSCmdCode() .
+		$extraHead = $this->View->getJSTop() .
 			//FIXME: throw some of these functions out again and use generic version of main-window functions
 			we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
 			we_main_headermenu::css() .

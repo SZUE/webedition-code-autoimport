@@ -34,7 +34,7 @@ function setProgressText(name, text) {
 }
 
 function setProgress(progress) {
-	var name="";
+	var name = "";
 	var elems = document.getElementsByClassName('progressbar');
 	for (var i = 0; i < elems.length; i++) {
 		elems[i].style.display = "";
@@ -42,7 +42,7 @@ function setProgress(progress) {
 	var koef = progressBar[name].koef;
 	document.getElementById("progress_image" + name).style.width = (koef * progress) + "px";
 	document.getElementById("progress_image_bg" + name).style.width = (koef * 100) - (koef * progress) + "px";
-	setProgressText("progress_text" + name, progress + "%");
+	setProgressText("progress_text" + name, (Math.round(progress * 10) / 10) + "%");
 	updateEst(name, progress);
 }
 

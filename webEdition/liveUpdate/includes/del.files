@@ -831,6 +831,7 @@ js/we_tabs/tabs.js
 js/we_tabs/images.js
 js/we_showMessage.js
 js/we_modules/search/search_view3.js
+js/we_modules/newsletter/newsletter_frames.js
 js/we_modules/navigation/navigation_frame.js
 js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
