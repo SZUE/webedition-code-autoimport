@@ -385,6 +385,16 @@ function we_cmd() {
 		case "setMediaReferences":
 			window.we_mediaReferences = args[1];
 			break;
+		case "object_TextArea_apply":
+			opener._EditorFrame.setEditorIsHot(true);
+			window.opener.setScrollTo();
+			break;
+		case 'object_switch_edit_page':
+			opener.we_cmd("switch_edit_page", args[1], args[2]);
+			break;
+		case 'object_reload_entry_at_class':
+			opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			break;
 			// it must be the last command
 		case "delete_navi":
 			if (!caller.confirm(WE().consts.g_l.editorScript.confirm_navDel)) {

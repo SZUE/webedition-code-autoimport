@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -73,5 +72,10 @@ switch($cmd){
 		we_editor_createObjectTemplate::cmd();
 		return true;
 	case 'object_editObjectTextArea':
-		return 'we_editors/we_editta.inc.php';
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 3);
+		$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
+		$we_doc = we_document::initDoc($we_dt);
+		$editor = new we_editor_objectTextarea($we_doc, $we_transaction);
+		echo $editor->show();
+		return true;
 }
