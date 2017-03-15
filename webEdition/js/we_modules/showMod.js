@@ -96,6 +96,9 @@ function we_cmd() {
 		case "updateTitle":
 			top.content.editor.edheader.document.getElementById("titlePath").innerText = args[1];
 			break;
+		case "setTool":
+			current = args[1];
+			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

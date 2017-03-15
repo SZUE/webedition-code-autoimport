@@ -138,10 +138,10 @@ class we_editor_srcTmpl extends we_editor_base{
 			foreach($parser_js as $js){
 				$maineditor .= we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/' . $js);
 			}
-			$maineditor .= we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') .
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
+			$maineditor .= we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/webEdition.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/show-invisibles.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/we-hint.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/cmTags_js.php?' . $settings);
 		}
 
 
@@ -150,7 +150,7 @@ class we_editor_srcTmpl extends we_editor_base{
 			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
 			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
 			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
-			we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
+			we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/webEdition.css');
 
 		$options = [//these are the CodeMirror options
 			'mode' => $mode,
@@ -181,7 +181,7 @@ class we_editor_srcTmpl extends we_editor_base{
 
 		$maineditor .= //($hasCompletion && $useCompletion ?		 :		''		) .
 			//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
-			($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
+			($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/cmTags_css.php?' . $settings) : '' ) .
 			we_html_element::cssElement(
 				($this->we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
 				$this->we_getCSSIds() : '') . '
