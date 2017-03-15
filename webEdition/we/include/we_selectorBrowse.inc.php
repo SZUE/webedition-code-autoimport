@@ -51,57 +51,58 @@ function readFiles($dir){
 
 	$ord = we_base_request::_(we_base_request::INT, "ord", 10);
 
-	if($dir_obj){
-		while(($entry = $dir_obj->read()) !== false){
-			if($entry == '.' || $entry == '..'){
-				continue;
+	if(!$dir_obj){
+		return we_message_reporting::jsMessagePush(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) . '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
+	}
+	
+	while(($entry = $dir_obj->read()) !== false){
+		if($entry == '.' || $entry == '..'){
+			continue;
+		}
+		if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
+			$arDir[] = $entry;
+			switch($ord){
+				case 10:
+				case 11:
+					$ordDir[] = $entry;
+					break;
+				case 20:
+				case 21:
+					$ordDir[] = getDataType($dir . '/' . $entry);
+					break;
+				case 30:
+				case 31:
+					$ordDir[] = filectime($dir . '/' . $entry);
+					break;
+				case 40:
+				case 41:
+					$ordDir[] = filesize($dir . '/' . $entry);
+					break;
 			}
-			if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
-				$arDir[] = $entry;
-				switch($ord){
-					case 10:
-					case 11:
-						$ordDir[] = $entry;
-						break;
-					case 20:
-					case 21:
-						$ordDir[] = getDataType($dir . '/' . $entry);
-						break;
-					case 30:
-					case 31:
-						$ordDir[] = filectime($dir . '/' . $entry);
-						break;
-					case 40:
-					case 41:
-						$ordDir[] = filesize($dir . '/' . $entry);
-						break;
-				}
-			} else {
-				$arFile[] = $entry;
-				switch($ord){
-					case 10:
-					case 11:
-						$ordFile[] = $entry;
-						break;
-					case 20:
-					case 21:
-						$ordFile[] = getDataType($dir . '/' . $entry);
-						break;
-					case 30:
-					case 31:
-						$ordFile[] = filectime($dir . '/' . $entry);
-						break;
-					case 40:
-					case 41:
-						$ordFile[] = filesize($dir . '/' . $entry);
-						break;
-				}
+		} else {
+			$arFile[] = $entry;
+			switch($ord){
+				case 10:
+				case 11:
+					$ordFile[] = $entry;
+					break;
+				case 20:
+				case 21:
+					$ordFile[] = getDataType($dir . '/' . $entry);
+					break;
+				case 30:
+				case 31:
+					$ordFile[] = filectime($dir . '/' . $entry);
+					break;
+				case 40:
+				case 41:
+					$ordFile[] = filesize($dir . '/' . $entry);
+					break;
 			}
 		}
-		$dir_obj->close();
-	} else {
-		echo we_message_reporting::jsMessagePush(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) . '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
 	}
+	$dir_obj->close();
+
 
 	switch($ord){
 		case 10:
@@ -135,147 +136,136 @@ $thumbFold = trim(WE_THUMBNAIL_DIRECTORY, '/');
 $dir = rtrim($_SERVER['DOCUMENT_ROOT'] . $org, '/');
 $files = readFiles($dir);
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
-	we_html_element::jsElement('top.allentries=' . ($files ? '["' . (implode('","', $files)) . '"]' : '[]') . ';'));
-?>
-<body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
-	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
-		<table class="default"><?php
-			if($nf === 'new_folder'){
-				?>
+if(is_array($files)){
+
+	$body = ($nf === 'new_folder' ? '
 				<tr class="selected">
-					<td class="selector treeIcon" data-contenttype="<?= we_base_ContentTypes::FOLDER; ?>" data-extension=""></td>
-					<td class="selector filename"><?= we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
-					<td class="selector filetype"><?= g_l('fileselector', '[folder]') ?></td>
-					<td class="selector moddate"><?= date("d.m.Y H:i:s") ?></td>
+					<td class="selector treeIcon" data-contenttype="' . we_base_ContentTypes::FOLDER . '" data-extension=""></td>
+					<td class="selector filename">' . we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%") . '</td>
+					<td class="selector filetype">' . g_l('fileselector', '[folder]') . '</td>
+					<td class="selector moddate">' . date("d.m.Y H:i:s") . '</td>
 					<td class="selector filesize"></td>
-				</tr>
-				<?php
+				</tr>' :
+		'');
+
+
+	foreach($files as $entry){
+		$name = str_replace('//', '/', $org . '/' . $entry);
+		$islink = is_link($dir . '/' . $entry);
+		$isfolder = is_dir($dir . '/' . $entry) && !$islink;
+
+		$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
+		$ext = strrchr($name, '.');
+
+		switch($entry){
+			case 'webEdition':
+			case WE_THUMBNAIL_DIRECTORY:
+			case $thumbFold:
+				$indb = 'folder';
+				break;
+			default:
+				if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download")){
+					$indb = 'folder';
+				} else {
+					$indb = isset($fileContentTypes[$entry]) ? $fileContentTypes[$entry] : false;
+				}
+		}
+		$indb = defined('supportDebugging') ? false : $indb;
+		switch($entry){
+			case '.':
+			case '..':
+				$show = false;
+				continue;
+			default:
+				switch($contentFilter){
+					case '':
+					case g_l('contentTypes', '[all_Types]'):
+					case $type:
+						$show = true;
+						break;
+					default:
+						$show = ($type == g_l('contentTypes', '[folder]'));
+				}
+		}
+		$bgcol = ($curID == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? 'selected' : '';
+		$onclick = $ondblclick = '';
+		$cursor = 'cursor:default;';
+		if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
+			if($indb){
+				if($isfolder){
+					$onclick = ' onclick="top.metaKeys.doubleTout=setTimeout(function(){if(!top.metaKeys.doubleClick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{top.metaKeys.doubleClick=false;}},300);return true;"';
+					$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
+					$cursor = 'cursor:pointer;';
+				} elseif($selectInternal){
+					$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+					$cursor = 'cursor:pointer;';
+				}
+			} else {
+				if($isfolder){
+					$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEdit(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
+					$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
+				} else {
+					$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+				}
+				$cursor = 'cursor:pointer;';
 			}
-			foreach($files as $entry){
-				$name = str_replace('//', '/', $org . '/' . $entry);
-				$islink = is_link($dir . '/' . $entry);
-				$isfolder = is_dir($dir . '/' . $entry) && !$islink;
+		}
 
-				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
-				$ext = strrchr($name, '.');
-
-				switch($entry){
-					case 'webEdition':
-					case WE_THUMBNAIL_DIRECTORY:
-					case $thumbFold:
-						$indb = 'folder';
-						break;
-					default:
-						if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download")){
-							$indb = 'folder';
-						} else {
-							$indb = isset($fileContentTypes[$entry]) ? $fileContentTypes[$entry] : false;
-						}
+		switch((($entry == $sid) && (!$indb) ? $nf : '')){
+			case "rename_folder":
+				if($isfolder){
+					$text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
+					$set_rename = true;
+					$type = g_l('contentTypes', '[folder]');
+					$date = date("d.m.Y H:i:s");
 				}
-				$indb = defined('supportDebugging') ? false : $indb;
-				switch($entry){
-					case '.':
-					case '..':
-						$show = false;
-						continue;
-					default:
-						switch($contentFilter){
-							case '':
-							case g_l('contentTypes', '[all_Types]'):
-							case $type:
-								$show = true;
-								break;
-							default:
-								$show = ($type == g_l('contentTypes', '[folder]'));
-						}
-				}
-				$bgcol = ($curID == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? 'selected' : '';
-				$onclick = $ondblclick = '';
-				$cursor = 'cursor:default;';
-				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
-					if($indb){
-						if($isfolder){
-							$onclick = ' onclick="top.metaKeys.doubleTout=setTimeout(function(){if(!top.metaKeys.doubleClick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{top.metaKeys.doubleClick=false;}},300);return true;"';
-							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
-							$cursor = 'cursor:pointer;';
-						} elseif($selectInternal){
-							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
-							$cursor = 'cursor:pointer;';
-						}
-					} else {
-						if($isfolder){
-							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEdit(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
-							$ondblclick = 'onDblClick="top.metaKeys.doubleClick=true;clearTimeout(top.metaKeys.doubleTout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
-						} else {
-							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!top.metaKeys.doubleClick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
-						}
-						$cursor = 'cursor:pointer;';
-					}
-				}
+				break;
+			case "rename_file":
+				$text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
+				$set_rename = true;
+				$type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
+				$date = date("d.m.Y H:i:s");
+				break;
+			default:
+				$text_to_show = '<div class="cutText" title="' . oldHtmlspecialchars($entry) . '">' . oldHtmlspecialchars($entry) . '</div>';
+				$type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
+				$date = (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filemtime($dir . '/' . $entry)) : 'n/a');
+		}
 
-				switch((($entry == $sid) && (!$indb) ? $nf : '')){
-					case "rename_folder":
-						if($isfolder){
-							$text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
-							$set_rename = true;
-							$type = g_l('contentTypes', '[folder]');
-							$date = date("d.m.Y H:i:s");
-						}
-						break;
-					case "rename_file":
-						$text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
-						$set_rename = true;
-						$type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
-						$date = date("d.m.Y H:i:s");
-						break;
-					default:
-						$text_to_show = '<div class="cutText" title="' . oldHtmlspecialchars($entry) . '">' . oldHtmlspecialchars($entry) . '</div>';
-						$type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
-						$date = (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filemtime($dir . '/' . $entry)) : 'n/a');
-				}
+		if($show){
+			$filesize = $isfolder || $islink ? 0 : (file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0);
 
-				if($show){
-					$filesize = $isfolder || $islink ? 0 : (file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0);
+			$size = ($isfolder ?
+				'' :
+				($islink ?
+				'-> ' . readlink($dir . '/' . $entry) :
+				'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
-					$size = ($isfolder ?
-						'' :
-						($islink ?
-						'-> ' . readlink($dir . '/' . $entry) :
-						'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
-
-					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' class="' . $bgcol . '" style="' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
+			$body .= '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' class="' . $bgcol . '" style="' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
 	<td class="selector treeIcon" data-contenttype="' . ($indb ?: ($islink ? 'symlink' : ($isfolder ? we_base_ContentTypes::FOLDER : 'application/*'))) . '" data-extension="' . $ext . '"></td>
 	<td class="selector filename">' . $text_to_show . '</td>
 	<td class="selector filetype">' . $type . '</td>
 	<td class="selector moddate">' . $date . '</td>
 	<td class="selector filesize">' . $size . '</td>
  </tr>';
-				}
+		}
+	}
+	switch($nf){
+		case "rename_folder":
+		case "rename_file":
+			if(!$set_rename){
+				break;
 			}
-			?>
-		</table>
-		<?php
-		switch($nf){
-			case "rename_folder":
-			case "rename_file":
-				if(!$set_rename){
-					break;
-				}
-				$isRename = true;
-			//no break
-			case "new_folder":
-				echo we_html_element::htmlHiddens(['cmd' => $nf,
+			$isRename = true;
+		//no break
+		case "new_folder":
+			$body .= we_html_element::htmlHiddens(['cmd' => $nf,
 					'pat' => we_base_request::_(we_base_request::RAW, "pat", ""),
 					(isset($isRename) ? 'sid' : '') => $sid,
 					(isset($isRename) ? 'oldtxt' : '') => ''
-				]);
-		}
-		?>
-	</form>
-
-	<?php
+			]);
+	}
+	$onload = '';
 	switch($nf){
 		case "rename_folder":
 		case "rename_file":
@@ -284,8 +274,20 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 's
 			}
 		//no break
 		case "new_folder":
-			echo we_html_element::jsElement('initSelector("' . $nf . '");');
+			$onload = "initSelector('" . $nf . "');";
 	}
-	?>
-</body>
-</html>
+} else {
+	$body = '<tr><td>' . $files . '</td></tr>';
+}
+
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js', '', ['id' => 'loadVarSelectors', 'data-selector' => setDynamicVar([
+			'allentries' => $files
+	])]), '
+<body onload="' . $onload . 'WE().util.setIconOfDocClass(document, \'treeIcon\');doScrollTo();">
+	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
+	<table class="default">' .
+	$body .
+	'</table></form></body>');
+
+

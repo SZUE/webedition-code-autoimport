@@ -32,6 +32,9 @@ top.metaKeys = {
 	inputClick: false,
 	doubleTout: null
 };
+var selector = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
+
+top.allentries=selector.allentries;
 
 function doClick(id, ct, indb) {
 	if (ct === 1) {
