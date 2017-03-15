@@ -23,7 +23,7 @@ $l_importFiles=array(
 	'image_options_close'=>'Скрыть функции графики',
 	'image_options_open'=>'Показывать функции графики',
 	'imgsSearchable'=>'Searchable',
-	'imgsSearchable_label'=>'Set images searchable',
+	'imgsSearchable_label'=>'Set imported files "searchable"',
 	'import_expl'=>'Нажатием на кнопку, находящуюся рядом с окном ввода, можно выбрать файл на жестком диске. После выбора появляется новое окно ввода, в котором можно выбрать следующий файл. Примите во внимание то, что в связи с ограничениями PHP максимальный размер файла составляет %s.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 
