@@ -514,7 +514,7 @@ class liveUpdateFunctions{
 
 			if($isNew){
 				//Bug #4431, siehe unten
-				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = 'ADD `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
 				$queries[] = 'MODIFY `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
