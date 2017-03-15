@@ -43,7 +43,7 @@ class we_editor_variants extends we_editor_base{
 				$inner = $this->we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
 				break;
 		}
-		return $this->getPage($inner, we_editor_script::get());
+		return $this->getPage($inner);
 	}
 
 }

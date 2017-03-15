@@ -25,7 +25,7 @@
 class we_editor_document_preview extends we_editor_base{
 
 	public function show(){
-		return $this->getPage($this->we_doc->getHtml(true), we_editor_script::get());
+		return $this->getPage($this->we_doc->getHtml(true));
 	}
 
 }

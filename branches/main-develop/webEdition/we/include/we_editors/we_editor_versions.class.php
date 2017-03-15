@@ -30,15 +30,14 @@ class we_editor_versions extends we_editor_base{
 		$foundItems = count($content);
 
 		return $this->getPage($versionsView->getHTMLforVersions([
-							["html" => "<div id='searchTable'>" . $versionsView->getBodyTop() . '</div>'],
-							["html" => "<div id='parametersTop'>" . $versionsView->getParameterTop($foundItems) . '</div>' . $versionsView->tblList($content, $versionsView->makeHeadLines()) . "<div id='parametersBottom'>" . $versionsView->getParameterBottom($foundItems) . "</div>"]
-						]), we_editor_script::get() .
-						$versionsView->getJS() .
-						we_html_element::cssLink(CSS_DIR . 'we_versions.css', ['media' => 'screen']) .
-						we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', ['media' => 'print']), [
-					'onkeypress' => "javascript:if (event.keyCode == 13 || event.keyCode == 3){search(true);}",
-					'onload' => "init();",
-					'onresize' => "sizeScrollContent();"
+					["html" => "<div id='searchTable'>" . $versionsView->getBodyTop() . '</div>'],
+					["html" => "<div id='parametersTop'>" . $versionsView->getParameterTop($foundItems) . '</div>' . $versionsView->tblList($content, $versionsView->makeHeadLines()) . "<div id='parametersBottom'>" . $versionsView->getParameterBottom($foundItems) . "</div>"]
+				]), $versionsView->getJS() .
+				we_html_element::cssLink(CSS_DIR . 'we_versions.css', ['media' => 'screen']) .
+				we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', ['media' => 'print']), [
+				'onkeypress' => "javascript:if (event.keyCode == 13 || event.keyCode == 3){search(true);}",
+				'onload' => "init();",
+				'onresize' => "sizeScrollContent();"
 		]);
 	}
 

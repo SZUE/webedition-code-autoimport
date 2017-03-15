@@ -59,7 +59,7 @@ class we_editor_imageedit extends we_editor_base{
 <input type="hidden" name="we_' . $this->we_doc->Name . '_input[focus]" id="focus" value="[' . implode(',', $focus) . ']"/>
 </div>
 </td></tr>
-</table>', we_editor_script::get(), ['onload' => (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
+</table>', '', ['onload' => (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
 					'WE().layout.we_setPath(_EditorFrame,"' . $this->we_doc->Path . '","' . $this->we_doc->Text . '", ' . intval($this->we_doc->ID) . ',"published");' :
 					'')]);
 	}

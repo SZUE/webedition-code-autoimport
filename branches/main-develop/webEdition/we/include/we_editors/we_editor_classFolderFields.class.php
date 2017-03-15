@@ -53,11 +53,10 @@ class we_editor_classFolderFields extends we_editor_base{
 		}
 
 		return $this->getPage(we_html_multiIconBox::getHTML('', [
-							['html' => $this->we_doc->getSearchDialog()],
-							['html' => $this->we_doc->getSearch()],
-								]
-								, 30), $this->we_doc->getSearchJS() .
-						we_editor_script::get()
+					['html' => $this->we_doc->getSearchDialog()],
+					['html' => $this->we_doc->getSearch()],
+					]
+					, 30), $this->we_doc->getSearchJS()
 		);
 	}
 

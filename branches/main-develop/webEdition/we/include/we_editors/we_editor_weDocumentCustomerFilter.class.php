@@ -86,7 +86,7 @@ class we_editor_weDocumentCustomerFilter extends we_editor_base{
 
 		return $this->getPage((!($this->we_doc instanceof we_imageDocument) && we_base_permission::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
 						we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
-						we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')), we_editor_script::get());
+						we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')));
 	}
 
 }

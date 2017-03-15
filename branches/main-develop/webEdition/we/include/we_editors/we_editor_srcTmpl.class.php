@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -140,18 +139,18 @@ class we_editor_srcTmpl extends we_editor_base{
 				$maineditor .= we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/' . $js);
 			}
 			$maineditor .= we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') .
-					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
-					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
-					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/show-invisibles.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/addon/we-hint.js') .
+				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_js.php?' . $settings);
 		}
 
 
 		// CodeMirror will be used; we add css to the page
 		$maineditor .= we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/lib/codemirror.css') .
-				we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
-				we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
-				we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
-				we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/theme/' . $_SESSION['prefs']['editorTheme'] . '.css') .
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/fold/foldgutter.css') .
+			we_html_element::cssLink(LIB_DIR . 'additional/CodeMirror/addon/hint/show-hint.css') .
+			we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.css');
 
 		$options = [//these are the CodeMirror options
 			'mode' => $mode,
@@ -181,11 +180,11 @@ class we_editor_srcTmpl extends we_editor_base{
 		];
 
 		$maineditor .= //($hasCompletion && $useCompletion ?		 :		''		) .
-				//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
-				($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
-				we_html_element::cssElement(
-						($this->we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
-						$this->we_getCSSIds() : '') . '
+			//($_SESSION['prefs']['editorShowSpaces'] ? '' : '') .
+			($_SESSION['prefs']['editorTooltips'] ? we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/cmTags_css.php?' . $settings) : '' ) .
+			we_html_element::cssElement(
+				($this->we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+				$this->we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,
 .weOpenTag:hover:after,
@@ -274,10 +273,10 @@ background: none;
 		<td id="tagSelectCol" style="width: 250px;">' . $tagselect . we_wizard_code::getSelect() . we_wizard_code::getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
 		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(['name' => 'we_' . $this->we_doc->Name . '_TagWizardCode',
-					'id' => 'tag_edit_area',
-					'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
-					'class' => 'defaultfont'
-						], $this->we_doc->TagWizardCode) . '</td>
+				'id' => 'tag_edit_area',
+				'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
+				'class' => 'defaultfont'
+				], $this->we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
 ';
@@ -297,11 +296,11 @@ background: none;
 		  </tr>
 		  </table> */
 		return
-				[$selectedGroup,
-					[
-						[],
-						["headline" => "", "html" => $tagWizardHtml,]
-					]
+			[$selectedGroup,
+				[
+					[],
+					["headline" => "", "html" => $tagWizardHtml,]
+				]
 		];
 	}
 
@@ -316,15 +315,15 @@ background: none;
 
 
 		$code = ($this->we_doc instanceof we_htmlDocument ?
-				$this->we_doc->getDocumentCode() :
-				$this->we_doc->getElement('data')
-				);
+			$this->we_doc->getDocumentCode() :
+			$this->we_doc->getElement('data')
+			);
 
 		$maineditor = '<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
-				'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
-				'" name="we_' . $this->we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
-				((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
-				. oldHtmlspecialchars($code) . '</textarea>';
+			'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
+			'" name="we_' . $this->we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
+			((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
+			. oldHtmlspecialchars($code) . '</textarea>';
 		$options = [];
 		switch($_SESSION['prefs']['editorMode']){
 			case 'java':
@@ -344,34 +343,33 @@ background: none;
 
 		return $this->getPage('<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">
 <div id="editorDiv" style="margin-left: 20px;margin-right: 20px;">' .
-						$maineditor . '
+				$maineditor . '
 	<table class="default" id="srtable">
 	<tr>
 		<td style="text-align:left" class="defaultfont">' .
-						($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
+				($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
 	<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
 	<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button('replace', 'javascript:cmReplace(null);') . '</div>' .
-						we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
-						'</div>' : ''
-						) . '
+				we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+				'</div>' : ''
+				) . '
 						</td>
 						<td style="text-align:right" class="defaultfont">' .
-						we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
-						($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
-						'</td></tr></table>
+				we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
+				($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
+				'</td></tr></table>
 </div>' .
-						(isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>', we_editor_script::get() .
-						we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-						we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar([
-								'docName' => $this->we_doc->Name,
-								'docCharSet' => ($this->we_doc->elements['Charset']['dat'] ?: $GLOBALS['WE_BACKENDCHARSET']),
-								'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
-								'CMOptions' => $options,
-					])]), [
-					'style' => "overflow:hidden;",
-					'onload' => (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '') . $this->getInitEditor(),
-					'onunload' => "doUnload();parent.editorScrollPosTop = getScrollPosTop();parent.editorScrollPosLeft = getScrollPosLeft();",
-					'onresize' => "sizeEditor();"
+				(isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>', we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', [
+					'id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar([
+						'docName' => $this->we_doc->Name,
+						'docCharSet' => ($this->we_doc->elements['Charset']['dat'] ?: $GLOBALS['WE_BACKENDCHARSET']),
+						'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
+						'CMOptions' => $options,
+				])]), [
+				'style' => "overflow:hidden;",
+				'onload' => (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '') . $this->getInitEditor(),
+				'onunload' => "doUnload();parent.editorScrollPosTop = getScrollPosTop();parent.editorScrollPosLeft = getScrollPosLeft();",
+				'onresize' => "sizeEditor();"
 		]);
 	}
 

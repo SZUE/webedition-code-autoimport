@@ -26,7 +26,7 @@ class we_editor_content_collection extends we_editor_base{
 
 	public function show(){
 		//$weSuggest = & weSuggest::getInstance();
-		return $this->getPage($this->we_doc->formCollection(), we_editor_script::get() . we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($this->we_doc->getJSDynamic())]));
+		return $this->getPage($this->we_doc->formCollection(), we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($this->we_doc->getJSDynamic())]));
 	}
 
 }

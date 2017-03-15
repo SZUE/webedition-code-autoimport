@@ -40,7 +40,7 @@ class we_editor_binaryContent extends we_editor_base{
 						"html" => $this->we_doc->formMetaInfos() . $this->we_doc->formMetaData(),
 						'space' => we_html_multiIconBox::SPACE_MED2
 					]
-					], 20), we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . we_editor_script::get());
+					], 20));
 	}
 
 }

@@ -55,7 +55,7 @@ class we_editor_contentobjectFile extends we_editor_base{
 			}
 		}
 		//$weSuggest = &weSuggest::getInstance();
-		$header = we_html_element::jsScript(JS_DIR . '/weOrderContainer.js') . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . we_editor_script::get(true);
+		$header = we_html_element::jsScript(JS_DIR . '/weOrderContainer.js');
 
 		if($this->we_doc->CSS){
 			$cssArr = makeArrayFromCSV($this->we_doc->CSS);

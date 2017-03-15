@@ -39,7 +39,7 @@ class we_editor_doclist extends we_editor_base{
 							['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
 						]) .
 						we_html_element::htmlHiddens(['obj' => 1
-						]), we_editor_script::get() . $doclistView->getSearchJS(), [
+						]), $doclistView->getSearchJS(), [
 					'onkeypress' => "javascript:if (event.keyCode == 13 || event.keyCode == 3) {search(true);}",
 					'onload' => "setTimeout(weSearch.init, 200)",
 					'onresize' => "weSearch.sizeScrollContent();"

@@ -76,7 +76,7 @@ class we_editor_other_preview extends we_editor_base{
 			$form = we_html_multiIconBox::getHTML('weOtherDocPrev', $parts, 20);
 		}
 
-		return $this->getPage($form, we_editor_script::get(), [
+		return $this->getPage($form, '', [
 					'class' => 'weEditorBody previewOther',
 					'onload' => (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
 					'WE().layout.we_setPath(_EditorFrame,\'' . $this->we_doc->Path . '\',\'' . $this->we_doc->Text . '\', ' . intval($this->we_doc->ID) . ',\'published\');"' : '')

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_editor_base{
-
 	protected $jsCmd = null;
 	protected $we_doc = null;
 	protected $charset = '';
@@ -42,17 +41,19 @@ abstract class we_editor_base{
 
 	protected function getPage($form, $header, $bodyAttr = [], $formAttr = []){
 		return we_html_tools::getHtmlTop($this->title, $this->charset, '', $header .
-						$this->jsCmd->getCmds(), we_html_element::htmlBody(array_merge(
-										[
-							'class' => "weEditorBody",
-							'onunload' => "doUnload()"
-										], $bodyAttr), we_html_element::htmlForm(array_merge([
-									'name' => "we_form",
-									'method' => "post",
-									'onsubmit' => "return false;"
-												], $formAttr), we_class::hiddenTrans() .
-										$form .
-										we_html_element::htmlHidden("we_complete_request", 1)))
+				we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+				we_editor_script::get() .
+				$this->jsCmd->getCmds(), we_html_element::htmlBody(array_merge(
+						[
+					'class' => "weEditorBody",
+					'onunload' => "doUnload()"
+						], $bodyAttr), we_html_element::htmlForm(array_merge([
+						'name' => "we_form",
+						'method' => "post",
+						'onsubmit' => "return false;"
+							], $formAttr), we_class::hiddenTrans() .
+						$form .
+						we_html_element::htmlHidden("we_complete_request", 1)))
 		);
 	}
 
