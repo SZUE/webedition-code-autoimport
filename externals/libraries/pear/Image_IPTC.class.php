@@ -67,7 +67,7 @@ class Image_IPTC{
 	 *
 	 * @access public
 	 */
-	function Image_IPTC($sFilename){
+	public function __construct($sFilename){
 		$this->_sFilename = $sFilename;
 
 		if(is_file($this->_sFilename)){
