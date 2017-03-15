@@ -668,7 +668,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				$what = 'all';
-
 			//no break;
 			case '':
 			default:
@@ -683,8 +682,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('updateFileLink');
 				self::updateCats($db);
 				self::meassure('updateCats');
-				self::updateDateInContent($db);
-				self::meassure('updateContentDate');
 				self::updateVersionsTable($db);
 				self::meassure('versions');
 				self::cleanUnreferencedVersions($db);
@@ -726,7 +723,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					}
 					self::meassure('shop');
 				}
-
+				self::updateDateInContent($db);
+				self::meassure('updateContentDate');
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				self::meassure(-1);
