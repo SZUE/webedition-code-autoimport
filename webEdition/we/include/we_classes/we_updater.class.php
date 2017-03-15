@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -93,9 +92,9 @@ abstract class we_updater{
 				}
 			}
 			$tmpDB->query('UPDATE ' . OBJECT_TABLE . ' SET ' . we_database_base::arraySetter([
-						'DefaultValues' => we_serialize($data, SERIALIZE_JSON),
-						'UsersReadOnly' => implode(',', $users)
-					]) . ' WHERE ID=' . $db->f('ID'));
+					'DefaultValues' => we_serialize($data, SERIALIZE_JSON),
+					'UsersReadOnly' => implode(',', $users)
+				]) . ' WHERE ID=' . $db->f('ID'));
 		}
 		if($db->f('ID')){
 			$progress['maxID'] = $db->f('ID');
@@ -310,8 +309,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					$data = we_unserialize($db->f('Catfields'));
 					if($data){
 						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(['Title' => $data['default']['Title'],
-									'Description' => $data['default']['Description'],
-								]) . ' WHERE ID=' . $db->f('ID'));
+								'Description' => $data['default']['Description'],
+							]) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -480,22 +479,22 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$all = $db->getAll();
 		foreach($all as $a){
 			$db->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' . we_database_base::arraySetter([
-						'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
-						'WhiteList' => trim($a['WhiteList'], ','),
-						'BlackList' => trim($a['BlackList'], ','),
-						'Customers' => trim($a['Customers'], ','),
-					]) . ' WHERE ID=' . $a['ID']);
+					'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
+					'WhiteList' => trim($a['WhiteList'], ','),
+					'BlackList' => trim($a['BlackList'], ','),
+					'Customers' => trim($a['Customers'], ','),
+				]) . ' WHERE ID=' . $a['ID']);
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
 			$db->query("SELECT modelId,filter,whiteList,blackList,specificCustomers FROM " . CUSTOMER_FILTER_TABLE . " WHERE filter LIKE 'a:%{i:%'");
 			$all = $db->getAll();
 			foreach($all as $a){
 				$db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter([
-							'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
-							'whiteList' => trim($a['whiteList'], ','),
-							'blackList' => trim($a['blackList'], ','),
-							'specificCustomers' => trim($a['specificCustomers'], ','),
-						]) . ' WHERE modelId=' . $a['modelId']);
+						'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
+						'whiteList' => trim($a['whiteList'], ','),
+						'blackList' => trim($a['blackList'], ','),
+						'specificCustomers' => trim($a['specificCustomers'], ','),
+					]) . ' WHERE modelId=' . $a['modelId']);
 			}
 		}
 	}
@@ -504,38 +503,38 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		//convert 1st gen values
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db))){
 			$zw = we_unserialize(
-					strtr($zw, [
+				strtr($zw, [
 				'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
 				'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
-					])
+				])
 			);
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
-					]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
+					'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
 		}
 
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule" AND pref_value LIKE "%weShopVatRule%"', '', $db))){
 			$zw = we_unserialize(
-					strtr($zw, [
+				strtr($zw, [
 				'O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":',
 				'O:13:"weshopvatrule":' => 'O:15:"we_shop_vatRule":'
-					])
+				])
 			);
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
-					]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
+					'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
 		}
 //convert 2nd gen values
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%we_shop_statusMails%"', '', $db))){
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
-					]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
+					'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
 		}
 
 		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule" AND pref_value LIKE "%we_shop_vatRule%"', '', $db))){
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
-					]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
+					'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
 		}
 	}
 
@@ -543,8 +542,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$items = $db->getAllq('SELECT * FROM ' . SETTINGS_TABLE . ' WHERE pref_value LIKE "a:%"');
 		foreach($items as $item){
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pref_value' => we_serialize(we_unserialize($item['pref_value']), SERIALIZE_JSON)
-					]) . ' WHERE tool="' . $item['tool'] . '" AND pref_name="' . $item['pref_name'] . '"');
+					'pref_value' => we_serialize(we_unserialize($item['pref_value']), SERIALIZE_JSON)
+				]) . ' WHERE tool="' . $item['tool'] . '" AND pref_name="' . $item['pref_name'] . '"');
 		}
 	}
 
@@ -588,8 +587,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 		//fill in dates
 		foreach(['MailConfirmation', 'MailShipping', 'MailPayment', 'MailCancellation', 'MailFinished',
-	'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF', 'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ',
-	'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ'] as $date){
+		'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF', 'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ',
+		'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ'] as $date){
 			$db->query('REPLACE INTO ' . SHOP_ORDER_DATES_TABLE . ' (ID,type,date) (SELECT IntOrderID,"' . $date . '",' . $date . ' FROM ' . SHOP_TABLE . ' WHERE ' . $date . ' IS NOT NULL AND IntOrderID IN(' . $ids . ') GROUP BY IntOrderID)');
 		}
 
@@ -603,15 +602,15 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
 			);
 			$db2->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-						'pricesNet' => intval($dat['we_shopPriceIsNet']),
-						'priceName' => $dat['we_shopPricename'],
-						'shippingCost' => $dat['we_shopPriceShipping']['costs'],
-						'shippingNet' => $dat['we_shopPriceShipping']['isNet'],
-						'shippingVat' => $dat['we_shopPriceShipping']['vatRate'],
-						'calcVat' => empty($dat['we_shopCalcVat']) ? 1 : $dat['we_shopCalcVat'],
-						'customFields' => $dat['we_sscf'] ? we_serialize($dat['we_sscf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
-						'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
-					]) . ' WHERE ID=' . $db->f('IntOrderID'));
+					'pricesNet' => intval($dat['we_shopPriceIsNet']),
+					'priceName' => $dat['we_shopPricename'],
+					'shippingCost' => $dat['we_shopPriceShipping']['costs'],
+					'shippingNet' => $dat['we_shopPriceShipping']['isNet'],
+					'shippingVat' => $dat['we_shopPriceShipping']['vatRate'],
+					'calcVat' => empty($dat['we_shopCalcVat']) ? 1 : $dat['we_shopCalcVat'],
+					'customFields' => $dat['we_sscf'] ? we_serialize($dat['we_sscf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+					'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
+				]) . ' WHERE ID=' . $db->f('IntOrderID'));
 		}
 
 		//fill in order items
@@ -632,25 +631,25 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
 				//add document first
 				$db2->query('REPLACE INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
-							'DocID' => $docid,
-							'type' => $type,
-							'variant' => $variant,
-							'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
-							'title' => strip_tags($dat['we_shoptitle']),
-							'description' => strip_tags($dat['we_shopdescription']),
-							'CategoryID' => empty($dat['shopcategory']) ? 0 : intval($dat['shopcategory']),
-							'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
+						'DocID' => $docid,
+						'type' => $type,
+						'variant' => $variant,
+						'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
+						'title' => strip_tags($dat['we_shoptitle']),
+						'description' => strip_tags($dat['we_shopdescription']),
+						'CategoryID' => empty($dat['shopcategory']) ? 0 : intval($dat['shopcategory']),
+						'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
 				]));
 				$id = $db2->getInsertId();
 			}
 
 			$db2->query('INSERT INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
-						'orderID' => $db->f('IntOrderID'),
-						'orderDocID' => $id,
-						'quantity' => $db->f('IntQuantity'),
-						'Price' => $db->f('Price'),
-						'customFields' => $dat['we_sacf'] ? we_serialize($dat['we_sacf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
-						'Vat' => isset($dat['shopvat']) ? $dat['shopvat'] : sql_function('NULL'),
+					'orderID' => $db->f('IntOrderID'),
+					'orderDocID' => $id,
+					'quantity' => $db->f('IntQuantity'),
+					'Price' => $db->f('Price'),
+					'customFields' => $dat['we_sacf'] ? we_serialize($dat['we_sacf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+					'Vat' => isset($dat['shopvat']) ? $dat['shopvat'] : sql_function('NULL'),
 			]));
 		}
 		return array_merge($progress, ['text' => 'Shop ' . $progress['pos'] . ' / ' . $progress['max']]);
@@ -663,16 +662,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	public static function doUpdate($what = '', array $progress = []){
 		$db = new DB_WE();
 		self::meassure('start');
-		//if we are in liveupdate, initial db updates already triggered
-		if($what == 'internal'){
-			self::replayUpdateDB();
-			self::meassure('replayUpdateDB');
-			$what = 'all';
-		}
 
 		switch($what){
-			default:
+			case 'internal'://if we are in liveupdate, initial db updates already triggered
+				self::replayUpdateDB();
+				self::meassure('replayUpdateDB');
+				$what = 'all';
+
+			//no break;
 			case '':
+			default:
+
 				self::fixInconsistentTables($db);
 				self::meassure('fixInconsistentTables');
 				if(defined('WE_GLOSSARY_MODULE_PATH')){
