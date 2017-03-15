@@ -84,7 +84,7 @@ class we_editor_info_objectFile extends we_editor_base{
 				'icon' => "workflow.gif"
 			];
 
-			return $this->getPage(we_html_multiIconBox::getHTML("", $parts, 30), we_editor_script::get() . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'));
+			return $this->getPage(we_html_multiIconBox::getHTML("", $parts, 30));
 		}
 	}
 

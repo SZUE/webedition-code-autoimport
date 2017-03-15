@@ -31,8 +31,8 @@ class we_editor_thumbnails extends we_editor_base{
 
 			if(!$doc){
 				$parts = [[
-				"headline" => "",
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
+					"headline" => "",
+					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
 				]];
 			} else if(we_base_imageEdit::is_imagetype_read_supported($imgType)){
 				$parts = [];
@@ -61,8 +61,8 @@ class we_editor_thumbnails extends we_editor_base{
 						$src = $thumbObj->getOutputPath(false, true);
 					} else {
 						$src = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&amp;we_cmd[1]=' .
-								$this->we_doc->ContentType . '&amp;we_cmd[2]=' .
-								$GLOBALS['we_transaction'] . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
+							$this->we_doc->ContentType . '&amp;we_cmd[2]=' .
+							$GLOBALS['we_transaction'] . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
 					}
 
 
@@ -98,7 +98,7 @@ class we_editor_thumbnails extends we_editor_base{
 			]];
 		}
 
-		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20), we_editor_script::get() . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), ['onload' => "doScrollTo();"]);
+		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20), '', ['onload' => "doScrollTo();"]);
 	}
 
 }

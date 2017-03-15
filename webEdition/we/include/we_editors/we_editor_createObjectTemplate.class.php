@@ -257,7 +257,7 @@ class we_editor_createObjectTemplate extends we_editor_base{
 						we_html_element::htmlHiddens(["SID" => $tmpl->Name,
 							"we_cmd[3]" => $cmd3,
 							"we_cmd[2]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2)
-						]), we_editor_script::get());
+						]));
 	}
 
 }

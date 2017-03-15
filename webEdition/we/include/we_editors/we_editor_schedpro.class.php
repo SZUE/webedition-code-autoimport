@@ -41,11 +41,9 @@ class we_editor_schedpro extends we_editor_base{
 		$parts[] = ['headline' => '',
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_schedule,fa-plus,fa-lg fa-clock-o', "javascript:we_cmd('schedule_add')"),
 		];
-		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20), we_editor_script::get() .
-						we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-						we_schedpro::getMainJS($this->we_doc), [
-					'onload' => "checkFooter();doScrollTo();"
-				]);
+		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20), we_schedpro::getMainJS($this->we_doc), [
+				'onload' => "checkFooter();doScrollTo();"
+		]);
 	}
 
 }

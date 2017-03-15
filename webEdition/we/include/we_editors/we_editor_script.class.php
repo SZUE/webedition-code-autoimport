@@ -24,13 +24,24 @@
  */
 abstract class we_editor_script{
 
-	public static function get($loadWysiwygConfigs = false){
+	public static function get(){
 		$ret = '';
 		if(isset($GLOBALS['we_doc'])){
-			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
-				//no wysiwyg
-			} else {
-				$ret = we_wysiwyg_editor::getHTMLHeader(false, $loadWysiwygConfigs);
+			switch($GLOBALS['we_doc']->ContentType){
+				case we_base_ContentTypes::TEMPLATE:
+					if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
+						break;
+					}
+				case we_base_ContentTypes::WEDOCUMENT:
+				case we_base_ContentTypes::OBJECT_FILE:
+				case we_base_ContentTypes::OBJECT:
+					switch($GLOBALS['we_doc']->EditPageNr){
+						case we_base_constants::WE_EDITPAGE_PREVIEW:
+						case we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE:
+						case we_base_constants::WE_EDITPAGE_CONTENT:
+							$ret = we_wysiwyg_editor::getHTMLHeader(false, true);
+							break;
+					}
 			}
 		}
 		$hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
@@ -72,8 +83,8 @@ abstract class we_editor_script{
 		}
 
 		$ret .= we_html_element::cssLink(CSS_DIR . 'editor.css') .
-				we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-				we_html_element::jsScript(JS_DIR . 'we_editor_script.js', '', ['id' => 'loadVarEditor_script', 'data-doc' => setDynamicVar($doc)]);
+			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'we_editor_script.js', '', ['id' => 'loadVarEditor_script', 'data-doc' => setDynamicVar($doc)]);
 
 		unset($doc);
 

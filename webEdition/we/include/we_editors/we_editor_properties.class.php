@@ -35,7 +35,7 @@ class we_editor_properties extends we_editor_base{
 
 		we_html_tools::headerCtCharset('text/html', $this->charset);
 
-		return $this->getPage($this->we_doc->getPropertyPage($this->jsCmd), we_editor_script::get() . we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), ['onload' => "doScrollTo()"]);
+		return $this->getPage($this->we_doc->getPropertyPage($this->jsCmd), '', ['onload' => "doScrollTo()"]);
 	}
 
 }
