@@ -131,7 +131,11 @@ abstract class we_fileupload{
 		$this->predefinedConfig = $predefinedConfig;
 	}
 
-	public function setImageEditProps($props = []){
+	public function setImageEditProps($props){
+		if(empty($props) || !is_array($props)){
+			return;
+		}
+
 		$this->imageEditProps = array_merge($this->imageEditProps, $props);
 	}
 
