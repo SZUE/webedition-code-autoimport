@@ -29,9 +29,9 @@ class we_export_view extends we_modules_view{
 	var $editorBodyDoc;
 	private $page;
 
-	public function __construct($frameset){
+	public function __construct(){
 		$topframe = "top.content";
-		parent::__construct($frameset, $topframe);
+		parent::__construct($topframe);
 		$this->export = new we_export_export();
 	}
 
@@ -57,7 +57,7 @@ class we_export_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return  we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(array $jsVars = []){
@@ -72,7 +72,7 @@ class we_export_view extends we_modules_view{
 		foreach($arr as $table => $elem){
 
 			if($this->export->$elem){
-				$selected .= 'top.content.editor.edbody.SelectedItems.' . $table . '=['.$this->export->$elem.'];';
+				$selected .= 'top.content.editor.edbody.SelectedItems.' . $table . '=[' . $this->export->$elem . '];';
 			}
 
 			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){

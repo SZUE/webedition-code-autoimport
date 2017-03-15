@@ -38,8 +38,8 @@ class we_banner_view extends we_modules_view{
 	var $pageFields = [];
 	var $uid;
 
-	public function __construct($frameset){
-		parent::__construct($frameset);
+	public function __construct(){
+		parent::__construct();
 		$this->banner = new we_banner_banner();
 		$this->page = 0;
 		$this->settings = $this->getSettings();

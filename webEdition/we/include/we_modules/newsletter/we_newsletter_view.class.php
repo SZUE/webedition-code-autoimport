@@ -42,8 +42,8 @@ class we_newsletter_view extends we_modules_view{
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
-	public function __construct($frameset){
-		parent::__construct($frameset);
+	public function __construct(){
+		parent::__construct();
 
 		$this->newsletter = new we_newsletter_newsletter();
 

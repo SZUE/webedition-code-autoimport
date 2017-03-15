@@ -34,8 +34,8 @@ class we_glossary_view extends we_modules_view{
 	 * @param string $frameset
 	 * @param string $topframe
 	 */
-	public function __construct($frameset){
-		parent::__construct($frameset);
+	public function __construct(){
+		parent::__construct();
 		$this->Glossary = new we_glossary_glossary();
 	}
 

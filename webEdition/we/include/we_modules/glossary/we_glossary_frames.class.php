@@ -29,8 +29,8 @@ class we_glossary_frames extends we_modules_frame{
 		$this->module = "glossary";
 		$this->treeDefaultWidth = 280;
 
-		$this->Tree = new we_glossary_tree($this->jsCmd, $this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_glossary_view($frameset);
+		$this->Tree = new we_glossary_tree($this->jsCmd, "top.content", "top.content", "top.content.cmd");
+		$this->View = new we_glossary_view();
 	}
 
 	function getHTML($what = '', $mode = '', $step = 0){
@@ -127,10 +127,10 @@ class we_glossary_frames extends we_modules_frame{
 		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)]);
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
-											"cmd" => "no_cmd"])
-								)
-						)
+				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
+							"cmd" => "no_cmd"])
+					)
+				)
 		);
 	}
 

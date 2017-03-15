@@ -28,8 +28,8 @@ class we_messaging_view extends we_modules_view{
 	private $transaction;
 	private $weTransaction;
 
-	public function __construct($frameset, $reqTransaction = 0, &$weTransaction = 0){
-		parent::__construct($frameset);
+	public function __construct($reqTransaction = 0, &$weTransaction = 0){
+		parent::__construct();
 
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;
@@ -103,7 +103,7 @@ class we_messaging_view extends we_modules_view{
 				return;
 			case 'reset_right_view':
 				$jscmd->addCmd('reset_right_v');
-				return ;
+				return;
 			case 'update_todo':
 				if($this->messaging->selected_message){
 					$jscmd->addCmd('upd_tdo', "reject");
@@ -133,7 +133,7 @@ class we_messaging_view extends we_modules_view{
 
 				$js_out = '
 top.content.editor.edbody.entries_selected = [];
-top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url(WEBEDITION_DIR . 'we_showMod.php?mod=messaging') . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
 top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				';
@@ -167,7 +167,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				]);
 				return we_html_element::jsElement('
 top.content.editor.edbody.entries_selected = [];
-top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url(WEBEDITION_DIR . 'we_showMod.php?mod=messaging') . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 top.content.editor.edbody.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
 top.content.editor.edbody.messaging_msg_view.location="about:blank";');
 
@@ -287,7 +287,7 @@ top.content.drawTree();');
 
 		return we_html_element::jsElement('
 top.content.editor.edbody.entries_selected = [' . $this->messaging->get_ids_selected() . '];
-top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url(WEBEDITION_DIR . 'we_showMod.php?mod=messaging') . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 if (top.content.editor.edbody.messaging_messages_overview) {
 	top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
 }' .

@@ -24,8 +24,8 @@
  */
 class we_export_tree extends we_tree_base{
 
-	public function __construct(we_base_jsCmd $jsCmd, $frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($jsCmd, $frameset, $topFrame, $treeFrame, $cmdFrame);
+	public function __construct(we_base_jsCmd $jsCmd, $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($jsCmd, $topFrame, $treeFrame, $cmdFrame);
 		$this->autoload = false;
 	}
 
@@ -259,7 +259,7 @@ var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.ed
 		$treeFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.body', 5);
 		$cmdFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.cmd', 6);
 		$jsCmd = new we_base_jsCmd();
-		$tree = new we_export_tree($jsCmd, 'export_frameset.php', $topFrame, $treeFrame, $cmdFrame);
+		$tree = new we_export_tree($jsCmd, $topFrame, $treeFrame, $cmdFrame);
 
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 

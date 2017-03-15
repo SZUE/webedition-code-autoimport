@@ -27,8 +27,8 @@ class we_voting_view extends we_modules_view{
 	var $voting;
 	var $icon_pattern = "";
 
-	function __construct($frameset){
-		parent::__construct($frameset);
+	function __construct(){
+		parent::__construct();
 		$this->voting = new we_voting_voting();
 	}
 
@@ -69,9 +69,7 @@ class we_voting_view extends we_modules_view{
 				}
 				$this->voting = new we_voting_voting();
 				$this->voting->IsFolder = we_base_request::_(we_base_request::STRING, "cmd") === 'new_voting_group' ? 1 : 0;
-				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
+				$jscmd->addCmd('loadHeaderFooter', $this->voting->Text);
 				break;
 			case "voting_edit":
 				if(!we_base_permission::hasPerm("EDIT_VOTING")){
@@ -89,9 +87,7 @@ class we_voting_view extends we_modules_view{
 					$_REQUEST["home"] = true;
 					break;
 				}
-				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
+				$jscmd->addCmd('loadHeaderFooter', $this->voting->Text);
 				break;
 			case "save_voting":
 				if(!we_base_permission::hasPerm("NEW_VOTING") && !we_base_permission::hasPerm("EDIT_VOTING")){
@@ -200,11 +196,11 @@ class we_voting_view extends we_modules_view{
 							'published' => ($this->voting->isActive() ? 1 : 0)
 						]);
 					}
-					echo we_html_element::jsElement('top.content.editor.edheader.location.reload();');
+					$jscmd->addCmd('loadHeaderFooter', $this->voting->Text);
 					$jscmd->addMsg(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
-			case "delete_voting":
+			case 'delete_voting':
 				if(!we_base_permission::hasPerm("DELETE_VOTING")){
 					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;

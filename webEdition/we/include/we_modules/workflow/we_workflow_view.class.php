@@ -41,8 +41,8 @@ class we_workflow_view extends we_modules_view{
 	var $hiddens = [];
 	var $uid;
 
-	function __construct($framset){
-		parent::__construct($framset);
+	function __construct(){
+		parent::__construct();
 		$this->uid = 'wf_' . md5(uniqid(__FILE__, true));
 		$this->workflowDef = new we_workflow_workflow();
 		$this->documentDef = new we_workflow_document();

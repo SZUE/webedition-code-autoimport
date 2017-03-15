@@ -155,6 +155,10 @@ function we_cmd() {
 		case "setTab":
 			top.content.activ_tab = args[1];
 			break;
+		case "loadHeaderFooter":
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=" + encodeURI(args[1]);
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

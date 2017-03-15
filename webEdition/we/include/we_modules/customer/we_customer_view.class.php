@@ -34,8 +34,8 @@ class we_customer_view extends we_modules_view{
 	const ERR_SAVE_FIELD_EXISTS = -4;
 	const ERR_SAVE_FIELD_NOT_EMPTY = -3;
 
-	function __construct($frameset){
-		parent::__construct($frameset);
+	function __construct(){
+		parent::__construct();
 		$this->customer = new we_customer_customer();
 		$this->settings = new we_customer_settings();
 		$this->settings->customer = & $this->customer;

@@ -228,6 +228,18 @@ function we_cmd() {
 		case "setTab":
 			top.content.activ_tab = args[1];
 			break;
+		case "loadHeaderFooter":
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=edheader&tab=" + args[1] + '&text=' + encodeURI(args[2]) + (args[3] ? '&cmdid=' + args[3] : '');
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=edfooter"
+			if (top.content.treeData) {
+				top.content.treeData.unselectNode();
+				if (args[4]) {
+					top.content.treeData.selectNode(args[4]);
+					//on save
+					top.content.hot = false;
+				}
+			}
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
