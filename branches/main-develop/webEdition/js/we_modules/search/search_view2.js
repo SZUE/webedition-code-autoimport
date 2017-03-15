@@ -212,6 +212,22 @@ function we_cmd() {
 				treeData.unselectNode();
 			}
 			break;
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(caller, url, "we_docselector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			break;
+		case "we_selector_file":
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
+			break;
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			break;
+		case "we_selector_category":
+			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
+			break;
+		case "setTab":
+			top.content.activ_tab = args[1];
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
@@ -221,4 +237,25 @@ function we_cmd() {
 function mark() {
 	hot = true;
 	top.content.editor.edheader.mark();
+}
+
+
+function submitForm(target, action, method) {
+	var f = document.we_form;
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch");
+	f.method = (method ? method : "post");
+	f.submit();
+}
+
+function setTab(tab) {
+	switch (tab) {
+		default: // just toggle content to show
+			parent.edbody.document.we_form.pnt.value = "edbody";
+			parent.edbody.document.we_form.tabnr.value = tab;
+			parent.edbody.submitForm();
+			break;
+	}
+	window.focus();
+	top.content.activ_tab = tab;
 }

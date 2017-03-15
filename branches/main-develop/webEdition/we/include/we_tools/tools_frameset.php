@@ -92,11 +92,10 @@ $_REQUEST['tool'] = $tool;
 echo we_html_tools::getHtmlTop($title, '', 'frameset', we_html_element::jsScript(JS_DIR . 'toolframe.js') .
 	we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-	we_html_element::jsElement('var current = "' . $tool . '";') .
 	we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
 			'mod' => $tool,
 	])]) .
-	we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(JS_DIR . 'initTabs.js'), we_html_element::htmlBody(['style' => "overflow:hidden;",
+	we_base_jsCmd::singleCmd('setTool', $tool), we_html_element::htmlBody(['style' => "overflow:hidden;",
 		'onload' => ($showHeader ? 'weTabs.setFrameSize();' : '')], ($showHeader ?
 			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .
 		we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false)
