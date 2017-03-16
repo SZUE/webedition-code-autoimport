@@ -104,7 +104,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e('Updating Category property');
 		}
 		if(isset($object->Category) && $object->ClassName != "we_category"){
-			$cats = makeArrayFromCSV($object->Category);
+			$cats = explode(',', $object->Category);
 			$newcats = [];
 			foreach($cats as $cat){
 				$ref = $this->RefTable->getRef(
@@ -173,7 +173,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					$element['bdid'] = ($ref ? $ref->ID : 0);
 					unset($element['dat']);
 				}
-			}elseif(isset($element["bdid"])){
+			} elseif(isset($element["bdid"])){
 				$ref = $this->RefTable->getRef(
 					['OldID' => $element['bdid'],
 						'Table' => FILE_TABLE
@@ -402,7 +402,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		if(!empty($object->Templates)){
-			$tids = makeArrayFromCSV($object->Templates);
+			$tids = explode(',', $object->Templates);
 			$new_tids = [];
 			foreach($tids as $tid){
 				$ref = $this->RefTable->getRef(
@@ -486,9 +486,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 		}
 
-		$cats = (isset($object->Categories) ?
-			(is_array($object->Categories) ? $object->Categories : makeArrayFromCSV($object->Categories)) :
-			[]);
+		$cats = (isset($object->Categories) ? (is_array($object->Categories) ? $object->Categories : explode(',', $object->Categories)) : []);
 
 		$new_cats = [];
 		foreach($cats as $cat){

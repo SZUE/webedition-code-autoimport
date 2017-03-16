@@ -22,6 +22,11 @@
  */
 /* global top, WE */
 'use strict';
+WE().util.loadConsts(document, "g_l.rebuild");
+
+function initRebuild() {
+	WE().session.rebuild = {};
+}
 
 function handle_event(what) {
 	var f = document.we_form;
@@ -70,6 +75,15 @@ function set_button_state(alldis) {
 		}
 	} else {
 		window.setTimeout(set_button_state, 300, (alldis ? 1 : 0));
+	}
+}
+
+function set_button_stateStep2() {
+	if (top.wizbusy) {
+		top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
+		top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
+	} else {
+		window.setTimeout(set_button_stateStep2, 300);
 	}
 }
 

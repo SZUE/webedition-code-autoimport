@@ -38,12 +38,9 @@ class we_editor_contentobject extends we_editor_base{
 //	---> Loading the Stylesheets
 		$head = '';
 		if($this->we_doc->CSS){
-			$cssArr = makeArrayFromCSV($this->we_doc->CSS);
-			foreach($cssArr as $cs){
-				$path = id_to_path($cs);
-				if($path){
-					$head .= we_html_element::cssLink($path);
-				}
+			$cssArr = id_to_path(explode(',', $this->we_doc->CSS), FILE_TABLE, null, true);
+			foreach($cssArr as $path){
+				$head .= we_html_element::cssLink($path);
 			}
 		}
 

@@ -160,13 +160,13 @@ class we_import_wizard{
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$content->setCol(0, 0, null, '');
-		$content->setCol(0, 1, ['style' => "text-align:right"],
-				we_html_element::htmlDiv(['id' => 'standardDiv'], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10)) .
-				we_html_element::htmlDiv(['id' => 'closeDiv', 'style' => 'display:none;'], $closeButton)
+		$content->setCol(0, 1, ['style' => "text-align:right"], we_html_element::htmlDiv(['id' => 'standardDiv'], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [
+					], 10)) .
+			we_html_element::htmlDiv(['id' => 'closeDiv', 'style' => 'display:none;'], $closeButton)
 		);
 
 		echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() . $pb, we_html_element::htmlBody(["class" => "weDialogButtonsBody",
-					'style' => 'overflow:hidden;'
+				'style' => 'overflow:hidden;'
 				], $content->getHtml()
 			)
 		);
@@ -235,10 +235,10 @@ class we_import_wizard{
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
 							$jsCmd->addCmd('addLog_buffered', [
-									we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")),
-									we_html_element::htmlB(g_l('import', '[prepare]')),
-									we_html_element::htmlB(g_l('import', '[import]'))
-								]);
+								we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")),
+								we_html_element::htmlB(g_l('import', '[prepare]')),
+								we_html_element::htmlB(g_l('import', '[import]'))
+							]);
 
 							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
 							we_base_file::createLocalFolderByPath($path);
@@ -499,8 +499,8 @@ class we_import_wizard{
 
 					if($v['type'] != we_import_functions::TYPE_WE_XML){
 						if(isset($v["dateFields"])){
-							$dateFields = makeArrayFromCSV($v["dateFields"]);
-							if(($v["sTimeStamp"] === "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] === "GMT")){
+							$dateFields = explode(',', $v["dateFields"]);
+							if(($v["sTimeStamp"] === 'Format' && $v["timestamp"] != "") || ($v["sTimeStamp"] === "GMT")){
 								foreach($dateFields as $dateField){
 									$fields[$dateField] = we_import_functions::date2Timestamp($fields[$dateField], ($v["sTimeStamp"] != "GMT") ? $v["timestamp"] : "");
 								}
@@ -1127,11 +1127,11 @@ class we_import_wizard{
 			$displayDocType = 'display:block';
 			$displayNoDocType = 'display:none';
 			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']), $DB_WE);
-			$ids_arr = makeArrayFromCSV($foo['Templates']);
+			$ids_arr = explode(',', $foo['Templates']);
 			$paths_arr = id_to_path($foo['Templates'], TEMPLATES_TABLE, null, true);
 
 			$optid = 0;
-			while(list(, $templateID) = each($ids_arr)){
+			foreach($ids_arr as $templateID){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				$optid++;
 				if(isset($v['we_TemplateID']) && $v['we_TemplateID'] == $templateID){
@@ -1752,14 +1752,12 @@ class we_import_wizard{
 		]);
 
 		if($v["docType"] != -1){
-			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v["docType"]), '', $DB_WE);
-			$ids_arr = makeArrayFromCSV($foo);
+			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']), '', $DB_WE);
 			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, null, true);
 
-
 			$optid = 0;
-			foreach($ids_arr as $templateID){
-				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
+			foreach($paths_arr as $templateID=>$path){
+				$TPLselect->insertOption($optid, $templateID, $path);
 				++$optid;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID){
 					$TPLselect->selectOption($templateID);
