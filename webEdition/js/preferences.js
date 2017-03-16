@@ -422,67 +422,64 @@ function edit_recipient() {
 function show_seem_chooser(val) {
 	switch (val) {
 		case 'document':
-			if (document.getElementById('selectordummy') !== undefined) {
-				document.getElementById('selectordummy').style.display = 'none';
-			}
-			if (document.getElementById('seem_start_object') !== undefined) {
-				document.getElementById('seem_start_object').style.display = 'none';
-			}
-			if (document.getElementById('seem_start_weapp') !== undefined) {
-				document.getElementById('seem_start_weapp').style.display = 'none';
-			}
-			if (document.getElementById('seem_start_document') !== undefined) {
+			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'block';
 			}
-
+			if (document.getElementById('selectordummy')) {
+				document.getElementById('selectordummy').style.display = 'none';
+			}
+			if (document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+			if (document.getElementById('seem_start_weapp')) {
+				document.getElementById('seem_start_weapp').style.display = 'none';
+			}
 			break;
 
 		case 'weapp':
-			if (document.getElementById('selectordummy') !== undefined) {
-				document.getElementById('selectordummy').style.display = 'none';
-			}
-			if (document.getElementById('seem_start_document') !== undefined) {
-				document.getElementById('seem_start_document').style.display = 'none';
-			}
-			if (document.getElementById('seem_start_weapp') !== undefined) {
+			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'block';
 			}
-			if (document.getElementById('seem_start_object') !== undefined) {
+			if (document.getElementById('selectordummy')) {
+				document.getElementById('selectordummy').style.display = 'none';
+			}
+			if (document.getElementById('seem_start_document')) {
+				document.getElementById('seem_start_document').style.display = 'none';
+			}
+			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 			break;
 		case 'object':
 			if (WE().consts.tables.OBJECT_FILES_TABLE) {
-				if (document.getElementById('selectordummy') !== undefined) {
-					document.getElementById('selectordummy').style.display = 'none';
-				}
-				if (document.getElementById('seem_start_weapp') !== undefined) {
-					document.getElementById('seem_start_weapp').style.display = 'none';
-				}
-				if (document.getElementById('seem_start_document') !== undefined) {
-					document.getElementById('seem_start_document').style.display = 'none';
-				}
-				if (document.getElementById('seem_start_object') !== undefined) {
+				if (document.getElementById('seem_start_object')) {
 					document.getElementById('seem_start_object').style.display = 'block';
 				}
+				if (document.getElementById('selectordummy')) {
+					document.getElementById('selectordummy').style.display = 'none';
+				}
+				if (document.getElementById('seem_start_weapp')) {
+					document.getElementById('seem_start_weapp').style.display = 'none';
+				}
+				if (document.getElementById('seem_start_document')) {
+					document.getElementById('seem_start_document').style.display = 'none';
+				}
 				break;
-
 			}
 			/* falls through */
 		default:
-			if (document.getElementById('selectordummy') !== null) {
+			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'block';
 			}
-			if (document.getElementById('seem_start_document') !== null) {
+			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp') !== null) {
+			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_object') !== null) {
+			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
-
 	}
 }
 
@@ -493,7 +490,7 @@ function selectSidebarDoc() {
 
 function select_seem_start() {
 	myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
-	if (document.getElementById('seem_start_type').value == 'object') {
+	if (document.getElementById('seem_start_type').value === 'object') {
 		if (WE().consts.tables.OBJECT_FILES_TABLE) {
 			parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
