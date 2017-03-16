@@ -29,9 +29,11 @@
  */
 class we_rebuild_wizard{
 	private $jsCmd;
+	private $step;
 
 	public function __construct(){
 		$this->jsCmd = new we_base_jsCmd();
+		$this->step=we_base_request::_(we_base_request::INT, 'step', 0);
 	}
 
 	/**
@@ -40,7 +42,7 @@ class we_rebuild_wizard{
 	 * @return string
 	 */
 	private function getBody(){
-		switch(we_base_request::_(we_base_request::INT, 'step', 0)){
+		switch($this->step){
 			default:
 			case 0:
 				return $this->getPage($this->getStep0());
@@ -641,12 +643,11 @@ class we_rebuild_wizard{
 		$btype = we_base_request::_(we_base_request::STRING, 'btype');
 		$type = we_base_request::_(we_base_request::STRING, 'type');
 		$tid = we_base_request::_(we_base_request::INT, 'templateID');
-		$step = we_base_request::_(we_base_request::INT, 'step');
 		$resp = we_base_request::_(we_base_request::STRING, 'responseText');
 		$tail = ($btype ? '&amp;btype=' . rawurlencode($btype) : '') .
 			($type ? '&amp;type=' . rawurlencode($type) : '') .
 			($tid ? '&amp;templateID=' . $tid : '') .
-			($step ? '&amp;step=' . $step : '') .
+			($this->step ? '&amp;step=' . $this->step : '') .
 			($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
 
 		$taskname = md5(session_id() . '_rebuild');
@@ -661,10 +662,9 @@ class we_rebuild_wizard{
 					we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		} else {
-			$height = (we_base_browserDetect::isFF() ? 60 : 40);
 			$body = we_html_element::htmlBody(['id' => 'weMainBody']
-					, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
-					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:60px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:60px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		}
