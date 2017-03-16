@@ -52,7 +52,7 @@ class we_widget_mdc extends we_widget_base{
 		if($csv){
 			if($this->binary{0}){
 				$ids = explode(',', $csv);
-				$paths = makeArrayFromCSV(id_to_path($ids, $table));
+				$paths = id_to_path($ids, $table, null, true);
 				$where = [];
 				foreach($paths as $path){
 					$where[] = 'Path LIKE "' . $path . '%" ';

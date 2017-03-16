@@ -27,22 +27,27 @@
  * rebuild dialog and the rebuild function
  * @static
  */
-abstract class we_rebuild_wizard{
+class we_rebuild_wizard{
+	private $jsCmd;
+
+	public function __construct(){
+		$this->jsCmd = new we_base_jsCmd();
+	}
 
 	/**
 	 * returns HTML for the Body Frame
 	 *
 	 * @return string
 	 */
-	static function getBody(){
+	private function getBody(){
 		switch(we_base_request::_(we_base_request::INT, 'step', 0)){
 			default:
 			case 0:
-				return self::getPage(self::getStep0());
+				return $this->getPage($this->getStep0());
 			case 1:
-				return self::getPage(self::getStep1());
+				return $this->getPage($this->getStep1());
 			case 2:
-				return self::getPage(self::getStep2());
+				return $this->getPage($this->getStep2());
 		}
 	}
 
@@ -51,7 +56,7 @@ abstract class we_rebuild_wizard{
 	 *
 	 * @return string
 	 */
-	static function getBusy(){
+	private function getBusy(){
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
 		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
@@ -89,8 +94,8 @@ abstract class we_rebuild_wizard{
 	 *
 	 * @return string for now it is an empty page
 	 */
-	static function getCmd(){
-		return self::getPage(['', '', '']);
+	private function getCmd(){
+		return $this->getPage(['', '']);
 	}
 
 	/**
@@ -98,7 +103,7 @@ abstract class we_rebuild_wizard{
 	 *
 	 * @return string
 	 */
-	private static function getStep0(){
+	private function getStep0(){
 		$dws = get_def_ws();
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
@@ -181,33 +186,22 @@ abstract class we_rebuild_wizard{
 
 		$allbutdisabled = !(we_base_permission::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD', 'REBUILD_OBJECTS', 'REBUILD_INDEX', 'REBUILD_THUMBS', 'REBUILD_META']));
 
-
-		$js = '
-			WE().util.loadConsts(document, "g_l.rebuild");
-WE().session.rebuild={};
-window.onload = function(){top.focus();}
-set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
-';
-
-		$dthidden = '';
+		$dthidden = $metaFieldsHidden = $thumbsHidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		foreach($doctypesArray as $k => $v){
 			$dthidden .= we_html_element::htmlHidden("doctypes[$k]", $v);
 		}
 
-		$thumbsHidden = "";
-		$thumbsArray = makeArrayFromCSV($thumbs);
+		$thumbsArray = explode(',', $thumbs);
 		foreach($thumbsArray as $k => $v){
 			$thumbsHidden .= we_html_element::htmlHidden("thumbs[$k]", $v);
 		}
 
-		$metaFieldsHidden = "";
 		foreach($metaFields as $key => $val){
 			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 		}
 
-		return [we_html_element::jsScript(JS_DIR . 'rebuild0.js'),
-			$js,
+		return [we_html_element::jsScript(JS_DIR . 'rebuild0.js', 'top.focus();initRebuild();set_button_state(' . ($allbutdisabled ? 1 : 0) . ');'),
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
 			$dthidden .
 			$thumbsHidden .
@@ -232,14 +226,14 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return string
 	 */
-	private static function getStep1(){
+	private function getStep1(){
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case "rebuild_documents":
-				return we_rebuild_wizard::getRebuildDocuments();
+				return $this->getRebuildDocuments();
 			case "rebuild_thumbnails":
-				return we_rebuild_wizard::getRebuildThumbnails();
+				return $this->getRebuildThumbnails();
 			case "rebuild_metadata":
-				return we_rebuild_wizard::getRebuildMetadata();
+				return $this->getRebuildMetadata();
 		}
 	}
 
@@ -248,7 +242,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return string
 	 */
-	private static function getStep2(){
+	private function getStep2(){
 		$btype = we_base_request::_(we_base_request::STRING, "btype", "rebuild_all");
 		$categories = we_base_request::_(we_base_request::INTLIST, "categories", "");
 		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", []));
@@ -266,15 +260,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$currentTask = we_base_request::_(we_base_request::INT, 'fr_' . $taskname . '_ct', 0);
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
-		$js = 'function set_button_state() {
-				if(top.wizbusy){
-					top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
-					top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
-				}else{
-					window.setTimeout(set_button_state,300);
-				}
-			}
-			set_button_state();';
+
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch(we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents')){
 				case 'rebuild_documents':
@@ -282,8 +268,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						return ['',
-							$js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR),
+						$this->jsCmd->addMsg(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR);
+						return [we_html_element::jsScript(JS_DIR . 'rebuild0.js', 'set_button_stateStep2();top.wizbusy.showPrevNextButton();'),
 							''];
 					}
 					$data = we_rebuild_base::getThumbnails($thumbs, $thumbsFolders);
@@ -309,8 +295,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 				return [];
 			}
-			return ['',
-				$js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();',
+			$this->jsCmd->addMsg(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR);
+			return [we_html_element::jsScript(JS_DIR . 'rebuild0.js', 'set_button_stateStep2();top.wizbusy.showPrevNextButton();'),
 				''];
 		}
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
@@ -351,14 +337,14 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @param string $categories csv value with category IDs
 	 * @param boolean $catAnd if the categories should be connected with AND
 	 */
-	private static function formCategory(we_base_jsCmd $jsCmd, $categories, $catAnd){
+	private function formCategory($categories, $catAnd){
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', '[catAnd]'), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','add_cat')");
 		$upperTable = '<table class="default" style="width:495px;"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
-		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get($jsCmd);
+		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get($this->jsCmd);
 	}
 
 	/**
@@ -387,13 +373,13 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @param string $folders csv value with directory IDs
 	 * @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	 */
-	private static function formFolders(we_base_jsCmd $jsCmd, $folders, $thumnailpage = false, $width = 495){
+	private function formFolders($folders, $thumnailpage = false, $width = 495){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
 
 		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut . $addbut, '', 'ContentType', FILE_TABLE);
 
-		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . '<br/><br/>' . $dirs->get($jsCmd);
+		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . '<br/><br/>' . $dirs->get($this->jsCmd);
 	}
 
 	/**
@@ -407,7 +393,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$Thselect = g_l('rebuild', '[thumbnails]') . '<br/><br/>' .
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
-		$thumbsArray = makeArrayFromCSV($thumbs);
+		$thumbsArray = explode(',', $thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
 			$Thselect .= '<option title="' . $GLOBALS['DB_WE']->f('description') . '" value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>";
 		}
@@ -441,7 +427,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return array
 	 */
-	static function getRebuildDocuments(){
+	private function getRebuildDocuments(){
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::INT, '_field', '');
@@ -454,7 +440,6 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
-		$jsCmd = new we_base_jsCmd();
 
 		$ws = get_ws(FILE_TABLE, true);
 		if($ws && !in_array(0, $ws) && (!$folders)){
@@ -465,9 +450,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
 			'');
 
-		$filter_content = self::formCategory($jsCmd, $categories, $catAnd) . '<br/><br/>' .
+		$filter_content = $this->formCategory($categories, $catAnd) . '<br/><br/>' .
 			self::formDoctypes($doctypes) . '<br/><br/>' .
-			self::formFolders($jsCmd, $folders);
+			self::formFolders($folders);
 
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && we_base_permission::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!we_base_permission::hasPerm('REBUILD_ALL')) && we_base_permission::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
@@ -495,7 +480,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 			}
 		}
-		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js') . $jsCmd->getCmds(), 'WE().session.rebuild.folders="folders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js', "WE().session.rebuild.folders='folders';"),
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .
@@ -516,7 +501,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return array
 	 */
-	static function getRebuildThumbnails(){
+	private function getRebuildThumbnails(){
 
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
@@ -566,7 +551,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		foreach($metaFields as $key => $val){
 			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$key]", $val);
 		}
-		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="thumbsFolders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js', "WE().session.rebuild.folders='thumbsFolders';"),
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
 			$dthidden .
 			$metaFieldsHidden .
@@ -582,7 +567,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				'step' => 2])];
 	}
 
-	static function getRebuildMetadata(){
+	private function getRebuildMetadata(){
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
@@ -632,7 +617,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		foreach($thumbs as $thumb){
 			$thumbsHidden .= we_html_element::htmlHidden('thumbs[]', $thumb);
 		}
-		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="metaFolders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js', "WE().session.rebuild.folders='metaFolders';"),
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
 			$thumbsHidden .
@@ -652,7 +637,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 *
 	 * @return string
 	 */
-	static function getFrameset(){
+	private function getFrameset(){
 		$btype = we_base_request::_(we_base_request::STRING, 'btype');
 		$type = we_base_request::_(we_base_request::STRING, 'type');
 		$tid = we_base_request::_(we_base_request::INT, 'templateID');
@@ -693,31 +678,29 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 * @return string
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
-	static function getPage(array $contents){
+	private function getPage(array $contents){
 		if(!$contents){
 			return '';
 		}
 		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $contents[0] .
-				($contents[1] ?
-				we_html_element::jsElement($contents[1]) :
-				''), we_html_element::htmlBody(["class" => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . 'we_cmd.php'], $contents[2])
+				$this->jsCmd->getCmds(), we_html_element::htmlBody(["class" => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . 'we_cmd.php'], $contents[1])
 				)
 		);
 	}
 
-	public static function showFrameset(){
+	public function showFrameset(){
 		switch(we_base_request::_(we_base_request::STRING, 'fr')){
 			case "body":
-				echo self::getBody();
+				echo $this->getBody();
 				break;
 			case "busy":
-				echo self::getBusy();
+				echo $this->getBusy();
 				break;
 			case "cmd":
-				echo self::getCmd();
+				echo $this->getCmd();
 				break;
 			default:
-				echo self::getFrameset();
+				echo $this->getFrameset();
 		}
 	}
 

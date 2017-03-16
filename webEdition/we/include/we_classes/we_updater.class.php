@@ -434,7 +434,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		if(!$order){
 			return;
 		}
-		$order = makeArrayFromCSV($order);
+		$order = explode(',', $order);
 		$meta = $db->metadata(CUSTOMER_TABLE);
 		$defaultCols = ['ID', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLogin', 'AutoLoginDenied', 'ModifyDate',
 			'ModifiedBy', 'Username',];

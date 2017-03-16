@@ -49,10 +49,10 @@ function handle_event(what) {
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
-	var f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var cats, i, folders;
+	var f = document.we_form,
+		cats, i, folders;
 
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -63,7 +63,7 @@ function we_cmd() {
 			break;
 		case "add_cat":
 			var catsToAdd = args[1].allIDs;
-			cats = makeArrayFromCSV(f.categories.value);
+			cats = f.categories.value.split(",");
 			for (i = 0; i < catsToAdd.length; i++) {
 				if (cats.indexOf(catsToAdd[i]) === -1) {
 					cats.push(catsToAdd[i]);
@@ -75,7 +75,7 @@ function we_cmd() {
 			break;
 		case "del_cat":
 			var catToDel = args[1];
-			cats = makeArrayFromCSV(f.categories.value);
+			cats = f.categories.value.split(",");
 			var newcats = [];
 			for (i = 0; i < cats.length; i++) {
 				if (cats[i] != catToDel) {
@@ -94,7 +94,7 @@ function we_cmd() {
 			break;
 		case "add_folder":
 			var foldersToAdd = args[1].allIDs;
-			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
+			folders = f[WE().session.rebuild.folders].value.split(",");
 			for (i = 0; i < foldersToAdd.length; i++) {
 				if (folders.indexOf(foldersToAdd[i]) === -1) {
 					folders.push(foldersToAdd[i]);
@@ -106,7 +106,7 @@ function we_cmd() {
 			break;
 		case "del_folder":
 			var folderToDel = args[1];
-			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
+			folders = f[WE().session.rebuild.folders].value.split(",");
 			var newfolders = [];
 			for (i = 0; i < folders.length; i++) {
 				if (folders[i] != folderToDel) {
@@ -155,19 +155,6 @@ function checkForError() {
 	document._errorMessage = (_fieldsChecked === false ?
 		WE().consts.g_l.rebuild.noFieldsChecked :
 		"");
-}
-
-function makeArrayFromCSV(csv) {
-	if (csv.length && csv.substring(0, 1) === ",") {
-		csv = csv.substring(1, csv.length);
-	}
-	if (csv.length && csv.substring(csv.length - 1, csv.length) === ",") {
-		csv = csv.substring(0, csv.length - 1);
-	}
-	return (csv.length === 0 ?
-		[] :
-		csv.split(/,/)
-		);
 }
 
 function set_button_state() {

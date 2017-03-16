@@ -517,7 +517,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 
 		if(isset($object->Owners) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
-			$owners = makeArrayFromCSV($object->Owners);
+			$owners = explode(',', $object->Owners);
 			$newowners = [];
 			foreach($owners as $owner){
 				if($this->options['handle_owners']){

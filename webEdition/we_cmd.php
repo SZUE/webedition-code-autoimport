@@ -136,7 +136,8 @@ function findInclude($cmd){
 			we_dialog_doctypeEdit::getDialog();
 			return true;
 		case 'rebuild':
-			we_rebuild_wizard::showFrameset();
+			$wiz=new we_rebuild_wizard();
+			$wiz->showFrameset();
 			return true;
 		case 'help':
 			return '';

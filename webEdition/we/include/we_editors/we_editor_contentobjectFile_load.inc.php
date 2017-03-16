@@ -51,9 +51,9 @@ $charset = (!empty($we_doc->elements["Charset"]["dat"]) ? //	send charset which 
 //	---> Loading the Stylesheets
 $header = '';
 if($we_doc->CSS){
-	$cssArr = makeArrayFromCSV($we_doc->CSS);
-	foreach($cssArr as $cs){
-		$header .= we_html_element::cssLink(id_to_path($cs));
+	$cssArr = id_to_path(explode(',', $we_doc->CSS), FILE_TABLE, null, true);
+	foreach($cssArr as $path){
+		$header .= we_html_element::cssLink($path);
 	}
 }
 
