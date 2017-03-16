@@ -505,6 +505,9 @@ we_cmd_modules.base = function (args, url, caller) {
 				top.plugin.remove(args[1]);
 			}
 			break;
+		case "doClickWithParameters":
+			WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], '', '', '', '', '', args[4]);
+			break;
 		case "new":
 			if (WE().session.seemode) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
@@ -587,11 +590,11 @@ we_cmd_modules.base = function (args, url, caller) {
 		case 'collection_insertFiles_rpc':
 			// TODO: make some tests and return with alert when not ok
 			postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '') +
-							'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
-							'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
-							'&we_cmd[full]=0' +
-							'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
-							'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+				'&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0) +
+				'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
+				'&we_cmd[full]=0' +
+				'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
+				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData);
 
 			break;
@@ -739,7 +742,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			} else {
 				var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], table);
 				we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: table, transaction: verifiedTransaction},
-								{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+					{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 			}
 			break;
 		case 'wedoc_setPropertyOrElement_rpc':
@@ -748,12 +751,12 @@ we_cmd_modules.base = function (args, url, caller) {
 			}
 
 			postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id) +
-							'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
-							'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
-							'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
-							'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
-							'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
-							'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+				'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
+				'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
+				'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
+				'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
+				'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
+				'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPropertyOrElement&cns=document" + postData);
 			break;
@@ -888,7 +891,7 @@ function doReloadCmd(args, url, hot) {
 	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
 		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
-						(args[1] ? '#f' + args[1] : '');
+			(args[1] ? '#f' + args[1] : '');
 	} else if (args[0] === "remove_image" && args[2]) {
 		url += '#f' + args[2];
 	}
@@ -933,12 +936,12 @@ function wecmd_editDocument(args, url) {
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 		// use Editor Frame
 		nextWindow.initEditorFrameData(
-						{
-							EditorType: "model",
-							EditorEditorTable: args[1],
-							EditorDocumentId: args[2],
-							EditorContentType: args[3]
-						}
+			{
+				EditorType: "model",
+				EditorEditorTable: args[1],
+				EditorDocumentId: args[2],
+				EditorContentType: args[3]
+			}
 		);
 		// set Window Active and show it
 		ctrl.setActiveEditorFrame(nextWindow.FrameId);
@@ -957,7 +960,7 @@ function wecmd_editDocument(args, url) {
 
 function we_cmd_new_document(url) {
 	var ctrl = WE().layout.weEditorFrameController,
-					nextWindow, nextContent;
+		nextWindow, nextContent;
 	if ((nextWindow = ctrl.getFreeWindow())) {
 		nextContent = nextWindow.getDocumentReference();
 		// activate tab and set it status loading ...
@@ -1067,8 +1070,8 @@ function getHotDocumentsString() {
 
 		for (i = 0; i < hotDocumentsOfCt[ct].length; i++) {
 			ulCtElem += "<li>" + (hotDocumentsOfCt[ct][i].getEditorDocumentText() ?
-							hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
-							"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
+				hotDocumentsOfCt[ct][i].getEditorDocumentPath() :
+				"<em>" + WE().consts.g_l.main.untitled + "</em>") + "</li>";
 		}
 
 		ret += "<li>" + WE().consts.g_l.contentTypes[ct] + "<ul>" + ulCtElem + "</ul></li>";
@@ -1087,10 +1090,10 @@ function collection_insertFiles(args) {
 
 	if (collection && ids) {
 		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						editor = null,
-						index = args[3] !== undefined ? args[3] : -1,
-						recursive = args[5] !== undefined ? args[5] : false,
-						transaction, frameId, candidate;
+			editor = null,
+			index = args[3] !== undefined ? args[3] : -1,
+			recursive = args[5] !== undefined ? args[5] : false,
+			transaction, frameId, candidate;
 
 		for (frameId in usedEditors) {
 			candidate = usedEditors[frameId];
@@ -1210,7 +1213,7 @@ function doPublish(url, trans) {
 function doExtClick(url) {
 	// split url in url and parameters !
 	var parameters = "",
-					_position = 0;
+		_position = 0;
 
 	if ((_position = url.indexOf("?")) !== -1) {
 		parameters = url.substring(_position);

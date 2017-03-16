@@ -26,9 +26,11 @@
 'use strict';
 var owners_label,
 	question_edit,
-	answers_edit;
+	answers_edit,
+	iptable_label;
 
 var table = WE().consts.tables.FILE_TABLE;
+var votings = WE().util.getDynamicVar(document, 'loadVarVoting', 'data-voting');
 
 function toggle(id) {
 	var elem = document.getElementById(id);
@@ -240,4 +242,81 @@ function refreshTotal() {
 				0);
 		}
 	}
+}
+
+function setMultiEdits() {
+	if (votings.isFolder) {
+		return;
+	}
+	var i, value, k, v, akey, aval, aval2, aval3, aval4;
+	question_edit = new (WE().util.multi_edit)("question", window, 1, "", 520, true);
+	answers_edit = new multi_editMulti("answers", document.we_form, 0, votings.delBut1, 500, true);
+	answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
+	answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
+	answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);
+	for (i = 0; i < votings.answerCount; i++) {
+		answers_edit.addItem("2");
+	}
+	for (var variant in votings.QASet) {
+		value = votings.QASet[variant];
+		question_edit.addVariant();
+		answers_edit.addVariant();
+		for (k in value) {
+			v = value[k];
+			switch (k) {
+				case 'question':
+					question_edit.setItem(variant, 0, v);
+					break;
+				case 'answers':
+					for (akey in v) {
+						aval = v[akey];
+						if ((votings.QASetAdditions[variant]) && (votings.QASetAdditions[variant].imageID[akey])) {
+							aval2 = votings.QASetAdditions[variant].imageID[akey];
+							aval3 = votings.QASetAdditions[variant].mediaID[akey];
+							aval4 = votings.QASetAdditions[variant].successorID[akey];
+						} else {
+							aval2 = aval3 = aval4 = '';
+						}
+						answers_edit.setItem(variant, akey, aval);
+						answers_edit.setItemImageID(variant, akey, aval2);
+						answers_edit.setItemMediaID(variant, akey, aval3);
+						answers_edit.setItemSuccessorID(variant, akey, aval4);
+					}
+					break;
+			}
+		}
+	}
+
+	answers_edit.delRelatedItems = true;
+	question_edit.showVariant(0);
+	answers_edit.showVariant(0);
+	question_edit.showVariant(votings.showVariant);
+	answers_edit.showVariant(votings.showVariant);
+
+
+	answers_edit.SetMinCount(votings.allow.freeText ? 1 : 2);
+	answers_edit.setImages(votings.allow.images);
+	answers_edit.setMedia(votings.allow.media);
+	answers_edit.setSuccessors(votings.allow.successor);
+	owners_label = new (WE().util.multi_edit)("owners", window, 0, votings.delBut, 510, false);
+	owners_label.addVariant();
+
+	for (i in votings.owners) {
+		owners_label.addItem();
+		owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(votings.owners[i].IsFolder ? WE().consts.contentTypes.FOLDER : 'we/user') + votings.owners[i].Path);
+	}
+	owners_label.showVariant(0);
+
+	iptable_label = new (WE().util.multi_edit)("iptable", window, 0, votings.delBut, 510, false);
+	iptable_label.addVariant();
+
+	for (i in votings.blackList) {
+		iptable_label.addItem();
+		iptable_label.setItem(0, (iptable_label.itemCount - 1), votings.blackList[i]);
+	}
+	if (votings.blackList) {
+		top.content.setHot();
+	}
+
+	iptable_label.showVariant(0);
 }

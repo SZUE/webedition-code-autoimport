@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -34,6 +34,7 @@ function toggle(id) {
 function previewVersion(table, ID, version, newID) {
 	top.opener.top.we_cmd("versions_preview", table, ID, version, newID);
 }
+
 function setTab(tab) {
 	toggle("tab" + activ_tab);
 	toggle("tab" + tab);

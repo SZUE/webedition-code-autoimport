@@ -178,8 +178,8 @@ abstract class we_SEEM{
 				$linkArray[7] = self::getDocContentTypesByID($linkArray[6]);
 
 				$code = (defined('WE_SIDEBAR') ?
-						self::replaceLinksForSidebar($code, $linkArray) :
-						self::replaceLinks($code, $linkArray));
+					self::replaceLinksForSidebar($code, $linkArray) :
+					self::replaceLinks($code, $linkArray));
 			}
 		}
 		return $code;
@@ -378,7 +378,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? : false);
+		return ($newArray ?: false);
 	}
 
 	/**
@@ -415,10 +415,10 @@ abstract class we_SEEM{
 					$isObj = array_key_exists("we_objectID", $theParameterArray);
 					$linkArray[2][$i] = "javascript:WE().layout.sidebar.load('" . $linkArray[2][$i] . "');";
 					$javascriptCode = "onmouseover=\"top.info('ID: " . ($isObj ?
-							//	target is a object
-							$theParameterArray['we_objectID'] . "');\" " :
-							//	target is a normal file.
-							$linkArray[6][$i] . "');\" " . $linkArray[4][$i] . ' ');
+						//	target is a object
+						$theParameterArray['we_objectID'] . "');\" " :
+						//	target is a normal file.
+						$linkArray[6][$i] . "');\" " . $linkArray[4][$i] . ' ');
 				} else { //  without parameters
 					$javascriptCode = " onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"" . $linkArray[4][$i] . " ";
 					$linkArray[2][$i] = "javascript:WE().layout.sidebar.load('" . $linkArray[2][$i] . "')";
@@ -451,9 +451,10 @@ abstract class we_SEEM{
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 					$javascriptCode .= (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-							"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
-							//	target is a normal file.
-							"top.doClickWithParameters('" . $linkArray[6][$i] . "'," . intval($linkArray[7][$i]) . ",'" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", ['we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
+						"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+						//	target is a normal file.
+						"top.doClickWithParameters('" . $linkArray[6][$i] . "'," . intval($linkArray[7][$i]) . ",'" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", [
+							'we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
 				} else { //  without parameters
 					$javascriptCode .= "WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . intval($linkArray[6][$i]) . ",'" . $linkArray[7][$i] . "');return true;\" onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"";
 				}
@@ -473,20 +474,20 @@ abstract class we_SEEM{
 				}
 
 				$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-						" onclick=\"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . "','objectFile')\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
-						" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
+					" onclick=\"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . "','objectFile')\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+					" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
 					);
 			} elseif(!trim($linkArray[5][$i])){
 				$javascriptCode = '';
 			} else {
 				//	This is a javascript:history link, to get back to the last document.
 				$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
-						' onclick="top.we_showMessage(WE().consts.g_l.alert.link_does_not_work,WE().consts.message.WE_MESSAGE_NOTICE,window);" onmouseover="top.info(\'' . g_l('SEEM', '[info_link_does_not_work]') . '\')"' :
-						//  Check, if the current document was changed
-						' onclick="we_cmd(\'doExtClick\',\'' . $linkArray[5][$i] . $linkArray[3][$i] . "');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
+					' onclick="top.we_showMessage(WE().consts.g_l.alert.link_does_not_work,WE().consts.message.WE_MESSAGE_NOTICE,window);" onmouseover="top.info(\'' . g_l('SEEM', '[info_link_does_not_work]') . '\')"' :
+					//  Check, if the current document was changed
+					' onclick="we_cmd(\'doExtClick\',\'' . $linkArray[5][$i] . $linkArray[3][$i] . "');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
 					);
 			}
-			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . ($javascriptCode ? 'javascript://' : '') . $linkArray[4][$i] . ' ' . ($javascriptCode? : '') . ' onmouseout="top.info(\' \')">', $destCode);
+			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . ($javascriptCode ? 'javascript://' : '') . $linkArray[4][$i] . ' ' . ($javascriptCode ?: '') . ' onmouseout="top.info(\' \')">', $destCode);
 		}
 		return $destCode;
 	}
@@ -584,14 +585,14 @@ abstract class we_SEEM{
 	 */
 	static function getDocIDbyPath($docPath, $tbl = "", we_database_base $db = null){
 		//FIXME: does this work for SEO Url's???
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 		$docPath = $db->escape(trim($docPath));
 		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && substr($docPath, -1) === '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
-		$id = f('SELECT ID FROM ' . $db->escape($tbl ? : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', '', $db);
-		return $id ? : -1;
+		$id = f('SELECT ID FROM ' . $db->escape($tbl ?: FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', '', $db);
+		return $id ?: -1;
 	}
 
 	/**
@@ -616,7 +617,7 @@ abstract class we_SEEM{
 				$j++;
 			}
 		}
-		return ($newArray ? : false);
+		return ($newArray ?: false);
 	}
 
 	/**
@@ -648,7 +649,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? : false);
+		return ($newArray ?: false);
 	}
 
 	/**
@@ -682,8 +683,8 @@ abstract class we_SEEM{
 		for($i = 0; $i < count($formArray[0]); $i++){
 			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
 			$thePaths[$i] = (isset($theAttribs["action"]) ?
-					$theAttribs["action"] :
-					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : we_base_request::_(we_base_request::FILE, "filepath")));
+				$theAttribs["action"] :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : we_base_request::_(we_base_request::FILE, "filepath")));
 		}
 		return $thePaths;
 	}
@@ -774,7 +775,7 @@ abstract class we_SEEM{
 				// target is a webEdition Document
 				$newForm .= ' target="load" action="' . WEBEDITION_DIR . 'we_cmd.php"' .
 					($formArray[2][$i] != -1 || strpos($formArray[1][$i], WEBEDITION_DIR . 'we_cmd.php') === 0 ? '' :
-						" onsubmit='if(window.confirm(\"" . g_l('SEEM', '[ext_form_target_we_server]') . "\")){return true;} else {return false;};'");
+					" onsubmit='if(window.confirm(\"" . g_l('SEEM', '[ext_form_target_we_server]') . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
 					if(strtolower($key) === 'target' || strtolower($key) === 'action'){
@@ -861,9 +862,9 @@ abstract class we_SEEM{
 			//	$linkArray[7] - contains the ContentTypes of the target, or ''
 			$linkArray[7] = self::getDocContentTypesByID($linkArray[6]);
 
-			$code = self::link2we_cmd($linkArray);
+			return self::link2we_cmd($linkArray);
 		}
-		return $code;
+		return '';
 	}
 
 	/**
@@ -872,7 +873,7 @@ abstract class we_SEEM{
 	 * @param   linkArray	array
 	 * @return  string
 	 */
-	static function link2we_cmd($linkArray){
+	private static function link2we_cmd($linkArray){
 		//  The target of the Link is a webEdition - Document.
 		if($linkArray[6][0] != -1){
 
@@ -880,12 +881,12 @@ abstract class we_SEEM{
 				$theParameterArray = self::getAttributesFromGet($linkArray[3][0], 'we_cmd');
 
 				if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
-					return "top.doClickWithParameters('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');";
+					return we_base_jsCmd::singleCmd('doClickWithParameters', OBJECT_FILES_TABLE, intval($theParameterArray["we_objectID"]), we_base_ContentTypes::OBJECT_FILE);
 				} //	target is a normal file.
 				$theParameters = self::arrayToParameters($theParameterArray, "", ['we_cmd']);
-				return "top.doClickWithParameters('" . $linkArray[6][0] . "','" . $linkArray[7][0] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
+				return we_base_jsCmd::singleCmd('doClickWithParameters', FILE_TABLE, $linkArray[6][0], $linkArray[7][0], $theParameters);
 			} //	No Parameters
-			return "WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "'," . intval($linkArray[6][0]) . ",'" . $linkArray[7][0] . "');";
+			return we_base_jsCmd::singleCmd('doClickWithParameters', FILE_TABLE, intval($linkArray[6][0]), $linkArray[7][0]);
 
 
 			//  The target is NO webEdition - Document
@@ -893,8 +894,7 @@ abstract class we_SEEM{
 
 		//  Target document is on another Web-Server - leave webEdition !
 		if(strpos($linkArray[5][0], "http://") === 0){
-
-			return "window.open('" . $linkArray[5][0] . $linkArray[3][0] . "','_blank');";
+			return we_base_jsCmd::singleCmd('seem_open_extern_document', $linkArray[5][0] . $linkArray[3][0]);
 
 			//  Target is on the same Werb-Server - open doc with webEdition.
 		}
@@ -914,12 +914,12 @@ abstract class we_SEEM{
 			}
 
 			return (isset($theParameterArray) && is_array($theParameterArray) && array_key_exists("we_objectID", $theParameterArray) ? //	target is a object
-					"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile')" :
-					"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "')");
+				we_base_jsCmd::singleCmd('doClickWithParameters', OBJECT_FILES_TABLE, intval($theParameterArray["we_objectID"]), we_base_ContentTypes::OBJECT_FILE) :
+				we_base_jsCmd::singleCmd('doClickWithParameters', FILE_TABLE, $GLOBALS['we_doc']->ID, we_base_ContentTypes::WEDOCUMENT, $theParameters));
 		}
 		//  we cant save data so we neednt make object
 		//	not recognized change of document
-		return "top.doExtClick('" . $linkArray[5][0] . $linkArray[3][0] . "');";
+		return we_base_jsCmd::singleCmd('doExtClick', $linkArray[5][0] . $linkArray[3][0]);
 	}
 
 	/**
@@ -943,7 +943,7 @@ abstract class we_SEEM{
 	 * @desc Looks for the ContentType of the document with the given id and returns it
 	 */
 	static function getDocContentTypeByID($id, we_database_base $db = null){
-		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? : new DB_WE()));
+		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ?: new DB_WE()));
 	}
 
 	/**
@@ -987,12 +987,11 @@ abstract class we_SEEM{
 		$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", ["we_cmd", "original_action"]);
 		$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
-		echo we_html_tools::getHtmlTop('', '', '', ' ', we_html_element::htmlBody([],
-				//	The following will translate a given URL to a we_cmd.
-				//	When pressing a link in edit-mode this functionality
-				//	is needed to reopen the document (if possible) with webEdition
-				we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . str_replace(' ', '+', $action) . '">'))
-		));
+		echo we_html_tools::getHtmlTop('', '', '', self::getJavaScriptCommandForOneLink('<a href="' . str_replace(' ', '+', $action) . '">'), we_html_element::htmlBody()
+			//	The following will translate a given URL to a we_cmd.
+			//	When pressing a link in edit-mode this functionality
+			//	is needed to reopen the document (if possible) with webEdition
+		);
 	}
 
 	public static function getExtDocFrameset(){
@@ -1005,8 +1004,8 @@ abstract class we_SEEM{
 			$serveradress = getServerUrl();
 
 			$url = (!$url || $url{0} != '/' ?
-					$serveradress . '/' . $url :
-					$serveradress . $url);
+				$serveradress . '/' . $url :
+				$serveradress . $url);
 		}
 //  extract the path to the file without parameters for file_exists -> we_SEEM_openExtDoc_content.php
 		$arr = parse_url($url);
@@ -1057,8 +1056,8 @@ abstract class we_SEEM{
 		$webEditionSiteUrl = getServerUrl() . SITE_DIR;
 		$url = we_base_request::_(we_base_request::URL, 'url');
 		$errormsg = (strpos($url, $webEditionSiteUrl) === 0 ?
-				g_l('SEEM', '[ext_doc_tmp]') :
-				sprintf(g_l('SEEM', '[ext_doc]'), $url));
+			g_l('SEEM', '[ext_doc_tmp]') :
+			sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
 		$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'], 1, 2);

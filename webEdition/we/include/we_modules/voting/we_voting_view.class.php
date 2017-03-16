@@ -51,7 +51,27 @@ class we_voting_view extends we_modules_view{
 	}
 
 	function getJSProperty(array $jsVars = []){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_prop.js');
+		$this->voting->Owners = (is_array($this->voting->Owners) ? array_filter($this->voting->Owners) : []);
+		$owners = ($this->voting->Owners ?
+			$this->db->getAllFirstq('SELECT ID,Path,IsFolder FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $this->voting->Owners) . ')', true, MYSQLI_ASSOC) :
+			[]);
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_prop.js', '', ['id' => 'loadVarVoting', 'data-voting' => setDynamicVar([
+					'isFolder' => $this->voting->IsFolder,
+					'delBut' => we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'),
+					'delBut1' => we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'),
+					'answerCount' => count($this->voting->QASet[0]['answers']),
+					'QASet' => $this->voting->QASet,
+					'QASetAdditions' => $this->voting->QASetAdditions,
+					'showVariant' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+					'allow' => [
+						'freeText' => $this->View->voting->AllowFreeText,
+						'images' => $this->View->voting->AllowImages,
+						'media' => $this->View->voting->AllowMedia,
+						'successor' => $this->View->voting->AllowSuccessors
+					],
+					'owners' => $owners,
+					'blackList' => is_array($this->voting->BlackList) ? $this->voting->BlackList : []
+		])]);
 	}
 
 	function processCommands(we_base_jsCmd $jscmd){

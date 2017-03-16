@@ -459,20 +459,6 @@ function weMemDebug(){
 	(microtime(true) - floatval($_SERVER['REQUEST_TIME_FLOAT'])) . ' ';
 }
 
-function weGetCookieVariable($name){
-	$c = isset($_COOKIE['we' . session_id()]) ? $_COOKIE['we' . session_id()] : '';
-	$vals = [];
-	if($c){
-		$parts = explode('&', $c);
-		foreach($parts as $p){
-			$foo = explode('=', $p);
-			$vals[rawurldecode($foo[0])] = rawurldecode($foo[1]);
-		}
-		return (isset($vals[$name]) ? $vals[$name] : '');
-	}
-	return '';
-}
-
 function getContentTypeFromFile($dat){
 	if(is_link($dat)){
 		return 'link';

@@ -120,7 +120,6 @@ class we_banner_view extends we_modules_view{
 				$itsname = 'weBannerProp';
 				$openText = g_l('weClass', '[moreProps]');
 				$closeText = g_l('weClass', '[lessProps]');
-				$wepos = weGetCookieVariable('but_weBannerProp');
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
 				$out .= we_html_element::htmlHiddens(['UseFilter' => $this->UseFilter,
@@ -152,7 +151,6 @@ class we_banner_view extends we_modules_view{
 				$itsname = 'weBannerPlace';
 				$openText = g_l('weClass', '[moreProps]');
 				$closeText = g_l('weClass', '[lessProps]');
-				$wepos = weGetCookieVariable('but_' . $itsname);
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
 				$headline = g_l('tabs', '[module][statistics]');
@@ -167,7 +165,7 @@ class we_banner_view extends we_modules_view{
 
 		$out .= we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 			$jsCmd->getCmds() .
-			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, ($wepos === 'down')) .
+			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, false) .
 			'</form></body></html>';
 
 		return $out;

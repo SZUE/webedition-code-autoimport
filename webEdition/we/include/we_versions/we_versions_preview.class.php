@@ -102,11 +102,7 @@ class we_versions_preview{
 			$we_tabs->addTab(g_l('versions', '[previewVersionOld]'), false, self::TAB_OLD, ["id" => "tab_" . self::TAB_OLD]);
 		}
 
-		return $we_tabs->getHTML() . we_html_element::jsElement('
-if(!activ_tab){
- activ_tab = 1;
-}
-document.getElementById("tab_"+activ_tab).className="tabActive";');
+		return $we_tabs->getHTML();
 	}
 
 	private function getChangesCustomerFilter(){
@@ -567,7 +563,7 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ?: DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
 			we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsScript(JS_DIR . 'versions_preview.js'), we_html_element::htmlBody(['class' => "weDialogBody"], '
+			we_html_element::jsScript(JS_DIR . 'versions_preview.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'setTab(1);'], '
 	<div id="eHeaderBody">' . $this->getTabsBody() . '</div>
 	<div id="content">
 		<div id="tab1" style="display:block;width:100%;">' . $this->contentDiff . '</div>

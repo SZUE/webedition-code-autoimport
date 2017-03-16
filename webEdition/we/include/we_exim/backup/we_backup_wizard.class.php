@@ -503,8 +503,6 @@ class we_backup_wizard{
 
 		$js = $this->getJSDep();
 
-		$edit_cookie = weGetCookieVariable("but_edit_image");
-
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard',
 					'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(1)"], we_html_element::htmlForm([
 						'name' => 'we_form', "method" => "post", 'onsubmit' => 'return false;'], we_html_element::htmlHiddens(["pnt" => "cmd",
@@ -512,7 +510,7 @@ class we_backup_wizard{
 							"operation_mode" => "backup",
 							"do_import_after_backup" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup")]) .
 						we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-						we_html_multiIconBox::getHTML("backup_options1", $parts, 30, "", $switchbut, g_l('backup', '[option]'), "<b>" . g_l('backup', '[option]') . "</b>", $edit_cookie != false ? ($edit_cookie === "down") : $edit_cookie, g_l('backup', '[export_step1]'))
+						we_html_multiIconBox::getHTML("backup_options1", $parts, 30, "", $switchbut, g_l('backup', '[option]'), "<b>" . g_l('backup', '[option]') . "</b>", false, g_l('backup', '[export_step1]'))
 					)
 				)
 		);

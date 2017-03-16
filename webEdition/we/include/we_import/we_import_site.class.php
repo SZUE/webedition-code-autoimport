@@ -625,15 +625,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			$foldAT = -1;
 		}
 
-		$wepos = weGetCookieVariable("but_wesiteimport");
-
 		$content = we_html_element::htmlForm([
 				"action" => WEBEDITION_DIR . "we_cmd.php",
 				"name" => "we_form",
 				"method" => "post",
 				"target" => "siteimportcmd"
 				], we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
+				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false, g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
 
 		$body = we_html_element::htmlBody(["class" => "weDialogBody", "onunload" => "doUnload();"
 				], $content);

@@ -75,16 +75,10 @@ var multi_editMulti = function (parentId, form, itemNum, but, width, editable, m
 
 	};
 
-	this.hideImages = function () {
-		this.ImagesHidden = 1;
+	this.setImages = function (hide) {
+		this.ImagesHidden = hide;
 		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowImageID' + i).style.display = "none";
-		}
-	};
-	this.showImages = function () {
-		this.ImagesHidden = 0;
-		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowImageID' + i).style.display = "block";
+			document.getElementById('tabrowImageID' + i).style.display = (hide ? "none" : "block");
 		}
 	};
 	this.toggleMedia = function () {
@@ -101,18 +95,13 @@ var multi_editMulti = function (parentId, form, itemNum, but, width, editable, m
 			}
 		}
 	};
-	this.hideMedia = function () {
-		this.MediaHidden = 1;
+	this.setMedia = function (hide) {
+		this.MediaHidden = hide;
 		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowMediaID' + i).style.display = "none";
+			document.getElementById('tabrowMediaID' + i).style.display = (hide ? "none" : "block");
 		}
 	};
-	this.showMedia = function () {
-		this.MediaHidden = 0;
-		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowMediaID' + i).style.display = "block";
-		}
-	};
+
 	this.toggleSuccessors = function () {
 		var i;
 		if (this.SuccessorsHidden) {
@@ -129,16 +118,10 @@ var multi_editMulti = function (parentId, form, itemNum, but, width, editable, m
 		}
 
 	};
-	this.hideSuccessors = function () {
-		this.SuccessorsHidden = 1;
+	this.setSuccessors = function (hide) {
+		this.SuccessorsHidden = hide;
 		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowSuccessorID' + i).style.display = "none";
-		}
-	};
-	this.showSuccessors = function () {
-		this.SuccessorsHidden = 0;
-		for (var i = 0; i < this.itemCount; i++) {
-			document.getElementById('tabrowSuccessorID' + i).style.display = "block";
+			document.getElementById('tabrowSuccessorID' + i).style.display = (hide ? "none" : "block");
 		}
 	};
 	this.createItemHidden = function (name) {
@@ -229,21 +212,9 @@ var multi_editMulti = function (parentId, form, itemNum, but, width, editable, m
 		}
 
 		this.itemCount++;
-		if (this.ImagesHidden) {
-			this.hideImages();
-		} else {
-			this.showImages();
-		}
-		if (this.MediaHidden) {
-			this.hideMedia();
-		} else {
-			this.showMedia();
-		}
-		if (this.SuccessorsHidden) {
-			this.hideSuccessors();
-		} else {
-			this.showSuccessors();
-		}
+		this.setImages(this.ImagesHidden);
+		this.setMedia(this.MediaHidden);
+		this.setSuccessors(this.SuccessorsHidden);
 	};
 
 	this.delItem = function (child) {
