@@ -29,56 +29,13 @@ var iconBox = WE().util.getDynamicVar(document, 'loadVarMultiIconBox', 'data-ico
 function weToggleBox(name, textDown, textRight) {
 	var t = document.getElementById('table_' + name);
 	var s = document.getElementById('text_' + name);
-	var b = document.getElementById('btn_direction_' + name + '_middle');
 	if (t.style.display === "none") {
 		t.style.display = "";
 		s.innerHTML = textDown;
-		weSetCookieVariable("but_" + name, "down");
 	} else {
 		t.style.display = "none";
 		s.innerHTML = textRight;
-		weSetCookieVariable("but_" + name, "right");
 	}
-}
-
-function toggleButton(but, name) {
-	but.getElementsByTagName("i")[0].className = "fa fa-lg fa-caret-" + weGetCookieVariable("but_" + name);
-}
-
-function weGetCookieVariable(name) {
-	var c = WE().util.weGetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
-	var vals = [];
-	if (c !== null) {
-		var parts = c.split(/&/);
-		for (var i = 0; i < parts.length; i++) {
-			var foo = parts[i].split(/=/);
-			vals[foo[0]] = foo[1];
-		}
-		return vals[name];
-	}
-	return null;
-}
-
-function weSetCookieVariable(name, value) {
-	var c = WE().util.weGetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
-	var vals = [];
-	var i;
-	if (c !== null) {
-		var parts = c.split(/&/);
-		for (i = 0; i < parts.length; i++) {
-			var foo = parts[i].split(/=/);
-			vals[foo[0]] = foo[1];
-		}
-	}
-	vals[name] = value;
-	c = "";
-	for (i in vals) {
-		c += encodeURI(i) + "=" + encodeURI(vals[i]) + "&";
-	}
-	if (c.length > 0) {
-		c = c.substring(0, c.length - 1);
-	}
-	WE().util.weSetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id, c);
 }
 
 function weGetMultiboxLength() {

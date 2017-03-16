@@ -122,100 +122,6 @@ class we_voting_frames extends we_modules_frame{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	private function getHTMLVariant(){
-		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
-		$del_but1 = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
-
-		// IMI: replace inline js
-		/* $Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
-		  (we_base_permission::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
-
-		  $sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();')); */
-
-
-		$variant_js = 'function setMultiEdits() {';
-
-		if($this->View->voting->IsFolder == 1){
-			return we_html_element::jsElement($variant_js . '}');
-		}
-		$variant_js .= 'question_edit = new (WE().util.multi_edit)("question",window,1,"",520 ,true);
-answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",500 ,true);
-answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
-answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
-answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);';
-
-		for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
-			$variant_js .= 'answers_edit.addItem("2");';
-		}
-
-		foreach($this->View->voting->QASet as $variant => $value){
-			$variant_js .= 'question_edit.addVariant();
-				   answers_edit.addVariant();';
-			foreach($value as $k => $v){
-				switch($k){
-					case 'question':
-						$variant_js .= 'question_edit.setItem("' . $variant . '",0,"' . $v . '");';
-						break;
-					case 'answers':
-						foreach($v as $akey => $aval){
-							if((isset($this->View->voting->QASetAdditions[$variant]) && isset($this->View->voting->QASetAdditions[$variant]['imageID'][$akey]))){
-								$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
-								$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
-								$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
-							} else {
-								$aval2 = $aval3 = $aval4 = '';
-							}
-							$variant_js .= 'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
-								answers_edit.setItemImageID("' . $variant . '","' . $akey . '","' . $aval2 . '");
-								answers_edit.setItemMediaID("' . $variant . '","' . $akey . '","' . $aval3 . '");
-								answers_edit.setItemSuccessorID("' . $variant . '","' . $akey . '","' . $aval4 . '");';
-						}
-						break;
-				}
-			}
-		}
-
-		$variant_js .= '
-answers_edit.delRelatedItems=true;
-question_edit.showVariant(0);
-answers_edit.showVariant(0);
-question_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
-answers_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
-answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
-answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
-answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
-answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
-
-		$variant_js .= 'owners_label = new (WE().util.multi_edit)("owners",window,0,"' . $del_but . '",510,false);
-owners_label.addVariant();';
-
-		if(is_array($this->View->voting->Owners)){
-			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
-			foreach($this->View->voting->Owners as $owner){
-				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($owner), '', $this->db);
-
-				$variant_js .= 'owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? we_base_ContentTypes::FOLDER : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
-			}
-		}
-		$variant_js .= ' owners_label.showVariant(0);
-iptable_label = new (WE().util.multi_edit)("iptable",window,0,"' . $del_but . '",510,false);
-iptable_label.addVariant();';
-
-		if(is_array($this->View->voting->BlackList)){
-			foreach($this->View->voting->BlackList as $ip){
-
-				$variant_js .= 'top.content.setHot();
-					iptable_label.addItem();
-					iptable_label.setItem(0,(iptable_label.itemCount-1),"' . $ip . '");';
-			}
-		}
-		$variant_js .= 'iptable_label.showVariant(0);
-	}';
-
-		return we_html_element::jsElement($variant_js);
-	}
-
 	function getHTMLTab1(){
 		$weSuggest = & weSuggest::getInstance();
 		$table = new we_html_table(['id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'], 3, 2);
@@ -570,8 +476,7 @@ iptable_label.addVariant();';
 			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
-			) : '') .
-			$this->getHTMLVariant();
+			) : '');
 	}
 
 	private function getHTMLDirChooser(){

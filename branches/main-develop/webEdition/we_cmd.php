@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -160,7 +159,7 @@ function findInclude($cmd){
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
 		case 'open_url_in_editor': // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-			echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'));
+			echo we_html_tools::getHtmlTop('', '', '', we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'), we_html_element::htmlBody());
 			return true;
 		case 'open_form_in_editor': // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
 			we_SEEM::openFormInEditor();
@@ -385,7 +384,6 @@ function findInclude($cmd){
 			}
 			//	This is ONLY used in the edit-mode of the documents.
 			//	This statement prevents the page from being reloaded.
-			echo we_html_element::jsElement('parent.openedWithWE=true;');
 			t_e('error', 'command \'' . $cmd . '\' not known!');
 			exit('command \'' . $cmd . '\' not known!');
 	}

@@ -337,7 +337,6 @@ background: none;
 
 		if($this->we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 			list($selectedGroup, $parts ) = $this->getTagWizzard();
-			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
 

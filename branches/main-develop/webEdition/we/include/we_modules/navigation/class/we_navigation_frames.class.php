@@ -212,7 +212,6 @@ class we_navigation_frames extends we_modules_frame{
 		// name and folder block
 		// icen selector block
 		$uniqname = 'weIconNaviAttrib';
-		$wepos = (weGetCookieVariable("but_weIconNaviAttrib") === 'down' ? 'down' : 'right');
 
 		return [
 			[
@@ -232,12 +231,12 @@ class we_navigation_frames extends we_modules_frame{
 				'headline' => '',
 				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'setHot', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
-						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
+						g_l('navigation', '[icon_properties]')) . "')", false, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', '[icon_properties]') . '</span></td></tr></table>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			], [
 				'headline' => '',
-				'html' => '<div id="table_' . $uniqname . '" style="display: ' . ($wepos === 'down' ? 'block' : 'none') . ';">' . $this->getHTMLImageAttributes() . '</div>',
+				'html' => '<div id="table_' . $uniqname . '" style="display:none;">' . $this->getHTMLImageAttributes() . '</div>',
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			],
@@ -1252,8 +1251,7 @@ class we_navigation_frames extends we_modules_frame{
 			'noline' => 1
 		];
 
-		$wepos = weGetCookieVariable("but_weNaviAttrib");
-		return we_html_multiIconBox::getHTML('weNaviAttrib', $parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos === 'down'));
+		return we_html_multiIconBox::getHTML('weNaviAttrib', $parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), false);
 	}
 
 	private function getHTMLImageAttributes(){

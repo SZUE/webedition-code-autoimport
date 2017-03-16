@@ -174,7 +174,6 @@ class we_import_files{
 			$foldAt = -1;
 		}
 
-		$wepos = weGetCookieVariable("but_weimportfiles");
 		$content = we_html_element::htmlHiddens(['we_cmd[0]' => 'import_files',
 				'nextCmd' => $this->nextCmd,
 				'cmd' => 'content',
@@ -182,7 +181,7 @@ class we_import_files{
 				'type' => $this->type
 			]) .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML("weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
+			we_html_multiIconBox::getHTML("weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false, g_l('importFiles', '[step1]'));
 
 		$startsrceen = we_html_element::htmlDiv(
 				["id" => "start"

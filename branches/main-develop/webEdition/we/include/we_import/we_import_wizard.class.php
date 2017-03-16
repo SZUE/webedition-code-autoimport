@@ -747,9 +747,8 @@ class we_import_wizard{
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
 
-		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[wxml_import]'));
 		return $content;
 	}
 
@@ -1011,9 +1010,9 @@ class we_import_wizard{
 				'space' => we_html_multiIconBox::SPACE_MED
 			];
 		}
-		$wepos = weGetCookieVariable('but_wxml');
+
 		$znr = -1;
-		$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
+		$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
 		return $content;
 	}
 
@@ -1240,12 +1239,11 @@ class we_import_wizard{
 			];
 		}
 
-		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
 		return $hdns .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[gxml_import]'));
 	}
 
 	/**
@@ -1349,7 +1347,6 @@ class we_import_wizard{
 			}
 		}
 
-		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
 		$content = $hdns .
@@ -1357,7 +1354,7 @@ class we_import_wizard{
 				'v[btnState_back]' => 'enabled'
 			]) .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[select_data_set]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[select_data_set]'));
 
 		return $content;
 	}
@@ -1568,18 +1565,16 @@ class we_import_wizard{
 			'space' => we_html_multiIconBox::SPACE_MED2
 		];
 
-		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
 		$content = $hdns .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[assign_record_fields]'));
 
 		return $content;
 	}
 
 	private function getCSVImportStep1(we_base_jsCmd $jsCmd){
-		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
@@ -2147,12 +2142,11 @@ class we_import_wizard{
 			'space' => we_html_multiIconBox::SPACE_MED2
 		];
 
-		$wepos = weGetCookieVariable('but_csv');
 		$znr = -1;
 
 		$content = $hdns .
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-			we_html_multiIconBox::getHTML('csv', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getHTML('csv', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[assign_record_fields]'));
 
 		return $content;
 	}

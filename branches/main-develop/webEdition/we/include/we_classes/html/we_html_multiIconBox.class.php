@@ -42,7 +42,7 @@ abstract class we_html_multiIconBox{
 	 * @return	string
 	 */
 	static function getHTML($name, array $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = '', $delegate = ''){
-		$uniqname = $name ? : md5(uniqid(__FILE__, true));
+		$uniqname = $name ?: md5(uniqid(__FILE__, true));
 
 		$out = $headline ?
 			self::_getBoxStartHeadline($name, $headline, $uniqname, $marginLeft) :
@@ -56,18 +56,18 @@ abstract class we_html_multiIconBox{
 			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(['src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon']) ) ?: (empty($c['iconX']) ? '' : $c['iconX']);
 			$headline = (empty($c['headline']) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
 			$leftWidth = (empty($c['space']) ? '' : $c["space"] );
-			$leftContent = $icon ? : (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
+			$leftContent = $icon ?: (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
 
-			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
+			$out .= (isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
 				($i == $foldAtNr && $foldAtNr < count($content) ? // only if the folded items contain stuff.
-					we_html_element::htmlSpan(['class' => 'btn_direction_weMultibox_table' . ($marginLeft ? ' withMargin' : '')], self::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
-						'<span class="toggleBox" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
-					) .
-					'<br/><table id="table_' . $uniqname . '" class="default iconBoxTable" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
+				we_html_element::htmlSpan(['class' => 'btn_direction_weMultibox_table' . ($marginLeft ? ' withMargin' : '')], self::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ?: "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
+					'<span class="toggleBox" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ?: "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+				) .
+				'<br/><table id="table_' . $uniqname . '" class="default iconBoxTable" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
 				'<div class="weMultiIconBoxContent ' . ($i < (count($content) - 1) && (empty($c['noline'])) ? 'weMultiIconBoxLine' : '' ) . ($marginLeft ? ' withMargin' : '') . '" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
-					'<div class="multiiconleft largeicons leftSpace-' . $leftWidth . '">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
-					'') .
+				'<div class="multiiconleft largeicons leftSpace-' . $leftWidth . '">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
+				'') .
 				//right
 				'<div class="multiIconRight">' . ($icon || !$leftContent || $forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
 				'</div>' .
@@ -81,10 +81,10 @@ abstract class we_html_multiIconBox{
 		$out .= self::_getBoxEnd();
 
 		return ($buttons ?
-				//ignore height, replace by bottom:
-				'<div class="weMultiIconBoxWithFooter">' . $out . '</div>
+			//ignore height, replace by bottom:
+			'<div class="weMultiIconBoxWithFooter">' . $out . '</div>
 				<div class="editfooter">' . $buttons . '</div>' :
-				$out);
+			$out);
 	}
 
 	static function getDynJS($uniqname = '', $marginLeft = 0){
@@ -111,8 +111,7 @@ abstract class we_html_multiIconBox{
 	}
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){
-		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");') .
-			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", '', 0, 0, '', '', false, true, $name, false, $title);
+		return we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";", '', 0, 0, '', '', false, true, $name, false, $title);
 	}
 
 }
