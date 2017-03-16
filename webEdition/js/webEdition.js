@@ -50,6 +50,7 @@ var WebEdition = {
 		focusedWindow: null,
 		browserwind: null,
 		regular_logout: false,
+		fileupload: {},
 		dragNDrop: {
 			dataTransfer: {
 				text: ''

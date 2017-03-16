@@ -194,7 +194,7 @@ class we_import_files{
 		$body = we_html_element::htmlBody(["class" => "weDialogBody"
 				], $startsrceen);
 
-		return $this->_getHtmlPage($body);
+		return $this->_getHtmlPage($body, we_html_element::jsScript(JS_DIR . 'weCmd_apply.js'));
 	}
 
 	function getStep2(){

@@ -120,7 +120,7 @@ class we_customer_EIWizard{
 	}
 
 	private static function getJSFrame(){
-		return we_html_element::jsScript(WEBEDITION_DIR . 'js/weCmd_apply.js');
+		return we_html_element::jsScript(JS_DIR . 'weCmd_apply.js');
 	}
 
 	function getHTMLExportStep1(){

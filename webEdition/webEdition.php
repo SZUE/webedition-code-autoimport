@@ -259,12 +259,20 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 	we_html_element::jsScript(JS_DIR . 'weButton.js') .
 	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
 	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-	we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js') .
+
+	we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_uploader.js') .
+	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_controller.js') .
+	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_sender.js') .
+	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_view.js') .
+	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_imageEdit.js') .
+	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_utils.js') .
+
+	we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js', 'WE().layout.fileupload.ExifReader = window.ExifReader;') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js', 'WE().layout.fileupload.encodehunks = window.encodeChunks;') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js', 'WE().layout.fileupload.extractChunks = window.extractChunks; WE().layout.fileupload.decodeChunks = window.decodeChunks;') .
 	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js', 'WE().layout.fileupload.pica = window.pica;') .
+
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_config.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_functionsTop.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_tinyWrapper.js') .

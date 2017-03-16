@@ -64,7 +64,7 @@ class rpcProcessFileuploadCmd extends we_rpc_cmd{
 		 * 
 		 */
 		$fileupload_resp = new $fileuploadRespClass($fileinputName, '', $FILES, $fileVars, $controlVars, $docVars);
-		$resp->setData("data", $fileupload_resp->processRequest());//, JSON_F
+		$resp->setData("data", $fileupload_resp->processRequest());
 
 		return $resp;
 	}

@@ -147,7 +147,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$table = $table ? : FILE_TABLE;
 		$cts = $contentTypes ? ',' . implode(',', $contentTypes) . ',' : '';
 
-		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::jsScript(JS_DIR . 'we_fileupload_externalDropzone.js') . // insert this in every top
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_externalDropzone.js') . // insert this in every top
 			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag',
 					'class' => 'we_file_drag',
 					'ondrop' => "handleDrop(event,'" . $name . "', " . ($dragFromTree ? 'true' : 'false') . ", " . ($dragFromExt ? 'true' : 'false') . ", '" . $jsCmdTree . "', '" . $jsCmdExt . "', '" . $cts . "', '" . $table . "');",
@@ -269,7 +269,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public function getJs(){
-		return we_html_element::jsScript(JS_DIR . 'weFileUpload_init.js', '', ['id' => 'loadVarWeFileUpload_init', 'data-initObject' => setDynamicVar($this->getJSDynamic())]);
+		return we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_init.js', '', ['id' => 'loadVarWeFileupload_init', 'data-initobject' => setDynamicVar($this->getJSDynamic())]);
 	}
 
 	public function getJSDynamic(){

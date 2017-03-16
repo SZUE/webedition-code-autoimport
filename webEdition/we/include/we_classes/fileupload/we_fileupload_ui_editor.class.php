@@ -186,8 +186,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$fileUpload->setNextCmd($nextCmd);
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_fileupload.js'), we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm([], we_html_element::htmlDiv([
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js') /*.
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_fileupload.js')*/, we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm([], we_html_element::htmlDiv([
 						'id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'], $fileUpload->getHtml()) .
 					we_html_element::htmlDiv(['id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'], $fileUpload->getHtmlFooter())
 				)
