@@ -203,7 +203,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		);
 
 		$js = we_html_element::jsElement($variant_js) .
-			we_html_element::jsScript(JS_DIR . 'we_fileupload_formCategories.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
+			we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_formCategories.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
 					'delButton' => $del_but,
 					'categoriesDivSize' => ($width_size - 10),
 					'variantCats' => $cats
@@ -284,7 +284,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			$weSuggest->setResult("fu_file_parentID", $parentID);
 			$weSuggest->setSelector(weSuggest::DirSelector);
 			$weSuggest->setWidth(326);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','document." . $formName . ".fu_file_parentID','document." . $formName . ".parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','fu_file_parentID','parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 
 			$html = $weSuggest->getHTML();
 		} else {

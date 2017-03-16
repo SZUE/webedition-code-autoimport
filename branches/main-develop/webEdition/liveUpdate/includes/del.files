@@ -849,6 +849,10 @@ js/weTinyMceDialogs.js
 js/weSuggest.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
+js/weFileUpload_init.js
+js/weFileUpload.js
+js/we_fileupload_formCategories.js
+js/we_fileupload_externalDropzone.js
 js/weDOM_Safari.js
 js/utils/we_cmd_encode.js
 js/utils/weDate.js

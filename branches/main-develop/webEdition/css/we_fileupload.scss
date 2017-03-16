@@ -523,29 +523,29 @@ div.fileuploadImporter{
 	div.editorLoupe{
 		top: initial;
 		bottom: 20px;
-		left: 198px;
+		left: 170px;
 		width: 400px;
 		height: 400px;
 	}
 	div.editorLoupeFallback{
 	top: initial;
-	left: 198px;
+	left: 170px;
 	bottom: 300px;
 	}
 	div.editorCrosshairH{
 		top: initial;
 		bottom: 219px;
-		left: 348px;
+		left: 320px;
 		width: 100px;
 	}
 	div.editorCrosshairV{
 		top: initial;
 		bottom: 170px;
-		left: 398px;
+		left: 370px;
 		height: 100px;
 	}
 	div.focusPointOnSet{
-		left: 398px;
+		left: 370px;
 		top: initial;
 		bottom: 219px;
 	}
@@ -567,7 +567,7 @@ div.fileuploadImporter{
 	}
 	button.importerBrowseHarddisk{
 		margin-left: 0;
-		width: 213px;
+		width: 177px;
 	}
 
 	div.importerElem{
@@ -580,7 +580,7 @@ div.fileuploadImporter{
 		div.elemContainer{
 			position: relative;
 			width: 540px;
-			margin-top: 4px;
+			margin: 4px 0 0 30px;
 			border:1px solid #aaaaaa;
 			display: inline-block;
 
@@ -650,10 +650,19 @@ div.fileuploadImporter{
 					height: 36px;
 
 					div.elemFilename{
-						padding: 12px 0 0 6px;
+						padding: 6px 0 0 6px;
 						width: auto;
 						position: absolute;
 						display: block;
+						
+						.inputElemFilename{
+							border: none;
+							padding: 5px 2px 3px 4px;
+							width: 207px;
+						}
+						.elemShowName{
+							padding: 6px 0 0 6px;
+						}
 					}
 					div.elemContentTopRight{
 						width: 170px;
@@ -709,11 +718,81 @@ div.fileuploadImporter{
 						padding: 0 0 0 4px;
 					}
 
+					/* IMI tmp */
+					div.optsRowScaleHelp{
+						display: none;
+						margin-left: 6px;
+
+						span.fa-stack{
+							height: inherit;
+							line-height: inherit;
+							vertical-align: inherit;
+						}
+						span.alertIcon{
+							font-size: inherit;
+						}
+
+						.optsRowScaleHelpText{
+							display: none;
+							position: absolute;
+							left: 40px;
+							top: 10px;
+							z-index: 2200;
+							background-color: white;
+							border: 1px solid gray;
+							width: 180px;
+							top: 24px;
+							padding: 4px;
+						}
+					}
+
+
+					div.elemInfo{
+						position: absolute;
+						display: inline-block;
+						left: 0;
+						width: 340px;
+						padding: 0 0 0 12px;
+
+						div.infoTop{
+							padding: 10px 0 0 0;
+							div.leftDiv{
+								width: 100px;
+								display: inline-block;
+							}
+							div.rightDiv{
+								display: inline-block;
+							}
+						}
+						div.infoMiddle{
+							padding: 3px 0 0 0;
+							div.leftDiv{
+								display: inline-block;
+								width: 100px;
+							}
+							div.rightDiv{
+								display: inline-block;
+							}
+						}
+						div.infoBottom{
+							display: none;
+							padding: 10px 0 0 0;
+							div.leftDiv{
+								width: 100px;
+								display: inline-block;
+							}
+							div.rightDiv{
+								display: inline-block;
+							}
+						}
+					}
+
+
 					div.optsLeft{
 						position: absolute;
 						display: inline-block;
 						left: 0;
-						width: 182px;
+						width: 200px;
 						height: 73px;
 						padding: 0;
 						
@@ -721,8 +800,9 @@ div.fileuploadImporter{
 							position: relative;
 							top: 10px;
 							left: 10px;
-							width: 160px;
-							height: 20px; 
+							width: 178px;
+							height: 20px;
+							background-color:red;
 						}
 						div.optsLeftBottom{
 							position: relative;
@@ -751,15 +831,15 @@ div.fileuploadImporter{
 						position: absolute;
 						display: inline-block;
 						left: 185px;
-						width: 182px;
+						width: 164px;
 						height: 73px;
 
 						div.optsRightTop{
 							position: relative;
 							top: 8px;
 							left: 0;
-							width: 170px;
-							height: 30px; 
+							width: 152px;
+							height: 30px;
 
 							div.optsRowScale{
 								position: relative;
@@ -808,8 +888,8 @@ div.fileuploadImporter{
 							position: relative;
 							top: 10px;
 							left: 0;
-							width: 170px;
-							height: 30px; 
+							width: 152px;
+							height: 30px;
 
 							div.optsRowQuality{
 								position: relative;
@@ -853,12 +933,17 @@ div.fileuploadImporter{
 					}
 
 					div.btnRefresh{
-						display: inline-block;
+						display: none;
 						position: absolute;
-						width: 40px;
+						width: 100px;
 						height: 30px;
-						left: 364px;
+						left: 334px;
 						bottom: 3px;
+						div.rowEditHot{
+							color: lightgray;
+							padding: 0 0 0 4px;
+							vertical-align: super;
+						}
 					}
 				}
 			}

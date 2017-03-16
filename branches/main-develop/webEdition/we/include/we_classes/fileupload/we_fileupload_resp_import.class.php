@@ -35,9 +35,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$cats = [];
 			foreach($catarray as $cat){
 				// bugfix Workarround #700
-				$cats[] = (is_numeric($cat) ?
-						$cat :
-						path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
+				$cats[] = (is_numeric($cat) ? $cat : path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
 			}
 			$categories = implode(',', $cats);
 		} else {
@@ -76,7 +74,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		$this->saveImageEditPropsInSession();
 	}
 
-	public function setImageEditProps(){
+	public function setImageEditProps($props){
 		$this->imageEditProps = array_merge($this->imageEditProps, [
 			'parentID' => $this->fileVars['parentID'],
 			'sameName' => $this->fileVars['sameName'],
