@@ -1099,6 +1099,7 @@ function weFileupload_view_import(uploader) {
 				if(self.imageEdit.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1){
 					doc.getElementById('image_edit_done_' + i).style.display = 'block';
 				}
+				doc.getElementById('showName_uploadFiles_'  + i).removeEventListener('click', self.controller.editFilename);
 				break;
 			case 'chunkOK' :
 				digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract

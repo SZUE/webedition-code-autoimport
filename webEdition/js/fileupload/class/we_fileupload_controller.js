@@ -570,7 +570,7 @@ function weFileupload_controller_import(uploader) {
 		switch(e.target.attributes['data-name'].value){
 			case 'showName_uploadFiles':
 				var input = doc.getElementById('fuOpts_filenameInput_' + e.target.attributes['data-index'].value);
-				e.target.style.left = '-10000px';
+				e.target.style.display = 'none';
 				doc.getElementById('editName_uploadFiles_' + e.target.attributes['data-index'].value).style.display = 'block';
 				self.tmpName = input.value;
 				input.focus();
@@ -588,7 +588,7 @@ function weFileupload_controller_import(uploader) {
 						break;
 					case 'blur':
 						doc.getElementById('editName_uploadFiles_' + index).style.display = 'none';
-						showName.style.left = 0;
+						showName.style.display = 'block';
 						break;
 				}
 				break;
