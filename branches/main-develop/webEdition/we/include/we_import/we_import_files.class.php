@@ -142,14 +142,14 @@ class we_import_files{
 		// create Start Screen ##############################################################################
 		$parts = [
 			$fileupload->getFormParentID('we_form'),
+			$fileupload->getFormIsSearchable(),
 			$fileupload->getFormSameName(),
-			$fileupload->getFormCategories(),
+			$fileupload->getFormCategories()
 		];
 
 		if(we_base_permission::hasPerm("NEW_GRAFIK")){
 			$parts = array_merge($parts, [
-				$fileupload->getFormImportMeta(),
-				$fileupload->getFormIsSearchable()
+				$fileupload->getFormImportMeta()
 			]);
 
 			if(we_base_imageEdit::gd_version() > 0){
