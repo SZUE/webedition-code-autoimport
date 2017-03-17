@@ -439,6 +439,9 @@ function edit_recipient() {
 function show_seem_chooser(val) {
 	switch (val) {
 		case 'document':
+			if (document.getElementById('seem_start_document')) {
+				document.getElementById('seem_start_document').style.display = 'block';
+			}
 			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
@@ -448,28 +451,27 @@ function show_seem_chooser(val) {
 			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_document')) {
-				document.getElementById('seem_start_document').style.display = 'block';
-			}
-
 			break;
 
 		case 'weapp':
+			if (document.getElementById('seem_start_weapp')) {
+				document.getElementById('seem_start_weapp').style.display = 'block';
+			}
 			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
 			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp')) {
-				document.getElementById('seem_start_weapp').style.display = 'block';
-			}
 			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 			break;
 		case 'object':
-			if (WE().consts.modules.active.indexOf("object") > 0) {
+			if (WE().consts.tables.OBJECT_FILES_TABLE) {
+				if (document.getElementById('seem_start_object')) {
+					document.getElementById('seem_start_object').style.display = 'block';
+				}
 				if (document.getElementById('selectordummy')) {
 					document.getElementById('selectordummy').style.display = 'none';
 				}
@@ -479,11 +481,7 @@ function show_seem_chooser(val) {
 				if (document.getElementById('seem_start_document')) {
 					document.getElementById('seem_start_document').style.display = 'none';
 				}
-				if (document.getElementById('seem_start_object')) {
-					document.getElementById('seem_start_object').style.display = 'block';
-				}
 				break;
-
 			}
 			/* falls through */
 		default:
@@ -499,7 +497,6 @@ function show_seem_chooser(val) {
 			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
-
 	}
 }
 
@@ -510,7 +507,7 @@ function selectSidebarDoc() {
 
 function select_seem_start() {
 	var myWindStr = "WE().util.jsWindow.prototype.find('preferences')";
-	if (document.getElementById('seem_start_type').value == 'object') {
+	if (document.getElementById('seem_start_type').value === 'object') {
 		if (WE().consts.modules.active.indexOf("object") > 0) {
 			window.parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
