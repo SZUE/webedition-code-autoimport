@@ -245,9 +245,6 @@ abstract class we_users_util{
 	}
 
 	public static function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-		if(empty($wsIDs) || empty($IDs)){
-			return true;
-		}
 		$db = ($db ? : new DB_WE());
 
 		if(!is_array($IDs)){
@@ -256,6 +253,11 @@ abstract class we_users_util{
 		if(!is_array($wsIDs)){
 			$wsIDs = explode(',', trim($wsIDs, ','));
 		}
+
+		if(empty($wsIDs) || empty($IDs)){
+			return true;
+		}
+
 		if(!$wsIDs || (in_array(0, $wsIDs))){
 			return true;
 		}
