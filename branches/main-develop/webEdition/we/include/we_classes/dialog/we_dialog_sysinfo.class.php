@@ -216,7 +216,7 @@ abstract class we_dialog_sysinfo{
 				g_l('sysinfo', '[port]') => $_SERVER['SERVER_PORT'] ?: 80,
 				g_l('sysinfo', '[protocol]') => getServerProtocol(),
 				g_l('sysinfo', '[installation_folder]') => $install_dir,
-				g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize(),
+				/* g_l('sysinfo', '[we_max_upload_size]') => we_fileupload::getMaxUploadSizeB(),// FIXME: handle 0 = noz restricted */
 				g_l('import', '[pfx]') => TBL_PREFIX
 			],
 			'<a href="javascript:showPhpInfo();">PHP</a>' => [g_l('sysinfo', '[php_version]') => PHP_VERSION,

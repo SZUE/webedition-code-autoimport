@@ -127,21 +127,18 @@ class we_backup_wizard{
 		$this->fileUploader->setDimensions(['width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5]);
 		$this->fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_FILENAME);
 
-		$maxsize = $this->fileUploader->getMaxUploadSize();
+		$maxsize = we_fileupload::getMaxUploadSizeB();
 
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
-			if($maxsize || $this->fileUploader){
-				//FIXME:
-				$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
-				$inputTypeFile = $this->fileUploader->getHTML();
+			$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
+			$inputTypeFile = $this->fileUploader->getHTML();
 
-				$parts = [['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1],
-					(DEFAULT_CHARSET ? null : ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false),
-					'noline' => 1]),
-					['headline' => '', 'html' => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1],
-					['headline' => '', 'html' => $inputTypeFile, 'noline' => 1]
-				];
-			}
+			$parts = [['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1],
+				(DEFAULT_CHARSET ? null : ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false),
+				'noline' => 1]),
+				['headline' => '', 'html' => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1],
+				['headline' => '', 'html' => $inputTypeFile, 'noline' => 1]
+			];
 		} else {
 			$select = new we_html_select(['name' => "backup_select", "size" => 7, 'style' => "width: 600px;"]);
 			$files = [];

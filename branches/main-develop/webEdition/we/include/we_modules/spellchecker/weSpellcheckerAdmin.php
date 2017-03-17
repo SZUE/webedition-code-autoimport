@@ -35,7 +35,7 @@ $l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 	'l_packing' => g_l('modules_spellchecker', '[packing]'),
 	'l_uploading' => g_l('modules_spellchecker', '[uploading]'),
 	'l_finished' => g_l('modules_spellchecker', '[end]'),
-	'upload_size' => getUploadMaxFilesize(),
+	'upload_size' => we_fileupload::getMaxUploadSizeB(),
 	'upload_url' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php',
 	'scid' => ''
 ];

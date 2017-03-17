@@ -101,8 +101,8 @@ abstract class we_fileupload{
 		return self::$maxUploadSizeMB;
 	}
 
-	public function getMaxUploadSize(){
-		return $this->maxUploadSizeBytes;
+	public static function getMaxUploadSizeB(){
+		return self::getMaxUploadSizeMB() * 1024 * 1024;
 	}
 
 	public function setTypeCondition($field = 'accepted', $weCts = [], $exts = []){

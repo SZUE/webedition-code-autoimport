@@ -421,7 +421,7 @@ abstract class we_backup_preparer{
 
 		if(!($_SESSION['weS']['weBackupVars']['backup_file'])){
 			$mess = (isset($_SESSION['weS']['weBackupVars']['options']['upload']) ?
-				sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(), we_base_file::SZ_MB)) :
+				sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(we_fileupload::getMaxUploadSizeB(), we_base_file::SZ_MB)) :
 				g_l('backup', '[file_missing]'));
 		} else if(!is_readable($_SESSION['weS']['weBackupVars']['backup_file'])){
 			$mess = g_l('backup', '[file_not_readable]');
