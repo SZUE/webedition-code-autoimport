@@ -64,7 +64,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$alert = we_html_element::htmlHiddens(['we_cmd[0]' => 'import_files',
 				'cmd' => 'content',
 				]) .
-			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . (we_fileupload::getMaxUploadSizeMB() ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), we_fileupload::getMaxUploadSizeMB())), we_html_tools::TYPE_INFO, 542, false, 20));
+			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . (!we_fileupload::getMaxUploadSizeMB() ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), we_fileupload::getMaxUploadSizeMB())), we_html_tools::TYPE_INFO, 542, false, 20));
 
 		$topParts = [["headline" => "",
 			"html" => $alert]

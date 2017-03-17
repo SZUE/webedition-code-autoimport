@@ -1308,7 +1308,7 @@ class we_newsletter_frames extends we_modules_frame{
 					"enctype" => "multipart/form-data"], we_html_element::htmlCenter(
 						$this->View->getHiddens() .
 						(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? we_html_element::htmlHiddens(["group" => $grp]) : '') .
-						we_html_element::htmlHiddens(["MAX_FILE_SIZE" => $weFileupload->getMaxUploadSize()]) .
+						we_html_element::htmlHiddens(["MAX_FILE_SIZE" => we_fileupload::getMaxUploadSizeB()]) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $footerTable->getHTML(), "100%", 30, "", "hidden")
 					)
 				)

@@ -477,16 +477,6 @@ function getContentTypeFromFile($dat){
 	return we_base_ContentTypes::APPLICATION;
 }
 
-function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
-	$post_max_size = we_convertIniSizes(ini_get('post_max_size'));
-	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
-	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
-
-	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
-			$min :
-			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
-}
-
 function we_convertIniSizes($in){
 	$regs = [];
 	if(preg_match('#^([0-9]+)M$#i', $in, $regs)){

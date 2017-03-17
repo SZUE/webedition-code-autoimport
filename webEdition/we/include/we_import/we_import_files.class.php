@@ -40,8 +40,6 @@ class we_import_files{
 	var $degrees = 0;
 	var $categories = '';
 	private $nextCmd = '';
-	private $maxUploadSizeMB = 8;
-	private $maxUploadSizeB = 0;
 	private $fileNameTemp = '';
 	private $partNum = 0;
 	private $partCount = 0;
@@ -83,8 +81,6 @@ class we_import_files{
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
-		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
-		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 	}
 
 	function getHTML(){
