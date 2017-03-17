@@ -42,12 +42,12 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		];
 		$this->formElements = array_merge($this->formElements, [
 			'uploader' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => false],
-			'parentId' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
-			'sameName' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false],
-			'importMeta' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true],
+			'parentId' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true],
 			'isSearchable' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false],
-			'categories' => ['set' => $permCat, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false],
-			'attributes' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true],
+			'sameName' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false],
+			'categories' => ['set' => $permCat, 'multiIconBox' => true, /*'space' => we_html_multiIconBox::SPACE_MED,*/ 'rightHeadline' => false],
+			'importMeta' => ['set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true],
+			'attributes' => ['set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true],
 			'thumbnails' => ['set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true],
 			], $moreElements);
 
@@ -116,10 +116,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$parts = [
 			(is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? $form : ''),
 			($this->parentID['setField'] && is_array($form = $this->getFormParentID()) ? $form : ''),
-			(is_array($form = $this->getFormSameName()) ? $form : ''),
-			($this->doImport && is_array($form = $this->getFormImportMeta()) ? $form : ''),
 			($this->doImport && is_array($form = $this->getFormIsSearchable()) ? $form : ''),
+			(is_array($form = $this->getFormSameName()) ? $form : ''),
 			($this->doImport && is_array($form = $this->getFormCategories()) ? $form : ''),
+			($this->doImport && is_array($form = $this->getFormImportMeta()) ? $form : ''),
 		];
 		if($this->doImport && (!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE)){
 			$parts = array_merge($parts, [

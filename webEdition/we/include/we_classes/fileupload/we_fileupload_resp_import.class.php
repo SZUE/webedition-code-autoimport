@@ -74,7 +74,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		$this->saveImageEditPropsInSession();
 	}
 
-	public function setImageEditProps($props){
+	public function setImageEditProps($props = []){
 		$this->imageEditProps = array_merge($this->imageEditProps, [
 			'parentID' => $this->fileVars['parentID'],
 			'sameName' => $this->fileVars['sameName'],
@@ -338,6 +338,15 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$we_doc->DocChanged = true;
 		}
 
+		if(in_array($we_doc->ContentType, [we_base_ContentTypes::APPLICATION, 
+				we_base_ContentTypes::AUDIO, 
+				we_base_ContentTypes::IMAGE,
+				we_base_ContentTypes::VIDEO,
+				we_base_ContentTypes::FLASH]
+				)){
+			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
+		}
+
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 			$newWidth = 0;
 			$newHeight = 0;
@@ -366,7 +375,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 						$we_doc->getElement('origheight', 'bdid') :
 						$we_doc->getElement('origwidth', 'bdid')), $this->docVars['degrees'], $this->docVars['quality']);
 			}
-			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
 			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->getElement('title')), 'attrib');
 			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->getElement('alt')), 'attrib');
 			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->Thumbs;
