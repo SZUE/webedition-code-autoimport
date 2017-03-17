@@ -223,7 +223,7 @@ function resetScores(max) {
 }
 
 function refreshTotal() {
-	var total = 0,
+	var total = 0,percent,
 		i;
 	var elems = document.we_form.elements;
 	for (i = 0; i < elems.length; i++) {

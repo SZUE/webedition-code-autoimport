@@ -761,6 +761,7 @@ function checkTimeout() {
 }
 
 function initControl() {
-	if (top.send_control.init)
+	if (top.send_control.init) {
 		top.send_control.init();
+	}
 }
