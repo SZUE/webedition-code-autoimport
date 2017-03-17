@@ -1972,7 +1972,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 					['headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
 					['headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, self::get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'),
 						'space' => we_html_multiIconBox::SPACE_MED],
-					['headline' => g_l('prefs', '[security][userPassRegex][desc]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_DESC]', 0, get_value('SECURITY_USER_PASS_DESC'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED],
+					['headline' => g_l('prefs', '[security][userPassRegex][desc]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_DESC]', 0, self::get_value('SECURITY_USER_PASS_DESC'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED],
 				];
 				return self::create_dialog('settings_security', $settings);
 
