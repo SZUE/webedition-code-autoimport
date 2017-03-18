@@ -5,13 +5,24 @@
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
-	var $QueryLog = array(
+	public $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
 		'entryExists' => array(),
 		'tableExists' => array(), //needed from server functions
 	);
+	protected $defaultEngine = '';
+	protected $db;
+	protected $allowedEngines = array('myisam', 'aria');
+
+	public function __construct(){
+		$this->db = new DB_WE();
+		$this->defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value', $this->db);
+		if(!in_array(strtolower($this->defaultEngine), $this->allowedEngines)){
+			$this->defaultEngine = 'MyISAM';
+		}
+	}
 
 	/*
 	 * Functions for updatelog
@@ -63,7 +74,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 *
 	 * @return string
 	 */
-	function preparePhpCode($content, $needle, $replace){
+	function preparePhpCode($content, $x = '', $y = ''){
 		return $this->checkReplaceDocRoot($content);
 	}
 
@@ -94,7 +105,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+			preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
 				$content);
 		}
 
@@ -143,11 +154,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if($dh){
 			while(($entry = readdir($dh))){
 				if($entry != '' && $entry != "." && $entry != '..'){
-					$_entry = $dir . '/' . $entry;
-					if(is_dir($_entry)){
-						$this->deleteDir($_entry);
+					$entry = $dir . '/' . $entry;
+					if(is_dir($entry)){
+						$this->deleteDir($entry);
 					} else {
-						$this->deleteFile($_entry);
+						$this->deleteFile($entry);
 					}
 				}
 			}
@@ -194,7 +205,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					opcache_invalidate($filePath, true);
 				}
 
-				if(!chmod($filePath, 0755)){
+				//FIXME: current user must write because of "prepare"
+				if(!chmod($filePath, 0644)){
 					return false;
 				}
 				return true;
@@ -246,7 +258,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		foreach($pathArray as $subPath){
 			$path .= $subPath;
-			if($subPath != "" && !is_dir($path)){
+			if($subPath && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
@@ -267,7 +279,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file){
-		return (file_exists($file) ? unlink($file) : true);
+		return (file_exists($file) ? @unlink($file) : true);
 	}
 
 	/**
@@ -279,7 +291,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function moveFile($source, $destination){
 
-		if($source == $destination){
+		if($source == $destination || !file_exists($source)/* happens if update is retriggered */){
 			return true;
 		}
 		if(filesize($source) == 0){//assume error, add warning, keep file!
@@ -291,10 +303,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if($this->checkMakeDir(dirname($destination))){
 			if(!isset($_SESSION['weS']['moveOk'])){
 				touch($source . 'x');
-				$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
+				$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
 				$this->deleteFile($destination . 'x');
 				$this->deleteFile($source . 'x');
 				$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
+			}
+			if(substr($destination, -4) === '.php' && function_exists('opcache_invalidate')){
+				opcache_invalidate($destination, true);
 			}
 
 			if($_SESSION['weS']['moveOk']){
@@ -353,19 +368,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if(file_exists($filePath)){
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
-			if($needle){
-				$newContent = preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent);
-			} else {
-				$newContent = $replace;
-			}
+			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
-			if(!$this->filePutContent($filePath, $newContent)){
-				return false;
-			}
-		} else {
-			return false;
+			return ($this->filePutContent($filePath, $newContent));
 		}
-		return true;
+		return false;
 	}
 
 	/*
@@ -394,11 +401,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return array
 	 */
 	function getFieldsOfTable($tableName, we_database_base $db){
+		$db = $this->db;
 
 		$fieldsOfTable = array();
 
 		$db->query('DESCRIBE ' . $db->escape($tableName));
 
+		$pos = 0;
 		while($db->next_record()){
 			$fieldsOfTable[$db->f('Field')] = array(
 				'Field' => $db->f('Field'),
@@ -406,7 +415,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				'Null' => $db->f('Null'),
 				'Key' => $db->f('Key'),
 				'Default' => $db->f('Default'),
-				'Extra' => $db->f('Extra')
+				'Extra' => $db->f('Extra'),
+				'Pos' => $pos++,
 			);
 		}
 		return $fieldsOfTable;
@@ -419,7 +429,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return array
 	 */
 	function getKeysFromTable($tableName){
-		$db = new DB_WE();
+		$db = $this->db;
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
 		while($db->next_record()){
@@ -551,9 +561,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-
-		static $db = null;
-		$db = $db ?: new DB_WE();
+		$db = $this->db;
 		$db->query('SHOW variables LIKE "default_storage_engine"');
 		$db->next_record();
 		$defaultEngine = $db->f('Value');
@@ -575,13 +583,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $query
 	 */
 	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ? $db: new DB_WE());
+		$db = $this->db;
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
 
 
-		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausführen
 			return true;
 		}
 
@@ -782,13 +790,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					}
 					break;
 				case 1062:
-					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n<!-- $query -->";
 					return false;
 				case 0:
 			case 1065:
+				//ignore empty queries
 					return true;
 				default:
-					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+				$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 					return false;
 			}
 		return true;
@@ -816,9 +825,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
-			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
 				$delFiles = array();
 				foreach($all as $cur){
+					$recursive = false;
+					if($cur{0} === '!'){
+						$cur = substr($cur, 1);
+						$recursive = true;
+					}
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){
 							$delFiles[] = $cur;
