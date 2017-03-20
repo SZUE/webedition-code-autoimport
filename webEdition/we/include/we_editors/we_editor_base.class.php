@@ -39,7 +39,7 @@ abstract class we_editor_base{
 
 	public abstract function show();
 
-	protected function getPage($form, $header, $bodyAttr = [], $formAttr = []){
+	protected function getPage($form, $header = '', $bodyAttr = [], $formAttr = []){
 		return we_html_tools::getHtmlTop($this->title, $this->charset, '', $header .
 				we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_editor_script::get() .
