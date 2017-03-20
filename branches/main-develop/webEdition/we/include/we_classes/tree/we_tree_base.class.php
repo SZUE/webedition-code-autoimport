@@ -61,7 +61,7 @@ abstract class we_tree_base{
 		$this->default_segment = intval(we_base_preferences::getUserPref('default_tree_count'));
 	}
 
-	function init($frameset, $topFrame, $treeFrame, $cmdFrame){
+	function init($topFrame, $treeFrame, $cmdFrame){
 		$this->topFrame = $topFrame;
 		$this->treeFrame = $treeFrame;
 		$this->cmdFrame = $cmdFrame;
