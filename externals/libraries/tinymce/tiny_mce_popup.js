@@ -332,6 +332,7 @@ tinyMCEPopup.resizeToInnerSize = function () {
 			g_l = WE().consts.g_l.tinyMceTranslationObject[a.editor.getParam("language", "")].we.dialog_btns;
 		} else {
 			g_l = a.editor.getParam('wePopupGl', '');
+			window.console.log('1');
 		}
 
 		var buttonsDiv = document.createElement("div");
@@ -419,7 +420,7 @@ tinyMCEPopup.onInit.add(function () {
 	var t = this;
 	var id = '';
 
-	if(t.opener.tinymce.activeEditor.getParam('weRefactured', '')){
+	if(top.opener.tinyMCE && top.opener.tinyMCE.activeEditor.getParam('weRefactured', '')){
 		window.addEventListener('unload', tinyMCEPopup.doUnregisterDialog, false);
 
 		try {
