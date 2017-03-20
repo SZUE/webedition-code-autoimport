@@ -65,9 +65,6 @@ function findInclude($cmd){
 		case 'backup_cmd':
 			we_backup_cmd::getHTML();
 			return true;
-		case 'newMsg':
-			we_messaging_message::showNewMsg();
-			return true;
 		case 'phpinfo':
 		case 'sysinfo':
 			we_dialog_sysinfo::getDialog($cmd);

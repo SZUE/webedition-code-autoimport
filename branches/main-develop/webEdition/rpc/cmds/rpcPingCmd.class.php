@@ -32,16 +32,6 @@ class rpcPingCmd extends we_rpc_cmd{
 			$resp->setData('release', $relRequest);
 		}
 
-		if(defined('MESSAGING_SYSTEM')){
-			$messaging = new we_messaging_messaging($we_transaction);
-			$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
-			$messaging->add_msgobj('we_message', 1);
-			$messaging->add_msgobj('we_todo', 1);
-
-			$resp->setData('newmsg_count', $messaging->used_msgobjs['we_message']->get_newmsg_count());
-			$resp->setData('newtodo_count', $messaging->used_msgobjs['we_todo']->get_newmsg_count());
-		}
-
 		list($num, $usr) = we_users_online::getUsers();
 
 		$resp->setData('users', $usr);

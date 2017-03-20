@@ -30,8 +30,6 @@ function we_tag_ifIsActive(array $attribs){
 			return we_base_moduleInfo::isActive(we_base_moduleInfo::CUSTOMER);
 		case 'glossary':
 			return we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY);
-		case 'messaging':
-			return we_base_moduleInfo::isActive(we_base_moduleInfo::MESSAGING);
 		case 'newsletter':
 			return we_base_moduleInfo::isActive(we_base_moduleInfo::NEWSLETTER);
 		case 'object':

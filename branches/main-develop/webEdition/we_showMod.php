@@ -54,35 +54,35 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 	?>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
 		<dialog id="alertBox"></dialog>
-		<?php
-		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
+			<?php
+			$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
 
-		//TODO: we should loop through all we_cmd and process them in respective we_module_frames.class only
-		$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1); //to be used only for IDs or integer constants!
-		$sid = $mod === 'customer' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'sid');
-		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
+			//TODO: we should loop through all we_cmd and process them in respective we_module_frames.class only
+			$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1); //to be used only for IDs or integer constants!
+			$sid = $mod === 'customer' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'sid');
+			$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
-		$we_tabs = new we_tabs();
-		$mods = we_base_moduleInfo::getAllModules();
-		we_base_moduleInfo::orderModuleArray($mods);
+			$we_tabs = new we_tabs();
+			$mods = we_base_moduleInfo::getAllModules();
+			we_base_moduleInfo::orderModuleArray($mods);
 
-		foreach($mods as $menuItem){
-			if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
-				if(we_base_moduleInfo::isActive($menuItem['name'])){ //	MODULE INSTALLED
-					if(we_users_util::canEditModule($menuItem['name'])){
-						$we_tabs->addTab(
-							($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
-							$menuItem['text']
-							, ( $mod == $menuItem['name']), "'" . $menuItem['name'] . "'", ['id' => $menuItem['name']]);
+			foreach($mods as $menuItem){
+				if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
+					if(we_base_moduleInfo::isActive($menuItem['name'])){ //	MODULE INSTALLED
+						if(we_users_util::canEditModule($menuItem['name'])){
+							$we_tabs->addTab(
+								($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
+								$menuItem['text']
+								, ( $mod == $menuItem['name']), "'" . $menuItem['name'] . "'", ['id' => $menuItem['name']]);
+						}
 					}
 				}
 			}
-		}
 
-		echo we_html_element::htmlDiv(['style' => 'right:0px;', 'name' => 'naviDiv', 'id' => 'naviDiv'], '<div id="main" >' . $we_tabs->getHTML() . '</div>') .
-		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
-		;
-		?></body></html><?php
+			echo we_html_element::htmlDiv(['style' => 'right:0px;', 'name' => 'naviDiv', 'id' => 'naviDiv'], '<div id="main" >' . $we_tabs->getHTML() . '</div>') .
+			we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
+			;
+			?></body></html><?php
 	return;
 }
 
@@ -166,15 +166,6 @@ switch($mod){
 		$weFrame->process();
 		echo $weFrame->getHTML($what, $mode, $type);
 		return;
-	case 'messaging':
-		if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
-			$we_transaction = 0;
-		}
-		$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
-
-		$weFrame = new we_messaging_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
-		$weFrame->process();
-		break;
 
 	case 'newsletter':
 		$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');

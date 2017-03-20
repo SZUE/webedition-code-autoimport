@@ -708,11 +708,6 @@ function removeWidget(wizId) {
 	saveSettings();
 }
 
-/*function newMessage(username) {
- if (WE().consts.modules.active.indexOf("messaging")>0) {
- new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, false);
- }
- }*/
 
 function getDimension(theString, styleClassElement) {
 	var dim = {};

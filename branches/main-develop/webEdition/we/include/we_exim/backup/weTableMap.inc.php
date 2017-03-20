@@ -95,16 +95,7 @@ return [
 	] :
 	[]
 	),
-	'todo' => (defined('MSG_TODO_TABLE') ? [
-	strtolower(stripTblPrefix(MSG_TODO_TABLE)) => MSG_TODO_TABLE,
-	strtolower(stripTblPrefix(MSG_TODOHISTORY_TABLE)) => MSG_TODOHISTORY_TABLE,
-	strtolower(stripTblPrefix(MESSAGES_TABLE)) => MESSAGES_TABLE,
-	strtolower(stripTblPrefix(MSG_ACCOUNTS_TABLE)) => MSG_ACCOUNTS_TABLE,
-	strtolower(stripTblPrefix(MSG_ADDRBOOK_TABLE)) => MSG_ADDRBOOK_TABLE,
-	strtolower(stripTblPrefix(MSG_FOLDERS_TABLE)) => MSG_FOLDERS_TABLE,
-	] :
-	[]
-	),
+	'todo' => [],
 	'newsletter' => (defined('NEWSLETTER_TABLE') ? [
 	strtolower(stripTblPrefix(NEWSLETTER_TABLE)) => NEWSLETTER_TABLE,
 	strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,

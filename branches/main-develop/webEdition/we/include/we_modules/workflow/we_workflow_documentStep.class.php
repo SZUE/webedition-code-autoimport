@@ -184,9 +184,9 @@ class we_workflow_documentStep extends we_workflow_base{
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
 				foreach($this->tasks as &$tv){
-					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
+					/*if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
 						$tv->removeTodo();
-					}
+					}*/
 				}
 			}
 			//insert into document Log
@@ -230,9 +230,9 @@ class we_workflow_documentStep extends we_workflow_base{
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
 				foreach($this->tasks as &$tv){
-					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
+					/*if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
 						$tv->removeTodo();
-					}
+					}*/
 				}
 			}
 			//insert into document Log

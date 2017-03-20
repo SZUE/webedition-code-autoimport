@@ -103,13 +103,6 @@ function doClicked(checked, opt) {
 					WE().util.showMessage(WE().consts.g_l.backupWizard.workflow_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
-			case 40:
-				if (WE().consts.modules.active.indexOf("messaging") > 0 && !document.we_form.handle_user.checked) {
-					document.we_form.handle_user.value = 1;
-					document.we_form.handle_user.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.todo_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
-				}
-				break;
 			case 45:
 				if (WE().consts.modules.active.indexOf("newsletter") > 0 && WE().consts.modules.active.indexOf("customer") > 0 && !document.we_form.handle_customer.checked || !document.we_form.handle_core.checked || !document.we_form.handle_object.checked) {
 					document.we_form.handle_core.value = 1;
@@ -133,7 +126,7 @@ function doClicked(checked, opt) {
 		return;
 	}
 	var mess = "",
-		tmpMess;
+					tmpMess;
 	switch (opt) {
 		case 10:
 			if (WE().consts.modules.active.indexOf("workflow") > 0 && document.we_form.elements.handle_workflow.checked) {
@@ -220,10 +213,7 @@ function doClicked(checked, opt) {
 					document.we_form.elements.handle_workflow.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.workflow_data;
 				}
-				if (WE().consts.modules.active.indexOf("messaging") > 0 && document.we_form.elements.handle_todo.checked) {
-					document.we_form.elements.handle_todo.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.todo_data;
-				}
+
 				if (mess !== "") {
 					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.user_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -259,7 +249,7 @@ function delSelItem() {
 function showAll() {
 	var a = document.we_form.backup_select.options;
 	var b = document.we_form.show_all,
-		i, j;
+					i, j;
 
 	if (b.checked) {
 		b.value = 1;
@@ -290,7 +280,7 @@ function setLocation(loc) {
 function startStep(step, doImport) {
 	window.focus();
 	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step + (
-		doImport !== undefined ? "&do_import_after_backup" + doImport : "");
+					doImport !== undefined ? "&do_import_after_backup" + doImport : "");
 }
 
 function startBusy() {

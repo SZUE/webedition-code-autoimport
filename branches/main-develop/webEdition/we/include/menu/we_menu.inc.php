@@ -446,12 +446,6 @@ $we_menu = [
 		'parent' => 'cockpit_new',
 		'cmd' => ['new_widget', 'rss'],
 		'perm' => 'CAN_SEE_QUICKSTART',
-	], [// Cockpit > new Widget > messaging
-		'text' => g_l('javaMenu_global', '[todo_messaging]'),
-		'parent' => 'cockpit_new',
-		'cmd' => ['new_widget', 'msg'],
-		'perm' => 'CAN_SEE_QUICKSTART',
-		'hide' => !defined('MESSAGING_SYSTEM')
 	], [// Cockpit > new Widget > Shop
 		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
 		'parent' => 'cockpit_new',

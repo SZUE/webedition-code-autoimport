@@ -174,7 +174,6 @@ Options:
   --customer                 Customer data
   --shop                     Shop data
   --workflow                 Workflow data
-  --todo                     Task/Messaging data
   --newsletter               Newsletter data
   --temporary                Temporary data (unpublished data)
   --banner                   Banner data

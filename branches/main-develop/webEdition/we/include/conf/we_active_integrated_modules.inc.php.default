@@ -12,13 +12,11 @@ $GLOBALS['_we_active_integrated_modules'] = [
 	'shop',
 	'editor',
 	'object',
-//	'messaging',
 //	'workflow',
 	'newsletter',
 	'banner',
 	'export',
 //	'voting',
-//	'spellchecker',
 	'glossary',
 	'navigation'
 ];
