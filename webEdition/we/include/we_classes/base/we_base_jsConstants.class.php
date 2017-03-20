@@ -65,8 +65,6 @@ abstract class we_base_jsConstants{
 				return liveUpdateFrames::getJSLangConsts();
 			case 'g_l.main':
 				return self::getMainJSLangConsts();
-			case 'g_l.messaging':
-				return we_messaging_messaging::getJSLangConsts();
 			case 'g_l.metadatafields':
 				return we_metadata_metaData::getJSLangConsts();
 			case 'g_l.navigation':

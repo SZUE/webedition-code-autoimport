@@ -93,10 +93,10 @@ class we_workflow_base{
 	/* generate new To Do */
 	/* return the ID of the created To Do, 0 on error */
 
-	function sendTodo($userID, $subject, $description, $deadline){
+/*	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = [];
 		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
-		$rcpts = [$foo]; /* user names */
+		$rcpts = [$foo]; /* user names
 		$m = new we_messaging_todo();
 		$m->set_login_data($_SESSION['user']['ID'], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$data = ['subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5];
@@ -112,7 +112,7 @@ class we_workflow_base{
 	}
 
 	/* Mark To Do as done */
-	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE
 
 	function doneTodo($id = 0){
 		$errs = '';
@@ -137,7 +137,7 @@ class we_workflow_base{
 	}
 
 	/* remove To Do */
-	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE
 
 	function removeTodo($id = 0){
 		$m = new we_messaging_todo();
@@ -149,7 +149,7 @@ class we_workflow_base{
 	}
 
 	/* Mark To Do as rejected */
-	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE 
 
 	function rejectTodo($id = 0){
 		$m = new we_messaging_todo();
@@ -163,6 +163,6 @@ class we_workflow_base{
 		$data = ['body' => ''];
 
 		$m->reject($msg, $data);
-	}
+	}*/
 
 }

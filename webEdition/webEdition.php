@@ -131,7 +131,6 @@ $const = [
 	'dirs' => [
 		'WEBEDITION_DIR' => WEBEDITION_DIR,
 		'WE_MODULES_DIR' => WE_MODULES_DIR,
-		'WE_MESSAGING_MODULE_DIR' => defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : '',
 		'WE_INCLUDES_DIR' => WE_INCLUDES_DIR,
 		'WE_JS_TINYMCE_DIR' => WE_JS_TINYMCE_DIR,
 		'WE_SPELLCHECKER_MODULE_DIR' => defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : '',
@@ -299,10 +298,9 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 <dialog id="alertBox"></dialog>
 <div id="headerDiv"><?php
 	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-	$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
 	?>
 	<div id="weMainHeader"><?php
-		we_main_headermenu::pbody($msg);
+		we_main_headermenu::pbody();
 		?>
 	</div>
 </div>
@@ -403,12 +401,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 	<iframe src="about:blank" name="load2"></iframe>
 	<iframe src="about:blank" name="plugin"></iframe>
 </div>
-<?php
-//	get the frameset for the actual mode.
-echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
-	we_messaging_headerMsg::getJS() : '');
-//	get the Treefunctions for docselector
-?>
 </body>
 </html>
 <?php

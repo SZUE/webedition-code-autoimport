@@ -71,16 +71,16 @@ class we_workflow_documentTask extends we_workflow_base{
 	function approve(){
 		$this->Status = self::STATUS_APPROVED;
 		$this->Date = time();
-		$this->doneTodo();
+		//$this->doneTodo();
 	}
 
 	function decline(){
 		$this->Status = self::STATUS_CANCELED;
 		$this->Date = time();
-		$this->rejectTodo();
+		//$this->rejectTodo();
 	}
 
-	function removeTodo($id = 0){
+/*	function removeTodo($id = 0){
 		if($this->todoID){
 			parent::removeTodo($this->todoID);
 		}
@@ -96,7 +96,7 @@ class we_workflow_documentTask extends we_workflow_base{
 		if($this->todoID){
 			parent::rejectTodo($this->todoID);
 		}
-	}
+	}*/
 
 	//--------------------------------STATIC FUNCTIONS ------------------------------
 	/**

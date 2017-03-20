@@ -15,7 +15,6 @@ $this->Attributes[] = new weTagData_selectAttribute('name', [
 	new weTagDataOption('banner'),
 	new weTagDataOption('customer'),
 	new weTagDataOption('glossary'),
-	new weTagDataOption('messaging'),
 	new weTagDataOption('newsletter'),
 	new weTagDataOption('object'),
 	new weTagDataOption('shop'),

@@ -69,7 +69,7 @@ abstract class we_widget_base{
 
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
-	 * Last modified (mfd), ToDo/Messaging (msg), Users Online (usr), and Unpublished docs and objs (ubp).
+	 * Last modified (mfd), Users Online (usr), and Unpublished docs and objs (ubp).
 	 *
 	 * @param      int $iId
 	 * @param      string $sType

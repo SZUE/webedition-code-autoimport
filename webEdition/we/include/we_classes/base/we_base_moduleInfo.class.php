@@ -7,7 +7,6 @@ abstract class we_base_moduleInfo{
 	const EDITOR = 'editor';
 	const EXPORT = 'export';
 	const GLOSSARY = 'glossary';
-	const MESSAGING = 'messaging';
 	const NAVIGATION = 'navigation';
 	const NEWSLETTER = 'newsletter';
 	const OBJECT = 'object';

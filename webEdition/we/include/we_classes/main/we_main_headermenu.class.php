@@ -72,7 +72,7 @@ class we_main_headermenu{
 		return $jmenu;
 	}
 
-	static function pbody($msg){
+	static function pbody(){
 
 // all available elements
 		$jmenu = self::getMenu();
@@ -123,10 +123,6 @@ class we_main_headermenu{
 						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
 					</div>
 					<?php
-				}
-				if($msg){
-					?>
-					<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div><?php
 				}
 
 				echo self::createMessageConsole('mainWindow', false);

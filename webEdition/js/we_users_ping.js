@@ -48,16 +48,6 @@ window.setInterval(function () {
 				}
 			}
 
-			if (WE().consts.modules.active.indexOf("messaging") > 0) {
-				if (top.header_msg_update) {
-					var newmsg_count = result.DataArray.newmsg_count;
-					var newtodo_count = result.DataArray.newtodo_count;
-
-					top.header_msg_update(newmsg_count, newtodo_count);
-				}
-
-			}
-
 			var releases = result.DataArray.release;
 			//FIXME: add support for release requests
 			var i;

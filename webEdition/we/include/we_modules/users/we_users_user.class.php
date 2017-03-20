@@ -299,20 +299,9 @@ class we_users_user{
 	}
 
 	function createAccount(){
-		if(defined('MESSAGING_SYSTEM')){
-			we_messaging_messaging::createFolders($this->ID);
-		}
 	}
 
 	function removeAccount(){
-		if(defined('MESSAGING_SYSTEM')){
-			$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MESSAGES_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODO_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID=' . $this->ID);
-		}
 		we_history::deleteByUserID($this->ID);
 	}
 

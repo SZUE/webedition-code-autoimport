@@ -60,7 +60,6 @@ abstract class we_autoloader{
 		'listview' => 'we_classes/listview',
 		'mail' => 'we_classes/mail',
 		'main' => 'we_classes/main',
-		'messaging' => 'we_modules/messaging',
 		'metadata' => 'we_classes/weMetaData',
 		'modules' => 'we_classes/modules',
 		'navigation' => 'we_modules/navigation/class',
