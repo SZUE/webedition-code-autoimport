@@ -64,6 +64,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 	self.OPTS_QUALITY_DEFAULT_VAL = 90;
 	self.PRESERVE_IMG_DATAURL = true;
 	self.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
+	self.MAX_LONGEST = -1;
 
 	self.IS_MEMORY_MANAGMENT = false;
 	self.PROCESS_PREVIEWS_ONLY = false;
@@ -81,6 +82,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 		self.sender = self.uploader.sender;
 		self.view = self.uploader.view;
 		self.utils = self.uploader.utils;
+		self.MAX_LONGEST = conf.imageeditMaxLongest ? parseInt(conf.imageeditMaxLongest) : -1;
 
 		self.init_sub(conf);
 	};

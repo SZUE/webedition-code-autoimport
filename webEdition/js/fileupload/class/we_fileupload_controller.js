@@ -247,12 +247,14 @@ function weFileupload_controller_abstract(uploader) {
 			inputRotate = form.elements.fuOpts_rotate,
 			inputQuality = form.elements.fuOpts_quality,
 			scale = inputScale.value,
-			rotate = parseInt(inputRotate.value),
 			quality = parseInt(inputQuality.value),
 			pos = form.getAttribute('data-type') === 'importer_rowForm' ? form.getAttribute('data-index') : -1,
 			//opttype = pos === -1 ? 'general' : 'custom';
 			btnRefresh = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0],
 			imageEdit = self.imageEdit;
+
+		var rotate = inputRotate ? parseInt(inputRotate.value) : 0;
+
 
 		switch (target.name){
 			case 'fuOpts_scaleProps':
@@ -262,6 +264,18 @@ function weFileupload_controller_abstract(uploader) {
 				target.value = 0;
 				/* falls through*/
 			case 'fuOpts_scale':
+				if(self.imageEdit.MAX_LONGEST){
+					if(parseInt(scale) > self.imageEdit.MAX_LONGEST){
+						WE().util.showMessage(WE().consts.g_l.fileupload.editMaxLongest.replace('##MAX_LONGEST##', self.imageEdit.MAX_LONGEST), WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
+						scale = self.imageEdit.MAX_LONGEST;
+						target.value = self.imageEdit.MAX_LONGEST;
+					}
+					if(!scale){
+						WE().util.showMessage(WE().consts.g_l.fileupload.editScaleMandatory.replace('##MAX_LONGEST##', self.imageEdit.MAX_LONGEST), WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
+						scale = self.imageEdit.MAX_LONGEST;
+						target.value = self.imageEdit.MAX_LONGEST;
+					}
+				}
 				if(scale || rotate){
 					if(quality === imageEdit.OPTS_QUALITY_NEUTRAL_VAL){
 						inputQuality.value = imageEdit.OPTS_QUALITY_DEFAULT_VAL;
@@ -276,11 +290,6 @@ function weFileupload_controller_abstract(uploader) {
 					self.view.formCustomEditOptsSync(-1, true);
 					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
 					self.view.setEditStatus('', pos, pos === -1 ? true : false);
-				}
-				btnRefresh.disabled = self.sender.preparedFiles.length === 0 || (!scale && !rotate);
-				if(target.name === 'fuOpts_rotate'){
-					self.view.formCustomEditOptsSync(-1, true, true);
-					self.view.previewSyncRotation(pos, rotate);
 				}
 				break;
 			case 'fuOpts_rotate':
@@ -329,7 +338,7 @@ function weFileupload_controller_abstract(uploader) {
 				inputQuality.value = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 				self.view.disableCustomEditOpts(!target.checked);
-				inputScale.value = '';
+				inputScale.value = (target.checked && self.imageEdit.MAX_LONGEST !== -1) ? self.imageEdit.MAX_LONGEST : '';
 
 				inputRotate.value = 0;
 				self.view.formCustomEditOptsSync(-1, true, true); // reset rotation on entries
@@ -340,30 +349,6 @@ function weFileupload_controller_abstract(uploader) {
 				self.view.setEditStatus('donotedit', -1, true);
 				btnRefresh.disabled = true;
 				break;
-			/*
-			case 'fuOpts_useCustomOpts':
-				var fileobj = self.sender.preparedFiles[pos];
-				if(target.checked){
-					fileobj.img.editOptions.from = 'custom';
-					self.imageEdit.uneditImage(pos, false);
-					self.view.formCustomEditOptsDisable(form, false);
-					self.view.formEditOptsReset(form);
-					self.view.previewSyncRotation(pos, 0);
-					self.imageEdit.setImageEditOptionsFile(fileobj);
-					self.view.setEditStatus('', pos, false);
-					btnRefresh.disabled = false;
-				}else {
-					fileobj.img.editOptions.from = 'general';
-					self.imageEdit.uneditImage(pos, false);
-					self.view.formCustomEditOptsDisable(form, true);
-					self.view.formCustomEditOptsSync(pos, false);
-					self.imageEdit.setImageEditOptionsFile(fileobj);
-					self.view.previewSyncRotation(pos, fileobj.img.editOptions.rotate);
-					self.view.setEditStatus('', pos, false);
-					btnRefresh.disabled = false;
-				}
-				break;
-			*/
 		}
 	};
 
@@ -414,7 +399,9 @@ function weFileupload_controller_bindoc(uploader) {
 		}
 
 		if (self.uploader.EDIT_IMAGES_CLIENTSIDE) {
-			doc.we_form.elements.check_fuOpts_doEdit.addEventListener('change', self.editOptionsOnChange, false);
+			if(doc.we_form.elements.check_fuOpts_doEdit){
+				doc.we_form.elements.check_fuOpts_doEdit.addEventListener('change', self.editOptionsOnChange, false);
+			}
 			doc.we_form.elements.fuOpts_scaleProps.addEventListener('change', self.editOptionsOnChange);
 			doc.we_form.elements.fuOpts_scale.addEventListener('keyup', self.editOptionsOnChange, false);
 			doc.we_form.elements.fuOpts_scaleWhat.addEventListener('change', self.editOptionsOnChange, false);
@@ -439,18 +426,6 @@ function weFileupload_controller_bindoc(uploader) {
 
 		var ids = [
 			'div_we_File_fileDrag'
-			/*
-			'div_fileupload_fileDrag_state_0',
-			'div_filedrag_content_left',
-			'div_filedrag_content_right',
-			'div_fileupload_fileDrag_state_1',
-			'div_upload_fileDrag_innerLeft',
-			'span_fileDrag_inner_filename',
-			'span_fileDrag_inner_size',
-			'span_fileDrag_inner_type',
-			'span_fileDrag_inner_edit',
-			'div_upload_fileDrag_innerRight'
-			*/
 		];
 		for (i = 0; i < ids.length; i++) {
 			doc.getElementById(ids[i]).addEventListener('dragover', self.fileDragHover, false);
@@ -487,8 +462,6 @@ function weFileupload_controller_import(uploader) {
 			generalform.elements.fuOpts_scale.addEventListener('keyup', self.editOptionsOnChange);
 			generalform.elements.fuOpts_scaleWhat.addEventListener('change', self.editOptionsOnChange);
 			generalform.elements.fuOpts_scaleProps.addEventListener('change', self.editOptionsOnChange);
-			generalform.elements.fuOpts_rotate.addEventListener('change', self.editOptionsOnChange);
-			generalform.elements.check_fuOpts_doEdit.addEventListener('change', self.editOptionsOnChange);
 			generalform.elements.fuOpts_quality.addEventListener('change', self.editOptionsOnChange, false);
 
 			var btn = generalform.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];

@@ -163,7 +163,7 @@ table.importer_files{
 }
 
 div.imgEditOpts{
-	display: none;
+	display: block;
 	padding: 4px 0 6px 4px;
 
 	div{
@@ -324,6 +324,9 @@ div.imgEditOpts{
 			top: -10px;
 		}
 	}
+}
+.imgEditOpts.hidden{
+	display: none;
 }
 
 div.editorLoupe{
