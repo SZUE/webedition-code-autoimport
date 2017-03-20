@@ -48,13 +48,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
 			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
 			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
-
 			'widthSelect' => ($eic ? '' : we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect'])),
 			'heightSelect' => ($eic ? '' : we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect'])),
 			'quality' => ($eic ? 8 : we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality'])),
 			'keepRatio' => ($eic ? true : we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio'])),
 			'degrees' => ($eic ? 0 : we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees'])),
-
 			'focusX' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusX', $this->docVars['focusX']),
 			'focusY' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusY', $this->docVars['focusY']),
 			// unset the following entries when not in request!
@@ -62,7 +60,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
 			'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
 			'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
-
 			'width' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID)),
 			'height' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID)),
 			], function($var){
@@ -88,8 +85,8 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'keepRatio' => $this->docVars['keepRatio'],
 			'quality' => $this->docVars['quality'],
 			'degrees' => $this->docVars['degrees'],
-			'categories' => empty($this->docVars['categories'])? : $this->docVars['categories']
-			]);
+			'categories' => empty($this->docVars['categories']) ?: $this->docVars['categories']
+		]);
 	}
 
 	protected function postprocess(){
@@ -109,7 +106,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	protected function isParentIdOk($parentID = 0){
-		return ($ws = get_ws(FILE_TABLE, true)) ? (we_users_util::in_workspace($parentID, $ws, FILE_TABLE)) : true;
+		return ($ws = get_ws(FILE_TABLE, true)) ? (we_users_util::in_workspace($parentID, $ws, FILE_TABLE, $GLOBALS['DB_WE'])) : true;
 	}
 
 	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
@@ -187,7 +184,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			return ['error' => g_l('importFiles', '[save_error]'),
 				'success' => false,
 				'weDoc' => ''
-				];
+			];
 		}
 		$we_doc->Filename = $matches[1];
 		$we_doc->Extension = strtolower($matches[2]);
@@ -223,7 +220,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					return ['error' => g_l('importFiles', '[same_name]'),
 						'success' => false,
 						'weDoc' => ''
-						];
+					];
 			}
 		}
 
@@ -274,7 +271,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				'error' => g_l('importFiles', '[no_perms]'),
 				'success' => false,
 				'weDoc' => ''
-				];
+			];
 		}
 
 		$tempFile = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
@@ -302,7 +299,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			return ['error' => g_l('importFiles', '[read_file_error]'),
 				'success' => false,
 				'weDoc' => ''
-				];
+			];
 		}
 
 		switch($we_doc->ContentType){
@@ -338,12 +335,12 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$we_doc->DocChanged = true;
 		}
 
-		if(in_array($we_doc->ContentType, [we_base_ContentTypes::APPLICATION, 
-				we_base_ContentTypes::AUDIO, 
+		if(in_array($we_doc->ContentType, [we_base_ContentTypes::APPLICATION,
+				we_base_ContentTypes::AUDIO,
 				we_base_ContentTypes::IMAGE,
 				we_base_ContentTypes::VIDEO,
 				we_base_ContentTypes::FLASH]
-				)){
+			)){
 			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
 		}
 
@@ -352,13 +349,13 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$newHeight = 0;
 			if(isset($this->docVars['width']) && $this->docVars['width']){
 				$newWidth = ($this->docVars['widthSelect'] === 'percent' ?
-						round(($we_doc->getElement('origwidth', 'bdid') / 100) * $this->docVars['width']) :
-						$this->docVars['width']);
+					round(($we_doc->getElement('origwidth', 'bdid') / 100) * $this->docVars['width']) :
+					$this->docVars['width']);
 			}
 			if(isset($this->docVars['height']) && $this->docVars['height']){
 				$newHeight = ($this->docVars['heightSelect'] === 'percent' ?
-						round(($we_doc->getElement('origheight', 'bdid') / 100) * $this->docVars['height']) :
-						$this->docVars['height']);
+					round(($we_doc->getElement('origheight', 'bdid') / 100) * $this->docVars['height']) :
+					$this->docVars['height']);
 			}
 			if(($newWidth && ($newWidth != $we_doc->getElement('origwidth', 'bdid'))) || ($newHeight && ($newHeight != $we_doc->getElement('origheight', 'bdid')))){
 				if($we_doc->resizeImage($newWidth, $newHeight, $this->docVars['quality'], $this->docVars['keepRatio'])){
@@ -388,30 +385,30 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				return ['error' => g_l('importFiles', '[save_error]'),
 					'success' => false,
 					'weDoc' => ''
-					];
+				];
 			}
 			if(!$we_doc->we_publish()){
 				return ['error' => "publish_error",
 					'success' => false,
 					'weDoc' => ''
-					];
+				];
 			}
 		}
 
 		return ['error' => [],
 			'success' => true,
 			'weDoc' => ['id' => $we_doc->ID,
-					'path' => $we_doc->Path,
-					'text' => $we_doc->Text,
-					'ct' => $we_doc->ContentType,
-					'table' => FILE_TABLE,
-					'currentID' => $we_doc->ID,
-					'currentPath' => $we_doc->Path,
-					'currentText' => $we_doc->Text,
-					'currentType' => $we_doc->ContentType,
-					'currentTable' => FILE_TABLE
-				]
-			];
+				'path' => $we_doc->Path,
+				'text' => $we_doc->Text,
+				'ct' => $we_doc->ContentType,
+				'table' => FILE_TABLE,
+				'currentID' => $we_doc->ID,
+				'currentPath' => $we_doc->Path,
+				'currentText' => $we_doc->Text,
+				'currentType' => $we_doc->ContentType,
+				'currentTable' => FILE_TABLE
+			]
+		];
 	}
 
 }

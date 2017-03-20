@@ -31,7 +31,6 @@ abstract class we_main_cockpit{
 			'rss' => we_widget_rss::getDefaultConfig(),
 			'mfd' => we_widget_mfd::getDefaultConfig(),
 			'shp' => we_widget_shp::getDefaultConfig(),
-			'msg' => we_widget_msg::getDefaultConfig(),
 			'fdl' => we_widget_fdl::getDefaultConfig(),
 			'usr' => we_widget_usr::getDefaultConfig(),
 			'upb' => we_widget_upb::getDefaultConfig(),

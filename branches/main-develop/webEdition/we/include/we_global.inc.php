@@ -47,8 +47,8 @@ function getHttpOption(){
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		return (ini_get('allow_url_fopen') != 1 ?
-				(function_exists('curl_init') ? 'curl' : 'none') :
-				'fopen');
+			(function_exists('curl_init') ? 'curl' : 'none') :
+			'fopen');
 	}
 	return 'fopen';
 }
@@ -204,12 +204,16 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 			return false;
 		}
 		$found[] = $p;
-	}while(($p = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($p), '', $db)));
+	} while(($p = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($p), '', $db)));
 	return false;
 }
 
-function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-	return we_users_util::in_workspace($IDs, $wsIDs, $table, $db, $norootcheck);
+function in_workspace(array $IDs, array $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
+	$ret = false;
+	foreach($IDs as $ID){
+		$ret |= we_users_util::in_workspace($IDs, $wsIDs, $table, $db, $norootcheck);
+	}
+	return $ret;
 }
 
 function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
@@ -241,29 +245,28 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 			break;
 		default:
 			$select = ($endslash ?
-					'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
-					'Path');
+				'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
+				'Path');
 	}
 
 	$foo = (in_array(0, $IDs) ? [0 => '/'] : []) +
-			($IDs ?
-			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
-			[]
-			);
+		($IDs ?
+		$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
+		[]
+		);
 
 	return $asArray ? $foo : implode(',', $foo);
 }
 
 function getPathsFromTable($table, we_database_base $db, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	$limitCSV = trim($limitCSV, ',');
+	$limitCSV = explode(',', trim($limitCSV, ','));
 	$query = [];
 	if($wsIDs){
-		$idArr = makeArrayFromCSV($wsIDs);
-		$wsPaths = makeArrayFromCSV(id_to_path($wsIDs, $table, $db));
+		$wsPaths = id_to_path(explode(',', $wsIDs), $table, $db, true);
 		$qfoo = [];
-		for($i = 0; $i < count($wsPaths); $i++){
-			if((!$limitCSV) || we_users_util::in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
-				$qfoo[] = ' Path LIKE "' . $db->escape($wsPaths[$i]) . '%" ';
+		foreach($wsPaths as $id => $path){
+			if((!$limitCSV) || we_users_util::in_workspace($id, $limitCSV, FILE_TABLE, $db)){
+				$qfoo[] = ' Path LIKE "' . $db->escape($path) . '%" ';
 			}
 		}
 		if(!count($qfoo)){
@@ -525,7 +528,7 @@ function getServerProtocol($slash = false){
 
 function getServerAuth(){
 	$pwd = rawurlencode(defined('HTTP_USERNAME') ? HTTP_USERNAME : (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '')) . ':' .
-			rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
+		rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
 	return (strlen($pwd) > 3) ? $pwd : '';
 }
 
@@ -595,17 +598,17 @@ function getHtmlTag($element, $attribs = [], $content = '', $forceEndTag = false
 	}
 
 	return '<' . $element . makeHTMLTagAtts(removeAttribs($attribs, $removeAttribs)) . ($content || $forceEndTag ? //	use endtag
-			'>' . $content . '</' . $element . '>' :
+		'>' . $content . '</' . $element . '>' :
 //	xml style or not
-			( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
+		( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
 }
 
 function makeHTMLTagAtts(array $attribs){
 	$ret = '';
 	foreach($attribs as $k => $v){
 		$ret .= ' ' . ($k === 'link_attribute' ? // Bug #3741
-				$v :
-				str_replace('pass_', '', $k) . '="' . $v . '"');
+			$v :
+			str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	return $ret;
 }
@@ -634,8 +637,8 @@ function getWeFrontendLanguagesForBackend(){
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
+			CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+			CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }
@@ -685,8 +688,8 @@ function register_g_l_dir($dir){
 function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
-			array_map(__METHOD__, $tmp) :
-			mb_convert_encoding($tmp, $charset, 'UTF-8'));
+		array_map(__METHOD__, $tmp) :
+		mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
 /**
@@ -702,9 +705,9 @@ function g_l($name, $specific, $omitErrors = false){
 	//t_e($name,$specific,$GLOBALS['we']['PageCharset'] , $GLOBALS['WE_BACKENDCHARSET']);
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 //inside we
-			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
+		(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+		(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = [];
@@ -713,11 +716,11 @@ function g_l($name, $specific, $omitErrors = false){
 		$tmp = getVarArray($cache['l_' . $name], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
-					(is_array($tmp) ?
-					array_map('g_l_encodeArray', $tmp) :
-					mb_convert_encoding($tmp, $charset, 'UTF-8')
-					) :
-					$tmp);
+				(is_array($tmp) ?
+				array_map('g_l_encodeArray', $tmp) :
+				mb_convert_encoding($tmp, $charset, 'UTF-8')
+				) :
+				$tmp);
 		}
 	}
 	$dirs = (empty($_SESSION['weS']['gl']) ? [] : $_SESSION['weS']['gl']);
@@ -744,11 +747,11 @@ function g_l($name, $specific, $omitErrors = false){
 	if($tmp !== false){
 		$cache['l_' . $name] = ${'l_' . $name};
 		return ($charset != 'UTF-8' ?
-				(is_array($tmp) ?
-				array_map('g_l_encodeArray', $tmp) :
-				mb_convert_encoding($tmp, $charset, 'UTF-8')
-				) :
-				$tmp);
+			(is_array($tmp) ?
+			array_map('g_l_encodeArray', $tmp) :
+			mb_convert_encoding($tmp, $charset, 'UTF-8')
+			) :
+			$tmp);
 	}
 	if(!$omitErrors){
 		t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
@@ -772,8 +775,8 @@ function we_templateInit(){
 		}
 //check for Trigger
 		if(empty($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
-				(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-				(empty($GLOBALS['we']['backVars'])) //on first call this variable is unset, so we're not inside an include
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+			(empty($GLOBALS['we']['backVars'])) //on first call this variable is unset, so we're not inside an include
 		){
 			we_schedpro::trigger_schedule();
 		}
@@ -818,7 +821,7 @@ function we_templateInit(){
 
 function we_templateHead($fullHeader = false){
 	if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition ||
-			((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
+		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
 	if($fullHeader && isset($GLOBALS['WE_HTML_HEAD_BODY'])){
@@ -890,8 +893,8 @@ function we_templatePost(){
 		}
 		//check for Trigger
 		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-				(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
-				(empty($GLOBALS['we']['backVars']))//not inside an included Doc
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
+			(empty($GLOBALS['we']['backVars']))//not inside an included Doc
 		){ //is set to Post or not set (new default)
 			session_write_close();
 			flush();
@@ -906,9 +909,9 @@ function we_templatePost(){
 
 function show_SeoLinks(){
 	return (
-			!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE']))))
-			);
+		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE']))))
+		);
 }
 
 function seoIndexHide($basename){
@@ -1099,10 +1102,10 @@ function setDynamicVar($data){
 function updateAvailable(){
 	$versionInfo = we_cache_file::load('newwe_version');
 	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
-			  //in branched mode, we compare svn revisions
-			  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
-			  ) */
-			)){
+		  //in branched mode, we compare svn revisions
+		  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
+		  ) */
+		)){
 		return $versionInfo;
 	}
 	return false;

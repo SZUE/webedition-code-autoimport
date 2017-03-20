@@ -155,7 +155,7 @@ class we_selector_directory extends we_selector_file{
 		if(we_base_permission::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		if(!$showAll && !we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
+		if(!$showAll && !we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db)){
 			return false;
 		}
 		return we_users_util::userIsOwnerCreatorOfParentDir($this->dir, $this->table);
@@ -260,7 +260,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function printSetDirHTML(we_base_jsCmd $weCmd){
-		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db);
 		if($isWS && $this->id == 0){
 			$this->path = '/';
 			$this->dir=0;

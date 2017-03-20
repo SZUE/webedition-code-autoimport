@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_webEditionDocument extends we_textContentDocument{
-
 	// ID of the templates that is used from the document
 	var $TemplateID = 0;
 	// ID of the template that is used from the parked document (Bug Fix #6615)
@@ -201,8 +200,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function formDocTypeTempl(){
 		$disable = (we_base_permission::hasPerm('EDIT_DOCEXTENSION') ?
-				(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
-				true);
+			(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
+			true);
 
 		return '
 <table class="default">
@@ -266,14 +265,14 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return ($templateFromDoctype ?
-						$this->xformTemplatePopup(0) :
-						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
-						);
+					$this->xformTemplatePopup(0) :
+					we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
+					);
 			}
 			$pop = (we_base_permission::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
-					'</td></tr></table>' :
-					$path);
+				'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
+				'</td></tr></table>' :
+				$path);
 
 			return we_html_tools::htmlFormElementTable($pop, g_l('weClass', '[template]'), 'left', 'defaultfont');
 		}
@@ -282,8 +281,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			// if a Doctype is set and this Doctype has defined some templates, just show a select box
 			return ($templateFromDoctype ?
-					$this->xformTemplatePopup(388) :
-					$this->formTemplateWindow() );
+				$this->xformTemplatePopup(388) :
+				$this->formTemplateWindow() );
 		}
 		return $this->formTemplateWindow();
 	}
@@ -314,16 +313,16 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($tlist){
 			$foo = [];
 			foreach($tlist as $tid){
-				if(($tid == $this->TemplateID) || we_users_util::in_workspace($tid, $ws, TEMPLATES_TABLE)){
+				if(($tid == $this->TemplateID) || we_users_util::in_workspace($tid, $ws, TEMPLATES_TABLE, $this->DB_WE)){
 					$foo[] = $tid;
 				}
 			}
 
 			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 AND ID IN (' . ($foo ? implode(',', $foo) : -1) . ') ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [
-						'required' => 'required'], 'left', 'defaultfont', '', $openButton, ['', '']);
+					'required' => 'required'], 'left', 'defaultfont', '', $openButton, ['', '']);
 		}
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [
-						], 'left', 'defaultfont', '', $openButton);
+				], 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -355,9 +354,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Title') . '</td></tr>
 	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Description') . '</td></tr>
 	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Keywords') . '</td></tr>' .
-				$this->getCharsetSelect() .
-				$this->formLangLinks(true) .
-				'</table>';
+			$this->getCharsetSelect() .
+			$this->formLangLinks(true) .
+			'</table>';
 	}
 
 	/**
@@ -371,9 +370,9 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	input field - check value
 			$value = ($this->getElement('Charset') ?:
-					(isset($GLOBALS["meta"]['Charset']) ?
-					$GLOBALS["meta"]['Charset']["default"] :
-					''));
+				(isset($GLOBALS["meta"]['Charset']) ?
+				$GLOBALS["meta"]['Charset']["default"] :
+				''));
 
 			//	menu for all possible charsets
 
@@ -388,7 +387,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = we_html_tools::htmlSelect('we_' . $this->Name . '_attrib[Charset]', we_base_charsetHandler::inst()->getCharsetsByArray($chars), 1, $value, false, ['onchange' => '_EditorFrame.setEditorIsHot(true);'], 'value');
+			$retSelect = we_html_tools::htmlSelect('we_' . $this->Name . '_attrib[Charset]', we_base_charsetHandler::inst()->getCharsetsByArray($chars), 1, $value, false, [
+					'onchange' => '_EditorFrame.setEditorIsHot(true);'], 'value');
 		} else {
 			//	charset-tag NOT available
 			$retSelect = we_html_tools::htmlSelect("dummi2", [g_l('charset', '[error][no_charset_available]')], 1, DEFAULT_CHARSET, false, ['disabled' => 'disabled'], 'value');
@@ -407,7 +407,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function setTemplatePath(){
 		$path = $this->TemplatePath = $this->TemplateID ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), '', $this->DB_WE) : '';
 		$this->TemplatePath = $path ?
-				TEMPLATES_PATH . $path : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
+			TEMPLATES_PATH . $path : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
 	}
 
 	public function setTemplateID($templID){
@@ -441,7 +441,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				return $tagname;
 			case 'input':
 				return (strpos($tag, 'type="date"') !== false) ?
-						'date' : 'txt';
+					'date' : 'txt';
 			default:
 				return 'txt';
 		}
@@ -763,15 +763,15 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
-				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
-				false);
+			we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+			false);
 	}
 
 	// returns the filesize of the document
 	function getFilesize(){
 		return (file_exists($_SERVER['DOCUMENT_ROOT'] . $this->Path) ?
-				filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
-				0);
+			filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
+			0);
 	}
 
 	protected function i_getDocumentToSave(){
@@ -1086,7 +1086,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	protected function getUsedElements($txtNamesOnly = false){
 		if($txtNamesOnly){
 			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : []), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : [
-			]));
+				]));
 		}
 		return $this->usedElementNames;
 	}
@@ -1094,14 +1094,14 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 
 		return we_html_multiIconBox::getHTML('PropertyPage', [
-					['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyWeDoc]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2],
-					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]
-						]);
+				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyWeDoc]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]
+		]);
 	}
 
 }

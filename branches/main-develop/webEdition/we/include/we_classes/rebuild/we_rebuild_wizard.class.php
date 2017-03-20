@@ -33,7 +33,7 @@ class we_rebuild_wizard{
 
 	public function __construct(){
 		$this->jsCmd = new we_base_jsCmd();
-		$this->step=we_base_request::_(we_base_request::INT, 'step', 0);
+		$this->step = we_base_request::_(we_base_request::INT, 'step', 0);
 	}
 
 	/**
@@ -522,9 +522,9 @@ class we_rebuild_wizard{
 
 		if($ws && $folders){
 			$newFolders = [];
-			$foldersArray = makeArrayFromCSV($folders);
+			$foldersArray = explode(',', $folders);
 			foreach($foldersArray as $folder){
-				if(we_users_util::in_workspace($folder, $ws)){
+				if(we_users_util::in_workspace($folder, $ws, FILE_TABLE, $GLOBALS['DB_WE'])){
 					$newFolders[] = $folder;
 				}
 			}
@@ -588,16 +588,16 @@ class we_rebuild_wizard{
 		if($ws && $folders){
 			$newFolders = [];
 			//$wsArray = makeArrayFromCSV($ws);
-			$foldersArray = makeArrayFromCSV($folders);
-			for($i = 0; $i < count($foldersArray); $i++){
-				if(we_users_util::in_workspace($foldersArray[$i], $ws)){
-					$newFolders[] = $foldersArray[$i];
+			$foldersArray = explode(',', $folders);
+			foreach($foldersArray as $folder){
+				if(we_users_util::in_workspace($folder, $ws, FILE_TABLE, $GLOBALS['DB_WE'])){
+					$newFolders[] = $folder;
 				}
 			}
 			$folders = implode(',', $newFolders);
 		}
 
-		if($ws && strpos($ws, (',0,')) !== true && ($metaFolders == '' || $metaFolders == '0')){
+		if($ws && !in_array(0, $ws) && ($metaFolders == '' || $metaFolders == '0')){
 			$metaFolders = get_def_ws(FILE_TABLE);
 		}
 
