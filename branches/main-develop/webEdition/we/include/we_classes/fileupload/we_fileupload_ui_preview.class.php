@@ -45,6 +45,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $contentType;
 	protected $extension;
 
+	private static $scaleProps = ['' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560];
+
 	public function __construct($contentType = '', $extension = ''){
 		parent::__construct('we_File');
 
@@ -123,36 +125,37 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		]);
 	}
 
-	public static function getFormImageEditClientside($multimport = false, $disabled = false){
-		///FIXME: $reeditCmd is undefined!!!
-
-
-		$editCheckbox = we_html_forms::checkboxWithHidden(false, 'fuOpts_doEdit', $multimport ? g_l('importFiles', '[edit_imgsBeforeUpload]') : g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){' . $reeditCmd . '}');
-		$attribs = array_merge($disabled ? ['disabled' => 'disabled'] : [], ['name' => 'fuOpts_scale', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($multimport ? ' multiimport' : ''), 'autocomplete' => 'off']);
+	public static function getFormImageEditClientside($multimport = false){
+		$editCheckbox = $multimport || self::IMAGEEDIT_MAX_LONGEST !== -1 ? we_html_element::htmlHidden(fuOpts_doEdit, 1) :
+				we_html_forms::checkboxWithHidden(false, 'fuOpts_doEdit', g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');');
+		$attribs = ['name' => 'fuOpts_scale', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($multimport ? ' multiimport' : ''), 'autocomplete' => 'off', 'value' => (self::IMAGEEDIT_MAX_LONGEST !== -1 ? self::IMAGEEDIT_MAX_LONGEST : '')];
 		$scaleValue = we_html_element::htmlInput($attribs);
-		$scalePropositions = we_html_tools::htmlSelect('fuOpts_scaleProps', ['' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560], 1, 0, false, [], '', '', 'weSelect optsScalePropositions' . ($multimport ? ' multiimport' : ''));
+		$scaleProps = self::IMAGEEDIT_MAX_LONGEST === -1 ? self::$scaleProps : array_filter(self::$scaleProps, function($val){return $val <= self::IMAGEEDIT_MAX_LONGEST;});
+		$scalePropositions = we_html_tools::htmlSelect('fuOpts_scaleProps', $scaleProps, 1, 0, false, [], '', '', 'weSelect optsScalePropositions' . ($multimport ? ' multiimport' : ''));
 		$scaleWhatSelect = we_html_tools::htmlSelect('fuOpts_scaleWhat', [
 				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]')
-				], 1, 0, false, ($disabled ? ['disabled' => 'disabled'] : []), '', $multimport ? 0 : 155, 'weSelect optsUnitSelect' . ($multimport ? ' multiimport' : ''));
+				], 1, 0, false, [], '', $multimport ? 0 : 155, 'weSelect optsUnitSelect' . ($multimport ? ' multiimport' : ''));
 		$scaleHelp = we_html_element::htmlDiv(['data-index' => '0', 'class' => 'optsRowScaleHelp'], '<span class="fa-stack alertIcon" style="color:black;"><i class="fa fa-question-circle" ></i></span>' . we_html_element::htmlDiv(['class' => 'optsRowScaleHelpText']));
+		if(!$multimport){
 		$rotateSelect = we_html_tools::htmlSelect('fuOpts_rotate', [
 				0 => g_l('weClass', '[rotate0]'),
 				180 => g_l('weClass', '[rotate180]'),
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
-				], 1, 0, false, ($disabled ? ['disabled' => 'disabled'] : []), '28', 0, 'weSelect optsRotateSelect' . ($multimport ? ' multiimport' : ''));
+				], 1, 0, false, [], '28', 0, 'weSelect optsRotateSelect');
+		}
 		$quality = we_html_element::htmlInput(['type' => 'range', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality', 'class' => 'optsQuality']);
 		$btnProcess = we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", '', 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv([], $editCheckbox) .
-			we_html_element::htmlDiv(['class' => 'imgEditOpts', 'id' => 'editImage'], we_html_element::htmlDiv(['class' => 'scaleDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[scale_label]') . ':') .
+			we_html_element::htmlDiv(['class' => 'imgEditOpts' . ($multimport || self::IMAGEEDIT_MAX_LONGEST !== -1  ? '' : ' hidden'), 'id' => 'editImage'], we_html_element::htmlDiv(['class' => 'scaleDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[scale_label]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $scaleWhatSelect . ' ' . $scalePropositions . $scaleValue) . $scaleHelp
 				) .
-				we_html_element::htmlDiv(['class' => 'rotationDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[rotate_label]') . ':') .
+				($multimport ? '' : we_html_element::htmlDiv(['class' => 'rotationDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[rotate_label]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $rotateSelect)
-				) .
+				)) .
 				we_html_element::htmlDiv(['class' => 'qualityDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('weClass', '[quality]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $quality) .
 					we_html_element::htmlDiv(['id' => 'qualityValue', 'class' => 'qualityValueContainer'], 100) .

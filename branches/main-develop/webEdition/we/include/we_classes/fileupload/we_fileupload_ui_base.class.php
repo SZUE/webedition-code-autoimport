@@ -65,6 +65,8 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $fileNameTemp = "";
 	protected $cliensideImageEditing = false;
 
+	const IMAGEEDIT_MAX_LONGEST = -1;
+
 	public function __construct($name){
 		parent::__construct($name);
 		$this->setGenericFileName();
@@ -297,7 +299,8 @@ class we_fileupload_ui_base extends we_fileupload{
 				'moreFieldsToAppend' => $this->moreFieldsToAppend,
 				'isInternalBtnUpload' => $this->isInternalBtnUpload,
 				'responseClass' => $this->responseClass,
-				'clientsideImageEditing' => ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0)
+				'clientsideImageEditing' => ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0),
+				'imageeditMaxLongest' => self::IMAGEEDIT_MAX_LONGEST
 			];
 	}
 
@@ -332,6 +335,8 @@ WE().consts.g_l.fileupload = {
 		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
 		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
 		uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+		editMaxLongest : "' . g_l('importFiles', '[imgedit_maxLongest]') . '",
+		editScaleMandatory : "' . g_l('importFiles', '[imgedit_mandatoryScale]') . '"
 };';
 	}
 }

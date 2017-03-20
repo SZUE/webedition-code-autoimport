@@ -614,7 +614,7 @@ function weFileupload_sender_import(uploader) {
 		if (!self.isCancelled) {
 			self.view.elems.footer.setProgress('', 100);
 			self.view.elems.footer.setProgressText('progress_title', '');
-			top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
+			top.we_showMessage(resp.completed.message, WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
 
 			if(self.nextCmd){
 				window.setTimeout(function () {
