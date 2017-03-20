@@ -170,7 +170,7 @@ abstract class we_workflow_utility{
 		}
 		$i = $doc->findLastActiveStep();
 		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
-				false : true);
+			false : true);
 	}
 
 	/**
@@ -236,7 +236,7 @@ abstract class we_workflow_utility{
 	}
 
 	static function getAllWorkflowDocs($table, we_database_base $db){
-		$db->query('SELECT DISTINCT doc.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' doc LEFT JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE doc.Status = ' . we_workflow_workflow::STATE_INACTIVE. ' AND wf.Type IN(' . self::getTypeForTable($table) . ')');
+		$db->query('SELECT DISTINCT doc.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' doc LEFT JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE doc.Status = ' . we_workflow_workflow::STATE_INACTIVE . ' AND wf.Type IN(' . self::getTypeForTable($table) . ')');
 		return array_unique($db->getAll(true));
 	}
 
@@ -288,23 +288,23 @@ WHERE docstep.startDate!=0 AND (docstep.startDate+ ROUND(step.Worktime*3600))<UN
 		while($db->next_record()){
 			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
-			$userID = $userID ? : $workflowDocument->userID;
+			$userID = $userID ?: $workflowDocument->userID;
 			$_SESSION['user']['ID'] = $userID;
 			if(!self::isWorkflowFinished($workflowDocument->document->ID, $workflowDocument->document->Table)){
 				$workflowStep = new we_workflow_step($db->f('stepID'));
 				if($workflowStep->timeAction == 1){
-					$ret.='(ID: ' . $workflowDocument->ID . ') ';
+					$ret .= '(ID: ' . $workflowDocument->ID . ') ';
 					if($workflowDocument->findLastActiveStep() >= count($workflowDocument->steps) - 1){
 						if($workflowDocument->workflow->LastStepAutoPublish){
 							$workflowDocument->autopublish($userID, g_l('modules_workflow', '[auto_published]'), true);
-							$ret.= g_l('modules_workflow', '[auto_published]') . "\n";
+							$ret .= g_l('modules_workflow', '[auto_published]') . "\n";
 						} else {
 							$workflowDocument->decline($userID, g_l('modules_workflow', '[auto_declined]'), true);
-							$ret.=g_l('modules_workflow', '[auto_declined]') . "\n";
+							$ret .= g_l('modules_workflow', '[auto_declined]') . "\n";
 						}
 					} else {
 						$workflowDocument->approve($userID, g_l('modules_workflow', '[auto_approved]'), true);
-						$ret.= g_l('modules_workflow', '[auto_approved]') . "\n";
+						$ret .= g_l('modules_workflow', '[auto_approved]') . "\n";
 					}
 				}
 				$workflowDocument->save();

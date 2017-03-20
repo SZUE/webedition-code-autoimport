@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_class_folder extends we_folder{
-
 	var $ClassPath = ''; //#4076
 	var $RootfolderID = ''; //#4076
 	var $searchclass;
@@ -195,7 +194,7 @@ class we_class_folder extends we_folder{
 		$but = we_html_button::create_button(we_html_button::SELECT, $this->ID ? "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', ' 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR), '', 0, 0, "", "", $disabled);
 
 		return '<table class="default" style="margin-bottom:2px;"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-				we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr></table>';
+			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr></table>';
 	}
 
 	private function setDefaultWorkspaces(){
@@ -214,8 +213,8 @@ class we_class_folder extends we_folder{
 	function searchProperties(){
 		$userWSArray = $this->setDefaultWorkspaces();
 		$where = (isset($this->searchclass->searchname) ?
-				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-				$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
+			$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
+			$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
@@ -255,7 +254,7 @@ class we_class_folder extends we_folder{
 					'<i class="fa fa-square-o wecheckIcon disabled"></i>')],
 				["align" => "center",
 					"height" => 35,
-					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
+					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',', $this->searchclass->f("Workspaces")), FILE_TABLE, $this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
 					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
     <i class="fa fa-stack-1x fa-cog"></i>
 </span>' :
@@ -304,8 +303,8 @@ class we_class_folder extends we_folder{
 		}
 
 		$where = (isset($this->searchclass->searchname) ?
-				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+			$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
+			$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
@@ -360,12 +359,12 @@ class we_class_folder extends we_folder{
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
 			$content[$f] = [["align" => "center",
-			'dat' => (we_base_permission::hasPerm("DELETE_OBJECTFILE") ?
-			'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
-			'<i class="fa fa-square-o wecheckIcon disabled"></i>'
-			)],
+				'dat' => (we_base_permission::hasPerm("DELETE_OBJECTFILE") ?
+				'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
+				'<i class="fa fa-square-o wecheckIcon disabled"></i>'
+				)],
 				["align" => "center",
-					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
+					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',',$this->searchclass->f("Workspaces")),FILE_TABLE,$this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
 					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
     <i class="fa fa-stack-1x fa-cog"></i>
 </span>' :
@@ -460,17 +459,17 @@ class we_class_folder extends we_folder{
 				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
 				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" ?
-						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
-						[0 => g_l('global', '[no]'),
+					$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
+					[0 => g_l('global', '[no]'),
 					1 => g_l('global', '[yes]'),
-						]
-						);
+					]
+					);
 
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', '[search]') . '</td>
 	<td style="width:50px;"></td>'
-						. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
+					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
 	<td style="width:10px;"></td>
 	<td style="width:50px;">' . we_search_base::getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td style="width:10px;"></td>
@@ -510,11 +509,11 @@ class we_class_folder extends we_folder{
 	<td>' . we_search_base::getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td style="width:10px;"></td>
 	<td>' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' - ' .
-						we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' - ' .
-						we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;' .
-						we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' : ' .
-						we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) .
-						'</td>
+					we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' - ' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' : ' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) .
+					'</td>
 	<td style="width:10px;"></td>
 	<td style="text-align:right">' . $button . '</td>
 </tr>';
@@ -564,9 +563,9 @@ class we_class_folder extends we_folder{
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 <form name="we_form" method="post">' . we_class::hiddenTrans() .
-				we_html_element::htmlHiddens(["Order" => $this->searchclass->Order,
-					"do" => ''
-				]) . '
+			we_html_element::htmlHiddens(["Order" => $this->searchclass->Order,
+				"do" => ''
+			]) . '
 <table class="default withSpace" style="margin-bottom:20px;">
 	<tr>
 		<td class="defaultfont lowContrast" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
@@ -575,20 +574,20 @@ class we_class_folder extends we_folder{
 	<tr>
 		<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
 		<td style="width:40px;">' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", ['onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');']) .
-				'</td>
+			'</td>
 		<td style="width:10px;">&nbsp;</td>
 		<td style="width:350px;">' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>	</tr>
 <tr>
 	<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[anzeige]') . '</td>
 	<td colspan="3">' . we_html_tools::htmlSelect('searchView', ['properties' => g_l('weClass', '[properties]'), 'fields' => g_l('modules_objectClassfoldersearch', '[FELDER]')], 1, $this->searchView, "", [
-					'onchange' => 'this.form.elements.SearchStart.value=0;submit();']) . '</td>
+				'onchange' => 'this.form.elements.SearchStart.value=0;submit();']) . '</td>
 </tr>
 </table>
 	<table class="default" style="margin-bottom:12px;">
 	<tr>
 		<td class="defaultfont lowContrast" style="width:200px">' . (we_base_permission::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
-				//(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
-				'</td>
+			//(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
+			'</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>

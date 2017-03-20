@@ -47,7 +47,7 @@ abstract class we_users_util{
 			$ret[$db_tmp->f("ID")] = ["name" => $db_tmp->f("username"),
 				"ParentID" => $id,
 				"Type" => $db_tmp->f("Type")
-				];
+			];
 			$section = self::getUserTree($db_tmp->f("ID"));
 			$ret = array_merge($ret, $section);
 		}
@@ -65,7 +65,7 @@ abstract class we_users_util{
 		if(in_array($uid, $users)){
 			return true;
 		}
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 
 		$aliases = self::getAliases($uid, $db);
 		foreach($aliases as $aid){
@@ -92,7 +92,7 @@ abstract class we_users_util{
 	}
 
 	static function isUserInGroup($uid, $groupID, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid), "ParentID", $db);
 		if($pid == $groupID){
 			return true;
@@ -214,7 +214,7 @@ abstract class we_users_util{
 		if(!defined('OBJECT_FILES_TABLE')){
 			return [];
 		}
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 		$out = [];
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
 //		$ws = get_ws(FILE_TABLE, true);
@@ -243,32 +243,21 @@ abstract class we_users_util{
 		return $out;
 	}
 
-	public static function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-		$db = ($db ? : new DB_WE());
-
-		if(!is_array($IDs)){
-			$IDs = explode(',', trim($IDs, ','));
-		}
-		if(!is_array($wsIDs)){
-			$wsIDs = explode(',', trim($wsIDs, ','));
-		}
-
-		if(empty($wsIDs) || empty($IDs)){
+	public static function in_workspace($ID, array $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
+		if(empty($wsIDs) || (in_array(0, $wsIDs))){
 			return true;
 		}
+		$ID = intval($ID);
 
-		if(!$wsIDs || (in_array(0, $wsIDs))){
-			return true;
+		if($ID === 0){
+			return (!$norootcheck ? false : true);
 		}
 
-		if((!$norootcheck) && in_array(0, $IDs)){
-			return false;
-		}
-		foreach($IDs as $id){
-			foreach($wsIDs as $ws){
-				if(in_parentID($id, $ws, $table, $db) || ($id == $ws) || ($id == 0)){
-					return true;
-				}
+		$db = ($db ?: new DB_WE());
+
+		foreach($wsIDs as $ws){
+			if(($ID == $ws) || in_parentID($ID, $ws, $table, $db)){
+				return true;
 			}
 		}
 		return false;

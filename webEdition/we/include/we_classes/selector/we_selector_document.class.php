@@ -69,7 +69,7 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function printCmdHTML(we_base_jsCmd $weCmd){
-		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db);
 		$weCmd->addCmd('setButtons', [['NewFileBut', $isWS && $this->userCanMakeNewFile]]);
 		parent::printCmdHTML($weCmd);
 	}
@@ -159,7 +159,7 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function getFsQueryString($what){
-		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this). '&what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
+		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this) . '&what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
@@ -191,7 +191,7 @@ class we_selector_document extends we_selector_directory{
 			case we_base_ContentTypes::WEDOCUMENT:
 				break;
 			default:
-				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'true' : 'false';
+				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db)) && $this->userCanMakeNewFile) ? 'true' : 'false';
 				$buttons[] = ['NewFileBut', $tmp];
 		}
 
@@ -250,7 +250,7 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function printSetDirHTML(we_base_jsCmd $weCmd){
-		$isWS = $this->userCanMakeNewFile && we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = $this->userCanMakeNewFile && we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db);
 		$weCmd->addCmd('setButtons', [['NewFileBut', $isWS]]);
 		parent::printSetDirHTML($weCmd);
 	}
@@ -392,7 +392,7 @@ class we_selector_document extends we_selector_directory{
 						$result['Text']
 						)
 						],
-							["caption" => "ID",
+						["caption" => "ID",
 							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><i style='margin-right:4px' class='fa fa-edit fa-lg'></i>" . $this->id . "</a>"
 						]
 					]],
