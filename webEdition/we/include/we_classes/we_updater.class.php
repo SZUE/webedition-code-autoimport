@@ -231,6 +231,9 @@ abstract class we_updater{
 
 	private static function upgradeTblLink(we_database_base $db){
 		//added in 7.0
+		if(!$db->isTabExist(LINK_TABLE)){
+			return;
+		}
 		if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\' LIMIT 1')){
 			$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=unhex(md5(Name))');
 			$db->delKey(LINK_TABLE, 'PRIMARY');
@@ -362,6 +365,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function updateContentTable(we_database_base $db, array $progress = []){
+		if(!$db->isTabExist(LINK_TABLE)){
+			return false;
+		}
 		$init = $progress = ($progress ?: [
 			'pos' => 0,
 			'maxID' => 0,
