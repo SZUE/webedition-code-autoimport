@@ -370,6 +370,7 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	'upload'=>array(
 		'title'=>'File upload',
 		'use_legacy'=>'use legacy HTML File Upload',
+		'we_max_img_size'=>'Longest image edge max.',
 		'we_max_size'=>'Максимально возможный объем',
 		'we_max_size_hint'=>'(в MByte, 0=automatic)',
 	),

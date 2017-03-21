@@ -370,6 +370,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'upload'=>array(
 		'title'=>'Datei-Upload',
 		'use_legacy'=>'bisherigen Uploader nutzen (deprecated)',
+		'we_max_img_size'=>'Längere Seite des Bildes maximal',
 		'we_max_size'=>'Maximale Upload Größe',
 		'we_max_size_hint'=>'(0 = unbegrenzt)',
 	),
