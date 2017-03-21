@@ -79,11 +79,9 @@ $GLOBALS['configs'] = [// Create array for needed configuration variables
 		'EXECUTE_HOOKS' => ['Default setting for hook execution', we_base_request::BOOL, false],
 // xhtml
 		'XHTML_DEFAULT' => ['Default setting for xml attribute', we_base_request::BOOL, true],
-		/* 'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
-		  'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
-		 */
 //system
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => ['Set the maximum size a file can have', we_base_request::INT, 128],
+		'FILE_UPLOAD_IMG_MAX_SIZE' => ['Set the maximum size a file can have', we_base_request::INT, 0],
 		'WE_NEW_FOLDER_MOD' => ['File permissions when creating a new directory', we_base_request::INT, 755], //this should be string but deny access by user doesn't make sense
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => ['Which Doctypes should be shown for which workspace', we_base_request::BOOL, false],
 		'SCHEDULER_TRIGGER' => ['decide how the scheduler works', we_base_request::INT, 1], //postdoc
@@ -92,8 +90,8 @@ $GLOBALS['configs'] = [// Create array for needed configuration variables
 		'SYSTEM_WE_SESSION_CRYPT' => ['crypt we session before save', we_base_request::INT, 2],
 // accessibility
 		'SHOWINPUTS_DEFAULT' => ['Default setting for showinputs attribute', we_base_request::BOOL, true],
-		/* 		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
-		  'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'), */
+		'WYSIWYG_TYPE' => ['define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'],
+		//'WYSIWYG_TYPE_FRONTEND' => ['define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'],
 		'WE_MAILER' => ['mailer type; possible values are php and smtp', we_base_request::STRING, 'php'],
 		'SMTP_SERVER' => ['SMTP_SERVER', we_base_request::STRING, 'localhost'],
 		'SMTP_PORT' => ['SMTP server port', we_base_request::INT, 25],

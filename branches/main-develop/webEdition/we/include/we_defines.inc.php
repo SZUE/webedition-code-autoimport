@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 define('SERIALIZE_PHP', 'serialize');
 define('SERIALIZE_JSON', 'json');
-define('IS_TINYMCE_4', true);
+define('IS_TINYMCE_4', WYSIWYG_TYPE == "tinyMCE_beta");
 
 define('WEBEDITION_DIR', '/webEdition/');
 

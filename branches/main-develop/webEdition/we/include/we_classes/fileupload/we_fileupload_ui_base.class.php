@@ -65,8 +65,6 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $fileNameTemp = "";
 	protected $cliensideImageEditing = false;
 
-	const IMAGEEDIT_MAX_LONGEST = -1;
-
 	public function __construct($name){
 		parent::__construct($name);
 		$this->setGenericFileName();
@@ -300,8 +298,8 @@ class we_fileupload_ui_base extends we_fileupload{
 				'isInternalBtnUpload' => $this->isInternalBtnUpload,
 				'responseClass' => $this->responseClass,
 				'clientsideImageEditing' => ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0),
-				'imageeditMaxLongest' => self::IMAGEEDIT_MAX_LONGEST
-			];
+				'imageeditMaxLongest' => (FILE_UPLOAD_IMG_MAX_SIZE ?: -1)
+		];
 	}
 
 	public static function getJSLangConsts(){
