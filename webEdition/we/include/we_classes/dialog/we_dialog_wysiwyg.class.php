@@ -44,11 +44,10 @@ class we_dialog_wysiwyg extends we_dialog_base{
 		$this->initByHttp();
 	}
 
-	public function initByHttp($editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
+	public function initByHttp(){
 		parent::initByHttp();
 
 		$this->dialogProperties = (array) json_decode($this->args['dialogProperties']);
-
 		$this->charset = $this->dialogProperties['weCharset'];
 		if(!$this->charset){
 			t_e('charset not found for wysiwyg', $this->charset);
@@ -61,7 +60,6 @@ class we_dialog_wysiwyg extends we_dialog_base{
 
 	public static function getDialog($nointernals = false, $editorType = we_wysiwyg_editor::TYPE_INLINE_FALSE){
 		$inst = new we_dialog_wysiwyg($nointernals, $editorType);
-		$inst->initByHttp();
 
 		return $inst->getHTML();
 	}
@@ -74,7 +72,7 @@ class we_dialog_wysiwyg extends we_dialog_base{
 	}
 
 	function getDialogContentHTML(){
-		$e = new we_wysiwyg_editor($this->dialogProperties, $this->editorType);
+		$e = new we_wysiwyg_editor($this->dialogProperties, $this->dialogProperties['weEditorType']);
 
 		return we_html_element::htmlDiv(['style' => 'position:absolute;top:0;bottom:0px;left:0px;right:0px;overflow:hidden;margin:0px'], $e->getHTML());
 	}

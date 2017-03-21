@@ -24,6 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 define('SERIALIZE_PHP', 'serialize');
 define('SERIALIZE_JSON', 'json');
+define('IS_TINYMCE_4', true);
 
 define('WEBEDITION_DIR', '/webEdition/');
 
@@ -40,11 +41,11 @@ define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('ICON_DIR', IMAGE_DIR . 'icons/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('WE_JS_MODULES_DIR', JS_DIR . 'we_modules/');
-define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');
+define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/' . (IS_TINYMCE_4 ? 'tinymce_4' : 'tinymce') . '/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
-define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
+define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/' . (IS_TINYMCE_4 ? 'tinymce_4' : 'tinymce') . '/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 define('WE_CACHE_DIR', WEBEDITION_DIR . 'we/cache/');
 
