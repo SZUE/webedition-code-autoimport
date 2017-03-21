@@ -1587,7 +1587,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 
 				$settings[] = ["headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $we_max_upload_size, 'space' => we_html_multiIconBox::SPACE_BIG];
 
-				$img = new we_html_select(['name' => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"]);
+				$img = new we_html_select(['name' => "newconf[FILE_UPLOAD_IMG_MAX_SIZE]", "class" => "weSelect"]);
 				$op = we_fileupload_ui_preview::$scaleProps;
 				$op[''] = g_l('siteimport', '[nolimit]');
 				$img->addOptions($op);
