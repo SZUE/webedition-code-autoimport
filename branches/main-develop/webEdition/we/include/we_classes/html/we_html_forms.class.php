@@ -129,6 +129,7 @@ abstract class we_html_forms{
 		$width = weTag_getAttribute('width', $attribs, '', we_base_request::UNIT);
 		$height = weTag_getAttribute('height', $attribs, '', we_base_request::UNIT);
 		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : '', we_base_request::STRING));
+		$menu = preg_replace('/ *, */', ',', weTag_getAttribute('menu', $attribs, '', we_base_request::STRING));
 		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs, '', we_base_request::STRING));
 		$bgcolor = weTag_getAttribute('bgcolor', $attribs, '', we_base_request::STRING);
 		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, we_base_request::BOOL);
@@ -203,10 +204,10 @@ abstract class we_html_forms{
 			$fontsizes = weTag_getAttribute('fontsizes', $attribs, '', we_base_request::STRING);
 
 			if($inlineedit){
-				$e = new we_wysiwyg_editor([], we_wysiwyg_editor::TYPE_INLINE_TRUE, $name, $width, $height, $value, $commands, $bgcolor, $class, $fontnames, $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
+				$e = new we_wysiwyg_editor([], we_wysiwyg_editor::TYPE_INLINE_TRUE, $name, $width, $height, $value, $commands, $bgcolor, $class, $fontnames, $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes, $menu);
 				return $out . $e->getHTML();
 			}
-			$e = new we_wysiwyg_editor([], we_wysiwyg_editor::TYPE_EDITBUTTON, $name, $width, $height, '', $commands, $bgcolor, $class, $fontnames, $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
+			$e = new we_wysiwyg_editor([], we_wysiwyg_editor::TYPE_EDITBUTTON, $name, $width, $height, '', $commands, $bgcolor, $class, $fontnames, $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes, $menu);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
 				$hiddenTextareaContent = strtr(we_wysiwyg_editor::parseInternalImageSrc($value), ["##|r##" => "\r", "##|n##" => "\n"]);

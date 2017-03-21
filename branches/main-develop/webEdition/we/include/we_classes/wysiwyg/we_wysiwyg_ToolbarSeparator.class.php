@@ -33,7 +33,7 @@ class we_wysiwyg_ToolbarSeparator extends we_wysiwyg_ToolbarElement{
 		return '<div style="border-right: #999999 solid 1px; font-size: 0px; height: ' . $this->height . 'px ! important; width: ' . ($this->width - 1) . 'px;position: relative;" class="tbButtonWysiwygDefaultStyle"></div>';
 	}
 
-	function hasProp($cmd = '', $contextMenu = false){
+	function hasProp($cmd = '', $showWhere = self::SHOW_IN_TOOLBAR){
 		return true;
 	}
 

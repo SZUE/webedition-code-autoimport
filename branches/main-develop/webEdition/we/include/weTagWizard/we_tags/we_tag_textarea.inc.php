@@ -31,6 +31,7 @@ $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_
 $php = new weTagData_selectAttribute('php', weTagData_selectAttribute::getTrueFalse(), false, '');
 $commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 $contextmenu = new weTagData_choiceAttribute('contextmenu', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
+$menu = new weTagData_choiceAttribute('menu', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 $fontnames = new weTagData_choiceAttribute('fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames', true), false, true, '');
 $fontsizes = new weTagData_choiceAttribute('fontsizes', we_wysiwyg_editor::getAttributeOptions('fontsizes', true), false, true, '');
 $formats = new weTagData_choiceAttribute('formats', we_wysiwyg_editor::getAttributeOptions('formats', true), false, true, '');
@@ -48,8 +49,8 @@ $tinyparams = new weTagData_textAttribute('tinyparams', false, '');
 $templates = new weTagData_textAttribute('templates', false, '');
 $gallerytemplates = new weTagData_textAttribute('gallerytemplates', false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', [new weTagDataOption('true', false, '', [$name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid], [$name]),
+$this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', [new weTagDataOption('true', false, '', array_filter([$name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, (IS_TINYMCE_4 ? $menu : false), $contextmenu, $fontnames, $fontsizes, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid]), [$name]),
 	new weTagDataOption('false', false, '', [$name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr/*, $spellcheck*/], [$name])], false, '');
 
-$this->Attributes = [$name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $xml, $abbr,
-	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid];
+$this->Attributes = array_filter([$name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, (IS_TINYMCE_4 ? $menu : false), $contextmenu, $fontnames, $fontsizes, $formats, $xml, $abbr,
+	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, /*$spellcheck,*/ $templates, $gallerytemplates, $tinyparams, $imagestartid]);

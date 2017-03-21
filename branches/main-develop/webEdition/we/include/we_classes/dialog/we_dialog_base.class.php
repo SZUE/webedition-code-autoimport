@@ -207,20 +207,22 @@ class we_dialog_base{
 						'onEnterKey' => intval($this->pageNr == $this->numPages && $this->onOkJsOnly),
 						'pluginName' => $this->tinyDialogName
 				])]) .
-			self::getTinyMceJS() .
+			self::getTinyMceDialogJS() .
 				$this->getJs() .
 				we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 				$additionals .
 				$this->jsCmd->getCmds());
 	}
 
-	protected static function getTinyMceJS(){
-		return
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
+	protected static function getTinyMceDialogJS(){
+		$path = TINYMCE_SRC_DIR;
+
+		return we_html_element::jsScript($path . 'tiny_mce_popup.js') .
+			(IS_TINYMCE_4 ? we_html_element::jsScript('/webEdition/js/wysiwyg/tinymce_4/weTinyMce_popup_overwrites.js') : '') .
+			we_html_element::jsScript($path . 'utils/mctabs.js') .
+			we_html_element::jsScript($path . 'utils/form_utils.js') .
+			we_html_element::jsScript($path . 'utils/validate.js') .
+			we_html_element::jsScript($path . 'utils/editable_selects.js');
 	}
 
 	protected function getJs(){

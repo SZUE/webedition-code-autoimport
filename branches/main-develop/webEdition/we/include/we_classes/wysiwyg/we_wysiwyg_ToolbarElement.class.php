@@ -24,26 +24,54 @@ class we_wysiwyg_ToolbarElement{
 	var $cmd;
 	var $editor;
 	var $classname = __CLASS__;
-	var $showMe = false;
-	var $showMeInContextmenu = false;
-	var $isSeparator = false;
+	protected $showMeInToolbar = false;
+	protected $showMeInContextmenu = false;
+	protected $isSeparator = false;
+	protected $showWhere = '';
+	
+	const SHOW_IN_TOOLBAR = 'toolbar';
+	const SHOW_IN_CONTEXTMENU = 'contextmenu';
+	const SHOW_IN_MENU = 'menu';
 
 	function __construct($editor, $cmd, $width, $height = ""){
 		$this->editor = $editor;
 		$this->width = $width;
 		$this->height = $height;
 		$this->cmd = $cmd;
-		$this->showMe = $this->hasProp();
+		$this->showMeInToolbar = $this->hasProp('', self::SHOW_IN_TOOLBAR);
+	}
+
+	public function isSeparator(){
+		return $this->isSeparator;
+	}
+
+	public function isShowInToolbar(){
+		return $this->showMeInToolbar;
+	}
+
+	public function isShowInMenu(){
+		return $this->showMeInMenu;
+	}
+
+	public function isShowInContextmenu(){
+		return $this->showMeInContextmenu;
 	}
 
 	function getHTML(){
 		return '';
 	}
 
-	function hasProp($cmd = '', $contextMenu = false){
+	function hasProp($cmd = '', $showWhere = ''){
 		$cmd = ($cmd ? : $this->cmd);
-		return !$contextMenu ? stripos($this->editor->getPropString(), ',' . $cmd . ',') !== false || $this->editor->getPropString() == '' :
-			stripos($this->editor->getRestrictContextmenu(), ',' . $cmd . ',') !== false;
+
+		switch($showWhere){
+			case self::SHOW_IN_MENU:
+				return in_array($cmd, $this->editor->getMenuCommands());
+			case self::SHOW_IN_CONTEXTMENU:
+				return stripos($this->editor->getRestrictContextmenu(), ',' . $cmd . ',') !== false;
+			default: // classic toolbar
+				return stripos($this->editor->getPropString(), ',' . $cmd . ',') !== false || $this->editor->getPropString() == '';
+		}
 	}
 
 }
