@@ -258,20 +258,17 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 	we_html_element::jsScript(JS_DIR . 'weButton.js') .
 	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
 	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-
 	we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_uploader.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_controller.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_sender.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_view.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_imageEdit.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_utils.js') .
-
 	we_html_element::jsScript(LIB_DIR . 'additional/ExifReader/ExifReader.js', 'WE().layout.fileupload.ExifReader = window.ExifReader;') .
 	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksEncode/index.js', 'WE().layout.fileupload.encodehunks = window.encodeChunks;') .
 	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/index.js', 'WE().layout.fileupload.extractChunks = window.extractChunks; WE().layout.fileupload.decodeChunks = window.decodeChunks;') .
 	we_html_element::jsScript(LIB_DIR . 'additional/pngChunksExtract/crc32.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/pica/pica.js', 'WE().layout.fileupload.pica = window.pica;') .
-
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_config.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_functionsTop.js') .
 	we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_tinyWrapper.js') .
@@ -294,14 +291,15 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 		startMsg();
 		checkPwd(<?= intval(empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])); ?>);
 		updateCheck(<?= (empty($versionInfo) ? '0,0,0' : '1,\'' . $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')\',\'' . $versionInfo['date'] . '\'') ?>);
-		self.focus();" onbeforeunload ="return doUnload();">
+		self.focus();" onbeforeunload ="return doUnload();"><?= we_html_element::htmlDiv(['id' => 'loginScreen'], '<div id="loading"><i class="fa fa-5x fa-spinner fa-pulse"></i></div>'); ?>
 <dialog id="alertBox"></dialog>
+<div id="weMainDiv">
 <div id="headerDiv"><?php
-	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-	?>
+			$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+			?>
 	<div id="weMainHeader"><?php
-		we_main_headermenu::pbody();
-		?>
+	we_main_headermenu::pbody();
+	?>
 	</div>
 </div>
 <div id="resizeFrame"><?php
@@ -324,34 +322,34 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 	?>
 	<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
 		<div id="vtabs"><?php
-			$vtab = [
-				'FILE_TABLE' => [
-					'show' => we_base_permission::hasPerm('CAN_SEE_DOCUMENTS'),
-					'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
-				],
-				'TEMPLATES_TABLE' => [
-					'show' => we_base_permission::hasPerm('CAN_SEE_TEMPLATES'),
-					'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
-				],
-				'OBJECT_FILES_TABLE' => [
-					'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES'),
-					'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
-				],
-				'OBJECT_TABLE' => [
-					'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS"),
-					'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
-				],
-				'VFILE_TABLE' => [
-					'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS"),
-					'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
-				]
-			];
-			foreach($vtab as $tab => $val){
-				if($val['show']){
-					echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
-				}
-			}
-			?>
+	$vtab = [
+		'FILE_TABLE' => [
+			'show' => we_base_permission::hasPerm('CAN_SEE_DOCUMENTS'),
+			'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
+		],
+		'TEMPLATES_TABLE' => [
+			'show' => we_base_permission::hasPerm('CAN_SEE_TEMPLATES'),
+			'desc' => '<i class="fa fa-file-code-o"></i> ' . g_l('global', '[templates]'),
+		],
+		'OBJECT_FILES_TABLE' => [
+			'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm('CAN_SEE_OBJECTFILES'),
+			'desc' => '<i class="fa fa-file"></i> ' . g_l('global', '[objects]'),
+		],
+		'OBJECT_TABLE' => [
+			'show' => defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS"),
+			'desc' => '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' . g_l('javaMenu_object', '[classes]'),
+		],
+		'VFILE_TABLE' => [
+			'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS"),
+			'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
+		]
+	];
+	foreach($vtab as $tab => $val){
+		if($val['show']){
+			echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
+		}
+	}
+	?>
 			<div id="baumArrows">
 				<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.inc();"><i class="fa fa-plus"></i></div>
 				<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.dec();"><i class="fa fa-minus"></i></div>
@@ -367,16 +365,16 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 				<div id="bm_treeheaderDiv">
 					<iframe src="about:blank" name="treeheader"></iframe>
 				</div>
-				<?= $treeHtml; ?>
+<?= $treeHtml; ?>
 				<div id="bm_searchField">
 					<div id="infoField" class="defaultfont"></div>
 					<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
 							return false;">
 						<div id="search">
-							<?php
-							echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
-							we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);");
-							?>
+								<?php
+								echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
+								we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);");
+								?>
 						</div>
 					</form>
 				</div>
@@ -386,20 +384,21 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 	<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
 		<iframe src="<?= WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=loadMultiEditor" name="bm_content_frame"></iframe>
 	</div>
-	<?php
-	if(!(SIDEBAR_DISABLED == 1)){
-		?>
+<?php
+if(!(SIDEBAR_DISABLED == 1)){
+	?>
 		<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
-			<?php
-			we_sidebar_frames::getHTML('');
-			?>
+		<?php
+		we_sidebar_frames::getHTML('');
+		?>
 		</div>
-	<?php } ?>
+		<?php } ?>
 </div>
 <div id="cmdDiv">
 	<iframe src="about:blank" name="load"></iframe>
 	<iframe src="about:blank" name="load2"></iframe>
 	<iframe src="about:blank" name="plugin"></iframe>
+</div>
 </div>
 </body>
 </html>
