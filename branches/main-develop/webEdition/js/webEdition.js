@@ -272,13 +272,13 @@ var WebEdition = {
 						return;
 					}
 					var target = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SelectorSuggest" +
-									"&we_cmd[table]=" + el.getAttribute('data-table') +
-									"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
-									"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
-									"&we_cmd[max]=" + el.getAttribute('data-max') +
-									"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
-									"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
-									"&we_cmd[query]=" + request.term;
+						"&we_cmd[table]=" + el.getAttribute('data-table') +
+						"&we_cmd[contenttypes]=" + el.getAttribute('data-contenttype') +
+						"&we_cmd[basedir]=" + el.getAttribute('data-basedir') +
+						"&we_cmd[max]=" + el.getAttribute('data-max') +
+						"&we_cmd[currentDocumentType]=" + el.getAttribute('data-currentDocumentType') +
+						"&we_cmd[currentDocumentID]=" + el.getAttribute('data-currentDocumentID') +
+						"&we_cmd[query]=" + request.term;
 					$.getJSON(target, request, function (weResponse, status, xhr) {
 						el.cache[term] = weResponse.DataArray.suggest;
 						response(weResponse.DataArray.suggest);
@@ -314,14 +314,14 @@ var WebEdition = {
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
 					}
 					if (
-									!this.getAttribute("disabled") &&
-									this.offsetParent !== null /*returns null if parent is hidden*/ && (
-													this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-													!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-													this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-													(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-													)
-									) {
+						!this.getAttribute("disabled") &&
+						this.offsetParent !== null /*returns null if parent is hidden*/ && (
+							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+							this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
+							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+							)
+						) {
 						this.classList.add("weMarkInputError");
 					} else {
 						this.classList.remove("weMarkInputError");
@@ -353,8 +353,8 @@ var WebEdition = {
 			openSelectionToEdit: function (win, elID) {
 				var el = win.document.getElementById(elID);
 				var table = el.getAttribute('data-table'),
-								id = el.result.value,
-								type = el.result.getAttribute('data-contenttype');
+					id = el.result.value,
+					type = el.result.getAttribute('data-contenttype');
 
 				if (table && id && type) {
 					WE().layout.openToEdit(table, id, type);
@@ -365,14 +365,14 @@ var WebEdition = {
 				var isValid = true;
 				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
 					if (
-									!this.getAttribute("disabled") &&
-									this.offsetParent !== null /*returns null if parent is hidden*/ && (
-													this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-													!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-													(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
-													(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
-													)
-									) {
+						!this.getAttribute("disabled") &&
+						this.offsetParent !== null /*returns null if parent is hidden*/ && (
+							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+							(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
+							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+							)
+						) {
 						this.classList.add("weMarkInputError");
 						isValid = false;
 					} else {
@@ -410,9 +410,9 @@ var WebEdition = {
 	util: {
 		weSetCookie: function (doc, name, value, expires, path, domain) {
 			doc.cookie = name + "=" + encodeURIComponent(value) +
-							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-							((path === undefined) ? "" : "; path=" + path) +
-							((domain === undefined) ? "" : "; domain=" + domain);
+				((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+				((path === undefined) ? "" : "; path=" + path) +
+				((domain === undefined) ? "" : "; domain=" + domain);
 		},
 		weGetCookie: function (doc, name) {
 			var cname = name + "=";
@@ -475,7 +475,7 @@ var WebEdition = {
 		getTreeIcon: function (contentType, open, extension) {
 			var simplepre = '<span class="fa-stack fa-lg fileicon">';
 			var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
-							post = '</span>';
+				post = '</span>';
 			switch (contentType) {
 				case 'cockpit':
 					return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
@@ -725,9 +725,9 @@ var WebEdition = {
 					maxWidth: 400,
 					closeOnEscape: false,
 					buttons: (WE().session.isMac ?
-									(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
-									(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
-									)
+						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
+						(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
+						)
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;
@@ -930,9 +930,9 @@ var WebEdition = {
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
 			return (el ?
-							this.decodeDynamicVar(el, dataname) :
-							null
-							);
+				this.decodeDynamicVar(el, dataname) :
+				null
+				);
 		},
 		decodeDynamicVar: function (el, dataname) {
 			var data = el.getAttribute(dataname);
@@ -945,7 +945,7 @@ var WebEdition = {
 				data: data,
 				success: success,
 				dataType: "json"
-								//timeout: 2000
+					//timeout: 2000
 			}).fail(function (jqxhr, textStatus, error) {
 				WE().t_e('JS rpc failed', textStatus, error, jqxhr.responseText, this.url);
 			});
@@ -973,8 +973,8 @@ function we_repl(target, url) {
 			if (target.name === "load" || target.name === "load2") {
 				if (top.lastUsedLoadFrame === target.name) {
 					target = (target.name === "load" ?
-									window.load2 :
-									window.load);
+						window.load2 :
+						window.load);
 				}
 				top.lastUsedLoadFrame = target.name;
 			}
@@ -1288,6 +1288,11 @@ function startMsg() {
 	window.document.body.addEventListener("onunload", top._console_.unregister);
 }
 
+function showMainWindow() {
+	top.document.getElementById("loading").style.display = "none";
+	top.document.getElementById("weMainDiv").style.visibility = "visible";
+}
+
 function checkPwd(sufficient) {
 	if (!sufficient) {
 		top.we_showMessage(WE().consts.g_l.alert.pwd_startupRegExFailed, WE().consts.message.WE_MESSAGE_ERROR);
@@ -1300,7 +1305,7 @@ function updateCheck(avail, version, date) {
 	}
 }
 
-function getTreeDataWindow(){//FIXME: we use this function temporary until frames in modules are obsolete
+function getTreeDataWindow() {//FIXME: we use this function temporary until frames in modules are obsolete
 	return top;
 }
 
