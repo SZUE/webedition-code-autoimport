@@ -324,7 +324,6 @@ function weFileupload_view_abstract(uploader) {
 		form.elements.fuOpts_scale.value = '';
 		form.elements.fuOpts_rotate.value = 0;
 		form.elements.fuOpts_quality.value = self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-		form.getElementsByClassName('qualityValueContainer')[0].innerHTML = self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 	};
 
 	self.formCustomEditOptsSync = function () {
@@ -580,8 +579,7 @@ function weFileupload_view_bindoc(uploader) {
 			}
 			self.setGuiState(f.uploadConditionsOk ? self.STATE_PREVIEW_OK : self.STATE_PREVIEW_NOK);
 			if(f.type !== 'image/jpeg'){
-				doc.getElementsByClassName('optsQuality')[0].value = 100;
-				doc.getElementsByClassName('qualityValueContainer')[0].innerHTML = 100;
+				doc.getElementsByClassName('optsQuality')[0].value = self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 				doc.getElementsByClassName('optsQuality')[0].style.display = 'none';
 			} else {
 				doc.getElementsByClassName('optsQuality')[0].style.display = 'block';
@@ -820,9 +818,7 @@ function weFileupload_view_bindoc(uploader) {
 	};
 
 	self.formCustomEditOptsSync = function(){
-		if(self.sender.preparedFiles.length && self.sender.preparedFiles[0].type !== 'image/jpeg'){
-			self.uploader.doc.getElementsByClassName('qualityValueContainer')[0].innerHTML = 100;
-		}
+		//
 	};
 
 	self.replacePreviewCanvas = function(fileobj) {
@@ -869,7 +865,7 @@ function weFileupload_view_import(uploader) {
 			fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
 			fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
 			fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
-			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = fileobj.img.origWidth ? fileobj.img.origHeight + ' x ' + fileobj.img.origWidth + ' px': '--';
+			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = (fileobj.img.origWidth ? fileobj.img.origHeight + ' x ' + fileobj.img.origWidth + ' px': '--') + ', ' + self.utils.computeSize(fileobj.img.originalSize);
 			//fileobj.entry.getElementsByClassName('optsQualitySlide')[0].style.display = fileobj.type === 'image/jpeg' ? 'block' : 'none';
 			self.replacePreviewCanvas(fileobj);
 			//self.formCustomEditOptsSync(fileobj.index, false);
@@ -976,7 +972,7 @@ function weFileupload_view_import(uploader) {
 		self.addTextCutLeft(doc.getElementById('showName_uploadFiles_' + index), f.file.name, 230);
 
 		if(uploader.EDIT_IMAGES_CLIENTSIDE){
-			doc.getElementById('customOpts_' + index).style.display = self.imageEdit.isImageEditActive ? 'inline-block' : 'none';
+			//doc.getElementById('customOpts_' + index).style.display = self.imageEdit.isImageEditActive ? 'inline-block' : 'none';
 			if(self.imageEdit.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
 				doc.getElementById('icon_uploadFiles_' + index).style.display = 'none';
 				doc.getElementById('preview_uploadFiles_' + index).style.display = 'block';
@@ -1009,28 +1005,6 @@ function weFileupload_view_import(uploader) {
 		form.elements.fuOpts_filenameInput.addEventListener('change', self.controller.editFilename, false);
 		form.elements.fuOpts_filenameInput.addEventListener('blur', self.controller.editFilename, false);
 		doc.getElementById('showName_uploadFiles_' + index).addEventListener('click', self.controller.editFilename, false);
-
-
-		/*
-		form.elements.fuOpts_useCustomOpts.addEventListener('change', function (e) {
-			controller.editOptionsOnChange(e.target);
-		}, false);
-		form.elements.fuOpts_scale.addEventListener('keyup', function (e) {
-			controller.editOptionsOnChange(e.target);
-		}, false);
-		form.elements.fuOpts_scaleWhat.addEventListener('change', function (e) {
-			controller.editOptionsOnChange(e.target);
-		}, false);
-		form.elements.fuOpts_scaleProps.addEventListener('change', function (e) {
-			controller.editOptionsOnChange(e.target);
-		});
-		form.elements.fuOpts_rotate.addEventListener('change', function (e) {
-			controller.editOptionsOnChange(e.target);
-		}, false);
-		form.elements.fuOpts_quality.addEventListener('change', function (e) {
-			controller.editOptionsOnChange(e.target);
-		}, false);
-		*/
 
 		var btn = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 		btn.addEventListener('click', function(){self.controller.editImageButtonOnClick(btn, index, false);}, false);
@@ -1216,25 +1190,6 @@ function weFileupload_view_import(uploader) {
 	};
 
 	self.formCustomEditOptsSync = function (pos, general, initRotation) {
-		/*
-		var generalForm = doc.we_form,
-			form, indices;
-
-		pos = general ? -1 : (pos && pos !== -1 ? pos : -1);
-		indices = imageEdit.getImageEditIndices(pos, general, true);
-
-		for(var i = 0; i < indices.length; i++){
-			form = doc.getElementById('form_editOpts_' + indices[i]);
-			if (form && !form.elements.fuOpts_useCustomOpts.checked) {
-				form.elements.fuOpts_scaleWhat.value = generalForm.elements.fuOpts_scaleWhat.value;
-				form.elements.fuOpts_scale.value = generalForm.elements.fuOpts_scale.value;
-				form.elements.fuOpts_rotate.value = generalForm.elements.fuOpts_rotate.value;
-				form.elements.fuOpts_quality.value = sender.preparedFiles[indices[i]].type === 'image/jpeg' ? generalForm.elements.fuOpts_quality.value : 100;
-				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = sender.preparedFiles[indices[i]].type === 'image/jpeg' ? generalForm.elements.fuOpts_quality.value : 100;
-			}
-		}
-		*/
-
 		if(initRotation){
 			var indices;
 
@@ -1264,7 +1219,7 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.setEditStatus = function(preset, pos, general){ // TODO: maybe name it setGuiEditOtions
+	self.setEditStatus = function(preset, pos, general, setDimensions){
 		var doc = self.uploader.doc;
 		var divUploadFiles = doc.getElementById('div_upload_files');
 		var indices = self.imageEdit.getImageEditIndices(pos, general, true);
@@ -1276,8 +1231,7 @@ function weFileupload_view_import(uploader) {
 		var infoMiddles = doc.getElementsByClassName('infoMiddle');
 		var infoMiddlesRight = doc.getElementsByClassName('rowRotation');
 		var infoBottoms = doc.getElementsByClassName('infoBottom');
-
-			// var scaleInputs = doc.getElementsByClassName('optsScaleInput_row');
+		// var scaleInputs = doc.getElementsByClassName('optsScaleInput_row');
 		var scaleHelp = divUploadFiles.getElementsByClassName('optsRowScaleHelp');
 		var fileobj, i, j, state, deg;
 
@@ -1292,22 +1246,38 @@ function weFileupload_view_import(uploader) {
 						elems[j].style.backgroundColor = 'rgb(244, 255, 244)';
 						//elems[j].style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(244, 255, 244,.5) 10px)';
 						sizes[j].innerHTML = self.utils.gl.sizeTextOk + '--';
-						infoTops[j].innerHTML = '--';
+						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + fileobj.img.lastWidthShown + ' x ' + fileobj.img.lastHeightShown : infoTops[j].innerHTML) : '--';
 						infoMiddles[j].style.display = 'block';
-						infoMiddlesRight[j].innerHTML = '--';
+						deg = fileobj.img.editOptions.rotate;
+						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + self.utils.gl.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + self.utils.gl.editRotationLeft*/ : '180&deg;')));
 						infoBottoms[j].style.display = 'block';
 						scaleHelp[j].style.display = 'none';
+						if(setDimensions === 'flip'){
+							var tmp = fileobj.img.lastWidthShown;
+							fileobj.img.lastWidthShown = fileobj.img.lastHeightShown;
+							fileobj.img.lastHeightShown = tmp;
+						}
 					break;
 				case 'processed':
 						elems[j].style.backgroundColor = 'rgb(216, 255, 216)';
 						elems[j].style.backgroundImage =  'none';
-						deg = fileobj.img.editOptions.rotate;
 
-						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? fileobj.img.editedHeight + ' x ' + fileobj.img.editedWidth + ' px' : '--');
+						// FIXME: fileobj.img.editedWidth is undefined when only qualitiy was changed
+						var w, h;
+						if(self.sender.preparedFiles[j].dataUrl){
+							var h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
+							var w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
+						}
+						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? h + ' x ' + w + ' px' : '--');
+
+						deg = fileobj.img.editOptions.rotate;
 						scaleHelp[j].style.display = fileobj.img.tooSmallToScale ? 'inline-block' : 'none';
 						infoMiddles[j].style.display = 'block';
-						infoMiddlesRight[j].innerHTML = (deg === 0 ? 'ohne' : (deg === 90 ? '90&deg; ' + self.utils.gl.editRotationRight : (deg === 270 ? '90&deg; ' + self.utils.gl.editRotationLeft : '180&deg;')));
+						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + self.utils.gl.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + self.utils.gl.editRotationLeft*/ : '180&deg;')));
 						infoBottoms[j].style.display = 'block';
+						// FIXME: fileobj.img.editedWidth is undefined when only qualitiy was changed
+						fileobj.img.lastWidthShown = fileobj.img.editedWidth ? fileobj.img.editedWidth : fileobj.img.lastWidthShown;
+						fileobj.img.lastHeightShown = fileobj.img.editedHeight ? fileobj.img.editedHeight : fileobj.img.lastHeightShown;
 					break;
 				case 'donotedit':
 				/*falls through*/
@@ -1319,6 +1289,8 @@ function weFileupload_view_import(uploader) {
 					infoMiddles[j].style.display = 'none';
 					infoMiddlesRight[j].innerHTML = '';
 					infoBottoms[j].style.display = 'none';
+					fileobj.img.lastWidthShown = fileobj.img.origWidth;
+					fileobj.img.lastHeightShown = fileobj.img.origHeight;
 			}
 			buttons[j].disabled = self.sender.preparedFiles[j].dataUrl ? true : false;
 			asteriskes[j].style.color = self.sender.preparedFiles[j].dataUrl ? 'lightgray' : 'red';

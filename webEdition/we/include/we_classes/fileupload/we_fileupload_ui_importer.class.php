@@ -87,7 +87,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ($isIE10 || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;width:280px;height:88px;padding-top:40px"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
 		</div>' .
-		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div style="position:absolute; left: 331px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true) . '</div>' : '');
+		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div class="editOptsImporter" style="position:absolute; left: 328px; padding-top: 24px">' . we_fileupload_ui_preview::getFormImageEditClientside(true) . '</div>' : '');
 
 		$topParts[] = ["html" => $fileselect, 'space' => 0];
 
@@ -149,7 +149,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 
 		$divInfoTop = we_html_element::htmlDiv(['class' => 'infoTop'], we_html_element::htmlDiv(['class' => 'leftDiv bold'], g_l('importFiles', '[edit_pixel_height]') . ' x ' . g_l('importFiles', '[edit_pixel_width]') . ':') . we_html_element::htmlDiv(['class' => 'rowDimensionsProcessed rightDiv'], '--') . $scaleHelp);
 		$divInfoMiddle = we_html_element::htmlDiv(['class' => 'infoMiddle'], we_html_element::htmlDiv(['class' => 'leftDiv bold'], g_l('importFiles', '[rotation]') . ':') . we_html_element::htmlDiv(['class' => 'rowRotation rightDiv'], ''));
-		$divInfoBottom = we_html_element::htmlDiv(['class' => 'infoBottom'], we_html_element::htmlDiv(['class' => 'leftDiv'], /*g_l('importFiles', '[original_dimensions]') .*/ 'Original:') . we_html_element::htmlDiv(['class' => 'rowDimensionsOriginal rightDiv'], '--'));
+		$divInfoBottom = we_html_element::htmlDiv(['class' => 'infoBottom'], we_html_element::htmlDiv(['class' => 'leftDiv'], g_l('importFiles', '[original_dimensions]') . ':') . we_html_element::htmlDiv(['class' => 'rowDimensionsOriginal rightDiv'], '--'));
 		$divInfo = we_html_element::htmlDiv(['class' => 'elemInfo'], $divInfoTop . $divInfoMiddle . $divInfoBottom);
 
 		$divBtnRefresh = we_html_element::htmlDiv(['class' => 'btnRefresh', 'id' => 'customOpts_WEFORMNUM', 'style' => 'top:6px; left: 332px;'], '<div>' . $fiddenFuOpts_rotate . $btnRotateLeft . $btnRotateRight . '</div><div style="margin-top: 4px;">' . we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", '', 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess') . '<div class="fa fa-asterisk rowEditHot "></div></div>');

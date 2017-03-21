@@ -288,19 +288,23 @@ div.imgEditOpts{
 			display: inline-block;
 			top: 0;
 			left: 70px;
-			width: 130px;
+			width: 166px;
 
 			input.optsQuality{
-				width: 124px;
+				width: 88px;
 				margin: 0;
 			}
-		}
-		div.qualityValueContainer{
-			display: inline-block;
-			padding: 0 0 0 6px;
-			width: 35px;
-			left: 200px;
-			top:4px;
+
+			i.qualityIconLeft{
+				font-size: 2em;
+				margin-right: 8px;
+				color: lightgray;
+			}
+			
+			i.qualityIconRight{
+				font-size: 2em;
+				margin-left: 8px;
+			}
 		}
 		div.btnContainer{
 			width: 53px;
@@ -321,7 +325,7 @@ div.imgEditOpts{
 		}
 		.multiimport.btnContainer{
 			left: 176px;
-			top: -10px;
+			top: -6px;
 		}
 	}
 }
@@ -500,6 +504,26 @@ div.focusPointOnSet:before{
 	div.focusPointOnSet{
 		left: 190px;
 		top: 314px;
+	}
+}
+
+
+div.editOptsImporter{
+	position:absolute;
+	left: 328px;
+	padding-top: 24px;
+}
+
+div.fileuploadImporter{
+	div.imgEditOpts{
+		div.qualityDiv{
+			margin: 8px 0 0 0;
+			div.inputContainer{
+				input.optsQuality{
+					width: 98px;
+				}
+			}
+		}
 	}
 }
 
@@ -722,6 +746,7 @@ div.fileuploadImporter{
 					}
 
 					/* IMI tmp */
+					/*
 					div.optsRowScaleHelp{
 						display: none;
 						margin-left: 6px;
@@ -748,6 +773,7 @@ div.fileuploadImporter{
 							padding: 4px;
 						}
 					}
+					*/
 
 
 					div.elemInfo{
@@ -790,153 +816,7 @@ div.fileuploadImporter{
 						}
 					}
 
-
-					div.optsLeft{
-						position: absolute;
-						display: inline-block;
-						left: 0;
-						width: 200px;
-						height: 73px;
-						padding: 0;
-						
-						div.optsLeftTop{
-							position: relative;
-							top: 10px;
-							left: 10px;
-							width: 178px;
-							height: 20px;
-							background-color:red;
-						}
-						div.optsLeftBottom{
-							position: relative;
-							top: 20px;
-							left: 10px;
-							width: 170px;
-							height: 30px; 
-
-							div.optsRowRotate{
-								position: relative;
-
-								select.optsRotateSelect{
-									position: absolute;
-									top: 0;
-									left: 0;
-									width: 172px;
-									height: 28px;
-									/* background-color: white; */
-									border: 1px solid #a5aaae;
-								}
-							}
-						}
-					}
-
-					div.optsRight{
-						position: absolute;
-						display: inline-block;
-						left: 185px;
-						width: 164px;
-						height: 73px;
-
-						div.optsRightTop{
-							position: relative;
-							top: 8px;
-							left: 0;
-							width: 152px;
-							height: 30px;
-
-							div.optsRowScale{
-								position: relative;
-								top:0;
-								left: 0;
-
-								.optsUnitSelect{
-									width: 104px;
-									height: 28px;
-									position: absolute;
-									
-								}
-								.optsScaleInput{
-									width: 50px;
-									position: absolute;
-									left: 106px;
-									height: 28px;
-									border-right: 0 none;
-								}
-								.optsScalePropositions{
-									position: absolute;
-									left: 134px;
-									padding: 5px 1px 5px 0px;
-									height: 28px;
-									width: 40px;
-								}
-							}
-							.optsRowScaleHelp{
-								display: none;
-								position: absolute;
-								left: 180px;
-								.optsRowScaleHelpText{
-									display: none;
-									position: absolute;
-									left: -110px;
-									z-index: 2200;
-									background-color: white;
-									border: 1px solid gray;
-									width: 180px;
-									top: 24px;
-									padding: 4px;
-								}
-							}
-						}
-						div.optsRightBottom{
-							position: relative;
-							top: 10px;
-							left: 0;
-							width: 152px;
-							height: 30px;
-
-							div.optsRowQuality{
-								position: relative;
-
-								div.optsQualityBox{
-									position: absolute;
-									top: 0;
-									left: 0;
-									width: 172px;
-									height: 26px;
-									background-color: #eee;
-									border: 1px solid #a5aaae;
-
-									.optsQualitySlide{
-										position: absolute;
-										top: 1px;
-										left: 2px;
-										width: 116px;
-										height: 20px;
-									}
-									div.optsQualityValue{
-										position: absolute;
-										top: 6px;
-										left: 136px;
-										width: 30px;
-										height: 20px;
-									}
-								}
-							}
-						}
-					}
-
-					div.optsRightIE{
-						.optsQualitySlide{
-							position: absolute;
-							margin-top: -16px;
-							left: 4px;
-							width: 116px;
-							height: 20px;
-						}
-					}
-
 					div.btnRefresh{
-						display: none;
 						position: absolute;
 						width: 100px;
 						height: 30px;

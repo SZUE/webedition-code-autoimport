@@ -146,19 +146,18 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				90 => g_l('weClass', '[rotate90r]'),
 				], 1, 0, false, [], '28', 0, 'weSelect optsRotateSelect');
 		}
-		$quality = we_html_element::htmlInput(['type' => 'range', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality', 'class' => 'optsQuality']);
+		$quality = '<i class="fa fa-image qualityIconLeft"></i>' . we_html_element::htmlInput(['type' => 'range', 'value' => 90, 'min' => 10, 'max' => 90, 'step' => 5, 'name' => 'fuOpts_quality', 'class' => 'optsQuality']) . '<i class="fa fa-image qualityIconRight"></i>';
 		$btnProcess = we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", '', 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv([], $editCheckbox) .
 			we_html_element::htmlDiv(['class' => 'imgEditOpts' . ($multimport || self::IMAGEEDIT_MAX_LONGEST !== -1  ? '' : ' hidden'), 'id' => 'editImage'], we_html_element::htmlDiv(['class' => 'scaleDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[scale_label]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $scaleWhatSelect . ' ' . $scalePropositions . $scaleValue) . $scaleHelp
 				) .
-				($multimport ? '' : we_html_element::htmlDiv(['class' => 'rotationDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[rotate_label]') . ':') .
+				($multimport ? we_html_element::htmlHidden('fuOpts_rotate', 0) : we_html_element::htmlDiv(['class' => 'rotationDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('importFiles', '[rotate_label]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $rotateSelect)
 				)) .
 				we_html_element::htmlDiv(['class' => 'qualityDiv'], we_html_element::htmlDiv(['class' => 'labelContainer'], g_l('weClass', '[quality]') . ':') .
 					we_html_element::htmlDiv(['class' => 'inputContainer'], $quality) .
-					we_html_element::htmlDiv(['id' => 'qualityValue', 'class' => 'qualityValueContainer'], 100) .
 					(!$multimport ? we_html_element::htmlDiv(['class' => 'btnContainer'], $btnProcess) : '')
 				) .
 				($multimport ? we_html_element::htmlDiv(['class' => 'btnDiv'], we_html_element::htmlDiv(['class' => 'btnContainer' . ($multimport ? ' multiimport' : '')], $btnProcess)
