@@ -48,6 +48,9 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 		}
 
 		if($this->controlVars['formnum'] === $this->controlVars['formcount']){
+			$response['success'] = empty($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? [] : $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
+			$response['imported_files'] = empty($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? [] : $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
+
 			if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $this->controlVars['formnum'] !== 0){
 				$filelist = '';
 				foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
@@ -56,10 +59,16 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 				unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 				$response['completed'] = ['message' => sprintf(g_l('importFiles', '[error]'), $filelist), 'type' => we_message_reporting::WE_MESSAGE_ERROR];
 			} else {
-				$response['completed'] = ['message' => g_l('importFiles', '[finished]'), 'type' => we_message_reporting::WE_MESSAGE_NOTICE];
+				$completed = g_l('importFiles', '[finished]');
+				if($response['imported_files']){
+					$completed .= '</br>';
+					foreach($response['imported_files'] as $file){
+						$completed .= '</br>- ' . $file['text'];
+					}
+				}
+				$response['completed'] = ['message' => $completed, 'type' => we_message_reporting::WE_MESSAGE_NOTICE];
 			}
-			$response['success'] = empty($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? [] : $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
-			$response['imported_files'] = empty($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? [] : $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
+
 			unset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']);
 			unset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']);
 		}
