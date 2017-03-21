@@ -44,7 +44,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $transaction;
 	protected $contentType;
 	protected $extension;
-	private static $scaleProps = ['' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560];
+	//array is used in settings as well
+	public static $scaleProps = ['' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560];
 
 	public function __construct($contentType = '', $extension = ''){
 		parent::__construct('we_File');

@@ -299,6 +299,7 @@ class we_users_user{
 	}
 
 	function createAccount(){
+
 	}
 
 	function removeAccount(){
@@ -430,8 +431,6 @@ class we_users_user{
 		$this->rememberPreference($jsCmd, isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight'); /*
 		  $this->rememberPreference($jsCmd, isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .;
 		  $this->rememberPreference($jsCmd, isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check') */
-
-
 	}
 
 	private function mapPermissions(){
@@ -1747,12 +1746,13 @@ function toggleRebuildPerm(disabledOnly) {';
 		$window_specify_code = we_html_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name . '_Preference_sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
-		$window_specify_table = new we_html_table(['class' => 'default', 'style' => 'margin:5px 0px;'], 2, 2);
+		$window_specify_table = new we_html_table(['class' => 'default', 'style' => 'margin:5px 0px;'], 1, 3);
 
-		$window_specify_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[width]') . ':');
-		$window_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
-		$window_specify_table->setCol(1, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[height]') . ':');
-		$window_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
+//		$window_specify_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[width]') . ':');
+		$window_specify_table->setCol(0, 0, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
+		//$window_specify_table->setCol(1, 0, ['class' => 'defaultfont', 'style' => 'padding-left:40px;padding-right:10px;'], g_l('prefs', '[height]') . ':');
+		$window_specify_table->setCol(0, 1, ['style' => 'padding:0px .5em;vertical-align: middle;'], 'x');
+		$window_specify_table->setCol(0, 2, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$window_current_dimension_table = '<div style="padding-left:90px;">' .
