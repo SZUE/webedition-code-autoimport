@@ -268,7 +268,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @desc returns the rollover attribs as array
 	 */
 	function getRollOverAttribsArr($child = true){
-		return $this->getElement('RollOverFlag') ? 'roll' . self::$imgCnt : '';
+		return $this->getElement('RollOverFlag') ? ['roll' . self::$imgCnt] : [];
 	}
 
 	/**
