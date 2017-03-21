@@ -30,15 +30,6 @@ function weFileupload_imageEdit_abstract(uploader) {
 
 	self.imageFilesToProcess = [];
 	self.isImageEditActive = false;
-	self.imageEditOptions = {
-		doEdit: false,
-		from: 'general',
-		scaleWhat: 'pixel_l',
-		scale: 0,
-		rotate: 0,
-		quality: 100
-	};
-	self.processimageRepeatLoadCanvas = 0;
 
 	self.PICA_CONFIGURATION = {
 		quality: 3, // [0,3]
@@ -60,8 +51,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 	self.IMG_MAKE_PREVIEW = 8;
 	self.IMG_POSTPROCESS = 9;
 
-	self.OPTS_QUALITY_NEUTRAL_VAL = 100;
-	self.OPTS_QUALITY_DEFAULT_VAL = 90;
+	self.OPTS_QUALITY_NEUTRAL_VAL = 90;
 	self.PRESERVE_IMG_DATAURL = true;
 	self.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
 	self.MAX_LONGEST = -1;
@@ -70,6 +60,17 @@ function weFileupload_imageEdit_abstract(uploader) {
 	self.PROCESS_PREVIEWS_ONLY = false;
 	//self.MEMORY_LIMIT = 31457280;
 	self.MEMORY_LIMIT = 83886080; // 80 MB
+	
+	self.imageEditOptions = {
+		doEdit: false,
+		from: 'general',
+		scaleWhat: 'pixel_l',
+		scale: 0,
+		rotate: 0,
+		quality: self.OPTS_QUALITY_NEUTRAL_VAL
+	};
+
+	self.processimageRepeatLoadCanvas = 0;
 	self.memoryManagement = {
 		registeredSum: 0,
 		registeredValues: {},
@@ -176,7 +177,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 				scaleWhat: 'pixel_l',
 				scale: 0,
 				rotate: 0,
-				quality: 100
+				quality: self.OPTS_QUALITY_NEUTRAL_VAL
 			};
 			fileobj.isEdited = false;
 			self.memorymanagerRegister(fileobj);
@@ -256,12 +257,14 @@ function weFileupload_imageEdit_abstract(uploader) {
 			quality = parseInt(form.elements.fuOpts_quality.value),
 			opts = self.imageEditOptions;
 
+		scale = parseInt(scale ? scale : 0);
+
 		if (parseInt(form.elements.fuOpts_doEdit.value) === 1 && (scale || deg || quality !== self.OPTS_QUALITY_NEUTRAL_VAL)) {
 			opts.doEdit = true;
 			opts.scaleWhat = form.elements.fuOpts_scaleWhat.value;
 			opts.scale = scale;
 			opts.rotate = deg;
-			opts.quality = form.elements.fuOpts_quality.value;
+			opts.quality = quality;
 		} else {
 			opts.doEdit = false;
 			opts.scaleWhat = 'pixel_l';
@@ -550,7 +553,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 		if(!self.PRESERVE_IMG_DATAURL){
 			fileobj.dataUrl = null;
 		}
-		fileobj.isEdited = fileobj.img.editOptions.quality < 90 ? true : fileobj.isEdited;
+		fileobj.isEdited = fileobj.img.editOptions.quality < self.OPTS_QUALITY_NEUTRAL_VAL ? true : fileobj.isEdited;
 
 		self.utils.logTimeFromStart('image written fn 2');
 		self.processImage(fileobj, nexttask);
@@ -699,39 +702,6 @@ function weFileupload_imageEdit_abstract(uploader) {
 			}
 			self.processImage(fileobj, nexttask);
 	};
-
-	/* obsolete
-	self.processimageReset = function(fileobj, nexttask){
-		if(!fileobj){
-			return;
-		}
-		fileobj.dataArray = null;
-		fileobj.dataUrl = null;
-		fileobj.size = fileobj.img.originalSize;
-		fileobj.img.previewImg = null;
-		fileobj.img.fullPrev = null;
-		fileobj.img.actualRotation = 0;
-		self.setImageEditOptionsFile(fileobj); // write correct actually valid editoptions
-		fileobj.img.processedOptions = { // reset last edited options
-			doEdit: false,
-			from: 'general',
-			scaleWhat: 'pixel_l',
-			scale: 0,
-			rotate: 0,
-			quality: 100
-		},
-		self.processimageRotatePreview(fileobj, 0);
-		view.replacePreviewCanvas(fileobj);
-		fileobj.isEdited = false;
-
-		if(nexttask){
-			self.processImage(fileobj, nexttask);
-		} else {
-			view.repaintEntry(fileobj);
-		}
-		return;
-	};
-	*/
 
 	self.processimagePostProcess = function(fileobj, nexttask){
 		fileobj.img.originalSize = fileobj.file.size;
@@ -1031,11 +1001,6 @@ function weFileupload_imageEdit_bindoc(uploader) {
 			if(scaleReference && (scaleReference < fileobj.img.editOptions.scale)){
 				fileobj.img.editOptions.scale = '';
 				fileobj.img.tooSmallToScale = true;
-				if(!fileobj.img.editOptions.rotate && fileobj.img.editOptions.quality >= self.OPTS_QUALITY_DEFAULT_VAL){
-					fileobj.img.editOptions.quality = self.OPTS_QUALITY_NEUTRAL_VAL;
-					self.uploader.doc.getElementsByName('fuOpts_quality')[0].value = self.OPTS_QUALITY_NEUTRAL_VAL;
-					self.uploader.doc.getElementById('qualityValue').innerHTML = self.OPTS_QUALITY_NEUTRAL_VAL;
-				}
 			} else {
 				fileobj.img.tooSmallToScale = false;
 			}
@@ -1057,70 +1022,42 @@ function weFileupload_imageEdit_import(uploader) {
 
 	self.PRESERVE_IMG_DATAURL = true;
 	self.IS_MEMORY_MANAGMENT = true;
-
-	/*
-	self.setImageEditOptionsGeneral = function () { // obsolet: is in abstract identical
-		self.abstractSetImageEditOptionsGeneral('we_form');
-	};
-	*/
+	self.isImageEditActive = true;
 
 	self.setImageEditOptionsFile = function (fileobj, general) {
 		var indices = self.getImageEditIndices(general ? -1 : fileobj.index, general);
 
+		// first global editOptiona are read out
+		self.setImageEditOptionsGeneral();
+
 		for(var i = 0; i < indices.length; i++){
 			fileobj = self.sender.preparedFiles[indices[i]];
 			var form = self.uploader.doc.getElementById('form_editOpts_' + fileobj.index);
-			var type = 'general';
 
-			/*
-			if (form && form.elements.fuOpts_useCustomOpts.checked) {
-				type = 'custom';
-			}
-			*/
+			fileobj.img.editOptions = JSON.parse(JSON.stringify(self.imageEditOptions));
 
-			switch(type){
-				case 'general':
-					// first global editOptiona are read out and all fileobject's editOptions are syncronized with these
-					self.setImageEditOptionsGeneral();
-					fileobj.img.editOptions = JSON.parse(JSON.stringify(self.imageEditOptions));
+			// reset quality to neutral for all images but jpeg
+			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : self.OPTS_QUALITY_NEUTRAL_VAL;
 
-					// reset quality to neutral for all images but jpeg
-					fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : self.OPTS_QUALITY_NEUTRAL_VAL;
-
-					// we sync general rotation to entries, thus fuOpts_rotate on entries is allways actual: take rotation from there
-					if(parseInt(form.elements.fuOpts_rotate.value) === -1){ // initial value when entry is just added
-						form.elements.fuOpts_rotate.value = fileobj.img.editOptions.rotate;
-					} else {
-						fileobj.img.editOptions.rotate = parseInt(form.elements.fuOpts_rotate.value);
-					}
-					break;
-				case 'custom':
-					/*
-					fileobj.img.editOptions.scaleWhat = form.elements.fuOpts_scaleWhat.value;
-					fileobj.img.editOptions.scale = form.elements.fuOpts_scale.value;
-					fileobj.img.editOptions.rotate = parseInt(form.elements.fuOpts_rotate.value);
-					fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? parseInt(form.elements.fuOpts_quality.value) : self.OPTS_QUALITY_NEUTRAL_VAL;
-					*/
-					break;
+			// we sync general rotation to entries, thus fuOpts_rotate on entries is allways actual: take rotation from there
+			if(parseInt(form.elements.fuOpts_rotate.value) === -1){ // initial value when entry is just added
+				form.elements.fuOpts_rotate.value = fileobj.img.editOptions.rotate;
+			} else {
+				fileobj.img.editOptions.rotate = parseInt(form.elements.fuOpts_rotate.value);
 			}
 
+			// check for tooSmallToScale
 			var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
 					fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
 
-			// check for tooSmallToScale
-			if(/*fileobj.img.workingCanvas !== null &&*/ scaleReference < fileobj.img.editOptions.scale){
+			if(scaleReference < fileobj.img.editOptions.scale){
 				fileobj.img.editOptions.scale = '';
 				fileobj.img.tooSmallToScale = true;
-				if(!fileobj.img.editOptions.rotate && fileobj.img.editOptions.quality >= self.OPTS_QUALITY_DEFAULT_VAL){
-					fileobj.img.editOptions.quality = self.OPTS_QUALITY_NEUTRAL_VAL;
-					//form.elements.fuOpts_quality.value = self.OPTS_QUALITY_NEUTRAL_VAL;
-					//form.getElementsByClassName('optsQualityValue')[0].innerHTML = self.OPTS_QUALITY_NEUTRAL_VAL;
-				}
 			} else {
 				fileobj.img.tooSmallToScale = false;
 			}
 
-			fileobj.img.editOptions.doEdit = parseInt(fileobj.img.editOptions.scale) || fileobj.img.editOptions.rotate || (parseInt(fileobj.img.editOptions.quality) < self.OPTS_QUALITY_DEFAULT_VAL) ? true : false;
+			fileobj.img.editOptions.doEdit = parseInt(fileobj.img.editOptions.scale) || fileobj.img.editOptions.rotate || (parseInt(fileobj.img.editOptions.quality) !== self.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
 		}
 	};
 

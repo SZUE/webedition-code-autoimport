@@ -145,7 +145,7 @@ function weFileupload_controller_abstract(uploader) {
 					scaleWhat: 'pixel_l',
 					scale: 0,
 					rotate: 0,
-					quality: 100
+					quality: self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL
 				},
 				editOptions: {
 					doEdit: false,
@@ -153,7 +153,7 @@ function weFileupload_controller_abstract(uploader) {
 					scaleWhat: 'pixel_l',
 					scale: 0,
 					rotate: 0,
-					quality: 100
+					quality: self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL
 				},
 				origWidth: 0,
 				origHeight: 0,
@@ -249,7 +249,6 @@ function weFileupload_controller_abstract(uploader) {
 			scale = inputScale.value,
 			quality = parseInt(inputQuality.value),
 			pos = form.getAttribute('data-type') === 'importer_rowForm' ? form.getAttribute('data-index') : -1,
-			//opttype = pos === -1 ? 'general' : 'custom';
 			btnRefresh = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0],
 			imageEdit = self.imageEdit;
 
@@ -257,6 +256,15 @@ function weFileupload_controller_abstract(uploader) {
 
 
 		switch (target.name){
+			case 'fuOpts_scaleWhat':
+				if(scale){
+					btnRefresh.disabled = false;
+					self.view.formCustomEditOptsSync(-1, true);
+					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
+					self.view.setEditStatus('notprocessed', pos, pos === -1 ? true : false);
+				}
+				btnRefresh.disabled = self.sender.preparedFiles.length === 0 || !scale;
+				break;
 			case 'fuOpts_scaleProps':
 				inputScale.value = target.value;
 				scale = target.value;
@@ -264,7 +272,7 @@ function weFileupload_controller_abstract(uploader) {
 				target.value = 0;
 				/* falls through*/
 			case 'fuOpts_scale':
-				if(self.imageEdit.MAX_LONGEST){
+				if(self.imageEdit.MAX_LONGEST !== -1){
 					if(parseInt(scale) > self.imageEdit.MAX_LONGEST){
 						WE().util.showMessage(WE().consts.g_l.fileupload.editMaxLongest.replace('##MAX_LONGEST##', self.imageEdit.MAX_LONGEST), WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
 						scale = self.imageEdit.MAX_LONGEST;
@@ -276,67 +284,27 @@ function weFileupload_controller_abstract(uploader) {
 						target.value = self.imageEdit.MAX_LONGEST;
 					}
 				}
-				if(scale || rotate){
-					if(quality === imageEdit.OPTS_QUALITY_NEUTRAL_VAL){
-						inputQuality.value = imageEdit.OPTS_QUALITY_DEFAULT_VAL;
-						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_DEFAULT_VAL;
-					}
-					self.view.formCustomEditOptsSync(-1, true);
-					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-					self.view.setEditStatus('', pos, pos === -1 ? true : false);
-				} else {
-					inputQuality.value = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-					form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-					self.view.formCustomEditOptsSync(-1, true);
-					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-					self.view.setEditStatus('', pos, pos === -1 ? true : false);
-				}
+				self.view.formCustomEditOptsSync(-1, true);
+				self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
+				self.view.setEditStatus('', pos, pos === -1 ? true : false);
+				btnRefresh.disabled = self.sender.preparedFiles.length === 0;
 				break;
 			case 'fuOpts_rotate':
 				self.view.formCustomEditOptsSync(-1, true, true);
-				if(scale || rotate){
-					if(quality === imageEdit.OPTS_QUALITY_NEUTRAL_VAL){
-						inputQuality.value = imageEdit.OPTS_QUALITY_DEFAULT_VAL;
-						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_DEFAULT_VAL;
-					}
-				} else {
-					inputQuality.value = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-					form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-				}
-
 				self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-				self.view.setEditStatus('', pos, pos === -1 ? true : false);
+				self.view.setEditStatus('', pos, (pos === -1 ? true : false));
 				self.view.previewSyncRotation(pos, rotate);
-				btnRefresh.disabled = self.sender.preparedFiles.length === 0 || (!scale && !rotate);
-				break;
-			case 'fuOpts_scaleWhat':
-				if(scale){
-					btnRefresh.disabled = true;
-					self.view.formCustomEditOptsSync(-1, true);
-					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-					self.view.setEditStatus('notprocessed', pos, pos === -1 ? true : false);
-				}
-				break;
+				btnRefresh.disabled = self.sender.preparedFiles.length === 0;
 			case 'fuOpts_quality':
-				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = quality;
-				if((quality === imageEdit.OPTS_QUALITY_NEUTRAL_VAL) && !scale && !rotate){
-					//btnRefresh.disabled = true;
-					self.view.formCustomEditOptsSync(-1, true);
-					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-					self.view.setEditStatus('', pos, pos === -1 ? true : false);
-				} else {
-					self.view.formCustomEditOptsSync(-1, true);
-					self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
-					btnRefresh.disabled = false;// sender.preparedFiles.length === 0;
-					self.imageEdit.setImageEditOptionsFile(pos === -1 ? null : self.sender.preparedFiles[pos], pos === -1 ? true : false);
-					self.view.setEditStatus('', pos, pos === -1 ? true : false);
-				}
+				self.view.formCustomEditOptsSync(-1, true);
+				self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
+				self.view.setEditStatus('', pos, (pos === -1 ? true : false), 'keep');
+				btnRefresh.disabled = self.sender.preparedFiles.length === 0;
 				break;
 			case 'check_fuOpts_doEdit':
 				// whenever we change this optoion we reset all vals and disable button
 				self.imageEdit.isImageEditActive = target.checked;
 				inputQuality.value = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 				self.view.disableCustomEditOpts(!target.checked);
 				inputScale.value = (target.checked && self.imageEdit.MAX_LONGEST !== -1) ? self.imageEdit.MAX_LONGEST : '';
 
@@ -572,7 +540,6 @@ function weFileupload_controller_import(uploader) {
 		var form = self.uploader.doc.getElementById('form_editOpts_' + index);
 		var pos = index; // this may be wrong!!
 		var btnRefresh = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
-		var fileobj = self.sender.preparedFiles[index];
 
 		switch (target.name){
 			case 'fuOpts_addRotationLeft':
@@ -584,9 +551,9 @@ function weFileupload_controller_import(uploader) {
 
 					self.imageEdit.uneditImage(pos, false);
 					if(!newRotation && !parseInt(self.imageEdit.imageEditOptions.scale)){ // if there is no other editing from general we set entry on doEdit=false
-						self.view.setEditStatus('', pos, false);
+						self.view.setEditStatus('', pos, false, 'flip');
 					} else {
-						self.view.setEditStatus('notprocessed', pos, false);
+						self.view.setEditStatus('notprocessed', pos, false, 'flip');
 					}
 					btnRefresh.disabled = false;
 				break;

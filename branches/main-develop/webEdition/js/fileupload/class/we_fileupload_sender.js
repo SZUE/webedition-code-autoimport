@@ -623,6 +623,7 @@ function weFileupload_sender_import(uploader) {
 					top.we_cmd.apply(top, tmp);
 				}, 100);
 			}
+			window.setTimeout(self.uploader.reset, 1000);
 		}
 		self.view.reloadOpener();
 
