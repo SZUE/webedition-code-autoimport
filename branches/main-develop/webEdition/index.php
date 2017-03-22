@@ -63,23 +63,22 @@ function getValueLoginMode($val){
 	}
 }
 
-function printHeader($login, $status = 200, $js = ''){
+function printLoginPage($login, $status = 200, $js = '', $body = ''){
 	header('Expires: ' . gmdate('D, d.m.Y H:i:s') . ' GMT');
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: public');
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
 
-	echo we_html_tools::getHtmlTop('', '', '', '', '', false) .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
-	we_html_element::jsElement(we_message_reporting::jsString()) .
-	($login != we_users_user::LOGIN_OK ?
-			we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
-			we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
-			'') .
-	we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
-	we_html_element::jsElement('
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
+			we_html_element::jsElement(we_message_reporting::jsString()) .
+			($login != we_users_user::LOGIN_OK ?
+					we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
+					we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
+					'') .
+			we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
+			we_html_element::jsElement('
 	isLoginScreen = true;
 	cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
@@ -134,8 +133,7 @@ function showMessage(message, prio, win){
 		}
 	}
 }' .
-			$js) .
-	'</head>';
+					$js), $body, false);
 }
 
 /* * ***************************************************************************
@@ -219,13 +217,11 @@ function getError($reason, $cookie = false){
 if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	$layout = getError(g_l('start', '[cookies_disabled]'));
 
-	printHeader($login, 400);
-	echo we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()) . '</html>';
+	printLoginPage($login, 400, '', we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()));
 } else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error === 'No database selected'){
 	$layout = getError(g_l('start', '[no_db_connection]'));
 
-	printHeader($login, 503);
-	echo we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()) . '</html>';
+	printLoginPage($login, 503, '', we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()));
 } /* don't check for browsers anymore */ else {
 
 	/*	 * ***************************************************************************
@@ -265,7 +261,6 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			} else {
 				$_SESSION['weS']['we_mode'] = we_base_request::_(we_base_request::STRING, 'mode');
 			}
-
 			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!we_base_request::_(we_base_request::BOOL, 'popup')))){
 				if($body_javascript){
 					$body_javascript .= 'top.location="' . WEBEDITION_DIR . 'webEdition.php"';
@@ -308,8 +303,7 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 	$layout = we_html_element::htmlForm(['action' => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'], $hidden_values . $dialogtable) .
 			we_html_element::htmlDiv(['id' => 'picCopy'], 'Copyright &copy; nw7.eu / Fotolia.com');
 
-	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
-	echo we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == LOGIN_OK && $headerjs) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
+	printLoginPage($login, (isset($httpCode) ? $httpCode : 401), $headerjs, we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == we_users_user::LOGIN_OK && $headerjs) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')));
 }
 session_write_close();
 flush();
@@ -334,8 +328,8 @@ if($cnt > we_base_constants::ERROR_LOG_MAX_ITEM_COUNT){
 //updatecheck
 if(!we_cache_file::load('newwe_version')){
 	we_cache_file::save('newwe_version', we_unserialize(getHTTP('https://update.webedition.org', '/server/we/latest.php?vers=' .
-					WE_VERSION .
-					'&supp=' . WE_VERSION_SUPP .
-					'&branch=' . WE_VERSION_BRANCH .
-					(WE_VERSION_SUPP != "release" ? '&beta=true' : ''), $stat)), 7 * 86400, SERIALIZE_JSON);
+							WE_VERSION .
+							'&supp=' . WE_VERSION_SUPP .
+							'&branch=' . WE_VERSION_BRANCH .
+							(WE_VERSION_SUPP != "release" ? '&beta=true' : ''), $stat)), 7 * 86400, SERIALIZE_JSON);
 }
