@@ -182,76 +182,79 @@ class we_navigation_item{
 	 */
 	function isCurrent(we_navigation_items $weNavigationItems){
 //FIXME do we need this any more since $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_obj'] in case of OBJECT_FILES_TABLE ??
+		static $cleanRequestUri=false;
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				if(isset($GLOBALS['we_obj'])){
-					$id = $GLOBALS['we_obj']->ID;
+				if(!isset($GLOBALS['we_obj'])){
+					$id = 0;
+					break;
 				}
+				if($cleanRequestUri === false){
+					$urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, '/'))) ?
+							urldecode($_SERVER['REDIRECT_URL']) :
+							(isset($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, '/')) ?
+							parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
+							'');
+					$path_parts = pathinfo($urlLookingFor);
+					$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
+							(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
+							rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlLookingFor), '/') :
+							'');
+				}
+				$id = (isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false) ? $GLOBALS['we_obj']->ID : 0);
 				break;
 			case FILE_TABLE:
-				if(isset($GLOBALS['WE_MAIN_DOC']) && (!($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile))){
-					$id = $GLOBALS['WE_MAIN_DOC']->ID;
-				}
+				$id = (isset($GLOBALS['WE_MAIN_DOC']) && (!($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile)) ? $GLOBALS['WE_MAIN_DOC']->ID : 0);
 				break;
+			default:
+				$id = 0;
 		}
 
-		if(isset($id) && ($this->docid == $id)){
-			$urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
-				urldecode($_SERVER['REDIRECT_URL']) :
-				(isset($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
-				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
-				'');
-			$path_parts = pathinfo($urlLookingFor);
-			$cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : //Fix #11057
-				(isset($_SERVER['REQUEST_URI']) ? //Fix #11246
-				rtrim((NAVIGATION_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename']) ? $path_parts['dirname'] : $urlLookingFor), '/') :
-				'');
-			if(isset($_SERVER['REQUEST_URI']) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
-				static $uri = null;
-				static $uriarrq = [];
-				$refarrq = [];
+		if($id && ($this->docid == $id)){
+			static $uri = null;
+			static $uriarrq = array();
+			$refarrq = array();
 
-				$uri = ($uri === null ? parse_url(strtr($_SERVER['REQUEST_URI'], ['&amp;' => '&'])) : $uri);
-				$ref = parse_url(strtr($this->href, ['&amp;' => '&']));
-				if(!empty($uri['query']) && !$uriarrq){
-					parse_str($uri['query'], $uriarrq);
+			$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
+			$ref = parse_url(str_replace('&amp;', '&', $this->href));
+			if(!empty($uri['query']) && !$uriarrq){
+				parse_str($uri['query'], $uriarrq);
+			}
+			if(!empty($ref['query'])){
+				parse_str($ref['query'], $refarrq);
+			}
+			if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
+				//remove other param tha "anchors" or catParams respectively
+				$tmpUriarrq = $tmpRefarrq = array();
+				if($this->CurrentOnAnker){
+					$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
+					$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
 				}
-				if(!empty($ref['query'])){
-					parse_str($ref['query'], $refarrq);
+				if($this->currentOnCat){
+					$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
+					$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
 				}
-				if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
-					//remove other param tha "anchors" or catParams respectively
-					$tmpUriarrq = $tmpRefarrq = [];
-					if($this->CurrentOnAnker){
-						$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
-						$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
-					}
-					if($this->currentOnCat){
-						$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
-						$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
-					}
-				} else {
-					$tmpUriarrq = $uriarrq;
-					$tmpRefarrq = $refarrq;
-				}
-				$allfound = true;
-				//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
-				foreach($tmpRefarrq as $key => $val){
-					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
-				}
-
-				if($allfound){
-					$this->setCurrent($weNavigationItems);
-				} elseif($this->current){
-					$this->unsetCurrent($weNavigationItems);
-				}
-				return $allfound;
+			} else {
+				$tmpUriarrq = $uriarrq;
+				$tmpRefarrq = $refarrq;
+			}
+			$allfound = true;
+			//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
+			foreach($tmpRefarrq as $key => $val){
+				$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
 			}
 
-			if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (empty($cleanRequestUri) || stripos($this->href, $cleanRequestUri) !== false)){
+			if($allfound){
 				$this->setCurrent($weNavigationItems);
-				return true;
+			} elseif($this->current){
+				$this->unsetCurrent($weNavigationItems);
 			}
+			return $allfound;
+		}
+
+		if($id && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)){
+			$this->setCurrent($weNavigationItems);
+			return true;
 		}
 
 		if($this->current){
