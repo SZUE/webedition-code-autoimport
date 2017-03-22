@@ -245,5 +245,4 @@ var LinkDialog = {
 
 };
 
-tinyMCEPopup.onInit.add(function(){alert('huuuhu');});
 tinyMCEPopup.onInit.add(LinkDialog.init);

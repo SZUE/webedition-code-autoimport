@@ -91,6 +91,7 @@ tinymce.ui.FormatControls = function(Control, Widget, FloatPanel, Tools, Arr, DO
 
 		function createFontNameListBoxChangeHandler(items) {
 			return function() {
+				return; // FIXME: functin causes error => may be obsolete anyway!
 				var self = this;
 
 				var getFirstFont = function (fontFamily) {
@@ -124,6 +125,7 @@ tinymce.ui.FormatControls = function(Control, Widget, FloatPanel, Tools, Arr, DO
 		}
 
 		function createFontSizeListBoxChangeHandler(items) {
+			return; // FIXME: functin causes error => may be obsolete anyway!
 			return function() {
 				var self = this;
 
