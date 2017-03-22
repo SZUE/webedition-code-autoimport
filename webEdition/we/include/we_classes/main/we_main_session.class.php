@@ -73,8 +73,8 @@ abstract class we_main_session{
 
 // only if username exists !!
 		if(
-			!($userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"')) ||
-			($checkUserPassword && !we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))
+				!($userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"')) ||
+				($checkUserPassword && !we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))
 		){
 			we_base_sessionHandler::makeNewID(true);
 			return;
@@ -125,9 +125,9 @@ abstract class we_main_session{
 
 	public static function logout(){
 		$db = $GLOBALS['DB_WE'];
-		$db->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . session_id() . '\'');
+		$db->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
 
-		$db->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . session_id() . '\'');
+		$db->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
 		$db->query('UPDATE ' . USER_TABLE . ' SET Ping=NULL WHERE ID=' . intval($_SESSION['user']['ID']));

@@ -1,6 +1,7 @@
 <?php
 
 class we_base_sessionHandler implements SessionHandlerInterface{
+
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -59,7 +60,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 	}
 
 	public function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
-		$sessID = $this->DB->escape(self::getSessionID(session_id()));
+		$sessID = self::getSessionID(session_id());
 		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid=NULL,lockTime=NULL WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND lockid=x\'' . $this->id . '\'');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
@@ -114,9 +115,9 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		$sessID = self::getSessionID($sessID);
 		if(md5($sessID . $sessData, true) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
-				we_database_base::arraySetter([
-					'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+					we_database_base::arraySetter([
+						'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
+						'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 					]) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
@@ -127,11 +128,11 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(['sessionName' => $this->sessionName,
-				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
-				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				]));
+					'session_id' => sql_function('x\'' . $sessID . '\''),
+					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
+					'lockid' => sql_function($lock ? 'x\'' . $this->id . '\'' : 'NULL'),
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+		]));
 		return true;
 	}
 
@@ -218,6 +219,12 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			session_write_close();
 		}
 		session_start();
+	}
+
+	public static function getCurrentHex(){
+		return (defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION ?
+				session_id() :
+				bin2hex(session_id()));
 	}
 
 }

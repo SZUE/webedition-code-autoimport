@@ -1455,14 +1455,14 @@ abstract class we_root extends we_class{
 	 */
 	function isLockedByUser(){
 		//select only own ID if not in same session
-		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!=x\'' . session_id() . '\' AND lockTime>NOW()', '', $this->DB_WE));
+		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!=x\'' . we_base_sessionHandler::getCurrentHex() . '\' AND lockTime>NOW()', '', $this->DB_WE));
 	}
 
 	function lockDocument(){
 		if($_SESSION['user']['ID'] && $this->ID){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
-			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID=x\'' . session_id() . '\',lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
-				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID=x\'' . session_id() . '\',lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND');
+			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
+				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND');
 			$this->LockUser = intval($_SESSION['user']['ID']);
 		}
 	}

@@ -52,9 +52,9 @@ foreach($queries as $table => $ids){
 	//don't clean all locks! - is this really a needed statement???
 	$ids = implode(', ', array_filter($ids));
 	if($ids){
-		$DB_WE->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . session_id() . '"');
+		$DB_WE->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . we_base_sessionHandler::getCurrentHex() . '"');
 
-		$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID=x\'' . session_id() . '\' AND UserID=' . $uid);
+		$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\' AND UserID=' . $uid);
 	}
 }
 ?>{"UNLOCKED":true}
