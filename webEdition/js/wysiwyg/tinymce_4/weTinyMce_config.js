@@ -108,7 +108,7 @@ function TinyMceConfObject(args) {
 		wefullscreen: '/webEdition/js/wysiwyg/tinymce_4/plugins/wefullscreen/editor_plugin.js',
 		wevisualaid: '/webEdition/js/wysiwyg/tinymce_4/plugins/wevisualaid/editor_plugin.js',
 		welang: '/webEdition/js/wysiwyg/tinymce_4/plugins/welang/editor_plugin.js',
-		table: '/webEdition/js/wysiwyg/tinymce_4/plugins/wetable/plugin.js',
+		wetable: '/webEdition/js/wysiwyg/tinymce_4/plugins/wetable/plugin.js',
 		xhtmlxtras: '/webEdition/js/wysiwyg/tinymce_4/plugins/xhtmlxtras/editor_plugin.js'
 	};
 
