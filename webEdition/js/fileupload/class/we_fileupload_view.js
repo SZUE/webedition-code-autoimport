@@ -579,10 +579,13 @@ function weFileupload_view_bindoc(uploader) {
 			}
 			self.setGuiState(f.uploadConditionsOk ? self.STATE_PREVIEW_OK : self.STATE_PREVIEW_NOK);
 			if(f.type !== 'image/jpeg'){
-				doc.getElementsByClassName('optsQuality')[0].value = self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
-				doc.getElementsByClassName('optsQuality')[0].style.display = 'none';
+				//doc.getElementsByClassName('optsQuality')[0].value = 50;
+				doc.getElementsByClassName('optsQuality')[0].disabled = true;
+				doc.getElementsByClassName('qualityIconRight')[0].style.color = 'lightgray';
 			} else {
-				doc.getElementsByClassName('optsQuality')[0].style.display = 'block';
+				//doc.getElementsByClassName('optsQuality')[0].value = f.img.editOptions.quality ? f.img.editOptions.quality : self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
+				doc.getElementsByClassName('optsQuality')[0].disabled = false;
+				doc.getElementsByClassName('qualityIconRight')[0].style.color = 'black';
 			}
 			doc.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].disable = false;
 		} else {
@@ -702,18 +705,22 @@ function weFileupload_view_bindoc(uploader) {
 
 	self.setEditStatus = function(state){
 		var doc = self.uploader.doc;
-		var fileobj = self.sender.preparedFiles.length ? self.sender.preparedFiles[0] : null,
-			btn = doc.getElementsByClassName('weFileupload_btnImgEditRefresh ')[0];
+		var fileobj = self.sender.preparedFiles.length ? self.sender.preparedFiles[0] : null;
+		var btn = doc.getElementsByClassName('weFileupload_btnImgEditRefresh ')[0];
 
 		state = !fileobj ? 'empty' : state;
 		state = state ? state : !fileobj ? 'empty' : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
+
+		if (self.uploader.uiType === 'wedoc') {
+			self.hideOptions(false);
+		}
 
 		switch(state){
 			case 'notprocessed':
 				if(self.sender.preparedFiles.length){
 					self.elems.fileDrag.style.backgroundColor = '#ffffff';
-					self.elems.fileDrag.style.backgroundColor = 'rgb(rgb(244, 255, 244))';//notprocessed
-					self.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
+					self.elems.fileDrag.style.backgroundColor = 'rgb(244, 255, 244)'; //'rgb(rgb(244, 255, 244))';//notprocessed
+					//self.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
 					self.elems.txtSize.innerHTML = self.utils.gl.sizeTextOk + '--';
 					btn.disabled = false;
 				}
@@ -743,7 +750,20 @@ function weFileupload_view_bindoc(uploader) {
 			doc.getElementsByClassName('optsRowScaleHelp')[0].style.display = 'none';
 		}
 	};
-	
+
+	self.hideOptions = function(hide){
+		var doc = self.uploader.doc;
+		if(hide){
+			doc.getElementById('editImage').style.display = 'none';
+			doc.getElementById('div_importMeta').style.display = 'none';
+			doc.getElementById('tr_alert').style.display = 'none';
+		} else {
+			doc.getElementById('editImage').style.display = 'block';
+			doc.getElementById('div_importMeta').style.display = 'block';
+			doc.getElementById('tr_alert').style.display = 'table-row';
+		}
+	};
+
 	self.disableCustomEditOpts = function () {
 		// to be overridden
 	};
@@ -865,7 +885,7 @@ function weFileupload_view_import(uploader) {
 			fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
 			fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
 			fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
-			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = (fileobj.img.origWidth ? fileobj.img.origHeight + ' x ' + fileobj.img.origWidth + ' px': '--') + ', ' + self.utils.computeSize(fileobj.img.originalSize);
+			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = (fileobj.img.origWidth ? fileobj.img.origWidth + ' x ' + fileobj.img.origHeight + ' px': '--') + ', ' + self.utils.computeSize(fileobj.img.originalSize);
 			//fileobj.entry.getElementsByClassName('optsQualitySlide')[0].style.display = fileobj.type === 'image/jpeg' ? 'block' : 'none';
 			self.replacePreviewCanvas(fileobj);
 			//self.formCustomEditOptsSync(fileobj.index, false);
@@ -1173,22 +1193,6 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.formCustomEditOptsDisable = function(form, disable){
-		/*
-		form.elements.fuOpts_scaleWhat.disabled = disable;
-		form.elements.fuOpts_scale.disabled = disable;
-		form.elements.fuOpts_scaleProps.disabled = disable;
-		form.elements.fuOpts_rotate.disabled = disable;
-		form.elements.fuOpts_quality.disabled = disable;//#eee
-
-		var type = sender.preparedFiles[form.getAttribute('data-index')].type;
-		form.getElementsByClassName('optsQualityBox')[0].style.backgroundColor = disable ? '#eee' : (type === 'image/jpeg' ? 'white' : '#eee');
-		if(disable){
-			//form.getElementsByClassName('weBtn')[0].disabled = true;
-		}
-		*/
-	};
-
 	self.formCustomEditOptsSync = function (pos, general, initRotation) {
 		if(initRotation){
 			var indices;
@@ -1233,7 +1237,7 @@ function weFileupload_view_import(uploader) {
 		var infoBottoms = doc.getElementsByClassName('infoBottom');
 		// var scaleInputs = doc.getElementsByClassName('optsScaleInput_row');
 		var scaleHelp = divUploadFiles.getElementsByClassName('optsRowScaleHelp');
-		var fileobj, i, j, state, deg;
+		var fileobj, i, j, state, deg, dimensions;
 
 		for(i = 0; i < indices.length; i++){
 			j = indices[i];
@@ -1246,7 +1250,19 @@ function weFileupload_view_import(uploader) {
 						elems[j].style.backgroundColor = 'rgb(244, 255, 244)';
 						//elems[j].style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(244, 255, 244,.5) 10px)';
 						sizes[j].innerHTML = self.utils.gl.sizeTextOk + '--';
-						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + fileobj.img.lastWidthShown + ' x ' + fileobj.img.lastHeightShown : infoTops[j].innerHTML) : '--';
+
+						if(setDimensions === 'flip'){
+							switch (fileobj.img.editOptions.scaleWhat) {
+								case 'pixel_l':
+									dimensions = fileobj.img.lastHeightShown + ' x ' + fileobj.img.lastWidthShown + ' px';
+									break;
+								case 'pixel_w':
+								case 'pixel_h':
+									dimensions = fileobj.img.editOptions.scale ? '--' : fileobj.img.lastHeightShown + ' x ' + fileobj.img.lastWidthShown + ' px';
+							}
+						}
+						
+						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + dimensions : infoTops[j].innerHTML) : '--';
 						infoMiddles[j].style.display = 'block';
 						deg = fileobj.img.editOptions.rotate;
 						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + self.utils.gl.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + self.utils.gl.editRotationLeft*/ : '180&deg;')));
@@ -1268,7 +1284,7 @@ function weFileupload_view_import(uploader) {
 							var h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
 							var w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
 						}
-						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? h + ' x ' + w + ' px' : '--');
+						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
 
 						deg = fileobj.img.editOptions.rotate;
 						scaleHelp[j].style.display = fileobj.img.tooSmallToScale ? 'inline-block' : 'none';
@@ -1282,7 +1298,7 @@ function weFileupload_view_import(uploader) {
 				case 'donotedit':
 				/*falls through*/
 				default:
-					infoTops[j].innerHTML = fileobj.img.origWidth ? fileobj.img.origHeight + ' x ' + fileobj.img.origWidth  + ' px' : '--';
+					infoTops[j].innerHTML = fileobj.img.origWidth ? fileobj.img.origWidth + ' x ' + fileobj.img.origHeight  + ' px' : '--';
 					elems[j].style.backgroundColor = 'white';
 					elems[j].style.backgroundImage = 'none';
 					scaleHelp[j].style.display = fileobj.img.tooSmallToScale ? 'inline-block' : 'none';

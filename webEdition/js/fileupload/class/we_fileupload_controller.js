@@ -247,7 +247,6 @@ function weFileupload_controller_abstract(uploader) {
 			inputRotate = form.elements.fuOpts_rotate,
 			inputQuality = form.elements.fuOpts_quality,
 			scale = inputScale.value,
-			quality = parseInt(inputQuality.value),
 			pos = form.getAttribute('data-type') === 'importer_rowForm' ? form.getAttribute('data-index') : -1,
 			btnRefresh = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0],
 			imageEdit = self.imageEdit;

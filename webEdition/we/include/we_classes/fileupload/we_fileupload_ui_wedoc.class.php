@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
+	private $editOptsHidden = false;
 
 	public function __construct($contentType = []){
 		parent::__construct($contentType);
@@ -42,6 +43,10 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 				['we_doc_ext', 'text']
 		]);
 		$this->cliensideImageEditing = ($this->contentType === we_base_ContentTypes::IMAGE);
+	}
+
+	public function setEditOptsHidden($hidden){
+		$this->editOptsHidden = $hidden;
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
@@ -64,14 +69,14 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 					</td>
 					<td style="width:300px">' .
 			we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone('preview', $thumbnailSmall) .
-				($this->contentType === we_base_ContentTypes::IMAGE && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->getFormImageEditClientside() : '') . ($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImportMeta() : '')
+				($this->contentType === we_base_ContentTypes::IMAGE && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->getFormImageEditClientside($this->type, $this->editOptsHidden) : '') . ($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImportMeta($this->editOptsHidden) : '')
 			) . '
 					</td>
 				</tr>
-				<tr><td colspan="2" class="defaultfont" style="padding-top:20px;">' . $this->getHtmlAlertBoxes() . '</td></tr>
+				<tr id="tr_alert"' . ($this->editOptsHidden ? ' class="fileuploadAlert hidden"' : '') . '><td colspan="2" class="defaultfont" style="padding-top:20px;">' . $this->getHtmlAlertBoxes() . '</td></tr>
 				<tr>
 					<td colspan="2" class="defaultfont" style="padding-top:20px;">' .
-			we_html_tools::htmlAlertAttentionBox(g_l('weClass', (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_INFO, 508) . '
 					</td>
 				</tr>
 			</table>';

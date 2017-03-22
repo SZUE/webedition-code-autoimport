@@ -437,6 +437,7 @@ function weFileupload_sender_bindoc(uploader) {
 		self.preparedFiles = [];
 		if (uploader.uiType !== 'wedoc') {
 			var cur = this.currentFile;
+
 			if (resp.status === 'failure') {
 				self.resetParams();
 			} else {
@@ -610,7 +611,7 @@ function weFileupload_sender_import(uploader) {
 
 	self.postProcess = function (resp) {
 		self.resp = resp;
-top.console.log(resp);
+
 		if (!self.isCancelled) {
 			self.view.elems.footer.setProgress('', 100);
 			self.view.elems.footer.setProgressText('progress_title', '');
