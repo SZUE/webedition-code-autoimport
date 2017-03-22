@@ -373,7 +373,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			'maxID' => 0,
 			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'')
 		]);
-		$maxStep = 1000;
+		$maxStep = 2000;
 
 		//FIXME!!!! LINK_TABLE
 		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
