@@ -217,7 +217,7 @@ class we_base_preferences{
 	 *
 	 * @return         boolean
 	 */
-	public function setUserPref($name, $value){
+	public static function setUserPref($name, $value){
 		if(isset($_SESSION['prefs'][$name]) && !empty($_SESSION['prefs']['userID'])){
 			$_SESSION['prefs'][$name] = $value;
 			we_users_user::writePrefs($_SESSION['prefs']['userID'], new DB_WE());
