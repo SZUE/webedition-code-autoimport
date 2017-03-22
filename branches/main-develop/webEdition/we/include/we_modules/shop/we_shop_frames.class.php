@@ -108,9 +108,9 @@ class we_shop_frames extends we_modules_frame{
 		} elseif($mid){
 			$year = substr($mid, (strlen($mid) - 4));
 			$month = str_replace($year, '', $mid);
-			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month;
+			$bodyURL = WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_revenueTop&ViewYear=' . $year . '&ViewMonth=' . $month;
 		} elseif($yearView){
-			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $yearView;
+			$bodyURL = WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_revenueTop&ViewYear=' . $yearView;
 		} else {
 			$bodyURL = WEBEDITION_DIR . 'we_showMod.php?mod=shop&bid=' . $bid;
 		}

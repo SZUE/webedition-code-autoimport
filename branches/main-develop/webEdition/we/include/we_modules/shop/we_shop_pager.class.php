@@ -97,7 +97,7 @@ class we_shop_pager{
 	 * 	@access private
 	 * 	@var (string)
 	 */
-	var $link_href = 'edit_shop_revenueTop.php?ViewYear=2005&page=';
+	var $link_href = WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_revenueTop&page=';
 	//////////////////////////////////////////////////
 	// Optionale Variablen
 	//////////////////////////////////////////////////
