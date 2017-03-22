@@ -213,18 +213,22 @@ function weFileupload_imageEdit_abstract(uploader) {
 				break;
 			case self.IMG_EXTRACT_METADATA:
 				self.processimageExtractMetadata(fileobj, self.IMG_SCALE);
+				//self.processimageScale(fileobj, self.IMG_ROTATE);
 				break;
 			case self.IMG_SCALE:
 				self.processimageScale(fileobj, self.IMG_ROTATE);
+				//self.processimageRotate(fileobj, self.IMG_APPLY_FILTERS);
 				break;
 			case self.IMG_ROTATE:
 				self.processimageRotate(fileobj, self.IMG_APPLY_FILTERS);
+				//self.processimageExtractMetadata(fileobj, self.IMG_SCALE);
 				break;
 			case self.IMG_APPLY_FILTERS:
 				self.imageEdit.processimageApplyFilters(fileobj, self.IMG_WRITE_IMAGE);
 				break;
 			case self.IMG_WRITE_IMAGE:
 				self.processimageWriteImage(fileobj, self.IMG_INSERT_METADATA);
+				//self.processimageWriteImage(fileobj, self.IMG_MAKE_PREVIEW);
 				break;
 			case self.IMG_INSERT_METADATA:
 				self.processimagInsertMetadata(fileobj, self.IMG_MAKE_PREVIEW);
@@ -361,6 +365,10 @@ function weFileupload_imageEdit_abstract(uploader) {
 	self.processimageExtractMetadata = function(fileobj, nexttask) {
 		switch(fileobj.type){
 			case 'image/jpeg':
+				if(fileobj.img.jpgCustomSegments){
+					self.processImage(fileobj, nexttask);
+					return;
+				}
 				self.processimageExtractMetadataJPG(fileobj, nexttask);
 				break;
 			case 'image/png':
@@ -371,17 +379,26 @@ function weFileupload_imageEdit_abstract(uploader) {
 		}
 	};
 
-	self.processimageExtractMetadataJPG = function(fileobj, nexttask) {
+	self.processimageExtractMetadataJPG = function(fileobj, nexttask, complete) {
 			var reader = new FileReader();
+			var segments;
 
 			reader.onloadend = function () {
-				fileobj.img.jpgCustomSegments = self.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
-
-				self.utils.logTimeFromStart('meta jpg exttracted');
+				self.utils.logTimeFromStart('file read to extract meta');
+				segments = self.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
+				if(segments === false && !fileobj.img.extractMetaSecondTry){
+					// 128 KB was not enough to reach SOS: we try again reading the whole file
+					fileobj.img.extractMetaSecondTry = true;
+					self.processimageExtractMetadataJPG(fileobj, nexttask, true);
+				}
+				fileobj.img.jpgCustomSegments = segments;
+				self.utils.logTimeFromStart('meta jpg extracted');
 				self.view.repaintImageEditMessage(true);
-				self.processImage(fileobj, nexttask);
+				if(nexttask){
+					self.processImage(fileobj, nexttask);
+				}
 			};
-			reader.readAsArrayBuffer(fileobj.file.slice(0, 128 * 1024));
+			reader.readAsArrayBuffer((complete ? fileobj.file : fileobj.file.slice(0, 128 * 1024)));
 	};
 
 	self.processimageExtractMetadataPNG = function(fileobj, nexttask) {
@@ -548,8 +565,10 @@ function weFileupload_imageEdit_abstract(uploader) {
 			self.processimageWriteImage_2(fileobj, nexttask);
 		}
 		*/
-		fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/100));
+		fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/90));
 		fileobj.dataArray = self.utils.dataURLToUInt8Array(fileobj.dataUrl);
+		//self.jpgGetSegmentsIfExist(fileobj.dataArray, [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
+
 		if(!self.PRESERVE_IMG_DATAURL){
 			fileobj.dataUrl = null;
 		}
@@ -710,7 +729,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 			fileobj.size = fileobj.dataArray.length;
 		}
 		fileobj.dataArray = null; // we recompute it from dataUrl and metas while uploading
-		if(self.PROCESS_PREVIEWS_ONLY){
+		if(false && self.PROCESS_PREVIEWS_ONLY){
 			fileobj.dataUrl = null;
 		}
 
@@ -728,7 +747,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 		self.view.repaintImageEditMessage();
 		self.utils.logTimeFromStart('processing finished', false, fileobj);
 
-		if(self.IS_MEMORY_MANAGMENT){
+		if(false && self.IS_MEMORY_MANAGMENT){
 			self.memorymanagerRegister(fileobj);
 			if(self.memorymanagerIsOverflow()){
 				self.memorymanagerEmptySpace();
@@ -823,7 +842,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 	};
 
 	self.jpgInsertSegment = function (uint8array, exifSegment) {
-		if(uint8array[0] == 255 && uint8array[1] == 216 && uint8array[2] == 255 && uint8array[3] == 224){
+		if(uint8array[0] == 255 && uint8array[1] == 216 && uint8array[2] == 255 && uint8array[3] == 224){ // type=jpg
 			var pos = 0;
 			if(!Uint8Array.prototype.indexOf){ // IE11
 				for(var i = 4; i < uint8array.length; i++){
@@ -904,6 +923,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 			searchObj = {},
 			segmentsArr = [],
 			controllArr = [];
+		var SOSfound;
 
 		for (var i = 0; i < segments.length; i++) {
 			searchObj[segments[i]] = true;
@@ -911,6 +931,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 
 		while (head < uint8array.length) {
 			if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+				SOSfound = true;
 				break;
 			}
 
@@ -925,7 +946,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 					controllArr.push({marker: uint8array[head + 1], head: head, length: (endPoint-head)});
 
 					/*
-					delete searchObj[uint8array[head + 1]]; // there can be duplicate segemnst: we want o restore them as is!
+					delete searchObj[uint8array[head + 1]]; // there can be duplicate segements: we want o restore them as is!
 					if (searchObj === {}){ // nothing left to search for
 						break;
 					}
@@ -935,7 +956,9 @@ function weFileupload_imageEdit_abstract(uploader) {
 				head = endPoint;
 			}
 		}
-		//win.console.log('all custom segments', {list: controllArr, segments: segmentsArr});
+		if(!SOSfound){
+			return false;
+		}
 
 		return concat ? self.utils.concatTypedArrays(Uint8Array, segmentsArr) : segmentsArr;
 	};
@@ -994,6 +1017,10 @@ function weFileupload_imageEdit_bindoc(uploader) {
 			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : self.OPTS_QUALITY_NEUTRAL_VAL;
 			fileobj.img.editOptions.from = 'general';
 
+			if(fileobj.img.editOptions.rotate % 180 === 90 && fileobj.img.editOptions.scaleWhat !== 'pixel_l'){
+				fileobj.img.editOptions.scaleWhat = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? 'pixel_h' : 'pixel_w';
+			}
+
 			// the following is identical in importer: move to new fn on abstract
 			var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
 					fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
@@ -1044,6 +1071,10 @@ function weFileupload_imageEdit_import(uploader) {
 				form.elements.fuOpts_rotate.value = fileobj.img.editOptions.rotate;
 			} else {
 				fileobj.img.editOptions.rotate = parseInt(form.elements.fuOpts_rotate.value);
+			}
+
+			if(fileobj.img.editOptions.rotate % 180 === 90 && fileobj.img.editOptions.scaleWhat !== 'pixel_l'){
+				fileobj.img.editOptions.scaleWhat = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? 'pixel_h' : 'pixel_w';
 			}
 
 			// check for tooSmallToScale

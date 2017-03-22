@@ -329,7 +329,9 @@ div.imgEditOpts{
 		}
 	}
 }
-.imgEditOpts.hidden{
+.imgEditOpts.hidden,
+.importMeta.hidden,
+.fileuploadAlert.hidden{
 	display: none;
 }
 
@@ -745,8 +747,6 @@ div.fileuploadImporter{
 						padding: 0 0 0 4px;
 					}
 
-					/* IMI tmp */
-					/*
 					div.optsRowScaleHelp{
 						display: none;
 						margin-left: 6px;
@@ -773,8 +773,6 @@ div.fileuploadImporter{
 							padding: 4px;
 						}
 					}
-					*/
-
 
 					div.elemInfo{
 						position: absolute;

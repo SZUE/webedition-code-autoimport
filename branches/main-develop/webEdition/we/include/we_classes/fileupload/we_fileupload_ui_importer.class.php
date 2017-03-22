@@ -87,7 +87,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ($isIE10 || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;width:280px;height:88px;padding-top:40px"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
 		</div>' .
-		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div class="editOptsImporter" style="position:absolute; left: 328px; padding-top: 24px">' . we_fileupload_ui_preview::getFormImageEditClientside(true) . '</div>' : '');
+		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div class="editOptsImporter" style="position:absolute; left: 328px; padding-top: 24px">' . we_fileupload_ui_preview::getFormImageEditClientside($this->type) . '</div>' : '');
 
 		$topParts[] = ["html" => $fileselect, 'space' => 0];
 
@@ -147,7 +147,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 		$btnRotateRight = we_html_button::create_button('fa:, fa-lg fa-rotate-right', 'javascript:void(0)', 'fuOpts_addRotationRight', 0, 0, '', '', false, false, '', false, g_l('importFiles', '[correct_orientation_right]'), 'fuOpts_addRotationRight');
 		$fiddenFuOpts_rotate = we_html_element::htmlHidden('fuOpts_rotate', -1, 'fuOpts_rotate_WEFORMNUM');
 
-		$divInfoTop = we_html_element::htmlDiv(['class' => 'infoTop'], we_html_element::htmlDiv(['class' => 'leftDiv bold'], g_l('importFiles', '[edit_pixel_height]') . ' x ' . g_l('importFiles', '[edit_pixel_width]') . ':') . we_html_element::htmlDiv(['class' => 'rowDimensionsProcessed rightDiv'], '--') . $scaleHelp);
+		$divInfoTop = we_html_element::htmlDiv(['class' => 'infoTop'], we_html_element::htmlDiv(['class' => 'leftDiv bold'], g_l('importFiles', '[edit_pixel_width]') . ' x ' . g_l('importFiles', '[edit_pixel_height]') . ':') . we_html_element::htmlDiv(['class' => 'rowDimensionsProcessed rightDiv'], '--') . $scaleHelp);
 		$divInfoMiddle = we_html_element::htmlDiv(['class' => 'infoMiddle'], we_html_element::htmlDiv(['class' => 'leftDiv bold'], g_l('importFiles', '[rotation]') . ':') . we_html_element::htmlDiv(['class' => 'rowRotation rightDiv'], ''));
 		$divInfoBottom = we_html_element::htmlDiv(['class' => 'infoBottom'], we_html_element::htmlDiv(['class' => 'leftDiv'], g_l('importFiles', '[original_dimensions]') . ':') . we_html_element::htmlDiv(['class' => 'rowDimensionsOriginal rightDiv'], '--'));
 		$divInfo = we_html_element::htmlDiv(['class' => 'elemInfo'], $divInfoTop . $divInfoMiddle . $divInfoBottom);

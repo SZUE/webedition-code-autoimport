@@ -321,6 +321,7 @@ class we_binaryDocument extends we_document{
 			'</a>');
 
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
+		$fileUpload->setEditOptsHidden($this->getElement('data'));
 
 		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}
