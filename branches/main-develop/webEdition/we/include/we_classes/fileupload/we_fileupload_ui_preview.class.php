@@ -130,9 +130,9 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	public static function getFormImageEditClientside($type = '', $hide = false){
 		$importer = $type === 'importer';
 		$attribs = ['name' => 'fuOpts_scale', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($importer ? ' multiimport' : ''), 'autocomplete' => 'off',
-			'value' => (FILE_UPLOAD_IMG_MAX_SIZE !== -1 ? FILE_UPLOAD_IMG_MAX_SIZE : '')];
+			'value' => (FILE_UPLOAD_IMG_MAX_SIZE ?: '')];
 		$scaleValue = we_html_element::htmlInput($attribs);
-		$scaleProps = FILE_UPLOAD_IMG_MAX_SIZE === -1 ? self::$scaleProps : array_filter(self::$scaleProps, function($val){
+		$scaleProps = !FILE_UPLOAD_IMG_MAX_SIZE ? self::$scaleProps : array_filter(self::$scaleProps, function($val){
 				return $val <= FILE_UPLOAD_IMG_MAX_SIZE;
 			});
 		$scalePropositions = we_html_tools::htmlSelect('fuOpts_scaleProps', $scaleProps, 1, 0, false, [], '', '', 'weSelect optsScalePropositions' . ($importer ? ' multiimport' : ''));
