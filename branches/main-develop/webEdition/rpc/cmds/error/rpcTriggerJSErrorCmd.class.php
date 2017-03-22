@@ -45,6 +45,7 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 			unset($_REQUEST);
 			log_error_message(E_JS, $data, $file, $line, $errobj);
 		}
+		return new we_rpc_response();
 	}
 
 }
