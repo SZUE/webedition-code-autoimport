@@ -487,7 +487,7 @@ WE().layout.we_tinyMCE.functions.initEditor = function(win, rawConfObj) {
 	}
 };
 
-WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function (win) {top.console.log('tutuwas', win);
+WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function (win) {
 	var rawConfObj;
 	var dialogProps = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-dialogProperties');
 

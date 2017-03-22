@@ -42,7 +42,7 @@ abstract class we_editor_script{
 						case we_base_constants::WE_EDITPAGE_PREVIEW:
 						case we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE:
 						case we_base_constants::WE_EDITPAGE_CONTENT:
-							$ret = we_wysiwyg_editor::getHTMLHeader(false, true);
+							$ret = we_wysiwyg_editor::getHTMLHeader(false);
 							break;
 					}
 			}

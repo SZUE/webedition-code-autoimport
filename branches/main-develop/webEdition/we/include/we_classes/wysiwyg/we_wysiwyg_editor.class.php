@@ -465,7 +465,7 @@ class we_wysiwyg_editor{
 
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-				(IS_TINYMCE_4 ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_tiny_mce_overwrites.js') . we_html_element::jsScript(TINYMCE_SRC_DIR . 'plugins/compat3x/plugin.min.js') : '') . //TINY4
+				(IS_TINYMCE_4 ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_tiny_mce_overwrites.js') . we_html_element::jsScript(TINYMCE_SRC_DIR . 'plugins/compat3x/plugin.js') : '') . //TINY4
 				($frontendEdit ? $frontendHeader  : '') .
 				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMce_init.js', '', ($loadConfigs ? ['id' => 'loadVar_tinyConfigs',
 						'data-dialogProperties' => setDynamicVar(self::$dataDialogProperties),
@@ -663,11 +663,11 @@ class we_wysiwyg_editor{
 			new we_wysiwyg_ToolbarButton($this, "pasteword"),
 			$sep,
 			//group: layer
-			new we_wysiwyg_ToolbarButton($this, "insertlayer"),
-			new we_wysiwyg_ToolbarButton($this, "movebackward"),
-			new we_wysiwyg_ToolbarButton($this, "moveforward"),
-			new we_wysiwyg_ToolbarButton($this, "absolute"),
-			$sep,
+			(IS_TINYMCE_4 ? false : new we_wysiwyg_ToolbarButton($this, "insertlayer")),
+			(IS_TINYMCE_4 ? false : new we_wysiwyg_ToolbarButton($this, "movebackward")),
+			(IS_TINYMCE_4 ? false : new we_wysiwyg_ToolbarButton($this, "moveforward")),
+			(IS_TINYMCE_4 ? false : new we_wysiwyg_ToolbarButton($this, "absolute")),
+			(IS_TINYMCE_4 ? false : $sep),
 			//group: essential
 			new we_wysiwyg_ToolbarButton($this, "undo"),
 			new we_wysiwyg_ToolbarButton($this, "redo"),
@@ -678,7 +678,7 @@ class we_wysiwyg_editor{
 			new we_wysiwyg_ToolbarButton($this, "selectall"),
 			$sepCon,
 			new we_wysiwyg_ToolbarButton($this, "search"),
-			new we_wysiwyg_ToolbarButton($this, "replace"),
+			(IS_TINYMCE_4 ? false : new we_wysiwyg_ToolbarButton($this, "replace")),
 			$sepCon,
 			new we_wysiwyg_ToolbarButton($this, "fullscreen"),
 			(IS_TINYMCE_4 ? new we_wysiwyg_ToolbarButton($this, "maximize") : false), //TINY4
@@ -1001,8 +1001,6 @@ class we_wysiwyg_editor{
 			$formatselects['menuSettings']['styles'] = ['title' => 'CSS-Styles und Klassen', 'items' => $items];
 		}
 
-
-t_e('all formats', $formatselects, $this->usedCommands, $this->usedCommandsMenu);
 		$this->formatselects = $formatselects;
 	}
 
@@ -1099,7 +1097,7 @@ t_e('all formats', $formatselects, $this->usedCommands, $this->usedCommandsMenu)
 				$processedMenu[$name] = ['title' => $menu['title'], 'items' => trim($items, ' |')];
 			}
 		}
-t_e('elems2', $elems, $usedCommandsMenu);
+
 		$this->usedCommandsMenu = $usedCommandsMenu;
 		$this->menu = $processedMenu;
 		$this->showMenu = !empty($this->menu);
@@ -1362,7 +1360,7 @@ t_e('elems2', $elems, $usedCommandsMenu);
 		];
 	}
 
-	private function getPropertiesEditor(){t_e('classes', $this->cssClasses, $this->tinyCssClasses);
+	private function getPropertiesEditor(){
 		$edProps = [
 			'weEditorType' => $this->editorType,
 			'weCharset' => $this->charset,
