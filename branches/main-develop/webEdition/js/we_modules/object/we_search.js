@@ -28,21 +28,21 @@
 function sub() {
 	document.we_form_search.target = "load";
 	document.getElementsByName("SearchStart")[0].value = 0;
-	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 	document.we_form_search.todo.value = "search";
 	document.we_form_search.submit();
 }
 
 function newinput() {
 	document.we_form_search.target = 'load';
-	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 	document.we_form_search.todo.value = "add";
 	document.we_form_search.submit();
 }
 
 function del(pos) {
 	document.we_form_search.target = 'load';
-	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 	document.we_form_search.todo.value = "delete";
 	document.we_form_search.position.value = pos;
 	document.we_form_search.submit();
@@ -50,7 +50,7 @@ function del(pos) {
 
 function changeitanyway(f) {
 	document.we_form_search.target = 'load';
-	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+	document.we_form_search.action =  WE().consts.dirs.WEBEDITION_DIR +"we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 	document.we_form_search.todo.value = "changemeta";
 	document.we_form_search.submit();
 }
@@ -63,19 +63,19 @@ function changeit(f) {
 	switch (x[0]) {
 		case 'meta':
 			document.we_form_search.target = 'load';
-			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.action =  WE().consts.dirs.WEBEDITION_DIR +"we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 			document.we_form_search.todo.value = 'changemeta';
 			document.we_form_search.submit();
 			break;
 		case 'date':
 			document.we_form_search.target = 'load';
-			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.action =  WE().consts.dirs.WEBEDITION_DIR +"we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 			document.we_form_search.todo.value = 'changedate';
 			document.we_form_search.submit();
 			break;
 		case 'checkbox':
 			document.we_form_search.target = 'load';
-			document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+			document.we_form_search.action =  WE().consts.dirs.WEBEDITION_DIR +"we_showMod.php?mod=weSearch&pnt=cmd&cmd=search_submit";
 			document.we_form_search.todo.value = 'changecheckbox';
 			document.we_form_search.submit();
 			break;

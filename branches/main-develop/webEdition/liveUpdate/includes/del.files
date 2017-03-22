@@ -1,6 +1,3 @@
-js/messaging_tree.js
-we/include/menu/module_menu_messaging.inc.php
-we/include/we_classes/widget/we_widget_msg.class.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -226,6 +223,7 @@ we/include/we_modules/object/we_editor_contentobjectFile.inc.php
 we/include/we_modules/object/we_class_folder.inc.php
 we/include/we_modules/object/we_classFolder_properties.inc.php
 we/include/we_modules/object/we_classFolder_fields.inc.php
+we/include/we_modules/object/search_submit.php
 we/include/we_modules/newsletter/we_webEditionCmd_newsletter.inc.php
 we/include/we_modules/newsletter/we_newsletter_treeLoader.class.php
 we/include/we_modules/newsletter/we_newsletter_tree.class.php
@@ -479,6 +477,7 @@ we/include/we_classes/xml_parser.inc.php
 we/include/we_classes/xml_import.inc.php
 we/include/we_classes/xml_export.inc.php
 we/include/we_classes/wysiwyg/we_wysiwyg_ToolbarSelect.class
+we/include/we_classes/widget/we_widget_msg.class.php
 we/include/we_classes/we_wysiwyg.class.php
 we/include/we_classes/we_wysiwyg.class.inc.php
 we/include/we_classes/we_widget.inc.php
@@ -728,6 +727,7 @@ we/include/selectors.inc.php
 we/include/notInstalledModules.inc.php
 we/include/newMsg.inc.php
 we/include/messageModuleNotActivated.inc.php
+we/include/menu/module_menu_messaging.inc.php
 we/include/loadTree.inc.php
 we/include/jsMessageConsole/messageConsole.php
 we/include/htaccessbase.txt
@@ -838,6 +838,7 @@ js/selectors/delete_selector.js
 js/seemode.js
 js/seeMode.php
 js/multiEditor/multiTabs.js
+js/messaging_tree.js
 js/messageConsoleView.js
 js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js

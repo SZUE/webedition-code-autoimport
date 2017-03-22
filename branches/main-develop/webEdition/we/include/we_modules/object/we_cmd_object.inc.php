@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -61,7 +62,11 @@ switch($cmd){
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
 		return 'we_editors/we_editor.inc.php';
 	case 'object_obj_search':
-		return 'we_modules/object/search_submit.php';
+		$_REQUEST['cmd'] = 'search_submit';
+		$weFrame = new we_search_frames();
+		$weFrame->process();
+		echo $weFrame->getHTML('cmd');
+		return true;
 	case 'object_preview_objectFile':
 		return 'we_showObject.inc.php';
 	case 'object_create_tmpfromClass':
