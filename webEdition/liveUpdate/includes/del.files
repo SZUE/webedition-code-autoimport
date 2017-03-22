@@ -1075,6 +1075,7 @@ apps/toolfactory/lang/no/default.xml
 apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
+agency_sample.php
 !wysiwyg
 !we_backup/tmp
 !we/include/we_widgets

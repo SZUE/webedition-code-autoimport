@@ -71,8 +71,8 @@ abstract class we_backup_util{
 			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
-			($import || file_exists(WEBEDITION_PATH . 'agency.php') ?
-			WEBEDITION_DIR . 'agency.php' :
+			($import || file_exists(WEBEDITION_PATH . 'agency.inc.php') ?
+			WEBEDITION_DIR . 'agency.inc.php' :
 			'')
 		]);
 	}
