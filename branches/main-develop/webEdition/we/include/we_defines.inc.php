@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php');
+
 define('SERIALIZE_PHP', 'serialize');
 define('SERIALIZE_JSON', 'json');
 define('IS_TINYMCE_4', WYSIWYG_TYPE == "tinyMCE_beta");

@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 13357 $
- * $Author: lukasimhof $
- * $Date: 2017-02-13 22:29:45 +0100 (Mo, 13 Feb 2017) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify

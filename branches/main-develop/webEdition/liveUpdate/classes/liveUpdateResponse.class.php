@@ -23,11 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class liveUpdateResponse{
-	var $Type;
-	var $Headline;
-	var $Content;
-	var $Header;
-	var $Code;
+
+	var $Type;//type of response
+	var $Headline;//for template-type
+	var $Content;//for template-type
+	var $Header;//for template-type
+	var $Code;//for eval-type
+
 	var $EncodedCode;
 	var $Encoding = false;
 
@@ -85,6 +87,7 @@ class liveUpdateResponse{
 				return liveUpdateFrames::htmlStateMessage();
 			//return 'Meldung vom Server:<br />Status: ' . $this->State . '<br />Meldung: ' . $this->Message;
 			default:
+				t_e($this->Type . ' is not implemented yet', $this);
 				return $this->Type . ' is not implemented yet';
 		}
 	}
