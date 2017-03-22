@@ -67,7 +67,7 @@ function setTab(tab) {
 			break;
 
 		case TAB_ADMIN3:
-			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR + "shop/edit_shop_revenueTop.php?ViewYear=" + shp.yearTrans;
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_revenueTop&ViewYear=" + shp.yearTrans;
 			// treeData.yearshop
 			break;
 		case TAB_OVERVIEW:
