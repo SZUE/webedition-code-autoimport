@@ -159,6 +159,9 @@ $l_buttons_global=array(
 	'btn_function_trash'=>array(
 		'alt'=>'Löschen',
 	),
+	'btn_function_unlock'=>array(
+		'alt'=>'Dokumentenfreigabe anfordern',
+	),
 	'btn_function_view'=>array(
 		'alt'=>'Ansehen',
 	),

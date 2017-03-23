@@ -159,6 +159,9 @@ $l_buttons_global=array(
 	'btn_function_trash'=>array(
 		'alt'=>'Kasuj',
 	),
+	'btn_function_unlock'=>array(
+		'alt'=>'Request document release',
+	),
 	'btn_function_view'=>array(
 		'alt'=>'Widok',
 	),
