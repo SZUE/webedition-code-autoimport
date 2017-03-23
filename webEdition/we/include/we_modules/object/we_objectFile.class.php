@@ -2336,7 +2336,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		}
 	}
 
-	function i_saveContentDataInDB(){
+	protected function i_saveContentDataInDB(){
 		if(intval($this->TableID) == 0){
 			return false;
 		}

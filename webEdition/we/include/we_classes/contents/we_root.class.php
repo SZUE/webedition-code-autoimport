@@ -1089,15 +1089,14 @@ abstract class we_root extends we_class{
 		return $this->DB_WE->getAllFirst(false);
 	}
 
-	function i_saveContentDataInDB(){
+	protected function i_saveContentDataInDB(){
 		if(!is_array($this->elements)){
 			return we_base_delete::deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
 		$def = sql_function('DEFAULT');
-		$data = [];
-		$new = [];
+		$data = $new = [];
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 				//ignore fields which result in empty entry - they will be deleted
@@ -1407,7 +1406,7 @@ abstract class we_root extends we_class{
 	  -3	if doc is locked by another user
 	  -4	if user has not the right to save a file.
 	 */
-	function userHasAccess(){
+	public function userHasAccess(){
 		$uid = $this->isLockedByUser();
 		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $GLOBALS['we_doc']->ID){ // file is locked
 			$this->LockUser = $uid;
@@ -1454,12 +1453,12 @@ abstract class we_root extends we_class{
 	 * @desc	checks if a file is locked by another user. returns that userID
 	  or 0 when file is not locked
 	 */
-	function isLockedByUser(){
+	public function isLockedByUser(){
 		//select only own ID if not in same session
 		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!=x\'' . we_base_sessionHandler::getCurrentHex() . '\' AND lockTime>NOW()', '', $this->DB_WE));
 	}
 
-	function lockDocument(){
+	public function lockDocument(){
 		if($_SESSION['user']['ID'] && $this->ID){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
 			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
@@ -1498,7 +1497,7 @@ abstract class we_root extends we_class{
 	 * Rewrites the navigation cache files
 	 *
 	 */
-	function rewriteNavigation(){
+	protected function rewriteNavigation(){
 		//FIXME: make this more efficient!
 		// rewrite filter
 		if(defined('CUSTOMER_TABLE') && !empty($this->documentCustomerFilter)){
