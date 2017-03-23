@@ -62,6 +62,9 @@ function we_cmd() {
 		case 'initGauge':
 			new Gauge(WE().layout.cockpitFrame.document.getElementById(args[1]), args[2]);
 			break;
+		case "removeWidgetOK":
+			removeWidgetOK(args[1]);
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -276,7 +279,7 @@ function setLabel(id, prefix, postfix) {
 	var el_label = document.getElementById(id + '_lbl');
 	var w = parseInt(el_label.style.width);
 	var suspensionPts = '',
-		label;
+					label;
 	if (prefix === undefined || postfix === undefined) {
 		label = getLabel(id);
 	} else {
@@ -345,8 +348,8 @@ function setOpacity(sId, degree) {
 
 function fadeTrans(wizId, start, end, ms) {
 	var v = Math.round(ms / 100),
-		t = 0,
-		i;
+					t = 0,
+					i;
 	if (start > end) {
 		for (i = start; i >= end; i--) {
 			//var obj = document.getElementById(wizId);
@@ -429,9 +432,9 @@ function createWidget(typ, row, col) {
 	} else { // add to empty col - before wildcard!
 		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
-			divClone,
-			_td.childNodes[0]
-			);
+						divClone,
+						_td.childNodes[0]
+						);
 	}
 	if (!cockpit.oCfg[typ].isResizable) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
@@ -700,14 +703,14 @@ function resizeIdx(a, id) {
 }
 
 function removeWidget(wizId) {
-	var remove = window.confirm(WE().consts.g_l.cockpit.pre_remove + getLabel(wizId) + WE().consts.g_l.cockpit.post_remove);
-	if (remove === true) {
-		document.getElementById(wizId).parentNode.removeChild(document.getElementById(wizId));
-		updateJsStyleCls();
-	}
-	saveSettings();
+	WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.cockpit.remove, getLabel(wizId)), ["removeWidgetOK", wizId]);
 }
 
+function removeWidgetOK(wizId) {
+	document.getElementById(wizId).parentNode.removeChild(document.getElementById(wizId));
+	updateJsStyleCls();
+	saveSettings();
+}
 
 function getDimension(theString, styleClassElement) {
 	var dim = {};
@@ -727,8 +730,8 @@ function getDimension(theString, styleClassElement) {
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-			theString + '<\/span>';
+						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+						theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
