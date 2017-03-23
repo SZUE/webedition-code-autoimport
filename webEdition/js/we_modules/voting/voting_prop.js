@@ -25,9 +25,9 @@
  */
 'use strict';
 var owners_label,
-	question_edit,
-	answers_edit,
-	iptable_label;
+				question_edit,
+				answers_edit,
+				iptable_label;
 
 var table = WE().consts.tables.FILE_TABLE;
 var votings = WE().util.getDynamicVar(document, 'loadVarVoting', 'data-voting');
@@ -223,8 +223,8 @@ function resetScores(max) {
 }
 
 function refreshTotal() {
-	var total = 0,percent,
-		i;
+	var total = 0, percent,
+					i;
 	var elems = document.we_form.elements;
 	for (i = 0; i < elems.length; i++) {
 		if (elems[i].name.match(/^scores_/)) {
@@ -238,13 +238,22 @@ function refreshTotal() {
 	for (i = 0; i < elems.length; i++) {
 		if (elems[i].name.match(/^scores_/)) {
 			percent = (total ?
-				Math.round((parseInt(elems[i].value) / total) * 100) :
-				0);
+							Math.round((parseInt(elems[i].value) / total) * 100) :
+							0);
 		}
 	}
 }
 
 function setMultiEdits() {
+	owners_label = new (WE().util.multi_edit)("owners", window, 0, votings.delBut, 510, false);
+	owners_label.addVariant();
+
+	for (i in votings.owners) {
+		owners_label.addItem();
+		owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(votings.owners[i].IsFolder ? WE().consts.contentTypes.FOLDER : 'we/user') + votings.owners[i].Path);
+	}
+	owners_label.showVariant(0);
+
 	if (votings.isFolder) {
 		return;
 	}
@@ -298,14 +307,6 @@ function setMultiEdits() {
 	answers_edit.setImages(votings.allow.images);
 	answers_edit.setMedia(votings.allow.media);
 	answers_edit.setSuccessors(votings.allow.successor);
-	owners_label = new (WE().util.multi_edit)("owners", window, 0, votings.delBut, 510, false);
-	owners_label.addVariant();
-
-	for (i in votings.owners) {
-		owners_label.addItem();
-		owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(votings.owners[i].IsFolder ? WE().consts.contentTypes.FOLDER : 'we/user') + votings.owners[i].Path);
-	}
-	owners_label.showVariant(0);
 
 	iptable_label = new (WE().util.multi_edit)("iptable", window, 0, votings.delBut, 510, false);
 	iptable_label.addVariant();
