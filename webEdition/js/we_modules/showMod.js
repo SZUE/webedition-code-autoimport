@@ -99,6 +99,13 @@ function we_cmd() {
 		case "setTool":
 			current = args[1];
 			break;
+		case "revertTab":
+			weTabs.setActiveTab(current);
+			break;
+		case "setHotTab":
+			top.content.hot = false;
+			setTab(args[1]);
+			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -107,10 +114,8 @@ function we_cmd() {
 
 function setTab(module) {
 	if (top.content.hot) {
-		if (!window.confirm(WE().consts.g_l.alert.discard_changed_data)) {
-			weTabs.setActiveTab(current);
-			return;
-		}
+		WE().util.showConfirm(window, "", WE().consts.g_l.alert.discard_changed_data, ["setHotTab", module], ["revertTab"]);
+		return;
 	}
 	if (typeof "top.content.usetHot" == "function") {
 		top.content.usetHot();

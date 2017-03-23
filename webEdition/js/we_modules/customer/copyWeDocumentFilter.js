@@ -27,13 +27,38 @@
 
 var filter = WE().util.getDynamicVar(document, 'loadVarFilter', 'data-filter');
 
+
+
+function we_cmd() {
+	/*jshint validthis:true */
+	var caller = (this && this.window === this ? this : window);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "closeChilds":
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+							_openChilds = args[1];
+			for (var i = 0; i < _openChilds.length; i++) {
+				_usedEditors[_openChilds[i]].setEditorIsHot(false);
+				WE().layout.weEditorFrameController.closeDocument(_openChilds[i]);
+			}
+			document.getElementById("iframeCopyWeDocumentCustomerFilter").src = filter.redirect;
+			break;
+		case "abortClose":
+			window.close();
+			break;
+		default:
+			window.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+	}
+}
+
 function checkForOpenChilds() {
 	var
 					_openChilds = [],
 					_usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 	for (var frameId in _usedEditors) {
-
 		// table muss FILE_TABLE sein
 		if (_usedEditors[frameId].getEditorEditorTable() === filter.table) {
 			if (filter.allChilds[_usedEditors[frameId].getEditorDocumentId()] && filter.allChilds[_usedEditors[frameId].getEditorDocumentId()] === _usedEditors[frameId].getEditorContentType()) {
@@ -43,17 +68,8 @@ function checkForOpenChilds() {
 	}
 
 	if (_openChilds.length) {
-		if (window.confirm(filter.question)) {
-			// close all
-			for (var i = 0; i < _openChilds.length; i++) {
-				_usedEditors[_openChilds[i]].setEditorIsHot(false);
-				WE().layout.weEditorFrameController.closeDocument(_openChilds[i]);
-			}
-		} else {
-			window.close();
-			return;
-		}
-
+		WE().util.showConfirm(window, "", filter.question, ["closeChilds", _openChilds], ["abortClose"]);
+		return;
 	}
 	document.getElementById("iframeCopyWeDocumentCustomerFilter").src = filter.redirect;
 }
