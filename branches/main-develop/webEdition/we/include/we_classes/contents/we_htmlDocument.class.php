@@ -29,7 +29,7 @@ class we_htmlDocument extends we_textContentDocument{
 		$this->ContentType = we_base_ContentTypes::HTML;
 	}
 
-	function i_saveContentDataInDB(){
+	protected function i_saveContentDataInDB(){
 		if(($code = $this->getElement('data'))){
 			$metas = $this->getMetas($code);
 			if(!empty($metas['title'])){
