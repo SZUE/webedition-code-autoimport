@@ -124,14 +124,6 @@ function we_cmd() {
 		case "loadHeaderFooter":
 			loadHeaderFooter(args[1], args[2], args[3]);
 			break;
-		case "checkSaveNew":
-			if (top.makeNewEntryCheck == 1) {
-				document.getElementById("makeNewEntry").checked = true;
-			}
-			if (top.publishWhenSave == 1 && document.getElementById("publishWhenSave")) {
-				document.getElementById("publishWhenSave").checked = true;
-			}
-			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

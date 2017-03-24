@@ -175,6 +175,14 @@ function we_cmd() {
 				}
 			}
 			break;
+		case "checkSaveNew":
+			if (top.makeNewEntryCheck == 1) {
+				document.getElementById("makeNewEntry").checked = true;
+			}
+			if (top.publishWhenSave == 1 && document.getElementById("publishWhenSave")) {
+				document.getElementById("publishWhenSave").checked = true;
+			}
+			break;
 		case "home":
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=editor";
 			/* falls through */
