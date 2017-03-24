@@ -65,11 +65,13 @@ window.addEventListener('load', function () {
 					break;
 				default:
 					//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
-					if (window.we_cmd) {
+					if (window.we_cmd) {//direct match
 						window.we_cmd.apply(window, [cmds[i], cmdData]);
-					} else if (window.parent.we_cmd) {
+					} else if (window.parent.we_cmd) {//match content frame
 						window.parent.we_cmd.apply(window, [cmds[i], cmdData]);
-					} else {
+					} else if (window.parent.parent.we_cmd) {//in view component (on modules)
+						window.parent.parent.we_cmd.apply(window, [cmds[i], cmdData]);
+					} else {//at last try the main we_cmd
 						top.we_cmd.apply(window, [cmds[i], cmdData]);
 					}
 			}

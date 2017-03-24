@@ -33,7 +33,7 @@ window.setInterval(function () {
 			var num_users = result.DataArray.num_users;
 			weRpcFailedCnt = 0;
 
-			var _ref = WE().layout.weEditorFrameController.getActiveDocumentReference();
+			var _ref = WE().layout.cockpitFrame;
 			if (_ref) {
 				if (_ref.setUsersOnline && _ref.setUsersListOnline) {
 					_ref.setUsersOnline(num_users);
