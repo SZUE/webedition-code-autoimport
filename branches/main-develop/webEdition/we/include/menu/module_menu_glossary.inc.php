@@ -87,31 +87,31 @@ foreach($langs as $key => $language){
 
 	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[abbreviation]'),
 		'parent' => $language,
-		'cmd' => 'GlossaryXYZnew_glossary_abbreviationXYZ' . $key,
+		'cmd' => ['new_glossary_abbreviation', $key],
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	];
 
 	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[acronym]'),
 		'parent' => $language,
-		'cmd' => 'GlossaryXYZnew_glossary_acronymXYZ' . $key,
+		'cmd' => ['new_glossary_acronym', $key],
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	];
 
 	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[foreignword]'),
 		'parent' => $language,
-		'cmd' => 'GlossaryXYZnew_glossary_foreignwordXYZ' . $key,
+		'cmd' => ['new_glossary_foreignword', $key],
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	];
 
 	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[link]'),
 		'parent' => $language,
-		'cmd' => 'GlossaryXYZnew_glossary_linkXYZ' . $key,
+		'cmd' => ['new_glossary_link', $key],
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	];
 
 	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[textreplacement]'),
 		'parent' => $language,
-		'cmd' => 'GlossaryXYZnew_glossary_textreplacementXYZ' . $key,
+		'cmd' => ['new_glossary_textreplacement', $key],
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	];
 }

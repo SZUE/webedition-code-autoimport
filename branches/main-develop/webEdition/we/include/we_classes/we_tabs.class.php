@@ -38,7 +38,7 @@ class we_tabs{
 		foreach($icons as $icon){
 			$this->container .= '<i class="icon fa ' . $icon . '"></i>';
 		}
-		$this->container .= '<span class="text">' . $text . '</span></span></div>';
+		$this->container .= ($text ? '<span class="text">' . $text . '</span>' : '') . '</span></div>';
 	}
 
 	function getHTML(){

@@ -33,16 +33,16 @@ we_cmd_modules.glossary = function (args, url, caller) {
 
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_EditorFrame !== false &&
-							_EditorFrame.getEditorType() === "model" &&
-							(
-											_EditorFrame.getEditorContentType() === WE().consts.contentTypes.WEDOCUMENT ||
-											_EditorFrame.getEditorContentType() === WE().consts.contentTypes.OBJECT_FILE
-											)
-							) {
+				_EditorFrame.getEditorType() === "model" &&
+				(
+					_EditorFrame.getEditorContentType() === WE().consts.contentTypes.WEDOCUMENT ||
+					_EditorFrame.getEditorContentType() === WE().consts.contentTypes.OBJECT_FILE
+					)
+				) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
-				new (WE().util.jsWindow)(caller, url, "glossary_check",  WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
+				new (WE().util.jsWindow)(caller, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -75,16 +75,6 @@ we_cmd_modules.glossary = function (args, url, caller) {
 			WE().layout.pushCmdToModule(args);
 			return true;
 		default:
-			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {
-				var tempargs = args[0].split("\XYZ");
-
-				wind = WE().util.jsWindow.prototype.find('edit_module');
-				if (wind) {
-					wind.content.we_cmd(tempargs[1], tempargs[2]);
-					wind.focus();
-				}
-				break;
-			}
 			return false;
 	}
 	return true;
