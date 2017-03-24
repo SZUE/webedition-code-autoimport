@@ -72,13 +72,13 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('modules_voting', '[property]')]);
+		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), false, self::TAB_INQUIRY, ["id" => "tab_" . self::TAB_INQUIRY]);
-			$we_tabs->addTab(g_l('modules_voting', '[options]'), false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
+			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), '', false, self::TAB_INQUIRY, ["id" => "tab_" . self::TAB_INQUIRY]);
+			$we_tabs->addTab(g_l('modules_voting', '[options]'), '', false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(g_l('modules_voting', '[result]'), false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
+				$we_tabs->addTab(g_l('modules_voting', '[result]'),'',  false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
 			}
 		}
 		if($this->View->voting->ID){

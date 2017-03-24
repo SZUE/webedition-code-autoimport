@@ -33,7 +33,9 @@ abstract class we_editor_footer{
 		//	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], sprintf(g_l('alert', '[file_locked_footer]'), $username));
-		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:WE().layout.weNavigationHistory.navigateReload();")));
+		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:WE().layout.weNavigationHistory.navigateReload();") .
+				we_html_button::create_button(we_html_button::UNLOCK, "javascript:we_cmd('requestUnlock'," . $we_doc->ID . ");")
+		));
 
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['id' => 'footerBody'], $messageTbl->getHtml()));
 	}
@@ -69,9 +71,9 @@ abstract class we_editor_footer{
 		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) || we_base_permission::hasPerm("PUBLISH")){
 
 			$table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :
-					($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-					we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
+				we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :
+				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+				we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
 
 			$we_form = we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], $table);
 
@@ -155,8 +157,8 @@ abstract class we_editor_footer{
 				$normalTable->addCol(2);
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::EDITOR)){
 					$normalTable->setColContent(0, $pos++, (stripos($we_doc->ContentType, 'text/') !== false ?
-									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editSource();") :
-									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editFile();"))
+							we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editSource();") :
+							we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editFile();"))
 					);
 				}
 		}
@@ -171,11 +173,11 @@ abstract class we_editor_footer{
 		switch($we_doc->Table){
 			case FILE_TABLE:
 				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_DOC_FOLDER')) ||
-						(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_DOCUMENT'));
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_DOCUMENT'));
 				break;
 			case TEMPLATES_TABLE:
 				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_TEMP_FOLDER')) ||
-						(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_TEMPLATE'));
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_TEMPLATE'));
 				break;
 			case OBJECT_FILES_TABLE:
 				$hasPerm = (we_base_permission::hasPerm('DELETE_OBJECTFILE'));
@@ -185,7 +187,7 @@ abstract class we_editor_footer{
 				break;
 			case VFILE_TABLE:
 				$hasPerm = ($we_doc->IsFolder && we_base_permission::hasPerm('DELETE_COLLECTION_FOLDER')) ||
-						(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_COLLECTION'));
+					(!$we_doc->IsFolder && we_base_permission::hasPerm('DELETE_COLLECTION'));
 				break;
 			default:
 				$hasPerm = false;
@@ -300,14 +302,14 @@ abstract class we_editor_footer{
 
 		//	Button scheduler
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
-				we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_base_permission::hasPerm("CAN_SEE_SCHEDULER")){
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_base_permission::hasPerm("CAN_SEE_SCHEDULER")){
 			$seeModeTable->addCol(2);
 			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button put in workflow
 		if(/* $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PROPERTIES && */ $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_SCHEDULER && // then button "workflow"
-				defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
+			defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
 
 			$ctrlElem = self::getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 
@@ -360,8 +362,8 @@ abstract class we_editor_footer{
 			$ctrlElem = self::getControlElement('checkbox', 'makeSameDoc');
 
 			$showPubl_makeSamNew = ($ctrlElem && $ctrlElem['hide'] ? '<div style="display: hidden;">' : '') .
-					we_html_forms::checkbox("makeSameDoc", ( $ctrlElem ? $ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $ctrlElem ? $ctrlElem['readonly'] : false)) .
-					($ctrlElem && $ctrlElem['hide'] ? '</div>' : '');
+				we_html_forms::checkbox("makeSameDoc", ( $ctrlElem ? $ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $ctrlElem ? $ctrlElem['readonly'] : false)) .
+				($ctrlElem && $ctrlElem['hide'] ? '</div>' : '');
 
 			$seeModeTable->addCol(2);
 			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], $showPubl_makeSamNew);
@@ -405,8 +407,8 @@ abstract class we_editor_footer{
 		if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
 			return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
-					$GLOBALS['we_doc']->controlElement[$type][$name] :
-					false);
+				$GLOBALS['we_doc']->controlElement[$type][$name] :
+				false);
 		}
 		return false;
 	}
@@ -464,9 +466,9 @@ abstract class we_editor_footer{
 		$canWeSave = $we_doc->userCanSave();
 
 		if($canWeSave &&
-				(($ctrlElem && $ctrlElem['hide']) ||
-				(defined('WORKFLOW_TABLE') && self::inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"])))
-				)){
+			(($ctrlElem && $ctrlElem['hide']) ||
+			(defined('WORKFLOW_TABLE') && self::inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"])))
+			)){
 			$canWeSave = false;
 		}
 
@@ -495,7 +497,7 @@ abstract class we_editor_footer{
 		];
 
 		if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$js_permnew
-				($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
+			($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
 			$ctrlElem = self::getControlElement('checkbox', 'makeSameDoc');
 			$doc['ctrlElem'] = ($ctrlElem ? ($ctrlElem["checked"] ? 1 : 2) : 3);
 		}
@@ -530,15 +532,15 @@ abstract class we_editor_footer{
 			}
 
 			$body = we_html_element::htmlBody(array_merge([
-						'id' => "footerBody",
-						'onload' => "we_footerLoaded();",
-									], $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER))
-							, we_html_element::htmlForm([
-								'name' => "we_form",
-								'action' => '',
-								'onsubmit' => (!empty($we_doc->IsClassFolder) ? 'sub();return false;' : '')
-									], we_html_element::htmlHidden('sel', $we_doc->ID) .
-									$content
+					'id' => "footerBody",
+					'onload' => "we_footerLoaded();",
+						], $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER))
+					, we_html_element::htmlForm([
+						'name' => "we_form",
+						'action' => '',
+						'onsubmit' => (!empty($we_doc->IsClassFolder) ? 'sub();return false;' : '')
+						], we_html_element::htmlHidden('sel', $we_doc->ID) .
+						$content
 			));
 		}
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_editor_footer.js', '', ['id' => 'loadVarEditor_footer', 'data-doc' => setDynamicVar($doc)]), $body);

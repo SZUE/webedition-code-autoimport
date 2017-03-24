@@ -26,7 +26,10 @@ $years = we_shop_shop::getAllOrderYears();
 
 $we_menu_shop = [
 	'shop' =>
-	['text' => g_l('javaMenu_shop', '[menu_user]'),],
+	[
+		'text' => g_l('javaMenu_shop', '[menu_user]'),
+		'icon' => 'fa fa-shopping-cart'
+	],
 	'jahr' => [
 		'text' => g_l('javaMenu_shop', '[year]'),
 		'parent' => 'shop',
@@ -39,6 +42,7 @@ $we_menu_shop = [
 // edit
 	'edit' => ['text' => g_l('javaMenu_shop', '[shop_edit]'),
 		'perm' => 'edit_shop',
+		'icon' => 'fa fa-cog'
 	],
 	['text' => g_l('javaMenu_shop', '[shop_pref]') . '&hellip;',
 		'parent' => 'edit',
@@ -96,8 +100,10 @@ $we_menu_shop = [
 		'cmd' => 'delete_shop',
 		'perm' => 'DELETE_SHOP_ARTICLE || ADMINISTRATOR',
 	],
-	'help' => ['text' => g_l('javaMenu_shop', '[menu_help]'),
+	'help' => [
+		'text' => g_l('javaMenu_shop', '[menu_help]'),
 		'perm' => 'SHOW_HELP',
+		'icon' => 'fa fa-question-circle'
 	],
 	['text' => g_l('javaMenu_shop', '[menu_help]') . '&hellip;',
 		'parent' => 'help',

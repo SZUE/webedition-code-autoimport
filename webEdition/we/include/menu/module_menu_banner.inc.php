@@ -24,6 +24,7 @@
 return [
 	'new' => [
 		'text' => g_l('modules_banner', '[new]'),
+		'icon' => 'fa fa-plus-circle',
 	],
 	[
 		'text' => g_l('modules_banner', '[banner]'),
@@ -39,6 +40,7 @@ return [
 	],
 	'banner' => [
 		'text' => g_l('modules_banner', '[banner]'),
+		'icon' => 'fa fa-flag-checkered'
 	],
 	[
 		'text' => g_l('modules_banner', '[save]'),
@@ -62,6 +64,7 @@ return [
 	],
 	'options' => [
 		'text' => g_l('modules_banner', '[options]'),
+		'icon' => 'fa fa-cog'
 	],
 	[
 		'text' => g_l('modules_banner', '[defaultbanner]') . '&hellip;',
@@ -77,6 +80,7 @@ return [
 	],
 	'help' => [
 		'text' => g_l('modules_banner', '[help]'),
+		'icon' => 'fa fa-question-circle'
 	],
 	[
 		'text' => g_l('modules_banner', '[help]') . '&hellip;',

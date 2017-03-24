@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'search' => ['text' => g_l('searchtool', '[menu_suche]'),],
-	'new' => ['text' => g_l('searchtool', '[menu_new]'),
-		'parent' => 'search',
+	'new' => [
+		'text' => g_l('searchtool', '[menu_new]'),
+		'icon' => 'fa fa-plus-circle',
 	],
 	['text' => g_l('searchtool', '[forDocuments]'),
 		'parent' => 'new',
@@ -56,6 +56,10 @@ return [
 		'cmd' => 'tool_weSearch_new_advSearch',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	],
+	'search' => [
+		'text' => g_l('searchtool', '[menu_suche]'),
+		'icon'=>'fa fa-search'
+	],
 	['text' => g_l('searchtool', '[menu_save]'),
 		'parent' => 'search',
 		'cmd' => 'tool_weSearch_save',
@@ -69,7 +73,10 @@ return [
 		'parent' => 'search',
 		'cmd' => 'tool_weSearch_exit',
 	],
-	'help' => ['text' => g_l('searchtool', '[menu_help]'),],
+	'help' => [
+		'text' => g_l('searchtool', '[menu_help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('searchtool', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

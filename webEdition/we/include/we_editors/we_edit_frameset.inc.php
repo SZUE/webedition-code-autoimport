@@ -156,12 +156,17 @@ if($we_doc->ID){
 		}
 	}
 	$access = $we_doc->userHasAccess();
-	if(($access !== we_root::USER_HASACCESS && $access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
-		if($we_ContentType != we_base_ContentTypes::OBJECT){
+	switch($access){
+		case we_root::USER_HASACCESS:
+			break;
+		case we_root::FILE_LOCKED:
+		case we_root::USER_NO_SAVE:
 			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
-		} else {
+			break;
+		case we_root::FILE_NOT_IN_USER_WORKSPACE:
+		default:
 			we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
-		}
+			break;
 	}
 }
 

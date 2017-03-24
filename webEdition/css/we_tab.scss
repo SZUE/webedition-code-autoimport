@@ -38,33 +38,41 @@ body {
 div.tabActive,
 div.tabNormal {
 	margin: 0px;
-  	padding: 0px 1em 0px 0px;
-  	border: 0px;
-  	float: left;
-  	display: inline-block;
-  	line-height: 30px;
-  	cursor: pointer;
-  	border-right: 1px solid $Grey;
-  	border-bottom: 1px solid $Grey;
-  	white-space: nowrap;
+	padding: 0px 1em 0px 0px;
+	border: 0px;
+	float: left;
+	display: inline-block;
+	line-height: 30px;
+	cursor: pointer;
+	border-right: 1px solid $Grey;
+	border-bottom: 1px solid $Grey;
+	white-space: nowrap;
 	&:after {
-		content: attr(title);
+		@media (min-width: $normScreenWidth) {
+			content: attr(title);
+		}
 	}
 }
 
 div.tabNormal {
-  	background: $MiddleGrey;
+	background: $MiddleGrey;
 }
 
 div.tabActive {
 	background: #ffffff;
 }
 
-span.text{
+span.content{
 	margin: 0px 1em;
-  	padding: 0px;
-  	font-size: 11px;
-  	vertical-align: top;
+	padding: 0px;
+	font-size: 11px;
+	//	vertical-align: top;
+}
+span.text{
+	padding-left:1em;
+	@media (max-width: $smallScreenWidth) {
+		display:none;
+	}
 }
 span.spacer{
 	font-size: $fafontMed;

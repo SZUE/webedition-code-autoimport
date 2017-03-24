@@ -28,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
-	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
 	//simple button with icon
 	const WE_FA_BUTTON_IDENTIFY = 'fa';
 	//button with an icon that is composed of more icons
@@ -49,6 +48,7 @@ abstract class we_html_button{
 	const DIRRIGHT = 'fa:btn_direction_right,fa-lg fa-caret-right';
 	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
+	const UNLOCK='fa:btn_function_unlock,fa-lg fa-unlock';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
 	const SAVE = 'fat:save,fa-lg fa-save';
 	const NEXT = 'fat:next,fa-lg fa-step-forward';
@@ -136,17 +136,6 @@ abstract class we_html_button{
 		}
 
 		switch($type){
-			//FIXME: remove image buttons - we don't have any
-			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
-				//fixes for Update
-				switch($name){
-					case 'image:btn_function_reload':
-						$name = self::REFRESH;
-						goto restart;
-					default:
-						t_e('old image button', $name);
-						$name = str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name) . self::NOT_FOUND;
-				}
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);

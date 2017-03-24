@@ -27,7 +27,7 @@ abstract class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	public static function Header(we_glossary_frames $weGlossaryFrames){
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(g_l('modules_glossary', '[overview]'), true, 1);
+		$we_tabs->addTab(g_l('modules_glossary', '[overview]'),'',  true, 1);
 
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode('_', we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
 	}

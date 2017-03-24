@@ -22,7 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'new' => ['text' => g_l('javaMenu_users', '[menu_new]'),],
+	'new' => [
+		'text' => g_l('javaMenu_users', '[menu_new]'),
+		'icon' => 'fa fa-plus-circle',
+	],
 	['text' => g_l('javaMenu_users', '[menu_user]'),
 		'parent' => 'new',
 		'cmd' => 'new_user',
@@ -39,7 +42,10 @@ return [
 		'cmd' => 'new_group',
 		'perm' => 'NEW_GROUP || ADMINISTRATOR',
 	],
-	'user' => ['text' => g_l('javaMenu_users', '[menu_user]'),],
+	'user' => [
+		'text' => g_l('javaMenu_users', '[menu_user]'),
+		'icon' => 'fa fa-user'
+		],
 	['text' => g_l('javaMenu_users', '[menu_save]'),
 		'parent' => 'user',
 		'cmd' => 'save_user',
@@ -55,7 +61,10 @@ return [
 		'parent' => 'user',
 		'cmd' => 'exit_users',
 	],
-	'help' => ['text' => g_l('javaMenu_users', '[menu_help]'),],
+	'help' => [
+		'text' => g_l('javaMenu_users', '[menu_help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('javaMenu_users', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

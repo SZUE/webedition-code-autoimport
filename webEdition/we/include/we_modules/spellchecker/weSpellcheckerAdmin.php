@@ -42,8 +42,8 @@ $l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, 1, ["id" => "tab_1"]);
-$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, 2, ["id" => "tab_2"]);
+$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), '', false, 1, ["id" => "tab_1"]);
+$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), '', false, 2, ["id" => "tab_2"]);
 
 $table = new we_html_table(['width' => 380, 'style' => 'margin: 5px;'], 3, 5);
 

@@ -334,6 +334,9 @@ body.radient{
 		bottom: 0px;
 		border-left: 1px solid $DarkBlue;
 		overflow: hidden;
+		@media (max-width: $smallScreenWidth) {
+			right:0px!important;
+		}
 		iframe{
 			border:0px;
 			width:100%;
@@ -347,6 +350,9 @@ body.radient{
 		top:0px;
 		bottom:0px;
 		right:0px;
+		@media (max-width: $smallScreenWidth) {
+			display:none;
+		}
 	}
 }
 
@@ -365,17 +371,21 @@ body.radient{
 		border-bottom: 1px solid #284051;
 		border-right: 1px solid $DarkBlue;
 		width: 40px;
-		height: 100px;
+		@media (min-height: $normScreenHeight) {
+			width: 40px;
+			height: 100px;
+		}
+		@media (max-height: $smallScreenHeight) {
+			height: 35px;
+		}
 		position: relative;
 		cursor: pointer;
 		background-color: $DarkBlue;
 		color: $LightBlue;
-		span{
+		span.description{
 			position: absolute;
 			display: block;
-			bottom: -15px;
 			left: 12px;
-			width: 100px;
 			-webkit-transform: rotate(-90deg);
 			-webkit-transform-origin: 0 0;
 			/* Chrome, Opera 15+, Safari 3.1+ */
@@ -387,7 +397,20 @@ body.radient{
 			transform-origin: 0 0;
 			text-align: center;
 			color: inherit;
-			font-size: $medfont;
+			@media (max-height: $smallScreenHeight) {
+				font-size:14px;
+				bottom: -8px;
+			}
+			@media (min-height: $normScreenHeight) {
+				font-size: $medfont;
+				bottom: -15px;
+				width: 100px;
+			}
+			.text{
+				@media (max-height: $smallScreenHeight) {
+					display:none;
+				}
+			}
 		}
 	}
 
@@ -587,7 +610,7 @@ td.boxHeader{
 	background: $Grey;
 	margin: 0px;
 	#tabContainer div{
-		min-width:5em;
+		min-width:3em;
 		text-align: center;
 	}
 }
@@ -1002,15 +1025,15 @@ optgroup{
 
 
 .editfooter {
-  left: 0px;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  padding: 7px 10px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background: $Grey;
-  border-top: none;
+	left: 0px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	padding: 7px 10px;
+	box-sizing: border-box;
+	overflow: hidden;
+	background: $Grey;
+	border-top: none;
 	height:$diaglogFooterHeight;
 }
 
@@ -1474,8 +1497,8 @@ span{
 		vertical-align:bottom;
 	}
 	&.cutTextLeft{
-    direction:rtl;
-    text-align:left;
+		direction:rtl;
+		text-align:left;
 	}
 }
 
@@ -2392,5 +2415,5 @@ dialog#alertBox{
 }
 /*jquery dialog close button remove*/
 .no-close .ui-dialog-titlebar-close {
-  display: none;
+	display: none;
 }

@@ -41,13 +41,11 @@ class we_base_menu{
 		foreach($this->entries as $id => $e){
 			if(empty($e['parent'])){
 				if(isset($e['perm']) ? self::isEnabled($e['perm']) : 1){
-					$mtext = (is_array($e['text']) ?
-							($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
-							($e['text'] ? : ''));
+					$mtext = ($e['text'] ?: '');
 
 					$menus[] = ['id' => $id,
-						'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
-						];
+						'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down"><i class="icon ' . (empty($e['icon']) ? '' : $e['icon']) . '" title="' . $mtext . '"></i><span class="mtext">' . $mtext . '</span></span></a><ul class="sub">',
+					];
 				}
 			}
 		}
@@ -82,9 +80,9 @@ class we_base_menu{
 			$and = explode('&&', $v);
 			$eand = 1;
 			foreach($and as $val){
-				$eand&=we_base_permission::hasPerm(trim($val));
+				$eand &= we_base_permission::hasPerm(trim($val));
 			}
-			$enabled|=$eand;
+			$enabled |= $eand;
 			if($enabled){
 				return true;
 			}
@@ -104,8 +102,8 @@ class we_base_menu{
 		foreach($nf as $id => $e){
 			$newAst = $zweig;
 			$mtext = (isset($e['text']) && is_array($e['text']) ?
-					($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
-					(isset($e['text']) ? $e['text'] : ''));
+				($e['text'][$GLOBALS['WE_LANGUAGE']] ?: '') :
+				(isset($e['text']) ? $e['text'] : ''));
 
 			if(!empty($e['hide']) ||
 				(!empty($e['perm']) && !self::isEnabled($e['perm']))

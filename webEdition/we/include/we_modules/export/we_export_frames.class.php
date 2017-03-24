@@ -67,10 +67,10 @@ class we_export_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
+		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
 		if($this->View->export->IsFolder == 0){
-			$we_tabs->addTab(g_l('export', '[options]'), false, self::TAB_OPTIONS, ["id" => "tab_2"]);
-			$we_tabs->addTab(g_l('export', '[log]'), false, self::TAB_LOG, ["id" => "tab_3"]);
+			$we_tabs->addTab(g_l('export', '[options]'), '', false, self::TAB_OPTIONS, ["id" => "tab_2"]);
+			$we_tabs->addTab(g_l('export', '[log]'), '', false, self::TAB_LOG, ["id" => "tab_3"]);
 		}
 
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .

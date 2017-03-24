@@ -22,7 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'new' => ['text' => g_l('modules_newsletter', '[new]'),],
+	'new' => [
+		'text' => g_l('modules_newsletter', '[new]'),
+		'icon' => 'fa fa-plus-circle',
+	],
 	['text' => g_l('modules_newsletter', '[newsletter][text]'),
 		'cmd' => 'new_newsletter',
 		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
@@ -33,7 +36,10 @@ return [
 		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
 		'parent' => 'new',
 	],
-	'newsletter' => ['text' => g_l('modules_newsletter', '[newsletter][text]'),],
+	'newsletter' => [
+		'text' => g_l('modules_newsletter', '[newsletter][text]'),
+		'icon' => 'fa fa-newspaper-o'
+	],
 	['text' => g_l('modules_newsletter', '[save]'),
 		'parent' => 'newsletter',
 		'cmd' => 'save_newsletter',
@@ -55,7 +61,10 @@ return [
 		'parent' => 'newsletter',
 		'cmd' => 'exit_newsletter',
 	],
-	'options' => ['text' => g_l('modules_newsletter', '[options]'),],
+	'options' => [
+		'text' => g_l('modules_newsletter', '[options]'),
+		'icon' => 'fa fa-cog'
+	],
 	['text' => g_l('modules_newsletter', '[domain_check]') . '&hellip;',
 		'parent' => 'options',
 		'cmd' => 'domain_check',
@@ -105,7 +114,10 @@ return [
 		'cmd' => 'newsletter_settings',
 		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
 	],
-	'help' => ['text' => g_l('modules_newsletter', '[help]'),],
+	'help' => [
+		'text' => g_l('modules_newsletter', '[help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('modules_newsletter', '[help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

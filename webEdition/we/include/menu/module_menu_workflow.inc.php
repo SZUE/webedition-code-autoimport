@@ -22,15 +22,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'new' => ['text' => g_l('javaMenu_workflow', '[new]'),
+	'new' => [
+		'text' => g_l('javaMenu_workflow', '[new]'),
 		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
+		'icon' => 'fa fa-plus-circle',
 	],
 	['text' => g_l('javaMenu_workflow', '[new]'),
 		'cmd' => 'new_workflow',
 		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
 		'parent' => 'new',
 	],
-	'workflow' => ['text' => g_l('javaMenu_workflow', '[workflow]'),],
+	'workflow' => [
+		'text' => g_l('javaMenu_workflow', '[workflow]'),
+		'icon' => 'fa fa-gears'
+	],
 	['text' => g_l('javaMenu_workflow', '[save]'),
 		'parent' => 'workflow',
 		'cmd' => 'save_workflow',
@@ -61,7 +66,10 @@ return [
 		'parent' => 'workflow',
 		'cmd' => 'exit_workflow',
 	],
-	'help' => ['text' => g_l('javaMenu_workflow', '[help]'),],
+	'help' => [
+		'text' => g_l('javaMenu_workflow', '[help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('javaMenu_workflow', '[help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

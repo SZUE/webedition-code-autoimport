@@ -101,29 +101,29 @@ class we_customer_frames extends we_modules_frame{
 
 		$branches_names = $this->View->customer->getBranchesNames();
 
-		$tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, '\'' . g_l('modules_customer', '[common]') . '\'', ["id" => "common", 'title' => g_l('modules_customer', '[common]')]);
+		$tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, '\'' . g_l('modules_customer', '[common]') . '\'', ["id" => "common", 'title' => g_l('modules_customer', '[common]')]);
 		$allTabs = [g_l('modules_customer', '[common]') => 'common'];
 		$branchCount = 0;
 		foreach($branches_names as $branch){
-			$tabs->addTab('<i class="fa fa-lg fa-object-group"></i>', false, '\'' . $branch . '\'', ['id' => 'branch_' . $branchCount, 'title' => $branch]);
+			$tabs->addTab('', 'fa-object-group', false, '\'' . $branch . '\'', ['id' => 'branch_' . $branchCount, 'title' => $branch]);
 			$allTabs[$branch] = 'branch_' . $branchCount;
 			$branchCount++;
 		}
-		$tabs->addTab('<i class="fa fa-lg fa-object-ungroup"></i>', false, '\'' . g_l('modules_customer', '[other]') . '\'', ['id' => 'other', 'title' => g_l('modules_customer', '[other]')]);
-		$tabs->addTab('<i class="fa fa-lg fa-list"></i>', false, '\'' . g_l('modules_customer', '[all]') . '\'', ['id' => 'all', 'title' => g_l('modules_customer', '[all]')]);
+		$tabs->addTab('', 'fa-object-ungroup', false, '\'' . g_l('modules_customer', '[other]') . '\'', ['id' => 'other', 'title' => g_l('modules_customer', '[other]')]);
+		$tabs->addTab('', 'fa-list', false, '\'' . g_l('modules_customer', '[all]') . '\'', ['id' => 'all', 'title' => g_l('modules_customer', '[all]')]);
 		$allTabs[g_l('modules_customer', '[other]')] = 'other';
 		$allTabs[g_l('modules_customer', '[all]')] = 'all';
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") )
 
 		if(defined('SHOP_ORDER_TABLE')){
-			$tabs->addTab('<i class="fa fa-lg fa-shopping-cart"></i>', false, '\'' . g_l('modules_customer', '[orderTab]') . '\'', ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
+			$tabs->addTab('', 'fa-shopping-cart', false, '\'' . g_l('modules_customer', '[orderTab]') . '\'', ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
 			$allTabs[g_l('modules_customer', '[orderTab]')] = 'orderTab';
 		}
 		if(defined('OBJECT_FILES_TABLE')){
-			$tabs->addTab('<i class="fa fa-lg fa-file-o"></i>', false, '\'' . g_l('modules_customer', '[objectTab]') . '\'', ['id' => 'objectTab', 'title' => g_l('modules_customer', '[objectTab]')]);
+			$tabs->addTab('', 'fa-file-o', false, '\'' . g_l('modules_customer', '[objectTab]') . '\'', ['id' => 'objectTab', 'title' => g_l('modules_customer', '[objectTab]')]);
 			$allTabs[g_l('modules_customer', '[objectTab]')] = 'objectTab';
 		}
-		$tabs->addTab('<i class="fa fa-lg fa-file"></i>', false, '\'' . g_l('modules_customer', '[documentTab]') . '\'', ['id' => 'documentTab', 'title' => g_l('modules_customer', '[documentTab]')]);
+		$tabs->addTab('', 'fa-file', false, '\'' . g_l('modules_customer', '[documentTab]') . '\'', ['id' => 'documentTab', 'title' => g_l('modules_customer', '[documentTab]')]);
 		$allTabs[g_l('modules_customer', '[documentTab]')] = 'documentTab';
 
 		/*

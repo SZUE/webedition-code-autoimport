@@ -22,7 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'new' => ['text' => g_l('modules_voting', '[menu_new]'),],
+	'new' => [
+		'text' => g_l('modules_voting', '[menu_new]'),
+		'icon' => 'fa fa-plus-circle',
+	],
 	['text' => g_l('modules_voting', '[voting]'),
 		'parent' => 'new',
 		'cmd' => 'new_voting',
@@ -33,7 +36,10 @@ return [
 		'cmd' => 'new_voting_group',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
 	],
-	'voting' => ['text' => g_l('modules_voting', '[voting]'),],
+	'voting' => [
+		'text' => g_l('modules_voting', '[voting]'),
+		'icon' => 'fa fa-thumbs-up'
+	],
 	['text' => g_l('modules_voting', '[menu_save]'),
 		'parent' => 'voting',
 		'cmd' => 'save_voting',
@@ -49,7 +55,9 @@ return [
 		'parent' => 'voting',
 		'cmd' => 'exit_voting',
 	],
-	'help' => ['text' => g_l('modules_voting', '[menu_help]'),],
+	'help' => [
+		'text' => g_l('modules_voting', '[menu_help]'),
+		'icon' => 'fa fa-question-circle'],
 	['text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

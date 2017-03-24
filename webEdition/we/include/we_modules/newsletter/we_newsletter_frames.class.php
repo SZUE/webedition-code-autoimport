@@ -125,13 +125,13 @@ class we_newsletter_frames extends we_modules_frame{
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), self::TAB_PROPERTIES, ['title' => g_l('modules_newsletter', '[property]')]);
+		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), self::TAB_PROPERTIES, ['title' => g_l('modules_newsletter', '[property]')]);
 
 		if(!$group){
-			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', ($page == self::TAB_MAILING), self::TAB_MAILING, ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
-			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, ($page == self::TAB_EDIT), self::TAB_EDIT, ['title' => g_l('modules_newsletter', '[edit]')]);
+			$we_tabs->addTab('', 'fa-list', ($page == self::TAB_MAILING), self::TAB_MAILING, ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
+			$we_tabs->addTab('', we_base_constants::WE_ICON_EDIT, ($page == self::TAB_EDIT), self::TAB_EDIT, ['title' => g_l('modules_newsletter', '[edit]')]);
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == self::TAB_REPORTING), self::TAB_REPORTING, ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
+			$we_tabs->addTab('', 'fa-pie-chart', ($page == self::TAB_REPORTING), self::TAB_REPORTING, ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
 			//}
 		}
 
