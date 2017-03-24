@@ -351,7 +351,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 				];
 				foreach($vtab as $tab => $val){
 					if($val['show']){
-						echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="description middlefont"><i class="icon fa ' . $val['icon'] . '"></i> <span class="text">' . $val['desc'] . '</span></span></div>';
+						echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="description middlefont" title="' . $val['desc'] . '"><i class="icon fa ' . $val['icon'] . '"></i> <span class="text">' . $val['desc'] . '</span></span></div>';
 					}
 				}
 				?>
