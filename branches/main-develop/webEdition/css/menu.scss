@@ -42,7 +42,13 @@ way to fit your requirements.
 				text-decoration: none;
 				cursor: pointer;
 				background: none;
-				padding: 0px 18px;
+				@media (min-width: $normScreenWidth) {
+					padding: 0px 18px;
+				}
+				@media (max-width: $smallScreenWidth) {
+					width:35px;
+					text-align:center;
+				}
 				line-height: $menuHeight;
 				span {
 					color: #ffffff;
@@ -53,6 +59,19 @@ way to fit your requirements.
 			position: relative;
 			z-index: 200;
 		}
+
+		.icon{
+			@media (min-width: $normScreenWidth) {
+				display:none;
+			}
+			font-size: 14px;
+		}
+		.mtext{
+			@media (max-width: $smallScreenWidth) {
+				display:none;
+			}
+		}
+
 	}
 
 	li.top:hover {
@@ -69,6 +88,11 @@ way to fit your requirements.
 		}
 	}
 
+	ul.sub 	i.fa{
+		position:absolute;
+		right:10px;
+		top: 2px;
+	}
 
 
 	/* Default list styling */
@@ -202,12 +226,6 @@ way to fit your requirements.
 		}
 	}
 
-	i.fa{
-		position:absolute;
-		right:10px;
-		top: 2px;
-		font-size: 1.7em;
-	}
 	li div.click ul li:hover > a {
 		color: #386aab !important;
 	}

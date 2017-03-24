@@ -63,7 +63,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(g_l('tools', '[properties]'), false, "1", ["id" => "tab_1"]);
+		$we_tabs->addTab(g_l('tools', '[properties]'),'', false, "1", ["id" => "tab_1"]);
 
 		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') . "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()",
 					"onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark"><i class="fa fa-asterisk modified"></i></div>') . '</div>' .

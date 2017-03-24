@@ -184,10 +184,10 @@ class we_shop_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if(!empty($_REQUEST["mid"]) && $_REQUEST["mid"] != '00'){
-			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, self::TAB_OVERVIEW);
+			$we_tabs->addTab(g_l('tabs', '[module][overview]'), '', true, self::TAB_OVERVIEW);
 		} else {
-			$we_tabs->addTab(g_l('tabs', '[module][orderdata]'), true, self::TAB_OVERVIEW);
-			$we_tabs->addTab(g_l('tabs', '[module][orderlist]'), false, self::TAB_ORDERLIST);
+			$we_tabs->addTab(g_l('tabs', '[module][orderdata]'), '', true, self::TAB_OVERVIEW);
+			$we_tabs->addTab(g_l('tabs', '[module][orderlist]'),'',  false, self::TAB_ORDERLIST);
 		}
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
@@ -230,16 +230,16 @@ class we_shop_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 		if(!empty($_REQUEST["mid"])){
-			$we_tabs->addTab(g_l('tabs', '[module][overview]'), true, 0);
+			$we_tabs->addTab(g_l('tabs', '[module][overview]'), '', true, 0);
 		} else {
 			switch(true){
 				default:
 				case ($resultD):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_1]'), true, self::TAB_ADMIN1);
+					$we_tabs->addTab(g_l('tabs', '[module][admin_1]'), '', true, self::TAB_ADMIN1);
 				case ($resultO):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_2]'), (!$resultD), self::TAB_ADMIN2);
+					$we_tabs->addTab(g_l('tabs', '[module][admin_2]'), '', (!$resultD), self::TAB_ADMIN2);
 				case (isset($yearTrans) && $yearTrans != 0):
-					$we_tabs->addTab(g_l('tabs', '[module][admin_3]'), false, self::TAB_ADMIN3);
+					$we_tabs->addTab(g_l('tabs', '[module][admin_3]'), '', false, self::TAB_ADMIN3);
 					break;
 			}
 		}

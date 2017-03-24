@@ -37,7 +37,7 @@ foreach($menuItems as $menuItem){
 			break;
 	}
 	if(we_base_permission::hasPerm($menuItem['startpermission'])){
-		$we_tabs->addTab($menuItem["text"], ($tool == $menuItem['name']), "'" . $menuItem['name'] . "'", ["id" => $menuItem['name']]);
+		$we_tabs->addTab($menuItem["text"], '', ($tool == $menuItem['name']), "'" . $menuItem['name'] . "'", ["id" => $menuItem['name']]);
 	}
 }
 

@@ -25,6 +25,7 @@ $seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] =
 $we_menu = [
 	'file_new' => [// New
 		'text' => g_l('javaMenu_global', '[new]'),
+		'icon'=>'fa fa-plus-circle',
 	],
 	'file_new_wedoc' => [// New > webEdition Document
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
@@ -175,6 +176,7 @@ $we_menu = [
 	],
 	'file' => [// File
 		'text' => g_l('javaMenu_global', '[file]'),
+		'icon'=>'fa fa-file',
 	],
 	/* 	$we_menu[1011100]['parent'] = 'file_new'; // separator
 	  // New > Wizards
@@ -426,6 +428,7 @@ $we_menu = [
 	'cockpit' => [// Cockpit
 		'text' => g_l('global', '[cockpit]'),
 		'perm' => 'CAN_SEE_QUICKSTART',
+		'icon'=>'fa fa-th-large'
 	], [// Cockpit > Display
 		'text' => g_l('javaMenu_global', '[display]'),
 		'parent' => 'cockpit',
@@ -491,9 +494,11 @@ $we_menu = [
 	],
 	'modules' => [
 		'text' => g_l('javaMenu_global', '[modules]'),
+		'icon'=>'fa fa-cubes',
 	],
 	'extras' => [
 		'text' => g_l('javaMenu_global', '[extras]'),
+		'icon'=>'fa fa-gears'
 	], [// Extras > Dokument-Typen
 		'text' => g_l('javaMenu_global', '[document_types]') . '&hellip;',
 		'parent' => 'extras',
@@ -549,6 +554,7 @@ $we_menu = [
 	],
 	'help' => [
 		'text' => g_l('javaMenu_global', '[help]'),
+		'icon'=>'fa fa-question-circle'
 	],
 	'online-help' => [
 		'text' => g_l('javaMenu_global', '[onlinehelp]'),

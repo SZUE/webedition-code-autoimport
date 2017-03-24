@@ -58,12 +58,12 @@ abstract class we_base_constants{
 	const WE_VARIANTS_PREFIX = 'we__intern_variant___';
 	const WE_VARIANTS_ELEMENT_NAME = 'weInternVariantElement';
 	const WE_VARIANT_REQUEST = 'we_variant';
-	const WE_ICON_PROPERTIES = '<i class="fa fa-lg fa-cog"></i>';
-	const WE_ICON_CUSTOMER_FILTER = '<i class="fa fa-lg fa-group"></i>';
-	const WE_ICON_WORKSPACE = '<i class="fa fa-lg fa-desktop"></i>';
-	const WE_ICON_EDIT = '<i class="fa fa-lg fa-edit"></i>';
-	const WE_ICON_INFO = '<i class="fa fa-lg fa-info-circle"></i>';
-	const WE_ICON_CONTENT = '<i class="fa fa-lg fa-search"></i>';
-	const WE_ICON_PREVIEW = '<i class="fa fa-lg fa-eye"></i>';
+	const WE_ICON_PROPERTIES = 'fa-cog';
+	const WE_ICON_CUSTOMER_FILTER = 'fa-group';
+	const WE_ICON_WORKSPACE = 'fa-desktop';
+	const WE_ICON_EDIT = 'fa-edit';
+	const WE_ICON_INFO = 'fa-info-circle';
+	const WE_ICON_CONTENT = 'fa-search';
+	const WE_ICON_PREVIEW = 'fa-eye';
 
 }

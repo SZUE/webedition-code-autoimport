@@ -30,7 +30,7 @@
 // initialise tabs
 $tabs = new we_tabs();
 foreach($this->Data['allTabs'] as $tabname){
-	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
+	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'),'fa-recycle', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
 }
 
 

@@ -1962,7 +1962,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		$we_tabs = new we_tabs();
 		foreach($tabs as $key => $val){
-			$we_tabs->addTab($val[1], ($tab == $key), $key, ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
+			$we_tabs->addTab('', $val[1], ($tab == $key), $key, ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
 		}
 
 

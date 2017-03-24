@@ -51,6 +51,20 @@ function we_cmd() {
 		case "start_multi_editor":
 			top.we_cmd("start_multi_editor");
 			break;
+		case "close":
+			window.close();
+			break;
+		case "moveCloseEditors":
+			var open_move_editors = args[1],
+				move_table = args[2];
+			for (var i = 0; i < open_move_editors.length; i++) {
+				open_move_editors[i].setEditorIsHot(false);
+				WE().layout.weEditorFrameController.closeDocument(open_move_editors[i].getFrameId());
+
+			}
+			we_cmd('do_move', '', move_table);
+
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -147,15 +161,8 @@ function press_ok_move(type) {
 			openDocs_Str += "- " + open_move_editors[i].getEditorDocumentPath() + "\n";
 
 		}
-		if (window.confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
-
-			for (i = 0; i < open_move_editors.length; i++) {
-				open_move_editors[i].setEditorIsHot(false);
-				WE().layout.weEditorFrameController.closeDocument(open_move_editors[i].getFrameId());
-
-			}
-			we_cmd('do_move', '', move_table);
-		}
+		WE().util.showConfirm(window, "", (WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue), [
+			'moveCloseEditors', open_move_editors, move_table], ['close']);
 
 	} else {
 		WE().util.showConfirm(window, "", WE().consts.g_l.alert.move, ['do_move', '', move_table]);

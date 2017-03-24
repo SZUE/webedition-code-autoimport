@@ -24,6 +24,7 @@
 return [
 	'new' => [
 		'text' => g_l('export', '[new]'),
+		'icon' => 'fa fa-plus-circle',
 	],
 	[
 		'text' => g_l('export', '[export]'),
@@ -39,6 +40,7 @@ return [
 	],
 	'export' => [
 		'text' => g_l('export', '[export]'),
+		'icon'=>'fa fa-download'
 	],
 	[
 		'text' => g_l('export', '[save]'),
@@ -60,6 +62,7 @@ return [
 	],
 	'help' => [
 		'text' => g_l('export', '[help]'),
+		'icon'=>'fa fa-question-circle'
 	],
 	[
 		'text' => g_l('export', '[help]') . '&hellip;',

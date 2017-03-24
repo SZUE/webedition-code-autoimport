@@ -22,7 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'new' => [ 'text' => g_l('navigation', '[menu_new]'),],
+	'new' => [
+		'text' => g_l('navigation', '[menu_new]'),
+		'icon' => 'fa fa-plus-circle',
+	],
 	['text' => g_l('navigation', '[entry]'),
 		'parent' => 'new',
 		'cmd' => 'module_navigation_new',
@@ -33,7 +36,10 @@ return [
 		'cmd' => 'module_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	],
-	'navigation' => ['text' => g_l('navigation', '[navigation]'),],
+	'navigation' => [
+		'text' => g_l('navigation', '[navigation]'),
+		'icon' => 'fa fa-compass',
+	],
 	['text' => g_l('navigation', '[menu_save]'),
 		'parent' => 'navigation',
 		'cmd' => 'module_navigation_save',
@@ -52,6 +58,7 @@ return [
 	'options' => [
 		'text' => g_l('navigation', '[menu_options]'),
 		'perm' => 'EDIT_NAVIAGTION_RULES',
+		'icon' => 'fa fa-cog'
 	],
 	['text' => g_l('navigation', '[menu_highlight_rules]'),
 		'parent' => 'options',
@@ -64,7 +71,10 @@ return [
 		'cmd' => 'module_navigation_reset_customer_filter',
 		'hide' => !defined('CUSTOMER_TABLE')
 	],
-	['text' => g_l('navigation', '[menu_help]'),],
+	'help' => [
+		'text' => g_l('navigation', '[menu_help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('navigation', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

@@ -25,8 +25,14 @@
 // ---> Menu File / Glossary
 //
 $we_menu_glossary = [
-	'new' => ['text' => g_l('modules_glossary', '[menu_new]'),],
-	'glossary' => ['text' => g_l('modules_glossary', '[glossary]'),],
+	'new' => [
+		'text' => g_l('modules_glossary', '[menu_new]'),
+		'icon' => 'fa fa-plus-circle',
+	],
+	'glossary' => [
+		'text' => g_l('modules_glossary', '[glossary]'),
+		'icon' => 'fa fa-commenting'
+	],
 	['text' => g_l('modules_glossary', '[menu_save]'),
 		'parent' => 'glossary',
 		'cmd' => 'save_glossary',
@@ -45,8 +51,10 @@ $we_menu_glossary = [
 //
 // ---> Menu Options
 //
-	'options' => ['text' => g_l('modules_glossary', '[menu_options]'),
+	'options' => [
+		'text' => g_l('modules_glossary', '[menu_options]'),
 		'perm' => 'ADMINISTRATOR',
+		'icon' => 'fa fa-cog'
 	],
 	['text' => g_l('modules_glossary', '[menu_settings]'),
 		'parent' => 'options',
@@ -56,7 +64,10 @@ $we_menu_glossary = [
 //
 // ---> Menu Help
 //
-	'help' => ['text' => g_l('modules_glossary', '[menu_help]'),],
+	'help' => [
+		'text' => g_l('modules_glossary', '[menu_help]'),
+		'icon' => 'fa fa-question-circle'
+	],
 	['text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',

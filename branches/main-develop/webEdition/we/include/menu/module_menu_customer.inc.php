@@ -25,6 +25,7 @@ return [
 	'new' => [
 		'text' => g_l('modules_customer', '[menu_new]'),
 		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
+		'icon' => 'fa fa-plus-circle',
 	],
 	[
 		'text' => g_l('modules_customer', '[menu_customer]'),
@@ -34,6 +35,7 @@ return [
 	],
 	'customer' => [
 		'text' => g_l('modules_customer', '[menu_customer]'),
+		'icon' => 'fa fa-users'
 	],
 	[
 		'text' => g_l('modules_customer', '[menu_save]'),
@@ -96,6 +98,7 @@ return [
 	],
 	'help' => [
 		'text' => g_l('modules_customer', '[menu_help]'),
+		'icon'=>'fa fa-question-circle'
 	],
 	[
 		'text' => g_l('modules_customer', '[menu_help]') . '&hellip;',
