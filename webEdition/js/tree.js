@@ -272,7 +272,7 @@ container.prototype = {
 				break;
 			default:
 				href = true;
-				row += "draggable=\"true\" ondragstart=\"top.getTreeDataWindow().treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"return top.getTreeDataWindow().checkDblClick('" + cur.id + "');\" onclick=\"top.getTreeDataWindow().tout=setTimeout(top.getTreeDataWindow().dblClickTmout,300,"+cur.id+");return true;\"" + (WE().session.isAppleTouch ? "" : " onmouseover=\"top.getTreeDataWindow().info('ID:" + cur.id + "')\" onmouseout=\"top.getTreeDataWindow().info(' ');\"");
+				row += "draggable=\"true\" ondragstart=\"top.getTreeDataWindow().treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"return top.getTreeDataWindow().checkDblClick('" + cur.id + "');\" onclick=\"top.getTreeDataWindow().tout=setTimeout(top.getTreeDataWindow().dblClickTmout,300,'" + cur.id + "');return true;\"" + (WE().session.isAppleTouch ? "" : " onmouseover=\"top.getTreeDataWindow().info('ID:" + cur.id + "')\" onmouseout=\"top.getTreeDataWindow().info(' ');\"");
 		}
 		row += (select && href ? "onclick=\"top.getTreeDataWindow().treeData.checkNode('img_" + cur.id + "')\"" : '') +
 			//close open span tag
@@ -495,22 +495,22 @@ function drawTree() {
 		"</div>";
 }
 
-function checkDblClick(id){
-	wasdblclick=true;
+function checkDblClick(id) {
+	wasdblclick = true;
 	clearTimeout(tout);
 	doClick('" + cur.id + "');
 	return true;
 }
 
-function dblClickTmout(id){
-	if(!top.getTreeDataWindow().wasdblclick){
+function dblClickTmout(id) {
+	if (!top.getTreeDataWindow().wasdblclick) {
 		top.getTreeDataWindow().doClick(id);
-	}else{
-		top.getTreeDataWindow().wasdblclick=false;
+	} else {
+		top.getTreeDataWindow().wasdblclick = false;
 	}
 }
 
-function initTree(){
+function initTree() {
 	treeData = new container();
 }
 
