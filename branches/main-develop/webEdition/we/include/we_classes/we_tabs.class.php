@@ -26,14 +26,14 @@ class we_tabs{
 	private $container = '';
 
 	public function addTab($text, $icon = '', $isActive = false, $jscmd = '', $attribs = []){
-		$class = ($isActive ? 'tabActive' : 'tabNormal');
-		$att = 'tilte="' . $text . '" ';
+		//$att = $text ? 'title="' . $text . '" ' : '';
+		$att = '';
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){
 				$att .= $key . '="' . $val . '" ';
 			}
 		}
-		$this->container .= '<div ' . $att . ' onclick="weTabs.clickHandler(window,this,' . $jscmd . ');" class="' . $class . '"><span class="content">';
+		$this->container .= '<div ' . $att . 'onclick="weTabs.clickHandler(window,this,' . $jscmd . ');" class="' . ($isActive ? 'tabActive' : 'tabNormal') . '"><span class="content">';
 		$icons = explode(',', $icon) ?: ['fa-ambulance'];
 		foreach($icons as $icon){
 			$this->container .= '<i class="icon fa ' . $icon . '"></i>';

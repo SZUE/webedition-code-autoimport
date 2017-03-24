@@ -47,8 +47,8 @@ div.tabNormal {
 	border-right: 1px solid $Grey;
 	border-bottom: 1px solid $Grey;
 	white-space: nowrap;
-	&:after {
-		@media (min-width: $normScreenWidth) {
+	@media (min-width: ($normScreenWidth - 200px)) {/*we may be are inside a frame*/
+		&:after {
 			content: attr(title);
 		}
 	}
@@ -70,7 +70,7 @@ span.content{
 }
 span.text{
 	padding-left:1em;
-	@media (max-width: $smallScreenWidth) {
+	@media (max-width: ($smallScreenWidth - 200px)) {/*we may be are inside a frame*/
 		display:none;
 	}
 }
