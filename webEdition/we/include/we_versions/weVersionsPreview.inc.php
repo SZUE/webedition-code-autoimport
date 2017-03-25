@@ -65,7 +65,7 @@ $newDoc = we_versions_version::loadVersion(' WHERE ID=' . intval($ID));
 $compareID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $oldDoc = we_versions_version::loadVersion(($compareID ?
 			' WHERE ID=' . $compareID :
-			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
+			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $db->escape(stripTblPrefix($newDoc['documentTable'])) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
 
 
 $isObj = false;
@@ -82,13 +82,13 @@ if(!($isObj OR $isTempl)){
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if(!$binaryPathNew){
-		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . ' AND documentTable="' . $db->escape(stripTblPrefix($newDoc['documentTable'])) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 	}
 
 	if($oldDoc){
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if(!$binaryPathOld){
-			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . ' AND documentTable="' . $db->escape($oldDoc['documentTable']) . '" AND documentID=' . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . ' AND documentTable="' . $db->escape(stripTblPrefix($oldDoc['documentTable'])) . '" AND documentID=' . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 		}
 	}
 
@@ -160,7 +160,7 @@ $versionOld = '';
 if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
-$db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND version!=' . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+$db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . ' AND documentTable="' . $db->escape(stripTblPrefix($newDoc['documentTable'])) . '" AND version!=' . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
 $versions = $db->getAllFirst(true, MYSQL_ASSOC);
 
 $versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
