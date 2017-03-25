@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
-
 	const TYPE_USER = 'user';
 	const TYPE_USER_GROUP = 'group';
 	const TYPE_ALIAS = 'alias';
@@ -471,8 +470,8 @@ class we_users_user{
 					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : [];
 					foreach($perm_values[$perm_group_name] as $v){
 						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
-								$permissions[$v] :
-								0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
+							$permissions[$v] :
+							0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
 					}
 				}
 
@@ -1067,9 +1066,9 @@ class we_users_user{
 		switch($tab){
 			case self::TAB_DATA:
 				return we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
-								'pwdCheck' => SECURITY_USER_PASS_REGEX
+							'pwdCheck' => SECURITY_USER_PASS_REGEX
 					])]) .
-						$this->formGeneralData();
+					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($jsCmd, $perm_branch);
 			case self::TAB_WORKSPACES:
@@ -1131,8 +1130,8 @@ class we_users_user{
 		$content .= '</select><br/><br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", '', 0, 0, "", "", true, false);
 
 		$parts = [['headline' => g_l('modules_users', '[group_data]'),
-		'html' => $tableObj->getHtml(),
-		'space' => we_html_multiIconBox::SPACE_MED
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
 			],
 			['headline' => g_l('modules_users', '[user]'),
 				'html' => $content,
@@ -1181,8 +1180,8 @@ class we_users_user{
 		]);
 
 		$parts = [['headline' => g_l('modules_users', '[general_data]'),
-		'html' => $tableObj->getHtml(),
-		'space' => we_html_multiIconBox::SPACE_MED
+			'html' => $tableObj->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
 			]
 		];
 
@@ -1190,9 +1189,9 @@ class we_users_user{
 		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(document.getElementsByName(\'' . $this->Name . '_ParentID_Text\')[0].value,this.value);" required="required" autocomplete="off"');
 
 		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
-				(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !we_base_permission::hasPerm('EDIT_PASSWD') ?
-				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
+			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !we_base_permission::hasPerm('EDIT_PASSWD') ?
+			'****************' :
+			'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
@@ -1209,21 +1208,21 @@ class we_users_user{
 
 
 		$CreatorIDtext = ($this->CreatorID ?
-				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
-				$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-				g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
-				'-');
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
+			'-');
 
 		$ModifierIDtext = ($this->ModifierID ?
-				($this->ModifierID == $this->ID ?
-				$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
-				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
-				$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-				g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
-				) :
-				'-');
+			($this->ModifierID == $this->ID ?
+			$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
+			(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
+			$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+			g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
+			) :
+			'-');
 		$tableObj = new we_html_table([], 5, 2, [[[['style' => 'padding-bottom:10px;width:280px;'], $username],
-		[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
+			[['style' => 'width:280px;'], we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]'))]
 			],
 			[[['style' => 'padding-bottom:10px;'], we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !we_base_permission::hasPerm("ADMINISTRATOR")))],
 				[['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ?: '-')]
@@ -1286,7 +1285,7 @@ function toggleRebuildPerm(disabledOnly) {';
 	}';
 				} else {
 					$handler = '
-	document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick =  (document.we_form.' . $this->Name . '_Permission_' . $pname . '?
+	document.we_form.' . $this->Name . '_Permission_' . $pname . ".onclick =  (document.we_form." . $this->Name . '_Permission_' . $pname . "?
 		rebuildCheckboxClicked:
 		top.content.setHot());
 	toggleRebuildPerm(true);";
@@ -1299,8 +1298,8 @@ function toggleRebuildPerm(disabledOnly) {';
 		}
 
 		$parts = [['headline' => '',
-		'html' => $content,
-		'noline' => 1
+			'html' => $content,
+			'noline' => 1
 			]
 		];
 
@@ -1480,7 +1479,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$dynamic_controls = new we_html_dynamicControls();
 		$groups = ['glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
-				//'editor' => g_l('prefs', '[tab][editor]'),
+			//'editor' => g_l('prefs', '[tab][editor]'),
 		];
 
 		$titles = $groups;
@@ -1488,13 +1487,13 @@ function toggleRebuildPerm(disabledOnly) {';
 		$multiboxes = [
 			'glossary' => $this->formPreferencesGlossary(),
 			'ui' => $this->formPreferencesUI($jsCmd),
-				//'editor' => $this->formPreferencesEditor(),
+			//'editor' => $this->formPreferencesEditor(),
 		];
 
 		return we_html_multiIconBox::getHTML('', [['headline' => '',
 				'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
-					]
-						], 30);
+				]
+				], 30);
 	}
 
 	private function formPreferencesGlossary(){
@@ -1757,7 +1756,7 @@ function toggleRebuildPerm(disabledOnly) {';
 
 		// Build apply current window dimension
 		$window_current_dimension_table = '<div style="padding-left:90px;">' .
-				we_html_button::create_button('apply_current_dimension', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;") . '</div>';
+			we_html_button::create_button('apply_current_dimension', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;") . '</div>';
 
 		// Build final HTML code
 		$window_html = new we_html_table(['class' => 'default withBigSpace'], 3, 1);
@@ -1772,7 +1771,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$window_predefined_table = new we_html_table(['class' => 'withBigSpace', 'style' => 'text-align:right'], 2, 1);
 
 		$window_predefined_table->setCol(0, 0, null, we_html_button::create_button('res_800', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';") .
-				we_html_button::create_button('res_1024', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';"));
+			we_html_button::create_button('res_1024', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';"));
 		$window_predefined_table->setCol(1, 0, null, we_html_button::create_button('res_1280', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';") . we_html_button::create_button('res_1600', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';"));
 
 		// Build dialog
@@ -1909,8 +1908,8 @@ function toggleRebuildPerm(disabledOnly) {';
 </table>';
 
 		$parts = [["headline" => g_l('modules_users', '[alias_data]'),
-		"html" => $content,
-		'space' => we_html_multiIconBox::SPACE_MED
+			"html" => $content,
+			'space' => we_html_multiIconBox::SPACE_MED
 			], ["headline" => g_l('modules_users', '[rights_and_workspaces]'),
 				"html" =>
 				$this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', '[inherit]')) .
@@ -1928,7 +1927,7 @@ function toggleRebuildPerm(disabledOnly) {';
 <table class="default" style="width:500px;">
 	<tr>
 		<td class="defaultfont">' .
-				we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
 	</tr>
 </table>';
 	}
@@ -1953,7 +1952,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			default:
 				$tabs = [
 					self::TAB_DATA => ['data', ''],
-					self::TAB_PERMISSION => ['permissions', '<i class="fa fa-lg fa-user-secret"></i>'],
+					self::TAB_PERMISSION => ['permissions', 'fa-user-secret'],
 					self::TAB_WORKSPACES => ['workspace', we_base_constants::WE_ICON_WORKSPACE],
 					self::TAB_SETTINGS => ['preferences', we_base_constants::WE_ICON_PROPERTIES]
 				];
@@ -1967,9 +1966,9 @@ function toggleRebuildPerm(disabledOnly) {';
 
 
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js') .
-				'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
+			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js') .
+			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ?: $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2093,9 +2092,9 @@ function toggleRebuildPerm(disabledOnly) {';
 	static function comparePasswords($username, $storedPassword, $clearPassword){
 		$matches = [];
 		$useSalt = (!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches) ?
-				//old md5
-				self::SALT_MD5 :
-				$matches[1]);
+			//old md5
+			self::SALT_MD5 :
+			$matches[1]);
 
 		switch($useSalt){
 			default:
@@ -2188,11 +2187,11 @@ function toggleRebuildPerm(disabledOnly) {';
 	public static function logLoginFailed($table, $user){
 		$db = $GLOBALS['DB_WE'];
 		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(['UserTable' => $table,
-					'Username' => $user,
-					'IP' => $_SERVER['REMOTE_ADDR'],
-					'Servername' => $_SERVER['SERVER_NAME'],
-					'Port' => $_SERVER['SERVER_PORT'],
-					'Script' => $_SERVER['SCRIPT_NAME']
+				'Username' => $user,
+				'IP' => $_SERVER['REMOTE_ADDR'],
+				'Servername' => $_SERVER['SERVER_NAME'],
+				'Port' => $_SERVER['SERVER_PORT'],
+				'Script' => $_SERVER['SCRIPT_NAME']
 		]));
 	}
 
@@ -2209,22 +2208,61 @@ function toggleRebuildPerm(disabledOnly) {';
 		$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NOW() WHERE ID=' . $_SESSION['user']['ID']);
 		//FIXME do we need to check session_id??? for release requests?
 		//check release requests
-		$ret['requests'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestText AS text,DATE_FORMAT(l.releaseRequestForce,"' . g_l('date', '[format][mysql]') . '") AS forceDate,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.releaseRequestID=u.ID) WHERE l.UserID=' . intval($_SESSION['user']['ID']) . ' AND l.releaseRequestText IS NOT NULL AND l.releaseRequestID!=' . intval($_SESSION['user']['ID']));
+		$ret['requests'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestText AS text,DATE_FORMAT(l.releaseRequestForce,"' . g_l('date', '[format][mysql]') . '") AS forceDate,TIMESTAMPDIFF(SECOND,NOW(),releaseRequestForce) AS forceTime,CONCAT(u.First," ",u.Second) AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.releaseRequestID=u.ID) WHERE l.UserID=' . intval($_SESSION['user']['ID']) . ' AND l.releaseRequestText IS NOT NULL AND l.releaseRequestID!=' . intval($_SESSION['user']['ID']));
 
-		//check my release requests
-		$ret['reply'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestReply AS text,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.UserID=u.ID) WHERE l.releaseRequestReply IS NOT NULL AND l.releaseRequestID=' . intval($_SESSION['user']['ID']) . ' AND l.UserID!=' . intval($_SESSION['user']['ID']));
+		//check my release requests - currently unused
+		$ret['reply'] = [];//$GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestReply AS text,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.UserID=u.ID) WHERE l.releaseRequestReply IS NOT NULL AND l.releaseRequestID=' . intval($_SESSION['user']['ID']) . ' AND l.UserID!=' . intval($_SESSION['user']['ID']));
 
 		//get all documents that have been released
-		$ret['unlock'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl FROM ' . LOCK_TABLE . ' l WHERE l.releaseRequestID=l.UserID AND l.sessionID!=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
+		$ret['unlock'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl FROM ' . LOCK_TABLE . ' l WHERE l.releaseRequestID=l.UserID AND l.sessionID=x\'0000000000000000000000000000000000000000\'');
+$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestID=NULL, sessionID=x\''. we_base_sessionHandler::getCurrentHex() . '\' WHERE releaseRequestID=UserID AND sessionID=x\'0000000000000000000000000000000000000000\'');
 
-		//FIXME how to handle force?!
 		//reset all replies
-		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestReply=NULL,releaseRequestForce=NULL WHERE releaseRequestReply IS NOT NULL AND releaseRequestID=' . intval($_SESSION['user']['ID']));
+		//$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestReply=NULL,releaseRequestForce=NULL WHERE releaseRequestReply IS NOT NULL AND releaseRequestID=' . intval($_SESSION['user']['ID']));
 
 		//update my locks, reset releaseRequestText
 		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND,releaseRequestText=NULL WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
 
 		return $ret;
+	}
+
+	public static function unlockDocuments(){
+		// prepare the queries, 4 as maximum.
+		$ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1); // we_cmd[1] is commaseperated list of ids
+//FIXME: make tblList???
+		$tables = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)); // we_cmd[3] is commaseparated list of tables
+		$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', null, 4); // we_cmd[4] is a single transaction, to delete data from session
+
+		$queries = [];
+
+		if($transaction){ // clean session
+			if(isset($_SESSION['weS']['we_data'][$transaction])){
+				$doc = $_SESSION['weS']['we_data'][$transaction][0];
+				if(isset($_SESSION['weS']['versions']['versionToCompare'][$doc['Table']][$doc['ID']])){
+					unset($_SESSION['weS']['versions']['versionToCompare'][$doc['Table']][$doc['ID']]);
+				}
+
+				unset($_SESSION['weS']['we_data'][$transaction]); // we_transaction is resetted here
+			}
+		}
+
+		foreach($ids as $i => $id){
+			if($tables[$i] && $id){
+				$queries[$tables[$i]][] = $id;
+			}
+		}
+
+		//$uid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+		foreach($queries as $table => $ids){
+			//don't clean all locks! - is this really a needed statement???
+			$ids = implode(', ', array_filter($ids));
+			if($ids){
+				$DB_WE=$GLOBALS['DB_WE'];
+				$DB_WE->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
+				$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID!=x\'0000000000000000000000000000000000000000\' AND UserID=' . $_SESSION['user']['ID']);
+			}
+		}
+		echo '{"UNLOCKED":true}';
 	}
 
 	public static function getJSLangConsts(){

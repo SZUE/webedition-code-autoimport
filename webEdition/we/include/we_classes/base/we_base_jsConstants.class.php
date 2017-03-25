@@ -130,6 +130,9 @@ abstract class we_base_jsConstants{
 		save_error_fields_value_not_valid: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '",
 		unable_to_call_ping: "' . g_l('global', '[unable_to_call_ping]') . '",
 		unable_to_call_setpagenr: "' . g_l('global', '[unable_to_call_setpagenr]') . '",
+		unlockRequest:"' . g_l('global', '[unlock][request]') . '",
+		unlockRequestForceTo:"' . g_l('global', '[unlock][request_force_to]') . '",
+		unlockReleaseDone:"' . g_l('global', '[unlock][releasedone]') . '",
 		untitled:"' . g_l('global', '[untitled]') . '",
 	},
 	message_reporting:{

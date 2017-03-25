@@ -258,7 +258,7 @@ class we_users_view extends we_modules_view{
 			}
 		}
 
-		if($ret == we_users_user::ERR_USER_PATH_NOK){
+		if($ret === we_users_user::ERR_USER_PATH_NOK){
 			$jscmd->addMsg(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 			return;
 		}

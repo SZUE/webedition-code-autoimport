@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
-
 we_cmd_modules.users = function (args, url, caller) {
 	switch (args[0]) {
 		case "we_users_selector":
@@ -80,7 +79,7 @@ we_cmd_modules.users = function (args, url, caller) {
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "doctypes":
-			new (WE().util.jsWindow)(caller, url, "doctypes",  WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, true, true);
+			new (WE().util.jsWindow)(caller, url, "doctypes", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, true, true);
 			break;
 		case "users_unlock":
 			WE().util.rpc(url);
@@ -107,6 +106,15 @@ we_cmd_modules.users = function (args, url, caller) {
 			break;
 		case "users_changeR":
 			window.we_repl(window.load, url);
+			break;
+		case "requestUnlock":
+			var ret = window.prompt("Bitte geben Sie einen Text für die Freigabe des Dokuments von " + args[1] + " an");
+			if (ret) {
+				var t = (WE().util.hasPerm("ADMINISTRATOR") ?
+					window.prompt("Geben Sie hier eine Zeit in Minuten an nach der das Dokument automatisch freigegeben wird (0 keine Automatik):") :
+					0);
+				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=RequestUnlock&type=request", {text: ret, time: t, doc: args[2], table: args[3]});
+			}
 			break;
 		default:
 			return false;

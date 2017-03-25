@@ -91,7 +91,7 @@ var WebEdition = {
 			var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 			for (var frameId in usedEditors) {
-				if (reloadTabs[usedEditors[frameId].getEditorEditorTable()] && (reloadTabs[usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + usedEditors[frameId].getEditorDocumentId() + ',') !== -1) {
+				if (reloadTabs[usedEditors[frameId].getEditorEditorTable()] && (reloadTabs[usedEditors[frameId].getEditorEditorTable()]).indexOf(usedEditors[frameId].getEditorDocumentId()) !== -1) {
 					usedEditors[frameId].setEditorReloadNeeded(true);
 				}
 			}
@@ -674,45 +674,46 @@ var WebEdition = {
 					yesCmd: yesCmd,
 					noCmd: noCmd,
 				};
-				var yesBut = {
-					text: (yesText ? yesText : WE().consts.g_l.message_reporting.yes),
-					icons: {
-						primary: "fa fa-check fa-ok"
-					},
-					click: function () {
-						var ab = this.ownerDocument.defaultView.$("#alertBox");
-						if (ab[0].data.yesCmd) {
-							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
+				var
+					yesBut = {
+						text: (yesText ? yesText : WE().consts.g_l.message_reporting.yes),
+						icons: {
+							primary: "fa fa-check fa-ok"
+						},
+						click: function () {
+							var ab = this.ownerDocument.defaultView.$("#alertBox");
+							if (ab[0].data.yesCmd) {
+								ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.yesCmd);
+							}
+							ab[0].data = null;
+							ab.dialog("close");
 						}
-						ab[0].data = null;
-						ab.dialog("close");
-					}
-				};
-				var noBut = {
-					text: (noText ? noText : WE().consts.g_l.message_reporting.no),
-					icons: {
-						primary: "fa fa-close fa-cancel"
 					},
-					click: function () {
-						var ab = this.ownerDocument.defaultView.$("#alertBox");
-						if (ab[0].data.noCmd) {
-							ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.noCmd);
+					noBut = {
+						text: (noText ? noText : WE().consts.g_l.message_reporting.no),
+						icons: {
+							primary: "fa fa-close fa-cancel"
+						},
+						click: function () {
+							var ab = this.ownerDocument.defaultView.$("#alertBox");
+							if (ab[0].data.noCmd) {
+								ab[0].data.win.we_cmd.apply(ab[0].data.win, ab[0].data.noCmd);
+							}
+							ab[0].data = null;
+							ab.dialog("close");
 						}
-						ab[0].data = null;
-						ab.dialog("close");
-					}
-				};
-				var cancelBut = {
-					text: WE().consts.g_l.message_reporting.cancel,
-					icons: {
-						primary: "fa fa-close fa-ban"
 					},
-					click: function () {
-						var ab = this.ownerDocument.defaultView.$("#alertBox");
-						ab[0].data = null;
-						ab.dialog("close");
-					}
-				};
+					cancelBut = {
+						text: WE().consts.g_l.message_reporting.cancel,
+						icons: {
+							primary: "fa fa-close fa-ban"
+						},
+						click: function () {
+							var ab = this.ownerDocument.defaultView.$("#alertBox");
+							ab[0].data = null;
+							ab.dialog("close");
+						}
+					};
 
 				ab.html('<span class="alertIcon fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
 				ab.dialog({
@@ -755,8 +756,8 @@ var WebEdition = {
 		 * @param prio integer one of the values 1,2,4
 		 * @param win object reference to the calling window
 		 */
-		showMessage: function (message, prio, win, timeout/*currently unsupprted*/) {
-			//FIXME:change this from alert to a dynamic window with timeout
+		showMessage: function (message, prio, win, timeout) {
+			//FIXME: we can't have more than one message due to the fact we have only one container!
 			win = (win ? win : this.window);
 			// default is error, to avoid missing messages
 			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;

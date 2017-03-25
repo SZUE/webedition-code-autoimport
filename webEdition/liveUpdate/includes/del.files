@@ -112,6 +112,7 @@ we/include/we_modules/voting/mod_home.inc.php
 we/include/we_modules/voting/edit_voting_frameset.php
 we/include/we_modules/users/we_webEditionCmd_users.inc.php
 we/include/we_modules/users/we_users_util.php
+we/include/we_modules/users/we_users_unlock.inc.php
 we/include/we_modules/users/we_users_tree.class.php
 we/include/we_modules/users/we_users_ping.php
 we/include/we_modules/users/we_users_ping.inc.php
