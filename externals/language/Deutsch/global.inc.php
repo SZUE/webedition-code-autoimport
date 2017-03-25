@@ -169,6 +169,12 @@ Sie können Ihr Passwort über den folgenden Link zurücksetzen:',
 	'type'=>'Typ',
 	'unable_to_call_ping'=>'Verbindung zum Server verloren - es ist möglich das sich Ihre Dokumente nicht mehr speichern lassen. Bitte kopieren Sie den Inhalt zur Sicherheit in eine andere Anwendung und starten Sie webEdition neu!',
 	'unable_to_call_setpagenr'=>'Verbindung zum Server verloren - RPC: setPageNr!',
+	
+	'unlock'=>array(
+		'releasedone'=>'Die folgenden Dokumente wurden zwangsweise gespeichert und geschlossen:',
+		'request'=>'Für folgende Dokumente wurde eine Anfrage zur Freigabe gestellt:',
+		'request_force_to'=>'bis',
+	),
 	'unlocking_document'=>'gebe Dokument frei',
 	'untitled'=>'Unbenannt',
 	'username'=>'Benutzername',

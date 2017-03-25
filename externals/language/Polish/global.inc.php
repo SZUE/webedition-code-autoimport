@@ -169,6 +169,12 @@ You can change your password using the following link:',
 	'type'=>'Typ',
 	'unable_to_call_ping'=>'Connection to server lost! Maybe your open documents cannot be saved. Please copy & paste the contents to another application and restart webEdition!',
 	'unable_to_call_setpagenr'=>'Connection to server is lost - RPC: setPageNr!',
+	
+	'unlock'=>array(
+		'releasedone'=>'The following documents have been forced to save and close:',
+		'request'=>'The following documents were requested to release:',
+		'request_force_to'=>'until',
+	),
 	'unlocking_document'=>'Zatwierdź dokument',
 	'untitled'=>'Untitled',
 	'username'=>'Nazwa użytkownika',
