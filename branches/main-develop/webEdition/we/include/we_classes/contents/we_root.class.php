@@ -1408,7 +1408,7 @@ abstract class we_root extends we_class{
 	 */
 	public function userHasAccess(){
 		$uid = $this->isLockedByUser();
-		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $GLOBALS['we_doc']->ID){ // file is locked
+		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $this->ID){ // file is locked
 			$this->LockUser = $uid;
 			$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 			return self::FILE_LOCKED;
@@ -1436,9 +1436,9 @@ abstract class we_root extends we_class{
 		}
 
 		//	access to doc is not restricted, check workspaces of user
-		if($GLOBALS['we_doc']->ID){
-			if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
-				if(!(we_users_util::in_workspace($GLOBALS['we_doc']->ID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
+		if($this->ID){
+			if(($ws = get_ws($this->Table, true))){ //	doc has workspaces
+				if(!(we_users_util::in_workspace($this->ID, $ws, $this->Table, $GLOBALS['DB_WE']))){
 					return self::FILE_NOT_IN_USER_WORKSPACE;
 				}
 			}
@@ -1462,7 +1462,7 @@ abstract class we_root extends we_class{
 		if($_SESSION['user']['ID'] && $this->ID){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
 			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
-				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND');
+				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\',lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND,releaseRequestID=null,releaseRequestForce=null');
 			$this->LockUser = intval($_SESSION['user']['ID']);
 		}
 	}

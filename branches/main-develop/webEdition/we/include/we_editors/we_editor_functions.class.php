@@ -349,7 +349,7 @@ abstract class we_editor_functions{
 			switch($we_doc->ContentType){
 				case we_base_ContentTypes::FOLDER:
 					if($we_doc->wasMoved()){
-						$reload[$we_doc->Table] = implode(',', $GLOBALS['DB_WE']->getAllq('SELECT f.ID FROM ' . $we_doc->Table . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix($we_doc->Table) . '" WHERE f.Path LIKE "' . $we_doc->Path . '/%"', true));
+						$reload[$we_doc->Table] = $GLOBALS['DB_WE']->getAllq('SELECT f.ID FROM ' . $we_doc->Table . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix($we_doc->Table) . '" WHERE f.Path LIKE "' . $we_doc->Path . '/%"', true);
 					}
 					break;
 
@@ -357,14 +357,14 @@ abstract class we_editor_functions{
 					$reloadDocsTempls = we_rebuild_base::getTemplAndDocIDsOfTemplate($we_doc->ID, false, false, true, true);
 
 					// reload all documents based on this template
-					$reload[FILE_TABLE] = implode(',', $reloadDocsTempls['documentIDs']);
+					$reload[FILE_TABLE] = $reloadDocsTempls['documentIDs'];
 					//no need to reload the edit tab, since this is not changed & Preview is always regenerated
 //			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
 
 					break;
 				case we_base_ContentTypes::OBJECT:
 					$GLOBALS['DB_WE']->query('SELECT of.ID FROM ' . OBJECT_FILES_TABLE . ' of INNER JOIN ' . LOCK_TABLE . ' l ON of.ID=l.ID AND l.tbl="' . stripTblPrefix(OBJECT_FILES_TABLE) . '" WHERE of.IsFolder=0 AND of.TableID=' . intval($we_doc->ID));
-					$reload[OBJECT_FILES_TABLE] = implode(',', $GLOBALS['DB_WE']->getAll(true));
+					$reload[OBJECT_FILES_TABLE] = $GLOBALS['DB_WE']->getAll(true);
 			}
 		}
 

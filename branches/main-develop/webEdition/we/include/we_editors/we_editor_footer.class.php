@@ -34,7 +34,7 @@ abstract class we_editor_footer{
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], sprintf(g_l('alert', '[file_locked_footer]'), $username));
 		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:WE().layout.weNavigationHistory.navigateReload();") .
-				we_html_button::create_button(we_html_button::UNLOCK, "javascript:we_cmd('requestUnlock'," . $we_doc->ID . ");")
+				we_html_button::create_button(we_html_button::UNLOCK, "javascript:top.we_cmd('requestUnlock','" . $username . "'," . $we_doc->ID . ",'" . stripTblPrefix($we_doc->Table) . "');")
 		));
 
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['id' => 'footerBody'], $messageTbl->getHtml()));
@@ -449,7 +449,6 @@ abstract class we_editor_footer{
 // init document
 		$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 		$we_doc = we_document::initDoc($we_dt);
-
 		self::checkUserAccess($we_doc);
 
 //	preparations of needed vars

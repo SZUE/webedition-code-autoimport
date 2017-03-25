@@ -28,7 +28,8 @@ switch($cmd){
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';
 	case 'users_unlock':
-		return 'we_modules/users/we_users_unlock.inc.php';
+		we_users_user::unlockDocuments();
+		return true;
 	case 'users_add_owner':
 	case 'users_del_owner':
 	case 'users_del_user':
