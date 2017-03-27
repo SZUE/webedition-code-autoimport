@@ -354,7 +354,7 @@ class we_navigation_navigation extends we_base_model{
 		return true;
 	}
 
-	function deleteChilds(){
+	private function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()){
 			$child = new we_navigation_navigation($this->db->f("ID"));
@@ -376,7 +376,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 	}
 
-	static function filenameNotValid($text){
+	public static function filenameNotValid($text){
 		return (strpos($text, '/') !== false);
 	}
 

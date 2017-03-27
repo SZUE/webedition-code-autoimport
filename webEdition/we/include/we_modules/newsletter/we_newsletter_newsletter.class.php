@@ -264,7 +264,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 * delete childs from database
 	 *
 	 */
-	function deleteChilds(){
+	private function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . NEWSLETTER_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		$ids = $this->db->getAll(true);
 		foreach($ids as $id){

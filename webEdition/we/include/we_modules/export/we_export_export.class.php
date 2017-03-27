@@ -141,7 +141,7 @@ class we_export_export extends we_base_model{
 	 *
 	 * ******************************** */
 
-	function deleteChilds(){
+	private function deleteChilds(){
 		$this->db->query("SELECT ID FROM " . EXPORT_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()){
 			$child = new we_export_export($this->db->f("ID"));
