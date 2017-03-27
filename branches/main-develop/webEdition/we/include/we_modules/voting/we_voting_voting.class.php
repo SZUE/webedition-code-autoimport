@@ -229,7 +229,7 @@ class we_voting_voting extends we_base_model{
 		return true;
 	}
 
-	function deleteChilds(){
+	private function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()){
 			$child = new we_voting_voting($this->db->f('ID'));

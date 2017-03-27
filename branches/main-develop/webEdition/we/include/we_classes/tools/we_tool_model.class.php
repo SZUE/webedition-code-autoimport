@@ -133,7 +133,7 @@ class we_tool_model extends we_base_model{
 		$this->IsFolder = $value;
 	}
 
-	function deleteChilds(){
+	private function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()){
 			$child = new $this->ModelClassName($this->db->f("ID"));

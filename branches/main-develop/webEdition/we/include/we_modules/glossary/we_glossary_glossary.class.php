@@ -293,7 +293,7 @@ class we_glossary_glossary extends we_base_model{
 	 * @return boolean
 	 */
 	function delete(){
-		if((!$this->ID) || ($this->IsFolder && !$this->_deleteChilds())){
+		if((!$this->ID) || ($this->IsFolder && !$this->deleteChilds())){
 			return false;
 		}
 
@@ -305,7 +305,7 @@ class we_glossary_glossary extends we_base_model{
 	 *
 	 * @return boolean
 	 */
-	function _deleteChilds(){
+	private function deleteChilds(){
 		return $this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE Path LIKE = "' . $this->db->escape($this->Path) . '/%"');
 	}
 
