@@ -135,9 +135,10 @@ abstract class we_html_button{
 				$on_click = '';
 			}
 		}
-
+		$hasIcon = false;
 		switch($type){
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
+				$hasIcon = true;
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -149,8 +150,10 @@ abstract class we_html_button{
 				$class .= ' weIconButton';
 				break;
 			case self::WE_FATEXT_BUTTON_IDENTIFY:
+				$hasIcon = true;
 				$class .= ' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
+				$hasIcon = true;
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -165,11 +168,14 @@ abstract class we_html_button{
 					$class .= ' weIconButton';
 					break;
 				}
-				//add text, no break;
-				$value .= ' ';
+			//add text, no break;
 			default:
 				$text = $notTranslate ? $name : g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
-				$value = ($name == 'next' ? '<span class="text">' . $text . ' </span>' . $value : $value . '<span class="text">' . $text . '</span>');
+				if($hasIcon){ // we need this, since text is stripped in mobile view
+					$value = ($name == 'next' ? '<span class="text">' . $text . ' </span> ' . $value : $value . '<span class="text">' . $text . '</span>');
+				} else {
+					$value = $text;
+				}
 		}
 		$hrefData = explode(':', $href, 2);
 
