@@ -68,11 +68,11 @@ class we_versions_preview{
 			'version' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3),
 		];
 
-		$this->newDoc = we_versions_version::loadVersion(' WHERE documentTable="' . $this->document['table'] . '" AND documentID=' . $this->document['ID'] . ' AND version=' . $this->document['version']);
+		$this->newDoc = we_versions_version::loadVersion(' WHERE documentTable="' . stripTblPrefix($this->document['table']) . '" AND documentID=' . $this->document['ID'] . ' AND version=' . $this->document['version']);
 
 		$this->compareID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
 		$this->oldDoc = we_versions_version::loadVersion(
-				' WHERE documentTable="' . $this->db->escape($this->newDoc['documentTable']) . '" AND documentID=' . intval($this->newDoc['documentID']) .
+				' WHERE documentTable="' . $this->db->escape(stripTblPrefix($this->newDoc['documentTable'])) . '" AND documentID=' . intval($this->newDoc['documentID']) .
 				($this->compareID ?
 				' AND version=' . $this->compareID :
 				' AND version<' . intval($this->newDoc['version']) . ' ORDER BY version DESC LIMIT 1'));
@@ -432,11 +432,11 @@ class we_versions_preview{
 		if(!($this->isObj || $this->isTempl)){
 			//get path of preview-file
 			$binaryPathNew = $this->newDoc['binaryPath'] ?:
-				f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->newDoc['version']) . ' AND documentTable="' . $this->db->escape($this->newDoc['documentTable']) . '" AND documentID=' . intval($this->newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+				f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->newDoc['version']) . ' AND documentTable="' . $this->db->escape(stripTblPrefix($this->newDoc['documentTable'])) . '" AND documentID=' . intval($this->newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 
 			if($this->oldDoc){
 				$binaryPathOld = $this->oldDoc['binaryPath'] ?:
-					f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->oldDoc['version']) . ' AND documentTable="' . $this->db->escape($this->oldDoc['documentTable']) . '" AND documentID=' . intval($this->oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+					f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($this->oldDoc['version']) . ' AND documentTable="' . $this->db->escape(stripTblPrefix($this->oldDoc['documentTable'])) . '" AND documentID=' . intval($this->oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 			}
 
 			$filePathNew = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPathNew;
@@ -488,7 +488,7 @@ class we_versions_preview{
 		if(!empty($this->oldDoc)){
 			$versionOld = ' AND version!=' . intval($this->oldDoc['version']);
 		}
-		$this->db->query('SELECT version AS ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($this->newDoc['documentID']) . ' AND documentTable="' . $this->db->escape($this->newDoc['documentTable']) . '" AND version!=' . intval($this->newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+		$this->db->query('SELECT version AS ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($this->newDoc['documentID']) . ' AND documentTable="' . $this->db->escape(stripTblPrefix($this->newDoc['documentTable'])) . '" AND version!=' . intval($this->newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
 		$versions = $this->db->getAllFirst(true, MYSQL_ASSOC);
 
 		$versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
