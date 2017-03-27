@@ -48,7 +48,7 @@ abstract class we_html_button{
 	const DIRRIGHT = 'fa:btn_direction_right,fa-lg fa-caret-right';
 	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
-	const UNLOCK='fa:btn_function_unlock,fa-lg fa-unlock';
+	const UNLOCK = 'fa:btn_function_unlock,fa-lg fa-unlock';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
 	const SAVE = 'fat:save,fa-lg fa-save';
 	const NEXT = 'fat:next,fa-lg fa-step-forward';
@@ -114,7 +114,8 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $htmlName = '', $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
+	static function create_button($name, $href, $htmlName = '', $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = [
+	]){
 		$cmd = '';
 
 		if($htmlName === true){
@@ -168,7 +169,7 @@ abstract class we_html_button{
 				$value .= ' ';
 			default:
 				$text = $notTranslate ? $name : g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
-				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
+				$value = ($name == 'next' ? '<span class="text">' . $text . ' </span>' . $value : $value . '<span class="text">' . $text . '</span>');
 		}
 		$hrefData = explode(':', $href, 2);
 

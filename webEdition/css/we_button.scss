@@ -44,6 +44,12 @@ button{
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
 
+		@media (max-width: ($smallScreenWidth - 200px)) {/*we may be are inside a frame*/
+			span.text{
+				display:none;
+			}
+		}
+
 		&:hover,
 			button.multiicon:hover {
 			color: $White;

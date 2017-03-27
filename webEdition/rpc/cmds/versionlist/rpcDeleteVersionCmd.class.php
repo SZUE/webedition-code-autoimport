@@ -28,11 +28,11 @@ class rpcDeleteVersionCmd extends we_rpc_cmd{
 		we_html_tools::protect();
 
 		$ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 'deleteVersion');
-
+		$version=new we_versions_version();
 		if($ids){
 			$_SESSION['weS']['versions']['logDeleteIds'] = [];
 			foreach($ids as $v){
-				we_versions_version::deleteVersion($v);
+				$version->deleteVersion($v);
 			}
 			if($_SESSION['weS']['versions']['logDeleteIds']){
 				$versionslog = new we_versions_log();
