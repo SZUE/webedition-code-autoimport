@@ -444,6 +444,6 @@ function finishedImport(doRebuild, file) {
 }
 
 //add reload timer if set
-if (backup.reloadTimer) {
+if (backup && backup.reloadTimer) {
 	top.cmd.reloadTimer = setTimeout(reloadFrame, backup.reloadTimer);
 }
