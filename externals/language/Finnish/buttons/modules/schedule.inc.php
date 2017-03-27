@@ -4,10 +4,8 @@ $l_buttons_modules_schedule=array(
 	'saveInScheduler'=>array(
 		'alt'=>'Document is saved in the schedule table and will be published by the scheduler.',
 		'value'=>'Save in Scheduler',
-		'width'=>150,
 	),
 	'schedule_button'=>array(
 		'alt'=>'Ajoitetut toiminnot',
 		'value'=>'Ajastin',
-		'width'=>100,
 ));

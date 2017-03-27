@@ -4,10 +4,8 @@ $l_buttons_modules_banner=array(
 	'new_banner'=>array(
 		'alt'=>'Tworzy nowy baner ...',
 		'value'=>'New banner',
-		'width'=>150,
 	),
 	'new_bannergroup'=>array(
 		'alt'=>'Tworzy nową grupę banerów ...',
 		'value'=>'New banner group',
-		'width'=>150,
 ));
