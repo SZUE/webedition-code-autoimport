@@ -1509,7 +1509,7 @@ class we_objectFile extends we_document{
 				$where = array();
 				foreach($paths as $path){
 					if($path != '/'){
-						$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . "'";
+						$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
 					}
 				}
 				$where = (empty($where) ? '' : ' AND (' . implode(' OR ', $where) . ')');
