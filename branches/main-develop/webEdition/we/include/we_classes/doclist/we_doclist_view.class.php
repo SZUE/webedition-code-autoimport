@@ -288,7 +288,7 @@ class we_doclist_view extends we_search_view{
 					$tagName = $defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($result[$f]['docID'])){
-						$DB_WE->query('SELECT c.DID,c.Dat FROM ' . CONTENT_TABLE . ' c ON WHERE c.DID=' . intval($result[$f]['docID']) . ' AND c.nHash=x\'' . md5($tagName) . '\' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+						$DB_WE->query('SELECT c.DID,c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($result[$f]['docID']) . ' AND c.nHash=x\'' . md5($tagName) . '\' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$tagName] = '';
 						while($DB_WE->next_record(MYSQL_ASSOC)){
 							$metafields[$tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);

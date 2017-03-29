@@ -88,10 +88,10 @@ class we_editor_unusedElements extends we_editor_base{
 			}
 		}
 
-		//$allFields = $db->getAllq('SELECT c.Type,c.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . CONTENT_TABLE . ' c ON WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND c.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY c.nHash');
+		//$allFields = $db->getAllq('SELECT c.Type,c.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND l.DocumentTable="tblFile" AND c.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY c.nHash');
 
 		if(!empty($relevantTags['normal']) || !empty($relevantTags['block'])){
-			$obsolete = $db->getAllq('SELECT c.Type,c.Name,HEX(c.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . CONTENT_TABLE . ' c ON WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND c.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(c.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY c.nHash ORDER BY c.Name');
+			$obsolete = $db->getAllq('SELECT c.Type,c.Name,HEX(c.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND c.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(c.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY c.nHash ORDER BY c.Name');
 
 			foreach($obsolete as &$ob){
 				$bl = explode('blk_', $ob['Name'], 2);

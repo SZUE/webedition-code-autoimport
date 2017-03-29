@@ -48,7 +48,7 @@ class we_helpers_lessParser extends Less_Parser{
 	public function SetInput($file_path){
 		if(is_numeric($file_path)){
 			self::$includedFiles[] = $file_path;
-			$this->input = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c ON WHERE c.Type="txt" AND c.nHash=x\'' . md5("data") . '\' AND c.DocumentTable="tblFile" AND c.DID=' . intval($file_path));
+			$this->input = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.Type="txt" AND c.nHash=x\'' . md5("data") . '\' AND c.DocumentTable="tblFile" AND c.DID=' . intval($file_path));
 			$file_path = '';
 		}
 		parent::SetInput($file_path);

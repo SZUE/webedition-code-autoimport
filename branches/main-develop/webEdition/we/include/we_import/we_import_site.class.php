@@ -1017,7 +1017,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// check if there is allready a template with the same content
 
 
-		$newTemplateID = f('SELECT c.DID FROM ' . CONTENT_TABLE . ' c ON WHERE c.Dat="' . $GLOBALS['DB_WE']->escape($templateCode) . '" AND c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" LIMIT 1');
+		$newTemplateID = f('SELECT c.DID FROM ' . CONTENT_TABLE . ' c WHERE c.Dat="' . $GLOBALS['DB_WE']->escape($templateCode) . '" AND c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" LIMIT 1');
 
 		if(!$newTemplateID){
 			// create Template
