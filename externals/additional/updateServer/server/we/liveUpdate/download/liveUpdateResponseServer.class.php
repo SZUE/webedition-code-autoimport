@@ -18,8 +18,8 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			"</div>";
 
 		return '<script><!--
-	top.leWizardContent.appendErrorText("' . $msg . '");
-	alert("' . strip_tags($msg) . '");
+	top.frames.updatecontent.appendMessageLog("' . strtr($msg, array('"' => "'")) . '");
+	alert("' . strtr(strip_tags($msg), array('"' => "'")) . '");
 //-->
 </script>';
 	}

@@ -101,7 +101,7 @@ abstract class updateUtilUpdate extends updateUtilBase{
 	}
 
 	static function getLastSnapShot($targetVersionNumber){
-		$row = $GLOBALS['DB_WE']->getHash("SELECT version FROM " . VERSION_TABLE . " WHERE isSnapshot=1 AND version<=" . intval($targetVersionNumber) . " ORDER BY version DESC LIMIT 1");
+		$row = $GLOBALS['DB_WE']->getHash('SELECT version FROM ' . VERSION_TABLE . ' WHERE isSnapshot=1 AND version<=' . intval($targetVersionNumber) . " ORDER BY version DESC LIMIT 1");
 		return ($row ? $row['version'] : 6000);
 	}
 
