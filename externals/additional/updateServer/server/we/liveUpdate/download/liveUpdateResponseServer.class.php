@@ -147,10 +147,12 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			}
 
 			if(!$liveUpdateFnc->filePutContent(LIVEUPDATE_CLIENT_DOCUMENT_DIR . $path, $content)){
-				return str_replace('__PATH__', $path, $this->Error['path']);
+				str_replace('__PATH__', $path, $this->Error['path']);
+				return $this->getErrorMsg();
 			}
 			if($testPath && method_exists($liveUpdateFnc, "checkMakeFileWritable") && !$liveUpdateFnc->checkMakeFileWritable($testPath)){
-				return str_replace('__PATH__', $testPath, $this->Error['write']);
+				str_replace('__PATH__', $testPath, $this->Error['write']);
+				return $this->getErrorMsg();
 			}
 			$successFiles[] = $path;
 		}
