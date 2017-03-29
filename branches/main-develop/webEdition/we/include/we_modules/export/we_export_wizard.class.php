@@ -344,7 +344,7 @@ class we_export_wizard{
 				"type" => ($showdocs ? "doctype" : "classname"),
 				"step" => 4]);
 		if(defined('OBJECT_FILES_TABLE')){
-			$classname = $this->getHTMLObjectType(350, $showdocs);
+			$classname = $this->getHTMLObjectType($showdocs);
 
 			$parts[] = ["headline" => "", "html" => $classname, 'space' => we_html_multiIconBox::SPACE_SMALL];
 		}
@@ -1059,19 +1059,15 @@ switch (args[0]) {
 		);
 	}
 
-	private function getHTMLObjectType($width = 350, $showdocs = false){
+	private function getHTMLObjectType($showdocs = false){
 		if(defined('OBJECT_FILES_TABLE')){
-			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			$select = new we_html_select(['name' => "classname", "class" => "weSelect", 'style' => "{width: $width}", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"]);
-			$first = "";
+			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ORDER BY Text');
+			$select = new we_html_select(['name' => "classname", "class" => "weSelect", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"]);
 			while($this->db->next_record()){
-				if(!$first){
-					$first = $this->db->f("ID");
-				}
 				$select->addOption($this->db->f("ID"), $this->db->f("Text"));
 			}
 
-			$classname = $this->exportVars["classname"];
+			$classname = $this->exportVars['classname'];
 			$select->selectOption($classname);
 
 			$type = we_base_request::_(we_base_request::STRING, "type", '');
