@@ -763,7 +763,7 @@ class we_versions_version{
 	 * @abstract looks if versions exist for the document
 	 */
 	private static function versionsExist($id, $table, $contentType){//FIXME: we need a documenttable!
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentTable="'. stripTblPrefix($table). '" AND documentId=' . intval($id) . ' AND ContentType="' . escape_sql_query($contentType) . '" LIMIT 1', '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentTable="' . stripTblPrefix($table) . '" AND documentId=' . intval($id) . ' AND ContentType="' . escape_sql_query($contentType) . '" LIMIT 1', '', new DB_WE()) == 1;
 	}
 
 	/**
@@ -1012,7 +1012,7 @@ class we_versions_version{
 			switch($status){
 				case 'published':
 				case 'saved':
-					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && self::versionsExist($document['ID'], $document['ContentType'])){
+					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && self::versionsExist($document['ID'], $document['Table'], $document['ContentType'])){
 						return;
 					}
 			}
@@ -1483,7 +1483,7 @@ class we_versions_version{
 			}
 
 			if($resetDoc->ContentType == we_base_ContentTypes::IMAGE){
-				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' .stripTblPrefix( $resetArray['documentTable']) . '" AND version <="' . $version . '" AND binaryPath !="" ORDER BY version DESC LIMIT 1', '', $db);
+				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . stripTblPrefix($resetArray['documentTable']) . '" AND version <="' . $version . '" AND binaryPath !="" ORDER BY version DESC LIMIT 1', '', $db);
 				$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $lastBinaryPath;
 			}
 
@@ -1515,7 +1515,7 @@ class we_versions_version{
 						if($k != 0 && $k != (count($folders) - 1)){
 
 							$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
-							$folder = (defined('OBJECT_FILES_TABLE') && addTblPrefix(stripTblPrefix($resetArray['documentTable']))== OBJECT_FILES_TABLE ?
+							$folder = (defined('OBJECT_FILES_TABLE') && addTblPrefix(stripTblPrefix($resetArray['documentTable'])) == OBJECT_FILES_TABLE ?
 								new we_class_folder() : new we_folder());
 
 							$folder->we_new(addTblPrefix(stripTblPrefix($resetArray['documentTable'])), $parentID, $v);
@@ -1564,7 +1564,7 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray['timestamp'];
 
-			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $db->escape(addTblPrefix($resetArray['documentTable'])). '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $db->escape(addTblPrefix($resetArray['documentTable'])) . '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 			$publishedDocExists = true;
 			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
@@ -1624,7 +1624,7 @@ class we_versions_version{
 			case 'status':
 				return g_l('versions', '[' . $v . ']');
 			case 'ParentID':
-				return id_to_path($v,addTblPrefix(stripTblPrefix($table)));
+				return id_to_path($v, addTblPrefix(stripTblPrefix($table)));
 			case 'modifierID':
 			case 'CreatorID':
 				return id_to_path($v, USER_TABLE);
