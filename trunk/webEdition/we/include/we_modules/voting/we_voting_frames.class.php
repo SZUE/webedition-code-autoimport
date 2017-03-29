@@ -146,8 +146,21 @@ function setTab(tab) {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 
-			function setMultiEdits() {';
+			function setMultiEdits() {
+			owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);
+			owners_label.addVariant();';
+		if(is_array($this->View->voting->Owners)){
+			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
+			foreach($this->View->voting->Owners as $owner){
+				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($owner), '', $this->db);
 
+				$variant_js .=
+					'owners_label.addItem();
+					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
+			}
+		}
+		$variant_js .=
+			' owners_label.showVariant(0);';
 		if($this->View->voting->IsFolder == 1){
 			return $js . we_html_element::jsElement($variant_js . '}');
 		}
@@ -204,20 +217,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 
 
-		$variant_js .= 'owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);
-			owners_label.addVariant();';
-		if(is_array($this->View->voting->Owners)){
-			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
-			foreach($this->View->voting->Owners as $owner){
-				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($owner), '', $this->db);
-
-				$variant_js .=
-					'owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
-			}
-		}
-		$variant_js .=
-			' owners_label.showVariant(0);
+		$variant_js .=			'
 			iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",510,false);
 			iptable_label.addVariant();';
 

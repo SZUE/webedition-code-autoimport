@@ -371,7 +371,7 @@ function we_cmd(){
 				"type" => ($showdocs ? "doctype" : "classname"),
 				"step" => 4));
 		if(defined('OBJECT_FILES_TABLE')){
-			$classname = $this->getHTMLObjectType(350, $showdocs);
+			$classname = $this->getHTMLObjectType($showdocs);
 
 			$parts[] = array("headline" => "", "html" => $classname, 'space' => we_html_multiIconBox::SPACE_SMALL);
 		}
@@ -396,14 +396,14 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont",  "top.art='docs'"),
+				"html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", "top.art='docs'"),
 				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1)
 		);
 		if(defined('OBJECT_FILES_TABLE')){
 			$parts[] = array(
 				"headline" => "",
-				"html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont",  "top.art='objects'"),
+				"html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont", "top.art='objects'"),
 				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1);
 		}
@@ -425,9 +425,9 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 		$art = $this->exportVars["art"];
 
 		$js = ($art === 'objects' && defined('OBJECT_FILES_TABLE') ?
-				we_html_element::jsElement( 'top.table="' . OBJECT_FILES_TABLE . '";') :
+				we_html_element::jsElement('top.table="' . OBJECT_FILES_TABLE . '";') :
 				($art == 'docs' ?
-					we_html_element::jsElement( 'top.table="' . FILE_TABLE . '";') :
+					we_html_element::jsElement('top.table="' . FILE_TABLE . '";') :
 					'')
 			);
 
@@ -671,7 +671,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 		$table = new we_html_table(array('class' => 'default'), 2, 1);
 
-		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont",   "top.export_to='local'"));
+		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont", "top.export_to='local'"));
 		$table->setCol(1, 0, array('style' => 'padding-top:20px;'), we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, "", "folder"), we_html_forms::radiobutton("server", ($export_to === "server" ? true : false), "export_to", g_l('export', '[export_to_server]'), true, "defaultfont", "top.export_to='server'")));
 
 		$parts[] = array("headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED);
@@ -1223,20 +1223,15 @@ switch (args[0]) {
 		);
 	}
 
-	private function getHTMLObjectType($width = 350, $showdocs = false){
+	private function getHTMLObjectType($showdocs = false){
 		if(defined('OBJECT_FILES_TABLE')){
-			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "style" => "{width: $width}", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
-			$first = "";
+			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ORDER BY Text');
+			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "onchange" => "top.classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			while($this->db->next_record()){
-				if(!$first){
-					$first = $this->db->f("ID");
-				}
 				$select->addOption($this->db->f("ID"), $this->db->f("Text"));
 			}
 
-			$classname = $this->exportVars["classname"];
-
+			$classname = $this->exportVars['classname'];
 
 			$js = we_html_element::jsElement('top.classname="' . $classname . '";');
 			$select->selectOption($classname);
