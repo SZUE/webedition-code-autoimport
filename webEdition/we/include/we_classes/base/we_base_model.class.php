@@ -54,7 +54,7 @@ class we_base_model{
 		foreach($tableInfo as $info){
 			$fname = $info['name'];
 			$this->persistent_slots[] = $fname;
-			switch($info["type"]){
+			switch($info['type']){
 				case 'tinyblob':
 				case 'mediumblob':
 				case 'blob':
