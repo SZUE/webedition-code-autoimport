@@ -125,7 +125,7 @@ function we_tag_img(array $attribs){
 
 	if($GLOBALS['we_editmode'] && $out && $showcontrol){ //in editMode we surround image with dropzone
 		$cmdTree = $cmdExt = 'tag_weimg_insertImage,' . $name . ',' . $fname . ',' . $GLOBALS['we_doc']->ID . ',' . (isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '')  . ',' . $GLOBALS['we_doc']->Table . ',' . $GLOBALS['we_doc']->EditPageNr;
-		$out = we_fileupload_ui_base::getExternalDropZone($GLOBALS['we_doc']->Name . '_' . $name, $out, 'width:auto;height:auto;padding:12px;', true, true, $cmdTree , $cmdExt);
+		$out = we_fileupload_ui_base::getExternalDropZone($GLOBALS['we_doc']->Name . '_' . $name, $out, 'width:auto;height:auto;padding:0px;', true, true, $cmdTree , $cmdExt);
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
