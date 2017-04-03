@@ -153,7 +153,7 @@ class we_fileupload_ui_base extends we_fileupload{
 					'ondrop' => "handleDrop(event,'" . $name . "', " . ($dragFromTree ? 'true' : 'false') . ", " . ($dragFromExt ? 'true' : 'false') . ", '" . $jsCmdTree . "', '" . $jsCmdExt . "', '" . $cts . "', '" . $table . "');",
 					'ondragover' => "handleDragOver(event, '" . $name . "');",
 					'ondragleave' => "handleDragLeave(event, '" . $name . "');",
-					'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style
+					'style' => 'margin:0px;' . (self::isDragAndDrop() ? '' : 'display:none;') . $style
 				], $content);
 	}
 

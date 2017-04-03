@@ -90,7 +90,7 @@ abstract class we_fileupload{
 	}
 
 	public static function isDragAndDrop(){
-		return !((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera());
+		return true;//!((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera());
 	}
 
 	public static function getMaxUploadSizeMB(){
