@@ -80,7 +80,7 @@ class we_modules_view implements we_modules_viewIF{
 		<body class="home" onload="loaded = true;
 						var we_is_home = 1;">
 			<div id="tabelle"><?= $starttable->getHtml(); ?></div>
-			<div id="modimage"><img src="<?= IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
+			<div id="modimage"><img src="<?= IMAGE_DIR . "backgrounds/bg-editor.png"; ?>" class="blank_editor_logo" /></div>
 				<?= $body; ?>
 		</body>
 		</html>

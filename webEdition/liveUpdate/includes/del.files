@@ -51,6 +51,7 @@ we/include/we_tools/treePopup.inc.php
 we/include/we_tools/tools_header.php
 we/include/we_tools/tableFn.inc.php
 we/include/we_tools/htmlBox.inc.php
+we/include/we_tools/home.inc.php
 we/include/we_tools/MultiFileChooser.inc.php
 we/include/we_tools/MultiDirTemplateAndDefaultChooser.inc.php
 we/include/we_tools/MultiDirChooser2.inc.php
@@ -976,7 +977,6 @@ images/we_boebbel_blau.gif
 images/we_bg_mod1.gif
 images/valid.gif
 images/umr_h_small.gif
-images/startscreen/we_startbox_modul.gif
 images/spinner.gif
 images/shaddow_u.gif
 images/shaddow_ru.gif
@@ -1159,6 +1159,7 @@ agency_sample.php
 !images/update
 !images/tree
 !images/tabs
+!images/startscreen
 !images/sidebar
 !images/pd
 !images/navigation
@@ -1192,4 +1193,5 @@ agency_sample.php
 !css/menu
 !cms
 !apps/toolfactory/service/views
+!apps/toolfactory/resources
 !apps/toolfactory/pattern
