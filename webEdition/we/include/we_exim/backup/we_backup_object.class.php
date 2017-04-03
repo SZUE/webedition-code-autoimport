@@ -191,7 +191,7 @@ class we_backup_object extends we_object{
 			case 'int':
 				return 'int';
 			case 'text':
-				return 'blob';
+				return 'longtext';
 		}
 		return '';
 	}

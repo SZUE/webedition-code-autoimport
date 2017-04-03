@@ -1481,7 +1481,7 @@ class we_objectFile extends we_document{
 				if(is_array($paths)){
 					foreach($paths as $path){
 						if($path != '/'){
-							$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path = "' . $this->DB_WE->escape($path) . '"';
+							$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
 						}
 					}
 				}
