@@ -125,15 +125,21 @@ class we_textDocument extends we_document{
 	}
 
 	protected function i_writeSiteDir($doc){
-		if($this->ContentType === we_base_ContentTypes::HTACCESS){
-			return true;
+		switch($this->ContentType){
+			case we_base_ContentTypes::HTACCESS:
+				return true;
+			default:
+				return parent::i_writeSiteDir($doc);
 		}
-		return parent::i_writeSiteDir($doc);
 	}
 
 	function getPath(){
-		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension === '.less' || $this->Extension === '.scss')){
-			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
+		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS){
+			switch($this->Extension){
+				case '.less':
+				case '.scss':
+					return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
+			}
 		}
 		return parent::getPath();
 	}
@@ -162,7 +168,7 @@ class we_textDocument extends we_document{
 								//we prepend an extra / before #WE, to make parser believe this is an absolute path
 								$doc = str_replace('/#WE:', '#WE:', $less->compile(preg_replace('|(#WE:\d+#)|', '/$1', $doc)));
 								$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND type="css"');
-								return $this->registerFileLinks(we_helpers_lessParser::$includedFiles, 'css');
+								$this->registerFileLinks(we_helpers_lessParser::$includedFiles, 'css');
 							} catch (exception $e){
 								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
@@ -177,7 +183,7 @@ class we_textDocument extends we_document{
 							try{
 								$doc = $scss->compile($doc);
 								$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND type="css"');
-								return $this->registerFileLinks(we_helpers_scss::$includedFiles, 'css');
+								$this->registerFileLinks(we_helpers_scss::$includedFiles, 'css');
 							} catch (exception $e){
 								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
