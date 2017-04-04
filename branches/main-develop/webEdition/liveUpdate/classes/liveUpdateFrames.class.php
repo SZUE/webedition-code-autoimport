@@ -47,7 +47,6 @@ class liveUpdateFrames{
 			case 'tabs':
 				// frame with tabs
 				$this->Data['activeTab'] = we_base_request::_(we_base_request::STRING, 'active', '');
-				$this->Data['allTabs'] = $this->getAllTabs();
 				break;
 
 			case 'update':
@@ -272,10 +271,6 @@ class liveUpdateFrames{
 			return $showTab;
 		}
 		return $GLOBALS['updatecmds'][0];
-	}
-
-	private function getAllTabs(){
-		return $GLOBALS['updatecmds'];
 	}
 
 	public static function getJSLangConsts(){

@@ -960,7 +960,7 @@ class we_imageDocument extends we_binaryDocument{
 					'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_DOC, "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_NAVI, "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
-				['icon' => we_html_multiIconBox::PROP_NAVI, "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_CATEGORIES, "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_USER, "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_LINK, "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_ICON],
 		]);

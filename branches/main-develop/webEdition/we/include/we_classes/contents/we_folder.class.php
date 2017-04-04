@@ -711,7 +711,7 @@ class we_folder extends we_root{
 					$parts[] = [
 						"headline" => g_l('modules_users', '[grant_owners]'),
 						"html" => $this->formChangeOwners(),
-						'space' => we_html_multiIconBox::SPACE_MED2,
+						'space' => we_html_multiIconBox::SPACE_ICON,
 						"forceRightHeadline" => 1
 					];
 				}
