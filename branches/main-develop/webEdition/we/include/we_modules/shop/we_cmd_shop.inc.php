@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'shop_edit_ifthere':
 	case 'shop_edit':
 		$_REQUEST['mod'] = 'shop';
 		$_REQUEST['pnt'] = 'show_frameset';

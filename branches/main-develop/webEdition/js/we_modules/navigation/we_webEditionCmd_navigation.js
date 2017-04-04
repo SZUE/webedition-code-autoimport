@@ -26,7 +26,6 @@
 we_cmd_modules.navigation = function (args, url, caller) {
 	switch (args[0]) {
 		case "navigation_edit":
-		case "navigation_edit_ifthere":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "module_navigation_new":
@@ -35,11 +34,8 @@ we_cmd_modules.navigation = function (args, url, caller) {
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
-			WE().layout.pushCmdToModule(args);
-			return true;
 		case "module_navigation_rules":
-			WE().util.jsWindow.prototype.focus('edit_module');
-			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=ruleFrameset", "tool_navigation_rules", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true, true);
+			WE().layout.pushCmdToModule(args);
 			return true;
 		case "module_navigation_edit_navi":
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=weNaviEditor&we_cmd[1]=" + args[1], "we_navieditor", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, false, true, true);

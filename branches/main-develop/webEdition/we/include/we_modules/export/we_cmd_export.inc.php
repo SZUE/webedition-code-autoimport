@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'export_edit_ifthere':
 	case 'export_edit':
 		$_REQUEST['mod'] = 'export';
 		$_REQUEST['pnt'] = 'show_frameset';

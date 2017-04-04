@@ -33,7 +33,6 @@ we_cmd_modules.users = function (args, url, caller) {
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "users_edit":
-		case "users_edit_ifthere":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
 				new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 				break;
@@ -41,42 +40,12 @@ we_cmd_modules.users = function (args, url, caller) {
 			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			break;
 		case "new_user":
-			if (WE().util.hasPerm('NEW_USER')) {
-				WE().layout.pushCmdToModule(args);
-				return true;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
-			break;
 		case "save_user":
-			if (WE().util.hasPerm('SAVE_USER')) {
-				WE().layout.pushCmdToModule(args);
-				return true;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
-			break;
 		case "new_group":
-			if (WE().util.hasPerm('NEW_GROUP')) {
-				WE().layout.pushCmdToModule(args);
-				return true;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
-			break;
 		case "new_alias":
-			if (WE().util.hasPerm('NEW_USER')) {
-				WE().layout.pushCmdToModule(args);
-				break;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
-			break;
 		case "exit_users":
-			WE().layout.pushCmdToModule(args);
-			break;
 		case "delete_user":
-			if (WE().util.hasPerm('DELETE_USER')) {
-				WE().layout.pushCmdToModule(args);
-				break;
-			}
-			top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().layout.pushCmdToModule(args);
 			break;
 		case "doctypes":
 			new (WE().util.jsWindow)(caller, url, "doctypes", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, true, true);
@@ -108,10 +77,10 @@ we_cmd_modules.users = function (args, url, caller) {
 			window.we_repl(window.load, url);
 			break;
 		case "requestUnlock":
-			var ret = window.prompt("Bitte geben Sie einen Text für die Freigabe des Dokuments von " + args[1] + " an");
+			var ret = window.prompt(WE().util.sprintf(WE().consts.g_l.main.unlockRequestTextPrompt, args[1]));
 			if (ret) {
 				var t = (WE().util.hasPerm("ADMINISTRATOR") ?
-					window.prompt("Geben Sie hier eine Zeit in Minuten an nach der das Dokument automatisch freigegeben wird (0 keine Automatik):") :
+					window.prompt(WE().consts.g_l.main.unlockRequestTimePrompt) :
 					0);
 				WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=RequestUnlock&type=request", {text: ret, time: t, doc: args[2], table: args[3]});
 			}

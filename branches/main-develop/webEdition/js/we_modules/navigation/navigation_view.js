@@ -252,6 +252,10 @@ function we_cmd() {
 		case "module_navigation_reset_customer_filter":
 			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.reset_customerfilter_question, ["module_navigation_do_reset_customer_filter"]);
 			break;
+		case "module_navigation_rules":
+			WE().util.jsWindow.prototype.focus('edit_module');
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=ruleFrameset", "tool_navigation_rules", WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true, true);
+			return true;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);

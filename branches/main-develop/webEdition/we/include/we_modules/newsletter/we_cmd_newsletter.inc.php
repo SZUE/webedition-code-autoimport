@@ -23,7 +23,6 @@
  */
 switch($cmd){
 	case 'newsletter_edit':
-	case 'newsletter_edit_ifthere':
 		$_REQUEST['mod'] = 'newsletter';
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';

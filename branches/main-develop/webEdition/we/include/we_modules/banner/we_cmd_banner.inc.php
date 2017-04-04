@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'banner_edit_ifthere':
 	case 'banner_edit':
 		$_REQUEST['mod'] = 'banner';
 		$_REQUEST['pnt'] = 'show_frameset';

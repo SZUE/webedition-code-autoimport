@@ -34,7 +34,6 @@ we_cmd_modules.workflow = function (args, url, caller) {
 			window.we_repl(window.load, url);
 			return true;
 		case "workflow_edit":
-		case "workflow_edit_ifthere":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "new_user":

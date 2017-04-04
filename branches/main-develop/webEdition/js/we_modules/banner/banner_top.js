@@ -121,12 +121,15 @@ function we_cmd() {
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edheader&page=' + args[1] + '&txt=' + args[2] + '&isFolder=' + args[3];
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
 			break;
+		case "banner_code":
+			WE().util.jsWindow.prototype.focus('edit_module');
+			new (WE().util.jsWindow)(caller, url, "bannercode", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
+			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
-
 	}
 }
 
-function setTab(tab){
-	top.content.editor.edbody.we_cmd("switchPage",tab);
+function setTab(tab) {
+	top.content.editor.edbody.we_cmd("switchPage", tab);
 }

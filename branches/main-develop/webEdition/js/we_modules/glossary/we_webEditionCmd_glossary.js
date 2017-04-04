@@ -53,15 +53,12 @@ we_cmd_modules.glossary = function (args, url, caller) {
 		case "glossary_edit_foreignword":
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
-		case "glossary_edit_ifthere":
+		case "glossary_edit":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "glossary_settings":
 			WE().util.jsWindow.prototype.focus('edit_module');
 			new (WE().util.jsWindow)(caller, url, "edit_glossary_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
-			break;
-		case "glossary_dictionaries":
-			new (WE().util.jsWindow)(caller, url, "edit_glossary_dictionaries", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true, true);
 			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":

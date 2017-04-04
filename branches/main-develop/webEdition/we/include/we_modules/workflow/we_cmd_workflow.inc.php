@@ -31,7 +31,6 @@ switch($cmd){
 		we_workflow_win::showWin();
 		return true;
 	case 'workflow_edit':
-	case 'workflow_edit_ifthere':
 		$_REQUEST['mod'] = 'workflow';
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';

@@ -29,10 +29,8 @@ we_cmd_modules.newsletter = function (args, url, caller) {
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", WE().consts.size.dialog.small, WE().consts.size.dialog.medium, true, false, true);
 			break;
 		case "newsletter_edit":
-		case "newsletter_edit_ifthere":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
-		case "new_user":
 		case "save_newsletter":
 		case "new_newsletter":
 		case "new_newsletter_group":

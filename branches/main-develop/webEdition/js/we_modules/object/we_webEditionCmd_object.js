@@ -25,7 +25,7 @@
 'use strict';
 we_cmd_modules.object = function (args, url, caller) {
 	switch (args[0]) {
-		case "object_edit_ifthere":
+		case "object_edit":
 		case "edit_object":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;

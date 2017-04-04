@@ -23,7 +23,6 @@
  */
 switch($cmd){
 	case 'users_edit':
-	case 'users_edit_ifthere':
 		$_REQUEST['mod'] = 'users';
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';

@@ -24,7 +24,6 @@
 //TODO: do we need the other navigation cmds here?
 
 switch($cmd){
-	case 'navigation_edit_ifthere':
 	case 'navigation_edit':
 		$_REQUEST['mod'] = 'navigation';
 		$_REQUEST['pnt'] = 'show_frameset';

@@ -669,13 +669,14 @@ foreach($allModules as $m){
 		$we_menu[] = [
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 'modules',
-			'cmd' => $m['name'] . '_edit_ifthere',
+			'cmd' => $m['name'] . '_edit',
 			'perm' => isset($m['perm']) ? $m['perm'] : '',
 		];
 	}
 }
 // Extras > Tools > Custom tools
-$tools = we_tool_lookup::getAllTools(true, false);
+/* deactivate tools since they are unable to run
+ * $tools = we_tool_lookup::getAllTools(true, false);
 
 foreach($tools as $tool){
 	$we_menu[] = [
@@ -684,13 +685,13 @@ foreach($tools as $tool){
 		'cmd' => 'tool_' . $tool['name'] . '_edit',
 		'perm' => $tool['startpermission'],
 	];
-}
+}*/
 
 $activeIntModules = we_base_moduleInfo::getIntegratedModules(true);
 we_base_moduleInfo::orderModuleArray($activeIntModules);
 
 //add settings
-$we_menu[] = ['parent' => 'extras',];
+//$we_menu[] = ['parent' => 'extras',];
 $we_menu['settings'] = [// Extras > Einstellungen
 	'text' => g_l('javaMenu_global', '[preferences]'),
 	'parent' => 'extras',

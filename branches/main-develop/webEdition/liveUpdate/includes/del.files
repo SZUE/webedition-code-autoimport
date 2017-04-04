@@ -299,6 +299,7 @@ we/include/we_modules/glossary/weGlossary.php
 we/include/we_modules/glossary/mod_home.inc.php
 we/include/we_modules/glossary/languages.inc.php
 we/include/we_modules/glossary/edit_glossary_frameset.php
+we/include/we_modules/glossary/edit_glossary_dictionaries_frameset.php
 we/include/we_modules/glossary/dict/dummy
 we/include/we_modules/glossary/cache/dummy
 we/include/we_modules/export/we_webEditionCmd_export.inc.php
