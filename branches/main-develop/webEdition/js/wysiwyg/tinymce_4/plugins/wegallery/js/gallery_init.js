@@ -53,11 +53,11 @@ var WegalleryDialog = {// TODO: clean code by using more vars
 		document.forms.we_form.elements['we_dialog_args[tmpl]'].value = tmplValue;
 	},
 
-	insert: function () {alert('insert gal');
+	insert: function () {
 		var idValue = document.forms.we_form.elements['we_dialog_args[collid]'].value;
 		var tmplValue = document.forms.we_form.elements['we_dialog_args[tmpl]'].value;
 
-		if (this.isGallery) {alert('isGal: return');
+		if (this.isGallery) {
 			if (idValue && tmplValue !== "0") {
 				this.inst.selection.getNode().setAttribute('id', idValue);
 				this.inst.selection.getNode().setAttribute('tmpl', tmplValue);

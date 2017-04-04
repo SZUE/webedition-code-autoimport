@@ -45,7 +45,7 @@ var ImageDialog = {
 			top.imageChanged();
 		}
 
-		if (n.nodeName === 'IMG' && !ed.isWeDataInitialized) {alert('do it now!!');
+		if (n.nodeName === 'IMG' && !ed.isWeDataInitialized) {
 			var imgWidth, imgHeight, longdesc;
 
 			// load attributes into form
