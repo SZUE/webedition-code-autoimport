@@ -89,7 +89,7 @@ const INFO_REFERENCES = '<i class="fa fa-shield"></i>';
 				'<br/><table id="table_' . $uniqname . '" class="default iconBoxTable" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
 				'<div class="weMultiIconBoxContent ' . ($i < (count($content) - 1) && (empty($c['noline'])) ? 'weMultiIconBoxLine' : '' ) . ($marginLeft ? ' withMargin' : '') . '" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
-				'<div class="multiiconleft largeicons leftSpace-' . $leftWidth . '">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
+				'<div class="multiiconleft leftSpace-' . $leftWidth . '">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 				'') .
 				//right
 				'<div class="multiIconRight">' . ($icon || !$leftContent || $forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
