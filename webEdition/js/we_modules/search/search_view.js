@@ -331,7 +331,7 @@ var weSearch = {
 		}
 	},
 	openModule: function (mod, id) {
-		top.we_cmd(mod + '_edit_ifthere', id);
+		top.we_cmd(mod + '_edit', id);
 	},
 	openCategory: function (id) {
 		top.we_cmd('editCat', id);

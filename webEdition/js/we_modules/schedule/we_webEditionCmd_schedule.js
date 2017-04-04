@@ -25,8 +25,7 @@
 'use strict';
 we_cmd_modules.schedule = function (args, url, caller) {
 	switch (args[0]) {
-		case "edit_schedule":
-		case "schedule_edit_ifthere":
+		case "schedule_edit":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 	}

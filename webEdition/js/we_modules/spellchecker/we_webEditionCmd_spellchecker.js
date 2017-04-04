@@ -29,7 +29,6 @@ we_cmd_modules.spellchecker = function (args, url, caller) {
 			window.we_cmd("spellchecker_edit");
 			break;
 		case "spellchecker_edit":
-		case "spellchecker_edit_ifthere":
 			new (WE().util.jsWindow)(caller, url, "spellcheckadmin", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, false);
 			return true;
 	}

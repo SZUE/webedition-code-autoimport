@@ -29,16 +29,11 @@ we_cmd_modules.banner = function (args, url, caller) {
 			we_cmd("banner_default");
 			break;
 		case "banner_edit":
-		case "banner_edit_ifthere":
 			new (WE().util.jsWindow)(caller, url, "edit_module", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			return true;
 		case "banner_default":
 			WE().util.jsWindow.prototype.focus('edit_module');
 			new (WE().util.jsWindow)(caller, url, "defaultbanner", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true, true);
-			return true;
-		case "banner_code":
-			WE().util.jsWindow.prototype.focus('edit_module');
-			new (WE().util.jsWindow)(caller, url, "bannercode", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true, false);
 			return true;
 		case "new_banner":
 		case "new_bannergroup":

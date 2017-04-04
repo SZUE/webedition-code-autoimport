@@ -131,6 +131,8 @@ abstract class we_base_jsConstants{
 		unable_to_call_ping: "' . g_l('global', '[unable_to_call_ping]') . '",
 		unable_to_call_setpagenr: "' . g_l('global', '[unable_to_call_setpagenr]') . '",
 		unlockRequest:"' . g_l('global', '[unlock][request]') . '",
+		unlockRequestTextPrompt:"'.g_l('global', '[unlock][requestPrompt]') . '",
+		unlockRequestTimePrompt:"'.g_l('global', '[unlock][requestTimePrompt]') . '",
 		unlockRequestForceTo:"' . g_l('global', '[unlock][request_force_to]') . '",
 		unlockReleaseDone:"' . g_l('global', '[unlock][releasedone]') . '",
 		untitled:"' . g_l('global', '[untitled]') . '",

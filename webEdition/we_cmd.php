@@ -374,7 +374,7 @@ function findInclude($cmd){
 
 			$mods = we_base_moduleInfo::getIntegratedModules(false);
 			foreach($mods as $m){
-				if($cmd == $m['name'] . '_edit_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
+				if($cmd == $m['name'] . '_edit' && !we_base_moduleInfo::isActive($m['name'])){
 					$GLOBALS['moduleName'] = $m['text_short'];
 					we_modules_frame::showNotActivatedMsg();
 					return true;

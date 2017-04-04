@@ -63,6 +63,10 @@ function we_cmd() {
 			}
 			break;
 		case "new_user":
+			if (!WE().util.hasPerm('NEW_USER')) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
 			top.content.editor.edbody.focus();
 			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_user&cgroup=" + usersData.cgroup;
@@ -78,16 +82,28 @@ function we_cmd() {
 			}
 			break;
 		case "new_group":
+			if (!WE().util.hasPerm('NEW_GROUP')) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
 			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_group&cgroup=" + usersData.cgroup;
 			}
 			break;
 		case "new_alias":
+			if (!WE().util.hasPerm('NEW_USER')) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
 			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_alias&cgroup=" + usersData.cgroup;
 			}
 			break;
 		case "save_user":
+			if (!WE().util.hasPerm('SAVE_USER')) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
 			if (top.content.editor.edbody.document.we_form) {
 				top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 				if (top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd")) {
@@ -96,10 +112,14 @@ function we_cmd() {
 			}
 			break;
 		case "delete_user":
-			WE().util.showConfirm(window, "", WE().util.sprintf( WE().consts.g_l.users.view.delete_alert[usersData.Type],usersData.Text),["delete_user_do"]);
+			if (!WE().util.hasPerm('DELETE_USER')) {
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
+			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.users.view.delete_alert[usersData.Type], usersData.Text), ["delete_user_do"]);
 			break;
 		case "delete_user_do":
-			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;

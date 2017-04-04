@@ -222,7 +222,7 @@ function we_cmd() {
 			break;
 		case 'exit_to_moduleExport':
 			top.console.log('exit');
-			top.opener.top.we_cmd("export_edit_ifthere"); // do we have to call on top.opener.top because of scope?
+			top.opener.top.we_cmd("export_edit"); // do we have to call on top.opener.top because of scope?
 			top.close();
 			break;
 		case 'startTree_delayed':

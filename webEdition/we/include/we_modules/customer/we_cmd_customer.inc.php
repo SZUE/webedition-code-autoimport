@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'customer_edit_ifthere':
 	case 'customer_edit':
 		$_REQUEST['mod'] = 'customer';
 		$_REQUEST['pnt'] = 'show_frameset';

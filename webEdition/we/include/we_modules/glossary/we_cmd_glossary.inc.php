@@ -28,7 +28,7 @@ switch($cmd){
 	case 'glossary_edit_foreignword':
 	case 'glossary_edit_link':
 	case 'glossary_edit_textreplacement':
-	case 'glossary_edit_ifthere':
+	case 'glossary_edit':
 	case 'glossary_view_folder':
 	case 'glossary_view_type':
 	case 'glossary_view_exception':
@@ -38,9 +38,6 @@ switch($cmd){
 
 	case 'glossary_settings':
 		return 'we_modules/glossary/edit_glossary_settings_frameset.php';
-
-	case 'glossary_dictionaries':
-		return 'we_modules/glossary/edit_glossary_dictionaries_frameset.php';
 
 	case 'glossary_check':
 		$GLOBALS['mod'] = 'glossary';

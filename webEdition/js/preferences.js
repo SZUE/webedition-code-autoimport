@@ -343,7 +343,7 @@ function addLocale() {
 		}
 		if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
 // Wörterbuch hinzufügen
-			WE().util.showConfirm(window, "", WE().consts.g_l.prefs.add_dictionary_question, ['spellchecker_edit_ifthere']);
+			WE().util.showConfirm(window, "", WE().consts.g_l.prefs.add_dictionary_question, ['spellchecker_edit']);
 		}
 
 	}

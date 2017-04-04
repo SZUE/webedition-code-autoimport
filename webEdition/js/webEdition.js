@@ -251,6 +251,7 @@ var WebEdition = {
 		},
 		pushCmdToModule: function (args) {
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
+			WE().t_e('command pushed to module ', args[0]);
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				if (args[0] !== "empty_log") {
@@ -1117,7 +1118,7 @@ function we_openMediaReference(id) {
 		var ref = window.we_mediaReferences['id_' + id];
 		switch (ref.type) {
 			case 'module':
-				top.we_cmd(ref.mod + '_edit_ifthere', ref.id);
+				top.we_cmd(ref.mod + '_edit', ref.id);
 				break;
 			case 'cat':
 				top.we_cmd('editCat', ref.id);
@@ -1184,7 +1185,7 @@ function we_cmd() {
 	// deal with not activated modules
 	mods = WE().consts.modules.inactive;
 	for (i = 0; i < mods.length; i++) {
-		if (args[0] === (mods[i] + "_edit_ifthere")) {
+		if (args[0] === (mods[i] + "_edit")) {
 			new (WE().util.jsWindow)(caller, url, "module_info", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, true, true);
 			return true;
 		}
