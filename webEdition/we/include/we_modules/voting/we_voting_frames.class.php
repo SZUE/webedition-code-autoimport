@@ -74,11 +74,11 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), '', false, self::TAB_INQUIRY, ["id" => "tab_" . self::TAB_INQUIRY]);
-			$we_tabs->addTab(g_l('modules_voting', '[options]'), '', false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
+			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), 'fa-comment', false, self::TAB_INQUIRY, ["id" => "tab_" . self::TAB_INQUIRY]);
+			$we_tabs->addTab(g_l('modules_voting', '[options]'), 'fa-cogs', false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(g_l('modules_voting', '[result]'),'',  false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
+				$we_tabs->addTab(g_l('modules_voting', '[result]'),'fa-bar-chart',  false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
 			}
 		}
 		if($this->View->voting->ID){
@@ -148,7 +148,8 @@ class we_voting_frames extends we_modules_frame{
 				$this->getHTMLDirChooser() .
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon'=>we_html_multiIconBox::PROP_PATH,
 				'noline' => 1],
 			['headline' => '',
 				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
@@ -470,7 +471,7 @@ class we_voting_frames extends we_modules_frame{
 		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
 		return we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js') .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 0, '', -1, '', '', false, $preselect)) .
 			(!$this->View->voting->IsFolder ?
 			(
 			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
