@@ -29,9 +29,11 @@
 
 // initialise tabs
 $tabs = new we_tabs();
-foreach($this->Data['allTabs'] as $tabname){
-	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'),'fa-recycle', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
-}
+$tabs->addTab(g_l('liveUpdate', '[tabs][update]'), 'fa-recycle', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
+$tabs->addTab(g_l('liveUpdate', '[tabs][languages]'), 'fa-language', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
+$tabs->addTab(g_l('liveUpdate', '[tabs][updatelog]'), 'fa-list-alt', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
+$tabs->addTab(g_l('liveUpdate', '[tabs][connect]'), 'fa-handshake-o', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
+$tabs->addTab(g_l('liveUpdate', '[tabs][beta]'), 'fa-unlock-alt', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
 
 
 // get output
