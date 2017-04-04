@@ -34,7 +34,7 @@ class we_editor_info_object extends we_editor_base{
 
 		$parts = [["headline" => "",
 			"html" => $html,
-			'space' => we_html_multiIconBox::SPACE_MED2,
+			'space' => we_html_multiIconBox::SPACE_ICON,
 			'icon' => we_html_multiIconBox::PROP_META
 			]
 		];
@@ -66,7 +66,7 @@ class we_editor_info_object extends we_editor_base{
 
 		$parts[] = ["headline" => "",
 			"html" => $html,
-			'space' => we_html_multiIconBox::SPACE_MED2,
+			'space' => we_html_multiIconBox::SPACE_ICON,
 			'icon' => we_html_multiIconBox::INFO_CALENDAR
 		];
 

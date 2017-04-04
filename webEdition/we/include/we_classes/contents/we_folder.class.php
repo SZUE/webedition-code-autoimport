@@ -648,7 +648,8 @@ class we_folder extends we_root{
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		$parts = [['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2]
+		$parts = [
+			['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_ICON]
 		];
 
 		switch($this->Table){
@@ -660,12 +661,12 @@ class we_folder extends we_root{
 						'headline' => g_l('weClass', '[language]'),
 						'html' => $this->formLangLinks(),
 						'noline' => 1,
-						'space' => we_html_multiIconBox::SPACE_MED2
+						'space' => we_html_multiIconBox::SPACE_ICON
 					];
 					$parts[] = [
 						'headline' => g_l('weClass', '[grant_language][headline]'),
 						'html' => $this->formChangeLanguage(),
-						'space' => we_html_multiIconBox::SPACE_MED2,
+						'space' => we_html_multiIconBox::SPACE_ICON,
 						'forceRightHeadline' => true
 					];
 				} else {
@@ -673,7 +674,7 @@ class we_folder extends we_root{
 						'icon' => we_html_multiIconBox::PROP_LANG,
 						'headline' => g_l('weClass', '[language]'),
 						'html' => $this->formLangLinks(),
-						'space' => we_html_multiIconBox::SPACE_MED2
+						'space' => we_html_multiIconBox::SPACE_ICON
 					];
 				}
 		}
@@ -693,7 +694,7 @@ class we_folder extends we_root{
 					'icon' => we_html_multiIconBox::PROP_COPY,
 					'headline' => g_l('weClass', '[copyFolder]'),
 					'html' => $this->formCopyDocument(),
-					'space' => we_html_multiIconBox::SPACE_MED2
+					'space' => we_html_multiIconBox::SPACE_ICON
 				];
 		}
 
@@ -705,7 +706,7 @@ class we_folder extends we_root{
 					"headline" => g_l('weClass', '[owners]'),
 					"html" => $this->formCreatorOwners($jsCmd) . "<br/>",
 					'noline' => 1,
-					'space' => we_html_multiIconBox::SPACE_MED2];
+					'space' => we_html_multiIconBox::SPACE_ICON];
 				if(we_base_permission::hasPerm("ADMINISTRATOR")){
 					$parts[] = [
 						"headline" => g_l('modules_users', '[grant_owners]'),

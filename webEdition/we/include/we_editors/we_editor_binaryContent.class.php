@@ -29,17 +29,17 @@ class we_editor_binaryContent extends we_editor_base{
 					['icon' => we_html_multiIconBox::PROP_UPLOAD,
 						"headline" => "",
 						"html" => $this->we_doc->formUpload(),
-						'space' => we_html_multiIconBox::SPACE_MED2
+						'space' => we_html_multiIconBox::SPACE_ICON
 					],
 					['icon' => we_html_multiIconBox::PROP_ATTRIB,
 						"headline" => g_l('weClass', '[attribs]'),
 						"html" => $this->we_doc->formProperties(),
-						'space' => we_html_multiIconBox::SPACE_MED2
+						'space' => we_html_multiIconBox::SPACE_ICON
 					],
 					['icon' => we_html_multiIconBox::PROP_META,
 						"headline" => g_l('weClass', '[metadata]'),
 						"html" => $this->we_doc->formMetaInfos() . $this->we_doc->formMetaData(),
-						'space' => we_html_multiIconBox::SPACE_MED2
+						'space' => we_html_multiIconBox::SPACE_ICON
 					]
 					], 20));
 	}

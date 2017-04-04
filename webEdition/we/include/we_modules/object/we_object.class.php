@@ -2157,27 +2157,27 @@ class we_object extends we_document{
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 			$parts = [['headline' => g_l('weClass', '[path]'),
 				'html' => $this->formPath(),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_PATH
 				],
 				['headline' => g_l('modules_object', '[default]'),
 					'html' => $this->formDefault($jsCmd),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_ATTRIB
 				],
 				['headline' => g_l('weClass', '[Charset]'),
 					'html' => $this->formCharset(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_CHARSET
 				],
 				['headline' => g_l('weClass', '[CSS]'),
 					'html' => $this->formCSS($jsCmd),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_OTHER
 				],
 				['headline' => g_l('modules_object', '[copyClass]'),
 					'html' => $this->formCopyDocument(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_COPY
 				]
 			];
@@ -2185,12 +2185,12 @@ class we_object extends we_document{
 			$parts = [
 				['headline' => g_l('weClass', '[workspaces]'),
 					'html' => $this->formWorkspaces($jsCmd),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_WORKSPACE
 				],
 				['headline' => g_l('modules_object', '[behaviour]'),
 					'html' => $this->formWorkspacesFlag(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'icon' => we_html_multiIconBox::PROP_DISPLAY
 				]
 			];
