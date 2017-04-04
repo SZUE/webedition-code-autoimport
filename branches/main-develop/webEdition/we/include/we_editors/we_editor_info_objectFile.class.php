@@ -84,7 +84,7 @@ class we_editor_info_objectFile extends we_editor_base{
 				'icon' => we_html_multiIconBox::INFO_WORKFLOW
 			];
 
-			return $this->getPage(we_html_multiIconBox::getHTML("", $parts, 30));
+			return $this->getPage(we_html_multiIconBox::getHTML("", $parts));
 		}
 	}
 

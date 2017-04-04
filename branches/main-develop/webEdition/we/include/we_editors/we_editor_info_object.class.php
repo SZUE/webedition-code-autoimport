@@ -71,7 +71,7 @@ class we_editor_info_object extends we_editor_base{
 		];
 
 
-		return $this->getPage(we_html_multiIconBox::getHTML("", $parts, 30), we_html_element::jsScript(JS_DIR . 'multiIconBox.js'));
+		return $this->getPage(we_html_multiIconBox::getHTML("", $parts), we_html_element::jsScript(JS_DIR . 'multiIconBox.js'));
 	}
 
 }
