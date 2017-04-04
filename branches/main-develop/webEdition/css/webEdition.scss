@@ -88,14 +88,6 @@ iframe{
 	border:none;
 }
 
-img{
-	&.multiIcon{
-		height:64px;
-		width:64px;
-		margin:0px 20px;
-	}
-}
-
 select{
 	margin-right:.5ex;
 }
@@ -236,9 +228,9 @@ div{
 			vertical-align: top;
 			//text-align: center;
 			span.fileicon{
-				margin-left:20px;
+				font-size: 3em;
 			}
-			i.fa{
+			> i.fa{
 				margin: 20px;
 				font-size: 4em;
 				color: #325e94;
