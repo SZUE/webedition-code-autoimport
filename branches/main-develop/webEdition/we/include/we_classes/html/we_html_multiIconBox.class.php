@@ -46,6 +46,13 @@ abstract class we_html_multiIconBox{
 	const PROP_WORKSPACE = '<i class="fa fa-gavel"></i>';
 	const PROP_DISPLAY = '<i class="fa fa-eye"></i>';
 	const PROP_CLASS = '<i class="fa fa-code"></i>';
+	const PROP_KEYBOARD = '<i class="fa fa-keyboard-o"></i>';
+	const PROP_WINDOW = '<i class="fa fa-window-maximize"></i>';
+	const PROP_REVREL = '<i class="fa fa-exchange"></i>';
+	const PROP_IMAGE = '<i class="fa fa-image"></i>';
+	const PROP_SORT = '<i class="fa fa-sort"></i>';
+	const PROP_NEWSLETTER = '<i class="fa fa-newspaper-o"></i>';
+	const PROP_MAIL= '<i class="fa fa-envelope"></i>';
 	//INFO
 	const INFO_CALENDAR = '<i class="fa fa-calendar"></i>';
 	const INFO_WORKFLOW = '<i class="fa fa-gears"></i>';

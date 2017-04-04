@@ -464,23 +464,23 @@ class we_newsletter_frames extends we_modules_frame{
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [
 					], "value", 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [
 					], 'value', 308));
 		}
@@ -803,7 +803,7 @@ class we_newsletter_frames extends we_modules_frame{
 	function getHTMLNewsletterBlocks(){
 		$counter = 0;
 
-		$parts = [["headline" => "", "html" => we_html_element::htmlHiddens(["blocks" => count($this->View->newsletter->blocks)]), 'space' => we_html_multiIconBox::SPACE_MED2,
+		$parts = [['headline' => "", 'html' => we_html_element::htmlHiddens(["blocks" => count($this->View->newsletter->blocks)]), 'space' => we_html_multiIconBox::SPACE_MED2,
 			'noline' => 1]
 		];
 
@@ -907,8 +907,8 @@ class we_newsletter_frames extends we_modules_frame{
 				''
 				) . '</div>';
 
-			$parts[] = ["headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, 'space' => we_html_multiIconBox::SPACE_MED2];
-			$parts[] = ["headline" => "", "html" => $buttons, 'space' => we_html_multiIconBox::SPACE_MED2];
+			$parts[] = ['headline' => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), 'html' => $content, 'space' => we_html_multiIconBox::SPACE_MED];
+			$parts[] = ['headline' => "", 'html' => $buttons, 'space' => we_html_multiIconBox::SPACE_MED];
 
 			$counter++;
 		}
@@ -921,16 +921,29 @@ class we_newsletter_frames extends we_modules_frame{
 		$out = we_html_element::jsScript(JS_DIR . 'multiIconBox.js');
 
 		for($i = 0; $i < $count; $i++){
-			$parts = [defined('CUSTOMER_TABLE') ? ["headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => we_html_multiIconBox::SPACE_MED2] : null,
-				["headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => we_html_multiIconBox::SPACE_MED2],
-				["headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => we_html_multiIconBox::SPACE_MED2]
+			$parts = [defined('CUSTOMER_TABLE') ? [
+				'headline' => g_l('modules_newsletter', '[customers]'),
+				'html' => $this->getHTMLCustomer($i),
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_USER
+				] : null,
+				[
+					'headline' => g_l('modules_newsletter', '[file_email]'),
+					'html' => $this->getHTMLExtern($i),
+					'space' => we_html_multiIconBox::SPACE_ICON,
+					'icon'=>we_html_multiIconBox::PROP_DOC
+				],
+				['headline' => g_l('modules_newsletter', '[emails]'),
+					'html' => $this->getHTMLEmails($i), 'space' => we_html_multiIconBox::SPACE_ICON,
+					'icon'=>we_html_multiIconBox::PROP_MAIL
+				]
 			];
 
 
 			$buttons = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null) .
 				($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
-			$out .= we_html_multiIconBox::getHTML("newsletter_group_box_$i", $parts, 30, "", 0, "", "", ($count < 2), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
+			$out .= we_html_multiIconBox::getHTML("newsletter_group_box_$i", $parts, 0, "", 0, "", "", ($count < 2), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
 				we_html_element::htmlBr() .
 				'<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
@@ -968,8 +981,13 @@ class we_newsletter_frames extends we_modules_frame{
 		$table->setCol(2, 0, [], we_html_tools::htmlFormElementTable($this->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), 'setHot', $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
 
 		//$table->setCol(2,0,[],we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=true;",we_base_ContentTypes::FOLDER),g_l('modules_newsletter','[dir]')));
-		$parts = [["headline" => "", "html" => "", 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1],
-			["headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2],
+		$parts = [
+			[
+				'headline' => g_l('modules_newsletter', '[path]'),
+				'html' => $table->getHtml(),
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_PATH
+			],
 		];
 
 		if(!$this->View->newsletter->IsFolder){
@@ -995,12 +1013,28 @@ class we_newsletter_frames extends we_modules_frame{
 
 			$table->setCol(4, 0, [], we_html_tools::htmlFormElementTable($embedImagesHid . $embedImagesChk . "&nbsp;" . $embedImagesLab, ""));
 
-			$parts[] = ["headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2];
-			$parts[] = ["headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), 'space' => we_html_multiIconBox::SPACE_MED2];
-			$parts[] = ["headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+			$parts[] = [
+				'headline' => g_l('modules_newsletter', '[newsletter][text]'),
+				'html' => $table->getHtml(),
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_NEWSLETTER,
+			];
+			$parts[] = [
+				'headline' => g_l('modules_newsletter', '[charset]'),
+				'html' => $this->getHTMLCharsetTable(),
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_CHARSET
+			];
+			$parts[] = [
+				'headline' => g_l('modules_newsletter', '[copy_newsletter]'),
+				'html' => $this->getHTMLCopy(),
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_COPY,
+				'noline' => 1
+			];
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30) .
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 0) .
 			we_html_element::htmlBr();
 	}
 

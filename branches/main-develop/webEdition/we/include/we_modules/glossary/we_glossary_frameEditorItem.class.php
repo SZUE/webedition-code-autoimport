@@ -54,7 +54,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
-		$out = we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
+		$out = we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')], we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 0, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
 
 		$head = we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
@@ -118,7 +118,8 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 </table>';
 		$parts = [["headline" => g_l('modules_glossary', '[path]'),
 			"html" => $content,
-			'space' => we_html_multiIconBox::SPACE_MED
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_PATH
 			],
 			["headline" => g_l('modules_glossary', '[selection]'),
 				"html" => self::getHTMLAbbreviation($glossary) .
@@ -126,7 +127,8 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				self::getHTMLForeignWord($glossary) .
 				self::getHTMLLink($glossary) .
 				self::getHTMLTextReplacement($glossary),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon'=>we_html_multiIconBox::PROP_ATTRIB,
 				'noline' => 1,
 			]
 		];

@@ -220,24 +220,27 @@ class we_navigation_frames extends we_modules_frame{
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', strtr($this->Model->Text, array_flip(get_html_translation_table(HTML_SPECIALCHARS))), '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[name]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Display', '', $this->Model->Display, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[display]')) .
 				$this->getHTMLChooser(g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $parentid, 'ParentPath', 'setHot', we_base_ContentTypes::FOLDER, ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_PATH,
 				'noline' => 1
 			], [
 				'headline' => '',
 				'html' => $table->getHtml(),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_SORT,
 				'noline' => 1
 			], [
 				'headline' => '',
 				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'setHot', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
 				we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", false, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', '[icon_properties]') . '</span></td></tr></table>',
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_IMAGE,
 				'noline' => 1
 			], [
 				'headline' => '',
 				'html' => '<div id="table_' . $uniqname . '" style="display:none;">' . $this->getHTMLImageAttributes() . '</div>',
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'noline' => 1
 			],
 		];
@@ -294,7 +297,8 @@ class we_navigation_frames extends we_modules_frame{
 			[
 				'headline' => g_l('navigation', '[selection]'),
 				'html' => $selection_block,
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_LINK,
 				'noline' => 1
 		]];
 	}
@@ -364,7 +368,8 @@ class we_navigation_frames extends we_modules_frame{
 			[
 				'headline' => g_l('navigation', '[selection]'),
 				'html' => $selection,
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_LINK,
 				'noline' => 1
 		]];
 
@@ -372,7 +377,8 @@ class we_navigation_frames extends we_modules_frame{
 			$parts[] = [
 				'headline' => g_l('navigation', '[charset]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[charset_desc]'), we_html_tools::TYPE_INFO, 520) . $this->getHTMLCharsetTable(),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_CHARSET,
 				'noline' => 1
 			];
 		}
@@ -391,7 +397,8 @@ class we_navigation_frames extends we_modules_frame{
 				'CopyFolderID' => '',
 				'CopyFolderPath' => ''
 			]),
-			'space' => we_html_multiIconBox::SPACE_MED,
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_COPY,
 			'noline' => 1
 		];
 
@@ -769,20 +776,20 @@ class we_navigation_frames extends we_modules_frame{
 						we_html_element::htmlHiddens([
 							'IsFolder' => (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0),
 							'presetFolder' => we_base_request::_(we_base_request::STRING, 'presetFolder', '')]) .
-						we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
+						we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 0, '', -1, '', '', false, $preselect) .
 						($this->Model->IsFolder ?
-						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :
-						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesGroup(), 0, '', -1, '', '', false, $preselect) :
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesItem(), 0, '', -1, '', '', false, $preselect)
 						) .
 						(($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC || $this->Model->IsFolder) ?
 						$this->getHTMLAttributes() :
 						''
 						)
 					) . ($this->Model->IsFolder && we_base_permission::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
-					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 0, '', -1, '', '', false, $preselect)) :
 					''
 					) . ((defined('CUSTOMER_TABLE')) ?
-					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CUSTOMER, 'style' => ($tabNr == self::TAB_CUSTOMER ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(['id' => 'tab' . self::TAB_CUSTOMER, 'style' => ($tabNr == self::TAB_CUSTOMER ? 'display: block;' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 0, '', -1, '', '', false, $preselect)) :
 					''
 					);
 		}
@@ -950,7 +957,7 @@ class we_navigation_frames extends we_modules_frame{
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $cmd . "');", '', 0, 0, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
 		$body = we_html_element::htmlBody(
-				['class' => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
+				['class' => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(['name' => 'we_form', "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 0, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js'));
 	}
@@ -1034,7 +1041,7 @@ class we_navigation_frames extends we_modules_frame{
 
 		$body = we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 					'name' => 'we_form', 'onsubmit' => 'return false'
-					], we_html_multiIconBox::getHTML('', $parts, 30, '<div style="float:right;">' .
+					], we_html_multiIconBox::getHTML('', $parts, 0, '<div style="float:right;">' .
 						we_html_button::create_button('close', 'javascript:self.close();') .
 						'</div>', -1, '', '', false, g_l('navigation', '[dyn_selection]'))));
 
@@ -1185,17 +1192,19 @@ class we_navigation_frames extends we_modules_frame{
 			[
 				'headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'noline' => 1
 			], [
 				'headline' => g_l('navigation', '[attributes]'),
 				'html' => $title . $anchor . $link . $target,
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_ATTRIB,
 				'noline' => 1
 			], [
 				'headline' => g_l('navigation', '[language]'),
 				'html' => $lang . $hreflang,
-				'space' => we_html_multiIconBox::SPACE_MED,
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::PROP_LANG,
 				'noline' => 1
 			]
 		];
@@ -1209,7 +1218,8 @@ class we_navigation_frames extends we_modules_frame{
 		$parts[] = [
 			'headline' => g_l('navigation', '[keyboard]'),
 			'html' => $accesskey . $tabindex,
-			'space' => we_html_multiIconBox::SPACE_MED,
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_KEYBOARD,
 			'noline' => 1
 		];
 
@@ -1219,7 +1229,8 @@ class we_navigation_frames extends we_modules_frame{
 		$parts[] = [
 			'headline' => g_l('navigation', '[relation]'),
 			'html' => $relfield . $revfield,
-			'space' => we_html_multiIconBox::SPACE_MED,
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_REVREL,
 			'noline' => 1
 		];
 
@@ -1247,11 +1258,12 @@ class we_navigation_frames extends we_modules_frame{
 		$parts[] = [
 			'headline' => g_l('navigation', '[popup]'),
 			'html' => $popup->getHTML(),
-			'space' => we_html_multiIconBox::SPACE_MED,
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_WINDOW,
 			'noline' => 1
 		];
 
-		return we_html_multiIconBox::getHTML('weNaviAttrib', $parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), false);
+		return we_html_multiIconBox::getHTML('weNaviAttrib', $parts, 0, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), false);
 	}
 
 	private function getHTMLImageAttributes(){
