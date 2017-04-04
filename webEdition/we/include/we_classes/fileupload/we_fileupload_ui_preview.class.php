@@ -99,7 +99,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$content = we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')/* , 'ondragenter' => "alert('wrong div')" */], we_html_element::htmlDiv([
+		$content = we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')], we_html_element::htmlDiv([
 					'id' => 'div_filedrag_content_left', 'class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')], $dropText) .
 				we_html_element::htmlDiv(['id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right'], ($thumbnailSmall ?: we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
 			) .

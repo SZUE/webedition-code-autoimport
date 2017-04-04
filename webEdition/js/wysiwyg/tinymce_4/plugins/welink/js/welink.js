@@ -28,7 +28,7 @@ var LinkDialog = {
 		}
 		//this.addClassesToList('we_dialog_args[cssclass]', 'advlink_styles'); here too: this one causes problems!
 
-		if (action === "update" && inst.isWeLinkInitialized === false && formObj) {alert('hooohe 5');
+		if (action === "update" && inst.isWeLinkInitialized === false && formObj) {
 			inst.isWeLinkInitialized = true;
 
 			//var href = inst.dom.getAttrib(elm, 'href');
