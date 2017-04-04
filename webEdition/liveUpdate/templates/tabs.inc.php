@@ -35,7 +35,6 @@ $tabs->addTab(g_l('liveUpdate', '[tabs][updatelog]'), 'fa-list-alt', ($this->Dat
 $tabs->addTab(g_l('liveUpdate', '[tabs][connect]'), 'fa-handshake-o', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
 $tabs->addTab(g_l('liveUpdate', '[tabs][beta]'), 'fa-unlock-alt', ($this->Data['activeTab'] == $tabname), "'" . $tabname . "'");
 
-
 // get output
 
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
