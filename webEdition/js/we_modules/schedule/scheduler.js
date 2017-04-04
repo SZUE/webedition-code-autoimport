@@ -39,7 +39,7 @@ function checkFooter() {
 	var button = window.parent.editFooter.document.getElementById("publish_" + scheduler.docID);
 	var aEl = document.getElementsByClassName("we_schedule_active");
 	var active = false;
-	if (button !== undefined) {
+	if (button) {
 		button = button.getElementsByTagName("button")[0];
 		for (var i = 0; i < aEl.length; ++i) {
 			if (aEl[i].value == 1) {

@@ -214,7 +214,7 @@ class we_editor_info extends we_editor_base{
 				];
 			}
 		}
-		return $this->getPage(we_html_multiIconBox::getHTML('', $parts, 20));
+		return $this->getPage(we_html_multiIconBox::getHTML('', $parts));
 	}
 
 }

@@ -71,22 +71,26 @@ class we_editor_weDocumentCustomerFilter extends we_editor_base{
 			}
 			$view = new we_customer_documentFilterView($filter, 520);
 
-			$parts[] = ['headline' => g_l('modules_customerFilter', '[customerFilter]'),
+			$parts[] = [
+				'headline' => g_l('modules_customerFilter', '[customerFilter]'),
 				'html' => $view->getFilterHTML(),
-				'space' => we_html_multiIconBox::SPACE_MED
+				'space' => we_html_multiIconBox::SPACE_ICON,
+				'icon' => we_html_multiIconBox::CUSTOMER_FILTER
 			];
 		}
 
 
-		$parts[] = ['headline' => g_l('modules_customer', '[one_customer]'),
+		$parts[] = [
+			'headline' => g_l('modules_customer', '[one_customer]'),
 			'html' => $this->formWebuser(we_base_permission::hasPerm("CAN_CHANGE_DOCS_CUSTOMER")),
-			'space' => we_html_multiIconBox::SPACE_MED
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon' => we_html_multiIconBox::PROP_USER
 		];
 
 
 		return $this->getPage((!($this->we_doc instanceof we_imageDocument) && we_base_permission::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
-						we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
-						we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')));
+				we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
+				we_html_multiIconBox::getHTML('weDocProp', $parts, 0, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')));
 	}
 
 }
