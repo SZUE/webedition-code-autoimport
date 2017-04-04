@@ -172,6 +172,8 @@ Sie können Ihr Passwort über den folgenden Link zurücksetzen:',
 	
 	'unlock'=>array(
 		'releasedone'=>'Die folgenden Dokumente wurden zwangsweise gespeichert und geschlossen:',
+		'requestPrompt'=>'Bitte geben Sie einen Text für die Freigabe des Dokuments von %s an.',
+		'requestTimePrompt'=>'Geben Sie hier eine Zeit in Minuten an nach der das Dokument automatisch freigegeben wird (0 keine Automatik)',
 		'request'=>'Für folgende Dokumente wurde eine Anfrage zur Freigabe gestellt:',
 		'request_force_to'=>'bis',
 	),

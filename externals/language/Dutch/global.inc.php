@@ -172,6 +172,8 @@ You can change your password using the following link:',
 	
 	'unlock'=>array(
 		'releasedone'=>'The following documents have been forced to save and close:',
+		'requestPrompt'=>'Please provide a text for the release of the document edited by %s.',
+		'requestTimePrompt'=>'Enter the time in minutes you want to wait for the release (0 just inform)',
 		'request'=>'The following documents were requested to release:',
 		'request_force_to'=>'until',
 	),
