@@ -274,7 +274,7 @@ class liveUpdateFrames{
 		return $GLOBALS['updatecmds'][0];
 	}
 
-	function getAllTabs(){
+	private function getAllTabs(){
 		return $GLOBALS['updatecmds'];
 	}
 
