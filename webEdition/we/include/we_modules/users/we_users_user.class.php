@@ -1179,9 +1179,11 @@ class we_users_user{
 			]
 		]);
 
-		$parts = [['headline' => g_l('modules_users', '[general_data]'),
+		$parts = [[
+			'headline' => g_l('modules_users', '[general_data]'),
 			'html' => $tableObj->getHtml(),
-			'space' => we_html_multiIconBox::SPACE_MED
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon'=>we_html_multiIconBox::PROP_USER,
 			]
 		];
 
@@ -1239,10 +1241,11 @@ class we_users_user{
 
 		$parts[] = ['headline' => g_l('modules_users', '[user_data]'),
 			'html' => $tableObj->getHtml(),
-			'space' => we_html_multiIconBox::SPACE_MED
+			'space' => we_html_multiIconBox::SPACE_ICON,
+			'icon'=>we_html_multiIconBox::PROP_PATH
 		];
 
-		return we_html_multiIconBox::getHTML('', $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 0);
 	}
 
 	/**
@@ -1951,7 +1954,7 @@ function toggleRebuildPerm(disabledOnly) {';
 			case self::TYPE_USER:
 			default:
 				$tabs = [
-					self::TAB_DATA => ['data', ''],
+					self::TAB_DATA => ['data', 'fa-user'],
 					self::TAB_PERMISSION => ['permissions', 'fa-user-secret'],
 					self::TAB_WORKSPACES => ['workspace', we_base_constants::WE_ICON_WORKSPACE],
 					self::TAB_SETTINGS => ['preferences', we_base_constants::WE_ICON_PROPERTIES]
