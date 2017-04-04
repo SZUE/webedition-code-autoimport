@@ -393,10 +393,10 @@ class we_binaryDocument extends we_document{
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_multiIconBox::getHTML('PropertyPage', [
-				['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' =>we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]]
+				['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' =>we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON]]
 		);
 	}
 

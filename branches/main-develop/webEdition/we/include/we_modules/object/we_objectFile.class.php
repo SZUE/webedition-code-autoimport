@@ -2740,7 +2740,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 			$parts = [["headline" => g_l('weClass', '[path]'),
 				"html" => $this->formPath(),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_PATH
 				]
 			];
@@ -2748,7 +2748,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_base_permission::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
 				$parts[] = ["headline" => g_l('modules_object', '[class]'),
 					"html" => $this->formClass(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					'noline' => true,
 					'icon' => we_html_multiIconBox::PROP_CLASS
 				];
@@ -2761,7 +2761,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 				$parts[] = ["headline" => "",
 					"html" => $html,
-					'space' => we_html_multiIconBox::SPACE_MED2,
+					'space' => we_html_multiIconBox::SPACE_ICON,
 					"forceRightHeadline" => 1,
 					'icon' => we_html_multiIconBox::PROP_CLASS
 				];
@@ -2769,37 +2769,37 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 			$parts[] = ["headline" => g_l('weClass', '[language]'),
 				"html" => $this->formLangLinks(),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_LANG
 			];
 
 			$parts[] = ["headline" => g_l('global', '[categorys]'),
 				"html" => $this->formCategory($jsCmd),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_CATEGORIES
 			];
 
 			$parts[] = ["headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_COPY
 			];
 
 			$parts[] = ["headline" => g_l('weClass', '[owners]'),
 				"html" => $this->formCreatorOwners($jsCmd),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_USER
 			];
 
 			$parts[] = ["headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_CHARSET
 			];
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = [["headline" => g_l('weClass', '[workspaces]'),
 				"html" => $this->formWorkspaces($jsCmd),
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				'noline' => 1,
 				'icon' => we_html_multiIconBox::PROP_WORKSPACE
 				],
@@ -2809,7 +2809,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 			$parts[] = ["headline" => "",
 				"html" => $button,
-				'space' => we_html_multiIconBox::SPACE_MED2
+				'space' => we_html_multiIconBox::SPACE_ICON
 			];
 		} else { //	No workspaces defined
 			$parts = [["headline" => "",

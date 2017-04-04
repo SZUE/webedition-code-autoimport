@@ -24,6 +24,7 @@
  */
 abstract class we_html_multiIconBox{
 	const SPACE_SMALL = 'small';
+	const SPACE_ICON = 'icon';
 	const SPACE_MED = 'med';
 	const SPACE_MED2 = 'med2';
 	const SPACE_BIG = 'big';

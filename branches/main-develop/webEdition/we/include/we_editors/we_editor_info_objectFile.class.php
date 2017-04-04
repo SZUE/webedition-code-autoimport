@@ -32,7 +32,7 @@ class we_editor_info_objectFile extends we_editor_base{
 
 		$parts = [["headline" => "",
 			"html" => $html,
-			'space' => we_html_multiIconBox::SPACE_MED2,
+			'space' => we_html_multiIconBox::SPACE_ICON,
 			'icon' => we_html_multiIconBox::PROP_META
 			]
 		];
@@ -67,7 +67,7 @@ class we_editor_info_objectFile extends we_editor_base{
 
 		$parts[] = ["headline" => "",
 			"html" => $html,
-			'space' => we_html_multiIconBox::SPACE_MED2,
+			'space' => we_html_multiIconBox::SPACE_ICON,
 			'icon' => we_html_multiIconBox::INFO_CALENDAR
 		];
 
@@ -79,7 +79,7 @@ class we_editor_info_objectFile extends we_editor_base{
 
 			$parts[] = ["headline" => g_l('modules_workflow', '[workflow]'),
 				"html" => $anzeige,
-				'space' => we_html_multiIconBox::SPACE_MED2,
+				'space' => we_html_multiIconBox::SPACE_ICON,
 				"forceRightHeadline" => 1,
 				'icon' => we_html_multiIconBox::INFO_WORKFLOW
 			];

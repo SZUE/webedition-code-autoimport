@@ -65,13 +65,13 @@ class we_htmlDocument extends we_textContentDocument{
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
 		return we_html_multiIconBox::getHTML('PropertyPage', [
 				['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(),
-					'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_NAVI, 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_COPY, 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_CHARSET, 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2]]
+					'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_NAVI, 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_COPY, 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_CHARSET, 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON]]
 		);
 	}
 

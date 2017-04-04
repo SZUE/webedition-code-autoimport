@@ -138,7 +138,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			new (WE().util.jsWindow)(caller, url, "we_change_passwd", WE().consts.size.dialog.tiny, WE().consts.size.dialog.smaller, true, false, true, false);
 			break;
 		case "update":
-			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
+			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, WE().consts.size.dialog.medium, WE().consts.size.dialog.small, true, true, true);
 			break;
 		case "upgrade":
 			new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, true, true);
