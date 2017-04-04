@@ -925,10 +925,11 @@ we_templateInit();?>';
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
+		return we_html_multiIconBox::getHTML('PropertyPage', [
+				['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_MASTER, 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_CHARSET, 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_COPY, 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
 				]
 		);
 	}

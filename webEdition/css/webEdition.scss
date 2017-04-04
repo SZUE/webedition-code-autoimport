@@ -238,6 +238,11 @@ div{
 			span.fileicon{
 				margin-left:20px;
 			}
+			i.fa{
+				margin: 20px;
+				font-size: 4em;
+				color: #325e94;
+			}
 		}
 
 		div.leftSpace-small{
@@ -334,7 +339,7 @@ body.radient{
 		bottom: 0px;
 		border-left: 1px solid $DarkBlue;
 		overflow: hidden;
-		@media (max-width: $smallScreenWidth) {
+		@media (max-device-width: $smallScreenWidth) {
 			right:0px!important;
 		}
 		iframe{
@@ -350,7 +355,7 @@ body.radient{
 		top:0px;
 		bottom:0px;
 		right:0px;
-		@media (max-width: $smallScreenWidth) {
+		@media (max-device-width: $smallScreenWidth) {
 			display:none;
 		}
 	}
@@ -371,11 +376,11 @@ body.radient{
 		border-bottom: 1px solid #284051;
 		border-right: 1px solid $DarkBlue;
 		width: 40px;
-		@media (min-height: $normScreenHeight) {
+		@media (min-device-height: $normScreenHeight) {
 			width: 40px;
 			height: 100px;
 		}
-		@media (max-height: $smallScreenHeight) {
+		@media (max-device-height: $smallScreenHeight) {
 			height: 35px;
 		}
 		position: relative;
@@ -397,17 +402,17 @@ body.radient{
 			transform-origin: 0 0;
 			text-align: center;
 			color: inherit;
-			@media (max-height: $smallScreenHeight) {
+			@media (max-device-height: $smallScreenHeight) {
 				font-size:14px;
 				bottom: -8px;
 			}
-			@media (min-height: $normScreenHeight) {
+			@media (min-device-height: $normScreenHeight) {
 				font-size: $medfont;
 				bottom: -15px;
 				width: 100px;
 			}
 			.text{
-				@media (max-height: $smallScreenHeight) {
+				@media (max-device-height: $smallScreenHeight) {
 					display:none;
 				}
 			}

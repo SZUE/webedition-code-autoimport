@@ -2741,7 +2741,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 			$parts = [["headline" => g_l('weClass', '[path]'),
 				"html" => $this->formPath(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "path.gif"
+				'icon' => we_html_multiIconBox::PROP_PATH
 				]
 			];
 
@@ -2750,7 +2750,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 					"html" => $this->formClass(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'noline' => true,
-					'icon' => "class.gif"
+					'icon' => we_html_multiIconBox::PROP_CLASS
 				];
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 				$html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
@@ -2763,45 +2763,45 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 					"html" => $html,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => 1,
-					'icon' => "class.gif"
+					'icon' => we_html_multiIconBox::PROP_CLASS
 				];
 			}
 
 			$parts[] = ["headline" => g_l('weClass', '[language]'),
 				"html" => $this->formLangLinks(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "lang.gif"
+				'icon' => we_html_multiIconBox::PROP_LANG
 			];
 
 			$parts[] = ["headline" => g_l('global', '[categorys]'),
 				"html" => $this->formCategory($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "cat.gif"
+				'icon' => we_html_multiIconBox::PROP_CATEGORIES
 			];
 
 			$parts[] = ["headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "copy.gif"
+				'icon' => we_html_multiIconBox::PROP_COPY
 			];
 
 			$parts[] = ["headline" => g_l('weClass', '[owners]'),
 				"html" => $this->formCreatorOwners($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "user.gif"
+				'icon' => we_html_multiIconBox::PROP_USER
 			];
 
 			$parts[] = ["headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => "charset.gif"
+				'icon' => we_html_multiIconBox::PROP_CHARSET
 			];
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = [["headline" => g_l('weClass', '[workspaces]'),
 				"html" => $this->formWorkspaces($jsCmd),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1,
-				'icon' => "workspace.gif"
+				'icon' => we_html_multiIconBox::PROP_WORKSPACE
 				],
 			];
 

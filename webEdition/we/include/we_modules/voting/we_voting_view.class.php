@@ -484,7 +484,7 @@ class we_voting_view extends we_modules_view{
 			'<br/>' .
 			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING"));
 
-		return parent::getActualHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
+		return parent::getActualHomeScreen("voting", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}
 
 }

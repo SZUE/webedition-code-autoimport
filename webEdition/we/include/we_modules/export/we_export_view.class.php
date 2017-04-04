@@ -257,7 +257,7 @@ function start() {
 		$hiddens["cmd"] = "home";
 		$content = we_html_button::create_button('new_export', "javascript:top.we_cmd('new_export');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_EXPORT")) . '<br/>' .
 			we_html_button::create_button('new_export_group', "javascript:top.we_cmd('new_export_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_EXPORT"));
-		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
+		return parent::getActualHomeScreen("export", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
 		));
 	}
 

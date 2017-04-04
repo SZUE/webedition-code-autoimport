@@ -43,8 +43,10 @@ button{
 		min-width: 2.5em;
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
-
-		@media (max-width: ($smallScreenWidth - 200px)) {/*we may be are inside a frame*/
+		span.text{
+			padding-left:.5em;
+		}
+		@media (max-device-width: ($smallScreenWidth)) {/*we may be are inside a frame*/
 			span.text{
 				display:none;
 			}

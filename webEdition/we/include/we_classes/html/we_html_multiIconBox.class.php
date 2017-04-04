@@ -27,6 +27,29 @@ abstract class we_html_multiIconBox{
 	const SPACE_MED = 'med';
 	const SPACE_MED2 = 'med2';
 	const SPACE_BIG = 'big';
+	const PROP_PATH = '<i class="fa fa-folder"></i>';
+	const PROP_DOC = '<i class="fa fa-file-text"></i>';
+	const PROP_CATEGORIES = '<i class="fa fa-tags"></i>';
+	const PROP_USER = '<i class="fa fa-user"></i>';
+	const PROP_CONTENT = '<i class="fa fa-inbox"></i>';
+	const PROP_OTHER = '<i class="fa fa-magic"></i>';
+	const PROP_LANG = '<i class="fa fa-language"></i>';
+	const PROP_COPY = '<i class="fa fa-copy"></i>';
+	const PROP_NAVI = '<i class="fa fa-compass"></i>';
+	const PROP_CHARSET = '<i class="fa fa-paragraph"></i>';
+	const PROP_LINK = '<i class="fa fa-link"></i>';
+	const PROP_MASTER = '<i class="fa fa-sitemap"></i>';
+const PROP_META = '<i class="fa fa-plus-circle"></i>';
+const PROP_UPLOAD = '<i class="fa fa-upload"></i>';
+const PROP_ATTRIB = '<i class="fa fa-cog"></i>';
+const PROP_WORKSPACE = '<i class="fa fa-gavel"></i>';
+const PROP_DISPLAY = '<i class="fa fa-eye"></i>';
+const PROP_CLASS = '<i class="fa fa-code"></i>';
+
+
+const INFO_CALENDAR = '<i class="fa fa-calendar"></i>';
+const INFO_WORKFLOW = '<i class="fa fa-gears"></i>';
+const INFO_REFERENCES = '<i class="fa fa-shield"></i>';
 
 	/**
 	 * @desc 	Get HTML-Code of the multibox
@@ -53,7 +76,7 @@ abstract class we_html_multiIconBox{
 				continue;
 			}
 			$forceRightHeadline = (!empty($c['forceRightHeadline']));
-			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(['src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon']) ) ?: (empty($c['iconX']) ? '' : $c['iconX']);
+			$icon = (empty($c['icon']) ? '' : $c['icon']);
 			$headline = (empty($c['headline']) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
 			$leftWidth = (empty($c['space']) ? '' : $c["space"] );
 			$leftContent = $icon ?: (($leftWidth && (!$forceRightHeadline)) ? $headline : '');

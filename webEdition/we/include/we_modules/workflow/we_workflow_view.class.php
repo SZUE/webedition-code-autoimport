@@ -1128,7 +1128,7 @@ class we_workflow_view extends we_modules_view{
 	public function getHomeScreen(){
 		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.we_cmd('new_workflow');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_WORKFLOW"));
 
-		return parent::getActualHomeScreen('workflow', "workflow.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
+		return parent::getActualHomeScreen('workflow', $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
 
 }

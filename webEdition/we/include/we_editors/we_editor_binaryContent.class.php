@@ -25,17 +25,18 @@
 class we_editor_binaryContent extends we_editor_base{
 
 	public function show(){
-		return $this->getPage(we_html_multiIconBox::getHTML("weImgProp", [['icon' => "upload.gif",
-					"headline" => "",
-					"html" => $this->we_doc->formUpload(),
-					'space' => we_html_multiIconBox::SPACE_MED2
+		return $this->getPage(we_html_multiIconBox::getHTML("weImgProp", [
+					['icon' => we_html_multiIconBox::PROP_UPLOAD,
+						"headline" => "",
+						"html" => $this->we_doc->formUpload(),
+						'space' => we_html_multiIconBox::SPACE_MED2
 					],
-					['icon' => "attrib.gif",
+					['icon' => we_html_multiIconBox::PROP_ATTRIB,
 						"headline" => g_l('weClass', '[attribs]'),
 						"html" => $this->we_doc->formProperties(),
 						'space' => we_html_multiIconBox::SPACE_MED2
 					],
-					['icon' => "meta.gif",
+					['icon' => we_html_multiIconBox::PROP_META,
 						"headline" => g_l('weClass', '[metadata]'),
 						"html" => $this->we_doc->formMetaInfos() . $this->we_doc->formMetaData(),
 						'space' => we_html_multiIconBox::SPACE_MED2

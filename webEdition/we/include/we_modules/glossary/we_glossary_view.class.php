@@ -302,7 +302,7 @@ class we_glossary_view extends we_modules_view{
 			$createLink . '<br/>' .
 			$createTextReplacement;
 
-		return parent::getActualHomeScreen("glossary", "glossary.gif", $content, we_html_element::htmlForm($form, $this->getCommonHiddens($hidden)));
+		return parent::getActualHomeScreen("glossary", $content, we_html_element::htmlForm($form, $this->getCommonHiddens($hidden)));
 	}
 
 }

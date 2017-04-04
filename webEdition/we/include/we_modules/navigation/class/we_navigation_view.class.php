@@ -458,7 +458,7 @@ class we_navigation_view extends we_modules_view{
 		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm('EDIT_NAVIGATION'));
 		$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
-		return parent::getActualHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));
+		return parent::getActualHomeScreen('navigation', $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));
 	}
 
 }

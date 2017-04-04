@@ -64,7 +64,7 @@ class we_modules_view implements we_modules_viewIF{
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
-	public function getActualHomeScreen($mod, $icon, $content, $body = ''){
+	public function getActualHomeScreen($mod, $content, $body = ''){
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? $modData['text'] : '';
 

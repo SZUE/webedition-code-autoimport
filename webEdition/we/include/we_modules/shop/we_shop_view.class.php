@@ -1113,7 +1113,7 @@ WHERE o.ID=' . $bid);
 			$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . WEBEDITION_DIR . 'we_showMod.php?mod=shop' . "&pnt=editor&top=1&typ=document '") . '<br/>';
 		}
 
-		return parent::getActualHomeScreen('shop', "shop.gif", $content);
+		return parent::getActualHomeScreen('shop', $content);
 	}
 
 	private function getCustomCartFieldsTable($bid, $customCartFields){

@@ -42,10 +42,10 @@ way to fit your requirements.
 				text-decoration: none;
 				cursor: pointer;
 				background: none;
-				@media (min-width: $normScreenWidth) {
+				@media (min-device-width: $normScreenWidth) {
 					padding: 0px 18px;
 				}
-				@media (max-width: $smallScreenWidth) {
+				@media (max-device-width: $smallScreenWidth) {
 					width:35px;
 					text-align:center;
 				}
@@ -61,13 +61,13 @@ way to fit your requirements.
 		}
 
 		.icon{
-			@media (min-width: $normScreenWidth) {
+			@media (min-device-width: $normScreenWidth) {
 				display:none;
 			}
 			font-size: 14px;
 		}
 		.mtext{
-			@media (max-width: $smallScreenWidth) {
+			@media (max-device-width: $smallScreenWidth) {
 				display:none;
 			}
 		}

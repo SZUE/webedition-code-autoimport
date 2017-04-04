@@ -43,7 +43,7 @@ class we_editor_info extends we_editor_base{
 <div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>' :
 				''),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'iconX' => '<span class="docIcon" data-contenttype="' . $this->we_doc->ContentType . '" data-extension="' . (isset($this->we_doc->Extension) ? $this->we_doc->Extension : '') . '"></span>'
+				'icon' => '<span class="docIcon" data-contenttype="' . $this->we_doc->ContentType . '" data-extension="' . (isset($this->we_doc->Extension) ? $this->we_doc->Extension : '') . '"></span>'
 			],
 			['headline' => '',
 				'html' => '
@@ -68,7 +68,7 @@ class we_editor_info extends we_editor_base{
 				'') :
 				''),
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'icon' => 'cal.gif'
+				'icon' => we_html_multiIconBox::INFO_CALENDAR
 			]
 		];
 
@@ -115,7 +115,7 @@ class we_editor_info extends we_editor_base{
 					$parts[] = ['headline' => '',
 						'html' => $html,
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'icon' => 'path.gif'
+						'icon' => we_html_multiIconBox::PROP_PATH
 					];
 			}
 
@@ -124,26 +124,26 @@ class we_editor_info extends we_editor_base{
 					'html' => $anzeige,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
-					'icon' => 'workflow.gif'
+					'icon' => we_html_multiIconBox::INFO_WORKFLOW
 				];
 			}
 
 			switch($this->we_doc->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					list($cnt, $select) = $this->we_doc->formTemplateDocuments();
-					$parts[] = ['icon' => 'doc.gif',
+					$parts[] = ['icon' => we_html_multiIconBox::PROP_DOC,
 						'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
 					];
 					list($cnt, $select) = $this->we_doc->formTemplatesUsed();
-					$parts[] = ['icon' => 'doc.gif',
+					$parts[] = ['icon' => we_html_multiIconBox::PROP_DOC,
 						'headline' => g_l('weClass', '[usedTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
 					];
 					list($cnt, $select) = $this->we_doc->formTemplateUsedByTemplate();
-					$parts[] = ['icon' => 'doc.gif',
+					$parts[] = ['icon' =>we_html_multiIconBox::PROP_DOC,
 						'headline' => g_l('weClass', '[usedByTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
@@ -200,7 +200,7 @@ class we_editor_info extends we_editor_base{
 					'html' => $formReference['form'],
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
-					'icon' => 'references.gif'
+					'icon' => we_html_multiIconBox::INFO_REFERENCES
 				];
 			}
 
@@ -210,7 +210,7 @@ class we_editor_info extends we_editor_base{
 					'html' => $metaDataTable,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
-					'icon' => 'meta.gif'
+					'icon' => we_html_multiIconBox::PROP_META
 				];
 			}
 		}
