@@ -1528,7 +1528,7 @@ class we_newsletter_view extends we_modules_view{
 			'<br/>' .
 			we_html_button::create_button('new_newsletter_group', "javascript:top.we_cmd('new_newsletter_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_NEWSLETTER"));
 
-		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getHiddens(['ncmd' => 'home']) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('newsletter', $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getHiddens(['ncmd' => 'home']) . we_html_element::htmlHidden('home', 0)));
 	}
 
 	private static function we_getObjectFileByID($id, $includepath = ''){

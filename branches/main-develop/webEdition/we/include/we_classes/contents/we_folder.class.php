@@ -648,7 +648,7 @@ class we_folder extends we_root{
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		$parts = [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2]
+		$parts = [['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2]
 		];
 
 		switch($this->Table){
@@ -656,7 +656,7 @@ class we_folder extends we_root{
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(we_base_permission::hasPerm('ADMINISTRATOR')){
 					$parts[] = [
-						'icon' => 'lang.gif',
+						'icon' => we_html_multiIconBox::PROP_LANG,
 						'headline' => g_l('weClass', '[language]'),
 						'html' => $this->formLangLinks(),
 						'noline' => 1,
@@ -670,7 +670,7 @@ class we_folder extends we_root{
 					];
 				} else {
 					$parts[] = [
-						'icon' => 'lang.gif',
+						'icon' => we_html_multiIconBox::PROP_LANG,
 						'headline' => g_l('weClass', '[language]'),
 						'html' => $this->formLangLinks(),
 						'space' => we_html_multiIconBox::SPACE_MED2
@@ -690,7 +690,7 @@ class we_folder extends we_root{
 					break;
 				}
 				$parts[] = [
-					'icon' => 'copy.gif',
+					'icon' => we_html_multiIconBox::PROP_COPY,
 					'headline' => g_l('weClass', '[copyFolder]'),
 					'html' => $this->formCopyDocument(),
 					'space' => we_html_multiIconBox::SPACE_MED2
@@ -701,7 +701,7 @@ class we_folder extends we_root{
 			case FILE_TABLE:
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$parts[] = [
-					'icon' => "user.gif",
+					'icon' => we_html_multiIconBox::PROP_USER,
 					"headline" => g_l('weClass', '[owners]'),
 					"html" => $this->formCreatorOwners($jsCmd) . "<br/>",
 					'noline' => 1,

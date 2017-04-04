@@ -955,13 +955,14 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				//['icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
+		return we_html_multiIconBox::getHTML('PropertyPage', [
+				['icon' => we_html_multiIconBox::PROP_PATH, "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(),
+					'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_DOC, "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_NAVI, "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_NAVI, "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_USER, "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_LINK, "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
 		]);
 	}
 

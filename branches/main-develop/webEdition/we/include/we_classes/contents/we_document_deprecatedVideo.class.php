@@ -25,9 +25,9 @@
 class we_document_deprecatedVideo extends we_document_video{
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				['icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => we_html_multiIconBox::SPACE_MED2]]);
+		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => we_html_multiIconBox::PROP_OTHER, 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => we_html_multiIconBox::SPACE_MED2]]);
 	}
 
 }

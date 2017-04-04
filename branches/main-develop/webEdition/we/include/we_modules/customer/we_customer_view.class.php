@@ -934,7 +934,7 @@ class we_customer_view extends we_modules_view{
 		$hiddens['cmd'] = 'home';
 		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.we_cmd('new_customer');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_CUSTOMER"));
 
-		return parent::getActualHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('customer', $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
 	}
 
 }

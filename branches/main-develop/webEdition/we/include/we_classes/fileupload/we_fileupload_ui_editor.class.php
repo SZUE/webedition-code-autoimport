@@ -100,7 +100,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 		$divBtnUpload = we_html_element::htmlDiv(['style' => 'float:right;padding-top:10px;width:auto;'], $this->getDivBtnUploadCancel(170));
 
-		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
+		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="' . ICON_DIR . '/no_image.gif" alt="no-image" />';
 		$formUploader = we_html_element::htmlDiv(['id' => 'imageUpload', 'style' => 'display:block;width:384px;'], $this->getJs() .
 				$this->getCss() .
 				$this->getHiddens() .
