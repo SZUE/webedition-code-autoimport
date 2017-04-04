@@ -1940,14 +1940,14 @@ function toggleRebuildPerm(disabledOnly) {';
 			case self::TYPE_USER_GROUP:
 				$headline1 = g_l('modules_users', '[group]') . ': ';
 				$tabs = [
-					self::TAB_DATA => ['data', ''],
-					self::TAB_PERMISSION => ['permissions', ''],
-					self::TAB_WORKSPACES => ['workspace', '']
+					self::TAB_DATA => ['data', 'fa-users'],
+					self::TAB_PERMISSION => ['permissions', 'fa-user-secret'],
+					self::TAB_WORKSPACES => ['workspace', we_base_constants::WE_ICON_WORKSPACE]
 				];
 				break;
 			case self::TYPE_ALIAS:
 				$tabs = [
-					self::TAB_DATA => ['data', '']
+					self::TAB_DATA => ['data', 'fa-user']
 				];
 				$headline1 = g_l('javaMenu_users', '[menu_alias]') . ': ';
 				break;
