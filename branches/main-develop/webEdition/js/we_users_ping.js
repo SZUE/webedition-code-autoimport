@@ -76,6 +76,9 @@ window.setInterval(function () {
 			if (releases.unlock) {
 				WE().layout.reloadUsedEditors(releases.unlock);
 			}
+		} else {
+			var extra = (result && result.DataArray ? result.DataArray.data : "");
+			top.we_showMessage(WE().consts.g_l.main.unable_to_call_ping + extra, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
 		}
 	}
 	).fail(function (jqxhr, textStatus, error) {
