@@ -26,7 +26,6 @@
 
 class we_shop_view extends we_modules_view{
 	var $frameset;
-	var $topFrame;
 	var $raw;
 	private $CLFields = []; //
 	private $classIds = [];

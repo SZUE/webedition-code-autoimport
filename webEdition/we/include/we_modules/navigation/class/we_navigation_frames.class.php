@@ -39,7 +39,7 @@ class we_navigation_frames extends we_modules_frame{
 		$this->treeDefaultWidth = 220;
 		$this->showTreeFooter = true;
 
-		$this->Tree = new we_navigation_tree($this->jsCmd, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_navigation_tree($this->jsCmd);
 		$this->View = new we_navigation_view();
 		$this->Model = &$this->View->Model;
 	}

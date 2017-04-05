@@ -27,12 +27,10 @@
 
 class we_modules_view implements we_modules_viewIF{
 	var $db;
-	var $topFrame;
 	var $Model;
 
-	public function __construct($topframe = 'top.content'){
+	public function __construct(){
 		$this->db = new DB_WE();
-		$this->topFrame = $topframe;
 	}
 
 	function getCommonHiddens($cmds = []){

@@ -1,4 +1,4 @@
-/* global container, WE,treeData,drawTree */
+/* global container, WE,treeData,drawTree, top */
 
 /**
  * webEdition SDK
@@ -27,26 +27,45 @@
  */
 'use strict';
 
+function initTree() {
+	treeData = new container();
+	treeData.SelectedItems = {};
+	treeData.SelectedItems[WE().consts.tables.FILE_TABLE] = [];
+	treeData.SelectedItems[WE().consts.tables.TEMPLATES_TABLE] = [];
+	treeData.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE] = [];
+	treeData.SelectedItems[WE().consts.tables.OBJECT_TABLE] = [];
+
+	treeData.openFolders = {};
+	treeData.openFolders[WE().consts.tables.FILE_TABLE] = "";
+	treeData.openFolders[WE().consts.tables.TEMPLATES_TABLE] = "";
+	treeData.openFolders[WE().consts.tables.OBJECT_FILES_TABLE] = "";
+	treeData.openFolders[WE().consts.tables.OBJECT_TABLE] = "";
+}
+
+function startTree() {
+	var win = top.content ? top.content : top;
+	win.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab=" + treeData.table + "&pid=0&openFolders=" + treeData.openFolders[treeData.table];
+}
+
 container.prototype.openClose = function (id) {
 	if (id === "") {
 		return;
 	}
 
-	var eintragsIndex = this.indexOfEntry(id);
-	//var status;
-
-	var openstatus = (this[eintragsIndex].open ? 0 : 1);
+	var eintragsIndex = this.indexOfEntry(id),
+		openstatus = (this[eintragsIndex].open ? 0 : 1),
+		win = (top.content ? top.content : top);
 
 	this[eintragsIndex].open = openstatus;
 	if (openstatus && !this[eintragsIndex].loaded) {
-		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&tab=" + treeData.frames.top.table + "&cmd=load&pid=" + id;
-		treeData.frames.top.openFolders[treeData.frames.top.table] += "," + id;
+		win.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&tab=" + treeData.table + "&cmd=load&pid=" + id;
+		treeData.openFolders[treeData.table] += "," + id;
 	} else {
-		var arr = treeData.frames.top.openFolders[treeData.frames.top.table].split(",");
-		treeData.frames.top.openFolders[treeData.frames.top.table] = "";
+		var arr = treeData.openFolders[treeData.table].split(",");
+		treeData.openFolders[treeData.table] = "";
 		for (var t = 0; t < arr.length; t++) {
 			if (arr[t] !== "" && arr[t] != id) {
-				treeData.frames.top.openFolders[treeData.frames.top.table] += "," + arr[t];
+				treeData.openFolders[treeData.table] += "," + arr[t];
 			}
 		}
 		drawTree();
@@ -61,29 +80,29 @@ container.prototype.checkNode = function (imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (var i = 1; i <= this.len; i++) {
 		if (this[i].id == object_name) {
-//			treeData.frames.tree.populate(this[i].id, this.table);
+//			populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
-				if (treeData.frames.tree.document.getElementsByName(imgName)) {
-					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+				if (document.getElementsByName(imgName)) {
+					tmp = document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-check-square-o');
 					tmp.classList.add('fa-square-o');
 				}
 				this[i].checked = 0;
-				var pos = treeData.frames.top.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
+				var pos = treeData.SelectedItems[treeData.table].indexOf(this[i].id);
 				if (pos > -1) {
-					treeData.frames.top.SelectedItems[treeData.frames.top.table].splice(pos, 1);
+					treeData.SelectedItems[treeData.table].splice(pos, 1);
 				}
 
 				this[i].applylayout();
 				break;
 			} else {
-				if (treeData.frames.tree.document.getElementsByName(imgName)) {
-					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+				if (document.getElementsByName(imgName)) {
+					tmp = document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-square-o');
 					tmp.classList.add('fa-check-square-o');
 				}
 				this[i].checked = 1;
-				treeData.frames.top.SelectedItems[treeData.frames.top.table].push(this[i].id);
+				treeData.SelectedItems[treeData.table].push(this[i].id);
 				this[i].applylayout();
 				break;
 			}
@@ -120,14 +139,14 @@ container.prototype.addSort = function (object) {
 };
 
 function setHead(tab) {
-	treeData.frames.top.table = tab;
-	treeData.frames.top.document.we_form.table.value = tab;
-	window.setTimeout(treeData.frames.top.startTree, 100);
+	treeData.table = tab;
+	document.we_form.table.value = tab;
+	window.setTimeout(startTree, 100);
 }
 
 
 function drawTree() {
-	treeData.frames.tree.document.getElementById("treetable").innerHTML = '<div class="treetable ' + treeData.getLayout() + '">' +
-					treeData.draw(treeData.startloc, "") +
-					"</div>";
+	document.getElementById("treetable").innerHTML = '<div class="treetable ' + treeData.getLayout() + '">' +
+		treeData.draw(treeData.startloc, "") +
+		"</div>";
 }

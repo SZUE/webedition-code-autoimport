@@ -31,8 +31,6 @@ class we_glossary_view extends we_modules_view{
 	private $page = 0;
 
 	/**
-	 * @param string $frameset
-	 * @param string $topframe
 	 */
 	public function __construct(){
 		parent::__construct();

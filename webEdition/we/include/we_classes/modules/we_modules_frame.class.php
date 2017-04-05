@@ -30,9 +30,6 @@ abstract class we_modules_frame{
 	var $frameset;
 	var $View;
 	var $Tree = null;
-	var $topFrame = "top.content";
-	var $treeFrame = "top.content";
-	var $cmdFrame = "top.content.cmd";
 	protected $showTreeHeader = false;
 	protected $showTreeFooter = false;
 	protected $treeDefaultWidth = 200;

@@ -238,7 +238,7 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			}
 			$jsCmd = new we_base_jsCmd();
 
-			$Tree = new we_tree_main($jsCmd, "top", "top", "top.load");
+			$Tree = new we_tree_main($jsCmd);
 			$treeItems = [];
 			$this->getItems($openFolders, $parentpaths, $wsQuery, $treeItems, $table, $parentFolder, $offset, $Tree->default_segment);
 

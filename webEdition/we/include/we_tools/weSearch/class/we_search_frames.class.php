@@ -34,7 +34,7 @@ class we_search_frames extends we_modules_frame{
 	public function __construct(){
 		$this->module = 'weSearch';
 		parent::__construct(WEBEDITION_DIR . 'we_showMod.php?mod=weSearch');
-		$this->Tree = new we_search_tree($this->jsCmd, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_search_tree($this->jsCmd);
 		$this->View = new we_search_view();
 	}
 

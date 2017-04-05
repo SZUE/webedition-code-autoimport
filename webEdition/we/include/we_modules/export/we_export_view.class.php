@@ -30,8 +30,7 @@ class we_export_view extends we_modules_view{
 	private $page;
 
 	public function __construct(){
-		$topframe = "top.content";
-		parent::__construct($topframe);
+		parent::__construct();
 		$this->export = new we_export_export();
 	}
 
@@ -75,11 +74,11 @@ class we_export_view extends we_modules_view{
 		foreach($arr as $table => $elem){
 
 			if($this->export->$elem){
-				$selected .= 'top.content.editor.edbody.SelectedItems.' . $table . '=[' . $this->export->$elem . '];';
+				$selected .= 'top.content.editor.edbody.treeData.SelectedItems.' . $table . '=[' . $this->export->$elem . '];';
 			}
 
 			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){
-				$opened .= 'top.content.editor.edbody.openFolders.' . $table . '="' . $open . '";';
+				$opened .= 'top.content.editor.edbody.treeData.openFolders.' . $table . '="' . $open . '";';
 			}
 		}
 

@@ -205,7 +205,7 @@ class we_widget_mdc extends we_widget_base{
 			$seltype['classname'] = g_l('cockpit', '[objects]');
 		}
 
-		$tree = new we_export_tree($jsCmd, 'top', 'top', 'cmd');
+		$tree = new we_export_tree($jsCmd);//, 'top', 'top', 'cmd'
 
 		$captions = [];
 		if(we_base_permission::hasPerm("CAN_SEE_DOCUMENTS")){
