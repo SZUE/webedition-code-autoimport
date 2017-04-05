@@ -52,7 +52,7 @@ abstract class we_message_reporting{
 			case self::WE_MESSAGE_FRONTEND:
 				return 'alert(' . $message . ');';
 			default:
-				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage(' . $message . ', ' . $priority . ', window);';
+				return ($isOpener ? 'top.opener.' : '') . 'WE().util.showMessage(' . $message . ', ' . $priority . ', window);';
 		}
 	}
 

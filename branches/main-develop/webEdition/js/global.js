@@ -59,15 +59,6 @@ function WE(retBool) {
 	throw new Error("webedition (final) not found");
 }
 
-function we_showMessage(message, prio, win, timeout) {
-	win = (win ? win : window);
-	if (WE(true)) {
-		WE().util.showMessage(message, prio, win, timeout);
-	} else { // there is no webEdition window open, just show the alert
-		win.alert(message);
-	}
-}
-
 function initWE() {
 //make some assignments to all WE documents
 	if (WE(true)) {

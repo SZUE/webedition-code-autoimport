@@ -181,7 +181,7 @@ var weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.weSearch.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 			case WE().consts.weSearch.SEARCH_DOCS:
@@ -200,7 +200,7 @@ var weSearch = {
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
 					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'] !== undefined && this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
-						top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+						WE().util.showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						Checks[0] = '';
 					}
@@ -217,7 +217,7 @@ var weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 		}
@@ -787,7 +787,7 @@ var weSearch = {
 	},
 	ajaxCallbackResetVersion: function (response) {
 		//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-		top.we_showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		WE().util.showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		// reload current document => reload all open Editors on demand
 		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
@@ -821,7 +821,7 @@ var weSearch = {
 			}
 		}
 		if (checkboxes.length === 0) {
-			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 		if (window.confirm(WE().consts.g_l.weSearch.resetVersionsSearchtool) !== true) {
@@ -859,7 +859,7 @@ var weSearch = {
 		}
 
 		if (check === false) {//searchtool__notChecked
-			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			var Check = window.confirm(WE().consts.g_l.weSearch.publish_docs);
 			if (Check === true) {
@@ -908,7 +908,7 @@ var weSearch = {
 
 		document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
 		//document.getElementById("resetBusyDocSearch").innerHTML = "";
-		top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		WE().util.showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	},
 	publishDocsAjax: function (whichSearch) {
 		var args = '';
@@ -943,7 +943,7 @@ var weSearch = {
 		}
 
 		if (!check) {
-			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			var conf = window.confirm("you really want to delete them?");//FIXME: G_L
 			if (conf) {
@@ -969,7 +969,7 @@ var weSearch = {
 	},
 	ajaxCallbackDeleteMediaDocs: function (weResponse) {
 		var response=weResponse.DataArray.response;
-		top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		WE().util.showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		// close all Editors with deleted documents
 		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),

@@ -94,11 +94,11 @@ function we_cmd() {
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
+				WE().util.showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().consts.g_l.customer.view.delete_alert, ["delete_customer_do"]);
@@ -121,7 +121,7 @@ function we_cmd() {
 				return;
 			}
 			if (!WE().util.hasPerm("EDIT_CUSTOMER") && !WE().util.hasPerm("NEW_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 
@@ -129,7 +129,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
+				WE().util.showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 			top.content.usetHot();
 			break;

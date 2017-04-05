@@ -307,7 +307,7 @@ function saveOnKeyBoard() {
 function we_checkName() {
 	var regExp = /'|"|>|<|\\|\//;
 	if (regExp.test(document.getElementById("category").value)) {
-		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid, document.getElementById("category").value), WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid, document.getElementById("category").value), WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		document.we_form.submit();
 	}

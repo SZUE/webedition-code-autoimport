@@ -96,11 +96,11 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 						_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
 					}
 				} else {
-					top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
+					WE().util.showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 				}
 			} else {
 				//	alert when in preview mode
-				top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
+				WE().util.showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 				_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page', editorSave.EditPageNr, editorSave.we_transaction);
 
 				for (i = 0; i < editorSave.we_responseJS.length; i++) {
@@ -113,14 +113,14 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 				}
 			}
 			if (isEditInclude) {
-				top.we_showMessage(WE().consts.g_l.alert.changed_include, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(WE().consts.g_l.alert.changed_include, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				weWindow.top.we_cmd("reload_editpage");
 				weWindow.edit_include.close();
 				top.close();
 			}
 		}
 	} else {
-		top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
+		WE().util.showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 		for (i = 0; i < editorSave.we_responseJS.length; i++) {
 			we_cmd.apply(window, editorSave.we_responseJS[i]);
 		}
@@ -139,7 +139,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 	for (i = 0; i < editorSave.we_JavaScript.length; i++) {
 		we_cmd.apply(window, editorSave.we_JavaScript[i]);
 	}
-	top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
+	WE().util.showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
 }
 
 function we_cmd() {

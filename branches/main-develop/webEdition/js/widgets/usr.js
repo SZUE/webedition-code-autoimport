@@ -33,7 +33,7 @@ function save() {
 	top.savePrefs();
 	top.previewPrefs();
 	window.opener.saveSettings();
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
 

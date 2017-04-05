@@ -221,7 +221,7 @@ function spellcheck() {
 		document.spellchecker.check(text);
 		window.setTimeout(findNext, 2000);
 	} else {
-		top.we_showMessage("err", WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage("err", WE().consts.message.WE_MESSAGE_ERROR, window);
 		window.close();
 	}
 }
@@ -260,7 +260,7 @@ function findNext() {
 						fadeout("spinner", 80, 10, 10);
 					}
 					WE().layout.button.enable(document, "check");
-					top.we_showMessage(WE().consts.g_l.spellcheck.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.spellcheck.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 		} else {
@@ -276,6 +276,6 @@ function add() {
 		//hiddenCmd.dispatch("addWord", currentWord);
 		findNext();
 	} else {
-		top.we_showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }*/

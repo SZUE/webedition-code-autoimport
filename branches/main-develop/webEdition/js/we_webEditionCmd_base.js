@@ -288,7 +288,7 @@ we_cmd_modules.base = function (args, url, caller) {
 		case "checkSameMaster":
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 			if (args[1].currentID == args[2]) {
-				top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
 				caller.document.we_form.elements[args[1].JSIDName].value = '';
 				window.opener.document.we_form.elements[args[1].JSTextName].value = '';
 			}
@@ -553,7 +553,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
 				WE().util.showConfirm(caller, "", WE().consts.g_l.cockpit.reset_settings, ["reset_home_do"]);
 			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 		case "reset_home_do":
@@ -567,7 +567,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);
 			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "open_document":
@@ -818,13 +818,13 @@ function we_cmd_delete_single_document_question(url) {
 
 	if (ctrl.getActiveDocumentReference()) {
 		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
-			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 			var url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 			WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -858,12 +858,12 @@ function we_cmd_delete_single_document(url) {
 
 	if (ctrl.getActiveDocumentReference()) {
 		if (!WE().util.hasPermDelete(eTable, (cType === WE().consts.contentTypes.FOLDER))) {
-			top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -954,7 +954,7 @@ function wecmd_editDocument(args, url) {
 			top.we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
+		WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 	}
 }
 
@@ -972,7 +972,7 @@ function we_cmd_new_document(url) {
 		// load new document editor
 		top.we_repl(nextContent, url + "&frameId=" + nextWindow.getFrameId());
 	} else {
-		top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
+		WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR);
 	}
 }
 

@@ -130,7 +130,7 @@ var WebEdition = {
 					ok = window.confirm(WE().consts.g_l.main.confirm_ext_change);
 				}
 				if (ok) {
-					a["we_" + name + "_Extension"].value = (a["we_" + name + "_IsDynamic"].value == 1 ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
+					a["we_" + name + "_Extension"].value = (parseInt(a["we_" + name + "_IsDynamic"].value) ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
 				}
 			}
 		},
@@ -215,7 +215,7 @@ var WebEdition = {
 				var newTime = ablauf.getTime() + 30758400000;
 				ablauf.setTime(newTime);
 				WE().util.weSetCookie(document, "treewidth_main", w, ablauf, WE().consts.dirs.WEBEDITION_DIR);
-			},
+			}
 		},
 		vtab: {
 			click: function (tab, table) {
@@ -246,7 +246,7 @@ var WebEdition = {
 			try {
 				WE().layout.browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 			} catch (e) {
-				top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		},
 		pushCmdToModule: function (args) {
@@ -1125,7 +1125,7 @@ function we_openMediaReference(id) {
 				break;
 			default:
 				if (ref.isTempPossible && ref.referencedIn === 'main' && ref.isModified) {
-					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);// FIXME: GL()
+					WE().util.showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);// FIXME: GL()
 				} else {
 					WE().layout.weEditorFrameController.openDocument(ref.table, ref.id, ref.ct);
 				}
@@ -1265,7 +1265,7 @@ function switchEditPage(args, url) {
 	if (isEditpageContent && visibleEditorFrame && visibleEditorFrame.weIsTextEditor !== undefined && currentEditorRootFrame.frames[2].location !== "about:blank") {
 		// tell the backend the right edit page nr and break (don't send the form)
 		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPageNr", "transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
-		//FAIL: top.we_showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
+		//FAIL: WE().util.showMessage(WE().consts.g_l.main.unable_to_call_setpagenr, WE().consts.message.WE_MESSAGE_ERROR);
 		if (visibleEditorFrame.reloadContent === false) {
 			return;
 		}
@@ -1297,13 +1297,13 @@ function showMainWindow() {
 
 function checkPwd(sufficient) {
 	if (!sufficient) {
-		top.we_showMessage(WE().consts.g_l.alert.pwd_startupRegExFailed, WE().consts.message.WE_MESSAGE_ERROR);
+		WE().util.showMessage(WE().consts.g_l.alert.pwd_startupRegExFailed, WE().consts.message.WE_MESSAGE_ERROR);
 	}
 }
 
 function updateCheck(avail, version, date) {
 	if (avail) {
-		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.alert.newWEAvailable, version, date), WE().consts.message.WE_MESSAGE_INFO, window);
+		WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.alert.newWEAvailable, version, date), WE().consts.message.WE_MESSAGE_INFO, window);
 	}
 }
 

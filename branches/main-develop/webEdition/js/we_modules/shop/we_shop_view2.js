@@ -85,7 +85,7 @@ function we_submit() {
 	if (elem && elem.value) {
 		document.we_form.submit();
 	} else {
-		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 

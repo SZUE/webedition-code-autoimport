@@ -218,31 +218,25 @@ class we_import_files{
 
 	private function getButtons(){
 		$bodyAttribs = ['class' => "weDialogButtonsBody"];
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", '', 0, 0, '', '', false, false);
-		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:handleEvent('cancel')", '', 0, 0, '', '', false, false);
 
-		$js = '';
 		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", false);
-		$prevButton2 = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", false, false);
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:top.handleEvent('next');", '', 0, 0, "", "", $this->step > 0, false);
 
 		// TODO: let we_fileupload set pb
 		$pb = new we_progressBar(0, 200);
 		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), we_progressBar::TOP, "progress_title");
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
-		$js .= we_progressBar::getJSCode();
-
-		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
-		$table->setCol(0, 1, ["styke" => "text-align:right"], we_html_element::htmlDiv(['id' => 'normButton'
-				], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10)));
+		$table->setCol(0, 1, ["styke" => "text-align:right"], we_html_element::htmlDiv(['id' => 'normButton'], we_html_button::position_yes_no_cancel(($prevButton ? $prevButton . $nextButton : null), null, $cancelButton, 10, '', [
+], 10)));
 
 		$content = $table->getHtml();
 		$body = we_html_element::htmlBody($bodyAttribs, $content);
 
-		return $this->_getHtmlPage($body, $js);
+		return $this->_getHtmlPage($body, we_progressBar::getJSCode());
 	}
 
 	function getHiddens($noCmd = false){

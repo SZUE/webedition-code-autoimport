@@ -149,7 +149,7 @@ function submitForm(target, action, method, form) {
 }
 
 function callAnswerLimit() {
-	top.we_showMessage(WE().consts.g_l.voting.answer_limit, WE().consts.message.WE_MESSAGE_ERROR, window);
+	WE().util.showMessage(WE().consts.g_l.voting.answer_limit, WE().consts.message.WE_MESSAGE_ERROR, window);
 }
 
 function removeAll() {

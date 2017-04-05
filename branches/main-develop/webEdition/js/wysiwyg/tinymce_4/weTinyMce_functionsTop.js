@@ -65,7 +65,7 @@ WE().layout.we_tinyMCE.setup.wePasteFromTiny = function(ed){
 		var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
 		if (args.content.match(pattImg)) {
 			args.content = args.content.replace(pattImg, '');
-			top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[pl.editor.settings.language].we.ed_removedInlinePictures, WE().consts.message.WE_MESSAGE_ERROR);
+			WE().util.showMessage(WE().consts.g_l.tinyMceTranslationObject[pl.editor.settings.language].we.ed_removedInlinePictures, WE().consts.message.WE_MESSAGE_ERROR);
 		}
 		*/
 		var patScript = /<script[^>]*.*< ?\/script[^>]*>/gi;

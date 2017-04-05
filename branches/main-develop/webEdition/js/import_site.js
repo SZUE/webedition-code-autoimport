@@ -88,7 +88,7 @@ function dateFormatChanged(s) {
 
 function showDateHelp() {
 	// this is a real alert, dont use showMessage yet
-	top.we_showMessage(WE().consts.g_l.import.format_timestamp, top.WE().consts.message.WE_MESSAGE_INFO, window);
+	WE().util.showMessage(WE().consts.g_l.import.format_timestamp, top.WE().consts.message.WE_MESSAGE_INFO, window);
 }
 
 function checkForm() {
@@ -98,7 +98,7 @@ function checkForm() {
 	if (createType === "specify") {
 		// check if template is selected
 		if (f.templateID.value == "0" || f.templateID.value === "") {
-			top.we_showMessage(WE().consts.g_l.import.pleaseSelectTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.pleaseSelectTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		// check value of fields
@@ -137,25 +137,25 @@ function checkForm() {
 			}
 		}
 		if (filled === 0) {
-			top.we_showMessage(WE().consts.g_l.import.startEndMarkAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.startEndMarkAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		if (document.getElementById("ownValueInput").style.display !== "none") {
 			if (f.dateformatField.value.length === 0) {
-				top.we_showMessage(WE().consts.g_l.import.errorEmptyDateFormat, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.import.errorEmptyDateFormat, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 		}
 	} else {
 		if (f.templateName.value.length === 0) {
-			top.we_showMessage(WE().consts.g_l.import.nameOfTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.nameOfTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 			f.templateName.focus();
 			f.templateName.select();
 			return false;
 		}
 		var reg = /[^a-z0-9\._+\-]/gi;
 		if (reg.test(f.templateName.value)) {
-			top.we_showMessage(WE().consts.g_l.import.we_filename_notValid, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.we_filename_notValid, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 			f.templateName.focus();
 			f.templateName.select();
 			return false;

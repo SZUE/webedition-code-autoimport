@@ -70,16 +70,16 @@ function add_thumbnail() {
 		return;
 	}
 	if ((name.indexOf('<') !== -1) || (name.indexOf('>') !== -1)) {
-		top.we_showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
 	if (name.indexOf("'") !== -1 || name.indexOf(",") !== -1) {
-		top.we_showMessage(WE().consts.g_l.thumbnail.hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.thumbnail.hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (name === "") {
-		top.we_showMessage(WE().consts.g_l.thumbnail.empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.thumbnail.empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (thumbnails.thumbnail_names.indexOf(name) !== -1) {
-		top.we_showMessage(WE().consts.g_l.thumbnail.exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.thumbnail.exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&newthumbnail=" + encodeURI(name);
 	}
