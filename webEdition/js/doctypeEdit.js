@@ -34,14 +34,14 @@ function we_save_docType(doc, url) {
 	var acStatus = WE().layout.weSuggest.checkRequired(window);
 
 	if (countSaveLoop > 10) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
 	} else {
 		if (acStatus.running) {
 			countSaveLoop++;
 			window.setTimeout(we_save_docType, 100, doc, url);
 		} else if (!acStatus.valid) {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
@@ -53,7 +53,7 @@ function we_save_docType(doc, url) {
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	f.target = target;
@@ -112,15 +112,15 @@ function we_cmd() {
 			var name = window.prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
 			if (name !== null) {
 				if ((name.indexOf("<") !== -1) || (name.indexOf(">") !== -1)) {
-					top.we_showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
 				if (name.indexOf("'") !== -1 || name.indexOf('"') !== -1 || name.indexOf(',') !== -1) {
-					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (name === "") {
-					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (doctype.docTypeNames.indexOf(name) !== -1) {
-					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					/*						if (top.opener.top.header) {
 					 top.opener.top.header.location.reload();

@@ -36,7 +36,7 @@ window.addEventListener('load', function () {
 			//Keep switch clean, only few statements should be here, everthing else goes to specific js file
 			switch (cmds[i]) {
 				case 'msg':
-					top.we_showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
 					break;
 				case 'close':
 					top.close();

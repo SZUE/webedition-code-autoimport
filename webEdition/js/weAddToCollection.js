@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -53,7 +55,7 @@ var weAddToCollection = {
 		}
 
 		if (!selection) {
-			top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
@@ -64,7 +66,7 @@ var weAddToCollection = {
 			return;
 		}
 		if (!acStatus.valid) {
-			top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 

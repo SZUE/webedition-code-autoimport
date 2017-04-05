@@ -35,7 +35,7 @@ function save() {
 	top.savePrefs();
 	top.previewPrefs();
 	refresh();
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	window.close();
 }
 
@@ -59,7 +59,7 @@ function ajaxCallbackResetLogins(weResponse) {
 	if (weResponse) {
 		if (weResponse.DataArray.data === "true") {
 			refresh();
-			top.we_showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.cockpit.fdl.kv_failedLogins, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			top.setTheme(prefs._sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 		}
 	}

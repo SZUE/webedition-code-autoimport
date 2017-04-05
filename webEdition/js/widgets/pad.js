@@ -257,18 +257,18 @@ function saveNote() {
 				weValidFrom = q_curr.ValidFrom.replace(/-/g, '');
 				weValidUntil = q_curr.ValidUntil.replace(/-/g, '');
 				if (weValidFrom > weValidUntil) {
-					top.we_showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
 					return false;
 				}
 			}
 			if (q_curr.Title === '') {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			}
 			var q_ID = document.getElementById(_id + '_ID').value;
 			WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + widget.sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, widget.sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 		} else {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		return;
 	}
@@ -278,23 +278,23 @@ function saveNote() {
 			weValidFrom = q_curr.ValidFrom.replace(/-/g, '');
 			weValidUntil = q_curr.ValidUntil.replace(/-/g, '');
 			if (weValidFrom > weValidUntil) {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				WE().util.showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			} else if (!weValidFrom || !weValidUntil) {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 		} else if (q_curr.Validity == 'date' && !q_curr.ValidFrom) {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 		if (q_curr.Title === '') {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			WE().util.showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 		WE().layout.cockpitFrame.rpc(_ttlB64Esc.concat(',' + widget.sInitProps), csv, 'insert', '', _ttlB64Esc, widget.sObjId, 'pad/pad', q_curr.Title, q_curr.Text);
 	} else {
-		top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		WE().util.showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
 }
 
@@ -357,7 +357,7 @@ function save() {
 		WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, widget.sObjId);
 	}
 	window.opener.setPrefs(widget.sObjId, sBit, sTitleEnc);
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	WE().layout.weNavigationHistory.navigateReload();
 	window.close();
 }

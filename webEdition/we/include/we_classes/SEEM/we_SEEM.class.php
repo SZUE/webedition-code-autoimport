@@ -482,7 +482,7 @@ abstract class we_SEEM{
 			} else {
 				//	This is a javascript:history link, to get back to the last document.
 				$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
-					' onclick="top.we_showMessage(WE().consts.g_l.alert.link_does_not_work,WE().consts.message.WE_MESSAGE_NOTICE,window);" onmouseover="top.info(\'' . g_l('SEEM', '[info_link_does_not_work]') . '\')"' :
+					' onclick="WE().util.showMessage(WE().consts.g_l.alert.link_does_not_work,WE().consts.message.WE_MESSAGE_NOTICE,window);" onmouseover="top.info(\'' . g_l('SEEM', '[info_link_does_not_work]') . '\')"' :
 					//  Check, if the current document was changed
 					' onclick="we_cmd(\'doExtClick\',\'' . $linkArray[5][$i] . $linkArray[3][$i] . "');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
 					);

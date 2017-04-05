@@ -1751,7 +1751,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 
 				$hooksHtml = $EXECUTE_HOOKS->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_HELP);
 
-				$useSession = new we_html_select(['name' => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'top.we_showMessage(\'' . g_l('prefs', '[session][crypt][alert]') . '\', WE().consts.message.WE_MESSAGE_ERROR);']);
+				$useSession = new we_html_select(['name' => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'WE().util.showMessage(\'' . g_l('prefs', '[session][crypt][alert]') . '\', WE().consts.message.WE_MESSAGE_ERROR);']);
 				$useSession->addOption(0, g_l('prefs', '[no]'));
 				$useSession->addOption(1, g_l('prefs', '[yes]'));
 				$useSession->selectOption(self::get_value("SYSTEM_WE_SESSION") ? 1 : 0);
@@ -1759,7 +1759,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$sessionTime = '<table class="default"><tr><td>' .
 					we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(self::get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
-				$cryptSession = new we_html_select(['name' => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'top.we_showMessage(\'' . g_l('prefs', '[session][crypt][alert]') . '\', WE().consts.message.WE_MESSAGE_ERROR);']);
+				$cryptSession = new we_html_select(['name' => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'WE().util.showMessage(\'' . g_l('prefs', '[session][crypt][alert]') . '\', WE().consts.message.WE_MESSAGE_ERROR);']);
 				$cryptSession->addOption(0, g_l('prefs', '[no]'));
 				$cryptSession->addOption(1, 'Transparent');
 				$cryptSession->addOption(2, 'Cookie');

@@ -45,7 +45,7 @@ we_cmd_modules.glossary = function (args, url, caller) {
 				new (WE().util.jsWindow)(caller, url, "glossary_check", WE().consts.size.dialog.medium, WE().consts.size.dialog.smaller, true, false, true);
 
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "glossary_edit_acronym":

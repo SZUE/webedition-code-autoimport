@@ -89,7 +89,7 @@ function we_cmd() {
 		/*falls through*/
 		case "tool_weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
-				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			} else if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.newone.value == 1) {
@@ -105,20 +105,20 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.weSearch.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "tool_weSearch_delete":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
-				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1 || !top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_WESEARCH")) {
-				top.we_showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (!top.content.editor.edbody.loaded) {

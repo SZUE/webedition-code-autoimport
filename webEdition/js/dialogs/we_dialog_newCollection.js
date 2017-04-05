@@ -35,7 +35,7 @@ _EditorFrame.setEditorIsHot = function () {};
 function we_submitForm(url) {
 	var f = document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	f.action = url;
@@ -66,7 +66,7 @@ function we_cmd() {
 				document.we_form.dosave.value = 1;
 				we_submitForm(top.dialog.scriptName);
 			} else {
-				top.we_showMessage('no name set', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+				WE().util.showMessage('no name set', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 			}
 			break;
 		case "do_onSuccess":

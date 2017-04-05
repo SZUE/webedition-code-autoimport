@@ -92,7 +92,7 @@ function hideDictSelector() {
 }
 
 function checkApplet() {
-	top.we_showMessage(WE().consts.g_l.spellcheck.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	WE().util.showMessage(WE().consts.g_l.spellcheck.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	hideDictSelector();
 	loadTable();
 	return;

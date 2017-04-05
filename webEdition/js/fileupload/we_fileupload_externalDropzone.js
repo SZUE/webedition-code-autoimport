@@ -63,13 +63,13 @@ function handleDrop(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, ta
 					// more cases to come
 			}
 		} else {
-			top.we_showMessage('no drag from tree here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+			WE().util.showMessage('no drag from tree here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 		}
 	} else if(e.dataTransfer.files){
 		if(dragFromExt){
 			doDragFromExternal(e.dataTransfer.files, cmdExt, cts);
 		} else {
-			top.we_showMessage('no drag from external here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+			WE().util.showMessage('no drag from external here', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
 		}
 	}
 }

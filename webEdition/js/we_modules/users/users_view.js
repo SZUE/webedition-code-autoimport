@@ -64,7 +64,7 @@ function we_cmd() {
 			break;
 		case "new_user":
 			if (!WE().util.hasPerm('NEW_USER')) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			top.content.editor.edbody.focus();
@@ -83,7 +83,7 @@ function we_cmd() {
 			break;
 		case "new_group":
 			if (!WE().util.hasPerm('NEW_GROUP')) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!saveBeforeNextCmd(args)) {
@@ -92,7 +92,7 @@ function we_cmd() {
 			break;
 		case "new_alias":
 			if (!WE().util.hasPerm('NEW_USER')) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!saveBeforeNextCmd(args)) {
@@ -101,7 +101,7 @@ function we_cmd() {
 			break;
 		case "save_user":
 			if (!WE().util.hasPerm('SAVE_USER')) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.editor.edbody.document.we_form) {
@@ -113,7 +113,7 @@ function we_cmd() {
 			break;
 		case "delete_user":
 			if (!WE().util.hasPerm('DELETE_USER')) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.users.view.delete_alert[usersData.Type], usersData.Text), ["delete_user_do"]);

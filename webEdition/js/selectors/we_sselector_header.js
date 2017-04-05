@@ -144,10 +144,10 @@ function editFile() {
 			var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", WE().consts.size.dialog.small, WE().consts.size.dialog.small, true, false, true, true);
 		} else {
-			top.we_showMessage(WE().consts.g_l.fileselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.fileselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.edit_file_is_folder, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.edit_file_is_folder, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 

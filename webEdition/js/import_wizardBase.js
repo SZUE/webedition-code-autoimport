@@ -473,7 +473,7 @@ function handleEvent_GXMLImport_step_2(evt) {
 			var iElements = parseInt(f.elements.we_select.options[f.elements.we_select.selectedIndex].value);
 
 			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
-				top.we_showMessage((WE().consts.g_l.import.num_elements + iElements), WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage((WE().consts.g_l.import.num_elements + iElements), WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
 				f.step.value = 3;
@@ -523,7 +523,7 @@ function doNext_WXMLImportStep1() {
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) == '..') {
-			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		//ext = fs.substr(fs.length - 4, 4);
@@ -533,7 +533,7 @@ function doNext_WXMLImportStep1() {
 		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
-		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 	f.step.value = 2;
@@ -550,7 +550,7 @@ function doNext_GXMLImportStep1() {
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) === '..') {
-			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		//ext = fs.substr(fs.length - 4, 4);
@@ -559,7 +559,7 @@ function doNext_GXMLImportStep1() {
 		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
-		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 	if (!f.elements['v[we_TemplateID]'].value) {
@@ -571,14 +571,14 @@ function doNext_GXMLImportStep1() {
 			f.step.value = 2;
 			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 		} else if (f.elements['v[import_type]'][0].checked) {
-			top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	} else {
 		if (f.elements['v[we_TemplateID]'].value !== "0") {
 			f.step.value = 2;
 			top.wizbody.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 		} else {
-			top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 }
@@ -591,7 +591,7 @@ function doNext_CSVImportStep1() {
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs != '/') {
 		if (fs.match(/\.\./) === '..') {
-			top.we_showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.invalid_path, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		//ext = fs.substr(fs.length - 4, 4);
@@ -600,14 +600,14 @@ function doNext_CSVImportStep1() {
 		//ext = fl.substr(fl.length - 4, 4);
 		f.elements['v[import_from]'].value = fl;
 	} else if (fs === '/' || fl === '') {
-		top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
 	if (fvalid) {
 		if (f.elements['v[csv_seperator]'].value === '') {
 			fvalid = false;
-			top.we_showMessage(WE().consts.g_l.import.select_seperator, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.import.select_seperator, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			f.step.value = 2;
 			top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
@@ -638,9 +638,9 @@ function handleEvent_CSVImportStep_2(evt) {
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {
 					if (f.elements['v[import_from]'].value == '/') {
-						top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+						WE().util.showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else if (f.elements['v[import_type]'][0].checked) {
-						top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
+						WE().util.showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 					}
 				}
 			} else {
@@ -649,9 +649,9 @@ function handleEvent_CSVImportStep_2(evt) {
 					we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 				} else {
 					if (f.elements['v[import_from]'].value == '/') {
-						top.we_showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
+						WE().util.showMessage(WE().consts.g_l.import.select_source_file, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
-						top.we_showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
+						WE().util.showMessage(WE().consts.g_l.import.select_docType, WE().consts.message.WE_MESSAGE_ERROR, window);
 					}
 				}
 			}

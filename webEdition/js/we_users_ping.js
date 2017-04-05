@@ -78,13 +78,13 @@ window.setInterval(function () {
 			}
 		} else {
 			var extra = (result && result.DataArray ? result.DataArray.data : "");
-			top.we_showMessage(WE().consts.g_l.main.unable_to_call_ping + extra, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
+			WE().util.showMessage(WE().consts.g_l.main.unable_to_call_ping + extra, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
 		}
 	}
 	).fail(function (jqxhr, textStatus, error) {
 		if (weRpcFailedCnt++ > 5) {
 			//in this case, rpc failed 5 times, this is severe, user should be in informed!
-			top.we_showMessage(WE().consts.g_l.main.unable_to_call_ping, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
+			WE().util.showMessage(WE().consts.g_l.main.unable_to_call_ping, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
 		}
 	});
 }, WE().consts.global.PING_TIME);

@@ -91,7 +91,7 @@ function moveTreeEntries(dontMoveClassFolders) {
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	var sel = "";
@@ -101,7 +101,7 @@ function we_submitForm(target, url) {
 		}
 	}
 	if (!sel) {
-		top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
@@ -122,7 +122,7 @@ function press_ok_move(type) {
 		}
 	}
 	if (!sel) {
-		top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
@@ -133,7 +133,7 @@ function press_ok_move(type) {
 		return;
 	}
 	if (!acStatus.valid) {
-		top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 

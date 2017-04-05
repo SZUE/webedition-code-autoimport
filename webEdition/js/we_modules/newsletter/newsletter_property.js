@@ -287,7 +287,7 @@ function we_cmd() {
 				return;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
@@ -297,15 +297,15 @@ function we_cmd() {
 			break;
 		case "popSend":
 			if (document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (document.we_form.IsFolder.value === 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			args[0] = "popSend_do";
@@ -331,15 +331,15 @@ function we_cmd() {
 			break;
 		case "send_test":
 			if (document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (top.content.hot) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */), ["send_test_do"]);
@@ -423,7 +423,7 @@ function we_cmd() {
 		case "edit_email":
 			var p = document.we_form["we_recipient" + args[1]];
 			if (p.selectedIndex < 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -539,7 +539,7 @@ function submitForm(target, action, method) {
 
 function checkData() {
 	if (document.we_form.Text.value === "") {
-		top.we_showMessage(WE().consts.g_l.newsletter.empty_name, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.newsletter.empty_name, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	return true;
@@ -552,7 +552,7 @@ function add(group, newRecipient, htmlmail, salutation, title, firstname, lastna
 	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255) {
-				top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -562,10 +562,10 @@ function add(group, newRecipient, htmlmail, salutation, title, firstname, lastna
 				addElement(document.forms[0].elements["we_recipient" + group], "#", newRecipient, true, optionClassName);
 				addEmail(group, newRecipient, htmlmail, salutation, title, firstname, lastname);
 			} else {
-				top.we_showMessage(WE().consts.g_l.newsletter.email_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.email_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		} else {
-			top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 		//set_state_edit_delete_recipient("we_recipient"+group);
 	}
@@ -580,7 +580,7 @@ function deleteit(group) {
 			p.options[p.selectedIndex] = null;
 		}
 	} else {
-		top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 	//set_state_edit_delete_recipient("we_recipient"+group);
 }
@@ -602,7 +602,7 @@ function editIt(group, index, editRecipient, htmlmail, salutation, title, firstn
 	if (index >= 0 && editRecipient !== null) {
 		if (editRecipient !== "") {
 			if (editRecipient.length > 255) {
-				top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 			optionClassName = (isValidEmail(editRecipient) ? "markValid" : "markNotValid");
@@ -610,7 +610,7 @@ function editIt(group, index, editRecipient, htmlmail, salutation, title, firstn
 			p.options[index].className = optionClassName;
 			editEmail(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname);
 		} else {
-			top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 }
@@ -632,7 +632,7 @@ function searchEmail(searchname) {
 				}
 			}
 		}
-		top.we_showMessage(WE().util.sprintf(WE().consts.g_l.newsletter.search_finished, hit), WE().consts.message.WE_MESSAGE_NOTICE, window);
+		WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.newsletter.search_finished, hit), WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
 }
 

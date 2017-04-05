@@ -111,7 +111,7 @@ function we_cmd() {
 				weInput.setValue("cmd", "save_navigation_rule");
 				document.we_form.submit();
 			} else {
-				top.we_showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 			break;

@@ -30,7 +30,7 @@ var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransacti
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	f.target = target;
@@ -178,7 +178,7 @@ function we_save_document(nextCmd) {
 		var acStatus = window.parent.frames[1].$ ? WE().layout.weSuggest.checkRequired(window.parent.frames[1]) : {'running': false, 'valid': true};
 
 		if (countSaveLoop > 10 || !acStatus.valid) {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else if (acStatus.running) {
 			countSaveLoop++;

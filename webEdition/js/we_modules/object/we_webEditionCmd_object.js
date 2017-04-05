@@ -143,7 +143,7 @@ we_cmd_modules.object = function (args, url, caller) {
 			break;
 		case 'fieldMultiobject_selectMultiobject_callback':
 			if(parseInt(args[1].currentID) === this.doc.docId){
-				top.we_showMessage(WE().consts.g_l.object.multiobject_recursion, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.object.multiobject_recursion, WE().consts.message.WE_MESSAGE_ERROR, window);
 				this.document.we_form.elements[args[1].JSIDName].value = '';
 				this.document.we_form.elements[args[1].JSTextName].value = '';
 			}

@@ -81,7 +81,7 @@ var WegalleryDialog = {// TODO: clean code by using more vars
 			this.inst.execCommand('mceInsertContent', false, content);
 			top.close();
 		} else {
-			top.we_showMessage(WE().consts.g_l.tinyMceTranslationObject[this.inst.getParam('language')].we.plugin_wegallery_values_nok, WE().consts.message.WE_MESSAGE_ERROR);
+			WE().util.showMessage(WE().consts.g_l.tinyMceTranslationObject[this.inst.getParam('language')].we.plugin_wegallery_values_nok, WE().consts.message.WE_MESSAGE_ERROR);
 		}
 
 		//tinyMCEPopup.close();

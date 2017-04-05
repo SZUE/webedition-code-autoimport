@@ -295,7 +295,7 @@ function we_cmd() {
 			if (WE().consts.graphic.gdSupportedTypes[doc.gdType]) {
 				ImageEditTools.Resize.start(url, doc.gdType);
 			} else {
-				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_convertJPEG":
@@ -306,10 +306,10 @@ function we_cmd() {
 				if (doc.gdSupport) {
 					ImageEditTools.Rotate.start(url, doc.gdType);
 				} else {
-					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.editorScript.noRotate, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.editorScript.noRotate, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_focus":
@@ -320,7 +320,7 @@ function we_cmd() {
 				if (doc.gdSupport) {
 					ImageEditTools.Crop.crop();
 				} else {
-					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			}
 			break;
@@ -421,32 +421,32 @@ function fields_are_valid() {
 					case "int":
 					case "integer":
 						if (!theVal.match(/^-{0,1}\d+$/)) {
-							top.we_showMessage(WE().consts.g_l.editorScript.field_contains_incorrect_chars.replace(/%s/, theType), WE().consts.message.WE_MESSAGE_ERROR, window);
+							WE().util.showMessage(WE().consts.g_l.editorScript.field_contains_incorrect_chars.replace(/%s/, theType), WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						} else if (theVal > 2147483647) {
-							top.we_showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
+							WE().util.showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "float":
 						if (isNaN(theVal)) {
-							top.we_showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
+							WE().util.showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_input_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 1023) {
-							top.we_showMessage(WE().consts.g_l.editorScript.field_input_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
+							WE().util.showMessage(WE().consts.g_l.editorScript.field_input_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_int_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 20) {
-							top.we_showMessage(WE().consts.g_l.editorScript.field_int_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
+							WE().util.showMessage(WE().consts.g_l.editorScript.field_int_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
@@ -461,17 +461,17 @@ function fields_are_valid() {
 
 function we_checkObjFieldname(i) {
 	if (i.value.search(/^([a-zA-Z0-9_+-])*$/) || i.value === "0") {
-		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.editorScript.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value === 'Title' || i.value === 'Description') {
-		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameNotTitleDesc, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.editorScript.fieldNameNotTitleDesc, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value.length === 0) {
-		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameEmpty, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.editorScript.fieldNameEmpty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		//		i.focus(); # 1052
 		//		i.select();
 		i.value = i.getAttribute("oldValue");

@@ -67,7 +67,7 @@ jsWindow.prototype = {
 		} catch (e) {
 			if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
 				if (!this.wind) {
-					top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
+					WE().util.showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
 					//  disabled See Bug#1335
 				}
 			}

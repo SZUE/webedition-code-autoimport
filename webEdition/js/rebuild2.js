@@ -31,7 +31,7 @@ function handle_event(what) {
 			break;
 		case "next":
 			if (document._errorMessage !== undefined && document._errorMessage !== "") {
-				top.we_showMessage(WE().consts.g_l.rebuild.noFieldsChecked, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.rebuild.noFieldsChecked, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			} else {
 				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");

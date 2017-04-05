@@ -381,7 +381,7 @@ function weFileupload_sender_base(uploader) {
 	self.processError = function (arg) {
 		switch (arg.from) {
 			case 'gui' :
-				top.we_showMessage(arg.msg, 4, self.uploader.win);
+				WE().util.showMessage(arg.msg, 4, self.uploader.win);
 				return;
 			case 'request' :
 				self.view.repaintGUI({what: 'fileNOK'});
@@ -472,7 +472,7 @@ function weFileupload_sender_bindoc(uploader) {
 	self.processError = function (arg) {
 		switch (arg.from) {
 			case 'gui' :
-				top.we_showMessage(arg.msg, 4, self.uploader.win);
+				WE().util.showMessage(arg.msg, 4, self.uploader.win);
 				return;
 			case 'request' :
 				self.view.repaintGUI({what: 'fileNOK'});
@@ -580,7 +580,7 @@ function weFileupload_sender_import(uploader) {
 		self.isUploading = false;
 		self.view.repaintGUI({what: 'cancelUpload'});
 		self.postProcess('', true);
-		//top.we_showMessage(utils.gl.uploadCancelled, 1, win);
+		//WE().util.showMessage(utils.gl.uploadCancelled, 1, win);
 	};
 
 	self.appendMoreData = function (fd) {
@@ -615,7 +615,7 @@ function weFileupload_sender_import(uploader) {
 		if (!self.isCancelled) {
 			self.view.elems.footer.setProgress('', 100);
 			self.view.elems.footer.setProgressText('progress_title', '');
-			top.we_showMessage(resp.completed.message, WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
+			WE().util.showMessage(resp.completed.message, WE().consts.message.WE_MESSAGE_INFO, self.uploader.win);
 
 			if(self.nextCmd){
 				window.setTimeout(function () {
@@ -637,7 +637,7 @@ function weFileupload_sender_import(uploader) {
 	self.processError = function (arg) {
 		switch (arg.from) {
 			case 'gui' :
-				top.we_showMessage(arg.msg, top.WE().consts.message.WE_MESSAGE_ERROR, self.uploader.win);
+				WE().util.showMessage(arg.msg, top.WE().consts.message.WE_MESSAGE_ERROR, self.uploader.win);
 				return;
 			case 'request' :
 				//view.repaintGUI({what : 'fileNOK'});

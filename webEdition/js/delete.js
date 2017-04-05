@@ -30,7 +30,7 @@ var deleteData = WE().util.getDynamicVar(document, 'loadVarDelete', 'data-delete
 function we_submitForm(target, url) {
 	var f = window.document.we_form;
 	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
@@ -41,7 +41,7 @@ function we_submitForm(target, url) {
 		}
 	}
 	if (!sel) {
-		top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 

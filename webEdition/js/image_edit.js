@@ -129,7 +129,7 @@ function doOKResizeDialog() {
 	var qual = 8;
 
 	if (f.width.value === "0" || f.height.value === "0" || f.width.value == "0%" || f.height.value == "0%") {
-		top.we_showMessage(WE().consts.g_l.alert.image_edit_null_not_allowed, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.alert.image_edit_null_not_allowed, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 	var newWidth = (f.widthSelect.options[f.widthSelect.selectedIndex].value === "pixel") ? f.width.value : Math.round((imgEdit.width / 100) * f.width.value);

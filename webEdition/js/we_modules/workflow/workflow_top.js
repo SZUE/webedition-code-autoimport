@@ -76,11 +76,11 @@ function we_cmd() {
 			break;
 		case "delete_workflow":
 			if (!WE().util.hasPerm("DELETE_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				WE().util.showConfirm(window, "", WE().consts.g_l.workflow.view.delete_question, [
 					"delete_workflow_do"]);
@@ -93,11 +93,11 @@ function we_cmd() {
 			break;
 		case "save_workflow":
 			if (!WE().util.hasPerm("EDIT_WORKFLOW") && !WE().util.hasPerm("NEW_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			if (!top.content.editor.edbody.loaded) {
-				top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);

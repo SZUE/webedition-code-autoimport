@@ -333,9 +333,9 @@ function addLocale() {
 	}
 
 	if (found === true) {
-		top.we_showMessage(WE().consts.g_l.prefs.language_already_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.prefs.language_already_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (CountryValue === "") {
-		top.we_showMessage(WE().consts.g_l.prefs.language_country_missing, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.prefs.language_country_missing, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = new Option(LocaleText, LocaleValue, false, false);
 		if (document.getElementById('locale_temp_locales').options.length === 1) {
@@ -355,7 +355,7 @@ function deleteLocale() {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue = document.getElementById('locale_temp_locales').options[LocaleIndex].value;
 		if (LocaleValue == document.getElementById('locale_default').value) {
-			top.we_showMessage(WE().consts.g_l.prefs.cannot_delete_default_language, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.prefs.cannot_delete_default_language, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
 		}
@@ -385,7 +385,7 @@ function add_recipient() {
 	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255) {
-				top.we_showMessage(WE().consts.g_l.max_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.max_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -395,10 +395,10 @@ function add_recipient() {
 				set_state_edit_delete_recipient();
 				send_recipients();
 			} else {
-				top.we_showMessage(WE().consts.g_l.prefs.recipient_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.prefs.recipient_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		} else {
-			top.we_showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 }
@@ -419,7 +419,7 @@ function edit_recipient() {
 			}
 
 			if (editRecipient.length > 255) {
-				top.we_showMessage(WE().consts.g_l.prefsmax_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.prefsmax_name_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -428,10 +428,10 @@ function edit_recipient() {
 				hot = true;
 				send_recipients();
 			} else {
-				top.we_showMessage(WE().consts.g_l.prefs.recipient_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.prefs.recipient_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		} else {
-			top.we_showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 }
