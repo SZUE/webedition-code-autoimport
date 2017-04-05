@@ -30,7 +30,7 @@ class we_banner_frames extends we_modules_frame{
 		$this->treeDefaultWidth = 224;
 
 		$this->View = new we_banner_view();
-		$this->Tree = new we_banner_tree($this->jsCmd, $this->topFrame, $this->treeFrame, $this->cmdFrame);
+		$this->Tree = new we_banner_tree($this->jsCmd);
 	}
 
 	function getHTML($what = '', $mode = '', $step = 0){

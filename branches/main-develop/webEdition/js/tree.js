@@ -176,13 +176,13 @@ container.prototype = {
 	},
 	drawThreeDots: function (nf, ai) {
 		return '<span class="treeKreuz kreuzungend"></span>' +
-			'<span name="_' + nf[ai].id + "\" onclick=\"top.getTreeDataWindow().treeData.setSegment('" + nf[ai].id + '\');" class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span><br/>';
+			'<span name="_' + nf[ai].id + "\" onclick=\"treeData.setSegment('" + nf[ai].id + '\');" class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span><br/>';
 	},
 	drawItem: function (nf, ai) {
 		return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + this.clickHandler(nf[ai]);
 	},
 	drawGroup: function (nf, ai, zweigEintrag) {
-		return  "<span onclick=\"top.getTreeDataWindow().setScrollY();top.getTreeDataWindow().treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
+		return  "<span onclick=\"setScrollY();treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
 			this.clickHandler(nf[ai]) +
 			(nf[ai].open ?
 				this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
@@ -272,9 +272,9 @@ container.prototype = {
 				break;
 			default:
 				href = true;
-				row += "draggable=\"true\" ondragstart=\"top.getTreeDataWindow().treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"return top.getTreeDataWindow().checkDblClick('" + cur.id + "');\" onclick=\"top.getTreeDataWindow().tout=setTimeout(top.getTreeDataWindow().dblClickTmout,300,'" + cur.id + "');return true;\"" + (WE().session.isAppleTouch ? "" : " onmouseover=\"top.getTreeDataWindow().info('ID:" + cur.id + "')\" onmouseout=\"top.getTreeDataWindow().info(' ');\"");
+				row += "draggable=\"true\" ondragstart=\"this.ownerDocument.defaultView.treeStartDrag(event,'" + (cur.contenttype === WE().consts.contentTypes.FOLDER ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"return this.ownerDocument.defaultView.checkDblClick('" + cur.id + "');\" onclick=\"this.ownerDocument.defaultView.tout=setTimeout(this.ownerDocument.defaultView.dblClickTmout,300,'" + cur.id + "');return true;\"" + (WE().session.isAppleTouch ? "" : " onmouseover=\"this.ownerDocument.defaultView.info('ID:" + cur.id + "')\" onmouseout=\"this.ownerDocument.defaultView.info(' ');\"");
 		}
-		row += (select && href ? "onclick=\"top.getTreeDataWindow().treeData.checkNode('img_" + cur.id + "')\"" : '') +
+		row += (select && href ? "onclick=\"treeData.checkNode('img_" + cur.id + "')\"" : '') +
 			//close open span tag
 			">" +
 			WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
@@ -354,8 +354,8 @@ container.prototype = {
 				this[i].checked = 0;
 				this[i].applylayout();
 				try {
-					if (top.getTreeDataWindow().document.getElementsByName(imgName)) {
-						tmp = top.getTreeDataWindow().document.getElementsByName(imgName)[0];
+					if (window.document.getElementsByName(imgName)) {
+						tmp = window.document.getElementsByName(imgName)[0];
 						tmp.classList.remove('fa-check-square-o');
 						tmp.classList.add('fa-square-o');
 					}
@@ -367,8 +367,8 @@ container.prototype = {
 			this[i].checked = 1;
 			this[i].applylayout();
 			try {
-				if (top.getTreeDataWindow().document.getElementsByName(imgName)) {
-					tmp = top.getTreeDataWindow().document.getElementsByName(imgName)[0];
+				if (window.document.getElementsByName(imgName)) {
+					tmp = window.document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-square-o');
 					tmp.classList.add('fa-check-square-o');
 				}
@@ -435,8 +435,8 @@ Node.prototype = {
 		window.we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
 	applylayout: function (layout) {
-		if (top.getTreeDataWindow().document.getElementById("lab_" + this.id)) {
-			top.getTreeDataWindow().document.getElementById("lab_" + this.id).className = (layout ? layout : this.getLayout());
+		if (window.document.getElementById("lab_" + this.id)) {
+			window.document.getElementById("lab_" + this.id).className = (layout ? layout : this.getLayout());
 		}
 	},
 	clear: function () {
@@ -503,10 +503,10 @@ function checkDblClick(id) {
 }
 
 function dblClickTmout(id) {
-	if (!top.getTreeDataWindow().wasdblclick) {
-		top.getTreeDataWindow().doClick(id);
+	if (!window.wasdblclick) {
+		window.doClick(id);
 	} else {
-		top.getTreeDataWindow().wasdblclick = false;
+		window.wasdblclick = false;
 	}
 }
 

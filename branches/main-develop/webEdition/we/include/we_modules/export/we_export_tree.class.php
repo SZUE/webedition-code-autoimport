@@ -30,58 +30,36 @@ class we_export_tree extends we_tree_base{
 	}
 
 	protected function customJSFile(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js', 'initTree();') . we_html_element::jsElement('
-function startTree(){
-	treeData.frames={
-		top:' . $this->topFrame . ',
-		cmd:' . $this->cmdFrame . ',
-		tree:' . $this->treeFrame . '
-	};
-	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.tree.treeData.table];
-}');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js', 'initTree();');
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
-		$js = 'var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.edbody:top);
-win.treeData.table=win.table;';
+		$js = 'var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.edbody:top);';
 
 		foreach($treeItems as $item){
-
-			$js .= ($clear ? '' : 'if(win.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
+			$js .= ($clear ? '' : 'if(win.treeData.indexOfEntry("' . $item['id'] . '")<0){
+' ) .
 				'win.treeData.add(new win.Node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems .= strtolower($k) . ':' .
 					(strtolower($k) === "checked" ?
-					'win.SelectedItems.' . $item['table'] . '.indexof("' . $item["id"] . '")>=0?
-	\'1\':
-	\'' . $v . '\'),
-' :
+					'(win.treeData.SelectedItems.' . $item['table'] . '.indexOf("' . $item["id"] . '")>=0?	\'1\':	\'' . $v . '\'),' :
 					'\'' . $v . '\',');
 			}
-			$js .= rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
+			$js .= rtrim($elems, ',') . '
+}));' . ($clear ? '' : '
+}');
 		}
-		$js .= 'win.treeData.setState(win.treeData.tree_states.select);
+		$js .= '
+win.treeData.setState(win.treeData.tree_states.select);
 win.drawTree();';
 
 		return $js;
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
-		$js = $this->getJSTreeCode() . we_html_element::jsElement('
-var SelectedItems={
-	WE().consts.tables.FILE_TABLE:[],
-	WE().consts.tables.TEMPLATES_TABLE:[],
-	WE().consts.tables.OBJECT_FILES_TABLE:[],
-	WE().consts.tables.OBJECT_TABLE:[],
-};
-
-var openFolders= {
-	WE().consts.tables.FILE_TABLE:"",
-	WE().consts.tables.TEMPLATES_TABLE:"",
-	WE().consts.tables.OBJECT_FILES_TABLE:"",
-	WE().consts.tables.OBJECT_TABLE:"",
-};') . we_html_element::cssLink(CSS_DIR . 'tree.css');
+		$js = $this->getJSTreeCode() . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
 			$captions = [];
@@ -253,7 +231,7 @@ var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.ed
 		$treeFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.body', 5);
 		$cmdFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.cmd', 6);
 		$jsCmd = new we_base_jsCmd();
-		$tree = new we_export_tree($jsCmd, $topFrame, $treeFrame, $cmdFrame);
+		$tree = new we_export_tree($jsCmd);
 
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 

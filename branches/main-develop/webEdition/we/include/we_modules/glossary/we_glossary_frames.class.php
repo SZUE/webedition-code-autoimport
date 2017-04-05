@@ -29,7 +29,7 @@ class we_glossary_frames extends we_modules_frame{
 		$this->module = "glossary";
 		$this->treeDefaultWidth = 280;
 
-		$this->Tree = new we_glossary_tree($this->jsCmd, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_glossary_tree($this->jsCmd);
 		$this->View = new we_glossary_view();
 	}
 

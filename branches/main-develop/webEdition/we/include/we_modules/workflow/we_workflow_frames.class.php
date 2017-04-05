@@ -29,7 +29,7 @@ class we_workflow_frames extends we_modules_frame{
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = "workflow";
-		$this->Tree = new we_workflow_tree($this->jsCmd, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_workflow_tree($this->jsCmd);
 		$this->View = new we_workflow_view();
 	}
 

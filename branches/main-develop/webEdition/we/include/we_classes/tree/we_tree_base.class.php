@@ -34,11 +34,9 @@ abstract class we_tree_base{
 	const MaxWidthModules = 800;
 
 	protected $db;
-	var $topFrame;
-	var $treeFrame;
-	var $cmdFrame;
 	var $styles = [];
-	var $tree_states = ['edit' => 0,
+	var $tree_states = [
+		'edit' => 0,
 		'select' => 1,
 		'selectitem' => 2,
 		'selectgroup' => 3,
@@ -51,20 +49,10 @@ abstract class we_tree_base{
 
 //Initialization
 
-	public function __construct(we_base_jsCmd $jsCmd, $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+	public function __construct(we_base_jsCmd $jsCmd){
 		$this->db = new DB_WE();
 		$this->jsCmd = $jsCmd;
-		if($topFrame && $treeFrame && $cmdFrame){
-			$this->init($topFrame, $treeFrame, $cmdFrame);
-		}
-
 		$this->default_segment = intval(we_base_preferences::getUserPref('default_tree_count'));
-	}
-
-	function init($topFrame, $treeFrame, $cmdFrame){
-		$this->topFrame = $topFrame;
-		$this->treeFrame = $treeFrame;
-		$this->cmdFrame = $cmdFrame;
 	}
 
 	/*

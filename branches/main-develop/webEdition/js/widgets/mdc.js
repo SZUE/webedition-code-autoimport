@@ -1,4 +1,4 @@
-/* global WE, top, prefs */
+/* global WE, top, prefs, treeData */
 
 /**
  * webEdition CMS
@@ -26,7 +26,7 @@
 'use strict';
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
-var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sInitTitle_;
+var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, _sInitTitle_;
 
 function toggle(id) {
 	var elem = document.getElementById(id);
@@ -68,10 +68,10 @@ function getCsv(bTbl) {
 
 function getTreeSelected() {
 	var sCsvIds = '';
-	var iTemsLen = SelectedItems[table].length;
+	var iTemsLen = treeData.SelectedItems[table].length;
 	for (var i = 0; i < iTemsLen; i++) {
-		sCsvIds += SelectedItems[table][i];
-		if (i < iTemsLen - 1 && SelectedItems[table][i] !== undefined && SelectedItems[table][i] !== ''){
+		sCsvIds += treeData.SelectedItems[table][i];
+		if (i < iTemsLen - 1 && treeData.SelectedItems[table][i] !== undefined && treeData.SelectedItems[table][i] !== ''){
 			sCsvIds += ',';
 		}
 	}
@@ -208,6 +208,6 @@ function init(tab, title, sBinary, _sCsv) {
 	var aCsv = _sCsv.split(',');
 	var aCsvLen = aCsv.length;
 	for (var i = 0; i < aCsvLen; i++) {
-		SelectedItems[tab][i] = aCsv[i];
+		treeData.SelectedItems[tab][i] = aCsv[i];
 	}
 }

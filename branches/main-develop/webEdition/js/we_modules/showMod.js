@@ -106,6 +106,9 @@ function we_cmd() {
 			top.content.hot = false;
 			setTab(args[1]);
 			break;
+		case "setIconOfDocClass":
+			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			break;
 		default:
 			WE().t_e("non explicit module command to main frame", args);
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
@@ -122,10 +125,6 @@ function setTab(module) {
 	}
 	current = module;
 	top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-}
-
-function getTreeDataWindow() {//FIXME: we use this function temporary until frames in modules are obsolete
-	return top.content;
 }
 
 function getFrameset() {//FIXME: we use this function temporary until frames in modules are obsolete

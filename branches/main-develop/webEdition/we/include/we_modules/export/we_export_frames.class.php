@@ -35,8 +35,8 @@ class we_export_frames extends we_modules_frame{
 		$this->treeDefaultWidth = 220;
 		$this->module = "export";
 
-		$this->Tree = new we_export_treeMain($this->jsCmd, "top.content", "top.content", "top.content.cmd");
-		$this->SelectionTree = new we_export_tree($this->jsCmd, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_export_treeMain($this->jsCmd);
+		$this->SelectionTree = new we_export_tree($this->jsCmd);
 		$this->View = new we_export_view();
 	}
 
@@ -149,8 +149,6 @@ class we_export_frames extends we_modules_frame{
 	}
 
 	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
-		$this->SelectionTree->init($this->frameset, 'top.content.editor.edbody', 'top.content.editor.edbody', $this->cmdFrame);
-
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') .
@@ -324,7 +322,7 @@ class we_export_frames extends we_modules_frame{
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . '&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd']);
+			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "")]);
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 		return '';
@@ -528,7 +526,7 @@ class we_export_frames extends we_modules_frame{
 		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js'), we_html_element::htmlBody(
 					['style' => 'margin:5px;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
-						($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
+						"top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';" :
 						'') . 'showEndStatus();'
 					]
 				), null

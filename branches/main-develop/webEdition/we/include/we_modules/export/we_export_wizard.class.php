@@ -162,7 +162,7 @@ class we_export_wizard{
 			$args .= "&we_cmd[1]=" . $cmd1;
 		}
 		$jsCmd = new we_base_jsCmd();
-		$this->Tree = new we_export_tree($jsCmd, 'top.content', 'top.content.editor.edbody', 'top.load');
+		$this->Tree = new we_export_tree($jsCmd);
 
 		$js = we_html_element::jsScript(JS_DIR . 'export_wizard.js') . $this->Tree->getJSTreeCode() . $jsCmd->getCmds();
 		/* TODO: maybe send this vars as dynvars so we have the defaults here
