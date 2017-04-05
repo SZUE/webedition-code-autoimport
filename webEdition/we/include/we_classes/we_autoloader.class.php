@@ -70,7 +70,7 @@ abstract class we_autoloader{
 		'rpcCmd' => 'we_classes/rpc/cmd',
 		'rpcView' => 'we_classes/rpc/view',
 		'sdk' => 'we_classes/sdk',
-		'search' => 'we_tools/weSearch/class',
+		'search' => 'we_modules/weSearch',
 		'selector' => 'we_classes/selector',
 		'sidebar' => 'we_classes/sidebar',
 		'users' => 'we_modules/users',

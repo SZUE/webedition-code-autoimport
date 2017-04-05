@@ -53,7 +53,7 @@ class we_search_view extends we_modules_view{
 	}
 
 	function getJSTop(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'weSearch/search_view2.js');
 	}
 
 	public function processCommands(we_base_jsCmd $jscmd){
@@ -321,7 +321,7 @@ class we_search_view extends we_modules_view{
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showSelects = '';
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'weSearch/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
 						'conf' => [
 							'whichsearch' => $whichSearch,
 							'editorBody' => 'top.content.editor.edbody',
@@ -1443,7 +1443,7 @@ class we_search_view extends we_modules_view{
 
 	function getJSProperty(array $jsVars = []){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'weSearch/search_view2.js');
 	}
 
 	function processVariables(){

@@ -34,7 +34,7 @@ class we_doclist_view extends we_search_view{
 	 * @return javascript code
 	 */
 	public function getSearchJS($whichSearch = ''){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'weSearch/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
 					'conf' => [
 						'whichsearch' => we_search_view::SEARCH_DOCLIST,
 						'we_transaction' => $this->Model->transaction,

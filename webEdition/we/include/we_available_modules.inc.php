@@ -21,7 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return ['users' => ['name' => 'users',
+return [
+	'users' => ['name' => 'users',
 		'perm' => 'NEW_USER || NEW_GROUP || SAVE_USER || SAVE_GROUP || DELETE_USER || DELETE_GROUP || ADMINISTRATOR',
 		'text' => g_l('javaMenu_moduleInformation', '[users][text]'),
 		'text_short' => g_l('javaMenu_moduleInformation', '[users][text_short]'),
@@ -193,4 +194,16 @@ return ['users' => ['name' => 'users',
 		'childmodule' => '',
 		'tables' => ['GLOSSARY_TABLE']
 	],
+	'weSearch' => ['name' => 'search',
+		'text' => g_l('searchtool', '[weSearch]'),
+		'text_short' => g_l('searchtool', '[weSearch]'),
+		'perm' => '',
+		'icon' => 'fa-commenting',
+		'inModuleMenu' => false,
+		'alwaysActive' => true,
+		'hasSettings' => false,
+		'dependson' => '',
+		'childmodule' => '',
+		'tables' => ['SEARCH_TABLE']
+	]
 ];
