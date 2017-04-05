@@ -535,7 +535,6 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 					$treeStyle = '';
 					break;
 			}
-			t_e($_SESSION['weS']['we_mode'], $treewidth);
 			?>
 			<div style="left:<?php echo $treewidth; ?>px;right:<?php echo $sidebarwidth; ?>px;" id="bm_content_frameDiv">
 				<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
