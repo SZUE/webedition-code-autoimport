@@ -1307,10 +1307,6 @@ function updateCheck(avail, version, date) {
 	}
 }
 
-function getTreeDataWindow() {//FIXME: we use this function temporary until frames in modules are obsolete
-	return top;
-}
-
 function getFrameset() {//FIXME: we use this function temporary until frames in modules are obsolete
 	return WE().consts.dirs.WEBEDITION_DIR + "webedition.php";
 }

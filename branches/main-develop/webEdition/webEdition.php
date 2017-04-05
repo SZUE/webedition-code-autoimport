@@ -42,7 +42,7 @@ we_base_file::cleanTempFiles();
  * @desc prints the functions needed for the tree.
  */
 function getWebEdition_Tree(we_base_jsCmd $jsCmd){
-	$Tree = new we_tree_main($jsCmd, "top", "top", "top.load");
+	$Tree = new we_tree_main($jsCmd);
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
