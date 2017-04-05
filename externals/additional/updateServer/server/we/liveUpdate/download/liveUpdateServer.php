@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: liveUpdateServer.php 13545 2017-03-12 21:36:16Z mokraemer $
  */
 if(file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/liveUpdate/includes/proxysettings.inc.php")){
 	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/liveUpdate/includes/proxysettings.inc.php");

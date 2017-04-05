@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: English.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 
 $lang["Wizard"]["Settings"]["title"] = "Settings";

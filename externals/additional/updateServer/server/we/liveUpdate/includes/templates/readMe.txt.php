@@ -1,5 +1,5 @@
 <?php /**
- * $Id$
+ * $Id: readMe.txt.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 exit;?>
 These templates are included from the updateserver. They are either included

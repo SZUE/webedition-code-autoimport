@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: English.inc.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
 
 $lang["Template"]["headline"] = "webEdition Online Installer";

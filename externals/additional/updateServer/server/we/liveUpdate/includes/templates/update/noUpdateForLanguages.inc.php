@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: noUpdateForLanguages.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 /**
  * This file is the template for the update screen, if there are updates

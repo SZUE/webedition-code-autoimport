@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: latest.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 /*
  * simple script that checks for the latest webEdition version available

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: InstallationDirectory.class.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 
 class InstallationDirectory extends leStep{

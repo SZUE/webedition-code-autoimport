@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: noLanguageSelected.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // build response array
 $liveUpdateResponse = [

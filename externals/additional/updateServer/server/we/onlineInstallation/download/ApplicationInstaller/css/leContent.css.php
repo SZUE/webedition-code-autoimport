@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: leContent.css.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 
 	header("Content-type: text/css");

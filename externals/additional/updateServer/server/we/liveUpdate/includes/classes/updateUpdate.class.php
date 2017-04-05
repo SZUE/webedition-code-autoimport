@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: updateUpdate.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 
 abstract class updateUpdate extends updateBase{

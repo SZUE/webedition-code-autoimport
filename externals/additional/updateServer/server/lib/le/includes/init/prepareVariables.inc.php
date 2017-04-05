@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: prepareVariables.inc.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 /**
  * Prepare global needed Variables for the LiveUpdate

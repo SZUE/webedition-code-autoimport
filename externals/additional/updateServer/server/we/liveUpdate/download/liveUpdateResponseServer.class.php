@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id$
+ * $Id: liveUpdateResponseServer.class.php 13667 2017-03-29 19:23:00Z mokraemer $
  */
 class liveUpdateResponseServer extends liveUpdateResponse{
 	/* Make sure all code is as compatible as possible

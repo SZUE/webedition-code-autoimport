@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: liveUpdateFunctionsServer.class.php 13610 2017-03-18 21:38:55Z mokraemer $
  */
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions{

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: confirmInstallation.inc.php 13552 2017-03-13 01:44:53Z mokraemer $
  */
 /**
  * This template is shown, before installation starts

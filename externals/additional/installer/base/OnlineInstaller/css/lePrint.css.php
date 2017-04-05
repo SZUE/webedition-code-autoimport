@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: lePrint.css.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
 include("../includes/constants.inc.php");
 header("Content-type: text/css");

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: liveUpdateFunctions.class.php 13539 2017-03-12 11:39:19Z mokraemer $
  * webEdition CMS
  *
  * This source is part of webEdition CMS. webEdition CMS is

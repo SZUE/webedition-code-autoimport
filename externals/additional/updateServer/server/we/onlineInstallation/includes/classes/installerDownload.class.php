@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: installerDownload.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 
 class installerDownload extends installerInstaller{

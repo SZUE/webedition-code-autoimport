@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: VersionCheck.class.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
 
 class VersionCheck extends leStep{

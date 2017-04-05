@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: installerBase.class.php 13542 2017-03-12 16:49:48Z mokraemer $
  */
 
 class installerBase{

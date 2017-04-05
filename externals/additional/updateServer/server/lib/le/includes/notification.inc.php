@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: notification.inc.php 13564 2017-03-13 17:13:40Z mokraemer $
  */
 // execute command
 switch($_REQUEST['detail']){

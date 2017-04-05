@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: establishDbConnection.inc.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
 /**
  * Establish connection to databases containing versioning and register

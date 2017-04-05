@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: library.inc.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
 // Load library files from online installer
 if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/library") && is_dir(LE_ONLINE_INSTALLER_PATH . "/includes/library")){

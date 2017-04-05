@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: progressBarUpdate.class.php 13562 2017-03-13 13:41:50Z mokraemer $
  */
 
 class progressBarUpdate extends progressBarBase{

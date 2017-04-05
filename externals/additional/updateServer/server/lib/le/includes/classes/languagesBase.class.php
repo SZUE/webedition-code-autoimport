@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: languagesBase.class.php 13556 2017-03-13 11:31:33Z mokraemer $
  */
 
 class languagesBase{

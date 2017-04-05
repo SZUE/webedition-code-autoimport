@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: includes.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // include config files
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/conf/conf.inc.php');

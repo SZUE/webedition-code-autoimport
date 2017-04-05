@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: updateAvailableAfterRepeat.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 /**
  * This template is shown, when there is an update available. But the SVN-REvision ist not high enough It is possible

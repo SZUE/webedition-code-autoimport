@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: finishInstallationPopUp.inc.php 13552 2017-03-13 01:44:53Z mokraemer $
  */
 $liveUpdateResponse = [
 	'Type' => 'template',

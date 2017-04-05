@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: installer.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // 1st check if software is installed correct
 // execute command
