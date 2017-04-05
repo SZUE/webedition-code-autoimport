@@ -28,9 +28,9 @@ $errorMessage = (isset($Response) ? str_replace("</body></html>", "", stristr($R
 	<li>' . g_l('liveUpdate', '[connect][availableConnectionTypes]') . ':
 	<ul>' .
 	(ini_get("allow_url_fopen") == "1" ?
-		"<li>fopen</li>" : '') .
+	"<li>fopen</li>" : '') .
 	(is_callable("curl_exec") ?
-		"<li>curl</li>" : '') .
+	"<li>curl</li>" : '') .
 	"</ul>
 	<li>" . g_l('liveUpdate', '[connect][connectionType]') . ": ";
 if(!empty($_SESSION['le_proxy_use'])){
@@ -69,10 +69,11 @@ $errorMessage .= "</li>
 
 $errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ": " .
 	(($ipAddr = gethostbynamel(LIVEUPDATE_SERVER)) ?
-		g_l('liveUpdate', '[connect][succeeded]') . '.</li><li>' . g_l('liveUpdate', '[connect][ipAddresses]') . ": " . implode(",", $ipAddr) . "</li>" :
-		g_l('liveUpdate', '[connect][failed]') . ".</li>"
+	g_l('liveUpdate', '[connect][succeeded]') . '.</li><li>' . g_l('liveUpdate', '[connect][ipAddresses]') . ": " . implode(",", $ipAddr) . "</li>" :
+	g_l('liveUpdate', '[connect][failed]') . ".</li>"
 	) . "</ul>";
 
+$jsCmd = new we_base_jsCmd();
+$jsCmd->addMsg(g_l('liveUpdate', '[connect][connectionErrorJs]'), we_message_reporting::WE_MESSAGE_FRONTEND);
 echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), '
-<div class="defaultfont">' . g_l('liveUpdate', '[connect][connectionError]') . '</div>' .
-	we_message_reporting::jsMessagePush(g_l('liveUpdate', '[connect][connectionErrorJs]'), we_message_reporting::WE_MESSAGE_FRONTEND) . $errorMessage);
+<div class="defaultfont">' . g_l('liveUpdate', '[connect][connectionError]') . '</div>' . $errorMessage, $jsCmd->getCmds());

@@ -56,10 +56,6 @@ abstract class we_message_reporting{
 		}
 	}
 
-	public static function jsMessagePush($message, $priority){
-		return we_base_jsCmd::singleCmd('msg', ['msg' => $message, 'prio' => $priority]);
-	}
-
 	public static function prepareMsgForJS($message){
 		return str_replace(["\n",
 			'\n',

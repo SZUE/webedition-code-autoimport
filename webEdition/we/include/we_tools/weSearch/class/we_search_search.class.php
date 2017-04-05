@@ -982,7 +982,7 @@ class we_search_search extends we_search_base{
 								'table' => addTblPrefix($val[1]),
 								'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
 								'mod' => $mod[$val[1]][$val[0]],
-								'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'not implemented yet: ' . $val[1] . '\')',
+								'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'WE().util.showMessage(\'not implemented yet: ' . $val[1] . '\', WE().consts.message.WE_MESSAGE_ERROR, window)',
 								'path' => isset($paths[$val[1]][$val[0]]) ? $paths[$val[1]][$val[0]] : '',
 								'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
 								'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false

@@ -42,8 +42,8 @@ abstract class we_backup_cmd{
 				if(isset($_SESSION['weS']['weBackupVars'])){
 					$last = $_SESSION['weS']['weBackupVars']['limits']['requestTime'];
 					$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
-							//we don't have the time of the request, assume some time is already spent.
-							time() - 3);
+						//we don't have the time of the request, assume some time is already spent.
+						time() - 3);
 
 					if(we_base_request::_(we_base_request::BOOL, 'reload')){
 						$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
@@ -61,17 +61,19 @@ abstract class we_backup_cmd{
 
 						if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION){//in case of compression the file can't be used
 							$_SESSION['weS']['weBackupVars']['retry'] = 1;
-							echo we_html_tools::getHtmlTop('', '', '', we_message_reporting::jsMessagePush(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR), we_html_element::htmlBody());
+							$jsCmd = new we_base_jsCmd();
+							$jsCmd->addMsg(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR);
+							echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 							exit();
 						}
 					}
 					$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
 					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard',
-								'data-backup' => setDynamicVar([
-									'reload' => (we_base_request::_(we_base_request::INT, 'reload', 0) + 1),
-									'mode' => (we_base_request::_(we_base_request::STRING, 'cmd') == self::RECOVER ? 'import' : 'export'),
-									'reloadTimer' => (min($_SESSION['weS']['weBackupVars']['limits']['exec'], 32) * 1000) + 5000 //wait extra 5 secs
+							'data-backup' => setDynamicVar([
+								'reload' => (we_base_request::_(we_base_request::INT, 'reload', 0) + 1),
+								'mode' => (we_base_request::_(we_base_request::STRING, 'cmd') == self::RECOVER ? 'import' : 'export'),
+								'reloadTimer' => (min($_SESSION['weS']['weBackupVars']['limits']['exec'], 32) * 1000) + 5000 //wait extra 5 secs
 						])]), we_html_element::htmlBody());
 				}
 		}
@@ -125,7 +127,7 @@ abstract class we_backup_cmd{
 				}
 				$percent = we_backup_util::getExportPercent();
 				we_backup_util::writeLog();
-			}while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && we_backup_util::limitsReached('', microtime(true) - $start));
+			} while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && we_backup_util::limitsReached('', microtime(true) - $start));
 			$_SESSION['weS']['weBackupVars']['close']($fh);
 		}
 		return [$description, $percent];
@@ -163,7 +165,7 @@ abstract class we_backup_cmd{
 					}
 				}
 				we_backup_util::writeLog();
-			}while(we_backup_util::limitsReached($_SESSION['weS']['weBackupVars']['current_table'], microtime(true) - $start));
+			} while(we_backup_util::limitsReached($_SESSION['weS']['weBackupVars']['current_table'], microtime(true) - $start));
 			$_SESSION['weS']['weBackupVars']['close']($fh);
 		}
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && !empty($_SESSION['weS']['weBackupVars']['extern_files']) ) || we_backup_util::hasNextTable()){
@@ -283,7 +285,7 @@ abstract class we_backup_cmd{
 					we_base_file::delete(array_pop($_SESSION['weS']['weBackupVars']['files_to_delete']));
 				}
 				$percent = we_backup_util::getImportPercent();
-			}while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_util::limitsReached('', microtime(true) - $start));
+			} while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_util::limitsReached('', microtime(true) - $start));
 		} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 			if($_SESSION['weS']['weBackupVars']['options']['format'] !== 'xml'){
 				t_e('error', 'unsupported Fileformat');
@@ -315,7 +317,7 @@ abstract class we_backup_cmd{
 				}
 				$percent = we_backup_util::getImportPercent();
 				we_backup_util::writeLog();
-			}while(we_backup_util::limitsReached('', microtime(true) - $start));
+			} while(we_backup_util::limitsReached('', microtime(true) - $start));
 			we_backup_fileReader::closeFile();
 
 			$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
@@ -333,7 +335,7 @@ abstract class we_backup_cmd{
 		}
 
 		if(($_SESSION['weS']['weBackupVars']['offset'] <= $_SESSION['weS']['weBackupVars']['offset_end']) ||
-				(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
+			(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 		){
 
 			we_backup_util::addLog('Issuing next request.');

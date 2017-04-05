@@ -1233,7 +1233,7 @@ class we_document extends we_root{
 					$linkAttribs[$k] = $v;
 				}
 			}
-			
+
 //   4th use Rollover attributes
 			if($rollOverAttribsArr){
 				$linkAttribs['class'] = (empty($linkAttribs['class']) ? '' : $linkAttribs['class'] . ' ') . $rollOverAttribsArr;
@@ -1729,9 +1729,14 @@ class we_document extends we_root{
 					$lang = 'grant_tid';
 					break;
 			}
-			echo we_html_tools::getHtmlTop('', '', '', ($ok ?
-					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][ok]'), we_message_reporting::WE_MESSAGE_NOTICE) :
-					we_message_reporting::jsMessagePush(g_l('weClass', '[' . $lang . '][notok]'), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
+			$jsCmd = new we_base_jsCmd();
+			if($ok){
+				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			} else {
+				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+			}
+
+			echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 	}
 
