@@ -356,11 +356,9 @@ function findInclude($cmd){
 			return true;
 
 		default:
-			//	In we.inc.php all names of the active modules have already been searched
-//	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
 			list($m, $m2) = explode('_', $cmd);
 			$m = ($m === 'we' || $m === 'module' ? $m2 : $m);
-			if(in_array($m, $GLOBALS['_we_active_integrated_modules'])){
+			if(we_base_moduleInfo::isActive($m)){
 				if(($INCLUDE = include(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php'))){
 					return $INCLUDE;
 				}

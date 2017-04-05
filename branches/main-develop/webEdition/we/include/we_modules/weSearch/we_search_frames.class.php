@@ -93,7 +93,7 @@ class we_search_frames extends we_modules_frame{
 
 		$tabsHead = we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsScript(JS_DIR . 'initTabs.js') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'weSearch/search_view2.js');
 
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(

@@ -11,18 +11,31 @@ abstract class we_base_moduleInfo{
 	const NEWSLETTER = 'newsletter';
 	const OBJECT = 'object';
 	const SCHEDULER = 'schedule';
+	const SEARCH = 'weSearch';
 	const SHOP = 'shop';
 	const SPELLCHECKER = 'spellchecker';
 	const USERS = 'users';
 	const VOTING = 'voting';
 	const WORKFLOW = 'workflow';
 
-	private static $we_available_modules = '';
+	private static $we_available_modules = [];
+	private static $userEnabledModules = [];
+	private static $activeModules = [];
 
 	private static function init(){
 		if(!self::$we_available_modules){
 			self::$we_available_modules = include(WE_INCLUDES_PATH . 'we_available_modules.inc.php');
+			include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
+			if(empty($GLOBALS['_we_active_integrated_modules'])){
+				include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
+			}
+			self::$userEnabledModules = $GLOBALS['_we_active_integrated_modules'];
 		}
+	}
+
+	public static function getUserEnabledModules(){
+		self::init();
+		return self::$userEnabledModules;
 	}
 
 	/**
@@ -78,20 +91,25 @@ abstract class we_base_moduleInfo{
 	}
 
 	static function isActive($modul){
-		switch($modul){
-			case 'weSearch':
-				break;
-			case 'users'://removed config
-				break;
-			default:
-				if(!in_array($modul, $GLOBALS['_we_active_integrated_modules'])){
-					return false;
-				}
+		self::init();
+		return in_array($modul, self::$activeModules);
+	}
+
+	static function getAllActiveModules(){
+		return self::$activeModules;
+	}
+
+	static function loadConfigs(){
+		self::init();
+		self::$activeModules = [];
+		foreach(self::$we_available_modules as $modul => $conf){
+			if($conf['alwaysActive'] || in_array($modul, self::$userEnabledModules)){
+				self::$activeModules[] = $modul;
 				if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
 					require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
 				}
+			}
 		}
-		return true;
 	}
 
 	static function getModuleData($module){

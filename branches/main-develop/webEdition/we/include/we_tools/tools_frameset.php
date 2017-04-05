@@ -89,6 +89,29 @@ if($tool === "weSearch"){
 
 $_REQUEST['tool'] = $tool;
 
+function getHeader(){
+	$we_tabs = new we_tabs();
+
+
+	$menuItems = we_tool_lookup::getAllTools(true, false);
+	$tool = we_base_request::_(we_base_request::STRING, 'tool');
+
+	foreach($menuItems as $menuItem){
+		switch($menuItem['name']){
+			case "weSearch":
+				continue;
+			case 'toolfactory':
+				$text = $menuItem["text"];
+				break;
+		}
+		if(we_base_permission::hasPerm($menuItem['startpermission'])){
+			$we_tabs->addTab($menuItem["text"], '', ($tool == $menuItem['name']), "'" . $menuItem['name'] . "'", ["id" => $menuItem['name']]);
+		}
+	}
+
+	return '<div id="main">' . $we_tabs->getHTML() . '</div>';
+}
+
 echo we_html_tools::getHtmlTop($title, '', 'frameset', we_html_element::jsScript(JS_DIR . 'toolframe.js') .
 	we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
@@ -97,7 +120,10 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset', we_html_element::jsScript
 	])]) .
 	we_base_jsCmd::singleCmd('setTool', $tool), we_html_element::htmlBody(['style' => "overflow:hidden;",
 		'onload' => ($showHeader ? 'weTabs.setFrameSize();' : '')], ($showHeader ?
-			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .
-		we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false)
+			we_html_element::htmlExIFrame('navi', getHeader(), 'right:0px;') : '') .
+		we_html_element::htmlIFrame('content', ($tool=== 'weSearch'?
+			WEBEDITION_DIR . 'we_showMod.php?mod='	:
+		WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=') .
+			$tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false)
 	)
 );

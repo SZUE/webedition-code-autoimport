@@ -36,7 +36,8 @@ switch($cmd){
 	case 'users_add_user':
 		return 'we_editors/we_editor.inc.php';
 	case 'users_changeR':
-		return 'we_modules/users/changeRec_users.inc.php';
+		echo we_users_util::changeRecursive();
+		return true;
 	case 'we_users_selector':
 		we_selector_file::getSelectorFromRequest();
 		return true;

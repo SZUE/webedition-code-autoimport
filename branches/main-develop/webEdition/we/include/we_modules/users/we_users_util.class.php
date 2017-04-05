@@ -263,4 +263,31 @@ abstract class we_users_util{
 		return false;
 	}
 
+	public static function changeRecursive(){
+		$ok = false;
+
+		if(we_base_permission::hasPerm('ADMINISTRATOR')){
+			$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1);
+
+			// init document
+			$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
+			$we_doc = we_document::initDoc($we_dt);
+
+			$childs = [];
+			pushChilds($childs, $we_doc->ID, $we_doc->Table, '', $GLOBALS['DB_WE']);
+			if($childs){
+				$ok = $GLOBALS['DB_WE']->query('UPDATE ' . $we_doc->Table . ' SET ' .
+					we_database_base::arraySetter(['CreatorID' => $we_doc->CreatorID,
+						'Owners' => $we_doc->Owners,
+						'RestrictOwners' => $we_doc->RestrictOwners,
+						'OwnersReadOnly' => $we_doc->OwnersReadOnly
+					]) . ' WHERE ID IN(' . implode(',', $childs) . ')');
+			}
+		}
+		$jsCmd = new we_base_jsCmd();
+		$jsCmd->addMsg(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR));
+
+		return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
+	}
+
 }

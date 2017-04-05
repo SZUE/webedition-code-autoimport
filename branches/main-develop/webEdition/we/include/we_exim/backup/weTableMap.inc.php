@@ -133,4 +133,7 @@ return [
 	] :
 	[]
 	),
+	'tblsearchtool' => [
+		strtolower(stripTblPrefix(SEARCH_TABLE)) => SEARCH_TABLE
+	],
 ];

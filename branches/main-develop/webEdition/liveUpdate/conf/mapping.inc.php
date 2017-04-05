@@ -44,7 +44,7 @@ $LU_Variables = [
 	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? '_UTF-8' : ''),
 	'clientExtension' => DEFAULT_DYNAMIC_EXT,
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
-	'clientInstalledModules' => $GLOBALS['_we_active_integrated_modules'],
+	'clientInstalledModules' => we_base_moduleInfo::getUserEnabledModules(),
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
 	'clientInstalledAppMeta' => we_tool_lookup::getAllTools(true, false, true),
 	'clientUpdateUrl' => getServerUrl() . $_SERVER['SCRIPT_NAME'],

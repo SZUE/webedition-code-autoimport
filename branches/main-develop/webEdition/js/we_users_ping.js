@@ -78,7 +78,7 @@ window.setInterval(function () {
 			}
 		} else {
 			var extra = (result && result.DataArray ? result.DataArray.data : "");
-			WE().util.showMessage(WE().consts.g_l.main.unable_to_call_ping + extra, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
+			WE().util.showMessage(WE().consts.g_l.main.unable_to_call_ping + "\n" + extra, WE().consts.message.WE_MESSAGE_ERROR, window, 20000);
 		}
 	}
 	).fail(function (jqxhr, textStatus, error) {

@@ -68,7 +68,7 @@ abstract class we_tool_lookup{
 		if($addInternTools){
 
 			$internToolDir = WE_INCLUDES_PATH . 'we_tools/';
-			$internTools = ['weSearch', 'navigation'];
+			$internTools = ['weSearch'];
 
 			foreach($internTools as $toolName){
 				$metaFile = $internToolDir . $toolName . '/conf/meta.conf.php';
@@ -334,16 +334,12 @@ abstract class we_tool_lookup{
 				}
 			}
 		}
-		$inc[] = 'weSearch';
-
 
 		return $inc;
 	}
 
 	static function getBackupTables($name){
-		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
-			WE_INCLUDES_PATH . 'we_tools/' :
-			WE_APPS_PATH);
+		$toolFolder = WE_APPS_PATH;
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
 			if(!empty($toolTables)){

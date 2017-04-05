@@ -24,6 +24,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+$tool = we_base_request::_(we_base_request::STRING, 'tool');
+if($tool === 'weSearch'){
+	$_REQUEST['mod'] = $tool;
+	require_once(WEBEDITION_PATH . 'we_showMod.php');
+	return;
+}
 
 $tools = we_tool_lookup::getAllTools(true, true);
 
@@ -33,15 +39,8 @@ foreach($tools as $k => $v){
 		$whiteList[] = $v['name'];
 	}
 }
-$tool = we_base_request::_(we_base_request::STRING, 'tool');
 if(!$tool || !in_array($tool, $whiteList)){
 	exit();
-}
-
-if($tool === 'weSearch'){
-	$_REQUEST['mod'] = $tool;
-	require_once(WEBEDITION_PATH . 'we_showMod.php');
-	return;
 }
 
 //check if bootstrap file exists of specific app

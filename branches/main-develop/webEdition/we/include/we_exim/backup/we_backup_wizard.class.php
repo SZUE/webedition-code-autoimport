@@ -268,7 +268,8 @@ class we_backup_wizard{
 			102 => 'handle_history',
 			300 => 'handle_extern',
 			310 => 'convert_charset',
-			320 => 'backup_log'
+			320 => 'backup_log',
+			400 => 'handle_weSearch'
 		];
 
 		$i = 0;
@@ -406,7 +407,8 @@ class we_backup_wizard{
 			101 => "handle_temporary",
 			102 => "handle_history",
 			300 => "handle_extern",
-			320 => "backup_log"
+			320 => "backup_log",
+			400 => 'handle_weSearch'
 		];
 
 		$i = 0;

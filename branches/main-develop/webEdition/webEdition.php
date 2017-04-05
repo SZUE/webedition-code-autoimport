@@ -97,16 +97,15 @@ if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 $jsCmd = new we_base_jsCmd();
 
 $jsWeCmd = [];
-foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+foreach(we_base_moduleInfo::getAllActiveModules() as $mod){
 	if(file_exists(WE_JS_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.js')){
 		$jsWeCmd[$mod] = WE_JS_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
 	}
 }
-
 we_tool_lookup::getJsCmdInclude($jsWeCmd);
 $jsmods = array_keys($jsWeCmd);
 $jsmods[] = 'base';
-$diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
+$diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), we_base_moduleInfo::getAllActiveModules());
 
 $const = [
 	'g_l' => [],
@@ -136,7 +135,7 @@ $const = [
 		'WE_SPELLCHECKER_MODULE_DIR' => defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : '',
 	],
 	'modules' => [
-		'active' => $GLOBALS['_we_active_integrated_modules'],
+		'active' => we_base_moduleInfo::getAllActiveModules(),
 		'jsmods' => $jsmods,
 		'inactive' => $diff,
 	],
