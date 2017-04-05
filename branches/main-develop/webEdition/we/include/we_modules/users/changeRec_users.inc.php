@@ -39,9 +39,11 @@ if(we_base_permission::hasPerm('ADMINISTRATOR')){
 				'Owners' => $we_doc->Owners,
 				'RestrictOwners' => $we_doc->RestrictOwners,
 				'OwnersReadOnly' => $we_doc->OwnersReadOnly
-				]) . ' WHERE ID IN(' . implode(',', $childs) . ')';
+			]) . ' WHERE ID IN(' . implode(',', $childs) . ')';
 		$ok = $DB_WE->query($q);
 	}
 }
+$jsCmd = new we_base_jsCmd();
+$jsCmd->addMsg(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR));
 
-echo we_html_tools::getHtmlTop('', '', '', we_message_reporting::jsMessagePush(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
+echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());

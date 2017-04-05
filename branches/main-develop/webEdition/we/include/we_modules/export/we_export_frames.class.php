@@ -339,7 +339,9 @@ class we_export_frames extends we_modules_frame{
 
 	private function getDoExportCode(){
 		if(!we_base_permission::hasPerm("MAKE_EXPORT")){
-			return we_message_reporting::jsMessagePush(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd = new we_base_jsCmd();
+			$jsCmd->addMsg(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+			return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 
 
@@ -576,7 +578,9 @@ class we_export_frames extends we_modules_frame{
 				exit();
 
 			case 'upload_failed':
-				return we_message_reporting::jsMessagePush(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd = new we_base_jsCmd();
+				$jsCmd->addMsg(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR);
+				return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 			default:
 				return '';
 		}

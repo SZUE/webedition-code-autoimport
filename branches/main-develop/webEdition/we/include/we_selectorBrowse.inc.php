@@ -37,6 +37,7 @@ $selectInternal = we_base_request::_(we_base_request::BOOL, 'selectInternal', fa
 $org = we_base_request::_(we_base_request::FILE, 'dir', '/');
 $contentFilter = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
 $curID = we_base_request::_(we_base_request::FILE, 'curID');
+$jsCmd = new we_base_jsCmd();
 
 function getDataType($dat){
 	$ct = getContentTypeFromFile($dat);
@@ -44,7 +45,7 @@ function getDataType($dat){
 		$ct : '');
 }
 
-function readFiles($dir){
+function readFiles($dir, we_base_jsCmd $jsCmd){
 	$arDir = $arFile = $ordDir = $ordFile = $final = [];
 	@chdir($dir);
 	$dir_obj = @dir($dir);
@@ -52,9 +53,10 @@ function readFiles($dir){
 	$ord = we_base_request::_(we_base_request::INT, "ord", 10);
 
 	if(!$dir_obj){
-		return we_message_reporting::jsMessagePush(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) . '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
+		$jsCmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
+		return '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
 	}
-	
+
 	while(($entry = $dir_obj->read()) !== false){
 		if($entry == '.' || $entry == '..'){
 			continue;
@@ -134,7 +136,7 @@ $fileContentTypes = $GLOBALS['DB_WE']->getAllFirstq('SELECT Text,ContentType FRO
 $set_rename = false;
 $thumbFold = trim(WE_THUMBNAIL_DIRECTORY, '/');
 $dir = rtrim($_SERVER['DOCUMENT_ROOT'] . $org, '/');
-$files = readFiles($dir);
+$files = readFiles($dir, $jsCmd);
 
 if(is_array($files)){
 
@@ -283,7 +285,7 @@ if(is_array($files)){
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js', '', ['id' => 'loadVarSelectors', 'data-selector' => setDynamicVar([
 			'allentries' => $files
-	])]), '
+	])]) . $jsCmd->getCmds(), '
 <body onload="' . $onload . 'WE().util.setIconOfDocClass(document, \'treeIcon\');doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
 	<table class="default">' .

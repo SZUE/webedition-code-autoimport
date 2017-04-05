@@ -696,31 +696,39 @@ class we_backup_wizard{
 		);
 	}
 
-	function getHTMLCmd(){
+	function getHTMLCmd(we_base_jsCmd $jsCmd){
 		switch(we_base_request::_(we_base_request::STRING, "operation_mode", '-1')){
 			case '-1':
 				return;
 			case 'rebuild':
-				return we_base_jsCmd::singleCmd('rebuild');
+				$jsCmd->addCmd('rebuild');
+				return;
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = [];
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
 
-				return we_base_jsCmd::singleCmd('deleteall');
+				$jsCmd->addCmd('deleteall');
+				return;
 			case 'deletebackup':
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){
-					return we_message_reporting::jsMessagePush(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					return;
 				}
 				if(!is_writable(BACKUP_PATH . $bfile)){
-					return we_message_reporting::jsMessagePush(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					return;
 				}
-				return (unlink(BACKUP_PATH . $bfile) ?
-					we_base_jsCmd::singleCmd('deletebackup') :
-					we_message_reporting::jsMessagePush(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+				if(unlink(BACKUP_PATH . $bfile)){
+					$jsCmd->addCmd('deletebackup');
+				} else {
+					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+				}
+				return;
 			default:
-				return we_message_reporting::jsMessagePush(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				return;
 		}
 	}
 
@@ -799,7 +807,9 @@ class we_backup_wizard{
 				echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, 'step', 1));
 				break;
 			case 'cmd':
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
+				$jsCmd = new we_base_jsCmd();
+				$weBackupWizard->getHTMLCmd($jsCmd);
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $jsCmd->getCmds(), we_html_element::htmlBody());
 				break;
 			case 'busy':
 				echo $weBackupWizard->getHTMLBusy();
@@ -850,10 +860,10 @@ class we_backup_wizard{
 	del_backup_confirm:"' . g_l('backup', '[del_backup_confirm]') . '",
 	delold_confirm:"' . g_l('backup', '[delold_confirm]') . '",
 	error_timeout:"' . g_l('backup', '[error_timeout]') . '",
-	finished:"'.g_l('backup', '[finished]').'",
+	finished:"' . g_l('backup', '[finished]') . '",
 	finished_success:"' . g_l('backup', '[finished_success]') . '",
 	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
-	import_file_found:"'.str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')).'",
+	import_file_found:"' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '",
 	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
   newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
 	nothing_selected:"' . g_l('backup', '[nothing_selected]') . '",

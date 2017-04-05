@@ -256,8 +256,8 @@ abstract class we_editor_functions{
 		} else {
 			ob_start();
 			include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
-							'' : WE_INCLUDES_PATH) .
-					$we_include);
+					'' : WE_INCLUDES_PATH) .
+				$we_include);
 			$docContents = ob_get_clean();
 		}
 
@@ -273,8 +273,8 @@ abstract class we_editor_functions{
 				$contents = we_SEEM::parseDocument($docContents);
 
 				$contents = (strpos($contents, '</head>') ?
-						str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
-						$insertReloadFooter . $contents);
+					str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
+					$insertReloadFooter . $contents);
 		}
 
 		switch($we_doc->Extension){
@@ -301,8 +301,8 @@ abstract class we_editor_functions{
 //
 
 		$glossarHTML = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) ?
-				we_glossary_replace::replace($evaled, $we_doc->Language) :
-				$evaled);
+			we_glossary_replace::replace($evaled, $we_doc->Language) :
+			$evaled);
 
 		if(!empty($GLOBALS['we_editmode'])){
 			$matches = [];
@@ -329,13 +329,13 @@ abstract class we_editor_functions{
 
 	private static function unPublishInc($we_transaction, $we_responseText = '', $we_responseTextType = '', we_base_jsCmd $jsCmd = null, $we_responseJS = []){
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
-						'we_editor_save' => false,
-						'we_transaction' => $we_transaction,
-						'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
-						'we_JavaScript' => [],
-						'we_responseText' => $we_responseText,
-						'we_responseTextType' => $we_responseTextType,
-						'we_responseJS' => $we_responseJS,
+					'we_editor_save' => false,
+					'we_transaction' => $we_transaction,
+					'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
+					'we_JavaScript' => [],
+					'we_responseText' => $we_responseText,
+					'we_responseTextType' => $we_responseTextType,
+					'we_responseJS' => $we_responseJS,
 			])]) . ($jsCmd ? $jsCmd->getCmds() : ''), we_html_element::htmlBody());
 	}
 
@@ -369,43 +369,43 @@ abstract class we_editor_functions{
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
-						'we_editor_save' => true,
-						'we_transaction' => $we_transaction,
-						'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
-						'wasSaved' => $wasSaved,
-						'wasPublished' => !empty($we_doc->Published),
-						'isPublished' => $publish_doc,
-						'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
-						'reloadEditors' => array_filter($reload),
-						'ContentType' => $we_doc->ContentType,
-						'docID' => $we_doc->ID,
-						'EditPageNr' => $we_doc->EditPageNr,
-						'saveTmpl' => $saveTemplate,
-						'isClose' => $isClose,
-						'showAlert' => $showAlert,
-						'we_responseText' => $we_responseText,
-						'we_responseTextType' => $we_responseTextType,
-						'we_JavaScript' => $we_JavaScript,
-						'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
-						'we_responseJS' => $we_responseJS,
-						'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs),
+					'we_editor_save' => true,
+					'we_transaction' => $we_transaction,
+					'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
+					'wasSaved' => $wasSaved,
+					'wasPublished' => !empty($we_doc->Published),
+					'isPublished' => $publish_doc,
+					'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
+					'reloadEditors' => array_filter($reload),
+					'ContentType' => $we_doc->ContentType,
+					'docID' => $we_doc->ID,
+					'EditPageNr' => $we_doc->EditPageNr,
+					'saveTmpl' => $saveTemplate,
+					'isClose' => $isClose,
+					'showAlert' => $showAlert,
+					'we_responseText' => $we_responseText,
+					'we_responseTextType' => $we_responseTextType,
+					'we_JavaScript' => $we_JavaScript,
+					'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
+					'we_responseJS' => $we_responseJS,
+					'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs),
 			])]), we_html_element::htmlBody());
 	}
 
 	public static function templateSave($we_transaction){
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?' . http_build_query(
-								['we_cmd' => [
-								0 => 'save_document',
-								1 => $we_transaction,
-								2 => 1,
-								5 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5), //is json64
-								6 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6), //is json64
-							],
-							'we_transaction' => $we_transaction,
-							'we_complete_request' => 1
-								], null, '&') .
-						'";
+					['we_cmd' => [
+						0 => 'save_document',
+						1 => $we_transaction,
+						2 => 1,
+						5 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5), //is json64
+						6 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6), //is json64
+					],
+					'we_transaction' => $we_transaction,
+					'we_complete_request' => 1
+					], null, '&') .
+				'";
 new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dialog.smaller,WE().consts.size.dialog.tiny,true,false,true);
 '), '<body></body>');
 	}
@@ -414,17 +414,17 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		$we_cmd6 = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6);
 
 		$alerttext = ($isTemplatesUsedByThisTemplate ?
-				g_l('alert', '[template_save_warning2]') :
-				sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
-				);
+			g_l('alert', '[template_save_warning2]') :
+			sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
+			);
 
 		echo we_html_tools::getHtmlTop(g_l('global', '[question]'), '', '', we_html_element::jsScript(JS_DIR . 'template_save_question.js', '', ['id' => 'loadVarTemplate_save_question',
-					'data-editorSave' => setDynamicVar([
-						'we_transaction' => $we_transaction,
-						'we_responseJS' => $we_responseJS,
-						'we_cmd6' => $we_cmd6
+				'data-editorSave' => setDynamicVar([
+					'we_transaction' => $we_transaction,
+					'we_responseJS' => $we_responseJS,
+					'we_cmd6' => $we_cmd6
 			])]), we_html_element::htmlBody(['class' => "weEditorBody", 'onload' => "self.focus();", 'onblur' => "self.focus()"], we_html_tools::htmlYesNoCancelDialog($alerttext, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, 'pressed_yes_button()', 'pressed_no_button()', 'pressed_cancel_button()')
-				)
+			)
 		);
 	}
 
@@ -432,7 +432,9 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		$we_responseText .= $we_doc->getErrMsg();
 		if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 			//will show the message
-			echo we_message_reporting::jsMessagePush(g_l('weEditor', '[incompleteRequest]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd = new we_base_jsCmd();
+			$jsCmd->addMsg(g_l('weEditor', '[incompleteRequest]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo $jsCmd->getCmds();
 			return;
 		}
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
@@ -441,7 +443,8 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 			we_schedpro::trigger_schedule();
 			$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID]; // save/ rename a document
 		}
-		self::saveInc($we_transaction, $we_doc, $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
+		self::saveInc($we_transaction, $we_doc, $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
+]), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
 	}
 
 	//if document is locked - only Preview mode is possible. otherwise show warning.
@@ -536,8 +539,8 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 
 // insert $reloadFooter at right place
 					$tmpCntHTML = (strpos($tmpCnt, '</head>')) ?
-							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCnt) :
-							$insertReloadFooter . $tmpCnt;
+						str_replace('</head>', $insertReloadFooter . '</head>', $tmpCnt) :
+						$insertReloadFooter . $tmpCnt;
 
 // --> Start Glossary Replacement
 

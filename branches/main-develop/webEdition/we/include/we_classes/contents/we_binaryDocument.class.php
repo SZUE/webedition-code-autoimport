@@ -99,7 +99,7 @@ class we_binaryDocument extends we_document{
 			$this->i_getContentData();
 		}
 		if($this->getFilesize() == 0){
-			echo we_message_reporting::jsMessagePush(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$this->errMsg = g_l('metadata', '[file_size_0]');
 			return false;
 		}
 		if(parent::we_save($resave, $skipHook)){
@@ -395,7 +395,7 @@ class we_binaryDocument extends we_document{
 		return we_html_multiIconBox::getHTML('PropertyPage', [
 				['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_DOC, 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_ICON],
-				['icon' =>we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
+				['icon' => we_html_multiIconBox::PROP_CATEGORIES, 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON],
 				['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON]]
 		);
 	}
