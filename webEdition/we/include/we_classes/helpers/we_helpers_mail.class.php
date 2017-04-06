@@ -269,7 +269,7 @@ class we_helpers_mail extends Zend_Mail{
 						$this->basedir = ($this->basedir ?: $_SERVER['DOCUMENT_ROOT']) .
 							((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
 							((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
-						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . $filename);
+						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . (is_array($filename) ? $filename[0] : $filename));
 						$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
 					}
 					$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
