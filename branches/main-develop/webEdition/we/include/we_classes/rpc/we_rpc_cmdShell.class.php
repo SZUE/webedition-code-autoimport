@@ -56,7 +56,7 @@ class we_rpc_cmdShell{
 
 		//$tool = we_base_request::_(we_base_request::STRING, 'tool');
 
-		$cmdfile = 			'cmds' . $namespace . $classname . '.class.php';
+		$cmdfile = $namespace . $classname . '.class.php';
 
 		if($cmdfile && include_once($cmdfile)){
 			$obj = new $classname($this);
@@ -72,12 +72,12 @@ class we_rpc_cmdShell{
 	}
 
 	function getView($view){
-		/*$classname = 'rpc' . $view . 'View';
-		$tool = we_base_request::_(we_base_request::STRING, 'tool');
-		$vns = we_base_request::_(we_base_request::STRING, 'vns');
-		$cns = we_base_request::_(we_base_request::STRING, 'cns');
-		$namespace = '/' . ($vns ? $vns . '/' : ($cns ? $cns . '/' : ''));
-*/
+		/* $classname = 'rpc' . $view . 'View';
+		  $tool = we_base_request::_(we_base_request::STRING, 'tool');
+		  $vns = we_base_request::_(we_base_request::STRING, 'vns');
+		  $cns = we_base_request::_(we_base_request::STRING, 'cns');
+		  $namespace = '/' . ($vns ? $vns . '/' : ($cns ? $cns . '/' : ''));
+		 */
 		return new we_rpc_genericJSONView($this, $this->Protocol);
 	}
 

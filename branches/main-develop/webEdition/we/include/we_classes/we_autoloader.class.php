@@ -79,7 +79,7 @@ abstract class we_autoloader{
 		'tree' => 'we_classes/tree',
 		'users' => 'we_modules/users',
 		'validation' => 'we_classes/validation',
-		'versions' => 'we_versions',
+		'versions' => 'we_classes/versions',
 		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
 		'widget' => 'we_classes/widget',
