@@ -800,7 +800,7 @@ class we_versions_version{
 		if(we_base_request::_(we_base_request::STRING, "pnt") === "wizcmd"){
 			switch(we_base_request::_(we_base_request::STRING, "v", '', "type")){
 				case we_import_functions::TYPE_CSV:
-				case we_import_functions::TYPE_GENERIC_XML:
+				case we_import_functions::TYPE_XML:
 					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
 					break;

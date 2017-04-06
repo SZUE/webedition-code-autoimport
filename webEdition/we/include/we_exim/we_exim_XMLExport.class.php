@@ -107,7 +107,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$this->db = new DB_WE();
 		switch($selection){
 			case "manual":
-				if($extype == we_import_functions::TYPE_WE_XML){
+				if($extype == we_import_functions::TYPE_WE){
 					$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
 					$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
 					$selObjs = defined('OBJECT_FILES_TABLE') ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";

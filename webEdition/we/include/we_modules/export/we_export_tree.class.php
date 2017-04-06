@@ -58,29 +58,34 @@ win.drawTree();';
 		return $js;
 	}
 
-	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
+	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true, $selected = FILE_TABLE, $exportType = we_import_functions::TYPE_WE){
 		$js = $this->getJSTreeCode() . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
-			$captions = [];
+			$selectorAttribs = ['name' => 'headerSwitch',
+				'onchange' => "setHead(this.value);",
+				'style' => 'width:' . $width . 'px;',
+				'disabled' => ($exportType === we_import_functions::TYPE_CSV ? 'disabled' : false)];
+			$selector = new we_html_select(array_filter($selectorAttribs));
+
 			if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
-				$captions[FILE_TABLE] = g_l('export', '[documents]');
+				$selector->addOption(FILE_TABLE, g_l('export', '[documents]'));
 			}
 			if(we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
-				$captions[TEMPLATES_TABLE] = g_l('export', '[templates]');
+				$selector->addOption(TEMPLATES_TABLE, g_l('export', '[templates]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
 			if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
-				$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
+				$selector->addOption(OBJECT_FILES_TABLE, g_l('export', '[objects]'));
 			}
 			if(defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS")){
-				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
+				$selector->addOption(OBJECT_TABLE, g_l('export', '[classes]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS")){
-				$captions[VFILE_TABLE] = g_l('export', '[collections]');
+				$selector->addOption(VFILE_TABLE, g_l('export', '[collections]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
+			$selector->selectOption($exportType === we_import_functions::TYPE_CSV ? OBJECT_FILES_TABLE : $selected);
 
-			$header = we_html_element::htmlDiv(['style' => 'margin:5px 0px;'], we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, [
-						'onchange' => "setHead(this.value);"], 'value', $width));
+			$header = we_html_element::htmlDiv(['style' => 'margin:5px 0px;'], $selector->getHtml());
 		} else {
 			$header = '';
 		}

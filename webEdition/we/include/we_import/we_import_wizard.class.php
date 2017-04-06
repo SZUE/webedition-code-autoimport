@@ -63,7 +63,7 @@ class we_import_wizard{
 			$a = [
 				'name' => 'we_form'
 			];
-			if($type == we_import_functions::TYPE_GENERIC_XML && $step == 1){
+			if($type == we_import_functions::TYPE_XML && $step == 1){
 				$a["onsubmit"] = 'return false;';
 			}
 			if($step == 1){
@@ -74,17 +74,17 @@ class we_import_wizard{
 				default:
 					$content = $this->getStep0($jsCmd);
 					break;
-				case we_import_functions::TYPE_GENERIC_XML:
+				case we_import_functions::TYPE_XML:
 					switch($step){
 						default:
 						case 1:
-							$content = $this->getGXMLImportStep1($jsCmd);
+							$content = $this->getXMLStep1($jsCmd);
 							break;
 						case 2:
-							$content = $this->getGXMLImportStep2($jsCmd);
+							$content = $this->getXMLStep2($jsCmd);
 							break;
 						case 3:
-							$content = $this->getGXMLImportStep3($jsCmd);
+							$content = $this->getXMLStep3($jsCmd);
 							break;
 					}
 					break;
@@ -92,27 +92,27 @@ class we_import_wizard{
 					switch($step){
 						default:
 						case 1:
-							$content = $this->getCSVImportStep1($jsCmd);
+							$content = $this->getCSVStep1($jsCmd);
 							break;
 						case 2:
-							$content = $this->getCSVImportStep2($jsCmd);
+							$content = $this->getCSVStep2($jsCmd);
 							break;
 						case 3:
-							$content = $this->getCSVImportStep3($jsCmd);
+							$content = $this->getCSVStep3($jsCmd);
 							break;
 					}
 					break;
-				case we_import_functions::TYPE_WE_XML:
+				case we_import_functions::TYPE_WE:
 					switch($step){
 						default:
 						case 1:
-							$content = $this->getWXMLImportStep1($jsCmd);
+							$content = $this->getWEStep1($jsCmd);
 							break;
 						case 2:
-							$content = $this->getWXMLImportStep2($jsCmd);
+							$content = $this->getWEStep2($jsCmd);
 							break;
 						case 3:
-							$content = $this->getWXMLImportStep3($jsCmd);
+							$content = $this->getWEStep3($jsCmd);
 							break;
 					}
 					break;
@@ -148,7 +148,7 @@ class we_import_wizard{
 
 			// make jsCmd => we need a minimal we_cmd on this frame
 			$jsCmd->addCmd('cycle');
-			$jsCmd->addCmd('we_import', 1, '-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : ''), false);
+			$jsCmd->addCmd('we_import', 1, '-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE) ? ',1' : ''), false);
 		}
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel');", '', 0, 0, '', '', false, false);
@@ -216,11 +216,11 @@ class we_import_wizard{
 			switch($v['cid']){
 				case -2:
 					$h = $this->getHdns('v', $v);
-					if($v["type"] != "" && $v["type"] != we_import_functions::TYPE_WE_XML){
+					if($v["type"] != "" && $v["type"] != we_import_functions::TYPE_WE){
 						$h .= $this->getHdns("records", $records) .
 							$this->getHdns("we_flds", $we_flds);
 					}
-					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
+					if($v["type"] == we_import_functions::TYPE_XML){
 						$h .= $this->getHdns("attributes", $attributes) .
 							$this->getHdns("attrs", $attrs);
 					}
@@ -233,7 +233,7 @@ class we_import_wizard{
 
 				case -1:
 					switch($v["type"]){
-						case we_import_functions::TYPE_WE_XML:
+						case we_import_functions::TYPE_WE:
 							$jsCmd->addCmd('addLog_buffered', [
 								we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")),
 								we_html_element::htmlB(g_l('import', '[prepare]')),
@@ -248,7 +248,7 @@ class we_import_wizard{
 								++$num_files;
 							}
 							break;
-						case we_import_functions::TYPE_GENERIC_XML:
+						case we_import_functions::TYPE_XML:
 							$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : false, (isset($v["to_elem"])) ? $v["to_elem"] : false, 1);
 							break;
@@ -306,14 +306,14 @@ class we_import_wizard{
 					}
 
 					$h = $this->getHdns("v", $v);
-					if($v["type"] != we_import_functions::TYPE_WE_XML){
+					if($v["type"] != we_import_functions::TYPE_WE){
 						$h .= $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
 					}
-					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
+					if($v["type"] == we_import_functions::TYPE_XML){
 						$h .= $this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
 					}
-					$h .= we_html_element::htmlHiddens(["v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
-							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path]);
+					$h .= we_html_element::htmlHiddens(["v[numFiles]" => ($v["type"] != we_import_functions::TYPE_XML) ? $num_files : $parse->fileId,
+							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_XML) ? $path : $parse->path]);
 
 					$jsCmd->addCmd('call_delayed', ['function' => 'we_import', 'delay' => 15, 'param_1' => 1, 'param_2' => 0]);
 
@@ -326,7 +326,7 @@ class we_import_wizard{
 				default:
 					$fields = [];
 					switch($v["type"]){
-						case we_import_functions::TYPE_WE_XML:
+						case we_import_functions::TYPE_WE:
 							$hiddens = $this->getHdns("v", $v);
 
 							if(intval($v['cid']) == 0){
@@ -421,7 +421,7 @@ class we_import_wizard{
 								}
 							}
 							break 2;
-						case we_import_functions::TYPE_GENERIC_XML:
+						case we_import_functions::TYPE_XML:
 							$hiddens = $this->getHdns('v', $v) . $this->getHdns('records', $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
 							$xp = new we_xml_parser($v['uniquePath'] . '/temp_' . $v['cid'] . '.xml');
 							foreach($records as $record){
@@ -497,7 +497,7 @@ class we_import_wizard{
 							}
 					}
 
-					if($v['type'] != we_import_functions::TYPE_WE_XML){
+					if($v['type'] != we_import_functions::TYPE_WE){
 						if(isset($v["dateFields"])){
 							$dateFields = explode(',', $v["dateFields"]);
 							if(($v["sTimeStamp"] === 'Format' && $v["timestamp"] != "") || ($v["sTimeStamp"] === "GMT")){
@@ -546,7 +546,7 @@ class we_import_wizard{
 	private function importFinished(we_base_jsCmd $jsCmd, $v, $type){
 		$jsCmd->addCmd('doOnImportFinished', ['progressText' => g_l('import', '[finish_progress]')]);
 
-		if($type = we_import_functions::TYPE_WE_XML){
+		if($type = we_import_functions::TYPE_WE){
 			$jsCmd->addCmd('addLog_buffered', [we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))]);
 		} else {
 			$jsCmd->addMsg(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE);
@@ -645,9 +645,9 @@ class we_import_wizard{
 		if(!we_base_permission::hasPerm('FILE_IMPORT')){
 			$defaultVal = we_import_functions::TYPE_SITE;
 			if(!we_base_permission::hasPerm('SITE_IMPORT')){
-				$defaultVal = we_import_functions::TYPE_WE_XML;
+				$defaultVal = we_import_functions::TYPE_WE;
 				if(!we_base_permission::hasPerm('WXML_IMPORT')){
-					$defaultVal = we_import_functions::TYPE_GENERIC_XML;
+					$defaultVal = we_import_functions::TYPE_XML;
 					if(!we_base_permission::hasPerm('GENERICXML_IMPORT')){
 						$defaultVal = we_import_functions::TYPE_CSV;
 						if(!we_base_permission::hasPerm('CSV_IMPORT')){
@@ -666,8 +666,8 @@ class we_import_wizard{
 		$tblFiles->setCol(0, 0, [], we_html_forms::radiobutton('file_import', ($cmd[1] == we_import_functions::TYPE_LOCAL_FILES), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !we_base_permission::hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
 		$tblFiles->setCol(1, 0, [], we_html_forms::radiobutton('site_import', ($cmd[1] == we_import_functions::TYPE_SITE), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !we_base_permission::hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
 		$tblData = new we_html_table(['class' => 'default withSpace'], 3, 1);
-		$tblData->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($cmd[1] == we_import_functions::TYPE_WE_XML), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('WXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_wxml_import]' : '[add_expat_support]')), 0, 384));
-		$tblData->setCol(1, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($cmd[1] == we_import_functions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('GENERICXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_gxml_import]' : '[add_expat_support]')), 0, 384));
+		$tblData->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_WE, ($cmd[1] == we_import_functions::TYPE_WE), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('WXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_wxml_import]' : '[add_expat_support]')), 0, 384));
+		$tblData->setCol(1, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_XML, ($cmd[1] == we_import_functions::TYPE_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!we_base_permission::hasPerm('GENERICXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_gxml_import]' : '[add_expat_support]')), 0, 384));
 		$tblData->setCol(2, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !we_base_permission::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
 		$parts = [
@@ -684,7 +684,7 @@ class we_import_wizard{
 		return we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false, g_l('import', '[title]'));
 	}
 
-	private function getWXMLImportStep1(we_base_jsCmd $jsCmd){
+	private function getWEStep1(we_base_jsCmd $jsCmd){
 		$v = we_base_request::_(we_base_request::STRING, 'v', []);
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
@@ -748,11 +748,11 @@ class we_import_wizard{
 		];
 
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', '[wxml_import]'));
 		return $content;
 	}
 
-	private function getWXMLImportStep2(we_base_jsCmd $jsCmd){
+	private function getWEStep2(we_base_jsCmd $jsCmd){
 		$v = we_base_request::_(we_base_request::STRING, 'v', []);
 		$upload_error = false;
 
@@ -980,7 +980,7 @@ class we_import_wizard{
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 					]
 				];
-				$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
+				$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE, $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return ['', $content];
 			}
 
@@ -1012,18 +1012,18 @@ class we_import_wizard{
 		}
 
 		$znr = -1;
-		$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
+		$content = $hdns . $hdnsBtnStates . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), false, g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
 		return $content;
 	}
 
-	private function getWXMLImportStep3(we_base_jsCmd $jsCmd){
+	private function getWEStep3(we_base_jsCmd $jsCmd){
 		$hdns = we_html_element::htmlHiddens(['v[btnState_next]' => 'disabled', 'v[btnState_back]' => 'disabled']);
 		$parts = [
 			['headline' => '',
 				'html' => we_html_element::htmlDiv(['class' => 'blockWrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'], ''),
 			]
 		];
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE, $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
 
 		return $content;
 	}
@@ -1033,7 +1033,7 @@ class we_import_wizard{
 	 *
 	 * @return unknown
 	 */
-	private function getGXMLImportStep1(we_base_jsCmd $jsCmd){
+	private function getXMLStep1(we_base_jsCmd $jsCmd){
 		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v', []);
 
@@ -1250,7 +1250,7 @@ class we_import_wizard{
 	 * Generic XML Import Step 2
 	 *
 	 */
-	private function getGXMLImportStep2(we_base_jsCmd $jsCmd){
+	private function getXMLStep2(we_base_jsCmd $jsCmd){
 		$parts = [];
 		$hdns = "\n";
 		$v = we_base_request::_(we_base_request::STRING, 'v');
@@ -1359,7 +1359,7 @@ class we_import_wizard{
 		return $content;
 	}
 
-	private function getGXMLImportStep3(we_base_jsCmd $jsCmd){
+	private function getXMLStep3(we_base_jsCmd $jsCmd){
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 		if(isset($v['att_pfx'])){
 			$v['att_pfx'] = base64_encode($v['att_pfx']);
@@ -1574,7 +1574,7 @@ class we_import_wizard{
 		return $content;
 	}
 
-	private function getCSVImportStep1(we_base_jsCmd $jsCmd){
+	private function getCSVStep1(we_base_jsCmd $jsCmd){
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
@@ -1658,7 +1658,7 @@ class we_import_wizard{
 		return $content;
 	}
 
-	private function getCSVImportStep2(we_base_jsCmd $jsCmd){
+	private function getCSVStep2(we_base_jsCmd $jsCmd){
 		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v');
 		$upload_error = false;
@@ -1919,7 +1919,7 @@ class we_import_wizard{
 			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 	}
 
-	private function getCSVImportStep3(we_base_jsCmd $jsCmd){
+	private function getCSVStep3(we_base_jsCmd $jsCmd){
 		$tid = we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID');
 		$tname = we_base_request::_(we_base_request::FILE, 'v', '', 'we_TemplateName');
 		if($tname && !$tid){
@@ -1942,7 +1942,7 @@ class we_import_wizard{
 			($records ? $this->getHdns("records", $records) : "") .
 			($we_flds ? $this->getHdns("we_flds", $we_flds) : "") .
 			($attrs ? $this->getHdns("attrs", $attrs) : "") .
-			we_html_element::htmlHiddens(["v[startCSVImport]" => we_base_request::_(we_base_request::BOOL, 'v', false, "startCSVImport"),
+			we_html_element::htmlHiddens(["v[startCSV]" => we_base_request::_(we_base_request::BOOL, 'v', false, "startCSV"),
 				"v[cid]" => -2,
 				"v[encoding]" => $encoding,
 				"v[pfx_fn]" => we_base_request::_(we_base_request::STRING, 'v', 0, "pfx_fn")]) . /* rdo_timestamp is a string: 'GMT', 'UNIX' or 'Format' */
@@ -2046,7 +2046,7 @@ class we_import_wizard{
 			]);
 			$sct_we_fields->addOption("", g_l('import', '[any]'));
 			foreach($val_nodes as $value => $text){
-				$b64_value = we_base_request::_(we_base_request::BOOL, 'v', false, "startCSVImport") ? $value : base64_encode($value);
+				$b64_value = we_base_request::_(we_base_request::BOOL, 'v', false, "startCSV") ? $value : base64_encode($value);
 				$sct_we_fields->addOption($b64_value, oldHtmlspecialchars($text));
 				if(isset($we_flds[$record])){
 					if($value == base64_decode($we_flds[$record])){
@@ -2166,13 +2166,13 @@ class we_import_wizard{
 		if($type && ($step == 1 || $step == 2) && $what === 'wizbody'){
 			$acceptedMime = $acceptedExt = [];
 			switch($type){
-				case we_import_functions::TYPE_GENERIC_XML:
+				case we_import_functions::TYPE_XML:
 					$name = 'uploaded_xml_file';
 					$acceptedMime = ['text/xml'];
 					$acceptedExt = ['.xml'];
 					$genericFileNameTemp = TEMP_DIR . 'we_xml_' . we_fileupload::REPLACE_BY_UNIQUEID . '.xml';
 					break;
-				case we_import_functions::TYPE_WE_XML:
+				case we_import_functions::TYPE_WE:
 					$name = 'uploaded_xml_file';
 					$acceptedMime = ['text/xml'];
 					$acceptedExt = ['.xml'];
