@@ -1216,7 +1216,7 @@ class we_search_view extends we_modules_view{
 				for($m = 0; $m < $x; $m++){
 					$out .= '<tr>' . ($whichSearch === self::SEARCH_MEDIA ? self::tblListRowMedia($content[$m]) : self::tblListRow($content[$m])) . '</tr>';
 				}
-				$out .= '</tbody></table>' . '<div id="movethemaway" style="display:block"></div>';
+				$out .= '</tbody></table><div id="movethemaway" style="display:block"></div>';
 				break;
 			case self::VIEW_ICONS:
 				$out = '<table class="default" style="width:100%"><tr><td style="text-align:center">';
@@ -1230,7 +1230,7 @@ class we_search_view extends we_modules_view{
 							'</div>');
 				}
 
-				$out .= '</td></tr></table>' . '<div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';
+				$out .= '</td></tr></table><div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';
 		}
 
 		return $out .= $this->getNextPrev($this->searchclass->founditems, $whichSearch, true, true);

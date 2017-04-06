@@ -73,10 +73,6 @@ function doClick(id, ct) {
 	}
 }
 
-function previewFolder(id) {
-	window.alert(id);
-}
-
 function setDir(id) {
 	showPreview(id);
 	if (top.fspreview && top.fspreview.document.body) {

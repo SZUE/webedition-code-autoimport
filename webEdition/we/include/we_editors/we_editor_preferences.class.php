@@ -1509,11 +1509,14 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$modInfos = we_base_moduleInfo::getAllModules();
 
 				$html = '';
-
-				foreach($modInfos as $modKey => $modInfo){
-					if(!isset($modInfo["alwaysActive"])){
-						$modInfo["alwaysActive"] = null;
+				$tmp = [];
+				foreach($modInfos as $modInfo){
+					if(empty($modInfo["alwaysActive"])){
+						$tmp[$modInfo["text"]] = $modInfo;
 					}
+				}
+				ksort($tmp);
+				foreach($tmp as $modInfo){
 					$onclick = "";
 					if(!empty($modInfo["childmodule"])){
 						$onclick = "if(!this.checked){document.getElementById('newconf[active_integrated_modules][" . $modInfo["childmodule"] . "]').checked=false;}";
@@ -1521,8 +1524,8 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 					if(!empty($modInfo["dependson"])){
 						$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $modInfo["dependson"] . "]').checked=true;}";
 					}
-					if(!$modInfo["alwaysActive"]){
-						$html .= we_html_forms::checkbox($modKey, $modInfo["alwaysActive"] || we_base_moduleInfo::isActive($modKey), "newconf[active_integrated_modules][$modKey]", $modInfo["text"], false, "defaultfont", $onclick, $modInfo["alwaysActive"]) . ($modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$modKey]\" value=\"$modKey\" />" : "" ) . "<br />";
+					if(empty($modInfo["alwaysActive"])){
+						$html .= we_html_forms::checkbox($modInfo['name'], we_base_moduleInfo::isActive($modInfo['name']), "newconf[active_integrated_modules][" . $modInfo['name'] . "]", $modInfo["text"], false, "defaultfont", $onclick) . "<br />";
 					}
 				}
 

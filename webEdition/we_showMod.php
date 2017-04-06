@@ -26,11 +26,8 @@ we_html_tools::protect();
 
 $mod = we_base_request::_(we_base_request::STRING, 'mod');
 
-if(we_base_moduleInfo::isActive($mod) && file_exists(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php')){
-	require_once(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php');
-}
-
-if(strpos($mod, '?')){
+if(strpos($mod, '?')){//FIXME:remove
+	t_e('error in mod-request', $mod);
 	//compatibility code for ?mod=xxx?pnt=yy
 	list($mod, $other) = explode('?', $mod);
 	$_REQUEST['mod'] = $mod;
@@ -84,7 +81,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 }
 
 switch($mod){
-	case 'workflow':
+	case we_base_moduleInfo::WORKFLOW:
 		$override = ($what === 'log');
 	default:
 		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : [false];
@@ -92,20 +89,20 @@ switch($mod){
 }
 
 switch($mod){
-	case 'banner':
+	case we_base_moduleInfo::BANNER:
 		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
-	case 'weSearch':
+	case we_base_moduleInfo::SEARCH:
 		$weFrame = new we_search_frames();
 		$weFrame->process();
 		break;
-	case 'shop':
+	case we_base_moduleInfo::SHOP:
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->View->processCommands($weFrame->jsCmd);
 		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
-	case 'customer':
+	case we_base_moduleInfo::CUSTOMER:
 		switch($what){
 			case 'export':
 			case 'eibody':
@@ -121,27 +118,27 @@ switch($mod){
 				$weFrame->process();
 		}
 		break;
-	case 'users':
+	case we_base_moduleInfo::USERS:
 		$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 
-	case 'export':
+	case we_base_moduleInfo::EXPORT:
 		$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 
-	case 'glossary':
+	case we_base_moduleInfo::GLOSSARY:
 		$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 
-	case 'voting':
+	case we_base_moduleInfo::VOTING:
 		$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 
-	case 'navigation':
+	case we_base_moduleInfo::NAVIGATION:
 		switch($what){
 			case 'ruleCmd':
 			case 'ruleContent':
@@ -157,14 +154,14 @@ switch($mod){
 		}
 		break;
 
-	case 'workflow':
+	case we_base_moduleInfo::WORKFLOW:
 		$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
 		$weFrame = new we_workflow_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		echo $weFrame->getHTML($what, $mode, $type);
 		return;
 
-	case 'newsletter':
+	case we_base_moduleInfo::NEWSLETTER:
 		$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
 
 		$weFrame = new we_newsletter_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
