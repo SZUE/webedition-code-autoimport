@@ -347,9 +347,6 @@ function findInclude($cmd){
 		case 'widget_cmd':
 			we_main_cockpit::processCommand();
 			return true;
-		case 'tool_weSearch_edit':
-			$_REQUEST['tool'] = 'weSearch';
-			return 'we_tools/tools_frameset.php';
 		case 'loadJSConsts':
 			echo we_base_jsConstants::process(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 			$skipJS = true;

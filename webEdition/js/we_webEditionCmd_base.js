@@ -90,10 +90,10 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().util.jsWindow.prototype.closeByName('edit_module');
 			break;
 		case "openUnpublishedObjects":
-			we_cmd("tool_weSearch_edit", "", "", 7, 3);
+			we_cmd("weSearch_edit", "", "", 7, 3);
 			break;
 		case "openUnpublishedPages":
-			we_cmd("tool_weSearch_edit", "", "", 4, 3);
+			we_cmd("weSearch_edit", "", "", 4, 3);
 			break;
 		case "reloadMainEditor":
 			WE().layout.weEditorFrameController.getActiveDocumentReference().frames[2].reloadContent = true;

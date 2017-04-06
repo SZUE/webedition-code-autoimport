@@ -1,4 +1,4 @@
-/* global we_cmd_modules */
+/* global we_cmd_modules, WE */
 
 /**
  * webEdition CMS
@@ -26,16 +26,16 @@
 'use strict';
 we_cmd_modules.weSearch = function (args, url, caller) {
 	switch (args[0]) {
-		case "tool_weSearch_edit":
+		case "weSearch_edit":
 			new (WE().util.jsWindow)(caller, url, "tool_window_weSearch", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
-		case "tool_weSearch_new_forDocuments":
-		case "tool_weSearch_new_forTemplates":
-		case "tool_weSearch_new_forObjects":
-		case "tool_weSearch_new_advSearch":
-		case "tool_weSearch_delete":
-		case "tool_weSearch_save":
-		case "tool_weSearch_exit":
+		case "weSearch_new_forDocuments":
+		case "weSearch_new_forTemplates":
+		case "weSearch_new_forObjects":
+		case "weSearch_new_advSearch":
+		case "weSearch_delete":
+		case "weSearch_save":
+		case "weSearch_exit":
 			var wind = WE().util.jsWindow.prototype.find('tool_window_weSearch');
 			if (wind) {
 				wind.content.we_cmd(args[0]);

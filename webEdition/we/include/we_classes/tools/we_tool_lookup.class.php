@@ -65,24 +65,6 @@ abstract class we_tool_lookup{
 				}
 			}
 		}
-		if($addInternTools){
-
-			$internToolDir = WE_INCLUDES_PATH . 'we_tools/';
-			$internTools = ['weSearch'];
-
-			foreach($internTools as $toolName){
-				$metaFile = $internToolDir . $toolName . '/conf/meta.conf.php';
-				if(file_exists($metaFile)){
-					include($metaFile);
-					if(isset($metaInfo)){
-						$metaInfo['text'] = $metaInfo['name'];
-						$tools[] = $metaInfo;
-						unset($metaInfo);
-					}
-				}
-			}
-		}
-
 		if(!defined('NO_SESS') && !$includeDisabled){
 			$_SESSION['weS'][self::REGISTRY_NAME]['meta'] = $tools;
 		}
@@ -125,13 +107,7 @@ abstract class we_tool_lookup{
 		$tools = self::getAllTools(true, true);
 
 		foreach($tools as $tool){
-			switch($tool['name']){
-				case 'weSearch':
-					$path = WE_INCLUDES_DIR . 'we_tools/';
-					break;
-				default:
-					$path = WEBEDITION_DIR . 'apps/';
-			}
+			$path = WEBEDITION_DIR . 'apps/';
 			$path .= $tool['name'] . '/hook/we_jsCmdHook_' . $tool['name'];
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
 				$includes['tool_' . $tool['name']] = $path . '.js';
@@ -395,7 +371,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getIgnoreList(){
-		return ['doctype', 'category', 'navigation', 'toolfactory', 'weSearch'];
+		return ['toolfactory',];
 	}
 
 	static function isInIgnoreList($toolname){

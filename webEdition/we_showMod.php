@@ -67,7 +67,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 			if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
 				if(we_base_moduleInfo::isActive($menuItem['name'])){ //	MODULE INSTALLED
 					if(we_users_util::canEditModule($menuItem['name'])){
-						$we_tabs->addTab($menuItem['text'], ($menuItem['icon'] ?: ''), ( $mod == $menuItem['name']), "'" . $menuItem['name'] . "'", ['id' => $menuItem['name']]);
+						$we_tabs->addTab($menuItem['text_short'], ($menuItem['icon'] ?: ''), ( $mod == $menuItem['name']), "'" . $menuItem['name'] . "'", ['id' => $menuItem['name']]);
 					}
 				}
 			}

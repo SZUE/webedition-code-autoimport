@@ -39,10 +39,10 @@ function we_cmd() {
 
 	if (top.content.hot) {
 		switch (args[0]) {
-			case "tool_weSearch_edit":
-			case "tool_weSearch_new":
-			case "tool_weSearch_new_group":
-			case "tool_weSearch_exit":
+			case "weSearch_edit":
+			case "weSearch_new":
+			case "_weSearch_new_group":
+			case "weSearch_exit":
 				args.unshift("exit_doc_question");
 				top.we_cmd.apply(caller, args);
 				return;
@@ -50,7 +50,7 @@ function we_cmd() {
 	}
 
 	switch (args[0]) {
-		case "tool_weSearch_edit":
+		case "weSearch_edit":
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
@@ -58,11 +58,11 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_edit", args[1]);
+				window.setTimeout(we_cmd, 10, "weSearch_edit", args[1]);
 			}
 			break;
-		case "tool_weSearch_new":
-		case "tool_weSearch_new_group":
+		case "weSearch_new":
+		case "weSearch_new_group":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -70,13 +70,13 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new");
+				window.setTimeout(we_cmd, 10, "weSearch_new");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
-		case "tool_weSearch_exit":
+		case "weSearch_exit":
 			top.close();
 			break;
 		case "exit_doc_question_no":
@@ -87,7 +87,7 @@ function we_cmd() {
 		case "exit_doc_question_yes":
 		//save the document
 		/*falls through*/
-		case "tool_weSearch_save":
+		case "weSearch_save":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
 				WE().util.showMessage(WE().consts.g_l.weSearch.predefinedSearchmodify, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
@@ -108,7 +108,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.weSearch.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
-		case "tool_weSearch_delete":
+		case "weSearch_delete":
 			if (top.content.editor.edbody.document.we_form.predefined.value == 1) {
 				WE().util.showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
@@ -124,16 +124,16 @@ function we_cmd() {
 			if (!top.content.editor.edbody.loaded) {
 				break;
 			}
-			WE().util.showConfirm(window, "", WE().consts.g_l.weSearch.confirmDel, ["tool_weSearch_delete_do"]);
+			WE().util.showConfirm(window, "", WE().consts.g_l.weSearch.confirmDel, ["weSearch_delete_do"]);
 			break;
-		case "tool_weSearch_delete_do":
-			top.content.editor.edbody.document.we_form.cmd.value = "tool_weSearch_delete";
+		case "weSearch_delete_do":
+			top.content.editor.edbody.document.we_form.cmd.value = "weSearch_delete";
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&home=0&pnt=edheader";
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=weSearch&home=0&pnt=edfooter";
 			top.content.editor.edbody.submitForm();
 			break;
-		case "tool_weSearch_new_forDocuments":
+		case "weSearch_new_forDocuments":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -142,14 +142,14 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forDocuments");
+				window.setTimeout(we_cmd, 10, "weSearch_new_forDocuments");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
 
-		case "tool_weSearch_new_forTemplates":
+		case "weSearch_new_forTemplates":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.activ_tab = 2;
@@ -158,14 +158,14 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forTemplates");
+				window.setTimeout(we_cmd, 10, "weSearch_new_forTemplates");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
 
-		case "tool_weSearch_new_forObjects":
+		case "weSearch_new_forObjects":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.activ_tab = 3;
@@ -174,14 +174,14 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forObjects");
+				window.setTimeout(we_cmd, 10, "weSearch_new_forObjects");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
 
-		case "tool_weSearch_new_forMedia":
+		case "weSearch_new_forMedia":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.activ_tab = 5;
@@ -190,14 +190,14 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new_forMedia");
+				window.setTimeout(we_cmd, 10, "weSearch_new_forMedia");
 			}
 			if (treeData) {
 				treeData.unselectNode();
 			}
 			break;
 
-		case "tool_weSearch_new_advSearch":
+		case "weSearch_new_advSearch":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				top.content.activ_tab = 3;
@@ -206,7 +206,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				window.setTimeout(we_cmd, 10, "tool_weSearch_new_advSearch");
+				window.setTimeout(we_cmd, 10, "weSearch_new_advSearch");
 			}
 			if (treeData) {
 				treeData.unselectNode();

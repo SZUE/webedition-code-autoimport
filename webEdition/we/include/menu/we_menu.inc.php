@@ -365,7 +365,7 @@ $we_menu = [
 	], [// File > Search
 		'text' => g_l('javaMenu_global', '[search]') . '&hellip;',
 		'parent' => 'file',
-		'cmd' => 'tool_weSearch_edit',
+		'cmd' => 'weSearch_edit',
 	], [
 		'parent' => 'file',
 	],
@@ -663,7 +663,6 @@ if(defined('OBJECT_TABLE')){
 $allModules = we_base_moduleInfo::getAllModules();
 we_base_moduleInfo::orderModuleArray($allModules);
 
-//$moduleList = 'schedpro|';
 foreach($allModules as $m){
 	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
 		$we_menu[] = [
