@@ -39,9 +39,9 @@ abstract class we_export_functions{
 	 *
 	 * @return     bool
 	 */
-	static function fileCreate($format = we_import_functions::TYPE_GENERIC_XML, $filename, $path){
+	static function fileCreate($format = we_import_functions::TYPE_XML, $filename, $path){
 		switch($format){
-			case we_import_functions::TYPE_GENERIC_XML:
+			case we_import_functions::TYPE_XML:
 				$file_name = ($path === "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
 
 				$continue = true;
@@ -90,9 +90,9 @@ abstract class we_export_functions{
 	 *
 	 * @return     void
 	 */
-	static function fileComplete($format = we_import_functions::TYPE_GENERIC_XML, $filename){
+	static function fileComplete($format = we_import_functions::TYPE_XML, $filename){
 		switch($format){
-			case we_import_functions::TYPE_GENERIC_XML:
+			case we_import_functions::TYPE_XML:
 				we_base_file::save($filename, we_backup_util::weXmlExImFooter, "ab");
 
 				break;
@@ -115,7 +115,7 @@ abstract class we_export_functions{
 	 */
 	static function fileInit($format, $filename, $path, $doctype = null, $tableid = null){
 		switch($format){
-			case we_import_functions::TYPE_GENERIC_XML:
+			case we_import_functions::TYPE_XML:
 				$file = "";
 
 				// Get a matching doctype or classname
@@ -169,7 +169,7 @@ abstract class we_export_functions{
 	 */
 	static function fileFinish($format, $text, $doctype, $filename, $csv_lineend = "\\n"){
 		switch($format){
-			case we_import_functions::TYPE_GENERIC_XML:
+			case we_import_functions::TYPE_XML:
 				// Close document tag
 				$text .= "\t</" . $doctype . ">\n";
 				we_base_file::save($filename, $text, "ab");
@@ -372,9 +372,9 @@ abstract class we_export_functions{
 	 *
 	 * @return     string
 	 */
-	static function formatOutput($tagname, $content, $format = we_import_functions::TYPE_GENERIC_XML, $tabs = 2, $cdata = false, $fix_content = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows"){
+	static function formatOutput($tagname, $content, $format = we_import_functions::TYPE_XML, $tabs = 2, $cdata = false, $fix_content = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows"){
 		switch($format){
-			case we_import_functions::TYPE_GENERIC_XML:
+			case we_import_functions::TYPE_XML:
 				// Generate intending tabs
 				$tabs = '';
 				for($i = 0; $i < $tabs; $i++){
@@ -535,7 +535,7 @@ abstract class we_export_functions{
 							}
 						} else { // is a normal text field
 							$tag_name = self::correctTagname($k, 'text', $tag_counter);
-							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
+							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $format, 2, $cdata, $format == we_import_functions::TYPE_XML);
 
 							// Remove tagname from array
 							if(isset($records)){
@@ -641,15 +641,15 @@ abstract class we_export_functions{
 					$realName = $field['type'] . '_' . $field['name'];
 
 					switch($format){
-						case we_import_functions::TYPE_GENERIC_XML:
+						case we_import_functions::TYPE_XML:
 							$tag_name = self::correctTagname($field['name'], 'value', $i);
 							$content = $we_obj->getElementByType($field['name'], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
-							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($content, 0, ''), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
+							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($content, 0, ''), $format, 2, $cdata, (($format == we_import_functions::TYPE_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
 						case 'csv':
 							$content = $we_obj->getElementByType($field['name'], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
-							$file .= self::formatOutput("", we_document::parseInternalLinks($content, 0, ''), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
+							$file .= self::formatOutput("", we_document::parseInternalLinks($content, 0, ''), $format, 2, false, (($format == we_import_functions::TYPE_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 							break;
 					}

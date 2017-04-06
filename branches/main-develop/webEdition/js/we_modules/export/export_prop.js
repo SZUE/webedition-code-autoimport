@@ -59,6 +59,84 @@ function we_cmd() {
 			document.we_form.cat.value = args[1].allIDs.join(",");
 			submitForm();
 			break;
+		case 'switch_type':
+			var type = args[1].value || WE().consts.import.TYPE_WE;
+			var i = 0;
+			var opts;
+
+			var exportOptions = top.content.editor.edbody.document.getElementsByClassName('exportOptions');
+			for(i = 0; i < exportOptions.length; i++){
+				exportOptions[i].style.display = 'none';
+			}
+
+			var extensions = top.content.editor.edbody.document.getElementsByClassName('exportExtension');
+
+			switch(type){
+				case WE().consts.import.TYPE_XML:
+					top.content.editor.edbody.document.we_form.SelectionType.value = 'doctype';
+					top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
+					closeAllType();
+					toggle('doctype');
+
+					top.content.editor.edbody.document.we_form.headerSwitch.disabled = false;
+					opts = top.content.editor.edbody.document.we_form.headerSwitch.options;
+					for(i = 0; i < opts.length; i++){
+						switch(opts[i].value){
+							case WE().consts.tables.OBJECT_FILES_TABLE:
+							case WE().consts.tables.FILE_TABLE:
+								continue;
+								break;
+							default:
+								opts[i].disabled = true;
+						}
+					}
+					if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE){
+						setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+						top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.FILE_TABLE;
+					}
+					top.content.editor.edbody.document.getElementById('optionsGXML').style.display = 'block';
+
+					for(i = 0; i < extensions.length; i++){
+						extensions[i].innerHTML = '.xml';
+					}
+					top.content.editor.edbody.document.we_form.Extension.value = '.xml';
+					break;
+				case WE().consts.import.TYPE_CSV:
+					top.content.editor.edbody.document.we_form.SelectionType.value = 'classname';
+					top.content.editor.edbody.document.we_form.SelectionType.disabled = true;
+					closeAllType();
+					toggle('classname');
+
+					setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+					top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.OBJECT_FILES_TABLE;
+					top.content.editor.edbody.document.we_form.headerSwitch.disabled = true;
+					top.content.editor.edbody.document.getElementById('optionsCSV').style.display = 'block';
+
+					for(i = 0; i < extensions.length; i++){
+						extensions[i].innerHTML = '.csv';
+					}
+					top.content.editor.edbody.document.we_form.Extension.value = '.csv';
+					break;
+				default:
+					top.content.editor.edbody.document.we_form.SelectionType.value = 'doctype';
+					top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
+					closeAllType();
+					toggle('doctype');
+
+					top.content.editor.edbody.document.we_form.headerSwitch.disabled = false;
+					opts = top.content.editor.edbody.document.we_form.headerSwitch.options;
+					for(i = 0; i < opts.length; i++){
+						opts[i].disabled = false;
+					}
+					top.content.editor.edbody.document.getElementById('optionsWXML').style.display = 'block';
+
+					for(i = 0; i < extensions.length; i++){
+						extensions[i].innerHTML = '.xml';
+					}
+					top.content.editor.edbody.document.we_form.Extension.value = '.xml';
+			}
+
+			break;
 		case "del_cat":
 		case "del_all_cats":
 			document.we_form.cmd.value = args[0];

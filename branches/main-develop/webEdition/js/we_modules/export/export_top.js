@@ -142,6 +142,8 @@ function we_cmd() {
 			}
 			/* falls through */
 		case "save_export":
+			top.content.editor.edbody.document.we_form.Text.value = top.content.editor.edbody.document.we_form.Text_visible.value + top.content.editor.edbody.document.we_form.Extension.value;
+
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
@@ -151,10 +153,11 @@ function we_cmd() {
 			}
 
 			if (top.content.editor.edbody.loaded) {
-				if (top.content.editor.edbody.document.we_form.Text.value === "") {
+				if (top.content.editor.edbody.document.we_form.Text.value === '') {
 					WE().util.showMessage(WE().consts.g_l.exports.name_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
+
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.pnt.value = args[0] === "start_export" ? "load" : "edbody";
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;

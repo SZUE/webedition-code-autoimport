@@ -144,7 +144,6 @@ function setHead(tab) {
 	window.setTimeout(startTree, 100);
 }
 
-
 function drawTree() {
 	document.getElementById("treetable").innerHTML = '<div class="treetable ' + treeData.getLayout() + '">' +
 		treeData.draw(treeData.startloc, "") +

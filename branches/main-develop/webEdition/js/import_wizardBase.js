@@ -156,14 +156,14 @@ function we_cmd() {
 			top.close();
 			top.opener.top.we_cmd("recover_backup");
 			break;
-		case 'fileupload_callbackWXMLImport':
-			top.doNext_WXMLImportStep1();
+		case 'fileupload_callbackWE':
+			top.doNext_WEStep1();
 			break;
-		case 'fileupload_callbackGXMLImport':
-			top.doNext_GXMLImportStep1();
+		case 'fileupload_callbackXML':
+			top.doNext_XMLStep1();
 			break;
-		case 'fileupload_callbackCSVImport':
-			top.doNext_CSVImportStep1();
+		case 'fileupload_callbackCSV':
+			top.doNext_CSVStep1();
 			break;
 		case 'fileupload_doOnFileSelect':
 			top.setFormField('v[rdofloc]', true, 'radio', 1);
@@ -294,9 +294,9 @@ function handleEvent(evt) {
 
 	switch (task) {
 		case 'getFileImport_step_1':
-		case 'getWXMLImport_step_1':
-		case 'getGXMLImport_step_1':
-		case 'getCSVImport_step_1':
+		case 'getWE_step_1':
+		case 'getXML_step_1':
+		case 'getCSV_step_1':
 			handleEvent_step_1(evt, type);
 			break;
 		case 'getFileImport_step_2':
@@ -304,23 +304,23 @@ function handleEvent(evt) {
 			break;
 		case 'getFileImport_step_3':
 			break;
-		case 'getWXMLImport_step_2':
-			handleEvent_WXMLImport_step_2(evt);
+		case 'getWE_step_2':
+			handleEvent_WE_step_2(evt);
 			break;
-		case 'getWXMLImport_step_3':
-			handleEvent_WXMLImport_step_3(evt);
+		case 'getWE_step_3':
+			handleEvent_WE_step_3(evt);
 			break;
-		case 'getGXMLImport_step_2':
-			handleEvent_GXMLImport_step_2(evt);
+		case 'getXML_step_2':
+			handleEvent_XML_step_2(evt);
 			break;
-		case 'getGXMLImport_step_3':
-			handleEvent_GXMLImport_step_3(evt);
+		case 'getXML_step_3':
+			handleEvent_XML_step_3(evt);
 			break;
-		case 'getCSVImport_step_2':
-			handleEvent_CSVImportStep_2(evt);
+		case 'getCSV_step_2':
+			handleEvent_CSVStep_2(evt);
 			break;
-		case 'getCSVImport_step_3':
-			handleEvent_CSVImportStep_3(evt);
+		case 'getCSV_step_3':
+			handleEvent_CSVStep_3(evt);
 			break;
 		default:
 			if (step === 0) {
@@ -368,7 +368,7 @@ function handleEvent_step_0(evt) {
 function handleEvent_step_1(evt, type) {
 	var f = top.wizbody.document.we_form;
 
-	if (type === 'GXMLImport') {
+	if (type === 'XML') {
 		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value :
 						f.elements.docTypeTemplateId.value);
 	}
@@ -383,14 +383,14 @@ function handleEvent_step_1(evt, type) {
 				top.wizbody.weFileUpload_instance.startUpload(); //FIXME: move this to the respective functions!
 			} else {
 				switch (type) {
-					case 'WXMLImport':
-						doNext_WXMLImportStep1();
+					case 'WE':
+						doNext_WEStep1();
 						break;
-					case 'GXMLImport':
-						doNext_GXMLImportStep1();
+					case 'XML':
+						doNext_XMLStep1();
 						break;
-					case 'CSVImport':
-						doNext_CSVImportStep1();
+					case 'CSV':
+						doNext_CSVStep1();
 						break;
 					case 'FileImport':
 						doNext_FileImportStep1();
@@ -431,7 +431,7 @@ function handleEvent_FileImport_step_2(evt) {
 	}
 }
 
-function handleEvent_WXMLImport_step_2(evt) {
+function handleEvent_WE_step_2(evt) {
 	var we_form = top.wizbody.document.we_form;
 	switch (evt) {
 		case "previous":
@@ -450,7 +450,7 @@ function handleEvent_WXMLImport_step_2(evt) {
 	}
 }
 
-function handleEvent_WXMLImport_step_3(evt) {
+function handleEvent_WE_step_3(evt) {
 	switch (evt) {
 		case "cancel":
 			top.close();
@@ -458,7 +458,7 @@ function handleEvent_WXMLImport_step_3(evt) {
 	}
 }
 
-function handleEvent_GXMLImport_step_2(evt) {
+function handleEvent_XML_step_2(evt) {
 	var f = top.wizbody.document.we_form;
 	switch (evt) {
 		case 'previous':
@@ -486,7 +486,7 @@ function handleEvent_GXMLImport_step_2(evt) {
 	}
 }
 
-function handleEvent_GXMLImport_step_3(evt) {
+function handleEvent_XML_step_3(evt) {
 	var f = top.wizbody.document.we_form;
 	switch (evt) {
 		case 'previous':
@@ -516,7 +516,7 @@ function doNext_FileImportStep1() {
 	frame.document.we_form.submit();
 }
 
-function doNext_WXMLImportStep1() {
+function doNext_WEStep1() {
 	var f = top.wizbody.document.we_form,
 					fs = f.elements['v[fserver]'].value,
 					fl = 'placeholder.xml';
@@ -541,7 +541,7 @@ function doNext_WXMLImportStep1() {
 	window.setTimeout(top.we_submit_form, 50, top.wizbody.document.forms.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import');
 }
 
-function doNext_GXMLImportStep1() {
+function doNext_XMLStep1() {
 	var f = top.wizbody.document.we_form;
 	f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
 
@@ -583,7 +583,7 @@ function doNext_GXMLImportStep1() {
 	}
 }
 
-function doNext_CSVImportStep1() {
+function doNext_CSVStep1() {
 	var f = top.wizbody.document.we_form,
 					fvalid = true,
 					fs = f.elements['v[fserver]'].value,
@@ -615,7 +615,7 @@ function doNext_CSVImportStep1() {
 	}
 }
 
-function handleEvent_CSVImportStep_2(evt) {
+function handleEvent_CSVStep_2(evt) {
 	var f = top.wizbody.document.we_form;
 	if (f.elements['v[import_type]'].value == 'documents') {
 		f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
@@ -662,7 +662,7 @@ function handleEvent_CSVImportStep_2(evt) {
 	}
 }
 
-function handleEvent_CSVImportStep_3(evt) {
+function handleEvent_CSVStep_3(evt) {
 	var f = top.wizbody.document.we_form;
 	switch (evt) {
 		case 'previous':
@@ -673,7 +673,7 @@ function handleEvent_CSVImportStep_3(evt) {
 			f.step.value = 3;
 			f.mode.value = 1;
 			f.elements['v[mode]'].value = 1;
-			f.elements['v[startCSVImport]'].value = 1;
+			f.elements['v[startCSV]'].value = 1;
 			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
 			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&mode=1');
 			break;
@@ -771,7 +771,7 @@ function cycle() {
 
 function we_import(mode, cid, reload) {
 	if (reload) {
-		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=WXMLImport&noload=1';
+		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=WE&noload=1';
 	}
 
 	var we_form = top.wizcmd.document.we_form;

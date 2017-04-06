@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
-	const TYPE_CSV = 'CSVImport';
-	const TYPE_GENERIC_XML = 'GXMLImport';
-	const TYPE_WE_XML = 'WXMLImport';
+	const TYPE_CSV = 'CSV';
+	const TYPE_XML = 'XML';
+	const TYPE_WE = 'WE';
 	const TYPE_LOCAL_FILES = 'FileImport';
 	const TYPE_SITE = 'siteImport';
 

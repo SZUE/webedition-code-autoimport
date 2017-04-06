@@ -277,7 +277,7 @@ class we_exim_XMLExIm{
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$db = new DB_WE();
 		if($selection === 'manual'){
-			if($extype == we_import_functions::TYPE_WE_XML){
+			if($extype == we_import_functions::TYPE_WE){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
 				$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';

@@ -37,6 +37,7 @@ class we_export_export extends we_base_model{
 	var $ExportTo; // local | server
 	var $ServerPath;
 	var $Filename;
+	public $Extension = '.xml';
 	var $Selection = 'auto'; // auto | manual
 	var $SelectionType = 'doctype'; // doctype | classname
 	var $DocType;
@@ -61,6 +62,12 @@ class we_export_export extends we_base_model{
 	var $ExportDepth;
 	var $Log = [];
 	var $ExportFilename;
+	public $ExportType = we_import_functions::TYPE_WE;
+	public $XMLCdata;
+	public $CSVDelimiter;
+	public $CSVLineend;
+	public $CSVEnclose;
+	public $CSVFieldnames;
 
 	//var $protected = ['ID', 'ParentID', 'IsFolder', 'Path', 'Text'];
 
@@ -75,6 +82,7 @@ class we_export_export extends we_base_model{
 			$this->ID = $exportID;
 			$this->load($exportID);
 		}
+
 		// clear expiered stuff
 		$this->selDocs = $this->clearExpired($this->selDocs, FILE_TABLE);
 		$this->selTempl = $this->clearExpired($this->selTempl, TEMPLATES_TABLE);
@@ -167,11 +175,13 @@ class we_export_export extends we_base_model{
 	}
 
 	function setDefaults(){
+		$this->ExportType = we_import_functions::TYPE_WE;
 		$this->ParentID = 0;
-		$this->Text = "weExport_" . time();
+		$this->Filename = 'weExport_' . time();
+		$this->Extension = '.xml';
+		$this->Text = 'weExport_' . time() . $this->Extension;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
-		$this->Filename = $this->Text . ".xml";
 		$this->ExportDepth = 5;
 
 		$this->HandleDefTemplates = 0;
@@ -184,6 +194,12 @@ class we_export_export extends we_base_model{
 		$this->HandleCategorys = 0;
 		$this->HandleOwners = 0;
 		$this->HandleNavigation = 0;
+
+		$this->XMLCdata = 1;
+		$this->CSVDelimiter = 'semicolon';
+		$this->CSVLineend = 'windows';
+		$this->CSVEnclose = 'doublequote';
+		$this->CSVFieldnames = 0;
 	}
 
 	function setPath(){
@@ -201,7 +217,7 @@ class we_export_export extends we_base_model{
 
 	function evalPath($id = 0){
 		$db_tmp = new DB_WE();
-		$path = "";
+		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
 			$path = $this->Text;

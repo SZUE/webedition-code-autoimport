@@ -153,7 +153,7 @@ class we_export_frames extends we_modules_frame{
 
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') .
 			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], $this->getHTMLTab2($preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_LOG ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 	}
 
@@ -161,8 +161,10 @@ class we_export_frames extends we_modules_frame{
 		$parts = [
 			[
 				'headline' => g_l('export', '[property]'),
-				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=true;"'), g_l('export', '[name]')) . '<br/>' .
-				$this->getHTMLDirChooser(),
+				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text_visible", '', str_replace($this->View->export->Extension, '', $this->View->export->Text), '', 'style="width: 490px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=true;"') . '<span class="exportExtension"> ' . $this->View->export->Extension . '</span>', g_l('export', '[name]')) .
+				we_html_element::htmlHiddens(['Extension' => $this->View->export->Extension,
+						'Text' => str_replace($this->View->export->Extension, '', $this->View->export->Text)]) .
+					'<br/>' . $this->getHTMLDirChooser(),
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
 
@@ -170,21 +172,36 @@ class we_export_frames extends we_modules_frame{
 			return $parts;
 		}
 
+		$wexportEnabled = (we_base_permission::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']));
+		$exTypes = array_filter([
+			we_import_functions::TYPE_WE => ($wexportEnabled ? g_l('export', '[wxml_export]') : false),
+			we_import_functions::TYPE_XML => (we_base_permission::hasPerm('GENERICXML_EXPORT') ? g_l('export', '[gxml_export]') : false),
+			we_import_functions::TYPE_CSV => (we_base_permission::hasPerm('CSV_EXPORT') ? g_l('export', '[csv_export]') : false),
+		]);
+
 		$parts[] = [
 			'headline' => g_l('export', '[export_to]'),
-			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=true;"'), g_l('export', '[filename]')),
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('ExportType', $exTypes, 1, $this->View->export->ExportType, false,
+					['onchange' => "we_cmd('switch_type', this);top.content.hot=true;"], 'value', 520), g_l('export', '[file_format]')
+				),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		];
 
-		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
+		$parts[] = [
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 490px;" onchange="top.content.hot=true;"') . '<span class="exportExtension"> ' . $this->View->export->Extension . '</span>', g_l('export', '[filename]')),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1
+		];
+
+		$table = new we_html_table(['class' => 'default withSpace'], 3, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', ['local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')], 1, $this->View->export->ExportTo, false, [
 				'onchange' => 'toggle(\'save_to\');top.content.hot=true;'], 'value', 520));
 		$table->setCol(1, 0, ["id" => "save_to", 'style' => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", we_base_ContentTypes::FOLDER), g_l('export', '[save_to]')));
 
 
-		$parts[] = ["headline" => "",
-			"html" => $table->getHtml(),
+		$parts[] = ['headline' => '',
+			'html' => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
@@ -201,12 +218,19 @@ class we_export_frames extends we_modules_frame{
 
 		$table = new we_html_table(['class' => 'default'], 4, 1);
 
-		$seltype = ['doctype' => g_l('export', '[doctypename]')];
+		$selectorAttribs = ['name' => 'SelectionType',
+			'onchange' => "closeAllType();toggle(this.value);top.content.hot=true;",
+			'style' => 'width:520px;',
+			'disabled' => ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'disabled' : false)];
+		$selectionType = new we_html_select(array_filter($selectorAttribs));
+		$selectionType->addOption(FILE_TABLE, g_l('export', '[documents]'));
+		$selectionType->addOption('doctype', g_l('export', '[doctypename]'));
 		if(defined('OBJECT_TABLE')){
-			$seltype['classname'] = g_l('export', '[classname]');
+			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? ['selected' => 'selected'] : []));
 		}
 
-		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, ['onchange' => "closeAllType();toggle(this.value);top.content.hot=true;"], 'value', 520));
+		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], $selectionType->getHtml());
+		$this->View->export->SelectionType = $this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'classname' : $this->View->export->SelectionType;
 		$table->setCol(1, 0, ["id" => "doctype", 'style' => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
 				'onchange' => 'top.content.hot=true;'], 'value', 520) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
@@ -229,7 +253,7 @@ class we_export_frames extends we_modules_frame{
 		);
 
 		$table->setCol(2, 0, ['id' => 'manual', 'style' => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 520) .
-			$this->SelectionTree->getHTMLMultiExplorer(520, 200)
+			$this->SelectionTree->getHTMLMultiExplorer(520, 200, true, FILE_TABLE, $this->View->export->ExportType)
 		);
 
 		$parts[] = ["headline" => g_l('export', '[selection]'),
@@ -240,7 +264,18 @@ class we_export_frames extends we_modules_frame{
 		return $parts;
 	}
 
-	private function getHTMLTab2(){
+	private function getHTMLTab2($preselect = ''){
+		$optionsWE = we_html_multiIconBox::getHTML('', $this->getHTMLOptionsWE(), 30, '', -1, '', '', false, $preselect);
+		$optionsXML = we_html_multiIconBox::getHTML('', $this->getHTMLOptionsXML(), 30, '', -1, '', '', false, $preselect);
+		$optionsCSV = we_html_multiIconBox::getHTML('', $this->getHTMLOptionsCSV(), 30, '', -1, '', '', false, $preselect);
+
+		return we_html_element::htmlDiv(['id' => 'optionsWXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_WE ? 'block' : 'none') . ';'], $optionsWE) .
+			we_html_element::htmlDiv(['id' => 'optionsGXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_XML ? 'block' : 'none') . ';'], $optionsXML) .
+			we_html_element::htmlDiv(['id' => 'optionsCSV', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'block' : 'none') . ';'], $optionsCSV);
+		
+	}
+
+	private function getHTMLOptionsWE(){
 		$formattable = new we_html_table([], 5, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', 'top.content.hot=true;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', 'top.content.hot=true;'));
@@ -252,7 +287,7 @@ class we_export_frames extends we_modules_frame{
 
 		$parts = [["headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
-			'space' => we_html_multiIconBox::SPACE_MED]
+			'space' => we_html_multiIconBox::SPACE_MED],
 		];
 
 		if(defined('OBJECT_TABLE')){
@@ -289,9 +324,43 @@ class we_export_frames extends we_modules_frame{
 			'space' => we_html_multiIconBox::SPACE_MED
 		];
 
-
 		return $parts;
 	}
+
+	private function getHTMLOptionsXML(){
+		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
+		$table->setColContent(0, 0, we_html_forms::radiobutton(1, ($this->View->export->XMLCdata === 1), 'XMLCdata', g_l('export', '[export_xml_cdata]'), true, 'defaultfont', "top.cdata=1"));
+		$table->setColContent(1, 0, we_html_forms::radiobutton(0, ($this->View->export->XMLCdata === 0), 'XMLCdata', g_l('export', '[export_xml_entities]'), true, 'defaultfont', "top.cdata=0"));
+
+		return [['headline' => g_l('export', '[cdata]'),
+			'html' => $table->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_MED
+		]];
+	}
+
+	private function getHTMLOptionsCSV(){
+		$fileformattable = new we_html_table([], 4, 1);
+		$file_encoding = new we_html_select(['name' => 'CSVLineend', 'class' => 'weSelect', 'style' => 'width: 254px;']);
+		$file_encoding->addOption("windows", g_l('export', '[windows]'));
+		$file_encoding->addOption("unix", g_l('export', '[unix]'));
+		$file_encoding->addOption("mac", g_l('export', '[mac]'));
+		$file_encoding->selectOption($this->View->export->CSVLineend);
+		$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('export', '[csv_lineend]') . '<br/>' . $file_encoding->getHtml());
+		$fileformattable->setColContent(1, 0, $this->getHTMLChooser('CSVDelimiter', $this->View->export->CSVDelimiter, ['semicolon' => g_l('export', '[semicolon]'), 
+				'comma' => g_l('export', '[comma]'),
+				'colon' => g_l('export', '[colon]'),
+				'tab' => g_l('export', '[tab]'),
+				'space' => g_l('export', '[space]')
+			], g_l('export', '[csv_delimiter]')));
+		$fileformattable->setColContent(2, 0, $this->getHTMLChooser("CSVEnclose", $this->View->export->CSVEnclose, ["doublequote" => g_l('export', '[double_quote]'), 
+				"singlequote" => g_l('export', '[single_quote]')
+			], g_l('export', '[csv_enclose]')));
+		$fileformattable->setColContent(3, 0, we_html_forms::checkboxWithHidden(($this->View->export->CSVFieldnames ? true : false), 'CSVFieldnames', g_l('export', '[csv_fieldnames]'), false, 'defaultfont'));
+
+		return [['headline' => g_l('export', '[csv_params]'), 'html' => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED]];
+	}
+	
+
 
 	private function getHTMLTab3(){
 		return [
@@ -319,10 +388,30 @@ class we_export_frames extends we_modules_frame{
 
 		return $weSuggest->getHTML();
 	}
+	
+	private function getHTMLChooser($name, $value, $values, $title){ // FIXME: function taken from we_export_wizard: may be obsolete
+		$input_size = 5;
+
+		$select = new we_html_select(['name' => $name . '_select', 'class' => 'weSelect', 'onchange' => 'document.we_form.' . $name . '.value=this.options[this.selectedIndex].value;this.selectedIndex=0',
+			'style' => 'width:200;']);
+		$select->addOption('', '');
+		foreach($values as $k => $v){
+			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
+		}
+
+		$table = new we_html_table(['class' => 'default', "width" => 250], 1, 2);
+
+		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value) . '  ');
+		$table->setColContent(0, 1, $select->getHtml());
+
+		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);
+	}
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "")]);
+			$table = $this->View->export->ExportType === we_import_functions::TYPE_CSV ? OBJECT_FILES_TABLE : we_base_request::_(we_base_request::TABLE, "tab");
+			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . $table . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "")]);
+
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 		return '';
@@ -344,7 +433,6 @@ class we_export_frames extends we_modules_frame{
 			return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 		}
 
-
 		$progress_update = [
 			'log' => [],
 			'text' => '',
@@ -365,27 +453,34 @@ class we_export_frames extends we_modules_frame{
 				$finalClasses = [];
 			}
 			$xmlExIm = new we_exim_XMLExport();
-			$xmlExIm->getSelectedItems($this->View->export->Selection, we_import_functions::TYPE_WE_XML, "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
+			$xmlExIm->getSelectedItems($this->View->export->Selection, we_import_functions::TYPE_WE, "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
 
 
-			$xmlExIm->setOptions(["handle_def_templates" => $this->View->export->HandleDefTemplates,
-				"handle_doctypes" => $this->View->export->HandleDoctypes,
-				"handle_categorys" => $this->View->export->HandleCategorys,
-				"handle_def_classes" => $this->View->export->HandleDefClasses,
-				"handle_document_includes" => $this->View->export->HandleDocIncludes,
-				"handle_document_linked" => $this->View->export->HandleDocLinked,
-				"handle_object_includes" => $this->View->export->HandleObjIncludes,
-				"handle_object_embeds" => $this->View->export->HandleObjEmbeds,
-				"handle_class_defs" => $this->View->export->HandleDefClasses,
-				"handle_owners" => $this->View->export->HandleOwners,
-				"export_depth" => $this->View->export->ExportDepth,
-				"handle_documents" => 1,
-				"handle_templates" => 1,
-				"handle_classes" => 1,
-				"handle_objects" => 1,
-				"handle_navigation" => $this->View->export->HandleNavigation,
-				"handle_thumbnails" => $this->View->export->HandleThumbnails
+			$xmlExIm->setOptions(['export_type' => $this->View->export->ExportType,
+				'handle_def_templates' => $this->View->export->HandleDefTemplates,
+				'handle_doctypes' => $this->View->export->HandleDoctypes,
+				'handle_categorys' => $this->View->export->HandleCategorys,
+				'handle_def_classes' => $this->View->export->HandleDefClasses,
+				'handle_document_includes' => $this->View->export->HandleDocIncludes,
+				'handle_document_linked' => $this->View->export->HandleDocLinked,
+				'handle_object_includes' => $this->View->export->HandleObjIncludes,
+				'handle_object_embeds' => $this->View->export->HandleObjEmbeds,
+				'handle_class_defs' => $this->View->export->HandleDefClasses,
+				'handle_owners' => $this->View->export->HandleOwners,
+				'export_depth' => $this->View->export->ExportDepth,
+				'handle_documents' => 1,
+				'handle_templates' => 1,
+				'handle_classes' => 1,
+				'handle_objects' => 1,
+				'handle_navigation' => $this->View->export->HandleNavigation,
+				'handle_thumbnails' => $this->View->export->HandleThumbnails,
+
+				'xml_cdata' => $this->View->export->XMLCdata,
+				'csv_delimiter' => $this->View->export->CSVDelimiter,
+				'csv_lineend' => $this->View->export->CSVLineend,
+				'csv_enclose' => $this->View->export->CSVEnclose,
+				'csv_fieldnames' => $this->View->export->CSVFieldnames
 			]);
 
 			$xmlExIm->RefTable->reset();

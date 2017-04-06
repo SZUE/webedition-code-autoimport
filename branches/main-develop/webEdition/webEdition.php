@@ -206,8 +206,8 @@ $const = [
 	],
 	'import' => [
 		'TYPE_CSV' => we_import_functions::TYPE_CSV,
-		'TYPE_GENERIC_XML' => we_import_functions::TYPE_GENERIC_XML,
-		'TYPE_WE_XML' => we_import_functions::TYPE_WE_XML,
+		'TYPE_XML' => we_import_functions::TYPE_XML,
+		'TYPE_WE' => we_import_functions::TYPE_WE,
 		'TYPE_LOCAL_FILES' => we_import_functions::TYPE_LOCAL_FILES,
 		'TYPE_SITE' => we_import_functions::TYPE_SITE
 	]
