@@ -14,7 +14,7 @@
 CREATE TABLE ###TBLPREFIX###tblContent (
   ID int unsigned NOT NULL auto_increment,
   DID int unsigned NOT NULL default '0',
-  `Type` enum('attrib','block','checkbox','collection','customer','date','formfield','href','img','input','LanguageDocName','link','linklist','object','txt','variant','variants','video') NOT NULL default 'txt',
+  `Type` enum('attrib','block','checkbox','collection','customer','date','formfield','href','img','input','LanguageDocName','link','linklist','object','select','txt','variant','variants','video') NOT NULL default 'txt',
   `Name` varchar(255) NOT NULL default '',
 	nHash binary(16) NOT NULL,
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
