@@ -396,11 +396,10 @@ function we_cmd() {
 			opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			break;
 			// it must be the last command
-		case "delete_navi":
-			if (!caller.confirm(WE().consts.g_l.editorScript.confirm_navDel)) {
-				break;
-			}
-			/* falls through */
+		case "delete_navi_ask":
+			args[0] = 'delete_navi';
+			WE().util.showConfirm(caller, "", WE().consts.g_l.editorScript.confirm_navDel, args);
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 
