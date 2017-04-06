@@ -97,7 +97,7 @@ class we_customer_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 
-		$tabs = new we_tabs();
+		$tabs = new we_gui_tabs();
 
 		$branches_names = $this->View->customer->getBranchesNames();
 

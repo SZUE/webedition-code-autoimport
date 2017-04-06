@@ -409,7 +409,3 @@ abstract class we_tool_lookup{
 	}
 
 }
-
-abstract class weToolLookup extends we_tool_lookup{
-
-}

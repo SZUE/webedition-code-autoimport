@@ -59,7 +59,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 		$sid = $mod === 'customer' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'sid');
 		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$mods = we_base_moduleInfo::getAllModules();
 		we_base_moduleInfo::orderModuleArray($mods);
 

@@ -180,7 +180,7 @@ class we_shop_frames extends we_modules_frame{
 			$cid = 0;
 			$cdat = '';
 		}
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		if(!empty($_REQUEST["mid"]) && $_REQUEST["mid"] != '00'){
 			$we_tabs->addTab(g_l('tabs', '[module][overview]'), '', true, self::TAB_OVERVIEW);
@@ -227,7 +227,7 @@ class we_shop_frames extends we_modules_frame{
 		$yearTrans = f('SELECT DATE_FORMAT(MAX(DateOrder),"%Y") AS DateOrd FROM ' . SHOP_ORDER_TABLE, '', $this->db);
 
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		if(!empty($_REQUEST["mid"])){
 			$we_tabs->addTab(g_l('tabs', '[module][overview]'), '', true, 0);
 		} else {

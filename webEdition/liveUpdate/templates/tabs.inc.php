@@ -28,7 +28,7 @@
  */
 
 // initialise tabs
-$tabs = new we_tabs();
+$tabs = new we_gui_tabs();
 $tabs->addTab(g_l('liveUpdate', '[tabs][update]'), 'fa-recycle', ($this->Data['activeTab'] =='update' ), "'update'");
 $tabs->addTab(g_l('liveUpdate', '[tabs][languages]'), 'fa-language', ($this->Data['activeTab'] == 'languages'), "'languages'");
 $tabs->addTab(g_l('liveUpdate', '[tabs][updatelog]'), 'fa-list-alt', ($this->Data['activeTab'] =='updatelog'), "'updatelog'");

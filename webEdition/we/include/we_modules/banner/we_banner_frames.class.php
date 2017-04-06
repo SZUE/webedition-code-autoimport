@@ -58,7 +58,7 @@ class we_banner_frames extends we_modules_frame{
 		$headline1 = g_l('modules_banner', $isFolder ? '[group]' : '[banner]');
 		$text = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_banner', ($isFolder ? '[newbannergroup]' : '[newbanner]')));
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), we_banner_banner::PAGE_PROPERTY, [
 			'title' => g_l('tabs', '[module][properties]')]);

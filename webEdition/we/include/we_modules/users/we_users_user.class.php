@@ -1962,7 +1962,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				$headline1 = g_l('javaMenu_users', '[menu_user]') . ': ';
 		}
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		foreach($tabs as $key => $val){
 			$we_tabs->addTab('', $val[1], ($tab == $key), $key, ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
 		}

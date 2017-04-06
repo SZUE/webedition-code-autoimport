@@ -142,9 +142,9 @@ class we_import_wizard{
 		$pb = '';
 
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
-			$WE_PB = new we_progressBar(0, 200);
-			$WE_PB->addText($text = g_l('import', '[import_progress]'), we_progressBar::TOP, "pb1");
-			$pb = we_progressBar::getJSCode() . we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
+			$WE_PB = new we_gui_progressBar(0, 200);
+			$WE_PB->addText($text = g_l('import', '[import_progress]'), we_gui_progressBar::TOP, "pb1");
+			$pb = we_gui_progressBar::getJSCode() . we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
 
 			// make jsCmd => we need a minimal we_cmd on this frame
 			$jsCmd->addCmd('cycle');

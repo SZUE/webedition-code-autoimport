@@ -61,9 +61,9 @@ class rpcDeleteVersionsWizardCmd extends we_rpc_cmd{
 		unset($_SESSION['weS']['versions']['logDeleteIds']);
 
 
-		$WE_PB = new we_progressBar(100, 200);
+		$WE_PB = new we_gui_progressBar(100, 200);
 
-		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), we_progressBar::TOP, "pb1");
+		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), we_gui_progressBar::TOP, "pb1");
 		//$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 

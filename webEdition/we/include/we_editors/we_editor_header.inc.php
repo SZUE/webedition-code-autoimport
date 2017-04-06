@@ -31,7 +31,7 @@ $z = 0;
 switch($_SESSION['weS']['we_mode']){
 	default:
 	case we_base_constants::MODE_NORMAL:
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		// user has no access to file - only preview mode.
 		$access = $we_doc->userHasAccess();
 		if($access != we_root::USER_HASACCESS && $access != we_root::USER_NO_SAVE){

@@ -216,7 +216,7 @@ abstract class we_backup_preparer{
 	}
 
 	static function getTables($options){
-		$tableMap = include(WE_INCLUDES_PATH . 'we_exim/backup/weTableMap.inc.php');
+		$tableMap = we_backup_tableMap::getMap();
 
 		$tables = [];
 		foreach($options as $group => $enabled){

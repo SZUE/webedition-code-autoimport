@@ -61,8 +61,8 @@ class we_rebuild_wizard{
 	private function getBusy(){
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
-		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
-		$WE_PB->addText(g_l('rebuild', '[savingDocument]'), we_progressBar::TOP, 'pb1');
+		$WE_PB = new we_gui_progressBar(0, ($dc ? 490 : 200));
+		$WE_PB->addText(g_l('rebuild', '[savingDocument]'), we_gui_progressBar::TOP, 'pb1');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", '', 0, 0, "", "", false, false);
@@ -85,7 +85,7 @@ class we_rebuild_wizard{
 			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody([
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_gui_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody([
 					'style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")], ($dc ? $pb : $content->getHtml())
 				)
 		);

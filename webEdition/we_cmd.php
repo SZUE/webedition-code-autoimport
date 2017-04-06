@@ -157,22 +157,22 @@ function findInclude($cmd){
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
 		case 'open_url_in_editor': // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-			echo we_html_tools::getHtmlTop('', '', '', we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'), we_html_element::htmlBody());
+			echo we_html_tools::getHtmlTop('', '', '', we_gui_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'), we_html_element::htmlBody());
 			return true;
 		case 'open_form_in_editor': // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
-			we_SEEM::openFormInEditor();
+			we_gui_SEEM::openFormInEditor();
 			return true;
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
-			we_SEEM::getExtDocFrameset();
+			we_gui_SEEM::getExtDocFrameset();
 			return true;
 		case 'openExtDoc_footer':
-			we_SEEM::getExtDocFooter();
+			we_gui_SEEM::getExtDocFooter();
 			return true;
 		case 'openExtDoc_header':
-			we_SEEM::getExtDocHeader();
+			we_gui_SEEM::getExtDocHeader();
 			return true;
 		case 'openExtDoc_content':
-			we_SEEM::getExtDocContent();
+			we_gui_SEEM::getExtDocContent();
 			return true;
 		case 'edit_document_with_parameters':
 			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 4);

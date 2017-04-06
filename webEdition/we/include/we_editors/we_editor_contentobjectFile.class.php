@@ -72,7 +72,7 @@ class we_editor_contentobjectFile extends we_editor_base{
 				$this->jsCmd->addCmd('orderContainerAdd', $part['name']);
 			}
 		} else {
-			$content .= we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
+			$content .= we_gui_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
 		return $this->getPage($content, $header, [
 				'onload' => "doScrollTo();"

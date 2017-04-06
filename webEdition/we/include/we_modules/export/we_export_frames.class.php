@@ -66,7 +66,7 @@ class we_export_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
 		if($this->View->export->IsFolder == 0){
 			$we_tabs->addTab(g_l('export', '[options]'), '', false, self::TAB_OPTIONS, ["id" => "tab_2"]);
@@ -137,14 +137,14 @@ class we_export_frames extends we_modules_frame{
 		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));
 		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
-		$progressbar = new we_progressBar($progress, 200);
-		$progressbar->addText($text, we_progressBar::TOP, "current_description");
+		$progressbar = new we_gui_progressBar($progress, 200);
+		$progressbar->addText($text, we_gui_progressBar::TOP, "current_description");
 
 		$table2->setCol(0, 4, ["id" => "progress"], $progressbar->getHtml('', 'display: none'));
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())
-				), (isset($progressbar) ? we_progressBar::getJSCode() : "")
+				), (isset($progressbar) ? we_gui_progressBar::getJSCode() : "")
 		);
 	}
 

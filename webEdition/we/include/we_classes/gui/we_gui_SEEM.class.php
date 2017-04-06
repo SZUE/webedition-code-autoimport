@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_SEEM{
+abstract class we_gui_SEEM{
 
 	/**
 	 * we_SEEM::getClassVars
@@ -43,12 +43,12 @@ abstract class we_SEEM{
 	  Pressing these links/ Submitting these forms has the same effect, than selecting the correspondent document in the
 	  Tree-Menue on the left side. Extern docs (with parameters) are also opened within webEdition.
 	 *
-	 * @see      we_SEEM::getAllHrefs
-	 * @see      we_SEEM::parseLinksForEditMode
-	 * @see      we_SEEM::parseLinksForPreviewMode
-	 * @see      we_SEEM::getAllForms
-	 * @see      we_SEEM::parseFormsForEditMode
-	 * @see      we_SEEM::parseFormsForPreviewMode
+	 * @see      we_gui_SEEM::getAllHrefs
+	 * @see      we_gui_SEEM::parseLinksForEditMode
+	 * @see      we_gui_SEEM::parseLinksForPreviewMode
+	 * @see      we_gui_SEEM::getAllForms
+	 * @see      we_gui_SEEM::parseFormsForEditMode
+	 * @see      we_gui_SEEM::parseFormsForPreviewMode
 	 *
 	 * @param    code    string
 	 * @return   code    string with parsed links
@@ -107,8 +107,8 @@ abstract class we_SEEM{
 	 * @desc     This function parses the given code for the edit-mode.
 	  It will change all Links with a SEEM attribute
 	 *
-	 * @see      we_SEEM::getSEEM_Links
-	 * @see      we_SEEM::replaceSEEM_Links
+	 * @see      we_gui_SEEM::getSEEM_Links
+	 * @see      we_gui_SEEM::replaceSEEM_Links
 	 *
 	 * @param    code        string of the complete source code
 	 * @param    linkArray   array of all found links in the document
@@ -136,11 +136,11 @@ abstract class we_SEEM{
 	 *
 	 * @desc     This function parses the given code for the preview-mode.
 	 *
-	 * @see      we_SEEM::onlyUseHyperlinks
-	 * @see      we_SEEM::cleanLinks
-	 * @see      we_SEEM::findRelativePaths
-	 * @see      we_SEEM::getDocIDsByPaths
-	 * @see      we_SEEM::replaceLinks
+	 * @see      we_gui_SEEM::onlyUseHyperlinks
+	 * @see      we_gui_SEEM::cleanLinks
+	 * @see      we_gui_SEEM::findRelativePaths
+	 * @see      we_gui_SEEM::getDocIDsByPaths
+	 * @see      we_gui_SEEM::replaceLinks
 	 *
 	 * @param    code        string of the complete source code
 	 * @param    linkArray   array of all found links in the document
@@ -191,10 +191,10 @@ abstract class we_SEEM{
 	 * @desc     This function parses all forms for the Preview mode, they will behave like viewing
 	  the page outside webEdition.
 	 *
-	 * @see      we_SEEM::getPathsFromForms
-	 * @see      we_SEEM::findRelativePaths
-	 * @see      we_SEEM::getDocIDsByPaths
-	 * @see      we_SEEM::rebuildForms
+	 * @see      we_gui_SEEM::getPathsFromForms
+	 * @see      we_gui_SEEM::findRelativePaths
+	 * @see      we_gui_SEEM::getDocIDsByPaths
+	 * @see      we_gui_SEEM::rebuildForms
 	 *
 	 * @param   code        string src-code of the document
 	 * @param   allForms    array with all forms found in the code
@@ -224,8 +224,8 @@ abstract class we_SEEM{
 	 * @desc    This function removes all forms from the code in the edit mode.
 	  Also 'input type="submits"' will be changed to 'input type="button"'
 	 *
-	 * @see     we_SEEM::removeAllButWE_FORM
-	 * @see     we_SEEM::changeSubmitToButton
+	 * @see     we_gui_SEEM::removeAllButWE_FORM
+	 * @see     we_gui_SEEM::changeSubmitToButton
 	 *
 	 * @param   code        string the srcCode of the document
 	 * @param   allForms    array with all found forms
@@ -511,7 +511,7 @@ abstract class we_SEEM{
 	 * we_SEEM::findRelativePaths()
 	 * @desc     Replaces all relative Paths which point to the webEdition-Server, by the relative Translation
 	 *
-	 * @see      we_SEEM::translateRelativePath
+	 * @see      we_gui_SEEM::translateRelativePath
 	 *
 	 * @param    foundPaths      array with all paths in the document
 	 * @return   relativePaths   array with the relative translation of the paths
@@ -557,7 +557,7 @@ abstract class we_SEEM{
 	 * @desc     This function searches the DocID from a given array of Paths. It is used to look for targets of links
 	  and targets of forms.
 	 *
-	 * @see      we_SEEM::getDocIDbyPath
+	 * @see      we_gui_SEEM::getDocIDbyPath
 	 *
 	 * @param    docPaths    array of Paths to documents
 	 * @return   docIds      array with the document-id ofthe correspending document
@@ -984,7 +984,7 @@ abstract class we_SEEM{
 	}
 
 	public static function openFormInEditor(){
-		$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", ["we_cmd", "original_action"]);
+		$paraStr = we_gui_SEEM::arrayToParameters($_REQUEST, "", ["we_cmd", "original_action"]);
 		$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
 		echo we_html_tools::getHtmlTop('', '', '', self::getJavaScriptCommandForOneLink('<a href="' . str_replace(' ', '+', $action) . '">'), we_html_element::htmlBody()
@@ -1040,7 +1040,7 @@ abstract class we_SEEM{
 	public static function getExtDocContent(){
 		$path = we_base_request::_(we_base_request::URL, "filepath");
 		if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
-			echo we_SEEM::parseDocument($content);
+			echo we_gui_SEEM::parseDocument($content);
 		} else {
 			$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'], 2, 1);
 			$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));

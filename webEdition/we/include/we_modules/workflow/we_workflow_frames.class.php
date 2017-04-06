@@ -60,7 +60,7 @@ class we_workflow_frames extends we_modules_frame{
 		$page = we_base_request::_(we_base_request::INT, 'page', 0);
 		$text = we_base_request::_(we_base_request::RAW, 'txt', g_l('modules_workflow', '[new_workflow]'));
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		if($mode == 0){
 			$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ['id' => 'tab_' . self::TAB_PROPERTIES, 'title' => g_l('tabs', '[module][properties]')]);

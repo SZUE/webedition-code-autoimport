@@ -62,7 +62,7 @@ abstract class we_tool_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab(g_l('tools', '[properties]'),'', false, "1", ["id" => "tab_1"]);
 
 		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') . "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()",

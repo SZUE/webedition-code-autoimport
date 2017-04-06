@@ -734,15 +734,15 @@ class we_export_wizard{
 			$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('backup', '[working]'));
 			$progress = we_base_request::_(we_base_request::INT, 'percent', 0);
 
-			$progressbar = new we_progressBar($progress, 200);
-			$progressbar->addText($text, we_progressBar::TOP, "current_description");
+			$progressbar = new we_gui_progressBar($progress, 200);
+			$progressbar->addText($text, we_gui_progressBar::TOP, "current_description");
 		}
 
 		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody",
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', (isset($progressbar) ? we_gui_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody",
 					'style' => 'overflow:hidden;'], we_html_element::htmlForm(["name" => "we_form",
 						"method" => "post",
 						"target" => "load",
