@@ -62,37 +62,37 @@ class we_search_view extends we_modules_view{
 			case 'search_submit':
 				$this->searchSubmit();
 				break;
-			case 'tool_weSearch_new' :
-			case 'tool_weSearch_new_forDocuments' :
-			case 'tool_weSearch_new_forTemplates' :
-			case 'tool_weSearch_new_forObjects' :
-			case 'tool_weSearch_new_forClasses' :
-			case 'tool_weSearch_new_forMedia' :
-			case 'tool_weSearch_new_advSearch' :
-				//case 'tool_weSearch_new_group' :
+			case 'weSearch_new' :
+			case 'weSearch_new_forDocuments' :
+			case 'weSearch_new_forTemplates' :
+			case 'weSearch_new_forObjects' :
+			case 'weSearch_new_forClasses' :
+			case 'weSearch_new_forMedia' :
+			case 'weSearch_new_advSearch' :
+				//case 'weSearch_new_group' :
 				$this->Model = new we_search_model($cmdid);
 				switch($cmd){
-					case 'tool_weSearch_new_forDocuments' :
-					case 'tool_weSearch_new_forMedia' :
+					case 'weSearch_new_forDocuments' :
+					case 'weSearch_new_forMedia' :
 						$tables = 1; // TODO: use constants
 						break;
-					case 'tool_weSearch_new_forTemplates' :
+					case 'weSearch_new_forTemplates' :
 						$tables = 2;
 						break;
-					case 'tool_weSearch_new_forObjects' :
+					case 'weSearch_new_forObjects' :
 						$tables = 3;
 						break;
-					case 'tool_weSearch_new_forClasses' :
+					case 'weSearch_new_forClasses' :
 						$tables = 4;
 						break;
-					case 'tool_weSearch_new_forVersions' :
+					case 'weSearch_new_forVersions' :
 						$tables = 5;
 						break;
-					case 'tool_weSearch_new_forMedia' :
+					case 'weSearch_new_forMedia' :
 						$tables = 1;
 						break;
-					case 'tool_weSearch_new_advSearch' :
-					case 'tool_weSearch_new' :
+					case 'weSearch_new_advSearch' :
+					case 'weSearch_new' :
 						$tables = 0;
 				}
 
@@ -104,7 +104,7 @@ class we_search_view extends we_modules_view{
 				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text);
 				break;
 
-			case 'tool_weSearch_edit' : // get model from db
+			case 'weSearch_edit' : // get model from db
 				$this->Model = new we_search_model($cmdid);
 				$this->Model->prepareModelForSearch();
 
@@ -117,7 +117,7 @@ class we_search_view extends we_modules_view{
 				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text, $cmdid, $this->Model->ID);
 				break;
 
-			case 'tool_weSearch_save' :
+			case 'weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
 					$jscmd->addMsg(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -188,14 +188,12 @@ class we_search_view extends we_modules_view{
 					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
-				echo $js;
-
 				break;
-			case 'tool_weSearch_delete' :
+			case 'weSearch_delete' :
 				if($this->Model->delete()){
 					$jscmd->addCmd('deleteTreeEntry', $this->Model->ID);
 					$jscmd->addMsg(g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
-					$jscmd->addCmd('tool_weSearch_edit');
+					$jscmd->addCmd('weSearch_edit');
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
 				}

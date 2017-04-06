@@ -352,7 +352,7 @@ class we_search_frames extends we_modules_frame{
 				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [[], 'tool_weSearch_save']
+						we_html_button::SAVE => [[], 'weSearch_save']
 				]);
 
 			default:

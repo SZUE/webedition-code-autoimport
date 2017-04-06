@@ -58,7 +58,7 @@ class we_rpc_cmdShell{
 
 		$cmdfile = $namespace . $classname . '.class.php';
 
-		if($cmdfile && include_once($cmdfile)){
+		if($cmdfile && include_once(WEBEDITION_PATH . 'rpc' . $cmdfile)){
 			$obj = new $classname($this);
 			$obj->executeRpcCmd($this);
 

@@ -62,7 +62,7 @@ container.prototype.openClose = function (id) {
 
 function doClick(id, typ) {
 	var node = top.content.treeData.get(id);
-	top.content.editor.edbody.we_cmd("tool_weSearch_edit", node.id);
+	top.content.editor.edbody.we_cmd("weSearch_edit", node.id);
 }
 
 drawTree.selection_table=WE().consts.tables.SEARCH_TABLE;
