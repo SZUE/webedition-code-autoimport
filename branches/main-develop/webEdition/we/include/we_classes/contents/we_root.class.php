@@ -1164,7 +1164,7 @@ abstract class we_root extends we_class{
 
 		//delete obsolete elements
 		if($replace){
-			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE c.DID=' . $this->ID . ' AND c.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND c.ID IN(' . implode(',', $replace) . ')');
+			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . $this->ID . ' AND c.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND c.ID IN(' . implode(',', $replace) . ')');
 		}
 		return true;
 	}

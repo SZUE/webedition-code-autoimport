@@ -325,7 +325,7 @@ class we_listview_document extends we_listview_base{
 
 			if(!$this->calendar_struct['calendar'] || $fetch){
 				$id = $this->IDs[$count];
-				$this->DB_WE->query('SELECT c.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . CONTENT_TABLE . ' WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$this->DB_WE->query('SELECT c.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = array_merge($this->DB_WE->getAllFirst(false), getHash('SELECT
 	ID AS WE_ID,
 	ParentID AS WE_PARENTID,
