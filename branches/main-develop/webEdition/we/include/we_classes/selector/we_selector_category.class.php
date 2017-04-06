@@ -407,7 +407,7 @@ class we_selector_category extends we_selector_file{
 			$title = $result ? $result['Title'] : '';
 			$description = $result ? $result['Description'] : '';
 
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId('Doc');
 			$weSuggest->setTable(CATEGORY_TABLE);
 			$weSuggest->setContentType('');
@@ -415,7 +415,7 @@ class we_selector_category extends we_selector_file{
 			$weSuggest->setMaxResults(20);
 			$weSuggest->setRequired(true);
 			$weSuggest->setResult('FolderID', $parentId);
-			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setSelector(we_gui_suggest::DirSelector);
 			$weSuggest->setWidth(250);
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'FolderID', 'FolderIDPath', '', '', '', '1', '', 'false', 1)"));
 

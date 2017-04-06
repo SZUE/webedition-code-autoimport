@@ -109,7 +109,7 @@ class we_export_frames extends we_modules_frame{
 			return $this->View->getHomeScreen();
 		}
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		//FIXME: folder don't have a tree to start.
 		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "loaded=1;startTree();start();", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"], we_html_element::htmlForm([
 					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties())
@@ -305,14 +305,14 @@ class we_export_frames extends we_modules_frame{
 	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("PathGroup");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput("ParentPath", $path, [], false, true);
 		$weSuggest->setLabel(g_l('export', '[group]'));
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult("ParentID", $this->View->export->ParentID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(EXPORT_TABLE);
 		$weSuggest->setWidth(400);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','setHot')"));
@@ -589,13 +589,13 @@ class we_export_frames extends we_modules_frame{
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/'){
 		$Pathvalue = ($Pathvalue ?: f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('SelPath');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput($Pathname, $Pathvalue, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($IDName, $IDValue);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(FILE_TABLE);
 		$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')"));

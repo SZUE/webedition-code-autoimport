@@ -100,9 +100,6 @@ function getHeader(){
 		switch($menuItem['name']){
 			case "weSearch":
 				continue;
-			case 'toolfactory':
-				$text = $menuItem["text"];
-				break;
 		}
 		if(we_base_permission::hasPerm($menuItem['startpermission'])){
 			$we_tabs->addTab($menuItem["text"], '', ($tool == $menuItem['name']), "'" . $menuItem['name'] . "'", ["id" => $menuItem['name']]);

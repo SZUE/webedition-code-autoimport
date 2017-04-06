@@ -273,7 +273,7 @@ abstract class we_root extends we_class{
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	protected function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $label = true, $disabled = false){
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$label = ($label === true ? g_l('weClass', '[dir]') : $label);
 
 		if(!$table){
@@ -302,7 +302,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setMaxResults(10);
 		//$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(intval($width));
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','dirChooser_callback," . $Pathname . ($cmd ? ',' . $cmd : '') . "','" . $rootDirID . "')"));
@@ -519,8 +519,8 @@ abstract class we_root extends we_class{
 	}
 
 	//FIXME: this should be a general selector
-	protected function formDocChooser($width, $name, $type = 'txt', $selector = weSuggest::DocSelector, $table = FILE_TABLE){
-		$weSuggest = &weSuggest::getInstance();
+	protected function formDocChooser($width, $name, $type = 'txt', $selector = we_gui_suggest::DocSelector, $table = FILE_TABLE){
+		$weSuggest = &we_gui_suggest::getInstance();
 		$textname = $this->Name . '_' . $name;
 		$idname = 'we_' . $this->Name . '_' . $type . '[' . $name . '#bdid]';
 		$myid = $this->getElement($name, 'bdid');
@@ -541,7 +541,7 @@ abstract class we_root extends we_class{
 	}
 
 	function formTriggerDocument($isclass = false){
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$table = FILE_TABLE;
 		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
@@ -559,7 +559,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setLabel(g_l('modules_object', '[seourltrigger]'));
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(388);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
@@ -568,7 +568,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function formInputLangLink($headline, $langkey, $LDID = 0, $path = ''){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
@@ -603,7 +603,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setLabel($headline);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')"));

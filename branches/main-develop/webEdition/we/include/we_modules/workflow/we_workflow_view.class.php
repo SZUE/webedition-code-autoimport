@@ -240,7 +240,7 @@ class we_workflow_view extends we_modules_view{
 		$counter = 0;
 		$counter1 = 0;
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		/*		 * *** WORKFLOWSTEPS **** */
 		foreach($this->workflowDef->steps as $sv){
@@ -276,7 +276,7 @@ class we_workflow_view extends we_modules_view{
 				$weSuggest->setMaxResults(10);
 				$weSuggest->setRequired(true);
 				$weSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
-				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setSelector(we_gui_suggest::DocSelector);
 				$weSuggest->setTable(USER_TABLE);
 				$weSuggest->setWidth(200);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);"));

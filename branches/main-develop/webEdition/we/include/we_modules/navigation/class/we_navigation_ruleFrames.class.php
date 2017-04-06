@@ -31,7 +31,7 @@ class we_navigation_ruleFrames{
 		$this->Frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		$this->Controller = new we_navigation_ruleControl();
 		$this->db = new DB_WE();
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 	}
 
 	function getHTML($what){
@@ -56,7 +56,7 @@ class we_navigation_ruleFrames{
 
 	function getHTMLContent(){
 		// content contains textarea with all so far existing rules
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		$allRules = we_navigation_ruleControl::getAllNavigationRules();
 
@@ -91,7 +91,7 @@ class we_navigation_ruleFrames{
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setTable(NAVIGATION_TABLE);
 		$weSuggest->setResult('NavigationID');
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(275);
 		$weSuggest->setSelectButton(
 			// IMI: replace enc (eval)
@@ -130,7 +130,7 @@ class we_navigation_ruleFrames{
 		$weSuggest->setInput('FolderIDPath');
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult('FolderID');
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setWidth(275);
 		$weSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', 'FolderID', 'FolderIDPath')"), 10);
 		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
@@ -154,7 +154,7 @@ class we_navigation_ruleFrames{
 			$weSuggest->setInput("ClassIDPath");
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult('ClassID');
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable(OBJECT_TABLE);
 			$weSuggest->setWidth(275);
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','get_workspaces')"), 10);

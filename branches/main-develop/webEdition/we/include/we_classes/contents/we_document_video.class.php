@@ -42,7 +42,7 @@ class we_document_video extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		return '<table class="default propertydualtable">
 	<tr>
 		<td>' . $this->formInput2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>

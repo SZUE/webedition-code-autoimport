@@ -25,12 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
-if($tool === 'weSearch'){
-	$_REQUEST['mod'] = $tool;
-	require_once(WEBEDITION_PATH . 'we_showMod.php');
-	return;
-}
-
 $tools = we_tool_lookup::getAllTools(true, true);
 
 $whiteList = [];

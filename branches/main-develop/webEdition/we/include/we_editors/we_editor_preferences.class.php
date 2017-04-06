@@ -28,7 +28,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 define('secondsDay', 86400);
 define('secondsWeek', 604800);
 define('secondsYear', 31449600);
-$weSuggest = &weSuggest::getInstance();
+$weSuggest = &we_gui_suggest::getInstance();
 
 abstract class we_editor_preferences{
 	private static $editor_reloaded = false;
@@ -577,7 +577,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 	 */
 	private static function build_dialog($selected_setting = 'ui'){
 		global $DB_WE;
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		switch($selected_setting){
 			case 'save':
@@ -754,7 +754,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 						$weSuggest->setMaxResults(20);
 						$weSuggest->setRequired(true);
 						$weSuggest->setResult('seem_start_document', $document_id);
-						$weSuggest->setSelector(weSuggest::DocSelector);
+						$weSuggest->setSelector(we_gui_suggest::DocSelector);
 						$weSuggest->setWidth(150);
 						$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
@@ -773,7 +773,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 						$weSuggest->setMaxResults(20);
 						$weSuggest->setRequired(true);
 						$weSuggest->setResult('seem_start_object', $object_id);
-						$weSuggest->setSelector(weSuggest::DocSelector);
+						$weSuggest->setSelector(we_gui_suggest::DocSelector);
 						$weSuggest->setTable(OBJECT_FILES_TABLE);
 						$weSuggest->setWidth(150);
 						$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
@@ -857,7 +857,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 					$weSuggest->setInput('ui_sidebar_file_name', $sidebar_path);
 					$weSuggest->setMaxResults(20);
 					$weSuggest->setResult('newconf[SIDEBAR_DEFAULT_DOCUMENT]', $sidebar_id);
-					$weSuggest->setSelector(weSuggest::DocSelector);
+					$weSuggest->setSelector(we_gui_suggest::DocSelector);
 					$weSuggest->setWidth(150);
 					$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()'));
 
@@ -972,7 +972,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$weSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
 				$weSuggest->setMaxResults(20);
 				$weSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ?: 0));
-				$weSuggest->setSelector(weSuggest::DirSelector);
+				$weSuggest->setSelector(we_gui_suggest::DirSelector);
 				$weSuggest->setWidth(226);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')"));
 				$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value = 0;document.forms[0].elements.imagestartid_default_text.value=''"));
@@ -1828,7 +1828,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$weSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
 				$weSuggest->setMaxResults(20);
 				$weSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ?: 0));
-				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setSelector(we_gui_suggest::DocSelector);
 				$weSuggest->setWidth(300);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)"));
 				$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = ''"));
@@ -1943,7 +1943,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				$weSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
 				$weSuggest->setMaxResults(20);
 				$weSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ?: 0));
-				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setSelector(we_gui_suggest::DocSelector);
 				$weSuggest->setWidth(250);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', 'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]','SECURITY_LIMIT_CUSTOMER_REDIRECT_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 				$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value = 0;document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value = ''"), 4);

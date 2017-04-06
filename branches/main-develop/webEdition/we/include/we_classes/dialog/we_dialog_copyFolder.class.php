@@ -51,7 +51,7 @@ abstract class we_dialog_copyFolder{
 		$path = '/';
 		$myid = 0;
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('Template');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput('foo', $path, [], true);
@@ -59,7 +59,7 @@ abstract class we_dialog_copyFolder{
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult('CreateTemplateInFolderID', $myid);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(TEMPLATES_TABLE);
 		$weSuggest->setWidth(370);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','setCreateTemplate')", '', 0, 0, "", "", true, false));
@@ -68,7 +68,7 @@ abstract class we_dialog_copyFolder{
 	}
 
 	public static function getDialog(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$jsCmd = new we_base_jsCmd();
 
 		if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){

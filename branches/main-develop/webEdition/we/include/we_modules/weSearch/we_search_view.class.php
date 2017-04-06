@@ -47,7 +47,7 @@ class we_search_view extends we_modules_view{
 		parent::__construct();
 		$this->Model = isset($_SESSION['weS'][$this->toolName . '_session']) ? $_SESSION['weS'][$this->toolName . '_session'] : new we_search_model();
 		//$this->Model = new we_search_model();
-		$this->yuiSuggest = & weSuggest::getInstance();
+		$this->yuiSuggest = & we_gui_suggest::getInstance();
 		$this->searchclassExp = new we_search_exp();
 		$this->searchclass = new we_search_search($this);
 	}
@@ -1393,7 +1393,7 @@ class we_search_view extends we_modules_view{
 	}
 
 	function getDirSelector($whichSearch){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$nameFolderID = "folderIDDoc";
@@ -1425,7 +1425,7 @@ class we_search_view extends we_modules_view{
 		$weSuggest->setLabel("");
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($nameFolderID, $nameFolderPath);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $nameFolderID . "','" . $nameFolderPath . "')"));
 

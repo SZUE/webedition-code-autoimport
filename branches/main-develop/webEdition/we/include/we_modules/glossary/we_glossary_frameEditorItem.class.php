@@ -246,7 +246,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		} else {
 			$linkPath = $linkID = $internParameter = "";
 		}
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId('docPath');
 		$weSuggest->setContentType([we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS,
 			we_base_ContentTypes::APPLICATION]);
@@ -254,7 +254,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false));
 		$weSuggest->setResult('link[Attributes][InternLinkID]', $linkID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(FILE_TABLE);
 		$weSuggest->setWidth(400);
 
@@ -296,14 +296,14 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId('objPathLink');
 		$weSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 		$weSuggest->setInput('link[Attributes][ObjectLinkPath]', $linkPath);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', false));
 		$weSuggest->setResult('link[Attributes][ObjectLinkID]', $linkID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(OBJECT_FILES_TABLE);
 		$weSuggest->setWidth(400);
 

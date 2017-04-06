@@ -123,7 +123,7 @@ class we_voting_frames extends we_modules_frame{
 	}
 
 	function getHTMLTab1(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$table = new we_html_table(['id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'], 3, 2);
 		$table->setCol(0, 1, ['colspan' => 2, 'class' => 'defaultfont'], g_l('modules_voting', '[limit_access_text]'));
 		$table->setColContent(1, 1, we_html_element::htmlDiv(['id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;']));
@@ -483,13 +483,13 @@ class we_voting_frames extends we_modules_frame{
 	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput('ParentPath', $path, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult('ParentID', ($this->View->voting->ParentID ?: 0));
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(VOTING_TABLE);
 		$weSuggest->setWidth(416);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')"));

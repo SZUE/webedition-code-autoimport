@@ -220,7 +220,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function formTemplateWindow(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
@@ -242,7 +242,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$weSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschrift . "</span>");
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));
@@ -334,7 +334,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		//will evaluate the tags => we get meta data set
 		$oldEdit = $this->EditPageNr; //FIXME: cache data
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
-		weSuggest::setStaticInstance(false); //avoid modification on suggestor
+		we_gui_suggest::setStaticInstance(false); //avoid modification on suggestor
 		$include = $this->editor();
 		$this->EditPageNr = $oldEdit;
 		if($include && $include != WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC){
@@ -346,7 +346,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$ret = ob_end_clean();
 		}
 
-		weSuggest::setStaticInstance(true);
+		we_gui_suggest::setStaticInstance(true);
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '

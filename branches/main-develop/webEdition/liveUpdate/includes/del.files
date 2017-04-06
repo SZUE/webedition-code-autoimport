@@ -1,3 +1,5 @@
+!we/include/we_classes/js_gui
+we/include/we_classes/weSuggest.class.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php

@@ -25,7 +25,7 @@
 class we_editor_properties extends we_editor_base{
 
 	public function show(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$GLOBALS['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 
 		$this->charset = ($this->we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?

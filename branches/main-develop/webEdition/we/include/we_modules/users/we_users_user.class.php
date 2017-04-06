@@ -1062,7 +1062,7 @@ class we_users_user{
 	 * LAYOUT FUNCTIONS
 	 */
 	function formDefinition(we_base_jsCmd $jsCmd, $tab, $perm_branch){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		switch($tab){
 			case self::TAB_DATA:
 				return we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
@@ -1101,14 +1101,14 @@ class we_users_user{
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(USER_TABLE);
 		$weSuggest->setWidth(450);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
@@ -1197,13 +1197,13 @@ class we_users_user{
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE) ?: '/';
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('PathGroup');
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(USER_TABLE);
 		$weSuggest->setWidth(403);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
@@ -1349,7 +1349,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
 		$parts = [];
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		foreach($this->workspaces as $k => $v){
 			switch($k){
@@ -1408,7 +1408,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				$weSuggest->setInput($obj_names . '[Text][' . $key . ']', $path);
 				$weSuggest->setMaxResults(10);
 				$weSuggest->setResult($obj_names . '[id][' . $key . ']', $value);
-				$weSuggest->setSelector(weSuggest::DirSelector);
+				$weSuggest->setSelector(we_gui_suggest::DirSelector);
 				$weSuggest->setTable($k);
 				$weSuggest->setWidth(290);
 
@@ -1649,14 +1649,14 @@ function toggleRebuildPerm(disabledOnly) {';
 
 
 		// Build SEEM select start document chooser
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('Doc');
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
 			we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 		$weSuggest->setInput('seem_start_document_name', $document_path);
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult('seem_start_document', $document_id);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(191);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', '', 0, 0, '', '', false, false), 10);
 
@@ -1668,7 +1668,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$weSuggest->setInput('seem_start_object_name', $object_path);
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult('seem_start_object', $object_id);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		if(defined('OBJECT_FILES_TABLE')){
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
 		}
@@ -1865,14 +1865,14 @@ function toggleRebuildPerm(disabledOnly) {';
 		$alias_text = ($this->ID ? f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->Alias), 'Path', $this->DB_WE) : '');
 		$parent_text = ($this->ParentID == 0 ? '/' : f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE));
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('PathName');
 		$weSuggest->setContentType(self::TYPE_USER . ',' . self::TYPE_USER_GROUP); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
 		$weSuggest->setInput($this->Name . '_Alias_Text', $alias_text, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($this->Name . '_Alias', $this->Alias);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(USER_TABLE);
 		$weSuggest->setWidth(200);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
@@ -1884,7 +1884,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$weSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, [], false, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(USER_TABLE);
 		$weSuggest->setWidth(200);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));

@@ -216,7 +216,7 @@ abstract class we_base_move{
 		}
 		$jsCmd = new we_base_jsCmd();
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 		switch($cmd0){
@@ -341,7 +341,7 @@ abstract class we_base_move{
 			$weSuggest->setMaxResults(4);
 			$weSuggest->setRequired(true);
 			$weSuggest->setResult(trim($idname), $ws_Id);
-			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setSelector(we_gui_suggest::DirSelector);
 			$weSuggest->setTable($table);
 			$weSuggest->setWidth(250);
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements.' . $idname . '.value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);

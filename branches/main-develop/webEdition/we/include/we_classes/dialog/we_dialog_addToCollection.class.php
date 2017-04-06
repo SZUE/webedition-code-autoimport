@@ -40,7 +40,7 @@ abstract class we_dialog_addToCollection{
 		  }
 		 *
 		 */
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 		$ws_Id = get_def_ws($table);
@@ -59,7 +59,7 @@ abstract class we_dialog_addToCollection{
 		$weSuggest->setMaxResults(4);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $targetCollection);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(VFILE_TABLE);
 		$weSuggest->setWidth(273);
 		//$cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';

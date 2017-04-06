@@ -45,7 +45,7 @@
  * 			10																															// Abstand zwischen Input-Feld und Button
  * 		);
  */
-class weSuggest{
+class we_gui_suggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
 	const BTN_EDIT = true;

@@ -71,7 +71,7 @@ class we_users_frames extends we_modules_frame{
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		$user_object = (isset($_SESSION["user_session_data"]) ?
 			$_SESSION["user_session_data"] :
