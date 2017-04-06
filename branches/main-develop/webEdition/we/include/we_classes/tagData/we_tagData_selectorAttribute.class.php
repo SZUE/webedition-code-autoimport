@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_selectorAttribute extends weTagDataAttribute{
+class we_tagData_selectorAttribute extends we_tagData_attribute{
 	const FOLDER = 'folder';
 
 	/**
@@ -80,5 +80,10 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 						<td class="attributeButton">' . $button . '</td>
 					</tr></table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_selectorAttribute extends we_tagData_selectorAttribute{
 
 }

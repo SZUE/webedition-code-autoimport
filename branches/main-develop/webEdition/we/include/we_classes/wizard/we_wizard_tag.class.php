@@ -103,7 +103,7 @@ abstract class we_wizard_tag{
 			$main = [];
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
-				$tag = weTagData::getTagData($tagname);
+				$tag = we_tagData_base::getTagData($tagname);
 				if(!$tag){
 					continue;
 				}
@@ -127,7 +127,7 @@ abstract class we_wizard_tag{
 		$modules = [];
 		$groups = [];
 		foreach($tags as $tagname){
-			$tag = weTagData::getTagData($tagname);
+			$tag = we_tagData_base::getTagData($tagname);
 			if(!is_object($tag)){
 				continue;
 			}

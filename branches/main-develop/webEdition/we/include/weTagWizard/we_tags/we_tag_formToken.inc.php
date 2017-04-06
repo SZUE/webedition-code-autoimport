@@ -9,4 +9,4 @@
 */
 $this->NeedsEndTag = false;
 $this->Description = ''; //g_l('weTag', '[' . $tagName . '][description]', true);
-$this->Attributes[] = new weTagData_textAttribute('lifetime', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('lifetime', true, '');

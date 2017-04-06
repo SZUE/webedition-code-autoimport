@@ -14,15 +14,15 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = g_l('weTag', '[' . $tagName . '][defaultvalue]', true);
 
 $this->Attributes = [
-	(defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, '', false, '') : null),
-	new weTagData_textAttribute('file', false, ''),
-	new weTagData_textAttribute('url', false, ''),
-	new weTagData_choiceAttribute('width', [new weTagDataOption('100'),
-		new weTagDataOption('150'),
-		new weTagDataOption('200'),
-		new weTagDataOption('250'),
-		new weTagDataOption('300'),
-		new weTagDataOption('350'),
-		new weTagDataOption('400'),
+	(defined('FILE_TABLE') ? new we_tagData_selectorAttribute('id', FILE_TABLE, '', false, '') : null),
+	new we_tagData_textAttribute('file', false, ''),
+	new we_tagData_textAttribute('url', false, ''),
+	new we_tagData_choiceAttribute('width', [new we_tagData_option('100'),
+		new we_tagData_option('150'),
+		new we_tagData_option('200'),
+		new we_tagData_option('250'),
+		new we_tagData_option('300'),
+		new we_tagData_option('350'),
+		new we_tagData_option('400'),
 		], false, true, ''),
 ];

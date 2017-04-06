@@ -953,7 +953,7 @@ we_templateInit();?>';
 		if($css || $setting['WE']){
 			$allWeTags = we_wizard_tag::getExistingWeTags($css); //only load deprecated tags if css is requested
 			foreach($allWeTags as $tagName){
-				if(($weTag = weTagData::getTagData($tagName))){
+				if(($weTag = we_tagData_base::getTagData($tagName))){
 					if($css){
 						$ret[] = '.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), [
 								'"' => '\'',

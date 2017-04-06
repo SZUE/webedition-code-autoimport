@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData{
+class we_tagData_base{
 	private $Exists = false;
 
 	/**
@@ -107,19 +107,19 @@ class weTagData{
 		}
 
 		if(strpos($tagName, 'if') !== 0){
-			$to = new weTagData_choiceAttribute('to', [
-				new weTagDataOption('global'),
-				new weTagDataOption('request'),
-				new weTagDataOption('get'),
-				new weTagDataOption('post'),
-				new weTagDataOption('session'),
-				new weTagDataOption('top'),
-				new weTagDataOption('self'),
-				new weTagDataOption('block'),
-				new weTagDataOption('sessionfield'),
-				new weTagDataOption('screen'),
+			$to = new we_tagData_choiceAttribute('to', [
+				new we_tagData_option('global'),
+				new we_tagData_option('request'),
+				new we_tagData_option('get'),
+				new we_tagData_option('post'),
+				new we_tagData_option('session'),
+				new we_tagData_option('top'),
+				new we_tagData_option('self'),
+				new we_tagData_option('block'),
+				new we_tagData_option('sessionfield'),
+				new we_tagData_option('screen'),
 				], false, false, '');
-			$nameto = new weTagData_textAttribute('nameto', false, '');
+			$nameto = new we_tagData_textAttribute('nameto', false, '');
 		}
 
 		if($this->TypeAttribute){
@@ -129,7 +129,7 @@ class weTagData{
 				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
 					foreach($options as &$value){
-						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName) . ($value->Name ? '-' . $this->TypeAttribute->getName() . '-' . $value->Name : '')], g_l('taged', '[tagreference_linktext]'));
+						$tmp = new we_tagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName) . ($value->Name ? '-' . $this->TypeAttribute->getName() . '-' . $value->Name : '')], g_l('taged', '[tagreference_linktext]'));
 						$value->AllowedAttributes[] = $tmp;
 						if($value->Value != '-'){
 							$this->Attributes[] = $tmp;
@@ -152,7 +152,7 @@ class weTagData{
 			}
 		} else {
 			if(!$this->noDocuLink){
-				$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName)], g_l('taged', '[tagreference_linktext]')); // Bug #6341
+				$this->Attributes[] = new we_tagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName)], g_l('taged', '[tagreference_linktext]')); // Bug #6341
 			}
 		}
 
@@ -207,14 +207,14 @@ class weTagData{
 
 	/**
 	 * @param string $tagName
-	 * @return weTagData
+	 * @return we_tagData_base
 	 */
 	static function getTagData($tagName){
 		static $tags = [];
 		if(isset($tags[$tagName])){
 			$tag = $tags[$tagName];
 		} else {
-			$tag = new weTagData($tagName);
+			$tag = new we_tagData_base($tagName);
 			if(!$tag->Exists){
 				return null;
 			}
@@ -280,7 +280,7 @@ class weTagData{
 		$attr = [];
 
 		foreach($this->UsedAttributes as $attribute){
-			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && !($attribute instanceof weTagData_linkAttribute) && !($attribute instanceof weTagData_cmdAttribute)){
+			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && !($attribute instanceof we_tagData_linkAttribute) && !($attribute instanceof we_tagData_cmdAttribute)){
 				$attr[] = $attribute->getName();
 			}
 		}
@@ -331,5 +331,10 @@ class weTagData{
 				'class' => 'wetextinput wetextarea'
 				], $this->DefaultValue);
 	}
+
+}
+
+//FIXME: remove
+class weTagData extends we_tagData_base{
 
 }

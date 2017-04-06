@@ -13,15 +13,15 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('type', [new weTagDataOption('button'),
-	new weTagDataOption('checkbox'),
+$this->Attributes[] = new we_tagData_choiceAttribute('type', [new we_tagData_option('button'),
+	new we_tagData_option('checkbox'),
  ], true, false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('name', [new weTagDataOption('delete'),
-	new weTagDataOption('makeSameDoc'),
-	new weTagDataOption('publish'),
-	new weTagDataOption('save'),
-	new weTagDataOption('unpublish'),
-	new weTagDataOption('workflow', false, 'workflow')], true, false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('hide', weTagData_selectAttribute::getTrueFalse(), false, false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('readonly', weTagData_selectAttribute::getTrueFalse(), false, false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('checked', weTagData_selectAttribute::getTrueFalse(), false, false, '');
+$this->Attributes[] = new we_tagData_choiceAttribute('name', [new we_tagData_option('delete'),
+	new we_tagData_option('makeSameDoc'),
+	new we_tagData_option('publish'),
+	new we_tagData_option('save'),
+	new we_tagData_option('unpublish'),
+	new we_tagData_option('workflow', false, 'workflow')], true, false, '');
+$this->Attributes[] = new we_tagData_choiceAttribute('hide', we_tagData_selectAttribute::getTrueFalse(), false, false, '');
+$this->Attributes[] = new we_tagData_choiceAttribute('readonly', we_tagData_selectAttribute::getTrueFalse(), false, false, '');
+$this->Attributes[] = new we_tagData_choiceAttribute('checked', we_tagData_selectAttribute::getTrueFalse(), false, false, '');

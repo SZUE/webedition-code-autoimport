@@ -13,14 +13,14 @@ $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 if(defined('CUSTOMER_TABLE')){
 	$this->Attributes = [
-		new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, [], ''),
-		new weTagData_textAttribute('match', false, ''),
-		new weTagData_textAttribute('userid', false, ''),
-		new weTagData_selectAttribute('cfilter', weTagData_selectAttribute::getTrueFalse(), false, ''),
-		new weTagData_selectAttribute('allowNoFilter', weTagData_selectAttribute::getTrueFalse(), false, ''),
-		new weTagData_selectAttribute('matchType', [new weTagDataOption('one'),
-			new weTagDataOption('contains'),
-			new weTagDataOption('exact'),
+		new we_tagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, [], ''),
+		new we_tagData_textAttribute('match', false, ''),
+		new we_tagData_textAttribute('userid', false, ''),
+		new we_tagData_selectAttribute('cfilter', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+		new we_tagData_selectAttribute('allowNoFilter', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+		new we_tagData_selectAttribute('matchType', [new we_tagData_option('one'),
+			new we_tagData_option('contains'),
+			new we_tagData_option('exact'),
 			], false, ''),
 	];
 }

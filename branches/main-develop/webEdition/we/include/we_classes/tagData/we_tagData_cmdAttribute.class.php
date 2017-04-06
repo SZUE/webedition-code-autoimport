@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_cmdAttribute extends weTagDataAttribute{
+class we_tagData_cmdAttribute extends we_tagData_attribute{
 	/**
 	 * @var array
 	 */
@@ -52,5 +52,10 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 			)
 		);
 	}
+
+}
+
+//FIXME: remove
+class weTagData_cmdAttribute extends we_tagData_cmdAttribute{
 
 }

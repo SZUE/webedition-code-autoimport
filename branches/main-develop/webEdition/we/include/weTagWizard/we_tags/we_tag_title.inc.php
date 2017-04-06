@@ -12,7 +12,7 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('prefix', false, '');
-$this->Attributes[] = new weTagData_textAttribute('suffix', false, '');
-$this->Attributes[] = new weTagData_textAttribute('delimiter', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('htmlspecialchars', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('prefix', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('suffix', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('delimiter', false, '');

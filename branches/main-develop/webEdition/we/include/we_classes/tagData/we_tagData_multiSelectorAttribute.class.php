@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_multiSelectorAttribute extends weTagDataAttribute{
+class we_tagData_multiSelectorAttribute extends we_tagData_attribute{
 	/**
 	 * @var string
 	 */
@@ -79,5 +79,10 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 </tr>
 </table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_multiSelectorAttribute extends we_tagData_multiSelectorAttribute{
 
 }

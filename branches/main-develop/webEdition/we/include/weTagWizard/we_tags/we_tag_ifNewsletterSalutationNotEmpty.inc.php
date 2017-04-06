@@ -13,6 +13,6 @@ $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_selectAttribute('type', [new weTagDataOption('email'),
-		new weTagDataOption('salutation', false, 'newsletter'), new weTagDataOption('title', false, 'newsletter'), new weTagDataOption('firstname', false, 'newsletter'), new weTagDataOption('lastname', false, 'newsletter'), new weTagDataOption('customerid', false, 'newsletter')], false, '')
+	new we_tagData_selectAttribute('type', [new we_tagData_option('email'),
+		new we_tagData_option('salutation', false, 'newsletter'), new we_tagData_option('title', false, 'newsletter'), new we_tagData_option('firstname', false, 'newsletter'), new we_tagData_option('lastname', false, 'newsletter'), new we_tagData_option('customerid', false, 'newsletter')], false, '')
 ];

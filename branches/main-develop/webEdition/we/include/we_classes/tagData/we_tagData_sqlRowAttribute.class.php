@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
+class we_tagData_sqlRowAttribute extends we_tagData_selectAttribute{
 
 	/**
 	 * @var string
@@ -61,9 +61,14 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 		$DB_WE->query('SELECT ' . $DB_WE->escape($this->ValueName) . ',' . $DB_WE->escape($this->TextName) . ' FROM ' . $DB_WE->escape($this->Table) . ' ' . ($order ? 'ORDER BY ' . $order : ''));
 
 		while($DB_WE->next_record()){
-			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
+			$options[] = new we_tagData_option($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
 		}
 		parent::__construct($name, $options, $required, $module, $description, $deprecated);
 	}
+
+}
+
+//FIXME: remove
+class weTagData_sqlRowAttribute extends we_tagData_sqlRowAttribute{
 
 }

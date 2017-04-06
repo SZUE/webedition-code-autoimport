@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class validation{
+abstract class we_validation_base{
 
 	static function getAllCategories(){
 		$cats = ['xhtml' => g_l('validation', '[category_xhtml]'),
@@ -33,7 +33,7 @@ abstract class validation{
 		return $cats;
 	}
 
-	static function saveService(validationService $validationService){
+	static function saveService(we_validation_service $validationService){
 		// before saving check if another validationservice has this name
 		if(f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
 AND ID!=' . intval($validationService->id) . ' LIMIT 1')){
@@ -90,7 +90,7 @@ AND ID!=' . intval($validationService->id) . ' LIMIT 1')){
 
 		$GLOBALS['DB_WE']->query($query);
 		while($GLOBALS['DB_WE']->next_record()){
-			$ret[] = new validationService($GLOBALS['DB_WE']->f('ID'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
+			$ret[] = new we_validation_service($GLOBALS['DB_WE']->f('ID'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
 		}
 		return $ret;
 	}

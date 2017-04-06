@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_choiceAttribute extends weTagDataAttribute{
+class we_tagData_choiceAttribute extends we_tagData_attribute{
 	/**
 	 * @var array
 	 */
@@ -56,8 +56,8 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 		// get html for choice box
 
 		$select = new we_html_select(['onchange' => ($this->Multiple ?
-				'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
-				'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
+			'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
+			'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
 			'class' => 'defaultfont selectinput'
 		]);
 
@@ -88,5 +88,10 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 </tr>
 </table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_choiceAttribute extends we_tagData_choiceAttribute{
 
 }

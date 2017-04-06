@@ -14,4 +14,4 @@ $this->Module = 'object';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<we:conditionAdd field="Type" var="type" compare="="/>';
 
-$this->Attributes[] = new weTagData_textAttribute('name', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', false, '');

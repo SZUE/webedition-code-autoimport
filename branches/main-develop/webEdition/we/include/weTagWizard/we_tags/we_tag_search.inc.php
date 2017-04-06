@@ -13,15 +13,15 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_selectAttribute('type', [new weTagDataOption('textinput'),
-		new weTagDataOption('textarea'),
-		new weTagDataOption('print'),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('textinput'),
+		new we_tagData_option('textarea'),
+		new we_tagData_option('print'),
 	 ], false, ''),
-	new weTagData_textAttribute('name', false, ''),
-	new weTagData_textAttribute('value', false, ''),
-	new weTagData_textAttribute('size', false, ''),
-	new weTagData_textAttribute('maxlength', false, ''),
-	new weTagData_textAttribute('cols', false, ''),
-	new weTagData_textAttribute('rows', false, ''),
-	new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('name', false, ''),
+	new we_tagData_textAttribute('value', false, ''),
+	new we_tagData_textAttribute('size', false, ''),
+	new we_tagData_textAttribute('maxlength', false, ''),
+	new we_tagData_textAttribute('cols', false, ''),
+	new we_tagData_textAttribute('rows', false, ''),
+	new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, ''),
 ];

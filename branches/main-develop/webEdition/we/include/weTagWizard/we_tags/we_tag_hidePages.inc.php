@@ -12,14 +12,14 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('pages', [new weTagDataOption('all'),
-	new weTagDataOption('properties'),
-	new weTagDataOption('edit'),
-	new weTagDataOption('information'),
-	new weTagDataOption('preview'),
-	new weTagDataOption('validation'),
-	new weTagDataOption('customer'),
-	new weTagDataOption('versions'),
-	new weTagDataOption('schedpro'),
-	new weTagDataOption('variants'),
+$this->Attributes[] = new we_tagData_choiceAttribute('pages', [new we_tagData_option('all'),
+	new we_tagData_option('properties'),
+	new we_tagData_option('edit'),
+	new we_tagData_option('information'),
+	new we_tagData_option('preview'),
+	new we_tagData_option('validation'),
+	new we_tagData_option('customer'),
+	new we_tagData_option('versions'),
+	new we_tagData_option('schedpro'),
+	new we_tagData_option('variants'),
  ], false, true, '');

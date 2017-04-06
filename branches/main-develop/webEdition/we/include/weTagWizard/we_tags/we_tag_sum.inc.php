@@ -12,11 +12,11 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 $this->Attributes = [
-	new weTagData_textAttribute('name', true, ''),
-	new weTagData_choiceAttribute('num_format', [new weTagDataOption('german'),
-		new weTagDataOption('french'),
-		new weTagDataOption('english'),
-		new weTagDataOption('swiss'),
+	new we_tagData_textAttribute('name', true, ''),
+	new we_tagData_choiceAttribute('num_format', [new we_tagData_option('german'),
+		new we_tagData_option('french'),
+		new we_tagData_option('english'),
+		new we_tagData_option('swiss'),
 		], false, false, ''),
-	new weTagData_textAttribute('decimals', true, ''),
+	new we_tagData_textAttribute('decimals', true, ''),
 ];

@@ -13,10 +13,10 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_textAttribute('name', true, ''),
-	new weTagData_selectAttribute('type', [new weTagDataOption('global'),
-		new weTagDataOption('request'),
-		new weTagDataOption('session'),
+	new we_tagData_textAttribute('name', true, ''),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('global'),
+		new we_tagData_option('request'),
+		new we_tagData_option('session'),
 		], false, ''),
-	new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, ''),
 ];

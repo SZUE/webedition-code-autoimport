@@ -12,140 +12,140 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$name = new weTagData_choiceAttribute('name', [new weTagDataOption('WE_Path'),
-	new weTagDataOption('WE_ID'),
-	new weTagDataOption('WE_Text'),
-	new weTagDataOption('WE_URL'),
-	new weTagDataOption('WE_Customer_ID'),
-	new weTagDataOption('WE_TriggerID'),
-	new weTagDataOption('WE_CreationDate'),
-	new weTagDataOption('WE_ModDate'),
-	new weTagDataOption('WE_Published'),
-	new weTagDataOption('WE_ParentID'),
-	new weTagDataOption('WE_Text'),
-	new weTagDataOption('WE_Category'),
-	new weTagDataOption('WE_SHOPVARIANTS', false, 'shop'),
+$name = new we_tagData_choiceAttribute('name', [new we_tagData_option('WE_Path'),
+	new we_tagData_option('WE_ID'),
+	new we_tagData_option('WE_Text'),
+	new we_tagData_option('WE_URL'),
+	new we_tagData_option('WE_Customer_ID'),
+	new we_tagData_option('WE_TriggerID'),
+	new we_tagData_option('WE_CreationDate'),
+	new we_tagData_option('WE_ModDate'),
+	new we_tagData_option('WE_Published'),
+	new we_tagData_option('WE_ParentID'),
+	new we_tagData_option('WE_Text'),
+	new we_tagData_option('WE_Category'),
+	new we_tagData_option('WE_SHOPVARIANTS', false, 'shop'),
 		], false, false, '');
-$classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
-$hyperlink = new weTagData_selectAttribute('hyperlink', weTagData_selectAttribute::getTrueFalse(), false, '');
-$tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
-$href = new weTagData_textAttribute('href', false, '');
-$target = new weTagData_choiceAttribute('target', [new weTagDataOption('_top'),
-	new weTagDataOption('_parent'),
-	new weTagDataOption('_self'),
-	new weTagDataOption('_blank'),
+$classid = (defined('OBJECT_TABLE') ? new we_tagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
+$hyperlink = new we_tagData_selectAttribute('hyperlink', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$tid = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
+$href = new we_tagData_textAttribute('href', false, '');
+$target = new we_tagData_choiceAttribute('target', [new we_tagData_option('_top'),
+	new we_tagData_option('_parent'),
+	new we_tagData_option('_self'),
+	new we_tagData_option('_blank'),
 		], false, false, '');
-$class = new weTagData_textAttribute('class', false, '');
-$style = new weTagData_textAttribute('style', false, '');
-$format = new weTagData_textAttribute('format', false, '');
-$num_format = new weTagData_choiceAttribute('num_format', [new weTagDataOption('german'),
-	new weTagDataOption('french'),
-	new weTagDataOption('english'),
-	new weTagDataOption('swiss'),
+$class = new we_tagData_textAttribute('class', false, '');
+$style = new we_tagData_textAttribute('style', false, '');
+$format = new we_tagData_textAttribute('format', false, '');
+$num_format = new we_tagData_choiceAttribute('num_format', [new we_tagData_option('german'),
+	new we_tagData_option('french'),
+	new we_tagData_option('english'),
+	new we_tagData_option('swiss'),
 		], false, false, '');
-$thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
-$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
-$parentidname = new weTagData_textAttribute('parentidname', false, '');
-$winprops = new weTagData_textAttribute('winprops', false, '');
-$alt = new weTagData_textAttribute('alt', false, '');
-$max = new weTagData_textAttribute('max', false, '');
-$src = new weTagData_textAttribute('src', false, '');
-$width = new weTagData_textAttribute('width', false, '');
-$height = new weTagData_textAttribute('height', false, '');
-$border = new weTagData_textAttribute('border', false, '');
-$hspace = new weTagData_textAttribute('hspace', false, '');
-$vspace = new weTagData_textAttribute('vspace', false, '');
-$align = new weTagData_selectAttribute('align', [new weTagDataOption('left'),
-	new weTagDataOption('right'),
-	new weTagDataOption('top'),
-	new weTagDataOption('bottom'),
-	new weTagDataOption('absmiddle'),
-	new weTagDataOption('middle'),
-	new weTagDataOption('texttop'),
-	new weTagDataOption('baseline'),
-	new weTagDataOption('absbottom'),
+$thumbnail = new we_tagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
+$id = (defined('FILE_TABLE') ? new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
+$parentidname = new we_tagData_textAttribute('parentidname', false, '');
+$winprops = new we_tagData_textAttribute('winprops', false, '');
+$alt = new we_tagData_textAttribute('alt', false, '');
+$max = new we_tagData_textAttribute('max', false, '');
+$src = new we_tagData_textAttribute('src', false, '');
+$width = new we_tagData_textAttribute('width', false, '');
+$height = new we_tagData_textAttribute('height', false, '');
+$border = new we_tagData_textAttribute('border', false, '');
+$hspace = new we_tagData_textAttribute('hspace', false, '');
+$vspace = new we_tagData_textAttribute('vspace', false, '');
+$align = new we_tagData_selectAttribute('align', [new we_tagData_option('left'),
+	new we_tagData_option('right'),
+	new we_tagData_option('top'),
+	new we_tagData_option('bottom'),
+	new we_tagData_option('absmiddle'),
+	new we_tagData_option('middle'),
+	new we_tagData_option('texttop'),
+	new we_tagData_option('baseline'),
+	new we_tagData_option('absbottom'),
 		], false, '');
 //$only = new weTagData_textAttribute('only', false, '');
-$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
-$seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
-$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-$win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
-$listviewname = new weTagData_textAttribute('listviewname', false, '');
-$striphtml = new weTagData_selectAttribute('striphtml', [new weTagDataOption('false'),
-	new weTagDataOption('true'),
+$htmlspecialchars = new we_tagData_selectAttribute('htmlspecialchars', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$seeMode = new we_tagData_selectAttribute('seeMode', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$xml = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$win2iso = new we_tagData_selectAttribute('win2iso', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$listviewname = new we_tagData_textAttribute('listviewname', false, '');
+$striphtml = new we_tagData_selectAttribute('striphtml', [new we_tagData_option('false'),
+	new we_tagData_option('true'),
 		], false, '');
-$only = new weTagData_selectAttribute('only', [new weTagDataOption('name'),
-	new weTagDataOption('src'),
-	new weTagDataOption('parentpath'),
-	new weTagDataOption('filename'),
-	new weTagDataOption('extension'),
-	new weTagDataOption('filesize'),
-	new weTagDataOption('id'),
+$only = new we_tagData_selectAttribute('only', [new we_tagData_option('name'),
+	new we_tagData_option('src'),
+	new we_tagData_option('parentpath'),
+	new we_tagData_option('filename'),
+	new we_tagData_option('extension'),
+	new we_tagData_option('filesize'),
+	new we_tagData_option('id'),
 		], false, '');
-$onlyImg = new weTagData_selectAttribute('only', [new weTagDataOption('name'),
-	new weTagDataOption('src'),
-	new weTagDataOption('parentpath'),
-	new weTagDataOption('filename'),
-	new weTagDataOption('extension'),
-	new weTagDataOption('filesize'),
-	new weTagDataOption('width'),
-	new weTagDataOption('height'),
-	new weTagDataOption('alt'),
+$onlyImg = new we_tagData_selectAttribute('only', [new we_tagData_option('name'),
+	new we_tagData_option('src'),
+	new we_tagData_option('parentpath'),
+	new we_tagData_option('filename'),
+	new we_tagData_option('extension'),
+	new we_tagData_option('filesize'),
+	new we_tagData_option('width'),
+	new we_tagData_option('height'),
+	new we_tagData_option('alt'),
 		], false, '');
-$outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
-$doc = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
-	new weTagDataOption('top'),
+$outputlanguage = new we_tagData_textAttribute('outputlanguage', false, '');
+$doc = new we_tagData_selectAttribute('doc', [new we_tagData_option('self'),
+	new we_tagData_option('top'),
 		], false, '');
-$triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
-$usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
-$showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
-$rootdir = new weTagData_textAttribute('rootdir', false, '');
-$catfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
-	new weTagDataOption('category'),
-	new weTagDataOption('path'),
-	new weTagDataOption('title'),
-	new weTagDataOption('description'),
-	new weTagDataOption('is_destinationprinciple'),
-	new weTagDataOption('is_from doc_object'),
-	new weTagDataOption('is_fallback_to_standard'),
-	new weTagDataOption('is_fallback_to_active')
+$triggerid = (defined('FILE_TABLE') ? new we_tagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
+$usekey = new we_tagData_selectAttribute('usekey', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$showpath = new we_tagData_selectAttribute('showpath', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$rootdir = new we_tagData_textAttribute('rootdir', false, '');
+$catfield = new we_tagData_selectAttribute('field', [new we_tagData_option('id'),
+	new we_tagData_option('category'),
+	new we_tagData_option('path'),
+	new we_tagData_option('title'),
+	new we_tagData_option('description'),
+	new we_tagData_option('is_destinationprinciple'),
+	new we_tagData_option('is_from doc_object'),
+	new we_tagData_option('is_fallback_to_standard'),
+	new we_tagData_option('is_fallback_to_active')
 		], false, '');
-$vatfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
-	new weTagDataOption('vat'),
-	new weTagDataOption('name'),
-	new weTagDataOption('country'),
-	new weTagDataOption('countrycode'),
-	new weTagDataOption('is_standard'),
-	new weTagDataOption('is_fallback_to_standard'),
-	new weTagDataOption('is_fallback_to_prefs'),
-	new weTagDataOption('is_country_fallback_to_prefs')
+$vatfield = new we_tagData_selectAttribute('field', [new we_tagData_option('id'),
+	new we_tagData_option('vat'),
+	new we_tagData_option('name'),
+	new we_tagData_option('country'),
+	new we_tagData_option('countrycode'),
+	new we_tagData_option('is_standard'),
+	new we_tagData_option('is_fallback_to_standard'),
+	new we_tagData_option('is_fallback_to_prefs'),
+	new we_tagData_option('is_country_fallback_to_prefs')
 		], false, '');
-$this->TypeAttribute = new weTagData_typeAttribute('type', [
-	new weTagDataOption('-'),
-	new weTagDataOption('text', false, '', [$name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid], [$name]),
-	new weTagDataOption('date', false, '', [$name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid], [$name]),
-	new weTagDataOption('img', false, '', [$name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid], [$name]),
-	new weTagDataOption('flashmovie', false, '', [$name, $width, $height, $triggerid], [$name]),
-	new weTagDataOption('href', false, '', [$name], [$name]),
-	new weTagDataOption('link', false, '', [$name], [$name]),
-	new weTagDataOption('day', false, '', [], []),
-	new weTagDataOption('dayname_long', false, '', [$outputlanguage], []),
-	new weTagDataOption('dayname_short', false, '', [$outputlanguage], []),
-	new weTagDataOption('week', false, '', [], []),
-	new weTagDataOption('month', false, '', [], []),
-	new weTagDataOption('monthname_long', false, '', [$outputlanguage], []),
-	new weTagDataOption('monthname_short', false, '', [$outputlanguage], []),
-	new weTagDataOption('year', false, '', [], []),
-	new weTagDataOption('select', false, 'object', [$name, $usekey, $htmlspecialchars, $triggerid], [$name]),
-	new weTagDataOption('binary', false, 'object', [$name, $hyperlink, $href, $target, $only], [$name]),
-	new weTagDataOption('float', false, '', [$name, $hyperlink, $href, $target, $num_format, $triggerid], [$name]),
-	new weTagDataOption('int', false, 'object', [$name, $hyperlink, $href, $target, $triggerid], [$name]),
-	new weTagDataOption('collection', false, '', [$name], [$name]),
-	new weTagDataOption('shopVat', false, '', [$vatfield], []),
-	new weTagDataOption('shopCategory', false, '', [$catfield, $showpath, $rootdir], []),
-	new weTagDataOption('checkbox', false, '', [$name], [$name]),
-	new weTagDataOption('country', false, '', [$outputlanguage, $doc], []),
-	new weTagDataOption('language', false, '', [$outputlanguage, $doc], [])
+$this->TypeAttribute = new we_tagData_typeAttribute('type', [
+	new we_tagData_option('-'),
+	new we_tagData_option('text', false, '', [$name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid], [$name]),
+	new we_tagData_option('date', false, '', [$name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid], [$name]),
+	new we_tagData_option('img', false, '', [$name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid], [$name]),
+	new we_tagData_option('flashmovie', false, '', [$name, $width, $height, $triggerid], [$name]),
+	new we_tagData_option('href', false, '', [$name], [$name]),
+	new we_tagData_option('link', false, '', [$name], [$name]),
+	new we_tagData_option('day', false, '', [], []),
+	new we_tagData_option('dayname_long', false, '', [$outputlanguage], []),
+	new we_tagData_option('dayname_short', false, '', [$outputlanguage], []),
+	new we_tagData_option('week', false, '', [], []),
+	new we_tagData_option('month', false, '', [], []),
+	new we_tagData_option('monthname_long', false, '', [$outputlanguage], []),
+	new we_tagData_option('monthname_short', false, '', [$outputlanguage], []),
+	new we_tagData_option('year', false, '', [], []),
+	new we_tagData_option('select', false, 'object', [$name, $usekey, $htmlspecialchars, $triggerid], [$name]),
+	new we_tagData_option('binary', false, 'object', [$name, $hyperlink, $href, $target, $only], [$name]),
+	new we_tagData_option('float', false, '', [$name, $hyperlink, $href, $target, $num_format, $triggerid], [$name]),
+	new we_tagData_option('int', false, 'object', [$name, $hyperlink, $href, $target, $triggerid], [$name]),
+	new we_tagData_option('collection', false, '', [$name], [$name]),
+	new we_tagData_option('shopVat', false, '', [$vatfield], []),
+	new we_tagData_option('shopCategory', false, '', [$catfield, $showpath, $rootdir], []),
+	new we_tagData_option('checkbox', false, '', [$name], [$name]),
+	new we_tagData_option('country', false, '', [$outputlanguage, $doc], []),
+	new we_tagData_option('language', false, '', [$outputlanguage, $doc], [])
 		], false, '');
 
 $this->Attributes = [$name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,

@@ -12,11 +12,11 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'voting';
 
 $this->Attributes = [
-	new weTagData_textAttribute('id', false, ''),
-	new weTagData_selectAttribute('allowredirect', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('writeto', [new weTagDataOption('voting'),
-		new weTagDataOption('session'),
+	new we_tagData_textAttribute('id', false, ''),
+	new we_tagData_selectAttribute('allowredirect', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('writeto', [new we_tagData_option('voting'),
+		new we_tagData_option('session'),
 	 ], false, ''),
-	new weTagData_selectAttribute('deletesessiondata', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_textAttribute('additionalfields', false, ''),
+	new we_tagData_selectAttribute('deletesessiondata', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('additionalfields', false, ''),
 ];

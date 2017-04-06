@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class validationService{
+class we_validation_service{
 
 	var $id;
 	var $art;	//  custom | default

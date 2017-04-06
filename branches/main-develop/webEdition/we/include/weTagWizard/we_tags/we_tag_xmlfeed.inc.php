@@ -12,7 +12,7 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_textAttribute('url', true, '');
-$this->Attributes[] = new weTagData_textAttribute('refresh', false, '');
-$this->Attributes[] = new weTagData_textAttribute('timeout', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('url', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('refresh', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('timeout', false, '');

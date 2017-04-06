@@ -23,7 +23,7 @@ include_once(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/tag
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataAttribute{
+class we_tagData_attribute{
 	/**
 	 * @var string
 	 */
@@ -137,5 +137,10 @@ class weTagDataAttribute{
 		}
 		return $useOptions;
 	}
+
+}
+
+//FIXME: remove
+class  weTagDataAttribute extends we_tagData_attribute{
 
 }

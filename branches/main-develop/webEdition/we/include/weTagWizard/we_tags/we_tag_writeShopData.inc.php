@@ -12,13 +12,13 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 $this->Attributes = [
-	new weTagData_textAttribute('shopname', true, ''),
-	new weTagData_textAttribute('pricename', true, ''),
-	new weTagData_selectAttribute('netprices', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('usevat', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_textAttribute('shipping', false, ''),
-	new weTagData_selectAttribute('shippingisnet', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_textAttribute('shippingvatrate', false, ''),
-	new weTagData_textAttribute('customPrefix', true, ''),
-	new weTagData_textAttribute('customPostfix', true, ''),
+	new we_tagData_textAttribute('shopname', true, ''),
+	new we_tagData_textAttribute('pricename', true, ''),
+	new we_tagData_selectAttribute('netprices', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('usevat', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('shipping', false, ''),
+	new we_tagData_selectAttribute('shippingisnet', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('shippingvatrate', false, ''),
+	new we_tagData_textAttribute('customPrefix', true, ''),
+	new we_tagData_textAttribute('customPostfix', true, ''),
 ];

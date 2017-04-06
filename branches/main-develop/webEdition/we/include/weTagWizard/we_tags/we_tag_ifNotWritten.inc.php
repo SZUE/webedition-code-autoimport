@@ -12,16 +12,16 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = [new weTagData_selectAttribute('type', [new weTagDataOption('document'),
-		new weTagDataOption('object'),
-		new weTagDataOption('customer'),
-		new weTagDataOption('shop'),
+$this->Attributes = [new we_tagData_selectAttribute('type', [new we_tagData_option('document'),
+		new we_tagData_option('object'),
+		new we_tagData_option('customer'),
+		new we_tagData_option('shop'),
 		], false, ''),
-	new weTagData_selectAttribute('onerror', [new weTagDataOption('all'),
-		new weTagDataOption('nousername'),
-		new weTagDataOption('nopassword'),
-		new weTagDataOption('userexists'),
-		new weTagDataOption('passwordRule'),
+	new we_tagData_selectAttribute('onerror', [new we_tagData_option('all'),
+		new we_tagData_option('nousername'),
+		new we_tagData_option('nopassword'),
+		new we_tagData_option('userexists'),
+		new we_tagData_option('passwordRule'),
 		], false, ''),
-	new weTagData_textAttribute('formname', false, '')
+	new we_tagData_textAttribute('formname', false, '')
 ];

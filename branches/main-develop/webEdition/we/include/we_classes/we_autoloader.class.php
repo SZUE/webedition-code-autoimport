@@ -32,7 +32,6 @@
  */
 
 abstract class we_autoloader{
-
 	private static $domains = [
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
@@ -76,8 +75,10 @@ abstract class we_autoloader{
 		'users' => 'we_modules/users',
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
+		'tagData' => 'we_classes/tagData',
 		'tree' => 'we_classes/tree',
 		'tool' => 'we_classes/tools',
+		'validation' => 'we_classes/validation',
 		'versions' => 'we_versions',
 		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
@@ -146,40 +147,25 @@ abstract class we_autoloader{
 			'we_objectFile' => 'object/we_objectFile.class.php',
 			'we_schedpro' => 'schedule/we_schedpro.class.php',
 		],
-		'validation' => [
-			'validation' => 'validation.class.php',
-			'validationService' => 'validationService.class.php',
-		],
-		'weTagWizard/classes' => [
-			'weTagData' => 'weTagData.class.php',
-			'weTagDataAttribute' => 'weTagDataAttribute.class.php',
-			'weTagDataOption' => 'weTagDataOption.class.php',
-			'weTagData_choiceAttribute' => 'weTagData_choiceAttribute.class.php',
-			'weTagData_cmdAttribute' => 'weTagData_cmdAttribute.class.php',
-			'weTagData_linkAttribute' => 'weTagData_linkAttribute.class.php',
-			'weTagData_multiSelectorAttribute' => 'weTagData_multiSelectorAttribute.class.php',
-			'weTagData_selectAttribute' => 'weTagData_selectAttribute.class.php',
-			'weTagData_selectorAttribute' => 'weTagData_selectorAttribute.class.php',
-			'weTagData_sqlColAttribute' => 'weTagData_sqlColAttribute.class.php',
-			'weTagData_sqlRowAttribute' => 'weTagData_sqlRowAttribute.class.php',
-			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
-			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
+		'we_classes/tagData' => [//FIXME: remove
+			'weTagData' => 'we_tagData_base.class.php',
+			'weTagDataAttribute' => 'we_tagData_attribute.class.php',
+			'weTagDataOption' => 'we_tagData_option.class.php',
+			'weTagData_choiceAttribute' => 'we_tagData_choiceAttribute.class.php',
+			'weTagData_cmdAttribute' => 'we_tagData_cmdAttribute.class.php',
+			'weTagData_linkAttribute' => 'we_tagData_linkAttribute.class.php',
+			'weTagData_multiSelectorAttribute' => 'we_tagData_multiSelectorAttribute.class.php',
+			'weTagData_selectAttribute' => 'we_tagData_selectAttribute.class.php',
+			'weTagData_selectorAttribute' => 'we_tagData_selectorAttribute.class.php',
+			'weTagData_sqlColAttribute' => 'we_tagData_sqlColAttribute.class.php',
+			'weTagData_sqlRowAttribute' => 'we_tagData_sqlRowAttribute.class.php',
+			'weTagData_textAttribute' => 'we_tagData_textAttribute.class.php',
+			'weTagData_typeAttribute' => 'we_tagData_typeAttribute.class.php',
 		],
 		WEBEDITION_DIR . 'liveUpdate/classes' => [
 			'liveUpdateFrames' => 'liveUpdateFrames.class.php'
 		]
 	];
-
-	public static function loadZend($class_name){
-		//t_e('load zend because of', $class_name);
-		if(!class_exists('Zend_Loader_Autoloader', false)){
-			require_once('Zend/Loader/Autoloader.php');
-			$loader = Zend_Loader_Autoloader::getInstance(); #3815
-			$loader->setFallbackAutoloader(true); #3815
-			$loader->suppressNotFoundWarnings(true);
-			spl_autoload_register('we_autoloader::finalLoad', true);
-		}
-	}
 
 	/**
 	 * default webEdition autoloader
@@ -212,9 +198,6 @@ abstract class we_autoloader{
 			/* case 'Less':
 			  include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
 			  return Less_Autoloader::loadClass($class_name); */
-			case 'Zend':
-				self::loadZend($class_name);
-				return false;
 		}
 
 		foreach(self::$classes as $path => $array){

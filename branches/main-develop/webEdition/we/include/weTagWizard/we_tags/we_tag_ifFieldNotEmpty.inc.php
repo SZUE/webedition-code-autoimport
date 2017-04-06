@@ -13,16 +13,16 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_textAttribute('match', true, ''),
-	new weTagData_selectAttribute('type', [new weTagDataOption('img'),
-		new weTagDataOption('flashmovie'),
-		new weTagDataOption('binary'),
-		new weTagDataOption('href'),
-		new weTagDataOption('object'),
-		new weTagDataOption('multiobject'),
-		new weTagDataOption('calendar'),
-		new weTagDataOption('checkbox'),
-		new weTagDataOption('int'),
-		new weTagDataOption('float'),
+	new we_tagData_textAttribute('match', true, ''),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('img'),
+		new we_tagData_option('flashmovie'),
+		new we_tagData_option('binary'),
+		new we_tagData_option('href'),
+		new we_tagData_option('object'),
+		new we_tagData_option('multiobject'),
+		new we_tagData_option('calendar'),
+		new we_tagData_option('checkbox'),
+		new we_tagData_option('int'),
+		new we_tagData_option('float'),
 		], false, ''),
 ];

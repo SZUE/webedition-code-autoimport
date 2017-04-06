@@ -13,10 +13,10 @@ $this->Groups[] = 'input_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_selectAttribute('type', [
-		new weTagDataOption('js'),
-		new weTagDataOption('php'),
+	new we_tagData_selectAttribute('type', [
+		new we_tagData_option('js'),
+		new we_tagData_option('php'),
 		], false, ''),
-	new weTagData_textAttribute('format', false, ''),
-	new weTagData_textAttribute('outputlanguage', false, ''),
+	new we_tagData_textAttribute('format', false, ''),
+	new we_tagData_textAttribute('outputlanguage', false, ''),
 ];

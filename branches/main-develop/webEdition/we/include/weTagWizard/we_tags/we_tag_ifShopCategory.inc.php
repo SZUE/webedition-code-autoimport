@@ -12,16 +12,16 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
-$this->Attributes[] = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
-	new weTagDataOption('is_destinationprinciple'),
-	new weTagDataOption('is_from doc_object'),
-	new weTagDataOption('is_fallback_to_standard'),
-	new weTagDataOption('is_fallback_to_active')
+$this->Attributes[] = new we_tagData_selectAttribute('field', [new we_tagData_option('id'),
+	new we_tagData_option('is_destinationprinciple'),
+	new we_tagData_option('is_from doc_object'),
+	new we_tagData_option('is_fallback_to_standard'),
+	new we_tagData_option('is_fallback_to_active')
 	], false, '');
 $options = [];
 $opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 foreach($opts as $k => $v){
-	$options[] = new weTagDataOption($v, $k);
+	$options[] = new we_tagData_option($v, $k);
 }
-$this->Attributes[] = new weTagData_selectAttribute('match', $options, false);
-$this->Attributes[] = new weTagData_selectAttribute('ignorefallbacks', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('match', $options, false);
+$this->Attributes[] = new we_tagData_selectAttribute('ignorefallbacks', we_tagData_selectAttribute::getTrueFalse(), false, '');

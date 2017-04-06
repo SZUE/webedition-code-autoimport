@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_selectAttribute extends weTagDataAttribute{
+class we_tagData_selectAttribute extends we_tagData_attribute{
 	/**
 	 * @var array
 	 */
@@ -44,7 +44,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	static function getTrueFalse(){
 		static $tmp = false;
 		if(!$tmp){
-			$tmp = [new weTagDataOption('true'), new weTagDataOption('false')];
+			$tmp = [new we_tagData_option('true'), new we_tagData_option('false')];
 		}
 		return $tmp;
 	}
@@ -68,5 +68,10 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 						<td class="attributeField">' . $select->getHtml() . '</td>
 					</tr></table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_selectAttribute extends we_tagData_selectAttribute{
 
 }

@@ -14,11 +14,11 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes = [new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '')];
+	$this->Attributes = [new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '')];
 }
-$this->Attributes[] = new weTagData_textAttribute('class', false, '');
-$this->Attributes[] = new weTagData_textAttribute('style', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('only', [new weTagDataOption('href'),
-	new weTagDataOption('id'),
+$this->Attributes[] = new we_tagData_textAttribute('class', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('style', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('only', [new we_tagData_option('href'),
+	new we_tagData_option('id'),
 	], false, '');

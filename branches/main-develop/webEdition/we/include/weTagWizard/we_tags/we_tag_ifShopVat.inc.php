@@ -14,21 +14,21 @@ $this->Module = 'shop';
 
 if(defined('WE_SHOP_VAT_TABLE')){
 	$options = [];
-	$options[] = new weTagDataOption('', 0);
+	$options[] = new we_tagData_option('', 0);
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){
-		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory . ')', $vat->id);
+		$options[] = new we_tagData_option($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory . ')', $vat->id);
 	}
 
 	if(!we_shop_category::isCategoryMode()){
-		$this->Attributes[] = new weTagData_selectAttribute('id', $options, true);
+		$this->Attributes[] = new we_tagData_selectAttribute('id', $options, true);
 	} else {
-		$this->Attributes[] = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
-			new weTagDataOption('is_standard'),
-			new weTagDataOption('is_fallback_to_standard'),
-			new weTagDataOption('is_fallback_to_prefs'),
-			new weTagDataOption('is_country_fallback_to_prefs')
+		$this->Attributes[] = new we_tagData_selectAttribute('field', [new we_tagData_option('id'),
+			new we_tagData_option('is_standard'),
+			new we_tagData_option('is_fallback_to_standard'),
+			new we_tagData_option('is_fallback_to_prefs'),
+			new we_tagData_option('is_country_fallback_to_prefs')
 			], false, '');
-		$this->Attributes[] = new weTagData_selectAttribute('match', $options, false);
+		$this->Attributes[] = new we_tagData_selectAttribute('match', $options, false);
 	}
 }

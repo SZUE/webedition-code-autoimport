@@ -12,21 +12,21 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('type', [new weTagDataOption('block'),
-	new weTagDataOption('linklist'),
-	new weTagDataOption('listdir'),
-	new weTagDataOption('listview'),
+$this->Attributes[] = new we_tagData_choiceAttribute('type', [new we_tagData_option('block'),
+	new we_tagData_option('linklist'),
+	new we_tagData_option('listdir'),
+	new we_tagData_option('listview'),
 	], true, false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('position', [new weTagDataOption('first'),
-	new weTagDataOption('last'),
-	new weTagDataOption('odd'),
-	new weTagDataOption('even'),
+$this->Attributes[] = new we_tagData_choiceAttribute('position', [new we_tagData_option('first'),
+	new we_tagData_option('last'),
+	new we_tagData_option('odd'),
+	new we_tagData_option('even'),
 	], true, true, '');
-$this->Attributes[] = new weTagData_textAttribute('reference', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('operator', [new weTagDataOption('equal'),
-	new weTagDataOption('less'),
-	new weTagDataOption('less|equal'),
-	new weTagDataOption('greater'),
-	new weTagDataOption('greater|equal'),
-	new weTagDataOption('every'),
+$this->Attributes[] = new we_tagData_textAttribute('reference', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('operator', [new we_tagData_option('equal'),
+	new we_tagData_option('less'),
+	new we_tagData_option('less|equal'),
+	new we_tagData_option('greater'),
+	new we_tagData_option('greater|equal'),
+	new we_tagData_option('every'),
 	], false, '');

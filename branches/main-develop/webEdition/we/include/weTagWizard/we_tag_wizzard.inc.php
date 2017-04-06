@@ -27,7 +27,7 @@ $openAtCursor = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 we_html_tools::protect();
 
 // include wetag depending on we_cmd[1]
-$weTag = weTagData::getTagData($tagName);
+$weTag = we_tagData_base::getTagData($tagName);
 if(!$weTag){
 	echo sprintf(g_l('taged', '[tag_not_found]'), $tagName);
 	exit;

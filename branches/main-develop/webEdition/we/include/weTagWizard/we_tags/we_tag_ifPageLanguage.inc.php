@@ -13,12 +13,12 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $locales = [];
 foreach($GLOBALS["weFrontendLanguages"] as $lv){
-	$locales[] = new weTagDataOption($lv);
+	$locales[] = new we_tagData_option($lv);
 }
 
 $this->Attributes = [
-	new weTagData_choiceAttribute('match', $locales, false, true, ''),
-	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
-		new weTagDataOption('self'),
+	new we_tagData_choiceAttribute('match', $locales, false, true, ''),
+	new we_tagData_selectAttribute('doc', [new we_tagData_option('top'),
+		new we_tagData_option('self'),
 		], false, ''),
 ];

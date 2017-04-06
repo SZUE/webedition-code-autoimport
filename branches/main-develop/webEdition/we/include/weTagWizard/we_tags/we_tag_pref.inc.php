@@ -12,22 +12,22 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$bannerName = new weTagData_choiceAttribute('name', [new weTagDataOption('DefaultBanner'),
+$bannerName = new we_tagData_choiceAttribute('name', [new we_tagData_option('DefaultBanner'),
 	], false, false, 'banner');
-$newsletterName = new weTagData_choiceAttribute('name', [
+$newsletterName = new we_tagData_choiceAttribute('name', [
 //	new weTagDataOption('DefaultBanner'),
 	], false, false, 'newsletter');
-$shopName = new weTagData_choiceAttribute('name', [new weTagDataOption('vatRule'),
-	new weTagDataOption('shippingControl'),
-	new weTagDataOption('statusMails'),
+$shopName = new we_tagData_choiceAttribute('name', [new we_tagData_option('vatRule'),
+	new we_tagData_option('shippingControl'),
+	new we_tagData_option('statusMails'),
 	], false, false, 'shop');
-$field = new weTagData_textAttribute('field', false, '');
+$field = new we_tagData_textAttribute('field', false, '');
 
 
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('banner', false, 'banner', [$bannerName], [$bannerName]),
-	new weTagDataOption('newsletter', false, 'newsletter', [$newsletterName], [$newsletterName]),
-	new weTagDataOption('shop', false, 'shop', [$shopName, $field], [$shopName, $field])]
+$this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_option('banner', false, 'banner', [$bannerName], [$bannerName]),
+	new we_tagData_option('newsletter', false, 'newsletter', [$newsletterName], [$newsletterName]),
+	new we_tagData_option('shop', false, 'shop', [$shopName, $field], [$shopName, $field])]
 	, false, '');
 
 $this->Attributes = [$bannerName, $newsletterName, $shopName, $field];

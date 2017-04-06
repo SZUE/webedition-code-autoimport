@@ -1,5 +1,3 @@
-!we/include/we_classes/js_gui
-we/include/we_classes/weSuggest.class.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -531,6 +529,7 @@ we/include/we_classes/weXMLComposer.class.php
 we/include/we_classes/weTree.inc.php
 we/include/we_classes/weTree.class.php
 we/include/we_classes/weTableDialog.class.inc.php
+we/include/we_classes/weSuggest.class.php
 we/include/we_classes/weSuggest.class.inc.php
 we/include/we_classes/weSpecialCharDialog.class.inc.php
 we/include/we_classes/weSidebarDocumentParser.class.php
@@ -707,13 +706,10 @@ we/include/weTagWizard/we_tags/we_tag_ifNotCaptcha.inc.php
 we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/weTagWizard/we_tags/we_tag_collection.inc.php
 we/include/weTagWizard/we_tags/custom_tags/dummy
-we/include/weTagWizard/classes/weTagWizard.class.php
 we/include/weCodeWizard/data/default/search/_information.php
 we/include/weCodeWizard/data/default/miscellaneous/_information.php
 we/include/weCodeWizard/data/custom/dummy
 we/include/weCodeWizard/data/custom/_information.php
-we/include/validation/xhtml_10_transitional.inc.php
-we/include/validation/xhtml_10_strict.inc.php
 we/include/treeInfo.inc.php
 we/include/sysinfo.inc.php
 we/include/sidebar.inc.php
@@ -1127,6 +1123,7 @@ agency_sample.php
 !we/include/we_classes/rpc/view
 !we/include/we_classes/permissionhandler
 !we/include/we_classes/leWizard
+!we/include/we_classes/js_gui
 !we/include/we_classes/java_menu
 !we/include/we_classes/delete
 !we/include/we_classes/Transform
@@ -1134,10 +1131,12 @@ agency_sample.php
 !we/include/we_ajax
 !we/include/weTracking
 !we/include/weTagWizard/data
+!we/include/weTagWizard/classes
 !we/include/weInfoPages
 !we/include/weCodeWizard/data/English_UTF-8
 !we/include/weCodeWizard/data/Deutsch_UTF-8
 !we/include/weCodeWizard/classes
+!we/include/validation
 !we/include/multiEditor
 !we/include/jsMessageConsole
 !we/include/java_menu

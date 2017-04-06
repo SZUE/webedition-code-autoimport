@@ -13,9 +13,9 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 $this->Attributes = [
-	new weTagData_textAttribute('name', true, ''),
-	new weTagData_selectAttribute('reference', [new weTagDataOption('article'),
-		new weTagDataOption('cart'),
+	new we_tagData_textAttribute('name', true, ''),
+	new we_tagData_selectAttribute('reference', [new we_tagData_option('article'),
+		new we_tagData_option('cart'),
 		], true, ''),
-	new weTagData_textAttribute('shopname', true, ''),
+	new we_tagData_textAttribute('shopname', true, ''),
 ];

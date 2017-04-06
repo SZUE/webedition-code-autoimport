@@ -14,25 +14,25 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/css', true, '');
+	$this->Attributes[] = new we_tagData_selectorAttribute('id', FILE_TABLE, 'text/css', true, '');
 }
-$this->Attributes[] = new weTagData_selectAttribute('rel', [new weTagDataOption('stylesheet'),
-	new weTagDataOption('alternate stylesheet'),
+$this->Attributes[] = new we_tagData_selectAttribute('rel', [new we_tagData_option('stylesheet'),
+	new we_tagData_option('alternate stylesheet'),
 	], false, '');
-$this->Attributes[] = new weTagData_textAttribute('title', false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('media', [new weTagDataOption('all'),
-	new weTagDataOption('braille'),
-	new weTagDataOption('embossed'),
-	new weTagDataOption('handheld'),
-	new weTagDataOption('print'),
-	new weTagDataOption('projection'),
-	new weTagDataOption('screen'),
-	new weTagDataOption('speech'),
-	new weTagDataOption('tty'),
-	new weTagDataOption('tv'),
+$this->Attributes[] = new we_tagData_textAttribute('title', false, '');
+$this->Attributes[] = new we_tagData_choiceAttribute('media', [new we_tagData_option('all'),
+	new we_tagData_option('braille'),
+	new we_tagData_option('embossed'),
+	new we_tagData_option('handheld'),
+	new we_tagData_option('print'),
+	new we_tagData_option('projection'),
+	new we_tagData_option('screen'),
+	new we_tagData_option('speech'),
+	new we_tagData_option('tty'),
+	new we_tagData_option('tv'),
 	], false, false, '');
-$this->Attributes[] = new weTagData_selectAttribute('applyto', [new weTagDataOption('all'),
-	new weTagDataOption('wysiwyg'),
-	new weTagDataOption('around'),
+$this->Attributes[] = new we_tagData_selectAttribute('applyto', [new we_tagData_option('all'),
+	new we_tagData_option('wysiwyg'),
+	new we_tagData_option('around'),
 	], false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');

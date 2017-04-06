@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_textAttribute extends weTagDataAttribute{
+class we_tagData_textAttribute extends we_tagData_attribute{
 
 	/**
 	 * @return string
@@ -40,5 +40,10 @@ class weTagData_textAttribute extends weTagDataAttribute{
 			'</td>
 					</tr></table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_textAttribute extends we_tagData_textAttribute{
 
 }

@@ -11,10 +11,10 @@ $this->NeedsEndTag = false;
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('userexists', false, '', true);
-$this->Attributes[] = new weTagData_textAttribute('userempty', false, '', true);
-$this->Attributes[] = new weTagData_textAttribute('passempty', false, '', true);
-$this->Attributes[] = new weTagData_selectAttribute('register', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('allowed', false, '');
-$this->Attributes[] = new weTagData_textAttribute('protected', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('changesessiondata', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('userexists', false, '', true);
+$this->Attributes[] = new we_tagData_textAttribute('userempty', false, '', true);
+$this->Attributes[] = new we_tagData_textAttribute('passempty', false, '', true);
+$this->Attributes[] = new we_tagData_selectAttribute('register', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('allowed', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('protected', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('changesessiondata', we_tagData_selectAttribute::getTrueFalse(), false, '');
