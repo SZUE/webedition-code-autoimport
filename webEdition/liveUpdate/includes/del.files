@@ -23,17 +23,6 @@ we/include/wysiwygWindow.inc.php
 we/include/webEdition_seem.inc.php
 we/include/webEdition_normal.inc.php
 we/include/we_vtabs.inc.php
-we/include/we_versions/we_versions_logBase.class.php
-we/include/we_versions/we_editor_versions.inc.php
-we/include/we_versions/weVersionsView.class.php
-we/include/we_versions/weVersionsView.class.inc.php
-we/include/we_versions/weVersionsSearch.class.php
-we/include/we_versions/weVersionsSearch.class.inc.php
-we/include/we_versions/weVersionsPreview.php
-we/include/we_versions/weVersionsPreview.inc.php
-we/include/we_versions/weVersions.class.php
-we/include/we_versions/weVersions.class.inc.php
-we/include/we_versions/versionsLog.inc.php
 we/include/we_tools/treePopup.inc.php
 we/include/we_tools/tools_header.php
 we/include/we_tools/tools_header.inc.php
@@ -677,6 +666,8 @@ we/include/clear_cache.inc.php
 we/include/changeTriggerID_rec.inc.php
 we/include/changeLanguage_rec.inc.php
 we/include/baumFrame.inc.php
+we/include/accessibility/services_html.inc.php
+we/include/accessibility/services_css.inc.php
 we/include/accessibility/checkDocument.inc.php
 treeMainModules.php
 treeMain.php
@@ -1029,7 +1020,7 @@ agency_sample.php
 !wysiwyg
 !we_backup/tmp
 !we/include/we_widgets
-!we/include/we_versions/version_wizard
+!we/include/we_versions
 !we/include/we_tools/weSearch/layout/icons
 !we/include/we_tools/weSearch/layout
 !we/include/we_tools/weSearch
@@ -1089,8 +1080,7 @@ agency_sample.php
 !sidebar/img
 !sidebar
 !rpc/views
-!rpc/cmds/tools/navigation
-!rpc/cmds/dw
+!rpc/cmds
 !rpc/base
 !multiEditor
 !menuapplet

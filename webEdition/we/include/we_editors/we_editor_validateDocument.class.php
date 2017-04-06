@@ -29,14 +29,32 @@
 
 class we_editor_validateDocument extends we_editor_base{
 
+	private function getCSSServices(){
+		$i = 0;
+		return [
+			new we_validation_service($i++, 'default', 'css', g_l('validation', '[service_css_upload]'), 'jigsaw.w3.org', '/css-validator/validator', 'post', 'file', 'fileupload', 'text/css', 'usermedium=all&submit=check', '.css', 1),
+			new we_validation_service($i++, 'default', 'css', g_l('validation', '[service_css_url]'), 'jigsaw.w3.org', '/css-validator/validator', 'get', 'uri', 'url', 'text/css', 'usermedium=all', '.css', 1)
+		];
+	}
+
+	private function getHTMLServices(){
+		$i = 0;
+
+//  first xhtml from W3C
+		return [
+			new we_validation_service($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_upload]'), 'validator.w3.org', '/check', 'post', 'uploaded_file', 'fileupload', 'text/html', '', '.html,.htm,.php', 1),
+			new we_validation_service($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_url]'), 'validator.w3.org', '/check', 'get', 'uri', 'url', 'text/html', '', '.html,.htm,.php', 1)
+		];
+	}
+
 	public function show(){
 
 //  for predefined services include properties file, depending on content-Type
 //  and depending on fileending.
 		if($this->we_doc->ContentType == we_base_ContentTypes::CSS || $this->we_doc->Extension === '.css'){
-			$validationService = require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
+			$validationService = $this->getCSSServices();
 		} else {
-			$validationService = require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
+			$validationService = $this->getHTMLServices();
 		}
 
 		$services = [];
@@ -97,13 +115,13 @@ class we_editor_validateDocument extends we_editor_base{
 			$select .= '</optgroup></optgroup></select>';
 			$selectedService = $validationService[0];
 			$hiddens = we_html_element::htmlHiddens([
-						'host' => $selectedService->host,
-						'path' => $selectedService->path,
-						'ctype' => $selectedService->ctype,
-						's_method' => $selectedService->method,
-						'checkvia' => $selectedService->checkvia,
-						'varname' => $selectedService->varname,
-						'additionalVars' => $selectedService->additionalVars
+					'host' => $selectedService->host,
+					'path' => $selectedService->path,
+					'ctype' => $selectedService->ctype,
+					's_method' => $selectedService->method,
+					'checkvia' => $selectedService->checkvia,
+					'varname' => $selectedService->varname,
+					'additionalVars' => $selectedService->additionalVars
 			]);
 		} else {
 			$select = g_l('validation', '[no_services_available]');
@@ -125,13 +143,15 @@ class we_editor_validateDocument extends we_editor_base{
 				. '</td></tr></table>'
 				, 'space' => we_html_multiIconBox::SPACE_MED],
 			['html' => g_l('validation', '[result]'), 'noline' => 1,],
-			['html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => we_html_multiIconBox::SPACE_SMALL],
+			['html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>',
+				'space' => we_html_multiIconBox::SPACE_SMALL],
 		];
 
 
-		return $this->getPage(we_html_multiIconBox::getHTML('weDocValidation', $parts, 20), we_html_element::jsScript(JS_DIR . 'validateDocument.js', '', ['id' => 'loadVarValidateDocument', 'data-validate' => setDynamicVar($json)]), [
-					'onload' => 'setIFrameSize()',
-					'onresize' => 'setIFrameSize()'
+		return $this->getPage(we_html_multiIconBox::getHTML('weDocValidation', $parts, 20), we_html_element::jsScript(JS_DIR . 'validateDocument.js', '', ['id' => 'loadVarValidateDocument',
+					'data-validate' => setDynamicVar($json)]), [
+				'onload' => 'setIFrameSize()',
+				'onresize' => 'setIFrameSize()'
 		]);
 	}
 
