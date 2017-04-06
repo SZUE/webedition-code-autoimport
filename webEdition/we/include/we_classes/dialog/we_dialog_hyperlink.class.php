@@ -326,7 +326,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		// Initialize we_button class
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$noInternals = false;
 
 		$extHref = str_replace('%20', ' ', (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
@@ -361,7 +361,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 			$weSuggest->setMaxResults(20);
 			$weSuggest->setRequired(true);
 			$weSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setWidth(300);
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','selector_callback,btn_edit_int','',0, '', " . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"), 10);
 			$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value);", '', 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
@@ -378,7 +378,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 				$weSuggest->setMaxResults(20);
 				$weSuggest->setRequired(true);
 				$weSuggest->setResult('we_dialog_args[objID]', ($this->args['objID'] == 0 ? '' : $this->args['objID']));
-				$weSuggest->setSelector(weSuggest::DocSelector);
+				$weSuggest->setSelector(we_gui_suggest::DocSelector);
 				$weSuggest->setTable(OBJECT_FILES_TABLE);
 				$weSuggest->setWidth(300);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")), 10);

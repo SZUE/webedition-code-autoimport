@@ -304,7 +304,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	private function getHTMLPropertiesGroup(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		$cmd1 = "document.we_form.elements.LinkID.value";
 		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','','','0','',0)";
@@ -342,7 +342,7 @@ class we_navigation_frames extends we_modules_frame{
 		$weSuggest->setInput('LinkPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult('LinkID', $this->Model->LinkID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$weSuggest->setWidth(330);
 		$weSuggest->setSelectButton($buttons);
@@ -548,7 +548,7 @@ class we_navigation_frames extends we_modules_frame{
 			id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK ? CATEGORY_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''))))
 			);
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("LinkPath", "");
 		$weSuggest->setContentType(
 			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ?
@@ -558,7 +558,7 @@ class we_navigation_frames extends we_modules_frame{
 		$weSuggest->setInput('LinkPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult('LinkID', $this->Model->LinkID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
 		$weSuggest->setWidth(370);
 		$weSuggest->setSelectButton($buttons);
@@ -842,16 +842,16 @@ class we_navigation_frames extends we_modules_frame{
 
 		if($table == NAVIGATION_TABLE){
 			$cmd = "javascript:we_cmd('we_navigation_dirSelector',document.we_form.$IDName.value,'" . $IDName . "','" . $PathName . "','" . $cmd . "')";
-			$selector = weSuggest::DirSelector;
+			$selector = we_gui_suggest::DirSelector;
 		} else if($filter == we_base_ContentTypes::FOLDER){
 			$cmd = "javascript:we_cmd('we_selector_file',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "')";
-			$selector = weSuggest::DirSelector;
+			$selector = we_gui_suggest::DirSelector;
 		} else {
 			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-			$selector = weSuggest::DocSelector;
+			$selector = we_gui_suggest::DocSelector;
 		}
 
-		if($selector == weSuggest::DocSelector){
+		if($selector == we_gui_suggest::DocSelector){
 			$path = $path === '/' ? '' : $path;
 			$required = 0;
 		} else {
@@ -867,7 +867,7 @@ class we_navigation_frames extends we_modules_frame{
 			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, '', 0, 0, '', '', $disabled);
 		}
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId($PathName);
 		$weSuggest->setContentType($acCTypes ?: $filter);
 		$weSuggest->setInput($PathName, $path, [], false, true);
@@ -994,13 +994,13 @@ class we_navigation_frames extends we_modules_frame{
 			$attribs['disabled'] = "disabled";
 		}
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput('FolderPath', $path, $attribs);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult('FolderID', $this->Model->FolderID ?: $rootDirID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setLabel(g_l('navigation', '[dir]'));
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(400);
@@ -1087,14 +1087,14 @@ class we_navigation_frames extends we_modules_frame{
 
 		$path = id_to_path($this->Model->UrlID);
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId($prefix . 'UrlIDPath');
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
 		$weSuggest->setInput($prefix . 'UrlIDPath', $path, [], false, true);
 		$weSuggest->setMaxResults(50);
 		$weSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(400);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, $cmd));
 

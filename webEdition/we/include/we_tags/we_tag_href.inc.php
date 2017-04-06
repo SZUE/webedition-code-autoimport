@@ -138,13 +138,13 @@ function we_tag_href(array $attribs){
 	switch($type){
 		case we_base_link::TYPE_ALL:
 		case we_base_link::TYPE_INT:
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
 			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 			$weSuggest->setInput($intPath_elem_Name, $intPath);
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult($intID_elem_Name, $intID);
-			$weSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
+			$weSuggest->setSelector($directory ? we_gui_suggest::DirSelector : we_gui_suggest::DocSelector);
 			$weSuggest->setTable(FILE_TABLE);
 			$weSuggest->setWidth($size);
 	}

@@ -200,14 +200,14 @@ class we_schedpro{
 					$rootDirID = 0;
 				}
 
-				$weSuggest = & weSuggest::getInstance();
+				$weSuggest = & we_gui_suggest::getInstance();
 				$weSuggest->setAcId('WsDir');
 				$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 				$weSuggest->setInput($textname, $path);
 				$weSuggest->setMaxResults(20);
 				$weSuggest->setRequired(true);
 				$weSuggest->setResult($idname, $myid);
-				$weSuggest->setSelector(weSuggest::DirSelector);
+				$weSuggest->setSelector(we_gui_suggest::DirSelector);
 				$weSuggest->setTable(FILE_TABLE);
 				$weSuggest->setWidth(320);
 				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $GLOBALS['we_doc']->Table . "','" . $idname . "','" . $textname . "','setHot',''," . $rootDirID . ")"));

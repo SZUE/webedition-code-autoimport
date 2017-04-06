@@ -59,13 +59,13 @@ class we_dialog_gallery extends we_dialog_base{
 	function getDialogContentHTML(){
 		$textname = 'we_targetname';
 		$idname = 'we_dialog_args[collid]';
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('ID');
 		$weSuggest->setContentType(we_base_ContentTypes::COLLECTION);
 		$weSuggest->setInput($textname, !empty($this->args['collid']) ? id_to_path($this->args['collid'], VFILE_TABLE) : '');
 		$weSuggest->setMaxResults(4);
 		$weSuggest->setResult($idname, isset($this->args['collid']) ? $this->args['collid'] : 0);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(VFILE_TABLE);
 
 		$weSuggest->setCheckFieldValue(false);

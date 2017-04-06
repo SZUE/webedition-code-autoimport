@@ -32,10 +32,10 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	echo we_base_jsCmd::singleCmd('close') . '</head><body></body></html>';
 	exit();
 }
-$weSuggest = & weSuggest::getInstance();
+$weSuggest = & we_gui_suggest::getInstance();
 
 function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $idname = ''){
-	$weSuggest = & weSuggest::getInstance();
+	$weSuggest = & we_gui_suggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
 
@@ -45,7 +45,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$weSuggest->setMaxResults(10);
 	$weSuggest->setRequired(true);
 	$weSuggest->setResult($idname, $idvalue);
-	$weSuggest->setSelector(weSuggest::DirSelector);
+	$weSuggest->setSelector(we_gui_suggest::DirSelector);
 	$weSuggest->setTable($table);
 	$weSuggest->setWidth($width);
 	$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')"));

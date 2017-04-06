@@ -43,13 +43,13 @@ function we_tag_collectionSelect(array $attribs){
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "',''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $rootDirID));
 		$weSuggest->setContentType(we_base_ContentTypes::COLLECTION);
 		$weSuggest->setInput($textname, $path);
 		$weSuggest->setResult($idname, $intID);
 		$weSuggest->setMaxResults(10);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(VFILE_TABLE);
 		$weSuggest->setWidth(200);
 		?>

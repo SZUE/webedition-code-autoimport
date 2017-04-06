@@ -321,7 +321,7 @@ class we_export_wizard{
 	}
 
 	private function getHTMLStep2a(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$jsCmd = new we_base_jsCmd();
 		$jsCmd->addCmd('load_frame', ['frame' => 'footer', 'location' => $this->frameset . '?pnt=footer&step=2']);
 		$js = '';
@@ -1127,7 +1127,7 @@ switch (args[0]) {
 	}
 
 	private function formWeChooser($width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/"){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		if(!$Pathvalue){
 			$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), "", $this->db);
 		}
@@ -1137,7 +1137,7 @@ switch (args[0]) {
 		$weSuggest->setInput($Pathname, $Pathvalue);
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($IDName, $IDValue);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')"));
 

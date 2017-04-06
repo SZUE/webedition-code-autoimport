@@ -634,14 +634,14 @@ class we_imageDocument extends we_binaryDocument{
 		$longdesc_id = $this->getElement('longdescid', 'bdid');
 		$longdescPath = ($longdesc_id ? id_to_path($longdesc_id) : '');
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId('LonDesc');
 		$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 		$weSuggest->setInput($longdesc_text_name, $longdescPath);
 		$weSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($longdesc_id_name, $longdesc_id);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(332);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $longdesc_id_name . "'].value,'" . FILE_TABLE . "','" . $longdesc_id_name . "','" . $longdesc_text_name . "','reload_hot_editpage','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('imageDocument_emptyLongdesk','" . $longdesc_id_name . "','" . $longdesc_text_name . "','" . $weSuggest->getInputId() . "')"));
@@ -775,7 +775,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return string
 	 */
 	function formLink(){
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 
 		$linkType = $this->getElement('LinkType') ?: 'no';
 		$checkLinkname = 'we_' . $this->Name . '_txt[LinkType]';
@@ -811,7 +811,7 @@ class we_imageDocument extends we_binaryDocument{
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $textname . "','check_radio_option," . $checkLinkname . ",2,1','',0,''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setWidth(280);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setLabel('href');
 		$int_link = $weSuggest->getHTML();
 		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), $checkLinkname, g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
@@ -830,7 +830,7 @@ class we_imageDocument extends we_binaryDocument{
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','check_radio_option," . $checkLinkname . ",3,1','','','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setWidth(280);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setLabel('href');
 			$obj_link = $weSuggest->getHTML();
 			$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-top:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
@@ -857,7 +857,7 @@ class we_imageDocument extends we_binaryDocument{
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image', document.we_form.elements['" . $RollOverIDName . "'].value,'" . FILE_TABLE . "','" . $RollOverIDName . "','" . $RollOverPathname . "','toggle_checkbox_with_hidden," . $RollOverFlagName . ",1,1','',0,'" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setWidth(280);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setLabel('href');
 		$rollover = $weSuggest->getHTML();
 

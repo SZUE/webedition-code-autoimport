@@ -52,7 +52,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	function getAccessControlHTML(){
 		$filter = $this->getFilter();
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		/*		 * ** AUTOSELECTOR FOR ErrorDocument, Customer is not logged in *** */
 		$id_selectorNoLoginId = $filter->getErrorDocNoLogin();
@@ -71,7 +71,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weSuggest->setLabel(g_l('modules_customerFilter', '[documentNoLogin]'));
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($selectorNoLoginId, $id_selectorNoLoginId);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(409);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $selectorNoLoginId . "','" . $selectorNoLoginText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>");
 
@@ -94,7 +94,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weSuggest->setLabel(g_l('modules_customerFilter', '[documentNoAccess]'));
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($selectorNoAccessId, $id_selectorNoAccessId);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(409);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $selectorNoAccessId . "','" . $selectorNoAccessText . "','setHot','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
 

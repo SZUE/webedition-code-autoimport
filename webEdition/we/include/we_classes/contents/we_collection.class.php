@@ -339,7 +339,7 @@ class we_collection extends we_root{
 		$toolbar->setCol(0, 6, ['class' => 'toolbarImport'], $btnImport);
 		$toolbar->setCol(0, 7, ['class' => 'toolbarNum weMultiIconBoxHeadline'], g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 
 		$longtext = g_l('weClass', '[collection][long_description]');
 		$ddtext = self::isDragAndDrop() ? g_l('weClass', '[collection][dd_ok]') : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : g_l('weClass', '[collection][dd_nok]'));
@@ -377,7 +377,7 @@ class we_collection extends we_root{
 			]
 		];
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 
 		return 'WE().consts.collection = {
 			blankItem : {
@@ -438,7 +438,7 @@ class we_collection extends we_root{
 		$weSuggest->setTable($item['remTable']);
 		$weSuggest->setContentType('folder,' . $item['remCT']);
 		$weSuggest->setCheckFieldValue(false);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setAcId('Item_' . $item['index']);
 		$weSuggest->setNoAutoInit(true);
 		$weSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
@@ -501,7 +501,7 @@ class we_collection extends we_root{
 		$weSuggest->setTable(addTblPrefix($item['remTable']));
 		$weSuggest->setContentType('folder,' . $item['remCT']);
 		$weSuggest->setCheckFieldValue(false);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setAcId('Item_' . $item['index']);
 		$weSuggest->setNoAutoInit(true);
 		$weSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);

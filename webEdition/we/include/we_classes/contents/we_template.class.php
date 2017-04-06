@@ -496,7 +496,7 @@ we_templateInit();?>';
 	}
 
 	function formMasterTemplate(){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
@@ -508,7 +508,7 @@ we_templateInit();?>';
 		$weSuggest->setInput($textname, $path);
 		$weSuggest->setLabel('');
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable($table);
 		$weSuggest->setWidth(0);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','checkSameMaster," . $this->ID . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)"));

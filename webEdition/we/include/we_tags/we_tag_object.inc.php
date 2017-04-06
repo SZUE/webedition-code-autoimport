@@ -80,13 +80,13 @@ function we_tag_object(array $attribs){
 			$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 			$weSuggest->setInput($textname, $path);
 			$weSuggest->setResult($idname, $we_oid);
 			$weSuggest->setMaxResults(10);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
 			$weSuggest->setWidth($size);
 			?>

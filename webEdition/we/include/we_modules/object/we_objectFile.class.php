@@ -781,13 +781,13 @@ class we_objectFile extends we_document{
 			($myid ? $openCloseButton : '') .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';top.we_cmd('object_reload_entry_at_object',,'" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId($textname . we_base_file::getUniqueId(), '/' . $name);
 		$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 		$weSuggest->setInput($textname, $path);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $myid);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(OBJECT_FILES_TABLE);
 		$weSuggest->setWidth($inputWidth);
 
@@ -819,14 +819,14 @@ class we_objectFile extends we_document{
 
 		$buttons = $btnSelect . (we_base_permission::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
 
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setNoAutoInit(true); // autosuggest is deactivated
 		$weSuggest->setAcId($textname);
 		$weSuggest->setContentType(we_base_ContentTypes::COLLECTION);
 		$weSuggest->setInput($textname, $path);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $collectionID);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setTable(VFILES_TABLE);
 		$weSuggest->setWidth(396);
 
@@ -861,10 +861,10 @@ class we_objectFile extends we_document{
 
 			$openCloseButton = $reloadEntry = '';
 
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 			$weSuggest->setMaxResults(10);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
 			$weSuggest->setWidth($inputWidth);
 
@@ -1062,14 +1062,14 @@ class we_objectFile extends we_document{
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $cmd . "','',0,''," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $cmd . "','',0);")
 				);
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
 			$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
 				we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 			$weSuggest->setInput($Path_elem_Name, $path, ['onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")]);
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult($intID_elem_Name, $intID);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable(FILE_TABLE);
 			$weSuggest->setWidth(200);
 		} else {

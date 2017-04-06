@@ -855,7 +855,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		if($force){//never do this again
 			$GLOBALS['we_templatePreContent'] = -10000;
 		}
-		$weSuggest = &weSuggest::getInstance();
+		$weSuggest = &we_gui_suggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
 		echo we_html_element::htmlHidden("we_complete_request", 1) .
 		'</form>' .

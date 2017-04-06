@@ -79,7 +79,7 @@ class we_banner_view extends we_modules_view{
 	}
 
 	function getProperties(we_base_jsCmd $jsCmd){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$out = '
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">' .
 			$this->getJSProperty() . '
@@ -665,7 +665,7 @@ class we_banner_view extends we_modules_view{
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	private function formBannerChooser($width = "", $IDName = "bannerID", $IDValue = 0, $title = "", $cmd = ""){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
 
@@ -675,7 +675,7 @@ class we_banner_view extends we_modules_view{
 		$weSuggest->setInput($Pathname, $Pathvalue, [], true, true);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($IDName, $IDValue);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')"));
 
@@ -683,7 +683,7 @@ class we_banner_view extends we_modules_view{
 	}
 
 	private function formDirChooser($idvalue = 0, $idname = '', $title = "", $acID = ""){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$path = id_to_path($idvalue, BANNER_TABLE, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
 
@@ -694,7 +694,7 @@ class we_banner_view extends we_modules_view{
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $idvalue);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setTable(BANNER_TABLE);
 		//$weSuggest->setWidth($width);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','setHot')"));
@@ -750,7 +750,7 @@ class we_banner_view extends we_modules_view{
 	</tr>
 </table>';
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("InternalURL");
 		$weSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 			we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
@@ -758,7 +758,7 @@ class we_banner_view extends we_modules_view{
 		$weSuggest->setLabel($title2);
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setResult($idname, $idvalue);
-		$weSuggest->setSelector(weSuggest::DocSelector);
+		$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(388);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','selector_intHrefCallback," . $this->uid . "','',0,'')"));
 

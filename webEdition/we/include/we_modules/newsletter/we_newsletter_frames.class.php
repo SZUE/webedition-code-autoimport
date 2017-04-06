@@ -36,7 +36,7 @@ class we_newsletter_frames extends we_modules_frame{
 		$this->module = 'newsletter';
 		$this->View = new we_newsletter_view();
 		$this->Tree = new we_tree_newsletter($this->jsCmd);
-		$this->weAutoCompleter = &weSuggest::getInstance();
+		$this->weAutoCompleter = &we_gui_suggest::getInstance();
 	}
 
 	public function getHTMLDocumentHeader($what = '', $mode = ''){
@@ -770,7 +770,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$weSuggest->setInput($Pathname, $Pathvalue);
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult($IDName, $IDValue);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable($table);
 			$weSuggest->setWidth($width);
 			$weSuggest->setSelectButton($button);
@@ -791,7 +791,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$weSuggest->setInput($Pathname, $Pathvalue);
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult($IDName, $IDValue);
-			$weSuggest->setSelector(weSuggest::DocSelector);
+			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable($table);
 			$weSuggest->setWidth($width);
 			$weSuggest->setSelectButton($button);
@@ -964,7 +964,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$weSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult($IDName, $IDValue);
-			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setSelector(we_gui_suggest::DirSelector);
 			$weSuggest->setTable(NEWSLETTER_TABLE);
 			$weSuggest->setWidth($width);
 			$weSuggest->setSelectButton($button);

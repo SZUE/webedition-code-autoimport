@@ -221,7 +221,7 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDirChooser($width = 100){
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
@@ -230,7 +230,7 @@ class we_docTypes extends we_class{
 		$weSuggest->setInput($textname, $this->ParentPath);
 		$weSuggest->setLabel(g_l('weClass', '[dir]'));
 		$weSuggest->setResult($idname, $this->ParentID);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setWidth($width - 10);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $idname . "', '" . $textname . "', '', '')"));
 

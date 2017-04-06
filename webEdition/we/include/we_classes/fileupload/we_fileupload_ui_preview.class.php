@@ -283,13 +283,13 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		}
 
 		if(!$this->parentID['setFixed']){
-			$weSuggest = &weSuggest::getInstance();
+			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId("fu_file_parentID");
 			$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$weSuggest->setInput("parentPath", $parentID ? id_to_path($parentID, FILE_TABLE) : '/', [], false);
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult("fu_file_parentID", $parentID);
-			$weSuggest->setSelector(weSuggest::DirSelector);
+			$weSuggest->setSelector(we_gui_suggest::DirSelector);
 			$weSuggest->setWidth(326);
 			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','fu_file_parentID','parentPath','','',0,'" . we_base_ContentTypes::FOLDER . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 

@@ -428,7 +428,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, '', '', 0);
 
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("DirPath");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput("toPath", id_to_path($this->to));
@@ -436,7 +436,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$weSuggest->setMaxResults(10);
 		$weSuggest->setRequired(true);
 		$weSuggest->setResult("to", $this->to);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setWidth(300);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','to','toPath','','','0')"));
 
@@ -779,7 +779,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 
-		$weSuggest = & weSuggest::getInstance();
+		$weSuggest = & we_gui_suggest::getInstance();
 		$weSuggest->setAcId("TplPath");
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$weSuggest->setInput('templateDirName', $path);
@@ -788,7 +788,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setWidth(320);
 		$weSuggest->setTable(TEMPLATES_TABLE);
-		$weSuggest->setSelector(weSuggest::DirSelector);
+		$weSuggest->setSelector(we_gui_suggest::DirSelector);
 		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','templateParentID','templateDirName','','')"));
 		$dirChooser = $weSuggest->getHTML();
 

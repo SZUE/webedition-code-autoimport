@@ -51,7 +51,7 @@ abstract class we_autoloader{
 		'fileupload' => 'we_classes/fileupload',
 		'fragment' => 'we_classes/fragment',
 		'glossary' => 'we_modules/glossary',
-		'gui' => 'we_classes/js_gui',
+		'gui' => 'we_classes/gui',
 		'helpers' => 'we_classes/helpers',
 		'hook' => 'we_hook/class',
 		'html' => 'we_classes/html',
@@ -135,7 +135,6 @@ abstract class we_autoloader{
 			'we_tabs' => 'we_tabs.class.php',
 			'we_updater' => 'we_updater.class.php',
 			'weBinary' => 'weBinary.class.php',
-			'weSuggest' => 'weSuggest.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		],
 		'we_modules' => [
