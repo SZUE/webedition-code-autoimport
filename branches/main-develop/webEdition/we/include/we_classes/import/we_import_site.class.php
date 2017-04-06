@@ -674,15 +674,15 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", '', 0, 0, '', '', false, false) .
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", '', 0, 0, '', '', false, false);
 
-		$pb = new we_progressBar(0, 200);
-		$pb->addText("&nbsp;", we_progressBar::TOP, "progressTxt");
+		$pb = new we_gui_progressBar(0, 200);
+		$pb->addText("&nbsp;", we_gui_progressBar::TOP, "progressTxt");
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, $pb->getHTML('', 'display:none;'));
 		$table->setCol(0, 1, ['style' => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
-		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_progressBar::getJSCode());
+		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_gui_progressBar::getJSCode());
 	}
 
 	/**

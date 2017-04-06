@@ -90,7 +90,7 @@ if($tool === "weSearch"){
 $_REQUEST['tool'] = $tool;
 
 function getHeader(){
-	$we_tabs = new we_tabs();
+	$we_tabs = new we_gui_tabs();
 
 
 	$menuItems = we_tool_lookup::getAllTools(true, false);

@@ -124,7 +124,7 @@ class we_newsletter_frames extends we_modules_frame{
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), self::TAB_PROPERTIES, ['title' => g_l('modules_newsletter', '[property]')]);
 
 		if(!$group){
@@ -253,7 +253,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$allBlockedByBlacklist = (array_key_exists("email_is_black", $results) ? $results['email_is_black'] : 0);
 			$percentBlockedByBlacklist = we_base_util::getPercent($allRecipients, $allBlockedByBlacklist, 2);
 
-			$pbByB = new we_progressBar($percentBlockedByBlacklist, 150, 'blacklist' . $key);
+			$pbByB = new we_gui_progressBar($percentBlockedByBlacklist, 150, 'blacklist' . $key);
 
 			$table->addRow();
 			$table->setColContent(1, 0, we_html_element::htmlSpan(['id' => 'blacklist_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
@@ -267,7 +267,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
 			$percentBlockedByDomain = we_base_util::getPercent($allRecipients, $allBlockedByDomainCheck, 2);
 
-			$pbBbD = new we_progressBar($percentBlockedByDomain, 150, 'domain' . $key);
+			$pbBbD = new we_gui_progressBar($percentBlockedByDomain, 150, 'domain' . $key);
 
 			$table->addRow();
 			$table->setColContent(2, 0, we_html_element::htmlSpan(['id' => 'domain_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
@@ -281,7 +281,7 @@ class we_newsletter_frames extends we_modules_frame{
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
 			$percentClearRecipients = we_base_util::getPercent($allRecipients, $allClearRecipients, 2);
 
-			$pbCR = new we_progressBar($percentClearRecipients, 150, 'recipients' . $key);
+			$pbCR = new we_gui_progressBar($percentClearRecipients, 150, 'recipients' . $key);
 
 			$table->addRow();
 			$table->setColContent(3, 0, we_html_element::htmlSpan(['id' => 'recipients_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
@@ -1326,13 +1326,13 @@ class we_newsletter_frames extends we_modules_frame{
 		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:weFileUpload_instance.startUpload();", '', 0, 0, '', '', false, false, '_footer');
 		$buttons = $cancel . $upload;
 
-		$pb = new we_progressBar(0, 120, 'fu_extProgress_we_File');
+		$pb = new we_gui_progressBar(0, 120, 'fu_extProgress_we_File');
 
 		$footerTable = new we_html_table(['class' => 'default', 'style' => 'width:100%;'], 1, 2);
 		$footerTable->setCol(0, 0, [], we_html_element::htmlDiv(['id' => 'progressbar', 'style' => 'display:none;padding-left:10px'], $pb->getHTML()));
 		$footerTable->setCol(0, 1, ['style' => 'text-align:right'], $buttons);
 
-		$js = $this->View->getJSProperty() . $weFileupload->getJs() . we_progressBar::getJSCode();
+		$js = $this->View->getJSProperty() . $weFileupload->getJs() . we_gui_progressBar::getJSCode();
 
 		$table = new we_html_table(['class' => 'default withBigSpace'], 2, 1);
 		$table->setCol(0, 0, ['style' => "padding-right:30px"], $weFileupload->getHtmlAlertBoxes());
@@ -1701,8 +1701,8 @@ class we_newsletter_frames extends we_modules_frame{
 	}
 
 	private function getHTMLSendBody(){
-		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0), 400);
-		$pb->addText(g_l('modules_newsletter', '[sending]'), we_progressBar::TOP, "title");
+		$pb = new we_gui_progressBar(we_base_request::_(we_base_request::INT, "pro", 0), 400);
+		$pb->addText(g_l('modules_newsletter', '[sending]'), we_gui_progressBar::TOP, "title");
 
 		$footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
 			$pb->getHTML() . '</td><td style="text-align:right">' .

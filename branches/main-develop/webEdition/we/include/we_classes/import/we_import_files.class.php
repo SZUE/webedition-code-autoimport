@@ -224,8 +224,8 @@ class we_import_files{
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:top.handleEvent('next');", '', 0, 0, "", "", $this->step > 0, false);
 
 		// TODO: let we_fileupload set pb
-		$pb = new we_progressBar(0, 200);
-		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), we_progressBar::TOP, "progress_title");
+		$pb = new we_gui_progressBar(0, 200);
+		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), we_gui_progressBar::TOP, "progress_title");
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
@@ -236,7 +236,7 @@ class we_import_files{
 		$content = $table->getHtml();
 		$body = we_html_element::htmlBody($bodyAttribs, $content);
 
-		return $this->_getHtmlPage($body, we_progressBar::getJSCode());
+		return $this->_getHtmlPage($body, we_gui_progressBar::getJSCode());
 	}
 
 	function getHiddens($noCmd = false){

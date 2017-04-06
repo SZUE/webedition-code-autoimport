@@ -868,8 +868,8 @@ class we_customer_EIWizard{
 			);
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
-			$progressbar = new we_progressBar($progress, 200);
-			$progressbar->addText($text, we_progressBar::TOP, 'current_description');
+			$progressbar = new we_gui_progressBar($progress, 200);
+			$progressbar->addText($text, we_gui_progressBar::TOP, 'current_description');
 
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ''));
 		} else if($step == 5){
@@ -885,7 +885,7 @@ class we_customer_EIWizard{
 		}
 		$content->setCol(0, 1, ['style' => "text-align:right"], $buttons);
 
-		return we_html_tools::getHtmlTop('', '', '', self::getJSFrame() . (isset($progressbar) ? we_progressBar::getJSCode() : ''), we_html_element::htmlBody(['class' => 'weDialogButtonsBody'], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop('', '', '', self::getJSFrame() . (isset($progressbar) ? we_gui_progressBar::getJSCode() : ''), we_html_element::htmlBody(['class' => 'weDialogButtonsBody'], we_html_element::htmlForm([
 						'name' => 'we_form',
 						'method' => 'post',
 						'target' => 'load',
@@ -919,8 +919,8 @@ class we_customer_EIWizard{
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
-				$progressbar = new we_progressBar($progress, 200);
-				$progressbar->addText($text, we_progressBar::TOP, "current_description");
+				$progressbar = new we_gui_progressBar($progress, 200);
+				$progressbar->addText($text, we_gui_progressBar::TOP, "current_description");
 
 				$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 				break;
@@ -943,7 +943,7 @@ class we_customer_EIWizard{
 		}
 		$content->setCol(0, 1, ['style' => 'text-align:right'], $buttons);
 
-		return we_html_tools::getHtmlTop('', '', '', self::getJSFrame() . (isset($progressbar) ? we_progressBar::getJSCode() : ''), we_html_element::htmlBody(['class' => 'weDialogButtonsBody'], we_html_element::htmlForm([
+		return we_html_tools::getHtmlTop('', '', '', self::getJSFrame() . (isset($progressbar) ? we_gui_progressBar::getJSCode() : ''), we_html_element::htmlBody(['class' => 'weDialogButtonsBody'], we_html_element::htmlForm([
 						'name' => 'we_form',
 						'method' => 'post',
 						'target' => 'load',

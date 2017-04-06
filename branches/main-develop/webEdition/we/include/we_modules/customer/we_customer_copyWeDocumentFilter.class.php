@@ -59,8 +59,8 @@ abstract class we_customer_copyWeDocumentFilter{
 
 		$allChildsJS = $db->getAllFirst(false);
 
-		$pb = new we_progressBar(0, 300);
-		$pb->addText('&nbsp;', we_progressBar::TOP, 'copyWeDocumentCustomerFilterText');
+		$pb = new we_gui_progressBar(0, 300);
+		$pb->addText('&nbsp;', we_gui_progressBar::TOP, 'copyWeDocumentCustomerFilterText');
 
 		// image and progressbar
 		$content = $pb->getHTML();
@@ -76,7 +76,7 @@ abstract class we_customer_copyWeDocumentFilter{
 						'question' => g_l('modules_customerFilter', '[apply_filter_cofirm_close]'),
 						'redirect' => $iframeLocation
 			])]) .
-				we_progressBar::getJSCode(), we_html_element::htmlBody([
+				we_gui_progressBar::getJSCode(), we_html_element::htmlBody([
 					'class' => "weDialogBody", 'onload' => "checkForOpenChilds()"
 						], we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', '[apply_filter]'), $buttonBar) .
 						'<div style="display: none;">

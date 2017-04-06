@@ -116,7 +116,7 @@ function we_tag_object(array $attribs){
 
 		if($avail){
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] === we_base_constants::MODE_SEE){
-				echo we_SEEM::getSeemAnchors($we_oid, 'object');
+				echo we_gui_SEEM::getSeemAnchors($we_oid, 'object');
 			}
 		}
 		we_pre_tag_listview($lv);

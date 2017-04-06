@@ -93,7 +93,7 @@ class we_versions_preview{
 	}
 
 	private function getTabsBody(){
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab(g_l('versions', '[versionDiffs]'), '', false, self::TAB_DIFF, ["id" => "tab_" . self::TAB_DIFF]);
 		if(!$this->isObj){
 			$we_tabs->addTab(g_l('versions', '[previewVersionNew]'), '', false, self::TAB_NEW, ["id" => "tab_" . self::TAB_NEW]);

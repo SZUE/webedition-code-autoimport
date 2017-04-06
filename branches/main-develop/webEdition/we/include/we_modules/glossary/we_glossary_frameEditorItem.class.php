@@ -26,7 +26,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 	public static function Header(we_glossary_frames $weGlossaryFrames){
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, true, 1, ['title' => g_l('modules_glossary', '[property]')]);
 
 		switch($weGlossaryFrames->View->Glossary->Type){

@@ -78,9 +78,9 @@ abstract class we_dialog_copyFolder{
 			$yes_button = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ":we_form");
 			$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 
-			$pb = new we_progressBar(0, 270);
+			$pb = new we_gui_progressBar(0, 270);
 
-			$pb->addText("&nbsp;", we_progressBar::TOP, "pbar1");
+			$pb->addText("&nbsp;", we_gui_progressBar::TOP, "pbar1");
 
 			$buttons = '<table class="default" style="width:100%"><tr><td id="pbTd" style="text-align:left;">' . $pb->getHTML('', 'display:none;') . '</td><td style="text-align:right">' .
 					we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
@@ -116,7 +116,7 @@ abstract class we_dialog_copyFolder{
 						'</td></tr></table>';
 			}
 
-			echo we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
+			echo we_html_tools::getHtmlTop('', '', '', we_gui_progressBar::getJSCode() .
 					we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
 					$jsCmd->getCmds() .
 					we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '<form name="we_form" target="pbUpdateFrame" method="get">' .

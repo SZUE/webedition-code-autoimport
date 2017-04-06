@@ -142,7 +142,7 @@ class we_navigation_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ['id' => 'tab_' . self::TAB_PROPERTIES, 'title' => g_l('navigation', '[property]')]);
 		if($this->Model->IsFolder && we_base_permission::hasPerm('EDIT_DYNAMIC_NAVIGATION')){

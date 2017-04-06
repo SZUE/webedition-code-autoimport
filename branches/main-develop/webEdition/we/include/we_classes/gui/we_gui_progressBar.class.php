@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_progressBar{
+class we_gui_progressBar{
 	const TOP = 0;
 	const RIGHT = 1;
 	const BOTTOM = 2;

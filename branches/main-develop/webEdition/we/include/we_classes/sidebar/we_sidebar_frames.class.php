@@ -126,7 +126,7 @@ abstract class we_sidebar_frames{
 			$SrcCode = self::getDefaultContent();
 		}
 
-		echo we_SEEM::parseDocument(($cnt ? $SrcCode : '<script src="/webEdition/js/global.js"></script>' . $SrcCode));
+		echo we_gui_SEEM::parseDocument(($cnt ? $SrcCode : '<script src="/webEdition/js/global.js"></script>' . $SrcCode));
 
 		exit();
 	}

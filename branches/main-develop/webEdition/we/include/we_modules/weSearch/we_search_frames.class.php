@@ -60,7 +60,7 @@ class we_search_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		if($this->View->Model->IsFolder == 0){
 			$displayEntry = 'inline';

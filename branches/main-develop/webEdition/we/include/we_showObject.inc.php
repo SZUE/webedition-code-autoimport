@@ -197,7 +197,7 @@ if(!empty($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition'])){ /
 
 	$contents = ob_get_clean();
 
-	echo we_SEEM::parseDocument($contents);
+	echo we_gui_SEEM::parseDocument($contents);
 	return;
 } //	Not in webEdition, just show the file.
 //

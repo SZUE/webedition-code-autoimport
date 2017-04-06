@@ -26,7 +26,7 @@ abstract class we_glossary_frameEditorException extends we_glossary_frameEditor{
 
 	public static function Header(we_glossary_frames $weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$we_tabs->addTab(g_l('modules_glossary', '[exception]'), '', true, 1);
 
 		$frontendL = getWeFrontendLanguagesForBackend();

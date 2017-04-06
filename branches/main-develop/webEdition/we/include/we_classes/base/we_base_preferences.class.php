@@ -259,7 +259,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 		$tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // generate the tabs
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 		$validTabs = [];
 
 		foreach($GLOBALS['tabs'] as $name => $list){

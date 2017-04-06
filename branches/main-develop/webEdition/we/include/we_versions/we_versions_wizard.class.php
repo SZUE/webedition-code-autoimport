@@ -58,8 +58,8 @@ abstract class we_versions_wizard{
 	static function getBusy(){
 		$dc = we_base_request::_(we_base_request::BOOL, "dc");
 
-		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
-		$WE_PB->addText("", we_progressBar::TOP, "pb1");
+		$WE_PB = new we_gui_progressBar(0, ($dc ? 490 : 200));
+		$WE_PB->addText("", we_gui_progressBar::TOP, "pb1");
 
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
@@ -84,7 +84,7 @@ abstract class we_versions_wizard{
 			$content->setCol(0, 1, ['style' => "text-align:right"], $content2);
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode() .
+		return we_html_tools::getHtmlTop('', '', '', we_gui_progressBar::getJSCode() .
 				we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(
 					['class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"),], ($dc ? $pb : $content->getHtml()))
 		);

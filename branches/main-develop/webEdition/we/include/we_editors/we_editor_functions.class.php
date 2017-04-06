@@ -270,7 +270,7 @@ abstract class we_editor_functions{
 				$contents = $docContents;
 				break;
 			default:
-				$contents = we_SEEM::parseDocument($docContents);
+				$contents = we_gui_SEEM::parseDocument($docContents);
 
 				$contents = (strpos($contents, '</head>') ?
 					str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
@@ -535,7 +535,7 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 						break;
 					}
 				default:
-					$tmpCnt = we_SEEM::parseDocument($contents);
+					$tmpCnt = we_gui_SEEM::parseDocument($contents);
 
 // insert $reloadFooter at right place
 					$tmpCntHTML = (strpos($tmpCnt, '</head>')) ?

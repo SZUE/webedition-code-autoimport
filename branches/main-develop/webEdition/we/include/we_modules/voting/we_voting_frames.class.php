@@ -70,7 +70,7 @@ class we_voting_frames extends we_modules_frame{
 			return parent::getHTMLEditorHeader(0);
 		}
 
-		$we_tabs = new we_tabs();
+		$we_tabs = new we_gui_tabs();
 
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, false, self::TAB_PROPERTIES, ["id" => "tab_" . self::TAB_PROPERTIES, 'title' => g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
@@ -398,7 +398,7 @@ class we_voting_frames extends we_modules_frame{
 
 				$percent = we_base_util::getPercent($total_score, $this->View->voting->Scores[$key], 2);
 
-				$pb = new we_progressBar($percent, 150, 'item' . $key);
+				$pb = new we_gui_progressBar($percent, 150, 'item' . $key);
 
 				$table->addRow();
 				$table->setRow($key + 1, ["id" => "row_scores_$key"]);
@@ -415,7 +415,7 @@ class we_voting_frames extends we_modules_frame{
 
 		$butt = we_html_button::create_button('reset_score', "javascript:top.content.setHot();resetScores();");
 
-		$js = we_progressBar::getJSCode();
+		$js = we_gui_progressBar::getJSCode();
 
 		$ok = we_html_button::create_button('export', "javascript:we_cmd('export_csv')");
 

@@ -40,7 +40,7 @@ $l_param = ['l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
 	'scid' => ''
 ];
 
-$we_tabs = new we_tabs();
+$we_tabs = new we_gui_tabs();
 
 $we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), '', false, 1, ["id" => "tab_1"]);
 $we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), '', false, 2, ["id" => "tab_2"]);
