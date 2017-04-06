@@ -670,6 +670,14 @@ var WebEdition = {
 					win.top.top.document.body.appendChild(alertDiv);
 					ab = win.top.top.$("#alertBox");
 				}
+				if (ab.html()) {//still a present dialog
+					var el = ab.get(0);
+					if (!el.stack) {
+						el.stack = [];
+					}
+					el.stack.push(['showConfirm', Array.prototype.slice.call(arguments)]);
+					return;
+				}
 				ab[0].data = {
 					win: win,
 					yesCmd: yesCmd,
@@ -729,7 +737,14 @@ var WebEdition = {
 					buttons: (WE().session.isMac ?
 						(noCmd ? [noBut, cancelBut, yesBut] : [noBut, yesBut]) :
 						(noCmd ? [yesBut, noBut, cancelBut] : [yesBut, noBut])
-						)
+						),
+					close: function () {
+						this.innerHTML = "";
+						if (this.stack && this.stack.length) {
+							var call = this.stack.shift();
+							WE().util[call[0]].apply(window, call[1]);
+						}
+					}
 				});
 			} else {
 				message = (title ? title + ":\n" : "") + message;
@@ -763,6 +778,23 @@ var WebEdition = {
 			// default is error, to avoid missing messages
 			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 			var ab;
+			if (win.top.top.$) {
+				ab = win.top.top.$("#alertBox");
+				if (!ab.length) {
+					var alertDiv = win.top.top.document.createElement('dialog');
+					alertDiv.id = "alertBox";
+					win.top.top.document.body.appendChild(alertDiv);
+					ab = win.top.top.$("#alertBox");
+				}
+				if (ab.html()) {//still a present dialog
+					var el = ab.get(0);
+					if (!el.stack) {
+						el.stack = [];
+					}
+					el.stack.push(['showMessage', Array.prototype.slice.call(arguments)]);
+					return;
+				}
+			}
 
 			// always show in console !
 			WE().layout.messageConsole.addMessage(prio, message);
@@ -791,14 +823,6 @@ var WebEdition = {
 				}
 				//try Jquery
 				if (win.top.top.$) {
-					ab = win.top.top.$("#alertBox");
-					if (!ab.length) {
-						var alertDiv = win.top.top.document.createElement('dialog');
-						alertDiv.id = "alertBox";
-						win.top.top.document.body.appendChild(alertDiv);
-						ab = win.top.top.$("#alertBox");
-					}
-
 					ab.html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
 					ab.dialog({
 						dialogClass: "no-close",
@@ -817,7 +841,14 @@ var WebEdition = {
 								click: function () {
 									this.ownerDocument.defaultView.$("#alertBox").dialog("close");
 								}
-							}]
+							}],
+						close: function () {
+							this.innerHTML = "";
+							if (this.stack && this.stack.length) {
+								var call = this.stack.shift();
+								WE().util[call[0]].apply(window, call[1]);
+							}
+						}
 					});
 					if (timeout) {
 						win.top.top.setTimeout(function (win) {
