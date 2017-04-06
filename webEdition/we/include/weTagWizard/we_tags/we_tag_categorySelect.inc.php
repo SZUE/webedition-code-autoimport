@@ -13,11 +13,11 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = [ new weTagData_textAttribute('name', false, ''),
-	new weTagData_selectAttribute('type', [new weTagDataOption('request'),], false, ''),
-	new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_textAttribute('rootdir', false, ''),
-	new weTagData_textAttribute('firstentry', false, ''),
-	new weTagData_selectAttribute('multiple', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_textAttribute('indent', false, ''),
+$this->Attributes = [ new we_tagData_textAttribute('name', false, ''),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('request'),], false, ''),
+	new we_tagData_selectAttribute('showpath', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('rootdir', false, ''),
+	new we_tagData_textAttribute('firstentry', false, ''),
+	new we_tagData_selectAttribute('multiple', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('indent', false, ''),
 ];

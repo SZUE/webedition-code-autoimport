@@ -12,4 +12,4 @@ $this->NeedsEndTag = false;
 $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('fieldName', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('fieldName', true, '');

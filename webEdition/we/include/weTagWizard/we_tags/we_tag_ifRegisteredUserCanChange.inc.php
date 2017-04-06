@@ -12,5 +12,5 @@ $this->Groups[] = 'if_tags';
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('protected', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('admin', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('protected', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('admin', false, '');

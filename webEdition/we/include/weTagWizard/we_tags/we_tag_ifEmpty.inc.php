@@ -12,14 +12,14 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('match', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', [new weTagDataOption('img'),
-	new weTagDataOption('flashmovie'),
-	new weTagDataOption('href'),
-	new weTagDataOption('object'),
-	new weTagDataOption('binary'),
-	new weTagDataOption('checkbox'),
+$this->Attributes[] = new we_tagData_textAttribute('match', true, '');
+$this->Attributes[] = new we_tagData_selectAttribute('type', [new we_tagData_option('img'),
+	new we_tagData_option('flashmovie'),
+	new we_tagData_option('href'),
+	new we_tagData_option('object'),
+	new we_tagData_option('binary'),
+	new we_tagData_option('checkbox'),
 	], false, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
-	new weTagDataOption('top'),
+$this->Attributes[] = new we_tagData_selectAttribute('doc', [new we_tagData_option('self'),
+	new we_tagData_option('top'),
 	], false, '');

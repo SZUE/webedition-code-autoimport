@@ -14,11 +14,11 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_textAttribute('match', true),
-	new weTagData_selectAttribute('type', [new weTagDataOption('id'), new weTagDataOption('name')], true),
-	new weTagData_textAttribute('mandatory'),
-	new weTagData_textAttribute('email'),
-	new weTagData_textAttribute('password'),
-	new weTagData_textAttribute('onError'),
-	new weTagData_textAttribute('jsIncludePath'),
+	new we_tagData_textAttribute('match', true),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('id'), new we_tagData_option('name')], true),
+	new we_tagData_textAttribute('mandatory'),
+	new we_tagData_textAttribute('email'),
+	new we_tagData_textAttribute('password'),
+	new we_tagData_textAttribute('onError'),
+	new we_tagData_textAttribute('jsIncludePath'),
 ];

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_typeAttribute extends weTagDataAttribute{
+class we_tagData_typeAttribute extends we_tagData_attribute{
 	/**
 	 * @var array
 	 */
@@ -83,5 +83,10 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	function getOptions(){
 		return $this->Options;
 	}
+
+}
+
+//FIXME: remove
+class weTagData_typeAttribute extends we_tagData_typeAttribute{
 
 }

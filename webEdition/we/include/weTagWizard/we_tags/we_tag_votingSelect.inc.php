@@ -12,12 +12,12 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'voting';
 
 $this->Attributes = [
-	new weTagData_textAttribute('firstentry', false, ''),
-	new weTagData_selectAttribute('submitonchange', [new weTagDataOption('false'),
-		new weTagDataOption('true'),
+	new we_tagData_textAttribute('firstentry', false, ''),
+	new we_tagData_selectAttribute('submitonchange', [new we_tagData_option('false'),
+		new we_tagData_option('true'),
 	 ], false, ''),
-	new weTagData_selectAttribute('reload', [new weTagDataOption('false'),
-		new weTagDataOption('true'),
+	new we_tagData_selectAttribute('reload', [new we_tagData_option('false'),
+		new we_tagData_option('true'),
 	 ], false, ''),
-	new weTagData_textAttribute('parentid', false, ''),
+	new we_tagData_textAttribute('parentid', false, ''),
 ];

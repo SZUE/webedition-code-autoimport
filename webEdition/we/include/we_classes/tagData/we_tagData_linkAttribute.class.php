@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_linkAttribute extends weTagDataAttribute{
+class we_tagData_linkAttribute extends we_tagData_attribute{
 
 	/**
 	 * @param string $name
@@ -47,5 +47,10 @@ class weTagData_linkAttribute extends weTagDataAttribute{
 				], '<a href="http://' . $this->Value . '" target="TagRef">' . g_l('taged', '[tagreference_linktext]') . '</a>') . '</td>
 					</tr></table>';
 	}
+
+}
+
+//FIXME: remove
+class weTagData_linkAttribute extends we_tagData_linkAttribute{
 
 }

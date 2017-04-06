@@ -13,7 +13,7 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
-		new weTagDataOption('self'),
+	new we_tagData_selectAttribute('doc', [new we_tagData_option('top'),
+		new we_tagData_option('self'),
 		], false, '')
 ];

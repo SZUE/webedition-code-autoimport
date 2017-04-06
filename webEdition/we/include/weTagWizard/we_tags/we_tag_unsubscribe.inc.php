@@ -12,10 +12,10 @@ $this->NeedsEndTag = false;
 $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('size', false, '');
-$this->Attributes[] = new weTagData_textAttribute('maxlength', false, '');
-$this->Attributes[] = new weTagData_textAttribute('value', false, '');
-$this->Attributes[] = new weTagData_textAttribute('class', false, '');
-$this->Attributes[] = new weTagData_textAttribute('style', false, '');
-$this->Attributes[] = new weTagData_textAttribute('onchange', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('size', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('maxlength', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('value', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('class', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('style', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('onchange', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');

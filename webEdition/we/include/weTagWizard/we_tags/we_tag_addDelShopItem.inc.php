@@ -11,5 +11,5 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
-$this->Attributes[] = new weTagData_textAttribute('shopname', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('floatquantities', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('shopname', true, '');
+$this->Attributes[] = new we_tagData_selectAttribute('floatquantities', we_tagData_selectAttribute::getTrueFalse(), false, '');

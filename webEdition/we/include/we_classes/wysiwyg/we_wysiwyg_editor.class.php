@@ -394,15 +394,15 @@ class we_wysiwyg_editor{
 		$tmp = array_keys($commands);
 		unset($tmp[0]); //unsorted
 		if($isTag){
-			$ret = [new weTagDataOption(g_l('wysiwyg', '[groups]'), we_html_tools::OPTGROUP)];
+			$ret = [new we_tagData_option(g_l('wysiwyg', '[groups]'), we_html_tools::OPTGROUP)];
 
 			foreach($tmp as $command){
-				$ret[] = new weTagDataOption($command);
+				$ret[] = new we_tagData_option($command);
 			}
 			foreach($commands as $key => $values){
-				$ret[] = new weTagDataOption($key, we_html_tools::OPTGROUP);
+				$ret[] = new we_tagData_option($key, we_html_tools::OPTGROUP);
 				foreach($values as $value){
-					$ret[] = new weTagDataOption($value);
+					$ret[] = new we_tagData_option($value);
 				}
 			}
 
@@ -435,7 +435,7 @@ class we_wysiwyg_editor{
 
 		if($isTag){
 			foreach($options as &$opt){
-				$opt = new weTagDataOption($opt);
+				$opt = new we_tagData_option($opt);
 			}
 			return $options;
 		}

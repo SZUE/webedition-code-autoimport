@@ -13,25 +13,25 @@ $this->NeedsEndTag = false;
 $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$path = new weTagData_textAttribute('path', false, '');
-$mailingList = new weTagData_textAttribute('mailingList', false, '');
-$doubleoptin = new weTagData_selectAttribute('doubleoptin', weTagData_selectAttribute::getTrueFalse(), false, '');
-$expiredoubleoptin = new weTagData_textAttribute('expiredoubleoptin', false, '');
-$mailid = new weTagData_selectorAttribute('mailid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
-$adminmailid = new weTagData_selectorAttribute('adminmailid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
-$subject = new weTagData_textAttribute('subject', false, '');
-$adminsubject = new weTagData_textAttribute('adminsubject', false, '');
-$adminemail = new weTagData_textAttribute('adminemail', false, '');
-$from = new weTagData_textAttribute('from', false, '');
-$id = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
-$fieldGroup = new weTagData_textAttribute('fieldGroup', false, '');
-$recipientCC = new weTagData_textAttribute('recipientCC', false, '');
-$recipientBCC = new weTagData_textAttribute('recipientBCC', false, '');
-$includeimages = new weTagData_selectAttribute('includeimages', weTagData_selectAttribute::getTrueFalse(), false, '');
+$path = new we_tagData_textAttribute('path', false, '');
+$mailingList = new we_tagData_textAttribute('mailingList', false, '');
+$doubleoptin = new we_tagData_selectAttribute('doubleoptin', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$expiredoubleoptin = new we_tagData_textAttribute('expiredoubleoptin', false, '');
+$mailid = new we_tagData_selectorAttribute('mailid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$adminmailid = new we_tagData_selectorAttribute('adminmailid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$subject = new we_tagData_textAttribute('subject', false, '');
+$adminsubject = new we_tagData_textAttribute('adminsubject', false, '');
+$adminemail = new we_tagData_textAttribute('adminemail', false, '');
+$from = new we_tagData_textAttribute('from', false, '');
+$id = new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$fieldGroup = new we_tagData_textAttribute('fieldGroup', false, '');
+$recipientCC = new we_tagData_textAttribute('recipientCC', false, '');
+$recipientBCC = new we_tagData_textAttribute('recipientBCC', false, '');
+$includeimages = new we_tagData_selectAttribute('includeimages', we_tagData_selectAttribute::getTrueFalse(), false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('csv', false, '', [$path, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], [$path]),
-	new weTagDataOption('customer', false, 'customer', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], []),
-	new weTagDataOption('emailonly', false, '', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $adminmailid, $adminsubject, $adminemail, $includeimages], [$adminmailid, $adminsubject, $adminemail])], false, 'newsletter');
+$this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_option('csv', false, '', [$path, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], [$path]),
+	new we_tagData_option('customer', false, 'customer', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], []),
+	new we_tagData_option('emailonly', false, '', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $adminmailid, $adminsubject, $adminemail, $includeimages], [$adminmailid, $adminsubject, $adminemail])], false, 'newsletter');
 
 
 $this->Attributes = [$path, $mailingList, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $adminmailid, $adminsubject, $adminemail,

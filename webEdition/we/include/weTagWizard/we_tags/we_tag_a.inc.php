@@ -13,33 +13,33 @@ $this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$id = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, true, '');
-$target = new weTagData_choiceAttribute('target', [new weTagDataOption('_top'),
-	new weTagDataOption('_parent'),
-	new weTagDataOption('_self'),
-	new weTagDataOption('_blank'),
+$id = new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, true, '');
+$target = new we_tagData_choiceAttribute('target', [new we_tagData_option('_top'),
+	new we_tagData_option('_parent'),
+	new we_tagData_option('_self'),
+	new we_tagData_option('_blank'),
 	], false, false, '');
-$confirm = new weTagData_textAttribute('confirm', false, '');
-$button = new weTagData_selectAttribute('button', weTagData_selectAttribute::getTrueFalse(), false, '');
-$hrefonly = new weTagData_selectAttribute('hrefonly', weTagData_selectAttribute::getTrueFalse(), false, '');
-$class = new weTagData_textAttribute('class', false, '');
-$style = new weTagData_textAttribute('style', false, '');
-$params = new weTagData_textAttribute('params', false, '');
-$hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
-$amount = new weTagData_textAttribute('amount', false, 'shop');
-$delarticle = new weTagData_selectAttribute('delarticle', weTagData_selectAttribute::getTrueFalse(), false, '');
-$delshop = new weTagData_selectAttribute('delshop', weTagData_selectAttribute::getTrueFalse(), false, 'shop');
-$shopname = new weTagData_textAttribute('shopname', false, 'shop');
-$editself = new weTagData_selectAttribute('editself', weTagData_selectAttribute::getTrueFalse(), false, '');
-$delete = new weTagData_selectAttribute('delete', weTagData_selectAttribute::getTrueFalse(), false, '');
-$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$confirm = new we_tagData_textAttribute('confirm', false, '');
+$button = new we_tagData_selectAttribute('button', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$hrefonly = new we_tagData_selectAttribute('hrefonly', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$class = new we_tagData_textAttribute('class', false, '');
+$style = new we_tagData_textAttribute('style', false, '');
+$params = new we_tagData_textAttribute('params', false, '');
+$hidedirindex = new we_tagData_selectAttribute('hidedirindex', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$amount = new we_tagData_textAttribute('amount', false, 'shop');
+$delarticle = new we_tagData_selectAttribute('delarticle', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$delshop = new we_tagData_selectAttribute('delshop', we_tagData_selectAttribute::getTrueFalse(), false, 'shop');
+$shopname = new we_tagData_textAttribute('shopname', false, 'shop');
+$editself = new we_tagData_selectAttribute('editself', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$delete = new we_tagData_selectAttribute('delete', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$xml = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');
 
 
-$this->TypeAttribute = new weTagData_typeAttribute('edit', [
-	new weTagDataOption('', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex], [$id]),
-	new weTagDataOption('document', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
-	new weTagDataOption('object', false, 'object', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
-	new weTagDataOption('shop', false, 'shop', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $amount, $delarticle, $delshop, $shopname,], [$id])]
+$this->TypeAttribute = new we_tagData_typeAttribute('edit', [
+	new we_tagData_option('', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex], [$id]),
+	new we_tagData_option('document', false, '', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
+	new we_tagData_option('object', false, 'object', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete], [$id]),
+	new we_tagData_option('shop', false, 'shop', [$id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $amount, $delarticle, $delshop, $shopname,], [$id])]
 	, false, '');
 
 

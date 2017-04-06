@@ -13,5 +13,5 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<we:field name="NameOfField" />';
 
-$this->Attributes[] = new weTagData_textAttribute('name', false, '');
-$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', false, '');
+$this->Attributes[] = new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');

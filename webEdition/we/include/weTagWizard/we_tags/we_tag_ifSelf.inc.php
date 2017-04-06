@@ -13,9 +13,9 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_multiSelectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, 'ID', false, ''),
-	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
-		new weTagDataOption('self'),
-		new weTagDataOption('listview'),
+	new we_tagData_multiSelectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, 'ID', false, ''),
+	new we_tagData_selectAttribute('doc', [new we_tagData_option('top'),
+		new we_tagData_option('self'),
+		new we_tagData_option('listview'),
 		], false, ''),
 ];

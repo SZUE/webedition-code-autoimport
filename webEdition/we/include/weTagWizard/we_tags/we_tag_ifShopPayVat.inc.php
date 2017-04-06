@@ -11,5 +11,5 @@ $this->NeedsEndTag = true;
 $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
-$this->Attributes[] = new weTagData_textAttribute('customerfrom', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('customerfrom', false, '');
 

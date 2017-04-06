@@ -13,4 +13,4 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('name', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', false, '');

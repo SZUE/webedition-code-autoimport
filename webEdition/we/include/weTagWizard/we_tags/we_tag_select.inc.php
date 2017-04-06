@@ -15,12 +15,12 @@ $this->DefaultValue = '<option>#1</option>
 <option>#2</option>
 <option>#3</option>';
 
-$name = new weTagData_textAttribute('name', true, '');
-$size = new weTagData_textAttribute('size', false, '');
-$reload = new weTagData_selectAttribute('reload', weTagData_selectAttribute::getTrueFalse(), false, '');
-$values = new weTagData_textAttribute('values', false, '');
-$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('', false, '', [$name, $size, $reload]),
-	new weTagDataOption('html', false, '', [$name, $size, $reload]),
-	new weTagDataOption('csv', false, '', [$name, $size, $reload, $values], [])], false, '');
+$name = new we_tagData_textAttribute('name', true, '');
+$size = new we_tagData_textAttribute('size', false, '');
+$reload = new we_tagData_selectAttribute('reload', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$values = new we_tagData_textAttribute('values', false, '');
+$this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_option('', false, '', [$name, $size, $reload]),
+	new we_tagData_option('html', false, '', [$name, $size, $reload]),
+	new we_tagData_option('csv', false, '', [$name, $size, $reload, $values], [])], false, '');
 
 $this->Attributes = [$name, $size, $reload, $values];

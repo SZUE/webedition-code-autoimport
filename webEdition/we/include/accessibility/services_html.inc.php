@@ -25,9 +25,9 @@
 $i = 0;
 
 //  first xhtml from W3C
-$validationService[] = new validationService($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_upload]'), 'validator.w3.org', '/check', 'post', 'uploaded_file', 'fileupload', 'text/html', '', '.html,.htm,.php', 1);
+$validationService[] = new we_validation_service($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_upload]'), 'validator.w3.org', '/check', 'post', 'uploaded_file', 'fileupload', 'text/html', '', '.html,.htm,.php', 1);
 
-$validationService[] = new validationService($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_url]'), 'validator.w3.org', '/check', 'get', 'uri', 'url', 'text/html', '', '.html,.htm,.php', 1);
+$validationService[] = new we_validation_service($i++, 'default', 'xhtml', g_l('validation', '[service_xhtml_url]'), 'validator.w3.org', '/check', 'get', 'uri', 'url', 'text/html', '', '.html,.htm,.php', 1);
 
 
 /*

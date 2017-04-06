@@ -13,4 +13,4 @@ $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = g_l('weTag', '[' . $tagName . '][defaultvalue]', true);
 
-$this->Attributes = [new weTagData_selectAttribute('plain', weTagData_selectAttribute::getTrueFalse(), false, 'newsletter')];
+$this->Attributes = [new we_tagData_selectAttribute('plain', we_tagData_selectAttribute::getTrueFalse(), false, 'newsletter')];

@@ -14,7 +14,7 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<we:link /><we:postlink><br /></we:postlink>';
 $this->Deprecated = true;
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_textAttribute('limit', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('limit', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('hidedirindex', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('objectseourls', we_tagData_selectAttribute::getTrueFalse(), false, '');

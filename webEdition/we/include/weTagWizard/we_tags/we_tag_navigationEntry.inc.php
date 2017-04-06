@@ -14,15 +14,15 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<a href="<we:navigationField name="href" />"><we:navigationField name="text" /></a><br />';
 
 $this->Attributes = [
-	new weTagData_textAttribute('navigationname', false, ''),
-	new weTagData_selectAttribute('type', [new weTagDataOption(weTagData_selectorAttribute::FOLDER),
-		new weTagDataOption('item'),
+	new we_tagData_textAttribute('navigationname', false, ''),
+	new we_tagData_selectAttribute('type', [new we_tagData_option(we_tagData_selectorAttribute::FOLDER),
+		new we_tagData_option('item'),
 		], true, ''),
-	new weTagData_textAttribute('level', false, ''),
-	new weTagData_selectAttribute('current', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_choiceAttribute('position', [new weTagDataOption('first'),
-		new weTagDataOption('odd'),
-		new weTagDataOption('even'),
-		new weTagDataOption('last'),
+	new we_tagData_textAttribute('level', false, ''),
+	new we_tagData_selectAttribute('current', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_choiceAttribute('position', [new we_tagData_option('first'),
+		new we_tagData_option('odd'),
+		new we_tagData_option('even'),
+		new we_tagData_option('last'),
 		], false, false, ''),
 ];

@@ -11,7 +11,7 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
-$this->Attributes[] = new weTagData_textAttribute('name', false, '');
-$this->Attributes[] = new weTagData_textAttribute('id', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('id', false, '');
 
-$this->Attributes[] = new weTagData_textAttribute('condition', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('condition', false, '');

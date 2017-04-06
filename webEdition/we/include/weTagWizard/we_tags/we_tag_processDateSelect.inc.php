@@ -12,5 +12,5 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('endofday', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', true, '');
+$this->Attributes[] = new we_tagData_selectAttribute('endofday', we_tagData_selectAttribute::getTrueFalse(), false, '');

@@ -13,7 +13,7 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('showselect', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('start', false, '');
-$this->Attributes[] = new weTagData_textAttribute('limit', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('name', true, '');
+$this->Attributes[] = new we_tagData_selectAttribute('showselect', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('start', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('limit', false, '');

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagData_sqlColAttribute extends weTagData_selectAttribute{
+class we_tagData_sqlColAttribute extends we_tagData_selectAttribute{
 
 	/**
 	 * @var string
@@ -47,10 +47,15 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 
 		foreach($tableInfo as $name){
 			if(!in_array($name, $filter)){
-				$options[] = new weTagDataOption($name);
+				$options[] = new we_tagData_option($name);
 			}
 		}
 		parent::__construct($name, $options, $required, $module, $description, $deprecated);
 	}
+
+}
+
+//FIXME: remove
+class weTagData_sqlColAttribute extends we_tagData_sqlColAttribute{
 
 }

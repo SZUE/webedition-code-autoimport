@@ -47,7 +47,7 @@ class we_editor_validateDocument extends we_editor_base{
 		}
 
 //  get custom services from database ..
-		$customServices = validation::getValidationServices('use');
+		$customServices = we_validation_base::getValidationServices('use');
 
 		if(!empty($customServices)){
 			foreach($customServices as $cService){

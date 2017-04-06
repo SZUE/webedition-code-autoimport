@@ -14,13 +14,13 @@ $this->DefaultValue = '<we:repeat>
 </we:repeat>';
 
 $this->Attributes = [
-	new weTagData_textAttribute('name', true, ''),
-	new weTagData_textAttribute('groupid', false, ''),
-	new weTagData_textAttribute('version', false, ''),
-	new weTagData_textAttribute('rows', false, ''),
-	new weTagData_textAttribute('offset', false, ''),
-	new weTagData_selectAttribute('desc', [new weTagDataOption('true'),
+	new we_tagData_textAttribute('name', true, ''),
+	new we_tagData_textAttribute('groupid', false, ''),
+	new we_tagData_textAttribute('version', false, ''),
+	new we_tagData_textAttribute('rows', false, ''),
+	new we_tagData_textAttribute('offset', false, ''),
+	new we_tagData_selectAttribute('desc', [new we_tagData_option('true'),
 		], false, ''),
-	new weTagData_textAttribute('order', false, ''),
-	new weTagData_selectAttribute('subgroup', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('order', false, ''),
+	new we_tagData_selectAttribute('subgroup', we_tagData_selectAttribute::getTrueFalse(), false, ''),
 ];

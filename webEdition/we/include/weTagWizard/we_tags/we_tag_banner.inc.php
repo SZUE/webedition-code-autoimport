@@ -12,22 +12,22 @@ $this->Module = 'banner';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_textAttribute('width', false, '');
-$this->Attributes[] = new weTagData_textAttribute('height', false, '');
-$this->Attributes[] = new weTagData_textAttribute('paths', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', [new weTagDataOption('js'),
-	new weTagDataOption('iframe'),
-	new weTagDataOption('cookie'),
-	new weTagDataOption('pixel'),
+$this->Attributes[] = new we_tagData_textAttribute('name', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('width', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('height', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('paths', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('type', [new we_tagData_option('js'),
+	new we_tagData_option('iframe'),
+	new we_tagData_option('cookie'),
+	new we_tagData_option('pixel'),
 	], false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('target', [new weTagDataOption('_top'),
-	new weTagDataOption('_parent'),
-	new weTagDataOption('_self'),
-	new weTagDataOption('_blank'),
+$this->Attributes[] = new we_tagData_choiceAttribute('target', [new we_tagData_option('_top'),
+	new we_tagData_option('_parent'),
+	new we_tagData_option('_self'),
+	new we_tagData_option('_blank'),
 	], false, false, '');
-$this->Attributes[] = new weTagData_selectAttribute('link', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('clickscript', false, '');
-$this->Attributes[] = new weTagData_textAttribute('getscript', false, '');
-$this->Attributes[] = new weTagData_textAttribute('page', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('link', we_tagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_textAttribute('clickscript', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('getscript', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('page', false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');

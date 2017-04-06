@@ -13,17 +13,17 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 $this->Attributes = [
-	new weTagData_textAttribute('name', true, ''),
-	new weTagData_selectAttribute('reference', [new weTagDataOption('article'),
-		new weTagDataOption('cart'),
+	new we_tagData_textAttribute('name', true, ''),
+	new we_tagData_selectAttribute('reference', [new we_tagData_option('article'),
+		new we_tagData_option('cart'),
 		], true, ''),
-	new weTagData_textAttribute('shopname', true, ''),
-	new weTagData_textAttribute('match', true, ''),
-	new weTagData_selectAttribute('operator', [new weTagDataOption('equal'),
-		new weTagDataOption('less'),
-		new weTagDataOption('less|equal'),
-		new weTagDataOption('greater'),
-		new weTagDataOption('greater|equal'),
-		new weTagDataOption('contains'),
+	new we_tagData_textAttribute('shopname', true, ''),
+	new we_tagData_textAttribute('match', true, ''),
+	new we_tagData_selectAttribute('operator', [new we_tagData_option('equal'),
+		new we_tagData_option('less'),
+		new we_tagData_option('less|equal'),
+		new we_tagData_option('greater'),
+		new we_tagData_option('greater|equal'),
+		new we_tagData_option('contains'),
 		], false, ''),
 ];

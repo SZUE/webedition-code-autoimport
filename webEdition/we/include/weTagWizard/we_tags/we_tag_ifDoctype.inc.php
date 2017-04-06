@@ -16,12 +16,12 @@ $db = new DB_WE();
 $db->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
 $docTypes = [];
 while($db->next_record()){
-	$docTypes[] = new weTagDataOption($db->f('DocType'));
+	$docTypes[] = new we_tagData_option($db->f('DocType'));
 }
 $this->Attributes = [
-	new weTagData_choiceAttribute('doctypes', $docTypes, false, true, ''),
-	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
-		new weTagDataOption('self'),
-		new weTagDataOption('listview'),
+	new we_tagData_choiceAttribute('doctypes', $docTypes, false, true, ''),
+	new we_tagData_selectAttribute('doc', [new we_tagData_option('top'),
+		new we_tagData_option('self'),
+		new we_tagData_option('listview'),
 		], false, ''),
 ];

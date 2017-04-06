@@ -12,10 +12,10 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = [new weTagData_selectAttribute('type', [new weTagDataOption('document'),
-		new weTagDataOption('object'),
-		new weTagDataOption('customer'),
-		new weTagDataOption('shop'),
+$this->Attributes = [new we_tagData_selectAttribute('type', [new we_tagData_option('document'),
+		new we_tagData_option('object'),
+		new we_tagData_option('customer'),
+		new we_tagData_option('shop'),
 		], false, ''),
-	new weTagData_textAttribute('formname', false, '')
+	new we_tagData_textAttribute('formname', false, '')
 ];

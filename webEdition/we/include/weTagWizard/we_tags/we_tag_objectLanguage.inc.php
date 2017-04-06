@@ -13,12 +13,12 @@ $this->Module = 'object';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_selectAttribute('type', [new weTagDataOption('complete'),
-		new weTagDataOption('language'),
-		new weTagDataOption('country'),
+	new we_tagData_selectAttribute('type', [new we_tagData_option('complete'),
+		new we_tagData_option('language'),
+		new we_tagData_option('country'),
 		], false, ''),
-	new weTagData_selectAttribute('case', [new weTagDataOption('unchanged'),
-		new weTagDataOption('uppercase'),
-		new weTagDataOption('lowercase'),
+	new we_tagData_selectAttribute('case', [new we_tagData_option('unchanged'),
+		new we_tagData_option('uppercase'),
+		new we_tagData_option('lowercase'),
 		], false, '')
 ];

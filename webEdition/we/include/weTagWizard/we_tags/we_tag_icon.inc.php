@@ -13,6 +13,6 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, '', true, '');
+	$this->Attributes[] = new we_tagData_selectorAttribute('id', FILE_TABLE, '', true, '');
 }
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, '');

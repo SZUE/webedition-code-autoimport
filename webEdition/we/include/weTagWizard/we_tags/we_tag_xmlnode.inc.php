@@ -12,6 +12,6 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('xpath', true, '');
-$this->Attributes[] = new weTagData_textAttribute('url', false, '');
-$this->Attributes[] = new weTagData_textAttribute('feed', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('xpath', true, '');
+$this->Attributes[] = new we_tagData_textAttribute('url', false, '');
+$this->Attributes[] = new we_tagData_textAttribute('feed', false, '');

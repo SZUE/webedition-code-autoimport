@@ -14,13 +14,13 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
 
-	new weTagData_textAttribute('value', true, ''),
-	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
-		new weTagDataOption('self'),
+	new we_tagData_textAttribute('value', true, ''),
+	new we_tagData_selectAttribute('doc', [new we_tagData_option('top'),
+		new we_tagData_option('self'),
 		], false, ''),
-	(defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null),
-	(defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('oid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null),
-	new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	(defined('CUSTOMER_TABLE') ? new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, [], '') : null),
+	(defined('FILE_TABLE') ? new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null),
+	(defined('OBJECT_FILES_TABLE') ? new we_tagData_selectorAttribute('oid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null),
+	new we_tagData_selectAttribute('xml', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	(defined('CUSTOMER_TABLE') ? new we_tagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, [], '') : null),
 ];
 

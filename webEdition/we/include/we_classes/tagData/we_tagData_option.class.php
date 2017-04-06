@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataOption{
+class we_tagData_option{
 	/**
 	 * @var string
 	 */
@@ -132,5 +132,10 @@ class weTagDataOption{
 	function useOption(){
 		return ($this->Module === '' || we_base_moduleInfo::isActive($this->Module));
 	}
+
+}
+
+//FIXME: remove
+class weTagDataOption extends we_tagData_option{
 
 }

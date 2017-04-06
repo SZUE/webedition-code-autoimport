@@ -13,20 +13,20 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	new weTagData_textAttribute('id', false, ''),
-	new weTagData_textAttribute('subject', false, ''),
-	new weTagData_textAttribute('recipient', true, ''),
-	new weTagData_textAttribute('recipientCC', false, ''),
-	new weTagData_textAttribute('recipientBCC', false, ''),
-	new weTagData_textAttribute('from', true, ''),
-	new weTagData_textAttribute('reply', false, ''),
-	new weTagData_selectAttribute('mimetype', [
-		new weTagDataOption(we_mail_mime::TYPE_TEXT),
-		new weTagDataOption(we_mail_mime::TYPE_HTML),
+	new we_tagData_textAttribute('id', false, ''),
+	new we_tagData_textAttribute('subject', false, ''),
+	new we_tagData_textAttribute('recipient', true, ''),
+	new we_tagData_textAttribute('recipientCC', false, ''),
+	new we_tagData_textAttribute('recipientBCC', false, ''),
+	new we_tagData_textAttribute('from', true, ''),
+	new we_tagData_textAttribute('reply', false, ''),
+	new we_tagData_selectAttribute('mimetype', [
+		new we_tagData_option(we_mail_mime::TYPE_TEXT),
+		new we_tagData_option(we_mail_mime::TYPE_HTML),
 		], false, ''),
-	new weTagData_textAttribute('charset', false, ''),
-	new weTagData_selectAttribute('includeimages', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('usebasehref', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('useformmailLog', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('useformmailBlock', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_textAttribute('charset', false, ''),
+	new we_tagData_selectAttribute('includeimages', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('usebasehref', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('useformmailLog', we_tagData_selectAttribute::getTrueFalse(), false, ''),
+	new we_tagData_selectAttribute('useformmailBlock', we_tagData_selectAttribute::getTrueFalse(), false, ''),
 ];

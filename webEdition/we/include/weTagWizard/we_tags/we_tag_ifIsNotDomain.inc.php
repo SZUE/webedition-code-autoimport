@@ -12,9 +12,9 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('domain', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('matchType', [new weTagDataOption('exact'),
-	new weTagDataOption('contains'),
-	new weTagDataOption('front'),
-	new weTagDataOption('back'),
+$this->Attributes[] = new we_tagData_textAttribute('domain', true, '');
+$this->Attributes[] = new we_tagData_selectAttribute('matchType', [new we_tagData_option('exact'),
+	new we_tagData_option('contains'),
+	new we_tagData_option('front'),
+	new we_tagData_option('back'),
 	], false, '');
