@@ -12,23 +12,13 @@
  * @return string
  */
 function getCheckBox($name, $value, $text, $beta = false){
-	// FIXME: eliminate [beta] or re-implement beta in db
-	$betas = defined('LANGUAGES_BETA') ? explode(',', LANGUAGES_BETA) : array();
-	$beta = in_array($text, $betas) ? true : $beta;
-
 	if(!is_array($_SESSION['clientInstalledLanguages'])){
 		$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
 	}
 
-	if(in_array($value, $_SESSION['clientInstalledLanguages'])){
-
-		$text = "<i>$text</i>";
-	}
-	if($beta == true){
-		$text = "$text <font color='red'>[beta]</font>";
-		//error_log("found beta language ".$text.".");
-	}
-	return '<input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '"/><label for="' . $name . '">' . $text . '</label>';
+	return '<input type="checkbox" id="' . $name . '" name="' . $name . '" value="' . $value . '"/><label for="' . $name . '">' .
+		(in_array($value, $_SESSION['clientInstalledLanguages']) ? '<i>' . $text . '</i>' : $text) .
+		'</label>';
 }
 
 $missingLanguages = $GLOBALS['updateServerTemplateData']['missingLanguages'];

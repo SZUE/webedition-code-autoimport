@@ -78,7 +78,7 @@ class installerDownload extends installerInstaller{
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
 
-		$Content = updateUtilInstaller::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+		$Content = file_get_contents($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
 
 		// If file is too large to transfer in one request, split it!

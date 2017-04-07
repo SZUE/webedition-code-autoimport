@@ -161,7 +161,9 @@ abstract class updateBase{
 				$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
 			}
 		}
-
+trigger_error('SELECT l.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND l.version=' . $vers : '') .
+				($useBeta ? '' : ' AND v.islive=1') .
+				' ORDER BY l.version DESC,l.language');
 		$GLOBALS['DB_WE']->query('SELECT l.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . ($vers ? ' AND l.version=' . $vers : '') .
 				($useBeta ? '' : ' AND v.islive=1') .
 				' ORDER BY l.version DESC,l.language');

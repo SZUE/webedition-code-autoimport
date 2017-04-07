@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: updateUtilBase.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-
 abstract class updateUtilBase{
 
 	/**
@@ -39,7 +39,6 @@ abstract class updateUtilBase{
 	 * @return string
 	 */
 	function addPhpCodeToTemplate($code){
-
 		return $code;
 	}
 
@@ -52,9 +51,8 @@ abstract class updateUtilBase{
 	static function getLiveUpdateResponseArrayFromFile($file){
 		global $updateServerTemplateData;
 
-		$liveUpdateResponse = array();
+		$liveUpdateResponse = [];
 		if(file_exists($file)){
-
 			include_once($file);
 		} else {
 			$liveUpdateResponse = [
@@ -124,7 +122,7 @@ abstract class updateUtilBase{
 			<input type=\"hidden\" name=\"update_cmd\" value=\"$update_cmd\" />
 			<input type=\"hidden\" name=\"detail\" value=\"$detail\" />
 			<input type=\"hidden\" name=\"liveUpdateSession\" value=\"" . ($liveUpdateSession ? $liveUpdateSession : session_id()) . "\" />
-		";
+";
 	}
 
 	/**
@@ -135,12 +133,8 @@ abstract class updateUtilBase{
 	 * @param integer $length
 	 * @return integer
 	 */
-	static function version2number($version){
-
-		$numberStr = str_replace('.', '', $version);
-		$number = (int) $numberStr;
-
-		return $number;
+	static function version2number($version){//FIXME: eliminate this function
+		return intval(str_replace('.', '', $version));
 	}
 
 	/**
@@ -152,10 +146,9 @@ abstract class updateUtilBase{
 	 * @param integer $length
 	 * @return string
 	 */
-	static function number2version($number, $length = VERSIONNUMBER_LENGTH){
-
+	static function number2version($number, $length = VERSIONNUMBER_LENGTH){//FIXME: eliminate this function
 		$number = "$number";
-		$numbers = array();
+		$numbers = [];
 
 		for($i = 0; $i < $length; $i++){
 			if(isset($number[$i])){
@@ -211,7 +204,6 @@ abstract class updateUtilBase{
 	 * @return string
 	 */
 	function getInternalResponse($templatePath){
-
 		$liveUpdateResponse = self::getLiveUpdateResponseArrayFromFile($templatePath);
 
 		return '
@@ -232,9 +224,7 @@ print $newResponse->getOutput();
 	 * @return string
 	 */
 	static function getFileContentEncoded($filePath){
-		$content = self::getFileContent($filePath);
-
-		return self::encodeCode($content);
+		return file_exists($filePath) ? self::encodeCode(file_get_contents($filePath)) : '';
 	}
 
 	/**

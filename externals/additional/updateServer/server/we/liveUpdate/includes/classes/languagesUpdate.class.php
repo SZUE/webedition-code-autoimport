@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: languagesUpdate.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-
 class languagesUpdate extends languagesBase{
 
 	/**
@@ -15,7 +15,7 @@ class languagesUpdate extends languagesBase{
 
 		// get all possible languages
 		$vers = $_SESSION['clientVersionNumber'];
-		$versionLngs = updateUpdate::getVersionsLanguageArray(false, $vers);
+		$versionLngs = updateUpdate::getVersionsLanguageArray(false, $vers, true);
 		if(!is_array($installAbleLanguages)){
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
 		}
@@ -38,8 +38,7 @@ class languagesUpdate extends languagesBase{
 
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = $installAbleLanguages;
 		$GLOBALS['updateServerTemplateData']['missingLanguages'] = $missingLanguages;
-		$ret = updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php');
-		return updateUtilUpdate::getResponseString($ret);
+		return updateUtilUpdate::getResponseString(updateUtilUpdate::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php'));
 	}
 
 	/**
@@ -87,24 +86,23 @@ class languagesUpdate extends languagesBase{
 	 * @return string
 	 */
 	static function getFinishInstallationResponse(){
-
 		$message = '<ul>';
-		for($i = 0; $i < count($_SESSION['clientDesiredLanguages']); $i++){
-			$message .= "<li>" . $_SESSION['clientDesiredLanguages'][$i] . "</li>";
+		foreach($_SESSION['clientDesiredLanguages'] as $cur){
+			$message .= "<li>" . $cur . "</li>";
 		}
 		$message .= '</ul>';
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
-
+		$retArray = [
+			'Type' => 'eval',
+			'Code' => '<?php
 ' . updateUtilUpdate::getOverwriteClassesCode() . '
-
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
 $liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
 
-?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>");
+?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>")
+		];
 		return updateUtilUpdate::getResponseString($retArray);
 	}
 

@@ -611,7 +611,7 @@ window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('installer', 'finis
 		$fileArray = [];
 		$Position = $_REQUEST['position'];
 
-		$Content = updateUtilUpdate::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+		$Content = file_get_contents($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
 
 		// If file is too large to transfer in one request, split it!
@@ -672,7 +672,7 @@ window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('installer', 'finis
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 				$ResponseSize += $FileSize;
 
-				$fileArray[$Paths[$Position]] = updateUtilUpdate::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$fileArray[$Paths[$Position]] = file_get_contents($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 				$Position++;
 			} else {
 				break;

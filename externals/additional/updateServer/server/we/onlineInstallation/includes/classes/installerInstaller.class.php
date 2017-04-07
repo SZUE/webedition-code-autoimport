@@ -177,69 +177,52 @@ class installerInstaller extends installerBase{
 	 */
 	static function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
 		// prepare $filesArray (path => encodedContent) for the client
-		$writeFilesCode = '
-			$files = array();';
+		$writeFilesCode = '$files = array();';
 
 		foreach($filesArray as $path => $content){
 
 			$writeFilesCode .= '
-				$files[' . $path . '] = "' . $content . '";';
+$files[' . $path . '] = "' . $content . '";';
+		}
+
+		return ['Type' => 'eval',
+			'Code' => '<?php
+' . updateUtilInstaller::getOverwriteClassesCode() . '
+' . $writeFilesCode . '
+$success = true; // all files fine
+$successFiles = array(); // successfully saved files
+
+foreach ($files as $path => $content) {
+	if ($success) {
+		if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
+			$errorFile = $path;
+			$success = false;
+		}
+	}
 }
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
+$Content = "";
+for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
+	$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
+}
 
-	' . updateUtilInstaller::getOverwriteClassesCode() . '
+if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
+	$successFiles[] = $path;
+}
+for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
+	$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
+}
 
-	' . $writeFilesCode . '
+if ($success) {
+	$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
+	$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+	$message =	 sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
+	?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
-		$success = true; // all files fine
-		$successFiles = array(); // successfully saved files
-
-		foreach ($files as $path => $content) {
-			if ($success) {
-				if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-					$errorFile = $path;
-					$success = false;
-				}
-			}
-		}
-
-		$Content = "";
-		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
-		}
-
-		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
-			$successFiles[] = $path;
-		}
-		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
-		}
-
-		if ($success) {
-			$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
-			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
-
-			/*$message = "<ul>";
-			foreach ($successFiles as $path) {
-				$text = basename($path);
-				$text = substr($text, -40);
-				$message .= "<li>$text</li>";
-
-			}
-
-			$message	.=	"</ul>".*/
-				$message =	 sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
-			?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
-
-		} else {
-			' . static::getErrorMessageResponsePart() . '
-		}
-
-?>';
-
-		return $retArray;
+} else {
+	' . static::getErrorMessageResponsePart() . '
+}
+?>'];
 	}
 
 }
