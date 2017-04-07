@@ -1,9 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_apps=array(
-	'Entry'=>'Entry',
-	'Folder'=>'Folder',
-	'Properties'=>'Properties',
+	'Entry'=>'Eintrag',
+	'Folder'=>'Verzeichnis',
+	'Properties'=>'Eigenschaften',
 	
 	'button'=>array(
 		'Publish'=>'Speichern',
@@ -11,12 +11,12 @@ $l_apps=array(
 		'Unpublish'=>'Parken',
 	),
 	'error'=>array(
-		'emptyName'=>'The name must not be empty!',
-		'nameExists'=>'The name already exists! Please choose another name or folder.',
-		'nameInvalid'=>'The name is not valid!',
-		'noperm'=>'You do not have the permission to create new entries or folders!',
-		'parentFolderNotValid'=>'The folder cannot be saved in the chosen folder!',
-		'requiredEmpty'=>'Required fields are empty!',
+		'emptyName'=>'Der Name darf nicht leer sein',
+		'nameExists'=>'Das Verzeichnis existiert bereits. Bitte wählen Sie einen anderen Namen.',
+		'nameInvalid'=>'Der Name ist ungültig!',
+		'noperm'=>'Sie haben keine Berechtigung neue Einträge oder Verzeichnisse zu erstellen.',
+		'parentFolderNotValid'=>'Das Verzeichnis kann nicht innerhalb des gewählten Verzeichnisses gespeichert werden.',
+		'requiredEmpty'=>'Nicht alle benötigten Felder wurden ausgefüllt.',
 	),
 	'menu'=>array(
 		'close'=>'Schließen',
@@ -32,7 +32,7 @@ $l_apps=array(
 			'entry'=>'Neuer Eintrag',
 	),),
 	'title'=>array(
-		'Applications'=>'Applications',
+		'Applications'=>'Anwendungen',
 	),
 	'toolfactory'=>array(
 		'name'=>'Anwendungsverwaltung',
