@@ -107,7 +107,7 @@ class we_listview_shopOrder extends we_listview_base{
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID AS OrderID,IntCustomerID AS CustomerID,IntPayment_Type AS Payment_Type,strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
+		$this->DB_WE->query('SELECT IntOrderID AS OrderID,IntCustomerID AS CustomerID,IntPayment_Type AS Payment_Type,strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
