@@ -371,7 +371,7 @@ abstract class we_editor_functions{
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
 					'we_editor_save' => true,
 					'we_transaction' => $we_transaction,
-					'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
+					'isHot' => ($we_responseText && $we_responseTextType == we_base_util::WE_MESSAGE_ERROR),
 					'wasSaved' => $wasSaved,
 					'wasPublished' => !empty($we_doc->Published),
 					'isPublished' => $publish_doc,
@@ -433,7 +433,7 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 			//will show the message
 			$jsCmd = new we_base_jsCmd();
-			$jsCmd->addMsg(g_l('weEditor', '[incompleteRequest]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('weEditor', '[incompleteRequest]'), we_base_util::WE_MESSAGE_ERROR);
 			echo $jsCmd->getCmds();
 			return;
 		}
@@ -469,13 +469,13 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 
 	public static function doUnpublish($we_doc, $we_transaction){
 		if(!$we_doc->Published){
-			self::unPublishInc($we_transaction, sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path), we_message_reporting::WE_MESSAGE_ERROR);
+			self::unPublishInc($we_transaction, sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
 		$jsCmd = new we_base_jsCmd();
 		if($we_doc->we_unpublish()){
 			$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_ok]'), $we_doc->Path);
-			$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+			$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 			if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 				$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction]; // wird in Templ eingef?gt
 			}
@@ -486,11 +486,11 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 			$we_doc->getUpdateTreeScript(true, $jsCmd); // save/ rename a document
 		} else {
 			$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
-			$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+			$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 		}
 		if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 			$we_responseText = g_l('weEditor', '[incompleteRequest]');
-			$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+			$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 		} else {
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 		}
@@ -506,7 +506,7 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		/* At this point complete requests are not common
 		  if(!isset($_REQUEST['we_complete_request'])){
 		  $we_responseText = g_l('weEditor', '[incompleteRequest]');
-		  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+		  $we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 		  } */
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 		if(is_object($we_include) || $_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){

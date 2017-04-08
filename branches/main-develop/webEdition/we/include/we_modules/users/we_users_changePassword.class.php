@@ -50,16 +50,16 @@ abstract class we_users_changePassword{
 			$userData = f('SELECT passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');
 
 			if(!we_users_user::comparePasswords($_SESSION['user']['Username'], $userData, $oldpasswd)){
-				$jsCmd->addMsg(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('global', '[pass_not_match]'), we_base_util::WE_MESSAGE_ERROR);
 			} else if(!preg_match('/' . addcslashes(SECURITY_USER_PASS_REGEX, '/') . '/', $newpasswd)){
-				$jsCmd->addMsg(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('global', '[pass_to_short]'), we_base_util::WE_MESSAGE_ERROR);
 			} else if($newpasswd != $newpasswd2){
-				$jsCmd->addMsg(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('global', '[pass_not_confirmed]'), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				//essential leave this line
 				$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($newpasswd));
 				$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '" WHERE ID=' . $_SESSION['user']['ID'] . ' AND username="' . $DB_WE->escape($_SESSION['user']["Username"]) . '"');
-				$jsCmd->addMsg(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('global', '[pass_changed]'), we_base_util::WE_MESSAGE_NOTICE);
 				$jsCmd->addCmd('close');
 				return;
 			}

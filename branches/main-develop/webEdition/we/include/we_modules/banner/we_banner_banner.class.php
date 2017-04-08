@@ -421,16 +421,22 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.banner=JSON.parse("' . setLangString(
+		return 'WE().consts.g_l.banner=JSON.parse("' . we_base_util::setLangString(
 				[
-				'view' => [
-					'deleteStatConfirm' => g_l('modules_banner', '[deleteStatConfirm]'),
-					'delete_question' => g_l('modules_banner', '[delete_question]'),
-					'nothing_to_delete' => g_l('modules_banner', '[nothing_to_delete]'),
-					'nothing_to_save' => g_l('modules_banner', '[nothing_to_save]'),
-					'save_changed_banner' => g_l('modules_banner', '[save_changed_banner]'),
-				]
-				]) . '");';
+					'error_tagname_empty' => g_l('modules_banner', '[error_tagname_empty]'),
+					'error_page_empty' => g_l('modules_banner', '[error_page_empty]'),
+					'error_width_empty' => g_l('modules_banner', '[error_width_empty]'),
+					'error_height_empty' => g_l('modules_banner', '[error_height_empty]'),
+					'error_getscript_empty' => g_l('modules_banner', '[error_getscript_empty]'),
+					'error_clickscript_empty' => g_l('modules_banner', '[error_clickscript_empty]'),
+					'view' => [
+						'deleteStatConfirm' => g_l('modules_banner', '[deleteStatConfirm]'),
+						'delete_question' => g_l('modules_banner', '[delete_question]'),
+						'nothing_to_delete' => g_l('modules_banner', '[nothing_to_delete]'),
+						'nothing_to_save' => g_l('modules_banner', '[nothing_to_save]'),
+						'save_changed_banner' => g_l('modules_banner', '[save_changed_banner]'),
+					]
+			]) . '");';
 	}
 
 }

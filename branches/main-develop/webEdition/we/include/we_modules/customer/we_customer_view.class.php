@@ -75,12 +75,12 @@ class we_customer_view extends we_modules_view{
 	private function saveCustomer(we_base_jsCmd $jscmd){
 		$this->customer->Username = trim($this->customer->Username);
 		if(!$this->customer->Username){
-			$jscmd->addMsg(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jscmd->addMsg(g_l('modules_customer', '[username_empty]'), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
 
 		if($this->customer->filenameNotValid()){
-			$jscmd->addMsg(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jscmd->addMsg(g_l('modules_customer', '[we_filename_notValid]'), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
 
@@ -88,7 +88,7 @@ class we_customer_view extends we_modules_view{
 
 		$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
 		if($exists){
-			$jscmd->addMsg(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
 		if($_SESSION['weS']['customer_session']->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
@@ -119,9 +119,9 @@ class we_customer_view extends we_modules_view{
 		}
 
 		if($saveOk){
-			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_base_util::WE_MESSAGE_NOTICE);
 		} else {
-			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_ERROR);
+			$jscmd->addMsg(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_base_util::WE_MESSAGE_ERROR);
 		}
 	}
 
@@ -143,7 +143,7 @@ class we_customer_view extends we_modules_view{
 				$this->customer->delete();
 				$this->customer = new we_customer_customer();
 
-				$jscmd->addMsg(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_customer', '[customer_deleted]'), we_base_util::WE_MESSAGE_NOTICE);
 				$jscmd->addCmd('deleteTreeEntry', $oldid);
 				$jscmd->addCmd('loadHome');
 				break;
@@ -162,19 +162,19 @@ class we_customer_view extends we_modules_view{
 
 				switch($saveret){
 					case self::ERR_SAVE_BRANCH:
-						$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_INVALID:
-						$jscmd->addMsg(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[we_fieldname_notValid]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_PROPERTY:
-						$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_EXISTS:
-						$jscmd->addMsg(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[fieldname_exists]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_NOT_EMPTY:
-						$jscmd->addMsg(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[field_not_empty]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					default:
 						$this->customer->loadPresistents();
@@ -192,7 +192,7 @@ class we_customer_view extends we_modules_view{
 				$this->deleteField(($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field) ? $fname : $field));
 
 				$this->customer->loadPresistents();
-				$jscmd->addMsg(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_base_util::WE_MESSAGE_NOTICE);
 				$jscmd->addCmd('refreshForm');
 				break;
 			case 'move_field_up':
@@ -210,7 +210,7 @@ class we_customer_view extends we_modules_view{
 				$branch_old = we_base_request::_(we_base_request::STRING, 'branch', '');
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
-					$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_customer', '[branch_no_edit]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 
@@ -218,13 +218,13 @@ class we_customer_view extends we_modules_view{
 					$arr = $this->customer->getBranchesNames();
 
 					if(in_array($branch_new, $arr)){
-						$jscmd->addMsg(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_customer', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 				}
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
-					$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				$this->customer->loadPresistents();
@@ -263,7 +263,7 @@ class we_customer_view extends we_modules_view{
 			case 'save_sort':
 				$this->settings->save();
 				$sorting = array_merge([g_l('modules_customer', '[no_sort]')], array_keys($this->settings->SortView));
-				$jscmd->addMsg(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_customer', '[sort_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 				$jscmd->addCmd('setSorts', $sorting);
 				break;
 			case 'applySort':
@@ -283,10 +283,10 @@ class we_customer_view extends we_modules_view{
 				}
 
 				if($this->settings->save()){
-					$jscmd->addMsg(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_customer', '[settings_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 					$jscmd->addCmd('close');
 				} else {
-					$jscmd->addMsg(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_customer', '[settings_not_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 				}
 				break;
 			default:

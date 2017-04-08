@@ -87,7 +87,7 @@ class we_object extends we_document{
 		$this->saveToDB();
 
 		$GLOBALS['we_responseText'] = g_l('weClass', '[response_save_ok]');
-		$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
+		$GLOBALS['we_responseTextType'] = we_base_util::WE_MESSAGE_NOTICE;
 
 		if(!$this->OldPath || ($this->OldPath != $this->Path)){
 			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->OldPath) . '"', '', $this->DB_WE);
@@ -410,7 +410,7 @@ class we_object extends we_document{
 			$this->save();
 			$GLOBALS['we_JavaScript'] = '';
 			$GLOBALS['we_responseText'] = sprintf(g_l('weClass', '[response_save_ok]'), $this->Path);
-			$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
+			$GLOBALS['we_responseTextType'] = we_base_util::WE_MESSAGE_NOTICE;
 			return new we_editor_save($this);
 		}
 		switch($this->EditPageNr){
@@ -1615,7 +1615,7 @@ class we_object extends we_document{
 
 		if(!empty($GLOBALS['WE_DEL_WORKSPACE_ERROR'])){
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
-			$jsCmd->addMsg(g_l('weClass', '[we_del_workspace_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('weClass', '[we_del_workspace_error]'), we_base_util::WE_MESSAGE_ERROR);
 		}
 		return $content;
 	}
@@ -1991,7 +1991,7 @@ class we_object extends we_document{
 	public function we_save($resave = false, $skipHook = false){
 		$this->save();
 		if(!$resave){
-			we_history::insertIntoHistory($this);
+			we_base_history::insertIntoHistory($this);
 		}
 		/* hook */
 		$this->unregisterMediaLinks();

@@ -670,7 +670,7 @@ class we_thumbnail{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.thumbnail=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.thumbnail=JSON.parse("' . we_base_util::setLangString([
 				'delete_prompt' => g_l('thumbnails', '[delete_prompt]'),
 				'empty' => (g_l('alert', '[thumbnail_empty]')),
 				'exists' => (g_l('alert', '[thumbnail_exists]')),

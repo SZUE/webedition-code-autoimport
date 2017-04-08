@@ -443,7 +443,7 @@ class we_shop_frames extends we_modules_frame{
 		$htmlTable->setColContent($row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 
 
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();'));
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){WE().util.showMessage(WE().consts.g_l.shop.preferences_save_alert,WE().consts.message.WE_MESSAGE_ERROR, window);}else{document.we_form.submit();}'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();'));
 
 		return we_html_tools::getHtmlTop('', '', '', JQUERY, we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=savePrefDialog" style="margin-left:8px; margin-top:16px;">
 	' . we_html_tools::htmlDialogLayout($htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $buttons) . '</form>'));
@@ -863,10 +863,10 @@ class we_shop_frames extends we_modules_frame{
 					unset($newId);
 					$saveSuccess = true;
 					$jsMessage = g_l('modules_shop', '[vat][save_success]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+					$jsMessageType = we_base_util::WE_MESSAGE_NOTICE;
 				} else {
 					$jsMessage = g_l('modules_shop', '[vat][save_error]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+					$jsMessageType = we_base_util::WE_MESSAGE_ERROR;
 				}
 
 				break;
@@ -874,10 +874,10 @@ class we_shop_frames extends we_modules_frame{
 			case 'deleteVat':
 				if(we_shop_vats::deleteVatById(we_base_request::_(we_base_request::INT, 'weShopVatId'))){
 					$jsMessage = g_l('modules_shop', '[vat][delete_success]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+					$jsMessageType = we_base_util::WE_MESSAGE_NOTICE;
 				} else {
 					$jsMessage = g_l('modules_shop', '[vat][delete_error]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+					$jsMessageType = we_base_util::WE_MESSAGE_ERROR;
 				}
 				break;
 		}
@@ -1164,10 +1164,10 @@ class we_shop_frames extends we_modules_frame{
 
 			if($saveSuccess){
 				$jsMessage = g_l('modules_shop', '[shopcats][save_success]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+				$jsMessageType = we_base_util::WE_MESSAGE_NOTICE;
 			} else {
 				$jsMessage = g_l('modules_shop', '[shopcats][save_error]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+				$jsMessageType = we_base_util::WE_MESSAGE_ERROR;
 			}
 		} else {
 			//please select category dir...
@@ -1361,10 +1361,10 @@ class we_shop_frames extends we_modules_frame{
 				$weShippingControl->setByRequest($_REQUEST); //FIXME: bad this is unchecked!!!
 				if($weShippingControl->save()){
 					$jsMessage = g_l('modules_shop', '[shipping][save_success]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+					$jsMessageType = we_base_util::WE_MESSAGE_NOTICE;
 				} else {
 					$jsMessage = g_l('modules_shop', '[shipping][save_error]');
-					$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+					$jsMessageType = we_base_util::WE_MESSAGE_ERROR;
 				}
 				if(($sid = we_base_request::_(we_base_request::STRING, 'weShippingId')) !== false){
 					$weShipping = $weShippingControl->getShippingById($sid);

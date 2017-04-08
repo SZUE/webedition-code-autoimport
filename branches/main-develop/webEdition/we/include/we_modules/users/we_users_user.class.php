@@ -303,7 +303,7 @@ class we_users_user{
 	}
 
 	function removeAccount(){
-		we_history::deleteByUserID($this->ID);
+		we_base_history::deleteByUserID($this->ID);
 	}
 
 	function getPersistentSlotsFromDB(){
@@ -2267,7 +2267,7 @@ function toggleRebuildPerm(disabledOnly) {';
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.users=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.users=JSON.parse("' . we_base_util::setLangString([
 				'view' => [
 					'give_org_name' => g_l('modules_users', '[give_org_name]'),
 					'password_alert' => (g_l('modules_users', '[password_alert]')),

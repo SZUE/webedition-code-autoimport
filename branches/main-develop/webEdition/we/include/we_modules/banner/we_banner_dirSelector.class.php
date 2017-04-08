@@ -93,15 +93,15 @@ class we_banner_dirSelector extends we_selector_directory{
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
-			$weCmd->addMsg(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('modules_banner', '[group_empty]'), we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
-				$weCmd->addMsg(sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path), we_base_util::WE_MESSAGE_ERROR);
 			} else if(preg_match('|[%/\\"\']|', $folder->Text)){
-				$weCmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
 				$weCmd->addCmd('updateSelectData', [
@@ -141,7 +141,7 @@ class we_banner_dirSelector extends we_selector_directory{
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
-			$weCmd->addMsg(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('modules_banner', '[group_empty]'), we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -150,10 +150,10 @@ class we_banner_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->table . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$weCmd->addMsg(sprintf(g_l('modules_banner', '[group_path_exists]')), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(sprintf(g_l('modules_banner', '[group_path_exists]')), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
-					$weCmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$weCmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 				} else {
 					if(f('SELECT Text FROM ' . $this->table . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();

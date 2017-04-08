@@ -57,7 +57,7 @@ class we_versions_fragment extends we_fragment_base{
 			default:
 				$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
 		}
-		$jsCmd->addMsg($responseText, we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg($responseText, we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('reloadEditors');
 		$jsCmd->addCmd('close');
 	}

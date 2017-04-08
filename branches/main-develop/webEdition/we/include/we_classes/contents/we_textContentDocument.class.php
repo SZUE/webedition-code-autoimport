@@ -251,7 +251,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$this->ModifierID = empty($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate = true;
-			we_history::insertIntoHistory($this);
+			we_base_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}
 

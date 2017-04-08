@@ -57,7 +57,7 @@ class we_rebuild_fragment extends we_fragment_base{
 
 	protected function finish(we_base_jsCmd $jsCmd){
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', '');
-		$jsCmd->addMsg($responseText ?: g_l('rebuild', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg($responseText ?: g_l('rebuild', '[finished]'), we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('close');
 	}
 

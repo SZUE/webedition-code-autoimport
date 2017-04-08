@@ -761,7 +761,7 @@ class we_voting_voting extends we_base_model{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.voting=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.voting=JSON.parse("' . we_base_util::setLangString([
 				'answer_limit' => g_l('modules_voting', '[answer_limit]'),
 				'delete_alert' => g_l('modules_voting', '[delete_alert]'),
 				'delete_ipdata_question' => g_l('modules_voting', '[delete_ipdata_question]'),
@@ -773,10 +773,11 @@ class we_voting_voting extends we_base_model{
 				'not_valid_ip' => g_l('modules_voting', '[not_valid_ip]'),
 				'nothing_to_delete' => (g_l('modules_voting', '[nothing_to_delete]')),
 				'nothing_to_save' => (g_l('modules_voting', '[nothing_to_save]')),
+				'result_delete_alert' => g_l('modules_voting', '[result_delete_alert]'),
 				'save_changed_voting' => g_l('modules_voting', '[save_changed_voting]'),
 				'successorID_text' => g_l('modules_voting', '[successorID_text]'),
-				'result_delete_alert' => g_l('modules_voting', '[result_delete_alert]'),
-				]) . '");';
+				'variant_limit' => g_l('modules_voting', '[variant_limit]'),
+			]) . '");';
 	}
 
 }

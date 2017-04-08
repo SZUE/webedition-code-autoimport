@@ -320,11 +320,11 @@ function getMainDialog(){
 	$cmd = new we_base_jsCmd();
 	$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
 	if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
-		$cmd->addMsg(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$cmd->addMsg(g_l('alert', '[thumbnail_hochkomma]'), we_base_util::WE_MESSAGE_ERROR);
 		$cmd->addCmd('history.back');
 	} else {
 		save_all_values();
-		$cmd->addMsg(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$cmd->addMsg(g_l('thumbnails', '[saved]'), we_base_util::WE_MESSAGE_NOTICE);
 		$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs&id=' . we_base_request::_(we_base_request::INT, "edited_id", 0)]);
 	}
 

@@ -65,7 +65,7 @@ class we_glossary_view extends we_modules_view{
 			case 'new_glossary_link':
 			case 'new_glossary_textreplacement':
 				if(!we_base_permission::hasPerm('NEW_GLOSSARY')){
-					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary();
@@ -79,7 +79,7 @@ class we_glossary_view extends we_modules_view{
 			case "glossary_edit_link":
 			case "glossary_edit_textreplacement":
 				if(!we_base_permission::hasPerm("EDIT_GLOSSARY")){
-					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 					break;
@@ -110,7 +110,7 @@ class we_glossary_view extends we_modules_view{
 
 				we_glossary_glossary::editException($language, $exception);
 
-				$jscmd->addMsg(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_glossary', '[save_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 
 				break;
 
@@ -129,22 +129,22 @@ class we_glossary_view extends we_modules_view{
 				$this->Glossary->Attributes = we_base_request::_(we_base_request::STRING, $type, '', 'Attributes');
 
 				if(!we_base_permission::hasPerm("NEW_GLOSSARY") && !we_base_permission::hasPerm("EDIT_GLOSSARY")){
-					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->Glossary->Text)){
-					$jscmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Text)){
-					$jscmd->addMsg(g_l('modules_glossary', '[text_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[text_notValid]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Title)){
-					$jscmd->addMsg(g_l('modules_glossary', '[title_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[title_notValid]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -153,12 +153,12 @@ class we_glossary_view extends we_modules_view{
 				$this->Glossary->setPath();
 
 				if($this->Glossary->pathExists($this->Glossary->Path)){
-					$jscmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->isSelf()){
-					$jscmd->addMsg(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -208,7 +208,7 @@ class we_glossary_view extends we_modules_view{
 					}
 					$message .= sprintf(g_l('modules_glossary', '[item_saved]'), $this->Glossary->Text);
 
-					$jscmd->addMsg($message, we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg($message, we_base_util::WE_MESSAGE_NOTICE);
 					$jscmd->addCmd('doAfterSave', $this->Glossary->Type, $this->Glossary->Language);
 
 					// --> Save to Cache
@@ -224,12 +224,12 @@ class we_glossary_view extends we_modules_view{
 			case "delete_glossary":
 
 				if(!we_base_permission::hasPerm("DELETE_GLOSSARY")){
-					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->Glossary->delete()){
 					$jscmd->addCmd('deleteTreeEntry', $this->Glossary->ID);
-					$jscmd->addMsg(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_base_util::WE_MESSAGE_NOTICE);
 
 					// --> Save to Cache
 
@@ -243,7 +243,7 @@ class we_glossary_view extends we_modules_view{
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					$jscmd->addMsg(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 				break;
 

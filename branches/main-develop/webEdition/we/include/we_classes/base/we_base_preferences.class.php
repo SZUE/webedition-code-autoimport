@@ -289,7 +289,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.prefs=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.prefs=JSON.parse("' . we_base_util::setLangString([
 				'add_dictionary_question' => g_l('prefs', '[add_dictionary_question]'),
 				'cannot_delete_default_language' => (g_l('prefs', '[cannot_delete_default_language]')),
 				'clear_block_entry_question' => g_l('prefs', '[clear_block_entry_question]'),

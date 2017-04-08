@@ -31,7 +31,7 @@
  * 6. NOTE that files MUST end with .class.php
  */
 
-abstract class we_autoloader{
+abstract class we_tool_autoloader{
 	private static $domains = [
 		'backup' => 'we_classes/backup',
 		'banner' => 'we_modules/banner',
@@ -127,8 +127,6 @@ abstract class we_autoloader{
 			'we_category' => 'we_category.class.php',
 			'we_docTypes' => 'we_docTypes.class.php',
 			'we_element' => 'we_element.class.php',
-			'we_history' => 'we_history.class.php',
-			'we_message_reporting' => 'we_message_reporting.class.php',
 			'we_updater' => 'we_updater.class.php',
 			'weBinary' => 'weBinary.class.php',
 		],
@@ -206,7 +204,7 @@ abstract class we_autoloader{
 		}
 		//don't load zend extension, if file is in system or fallback
 		//} else {// add this loader at the end, if class was not yet found
-		spl_autoload_register('we_autoloader::finalLoad', true);
+		spl_autoload_register('we_tool_autoloader::finalLoad', true);
 		//}
 		//will try next auto-loader
 	}
@@ -220,7 +218,7 @@ abstract class we_autoloader{
 			include(WEBEDITION_PATH . self::$fallBack[$class_name]);
 			return true;
 		}
-		t_e('notice', 'we_autoloader: class ' . $class_name . ' not found');
+		t_e('notice', 'we_tool_autoloader: class ' . $class_name . ' not found');
 	}
 
 }

@@ -285,7 +285,7 @@ abstract class we_users_util{
 			}
 		}
 		$jsCmd = new we_base_jsCmd();
-		$jsCmd->addMsg(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR));
+		$jsCmd->addMsg(g_l('modules_users', '[grant_owners_ok]'), ($ok ? we_base_util::WE_MESSAGE_NOTICE : we_base_util::WE_MESSAGE_ERROR));
 
 		return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 	}

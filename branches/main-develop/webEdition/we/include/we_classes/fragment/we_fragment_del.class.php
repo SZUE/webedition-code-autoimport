@@ -67,9 +67,9 @@ class we_fragment_del extends we_fragment_base{
 
 	protected function finish(we_base_jsCmd $jsCmd){
 		if($_SESSION['weS']['fragDel']['we_not_deleted_entries']){
-			$jsCmd->addMsg(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['fragDel']['we_not_deleted_entries']) . "\n"), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['fragDel']['we_not_deleted_entries']) . "\n"), we_base_util::WE_MESSAGE_ERROR);
 		} else {
-			$jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 		}
 
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['fragDel']['we_go_seem_start']){

@@ -401,7 +401,7 @@ class we_metadata_metaData{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.metadatafields=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.metadatafields=JSON.parse("' . we_base_util::setLangString([
 				'error_meta_field_empty_msg' => (g_l('metadata', '[error_meta_field_empty_msg]')),
 				'fields' => (g_l('metadata', '[fields]')),
 				'import_from' => (g_l('metadata', '[import_from]')),

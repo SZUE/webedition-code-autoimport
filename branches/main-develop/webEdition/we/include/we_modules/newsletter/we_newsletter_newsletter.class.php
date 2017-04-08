@@ -457,7 +457,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.newsletter=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.newsletter=JSON.parse("' . we_base_util::setLangString([
 				'add_email' => g_l('modules_newsletter', '[add_email]'),
 				'all_list' => g_l('modules_newsletter', '[all_list]'),
 				'ask_to_preserve' => g_l('modules_newsletter', '[ask_to_preserve]'),

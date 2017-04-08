@@ -439,7 +439,7 @@ abstract class we_class{
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
 				$jsCmd = new we_base_jsCmd();
-				$jsCmd->addMsg(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('weClass', '[languageLinksLocaleChanged]'), we_base_util::WE_MESSAGE_NOTICE);
 				echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 				return true;
 			}
@@ -500,7 +500,7 @@ abstract class we_class{
 				if(($fileLang = f('SELECT Language FROM ' . $this->DB_WE->escape(addTblPrefix($documentTable)) . ' WHERE ID=' . intval($LDID), '', $this->DB_WE))){
 					if($fileLang != $locale){
 						$jsCmd = new we_base_jsCmd();
-						$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_base_util::WE_MESSAGE_NOTICE);
 						echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 						return true;
 					}
@@ -526,7 +526,7 @@ abstract class we_class{
 
 						if(!$setThisLink){
 							$jsCmd = new we_base_jsCmd();
-							$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE);
+							$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_base_util::WE_MESSAGE_NOTICE);
 							echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 							return true;
 						}
@@ -546,7 +546,7 @@ abstract class we_class{
 					} else {//!isfolder
 						if(f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DLocale="' . $this->DB_WE->escape($ownLocale) . '" AND Locale="' . $this->DB_WE->escape($locale) . '" AND LDID=' . intval($LDID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=1 LIMIT 1', '', $this->DB_WE)){//conflict
 							$jsCmd = new we_base_jsCmd();
-							$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE);
+							$jsCmd->addMsg(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_base_util::WE_MESSAGE_NOTICE);
 							echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 							return true;
 						}

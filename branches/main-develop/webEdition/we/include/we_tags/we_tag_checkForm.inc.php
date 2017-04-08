@@ -59,13 +59,12 @@ function we_tag_checkForm(array $attribs, $content){
 
 	//  Generate errorHandler:
 	$jsOnError = ($onError ?
-			$jsOnError = '
+		$jsOnError = '
 if(self.' . $onError . '){' .
-			$onError . '(formular,missingReq,wrongEmail,pwError);
-} else {' .
-			we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
+		$onError . '(formular,missingReq,wrongEmail,pwError);
+} else {alert("' . $content . '");
 }' :
-			we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND)
+		'alert("' . $content . '");'
 		);
 
 	//  Generate mandatory array
@@ -79,10 +78,10 @@ missingReq = weCheckFormMandatory(formular, required);';
 	}
 
 	$jsEmail = ($email ? //  code to check Emails
-			'//  validate emails
+		'//  validate emails
         var email = ["' . implode('", "', explode(',', $email)) . '"];
         wrongEmail = weCheckFormEmail(formular, email);' :
-			'');
+		'');
 
 
 	if($password){

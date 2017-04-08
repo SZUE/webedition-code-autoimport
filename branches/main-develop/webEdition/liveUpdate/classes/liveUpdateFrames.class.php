@@ -274,7 +274,7 @@ class liveUpdateFrames{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.liveUpdate=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.liveUpdate=JSON.parse("' . we_base_util::setLangString([
 				'confirmDelete' => g_l('liveUpdate', '[updatelog][confirmDelete]'),
 				'languagesDeleted' => g_l('liveUpdate', '[languages][languagesDeleted]'),
 				'languagesNotDeleted' => g_l('liveUpdate', '[languages][languagesNotDeleted]'),

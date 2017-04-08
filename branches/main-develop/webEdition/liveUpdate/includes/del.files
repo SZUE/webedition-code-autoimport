@@ -423,6 +423,7 @@ we/include/we_classes/we_progressBar.class.php
 we/include/we_classes/we_otherDocument.inc.php
 we/include/we_classes/we_otherDocument.class.php
 we/include/we_classes/we_multiSelector.inc.php
+we/include/we_classes/we_message_reporting.class.php
 we/include/we_classes/we_mailer_class.inc.php
 we/include/we_classes/we_imageDocument.inc.php
 we/include/we_classes/we_imageDocument.class.php
@@ -450,6 +451,8 @@ we/include/we_classes/we_category.inc.php
 we/include/we_classes/we_catSelector.inc.php
 we/include/we_classes/we_binaryDocument.inc.php
 we/include/we_classes/we_binaryDocument.class.php
+we/include/we_classes/we_base_history.php
+we/include/we_classes/we_autoloader.class.php
 we/include/we_classes/weXMLComposer.class.php
 we/include/we_classes/weTree.inc.php
 we/include/we_classes/weTree.class.php

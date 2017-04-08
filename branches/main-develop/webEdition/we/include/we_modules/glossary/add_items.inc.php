@@ -343,12 +343,12 @@ var AddWords = "";
 ' . $AddJs . '
 top.add();' .
 								($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
-								we_message_reporting::getShowMessageCall(
-									g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
-											'[check_successful]' :
-											// glossary check with publishing
-											'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
-								"top.close();");
+								'alert("' .
+								g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
+										'[check_successful]' :
+										// glossary check with publishing
+										'[check_successful_and_publish]')) . '");
+top.close();');
 							?>
 							</head>
 							<body class="weDialogBody">

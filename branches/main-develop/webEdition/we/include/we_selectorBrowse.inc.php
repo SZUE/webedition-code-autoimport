@@ -53,7 +53,7 @@ function readFiles($dir, we_base_jsCmd $jsCmd){
 	$ord = we_base_request::_(we_base_request::INT, "ord", 10);
 
 	if(!$dir_obj){
-		$jsCmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addMsg(g_l('alert', '[access_denied]'), we_base_util::WE_MESSAGE_ERROR);
 		return '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
 	}
 

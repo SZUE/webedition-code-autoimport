@@ -633,12 +633,12 @@ class we_fragment_copyFolder extends we_fragment_base{
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
 			$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
 			$jsCmd->addCmd('close');
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
 			$jsCmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
-			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
 			$jsCmd->addCmd('close');
 		}
 	}

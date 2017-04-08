@@ -656,7 +656,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$jscmd->addMsg((count(scandir($importDirectory)) <= 2 ?
 						g_l('importFiles', '[emptyDir]') :
 						g_l('importFiles', '[noFiles]'))
-					, we_message_reporting::WE_MESSAGE_INFO);
+					, we_base_util::WE_MESSAGE_INFO);
 
 				$jscmd->addCmd('close');
 				return $jscmd->getCmds();

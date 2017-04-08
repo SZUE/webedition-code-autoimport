@@ -57,7 +57,7 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 					$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 				}
 				unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-				$response['completed'] = ['message' => sprintf(g_l('importFiles', '[error]'), $filelist), 'type' => we_message_reporting::WE_MESSAGE_ERROR];
+				$response['completed'] = ['message' => sprintf(g_l('importFiles', '[error]'), $filelist), 'type' => we_base_util::WE_MESSAGE_ERROR];
 			} else {
 				$completed = g_l('importFiles', '[finished]');
 				if($response['imported_files']){
@@ -66,7 +66,7 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 						$completed .= '</br>- ' . $file['text'];
 					}
 				}
-				$response['completed'] = ['message' => $completed, 'type' => we_message_reporting::WE_MESSAGE_NOTICE];
+				$response['completed'] = ['message' => $completed, 'type' => we_base_util::WE_MESSAGE_NOTICE];
 			}
 
 			unset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']);

@@ -857,7 +857,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		}
 		$weSuggest = &we_gui_suggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		echo we_html_element::htmlHidden("we_complete_request", 1) .
+		echo we_html_element::htmlHidden('we_complete_request', 1) .
 		'</form>' .
 		we_wysiwyg_editor::getHTMLConfigurationsTag() .
 		($fullPoster ? '</body></html>' : '');
@@ -1097,20 +1097,4 @@ function setDynamicVar($data){
 	}
 	$json = new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 	return base64_encode(utf8_encode($json->encode($data, false)));
-}
-
-function setLangString(array $lang){
-	return addcslashes(json_encode($lang, JSON_UNESCAPED_UNICODE), '\\"');
-}
-
-function updateAvailable(){
-	$versionInfo = we_cache_file::load('newwe_version');
-	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
-		  //in branched mode, we compare svn revisions
-		  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
-		  ) */
-		)){
-		return $versionInfo;
-	}
-	return false;
 }

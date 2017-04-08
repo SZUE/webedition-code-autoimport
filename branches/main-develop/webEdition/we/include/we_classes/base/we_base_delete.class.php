@@ -449,7 +449,7 @@ if(!$wfchk){
 			}
 		}
 	} else {
-		$jsCmd->addMsg(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+		$jsCmd->addMsg(g_l('alert', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html = we_html_element::htmlBody(['onload' => ($selectedItems ? 'confirmDel(' . intval($found) . ')' : '')], '<form name="we_form" method="post">' . we_html_element::htmlHidden("sel", implode(',', $selectedItems)) . "</form>");
 } elseif(in_array($wecmd0, ["do_delete", 'delete_single_document'])){
@@ -475,38 +475,38 @@ if(!$wfchk){
 
 		switch($retVal){
 			case we_base_permission::NO_PERMISSION:
-				$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			case -5: //	not allowed to delete workspace
 				$objList = '';
 				foreach($objects as $val){
 					$objList .= '- ' . $val . '\n';
 				}
-				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			case -4: //	not allowed to delete workspace
 				$usrList = '';
 				foreach($users as $val){
 					$usrList .= '- ' . $val . '\n';
 				}
-				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			case -3: //	not allowed to delete workspace
 				$objList = '';
 				foreach($objects as $val){
 					$objList .= "- " . $val . '\n';
 				}
-				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			case we_base_permission::WORKSPACE_HAS_USERS: //	not allowed to delete workspace
 				$usrList = '';
 				foreach($users as $val){
 					$usrList .= '- ' . $val . '\n';
 				}
-				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			case we_base_permission::USER_RESTRICTED: //	not allowed to delete document
-				$jsCmd->addMsg(sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), we_base_util::WE_MESSAGE_ERROR);
 				break;
 			default:
 				if($retVal){ //	user may delete -> delete files !
@@ -548,11 +548,11 @@ if(!$wfchk){
 							}
 						}
 
-						we_history::deleteFromHistory(
+						we_base_history::deleteFromHistory(
 							$deletedItems, $table);
 						if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_TABLE){
 							if(!empty($deleted_objects)){
-								we_history::deleteFromHistory(
+								we_base_history::deleteFromHistory(
 									$deleted_objects, OBJECT_FILES_TABLE);
 							}
 						}
@@ -572,24 +572,24 @@ if(!$wfchk){
 							}
 							$jsCmd->addCmd('delInfo');
 						} else {
-							$jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+							$jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 						}
 					}
 				} else {
 					switch($table){
 						case TEMPLATES_TABLE:
-							$jsCmd->addMsg(g_l('alert', '[deleteTempl_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$jsCmd->addMsg(g_l('alert', '[deleteTempl_notok_used]'), we_base_util::WE_MESSAGE_ERROR);
 							break;
 						case OBJECT_TABLE:
-							$jsCmd->addMsg(g_l('alert', '[deleteClass_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$jsCmd->addMsg(g_l('alert', '[deleteClass_notok_used]'), we_base_util::WE_MESSAGE_ERROR);
 							break;
 						default:
-							$jsCmd->addMsg(g_l('alert', '[delete_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$jsCmd->addMsg(g_l('alert', '[delete_notok]'), we_base_util::WE_MESSAGE_ERROR);
 					}
 				}
 		}
 	} else {
-		$jsCmd->addMsg(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+		$jsCmd->addMsg(g_l('alert', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_WARNING);
 	}
 
 	//exit;
@@ -599,11 +599,11 @@ if(!$wfchk){
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if($retVal){
-		$jsCmd->addMsg(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg(g_l('alert', '[delete_single][return_to_start]'), we_base_util::WE_MESSAGE_NOTICE);
 		//	document deleted -> go to seeMode startPage
 		$jsCmd->addCmd('we_cmd', ['start_multi_editor']);
 	} else {
-		$jsCmd->addMsg(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$jsCmd->addMsg(g_l('alert', '[delete_single][no_delete]'), we_base_util::WE_MESSAGE_ERROR);
 	}
 	$body = we_html_element::htmlBody();
 } elseif(!$wfchk && $wecmd0 != "delete"){

@@ -868,7 +868,7 @@ abstract class we_root extends we_class{
 		$this->update_filehash();
 		$a = $this->i_saveContentDataInDB();
 		if(!$resave && !$this->IsClassFolder){
-			we_history::insertIntoHistory($this);
+			we_base_history::insertIntoHistory($this);
 		}
 		return $a;
 	}

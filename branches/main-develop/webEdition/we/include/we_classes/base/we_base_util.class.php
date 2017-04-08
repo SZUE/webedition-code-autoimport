@@ -36,6 +36,11 @@ abstract class we_base_util{
 	const MIME_BY_EXTENSION = 1;
 	const MIME_BY_HEAD = 2;
 	const MIME_BY_DATA = 3;
+	const WE_MESSAGE_NOTICE = 1;
+	const WE_MESSAGE_WARNING = 2;
+	const WE_MESSAGE_ERROR = 4;
+	const WE_MESSAGE_INFO = 8;
+	const WE_MESSAGE_FRONTEND = 16;
 
 	//FIXME: add more extensions
 	//FIXME: change this to $finfo = finfo_open(FILEINFO_MIME_TYPE); 		  $mime = finfo_file($finfo, $filepath);		  finfo_close($finfo);
@@ -592,6 +597,22 @@ abstract class we_base_util{
 	public static function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 		return self::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
+	}
+
+	function setLangString(array $lang){
+		return addcslashes(json_encode($lang, JSON_UNESCAPED_UNICODE), '\\"');
+	}
+
+	function updateAvailable(){
+		$versionInfo = we_cache_file::load('newwe_version');
+		if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
+			  //in branched mode, we compare svn revisions
+			  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
+			  ) */
+			)){
+			return $versionInfo;
+		}
+		return false;
 	}
 
 }

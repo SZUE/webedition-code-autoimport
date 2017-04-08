@@ -370,7 +370,7 @@ class we_selector_file{
 
 	public static function getJSLangConsts(){
 		return '
-WE().consts.g_l.fileselector=JSON.parse("' . setLangString([
+WE().consts.g_l.fileselector=JSON.parse("' . we_base_util::setLangString([
 				'already_root' => (g_l('fileselector', '[already_root]')),
 				'date_format' => date(g_l('date', '[format][default]')),
 				'deleteQuestion' => g_l('fileselector', '[deleteQuestion]'),
@@ -386,7 +386,7 @@ WE().consts.g_l.fileselector=JSON.parse("' . setLangString([
 	}
 
 	public static function getJSConsts(){
-		return 'WE().consts.selectors=JSON.parse("' . setLangString(
+		return 'WE().consts.selectors=JSON.parse("' . we_base_util::setLangString(
 				[
 				'CMD' => self::CMD,
 				'CREATEFOLDER' => self::CREATEFOLDER,

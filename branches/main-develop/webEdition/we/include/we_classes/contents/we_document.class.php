@@ -1731,9 +1731,9 @@ class we_document extends we_root{
 			}
 			$jsCmd = new we_base_jsCmd();
 			if($ok){
-				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][ok]'), we_base_util::WE_MESSAGE_NOTICE);
 			} else {
-				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('weClass', '[' . $lang . '][notok]'), we_base_util::WE_MESSAGE_ERROR);
 			}
 
 			echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());

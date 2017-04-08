@@ -57,12 +57,12 @@ class we_dialog_lang extends we_dialog_base{
 			$Glossary->setPath();
 
 			if($Glossary->Text === "" || $Glossary->getAttribute('lang') === ""){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 			} else if($Glossary->pathExists($Glossary->Path)){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				$Glossary->save();
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 				$this->jsCmd->addCmd('close');
 			}
 		}

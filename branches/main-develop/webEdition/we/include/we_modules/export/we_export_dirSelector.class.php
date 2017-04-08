@@ -96,14 +96,14 @@ class we_export_dirSelector extends we_selector_directory{
 			]
 		);
 		if(!$txt){
-			$weCmd->addMsg(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('export', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"', '', $this->db)){
-				$weCmd->addMsg(g_l('export', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(g_l('export', '[folder_path_exists]'), we_base_util::WE_MESSAGE_ERROR);
 			} elseif(we_export_export::filenameNotValid($folder->Text)){
-				$weCmd->addMsg(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(g_l('export', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
 				if($this->canSelectDir){
@@ -144,7 +144,7 @@ class we_export_dirSelector extends we_selector_directory{
 		]);
 
 		if(!$txt){
-			$weCmd->addMsg(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('export', '[folder_empty]'), we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -153,10 +153,10 @@ class we_export_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$weCmd->addMsg(sprintf(g_l('export', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(sprintf(g_l('export', '[folder_exists]'), $folder->Path), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
-					$weCmd->addMsg(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$weCmd->addMsg(g_l('export', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 				} else {
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), '', $this->db) != $txt){
 						$folder->we_save();

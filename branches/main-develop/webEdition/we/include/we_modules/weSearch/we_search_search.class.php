@@ -1574,7 +1574,7 @@ class we_search_search extends we_search_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.weSearch=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.weSearch=JSON.parse("' . we_base_util::setLangString([
 				'buttonSelectValue' => g_l('button', '[select][value]'),
 				'confirmDel' => g_l('searchtool', '[confirmDel]'),
 				'nameForSearch' => g_l('searchtool', '[nameForSearch]'),

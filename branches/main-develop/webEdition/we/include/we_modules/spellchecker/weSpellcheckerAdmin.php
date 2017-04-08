@@ -6,7 +6,7 @@ we_html_tools::protect($protect);
 
 if(!we_base_permission::hasPerm('SPELLCHECKER_ADMIN')){
 	$cmd = new we_base_jsCmd();
-	$cmd->addMsg(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
+	$cmd->addMsg(g_l('alert', '[access_denied]'), we_base_util::WE_MESSAGE_ERROR);
 	$cmd->addCmd('close');
 	echo $cmd->getCmds();
 	exit();

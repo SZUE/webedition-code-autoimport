@@ -1209,7 +1209,7 @@ class we_newsletter_frames extends we_modules_frame{
 				}
 
 				if(strpos($filepath, '..') !== false){
-					$this->jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$this->jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_base_util::WE_MESSAGE_ERROR);
 				} else {
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
@@ -1231,7 +1231,7 @@ class we_newsletter_frames extends we_modules_frame{
 							}
 						}
 					} else {
-						$this->jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$this->jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_base_util::WE_MESSAGE_ERROR);
 					}
 				}
 				break;
@@ -1428,7 +1428,7 @@ class we_newsletter_frames extends we_modules_frame{
 			}
 		} else {
 			$jsCmd = new we_base_jsCmd();
-			$jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('modules_newsletter', '[path_not_valid]'), we_base_util::WE_MESSAGE_ERROR);
 			echo $jsCmd->getCmds();
 		}
 
@@ -1616,7 +1616,7 @@ class we_newsletter_frames extends we_modules_frame{
 	function getHTMLClearLog(){
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query('TRUNCATE TABLE ' . NEWSLETTER_LOG_TABLE);
-			$this->jsCmd->addMsg(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$this->jsCmd->addMsg(g_l('modules_newsletter', '[log_is_clear]'), we_base_util::WE_MESSAGE_NOTICE);
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
