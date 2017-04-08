@@ -267,7 +267,7 @@ abstract class we_root extends we_class{
 	/* creates the filename input-field */
 
 	function formFilename($text = ''){
-		return $this->formTextInput('', 'Filename', $text ? : g_l('weClass', '[filename]'), 24, 255);
+		return $this->formTextInput('', 'Filename', $text ?: g_l('weClass', '[filename]'), 24, 255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -298,7 +298,7 @@ abstract class we_root extends we_class{
 			$weSuggest->setjsCommandOnItemSelect('pathOfDocumentChanged');
 		}
 		//FIXME: onblur!
-		$weSuggest->setLabel($label ? : '');
+		$weSuggest->setLabel($label ?: '');
 		$weSuggest->setMaxResults(10);
 		//$weSuggest->setRequired(true);
 		$weSuggest->setResult($idname, $myid);
@@ -399,7 +399,7 @@ abstract class we_root extends we_class{
 <tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
-				'<tr><td style="padding-top:2px;">' . $this->formOwners($jsCmd, $canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+			'<tr><td style="padding-top:2px;">' . $this->formOwners($jsCmd, $canChange && we_base_permission::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 
@@ -473,7 +473,7 @@ abstract class we_root extends we_class{
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
 		if($this->ContentType === we_base_ContentTypes::HTACCESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
-			$this->Filename = $this->Filename ? : current($vals);
+			$this->Filename = $this->Filename ?: current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
 		} else {
 			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="if(self.pathOfDocumentChanged){pathOfDocumentChanged(' . ($notSetHot ? 'false' : 'true') . ');}"');
@@ -506,8 +506,8 @@ abstract class we_root extends we_class{
 
 	#
 	function formUserChooser($old_userID = -1, $width = '', $in_textname = '', $in_idname = ''){
-		$textname = $in_textname ? : 'we_' . $this->Name . '_UserName';
-		$idname = $in_idname ? : 'we_' . $this->Name . '_UserID';
+		$textname = $in_textname ?: 'we_' . $this->Name . '_UserName';
+		$idname = $in_idname ?: 'we_' . $this->Name . '_UserID';
 
 		$username = '';
 		$userid = $old_userID;
@@ -546,10 +546,10 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? : '';
+			$myid = $this->DefaultTriggerID ?: '';
 		} else {
 			$idname = 'we_' . $this->Name . '_TriggerID';
-			$myid = $this->TriggerID ? : '';
+			$myid = $this->TriggerID ?: '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
@@ -572,9 +572,9 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
-		$myid = $LDID ? : '';
+		$myid = $LDID ?: '';
 		$table = $this->IsFolder ? FILE_TABLE : $this->Table;
-		$path = $path ? : ($LDID ? f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
+		$path = $path ?: ($LDID ? f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
 		$rootDirID = $table === OBJECT_FILES_TABLE ? $this->rootDirID : 0;
 		if($rootDirID && !$path){
@@ -615,7 +615,7 @@ abstract class we_root extends we_class{
 
 	function formLangLinks($withHeadline = true){
 		$defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? : $defLang);
+		$value = ($this->Language ?: $defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$languages = getWeFrontendLanguagesForBackend();
 		$headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
@@ -688,10 +688,10 @@ abstract class we_root extends we_class{
 			case 'ALLKEYS':
 				//check bdid first
 				return (!empty($this->elements[$name]['bdid']) ?
-						$this->elements[$name]['bdid'] :
-						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
-							$this->elements[$name]['dat'] :
-							$default));
+					$this->elements[$name]['bdid'] :
+					(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
+					$this->elements[$name]['dat'] :
+					$default));
 			default:
 				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 		}
@@ -1137,9 +1137,9 @@ abstract class we_root extends we_class{
 			}
 
 			$data[] = we_database_base::arraySetter([//be aware to change replace statement as well
-					'ID' => $cid ? : $def,
+					'ID' => $cid ?: $def,
 					'Dat' => ($bdid ? sql_function('NULL') : (is_array($dat) ? we_serialize($dat) : $dat)),
-					'BDID' => intval($bdid),
+					'BDID' => ($bdid ? intval($bdid) : sql_function('NULL')),
 					'DID' => $this->ID,
 					'Name' => $k,
 					'Type' => $v['type'],
