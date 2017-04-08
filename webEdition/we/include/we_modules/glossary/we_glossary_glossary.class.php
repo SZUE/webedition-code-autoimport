@@ -461,7 +461,7 @@ class we_glossary_glossary extends we_base_model{
 
 	public static function getJSConsts(){
 		return '
-WE().consts.g_l.glossary=JSON.parse("' . setLangString([
+WE().consts.g_l.glossary=JSON.parse("' . we_base_util::setLangString([
 				'checking' => g_l('modules_glossary', '[checking]'),
 				'all_words_identified' => g_l('modules_glossary', '[all_words_identified]'),
 				'change_to' => g_l('modules_glossary', '[change_to]'),
@@ -481,7 +481,7 @@ WE().consts.g_l.glossary=JSON.parse("' . setLangString([
 					'save_changed_glossary' => g_l('modules_glossary', '[save_changed_glossary]'),
 				],
 			]) . '");
-WE().consts.glossary=JSON.parse("' . setLangString([
+WE().consts.glossary=JSON.parse("' . we_base_util::setLangString([
 				'TYPE_ABBREVATION' => we_glossary_glossary::TYPE_ABBREVATION,
 				'TYPE_ACRONYM' => we_glossary_glossary::TYPE_ACRONYM,
 				'TYPE_FOREIGNWORD' => we_glossary_glossary::TYPE_FOREIGNWORD,

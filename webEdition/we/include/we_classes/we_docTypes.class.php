@@ -311,7 +311,7 @@ class we_docTypes extends we_class{
 
 	public static function getJSLangConsts(){
 		return '
-	WE().consts.g_l.doctypeEdit=JSON.parse("' . setLangString([
+	WE().consts.g_l.doctypeEdit=JSON.parse("' . we_base_util::setLangString([
 				'doctype_empty' => (g_l('alert', '[doctype_empty]')),
 				'doctype_exists' => (g_l('alert', '[doctype_exists]')),
 				'doctype_hochkomma' => (g_l('alert', '[doctype_hochkomma]')),

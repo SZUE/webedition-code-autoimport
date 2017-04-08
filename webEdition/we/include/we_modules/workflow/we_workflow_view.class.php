@@ -511,15 +511,15 @@ class we_workflow_view extends we_modules_view{
 					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!we_base_permission::hasPerm('EDIT_WORKFLOW') && !we_base_permission::hasPerm('NEW_WORKFLOW')){
-						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($newone && !we_base_permission::hasPerm('NEW_WORKFLOW')){
-						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($double){
-						$jscmd->addMsg(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[double_name]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 					$this->workflowDef->loadDocuments();
@@ -549,7 +549,7 @@ class we_workflow_view extends we_modules_view{
 						]);
 					}
 					$jscmd->addCmd('setHeadRow', we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)));
-					$jscmd->addMsg(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_workflow', '[save_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 				}
 				break;
 			case 'show_document':
@@ -563,7 +563,7 @@ class we_workflow_view extends we_modules_view{
 			case 'delete_workflow':
 				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					if(!we_base_permission::hasPerm('DELETE_WORKFLOW')){
-						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 
@@ -571,9 +571,9 @@ class we_workflow_view extends we_modules_view{
 					if($this->workflowDef->delete()){
 						$this->workflowDef = new we_workflow_workflow();
 						$jscmd->addCmd('deleteTreeEntry', [$id, we_base_ContentTypes::FOLDER]);
-						$jscmd->addMsg(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jscmd->addMsg(g_l('modules_workflow', '[delete_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 					} else {
-						$jscmd->addMsg(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_workflow', '[delete_nok]'), we_base_util::WE_MESSAGE_ERROR);
 					}
 				}
 				break;
@@ -586,7 +586,7 @@ class we_workflow_view extends we_modules_view{
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);
-				$jscmd->addMsg(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('modules_workflow', '[empty_log_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 				break;
 			default:
 		}

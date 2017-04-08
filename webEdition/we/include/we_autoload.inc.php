@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,17 +27,16 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 we_error_handler(!isset($GLOBALS['WE_TEMPLATE_INIT']));
 
-
 // include configuration file of webEdition
 require_once (WE_INCLUDES_PATH . 'conf/we_conf.inc.php');
-require_once(WE_INCLUDES_PATH . 'we_classes/we_autoloader.class.php');
+require_once(WE_INCLUDES_PATH . 'we_classes/tools/we_tool_autoloader.class.php');
 
 if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SEPARATOR . ini_get('include_path')) === FALSE){
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
 
 //make we_autoloader the first autoloader
-$ret = spl_autoload_register('we_autoloader::autoload', false, true);
+$ret = spl_autoload_register('we_tool_autoloader::autoload', false, true);
 
 if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){
@@ -46,6 +44,3 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 	}
 	define('DATETIME_INITIALIZED', 1);
 }
-/*if(!isset($_SERVER['TMP'])){
-	$_SERVER['TMP'] = WEBEDITION_PATH . 'we/cache';
-}*/

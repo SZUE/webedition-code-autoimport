@@ -59,19 +59,19 @@ class we_editor_createObjectTemplate extends we_editor_base{
 
 
 		if(($we_responseText = $GLOBALS['we_doc']->checkFieldsOnSave())){
-			$jscmd->addCmd($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+			$jscmd->addCmd($we_responseText, we_base_util::WE_MESSAGE_ERROR);
 			echo $editor->show();
 			return;
 		}
 		if($GLOBALS['we_doc']->we_save()){
-			$jscmd->addMsg(sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jscmd->addMsg(sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path), we_base_util::WE_MESSAGE_NOTICE);
 			$jscmd->addCmd('we_cmd', ["object_changeTempl_ob", $nr, $GLOBALS['we_doc']->ID]);
 			$jscmd->addCmd('close');
 			echo $jscmd->getCmds();
 			return;
 		}
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
-		$jscmd->addCmd($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+		$jscmd->addCmd($we_responseText, we_base_util::WE_MESSAGE_ERROR);
 		echo $editor->show();
 	}
 
@@ -249,7 +249,7 @@ class we_editor_createObjectTemplate extends we_editor_base{
 		$_SESSION['weS']['content'] = $content;
 
 		$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=object_createTemplatecmd';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+						we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=object_createTemplatecmd';document.we_form.submit();}else{WE().util.showMessage(WE().consts.g_l.alert.input_file_name,WE().consts.message.WE_MESSAGE_ERROR, window);}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 		);
 
 		$this->title = g_l('weClass', '[generateTemplate]');

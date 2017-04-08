@@ -311,12 +311,12 @@ WHERE o.ID=' . $bid);
 			$orderTable .= '
 		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&anzahl='+anzahl;}}\">" . $Quantity . "</a>" . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){WE().util.showMessage(WE().consts.g_l.shop.no_number,WE().consts.message.WE_MESSAGE_ERROR, window);}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&anzahl='+anzahl;}}\">" . $Quantity . "</a>" . '</td>
 			<td>' . self::cutText($this->db->f('title'), 35) . '</td>
 			<td>' . self::cutText($this->db->f('description'), 35) . '</td>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = window.prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&preis=' + preis; } }\">" . we_base_util::formatNumber($Price) . "</a>" . $waehr . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = window.prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){WE().util.showMessage(WE().consts.g_l.shop.no_number,WE().consts.message.WE_MESSAGE_ERROR, window);}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&preis=' + preis; } }\">" . we_base_util::formatNumber($Price) . "</a>" . $waehr . '</td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
-				($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = window.prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+				($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = window.prompt('" . g_l('modules_shop', '[vat][new_vat_name]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){WE().util.showMessage(WE().consts.g_l.shop.no_number,WE().consts.message.WE_MESSAGE_ERROR, window);}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&deleteaarticle=" . $tblOrdersId . "';}", '', 0, 0, "", "", !we_base_permission::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 			// if this article has custom fields or is a variant - we show them in a extra rows
@@ -528,7 +528,7 @@ WHERE o.ID=' . $bid);
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'add_article':
 				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') == 0){
-					$jscmd->addMsg(g_l('modules_shop', '[keinezahl]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_shop', '[keinezahl]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 
@@ -778,10 +778,10 @@ WHERE o.ID=' . $bid);
 
 				// update all orders with this orderId
 				if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET calcVat=' . $calcVat . ' WHERE ID=' . $bid)){
-					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]'), we_base_util::WE_MESSAGE_NOTICE);
 					return;
 				}
-				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 
 			case 'delete_shop_cart_custom_field':
@@ -795,10 +795,10 @@ WHERE o.ID=' . $bid);
 								'customFields' => $customFields ? we_serialize($customFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
 							]) . ' WHERE ID=' . $bid)
 					){
-						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']), we_base_util::WE_MESSAGE_NOTICE);
 						return;
 					}
-					$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				break;
@@ -853,12 +853,12 @@ WHERE o.ID=' . $bid);
 							]) . ' WHERE ID=' . $bid)
 					){
 						$jscmd->addCmd('doClickShopOrder', $_REQUEST['bid']);
-						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_base_util::WE_MESSAGE_NOTICE);
 					} else {
-						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_base_util::WE_MESSAGE_ERROR);
 					}
 				} else {
-					$jscmd->addMsg(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_shop', '[field_empty_js_alert]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 				$jscmd->addCmd('close');
 				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js') . $jscmd->getCmds(), we_html_element::htmlBody());
@@ -913,10 +913,10 @@ WHERE o.ID=' . $bid);
 							'shippingVat' => we_base_request::_(we_base_request::FLOAT, 'weShipping_vatRate'),
 						]) . ' WHERE ID=' . $bid)
 				){
-					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_success]'), we_base_util::WE_MESSAGE_NOTICE);
 					return;
 				}
-				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_shipping_error]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 
 			case 'edit_order_customer'; // edit data of the saved customer.
@@ -1036,10 +1036,10 @@ WHERE o.ID=' . $bid);
 				if($this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
 							'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
 						]) . ' WHERE ID=' . $bid)){
-					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_success]'), we_base_util::WE_MESSAGE_NOTICE);
 					return;
 				}
-				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_shop', '[edit_order][js_saved_customer_error]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 		}
 	}

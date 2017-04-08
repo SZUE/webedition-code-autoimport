@@ -28,10 +28,10 @@ class we_glossary_settingControl{
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'save_glossary_setting':
 				if($this->saveSettings()){
-					$jscmd->addMsg(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_glossary', '[preferences_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 					$jscmd->addCmd('close');
 				} else {
-					$jscmd->addMsg(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_glossary', '[preferences_not_saved]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 
 				break;

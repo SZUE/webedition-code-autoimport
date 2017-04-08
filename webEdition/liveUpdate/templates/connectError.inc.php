@@ -74,6 +74,6 @@ $errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ":
 	) . "</ul>";
 
 $jsCmd = new we_base_jsCmd();
-$jsCmd->addMsg(g_l('liveUpdate', '[connect][connectionErrorJs]'), we_message_reporting::WE_MESSAGE_FRONTEND);
+$jsCmd->addMsg(g_l('liveUpdate', '[connect][connectionErrorJs]'), we_base_util::WE_MESSAGE_FRONTEND);
 echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), '
 <div class="defaultfont">' . g_l('liveUpdate', '[connect][connectionError]') . '</div>' . $errorMessage, $jsCmd->getCmds());

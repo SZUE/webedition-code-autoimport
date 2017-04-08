@@ -439,7 +439,7 @@ class we_customer_customer extends we_base_model{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.customer=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.customer=JSON.parse("' . we_base_util::setLangString([
 				'view' => [
 					'delete_alert' => g_l('modules_customer', '[delete_alert]'),
 					'nothing_to_delete' => (g_l('modules_customer', '[nothing_to_delete]')),

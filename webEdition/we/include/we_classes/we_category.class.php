@@ -176,7 +176,7 @@ class we_category extends we_base_model{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.selectors.category=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.selectors.category=JSON.parse("' . we_base_util::setLangString([
 				'new_cat_name' => g_l('fileselector', '[new_cat_name]'),
 				'we_filename_notValid' => (g_l('weEditor', '[category][we_filename_notValid]')),
 				]) . '");';

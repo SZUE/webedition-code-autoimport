@@ -305,7 +305,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.fileupload=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.fileupload=JSON.parse("' . we_base_util::setLangString([
 				'btnCancel' => g_l('button', '[cancel][value]'),
 				'btnClose' => g_l('button', '[close][value]'),
 				'btnProcess' => g_l('importFiles', '[btnProcess]'),

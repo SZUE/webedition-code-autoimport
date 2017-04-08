@@ -120,7 +120,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 			'name' => 'copyWeDocumentCustomerFilterText',
 			'text' => g_l('modules_customerFilter', '[apply_filter_done]'),
 		]);
-		$jsCmd->addMsg(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg(g_l('modules_customerFilter', '[apply_filter_done]'), we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('close');
 	}
 

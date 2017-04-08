@@ -88,7 +88,7 @@ switch($cmd0){
 			exit(' ContentType Missing !!! ');
 		}
 		if(($we_responseText = $we_doc->checkFieldsOnSave())){
-			we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, false, $isClose, $showAlert, $we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+			we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, false, $isClose, $showAlert, $we_responseText, we_base_util::WE_MESSAGE_ERROR);
 			break;
 		}
 		$saveTemplate = true;
@@ -137,7 +137,7 @@ switch($cmd0){
 					$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID];
 					$we_JavaScript[] = $we_doc->getUpdateTreeScript(true, null, true); // save/ rename a document
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+					$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4)){
 // this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
 						if($somethingNeedsToBeResaved){
@@ -150,12 +150,12 @@ switch($cmd0){
 // we got an error while saving the template
 					$we_JavaScript = [];
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 				}
 
 				/* if(empty($TEMPLATE_SAVE_CODE2)){
 				  $we_responseText = g_l('weEditor', '[text/weTmpl][no_template_save]');
-				  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+				  $we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 				  we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
 				  ]), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
 
@@ -169,7 +169,7 @@ switch($cmd0){
 			case we_base_ContentTypes::APPLICATION:
 				if((!we_base_permission::hasPerm('NEW_SONSTIGE')) && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML))){
 					$we_JavaScript = [];
-					we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension), we_message_reporting::WE_MESSAGE_ERROR);
+					we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 			//falls through
@@ -179,7 +179,7 @@ switch($cmd0){
 				$wasPubl = (!empty($we_doc->Published)) ? true : false;
 				if(!we_base_permission::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !we_users_util::in_workspace($we_doc->ParentID, get_ws($we_doc->Table, true), $we_doc->Table)){
 					$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 					we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
 									]), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
 
@@ -187,7 +187,7 @@ switch($cmd0){
 				}
 				if(!$we_doc->userCanSave()){
 					$we_responseText = g_l('alert', '[access_denied]');
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 					we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
 									]), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
 
@@ -209,20 +209,20 @@ switch($cmd0){
 							break;
 					}
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+					$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 
 					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 						if($we_doc->i_publInScheduleTable()){
 							if(($foo = $we_doc->getNextPublishDate())){
 								$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
-								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+								$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 							}
 						} elseif($we_doc->we_publish()){
 							if(defined('WORKFLOW_TABLE') && (we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table))){
 								we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 							}
 							$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
-							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+							$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 // SEEM, here a doc is published
 							$GLOBALS['publish_doc'] = true;
 							switch($we_doc->EditPageNr){
@@ -236,13 +236,13 @@ switch($cmd0){
 							}
 						} else {
 							$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
-							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+							$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 						}
 					} else {
 						$tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 						if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))) || $tmp){
 							$we_responseText = $tmp ? '' : $we_responseText;
-							$we_responseTextType = $tmp ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
+							$we_responseTextType = $tmp ? we_base_util::WE_MESSAGE_ERROR : $we_responseTextType;
 							$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction];
 
 							switch($tmp){
@@ -288,7 +288,7 @@ switch($cmd0){
 				} else {
 					$we_JavaScript = [];
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
 				}
 
 				if(($js = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6))){

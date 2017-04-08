@@ -202,49 +202,49 @@ class we_banner_view extends we_modules_view{
 			$acQuery = new we_selector_query();
 			if((!we_base_permission::hasPerm("EDIT_BANNER") && !we_base_permission::hasPerm("NEW_BANNER")) ||
 				($newone && !we_base_permission::hasPerm("NEW_BANNER"))){
-				$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 			if(!$this->banner->Text){
-				$jscmd->addMsg(g_l('modules_banner', '[no_text]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[no_text]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 			if(preg_match('|[%/\\\"\']|', $this->banner->Text)){
-				$jscmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 			if(!$this->banner->bannerID && !$this->banner->IsFolder){
-				$jscmd->addMsg(g_l('modules_banner', '[no_bannerid]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[no_bannerid]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 			if($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
-				$jscmd->addMsg(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[no_group_in_group]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 			if(f('SELECT 1 FROM ' . BANNER_TABLE . ' WHERE Text="' . $this->db->escape($this->banner->Text) . '" AND ParentID=' . intval($this->banner->ParentID) .
 					($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
-				$jscmd->addMsg(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jscmd->addMsg(g_l('modules_banner', '[double_name]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 			}
 
 			if($this->banner->ParentID > 0){
 				$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
 				if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder'] == 0)){
-					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 			}
 			if($this->banner->IntHref){
 				$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, ["IsFolder"]);
 				if(!$acResult || $acResult[0]['IsFolder'] == 1){
-					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 			}
 			if($this->banner->bannerID > 0){
 				$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, ["ContentType"]);
 				if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
-					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_banner', '[error_ac_field]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 			}
@@ -266,7 +266,7 @@ class we_banner_view extends we_modules_view{
 					'text' => $this->banner->Text,
 				]);
 			}
-			$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_base_util::WE_MESSAGE_NOTICE);
 		}
 	}
 
@@ -410,7 +410,7 @@ class we_banner_view extends we_modules_view{
 				$bid = we_base_request::_(we_base_request::INT, 'bid');
 				if($bid){
 					if(!we_base_permission::hasPerm("DELETE_BANNER")){
-						$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_banner', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
 
@@ -418,10 +418,10 @@ class we_banner_view extends we_modules_view{
 					if($this->banner->delete()){
 						$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
 						$jscmd->addCmd('deleteTreeEntry', [$bid, ($this->banner->IsFolder ? we_base_ContentTypes::FOLDER : 'file')]);
-						$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_base_util::WE_MESSAGE_NOTICE);
 						$jscmd->addCmd('new_banner');
 					} else {
-						$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_nok]' : '[delete_nok]')), we_base_util::WE_MESSAGE_ERROR);
 					}
 				}
 				break;

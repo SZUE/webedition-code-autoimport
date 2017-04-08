@@ -47,7 +47,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EMPTY;
 			if($userempty !== ''){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement('alert("' . ($userempty ?: g_l('modules_customer', '[username_empty]')) . '");');
 			}
 			return;
 		}
@@ -56,7 +56,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EXISTS;
 			if($userexists !== ''){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement('alert("' . sprintf(($userexists ?: g_l('modules_customer', '[username_exists]')), $username) . '");');
 			}
 			return;
 		}
@@ -64,7 +64,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
 			if($passempty !== ''){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement('alert("' . ($passempty ?: g_l('modules_customer', '[password_empty]')) . '");');
 			}
 			return;
 		}
@@ -103,12 +103,12 @@ function we_tag_saveRegisteredUser(array $attribs){
 		}
 	} else if(!empty($_SESSION['webuser']['registered']) && ($uid == $_SESSION['webuser']['ID'])){ // existing user
 		// existierender User (Daten werden von User geaendert)!!
-		$weUsername = $username? : $_SESSION['webuser']['Username'];
+		$weUsername = $username ?: $_SESSION['webuser']['Username'];
 
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EXISTS;
 			if($userexists !== ''){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf($userexists ? : g_l('modules_customer', '[username_exists]'), $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement('alert("' . sprintf($userexists ?: g_l('modules_customer', '[username_exists]'), $weUsername) . '");');
 			}
 			return;
 		}
@@ -126,7 +126,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 					}
 					$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
 					if($passempty !== ''){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+						echo we_html_element::jsElement('alert("' . ($passempty ?: g_l('modules_customer', '[password_empty]')) . '");');
 					}
 					return;
 				}
@@ -219,7 +219,8 @@ function we_saveCustomerImages(){
 					(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
 					$imageData = we_base_file::load($serverPath);
 					$thumb = new we_thumbnail();
-					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], [$_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
+					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], [$_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0,
+						$_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 					$imgData = '';
 					$thumb->getThumb($imgData);
@@ -311,8 +312,8 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 					continue;
 				}
 				$set[$name] = (isset($allEncryptedFields[$name]) && $val != we_customer_customer::ENCRYPTED_DATA ?
-						we_customer_customer::cryptData(we_base_util::rmPhp($val), SECURITY_ENCRYPTION_KEY, false) :
-						we_base_util::rmPhp($val)
+					we_customer_customer::cryptData(we_base_util::rmPhp($val), SECURITY_ENCRYPTION_KEY, false) :
+					we_base_util::rmPhp($val)
 					);
 				break;
 		}

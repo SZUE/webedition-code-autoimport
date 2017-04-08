@@ -316,7 +316,7 @@ class we_selector_directory extends we_selector_file{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 		if($msg){
-			$weCmd->addMsg($msg, we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg($msg, we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$weCmd->addCmd('makeNewTreeEntry', [
 				'id' => $folder->ID,
@@ -402,7 +402,7 @@ class we_selector_directory extends we_selector_file{
 		]);
 
 		if(($msg = $folder->checkFieldsOnSave())){
-			$weCmd->addMsg($msg, we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg($msg, we_base_util::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();

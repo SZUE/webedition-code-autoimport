@@ -912,13 +912,13 @@ class we_navigation_navigation extends we_base_model{
 			$GLOBALS['DB_WE']->query('UPDATE ' . NAVIGATION_TABLE . ' SET LimitAccess=0, ApplyFilter=0');
 			$jsCmd->addCmd('module_navigation_progress_reset_customer_filter');
 		} else {
-			$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_base_util::WE_MESSAGE_ERROR);
 		}
 		echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	public static function getJSConsts(){
-		return 'WE().consts.g_l.navigation=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.navigation=JSON.parse("' . we_base_util::setLangString([
 				'view' => [
 					'catLink' => g_l('navigation', '[catLink]'),
 					'categories' => g_l('navigation', '[categories]'),
@@ -943,7 +943,7 @@ class we_navigation_navigation extends we_base_model{
 					'save_error_fields_value_not_valid' => (g_l('alert', '[save_error_fields_value_not_valid]')),
 				]
 			]) . '");
-WE().consts.navigation=JSON.parse("' . setLangString([
+WE().consts.navigation=JSON.parse("' . we_base_util::setLangString([
 				'DYN_CLASS' => we_navigation_navigation::DYN_CLASS,
 				'DYN_DOCTYPE' => we_navigation_navigation::DYN_DOCTYPE,
 				'DYN_CATEGORY' => we_navigation_navigation::DYN_CATEGORY,

@@ -337,7 +337,7 @@ class we_customer_frames extends we_modules_frame{
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
 		if(we_base_request::_(we_base_request::STRING, 'error')){
-			$this->jsCmd->addMsg(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$this->jsCmd->addMsg(g_l('modules_customer', '[error_download_failed]'), we_base_util::WE_MESSAGE_ERROR);
 		}
 
 		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))]);

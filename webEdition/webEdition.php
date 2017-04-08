@@ -148,11 +148,11 @@ $const = [
 		'DEFAULT_STATIC_EXT' => DEFAULT_STATIC_EXT,
 	],
 	'message' => [
-		'WE_MESSAGE_INFO' => we_message_reporting::WE_MESSAGE_INFO,
-		'WE_MESSAGE_FRONTEND' => we_message_reporting::WE_MESSAGE_FRONTEND,
-		'WE_MESSAGE_NOTICE' => we_message_reporting::WE_MESSAGE_NOTICE,
-		'WE_MESSAGE_WARNING' => we_message_reporting::WE_MESSAGE_WARNING,
-		'WE_MESSAGE_ERROR' => we_message_reporting::WE_MESSAGE_ERROR,
+		'WE_MESSAGE_INFO' => we_base_util::WE_MESSAGE_INFO,
+		'WE_MESSAGE_FRONTEND' => we_base_util::WE_MESSAGE_FRONTEND,
+		'WE_MESSAGE_NOTICE' => we_base_util::WE_MESSAGE_NOTICE,
+		'WE_MESSAGE_WARNING' => we_base_util::WE_MESSAGE_WARNING,
+		'WE_MESSAGE_ERROR' => we_base_util::WE_MESSAGE_ERROR,
 	],
 	'linkPrefix' => [
 		'TYPE_OBJ_PREFIX' => we_base_link::TYPE_OBJ_PREFIX,
@@ -232,7 +232,7 @@ $session = [
 		'short' => array_search($GLOBALS['WE_LANGUAGE'], getWELangs()),
 		'long' => $GLOBALS["WE_LANGUAGE"]
 	],
-	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
+	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_base_util::WE_MESSAGE_INFO | we_base_util::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
 	'isChrome' => we_base_browserDetect::isChrome(),
 	'isAppleTouch' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)),
 	'isMac' => we_base_browserDetect::isMAC(),
@@ -281,7 +281,7 @@ foreach($jsWeCmd as $cur){
 list($jsTree, $treeHtml) = getWebEdition_Tree($jsCmd);
 
 $head .= $jsTree . $jsCmd->getCmds();
-$versionInfo = empty($_SESSION['perms']['ADMINISTRATOR']) ? [] : updateAvailable();
+$versionInfo = empty($_SESSION['perms']['ADMINISTRATOR']) ? [] : we_base_util::updateAvailable();
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', $head, '', false);
 ?>

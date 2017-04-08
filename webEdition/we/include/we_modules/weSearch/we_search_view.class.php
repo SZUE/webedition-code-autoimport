@@ -108,7 +108,7 @@ class we_search_view extends we_modules_view{
 				$this->Model->prepareModelForSearch();
 
 				if(!$this->Model->isAllowedForUser()){
-					$jscmd->addMsg(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
@@ -119,34 +119,34 @@ class we_search_view extends we_modules_view{
 			case 'weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
-					$jscmd->addMsg(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('searchtool', '[nameTooLong]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
-					$jscmd->addMsg(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('searchtool', '[no_hochkomma]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Model->filenameNotValid($this->Model->Text)){
-					$jscmd->addMsg(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1); // TODO: have activeTab always active (initByHttp)!!
 
 				if(!trim($this->Model->Text)){
-					$jscmd->addMsg(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$oldpath = $this->Model->Path;
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					$jscmd->addMsg(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				if($this->Model->isSelf()){
-					$jscmd->addMsg(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('tools', '[path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -175,7 +175,7 @@ class we_search_view extends we_modules_view{
 						]);
 					}
 					$jscmd->addCmd('loadHeaderFooter', $this->Model->activTab, $this->Model->Text, '', $this->Model->ID);
-					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_base_util::WE_MESSAGE_NOTICE);
 
 
 					if(($delay = we_base_request::_(we_base_request::STRING, 'delayCmd'))){
@@ -184,14 +184,14 @@ class we_search_view extends we_modules_view{
 					}
 				} else {
 					$jscmd->addCmd('loadHeaderFooter', $this->Model->activTab, $this->Model->Text, '', $this->Model->ID);
-					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_base_util::WE_MESSAGE_ERROR);
 				}
 
 				break;
 			case 'weSearch_delete' :
 				if($this->Model->delete()){
 					$jscmd->addCmd('deleteTreeEntry', $this->Model->ID);
-					$jscmd->addMsg(g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_base_util::WE_MESSAGE_NOTICE);
 					$jscmd->addCmd('weSearch_edit');
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
@@ -357,7 +357,7 @@ class we_search_view extends we_modules_view{
 	}
 
 	public static function getJSConsts(){
-		return 'WE().consts.weSearch=JSON.parse("' . setLangString([
+		return 'WE().consts.weSearch=JSON.parse("' . we_base_util::setLangString([
 				'MEDIA_CONTENTTYPES_CSV' => [we_base_ContentTypes::APPLICATION, we_base_ContentTypes::AUDIO, we_base_ContentTypes::FLASH, we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO],
 				'SEARCH_ADV' => self::SEARCH_ADV,
 				'SEARCH_DOCLIST' => we_search_view::SEARCH_DOCLIST,

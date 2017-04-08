@@ -270,7 +270,7 @@ class we_rebuild_wizard{
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						$this->jsCmd->addMsg(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$this->jsCmd->addMsg(g_l('rebuild', '[no_thumbs_selected]'), we_base_util::WE_MESSAGE_ERROR);
 						return [we_html_element::jsScript(JS_DIR . 'rebuild0.js', 'set_button_stateStep2();top.wizbusy.showPrevNextButton();'),
 							''];
 					}
@@ -297,7 +297,7 @@ class we_rebuild_wizard{
 
 				return [];
 			}
-			$this->jsCmd->addMsg(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$this->jsCmd->addMsg(g_l('rebuild', '[nothing_to_rebuild]'), we_base_util::WE_MESSAGE_ERROR);
 			return [we_html_element::jsScript(JS_DIR . 'rebuild0.js', 'set_button_stateStep2();top.wizbusy.showPrevNextButton();'),
 				''];
 		}
@@ -706,7 +706,7 @@ class we_rebuild_wizard{
 
 	public static function getJSLangConsts(){
 		return '
-WE().consts.g_l.rebuild=JSON.parse("' . setLangString([
+WE().consts.g_l.rebuild=JSON.parse("' . we_base_util::setLangString([
 				'noFieldsChecked' => (g_l('rebuild', '[noFieldsChecked]'))
 				]) . '");';
 	}

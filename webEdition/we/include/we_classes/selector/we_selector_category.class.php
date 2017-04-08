@@ -116,13 +116,13 @@ class we_selector_category extends we_selector_file{
 		$weCmd->addCmd('clearEntries');
 
 		if(empty($txt)){
-			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_base_util::WE_MESSAGE_ERROR);
 		} else if(strpos($txt, ',') !== false){
-			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" LIMIT 1', '', $this->db) === '1'){
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\\\'"<>/]|', $txt)){
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_base_util::WE_MESSAGE_ERROR);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 						'Category' => $txt,
@@ -162,13 +162,13 @@ class we_selector_category extends we_selector_file{
 		$weCmd->addCmd('clearEntries');
 
 		if(!$txt){
-			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('weEditor', '[category][filename_empty]'), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(strpos($txt, ',') !== false){
-			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(g_l('weEditor', '[category][name_komma]'), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" AND ID!=' . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_base_util::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 						'Category' => $txt,
@@ -266,7 +266,7 @@ class we_selector_category extends we_selector_file{
 				}
 			}
 			if($catlistNotDeleted){
-				$weCmd->addMsg(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addMsg(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_base_util::WE_MESSAGE_ERROR);
 			}
 			if($changeToParent){
 				$this->dir = $this->values['ParentID'];
@@ -380,9 +380,9 @@ class we_selector_category extends we_selector_file{
 
 			$cat = new we_category($catId);
 			$cat->registerMediaLinks();
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_base_util::WE_MESSAGE_NOTICE);
 		} else {
-			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addMsg(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_base_util::WE_MESSAGE_ERROR);
 		}
 		$weCmd->addCmd('setLookinDir');
 

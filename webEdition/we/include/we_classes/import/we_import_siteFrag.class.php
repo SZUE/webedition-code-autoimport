@@ -59,7 +59,7 @@ class we_import_siteFrag extends we_fragment_base{
 	}
 
 	protected function finish(we_base_jsCmd $jsCmd){
-		$jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
 		$jsCmd->addCmd('close');
 	}

@@ -549,7 +549,7 @@ class we_import_wizard{
 		if($type = we_import_functions::TYPE_WE){
 			$jsCmd->addCmd('addLog_buffered', [we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))]);
 		} else {
-			$jsCmd->addMsg(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('import', '[finish_import]'), we_base_util::WE_MESSAGE_NOTICE);
 			$jsCmd->addCmd('call_delayed', ['function' => 'close', 'delay' => 100]);
 		}
 	}
@@ -781,7 +781,7 @@ class we_import_wizard{
 		$cmd = new we_base_jsCmd();
 
 		if($upload_error){
-			$cmd->addMsg($upload_error, we_message_reporting::WE_MESSAGE_ERROR);
+			$cmd->addMsg($upload_error, we_base_util::WE_MESSAGE_ERROR);
 			$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 			$return[1] = $hdnsBtnStates . $cmd->getCmds();
 			return $return;
@@ -789,7 +789,7 @@ class we_import_wizard{
 
 		$import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(we_backup_util::getFormat($import_file) != 'xml'){
-			$cmd->addMsg(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$cmd->addMsg(g_l('import', '[format_unknown]'), we_base_util::WE_MESSAGE_ERROR);
 			$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 			$return[1] = $hdnsBtnStates . $cmd->getCmds();
 			return $return;
@@ -802,23 +802,23 @@ class we_import_wizard{
 					$cmd->addCmd('confirm_start_recoverBackup');
 					$return[1] = $cmd->getCmds();
 				} else {
-					$cmd->addMsg(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$cmd->addMsg(g_l('import', '[backup_file_found]'), we_base_util::WE_MESSAGE_ERROR);
 					$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 					$return[1] = $hdnsBtnStates . $cmd->getCmds();
 				}
 				return $return;
 			case 'customer':
-				$cmd->addMsg(g_l('import', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$cmd->addMsg(g_l('import', '[customer_import_file_found]'), we_base_util::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates . $cmd->getCmds();
 				return $return;
 			case 'unreadble':
-				$cmd->addMsg(g_l('backup', '[file_not_readable]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$cmd->addMsg(g_l('backup', '[file_not_readable]'), we_base_util::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates . $cmd->getCmds();
 				return $return;
 			case 'unknown':
-				$cmd->addMsg(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$cmd->addMsg(g_l('import', '[format_unknown]'), we_base_util::WE_MESSAGE_ERROR);
 				$cmd->addCmd('we_cmd', ['handle_event', 'previous']);
 				$return[1] = $hdnsBtnStates . $cmd->getCmds();
 				return $return;
@@ -2207,7 +2207,7 @@ class we_import_wizard{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.import=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.import=JSON.parse("' . we_base_util::setLangString([
 				'backup_file_found' => g_l('import', '[backup_file_found]'),
 				'backup_file_found_question' => g_l('import', '[backup_file_found_question]'),
 				'errorEmptyDateFormat' => (g_l('siteimport', '[errorEmptyDateFormat]')),

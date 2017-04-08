@@ -31,7 +31,7 @@ class we_main_headermenu{
 	 * @return string
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
-		return 			'
+		return '
 <div id="messageConsole" onclick="_console_.openMessageConsole();">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
@@ -117,7 +117,7 @@ class we_main_headermenu{
 				}
 				?></div>
 			<div id="weHeaderRight"><?php
-				if(($versionInfo = updateAvailable())){
+				if(($versionInfo = we_base_util::updateAvailable())){
 					?>
 					<div id="newUpdate" class="navigation">
 						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
@@ -126,7 +126,6 @@ class we_main_headermenu{
 				}
 
 				echo self::createMessageConsole('mainWindow', false);
-//				<img src="<php echo IMAGE_DIR >/webedition.svg" alt="" id="weHeaderLogo"/>
 				?>
 				<div id="logout" class="navigation" onclick="top.we_cmd('dologout');"><i class="fa fa-power-off fa-lg"></i></div>
 			</div>

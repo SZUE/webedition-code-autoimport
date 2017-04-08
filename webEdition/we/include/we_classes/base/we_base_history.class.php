@@ -28,7 +28,7 @@
  * Provides functions determined to handle a list of last modified files required by
  * the 'personalized desktop'.
  */
-abstract class we_history{
+abstract class we_base_history{
 	const MAX = 50;
 
 	static function userHasPerms($creatorid, $owners, $restricted){

@@ -289,12 +289,12 @@ function getMainDialog(){
 		$save_javascript = new we_base_jsCmd();
 		$name = we_base_request::_(we_base_request::STRING, 'metadatafields_name');
 		if((strpos($name, "'") !== false || strpos($name, ',') !== false)){
-			$save_javascript->addMsg(g_l('alert', '[metadatafields_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$save_javascript->addMsg(g_l('alert', '[metadatafields_hochkomma]'), we_base_util::WE_MESSAGE_ERROR);
 			$save_javascript->addCmd('history.back');
 		} else {
 			save_all_values();
 
-			$save_javascript->addMsg(g_l('metadata', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$save_javascript->addMsg(g_l('metadata', '[saved]'), we_base_util::WE_MESSAGE_NOTICE);
 			$save_javascript->addCmd('close');
 		}
 

@@ -1020,7 +1020,7 @@ we_templateInit();?>';
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.tagWizzard=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.tagWizzard=JSON.parse("' . we_base_util::setLangString([
 				'fill_required_fields' => g_l('taged', '[fill_required_fields]'),
 				'no_type_selected' => g_l('taged', '[no_type_selected]'),
 				]) . '");';

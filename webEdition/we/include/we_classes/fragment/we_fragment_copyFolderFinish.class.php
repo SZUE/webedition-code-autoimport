@@ -71,7 +71,7 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-		$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('close');
 	}
 

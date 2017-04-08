@@ -63,7 +63,7 @@ if(!empty($notDeletedLngs)){
 
 $jsCmd = new we_base_jsCmd();
 if($jsAlert){
-	$jsCmd->addMsg($jsAlert, we_message_reporting::WE_MESSAGE_FRONTEND);
+	$jsCmd->addMsg($jsAlert, we_base_util::WE_MESSAGE_FRONTEND);
 }
 
 echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), '

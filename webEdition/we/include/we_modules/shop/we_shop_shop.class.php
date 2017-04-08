@@ -100,21 +100,23 @@ class we_shop_shop{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.shop=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.shop=JSON.parse("' . we_base_util::setLangString([
 				'del_shop' => g_l('modules_shop', '[del_shop]'),
 				'delete_alert' => g_l('modules_shop', '[delete_alert]'),
 				'delete_shipping' => g_l('modules_shop', '[delete][shipping]'),
 				'field_empty_js_alert' => g_l('modules_shop', '[field_empty_js_alert]'),
 				'no_order_there' => (g_l('modules_shop', '[no_order_there]')),
+				'no_number' => g_l('modules_shop', '[keinezahl]'),
 				'no_perms' => (g_l('modules_shop', '[no_perms]')),
 				'nothing_to_delete' => (g_l('modules_shop', '[nothing_to_delete]')),
 				'nothing_to_save' => (g_l('modules_shop', '[nothing_to_save]')),
+				'preferences_save_alert' => g_l('modules_shop', '[preferences][save_alert]'),
 				'vat_confirm_delete' => g_l('modules_shop', '[vat][js_confirm_delete]'),
 				'tree' => [
 					'treeYearClick' => g_l('modules_shop', '[treeYearClick]'),
 					'treeYear' => g_l('modules_shop', '[treeYear]'),
 				]
-				]) . '");';
+			]) . '");';
 	}
 
 }

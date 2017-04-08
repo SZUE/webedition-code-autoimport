@@ -122,7 +122,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', we_base_request::_(we_base_request::STRING, 'defaultDict'));
 
 		$jsCmd = new we_base_jsCmd();
-$jsCmd->addMsg(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		$jsCmd->addMsg(g_l('modules_spellchecker', '[save_settings]'), we_base_util::WE_MESSAGE_NOTICE);
 
 		break;
 
@@ -130,7 +130,7 @@ $jsCmd->addMsg(g_l('modules_spellchecker', '[save_settings]'), we_message_report
 		if(strpos($cmd1, "..") === false){
 			unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $cmd1 . '.zip');
 			$_mess = g_l('modules_spellchecker', '[dict_removed]');
-			$_messType = we_message_reporting::WE_MESSAGE_NOTICE;
+			$_messType = we_base_util::WE_MESSAGE_NOTICE;
 
 			if($GLOBALS['spellcheckerConf']['default'] == $cmd1){ // if the default dict has been deleted
 				if(!empty($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])){
@@ -146,12 +146,12 @@ $jsCmd->addMsg(g_l('modules_spellchecker', '[save_settings]'), we_message_report
 			}
 		} else {
 			$_mess = g_l('modules_spellchecker', '[name_invalid]');
-			$_messType = we_message_reporting::WE_MESSAGE_ERROR;
+			$_messType = we_base_util::WE_MESSAGE_ERROR;
 		}
 
 		echo
-			we_message_reporting::getShowMessageCall($_mess, $_messType) .
-			'parent.loadTable();
+		'alert(' . $_mess . $_messType . ')' .
+		'parent.loadTable();
 				';
 		break;
 
@@ -207,7 +207,8 @@ parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_repl
 	default:
 }
 
-echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js');?>
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js');
+?>
 </head>
 
 <body>

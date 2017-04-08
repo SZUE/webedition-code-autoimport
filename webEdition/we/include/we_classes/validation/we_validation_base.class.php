@@ -131,7 +131,7 @@ AND ID!=' . intval($validationService->id) . ' LIMIT 1')){
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 	  $jsCmd = new we_base_jsCmd();
-$jsCmd->addMsg(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR);
+$jsCmd->addMsg(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_base_util::WE_MESSAGE_ERROR);
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 	  t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
@@ -152,7 +152,7 @@ $jsCmd->addMsg(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]')
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 	  $jsCmd = new we_base_jsCmd();
-$jsCmd->addMsg(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR);
+$jsCmd->addMsg(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_base_util::WE_MESSAGE_ERROR);
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 	  error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
@@ -168,7 +168,7 @@ $jsCmd->addMsg(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $req
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 	  $jsCmd = new we_base_jsCmd();
-$jsCmd->addMsg(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR);
+$jsCmd->addMsg(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_base_util::WE_MESSAGE_ERROR);
 	  }
 	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 	  error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));

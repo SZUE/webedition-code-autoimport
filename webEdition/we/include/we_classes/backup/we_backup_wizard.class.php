@@ -715,21 +715,21 @@ class we_backup_wizard{
 			case 'deletebackup':
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){
-					$jsCmd->addMsg(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('backup', '[name_notok]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				if(!is_writable(BACKUP_PATH . $bfile)){
-					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				if(unlink(BACKUP_PATH . $bfile)){
 					$jsCmd->addCmd('deletebackup');
 				} else {
-					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('backup', '[error_delete]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 				return;
 			default:
-				$jsCmd->addMsg(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('backup', '[error]'), we_base_util::WE_MESSAGE_ERROR);
 				return;
 		}
 	}
@@ -854,7 +854,7 @@ class we_backup_wizard{
 
 	public static function getJSLangConsts(){
 		//'make_backup' : 'recover_backup'
-		return 'WE().consts.g_l.backupWizard=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.backupWizard=JSON.parse("' . we_base_util::setLangString([
 				'make_backup' => [
 					'banner_dep' => (g_l('backup', '[make_backup_banner_dep]')),
 					'binary_data' => g_l('backup', '[make_backup_binary_data]'),

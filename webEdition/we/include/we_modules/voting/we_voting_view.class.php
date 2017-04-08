@@ -84,7 +84,7 @@ class we_voting_view extends we_modules_view{
 			case "new_voting":
 			case "new_voting_group":
 				if(!we_base_permission::hasPerm("NEW_VOTING")){
-					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->voting = new we_voting_voting();
@@ -93,7 +93,7 @@ class we_voting_view extends we_modules_view{
 				break;
 			case "voting_edit":
 				if(!we_base_permission::hasPerm("EDIT_VOTING")){
-					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
 					break;
@@ -102,7 +102,7 @@ class we_voting_view extends we_modules_view{
 				$this->voting = new we_voting_voting(we_base_request::_(we_base_request::INT, "cmdid"));
 
 				if(!$this->voting->isAllowedForUser()){
-					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					$this->voting = new we_voting_voting();
 					$_REQUEST["home"] = true;
 					break;
@@ -111,22 +111,22 @@ class we_voting_view extends we_modules_view{
 				break;
 			case "save_voting":
 				if(!we_base_permission::hasPerm("NEW_VOTING") && !we_base_permission::hasPerm("EDIT_VOTING")){
-					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(we_voting_voting::filenameNotValid($this->voting->Text)){
-					$jscmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->voting->Text)){
-					$jscmd->addMsg(g_l('modules_voting', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->voting->Active == 1 && $this->voting->ActiveTime && $this->voting->Valid < time()){
-					$jscmd->addMsg(g_l('modules_voting', '[not_active]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[not_active]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -135,11 +135,11 @@ class we_voting_view extends we_modules_view{
 				$this->voting->setPath();
 
 				if($this->voting->pathExists($this->voting->Path)){
-					$jscmd->addMsg(g_l('modules_voting', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				if($this->voting->isSelf()){
-					$jscmd->addMsg(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -167,11 +167,11 @@ class we_voting_view extends we_modules_view{
 
 					if($q_empty){
 						$error = true;
-						$jscmd->addMsg(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_voting', '[question_empty]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					} else if($a_empty){
 						$error = true;
-						$jscmd->addMsg(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_voting', '[answer_empty]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					}
 				}
@@ -180,7 +180,7 @@ class we_voting_view extends we_modules_view{
 					$weAcQuery = new we_selector_query();
 					$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, ["IsFolder"]);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-						$jscmd->addMsg(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('modules_voting', '[path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					}
 				}
@@ -217,22 +217,22 @@ class we_voting_view extends we_modules_view{
 						]);
 					}
 					$jscmd->addCmd('loadHeaderFooter', $this->voting->Text);
-					$jscmd->addMsg(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_base_util::WE_MESSAGE_NOTICE);
 				}
 				break;
 			case 'delete_voting':
 				if(!we_base_permission::hasPerm("DELETE_VOTING")){
-					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->voting->delete()){
 					$jscmd->addCmd('deleteTreeEntry', $this->voting->ID);
-					$jscmd->addMsg(g_l('modules_voting', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('modules_voting', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[voting_deleted]')), we_base_util::WE_MESSAGE_NOTICE);
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					$jscmd->addMsg(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('modules_voting', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 
 				break;

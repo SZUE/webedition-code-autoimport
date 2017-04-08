@@ -40,26 +40,17 @@ class we_navigation_ruleControl{
 
 				$this->NavigationRule->NavigationName = trim($this->NavigationRule->NavigationName);
 
-				// 1st check if name is allowed
-				//FIXME: is this correct on UTF-8??
-				/* 					if(!preg_match(
-				  '%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
-				  $js = we_message_reporting::getShowMessageCall(
-				  g_l('navigation', '[rules][invalid_name]'), we_message_reporting::WE_MESSAGE_ERROR);
-				  $save = false;
-				  } */
-
 				// 2ns check if another element has same name
 				$db = new DB_WE();
 
 				if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID!=' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
-					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_base_util::WE_MESSAGE_ERROR);
 					$save = false;
 				}
 
 				if($save && $this->NavigationRule->save()){
 					$jscmd->addCmd('setSavedRule', $this->NavigationRule->ID, $this->NavigationRule->NavigationName, $isNew);
-					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_base_util::WE_MESSAGE_NOTICE);
 				}
 				break;
 

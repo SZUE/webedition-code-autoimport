@@ -45,7 +45,7 @@ class we_backup_delete extends we_fragment_base{
 
 			if(!$this->alldata){
 				$jsCmd = new we_base_jsCmd();
-				$jsCmd->addMsg(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+				$jsCmd->addMsg(g_l('backup', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_WARNING);
 				$this->finish($jsCmd);
 			}
 		}

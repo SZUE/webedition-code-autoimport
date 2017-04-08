@@ -337,7 +337,7 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.workflow=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.workflow=JSON.parse("' . we_base_util::setLangString([
 				'view' => [
 					'delete_question' => g_l('modules_workflow', '[delete_question]'),
 					'emty_log_question' => g_l('modules_workflow', '[emty_log_question]'),

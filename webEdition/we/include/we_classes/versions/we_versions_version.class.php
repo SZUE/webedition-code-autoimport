@@ -1984,15 +1984,18 @@ class we_versions_version{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.versions=JSON.parse("' . setLangString([
+		return 'WE().consts.g_l.versions=JSON.parse("' . we_base_util::setLangString([
 				'all' => g_l('logging', '[all]'),
 				'defaultView' => g_l('logging', '[defaultView]'),
+				'deleteDateVersionsOK' => g_l('versions', '[deleteDateVersionsOK]'),
+				'deleteNothingFound' => g_l('versions', '[deleteNothingFound]'),
 				'deleteVersions' => g_l('versions', '[deleteVersions]'),
 				'mark' => g_l('versions', '[mark]'),
 				'notChecked' => (g_l('versions', '[notChecked]')),
 				'notMark' => g_l('versions', '[notMark]'),
+				'resetAllVersionsOK' => g_l('versions', '[resetAllVersionsOK]'),
 				'resetVersions' => g_l('versions', '[resetVersions]'),
-				]) . '");';
+			]) . '");';
 	}
 
 }

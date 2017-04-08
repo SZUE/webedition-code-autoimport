@@ -34,18 +34,18 @@ abstract class we_dialog_doctypeEdit{
 		switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 			case "save_docType":
 				if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
-					$jsCmd->addMsg(g_l('weClass', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('weClass', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 				if(preg_match('|[\'",]|', $we_doc->DocType)){
-					$jsCmd->addMsg(g_l('alert', '[doctype_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[doctype_hochkomma]'), we_base_util::WE_MESSAGE_ERROR);
 				} else if(!$we_doc->DocType){
-					$jsCmd->addMsg(g_l('alert', '[doctype_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[doctype_empty]'), we_base_util::WE_MESSAGE_ERROR);
 				} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
-					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), we_base_util::WE_MESSAGE_ERROR);
 				} elseif($we_doc->we_save()){
-					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), we_base_util::WE_MESSAGE_NOTICE);
 					list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
 					$jsCmd->addCmd($cmd, $val);
 				} else {
@@ -62,7 +62,7 @@ abstract class we_dialog_doctypeEdit{
 				break;
 			case "deleteDocTypeok":
 				if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
-					$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
@@ -70,13 +70,13 @@ abstract class we_dialog_doctypeEdit{
 				$del = false;
 				if($name){
 					if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
-						$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_nok]'), $name), we_message_reporting::WE_MESSAGE_ERROR);
+						$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_nok]'), $name), we_base_util::WE_MESSAGE_ERROR);
 					} else {
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
 						// Fast Fix for deleting entries from tblLangLink: #5840
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND (DID=' . $id . ' OR LDID=' . $id . ')');
-						$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_ok]'), $name), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_delete_ok]'), $name), we_base_util::WE_MESSAGE_NOTICE);
 						$del = true;
 					}
 					if($del){
@@ -146,7 +146,7 @@ abstract class we_dialog_doctypeEdit{
 		switch($wecmd0){
 			case "deleteDocType":
 				if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
-					$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$jsCmd->addCmd('confirmDeleteDocType', [

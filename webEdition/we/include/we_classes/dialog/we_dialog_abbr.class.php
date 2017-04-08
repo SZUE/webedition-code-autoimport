@@ -65,22 +65,22 @@ class we_dialog_abbr extends we_dialog_base{
 			$Glossary->setPath();
 
 			if($Glossary->Title === ''){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[title_empty]'), we_base_util::WE_MESSAGE_ERROR);
 				$this->jsCmd->addCmd('setFocus', "we_dialog_args[title]");
 			} else if($Glossary->getAttribute('lang') === ''){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[lang_empty]'), we_base_util::WE_MESSAGE_ERROR);
 				$this->jsCmd->addCmd('setFocus', "we_dialog_args[lang]");
 			} else if($Glossary->Text === ''){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 			} else if($Glossary->pathExists($Glossary->Path)){
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 			} else {
 				$Glossary->save();
 
 				$Cache = new we_glossary_cache(we_base_request::_(we_base_request::STRING, 'language'));
 				$Cache->write();
 				unset($Cache);
-				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$this->jsCmd->addMsg(g_l('modules_glossary', '[entry_saved]'), we_base_util::WE_MESSAGE_NOTICE);
 				$this->jsCmd->addCmd('close');
 			}
 		}

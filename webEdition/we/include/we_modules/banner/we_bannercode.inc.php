@@ -59,55 +59,13 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 </iframe>';
 	}
 }
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_code.js');
 ?>
-
-<script><!--
-	function checkForm(f) {
-		if (f.tagname.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.tagname.focus();
-			f.tagname.select();
-			return false;
+	<style>
+		td.right{
+			padding-left:10px;
 		}
-		if (f.page.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_page_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.page.focus();
-			f.page.select();
-			return false;
-		}
-		if (f.width.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_width_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.width.focus();
-			f.width.select();
-			return false;
-		}
-		if (f.height.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_height_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.height.focus();
-			f.height.select();
-			return false;
-		}
-		if (f.getscript.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_getscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.getscript.focus();
-			f.getscript.select();
-			return false;
-		}
-		if (f.clickscript.value == "") {
-<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_clickscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			f.clickscript.focus();
-			f.clickscript.select();
-			return false;
-		}
-		return true;
-	}
-	//-->
-</script>
-<style>
-	td.right{
-		padding-left:10px;
-	}
-</style>
+	</style>
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();
 			document.we_form.code.focus();
@@ -122,7 +80,7 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 		$content = '<table class="default withSpace">
 ';
 		if(!$ok){
-			$content.= '	<tr><td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td class="defaultfont right">' . $typeselect . '</td></tr>
+			$content .= '	<tr><td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td class="defaultfont right">' . $typeselect . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_banner', '[tagname]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("tagname", 40, $tagname, "", "", "text", 300) . '</td>	</tr>
 	<tr><td class="defaultfont">' . g_l('modules_banner', '[pageurl]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("page", 40, $page, "", "", "text", 300) . '</td>	</tr>
 	<tr><td class="defaultfont">' . g_l('modules_banner', '[target]') . '</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("target", 40, $target, "", "", "text", 300) . '</td>	</tr>

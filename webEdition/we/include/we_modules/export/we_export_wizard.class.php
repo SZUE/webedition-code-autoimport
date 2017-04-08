@@ -905,7 +905,7 @@ if (top.footer.setProgress){
 				}
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(
 							['style' => 'margin:5px;',
-								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();"))]), null
+								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=10';") : ("WE().util.showMessage(WE().consts.g_l.export.server_finished,WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();"))]), null
 				);
 
 			case 'do_wexport':
@@ -999,7 +999,7 @@ if (top.footer.setProgress){
 
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);'), we_html_element::htmlBody(
 							['style' => 'margin:5px;',
-								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "&pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();"))]), null
+								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "&pnt=footer&step=10';") : ( "WE().util.showMessage(WE().consts.g_l.export.server_finished,WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();"))]), null
 				);
 		}
 		return $out;

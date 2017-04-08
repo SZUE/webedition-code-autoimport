@@ -347,7 +347,7 @@ function handle_event(what){
 			var minutes = document.getElementById("delete_minutes").value;
 			var seconds = document.getElementById("delete_seconds").value;
 			if(' . $jsCheckboxCtIf . ') {
-				' . we_message_reporting::getShowMessageCall(g_l('versions', '[notCheckedContentType]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				WE().util.showMessage(WE().consts.g_l.alert.notCheckedContentType,WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}else {
 				selectedValue="";
 				for(var i=0;i<f.type.length;i++){
@@ -557,10 +557,10 @@ set_button_state(false);';
 							var minutes = document.getElementById("reset_minutes").value;
 							var seconds = document.getElementById("reset_seconds").value;
 							if(' . $jsCheckboxCtIf . ') {
-								' . we_message_reporting::getShowMessageCall(g_l('versions', '[notCheckedContentType]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								WE().util.showMessage(WE().consts.g_l.alert.notCheckedContentType,WE().consts.message.WE_MESSAGE_NOTICE, window);
 							}
 							else if(date=="") {
-								' . we_message_reporting::getShowMessageCall(g_l('versions', '[notCheckedDate]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+							WE().util.showMessage(WE().consts.g_l.alert.notCheckedDate,WE().consts.message.WE_MESSAGE_NOTICE, window);
 							}
 							else {
 								selectedValue="";
@@ -578,8 +578,7 @@ set_button_state(false);';
 				function checkAll(val) {
 		            	if(val.checked) {
 		            		checked = 1;
-		            	}
-		            	else {
+		            	}else {
 		            		checked = 0;
 		            	}
 						' . $jsCheckboxCheckAll . ';
@@ -689,7 +688,7 @@ set_button_state(false);';
 
 				return [];
 			}
-			return [$js . we_message_reporting::getShowMessageCall(g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
+			return [$js . 'WE().util.showMessage(WE().consts.g_l.versions.deleteNothingFound,WE().consts.message.WE_MESSAGE_NOTICE, window);top.wizbusy.showPrevNextButton();',
 				""
 			];
 		}
@@ -1000,6 +999,8 @@ set_button_state(false);';
 		$publish = we_base_request::_(we_base_request::BOOL, 'reset_doPublish');
 		$we_transaction = $GLOBALS['we_transaction'];
 		return '
+WE().util.loadConsts(document, "g_l.versions");
+
 window.onload = function(){
 	top.focus();
 }
@@ -1027,7 +1028,7 @@ function handle_event(what){
 function ajaxCallbackDeleteVersionsWizard (responseText){
 	if(responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = responseText;
-		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[deleteDateVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		WE().util.showMessage(WE().consts.g_l.versions.deleteDateVersionsOK,WE().consts.message.WE_MESSAGE_NOTICE, window);
 		// reload current document => reload all open Editors on demand
 
 		var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
@@ -1051,7 +1052,7 @@ function ajaxCallbackDeleteVersionsWizard (responseText){
 function ajaxCallbackResetVersionsWizard(responseText) {
 	if(responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = responseText;
-		' . we_message_reporting::getShowMessageCall(addslashes(g_l('versions', '[resetAllVersionsOK]') ?: ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		WE().util.showMessage(WE().consts.g_l.versions.resetAllVersionsOK,WE().consts.message.WE_MESSAGE_NOTICE, window);
 		top.close();
 	}
 }
@@ -1076,7 +1077,6 @@ function goTo(where){
 		WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersionsWizard", "cns=versionlist",ajaxCallbackDeleteVersionsWizard,"html");
 	}
 }
-
 
 function set_button_state(alldis) {
 					if(top.wizbusy){

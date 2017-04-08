@@ -28,18 +28,18 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case 'saveService':
 		$service = new we_validation_service(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 		if(($selectedService = we_validation_base::saveService($service))){
-			$jsCmd->addMsg(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('validation', '[edit_service][saved_success]'), we_base_util::WE_MESSAGE_NOTICE);
 		} else {
 			$selectedService = $service;
-			$jsCmd->addMsg(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_base_util::WE_MESSAGE_ERROR);
 		}
 		break;
 	case 'deleteService':
 		$service = new we_validation_service(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 		if(we_validation_base::deleteService($service)){
-			$jsCmd->addMsg(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
+			$jsCmd->addMsg(g_l('validation', '[edit_service][delete_success]'), we_base_util::WE_MESSAGE_NOTICE);
 		} else {
-			$jsCmd->addMsg(g_l('validation', '[edit_service][delete_failure]'), we_message_reporting::WE_MESSAGE_ERR);
+			$jsCmd->addMsg(g_l('validation', '[edit_service][delete_failure]'), we_base_util::WE_MESSAGE_ERR);
 		}
 		break;
 	case 'selectService';

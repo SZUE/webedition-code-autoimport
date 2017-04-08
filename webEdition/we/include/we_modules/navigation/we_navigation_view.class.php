@@ -76,7 +76,7 @@ class we_navigation_view extends we_modules_view{
 			case 'module_navigation_new':
 			case 'module_navigation_new_group':
 				if(!we_base_permission::hasPerm('EDIT_NAVIGATION')){
-					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->Model = new we_navigation_navigation();
@@ -86,14 +86,14 @@ class we_navigation_view extends we_modules_view{
 				break;
 			case 'module_navigation_edit':
 				if(!we_base_permission::hasPerm('EDIT_NAVIGATION')){
-					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				$this->Model = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'cmdid'));
 
 				if(!$this->Model->isAllowedForUser()){
-					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = true;
 					break;
@@ -102,17 +102,17 @@ class we_navigation_view extends we_modules_view{
 				break;
 			case 'module_navigation_save':
 				if(!we_base_permission::hasPerm('EDIT_NAVIGATION') && !we_base_permission::hasPerm('EDIT_NAVIGATION')){
-					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(we_navigation_navigation::filenameNotValid($this->Model->Text)){
-					$jscmd->addMsg(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[wrongtext]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->Model->Text)){
-					$jscmd->addMsg(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[name_empty]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -120,12 +120,12 @@ class we_navigation_view extends we_modules_view{
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					$jscmd->addMsg(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[name_exists]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Model->isSelf() || !$this->Model->isAllowedForUser()){
-					$jscmd->addMsg(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -139,11 +139,11 @@ class we_navigation_view extends we_modules_view{
 							}
 						}
 						if(!key_exists($this->Model->TitleField, $fieldsByNamePart) && !key_exists($this->Model->TitleField, $classFields)){
-							$jscmd->addMsg(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$jscmd->addMsg(g_l('navigation', '[wrongTitleField]'), we_base_util::WE_MESSAGE_ERROR);
 							break;
 						}
 					} else {
-						$jscmd->addMsg(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR);
+						$jscmd->addMsg(g_l('navigation', '[wrongTitleField]'), we_base_util::WE_MESSAGE_ERROR);
 						break;
 					}
 				}
@@ -219,7 +219,7 @@ class we_navigation_view extends we_modules_view{
 				}
 				$delaycmd = we_base_request::_(we_base_request::STRING, 'delayCmd');
 
-				$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_base_util::WE_MESSAGE_NOTICE);
 				$jscmd->addCmd('saveReload', $this->Model->IsFolder == 1);
 				if($delaycmd){
 					$jscmd->addCmd('we_cmd', $delaycmd);
@@ -230,17 +230,17 @@ class we_navigation_view extends we_modules_view{
 			case 'module_navigation_delete':
 
 				if(!we_base_permission::hasPerm('DELETE_NAVIGATION')){
-					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->Model->delete()){
 					$jscmd->addCmd('deleteTreeEntry', $this->Model->ID);
-					$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE);
+					$jscmd->addMsg(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_base_util::WE_MESSAGE_NOTICE);
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					$jscmd->addMsg(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jscmd->addMsg(g_l('navigation', '[nothing_to_delete]'), we_base_util::WE_MESSAGE_ERROR);
 				}
 				break;
 			case 'switchPage':
@@ -294,14 +294,14 @@ class we_navigation_view extends we_modules_view{
 						'order' => $k
 					]);
 				}
-				$jscmd->addMsg(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('navigation', '[populate_msg]'), we_base_util::WE_MESSAGE_NOTICE);
 				break;
 			case 'depopulate':
 				$items = $this->Model->depopulateGroup();
 				foreach($items as $id){
 					$jscmd->addCmd('deleteTreeEntry', $id['ID']);
 				}
-				$jscmd->addMsg(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(g_l('navigation', '[depopulate_msg]'), we_base_util::WE_MESSAGE_NOTICE);
 				$this->Model->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$this->Model->saveField('Selection');
 				break;

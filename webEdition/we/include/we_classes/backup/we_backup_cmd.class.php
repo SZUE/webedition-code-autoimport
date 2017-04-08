@@ -62,7 +62,7 @@ abstract class we_backup_cmd{
 						if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION){//in case of compression the file can't be used
 							$_SESSION['weS']['weBackupVars']['retry'] = 1;
 							$jsCmd = new we_base_jsCmd();
-							$jsCmd->addMsg(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$jsCmd->addMsg(g_l('backup', '[error_timeout]'), we_base_util::WE_MESSAGE_ERROR);
 							echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
 							exit();
 						}

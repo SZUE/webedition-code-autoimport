@@ -408,7 +408,7 @@ class we_folder extends we_root{
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
 		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid][expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
-			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) {WE().util.showMessage(WE().consts.g_l.alert.saveFirstMessage,WE().consts.message.WE_MESSAGE_ERROR, window);' . " } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
 			'') .
 			($this->Table == FILE_TABLE && $this->ID && we_base_permission::hasPerm('ADMINISTRATOR') ? '
@@ -421,7 +421,7 @@ class we_folder extends we_root{
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
+			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) {WE().util.showMessage(WE().consts.g_l.alert.input_file_name,WE().consts.message.WE_MESSAGE_ERROR, window);' . " } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
 
@@ -429,7 +429,7 @@ class we_folder extends we_root{
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language][expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
+			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { WE().util.showMessage(WE().consts.g_l.alert.input_file_name,WE().consts.message.WE_MESSAGE_ERROR, window); } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
 
@@ -440,8 +440,7 @@ class we_folder extends we_root{
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 				"javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "')" :
-				"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
-				, '', 0, 0, "", "", !empty($disabledNote));
+				"javascript:WE().util.showMessage(WE().consts.g_l.alert.copy_folders_no_id,WE().consts.message.WE_MESSAGE_ERROR, window);"), '', 0, 0, "", "", !empty($disabledNote));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>

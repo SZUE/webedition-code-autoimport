@@ -49,7 +49,7 @@ abstract class we_html_tools{
 		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
 			self::setHttpCode(401);
 			echo self::getHtmlTop() .
-			we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location="' . $redirect . '"' : 'top.close();')) .
+			we_html_element::jsElement('alert("' . g_l('alert', '[perms_no_permissions]') . '");' . ($redirect ? 'document.location="' . $redirect . '"' : 'top.close();')) .
 			'</head><body>' .
 			str_replace('\n', '<br/>', g_l('alert', '[perms_no_permissions]')) .
 			'</body></html>';

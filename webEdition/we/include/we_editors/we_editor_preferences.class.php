@@ -102,7 +102,7 @@ abstract class we_editor_preferences{
 				return defined('WE_PROXYHOST');
 
 			case 'message_reporting':
-				return (!empty($_SESSION['prefs']['message_reporting'])) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
+				return (!empty($_SESSION['prefs']['message_reporting'])) ? $_SESSION['prefs']['message_reporting'] : (we_base_util::WE_MESSAGE_ERROR + we_base_util::WE_MESSAGE_WARNING + we_base_util::WE_MESSAGE_NOTICE);
 
 			default:
 				if(isset($GLOBALS['configs']['user'][$settingname])){
@@ -818,9 +818,9 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 				}
 				$val = self::get_value('message_reporting');
 
-				$html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
-					we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
-					we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
+				$html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$val\" />" . we_html_forms::checkbox(we_base_util::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
+					we_html_forms::checkbox(we_base_util::WE_MESSAGE_WARNING, $val & we_base_util::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
+					we_html_forms::checkbox(we_base_util::WE_MESSAGE_NOTICE, $val & we_base_util::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
 				$settings[] = ['headline' => g_l('prefs', '[message_reporting][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_HELP, false, false),
 					'html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG];
@@ -2280,8 +2280,8 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 
 		if($doSave && !$acError){
 			self::save_all_values();
-			self::$jsCmd->addMsg(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
-			//	self::$jsCmd->addMsg(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR);
+			self::$jsCmd->addMsg(g_l('prefs', '[saved]'), we_base_util::WE_MESSAGE_NOTICE);
+			//	self::$jsCmd->addMsg(g_l('prefs', '[error_mail_not_saved]'), we_base_util::WE_MESSAGE_ERROR);
 
 			self::$jsCmd->addCmd('updatePrefs');
 			$body = we_html_element::htmlBody(['class' => 'weDialogBody'], self::build_dialog('saved')) . '</html>';
@@ -2289,7 +2289,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = [
 			$form = we_html_element::htmlForm(['onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editor_preferences'], we_html_element::htmlHidden('save_settings', 0) . self::render_dialog());
 
 			if($acError){
-				self::$jsCmd->addMsg(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR);
+				self::$jsCmd->addMsg(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_base_util::WE_MESSAGE_ERROR);
 			}
 
 			$body = we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startPrefs();'], $form);

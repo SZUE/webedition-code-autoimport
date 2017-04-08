@@ -224,11 +224,11 @@ abstract class we_base_move{
 			case 'move_single_document':
 				$db = new DB_WE();
 				if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
-					$jsCmd->addMsg(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[move_no_dir]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 				if(!($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
-					$jsCmd->addMsg(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(g_l('alert', '[nothing_to_move]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -270,7 +270,7 @@ abstract class we_base_move{
 				}
 
 				if($retVal == -1){ //	not allowed to move document
-					$jsCmd->addMsg(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_base_util::WE_MESSAGE_ERROR);
 				} elseif($retVal){ //	move files !
 					$notMovedItems = [];
 					self::moveItems($targetDirectroy, $selectedItems, $table, $notMovedItems);
@@ -290,11 +290,11 @@ abstract class we_base_move{
 							}
 							$jsCmd->addCmd('moveInfo');
 						} else {
-							$jsCmd->addMsg(g_l('alert', '[move_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+							$jsCmd->addMsg(g_l('alert', '[move_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 						}
 					}
 				} else {
-					$jsCmd->addMsg($message, we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd->addMsg($message, we_base_util::WE_MESSAGE_ERROR);
 				}
 		}
 
@@ -303,10 +303,10 @@ abstract class we_base_move{
 
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			if($retVal){
-				$jsCmd->addMsg(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('alert', '[move_single][return_to_start]'), we_base_util::WE_MESSAGE_NOTICE);
 				$jsCmd->addCmd('start_multi_editor');
 			} else {
-				$jsCmd->addMsg(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('alert', '[move_single][no_delete]'), we_base_util::WE_MESSAGE_ERROR);
 			}
 
 			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'move.js') . $jsCmd->getCmds());

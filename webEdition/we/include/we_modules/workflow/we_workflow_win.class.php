@@ -57,7 +57,7 @@ abstract class we_workflow_win{
 			$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID']));
 
 			if(we_workflow_utility::decline($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], $wf_text, $force)){
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 				//	in SEEM-Mode back to Preview page
 				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 					$jsCmd->addCmd('switch_edit_page', we_base_constants::WE_EDITPAGE_PREVIEW, $we_transaction);
@@ -69,7 +69,7 @@ abstract class we_workflow_win{
 					$jsCmd->addCmd('switch_edit_page', $we_doc->EditPageNr, $we_transaction); // will be inserted into the template
 				}
 			} else {
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_notok]'), we_base_util::WE_MESSAGE_ERROR);
 				//	in SEEM-Mode back to Preview page
 				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 					$jsCmd->addCmd('switch_edit_page', we_base_constants::WE_EDITPAGE_PREVIEW, $we_transaction);
@@ -102,7 +102,7 @@ abstract class we_workflow_win{
 		if($cmd === 'ok'){
 			$wf_select = we_base_request::_(we_base_request::INT, 'wf_select');
 			if(we_workflow_utility::insertDocInWorkflow($we_doc->ID, $we_doc->Table, $wf_select, $_SESSION['user']["ID"], $wf_text)){
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 				switch($_SESSION['weS']['we_mode']){
 					case we_base_constants::MODE_SEE:
 						$jsCmd->addCmd('switch_edit_page', we_base_constants::WE_EDITPAGE_PREVIEW, $we_transaction);
@@ -120,7 +120,7 @@ abstract class we_workflow_win{
 					$jsCmd->addCmd('switch_edit_page', $we_doc->EditPageNr, $we_transaction); // wird in Templ eingef�gt
 				}
 			} else {
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_notok]'), we_base_util::WE_MESSAGE_ERROR);
 				switch($_SESSION['weS']['we_mode']){
 					case we_base_constants::MODE_SEE:
 						$jsCmd->addCmd('switch_edit_page', we_base_constants::WE_EDITPAGE_PREVIEW, $we_transaction);
@@ -139,7 +139,7 @@ abstract class we_workflow_win{
 			we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
 		$wfID = $wfDoc->workflowID;
 		if(!$wfID){
-			$jsCmd->addMsg(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addMsg(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_base_util::WE_MESSAGE_ERROR);
 			$jsCmd->addCmd('close');
 			return '';
 		}
@@ -177,7 +177,7 @@ abstract class we_workflow_win{
 			$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID']));
 
 			if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], $wf_text, $force)){
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 
 				//	in SEEM-Mode back to Preview page
 				switch($_SESSION['weS']['we_mode']){
@@ -193,7 +193,7 @@ abstract class we_workflow_win{
 					$jsCmd->addCmd('switch_edit_page', $we_doc->EditPageNr, $we_transaction); // wird in Templ eingef�gt
 				}
 			} else {
-				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$jsCmd->addMsg(g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_notok]'), we_base_util::WE_MESSAGE_ERROR);
 				//	in SEEM-Mode back to Preview page
 				switch($_SESSION['weS']['we_mode']){
 					case we_base_constants::MODE_SEE:

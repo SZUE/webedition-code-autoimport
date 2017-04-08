@@ -85,7 +85,7 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 			if(defined('CUSTOMER_TABLE')){
 				we_customer_documentFilter::deleteModel($GLOBALS['deletedItems'], FILE_TABLE);
 			}
-			we_history::deleteFromHistory($GLOBALS['deletedItems'], FILE_TABLE);
+			we_base_history::deleteFromHistory($GLOBALS['deletedItems'], FILE_TABLE);
 
 			return ['message' => g_l('alert', '[delete_ok]'), 'rewriteMain' => true, 'deletedItems' => $GLOBALS['deletedItems']];
 		}
