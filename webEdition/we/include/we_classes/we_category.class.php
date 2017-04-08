@@ -55,7 +55,7 @@ class we_category extends we_base_model{
 		//FIXME: this will give us all cats, including subcats, check what we really want:
 		//SELECT c2.ID FROM `tblCategorys` c1 LEFT JOIN tblCategorys c2 ON (c2.Path LIKE CONCAT(c1.Path,"/%") OR c1.ID=c2.ID) WHERE c1.ID IN (XX,YY,ZZ)
 
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
 		$post = '",' . $alias . '.' . $fieldName . ') ';
@@ -68,7 +68,7 @@ class we_category extends we_base_model{
 			while($db->next_record()){
 				if($db->f('IsFolder')){
 					//all folders need to be searched in deep
-					$catCSV.=',' . $db->f('Path');
+					$catCSV .= ',' . $db->f('Path');
 				} else {
 					$idarray[] = $db->f('ID');
 				}
@@ -84,7 +84,7 @@ class we_category extends we_base_model{
 				$db->query('SELECT ID, EXISTS (SELECT * FROM ' . CATEGORY_TABLE . ' cc WHERE c.ID=cc.ParentID) AS IsFolder FROM ' . CATEGORY_TABLE . ' c WHERE c.Path LIKE "' . $db->escape($cat) . '/%" OR c.Path="' . $db->escape($cat) . '"');
 				while($db->next_record()){
 					$tmp[] = $db->f('ID');
-					$isFolder|=$db->f('IsFolder');
+					$isFolder |= $db->f('IsFolder');
 				}
 				if($isFolder){
 					$folders[] = $tmp;
@@ -122,28 +122,28 @@ class we_category extends we_base_model{
 
 	static function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){
 		return (isset($doc->Category) ?
-				self::we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
-				'');
+			self::we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
+			'');
 	}
 
 	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $complete = false){
 		return ($catIDs ?
-				self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $complete) :
-				($asArray ?
-					[] :
-					'')
+			self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $complete) :
+			($asArray ?
+			[] :
+			'')
 			);
 	}
 
 	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $complete = false, $includeDir = false, $order = ''){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 		$cats = [];
 		$whereIDs = trim($catIDs, ',') ? ' ID IN(' . trim($catIDs, ',') . ')' : 1;
 		$whereDir = ' AND Path LIKE "' . $db->escape($onlyindir) . '/%"';
 		$whereIncludeDir = $onlyindir && $includeDir !== false ? ' OR (Path = "' . $db->escape($onlyindir) . '")' : '';
 		$orderBy = $order ? ' ORDER BY ' . $db->escape($order) : '';
-		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
-		$showpath &=!$catfield;
+		$field = $catfield ?: ($showpath ? 'Path' : 'Category');
+		$showpath &= !$catfield;
 
 		$db->query('SELECT ID,Path,Category,Title,Description, ParentID FROM ' . CATEGORY_TABLE . ' WHERE (' . $whereIDs . $whereDir . ')' . $whereIncludeDir . $orderBy);
 		while($db->next_record()){
@@ -168,7 +168,7 @@ class we_category extends we_base_model{
 					'Title' => $data['Title'],
 					'Description' => $data['Description'],
 					'IsFolder' => 1//$data['IsFolder']
-					];
+				];
 			}
 		}
 
@@ -176,10 +176,10 @@ class we_category extends we_base_model{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.selectors.category={
-	new_cat_name:"' . g_l('fileselector', '[new_cat_name]') . '",
-	we_filename_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('weEditor', '[category][we_filename_notValid]')) . '",
-};';
+		return 'WE().consts.g_l.selectors.category=JSON.parse("' . setLangString([
+				'new_cat_name' => g_l('fileselector', '[new_cat_name]'),
+				'we_filename_notValid' => (g_l('weEditor', '[category][we_filename_notValid]')),
+				]) . '");';
 	}
 
 }

@@ -1183,7 +1183,7 @@ class we_users_user{
 			'headline' => g_l('modules_users', '[general_data]'),
 			'html' => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_ICON,
-			'icon'=>we_html_multiIconBox::PROP_USER,
+			'icon' => we_html_multiIconBox::PROP_USER,
 			]
 		];
 
@@ -1242,7 +1242,7 @@ class we_users_user{
 		$parts[] = ['headline' => g_l('modules_users', '[user_data]'),
 			'html' => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_ICON,
-			'icon'=>we_html_multiIconBox::PROP_PATH
+			'icon' => we_html_multiIconBox::PROP_PATH
 		];
 
 		return we_html_multiIconBox::getHTML('', $parts, 0);
@@ -2214,15 +2214,13 @@ function toggleRebuildPerm(disabledOnly) {';
 		$ret['requests'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestText AS text,DATE_FORMAT(l.releaseRequestForce,"' . g_l('date', '[format][mysql]') . '") AS forceDate,TIMESTAMPDIFF(SECOND,NOW(),releaseRequestForce) AS forceTime,CONCAT(u.First," ",u.Second) AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.releaseRequestID=u.ID) WHERE l.UserID=' . intval($_SESSION['user']['ID']) . ' AND l.releaseRequestText IS NOT NULL AND l.releaseRequestID!=' . intval($_SESSION['user']['ID']));
 
 		//check my release requests - currently unused
-		$ret['reply'] = [];//$GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestReply AS text,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.UserID=u.ID) WHERE l.releaseRequestReply IS NOT NULL AND l.releaseRequestID=' . intval($_SESSION['user']['ID']) . ' AND l.UserID!=' . intval($_SESSION['user']['ID']));
-
+		$ret['reply'] = []; //$GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestReply AS text,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.UserID=u.ID) WHERE l.releaseRequestReply IS NOT NULL AND l.releaseRequestID=' . intval($_SESSION['user']['ID']) . ' AND l.UserID!=' . intval($_SESSION['user']['ID']));
 		//get all documents that have been released
 		$ret['unlock'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl FROM ' . LOCK_TABLE . ' l WHERE l.releaseRequestID=l.UserID AND l.sessionID=x\'0000000000000000000000000000000000000000\'');
-$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestID=NULL, sessionID=x\''. we_base_sessionHandler::getCurrentHex() . '\' WHERE releaseRequestID=UserID AND sessionID=x\'0000000000000000000000000000000000000000\'');
+		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestID=NULL, sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\' WHERE releaseRequestID=UserID AND sessionID=x\'0000000000000000000000000000000000000000\'');
 
 		//reset all replies
 		//$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestReply=NULL,releaseRequestForce=NULL WHERE releaseRequestReply IS NOT NULL AND releaseRequestID=' . intval($_SESSION['user']['ID']));
-
 		//update my locks, reset releaseRequestText
 		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND,releaseRequestText=NULL WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
 
@@ -2260,7 +2258,7 @@ $GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestID=NULL, s
 			//don't clean all locks! - is this really a needed statement???
 			$ids = implode(', ', array_filter($ids));
 			if($ids){
-				$DB_WE=$GLOBALS['DB_WE'];
+				$DB_WE = $GLOBALS['DB_WE'];
 				$DB_WE->query('UPDATE ' . LOCK_TABLE . ' SET sessionID=x\'00\',UserID=releaseRequestID WHERE releaseRequestID IS NOT NULL AND releaseRequestID!=UserID AND tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . we_base_sessionHandler::getCurrentHex() . '\'');
 				$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID!=x\'0000000000000000000000000000000000000000\' AND UserID=' . $_SESSION['user']['ID']);
 			}
@@ -2269,19 +2267,18 @@ $GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestID=NULL, s
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.users={
-	view:{
-		give_org_name:"' . g_l('modules_users', '[give_org_name]') . '",
-		password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '",
-		save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
-		delete_alert:{
-			' . self::TYPE_USER_GROUP . ':"' . g_l('modules_users', '[delete_alert_group]') . '",
-			' . self::TYPE_ALIAS . ':"' . g_l('modules_users', '[delete_alert_alias]') . '",
-			' . self::TYPE_USER . ':"' . g_l('modules_users', '[delete_alert_user]') . '"
-		}
-	}
-};
-';
+		return 'WE().consts.g_l.users=JSON.parse("' . setLangString([
+				'view' => [
+					'give_org_name' => g_l('modules_users', '[give_org_name]'),
+					'password_alert' => (g_l('modules_users', '[password_alert]')),
+					'save_changed_user' => g_l('modules_users', '[save_changed_user]'),
+					'delete_alert' => [
+						self::TYPE_USER_GROUP => g_l('modules_users', '[delete_alert_group]'),
+						self::TYPE_ALIAS => g_l('modules_users', '[delete_alert_alias]'),
+						self::TYPE_USER => g_l('modules_users', '[delete_alert_user]'),
+					]
+				]
+				]) . '");';
 	}
 
 }

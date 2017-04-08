@@ -63,8 +63,8 @@ class we_export_view extends we_modules_view{
 		$selected = '';
 		$opened = '';
 		$arr = [
-			FILE_TABLE => "selDocs",
-			TEMPLATES_TABLE => "selTempl"
+			FILE_TABLE => 'selDocs',
+			TEMPLATES_TABLE => 'selTempl'
 		];
 		if(defined('OBJECT_TABLE')){
 			$arr[OBJECT_FILES_TABLE] = 'selObjs';
@@ -72,7 +72,6 @@ class we_export_view extends we_modules_view{
 		}
 
 		foreach($arr as $table => $elem){
-
 			if($this->export->$elem){
 				$selected .= 'top.content.editor.edbody.treeData.SelectedItems.' . $table . '=[' . $this->export->$elem . '];';
 			}

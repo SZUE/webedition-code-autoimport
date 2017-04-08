@@ -239,17 +239,17 @@ class we_export_export extends we_base_model{
 
 	public static function getJSLangConsts(){
 		return '
-	WE().consts.g_l.exports={
-	delete_group_question:"' . g_l('export', '[delete_group_question]') . '",
-	delete_question:"' . g_l('export', '[delete_question]') . '",
-	must_save:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[must_save]')) . '",
-	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[name_empty]')) . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[no_perms]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_save]')) . '",
-	save_changed_export:"' . g_l('export', '[save_changed_export]') . '",
-	server_finished:"' . g_l('export', '[server_finished]') . '",
-};';
+	WE().consts.g_l.exports=JSON.parse("' . we_serialize([
+				'delete_group_question' => g_l('export', '[delete_group_question]'),
+				'delete_question' => g_l('export', '[delete_question]'),
+				'must_save' => (g_l('export', '[must_save]')),
+				'name_empty' => (g_l('export', '[name_empty]')),
+				'no_perms' => (g_l('export', '[no_perms]')),
+				'nothing_to_delete' => (g_l('export', '[nothing_to_delete]')),
+				'nothing_to_save' => (g_l('export', '[nothing_to_save]')),
+				'save_changed_export' => g_l('export', '[save_changed_export]'),
+				'server_finished' => g_l('export', '[server_finished]'),
+				]) . '");';
 	}
 
 }

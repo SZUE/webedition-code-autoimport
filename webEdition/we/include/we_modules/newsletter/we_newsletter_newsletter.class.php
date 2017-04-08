@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_newsletter extends we_newsletter_base{
-
 	const SAVE_PATH_NOK = -10;
 	const MALFORMED_SENDER = -1;
 	const MALFORMED_REPLY = -2;
@@ -220,13 +218,13 @@ class we_newsletter_newsletter extends we_newsletter_base{
 
 		foreach($this->MediaLinks as $element => $remObj){
 			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $this->ID,
-						'DocumentTable' => stripTblPrefix($this->table),
-						'type' => 'media',
-						'remObj' => $remObj,
-						'remTable' => stripTblPrefix(FILE_TABLE),
-						'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
-						'position' => 0,
-						'isTemp' => 0
+					'DocumentTable' => stripTblPrefix($this->table),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'nHash' => sql_function(is_numeric($element) ? 'NULL' : 'x\'' . md5($element) . '\''),
+					'position' => 0,
+					'isTemp' => 0
 			]));
 		}
 	}
@@ -399,8 +397,8 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 */
 	function addLog($log, $param = ''){
 		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(['NewsletterID' => $this->ID,
-					'Log' => $log,
-					'Param' => $param
+				'Log' => $log,
+				'Param' => $param
 		]));
 	}
 
@@ -459,36 +457,35 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.newsletter = {
-	add_email:"' . g_l('modules_newsletter', '[add_email]') . '",
-	all_list:"' . g_l('modules_newsletter', '[all_list]') . '",
-	ask_to_preserve:"' . g_l('modules_newsletter', '[ask_to_preserve]') . '",
-	continue_camp:"'.g_l('modules_newsletter', '[continue_camp]').'",
-	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '",
-	delete_group_question:	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
-	delete_question:"' . g_l('modules_newsletter', '[delete_question]') . '",
-	edit_email:"' . g_l('modules_newsletter', '[edit_email]') . '",
-	email_delete:"' . g_l('modules_newsletter', '[email_delete]') . '",
-	email_delete_all:"' . g_l('modules_newsletter', '[email_delete_all]') . '",
-	email_exists: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_exists]')) . '",
-	email_max_len: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_max_len]')) . '",
-	empty_name: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[empty_name]')) . '",
-	mailing_list:"' . g_l('modules_newsletter', '[mailing_list]') . '",
-	must_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save]')) . '",
-	must_save_preview: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save_preview]')) . '",
-	no_email: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_email]')) . '",
-	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
-	no_subject:"' . g_l('modules_newsletter', '[no_subject]') . '",
-	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",
-	save_changed_newsletter:"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
-	search_finished:"' . g_l('modules_newsletter', '[search_finished]') . '",
-	search_text:"' . g_l('modules_newsletter', '[search_text]') . '",
-	send_question:"' . g_l('modules_newsletter', '[send_question]') . '",
-	send_test_question:"' . g_l('modules_newsletter', '[send_test_question]') . '",
-	test_email_question:"' . g_l('modules_newsletter', '[test_email_question]') . '",
-};
-';
+		return 'WE().consts.g_l.newsletter=JSON.parse("' . setLangString([
+				'add_email' => g_l('modules_newsletter', '[add_email]'),
+				'all_list' => g_l('modules_newsletter', '[all_list]'),
+				'ask_to_preserve' => g_l('modules_newsletter', '[ask_to_preserve]'),
+				'continue_camp' => g_l('modules_newsletter', '[continue_camp]'),
+				'del_email_file' => (g_l('modules_newsletter', '[del_email_file]')),
+				'delete_group_question' => g_l('modules_newsletter', '[delete_group_question]'),
+				'delete_question' => g_l('modules_newsletter', '[delete_question]'),
+				'edit_email' => g_l('modules_newsletter', '[edit_email]'),
+				'email_delete' => g_l('modules_newsletter', '[email_delete]'),
+				'email_delete_all' => g_l('modules_newsletter', '[email_delete_all]'),
+				'email_exists' => (g_l('modules_newsletter', '[email_exists]')),
+				'email_max_len' => (g_l('modules_newsletter', '[email_max_len]')),
+				'empty_name' => (g_l('modules_newsletter', '[empty_name]')),
+				'mailing_list' => g_l('modules_newsletter', '[mailing_list]'),
+				'must_save' => (g_l('modules_newsletter', '[must_save]')),
+				'must_save_preview' => (g_l('modules_newsletter', '[must_save_preview]')),
+				'no_email' => (g_l('modules_newsletter', '[no_email]')),
+				'no_newsletter_selected' => (g_l('modules_newsletter', '[no_newsletter_selected]')),
+				'no_subject' => g_l('modules_newsletter', '[no_subject]'),
+				'nothing_to_delete' => (g_l('modules_newsletter', '[nothing_to_delete]')),
+				'nothing_to_save' => (g_l('modules_newsletter', '[nothing_to_save]')),
+				'save_changed_newsletter' => g_l('modules_newsletter', '[save_changed_newsletter]'),
+				'search_finished' => g_l('modules_newsletter', '[search_finished]'),
+				'search_text' => g_l('modules_newsletter', '[search_text]'),
+				'send_question' => g_l('modules_newsletter', '[send_question]'),
+				'send_test_question' => g_l('modules_newsletter', '[send_test_question]'),
+				'test_email_question' => g_l('modules_newsletter', '[test_email_question]'),
+			]) . '");';
 	}
 
 }

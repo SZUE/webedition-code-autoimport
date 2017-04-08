@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_file{
-
 	const FRAMESET = 0;
 	const FOOTER = 2;
 	const BODY = 3;
@@ -125,15 +124,15 @@ class we_selector_file{
 
 	protected function setDirAndID(){
 		if($this->id > 0 &&
-				// get default Directory
-				($data = getHash('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db))){
+			// get default Directory
+			($data = getHash('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db))){
 
 			// getValues of selected Dir
 			$this->values = $data;
 
 			$this->dir = ($this->values['IsFolder'] ?
-					$this->id :
-					$this->values['ParentID']);
+				$this->id :
+				$this->values['ParentID']);
 
 			$this->path = $this->values['Path'];
 			return;
@@ -160,8 +159,8 @@ class we_selector_file{
 	protected function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . self::getWsQuery($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-				( ($this->filter && $this->table != CATEGORY_TABLE ? 'AND ContentType="' . $this->db->escape($this->filter) . '" ' : '' ) . $wsQuery ) .
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+			( ($this->filter && $this->table != CATEGORY_TABLE ? 'AND ContentType="' . $this->db->escape($this->filter) . '" ' : '' ) . $wsQuery ) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -205,7 +204,7 @@ class we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramsetJSFile() .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($weCmd, $withPreview) . $weCmd->getCmds());
+			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($weCmd, $withPreview) . $weCmd->getCmds());
 	}
 
 	protected function getFramsetJSFile(){
@@ -230,12 +229,12 @@ class we_selector_file{
 
 	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = false){
 		return '<body class="selector" onload="startFrameset();">' .
-				we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
-				we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
-				we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>';
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>';
 	}
 
 	protected function getFsQueryString($what){
@@ -244,7 +243,7 @@ class we_selector_file{
 
 	protected function printBodyHTML(){
 		echo we_html_tools::getHtmlTop('', '', '4Trans', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				$this->getFramsetJSFile(), we_html_element::htmlBody(['class' => "selectorBody", 'onload' => "top.writeBody(self.document.body);", 'onclick' => "weonclick(event);"]));
+			$this->getFramsetJSFile(), we_html_element::htmlBody(['class' => "selectorBody", 'onload' => "top.writeBody(self.document.body);", 'onclick' => "weonclick(event);"]));
 	}
 
 	protected function printHeaderHTML(we_base_jsCmd $weCmd){
@@ -254,8 +253,8 @@ class we_selector_file{
 			$this->setSelectorData($weCmd);
 		}
 		return
-				($do ? $this->printHeaderTable($weCmd) : '') .
-				$this->printHeaderHeadlines();
+			($do ? $this->printHeaderTable($weCmd) : '') .
+			$this->printHeaderHeadlines();
 	}
 
 	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
@@ -268,8 +267,8 @@ class we_selector_file{
 		</td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", '', 0, 0, "", "", ($this->dir == 0), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", '', 0, 0, "", "", ($this->dir == 0), false) . '</td>' .
-				$extra .
-				'</tr>
+			$extra .
+			'</tr>
 </table>';
 	}
 
@@ -371,39 +370,38 @@ class we_selector_file{
 
 	public static function getJSLangConsts(){
 		return '
-WE().consts.g_l.fileselector = {
-	already_root: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')) . '",
-	date_format:"' . date(g_l('date', '[format][default]')) . '",
-	deleteQuestion:"' . g_l('fileselector', '[deleteQuestion]') . '",
-	edit_file_is_folder: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '",
-	edit_file_nok: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
-	folder:"' . g_l('contentTypes', '[folder]') . '",
-	newFolderExport:"' . g_l('export', '[newFolder]') . '",
-	newFolderNavigation:"' . g_l('navigation', '[newFolder]') . '",
-	newFolderVoting:"' . g_l('modules_voting', '[newFolder]') . '",
-	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
-	newbannergroup:"' . g_l('modules_banner', '[newbannergroup]') . '",
-};';
+WE().consts.g_l.fileselector=JSON.parse("' . setLangString([
+				'already_root' => (g_l('fileselector', '[already_root]')),
+				'date_format' => date(g_l('date', '[format][default]')),
+				'deleteQuestion' => g_l('fileselector', '[deleteQuestion]'),
+				'edit_file_is_folder' => (g_l('fileselector', '[edit_file_is_folder]')),
+				'edit_file_nok' => (g_l('fileselector', '[edit_file_nok]')),
+				'folder' => g_l('contentTypes', '[folder]'),
+				'newFolderExport' => g_l('export', '[newFolder]'),
+				'newFolderNavigation' => g_l('navigation', '[newFolder]'),
+				'newFolderVoting' => g_l('modules_voting', '[newFolder]'),
+				'new_folder_name' => g_l('fileselector', '[new_folder_name]'),
+				'newbannergroup' => g_l('modules_banner', '[newbannergroup]'),
+				]) . '");';
 	}
 
 	public static function getJSConsts(){
-		return 'WE().consts.selectors={
-	CMD:' . self::CMD . ',
-	CREATEFOLDER:' . self::CREATEFOLDER . ',
-	CREATE_CAT:' . self::CREATE_CAT . ',
-	DEL:' . self::DEL . ',
-	DEL:' . self::DEL . ',
-	DORENAMEFOLDER:' . self::DORENAMEFOLDER . ',
-	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
-	NEWFOLDER:' . self::NEWFOLDER . ',
-	PREVIEW:' . self::PREVIEW . ',
-	PROPERTIES:' . self::PROPERTIES . ',
-	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
-	SETDIR:' . self::SETDIR . ',
-	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
-  VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
-};
-';
+		return 'WE().consts.selectors=JSON.parse("' . setLangString(
+				[
+				'CMD' => self::CMD,
+				'CREATEFOLDER' => self::CREATEFOLDER,
+				'CREATE_CAT' => self::CREATE_CAT,
+				'DEL' => self::DEL,
+				'DORENAMEFOLDER' => self::DORENAMEFOLDER,
+				'DO_RENAME_ENTRY' => self::DO_RENAME_ENTRY,
+				'NEWFOLDER' => self::NEWFOLDER,
+				'PREVIEW' => self::PREVIEW,
+				'PROPERTIES' => self::PROPERTIES,
+				'RENAMEFOLDER' => self::RENAMEFOLDER,
+				'SETDIR' => self::SETDIR,
+				'VIEW_ICONS' => we_search_view::VIEW_ICONS,
+				'VIEW_LIST' => we_search_view::VIEW_LIST,
+				]) . '");';
 	}
 
 	public static function getWsQuery($tab, $includingFolders = true){

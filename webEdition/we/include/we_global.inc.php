@@ -1091,12 +1091,16 @@ function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compre
 }
 
 function setDynamicVar($data){
-	$ret = json_encode($data);
+	$ret = json_encode($data, JSON_UNESCAPED_UNICODE);
 	if($ret){
 		return base64_encode($ret);
 	}
 	$json = new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 	return base64_encode(utf8_encode($json->encode($data, false)));
+}
+
+function setLangString(array $lang){
+	return addcslashes(json_encode($lang, JSON_UNESCAPED_UNICODE), '\\"');
 }
 
 function updateAvailable(){

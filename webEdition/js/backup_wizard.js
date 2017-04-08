@@ -48,7 +48,7 @@ function doClicked(checked, opt) {
 				if (!document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.temporary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].temporary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 12:
@@ -57,7 +57,7 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_object.value = 1;
 					document.we_form.handle_object.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.versions_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].versions_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 13:
@@ -68,14 +68,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_object.checked = true;
 					document.we_form.handle_versions.value = 1;
 					document.we_form.handle_versions.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.versions_binarys_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].versions_binarys_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 14:
 				if (!document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.binary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].binary_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 55:
@@ -84,14 +84,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_object.value = 1;
 					document.we_form.handle_object.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.schedule_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].schedule_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 30:
 				if (WE().consts.modules.active.indexOf("shop") > 0 && WE().consts.modules.active.indexOf("customer") > 0 && !document.we_form.handle_customer.checked) {
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 35:
@@ -100,7 +100,7 @@ function doClicked(checked, opt) {
 					document.we_form.handle_core.checked = true;
 					document.we_form.handle_user.value = 1;
 					document.we_form.handle_user.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.workflow_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].workflow_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 45:
@@ -111,14 +111,14 @@ function doClicked(checked, opt) {
 					document.we_form.handle_object.checked = true;
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.newsletter_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].newsletter_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 			case 50:
 				if (WE().consts.modules.active.indexOf("banner") > 0 && !document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value = 1;
 					document.we_form.handle_core.checked = true;
-					WE().util.showMessage(WE().consts.g_l.backupWizard.banner_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					WE().util.showMessage(WE().consts.g_l.backupWizard[backup.mode].banner_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 				break;
 
@@ -131,39 +131,39 @@ function doClicked(checked, opt) {
 		case 10:
 			if (WE().consts.modules.active.indexOf("workflow") > 0 && document.we_form.elements.handle_workflow.checked) {
 				document.we_form.elements.handle_workflow.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.workflow_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].workflow_data;
 			}
 			if (WE().consts.modules.active.indexOf("newsletter") > 0 && document.we_form.elements.handle_newsletter.checked) {
 				document.we_form.elements.handle_newsletter.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].newsletter_data;
 			}
 			if (WE().consts.modules.active.indexOf("banner") > 0 && document.we_form.elements.handle_banner.checked) {
 				document.we_form.elements.handle_banner.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].newsletter_data;
 			}
 			if (WE().consts.modules.active.indexOf("schedule") > 0 && document.we_form.elements.handle_schedule.checked) {
 				document.we_form.elements.handle_schedule.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.schedule_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].schedule_data;
 			}
 			if (document.we_form.elements.handle_versions.checked) {
 				document.we_form.elements.handle_versions.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.versions_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].versions_data;
 			}
 
 			if (document.we_form.elements.handle_versions_binarys.checked) {
 				document.we_form.elements.handle_versions_binarys.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.versions_binarys_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].versions_binarys_data;
 			}
 			if (document.we_form.elements.handle_temporary.checked) {
 				document.we_form.elements.handle_temporary.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.temporary_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].temporary_data;
 			}
 			if (document.we_form.elements.handle_history.checked) {
 				document.we_form.elements.handle_history.checked = false;
-				mess += "\n-" + WE().consts.g_l.backupWizard.history_data;
+				mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].history_data;
 			}
 			if (mess !== "") {
-				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.core_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].core_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 				WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
@@ -172,18 +172,18 @@ function doClicked(checked, opt) {
 			if (WE().consts.modules.active.indexOf("object") > 0) {
 				if (WE().consts.modules.active.indexOf("schedule") > 0 && document.we_form.elements.handle_schedule.checked) {
 					document.we_form.elements.handle_schedule.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.schedule_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].schedule_data;
 				}
 				if (document.we_form.elements.handle_versions.checked) {
 					document.we_form.elements.handle_versions.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.versions_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].versions_data;
 				}
 				if (document.we_form.elements.handle_versions_binarys.checked) {
 					document.we_form.elements.handle_versions_binarys.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.versions_binarys_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].versions_binarys_data;
 				}
 				if (mess !== "") {
-					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.object_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].object_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
@@ -192,10 +192,10 @@ function doClicked(checked, opt) {
 			if (WE().consts.modules.active.indexOf("object") > 0) {
 				if (document.we_form.elements.handle_versions_binarys.checked) {
 					document.we_form.elements.handle_versions_binarys.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.versions_binarys_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].versions_binarys_data;
 				}
 				if (mess !== "") {
-					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.versions_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].versions_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
@@ -203,7 +203,7 @@ function doClicked(checked, opt) {
 
 		case 14:
 			if (mess !== "") {
-				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.binary_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].binary_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 				WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
@@ -211,11 +211,11 @@ function doClicked(checked, opt) {
 			if (WE().consts.modules.active.indexOf("workflow") > 0) {
 				if (document.we_form.elements.handle_workflow.checked) {
 					document.we_form.elements.handle_workflow.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.workflow_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].workflow_data;
 				}
 
 				if (mess !== "") {
-					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.user_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].user_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
@@ -224,14 +224,14 @@ function doClicked(checked, opt) {
 			if (WE().consts.modules.active.indexOf("customer") > 0) {
 				if (WE().consts.modules.active.indexOf("shop") > 0 && document.we_form.elements.handle_shop.checked) {
 					document.we_form.elements.handle_shop.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.shop_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].shop_data;
 				}
 				if (WE().consts.modules.active.indexOf("newsletter") > 0 && document.we_form.elements.handle_newsletter.checked) {
 					document.we_form.elements.handle_newsletter.checked = false;
-					mess += "\n-" + WE().consts.g_l.backupWizard.newsletter_data;
+					mess += "\n-" + WE().consts.g_l.backupWizard[backup.mode].newsletter_data;
 				}
 				if (mess !== "") {
-					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.customer_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
+					tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard[backup.mode].customer_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 					WE().util.showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}

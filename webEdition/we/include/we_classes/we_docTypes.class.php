@@ -311,12 +311,12 @@ class we_docTypes extends we_class{
 
 	public static function getJSLangConsts(){
 		return '
-	WE().consts.g_l.doctypeEdit = {
-		doctype_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')) . '",
-		doctype_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')) . '",
-		doctype_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')) . '",
-		newDocTypeName: "' . g_l('weClass', '[newDocTypeName]') . '",
-	};';
+	WE().consts.g_l.doctypeEdit=JSON.parse("' . setLangString([
+				'doctype_empty' => (g_l('alert', '[doctype_empty]')),
+				'doctype_exists' => (g_l('alert', '[doctype_exists]')),
+				'doctype_hochkomma' => (g_l('alert', '[doctype_hochkomma]')),
+				'newDocTypeName' => g_l('weClass', '[newDocTypeName]'),
+				]) . '");';
 	}
 
 }

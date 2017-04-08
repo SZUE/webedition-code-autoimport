@@ -706,9 +706,9 @@ class we_rebuild_wizard{
 
 	public static function getJSLangConsts(){
 		return '
-WE().consts.g_l.rebuild={
-	noFieldsChecked:"' . we_message_reporting::prepareMsgForJS(g_l('rebuild', '[noFieldsChecked]')) . '",
-};';
+WE().consts.g_l.rebuild=JSON.parse("' . setLangString([
+				'noFieldsChecked' => (g_l('rebuild', '[noFieldsChecked]'))
+				]) . '");';
 	}
 
 }

@@ -1984,15 +1984,15 @@ class we_versions_version{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.versions={
-	all:"' . g_l('logging', '[all]') . '",
-	defaultView:"' . g_l('logging', '[defaultView]') . '",
-	deleteVersions:"' . g_l('versions', '[deleteVersions]') . '",
-	mark:"' . g_l('versions', '[mark]') . '",
-	notChecked: "' . we_message_reporting::prepareMsgForJS(g_l('versions', '[notChecked]')) . '",
-	notMark:"' . g_l('versions', '[notMark]') . '",
-	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
-};';
+		return 'WE().consts.g_l.versions=JSON.parse("' . setLangString([
+				'all' => g_l('logging', '[all]'),
+				'defaultView' => g_l('logging', '[defaultView]'),
+				'deleteVersions' => g_l('versions', '[deleteVersions]'),
+				'mark' => g_l('versions', '[mark]'),
+				'notChecked' => (g_l('versions', '[notChecked]')),
+				'notMark' => g_l('versions', '[notMark]'),
+				'resetVersions' => g_l('versions', '[resetVersions]'),
+				]) . '");';
 	}
 
 }

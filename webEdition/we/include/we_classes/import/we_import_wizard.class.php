@@ -1756,7 +1756,7 @@ class we_import_wizard{
 			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, null, true);
 
 			$optid = 0;
-			foreach($paths_arr as $templateID=>$path){
+			foreach($paths_arr as $templateID => $path){
 				$TPLselect->insertOption($optid, $templateID, $path);
 				++$optid;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID){
@@ -2207,24 +2207,24 @@ class we_import_wizard{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.import={
-	backup_file_found:\'' . g_l('import', '[backup_file_found]') . '\',
-	backup_file_found_question:\'' . g_l('import', '[backup_file_found_question]') . '\',
-	errorEmptyDateFormat:"' . we_message_reporting::prepareMsgForJS(g_l('siteimport', '[errorEmptyDateFormat]')) . '",
-	format_timestamp:"' . g_l('import', '[format_timestamp]') . '",
-	invalid_path:"' . g_l('import', '[invalid_path]') . '",
-	nameOfTemplateAlert:"' . g_l('siteimport', '[nameOfTemplateAlert]') . '",
-	num_elements:"' . g_l('import', '[num_elements]') . '",
-	pleaseSelectTemplateAlert:"' . g_l('siteimport', '[pleaseSelectTemplateAlert]') . '",
-	root_dir_1:"' . g_l('importFiles', '[root_dir_1]') . '",
-	root_dir_2:"' . g_l('importFiles', '[root_dir_2]') . '",
-	root_dir_3:"' . g_l('importFiles', '[root_dir_3]') . '",
-	select_docType:"' . g_l('import', '[select_docType]') . '",
-	select_seperator:"' . g_l('import', '[select_seperator]') . '",
-	select_source_file:"' . g_l('import', '[select_source_file]') . '",
-	startEndMarkAlert:"' . g_l('siteimport', '[startEndMarkAlert]') . '",
-	we_filename_notValid:"' . g_l('alert', '[we_filename_notValid]') . '",
-};';
+		return 'WE().consts.g_l.import=JSON.parse("' . setLangString([
+				'backup_file_found' => g_l('import', '[backup_file_found]'),
+				'backup_file_found_question' => g_l('import', '[backup_file_found_question]'),
+				'errorEmptyDateFormat' => (g_l('siteimport', '[errorEmptyDateFormat]')),
+				'format_timestamp' => g_l('import', '[format_timestamp]'),
+				'invalid_path' => g_l('import', '[invalid_path]'),
+				'nameOfTemplateAlert' => g_l('siteimport', '[nameOfTemplateAlert]'),
+				'num_elements' => g_l('import', '[num_elements]'),
+				'pleaseSelectTemplateAlert' => g_l('siteimport', '[pleaseSelectTemplateAlert]'),
+				'root_dir_1' => g_l('importFiles', '[root_dir_1]'),
+				'root_dir_2' => g_l('importFiles', '[root_dir_2]'),
+				'root_dir_3' => g_l('importFiles', '[root_dir_3]'),
+				'select_docType' => g_l('import', '[select_docType]'),
+				'select_seperator' => g_l('import', '[select_seperator]'),
+				'select_source_file' => g_l('import', '[select_source_file]'),
+				'startEndMarkAlert' => g_l('siteimport', '[startEndMarkAlert]'),
+				'we_filename_notValid' => g_l('alert', '[we_filename_notValid]'),
+				]) . '");';
 	}
 
 }

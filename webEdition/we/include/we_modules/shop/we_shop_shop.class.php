@@ -100,24 +100,21 @@ class we_shop_shop{
 	}
 
 	public static function getJSLangConsts(){
-		return '
-WE().consts.g_l.shop={
-	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
-	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
-	delete_shipping:"' . g_l('modules_shop', '[delete][shipping]') . '",
-	field_empty_js_alert:"' . g_l('modules_shop', '[field_empty_js_alert]') . '",
-	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_save]')) . '",
-	vat_confirm_delete:"' . g_l('modules_shop', '[vat][js_confirm_delete]') . '",
-};
-
-WE().consts.g_l.shop.tree={
-	treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
-	treeYear:"' . g_l('modules_shop', '[treeYear]') . '",
-};
-	';
+		return 'WE().consts.g_l.shop=JSON.parse("' . setLangString([
+				'del_shop' => g_l('modules_shop', '[del_shop]'),
+				'delete_alert' => g_l('modules_shop', '[delete_alert]'),
+				'delete_shipping' => g_l('modules_shop', '[delete][shipping]'),
+				'field_empty_js_alert' => g_l('modules_shop', '[field_empty_js_alert]'),
+				'no_order_there' => (g_l('modules_shop', '[no_order_there]')),
+				'no_perms' => (g_l('modules_shop', '[no_perms]')),
+				'nothing_to_delete' => (g_l('modules_shop', '[nothing_to_delete]')),
+				'nothing_to_save' => (g_l('modules_shop', '[nothing_to_save]')),
+				'vat_confirm_delete' => g_l('modules_shop', '[vat][js_confirm_delete]'),
+				'tree' => [
+					'treeYearClick' => g_l('modules_shop', '[treeYearClick]'),
+					'treeYear' => g_l('modules_shop', '[treeYear]'),
+				]
+				]) . '");';
 	}
 
 }

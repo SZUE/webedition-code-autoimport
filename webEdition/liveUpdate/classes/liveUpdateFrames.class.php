@@ -274,11 +274,11 @@ class liveUpdateFrames{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.liveUpdate={
-		confirmDelete:"' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '",
-		languagesDeleted:"' . g_l('liveUpdate', '[languages][languagesDeleted]') . '",
-		languagesNotDeleted:"' . g_l('liveUpdate', '[languages][languagesNotDeleted]') . '",
-};';
+		return 'WE().consts.g_l.liveUpdate=JSON.parse("' . setLangString([
+				'confirmDelete' => g_l('liveUpdate', '[updatelog][confirmDelete]'),
+				'languagesDeleted' => g_l('liveUpdate', '[languages][languagesDeleted]'),
+				'languagesNotDeleted' => g_l('liveUpdate', '[languages][languagesNotDeleted]'),
+				]) . '");';
 	}
 
 }
