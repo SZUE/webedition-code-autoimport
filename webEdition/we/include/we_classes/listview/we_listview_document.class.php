@@ -148,7 +148,7 @@ class we_listview_document extends we_listview_base{
 						$order[] = 'ranking';
 					}
 					//FIXME how to know if we sort by dat or bdid?! otherwise numeric sort is not correct unless numorder is set
-					$order[] = ($this->numorder ? '0+' : '') . 'IFNULL(cc' . $cnt . '.Dat,cc' . $cnt . '.BDID)' . ($this->desc ? ' DESC' : '');
+					$order[] = ($this->numorder ? 'CAST(' : '') . 'IFNULL(cc' . $cnt . '.Dat,cc' . $cnt . '.BDID)' . ($this->numorder ? ' AS UNSIGNED) ' : '').($this->desc ? ' DESC' : '');
 					break;
 			}
 		}

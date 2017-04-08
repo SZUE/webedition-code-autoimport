@@ -10,6 +10,8 @@
 /* query separator */
 ###ONCOL(dHash,###TBLPREFIX###tblContent)UPDATE ###TBLPREFIX###tblContent SET BDID=Dat,Dat=NULL WHERE Dat!="" AND ID IN (SELECT CID FROM ###TBLPREFIX###tblLink WHERE DocumentTable='tblFile'  AND nHash IN (x'b435e227d5dd201e1768b2bcb2e0aa81',x'eaae26a6fb20ed3ef54fb23bfa0b1fcc',x'11b4278c7e5a79003db77272c1ed2cf5',x'5e8b6e54ab9f39e8df3a49d1fa478324',x'58b79779851d8d14bbd71d6bd2ad0cba',x'09d2a3e9b7efc29e9a998d7ae84cca87',x'b6b8646a49103a66f9d9e2aae212bdbe',x'fe40feec71672d515faa242b1cff2165',x'c6e9ec12d4d8b4e75e596aaf47772a3d'));
 /* query separator */
+###ONCOL(dHash,###TBLPREFIX###tblContent)UPDATE ###TBLPREFIX###tblContent SET BDID=NULL WHERE BDID=0 AND Dat!="" AND Dat IS NOT NULL;
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblContent (
   ID int unsigned NOT NULL auto_increment,
@@ -18,7 +20,7 @@ CREATE TABLE ###TBLPREFIX###tblContent (
   `Name` varchar(255) NOT NULL default '',
 	nHash binary(16) NOT NULL,
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
-  BDID int unsigned NOT NULL default '0',
+  BDID int unsigned default NULL,
   Dat longtext default NULL,
   PRIMARY KEY (ID),
   KEY BDID (BDID),
