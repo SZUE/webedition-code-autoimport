@@ -28,10 +28,10 @@
 'use strict';
 
 WE().util.loadConsts(document, "g_l.spellcheck");
-/*			dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+/*			dict_saved: "<?= (g_l('modules_spellchecker', '[dict_saved]')); ?>",
  ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
  checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
- finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+ finished: "<?= (g_l('modules_spellchecker', '[finished]')); ?>"
  */
 var activ_tab = 0;
 

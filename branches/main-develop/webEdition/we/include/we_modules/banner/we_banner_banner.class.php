@@ -109,7 +109,7 @@ class we_banner_banner extends we_banner_base{
 			'Customers' => we_base_request::INTLIST,
 			'TagName' => we_base_request::RAW,
 			'weight' => we_base_request::INT,
-			];
+		];
 
 		$this->IsFolder = $IsFolder;
 		$this->Text = g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
@@ -199,7 +199,7 @@ class we_banner_banner extends we_banner_base{
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 					'isTemp' => 0
-					]));
+			]));
 		}
 	}
 
@@ -326,7 +326,7 @@ class we_banner_banner extends we_banner_base{
 						'bid' => $bannerData["bannerID"],
 						'did' => $did,
 						'page' => $page
-						]);
+				]);
 			}
 			$bannerlink = $bannerclick . '?' . http_build_query([($nocount ? 'nocount' : 'n') => $nocount,
 					'u' => $uniq,
@@ -334,7 +334,7 @@ class we_banner_banner extends we_banner_base{
 					'id' => $bannerData["ID"],
 					'did' => $did,
 					'page' => $page
-					]);
+			]);
 		} else {
 			$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"', '', $db);
 
@@ -352,7 +352,7 @@ class we_banner_banner extends we_banner_base{
 						'id' => $id,
 						'bid' => $bannerID,
 						'did' => $did
-						]);
+				]);
 				$showlink = false;
 			}
 			$bannerlink = $bannerclick . '?' . http_build_query([($nocount ? 'nocount' : 'n') => $nocount,
@@ -361,16 +361,16 @@ class we_banner_banner extends we_banner_base{
 					'id' => $id,
 					'did' => $did,
 					'page' => $page
-					]);
+			]);
 		}
 		if(!$nocount){
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => intval($id),
 					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 					'IP' => $_SERVER['REMOTE_ADDR'],
-					'Referer' => $referer ? : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
+					'Referer' => $referer ?: (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
 					'DID' => intval($did),
 					'Page' => $page
-					]));
+			]));
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 
@@ -413,24 +413,24 @@ class we_banner_banner extends we_banner_base{
 	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db){
 		$res = getHash('SELECT FIND_IN_SET(' . $customerID . ',Customers) AS found,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
 		return ($res['found'] ?
-				true :
-				($res['ParentID'] ?
-					self::customerOwnsBanner($customerID, $res["ParentID"], $db) :
-					false)
+			true :
+			($res['ParentID'] ?
+			self::customerOwnsBanner($customerID, $res["ParentID"], $db) :
+			false)
 			);
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.banner={
-	view:{
-		deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '",
-		delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
-		nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
-		nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '",
-		save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
-	}
-};
-';
+		return 'WE().consts.g_l.banner=JSON.parse("' . setLangString(
+				[
+				'view' => [
+					'deleteStatConfirm' => g_l('modules_banner', '[deleteStatConfirm]'),
+					'delete_question' => g_l('modules_banner', '[delete_question]'),
+					'nothing_to_delete' => g_l('modules_banner', '[nothing_to_delete]'),
+					'nothing_to_save' => g_l('modules_banner', '[nothing_to_save]'),
+					'save_changed_banner' => g_l('modules_banner', '[save_changed_banner]'),
+				]
+				]) . '");';
 	}
 
 }

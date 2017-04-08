@@ -982,14 +982,6 @@ editors/template/CodeMirror/MODIFICATIONS
 editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
 editors/content/eplugin/gal
-dynamic/wysiwyg/linkDialog.php
-dynamic/wysiwyg/langDialog.php
-dynamic/wysiwyg/imageDialog.php
-dynamic/wysiwyg/galleryDialog.php
-dynamic/wysiwyg/fullscreenEditDialog.php
-dynamic/wysiwyg/acronymDialog.php
-dynamic/wysiwyg/abbrDialog.php
-dynamic/wysiwyg/WeWysiwygEditorWindow.php
 delInfo.php
 delFrag.php
 css/wysiwyg/tinymce/tinyDialogCss_mac.scss
@@ -1068,7 +1060,6 @@ agency_sample.php
 !we/include/jsMessageConsole
 !we/include/java_menu
 !we/include/fonts
-!sidebar/img
 !sidebar
 !rpc/views
 !rpc/cmds

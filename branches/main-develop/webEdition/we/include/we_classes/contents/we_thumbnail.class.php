@@ -223,7 +223,7 @@ class we_thumbnail{
 		$this->date = $date;
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
-			$this->outputFormat = $this->thumbFormat ? : (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
+			$this->outputFormat = $this->thumbFormat ?: (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
 			$this->getImageData(false, true);
 			$this->checkAndGetImageSizeIfNeeded();
 			$this->setOutputPath();
@@ -246,7 +246,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
+		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db) ?:
 			['Width' => 0,
 			'Height' => 0,
 			'Options' => '',
@@ -274,7 +274,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
+		$foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db) ?:
 			['ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -312,7 +312,7 @@ class we_thumbnail{
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
-			];
+		];
 
 		$this->init($thumbID, $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $foo['Date']);
 
@@ -357,7 +357,7 @@ class we_thumbnail{
 			we_base_file::createLocalFolderByPath($thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ?: WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -386,7 +386,7 @@ class we_thumbnail{
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ?: $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;
@@ -404,7 +404,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	public static function getThumbDirectory($realpath = false){
-		return ($realpath ? realpath(WEBEDITION_PATH . '..') : '') . '/' . ltrim(preg_replace('#^\.?(.*)$#', '${1}', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
+		return ($realpath ? realpath(WEBEDITION_PATH . '..') : '') . '/' . ltrim(preg_replace('#^\.?(.*)$#', '${1}', (WE_THUMBNAIL_DIRECTORY ?: '_thumbnails_')), '/');
 	}
 
 	/**
@@ -425,8 +425,8 @@ class we_thumbnail{
 			return $arr;
 		}
 		return (we_base_imageEdit::gd_version() ?
-				we_base_imageEdit::getimagesize($filename) :
-				$arr);
+			we_base_imageEdit::getimagesize($filename) :
+			$arr);
 	}
 
 	/**
@@ -439,7 +439,7 @@ class we_thumbnail{
 		return ($withDocumentRoot ? realpath(WEBEDITION_PATH . '..') : '') .
 			$this->outputPath .
 			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '..' . $this->outputPath) : time()) :
-				'');
+			'');
 	}
 
 	/**
@@ -554,8 +554,8 @@ class we_thumbnail{
 	 */
 	private function useOriginalSize(){
 		return ($this->generateSmaller ?
-				false :
-				(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
+			false :
+			(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
 	}
 
 	/**
@@ -670,14 +670,13 @@ class we_thumbnail{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.thumbnail={
-	delete_prompt:"' . g_l('thumbnails', '[delete_prompt]') . '",
-	empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
-	exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
-	hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
-	new: "' . g_l('thumbnails', '[new]') . '",
-};
-		';
+		return 'WE().consts.g_l.thumbnail=JSON.parse("' . setLangString([
+				'delete_prompt' => g_l('thumbnails', '[delete_prompt]'),
+				'empty' => (g_l('alert', '[thumbnail_empty]')),
+				'exists' => (g_l('alert', '[thumbnail_exists]')),
+				'hochkomma' => (g_l('alert', '[thumbnail_hochkomma]')),
+				'new' => g_l('thumbnails', '[new]'),
+				]) . '");';
 	}
 
 }

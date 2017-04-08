@@ -205,7 +205,7 @@ class we_glossary_glossary extends we_base_model{
 			$Item = ['Type' => $GLOBALS['DB_WE']->f("Type"),
 				'Text' => $GLOBALS['DB_WE']->f("Text"),
 				'Title' => $GLOBALS['DB_WE']->f("Title"),
-				];
+			];
 
 			if($GLOBALS['DB_WE']->f("Type") != self::TYPE_FOREIGNWORD){
 				$temp = we_unserialize($GLOBALS['DB_WE']->f("Attributes"));
@@ -461,33 +461,31 @@ class we_glossary_glossary extends we_base_model{
 
 	public static function getJSConsts(){
 		return '
-WE().consts.g_l.glossary={
-	checking:"' . g_l('modules_glossary', '[checking]') . '",
-	all_words_identified:"' . g_l('modules_glossary', '[all_words_identified]') . '",
-	change_to:"' . g_l('modules_glossary', '[change_to]') . '",
-	input:"' . g_l('modules_glossary', '[input]') . '",
-	suggestions:"' . g_l('modules_glossary', '[suggestions]') . '",
-	languages:"' . g_l('modules_glossary', '[languages]') . '",
-	please_insert_title:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_title]')) . '",
-	please_insert_language:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_language]')) . '",
-	please_insert_correct_word:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_correct_word]')) . '",
-	please_choose_action:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_choose_action]')) . '",
-};
-
-WE().consts.g_l.glossary.view={
-	delete_alert:	"' . g_l('modules_glossary', '[delete_alert]') . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_perms]')) . '",
-	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
-	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
-};
-WE().consts.glossary={
-	TYPE_ABBREVATION:"' . we_glossary_glossary::TYPE_ABBREVATION . '",
-	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
-	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
-};
-';
+WE().consts.g_l.glossary=JSON.parse("' . setLangString([
+				'checking' => g_l('modules_glossary', '[checking]'),
+				'all_words_identified' => g_l('modules_glossary', '[all_words_identified]'),
+				'change_to' => g_l('modules_glossary', '[change_to]'),
+				'input' => g_l('modules_glossary', '[input]'),
+				'suggestions' => g_l('modules_glossary', '[suggestions]'),
+				'languages' => g_l('modules_glossary', '[languages]'),
+				'please_insert_title' => (g_l('modules_glossary', '[please_insert_title]')),
+				'please_insert_language' => (g_l('modules_glossary', '[please_insert_language]')),
+				'please_insert_correct_word' => (g_l('modules_glossary', '[please_insert_correct_word]')),
+				'please_choose_action' => (g_l('modules_glossary', '[please_choose_action]')),
+				'view' => [
+					'delete_alert' => g_l('modules_glossary', '[delete_alert]'),
+					'no_perms' => (g_l('modules_glossary', '[no_perms]')),
+					'no_workspace' => (g_l('modules_glossary', '[no_workspace]')),
+					'nothing_to_delete' => (g_l('modules_glossary', '[nothing_to_delete]')),
+					'nothing_to_save' => (g_l('modules_glossary', '[nothing_to_save]')),
+					'save_changed_glossary' => g_l('modules_glossary', '[save_changed_glossary]'),
+				],
+			]) . '");
+WE().consts.glossary=JSON.parse("' . setLangString([
+				'TYPE_ABBREVATION' => we_glossary_glossary::TYPE_ABBREVATION,
+				'TYPE_ACRONYM' => we_glossary_glossary::TYPE_ACRONYM,
+				'TYPE_FOREIGNWORD' => we_glossary_glossary::TYPE_FOREIGNWORD,
+			]) . '");';
 	}
 
 }

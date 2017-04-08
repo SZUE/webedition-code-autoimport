@@ -1020,11 +1020,10 @@ we_templateInit();?>';
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.tagWizzard={
-	fill_required_fields:"' . g_l('taged', '[fill_required_fields]') . '",
-	no_type_selected:"' . g_l('taged', '[no_type_selected]') . '",
-};
-';
+		return 'WE().consts.g_l.tagWizzard=JSON.parse("' . setLangString([
+				'fill_required_fields' => g_l('taged', '[fill_required_fields]'),
+				'no_type_selected' => g_l('taged', '[no_type_selected]'),
+				]) . '");';
 	}
 
 	public static function getJSTWConsts(){

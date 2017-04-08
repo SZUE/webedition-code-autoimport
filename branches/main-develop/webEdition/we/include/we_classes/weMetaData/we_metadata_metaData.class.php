@@ -63,7 +63,7 @@ class we_metadata_metaData{
 		'iff', // IMAGETYPE_IFF
 		'wbmp', // IMAGETYPE_WBMP
 		'xbm', // IMAGETYPE_XBM
-		];
+	];
 
 	/**
 	 * @var string name and path of the file for read/write operations
@@ -135,8 +135,8 @@ class we_metadata_metaData{
 	 */
 	function getImplementations(){
 		return (!$this->valid || !$this->datatype ?
-				false :
-				$this->datatype);
+			false :
+			$this->datatype);
 	}
 
 	function getMetaData($selection = ''){
@@ -401,17 +401,16 @@ class we_metadata_metaData{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.metadatafields={
-	error_meta_field_empty_msg:"' . addslashes(g_l('metadata', '[error_meta_field_empty_msg]')) . '",
-	fields:"' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '",
-	import_from:"' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '",
-	meta_field_wrong_chars_messsage:"' . addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]')) . '",
-	meta_field_wrong_name_messsage:"' . addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]')) . '",
-	proposals:"' . oldHtmlspecialchars('Vorschlagsliste') . '",
-	tagname:"' . g_l('metadata', '[tagname]') . '",
-	type:"' . g_l('metadata', '[type]') . '",
-};
-';
+		return 'WE().consts.g_l.metadatafields=JSON.parse("' . setLangString([
+				'error_meta_field_empty_msg' => (g_l('metadata', '[error_meta_field_empty_msg]')),
+				'fields' => (g_l('metadata', '[fields]')),
+				'import_from' => (g_l('metadata', '[import_from]')),
+				'meta_field_wrong_chars_messsage' => (g_l('metadata', '[meta_field_wrong_chars_messsage]')),
+				'meta_field_wrong_name_messsage' => (g_l('metadata', '[meta_field_wrong_name_messsage]')),
+				'proposals' => g_l('metadata', '[proposals]'),
+				'tagname' => g_l('metadata', '[tagname]'),
+				'type' => g_l('metadata', '[type]'),
+				]) . '");';
 	}
 
 }

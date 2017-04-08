@@ -761,23 +761,22 @@ class we_voting_voting extends we_base_model{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.voting={
-	answer_limit:"' . g_l('modules_voting', '[answer_limit]') . '",
-	delete_alert:"' . g_l('modules_voting', '[delete_alert]') . '",
-	delete_ipdata_question:"' . g_l('modules_voting', '[delete_ipdata_question]') . '",
-	delete_log_question:"' . g_l('modules_voting', '[delete_log_question]') . '",
-	imageID_text:"' . g_l('modules_voting', '[imageID_text]') . '",
-	mediaID_text:"' . g_l('modules_voting', '[mediaID_text]') . '",
-	new_ip_add:"' . g_l('modules_voting', '[new_ip_add]') . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[no_perms]')) . '",
-	not_valid_ip:"' . g_l('modules_voting', '[not_valid_ip]') . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
-	save_changed_voting:"' . g_l('modules_voting', '[save_changed_voting]') . '",
-	successorID_text:"' . g_l('modules_voting', '[successorID_text]') . '",
-	result_delete_alert:"'.g_l('modules_voting', '[result_delete_alert]').'",
-};
-';
+		return 'WE().consts.g_l.voting=JSON.parse("' . setLangString([
+				'answer_limit' => g_l('modules_voting', '[answer_limit]'),
+				'delete_alert' => g_l('modules_voting', '[delete_alert]'),
+				'delete_ipdata_question' => g_l('modules_voting', '[delete_ipdata_question]'),
+				'delete_log_question' => g_l('modules_voting', '[delete_log_question]'),
+				'imageID_text' => g_l('modules_voting', '[imageID_text]'),
+				'mediaID_text' => g_l('modules_voting', '[mediaID_text]'),
+				'new_ip_add' => g_l('modules_voting', '[new_ip_add]'),
+				'no_perms' => (g_l('modules_voting', '[no_perms]')),
+				'not_valid_ip' => g_l('modules_voting', '[not_valid_ip]'),
+				'nothing_to_delete' => (g_l('modules_voting', '[nothing_to_delete]')),
+				'nothing_to_save' => (g_l('modules_voting', '[nothing_to_save]')),
+				'save_changed_voting' => g_l('modules_voting', '[save_changed_voting]'),
+				'successorID_text' => g_l('modules_voting', '[successorID_text]'),
+				'result_delete_alert' => g_l('modules_voting', '[result_delete_alert]'),
+				]) . '");';
 	}
 
 }

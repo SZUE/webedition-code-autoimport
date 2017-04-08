@@ -56,7 +56,7 @@ abstract class we_message_reporting{
 		}
 	}
 
-	public static function prepareMsgForJS($message){
+	private static function prepareMsgForJS($message){
 		return str_replace(["\n",
 			'\n',
 			'\\',
@@ -73,11 +73,11 @@ abstract class we_message_reporting{
 
 	public static function jsString(){
 		return '
-var message_reporting={
-	notice:"' . g_l('alert', '[notice]') . '",
-	warning:"' . g_l('alert', '[warning]') . '",
-	error:"' . g_l('alert', '[error]') . '"
-};';
+var message_reporting=JSON.parse("' . setLangString([
+				'notice' => g_l('alert', '[notice]'),
+				'warning' => g_l('alert', '[warning]'),
+				'error' => g_l('alert', '[error]'),
+			]) . '");';
 	}
 
 }

@@ -99,7 +99,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 * Load workflow definition from database
 	 */
 	function load($id = 0){
-		$this->ID = $id ? : $this->ID;
+		$this->ID = $id ?: $this->ID;
 		if(!$this->ID){
 			return false;
 		}
@@ -205,12 +205,12 @@ class we_workflow_workflow extends we_workflow_base{
 
 	static function isDocInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(' . self::DOCTYPE_CATEGORY . ',' . self::FOLDER . ') AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? : false);
+		return ($id ?: false);
 	}
 
 	static function isObjectInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? : false);
+		return ($id ?: false);
 	}
 
 	/**
@@ -263,7 +263,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 		return ($workflowID ? $workflowID // when we have found a document type-based workflow we can return
-				: (self::findWfIdForFolder($folder, $db, $all) ? : false));
+			: (self::findWfIdForFolder($folder, $db, $all) ?: false));
 	}
 
 	private static function findWfIdForFolder($folderID, we_database_base $db, array &$all){
@@ -323,7 +323,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 
-		return ($workflowID ? : false);
+		return ($workflowID ?: false);
 	}
 
 	function addNewStep(){
@@ -337,26 +337,26 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.workflow={
-view:{
-	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
-	emty_log_question:"' . g_l('modules_workflow', '[emty_log_question]') . '",
-	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '",
-	save_changed_workflow:"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
-	save_question:"' . g_l('modules_workflow', '[save_question]') . '",
-},
-prop:{
-	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
-	del_last_task:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
-	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
-	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
-	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
-	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '",
-	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
-	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
-}
-};';
+		return 'WE().consts.g_l.workflow=JSON.parse("' . setLangString([
+				'view' => [
+					'delete_question' => g_l('modules_workflow', '[delete_question]'),
+					'emty_log_question' => g_l('modules_workflow', '[emty_log_question]'),
+					'nothing_to_delete' => (g_l('modules_workflow', '[nothing_to_delete]')),
+					'nothing_to_save' => (g_l('modules_workflow', '[nothing_to_save]')),
+					'save_changed_workflow' => g_l('modules_workflow', '[save_changed_workflow]'),
+					'save_question' => g_l('modules_workflow', '[save_question]'),
+				],
+				'prop' => [
+					'del_last_step' => (g_l('modules_workflow', '[del_last_step]')),
+					'del_last_task' => (g_l('modules_workflow', '[del_last_task]')),
+					'doctype_empty' => (g_l('modules_workflow', '[doctype_empty]')),
+					'folders_empty' => (g_l('modules_workflow', '[folders_empty]')),
+					'name_empty' => (g_l('modules_workflow', '[name_empty]')),
+					'objects_empty' => (g_l('modules_workflow', '[objects_empty]')),
+					'user_empty' => (g_l('modules_workflow', '[user_empty]')),
+					'worktime_empty' => (g_l('modules_workflow', '[worktime_empty]')),
+				]
+				]) . '");';
 	}
 
 }
