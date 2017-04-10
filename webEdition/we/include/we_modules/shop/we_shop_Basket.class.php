@@ -130,14 +130,14 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Add_Item($id, $quantity = 1, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = []){
+	function addItem($id, $quantity = 1, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = []){
 
 		// check if this item is already in the shoppingCart
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
 			if($this->ShoppingItems[$key]['quantity'] + $quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] += $quantity;
 			} else {
-				$this->Del_Item($id, $type, $variant, $customFields);
+				$this->delItem($id, $type, $variant, $customFields);
 			}
 		} else { // add the item
 			$key = str_replace('.', '', uniqid('we_cart_', true));
@@ -160,7 +160,7 @@ class we_shop_Basket{
 	 *
 	 * @return integer
 	 */
-	function Get_Basket_Count(){
+	function getBasketCount(){
 		return count($this->ShoppingItems);
 	}
 
@@ -169,7 +169,7 @@ class we_shop_Basket{
 	 *
 	 * @return array
 	 */
-	function Get_All_Data(){
+	function getAllData(){
 		return $this->getCartProperties();
 	}
 
@@ -265,7 +265,7 @@ class we_shop_Basket{
 	 * @param string $key
 	 * @return integer
 	 */
-	function Get_Item_Quantity($key){
+	function getItemQuantity($key){
 		return $this->ShoppingItems[$key]['quantity'];
 	}
 
@@ -276,7 +276,7 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Del_Item($id, $type, $variant = '', $customFields = []){
+	function delItem($id, $type, $variant = '', $customFields = []){
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){
 			unset($this->ShoppingItems[$key]);
 		}
@@ -286,7 +286,7 @@ class we_shop_Basket{
 	 * resets the shoppingCart
 	 *
 	 */
-	function Empty_Basket(){
+	function emptyBasket(){
 		$this->ShoppingItems = [];
 		$this->CartFields = [];
 	}
@@ -299,15 +299,15 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Set_Item($id, $quantity = 1, $type = "w", $variant = '', $customFields = []){
+	function setItem($id, $quantity = 1, $type = "w", $variant = '', $customFields = []){
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
 			} else {
-				$this->Del_Item($id, $type, $variant, $customFields);
+				$this->delItem($id, $type, $variant, $customFields);
 			}
 		} else { // new item
-			$this->Add_Item($id, $quantity, $type, $variant, $customFields);
+			$this->addItem($id, $quantity, $type, $variant, $customFields);
 		}
 	}
 
@@ -317,10 +317,10 @@ class we_shop_Basket{
 	 * @param string $cart_id
 	 * @param integer $cart_amount
 	 */
-	function Set_Cart_Item($cart_id, $cart_amount){
+	function setCartItem($cart_id, $cart_amount){
 		if(isset($this->ShoppingItems[$cart_id])){
 			$item = $this->ShoppingItems[$cart_id];
-			$this->Set_Item($item['id'], $cart_amount, $item['type'], $item['variant'], $item['customFields']);
+			$this->setItem($item['id'], $cart_amount, $item['type'], $item['variant'], $item['customFields']);
 		}
 	}
 

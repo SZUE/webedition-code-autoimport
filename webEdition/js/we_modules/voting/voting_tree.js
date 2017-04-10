@@ -57,7 +57,7 @@ function doClick(id, typ) {
 	top.content.usetHot();
 	cmd = "voting_edit";
 	node = treeData.get(id);
-	top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;
+	top.content.editor.edbody.location = top.getFrameset() + "&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;
 }
 
 function info(text) {

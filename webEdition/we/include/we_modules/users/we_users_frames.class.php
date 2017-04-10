@@ -29,7 +29,6 @@ class we_users_frames extends we_modules_frame{
 		$this->module = 'users';
 		$this->Tree = new we_tree_users($this->jsCmd);
 		$this->showTreeFooter = true;
-		$this->treeDefaultWidth = 224;
 		$this->View = new we_users_view($frameset, 'top.content');
 	}
 

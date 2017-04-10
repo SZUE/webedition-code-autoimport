@@ -247,7 +247,6 @@ class we_tag_tagParser{
 			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname), 'Parsed tags around:' . $data);
 		}
 		//tags which need an endtag are not allowed to be selfclosing
-		//FIXME: ok or not?
 		//$selfclose&=!in_array($tagname, self::$CloseTags);
 		preg_match('%</?we:[[:alnum:]_-]+[ \t\n\r]*(.*)' . $regs[4] . $regs[5] . '%msi', $regs[0], $regs);
 		$attr = trim($regs[1]);

@@ -32,7 +32,7 @@ abstract class we_modules_frame{
 	var $Tree = null;
 	protected $showTreeHeader = false;
 	protected $showTreeFooter = false;
-	protected $treeDefaultWidth = 200;
+	protected $treeDefaultWidth = 240;
 	protected $treeWidth = 0;
 	protected $hasIconbar = false;
 	//FIXME: make this protected again

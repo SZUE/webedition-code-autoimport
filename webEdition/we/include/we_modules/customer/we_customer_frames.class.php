@@ -27,7 +27,6 @@ class we_customer_frames extends we_modules_frame{
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
-		$this->treeDefaultWidth = 244;
 		$this->module = 'customer';
 		$this->showTreeHeader = true;
 		$this->showTreeFooter = true;

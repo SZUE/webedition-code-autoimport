@@ -153,8 +153,8 @@ class we_base_request{
 					}
 					$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 					$mail = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-							$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
-							'');
+						$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+						'');
 				}//if format didn't match, filter the whole var as one address
 
 				$mails = array_filter($mails);
@@ -174,8 +174,8 @@ class we_base_request{
 				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 
 				$var = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-						$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
-						'');
+					$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+					'');
 				return;
 			case self::WEFILELIST:
 			case self::WEFILELISTA:
@@ -183,7 +183,7 @@ class we_base_request{
 			case self::FILELIST:
 				$var = explode(',', trim(strtr($var, ['../' => '',
 					'//' => ''
-					]), ','));
+						]), ','));
 				foreach($var as &$cur){
 					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
 					if($cur === rtrim(WEBEDITION_DIR, '/') || strpos($cur, WEBEDITION_DIR) === 0){//file-selector has propably access
@@ -198,13 +198,13 @@ class we_base_request{
 			case self::FILE:
 				$var = strtr(($type == self::FILE ? filter_var($var, FILTER_SANITIZE_URL) : $var), ['../' => '',
 					'//' => '/'
-					]);
+				]);
 				if(strpos($var, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
 					if(!(strstr($var, SITE_DIR) || strstr($var, TEMP_DIR))){//allow site/tmp dir
 						$var = defined('supportDebugging') && (supportDebugging == $_SERVER['REMOTE_ADDR']) ? $var : '-1';
 					}
 				}
-				$var = $var ? : $default;
+				$var = $var ?: $default;
 				return;
 			case self::URL:
 				if(preg_match('-(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_MAIL_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|' . we_base_link::TYPE_THUMB_PREFIX . ')-', $var)){
@@ -233,7 +233,7 @@ class we_base_request{
 				//in lists, we don't accept quotes
 				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
 				return;
-				//FIXME: what is the idea behin this? where is the difference to STRING?
+			//FIXME: what is the idea behin this? where is the difference to STRING?
 			case self::HTML:
 				$var = filter_var(htmlspecialchars_decode($var), FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
@@ -252,12 +252,7 @@ class we_base_request{
 	}
 
 	public static function filterVar($var, $varType, $default = ''){
-		//FIXME: remove checker at release
-		//$preVar = $var;
 		self::_weRequest($var, '', [$varType, $default]);
-		/* 		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
-		  t_e('changed var/tag attribute', $preVar, $var);
-		  } */
 		return $var;
 	}
 

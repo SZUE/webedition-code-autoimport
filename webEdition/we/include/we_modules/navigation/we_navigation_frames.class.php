@@ -36,7 +36,6 @@ class we_navigation_frames extends we_modules_frame{
 		$frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		parent::__construct($frameset);
 		$this->module = 'navigation';
-		$this->treeDefaultWidth = 220;
 		$this->showTreeFooter = true;
 
 		$this->Tree = new we_navigation_tree($this->jsCmd);
