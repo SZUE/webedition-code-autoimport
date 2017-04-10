@@ -870,7 +870,6 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		//	we need all given tags ...
 
 		if($tags[0]){
-
 			if(!in_array('controlElement', $this->persistent_slots)){
 				$this->persistent_slots[] = 'controlElement';
 			} else {
