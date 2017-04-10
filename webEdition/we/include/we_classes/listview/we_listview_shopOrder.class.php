@@ -33,13 +33,13 @@ class we_listview_shopOrder extends we_listview_base{
 	var $docID = 0;
 	var $hidedirindex = false;
 	private static $replArray = [
-			'OrderID' => 'ID',
-			'OrderIntID' => 'ID',
-			'IntOrderID' => 'ID',
-			'CustomerIntID' => 'customerID',
-			'IntCustomerID' => 'customerID',
-			'CustomerID' => 'customerID',
-		];
+		'OrderID' => 'ID',
+		'OrderIntID' => 'ID',
+		'IntOrderID' => 'ID',
+		'CustomerIntID' => 'customerID',
+		'IntCustomerID' => 'customerID',
+		'CustomerID' => 'customerID',
+	];
 
 	/**
 	 * @desc    constructor of class
@@ -102,7 +102,7 @@ class we_listview_shopOrder extends we_listview_base{
 	shippingVat AS Shipping_vatRate,
 	customerData,
 	' . implode(',', $format) .
-			' FROM ' . SHOP_ORDER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
+			' FROM ' . SHOP_ORDER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 

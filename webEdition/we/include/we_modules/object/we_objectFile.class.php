@@ -2297,14 +2297,14 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	protected function i_urlDouble(){
 		$this->setUrl();
 		$db = new DB_WE();
 
-		return ($this->Url ? f('SELECT ID FROM ' . $db->escape($this->Table) . ' WHERE Url="' . $db->escape($this->Url) . '" AND ID!=' . intval($this->ID), '', $db) : false);
+		return ($this->Url ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Url="' . $db->escape($this->Url) . '" AND ID!=' . intval($this->ID), '', $db) : false);
 	}
 
 	function i_checkPathDiffAndCreate(){
