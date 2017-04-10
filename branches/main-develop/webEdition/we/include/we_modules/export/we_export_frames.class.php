@@ -32,7 +32,6 @@ class we_export_frames extends we_modules_frame{
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
-		$this->treeDefaultWidth = 220;
 		$this->module = "export";
 
 		$this->Tree = new we_export_treeMain($this->jsCmd);
@@ -272,7 +271,7 @@ class we_export_frames extends we_modules_frame{
 		return we_html_element::htmlDiv(['id' => 'optionsWXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_WE ? 'block' : 'none') . ';'], $optionsWE) .
 			we_html_element::htmlDiv(['id' => 'optionsGXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_XML ? 'block' : 'none') . ';'], $optionsXML) .
 			we_html_element::htmlDiv(['id' => 'optionsCSV', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'block' : 'none') . ';'], $optionsCSV);
-		
+
 	}
 
 	private function getHTMLOptionsWE(){
@@ -346,20 +345,20 @@ class we_export_frames extends we_modules_frame{
 		$file_encoding->addOption("mac", g_l('export', '[mac]'));
 		$file_encoding->selectOption($this->View->export->CSVLineend);
 		$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('export', '[csv_lineend]') . '<br/>' . $file_encoding->getHtml());
-		$fileformattable->setColContent(1, 0, $this->getHTMLChooser('CSVDelimiter', $this->View->export->CSVDelimiter, ['semicolon' => g_l('export', '[semicolon]'), 
+		$fileformattable->setColContent(1, 0, $this->getHTMLChooser('CSVDelimiter', $this->View->export->CSVDelimiter, ['semicolon' => g_l('export', '[semicolon]'),
 				'comma' => g_l('export', '[comma]'),
 				'colon' => g_l('export', '[colon]'),
 				'tab' => g_l('export', '[tab]'),
 				'space' => g_l('export', '[space]')
 			], g_l('export', '[csv_delimiter]')));
-		$fileformattable->setColContent(2, 0, $this->getHTMLChooser("CSVEnclose", $this->View->export->CSVEnclose, ["doublequote" => g_l('export', '[double_quote]'), 
+		$fileformattable->setColContent(2, 0, $this->getHTMLChooser("CSVEnclose", $this->View->export->CSVEnclose, ["doublequote" => g_l('export', '[double_quote]'),
 				"singlequote" => g_l('export', '[single_quote]')
 			], g_l('export', '[csv_enclose]')));
 		$fileformattable->setColContent(3, 0, we_html_forms::checkboxWithHidden(($this->View->export->CSVFieldnames ? true : false), 'CSVFieldnames', g_l('export', '[csv_fieldnames]'), false, 'defaultfont'));
 
 		return [['headline' => g_l('export', '[csv_params]'), 'html' => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED]];
 	}
-	
+
 
 
 	private function getHTMLTab3(){
@@ -388,7 +387,7 @@ class we_export_frames extends we_modules_frame{
 
 		return $weSuggest->getHTML();
 	}
-	
+
 	private function getHTMLChooser($name, $value, $values, $title){ // FIXME: function taken from we_export_wizard: may be obsolete
 		$input_size = 5;
 

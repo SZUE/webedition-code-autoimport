@@ -51,7 +51,7 @@ container.prototype.openClose = function (id) {
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
 		sort = sort.replace(/\+/g, "%2B");
-		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		top.content.cmd.location = top.getFrameset() + "&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -89,12 +89,12 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = "top.content.treeData.openClose('" + cur.id + "')\"";
 	var row = "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
-					'<span ' +
-					(cur.disabled ? "" : "name=\"_" + cur.id + "\" onclick=\"" + oc_js + "\"") +
-					">" +
-					WE().util.getTreeIcon(cur.contenttype, cur.open) +
-					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getLayout() + "\">" + cur.text + "</label>" +
-					"</span><br/>";
+		'<span ' +
+		(cur.disabled ? "" : "name=\"_" + cur.id + "\" onclick=\"" + oc_js + "\"") +
+		">" +
+		WE().util.getTreeIcon(cur.contenttype, cur.open) +
+		"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getLayout() + "\">" + cur.text + "</label>" +
+		"</span><br/>";
 	if (cur.open) {
 		newAst += '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>';
 		row += this.draw(cur.id, newAst);
@@ -106,14 +106,14 @@ container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 	var oc_js = "top.content.treeData.openClose('" + nf[ai].id + "')\"";
 
 	return "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
-					"<span name=\"_" + nf[ai].id + "\" onclick=\"" + oc_js + ";\">" +
-					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + this.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
-					"</span>" +
-					"<br/>" +
-					(nf[ai].open ?
-									this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>') :
-									"");
+		"<span name=\"_" + nf[ai].id + "\" onclick=\"" + oc_js + ";\">" +
+		WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+		"<label id=\"lab_" + nf[ai].id + "\" class=\"" + this.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
+		"</span>" +
+		"<br/>" +
+		(nf[ai].open ?
+			this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>') :
+			"");
 };
 
 function applySort() {

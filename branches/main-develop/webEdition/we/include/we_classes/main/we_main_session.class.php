@@ -41,7 +41,7 @@ abstract class we_main_session{
 			$_SESSION['user'] = ['ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false];
 		}
 
-		//FIXME: if this is not set, nothing work in WE!!!
+		//FIXME: if this is not set, nothing works in WE!!!
 		$GLOBALS['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', md5(uniqID('', true)));
 
 		if(!isset($_SESSION['weS']['we_data'])){

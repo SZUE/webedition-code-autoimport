@@ -27,7 +27,6 @@ class we_glossary_frames extends we_modules_frame{
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = "glossary";
-		$this->treeDefaultWidth = 280;
 
 		$this->Tree = new we_glossary_tree($this->jsCmd);
 		$this->View = new we_glossary_view();
