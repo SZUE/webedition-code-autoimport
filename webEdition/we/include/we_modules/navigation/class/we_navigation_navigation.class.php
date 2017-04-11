@@ -743,7 +743,7 @@ class we_navigation_navigation extends we_base_model{
                 } else {
                     $param = 'we_objectID=' . $id . ($param ? '&' : '') . $param;
                 }
-                $id = we_navigation_dynList::getFirstDynDocument(($this->IsFolder ? $this->FolderWsID : $this->WorkspaceID), $db) ? : (!empty($object['TriggerID']) ? $object['TriggerID'] : $id);
+                $id = !empty($object['TriggerID']) ? $object['TriggerID'] : we_navigation_dynList::getFirstDynDocument(($this->IsFolder ? $this->FolderWsID : $this->WorkspaceID), $db);
             default: //folder and entry
                 $p = we_navigation_items::id2path($id);
                 $path = ($p === '/' ? '' : $p);
