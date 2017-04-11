@@ -239,7 +239,7 @@ class we_export_export extends we_base_model{
 
 	public static function getJSLangConsts(){
 		return '
-	WE().consts.g_l.exports=JSON.parse("' . we_serialize([
+	WE().consts.g_l.exports=JSON.parse("' . we_base_util::setLangString([
 				'delete_group_question' => g_l('export', '[delete_group_question]'),
 				'delete_question' => g_l('export', '[delete_question]'),
 				'must_save' => (g_l('export', '[must_save]')),
@@ -249,7 +249,7 @@ class we_export_export extends we_base_model{
 				'nothing_to_save' => (g_l('export', '[nothing_to_save]')),
 				'save_changed_export' => g_l('export', '[save_changed_export]'),
 				'server_finished' => g_l('export', '[server_finished]'),
-				]) . '");';
+			]) . '");';
 	}
 
 }
