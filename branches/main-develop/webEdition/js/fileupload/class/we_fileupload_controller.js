@@ -294,6 +294,7 @@ function weFileupload_controller_abstract(uploader) {
 				self.view.setEditStatus('', pos, (pos === -1 ? true : false));
 				self.view.previewSyncRotation(pos, rotate);
 				btnRefresh.disabled = self.sender.preparedFiles.length === 0;
+				break;
 			case 'fuOpts_quality':
 				self.view.formCustomEditOptsSync(-1, true);
 				self.imageEdit.uneditImage(pos, pos === -1 ? true : false);
@@ -495,6 +496,7 @@ function weFileupload_controller_import(uploader) {
 				replace = WE().consts.g_l.fileupload.btnCancel;
 				break;
 			case 'upload' :
+			/*falls through*/
 			default:
 				replace = WE().consts.g_l.fileupload.btnUpload;
 		}

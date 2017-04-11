@@ -37,7 +37,7 @@ function TinyWrapper(win, fieldname) {
 	this. tinymce = this.win.tinymce;
 	this.doc = this.win.document;
 	this.isInlineTrue = typeof this.tinyEditors[this.fieldname] === 'object';
-	this.id = isInlineTrue ? this.tinyEditors[this.fieldname].id : (this.tinyEditors[this.fieldname] === undefined ? undefined : this.tinyEditors[this.fieldname]);
+	this.id = this.isInlineTrue ? this.tinyEditors[this.fieldname].id : (this.tinyEditors[this.fieldname] === undefined ? undefined : this.tinyEditors[this.fieldname]);
 
 	this.getFieldName = function () {
 		return this.fieldname;
@@ -79,7 +79,7 @@ function TinyWrapper(win, fieldname) {
 		if(this.isEditorInitialized()) {
 			return this.tinyEditorsInlineFalse[this.fieldname];
 		}
-		
+
 		return undefined;
 	};
 

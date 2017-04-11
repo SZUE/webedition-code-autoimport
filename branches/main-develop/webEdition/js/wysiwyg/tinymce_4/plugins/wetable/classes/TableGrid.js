@@ -7,6 +7,7 @@
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
+'use strict';
 
 /**
  * This class creates a grid out of a table element. This

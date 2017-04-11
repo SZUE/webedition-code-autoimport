@@ -282,17 +282,17 @@
 						}
 					}
 					//small_cm = c < (ed.controlManager.controls[ed.editorId + '_table'] ? 25 : 15) ? true : false;
-					small_cm = c < (ed.buttons['table'] ? 25 : 15) ? true : false;
+					small_cm = c < (ed.buttons.table ? 25 : 15) ? true : false;
 
 					//correct wrong state of unlink
-					if (ed.controlManager.buttons['unlink']) {
-						ed.controlManager.buttons['unlink'].state.data.active = false;
+					if (ed.controlManager.buttons.unlink) {
+						ed.controlManager.buttons.unlink.state.data.active = false;
 					}
 
 					//set rules for active items and folders
 					//if (ed.controlManager.controls[ed.editorId + '_table'] && ed.controlManager.controls[ed.editorId + '_table'].active) {
 						//ed.controlManager.controls[ed.editorId + '_table'].active = 0;
-					if (ed.controlManager.buttons['table'] && ed.controlManager.buttons['table'].state.data.active) {
+					if (ed.controlManager.buttons.table && ed.controlManager.buttons.table.state.data.active) {
 						ed.controlManager.controls[ed.editorId + '_table'].active = 0;
 						set_tableprops_active = true;
 						active_groups.table = true;
@@ -305,24 +305,24 @@
 						(ed.controlManager.controls[ed.editorId + '_movebackward'] && !ed.controlManager.controls[ed.editorId + '_movebackward'].disabled)) {
 						active_groups.layer = true;
 					}
-	*/top.console.log('bold', ed.controlManager.buttons['bold']);
-					if ((ed.controlManager.buttons['justifyleft'] && ed.controlManager.buttons['justifyleft'].state.data.active) ||
-						(ed.controlManager.buttons['justifycenter'] && ed.controlManager.buttons['justifycenter'].state.data.active) ||
-						(ed.controlManager.buttons['justifyright'] && ed.controlManager.buttons['justifycenter'].state.data.active) ||
-						(ed.controlManager.buttons['justifyfull'] && ed.controlManager.buttons['justifycenter'].state.data.active)) {
+	*/top.console.log('bold', ed.controlManager.buttons.bold);
+					if ((ed.controlManager.buttons.justifyleft && ed.controlManager.buttons.justifyleft.state.data.active) ||
+						(ed.controlManager.buttons.justifycenter && ed.controlManager.buttons.justifycenter.state.data.active) ||
+						(ed.controlManager.buttons.justifyright && ed.controlManager.buttons.justifycenter.state.data.active) ||
+						(ed.controlManager.buttons.justifyfull && ed.controlManager.buttons.justifycenter.state.data.active)) {
 						active_groups.justify = true;
 					}
-					if (ed.controlManager.buttons['welink'] && ed.controlManager.buttons['welink'].state.data.active) {
+					if (ed.controlManager.buttons.welink && ed.controlManager.buttons.welink.state.data.active) {
 						active_items.weadaptunlink = true;
 					}
-					if (ed.controlManager.buttons['outdent'] && ed.controlManager.buttons['outdent'].state.data.active) {
+					if (ed.controlManager.buttons.outdent && ed.controlManager.buttons.outdent.state.data.active) {
 						active_items.indent = true;
 						active_items.outdent = true;
 					}
-					if (ed.controlManager.buttons['undo'] && !ed.controlManager.buttons['undo'].state.data.disabled) {
+					if (ed.controlManager.buttons.undo && !ed.controlManager.buttons.undo.state.data.disabled) {
 						active_items.undo = true;
 					}
-					if (ed.controlManager.buttons['redo'] && !ed.controlManager.buttons['redo'].state.data.disabled) {
+					if (ed.controlManager.buttons.redo && !ed.controlManager.buttons.redo.state.data.disabled) {
 						active_items.redo = true;
 					}
 

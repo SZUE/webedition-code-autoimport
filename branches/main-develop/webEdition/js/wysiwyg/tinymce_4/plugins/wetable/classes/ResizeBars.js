@@ -7,6 +7,7 @@
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
+'use strict';
 
 /**
  * This class handles table column and row resizing by adding divs over the columns and rows of the table.

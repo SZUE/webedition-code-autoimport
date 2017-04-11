@@ -167,7 +167,7 @@ EditorFrameController.prototype = {
 		if ((_editorId = this.getEditorIdOfOpenDocument(table, id, editcmd, url))) { // activate open tab
 			if (parameters !== this.getEditorFrame(_editorId).getEditorDocumentParameters()) {
 				// re-open document
-				this.closeDocument(_editorId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
+				this.closeDocument(_editorId, ['openDocumentAllParams', table, id, ct, editcmd, dt, url, code, mode, parameters]);
 			} else if (this.ActiveEditorFrameId !== _editorId) {
 				// add to navigationHistory:
 				WE().layout.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
@@ -218,8 +218,7 @@ EditorFrameController.prototype = {
 			} else if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
 				// build nextCmd
 				// table,id,ct,editcmd,dt,url,code,mode
-				this.closeDocument(this.ActiveEditorFrameId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
-
+				this.closeDocument(this.ActiveEditorFrameId, ['openDocumentAllParams', table, id, ct, editcmd, dt, url, code, mode, parameters]);
 			} else {
 				WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
 
@@ -264,7 +263,7 @@ EditorFrameController.prototype = {
 					}
 
 					if (nextCommand) {
-						eval(nextCommand);
+						top.we_cmd.apply(window, nextCommand);
 					}
 				}
 			} else {
@@ -304,7 +303,7 @@ EditorFrameController.prototype = {
 			return true;
 		}
 		if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
-			this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("dologout");');
+			this.closeDocument(this.ActiveEditorFrameId, ['dologout']);
 		} else {
 			top.we_cmd("exit_multi_doc_question", 'dologout');
 		}
@@ -353,7 +352,7 @@ EditorFrameController.prototype = {
 				return true;
 			}
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
-				this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
+				this.closeDocument(this.ActiveEditorFrameId, ['close_all_documents']);
 			} else {
 				top.we_cmd("exit_multi_doc_question", 'close_all_documents');
 			}
@@ -384,7 +383,7 @@ EditorFrameController.prototype = {
 				for (frameId in _UsedEditors) {
 					if (frameId !== activeId) {
 						if (_UsedEditors[frameId].getEditorIsHot()) {
-							this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '");');
+							this.closeDocument(frameId, ['close_all_but_active_document', activeId]);
 							return;
 
 						}

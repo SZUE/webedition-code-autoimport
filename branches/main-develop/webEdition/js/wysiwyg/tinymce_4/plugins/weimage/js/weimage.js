@@ -1,4 +1,4 @@
-/* global tinyMCEPopup, tinymce */
+/* global tinyMCEPopup, tinymce, TinyMCE_EditableSelects */
 
 /**
  * webEdition CMS

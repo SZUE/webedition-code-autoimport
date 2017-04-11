@@ -25,37 +25,37 @@
 'use strict';
 
 function checkForm(f) {
-	if (f.tagname.value == "") {
+	if (f.tagname.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_tagname_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.tagname.focus();
 		f.tagname.select();
 		return false;
 	}
-	if (f.page.value == "") {
+	if (f.page.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_page_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.page.focus();
 		f.page.select();
 		return false;
 	}
-	if (f.width.value == "") {
+	if (f.width.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_width_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.width.focus();
 		f.width.select();
 		return false;
 	}
-	if (f.height.value == "") {
+	if (f.height.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_height_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.height.focus();
 		f.height.select();
 		return false;
 	}
-	if (f.getscript.value == "") {
+	if (f.getscript.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_getscript_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.getscript.focus();
 		f.getscript.select();
 		return false;
 	}
-	if (f.clickscript.value == "") {
+	if (f.clickscript.value === "") {
 		WE().util.showMessage(WE().consts.g_l.banner.error_clickscript_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		f.clickscript.focus();
 		f.clickscript.select();

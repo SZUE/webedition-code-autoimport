@@ -46,7 +46,9 @@ var LinkDialog = {
 			formObj.elements['we_dialog_args[accesskey]'].value = inst.dom.getAttrib(elm, 'accesskey', elm.accesskey !== undefined ? elm.accesskey : "");
 			formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', elm.tabindex !== undefined ? elm.tabindex : "");
 			this.selectOptionByValue(formObj, "we_dialog_args[cssclass]", inst.dom.getAttrib(elm, 'class'));
-		} else top.opener.topconsole.log('n drin');
+		} else{
+			top.opener.topconsole.log('n drin');
+		}
 		/*
 		 if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
 		 var cl = '';

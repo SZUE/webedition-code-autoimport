@@ -15,6 +15,7 @@
  * @class tinymce.tableplugin.CellSelection
  * @private
  */
+'use strict';
 define("tinymce/tableplugin/CellSelection", [
 	"tinymce/tableplugin/TableGrid",
 	"tinymce/dom/TreeWalker",

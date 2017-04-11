@@ -1,3 +1,6 @@
+/* global tinymce, top, tinyMCEPopup */
+
+'use strict';
 
 /* overwrite buggy function getWindowArg() */
 tinyMCEPopup.getWindowArg = function (c, b) {
@@ -12,47 +15,47 @@ tinyMCEPopup._onDOMLoaded = function () {
 		if (b.features.translate_i18n !== false) {
 			c = document.body.innerHTML;
 			if (tinymce.isIE) {
-				c = c.replace(/ (value|title|alt)=([^"][^\s>]+)/gi, ' $1="$2"')
+				c = c.replace(/ (value|title|alt)=([^"][^\s>]+)/gi, ' $1="$2"');
 			}
 			document.dir = b.editor.getParam("directionality", "");
 			if ((a = b.editor.translate(c)) && a != c) {
-				document.body.innerHTML = a
+				document.body.innerHTML = a;
 			}
 			if ((a = b.editor.translate(d)) && a != d) {
-				document.title = d = a
+				document.title = d = a;
 			}
 		}
 		if (!b.editor.getParam("browser_preferred_colors", false) || !b.isWindow) {
-			b.dom.addClass(document.body, "forceColors")
+			b.dom.addClass(document.body, "forceColors");
 		}
 		document.body.style.display = "";
 		if (tinymce.isIE && !tinymce.isIE11) {
 			document.attachEvent("onmouseup", tinyMCEPopup._restoreSelection);
 			b.dom.add(b.dom.select("head")[0], "base", {
 				target: "_self"
-			})
+			});
 		} else {
 			if (tinymce.isIE11) {
-				document.addEventListener("mouseup", tinyMCEPopup._restoreSelection, false)
+				document.addEventListener("mouseup", tinyMCEPopup._restoreSelection, false);
 			}
 		}
 		b.restoreSelection();
 		b.resizeToInnerSize();
 		if (!b.isWindow) {
-			b.editor.windowManager.setTitle(window, d)
+			b.editor.windowManager.setTitle(window, d);
 		} else {
-			window.focus()
+			window.focus();
 		}
 		if (!tinymce.isIE && !b.isWindow) {
 			b.dom.bind(document, "focus", function () {
-				b.editor.windowManager.focus(b.id)
-			})
+				b.editor.windowManager.focus(b.id);
+			});
 		}
 		tinymce.each(b.dom.select("select"), function (f) {
-			f.onkeydown = tinyMCEPopup._accessHandler
+			f.onkeydown = tinyMCEPopup._accessHandler;
 		});
 		tinymce.each(b.listeners, function (f) {
-			f.func.call(f.scope, b.editor)
+			f.func.call(f.scope, b.editor);
 		});
 		if (b.getWindowArg("mce_auto_focus", true)) {
 			window.focus();
@@ -60,15 +63,15 @@ tinyMCEPopup._onDOMLoaded = function () {
 				tinymce.each(g.elements, function (f) {
 					if (b.dom.hasClass(f, "mceFocus") && !f.disabled) {
 						f.focus();
-						return false
+						return false;
 					}
-				})
-			})
+				});
+			});
 		}
-		document.onkeyup = tinyMCEPopup._closeWinKeyHandler
+		document.onkeyup = tinyMCEPopup._closeWinKeyHandler;
 	} catch (e) {
 	}
-}
+};
 
 /* webEdition Functions */
 

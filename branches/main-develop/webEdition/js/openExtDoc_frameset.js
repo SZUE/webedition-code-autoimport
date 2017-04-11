@@ -23,23 +23,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+var openedWithWE = true;
 var extdoc = WE().util.getDynamicVar(document, 'loadVarExtDoc', 'data-extdoc');
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(extdoc.frameData);
 
 function checkDocument() {
 	var loc = null;
-
 	try {
 		loc = top.extDocContent.location;
 	} catch (e) {
-
 	}
 
 	_EditorFrame.setEditorIsHot(false);
 
 	if (loc) {	//	Page is on webEdition-Server, open it with matching command
-
 		// close existing editor, it was closed very hard
 		WE().layout.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
 
@@ -61,4 +59,16 @@ function checkDocument() {
 		top.extDocHeader.location = "about:blank";
 		top.extDocFooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=openExtDoc_footer";
 	}
+}
+
+function setOnload() {
+	_EditorFrame.initEditorFrameData({'EditorIsLoading': false});
+	if (top.edit_include) {
+		top.edit_include.close();
+	}
+
+	if (!openedWithWE) {
+		checkDocument();
+	}
+	openedWithWE = false;
 }

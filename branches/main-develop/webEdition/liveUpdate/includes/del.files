@@ -702,6 +702,7 @@ licenses/PhpMailer/License.txt
 licenses/PEAR/PHP_License.txt
 lib/additional/pear/PEAR5.php
 lib/additional/archive/altArchive_Tar.class.php
+js/wysiwyg/tinymce_4/plugins/wetable/plugin.min.js
 js/wysiwyg/tinymce/weTinyMce_registerDialogs.js
 js/wysiwyg/tinymce/weTinyMce_functions.js
 js/wysiwyg/tinymce/weTinyMceFunctions.js

@@ -47,9 +47,9 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] != "save_banner") {
+	if (hot && args[0] !== "save_banner") {
 		if (window.confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
 			args[0] = "save_banner";
 		} else {

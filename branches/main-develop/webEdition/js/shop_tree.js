@@ -1,4 +1,4 @@
-/* global WE, container, top, treeData */
+/* global WE, container, top */
 
 /**
  * webEdition SDK
@@ -30,7 +30,7 @@
 'use strict';
 
 function drawTree() {
-	top.content.document.getElementById("treetable").innerHTML = "<span onclick=\"doYearClick(" + treeData.yearshop + ");\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + treeData.yearshop + " </strong></span><br/>" + treeData.draw(0, "");
+	top.content.document.getElementById("treetable").innerHTML = "<span onclick=\"doYearClick(" + top.content.treeData.yearshop + ");\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.content.treeData.yearshop + " </strong></span><br/>" + top.content.treeData.draw(0, "");
 }
 
 container.prototype.drawShop = function (nf, ai, zweigEintrag) {
@@ -62,13 +62,13 @@ container.prototype.drawFolder = function (nf, ai, zweigEintrag) {
 };
 
 container.prototype.openClose = function (id, status) {
-	var eintragsIndex = treeData.indexOfEntry(id);
-	treeData[eintragsIndex].open = status;
+	var eintragsIndex = top.content.treeData.indexOfEntry(id);
+	top.content.treeData[eintragsIndex].open = status;
 	drawTree();
 };
 
 container.prototype.indexOfEntry = function (id) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
+	for (var ai = 1; ai <= top.content.treeData.len; ai++) {
 		switch (this[ai].typ) {
 			case 'root':
 			case 'folder':
@@ -101,6 +101,6 @@ function doYearClick(yearView) {
 }
 
 function initTree(year) {
-	treeData = new container();
-	treeData.yearshop = year;
+	top.content.treeData = new container();
+	top.content.treeData.yearshop = year;
 }

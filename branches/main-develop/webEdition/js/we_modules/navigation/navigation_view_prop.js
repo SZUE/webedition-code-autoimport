@@ -510,7 +510,7 @@ function unmark() {
 }
 
 function initNavHeader() {
-	weTabs.setFrameSize();
+	window.weTabs.setFrameSize();
 	document.getElementById('tab_' + top.content.activ_tab).className = 'tabActive';
 }
 

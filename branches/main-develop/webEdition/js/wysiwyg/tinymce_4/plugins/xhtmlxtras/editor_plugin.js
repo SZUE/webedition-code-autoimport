@@ -1,3 +1,5 @@
+/* global tinymce */
+
 /**
  * editor_plugin_src.js
  *
@@ -7,6 +9,7 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 
 (function() {
 	tinymce.create('tinymce.plugins.XHTMLXtrasPlugin', {

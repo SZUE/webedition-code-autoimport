@@ -7,6 +7,7 @@
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
+'use strict';
 
 /**
  * This class contains all core logic for the table plugin.

@@ -35,7 +35,7 @@ var _oCsv_,
 				_aRdo = ['sort', 'display', 'date', 'prio'],
 				_lastPreviewCsv = '',
 				_sCls_ = parent.document.getElementById(widget.sObjId + '_cls').value,
-				_ttlB64Esc = escape(window.btoa(widget.sTb));
+				_ttlB64Esc = encodeURIComponent(window.btoa(widget.sTb));
 
 function weEntity2char(weString) {
 	weString = weString.replace('&lt;', '<');

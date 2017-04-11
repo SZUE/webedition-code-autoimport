@@ -204,7 +204,7 @@ function init(tab, title, sBinary, _sCsv) {
 			}
 		}
 	}
-	startTree();
+	window.startTree();
 	var aCsv = _sCsv.split(',');
 	var aCsvLen = aCsv.length;
 	for (var i = 0; i < aCsvLen; i++) {

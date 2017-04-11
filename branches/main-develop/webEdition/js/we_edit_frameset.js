@@ -64,10 +64,6 @@ function closeAllModalWindows() {
 	}
 }
 
-function setOpenedWithWE(val) {
-	openedWithWE = val;
-}
-
 function checkDocument() {
 	var loc = null;
 	try {
