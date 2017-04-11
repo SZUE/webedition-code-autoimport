@@ -1,4 +1,4 @@
-/* global treeData, node, container, drawTree, WE*/
+/* global container, drawTree, WE, top, Node*/
 
 /**
  * webEdition SDK
@@ -29,7 +29,7 @@
 
 Node.prototype.getLayout = function () {
 	if (this.typ === "threedots") {
-		return treeData.node_layouts.threedots;
+		return top.treeData.node_layouts.threedots;
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
 		(this.selected ? "Selected" : "") +
@@ -39,24 +39,24 @@ Node.prototype.getLayout = function () {
 		(this.typ === "item" && this.published === 0 ? "Notpublished" : "") +
 		(this.typ === "item" && this.published === -1 ? "Changed" : "");
 
-	return treeData.node_layouts[layout_key];
+	return top.treeData.node_layouts[layout_key];
 };
 
 container.prototype.openClose = function (id) {
 	if (id === "") {
 		return;
 	}
-	var eintragsIndex = treeData.indexOfEntry(id);
-	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
-	treeData[eintragsIndex].open = openstatus;
-	if (openstatus && !treeData[eintragsIndex].loaded) {
-		window.we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);
+	var eintragsIndex = top.treeData.indexOfEntry(id);
+	var openstatus = (top.treeData[eintragsIndex].open ? 0 : 1);
+	top.treeData[eintragsIndex].open = openstatus;
+	if (openstatus && !top.treeData[eintragsIndex].loaded) {
+		window.we_cmd("loadFolder", top.treeData.table, top.treeData[eintragsIndex].id);
 	} else {
-		window.we_cmd("closeFolder", top.treeData.table, treeData[eintragsIndex].id);
+		window.we_cmd("closeFolder", top.treeData.table, top.treeData[eintragsIndex].id);
 		drawTree();
 	}
 	if (openstatus) {
-		treeData[eintragsIndex].loaded = true;
+		top.treeData[eintragsIndex].loaded = true;
 	}
 };
 
@@ -75,7 +75,7 @@ function info(text) {
 }
 
 function doClick(id) {
-	var node = treeData.get(id);
+	var node = top.treeData.get(id);
 	var ct = node.contenttype;
 	var table = node.table;
 	id = node.we_id ? node.we_id : id;
@@ -99,6 +99,6 @@ function doClick(id) {
 
 
 function initTree() {
-	treeData = new container();
-	treeData.table = WE().consts.tables.FILE_TABLE;
+	top.treeData = new container();
+	top.treeData.table = WE().consts.tables.FILE_TABLE;
 }

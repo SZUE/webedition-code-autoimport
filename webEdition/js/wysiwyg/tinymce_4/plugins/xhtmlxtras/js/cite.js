@@ -1,3 +1,5 @@
+/* global SXE, tinyMCEPopup */
+
 /**
  * cite.js
  *
@@ -7,6 +9,7 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 
 function init() {
 	SXE.initElementDialog('cite');

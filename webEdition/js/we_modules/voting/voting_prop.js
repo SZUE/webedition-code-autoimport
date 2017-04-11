@@ -245,6 +245,7 @@ function refreshTotal() {
 }
 
 function setMultiEdits() {
+	var i, value, k, v, akey, aval, aval2, aval3, aval4;
 	owners_label = new (WE().util.multi_edit)("owners", window, 0, votings.delBut, 510, false);
 	owners_label.addVariant();
 
@@ -257,7 +258,6 @@ function setMultiEdits() {
 	if (votings.isFolder) {
 		return;
 	}
-	var i, value, k, v, akey, aval, aval2, aval3, aval4;
 	question_edit = new (WE().util.multi_edit)("question", window, 1, "", 520, true);
 	answers_edit = new multi_editMulti("answers", document.we_form, 0, votings.delBut1, 500, true);
 	answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);

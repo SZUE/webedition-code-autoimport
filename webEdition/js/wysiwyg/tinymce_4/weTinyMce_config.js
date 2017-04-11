@@ -89,7 +89,7 @@ function TinyMceConfObject(args) {
 	this.doctype = '<!DOCTYPE html>';
 	this.language = args.language;
 	this.selector = 'textarea.' + args.weSelectorClass;
-	this.height =  500; 
+	this.height =  500;
 	this.width = 700;
 	this.menu = args.menu;
 	//this.contextmenu = '';
@@ -113,7 +113,7 @@ function TinyMceConfObject(args) {
 	};
 
 	this.weBlockImportCss = args.weBlockImportCss;
-	
+
 	this.style_formats = args.style_formats; // checked
 	this.style_formats_autohide = true; // checked
 	this.importcss_append = true; // checked
@@ -134,7 +134,7 @@ function TinyMceConfObject(args) {
 
 	this.table_toolbar = args.table_toolbar;
 	this.table_appearance_options = false;
-	
+
 	this.paste_data_images = false;
 	this.paste_data_images = true;
 	this.table_tab_navigation = true;
@@ -157,11 +157,11 @@ function TinyMceConfObject(args) {
 	this.element_format = args.element_format;
 	this.theme_advanced_toolbar_location = args.theme_advanced_toolbar_location; //external: toolbar floating on top of textarea
 	this.theme_advanced_toolbar_align = 'left';
-	
-	
-	
+
+
+
 	*/
-   
+
 	this.weFormatselects = args.weFormatselects;
 	this.font_formats = args.weFormatselects.toolbarSettings.fonts;
 	this.fontsize_formats = args.weFormatselects.toolbarSettings.fontsizes;
@@ -185,8 +185,8 @@ function TinyMceConfObject(args) {
 	this.template_templates = args.template_templates;
 	//this.force_br_newlines = true;
 	//this.forced_root_block = '';
-	
-	
+
+
 	this.codesample_dialog_width = 600;
 	this.codesample_languages = [
         {text: 'HTML/XML', value: 'markup'},
@@ -202,13 +202,13 @@ function TinyMceConfObject(args) {
     ],
 
 	this.setup = WE().layout.we_tinyMCE.setupEditor;
-	
-	
+
+
 }
 
 WE().layout.we_tinyMCE.setupEditor = function(ed){
 	var conf = ed.settings;
-	
+
 
 top.console.log('block', conf.weBlockImportCss);
 	//if(!conf.weBlockImportCss){
@@ -230,7 +230,7 @@ top.console.log('block', conf.weBlockImportCss);
 	ed.on('DblClick', function(e){WE().layout.we_tinyMCE.do.onDblClick(ed, e);});
 	ed.on('PostProcess', function(e){WE().layout.we_tinyMCE.do.onPostProcess(ed, e);});
 	ed.on('NodeChange', function(e){WE().layout.we_tinyMCE.do.onNodeChange(ed, e);});
-		
+
 
 	if(!conf.weIsFrontendEdit && conf.weSynchronizeHot.doSyncHot){
 		conf.weSynchronizeHot.doOnChange = ed.once('change', function(e){WE().layout.we_tinyMCE.do.onChange(ed, e);});
@@ -250,21 +250,21 @@ top.console.log('FormatControls', conf.weWin.tinymce.ui.FormatControls);
 	};
 
 	// move to some fn
-	if(ed.menuItems['searchreplace']){
-		ed.menuItems['searchreplace'].icon = 'fa fa-search';
+	if(ed.menuItems.searchreplace){
+		ed.menuItems.searchreplace.icon = 'fa fa-search';
 	}
-	if(ed.menuItems['selectall']){
-		ed.menuItems['selectall'].icon = 'fa fa-hand-pointer-o';
+	if(ed.menuItems.selectall){
+		ed.menuItems.selectall.icon = 'fa fa-hand-pointer-o';
 	}
-	if(ed.buttons['fullscreen']){
-		ed.buttons['fullscreen'].icon = 'fa fa-train';
+	if(ed.buttons.fullscreen){
+		ed.buttons.fullscreen.icon = 'fa fa-train';
 		//ed.buttons['fullscreen'].tooltip = 'Editor auf maximale Größe ziehen'; does not work
 	}
-	if(ed.menuItems['fullscreen']){
-		ed.menuItems['fullscreen'].text = 'Editor auf maximale Größe ziehen';
+	if(ed.menuItems.fullscreen){
+		ed.menuItems.fullscreen.text = 'Editor auf maximale Größe ziehen';
 	}
-	if(ed.buttons['codesample'] && ed.menuItems['codesample']){
-		ed.menuItems['codesample'].icon = ed.buttons['codesample'].icon;
+	if(ed.buttons.codesample && ed.menuItems.codesample){
+		ed.menuItems.codesample.icon = ed.buttons.codesample.icon;
 	}
 
 	//ed.menuItems['formats'].menu.items = [];

@@ -117,7 +117,7 @@ function openToEdit(id, ct, table) {
 }
 
 //FIXME: this function is not used anymore, why?
-function showanchors(name, val, onCh) {
+/*function showanchors(name, val, onCh) {
 	var pageAnchors = top.opener.document.getElementsByTagName("A");
 	var objAnchors = top.opener["weWysiwygObject_" + editname].eDocument.getElementsByTagName("A");
 	var allAnchors = [];
@@ -144,7 +144,7 @@ function showanchors(name, val, onCh) {
 
 		document.writeln('</select>');
 	}
-}
+}*/
 
 function checkMakeEmptyHrefExt() {
 	var f = document.we_form,

@@ -33,7 +33,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "exit_doc_question_yes":
 			EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(args[1]);
-			EditorFrame.getDocumentReference().frames.editFooter.we_save_document("WE().layout.weEditorFrameController.closeDocument('" + args[1] + "');" + (args[3] ? "top.setTimeout('" + args[3] + "', 1000);" : ""));
+			EditorFrame.getDocumentReference().frames.editFooter.we_save_document("WE().layout.weEditorFrameController.closeDocument('" + args[1] + "');" + (args[3] ? args[3] : ""));
 			break;
 		case "exit_doc_question_no":
 			EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(args[1]);
@@ -508,6 +508,9 @@ we_cmd_modules.base = function (args, url, caller) {
 		case "doClickWithParameters":
 			WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], '', '', '', '', '', args[4]);
 			break;
+		case "openDocumentAllParams":
+			WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+			break;
 		case "new":
 			if (WE().session.seemode) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
@@ -526,7 +529,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			WE().session.deleteMode = false;
 			if (!WE().session.seemode) {
 				top.treeData.setState(top.treeData.tree_states.edit);
-				drawTree();
+				top.drawTree();
 				var cl = window.document.getElementById("bm_treeheaderDiv").classList;
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
@@ -615,7 +618,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			new (WE().util.jsWindow)(caller, url, "we_dirChooser", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "switch_edit_page":
-			switchEditPage(args, url);
+			top.switchEditPage(args, url);
 			break;
 		case "insert_variant":
 		case "move_variant_up":
@@ -886,7 +889,7 @@ function doReloadCmd(args, url, hot) {
 		_visibleEditorFrame.focus();
 	}
 
-	url += getActiveEditors();
+	url += top.getActiveEditors();
 
 	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
@@ -926,7 +929,7 @@ function wecmd_editDocument(args, url) {
 		}
 	} catch (e) {
 	}
-	url += getActiveEditors();
+	url += top.getActiveEditors();
 
 	var ctrl = WE().layout.weEditorFrameController;
 	var nextWindow, nextContent;
@@ -1001,12 +1004,12 @@ function addToCollection(args, url) {
 	if (WE().session.seemode) {
 		//
 	} else {
-		if (WE().session.deleteMode != args[1]) {
+		if (WE().session.deleteMode !== args[1]) {
 			WE().session.deleteMode = args[1];
 		}
 		if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.select) {
 			top.treeData.setState(top.treeData.tree_states.edit);
-			drawTree();
+			top.drawTree();
 		}
 		window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
 		window.document.getElementById("treetable").classList.add('collectionSelector');
@@ -1044,7 +1047,7 @@ function updateMainTree(select, attribs, adv) {
 		if (top.treeData.indexOfEntry(attribs.id) !== -1) {
 			top.treeData.updateEntry(attribs);
 		} else {
-			top.treeData.addSort(new top.Node(objectAssign(attribs, adv)));
+			top.treeData.addSort(new top.Node(top.objectAssign(attribs, adv)));
 		}
 		top.drawTree();
 	} else if (top.treeData.indexOfEntry(attribs.id) !== -1) {
@@ -1132,7 +1135,7 @@ function we_cmd_move(args, url) {
 		}
 		if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.selectitem) {
 			top.treeData.setState(top.treeData.tree_states.edit);
-			drawTree();
+			top.drawTree();
 		}
 		window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
 		window.document.getElementById("treetable").classList.add('moveSelector');
@@ -1169,7 +1172,7 @@ function we_cmd_delete(args, url) {
 	}
 	if (!WE().session.deleteMode && top.treeData.state == top.treeData.tree_states.select) {
 		top.treeData.setState(top.treeData.tree_states.edit);
-		drawTree();
+		top.drawTree();
 	}
 	window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
 	window.document.getElementById("treetable").classList.add('deleteSelector');
@@ -1199,14 +1202,14 @@ function doSave(url, trans) {
 	}
 	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(window.load, url);
+		top.we_repl(window.load, url);
 	}
 }
 
 function doPublish(url, trans) {
 	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(window.load, url);
+		top.we_repl(window.load, url);
 	}
 }
 

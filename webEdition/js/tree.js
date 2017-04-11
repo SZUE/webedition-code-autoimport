@@ -495,6 +495,10 @@ function drawTree() {
 		"</div>";
 }
 
+function doClick(){
+	//override!
+}
+
 function checkDblClick(id) {
 	wasdblclick = true;
 	clearTimeout(tout);

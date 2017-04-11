@@ -1,4 +1,4 @@
-/* global top */
+/* global top,container */
 
 /**
  * webEdition SDK
@@ -34,6 +34,6 @@ function doClick(id) {
 	top.content.we_cmd('display_user', id, item.contenttype, item.table);
 }
 function initTree(loc) {
-	treeData = new container();
-	treeData.startloc = loc;
+	top.content.treeData = new container();
+	top.content.treeData.startloc = loc;
 }

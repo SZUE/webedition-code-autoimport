@@ -11,7 +11,7 @@
 					return;
 				}
 				var wesrc = "";
-				if (ed.selection.getNode().nodeName === 'IMG' && e.dom.getAttrib(ed.selection.getNode(), 'src', '')) {
+				if (ed.selection.getNode().nodeName === 'IMG' && ed.dom.getAttrib(ed.selection.getNode(), 'src', '')) {
 					wesrc = ed.dom.getAttrib(ed.selection.getNode(), 'src', '');
 				}
 

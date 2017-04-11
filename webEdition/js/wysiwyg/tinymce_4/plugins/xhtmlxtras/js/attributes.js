@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 /**
  * attributes.js
  *
@@ -7,6 +9,7 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 
 function init() {
 	tinyMCEPopup.resizeToInnerSize();
@@ -67,8 +70,9 @@ function setAttrib(elm, attrib, value) {
 	if (typeof(value) == "undefined" || value == null) {
 		value = "";
 
-		if (valueElm)
+		if (valueElm){
 			value = valueElm.value;
+		}
 	}
 
 	dom.setAttrib(elm, attrib.toLowerCase(), value);

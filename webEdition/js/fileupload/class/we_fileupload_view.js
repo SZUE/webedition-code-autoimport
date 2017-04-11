@@ -233,7 +233,7 @@ function weFileupload_view_abstract(uploader) {
 	};
 
 	self.unsetPreviewLoupe = function(fileobj){
-		var doc = self.uploader.doc; 
+		var doc = self.uploader.doc;
 
 		self.loupeVisible = false;
 		if(fileobj.loupInner){
@@ -1201,7 +1201,7 @@ function weFileupload_view_import(uploader) {
 			indices = self.imageEdit.getImageEditIndices(pos, general, true);
 
 			for(var i = 0; i < indices.length; i++){
-				self.uploader.doc.getElementById('fuOpts_rotate_' + indices[i]).value = self.uploader.doc.we_form.elements.fuOpts_rotate.value;;
+				self.uploader.doc.getElementById('fuOpts_rotate_' + indices[i]).value = self.uploader.doc.we_form.elements.fuOpts_rotate.value;
 			}
 		}
 	};
@@ -1261,7 +1261,7 @@ function weFileupload_view_import(uploader) {
 									dimensions = fileobj.img.editOptions.scale ? '--' : fileobj.img.lastHeightShown + ' x ' + fileobj.img.lastWidthShown + ' px';
 							}
 						}
-						
+
 						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + dimensions : infoTops[j].innerHTML) : '--';
 						infoMiddles[j].style.display = 'block';
 						deg = fileobj.img.editOptions.rotate;
@@ -1281,8 +1281,8 @@ function weFileupload_view_import(uploader) {
 						// FIXME: fileobj.img.editedWidth is undefined when only qualitiy was changed
 						var w, h;
 						if(self.sender.preparedFiles[j].dataUrl){
-							var h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
-							var w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
+							h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
+							w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
 						}
 						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
 

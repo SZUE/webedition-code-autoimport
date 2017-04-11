@@ -7,6 +7,7 @@
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
+'use strict';
 
 /*eslint dot-notation:0*/
 

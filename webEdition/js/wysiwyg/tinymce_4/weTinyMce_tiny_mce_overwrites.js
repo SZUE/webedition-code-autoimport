@@ -1,3 +1,5 @@
+/* global tinymce, top */
+
 /**
  * FormatControls.js
  *
@@ -7,6 +9,7 @@
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
+'use strict';
 
 /**
  * Internal class containing all TinyMCE specific control types such as
@@ -162,7 +165,7 @@ tinymce.ui.FormatControls = function(Control, Widget, FloatPanel, Tools, Arr, DO
 
 			return formats;
 		}
-		
+
 		//var count = 0, newFormats = [];
 
 		function createFormatMenu(whatMenu, settings) {top.console.log('createFormatMenu', whatMenu, settings);
@@ -228,7 +231,7 @@ tinymce.ui.FormatControls = function(Control, Widget, FloatPanel, Tools, Arr, DO
 			function createStylesMenu(whatMenu, settings) {
 				switch(whatMenu){
 					case 'fontselect':
-					case 'fontsizeselect': 
+					case 'fontsizeselect':
 					case 'headers':
 					case 'blocks':
 						return createMenu(whatMenu, settings);

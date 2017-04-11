@@ -85,7 +85,6 @@ function we_cmd() {
 							case WE().consts.tables.OBJECT_FILES_TABLE:
 							case WE().consts.tables.FILE_TABLE:
 								continue;
-								break;
 							default:
 								opts[i].disabled = true;
 						}

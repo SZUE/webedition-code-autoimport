@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 /**
  * webEdition CMS
  *

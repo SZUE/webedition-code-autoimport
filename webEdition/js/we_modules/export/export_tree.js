@@ -28,7 +28,7 @@
 'use strict';
 
 function initTree() {
-	treeData = new container();
+	window.treeData = new container();
 	treeData.SelectedItems = {};
 	treeData.SelectedItems[WE().consts.tables.FILE_TABLE] = [];
 	treeData.SelectedItems[WE().consts.tables.TEMPLATES_TABLE] = [];

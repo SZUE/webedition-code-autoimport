@@ -1,3 +1,5 @@
+/* global SXE, tinyMCEPopup */
+
 /**
  * del.js
  *
@@ -7,10 +9,11 @@
  * License: http://tinymce.moxiecode.com/license
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
+'use strict';
 
 function init() {
 	SXE.initElementDialog('del');
-	if (SXE.currentAction == "update") {
+	if (SXE.currentAction === "update") {
 		setFormValue('datetime', tinyMCEPopup.editor.dom.getAttrib(SXE.updateElement, 'datetime'));
 		setFormValue('cite', tinyMCEPopup.editor.dom.getAttrib(SXE.updateElement, 'cite'));
 		SXE.showRemoveButton();
@@ -27,7 +30,7 @@ function setElementAttribs(elm) {
 function insertDel() {
 	var elm = tinyMCEPopup.editor.dom.getParent(SXE.focusElement, 'DEL');
 
-	if (elm == null) {
+	if (elm === null) {
 		var s = SXE.inst.selection.getContent();
 		if(s.length > 0) {
 			insertInlineElement('del');

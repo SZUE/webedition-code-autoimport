@@ -244,7 +244,7 @@ WE().layout.we_tinyMCE.do.onKeyDown = function (ed, e) {
 				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
 				conf.weSynchronizeHot.doSyncHot = false;
 				break;
-			case 88: 
+			case 88:
 				conf.weSynchronizeHot.tmpDoSyncHot = conf.weSynchronizeHot.doSyncHot ? true : false;
 				break;
 			case 68: // d
@@ -349,7 +349,7 @@ WE().layout.we_tinyMCE.do.onPostRender = function (ed, cm) {
 	ed.settings.weWin.addEventListener("resize", function (e) {
 		WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, false);
 	});
-	
+
 
 	WE().layout.we_tinyMCE.functions.tinyWeResizeEditor(ed, true);
 };
@@ -471,7 +471,7 @@ WE().layout.we_tinyMCE.functions.initEditor = function(win, rawConfObj) {
 	if (typeof win.tinymce === 'object' && typeof rawConfObj === 'object') {
 		var confObj = WE().layout.we_tinyMCE.getTinyConfObject(rawConfObj);
 
-		if(!win.tinyMceTranslationObjectAdded){;
+		if(!win.tinyMceTranslationObjectAdded){
 			win.tinymce.addI18n(rawConfObj.language, WE().consts.g_l.tinyMceTranslationObject[rawConfObj.language]);
 			win.tinyMceTranslationObjectAdded = true;
 		}
@@ -686,7 +686,7 @@ WE().layout.we_tinyMCE.functions.registerDialog = function (ed, win, action, dia
 		return;
 	}
 
-	var reg = ed.settings.weRegisteredDialogs; 
+	var reg = ed.settings.weRegisteredDialogs;
 	dialogType = dialogType ? dialogType : 'dialog';
 
 	switch(action){
@@ -791,7 +791,7 @@ WE().layout.we_tinyMCE.overwrite.openLegacyPlugin = function(ed, args, params) {
 	win = new tinymce.ui.Window(args);
 	this.windows.push(win);
 
-	// we pop win from windows in onInit so onClose is rather obsolet. 
+	// we pop win from windows in onInit so onClose is rather obsolet.
 	// we fire it just to be sure the win is really removed from windows
 	win.on('close', function() {
 		var i = this.windows.length;
@@ -838,9 +838,9 @@ WE().layout.we_tinyMCE.overwrite.openLegacyPlugin = function(ed, args, params) {
 
 	// Build features string
 	tinymce.each(args, function(v, k) {
-		if (tinymce.is(v, 'boolean'))
+		if (tinymce.is(v, 'boolean')){
 			v = v ? 'yes' : 'no';
-
+			}
 		if (!/^(name|url)$/.test(k)) {
 			f += (f ? ',' : '') + k + '=' + v;
 		}
@@ -862,8 +862,8 @@ WE().layout.we_tinyMCE.overwrite.openLegacyPlugin = function(ed, args, params) {
 };
 
 WE().layout.we_tinyMCE.functions.buildTableMenu = function(){
-	var dialogs = new Dialogs;
-	
+	var dialogs = new Dialogs();
+
 		/* WE-PATCH START: if(cmd.xy)-options are added to create menues according to setting table-toolbar */
 		var table_toolbar = editor.settings.table_toolbar.split(' ');
 		var cmds = {};
@@ -1048,6 +1048,6 @@ WE().layout.we_tinyMCE.functions.buildTableMenu = function(){
 		}
 		/* WE-PATCH END */
 
-	
-	
-}
+
+
+};
