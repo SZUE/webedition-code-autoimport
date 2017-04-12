@@ -354,7 +354,7 @@ function deleteLocale() {
 	if (document.getElementById('locale_temp_locales').selectedIndex > -1) {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue = document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-		if (LocaleValue == document.getElementById('locale_default').value) {
+		if (LocaleValue === document.getElementById('locale_default').value) {
 			WE().util.showMessage(WE().consts.g_l.prefs.cannot_delete_default_language, WE().consts.message.WE_MESSAGE_ERROR, window);
 		} else {
 			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;

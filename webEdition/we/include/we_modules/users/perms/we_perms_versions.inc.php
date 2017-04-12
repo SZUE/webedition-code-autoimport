@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,16 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $perm_group_name = 'versions';
-$perm_group_title[$perm_group_name] = g_l('perms_versions', '[perm_group_title]');
-$perm_defaults[$perm_group_name] = ['SEE_VERSIONS' => 0,
+$perm_group_title = g_l('perms_versions', '[perm_group_title]');
+$perm_defaults = [
+	'SEE_VERSIONS' => 0,
 	'RESET_VERSIONS' => 0
- ];
-
-$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = [];
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
+];
+return [$perm_group_name, $perm_group_title, $perm_defaults];

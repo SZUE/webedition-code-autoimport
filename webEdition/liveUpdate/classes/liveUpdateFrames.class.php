@@ -87,7 +87,8 @@ class liveUpdateFrames{
 			case 'modules':
 				return $this->htmlModules();
 			case 'languages':
-				return $this->htmlLanguages();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
+				return '';
 			case 'updatelog':
 				include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
 				return'';
@@ -250,10 +251,6 @@ class liveUpdateFrames{
 </html>';
 	}
 
-	function htmlLanguages(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
-	}
-
 	static function htmlConnectionSuccess($errorMessage = ''){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectSuccess.inc.php');
 	}
@@ -278,7 +275,7 @@ class liveUpdateFrames{
 				'confirmDelete' => g_l('liveUpdate', '[updatelog][confirmDelete]'),
 				'languagesDeleted' => g_l('liveUpdate', '[languages][languagesDeleted]'),
 				'languagesNotDeleted' => g_l('liveUpdate', '[languages][languagesNotDeleted]'),
-				]) . '");';
+			]) . '");';
 	}
 
 }

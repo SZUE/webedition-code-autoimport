@@ -320,7 +320,7 @@ function findInclude($cmd){
 		case 'import':
 			we_import_wizard::getFrameset();
 			return true;
-		case 'export':
+		case 'export'://FIXME:this is obsolete when export-wizard is integrated
 			return 'we_modules/export/export_frameset.php';
 		case 'copyFolder':
 			we_dialog_copyFolder::getDialog();

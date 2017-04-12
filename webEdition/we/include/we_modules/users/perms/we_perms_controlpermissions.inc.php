@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,9 +23,9 @@
  */
 $perm_group_name = 'controlpermissions';
 
-$perm_group_title[$perm_group_name] = g_l('perms_controlpermissions', '[perm_group_title]');
+$perm_group_title = g_l('perms_controlpermissions', '[perm_group_title]');
 
-$perm_defaults[$perm_group_name] = ['NEW_GROUP' => 0,
+$perm_defaults = ['NEW_GROUP' => 0,
 	'NEW_USER' => 0,
 	'SAVE_GROUP' => 0,
 	'SAVE_USER' => 0,
@@ -39,13 +38,6 @@ $perm_defaults[$perm_group_name] = ['NEW_GROUP' => 0,
 	'EDIT_SETTINGS' => 1,
 	'EDIT_PASSWD' => 1,
 	'EDIT_MFD_USER' => 0
- ];
+];
 
-$perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
-
-//	Here the array of the permission-titles is set.
-$perm_titles[$perm_group_name] = [];
-
-foreach($perm_values[$perm_group_name] as $cur){
-	$perm_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
-}
+return [$perm_group_name, $perm_group_title, $perm_defaults];

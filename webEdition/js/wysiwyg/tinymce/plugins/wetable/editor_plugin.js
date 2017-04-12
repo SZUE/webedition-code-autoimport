@@ -1,4 +1,4 @@
-/* global tinymce */
+/* global tinymce, rng */
 /**
  * editor_plugin_src.js
  *
