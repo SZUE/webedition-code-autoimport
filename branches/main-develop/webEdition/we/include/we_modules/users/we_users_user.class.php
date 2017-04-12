@@ -440,22 +440,15 @@ class we_users_user{
 		$this->permissions_defaults = [];
 		$permissions = we_unserialize($this->Permissions);
 
-		$entries = we_tool_lookup::getPermissionIncludes();
-
-		$d = dir(WE_USERS_MODULE_PATH . 'perms');
-		while(($file = $d->read())){
-			if(substr($file, 0, 9) === 'we_perms_'){
-				$entries[] = WE_USERS_MODULE_PATH . 'perms/' . $file;
-			}
-		}
-		$d->close();
+		$entries = /*array_merge(we_tool_lookup::getPermissionIncludes(), */(glob(WE_USERS_MODULE_PATH . 'perms/we_perms_*'));
 
 		foreach($entries as $entry){
+			list($perm_group_name, $perm_group_title, $perm_defaults) = include($entry);
+			/*if(empty($perm_defaults)){
+				t_e($entry);
+			}*/
+			$perm_values = array_keys($perm_defaults);
 
-			$perm_group_name = '';
-			$perm_values = $perm_titles = $perm_group_title = [];
-
-			include($entry);
 			if(!($perm_group_name === 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
 				if(!isset($this->permissions_main_titles[$perm_group_name])){
 					$this->permissions_main_titles[$perm_group_name] = '';
@@ -464,23 +457,17 @@ class we_users_user{
 					$this->permissions_slots[$perm_group_name] = [];
 				}
 				if(!isset($this->permissions_titles[$perm_group_name])){
-					$this->permissions_titles[$perm_group_name] = '';
-				}
-				if(is_array($perm_values[$perm_group_name])){
-					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : [];
-					foreach($perm_values[$perm_group_name] as $v){
-						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
-							$permissions[$v] :
-							0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
-					}
+					$this->permissions_titles[$perm_group_name] = [];
 				}
 
-				$this->permissions_main_titles[$perm_group_name] = $perm_group_title[$perm_group_name];
+				$this->permissions_defaults[$perm_group_name] = empty($perm_defaults) ? [] : $perm_defaults;
+				$this->permissions_main_titles[$perm_group_name] = $perm_group_title;
 
-				if(is_array($perm_titles[$perm_group_name])){
-					foreach($perm_titles[$perm_group_name] as $key => $val){
-						$this->permissions_titles[$perm_group_name][$key] = $val;
-					}
+				foreach($perm_values as $cur){
+					$this->permissions_titles[$perm_group_name][$cur] = g_l('perms_' . $perm_group_name, '[' . $cur . ']');
+					$this->permissions_slots[$perm_group_name][$cur] = (is_array($permissions) && isset($permissions[$cur]) ?
+						$permissions[$cur] :
+						0); //always set unknown fields to 0
 				}
 			}
 		}
@@ -2278,7 +2265,7 @@ function toggleRebuildPerm(disabledOnly) {';
 						self::TYPE_USER => g_l('modules_users', '[delete_alert_user]'),
 					]
 				]
-				]) . '");';
+			]) . '");';
 	}
 
 }
