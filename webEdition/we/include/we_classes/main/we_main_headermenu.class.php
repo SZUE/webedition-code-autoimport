@@ -92,9 +92,9 @@ class we_main_headermenu{
 				];
 			}
 			$navigationButtons = array_merge($navigationButtons, [
-				["onclick" => "WE().layout.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')],
-				["onclick" => "WE().layout.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')],
-				["onclick" => "WE().layout.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')],
+				['onclick' => 'WE().layout.weNavigationHistory.navigateReload();', 'i' => 'refresh', 'text' => g_l('javaMenu_global', '[reload]')],
+				['onclick' => 'WE().layout.weNavigationHistory.navigateBack();', 'i' => 'caret-left', 'text' => g_l('javaMenu_global', '[back]')],
+				['onclick' => 'WE().layout.weNavigationHistory.navigateNext();', 'i' => 'caret-right', 'text' => g_l('javaMenu_global', '[next]')],
 				]
 			);
 		}
@@ -120,7 +120,7 @@ class we_main_headermenu{
 				if(($versionInfo = we_base_util::updateAvailable())){
 					?>
 					<div id="newUpdate" class="navigation">
-						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
+						<i class="fa fa-lg fa-exclamation-circle" onclick="<?= (we_base_permission::hasPerm('ADMINISTRATOR') ? "top.we_cmd('update');" : ""); ?>" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
 					</div>
 					<?php
 				}
