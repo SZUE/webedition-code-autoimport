@@ -299,10 +299,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], 
 		<div id="weMainHeader"><?php
 			we_main_headermenu::pbody();
 			?>
-			<div id="weMainHeader"><?php
-				we_main_headermenu::pbody($msg);
-				?>
-			</div>
 		</div>
 	</div>
 	<div id="resizeFrame"><?php
