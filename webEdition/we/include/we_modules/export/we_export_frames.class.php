@@ -124,14 +124,14 @@ class we_export_frames extends we_modules_frame{
 		$col = 0;
 		$table2 = new we_html_table(['style' => 'margin-top:10px;', 'class' => 'default', "width" => 210], 1, 5);
 		$table2->setRow(0, ['style' => 'vertical-align:middle;']);
-		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
+		$table2->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !we_base_permission::hasPerm("MAKE_EXPORT"))
+			$table2->setColContent(0, $col++, we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !we_base_permission::hasPerm('MAKE_EXPORT'))
 			);
 		}
 
-		$table2->setCol(0, $col++, ['style' => 'width:290px;']);
+		$table2->setColContent(0, $col++, we_html_button::create_button(we_html_button::DELETE, "javascript:top.content.we_cmd('delete_export')", '', 0, 0, '', '', !we_base_permission::hasPerm('DELETE_EXPORT')));
 
 		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));
 		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
@@ -139,7 +139,7 @@ class we_export_frames extends we_modules_frame{
 		$progressbar = new we_gui_progressBar($progress, 200);
 		$progressbar->addText($text, we_gui_progressBar::TOP, "current_description");
 
-		$table2->setCol(0, 4, ["id" => "progress"], $progressbar->getHtml('', 'display: none'));
+		$table2->setCol(0, $col++, ["id" => "progress"], $progressbar->getHtml('', 'display: none'));
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())

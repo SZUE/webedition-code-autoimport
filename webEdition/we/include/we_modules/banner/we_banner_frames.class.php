@@ -38,7 +38,8 @@ class we_banner_frames extends we_modules_frame{
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [['EDIT_BANNER'], 'save_banner']
+						we_html_button::SAVE => [['EDIT_BANNER'], 'save_banner'],
+						we_html_button::DELETE => [['DELETE_BANNER'], 'delete_banner'],
 						], we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
@@ -62,7 +63,7 @@ class we_banner_frames extends we_modules_frame{
 		$we_tabs->addTab('', we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), we_banner_banner::PAGE_PROPERTY, [
 			'title' => g_l('tabs', '[module][properties]')]);
 		if(!$isFolder){
-			$we_tabs->addTab(g_l('tabs', '[module][placement]'),'',  ($page == we_banner_banner::PAGE_PLACEMENT), we_banner_banner::PAGE_PLACEMENT);
+			$we_tabs->addTab(g_l('tabs', '[module][placement]'), '', ($page == we_banner_banner::PAGE_PLACEMENT), we_banner_banner::PAGE_PLACEMENT);
 			$we_tabs->addTab('', 'fa-pie-chart', ($page == we_banner_banner::PAGE_STATISTICS), we_banner_banner::PAGE_STATISTICS, [
 				'title' => g_l('tabs', '[module][statistics]')]);
 		}

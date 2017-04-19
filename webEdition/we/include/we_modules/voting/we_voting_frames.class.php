@@ -57,7 +57,8 @@ class we_voting_frames extends we_modules_frame{
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [['NEW_VOTING', 'EDIT_VOTING'], 'save_voting']
+						we_html_button::SAVE => [['NEW_VOTING', 'EDIT_VOTING'], 'save_voting'],
+						we_html_button::DELETE => [['DELETE_VOTING'], 'delete_voting']
 				]);
 
 			default:
@@ -78,7 +79,7 @@ class we_voting_frames extends we_modules_frame{
 			$we_tabs->addTab(g_l('modules_voting', '[options]'), 'fa-cogs', false, self::TAB_OPTIONS, ["id" => "tab_" . self::TAB_OPTIONS]);
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(g_l('modules_voting', '[result]'),'fa-bar-chart',  false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
+				$we_tabs->addTab(g_l('modules_voting', '[result]'), 'fa-bar-chart', false, self::TAB_RESULT, ["id" => "tab_" . self::TAB_RESULT]);
 			}
 		}
 		if($this->View->voting->ID){
@@ -149,7 +150,7 @@ class we_voting_frames extends we_modules_frame{
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => we_html_multiIconBox::SPACE_ICON,
-				'icon'=>we_html_multiIconBox::PROP_PATH,
+				'icon' => we_html_multiIconBox::PROP_PATH,
 				'noline' => 1],
 			['headline' => '',
 				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
