@@ -1,6 +1,6 @@
 <?php
 /**
- * webEdition CMS
+ * webEdition CMS.
  *
  * $Rev$
  * $Author$
