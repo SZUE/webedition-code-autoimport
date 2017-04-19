@@ -658,7 +658,7 @@ class we_navigation_navigation extends we_base_model{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -670,7 +670,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 		$num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -725,7 +725,11 @@ class we_navigation_navigation extends we_base_model{
 				} else {
 					$param = 'we_objectID=' . $id . ($param ? '&' . $param : '');
 				}
-				$id = we_navigation_dynList::getFirstDynDocument($this->WorkspaceID, $db) ?: (!empty($object['TriggerID']) ? $object['TriggerID'] : $id);
+				$wsId = $this->IsFolder ? $this->FolderWsID : $this->WorkspaceID;
+				$id = $wsId ?:
+					(!empty($object['TriggerID']) ? $object['TriggerID'] :
+					we_navigation_dynList::getFirstDynDocument($wsId, $db)
+					);
 			default: //folder and entry
 				$p = we_navigation_items::id2path($id);
 				$path = ($p === '/' ? '' : $p);

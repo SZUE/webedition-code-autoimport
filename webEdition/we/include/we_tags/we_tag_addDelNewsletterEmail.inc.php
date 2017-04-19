@@ -135,8 +135,9 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 			case 'csv':
 				//in die Liste eintragen
 				we_newsletter_util::addToFile($paths, $f);
-
-				we_newsletter_util::mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL));
+                if($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == we_newsletter_base::STATUS_SUCCESS){
+                    we_newsletter_util::mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL));
+                }
 		}
 		$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE LOWER(subscribe_mail)="' . $db->escape(strtolower($f['subscribe_mail'])) . '"');
 	}
@@ -146,6 +147,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 		if(!we_newsletter_util::unsubscribeNewsletter($db, $type === 'customer', $customerFieldPrefs['customer_email_field'], $abos, $paths, we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'))){
 			return;
 		}
+        we_newsletter_util::mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL));
 	}
 
 	unset($_REQUEST['we_unsubscribe_email__'], $_REQUEST['we_subscribe_email__'], $_REQUEST['we_subscribe_html__'], $_REQUEST['we_subscribe_title__'], $_REQUEST['we_subscribe_salutation__'], $_REQUEST['we_subscribe_firstname__'], $_REQUEST['we_subscribe_lastname__'], $_REQUEST['we_subscribe_list__']);
