@@ -164,7 +164,7 @@ class we_search_base{
 			return -1;
 		}
 		$this->where = ($where ? : ($this->where ? : '1'));
-		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WETABLE WHERE ' . $this->where, '', $this->db);
+		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' AS WETABLE WHERE ' . $this->where, '', $this->db);
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){

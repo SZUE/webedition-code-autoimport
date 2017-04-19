@@ -24,7 +24,7 @@
  */
 function we_tag_link(array $attribs, $content){
 	if(isset($GLOBALS['we']['ll'])){
-		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
+		$only = weTag_getAttribute('only', $attribs, '', we_base_request::BOOL);
 		$link = $GLOBALS['we']['ll']->getLink();
 		$linkcontent = $GLOBALS['we']['ll']->getLinkContent();
 		if($link){
