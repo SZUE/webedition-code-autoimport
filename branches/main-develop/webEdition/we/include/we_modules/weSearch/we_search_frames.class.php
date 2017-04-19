@@ -73,16 +73,16 @@ class we_search_frames extends we_modules_frame{
 
 		//tabs for entries
 		if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab( g_l('searchtool', '[documents]'),'fa-file-o', false, self::TAB_DOCUMENTS, ['id' => 'tab_1', 'style' => 'display:' . $displayEntry]);
+			$we_tabs->addTab(g_l('searchtool', '[documents]'), 'fa-file-o', false, self::TAB_DOCUMENTS, ['id' => 'tab_1', 'style' => 'display:' . $displayEntry]);
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab(g_l('searchtool', '[templates]'),'fa-file-code-o' , false, self::TAB_TEMPLATES, ['id' => 'tab_2',
+			$we_tabs->addTab(g_l('searchtool', '[templates]'), 'fa-file-code-o', false, self::TAB_TEMPLATES, ['id' => 'tab_2',
 				'style' => 'display:' . $displayEntry]);
 		}
 		if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
-			$we_tabs->addTab(g_l('searchtool', '[media]'),'fa-image'  , false, self::TAB_MEDIA, ['id' => 'tab_5', 'style' => 'display:' . $displayEntry]);
+			$we_tabs->addTab(g_l('searchtool', '[media]'), 'fa-image', false, self::TAB_MEDIA, ['id' => 'tab_5', 'style' => 'display:' . $displayEntry]);
 		}
-		$we_tabs->addTab(g_l('searchtool', '[advSearch]'),'fa-search-plus', false, self::TAB_ADVANCED, ['id' => 'tab_3',
+		$we_tabs->addTab(g_l('searchtool', '[advSearch]'), 'fa-search-plus', false, self::TAB_ADVANCED, ['id' => 'tab_3',
 			'style' => 'display:' . $displayEntry]);
 
 		//tabs for folders
@@ -351,10 +351,7 @@ class we_search_frames extends we_modules_frame{
 			case 'editor':
 				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
 			case "edfooter":
-				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [[], 'weSearch_save']
-				]);
-
+				return $this->getHTMLEditorFooter([we_html_button::SAVE => [[], 'weSearch_save']]);
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}

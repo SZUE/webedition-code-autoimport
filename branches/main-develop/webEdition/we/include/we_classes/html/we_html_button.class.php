@@ -51,6 +51,7 @@ abstract class we_html_button{
 	const UNLOCK = 'fa:btn_function_unlock,fa-lg fa-unlock';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
 	const SAVE = 'fat:save,fa-lg fa-save';
+	const SEND = 'fat:send,fa-lg fa-send-o';
 	const NEXT = 'fat:next,fa-lg fa-step-forward';
 	const BACK = 'fat:back,fa-lg fa-step-backward';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';

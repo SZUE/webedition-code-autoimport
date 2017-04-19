@@ -290,7 +290,7 @@ class we_shop_statusMails{
 			$but = we_html_button::create_button('fa:mail_resend,fa-lg fa-envenlope,fa-lg fa-rotate-right', "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
 		} else {
 			$EMailhandler .= '<td class="defaultfont" style="width:150px">&nbsp;</td>';
-			$but = we_html_button::create_button('fa:mail_send,fa-lg fa-envenlope,fa-lg fa-send-o', "javascript:SendMail('" . $was . "')");
+			$but = we_html_button::create_button(we_html_button::SEND, "javascript:SendMail('" . $was . "')");
 		}
 		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : '') . '</td></tr></table>';
 
