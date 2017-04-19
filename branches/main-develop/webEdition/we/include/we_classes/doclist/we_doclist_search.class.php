@@ -54,8 +54,6 @@ class we_doclist_search extends we_search_search{
 			$this->createTempTable();
 
 			foreach($currentSearchFields as $i => $searchField){
-
-				$w = "";
 				if(isset($currentSearch[0])){
 					$searchString = (isset($currentSearch[$i]) ? $currentSearch[$i] : $currentSearch[0]);
 				}
@@ -65,8 +63,7 @@ class we_doclist_search extends we_search_search{
 						default:
 						case 'Text':
 							if(isset($searchField) && isset($currentLocation[$i])){
-								$w = $this->searchfor($searchString, $searchField, $currentLocation[$i], $table);
-								$where[] = ($w ? $w : 'AND 0');
+								$where[] = ($this->searchfor($searchString, $searchField, $currentLocation[$i], $table) ? : 'AND 0');
 							}
 						case 'Content':
 						case 'Title':
@@ -80,8 +77,7 @@ class we_doclist_search extends we_search_search{
 
 					switch($searchField){
 						case 'Content':
-							$w = $this->searchContent($searchString, $table);
-							$where[] = 'AND' . ($w ? $w : '0');
+							$where[] = 'AND ' . ($this->searchContent($searchString, $table) ? : '0');
 							break;
 
 						case 'Title':
@@ -95,42 +91,39 @@ class we_doclist_search extends we_search_search{
 						case "Speicherart":
 							if($searchString != ""){
 								if($table === FILE_TABLE){
-									$w = $this->getStatusFiles($searchString, $table);
-									$where[] = $w;
+									$where[] = $this->getStatusFiles($searchString, $table);
 								}
 							}
 							break;
 						case 'CreatorName':
 						case 'WebUserName':
 							if($searchString != ""){
-								$w = $this->searchSpecial($searchString, $searchField, $currentLocation[$i]);
-								$where[] = $w;
+								$where[] = $this->searchSpecial($searchString, $searchField, $currentLocation[$i]);
 							}
 							break;
 						case 'temp_category':
-							$w = $this->searchCategory($searchString, $table, $searchField);
-							$where[] = $w;
+							$where[] = $this->searchCategory($searchString, $table, $searchField);
 							break;
 					}
 				}
 			}
 
-			$where[] = 'AND WETABLE.ParentID=' . intval($currentFolderID);
+			$where[] = 'WETABLE.ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
-					$where[] = 'AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
+					$where[] = '(WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',WETABLE.Owners))';
 					break;
 				case TEMPLATES_TABLE:
 					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = 'AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',WETABLE.Owners))';
+					$where[] = '(WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',WETABLE.Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-					$where[] = 'AND (WETABLE.RestrictUsers=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',WETABLE.Users))';
+					$where[] = '(WETABLE.RestrictUsers=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',WETABLE.Users))';
 					break;
 			}
-			$whereQuery = '1 ' . implode(' ', $where);
+			$whereQuery = implode(' AND ', $where);
 			$this->setwhere($whereQuery);
 			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');
 

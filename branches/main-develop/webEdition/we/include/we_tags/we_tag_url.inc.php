@@ -44,13 +44,15 @@ function we_tag_url(array $attribs){
 	} else {
 		$url = '';
 		switch($type){
-            case we_base_ContentTypes::OBJECT :
+			case we_base_ContentTypes::OBJECT :
 				$objectID = ($id === 'self' || $id === 'top') ? $GLOBALS['we_obj']->ID : intval($id);
 				if(($getObject = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objectID)))){
 					$triggerDocPath = $triggerid ? id_to_path($triggerid) :
-							(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-								(we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/')), $GLOBALS['we_obj']->Workspaces, $GLOBALS['we_obj']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) ?: id_to_path($getObject['TriggerID'])):
+						($getObject['TriggerID'] ? id_to_path($getObject['TriggerID']) :
+						(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
+						we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/')), $GLOBALS['we_obj']->Workspaces, $GLOBALS['we_obj']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
 						parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+						)
 						);
 
 					$path_parts = pathinfo($triggerDocPath);
@@ -58,11 +60,11 @@ function we_tag_url(array $attribs){
 					if($objectseourls && $getObject['Url'] != '' && show_SeoLinks()){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($hidedirindex && seoIndexHide($path_parts['basename']) ?
-								'' : $path_parts['filename'] . '/' ) . $getObject['Url'];
+							'' : $path_parts['filename'] . '/' ) . $getObject['Url'];
 					} else {
 						$url = ($hidedirindex && seoIndexHide($path_parts['basename']) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $objectID :
-								$triggerDocPath . '?we_objectID=' . $objectID
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $objectID :
+							$triggerDocPath . '?we_objectID=' . $objectID
 							);
 					}
 				}
