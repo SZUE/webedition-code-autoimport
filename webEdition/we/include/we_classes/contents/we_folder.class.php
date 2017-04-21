@@ -683,7 +683,8 @@ class we_folder extends we_root{
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2)
 		);
 
-		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
+		if(($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE))
+ && (count($GLOBALS['weFrontendLanguages']) > 1)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$parts[] = array('icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
 				$parts[] = array(
