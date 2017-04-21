@@ -147,7 +147,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 		if(!we_newsletter_util::unsubscribeNewsletter($db, $type === 'customer', $customerFieldPrefs['customer_email_field'], $abos, $paths, we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'))){
 			return;
 		}
-        $f = we_newsletter_util::getNewsletterFields(0, we_newsletter_base::STATUS_SUCCESS, '', we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'));
+        $f = we_newsletter_util::getNewsletterFields(0, ($status = we_newsletter_base::STATUS_SUCCESS), '', we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'));
         we_newsletter_util::mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL));
 	}
 
