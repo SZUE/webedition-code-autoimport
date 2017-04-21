@@ -446,7 +446,7 @@ class we_folder extends we_root{
 	function formChangeLanguage(){
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language][expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -687,7 +687,7 @@ class we_folder extends we_root{
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$parts[] = array('icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
 				$parts[] = array(
-					"headline" => g_l('weClass', '[grant_language]'),
+					"headline" => g_l('weClass', '[grant_language][headline]'),
 					"html" => $this->formChangeLanguage(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => true
