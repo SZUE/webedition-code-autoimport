@@ -27,15 +27,15 @@
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 var _oCsv_,
-				_sInitCsv_,
-				_sInitTitle,
-				_sInitBin,
-				_sPadInc = 'pad/pad',
-				_oSctDate,
-				_aRdo = ['sort', 'display', 'date', 'prio'],
-				_lastPreviewCsv = '',
-				_sCls_ = parent.document.getElementById(widget.sObjId + '_cls').value,
-				_ttlB64Esc = encodeURIComponent(window.btoa(widget.sTb));
+	_sInitCsv_,
+	_sInitTitle,
+	_sInitBin,
+	_sPadInc = 'pad/pad',
+	_oSctDate,
+	_aRdo = ['sort', 'display', 'date', 'prio'],
+	_lastPreviewCsv = '',
+	_sCls_ = parent.document.getElementById(widget.sObjId + '_cls').value,
+	_ttlB64Esc = encodeURIComponent(window.btoa(widget.sTb));
 
 function weEntity2char(weString) {
 	weString = weString.replace('&lt;', '<');
@@ -123,19 +123,19 @@ function getInitialQueryById(id) {
 }
 
 function getCurrentQuery() {
-	var fo = document.forms[0];
-	var oSctValid = fo.elements.sct_valid;
+	var fo = document.forms[0].elements;
+	var oSctValid = fo.sct_valid;
 	var validSel = oSctValid.options[oSctValid.selectedIndex].value;
-	var oRdoPrio = fo.elements.rdo_prio;
-	var sValidFrom = fo.elements.f_ValidFrom.value;
-	var sValidUntil = fo.elements.f_ValidUntil.value;
+	var oRdoPrio = fo.rdo_prio;
+	var sValidFrom = fo.f_ValidFrom.value;
+	var sValidUntil = fo.f_ValidUntil.value;
 	return {
 		Validity: (validSel === "0") ? 'always' : ((validSel === "1") ? 'date' : 'period'),
 		ValidFrom: convertDate(sValidFrom, '%Y-%m-%d'),
 		ValidUntil: convertDate(sValidUntil, '%Y-%m-%d'),
 		Priority: (oRdoPrio[0].checked) ? 'high' : (oRdoPrio[1].checked) ? 'medium' : 'low',
-		Title: fo.elements.props_title.value,
-		Text: fo.elements.props_text.value
+		Title: fo.props_title.value,
+		Text: fo.props_text.value
 	};
 }
 
@@ -155,7 +155,7 @@ function populate(r) {
 	fo.elements.f_ValidFrom.value = convertDate(document.getElementById(r + '_ValidFrom').value, '%d.%m.%Y');
 	fo.elements.f_ValidUntil.value = convertDate(document.getElementById(r + '_ValidUntil').value, '%d.%m.%Y');
 	var prio = document.getElementById(r + '_Priority').value;
-	fo.elements.rdo_prio[prio == 'high' ? 0 : prio == 'medium' ? 1 : 2].checked = true;
+	fo.elements.rdo_prio[prio === 'high' ? 0 : prio === 'medium' ? 1 : 2].checked = true;
 	fo.elements.props_title.value = document.getElementById(r + '_Title').value;
 	fo.elements.props_text.value = document.getElementById(r + '_Text').value;
 	WE().layout.button.switch_button_state(document, 'delete', 'enabled');
@@ -229,11 +229,11 @@ function init() {
 // saves a note, using the function rpc() in home.inc.php (750)
 function saveNote() {
 	var fo = document.forms[0],
-					_id = fo.elements.mark.value,
-					weValidFrom, weValidUntil;
+		_id = fo.elements.mark.value,
+		weValidFrom, weValidUntil;
 	var q_init = (_id !== '' ?
-					getInitialQueryById(_id) :
-					{Validity: 'always', ValidFrom: '', ValidUntil: '', Priority: 'low', Title: '', Text: ''});
+		getInitialQueryById(_id) :
+		{Validity: 'always', ValidFrom: '', ValidUntil: '', Priority: 'low', Title: '', Text: ''});
 	var q_curr = getCurrentQuery();
 	var hot = false;
 	var idx = ['Title', 'Text', 'Priority', 'Validity', 'ValidFrom', 'ValidUntil'];
@@ -353,7 +353,7 @@ function save() {
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
-					(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
+		(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
 		WE().layout.cockpitFrame.rpc(sTitleEnc.concat(',' + sBit), '', '', '', sTitleEnc, widget.sObjId);
 	}
 	window.opener.setPrefs(widget.sObjId, sBit, sTitleEnc);
