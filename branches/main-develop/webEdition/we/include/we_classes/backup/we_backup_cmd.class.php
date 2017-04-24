@@ -72,7 +72,7 @@ abstract class we_backup_cmd{
 					echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard',
 							'data-backup' => setDynamicVar([
 								'reload' => (we_base_request::_(we_base_request::INT, 'reload', 0) + 1),
-								'mode' => (we_base_request::_(we_base_request::STRING, 'cmd') == self::RECOVER ? 'import' : 'export'),
+								'mode' => (we_base_request::_(we_base_request::STRING, 'cmd') == we_backup_wizard::RECOVER ? 'import' : 'export'),
 								'reloadTimer' => (min($_SESSION['weS']['weBackupVars']['limits']['exec'], 32) * 1000) + 5000 //wait extra 5 secs
 						])]), we_html_element::htmlBody());
 				}
