@@ -37,8 +37,8 @@ if(isset($_REQUEST["phpinfo"])){
 	phpinfo();
 	exit();
 }
-if(version_compare(PHP_VERSION, "5.3.7", "<")){
-	die('<html><head><title>webEdition setup</title></head><body><div style="font-family:sans-serif, sans; font-size:10pt; border:1px solid red; text-align:center; padding:10px; margin:100px;"><b>PHP Version mismatch</b><br /><br />The PHP Version currently used  on this server is too old to run webEdition.<br />webEdition versions newer than need at least PHP Version 5.3.7, please ask your administrator to update your PHP installation!</div></body></html>');
+if(version_compare(PHP_VERSION, "5.6.0", "<")){
+	die('<html><head><title>webEdition setup</title></head><body><div style="font-family:sans-serif, sans; font-size:10pt; border:1px solid red; text-align:center; padding:10px; margin:100px;"><b>PHP Version mismatch</b><br /><br />The PHP Version currently used  on this server is too old to run webEdition.<br />webEdition versions newer than need at least PHP Version 5.6.0, please ask your administrator to update your PHP installation!</div></body></html>');
 }
 
 // first some includes:
@@ -46,8 +46,8 @@ if(
 	!is_readable('./webEdition/we/include/we_version.php') ||
 	!is_readable('./webEdition/we/include/conf/we_conf.inc.php.default') ||
 	!is_readable('./webEdition/we/include/conf/we_conf_global.inc.php.default') ||
-	!is_dir('./webEdition') ||
-	!is_dir('./webEdition/lib/we')){
+	!is_dir('./webEdition')
+){
 	die("No webEdition installation found. This script has to be placed in your DOCUMENT_ROOT besides your webEdition folder!");
 }
 if(!is_readable('./webEdition/we/include/conf/we_conf.inc.php')){
@@ -63,17 +63,11 @@ if(!defined('DB_CONNECT')){
 include_once './webEdition/we/include/we_version.php';
 include_once './webEdition/lib/we/core/autoload.php';
 @session_start();
-if(isset($_REQUEST["debug"]) && !isset($_SESSION["debug"]))
+if(isset($_REQUEST["debug"]) && !isset($_SESSION["debug"])){
 	$_SESSION["debug"] = true;
-if(isset($_REQUEST["debugoff"]) && isset($_SESSION["debug"]))
+}
+if(isset($_REQUEST["debugoff"]) && isset($_SESSION["debug"])){
 	unset($_SESSION["debug"]);
-
-//remove slashes if magic_quotes_gpc is on
-if(get_magic_quotes_gpc()){
-	foreach($_REQUEST as $k => $v){
-		if(!is_array($v))
-			$_REQUEST[$k] = stripslashes($v);
-	}
 }
 
 // html code for additional html header tags:
@@ -134,11 +128,8 @@ $steps = array(
 );
 
 // identify current step:
-if(isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST) >= "1" && intval($_REQUEST) <= count($steps)){
-	$currentStep = $steps[intval($_REQUEST["step"]) - 1];
-} else {
-	$currentStep = $steps[0];
-}
+$currentStep = (isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST["step"]) >= 1 && intval($_REQUEST["step"]) <= count($steps) ?
+	$steps[intval($_REQUEST["step"]) - 1] : $steps[0]);
 
 //functions for checking system
 function ini_get_bool($val){
@@ -202,7 +193,8 @@ function step_requirements(){
 		$extens = strtolower($extens);
 	}
 	$phpextensionsMissing = array();
-	$phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'gd', 'iconv', 'libxml', 'mbstring', 'mysqli', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib');
+	$phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'gd', 'iconv', 'libxml', 'mbstring', 'mysqli', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL',
+		'standard', 'tokenizer', 'xml', 'zlib');
 
 	if(count($phpextensions) > 3){
 		foreach($phpextensionsMin as $exten){
@@ -222,78 +214,78 @@ function step_requirements(){
 
 	$output = "Checking if all system requirements are met. Some additional tests are performed as they are needed for webEdition to be fully functional but are not essential to run webEdition.<br /><br /><b>Basic Requirements:</b><ul style=\"list-style-position:outside;\">";
 	$errors = false;
-	if(version_compare(PHP_VERSION, "5.3.7", "<")){
-		$output.=tpl_error("PHP Version 5.3.7 or newer required for webEdition versions never than 6.3.9.0!");
+	if(version_compare(PHP_VERSION, "5.6.0", "<")){
+		$output .= tpl_error("PHP Version 5.6.0 or newer required for webEdition versions never than 6.3.9.0!");
 		$errors = true;
 	} else {
-		$output.=tpl_ok("Your PHP Version is up to date (Version " . PHP_VERSION . ")");
+		$output .= tpl_ok("Your PHP Version is up to date (Version " . PHP_VERSION . ")");
 	}
 	if(!empty($phpextensionsMissing)){
-		$output.=tpl_error("Required PHP extensions are not available, missing: " . implode(', ', $phpextensionsMissing));
+		$output .= tpl_error("Required PHP extensions are not available, missing: " . implode(', ', $phpextensionsMissing));
 		$errors = true;
 	}
 	if(!is_callable("mysqli_query")){
-		$output.=tpl_error("PHP MySQL Support is required for running webEdition! MySQL servers at version 5.0 or newer are supported.");
+		$output .= tpl_error("PHP MySQL Support is required for running webEdition! MySQL servers at version 5.0 or newer are supported.");
 		$errors = true;
 	} else {
 		$mysqlVersion = mysqli_get_client_version();
 		if($mysqlVersion < 50000){
-			$output.=tpl_error("MySQL Version 5.0 or newer required!");
+			$output .= tpl_error("MySQL Version 5.0 or newer required!");
 			$errors = true;
 		} else {
-			$output.=tpl_ok("PHP MySQL support available (Client API Version " . $mysqlVersion . " found)");
+			$output .= tpl_ok("PHP MySQL support available (Client API Version " . $mysqlVersion . " found)");
 		}
 	}
 
 	$output .= "</ul><b>Additional requirements:</b><ul style=\"list-style-position:outside;\">";
 	if(ini_get_bool('safe_mode')){
-		$output.=tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, yet we do not recommend it since it is DEPRECATED since PHP version 5.3. We also cannot guarantee that all features of webEdition will work properly.");
+		$output .= tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, yet we do not recommend it since it is DEPRECATED since PHP version 5.3. We also cannot guarantee that all features of webEdition will work properly.");
 	}
 	if(ini_get_bool('register_globals')){
-		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b>, is declared DEPRECATED since PHP version 5.3 and we strongly recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more information.");
+		$output .= tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b>, is declared DEPRECATED since PHP version 5.3 and we strongly recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more information.");
 	}
 	if(in_array('suhosin', get_loaded_extensions())){
-		$output.=tpl_warning("Suhosin is active! The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.");
+		$output .= tpl_warning("Suhosin is active! The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.");
 	}
 
 
 	if(!is_callable("curl_getinfo")){
-		$output.=tpl_warning("curl support is not available.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate, the First Steps Wizard or the application installer.");
+		$output .= tpl_warning("curl support is not available.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate, the First Steps Wizard or the application installer.");
 	} else {
 		$curlVersion = curl_version();
-		$output.=tpl_ok("curl support is available (Version " . $curlVersion["version"] . " found)");
+		$output .= tpl_ok("curl support is available (Version " . $curlVersion["version"] . " found)");
 	}
 	if(!ini_get_bool("allow_url_fopen")){
-		$output.=tpl_warning("allow_url_fopen deactivated.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate.");
+		$output .= tpl_warning("allow_url_fopen deactivated.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate.");
 	} else {
-		$output.=tpl_ok("allow_url_fopen activated.");
+		$output .= tpl_ok("allow_url_fopen activated.");
 	}
 
 	if(!is_callable("mb_convert_encoding")){
-		$output.=tpl_warning("PHP multibyte functions not available");
+		$output .= tpl_warning("PHP multibyte functions not available");
 	} else {
-		$output.=tpl_ok("PHP multibyte functions available");
+		$output .= tpl_ok("PHP multibyte functions available");
 	}
 	if(!is_callable("gd_info")){
-		$output.=tpl_warning("gdlib functions not available");
+		$output .= tpl_warning("gdlib functions not available");
 	} else {
-		$output.=tpl_ok("gdlib functions available (Version " . GD_VERSION . " found)");
+		$output .= tpl_ok("gdlib functions available (Version " . GD_VERSION . " found)");
 	}
 	if(!is_callable("exif_imagetype")){
-		$output.=tpl_warning("exif extension not available: EXIF-Metadata for images are not available");
+		$output .= tpl_warning("exif extension not available: EXIF-Metadata for images are not available");
 	}
 	if(!$sdkDbOK){
-		$output.=tpl_warning("SDK Operations and WE-APPS with database access are not available");
+		$output .= tpl_warning("SDK Operations and WE-APPS with database access are not available");
 	}
 	if(!$phpExtensionsDetectable){
-		$output.=tpl_warning("Not all requirements could be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start");
+		$output .= tpl_warning("Not all requirements could be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start");
 	}
 
 	if(defined("PCRE_VERSION") && substr(PCRE_VERSION, 0, 1) < 7){
-		$output.=tpl_warning("Your PCRE extension is outdated: " . PCRE_VERSION . " detected. This can lead to problems, particularly in future webEdition versions.");
+		$output .= tpl_warning("Your PCRE extension is outdated: " . PCRE_VERSION . " detected. This can lead to problems, particularly in future webEdition versions.");
 	}
 	if(!defined("PCRE_VERSION")){
-		$output.=tpl_warning("Your PCRE extension version can not be determined. Versions before 7.0 can lead to problems, particularly in future webEdition versions.");
+		$output .= tpl_warning("Your PCRE extension version can not be determined. Versions before 7.0 can lead to problems, particularly in future webEdition versions.");
 	}
 
 
@@ -305,14 +297,14 @@ function step_requirements(){
 	// session and cookie test:
 	$output .= "</ul><b>Session / cookie test:</b><ul style=\"list-style-position:outside;\">";
 	if(isset($_SESSION["we_test"]) && $_SESSION["we_test"] == @session_id()){
-		$output.=tpl_error("Session test failed. Maybe restarting your browser may help.");
+		$output .= tpl_error("Session test failed. Maybe restarting your browser may help.");
 	} else {
-		$output.=tpl_ok("Session test");
+		$output .= tpl_ok("Session test");
 	}
 	if(isset($_COOKIE["we_test"]) && $_COOKIE["we_test"] == @session_id()){
-		$output.=tpl_error("Cookie test failed. Maybe cookies are disabled in your browser.");
+		$output .= tpl_error("Cookie test failed. Maybe cookies are disabled in your browser.");
 	} else {
-		$output.=tpl_ok("Cookie test");
+		$output .= tpl_ok("Cookie test");
 	}
 	$output .= "</ul>";
 	return $output;
@@ -403,75 +395,46 @@ function step_database(){
 	global $header;
 	$output = "Please enter all informations required to connect to the database server:<br /><br />";
 	// database host name
-	$input_host = new we_ui_controls_TextField();
-	$input_host->setName('db_host');
-	if(isset($_SESSION["db_host"]) && !empty($_SESSION["db_host"])){
-		$input_host->setValue($_SESSION["db_host"]);
-	} else {
-		$input_host->setValue('localhost');
-	}
-	$input_host->setWidth(200);
-	$input_host->setHeight(26);
+	$input_host = '<input style="width:200px:" name="db_host" value="' .
+		(isset($_SESSION["db_host"]) && !empty($_SESSION["db_host"]) ?
+		$_SESSION["db_host"] :
+		'localhost') .
+		'"/>';
 
 	// database name:
-	$input_database = new we_ui_controls_TextField();
-	$input_database->setName('db_database');
-	if(isset($_SESSION["db_database"]) && !empty($_SESSION["db_database"])){
-		$input_database->setValue($_SESSION["db_database"]);
-	} else {
-		$input_database->setValue('webedition');
-	}
-	$input_database->setWidth(200);
-	$input_database->setHeight(26);
+	$input_database = '<input style="width:200px:" name="db_database" value="' .
+		(isset($_SESSION["db_database"]) && !empty($_SESSION["db_database"]) ?
+		$_SESSION["db_database"] :
+		'webedition') .
+		'"/>';
 
 	// table prefix:
-	$input_tableprefix = new we_ui_controls_TextField();
-	$input_tableprefix->setName('db_tableprefix');
-	if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])){
-		$input_tableprefix->setValue($_SESSION["db_tableprefix"]);
-	} else {
-		$input_tableprefix->setValue('');
-	}
-	$input_tableprefix->setWidth(200);
-	$input_tableprefix->setHeight(26);
+	$input_tableprefix = '<input style="width:200px:" name="db_tableprefix" value="' .
+		(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"]) ?
+		$_SESSION["db_tableprefix"] :
+		'') .
+		'"/>';
 
 	// database username:
-	$input_username = new we_ui_controls_TextField();
-	$input_username->setName('db_username');
-	if(isset($_SESSION["db_username"]) && !empty($_SESSION["db_username"])){
-		$input_username->setValue($_SESSION["db_username"]);
-	} else {
-		$input_username->setValue('');
-	}
-	$input_username->setWidth(200);
-	$input_username->setHeight(26);
+	$input_username = '<input style="width:200px:" name="db_username" value="' .
+		(isset($_SESSION["db_username"]) && !empty($_SESSION["db_username"]) ?
+		$_SESSION["db_username"] :
+		'') .
+		'"/>';
 
 	// database user password:
-	$input_password = new we_ui_controls_TextField();
-	$input_password->setName('db_password');
-	if(isset($_SESSION["db_password"])){
-		$input_password->setValue($_SESSION["db_password"]);
-	} else {
-		$input_password->setValue('');
-	}
-	$input_password->setWidth(200);
-	$input_password->setClass("small");
-	$input_password->setType("password");
-	$input_password->setHeight(26);
-	;
+	$input_password = '<input  class="small" type="password" style="width:200px:" name="db_password" value="' .
+		(isset($_SESSION["db_password"]) ?
+		$_SESSION["db_password"] :
+		'') .
+		'"/>';
 
-	foreach($input_host->getJSFiles() as $jsFile){
-		$header .= '<script src="' . $jsFile . '"></script>';
-	}
-	foreach($input_host->getCSSFiles() as $cssFile){
-		$header .= '<link href="' . $cssFile["path"] . '" media = "' . $cssFile["media"] . '" rel="styleSheet" type="text/css" />';
-	}
 	$output .= '<table class="small">';
-	$output .= '<tr><td style="width:80px;">Server: </td><td>' . $input_host->getHTML() . '</td></tr>';
-	$output .= '<tr><td style="width:80px;">Database: </td><td>' . $input_database->getHTML() . '</td></tr>';
-	$output .= '<tr><td style="width:80px;">Table prefix: </td><td>' . $input_tableprefix->getHTML() . '</td></tr>';
-	$output .= '<tr><td style="width:80px;">Username: </td><td>' . $input_username->getHTML() . '</td></tr>';
-	$output .= '<tr><td style="width:80px;">Password: </td><td>' . $input_password->getHTML() . '</td></tr>';
+	$output .= '<tr><td style="width:80px;">Server: </td><td>' . $input_host . '</td></tr>';
+	$output .= '<tr><td style="width:80px;">Database: </td><td>' . $input_database . '</td></tr>';
+	$output .= '<tr><td style="width:80px;">Table prefix: </td><td>' . $input_tableprefix . '</td></tr>';
+	$output .= '<tr><td style="width:80px;">Username: </td><td>' . $input_username . '</td></tr>';
+	$output .= '<tr><td style="width:80px;">Password: </td><td>' . $input_password . '</td></tr>';
 	$output .= '</table>';
 	return $output;
 }
@@ -753,7 +716,7 @@ function step_summary(){
 	){
 		$errors = true;
 	}
-	$output.="*These values can be changed easily with the configuration dialog.";
+	$output .= "*These values can be changed easily with the configuration dialog.";
 	return $output;
 }
 
@@ -814,8 +777,8 @@ function step_installation(){
 		$defaultEngine = 'myisam';
 	}
 	$charset_collation = (!empty($_SESSION["we_db_charset"]) && !empty($_SESSION["we_db_collation"]) ?
-			" CHARACTER SET " . $_SESSION["we_db_charset"] . " COLLATE " . $_SESSION["we_db_collation"] :
-			'') .
+		" CHARACTER SET " . $_SESSION["we_db_charset"] . " COLLATE " . $_SESSION["we_db_collation"] :
+		'') .
 		' ENGINE=' . $defaultEngine;
 	mysqli_query($conn, " SET NAMES '" . $_SESSION["we_db_charset"] . "' ");
 	foreach($dbqueries as $dbquery){
@@ -845,11 +808,11 @@ function step_installation(){
 			}
 		}
 	}
-	$errors|=$queryErrors;
+	$errors |= $queryErrors;
 
 	$output .= ($queryErrors === true ?
-			tpl_error("There were some errors while executing the database queries.") :
-			tpl_ok("Executed all queries successfully to the selected database.")
+		tpl_error("There were some errors while executing the database queries.") :
+		tpl_ok("Executed all queries successfully to the selected database.")
 		);
 
 	//print("<pre>".$dbdata."</pre>");
@@ -921,16 +884,14 @@ function step_installation(){
 }
 
 function step_finish(){
-	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\" target=\"_blank\">clicking here</a>.
+	return "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\" target=\"_blank\">clicking here</a>.
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
-	";
-	$output .= "<b>Important:</b><br /><br />";
-	$output .= "Please don't forget to remove this setup script in order to prevent damage to your website by misuse. The next and final step of this installation script will take care of that.<br /><br />";
-	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
+
+<b>Important:</b><br /><br />
+Please don't forget to remove this setup script in order to prevent damage to your website by misuse. The next and final step of this installation script will take care of that.<br /><br />
+The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
 	You can do that using the webEdition user management module (located at the top of the \"Modules\" menu).";
-	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
-	return $output;
 }
 
 function step_cleanup(){
@@ -953,20 +914,17 @@ function step_cleanup(){
 		}
 	}
 	//if(is_readable("./setup.php")) $error = true;
-	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>.
+	return "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>.
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
-	";
-	if($error === true){
-		$output .= tpl_errorbox("At least one of the setup files could not be deleted (maybe insufficient access permissions?), please do that manually!");
-	} else {
-		$output .= tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.");
-	}
-	$output .= "<br /><b>Important:</b><br /><br />";
-	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
+	" .
+		($error === true ?
+		tpl_errorbox("At least one of the setup files could not be deleted (maybe insufficient access permissions?), please do that manually!") :
+		tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.")
+		) .
+		"<br /><b>Important:</b><br /><br />
+The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
 	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
-	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
-	return $output;
 }
 
 // html template functions:
@@ -1001,68 +959,17 @@ function tpl_warning($text = ""){
 }
 
 // title text
-if(isset($currentStep["title"])){
-	$stepTitle = '<big><b>' . $currentStep["id"] . '. ' . $currentStep["title"] . '</b></big><br /><br />';
-} else {
-	$stepTitle = '';
-}
+$stepTitle = (isset($currentStep["title"]) ? '<h1>' . $currentStep["id"] . '. ' . $currentStep["title"] . '</h1><br /><br />' : '');
 
 // step navigation (2 buttons):
 function tpl_navigation($step = "1"){
-	global $header, $currentStep, $steps, $errors;
+	global $steps, $errors;
 	$nextID = $step + 1;
 	$prevID = $step - 1;
 	// next button
-	$buttonNext = new we_ui_controls_Button();
-	$buttonNext->setWidth(120);
-	$buttonNext->setTextPosition('right');
-	/*
-	  if($step == count($steps)) {
-	  $buttonNext->setHref('./webEdition/');
-	  $buttonNext->setTarget('_blank');
-	  $buttonNext->setText('start webEdition');
-	  $buttonNext->setTitle('start webEdition in a new window');
-	  } else {
-	 */
-	$buttonNext->setTitle('next step');
-	if($step == (count($steps) - 1)){
-		$buttonNext->setText('cleanup');
-	} else {
-		$buttonNext->setText('next');
-	}
 
-	$buttonNext->setTarget('_self');
-	$buttonNext->setType('submit');
-	if($step >= count($steps) || $errors === true){
-		$buttonNext->setDisabled(true);
-	} else {
-		$buttonNext->setHref('?step=' . $nextID);
-	}
-	//}
-	// back button
-	$buttonPrev = new we_ui_controls_Button();
-	$buttonPrev->setTitle('previous step');
-	$buttonPrev->setText('back');
-	$buttonPrev->setType('href');
-	$buttonPrev->setTarget('_self');
-	if($step == "1" || $step >= (count($steps) - 1)){
-		$buttonPrev->setDisabled(true);
-	} else {
-		$buttonPrev->setHref('?step=' . $prevID);
-	}
-	$buttonPrev->setWidth(120);
-	$buttonPrev->setTextPosition('left');
-
-	foreach($buttonNext->getJSFiles() as $jsFile){
-		$header .= '<script src="' . $jsFile . '"></script>';
-	}
-	foreach($buttonNext->getCSSFiles() as $cssFile){
-		$header .= '<link href="' . $cssFile["path"] . '" media = "' . $cssFile["media"] . '" rel="styleSheet" type="text/css" />';
-	}
-
-	$output = '<div style="display:block; margin:10px 0px 10px 0px;"><div style="float:left;">' . $buttonPrev->getHTML() . '</div>';
-	$output .= '<div style="float:right;">' . $buttonNext->getHTML() . '</div></div>';
-	return $output;
+	return '<div style="display:block; margin:10px 0px 10px 0px;"><div style="float:left;"><button style="width:120px;" title="previous step" type="button" onclick="document.location=\'?step=' . $prevID . '\'" ' . ($step == "1" || $step >= (count($steps) - 1) ? 'disabled="disabled"' : '') . '>back</button></div>' .
+		'<div style="float:right;"><button style="width:120px;" title="next step" type="button" onclick="document.location=\'?step=' . $nextID . '\'" ' . ($step >= count($steps) || $errors === true ? 'disabled="disabled"' : '') . '>' . ($step == (count($steps) - 1) ? 'cleanup' : 'next') . '</button></div></div>';
 }
 
 // buffer
@@ -1093,6 +1000,9 @@ ob_end_clean();
 				font-size:8pt;
 			}
 			table {font-weight:normal;}
+			td {
+				text-align: left;
+			}
 			fieldset {
 				border:1px solid #888;
 			}
@@ -1118,10 +1028,10 @@ ob_end_clean();
 				color:#000000;
 			}
 		</style>
-		<link href="/webEdition/css/global.php?WE_LANGUAGE=English&amp;WE_BACKENDCHARSET=UTF-8" rel="styleSheet" type="text/css" />
+		<link href="webEdition/css/webEdition.css" />
 		<?php echo $header; ?>
 	</head>
-	<body bgcolor="#386AAB" class="header" onLoad="" style="margin:0px">
+	<body bgcolor="#386AAB" class="header" style="margin:0px">
 		<div class="debug"<?php
 		if(isset($_SESSION["debug"])){
 			echo ' style="display:block;"';
@@ -1131,71 +1041,65 @@ ob_end_clean();
 		?>>
 					 <?php echo $bufferedOutput; ?>
 		</div>
-		<table width="100%" style="width: 100%; height: 100%;">
-			<tr>
-				<td align="center" valign="middle">
-					<form action="/setup.php?step=<?php echo ($currentStep["id"] + 1) ?>" method="post">
-						<input name="step" value="<?php echo $currentStep["id"] + 1 ?>" type="hidden" />
-						<table border="0" style="width:818px;">
-							<tr style="height:10px;">
-								<td style="width:260px;background-color:#386AAB;"></td>
-								<td rowspan="2" style="width:430px;">
-									<table border="0" style="background-repeat: no-repeat;background-color:#EBEBEB;">
-										<tr>
-											<td colspan="3" width="432" height="110"></td>
-										</tr>
-										<tr>
-											<td width="432" colspan="3"></td>
-										</tr>
-										<tr>
-											<td width="15"></td>
-											<td width="402">
-												<?php
-												echo $stepTitle;
-												echo $output;
-												echo $navigation;
-												?>
-											</td>
-											<td width="15"></td>
-										</tr>
-										<tr>
-											<td width="432" colspan="3"></td>
-										</tr>
-										<tr>
-											<td width="15"></td>
-											<td width="402" class="small">Version: <?php echo WE_VERSION ?></td>
-											<td width="15"></td>
-										</tr>
-										<tr>
-											<td width="432" colspan="3"></td>
-										</tr>
-										<tr>
-											<td width="432" colspan="3">
-
-											</td>
-										</tr>
-									</table>
-								</td>
-								<td valign="top" style="width:260px;background-repeat:repeat-y;">
-
-								</td>
+		<form action="/setup.php?step=<?php echo ($currentStep["id"] + 1) ?>" method="post">
+			<input name="step" value="<?php echo $currentStep["id"] + 1 ?>" type="hidden" />
+			<table border="0" style="margin-left: auto;margin-right: auto;width:818px;">
+				<tr style="height:10px;">
+					<td style="width:260px;background-color:#386AAB;"></td>
+					<td rowspan="2" style="width:430px;">
+						<table border="0" style="background-repeat: no-repeat;background-color:#EBEBEB;">
+							<tr>
+								<td colspan="3" width="432" height="110"><img src="/webEdition/images/webedition.svg"/></td>
 							</tr>
 							<tr>
-								<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">
+								<td width="432" colspan="3"></td>
+							</tr>
+							<tr>
+								<td width="15"></td>
+								<td width="402">
+									<?=
+									$stepTitle .
+									$output .
+									$navigation;
+									?>
 								</td>
-								<td valign="bottom" style="width:260px;height:296px;background-repeat:repeat-y;">
+								<td width="15"></td>
+							</tr>
+							<tr>
+								<td width="432" colspan="3"></td>
+							</tr>
+							<tr>
+								<td width="15"></td>
+								<td width="402" class="small">Version: <?php echo WE_VERSION ?></td>
+								<td width="15"></td>
+							</tr>
+							<tr>
+								<td width="432" colspan="3"></td>
+							</tr>
+							<tr>
+								<td width="432" colspan="3">
 
 								</td>
 							</tr>
-							<tr style="height:10px;">
-								<td style="width:260px;"></td>
-								<td style="height:10px;"></td>
-								<td style="width:260px;"></td>
-							</tr>
 						</table>
-					</form>
-				</td>
-			</tr>
-		</table>
+					</td>
+					<td valign="top" style="width:260px;background-repeat:repeat-y;">
+
+					</td>
+				</tr>
+				<tr>
+					<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">
+					</td>
+					<td valign="bottom" style="width:260px;height:296px;background-repeat:repeat-y;">
+
+					</td>
+				</tr>
+				<tr style="height:10px;">
+					<td style="width:260px;"></td>
+					<td style="height:10px;"></td>
+					<td style="width:260px;"></td>
+				</tr>
+			</table>
+		</form>
 	</body>
 </html>
