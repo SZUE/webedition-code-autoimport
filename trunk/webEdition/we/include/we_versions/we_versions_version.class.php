@@ -1062,7 +1062,7 @@ class we_versions_version{
 			switch($status){
 				case 'published':
 				case 'saved':
-					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && self::versionsExist($document['ID'], $document['ContentType'])){
+					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && self::versionsExist($document['ID'], $document['Table'], $document['ContentType'])){
 						return;
 					}
 			}
