@@ -30,7 +30,7 @@
 
 $_SESSION['weS']['testUpdate'] = we_base_request::_(we_base_request::BOOL, "setTestUpdate", isset($_SESSION['weS']['testUpdate']) ? $_SESSION['weS']['testUpdate'] : false);
 
-$content = '
+return liveUpdateTemplates::getHtml(g_l('liveUpdate', '[beta][headline]'), '
 <table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
@@ -40,26 +40,12 @@ $content = '
 	<td>' . g_l('liveUpdate', '[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
-<tr>
-	<td></td><td>
-		<br />
-		<br />
-	</td>
-</tr>
+<tr><td colspan="2"><br /><br /></td></tr>
 <tr>
 	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($_SESSION['weS']['testUpdate'], 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
 		<br />
 		<br />
 	</td>
 </tr>
-<tr>
-	<td colspan="2">' . g_l('liveUpdate', '[beta][warning]') . '
-		<br />
-		<br />
-	</td>
-</tr>
-
-</table>
-';
-
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[beta][headline]'), $content);
+<tr><td colspan="2">' . g_l('liveUpdate', '[beta][warning]') . '<br /><br /></td></tr>
+</table>');

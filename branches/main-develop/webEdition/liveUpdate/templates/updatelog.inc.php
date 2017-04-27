@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -44,7 +45,6 @@
  *
  */
 
-$content = g_l('liveUpdate', '[updatelog][logIsEmpty]');
 
 /*
  * items found - show them in table
@@ -56,10 +56,10 @@ if($this->Data['allEntries']){ // entries exist
 	$start = $this->Data['start'];
 	$content = '
 <form name="we_form">' . we_html_element::htmlHiddens([
-			"section" => we_base_request::_(we_base_request::STRING, 'section'),
-			"log_cmd" => "dummy",
-			"start" => $start
-		]) . '
+				"section" => we_base_request::_(we_base_request::STRING, 'section'),
+				"log_cmd" => "dummy",
+				"start" => $start
+			]) . '
 <table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
@@ -67,9 +67,9 @@ if($this->Data['allEntries']){ // entries exist
 </tr>
 </table>
 <div class="defaultfont">' .
-		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") .
-		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") .
-		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+			we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") .
+			we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") .
+			we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />';
 
@@ -106,12 +106,12 @@ if($this->Data['allEntries']){ // entries exist
 		 */
 
 		$buttons = we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();") .
-			($start > 0 ? //	backbutton
-			we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
-			we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)) .
-			($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-			we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true) :
-			we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
+				($start > 0 ? //	backbutton
+				we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
+				we_html_button::create_button(we_html_button::BACK, "#", '', 0, 0, "", "", true)) .
+				($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
+				we_html_button::create_button(we_html_button::NEXT, "#", '', 0, 0, "", "", true) :
+				we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
 
 		$content .= '
 </table>';
@@ -120,6 +120,8 @@ if($this->Data['allEntries']){ // entries exist
 	}
 	$content .= '
 </form>';
+} else {
+	$content = g_l('liveUpdate', '[updatelog][logIsEmpty]');
 }
 
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js'), $buttons);
+return liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js'), $buttons);

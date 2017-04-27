@@ -37,7 +37,7 @@ $tabs->addTab(g_l('liveUpdate', '[tabs][beta]'), 'fa-unlock-alt', ($this->Data['
 
 // get output
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+return we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 	we_html_element::jsScript(JS_DIR . 'initTabs.js') .
 	we_html_element::jsScript(JS_DIR . 'update/updatelog.js'), we_html_element::htmlBody([
 		'id' => 'eHeaderBody',

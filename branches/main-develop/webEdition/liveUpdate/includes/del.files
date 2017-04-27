@@ -684,9 +684,12 @@ mozillamenu.php
 moveInfo.php
 loginToSuperEasyEditMode.php
 liveUpdate/tmp/dummy
+liveUpdate/templates/upgrade.inc.php
+liveUpdate/templates/stateMessage.inc.php
 liveUpdate/templates/register.inc.php
 liveUpdate/templates/nextVersion.inc.php
 liveUpdate/templates/modules.inc.php
+liveUpdate/templates/connectSuccess.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
 liveUpdate/sqldumps/tblObjectLink.sql
