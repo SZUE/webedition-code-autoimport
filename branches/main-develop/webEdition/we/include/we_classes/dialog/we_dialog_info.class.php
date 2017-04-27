@@ -30,9 +30,9 @@ abstract class we_dialog_info{
 		$we_version = '';
 		if(!$isLogin){
 			$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
-					((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . (defined('WE_VERSION_HOTFIX_NR') && WE_VERSION_HOTFIX_NR ? ' , h' . WE_VERSION_HOTFIX_NR : '') . ')' .
-					((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-					((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
+				((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . (defined('WE_VERSION_HOTFIX_NR') && WE_VERSION_HOTFIX_NR ? ' , h' . WE_VERSION_HOTFIX_NR : '') . ')' .
+				((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+				((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
 		}
 
 		if($isLogin && WE_LOGIN_HIDEWESTATUS){
@@ -76,8 +76,8 @@ abstract class we_dialog_info{
 
 //	5th credits
 		$table->setCol($actRow++, 0, ['class' => "defaultfont small row5"], '<div id="credits">' .
-				g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
-				  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
+			g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
+			  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
 
 //	7th agency
 		if(is_readable(WEBEDITION_PATH . 'agency.inc.php')){
@@ -88,11 +88,11 @@ abstract class we_dialog_info{
 		$loginRow = 0;
 
 		if($showLoginDialog){
-			$loginTable = new we_html_table(['class' => "plainTable"], 4, 1);
+			$loginTable = new we_html_table(['class' => "plainTable credentials"], 4, 1);
 			$loginTable->setCol($loginRow++, 0, ['class' => "small"], we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, ["for" => "username"], g_l('global', '[username]'))));
-			$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
+			$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0) . '<i class="fa fa-user"></i>');
 			$loginTable->setCol($loginRow++, 0, ['class' => "small row5"], we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, ["for" => 'password'], g_l('global', '[password]'))));
-			$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
+			$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0) . '<i class="fa fa-lock"></i>');
 			$loginTable->setCol($loginRow++, 0, [], '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 			$table->addRow(2);
@@ -130,10 +130,10 @@ abstract class we_dialog_info{
 				// if button is between these radio boces, they can not be reachable with <tab>
 				$modetable->setCol(0, 0, [], '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
-						'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
-						'</td></tr>
+					'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
+					'</td></tr>
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
-						'</td></tr>
+					'</td></tr>
 		</table>');
 				$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3], $loginButton);
 			}
@@ -154,16 +154,16 @@ abstract class we_dialog_info{
 		}
 
 		return $table->getHtml() . (!$showLoginDialog ? '' :
-				we_html_element::htmlDiv(['id' => 'loading'], '<i class="fa fa-5x fa-spinner fa-pulse"></i>')
-				);
+			we_html_element::htmlDiv(['id' => 'loading'], '<i class="fa fa-5x fa-spinner fa-pulse"></i>')
+			);
 	}
 
 	public static function getFullDialog(){
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
-				we_html_element::cssLink(CSS_DIR . 'infoScreen.css'), we_html_element::htmlBody([
-					'id' => 'infoScreen',
-					'onload' => "self.focus();"
-						], self::getDialog()
+			we_html_element::cssLink(CSS_DIR . 'infoScreen.css'), we_html_element::htmlBody([
+				'id' => 'infoScreen',
+				'onload' => "self.focus();"
+				], self::getDialog()
 		));
 	}
 

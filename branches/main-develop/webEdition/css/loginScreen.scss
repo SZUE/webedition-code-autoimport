@@ -37,7 +37,7 @@
 	#picCopy{
 		font-size: $smallfont;
 		position: absolute;
-		right:5px;
+		right:1em;
 		bottom:0px;
 		color:white;
 	}
@@ -68,12 +68,21 @@
 	border-spacing: 0px;
 	background-color: #192C3A;
 	background: url(../images/bg-login-box.png);
-	width: 432px;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
 	box-shadow: none;
 	color: #ffffff;
+	table.credentials td{
+		position: relative;
+
+		i{
+			color: #4d565d;
+			position: absolute;
+			left:8px;
+			top:8px;
+		}
+	}
 	td.logo{
 		text-align:center;
 	}
@@ -100,7 +109,7 @@
 		color: #4d565d;
 		background: #ffffff;
 		border: none;
-		padding: 0px 10px;
+		padding: 0px 10px 0px 25px;
 		height: 30px;
 		line-height: 30px;
 		width: 100%;
