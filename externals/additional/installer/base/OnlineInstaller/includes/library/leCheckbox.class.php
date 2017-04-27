@@ -12,7 +12,6 @@ class leCheckbox{
 		}
 
 		$_checked = ($checked ? " checked=\"checked\"" : '');
-		$_id = (array_key_exists("id", $attribs) ? $attribs['id'] : $name);
 
 		return "<table cellpadding=\"0\" border=\"0\" cellspacing=\"0\">
 <tr><td>

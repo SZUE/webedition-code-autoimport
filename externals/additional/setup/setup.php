@@ -70,8 +70,6 @@ if(isset($_REQUEST["debugoff"]) && isset($_SESSION["debug"])){
 	unset($_SESSION["debug"]);
 }
 
-// html code for additional html header tags:
-$header = "";
 // boolean for error state (for disabling the next button if any errors occured)
 $errors = false;
 $steps = array(
@@ -392,7 +390,6 @@ function step_filesystem(){
 }
 
 function step_database(){
-	global $header;
 	$output = "Please enter all informations required to connect to the database server:<br /><br />";
 	// database host name
 	$input_host = '<input style="width:200px:" name="db_host" value="' .
@@ -660,28 +657,24 @@ function step_language(){
 
 function step_summary(){
 	global $errors;
-	//print_r($_SESSION);
 	$output = "";
 	if((!isset($_SESSION["we_language"]) || empty($_SESSION["we_language"])) && (!isset($_REQUEST["we_language"]) || empty($_REQUEST["we_language"]))){
 		$output .= tpl_errorbox("Please select a valid language to be used by webEdition.");
 		$errors = true;
 	} else if(isset($_REQUEST["we_language"])){
-		$_SESSION["we_language"] = str_replace("/*", "", str_replace('"', '', str_replace("'", "", trim($_REQUEST["we_language"]))));
-		$_SESSION["we_language_translation"] = str_replace("/*", "", str_replace('"', '', str_replace("'", "", trim($_REQUEST["we_language_translation"]))));
+		$_SESSION["we_language"] = str_replace(["/*", '"', "'"], "", trim($_REQUEST["we_language"]));
+		$_SESSION["we_language_translation"] = str_replace(["/*", '"', "'"], "", trim($_REQUEST["we_language_translation"]));
 	}
 	if((!isset($_SESSION["we_db_collation"]) || empty($_SESSION["we_db_collation"])) && (!isset($_REQUEST["we_db_collation"]) || empty($_REQUEST["we_db_collation"]))){
 		$output .= tpl_errorbox("Please select a valid database collation to be  used by webEdition.");
 		$errors = true;
 	} else if(isset($_REQUEST["we_db_collation"])){
-		$_SESSION["we_db_collation"] = str_replace("/*", "", str_replace('"', '', str_replace("'", "", trim($_REQUEST["we_db_collation"]))));
+		$_SESSION["we_db_collation"] = str_replace(["/*", '"', "'"], "", trim($_REQUEST["we_db_collation"]));
 	}
 	$dbcharsetparts = explode('_', $_SESSION["we_db_collation"]);
 	$_SESSION["we_db_charset"] = $dbcharsetparts[0];
-	if($_SESSION["we_db_charset"] == "utf8"){
-		$_SESSION['we_charset'] = 'UTF-8';
-	} else {
-		$_SESSION['we_charset'] = 'ISO-8859-1';
-	}
+	$_SESSION['we_charset'] = ($_SESSION["we_db_charset"] == "utf8" ? 'UTF-8' : 'ISO-8859-1');
+
 
 	// webEdition settings:
 	$output .= '<fieldset><legend>webEdition:</legend><table class="small" style="width:100%; table-layout:fixed;">' .
@@ -750,17 +743,17 @@ function step_installation(){
 		$output .= tpl_error("Could not connect to database server. Message from server: " . mysqli_error($conn));
 		$errors = true;
 		return $output;
-	} else {
-		$output .= tpl_ok("connected to database server on \"" . $_SESSION["db_host"] . "\"");
 	}
+	$output .= tpl_ok("connected to database server on \"" . $_SESSION["db_host"] . "\"");
+
 	// select database:
 	if(!mysqli_query($conn, "USE " . $_SESSION["db_database"])){
 		$output .= tpl_error("Error using specified database. Message from server: " . mysqli_error($conn));
 		$errors = true;
 		return $output;
-	} else {
-		$output .= tpl_ok("Using specified database \"" . $_SESSION["db_database"] . "\"");
 	}
+	$output .= tpl_ok("Using specified database \"" . $_SESSION["db_database"] . "\"");
+
 	// drop all existing tables beginning with $prefix$tbl:
 	$res = mysqli_query($conn, 'show tables where Tables_in_' . $_SESSION["db_database"] . ' LIKE "' . $_SESSION["db_tableprefix"] . 'tbl%"');
 	while($table = mysqli_fetch_array($res)){
@@ -987,7 +980,6 @@ ob_end_clean();
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-
 	<head>
 		<title>webEdition &bull; initial configuration</title>
 		<meta http-equiv="expires" content="0">
@@ -1029,31 +1021,20 @@ ob_end_clean();
 			}
 		</style>
 		<link href="webEdition/css/webEdition.css" />
-		<?php echo $header; ?>
 	</head>
 	<body bgcolor="#386AAB" class="header" style="margin:0px">
-		<div class="debug"<?php
-		if(isset($_SESSION["debug"])){
-			echo ' style="display:block;"';
-		} else {
-			echo ' style="display:none;"';
-		}
-		?>>
-					 <?php echo $bufferedOutput; ?>
+		<div class="debug"<?= (isset($_SESSION["debug"]) ? ' style="display:block;"' : ' style="display:none;"'); ?>>
+			<?= $bufferedOutput; ?>
 		</div>
-		<form action="/setup.php?step=<?php echo ($currentStep["id"] + 1) ?>" method="post">
-			<input name="step" value="<?php echo $currentStep["id"] + 1 ?>" type="hidden" />
+		<form action="/setup.php?step=<?= ($currentStep["id"] + 1) ?>" method="post">
+			<input name="step" value="<?= $currentStep["id"] + 1 ?>" type="hidden" />
 			<table border="0" style="margin-left: auto;margin-right: auto;width:818px;">
 				<tr style="height:10px;">
 					<td style="width:260px;background-color:#386AAB;"></td>
 					<td rowspan="2" style="width:430px;">
 						<table border="0" style="background-repeat: no-repeat;background-color:#EBEBEB;">
-							<tr>
-								<td colspan="3" width="432" height="110"><img src="/webEdition/images/webedition.svg"/></td>
-							</tr>
-							<tr>
-								<td width="432" colspan="3"></td>
-							</tr>
+							<tr><td colspan="3" width="432" height="110"><img src="/webEdition/images/webedition.svg"/></td></tr>
+							<tr><td width="432" colspan="3"></td></tr>
 							<tr>
 								<td width="15"></td>
 								<td width="402">
@@ -1065,34 +1046,19 @@ ob_end_clean();
 								</td>
 								<td width="15"></td>
 							</tr>
-							<tr>
-								<td width="432" colspan="3"></td>
-							</tr>
+							<tr><td width="432" colspan="3"></td></tr>
 							<tr>
 								<td width="15"></td>
 								<td width="402" class="small">Version: <?php echo WE_VERSION ?></td>
 								<td width="15"></td>
 							</tr>
-							<tr>
-								<td width="432" colspan="3"></td>
-							</tr>
-							<tr>
-								<td width="432" colspan="3">
-
-								</td>
-							</tr>
 						</table>
 					</td>
-					<td valign="top" style="width:260px;background-repeat:repeat-y;">
-
-					</td>
+					<td valign="top" style="width:260px;background-repeat:repeat-y;"></td>
 				</tr>
 				<tr>
-					<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">
-					</td>
-					<td valign="bottom" style="width:260px;height:296px;background-repeat:repeat-y;">
-
-					</td>
+					<td valign="bottom" style="width:260px;height:296px;background-color:#386AAB;"></td>
+					<td valign="bottom" style="width:260px;height:296px;background-repeat:repeat-y;"></td>
 				</tr>
 				<tr style="height:10px;">
 					<td style="width:260px;"></td>
