@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  * Not much functionality here, just show the requested frame
  */
 class liveUpdateFrames{
+
 	var $Section;
 	var $Data;
 
@@ -71,33 +73,21 @@ class liveUpdateFrames{
 
 		switch($this->Section){
 			case 'tabs':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
-				return '';
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
 			case 'frameset':
 				return $this->htmlFrameset();
-			case 'upgrade':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'upgrade.inc.php');
-				return '';
 			case 'beta':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
-				return '';
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
 			case 'update':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
-				return '';
-			case 'modules':
-				return $this->htmlModules();
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
 			case 'languages':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
-				return '';
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
 			case 'updatelog':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
-				return'';
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
 			case 'connect':
-				include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
-				return '';
+				return include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
 			default:
-				echo "Frame $this->Section is not known!";
-				return;
+				return "Frame $this->Section is not known!";
 		}
 	}
 
@@ -245,14 +235,20 @@ class liveUpdateFrames{
 		$active = "&active=$activeTab";
 		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 		return we_html_tools::getHtmlTop('webEdition Update', '', 'frameset', ' ') . '<body style="overflow:hidden">' .
-			we_html_element::htmlIFrame('updatetabs', $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active, 'position: absolute;top:0px;left:0px;right:0px;height:25px;', '', '', false) .
-			we_html_element::htmlIFrame('updatecontent', $_SERVER['SCRIPT_NAME'] . $show, 'position: absolute;top:25px;left:0px;right:0px;bottom:0px;', '', '', false) .
-			we_html_element::htmlIFrame('updateload', 'about:blank', 'display:none;', '', '', false) . '</body>
+				we_html_element::htmlIFrame('updatetabs', $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active, 'position: absolute;top:0px;left:0px;right:0px;height:25px;', '', '', false) .
+				we_html_element::htmlIFrame('updatecontent', $_SERVER['SCRIPT_NAME'] . $show, 'position: absolute;top:25px;left:0px;right:0px;bottom:0px;', '', '', false) .
+				we_html_element::htmlIFrame('updateload', 'about:blank', 'display:none;', '', '', false) . '</body>
 </html>';
 	}
 
 	static function htmlConnectionSuccess($errorMessage = ''){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'connectSuccess.inc.php');
+		echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), '
+<div class="defaultfont">
+	' . ($errorMessage ? // servers response is error string
+						g_l('liveUpdate', '[connect][connectionSuccessError]') . '<div class="errorDiv"><code>' . $errorMessage . '</code></div>' :
+						g_l('liveUpdate', '[connect][connectionSuccess]')
+				) .
+				'</div>');
 	}
 
 	static function htmlConnectionError(){
@@ -260,7 +256,19 @@ class liveUpdateFrames{
 	}
 
 	static function htmlStateMessage(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'stateMessage.inc.php');
+		$description = ($this->State === 'true' ?
+				g_l('liveUpdate', '[state][descriptionTrue]') :
+				g_l('liveUpdate', '[state][descriptionError]'));
+
+		$content = '
+<div class="defaultfont">
+	' . $description . '
+	<div class="errorDiv">
+		<code>' . $this->Message . '</code>
+	</div>
+</div>';
+
+		echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[state][headline]'), $content);
 	}
 
 	static function getValidTab($showTab = ''){
@@ -272,10 +280,10 @@ class liveUpdateFrames{
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.liveUpdate=JSON.parse("' . we_base_util::setLangString([
-				'confirmDelete' => g_l('liveUpdate', '[updatelog][confirmDelete]'),
-				'languagesDeleted' => g_l('liveUpdate', '[languages][languagesDeleted]'),
-				'languagesNotDeleted' => g_l('liveUpdate', '[languages][languagesNotDeleted]'),
-			]) . '");';
+					'confirmDelete' => g_l('liveUpdate', '[updatelog][confirmDelete]'),
+					'languagesDeleted' => g_l('liveUpdate', '[languages][languagesDeleted]'),
+					'languagesNotDeleted' => g_l('liveUpdate', '[languages][languagesNotDeleted]'),
+				]) . '");';
 	}
 
 }

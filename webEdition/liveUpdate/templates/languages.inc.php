@@ -66,14 +66,12 @@ if($jsAlert){
 	$jsCmd->addMsg($jsAlert, we_base_util::WE_MESSAGE_FRONTEND);
 }
 
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), '
+return liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), '
 <div>
 <form name="we_form">
 ' . we_html_element::htmlHidden('section', 'languages') . '
-' . g_l('liveUpdate', '[languages][installedLngs]') . '
-<br />
-' . $languagesStr . '
-<br />
+' . g_l('liveUpdate', '[languages][installedLngs]') . '<br />
+' . $languagesStr . '<br />
 <table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[languages][showLanguages]') . '</td>

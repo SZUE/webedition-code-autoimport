@@ -47,17 +47,11 @@ $content = '
 	<td>' . g_l('liveUpdate', '[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
-<tr>
-	<td>
-		<br />
-		<br />
-	</td>
-</tr>
+<tr><td colspan="2"><br /><br /></td></tr>
 <tr>
 	<td>' . g_l('liveUpdate', '[update][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
-</table>
-';
+</table>';
 
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[update][headline]'), $content);
+return liveUpdateTemplates::getHtml(g_l('liveUpdate', '[update][headline]'), $content);
