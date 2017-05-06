@@ -77,7 +77,7 @@ $lang["installApplication"]["dbNotInsertPrefs"] = "Konnte Einstellungen nicht ab
 $lang["installApplication"]["finished"] = "Installation abgeschlossen";
 
 $lang["installApplication"]["module_must_be_reinstalled"] = "Dieses Modul war auf dieser Domain bereits installiert und muss daher wieder installiert werden.";
-$lang["installApplication"]["rss_feed_url"] = "http://www.living-e.de/de/pressezentrum/pr-mitteilungen/rss2.xml";
+$lang["installApplication"]["rss_feed_url"] = "https://www.webedition.org/de/rss/webedition.xml";
 
 
 //

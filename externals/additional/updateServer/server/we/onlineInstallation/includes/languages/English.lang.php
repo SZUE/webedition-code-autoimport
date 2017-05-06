@@ -78,7 +78,7 @@ $lang["installApplication"]["dbNotInsertPrefs"] = "Could not save preferences.";
 $lang["installApplication"]["finished"] = "Installation finished";
 
 $lang["installApplication"]["module_must_be_reinstalled"] = "This module was already installed at this domain. You have to reinstall this module.";
-$lang["installApplication"]["rss_feed_url"] = "http://www.living-e.de/en/press-center/press-releases/rss2.xml";
+$lang["installApplication"]["rss_feed_url"] = "https://www.webedition.org/de/rss/webedition.xml";
 
 
 //
