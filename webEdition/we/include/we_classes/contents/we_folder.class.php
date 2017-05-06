@@ -430,7 +430,7 @@ class we_folder extends we_root{
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language][expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { WE().util.showMessage(WE().consts.g_l.alert.input_file_name,WE().consts.message.WE_MESSAGE_ERROR, window); } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", '', 0, 22, '', '', !empty($disabledNote)) . '</td></tr>
-					</table>';
+</table>';
 	}
 
 	function formCopyDocument(){
