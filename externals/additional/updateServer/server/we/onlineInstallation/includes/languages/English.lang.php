@@ -3,106 +3,64 @@
  * $Id: English.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // installer common
-$lang["installer"]["errorAtStep"] = "Error during step: ";
-
-// installApplication::getPrepareApplicationInstallationResponse()
-$lang["installer"]["tableNotDrop"] = "Existing webEdition-Tables could not be deleted. Please check, if your database user has the privileges to drop tables.";
-
-// installApplication::getApplicationFilesResponse()
-// installerDownload::getGetInstallerFilesResponse()
-$lang["installer"]["downloadFilesTotal"] = "This installation requires %s files";
-$lang["installer"]["downloadFilesFiles"] = "files";
-
-// installApplication::getApplicationFilesResponse()
-$lang["installer"]["downloadFilesQueries"] = "Database queries";
-$lang["installer"]["downloadFilesPatches"] = "Patches";
-
-// installApplication::getUpdateApplicationDatabaseResponse()
-$lang["installer"]["updateDatabaseNotice"] = "Notice during Step: Create database";
-$lang["installer"]["tableExists"] = "Table already exists";
-$lang["installer"]["tableReCreated"] = "Table was recreated";
-$lang["installer"]["tableChanged"] = "Table updated";
-$lang["installer"]["entryAlreadyExists"] = "Entries already exist";
-$lang["installer"]["errorExecutingQuery"] = "Some queries failed.";
-
-// installApplication::getCopyApplicationFilesResponse()
-// installerDownload::getCopyFilesResponse()
-$lang["installer"]["amountFilesCopied"] = "Files %s to %s installed";
-
-// installApplication::getCopyApplicationFilesResponse()
-// installApplication::getWriteApplicationConfigurationResponse()
-// installerDownload::getCopyFilesResponse()
-$lang["installer"]["errorMoveFile"] = "Could not install file, please verify if PHP (Apache) has write permission in the webEdition directory (and files).";
-
-
-$lang["installer"]["amountFilesDownloaded"] = "%s of %s Files downloaded.";
-
-// installerDownload::getPrepareInstallerFilesResponse()
-$lang["installer"]["amountFilesPrepared"] = "%s of %s Files prepared.";
-
-// installApplication::getUpdateApplicationDatabaseResponse()
-$lang["installer"]["amountDatabaseQueries"] = "%s of %s Queries executed.";
-
-
-// installer::getErrorMessage()
-$lang["installer"]["errorMessage"] = "Error message";
-$lang["installer"]["errorIn"] = "at";
-$lang["installer"]["errorLine"] = "line";
-
-
-//
-// ---> installApplication
-//
-// installer::getProceedNextCommandResponsePart()
-$lang["installApplication"]["prepareApplicationInstallation"] = "Prepare application installation";
-$lang["installApplication"]["determineApplicationFiles"] = "Determine application files";
-$lang["installApplication"]["downloadApplicationFiles"] = "Download application files";
-$lang["installApplication"]["updateApplicationDatabase"] = "Setup database";
-$lang["installApplication"]["prepareApplicationFiles"] = "Prepare application files";
-$lang["installApplication"]["copyApplicationFiles"] = "Copy application files";
-$lang["installApplication"]["writeApplicationConfiguration"] = "Configure webEdition";
-
-
-// installer::getErrorMessage()
-$lang["installApplication"]["prepareApplicationInstallationError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["prepareApplicationInstallation"];
-$lang["installApplication"]["determineApplicationFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["determineApplicationFiles"];
-$lang["installApplication"]["downloadApplicationFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["downloadApplicationFiles"];
-$lang["installApplication"]["updateApplicationDatabaseError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["updateApplicationDatabase"];
-$lang["installApplication"]["prepareApplicationFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["prepareApplicationFiles"];
-$lang["installApplication"]["copyApplicationFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["copyApplicationFiles"];
-$lang["installApplication"]["writeApplicationConfigurationError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["writeApplicationConfiguration"];
-
-// installApplication::getWriteApplicationConfigurationResponse()
-$lang["installApplication"]["dbNotInsertUser"] = "Could not create user";
-$lang["installApplication"]["dbNotInsertPrefs"] = "Could not save preferences.";
-$lang["installApplication"]["finished"] = "Installation finished";
-
-$lang["installApplication"]["module_must_be_reinstalled"] = "This module was already installed at this domain. You have to reinstall this module.";
-$lang["installApplication"]["rss_feed_url"] = "https://www.webedition.org/de/rss/webedition.xml";
-
-
-//
-// ---> installerDownload
-//
-// installer::getProceedNextCommandResponsePart()
-$lang["installerDownload"]["determineInstallerFiles"] = "Determine installer files";
-$lang["installerDownload"]["downloadInstallerFiles"] = "Download installer files";
-$lang["installerDownload"]["prepareInstallerFiles"] = "Prepare installer files";
-$lang["installerDownload"]["copyInstallerFiles"] = "Copy installer files";
-
-// installer::getErrorMessage()
-$lang["installerDownload"]["determineInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["determineInstallerFiles"];
-$lang["installerDownload"]["downloadInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["downloadInstallerFiles"];
-$lang["installerDownload"]["prepareInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["prepareInstallerFiles"];
-$lang["installerDownload"]["copyInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["copyInstallerFiles"];
-
-
-$lang["installer"]['nightly-build'] = 'nightly build';
-$lang["installer"]['nightly'] = 'nightly build';
-$lang["installer"]['alpha'] = 'Alpha';
-$lang["installer"]['beta'] = 'Beta';
-$lang["installer"]['rc'] = 'RC';
-$lang["installer"]['release'] = 'official release';
-$lang["installer"]['retired'] = '=&gt; retired release!';
-
-
+$lang = ['installer' =>
+	['errorAtStep' => 'Error during step: ',
+		'tableNotDrop' => 'Existing webEdition-Tables could not be deleted. Please check, if your database user has the privileges to drop tables.',
+		'downloadFilesTotal' => 'This installation requires %s files',
+		'downloadFilesFiles' => 'files',
+		'downloadFilesQueries' => 'Database queries',
+		'downloadFilesPatches' => 'Patches',
+		'updateDatabaseNotice' => 'Notice during Step: Create database',
+		'tableExists' => 'Table already exists',
+		'tableReCreated' => 'Table was recreated',
+		'tableChanged' => 'Table updated',
+		'entryAlreadyExists' => 'Entries already exist',
+		'errorExecutingQuery' => 'Some queries failed.',
+		'amountFilesCopied' => 'Files %s to %s installed',
+		'errorMoveFile' => 'Could not install file, please verify if PHP (Apache) has write permission in the webEdition directory (and files).',
+		'amountFilesDownloaded' => '%s of %s Files downloaded.',
+		'amountFilesPrepared' => '%s of %s Files prepared.',
+		'amountDatabaseQueries' => '%s of %s Queries executed.',
+		'errorMessage' => 'Error message',
+		'errorIn' => 'at',
+		'errorLine' => 'line',
+		'nightly-build' => 'nightly build',
+		'nightly' => 'nightly build',
+		'alpha' => 'Alpha',
+		'beta' => 'Beta',
+		'rc' => 'RC',
+		'release' => 'official release',
+		'retired' => '=&gt; retired release!',
+	],
+	'installApplication' =>
+	['prepareApplicationInstallation' => 'Prepare application installation',
+		'determineApplicationFiles' => 'Determine application files',
+		'downloadApplicationFiles' => 'Download application files',
+		'updateApplicationDatabase' => 'Setup database',
+		'prepareApplicationFiles' => 'Prepare application files',
+		'copyApplicationFiles' => 'Copy application files',
+		'writeApplicationConfiguration' => 'Configure webEdition',
+		'prepareApplicationInstallationError' => 'Error during step: Prepare application installation',
+		'determineApplicationFilesError' => 'Error during step: Determine application files',
+		'downloadApplicationFilesError' => 'Error during step: Download application files',
+		'updateApplicationDatabaseError' => 'Error during step: Setup database',
+		'prepareApplicationFilesError' => 'Error during step: Prepare application files',
+		'copyApplicationFilesError' => 'Error during step: Copy application files',
+		'writeApplicationConfigurationError' => 'Error during step: Configure webEdition',
+		'dbNotInsertUser' => 'Could not create user',
+		'dbNotInsertPrefs' => 'Could not save preferences.',
+		'finished' => 'Installation finished',
+		'module_must_be_reinstalled' => 'This module was already installed at this domain. You have to reinstall this module.',
+		'rss_feed_url' => 'https://www.webedition.org/de/rss/webedition.xml',
+	],
+	'installerDownload' =>
+	['determineInstallerFiles' => 'Determine installer files',
+		'downloadInstallerFiles' => 'Download installer files',
+		'prepareInstallerFiles' => 'Prepare installer files',
+		'copyInstallerFiles' => 'Copy installer files',
+		'determineInstallerFilesError' => 'Error during step: Determine installer files',
+		'downloadInstallerFilesError' => 'Error during step: Download installer files',
+		'prepareInstallerFilesError' => 'Error during step: Prepare installer files',
+		'copyInstallerFilesError' => 'Error during step: Copy installer files',
+	],
+];

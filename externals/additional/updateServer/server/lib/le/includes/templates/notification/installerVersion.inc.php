@@ -5,5 +5,5 @@
 $liveUpdateResponse = [
 	'Type' => 'template',
 	'Headline' => $GLOBALS['lang']['notification']['installerVersionFailed']['headline'],
-	'Content' => '<div class="messageDiv">' . $GLOBALS['lang']['notification']['installerVersionFailed']['content'] . '</div>'
+	'Content' => '<div class="messageDiv">' . sprintf($GLOBALS['lang']['notification']['installerVersionFailed']['content'], MIN_INSTALLER_V) . '</div>'
 ];
