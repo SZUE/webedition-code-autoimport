@@ -184,7 +184,7 @@ class liveUpdateHttp{
 <head>
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="' . 'http://' . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'] . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'] . '" method="post">
+<form id="liveUpdateForm" action="' . 'https://' . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'] . $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'] . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
 	<input type="hidden" name="detail" value="' . $_REQUEST['detail'] . '" />
