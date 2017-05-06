@@ -208,9 +208,9 @@ abstract class we_backup_util{
 		if(($_SESSION['weS']['weBackupVars']['handle_options']['settings'] && $isSetting) ||
 			($_SESSION['weS']['weBackupVars']['options']['backup_extern'] && !$isSetting) ||
 			//($_SESSION['weS']['weBackupVars']['handle_options']['spellchecker'] && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 ) ||
-			($_SESSION['weS']['weBackupVars']['handle_options']['hooks'] && strpos($path, WE_INCLUDES_PATH . 'we_hook/custom_hooks') === 0) ||
-			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_PATH . 'we_tags/custom_tags') === 0) ||
-			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags') === 0)
+			($_SESSION['weS']['weBackupVars']['handle_options']['hooks'] && strpos($path, WE_INCLUDES_DIR . 'we_hook/custom_hooks') === 0) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_DIR . 'we_tags/custom_tags') === 0) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_DIR . 'weTagWizard/we_tags/custom_tags') === 0)
 		){
 			return true;
 		}
