@@ -1,5 +1,5 @@
 <?php
-$lang = array('installer' => array(
+$GLOBALS['lang'] = array('installer' => array(
 		'alpha' => 'Alpha',
 		'amountDatabaseQueries' => '%s von %s Datenbankqueries wurden ausgef&uuml;hrt.',
 		'amountFilesCopied' => '%s von %s Dateien wurden installiert.',

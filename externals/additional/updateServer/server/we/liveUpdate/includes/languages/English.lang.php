@@ -2,7 +2,7 @@
 /**
  * $Id: English.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-$lang = array('license' =>
+$GLOBALS['lang'] = array('license' =>
 	array('undefinedError' => 'Undefined Error',
 	),
 	'button' => array(

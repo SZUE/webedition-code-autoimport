@@ -3,7 +3,7 @@
  * $Id: English.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // installer common
-$lang = array('installer' =>
+$GLOBALS['lang'] = array('installer' =>
 	array('errorAtStep' => 'Error during step: ',
 		'tableNotDrop' => 'Existing webEdition-Tables could not be deleted. Please check, if your database user has the privileges to drop tables.',
 		'downloadFilesTotal' => 'This installation requires %s files',

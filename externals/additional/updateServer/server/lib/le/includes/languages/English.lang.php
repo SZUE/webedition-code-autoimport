@@ -2,7 +2,7 @@
 /**
  * $Id: English.lang.php 13540 2017-03-12 11:48:37Z mokraemer $
  */
-$lang = array('update' => array(
+$GLOBALS['lang'] = array('update' => array(
 		'headline' => 'Update',
 	),
 	'notification' => array(
