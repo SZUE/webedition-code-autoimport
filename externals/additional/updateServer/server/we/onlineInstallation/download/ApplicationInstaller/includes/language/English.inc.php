@@ -2,46 +2,46 @@
 /**
  * $Id: English.inc.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-$lang = [
-	'Wizard' => [
-		'Settings' => [
+$lang = array(
+	'Wizard' => array(
+		'Settings' => array(
 			'title' => 'Settings',
-		],
-		'Features' => [
+		),
+		'Features' => array(
 			'title' => 'Choose features',
-		],
-		'Summary' => [
+		),
+		'Summary' => array(
 			'title' => 'Summary',
-		],
-		'DownloadAndInstallSoftware' => [
+		),
+		'DownloadAndInstallSoftware' => array(
 			'title' => 'Install application',
-		],
-		'FinishInstallation' => [
+		),
+		'FinishInstallation' => array(
 			'title' => 'Finish installation',
-		],
-	],
-	'Step' => [
-		'ImportantAnnouncement' => [
+		),
+	),
+	'Step' => array(
+		'ImportantAnnouncement' => array(
 			'title' => 'Important Information',
 			'headline' => 'Important Information',
 			'content' => '<img src="./ApplicationInstaller/img/leLayout/alert.gif" style="margin:0px 10px 10px 0px; float:right;"/>Due to maintenance, the update server will not be available for updates and installations from Friday, November 28th, 2008 until Monday, December 1st, 2008. We are sorry for the inconvenience.<br /><br />The webEdition installation archive on <a href="http://sourceforge.net/projects/webedition/" target="_blank">Sourceforge project page</a> will be available to you during this time for installations.',
-		],
+		),
 		'LicenceAgreement' =>
-		['title' => 'Licence agreement',
+		array('title' => 'Licence agreement',
 			'headline' => 'Licence agreement',
 			'content' => '',
 			'labelAccept' => 'General license conditions accepted',
-		],
+		),
 		'DocumentRoot' =>
-		['title' => 'DOCUMENT_ROOT',
+		array('title' => 'DOCUMENT_ROOT',
 			'headline' => 'DOCUMENT_ROOT',
 			'content' => 'Enter the DOCUMENT_ROOT here. The DOCUMENT_ROOT ist the path on the server to the directory conatining your HTML-files.<br /><br />The server returns the following path (MouseOver for the complete path) as DOCUMENT_ROOT: <br />%s<br /><br />If this is correct, you don\'t need to enter anything in the input field below!',
 			'DocumentRoot' => 'DOCUMENT_ROOT',
 			'requestNotValid' => 'The DOCUMENT_ROOT you entered could not be found on the server. Please verify your input',
 			'autoDocRootNotValid' => 'The DOCUMENT_ROOT could not be found on the server. Please enter the correct DOCUMENT_ROOT.',
-		],
+		),
 		'SystemRequirements' =>
-		['title' => 'System requirements',
+		array('title' => 'System requirements',
 			'headline' => 'System requirements',
 			'content' => 'Now the system requirements will be checked.',
 			'failure' => 'Error',
@@ -50,9 +50,9 @@ $lang = [
 			'mysql' => 'MySQL support',
 			'is_writeable' => 'Installation directory writable',
 			'error' => 'One or more of the system requirements are not satisfied. webEdition cannot be installed.<br />The installation will be cancelled.<br /><br />',
-		],
+		),
 		'SoftwareRequirements' =>
-		['title' => 'Software requirements',
+		array('title' => 'Software requirements',
 			'headline' => 'Software requirements',
 			'content' => 'Now the software requirements will be checked.',
 			'failure' => 'Error',
@@ -73,9 +73,9 @@ $lang = [
 			'phpextWarning' => 'Not available required PHP extensions: ',
 			'reqNotDetec' => 'Some of the software requirements could not be checked (Suhosin?). Please check the system requirements at http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ',
 			'softreq' => 'Additional software requirements',
-		],
+		),
 		'InstallationDirectory' =>
-		['title' => 'Installation directory',
+		array('title' => 'Installation directory',
 			'headline' => 'Check installation directory',
 			'content' => 'There seems no webEdition installed on the server so far. You can continue with the installation.',
 			'installationForbidden' => 'Several webEdition files, but no webEdition configuration can be found on the server. The installation can not be continued until the webEdition directory is deleted from the server.',
@@ -85,9 +85,9 @@ $lang = [
 			'dataNotValid' => 'The data you have entered does not match with the found data in file /webEdition/we/include/we_conf.inc.php.',
 			'userNameDb' => 'Database user',
 			'passDb' => 'Database password',
-		],
+		),
 		'Database' =>
-		['title' => 'Database',
+		array('title' => 'Database',
 			'headline' => 'Database',
 			'content' => 'Enter the access information for your MySQL-Database server! You will receive these data from your web-space provider. If the database does not exist, it will be created.',
 			'connecttype' => 'Connection type',
@@ -110,9 +110,9 @@ $lang = [
 			'ErrorDBUser' => 'Enter the username of the database server!',
 			'ErrorDBName' => 'Enter the password of the database server!',
 			'ErrorCreateDb' => 'Database \'%s\' not created!. Please check your MySQL-Privileges.<br />MySQL-Fehler: %s (%s)',
-		],
+		),
 		'DatabasePermissions' =>
-		['title' => 'Database permissions',
+		array('title' => 'Database permissions',
 			'headline' => 'Check database permissions',
 			'content' => 'You have the required priviliges to install webEdition.<br /><ul><li>CREATE TABLE</li><li>ALTER TABLE</li><li>DROP TAPBE</li></ul>',
 			'dbserverwarning' => '<br/>The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.5. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style="color:red;font-weight:bold">In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/>',
@@ -124,9 +124,9 @@ $lang = [
 			'overWriteExistingDbCheckBox' => 'Continue and overwrite old data',
 			'Collation' => 'Collation',
 			'defaultCollation' => 'default value of the MySQL server',
-		],
+		),
 		'Login' =>
-		['title' => 'Login',
+		array('title' => 'Login',
 			'headline' => 'Login',
 			'content' => 'Enter your webEdition access data here. This information allows you to log into your installed webEdition.',
 			'user' => 'Username',
@@ -145,17 +145,17 @@ $lang = [
 			'PasswordInvalid' => 'No spaces allowed in password!',
 			'ConfirmFailure' => 'Passwords do not match.',
 			'EmailInvalid' => 'Please enter an email-adress!',
-		],
+		),
 		'ChooseLanguage' =>
-		['title' => 'Language',
+		array('title' => 'Language',
 			'headline' => 'Choose languages',
 			'content' => 'Please choose your prefered languages. The system language will be the default language in webEdition. We recommend to use an UTF-8 version. Additional languages can be installed later with the online updater.<br/><b>Important notice:</b>As <font color="red">[beta]</font> marked languages might be incomplete and even with errors. Please contact the project team if you want to help to complete the translations. ',
 			'language' => 'Languages',
 			'system' => 'System',
 			'additional' => 'Additional',
-		],
+		),
 		'ChooseVersion' =>
-		['title' => 'Version',
+		array('title' => 'Version',
 			'headline' => 'Choose version',
 			'content' => 'Please choose which webEdition version you want to install.',
 			'cannotInstallWebEdition' => 'webEdition could not be installed, because there is no translation for all selected languages.',
@@ -169,9 +169,9 @@ $lang = [
 			'beta' => 'Beta',
 			'rc' => 'RC',
 			'release' => 'official Release',
-		],
+		),
 		'Summary' =>
-		['title' => 'Summary',
+		array('title' => 'Summary',
 			'headline' => 'Summary',
 			'content' => 'Are all the displayed data correct?',
 			'webEditionBase' => 'webEdition',
@@ -202,62 +202,62 @@ $lang = [
 			'no' => 'no',
 			'showPasswords' => 'Show passwords',
 			'hidePasswords' => 'Hide passwords',
-		],
+		),
 		'PrepareApplicationInstallation' =>
-		['title' => 'Prepare installation',
+		array('title' => 'Prepare installation',
 			'headline' => 'Prepare application installation',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'DetermineApplicationFiles' =>
-		['title' => 'Determine files',
+		array('title' => 'Determine files',
 			'headline' => 'Determine application files',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'DownloadApplicationFiles' =>
-		['title' => 'Download files',
+		array('title' => 'Download files',
 			'headline' => 'Download application files',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'UpdateApplicationDatabase' =>
-		['title' => 'Setting up database',
+		array('title' => 'Setting up database',
 			'headline' => 'Setting up database',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'PrepareApplicationFiles' =>
-		['title' => 'Prepare files',
+		array('title' => 'Prepare files',
 			'headline' => 'Prepare application files',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'CopyApplicationFiles' =>
-		['title' => 'Copy files',
+		array('title' => 'Copy files',
 			'headline' => 'Copy application files',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'WriteApplicationConfiguration' =>
-		['title' => 'Configure webEdition',
+		array('title' => 'Configure webEdition',
 			'headline' => 'Configure webEdition',
 			'content' => 'This step will be executed by the LiveUpdate-Server',
-		],
+		),
 		'FinishApplicationInstallation' =>
-		['title' => 'Finish installation',
+		array('title' => 'Finish installation',
 			'headline' => 'Installation will be finished',
 			'content' => 'The installation will now be finished.',
-		],
+		),
 		'InstallationFinished' =>
-		['title' => 'Installation finished',
+		array('title' => 'Installation finished',
 			'headline' => 'webEdition is now installed',
 			'content' => 'webEdition is now installed on your server. You could now login with your chosen username and password.',
 			'login_webEdition' => 'Start webEdition',
 			'additional_software' => 'You could install some of our other products, if you are interested in these.<br />You could simply use this installer to do this.',
 			'installMore' => 'Yes, i want to test other products',
 			'choose_software' => 'Please choose the application you want to install',
-		],
+		),
 		'CleanUp' =>
-		['title' => 'Clean up',
+		array('title' => 'Clean up',
 			'headline' => 'Clean up the installer',
 			'content' => 'At the end of the installation, the demo data will be installed and the installation files will be deleted.',
 			'delete_failed' => 'For security reasons we recommend, that you delete the installer files now.',
 			'openWebEdition' => 'Start webEdition',
-		],
-	],
-];
+		),
+	),
+);

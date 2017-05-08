@@ -2,19 +2,19 @@
 /**
  * $Id: Deutsch.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-$lang = ['license' =>
-	['undefinedError' => 'Undefinierter Fehler',
-	],
+$lang = array('license' =>
+	array('undefinedError' => 'Undefinierter Fehler',
+	),
 	'button' =>
-	['ok' => 'OK',
+	array('ok' => 'OK',
 		'next' => 'weiter',
 		'back' => 'zurück',
 		'backup' => 'Backup',
 		'cancel' => 'Abbrechen',
 		'refresh' => 'Aktualisieren',
-	],
+	),
 	'upgrade' =>
-	['headline' => 'Upgrade von webEdition',
+	array('headline' => 'Upgrade von webEdition',
 		'upgradePossibleText' => 'W&auml;hlen Sie aus der Liste aus, auf welche webEdition Version Sie updaten m&ouml;chten',
 		'upgradeToVersion' => 'Upgrade auf Version',
 		'confirmUpgradeWarning' => 'Sie sind gerade dabei, ein Upgrade von webEdition durchzuf&uuml;hren. <b>In einem ersten Schritt ist dabei nur ein Upgrade auf Version 6.0.0.6 m&ouml;glich.</b> Dabei werden alle webEdition Programmdateien ersetzt und durch die neuen Dateien ersetzt, dieser Vorgang kann unter Umst&auml;nden sehr lange dauern. Bitte beachten Sie die folgenden Informationen:<br /><br /><b>Wichtige Informationen:</b><ul><li>webEdition ben&ouml;tigt <u>PHP in der Version 5.5</u> oder neuer. Die aktuell verwendete Version k&ouml;nnen Sie &uuml;ber das Infofenster "Systeminformationen" (im Men&uuml; "Hilfe") ermitteln.</li><li>Nach dem Update muss webEdition neu gestartet werden.</li><li>Anschließend muss ein Rebuild der Seite durchgef&uuml;hrt werden, da diverse &Auml;nderungen an den we:tags durchgef&uuml;hrt wurden.</li><li><b>F&uuml;hren Sie abschließend ein Update auf die aktuellste webEdition Version durch.</b></li><li>Wir empfehlen, dies Schritt f&uuml;r Schritt durchzuf&uuml;hren: 6.0.0.6 -&gt; 6.1.0.2, 6.1.0.2 -&gt; 6.2.X (latest), jeweils mit Rebuilds zwischen den Updates</li></ul>',
@@ -22,7 +22,7 @@ $lang = ['license' =>
 		'confirmUpgradeWarningCheckbox' => 'Hiermit best&auml;tige ich, dass ich die oben stehenden Hinweise gelesen habe.',
 		'confirmUpdateWarning' => 'Sie sind gerade dabei, ein Update von webEdition durchzuf&uuml;hren. Bitte beachten Sie die folgenden Informationen:<br /><br /><b>Wichtige Informationen:</b><ul><li>Nach einem Update sollte webEdition neu gestartet werden.</li><li>Anschlie&szlig;end sollten Sie einen Rebuild &uuml;ber Dokumente und Vorlagen durchf&uuml;hren.</li></ul>',
 		'confirmUpdateHint' =>
-		[6007 => '<b>webEdition 6.0.0.7:</b><ul><li><b>Ab dieser webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt.</b><br/>Die aktuell verwendete PHP-Version k&ouml;nnen Sie &uuml;ber das Infofenster "Systeminformationen" (im Men&uuml; "Hilfe") ermitteln.</li><li>F&uuml;hren Sie nach dem Rebuild der Dokumente und Vorlagen noch folgende Rebuilds durch:<ul><li>Index-Tabelle</li><li>Objekte</li></ul></li></ul>',
+		array(6007 => '<b>webEdition 6.0.0.7:</b><ul><li><b>Ab dieser webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt.</b><br/>Die aktuell verwendete PHP-Version k&ouml;nnen Sie &uuml;ber das Infofenster "Systeminformationen" (im Men&uuml; "Hilfe") ermitteln.</li><li>F&uuml;hren Sie nach dem Rebuild der Dokumente und Vorlagen noch folgende Rebuilds durch:<ul><li>Index-Tabelle</li><li>Objekte</li></ul></li></ul>',
 			6008 => '<b>webEdition 6.0.0.8:</b><ul><li><b>In dieser webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt.</b><br/>Die aktuell verwendete PHP-Version k&ouml;nnen Sie &uuml;ber das Infofenster "Systeminformationen" (im Men&uuml; "Hilfe") ermitteln.</li><li>F&uuml;hren Sie nach dem Rebuild der Dokumente und Vorlagen noch folgende Rebuilds durch:<ul><li>Navigation</li></ul></li></ul>',
 			6100 => '<b>webEdition 6.1.0.0:</b><ul><li>Dieses Update ben&ouml;tigt tempor&auml;r <b>ca. 62 MB freien Webspace (Quota!)</b> da praktisch alle Dateien ausgetauscht werden</li><li><b>In dieser webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt.</b><br/>Die aktuell verwendete PHP-Version k&ouml;nnen Sie &uuml;ber das Infofenster "Systeminformationen" (im Men&uuml; "Hilfe") ermitteln.</li><li>F&uuml;hren Sie nach dem Rebuild der Dokumente und Vorlagen noch folgende Rebuilds durch:<ul><li>Navigation</li><li>Objekte</li><li>Vorlagen</li></ul></li><li>Die PHP-Klassen smtp.class.php, we_mailer_class.inc.php, weNewsletterMailer.php werden in Zukunft nicht mehr unterst&uuml;tzt und als DEPRECATED (veraltet) erkl&auml;rt. Werden diese Klassen durch direkte PHP-Programmierung in den Vorlagen (die we:tags sind nicht betroffen) angesprochen, so sind sie in zuk&uuml;nftigen Projekten durch die Klasse we_util_Mailer (oder direkt Zend_Mail) zu ersetzen.<br/><b>In vorhandenen Installationen werden diese Klassen nicht gel&ouml;scht und stehen weiter zur Verf&uuml;gung.</b></li><li>Aufgrund des YUI Updates sind <strong>vorhandene WE-Apps unter Version 6.1.0 nicht lauff&auml;hig</strong> und m&uuml;ssen vor einem Update angepasst werden.</li></ul>',
 			6101 => '<b>webEdition 6.1.0.1:</b><ul><li><b>In dieser webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt.</b></li></ul>',
@@ -32,7 +32,7 @@ $lang = ['license' =>
 			6220 => '<b>webEdition 6.2.2.0:</b><ul><li>In der webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt sowie eine MySQL DB Version 5.X</li><li>Dieses Update behebt einen alten Fehler, der aber in den meisten F&auml;llen nur in der Version 6.2.1 relevant wird. Die Schreibweise der Tags &lt;we:conditionAnd&gt; (nicht AND) und &lt;we:conditionOr&gt; (nicht OR) ist jetzt wichtig f&uuml;r korrektes Funktionieren. Bei Problemen kann in den Einstellungen Tab System der Haken bei Abw&auml;rtskompatibilit&auml;t gesetzt werden. </li></ul>',
 			6230 => '<b>webEdition 6.2.3.0:</b><ul><li>Dieses Update behebt ein schwerwiegendes Sicherheitsproblem in der Kundenverwaltung. Zur Behebung musste unter anderem der Standardwert f&uuml;r das Attribut register des Tags we:saveRegisteredUser ge&auml;ndert werden. Sollte eine Neuregistrierung von Kunden in Ihrer Site nach dem Update nicht m&ouml;glich sein, so k&ouml;nnen Sie das alte Verhalten im Dialog Einstellungen Kundenverwaltung wiederherstellen</li></ul>',
 			6300 => '<b>webEdition 6.3.0.0:</b><ul><li>Dieses Update optimiert die komplette webEdition Infrastruktur. Wegen der vielen grundlegenden &Auml;nderungen kann es beim Update einer Site durchaus zu Problemen kommen!</li><li><b>Erstellen Sie unbedingt ein Backup der vorhandenen Site</b></li><li>Beachten Sie die Hinweise in der Versionshistorie zu <b>m&ouml;glichen Problemen und L&ouml;sungen, siehe <a href="http://www.webedition.org/de/dokumentation-community/versionshistorie/version-6.3.0.0" target="_blank">Version 6.3.0.0</a></b></li><li>F&uuml;hren Sie gegebenfalls ein <b>Testupdate</b> in einer Kopie der Site durch, insbesondere wenn Sie Module (z.B. Shop, Objekt/DB, aber auch andere) einsetzen.</li><li>Nach dem Rebuild aller Vorlagen und Dokumente pr&uuml;fen Sie das Fehlerlog auf weitere Hinweise</li></ul>',
-		],
+		),
 		'confirmUpdateDiskquotaWarning0' => '<br/>Sie haben mehr als 100 MB freien Webspace.',
 		'confirmUpdateDiskquotaWarning1' => '<br/>Sie haben nur noch <b>',
 		'confirmUpdateDiskquotaWarning2' => 'MB</b> freien WebSpace (Quota), <br/><b>pr&uuml;fen Sie die Update Hinweise</b> auf den ben&ouml;tigen Speicherplatz!',
@@ -58,9 +58,9 @@ $lang = ['license' =>
 		'notepad_category' => 'Sonstiges',
 		'notepad_headline' => 'Willkommen bei webEdition',
 		'notepad_text' => '',
-	],
+	),
 	'update' =>
-	['headline' => 'Update',
+	array('headline' => 'Update',
 		'nightly' => 'nightly Build',
 		'nightly-build' => 'nightly Build',
 		'alpha' => 'Alpha',
@@ -111,9 +111,9 @@ gesichert wird</li></ul>',
 		'ReqWarnungGdlib' => 'Die PHP GDlib-Funktionen (PHP-Extension gd) sind auf diesem Server nicht verf&uuml;gbar, daher sind einige Bildbearbeitungs- und Bildvorschaufunktionen nur eingeschr&auml;nkt nutzbar.',
 		'ReqWarnungExif' => 'Die exif PHP Extension ist auf diesem Server nicht verf&uuml;gbar, daher sind EXIF-Metadaten f&uuml;r Bilder nicht nutzbar.',
 		'ReqWarnungPHPversion' => 'Es wird mindestens PHP in der Version %s ben&ouml;tigt. Festgestellt wurde Version ',
-	],
+	),
 	'installer' =>
-	['headline' => 'Installation wird durchgef&uuml;hrt',
+	array('headline' => 'Installation wird durchgef&uuml;hrt',
 		'headlineConfirmInstallation' => 'Installation best&auml;tigen',
 		'confirmInstallation' => 'ACHTUNG !<br>W&auml;hrend des Update-Vorgangs k&ouml;nnen Daten besch&auml;digt werden. Wenn Sie ohne ein Backup fortfahren besteht die Gefahr, dass Sie Daten verlieren.<br />Wollen Sie mit der Installation fortfahren?',
 		'downloadInstaller' => 'Installer herunterladen',
@@ -137,18 +137,18 @@ gesichert wird</li></ul>',
 		'amountFilesCopied' => '%s Dateien installiert',
 		'amountPatchesExecuted' => '%s Patch(es) eingespielt',
 		'finished' => 'Die Installation ist beendet. Um alle &Auml;nderungen zu &uuml;bernehmen, wird webEdition nun neu gestartet.',
-	],
+	),
 	'languages' =>
-	['headline' => 'Sprachinstallation',
+	array('headline' => 'Sprachinstallation',
 		'installLamguages' => 'Folgende Sprachen k&ouml;nnen installiert werden.<br />Besonders <i>hervorgehobene</i> Sprachen sind bereits auf dem System installiert, die Installation kann aber wiederholt werden.<br /><b>Wichtiger Hinweis:</b> Als <font color="red">[beta]</font> markierte Sprachen k&ouml;nnen unvollst&auml;ndig und unter Umst&auml;nden fehlerhaft sein. Sie k&ouml;nnen sich jedoch gern an das Projektteam wenden um diese &Uuml;bersetzungen zu vervollst&auml;ndigen.',
 		'languagesNotReady' => 'Folgende Sprachen k&ouml;nnen f&uuml;r diese Version momentan leider nicht installiert werden',
 		'confirmInstallation' => 'Die folgenden Sprachen werden installiert.',
 		'installLanguages' => 'Ausgew&auml;hlte Sprachen installieren',
 		'noLanguageSelectedText' => 'Sie haben keine Sprache ausgew&auml;hlt. Bitte gehen Sie zur&uuml;ck zum Sprachauswahldialog und w&auml;hlen Sie die Sprachen aus, die sie installieren m&ouml;chten.',
 		'finished' => 'Sprachinstallation abgeschlossen',
-	],
+	),
 	'notification' =>
-	['upgradeNotPossibleYet' => 'Ein Update zur Version 5 ist erst ab dem 04.06.2007 m&ouml;glich',
+	array('upgradeNotPossibleYet' => 'Ein Update zur Version 5 ist erst ab dem 04.06.2007 m&ouml;glich',
 		'upgradeMaintenance' => 'Wegen Wartungsarbeiten ist ein Update zu webEdition Version 5 derzeit nicht m&ouml;glich.',
-	],
-];
+	),
+);

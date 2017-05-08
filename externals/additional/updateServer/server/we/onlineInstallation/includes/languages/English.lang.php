@@ -3,8 +3,8 @@
  * $Id: English.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
 // installer common
-$lang = ['installer' =>
-	['errorAtStep' => 'Error during step: ',
+$lang = array('installer' =>
+	array('errorAtStep' => 'Error during step: ',
 		'tableNotDrop' => 'Existing webEdition-Tables could not be deleted. Please check, if your database user has the privileges to drop tables.',
 		'downloadFilesTotal' => 'This installation requires %s files',
 		'downloadFilesFiles' => 'files',
@@ -31,9 +31,9 @@ $lang = ['installer' =>
 		'rc' => 'RC',
 		'release' => 'official release',
 		'retired' => '=&gt; retired release!',
-	],
+	),
 	'installApplication' =>
-	['prepareApplicationInstallation' => 'Prepare application installation',
+	array('prepareApplicationInstallation' => 'Prepare application installation',
 		'determineApplicationFiles' => 'Determine application files',
 		'downloadApplicationFiles' => 'Download application files',
 		'updateApplicationDatabase' => 'Setup database',
@@ -52,9 +52,9 @@ $lang = ['installer' =>
 		'finished' => 'Installation finished',
 		'module_must_be_reinstalled' => 'This module was already installed at this domain. You have to reinstall this module.',
 		'rss_feed_url' => 'https://www.webedition.org/de/rss/webedition.xml',
-	],
+	),
 	'installerDownload' =>
-	['determineInstallerFiles' => 'Determine installer files',
+	array('determineInstallerFiles' => 'Determine installer files',
 		'downloadInstallerFiles' => 'Download installer files',
 		'prepareInstallerFiles' => 'Prepare installer files',
 		'copyInstallerFiles' => 'Copy installer files',
@@ -62,5 +62,5 @@ $lang = ['installer' =>
 		'downloadInstallerFilesError' => 'Error during step: Download installer files',
 		'prepareInstallerFilesError' => 'Error during step: Prepare installer files',
 		'copyInstallerFilesError' => 'Error during step: Copy installer files',
-	],
-];
+	),
+);

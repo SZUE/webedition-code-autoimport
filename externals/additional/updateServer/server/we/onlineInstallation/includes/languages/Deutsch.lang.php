@@ -1,5 +1,5 @@
 <?php
-$lang = ['installer' => [
+$lang = array('installer' => array(
 		'alpha' => 'Alpha',
 		'amountDatabaseQueries' => '%s von %s Datenbankqueries wurden ausgef&uuml;hrt.',
 		'amountFilesCopied' => '%s von %s Dateien wurden installiert.',
@@ -27,8 +27,8 @@ $lang = ['installer' => [
 		'tableNotDrop' => 'Bestehende webEdition-Tabellen konnten nicht gel&ouml;scht werden. Bitte pr&uuml;fen Sie, ob der Datenbankbenutzer &uuml;ber die ben&ouml;tigten Rechte verf&uuml;gt.',
 		'tableReCreated' => 'Tabelle wurde neu gespeichert',
 		'updateDatabaseNotice' => 'Hinweis beim Schritt: Datenbank anlegen',
-	],
-	'installApplication' => [
+	),
+	'installApplication' => array(
 		'copyApplicationFiles' => 'Daten installieren',
 		'dbNotInsertPrefs' => 'Konnte Einstellungen nicht abspeichern.',
 		'dbNotInsertUser' => 'Konnte Benutzer nicht anlegen',
@@ -41,14 +41,14 @@ $lang = ['installer' => [
 		'rss_feed_url' => 'https://www.webedition.org/de/rss/webedition.xml',
 		'updateApplicationDatabase' => 'Datenbank einrichten',
 		'writeApplicationConfiguration' => 'webEdition konfigurieren',
-	],
-	'installerDownload' => [
+	),
+	'installerDownload' => array(
 		'determineInstallerFiles' => 'Ben&ouml;tigte Daten ermitteln',
 		'downloadInstallerFiles' => 'Daten herunterladen',
 		'prepareInstallerFiles' => 'Daten vorbereiten',
 		'copyInstallerFiles' => 'Daten installieren',
-	],
-];
+	),
+);
 
 // installer::getErrorMessage()
 $lang["installApplication"]["prepareApplicationInstallationError"] = $lang["installer"]["errorAtStep"] . $lang["installApplication"]["prepareApplicationInstallation"];

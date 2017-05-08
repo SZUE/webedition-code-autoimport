@@ -2,25 +2,25 @@
 /**
  * $Id: English.lang.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-$lang = ['license' =>
-	['undefinedError' => 'Undefined Error',
-	],
-	'button' => [
+$lang = array('license' =>
+	array('undefinedError' => 'Undefined Error',
+	),
+	'button' => array(
 		'ok' => 'OK',
 		'next' => 'Next',
 		'back' => 'Back',
 		'backup' => 'Backup',
 		'cancel' => 'Abort',
 		'refresh' => 'Refresh',
-	],
-	'upgrade' => [
+	),
+	'upgrade' => array(
 		'headline' => 'Upgrade webEdition',
 		'upgradeToVersion' => 'Upgrade to version',
 		'confirmUpgradeWarning' => 'You are about to upgrade webEdition. <b>In a first step, you can upgrade only to version 6.0.0.6.</b> During this process, all webEdition programme files will be replaced. This process can take some time.<br /><br /><b>Attention:</b><ul><li>webEdition 6 requires at least <u>PHP version 5.5</u> or newer.</li><li>After the update webEdition must be restarted.</li><li>After restart, you must make a complete rebuild of your web-site.</li><li><b>Finally you can update to the latest version of webEdition.</b></li><li>We recommend to do this step by step 6.0.0.6 -&gt; 6.1.0.2, 6.1.0.2 -&gt; 6.2.X (latest) with rebuilds after each step.</li></ul>',
 		'confirmUpgradeWarningTitle' => 'Please confirm to continue:',
 		'confirmUpgradeWarningCheckbox' => 'I hereby confirm that I have read the above notice.',
 		'confirmUpdateWarning' => 'You are about to update your webEdition installation.<br /><br /><b>Attention:</b><ul><li>After the update webEdition should be restarted.</li><li>You should make a rebuild after the update.</li></ul>',
-		'confirmUpdateHint' => [
+		'confirmUpdateHint' => array(
 			6007 => '<b>webEdition 6.0.0.7:</b><ul><li><b>Starting with this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Index table</li><li>Objects</li></ul></li></ul>',
 			6008 => '<b>webEdition 6.0.0.8:</b><ul><li><b>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Navigation</li></ul></li></ul>',
 			6100 => '<b>webEdition 6.1.0.0:</b><ul><li>This update requires temporarily about <b>62 MB free webspace (Quota!)</b> since all files are going to be replaced</li><li><b>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Navigation</li><li>Objects</li><li>Templates</li></ul></li><li>The PHP classes smtp.class.php, we_mailer_class.inc.php, weNewsletterMailer.php will not be available in future and are declared as DEPRECATED. If this classes are used in direct PHP programming in templates, (the we:tags are not affected), they are to be replaced by calls to the class we_util_Mailer (or Zend_Mail).<br/><b>In this installation, the classes are not deleted and can still be used.</b></li><li>Due to the update of the JS framework YUI, <strong>already installed WE-Apps do not work in this version of webEdition</strong> and have to be adopted before the update.</li></ul>',
@@ -31,7 +31,7 @@ $lang = ['license' =>
 			6220 => '<b>webEdition 6.2.2.0:</b><ul><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required and a MySQL databse Version 5.x or higher.</li><li>This update fixes an old error which was relevant only in version 6.2.1. The spelling of the tags is correctd to the old standard: &lt;we:conditionAnd&gt; (not AND) und &lt;we:conditionOr&gt; (not OR). If problems occur, you can select backward compatibility in the settings, tab system.</li></ul>',
 			6230 => '<b>webEdition 6.2.3.0:</b><ul><li>This update fixes a severe security problem in the customer module. To fix it, among other changes, the standard value for the attribute register of the tag we:saveRegisteredUser had to be changed. Should the registration of new customers not work properly after the update, you can set the old behaviour in the settings dialog of the customer module.</li></ul>',
 			6300 => '<b>webEdition 6.3.0.0:</b><ul><li>This update optimizes the complete webEdition infra strukture. Due to the many changes it is possible to run into problems after the update!</li><li><b>Perform a komplete backup of the entire Site</b></li><li>Follow the hints in the version history in detail about <b>possible problems und solutions Problemen und Lösungen, see <a href="http://www.webedition.org/de/dokumentation-community/versionshistorie/version-6.3.0.0" target="_blank">version 6.3.0.0</a></b></li><li>Possibly, perform a <b>test update</b> on a copy of the site.</li><li>After rebuilding all templates and Ddkuments, please check the error log for further hints on problems</li></ul>',
-		],
+		),
 		'confirmUpdateDiskquotaWarning0' => '<br/>You have more than 100 MB free Webspace.',
 		'confirmUpdateDiskquotaWarning1' => '<br/>You have only <b>',
 		'confirmUpdateDiskquotaWarning2' => 'MB</b> free WebSpace (Quota) left, <br/><b>check the update hints carefully</b> for the required disk space!',
@@ -57,8 +57,8 @@ $lang = ['license' =>
 		'notepad_category' => 'Sonstiges',
 		'notepad_headline' => 'Welcome to webEdition',
 		'notepad_text' => '',
-	],
-	'update' => [
+	),
+	'update' => array(
 		'headline' => 'Update',
 		'nightly' => 'nightly build',
 		'nightly-build' => 'nightly build',
@@ -105,8 +105,8 @@ $lang = ['license' =>
 It allows the foundation to employ professional developers which make it <br/>
 possible to fix bugs and to implement new features faster and to ensure <br/>
 the development of webEdition on the long run',
-	],
-	'installer' => [
+	),
+	'installer' => array(
 		'headline' => 'Installation',
 		'headlineConfirmInstallation' => 'Confirm Installation',
 		'confirmInstallation' => 'ATTENTION !<br />Your data may become corrupted during the update process. If you continue without a backup, you risk losing data.',
@@ -131,8 +131,8 @@ the development of webEdition on the long run',
 		'amountPatchesExecuted' => '%s Patch(es) executed',
 		'finished' => 'The installation is completed. To activate all changes, webEdition is restarted now.',
 		'amountFilesDownloaded' => '%s of %s Files downloaded.',
-	],
-	'languages' => [
+	),
+	'languages' => array(
 		'headline' => 'Installation of languages',
 		'installLamguages' => 'The following languages can be installed.<br /><i>Emphasized</i> languages are already installed on your system, but you can repeat the installation.<br /><b>Please Note:</b> Languages marked as <font color="red">[beta]</font> can be incomplete or even defective. But you are welcome to help the webEdition team completing these translations.',
 		'languagesNotReady' => 'The follwoing languages can not be installed for the version you are running',
@@ -140,9 +140,9 @@ the development of webEdition on the long run',
 		'installLanguages' => 'Install selected languages',
 		'noLanguageSelectedText' => 'You have not selected a language. Please select the languagaes you want to install.',
 		'finished' => 'Installation of languages completed',
-	],
-	'notification' => [
+	),
+	'notification' => array(
 		'upgradeNotPossibleYet' => 'An update to version 5 is not possible until 04.06.2007',
 		'upgradeMaintenance' => 'Due to maintenance, an update to webEdition version 5 is not possible at the moment.',
-	],
-];
+	),
+);
