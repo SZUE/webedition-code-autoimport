@@ -22,6 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+// FIXME: move to some new class we_exim_preparer => no exporting in modul anymore
 class we_export_preparer extends we_exim_XMLExIm{
 	var $RefTable;
 	var $options;
@@ -399,7 +401,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	public function prepareExport(array $ids = []){
-		we_updater::fixInconsistentTables();
+		//we_updater::fixInconsistentTables(); // FIXME: this call kills all elements!
 
 		if($this->options['handle_def_templates'] ||
 			$this->options['handle_doctypes'] ||
@@ -423,8 +425,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	public function loadPerserves(){
-		parent::loadPerserves();
+	public function loadPreserves(){
+		parent::loadPreserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
 		}
@@ -433,14 +435,14 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	public function savePerserves(){
-		parent::savePerserves();
+	public function savePreserves(){
+		parent::savePreserves();
 		$_SESSION['weS']['ExImPrepare'] = $this->prepare;
 		$_SESSION['weS']['ExImOptions'] = $this->options;
 	}
 
-	public function unsetPerserves(){
-		parent::unsetPerserves();
+	public static function unsetPreserves(){
+		parent::unsetPreserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);
 		}

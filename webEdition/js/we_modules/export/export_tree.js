@@ -44,6 +44,7 @@ function initTree() {
 
 function startTree() {
 	var win = top.content ? top.content : top;
+	treeData.table = top.content.editor.edbody.document.we_form.headerSwitch.value ? top.content.editor.edbody.document.we_form.headerSwitch.value : treeData.table;
 	win.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab=" + treeData.table + "&pid=0&openFolders=" + treeData.openFolders[treeData.table];
 }
 
@@ -88,7 +89,7 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-square-o');
 				}
 				this[i].checked = 0;
-				var pos = treeData.SelectedItems[treeData.table].indexOf(this[i].id);
+				var pos = treeData.SelectedItems[treeData.table].indexOf(parseInt(this[i].id));
 				if (pos > -1) {
 					treeData.SelectedItems[treeData.table].splice(pos, 1);
 				}
@@ -102,13 +103,14 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-check-square-o');
 				}
 				this[i].checked = 1;
-				treeData.SelectedItems[treeData.table].push(this[i].id);
+				treeData.SelectedItems[treeData.table].push(parseInt(this[i].id));
 				this[i].applylayout();
 				break;
 			}
 		}
 
 	}
+
 	if (top.content) {
 		if (top.content.hot !== undefined) {
 			top.content.hot = true;

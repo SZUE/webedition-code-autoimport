@@ -137,9 +137,6 @@ function we_cmd() {
 			if (top.content.editor.edbody.clearLog) {
 				top.content.editor.edbody.clearLog();
 			}
-			if (top.content.editor.edbody.addLog) {
-				top.content.editor.edbody.addLog("<br/><br/>");
-			}
 			/* falls through */
 		case "save_export":
 			top.content.editor.edbody.document.we_form.Text.value = top.content.editor.edbody.document.we_form.Text_visible.value + top.content.editor.edbody.document.we_form.Extension.value;

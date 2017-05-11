@@ -31,6 +31,5 @@ $frames = new we_export_wizard(WE_EXPORT_MODULE_DIR . "export_frameset.php");
 $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $step = we_base_request::_(we_base_request::INT, "step", 0);
 
-
 echo $frames->getHTML($what, $step);
 //FIXME: check to replace this by we_showMod.php

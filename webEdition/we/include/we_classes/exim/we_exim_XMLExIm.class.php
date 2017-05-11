@@ -22,6 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+// FIXME: rename to we_exim_ExIm
 class we_exim_XMLExIm{
 	var $destination = [];
 	var $RefTable;
@@ -69,14 +71,20 @@ class we_exim_XMLExIm{
 		'change_encoding' => 0,
 		'xml_encoding' => '',
 		'target_encoding' => '',
-		'rebuild' => 1
+		'rebuild' => 1,
+		'xml_cdata' => 1,
+		'xml_table' => 'tblFile',
+		'csv_delimiter' => 'colon',
+		'csv_lineend' => 'windows',
+		'csv_enclose' => 'doublequote',
+		'csv_fieldnames' => 1
 	];
 	var $xmlBrowser;
 
 	function __construct($file = ''){
 		$this->RefTable = new we_exim_refTable();
 		if($file){
-			$this->loadPerserves($file);
+			$this->loadPreserves($file);
 		}
 
 		$this->destination[strtolower(FILE_TABLE)] = 0;
@@ -139,7 +147,7 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function getTableForCT($we_ContentType, $table = ''){
+	public static function getTableForCT($we_ContentType, $table = ''){
 		switch($we_ContentType){
 			case 'doctype':
 				return DOC_TYPES_TABLE;
@@ -170,7 +178,7 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	public function loadPerserves(){
+	public function loadPreserves(){
 		if(isset($_SESSION['weS']['ExImRefTable'])){
 			$this->RefTable = $_SESSION['weS']['ExImRefTable'];
 		}
@@ -182,13 +190,13 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	public function savePerserves(){
+	public function savePreserves(){
 		$_SESSION['weS']['ExImRefTable'] = $this->RefTable;
 		$_SESSION['weS']['ExImRefUsers'] = $this->RefTable->Users;
 		$_SESSION['weS']['ExImCurrentRef'] = $this->RefTable->current;
 	}
 
-	public function unsetPerserves(){
+	public static function unsetPreserves(){
 		if(isset($_SESSION['weS']['ExImRefTable'])){
 			unset($_SESSION['weS']['ExImRefTable']);
 		}
@@ -224,36 +232,7 @@ class we_exim_XMLExIm{
 		return we_backup_util::weXmlExImFooter;
 	}
 
-	function getIDs($selIDs, $table, $with_dirs = false){
-		$tmp = [];
-		$db = new DB_WE();
-		$allow = $this->queryForAllowed($table);
-		if($selIDs){
-			$db->query('SELECT ID FROM ' . $table . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
-			$folders = $db->getAll(true);
-		}
-		foreach($selIDs as $v){
-			if($v){
-				if(in_array($v, $folders)){
-					if($with_dirs){
-						$tmp[] = $v;
-					}
-				} else {
-					$tmp[] = $v;
-				}
-			}
-		}
-		if($folders){
-			we_readChilds($folders, $tmp, $table, false, $allow);
-		}
-		if($with_dirs){
-			return $tmp;
-		}
-		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE IsFolder=0 AND ID IN(' . ($tmp ? implode(',', $tmp) : '0') . ')');
-		return $db->getAll(true);
-	}
-
-	function queryForAllowed($table){
+	public static function queryForAllowed($table){
 		$db = new DB_WE();
 		$wsQuery = [];
 		if(($ws = get_ws($table, true))){
@@ -272,47 +251,6 @@ class we_exim_XMLExIm{
 		}
 
 		return ' AND (1 ' . we_users_util::makeOwnersSql() . ( $wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
-	}
-
-	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
-		$db = new DB_WE();
-		if($selection === 'manual'){
-			if($extype == we_import_functions::TYPE_WE){
-				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
-				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
-				$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
-				$selClasses = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
-			} else {
-				switch($art){
-					case 'docs':
-						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-						break;
-					case 'objects':
-						$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
-						break;
-				}
-			}
-			return;
-		}
-		switch($type){
-			case 'doctype':
-				$cat_sql = ($categories ? ' AND ' . we_category::getCatSQLTail('', 'f', true, $db, 'Category', $categories) : '');
-				$ws_where = ($dir ?
-					' AND (f.Path LIKE "' . $db->escape(id_to_path($dir, FILE_TABLE, $db)) . '/%" OR f.ID="' . $dir . '") ' :
-					'');
-
-				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' f WHERE 1 ' . $ws_where . '  AND f.IsFolder=0 AND f.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
-				$selDocs = $db->getAll(true);
-				return;
-			default:
-				if(defined('OBJECT_FILES_TABLE')){
-					$cat_sql = ' ' . ($categories ? ' AND ' . we_category::getCatSQLTail('', 'of', true, $db, 'Category', $categories) : '');
-					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-
-					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsFolder=0 AND of.TableID=' . intval($classname) . $cat_sql . $where);
-					$selObjs = $db->getAll(true);
-				}
-		}
 	}
 
 	function isBinary(){

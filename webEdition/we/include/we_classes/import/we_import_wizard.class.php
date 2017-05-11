@@ -331,13 +331,13 @@ class we_import_wizard{
 
 							if(intval($v['cid']) == 0){
 								// clear session data
-								we_exim_XMLExIm::unsetPerserves();
+								we_exim_XMLExIm::unsetPreserves();
 							}
 
 							$ref = false;
 							if($v["cid"] >= $v["numFiles"] - 1){ // finish import
 								$xmlExIm = new we_import_updater();
-								$xmlExIm->loadPerserves();
+								$xmlExIm->loadPreserves();
 								$this->xmlExImSetOpt(xmlExImSetOpt, $v);
 								if($xmlExIm->RefTable->current == 0){
 									$jsCmd->addCmd('addLog_buffered', [we_html_element::htmlB(g_l('import', '[update_links]'))]);
@@ -353,7 +353,7 @@ class we_import_wizard{
 								}
 
 								if($ref){
-									$xmlExIm->savePerserves();
+									$xmlExIm->savePreserves();
 
 									$jsCmd->addCmd('setProgressText_footer', 'pb1', g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount());
 									$jsCmd->addCmd('setProgress_footer', (int) ((($v['cid'] + $xmlExIm->RefTable->current + 1) / ($xmlExIm->RefTable->getCount() + $v["numFiles"])) * 100));
@@ -369,15 +369,15 @@ class we_import_wizard{
 								}
 
 								$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens);
-								$xmlExIm->unsetPerserves();
+								we_exim_XMLExIm::unsetPreserves();
 							} else { // do import
 								$xmlExIm = new we_exim_XMLImport();
 								$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
 								if(file_exists($chunk)){
-									$xmlExIm->loadPerserves();
+									$xmlExIm->loadPreserves();
 									$this->xmlExImSetOpt(xmlExImSetOpt, $v);
 									$imported = $xmlExIm->import($chunk);
-									$xmlExIm->savePerserves();
+									$xmlExIm->savePreserves();
 									if($imported){
 										$status = g_l('import', '[import]');
 										$ref = $xmlExIm->RefTable->getLast();
