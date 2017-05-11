@@ -372,7 +372,7 @@ $we_menu = [
 	'file_imex' => [// File > Import/Export
 		'text' => g_l('javaMenu_global', '[import_export]'),
 		'parent' => 'file',
-		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT',
+		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT || EXPORTNODOWNLOAD || EXPORT || EDIT_EXPORT || MAKE_EXPORT',
 	], [// File > Import/Export > Import
 		'text' => g_l('javaMenu_global', '[import]') . '&hellip;',
 		'cmd' => 'import',
@@ -380,9 +380,10 @@ $we_menu = [
 		'perm' => 'FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT',
 	], [// File > Import/Export > Export
 		'text' => g_l('javaMenu_global', '[export]') . '&hellip;',
-		'cmd' => 'export',
+		'cmd' => 'export_edit',
 		'parent' => 'file_imex',
-		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT',
+		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || EXPORTNODOWNLOAD || EXPORT || EDIT_EXPORT || MAKE_EXPORT',
+		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT),
 	],
 	'file_backup' => [// File > Backup
 		'text' => g_l('javaMenu_global', '[backup]'),
