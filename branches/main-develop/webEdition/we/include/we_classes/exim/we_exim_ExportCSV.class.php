@@ -25,7 +25,7 @@
 class we_exim_ExportCSV extends we_exim_Export{
 	protected $exportType = we_import_functions::TYPE_CSV;
 	protected $permittedContentTypes = [
-		we_base_ContentTypes::WEDOCUMENT,
+		we_base_ContentTypes::OBJECT_FILE,
 	];
 	private $delimiters = ['semicolon' => ";",
 		'comma' => ",",
