@@ -136,6 +136,10 @@ function we_cmd() {
 			}
 
 			break;
+		case "setTreeHead":
+			document.we_form.XMLTable.value = args[1].replace(WE().consts.tables.TBL_PREFIX, '');
+			setHead(args[1]);
+			break;
 		case "del_cat":
 		case "del_all_cats":
 			document.we_form.cmd.value = args[0];
@@ -150,6 +154,15 @@ function we_cmd() {
 			}
 			top.content.editor.edfooter.setProgress(args[1].percent);
 			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
+			break;
+		case 'submitCmdForm':
+			top.content.cmd.document.we_form.submit();
+			break;
+		case 'startDownload':
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' + args[1];
+			break;
+		case 'setStatusEnd':
+			showEndStatus();
 			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

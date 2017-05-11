@@ -1309,7 +1309,7 @@ class we_customer_EIWizard{
 		}
 	}
 
-	function getIDs($selIDs, $table){
+	private static function getIDs($selIDs, $table){
 		return array_filter($selIDs);
 	}
 

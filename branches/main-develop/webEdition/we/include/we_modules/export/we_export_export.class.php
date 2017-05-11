@@ -64,6 +64,7 @@ class we_export_export extends we_base_model{
 	var $ExportFilename;
 	public $ExportType = we_import_functions::TYPE_WE;
 	public $XMLCdata;
+	public $XMLTable;
 	public $CSVDelimiter;
 	public $CSVLineend;
 	public $CSVEnclose;
@@ -104,7 +105,7 @@ class we_export_export extends we_base_model{
 				$new[] = $id;
 			}
 		}
-		return implode(',', $new);
+		return implode(',', array_unique($new));
 	}
 
 	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
@@ -196,6 +197,7 @@ class we_export_export extends we_base_model{
 		$this->HandleNavigation = 0;
 
 		$this->XMLCdata = 1;
+		$this->XMLCdata = 'documents';
 		$this->CSVDelimiter = 'semicolon';
 		$this->CSVLineend = 'windows';
 		$this->CSVEnclose = 'doublequote';

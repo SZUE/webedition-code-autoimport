@@ -63,7 +63,7 @@ win.drawTree();';
 
 		if($useSelector){
 			$selectorAttribs = ['name' => 'headerSwitch',
-				'onchange' => "setHead(this.value);",
+				'onchange' => "we_cmd('setTreeHead', this.value)",
 				'style' => 'width:' . $width . 'px;',
 				'disabled' => ($exportType === we_import_functions::TYPE_CSV ? 'disabled' : false)];
 			$selector = new we_html_select(array_filter($selectorAttribs));
@@ -83,7 +83,7 @@ win.drawTree();';
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS")){
 				$selector->addOption(VFILE_TABLE, g_l('export', '[collections]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
-			$selector->selectOption($exportType === we_import_functions::TYPE_CSV ? OBJECT_FILES_TABLE : $selected);
+			$selector->selectOption($selected);
 
 			$header = we_html_element::htmlDiv(['style' => 'margin:5px 0px;'], $selector->getHtml());
 		} else {

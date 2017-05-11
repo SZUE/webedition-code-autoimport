@@ -221,9 +221,9 @@ function start() {
 
 				break;
 			case "start_export":
-				we_exim_XMLExIm::unsetPerserves();
+				we_exim_Export::unsetPreserves(); // reset exporter
 				$_REQUEST["cmd"] = "do_export";
-				$this->export->ExportFilename = ($this->export->ExportTo === 'local' ? TEMP_PATH . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);
+				$this->export->ExportFilename = ($this->export->ExportTo === 'local' ? TEMP_PATH . $this->export->Text : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Text);
 				break;
 			default:
 		}
@@ -231,7 +231,7 @@ function start() {
 		$_SESSION['weS']['export_session'] = $this->export;
 	}
 
-	function processVariables(){//FIXME use table datatypes
+	function processVariables(){//FIXME use table datatypes or make like in we_export_wizard::getExportVars()
 		if(isset($_SESSION['weS']['export_session'])){
 			$this->export = $_SESSION['weS']['export_session'];
 		}
@@ -242,7 +242,7 @@ function start() {
 
 		if(is_array($this->export->persistent_slots)){
 			foreach($this->export->persistent_slots as $varname){
-				if(($v = we_base_request::_(we_base_request::STRING, $varname))){//FIXME: this is quiet for now....
+				if(($v = we_base_request::_(we_base_request::STRING, $varname, false)) !== false){//FIXME: this is quiet for now....
 					$this->export->{$varname} = $v;
 				}
 			}
