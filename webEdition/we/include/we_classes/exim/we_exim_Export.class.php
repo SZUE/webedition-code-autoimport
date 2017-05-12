@@ -34,6 +34,11 @@ class we_exim_Export extends we_exim_XMLExIm{
 	const EXPORT_PROCESS_NEXT = 'writeNextItem';
 	const EXPORT_POST_PROCESS = 'finishExport';
 
+	const SELECTIONTYPE_CLASSNAME = 'classname';
+	const SELECTIONTYPE_DOCTYPE = 'doctype';
+	const SELECTIONTYPE_DOCUMENT = 'document';
+	const ENABLE_DOCUMENTS2CSV = true;
+
 	function __construct(){
 		parent::__construct();
 		$this->db = new DB_WE;
@@ -90,10 +95,6 @@ class we_exim_Export extends we_exim_XMLExIm{
 		if($export->Selection === 'manual'){
 			switch($export->ExportType){
 				case we_import_functions::TYPE_CSV: 
-					$finalObjs = makeArrayFromCSV($export>selObjs);
-					$handle_objects = 1;
-					$export->ExportDepth = 1;
-					break;
 				case we_import_functions::TYPE_XML:
 					if($export->XMLTable === stripTblPrefix(FILE_TABLE)){
 						$finalDocs = makeArrayFromCSV($export->selDocs);
@@ -298,14 +299,19 @@ class we_exim_Export extends we_exim_XMLExIm{
 			$hrefs = [];
 			$content = '';
 			$tag_counter = 0;
+			$usedFields = [];
 
 			foreach($we_doc->elements as $k => $v){
 				$tag_counter++;
 
-				switch(isset($v["type"]) ? $v["type"] : ''){
-					case "date": // is a date field
-						$tag_name = self::correctTagname($k, "date", $tag_counter);
-						$content .= $this->formatOutput($tag_name, abs($we_doc->elements[$k]["dat"]), $this->exportType, 2, $cdata);
+				switch(isset($v['type']) ? $v['type'] : ''){
+					case 'date': // is a date field
+						$tag_name = self::correctTagname($k, 'date', $tag_counter);
+
+						$value = $we_doc->elements[$k]['dat'] ?: ($we_doc->elements[$k]['bdid'] ?: 0); // FIXME: dates must not be stored in bdid!
+
+						$content .= $this->formatOutput(abs($value), $tag_name, $this->exportType, 2, $cdata);
+						$usedFields[] = $tag_name;
 
 						// Remove tagname from array
 						if(isset($records)){
@@ -313,7 +319,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 						}
 
 						break;
-					case "txt":
+					case 'txt':
 						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
 							if(!in_array($regs[1], $hrefs)){
 								$hrefs[] = $regs[1];
@@ -321,16 +327,18 @@ class we_exim_Export extends we_exim_XMLExIm{
 								if($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK, 'dat', 0)){
 									$intID = $we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
 
-									$tag_name = self::correctTagname($k, "link", $tag_counter);
-									$content .= $this->formatOutput($tag_name, id_to_path($intID, FILE_TABLE, $DB_WE), $this->exportType, 2, $cdata);
-
+									$tag_name = self::correctTagname($k, 'link', $tag_counter);
+									$content .= $this->formatOutput(id_to_path($intID, FILE_TABLE, $DB_WE), $tag_name, $this->exportType, 2, $cdata);
+									$usedFields[] = $tag_name;
+									
 									// Remove tagname from array
 									if(isset($records)){
 										$records = $this->remove_from_check_array($records, $tag_name);
 									}
 								} else {
 									$tag_name = self::correctTagname($k, "link", $tag_counter);
-									$content .= $this->formatOutput($tag_name, $we_doc->elements[$regs[1]]["dat"], $this->exportType, 2, $cdata);
+									$content .= $this->formatOutput($we_doc->elements[$regs[1]]["dat"], $tag_name, $this->exportType, 2, $cdata);
+									$usedFields[] = $tag_name;
 
 									// Remove tagname from array
 									if(isset($records)){
@@ -340,7 +348,8 @@ class we_exim_Export extends we_exim_XMLExIm{
 							}
 						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(we_unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
 							$tag_name = self::correctTagname($k, "link", $tag_counter);
-							$content .= $this->formatOutput($tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $this->exportType, 2, $cdata);
+							$content .= $this->formatOutput(self::formatOutput($we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), '',"cdata"), $tag_name, $this->exportType, 2, $cdata);
+							$usedFields[] = $tag_name;
 
 							// Remove tagname from array
 							if(isset($records)){
@@ -348,7 +357,8 @@ class we_exim_Export extends we_exim_XMLExIm{
 							}
 						} else { // is a normal text field
 							$tag_name = self::correctTagname($k, 'text', $tag_counter);
-							$content .= $this->formatOutput($tag_name, we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+							$content .= $this->formatOutput(we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $tag_name, $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+							$usedFields[] = $tag_name;
 
 							// Remove tagname from array
 							if(isset($records)){
@@ -362,11 +372,15 @@ class we_exim_Export extends we_exim_XMLExIm{
 
 			if(isset($records) && is_array($records)){
 				foreach($records as $cur){
-					$content .= $this->formatOutput($cur, '', $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+					$content .= $this->formatOutput('', $cur, $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+					$usedFields[] = $cur;
 				}
 			}
 
+			$this->checkWriteFieldNames($usedFields, $fh);
+
 			return fwrite($fh, $content);
+
 		}
 
 		return false;
@@ -403,22 +417,19 @@ class we_exim_Export extends we_exim_XMLExIm{
 					$realName = $field['type'] . '_' . $field['name'];
 					$element = $we_obj->getElementByType($field['name'], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
 
-					switch($this->exportType){ // Fixme: this switch is obsolete!
-						case we_import_functions::TYPE_XML:
-							$tag_name = self::correctTagname($field['name'], 'value', $i);
-							$content .= $this->formatOutput($tag_name, we_document::parseInternalLinks($element, 0, ''), we_import_functions::TYPE_XML, 2, $cdata, (($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
-							break;
-						case we_import_functions::TYPE_CSV:
-							$usedFields[] = $field['name'];
-							$content .= $this->formatOutput(we_document::parseInternalLinks($element, 0, ''));
-							break;
-					}
+					$tag_name = self::correctTagname($field['name'], 'value', $i);
+					$usedFields[] = $field['name'];
+					$content .= $this->formatOutput(we_document::parseInternalLinks($element, 0, ''), $tag_name, we_import_functions::TYPE_XML, 2, $cdata, (($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 			}
 		}
 
 		$this->checkWriteFieldNames($usedFields, $fh);
 
 		return fwrite($fh, $content);
+	}
+	
+	protected function formatOutput($content){
+		return $content; // to be overridden
 	}
 
 	protected function exportObjectFieldNames(){
@@ -431,8 +442,11 @@ class we_exim_Export extends we_exim_XMLExIm{
 			case "manual":
 				switch($exportType){
 					case we_import_functions::TYPE_CSV:
+						/*
 						$finalObjs = defined('OBJECT_FILES_TABLE') ? self::getIDs($finalObjs, OBJECT_FILES_TABLE) : "";
 						break;
+						 * 
+						 */
 					case we_import_functions::TYPE_XML:
 						switch($xmlTable){
 							case stripTblPrefix(FILE_TABLE):
@@ -458,7 +472,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 				$doctype_where = '';
 
 				switch($selectionType){
-					case 'classname':
+					case self::SELECTIONTYPE_CLASSNAME:
 						if(defined('OBJECT_FILES_TABLE')){
 							$where = we_exim_XMLExIm::queryForAllowed(OBJECT_FILES_TABLE);
 							$cat_sql = ' ' . ($categorys ? ' AND ' . we_category::getCatSQLTail('', 'of', true, $this->db, 'Category', $categorys) : '');
@@ -467,9 +481,10 @@ class we_exim_Export extends we_exim_XMLExIm{
 							$finalObjs = $this->db->getAll(true);
 						}
 						break;
-					case 'doctype':
+					case self::SELECTIONTYPE_DOCTYPE:
 						$doctype_where = ' AND f.DocType="' . $this->db->escape($docType) . '"';
 						/* fall through */
+					case self::SELECTIONTYPE_DOCUMENT:
 					case FILE_TABLE:
 					default:
 						$cat_sql = ($categorys ? ' AND ' . we_category::getCatSQLTail('', 'f', true, $this->db, 'Category', $categorys) : '');

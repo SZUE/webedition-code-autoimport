@@ -46,6 +46,10 @@ class we_exim_ExportCSV extends we_exim_Export{
 
 	function __construct(){
 		parent::__construct();
+
+		if(we_exim_Export::ENABLE_DOCUMENTS2CSV){
+			$this->permittedContentTypes[] = we_base_ContentTypes::WEDOCUMENT;
+		}
 	}
 
 	protected function fileCreate(){
@@ -59,22 +63,19 @@ class we_exim_ExportCSV extends we_exim_Export{
 		return false;
 	}
 
-	protected function writeExportItem($doc, $fh, $attribute = [], $isBin = false, $setBackupMarker = false){
-		if(!$isBin && isset($doc->Table) && $doc->Table === OBJECT_FILES_TABLE){
-			$this->object2nonWE($doc, $fh);
-
-			switch($this->options['csv_lineend']){
-				case 'unix':
-					$content .= "\n";
+	protected function writeExportItem($doc, $fh, $attribute = [], $isBin = false){
+		if(!$isBin && isset($doc->Table) && in_array($doc->ContentType, $this->permittedContentTypes)){
+			switch($doc->Table){
+				case OBJECT_FILES_TABLE:
+					$this->object2nonWE($doc, $fh);
 					break;
-				case 'mac':
-					$content .= "\r";
+				case FILE_TABLE:
+					$this->document2nonWE($doc, $fh);
 					break;
-				case 'windows':
-				default:
-					$content .= "\r\n";
-				break;
 			}
+
+			$content = isset($this->lineends[$this->options['csv_lineend']]) ? $this->lineends[$this->options['csv_lineend']] :
+				$this->lineends['windows'];
 
 			fwrite($fh, $content);
 		}

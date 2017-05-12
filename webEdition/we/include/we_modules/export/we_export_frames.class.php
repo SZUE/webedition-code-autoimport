@@ -216,49 +216,52 @@ class we_export_frames extends we_modules_frame{
 
 		$FolderPath = $this->View->export->Folder ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->View->export->Folder), '', $this->db) : "/";
 
-		$table = new we_html_table(['class' => 'default'], 4, 1);
+		$table = new we_html_table(['class' => 'default'], 5, 1);
 
-		$this->View->export->SelectionType = $this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'classname' : $this->View->export->SelectionType;
+		$this->View->export->SelectionType = $this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'classname' : $this->View->export->SelectionType;
 
 		$selectorAttribs = ['name' => 'SelectionType',
-			'onchange' => "closeAllType();toggle(this.value);top.content.hot=true;",
+			'onchange' => "closeAllType();toggleSelectionType(this.value);top.content.hot=true;",
 			'style' => 'width:520px;',
-			'disabled' => ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'disabled' : false)];
+			'disabled' => $this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'disabled' : false
+		];
+
 		$selectionType = new we_html_select(array_filter($selectorAttribs));
 		$selectionType->addOption(FILE_TABLE, g_l('export', '[documents]'));
 		$selectionType->addOption('doctype', g_l('export', '[doctypename]'));
 		if(defined('OBJECT_TABLE')){
-			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? ['selected' => 'selected'] : []));
+			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? ['selected' => 'selected'] : []));
 		}
 		$selectionType->selectOption($this->View->export->SelectionType);
-		
-
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], $selectionType->getHtml());
-		
-		$table->setCol(1, 0, ["id" => "doctype", 'style' => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
-				'onchange' => 'top.content.hot=true;'], 'value', 520) .
+
+		$table->setCol(1, 0, ['class' => 'selectionTypes doctype', 'style' => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
+			'onchange' => 'top.content.hot=true;'], 'value', 520)
+		);
+
+		$table->setCol(2, 0, ['class' => 'selectionTypes doctype document', 'style' => ($this->View->export->SelectionType !== 'classname' ? 'display:block' : 'display: none')],
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
+
 		if(defined('OBJECT_TABLE')){
-			$table->setCol(2, 0, ["id" => "classname", 'style' => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
-					'onchange' => 'top.content.hot=true;'], 'value', 520)
+			$table->setCol(3, 0, ['class' => 'selectionTypes classname', 'style' => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
+				'onchange' => 'top.content.hot=true;'], 'value', 520)
 			);
 		}
 
-		$table->setColContent(3, 0, $this->getHTMLCategory());
-
+		$table->setColContent(4, 0, $this->getHTMLCategory());
 		$selectionTypeHtml = $table->getHTML();
 
 		$table = new we_html_table(['class' => 'default'], 3, 1);
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlSelect('Selection', ['auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')], 1, $this->View->export->Selection, false, [
-				'onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=true;'], 'value', 520));
+				'onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggleSelectionType(\'doctype\');top.content.hot=true;'], 'value', 520));
 		$table->setCol(1, 0, ['id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, 520) .
 			$selectionTypeHtml
 		);
 
 		switch($this->View->export->ExportType){
 			case we_import_functions::TYPE_CSV:
-				$selected = OBJECT_FILES_TABLE;
+				$selected = !we_exim_Export::ENABLE_DOCUMENTS2CSV ? OBJECT_FILES_TABLE : addTblPrefix($this->View->export->XMLTable);
 				break;
 			case we_import_functions::TYPE_XML:
 				$selected = addTblPrefix($this->View->export->XMLTable);
@@ -266,7 +269,7 @@ class we_export_frames extends we_modules_frame{
 			default:
 				$selected = FILE_TABLE;
 		}
-		
+
 		$table->setCol(2, 0, ['id' => 'manual', 'style' => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")], we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 520) .
 			$this->SelectionTree->getHTMLMultiExplorer(520, 200, true, $selected, $this->View->export->ExportType) . we_html_element::htmlHidden('XMLTable', $this->View->export->XMLTable ?: stripTblPrefix(FILE_TABLE))
 		);
@@ -361,7 +364,7 @@ class we_export_frames extends we_modules_frame{
 		$file_encoding->addOption("mac", g_l('export', '[mac]'));
 		$file_encoding->selectOption($this->View->export->CSVLineend);
 		$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('export', '[csv_lineend]') . '<br/>' . $file_encoding->getHtml());
-		$fileformattable->setColContent(1, 0, $this->getHTMLChooser('CSVDelimiter', $this->View->export->CSVDelimiter, ['semicolon' => g_l('export', '[semicolon]'),
+		$fileformattable->setColContent(1, 0, $this->getHTMLChooser('CSVDelimiter', ($this->View->export->CSVDelimiter ?: 'comma'), ['semicolon' => g_l('export', '[semicolon]'),
 				'comma' => g_l('export', '[comma]'),
 				'colon' => g_l('export', '[colon]'),
 				'tab' => g_l('export', '[tab]'),

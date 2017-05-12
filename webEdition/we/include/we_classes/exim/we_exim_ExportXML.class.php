@@ -68,7 +68,7 @@ class we_exim_ExportXML extends we_exim_Export{
 		}
 	}
 
-	protected function formatOutput($tagname, $content, $format = we_import_functions::TYPE_XML, $tabs = 2, $cdata = false, $fix_content = false){
+	protected function formatOutput($content, $tagname, $format = we_import_functions::TYPE_XML, $tabs = 2, $cdata = false, $fix_content = false){
 		switch($format){
 			case we_import_functions::TYPE_XML:
 				// Generate intending tabs
