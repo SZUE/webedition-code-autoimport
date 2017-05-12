@@ -172,16 +172,16 @@ class we_export_frames extends we_modules_frame{
 			return $parts;
 		}
 
-		$wexportEnabled = (we_base_permission::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']));
-		$exTypes = array_filter([
-			we_import_functions::TYPE_WE => ($wexportEnabled ? g_l('export', '[wxml_export]') : false),
-			we_import_functions::TYPE_XML => (we_base_permission::hasPerm('GENERICXML_EXPORT') ? g_l('export', '[gxml_export]') : false),
-			we_import_functions::TYPE_CSV => (we_base_permission::hasPerm('CSV_EXPORT') ? g_l('export', '[csv_export]') : false),
+		$permittedExportTypes = self::getPermittedExportTypes();
+		$exportTypes = array_filter([
+			we_import_functions::TYPE_WE => (in_array(we_import_functions::TYPE_WE, $permittedExportTypes) ? g_l('export', '[wxml_export]') : false),
+			we_import_functions::TYPE_XML => (in_array(we_import_functions::TYPE_XML, $permittedExportTypes) ? g_l('export', '[gxml_export]') : false),
+			we_import_functions::TYPE_CSV => (in_array(we_import_functions::TYPE_CSV, $permittedExportTypes) ? g_l('export', '[csv_export]') : false),
 		]);
 
 		$parts[] = [
 			'headline' => g_l('export', '[export_to]'),
-			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('ExportType', $exTypes, 1, $this->View->export->ExportType, false,
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('ExportType', $exportTypes, 1, $this->View->export->ExportType, false,
 					['onchange' => "we_cmd('switch_type', this);top.content.hot=true;"], 'value', 520), g_l('export', '[file_format]')
 				),
 			'space' => we_html_multiIconBox::SPACE_MED,
@@ -443,8 +443,16 @@ class we_export_frames extends we_modules_frame{
 		return '';
 	}
 
+	public static function getPermittedExportTypes(){
+		return array_filter([
+			(we_base_permission::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']) ? we_import_functions::TYPE_WE : false),
+			(we_base_permission::hasPerm(['GENERICXML_EXPORT']) ? we_import_functions::TYPE_XML : false),
+			(we_base_permission::hasPerm(['CSV_EXPORT']) ? we_import_functions::TYPE_CSV : false)
+		]);
+	}
+
 	private function getDoExportCode(){
-		if(!we_base_permission::hasPerm("MAKE_EXPORT")){
+		if(!in_array($this->View->export->ExportType, self::getPermittedExportTypes())){
 			$jsCmd = new we_base_jsCmd();
 			$jsCmd->addMsg(g_l('export', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 			return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds(), we_html_element::htmlBody());
