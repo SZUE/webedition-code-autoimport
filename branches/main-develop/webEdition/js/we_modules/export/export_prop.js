@@ -24,6 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 'use strict';
+
 var loaded = false;
 
 function doUnload() {
@@ -60,10 +61,11 @@ function we_cmd() {
 			submitForm();
 			break;
 		case 'switch_type':
-			var type = args[1].value || WE().consts.import.TYPE_WE;
+			var type = args[1].value || WE().consts.exim.TYPE_WE;
 			var i = 0;
 			var opts;
 
+			// hide all typespecific options on tab 2
 			var exportOptions = top.content.editor.edbody.document.getElementsByClassName('exportOptions');
 			for(i = 0; i < exportOptions.length; i++){
 				exportOptions[i].style.display = 'none';
@@ -72,13 +74,14 @@ function we_cmd() {
 			var extensions = top.content.editor.edbody.document.getElementsByClassName('exportExtension');
 
 			switch(type){
-				case WE().consts.import.TYPE_XML:
-					top.content.editor.edbody.document.we_form.SelectionType.value = 'doctype';
+				case WE().consts.exim.TYPE_XML:
+					// auto: all selectenTypes alloud => no changes needed but selector may be disabled
 					top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
-					closeAllType();
-					toggle('doctype');
 
+					// manual
 					top.content.editor.edbody.document.we_form.headerSwitch.disabled = false;
+
+					// disable all tables but object and document
 					opts = top.content.editor.edbody.document.we_form.headerSwitch.options;
 					for(i = 0; i < opts.length; i++){
 						switch(opts[i].value){
@@ -89,52 +92,88 @@ function we_cmd() {
 								opts[i].disabled = true;
 						}
 					}
-					if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE){
+
+					// set to alloud table if needed
+					if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE ||
+							top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.FILE_TABLE){
 						setHead(WE().consts.tables.OBJECT_FILES_TABLE);
 						top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.FILE_TABLE;
 					}
-					top.content.editor.edbody.document.getElementById('optionsGXML').style.display = 'block';
 
+					// some typespecific stuff
+					top.content.editor.edbody.document.getElementById('optionsGXML').style.display = 'block';
 					for(i = 0; i < extensions.length; i++){
 						extensions[i].innerHTML = '.xml';
 					}
 					top.content.editor.edbody.document.we_form.Extension.value = '.xml';
 					break;
-				case WE().consts.import.TYPE_CSV:
-					top.content.editor.edbody.document.we_form.SelectionType.value = 'classname';
-					top.content.editor.edbody.document.we_form.SelectionType.disabled = true;
-					closeAllType();
-					toggle('classname');
+				case WE().consts.exim.TYPE_CSV:
+					// auto
+					if(!WE().consts.exim.export.ENABLE_DOCUMENTS2CSV){
+						// auto: set selectionType to classname and disable selector
+						top.content.editor.edbody.document.we_form.SelectionType.value = WE().consts.exim.export.SELECTIONTYPE_CLASSNAME;
+						top.content.editor.edbody.document.we_form.SelectionType.disabled = true;
+						toggleSelectionType(WE().consts.exim.export.SELECTIONTYPE_CLASSNAME);
 
-					setHead(WE().consts.tables.OBJECT_FILES_TABLE);
-					top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.OBJECT_FILES_TABLE;
-					top.content.editor.edbody.document.we_form.headerSwitch.disabled = true;
+						// manual: set tree to object and disable table selector
+						setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+						top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.OBJECT_FILES_TABLE;
+						top.content.editor.edbody.document.we_form.headerSwitch.disabled = true;
+					} else {
+						// auto: all selectenTypes alloud => no changes needed but selector may be disabled
+						top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
+
+						// manual
+						top.content.editor.edbody.document.we_form.headerSwitch.disabled = false;
+
+						// disable all tables but object and document
+						opts = top.content.editor.edbody.document.we_form.headerSwitch.options;
+						for(i = 0; i < opts.length; i++){
+							switch(opts[i].value){
+								case WE().consts.tables.OBJECT_FILES_TABLE:
+								case WE().consts.tables.FILE_TABLE:
+									continue;
+								default:
+									opts[i].disabled = true;
+							}
+						}
+
+						// set to alloud table if needed
+						if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE ||
+								top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.FILE_TABLE){
+							setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+							top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.FILE_TABLE;
+						}
+					}
+
+					// some typespecific stuff
 					top.content.editor.edbody.document.getElementById('optionsCSV').style.display = 'block';
-
 					for(i = 0; i < extensions.length; i++){
 						extensions[i].innerHTML = '.csv';
 					}
 					top.content.editor.edbody.document.we_form.Extension.value = '.csv';
 					break;
+				case WE().consts.exim.TYPE_CSV:
 				default:
-					top.content.editor.edbody.document.we_form.SelectionType.value = 'doctype';
+					// auto: all selectenTypes alloud => no changes needed but selector may be disabled
 					top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
-					closeAllType();
-					toggle('doctype');
 
+					// auto
 					top.content.editor.edbody.document.we_form.headerSwitch.disabled = false;
+
+					// enable all tables
 					opts = top.content.editor.edbody.document.we_form.headerSwitch.options;
 					for(i = 0; i < opts.length; i++){
 						opts[i].disabled = false;
 					}
-					top.content.editor.edbody.document.getElementById('optionsWXML').style.display = 'block';
 
+					// some typespecific stuff
+					top.content.editor.edbody.document.getElementById('optionsWXML').style.display = 'block';
 					for(i = 0; i < extensions.length; i++){
 						extensions[i].innerHTML = '.xml';
 					}
 					top.content.editor.edbody.document.we_form.Extension.value = '.xml';
 			}
-
 			break;
 		case "setTreeHead":
 			document.we_form.XMLTable.value = args[1].replace(WE().consts.tables.TBL_PREFIX, '');
@@ -186,6 +225,31 @@ function toggle(id) {
 	}
 }
 
+function toggleSelectionType(selType) {
+	var displayElems, cl, i;
+	var allElems = document.getElementsByClassName('selectionTypes');
+
+	for(i = 0; i < allElems.length; i++){
+		allElems[i].style.display = 'none';
+	}
+
+	switch(selType){
+		case WE().consts.exim.export.SELECTIONTYPE_DOCTYPE:
+		case WE().consts.exim.export.SELECTIONTYPE_CLASSNAME:
+			cl = selType;
+			break;
+		case WE().consts.exim.export.SELECTIONTYPE_DOCUMENT:
+		default:
+			cl = WE().consts.exim.export.SELECTIONTYPE_DOCUMENT;
+	}
+
+	displayElems = document.getElementsByClassName(cl);
+
+	for(i = 0; i < displayElems.length; i++){
+		displayElems[i].style.display = '';
+	}
+}
+
 function clearLog() {
 	top.content.editor.edbody.document.getElementById("log").innerHTML = "";
 }
@@ -203,11 +267,10 @@ function closeAllSelection() {
 }
 
 function closeAllType() {
-	var elem = document.getElementById("doctype");
-	elem.style.display = "none";
-	if (WE().consts.modules.active.indexOf("object") > 0) {
-		elem = document.getElementById("classname");
-		elem.style.display = "none";
+	var allElems = document.getElementsByClassName('selectionTypes');
+
+	for(var i = 0; i < allElems.length; i++){
+		allElems[i].style.display = 'none';
 	}
 }
 
