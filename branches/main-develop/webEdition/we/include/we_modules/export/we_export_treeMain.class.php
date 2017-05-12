@@ -50,6 +50,9 @@ class we_export_treeMain extends we_tree_base{
 		}
 
 		$where = ' WHERE ParentID=' . intval($ParentID);
+		if(($permittedExportTypes = we_export_frames::getPermittedExportTypes())){
+			$where .= " AND ExportType IN ('" . implode("','", $permittedExportTypes) . "')";
+		}
 
 		$db->query('SELECT ID,ParentID,Path,Text,IsFolder FROM ' . EXPORT_TABLE . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : '' ));
 
