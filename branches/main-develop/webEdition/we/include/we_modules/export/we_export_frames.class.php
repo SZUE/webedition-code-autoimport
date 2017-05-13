@@ -111,7 +111,7 @@ class we_export_frames extends we_modules_frame{
 
 		$weSuggest = & we_gui_suggest::getInstance();
 		//FIXME: folder don't have a tree to start.
-		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "loaded=1;startTree();start();", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"], we_html_element::htmlForm([
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onload" => "doOnload()", "onunload" => "doUnload();"], we_html_element::htmlForm([
 					'name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties())
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());

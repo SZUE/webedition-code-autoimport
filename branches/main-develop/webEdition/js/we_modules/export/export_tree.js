@@ -151,3 +151,26 @@ function drawTree() {
 		treeData.draw(treeData.startloc, "") +
 		"</div>";
 }
+
+function loadTreeItems(parentFolder, clear, treeItems){
+	var win = (top.content && top.content.editor.edbody.treeData ? top.content.editor.edbody : top);
+	var item;
+
+	if(!parentFolder){
+		win.treeData.clear();
+		win.treeData.add(win.Node.prototype.rootEntry(0, 'root', 'root'));
+	}
+
+	for(var i = 0; i < treeItems.length; i++){
+		item = treeItems[i];top.console.log(win.treeData.SelectedItems[item.table], item);
+
+		if(!clear || win.treeData.indexOfEntry(item.id) < 0){
+			item.id = parseInt(item.id);
+			item.checked = win.treeData.SelectedItems[item.table].indexOf(item.id) >= 0 ? 1 : 0;
+			win.treeData.add(new win.Node(item));
+		}
+	}
+
+	win.treeData.setState(win.treeData.tree_states.select);
+	win.drawTree();
+}

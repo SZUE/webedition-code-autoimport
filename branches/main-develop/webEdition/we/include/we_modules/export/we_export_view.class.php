@@ -60,8 +60,7 @@ class we_export_view extends we_modules_view{
 	}
 
 	function getJSProperty(array $jsVars = []){
-		$selected = '';
-		$opened = '';
+
 		$arr = [
 			FILE_TABLE => 'selDocs',
 			TEMPLATES_TABLE => 'selTempl'
@@ -71,21 +70,23 @@ class we_export_view extends we_modules_view{
 			$arr[OBJECT_TABLE] = 'selClasses';
 		}
 
-		foreach($arr as $table => $elem){
-			if($this->export->$elem){
-				$selected .= 'top.content.editor.edbody.treeData.SelectedItems.' . $table . '=[' . $this->export->$elem . '];';
-			}
+		$dynVars = [
+			'initialTreeData' => [
+					'selectedItems' => [],
+					'openFolders' => []
+				],
+			'modelProperties' => [
+				'isFolder' => intval($this->export->IsFolder),
+				'currentTable' => we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE)
+			]
+		];
 
-			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){
-				$opened .= 'top.content.editor.edbody.treeData.openFolders.' . $table . '="' . $open . '";';
-			}
+		foreach($arr as $table => $elem){
+			$dynVars['initialTreeData']['selectedItems'][$table] = array_map('intval', array_filter(explode(',', $this->export->$elem)));
+			$dynVars['initialTreeData']['openFolders'][$table] = array_map('intval', array_filter(explode(',', we_base_request::_(we_base_request::STRING, $elem . '_open'))));
 		}
 
-		return we_html_element::jsElement('
-function start() {
-	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
-	setHead("' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '");' : '') . '
-}') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js', '', ['id' => 'loadVarExport_prop', 'data-dynVars' => setDynamicVar($dynVars)]);
 	}
 
 	function processCommands(we_base_jsCmd $jscmd){

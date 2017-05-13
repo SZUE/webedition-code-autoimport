@@ -27,8 +27,31 @@
 
 var loaded = false;
 
+window.dynVars = WE().util.getDynamicVar(document, 'loadVarExport_prop', 'data-dynVars');
+/* $(function () {}); */
+
+function doOnload() { // FIXME: if this script wasn't used in cmd frame too, we could call start() directly (without this fn and attrib onload on body)!
+	loaded=1;
+	if(typeof window.startTree === 'function'){
+		startTree();
+	}
+	start();
+}
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function start(){
+	if(!window.dynVars.modelProperties.isFolder){
+		if(typeof window.dynVars.initialTreeData.selectedItems === 'object'){
+			top.content.editor.edbody.treeData.SelectedItems = window.dynVars.initialTreeData.selectedItems;
+		}
+		if(typeof window.dynVars.initialTreeData.openFolders === 'object'){
+			top.content.editor.edbody.treeData.openFolders = window.dynVars.initialTreeData.openFolders;
+		}
+		setHead(window.dynVars.modelProperties.currentTable);
+	}
 }
 
 function we_cmd() {

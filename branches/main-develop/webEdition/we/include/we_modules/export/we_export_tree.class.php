@@ -33,31 +33,6 @@ class we_export_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js', 'initTree();');
 	}
 
-	function getJSLoadTree($clear, array $treeItems){
-		$js = 'var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.edbody:top);';
-
-		foreach($treeItems as $item){
-			$js .= ($clear ? '' : 'if(win.treeData.indexOfEntry("' . $item['id'] . '")<0){
-' ) .
-				'win.treeData.add(new win.Node({';
-			$elems = '';
-			foreach($item as $k => $v){
-				$elems .= strtolower($k) . ':' .
-					(strtolower($k) === "checked" ?
-					'(win.treeData.SelectedItems.' . $item['table'] . '.indexOf("' . $item["id"] . '")>=0?	\'1\':	\'' . $v . '\'),' :
-					'\'' . $v . '\',');
-			}
-			$js .= rtrim($elems, ',') . '
-}));' . ($clear ? '' : '
-}');
-		}
-		$js .= '
-win.treeData.setState(win.treeData.tree_states.select);
-win.drawTree();';
-
-		return $js;
-	}
-
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true, $selected = FILE_TABLE, $exportType = we_import_functions::TYPE_WE){
 		$js = $this->getJSTreeCode() . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
@@ -215,19 +190,16 @@ win.drawTree();';
 		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
 		$treeItems = [];
-
 		self::getTreeItems($table, $parentFolder, $treeItems, $openFolders, new DB_WE());
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-var win=(top.content && top.content.editor.edbody.treeData?top.content.editor.edbody:top);
-' .
-				($parentFolder ? '' :
-					'win.treeData.clear();' .
-					'win.treeData.add(win.Node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
-				) .
-				$this->getJSLoadTree(!$parentFolder, $treeItems) .
-				$this->jsCmd->getCmds()
-			), we_html_element::htmlBody(["bgcolor" => "#ffffff"])
-		);
+
+		$dynVars = [
+			'parentFolder' => $parentFolder,
+			'clear' => !$parentFolder,
+			'treeItems' => $treeItems
+		];
+
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_cmd_loadTree.js', '', ['id' => 'loadVarExport_cmd_loadTree', 'data-cmdDynVars' => setDynamicVar($dynVars)]) . 
+				$this->jsCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	public static function loadTree(){
