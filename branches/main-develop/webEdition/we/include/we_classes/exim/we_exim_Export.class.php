@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_exim_Export extends we_exim_XMLExIm{
+class we_exim_Export extends we_exim_ExIm{
 	var $db;
 	var $prepare = true;
 
@@ -94,8 +94,8 @@ class we_exim_Export extends we_exim_XMLExIm{
 		// FIXME: this may be obsolete when $xmlExIm->getSelectedItems() works correctly
 		if($export->Selection === 'manual'){
 			switch($export->ExportType){
-				case we_import_functions::TYPE_CSV: 
-				case we_import_functions::TYPE_XML:
+				case we_exim_ExIm::TYPE_CSV: 
+				case we_exim_ExIm::TYPE_XML:
 					if($export->XMLTable === stripTblPrefix(FILE_TABLE)){
 						$finalDocs = makeArrayFromCSV($export->selDocs);
 						$handle_documents = 1;
@@ -357,7 +357,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 							}
 						} else { // is a normal text field
 							$tag_name = self::correctTagname($k, 'text', $tag_counter);
-							$content .= $this->formatOutput(we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $tag_name, $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+							$content .= $this->formatOutput(we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $tag_name, $this->exportType, 2, $cdata, $this->exportType === we_exim_ExIm::TYPE_XML);
 							$usedFields[] = $tag_name;
 
 							// Remove tagname from array
@@ -372,7 +372,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 
 			if(isset($records) && is_array($records)){
 				foreach($records as $cur){
-					$content .= $this->formatOutput('', $cur, $this->exportType, 2, $cdata, $this->exportType === we_import_functions::TYPE_XML);
+					$content .= $this->formatOutput('', $cur, $this->exportType, 2, $cdata, $this->exportType === we_exim_ExIm::TYPE_XML);
 					$usedFields[] = $cur;
 				}
 			}
@@ -411,7 +411,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 				case 'object':
 				case 'img':
 				case 'binary':
-				case (in_array($this->exportType, [we_import_functions::TYPE_CSV, we_import_functions::TYPE_XML]) ? 'OF' : ''):
+				case (in_array($this->exportType, [we_exim_ExIm::TYPE_CSV, we_exim_ExIm::TYPE_XML]) ? 'OF' : ''):
 					continue;
 				default:
 					$realName = $field['type'] . '_' . $field['name'];
@@ -419,7 +419,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 
 					$tag_name = self::correctTagname($field['name'], 'value', $i);
 					$usedFields[] = $field['name'];
-					$content .= $this->formatOutput(we_document::parseInternalLinks($element, 0, ''), $tag_name, we_import_functions::TYPE_XML, 2, $cdata, (($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
+					$content .= $this->formatOutput(we_document::parseInternalLinks($element, 0, ''), $tag_name, we_exim_ExIm::TYPE_XML, 2, $cdata, (($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 			}
 		}
 
@@ -441,13 +441,13 @@ class we_exim_Export extends we_exim_XMLExIm{
 		switch($selection){
 			case "manual":
 				switch($exportType){
-					case we_import_functions::TYPE_CSV:
+					case we_exim_ExIm::TYPE_CSV:
 						/*
 						$finalObjs = defined('OBJECT_FILES_TABLE') ? self::getIDs($finalObjs, OBJECT_FILES_TABLE) : "";
 						break;
 						 * 
 						 */
-					case we_import_functions::TYPE_XML:
+					case we_exim_ExIm::TYPE_XML:
 						switch($xmlTable){
 							case stripTblPrefix(FILE_TABLE):
 								$finalDocs = self::getIDs($finalDocs, FILE_TABLE);
@@ -459,7 +459,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 								break;
 						}
 						break;
-					case we_import_functions::TYPE_WE:
+					case we_exim_ExIm::TYPE_WE:
 					default:
 						$finalDocs = array_unique(self::getIDs($finalDocs, FILE_TABLE, false));
 						$finalTempl = array_unique(self::getIDs($finalTempl, TEMPLATES_TABLE, false));
@@ -474,7 +474,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 				switch($selectionType){
 					case self::SELECTIONTYPE_CLASSNAME:
 						if(defined('OBJECT_FILES_TABLE')){
-							$where = we_exim_XMLExIm::queryForAllowed(OBJECT_FILES_TABLE);
+							$where = we_exim_ExIm::queryForAllowed(OBJECT_FILES_TABLE);
 							$cat_sql = ' ' . ($categorys ? ' AND ' . we_category::getCatSQLTail('', 'of', true, $this->db, 'Category', $categorys) : '');
 
 							$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsFolder=0 AND of.TableID=' . intval($className) . $cat_sql . $where);
@@ -559,7 +559,7 @@ class we_exim_Export extends we_exim_XMLExIm{
 	protected static function getIDs($selIDs, $table, $with_dirs = false){
 		$tmp = [];
 		$db = new DB_WE();
-		$allow = we_exim_XMLExIm::queryForAllowed($table);
+		$allow = we_exim_ExIm::queryForAllowed($table);
 		if($selIDs){
 			$db->query('SELECT ID FROM ' . $table . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
 			$folders = $db->getAll(true);

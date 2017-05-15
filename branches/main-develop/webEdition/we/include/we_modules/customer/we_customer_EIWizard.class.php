@@ -123,11 +123,11 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep1(){
-		$type = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
+		$type = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
 
 		$generic = new we_html_table(['class' => 'default withSpace'], 2, 1);
-		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_XML, ($type == we_import_functions::TYPE_XML), 'type', g_l('modules_customer', '[gxml_export]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_import_functions::TYPE_XML . "'});", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
-		$generic->setCol(1, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($type == we_import_functions::TYPE_CSV), 'type', g_l('modules_customer', '[csv_export]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_import_functions::TYPE_CSV . "'});", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
+		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_exim_ExIm::TYPE_XML, ($type == we_exim_ExIm::TYPE_XML), 'type', g_l('modules_customer', '[gxml_export]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_exim_ExIm::TYPE_XML . "'});", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(1, 0, [], we_html_forms::radiobutton(we_exim_ExIm::TYPE_CSV, ($type == we_exim_ExIm::TYPE_CSV), 'type', g_l('modules_customer', '[csv_export]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_exim_ExIm::TYPE_CSV . "'});", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = [['headline' => g_l('modules_customer', '[generic_export]'),
 			'html' => $generic->getHTML(),
@@ -174,8 +174,8 @@ class we_customer_EIWizard{
 
 	function getHTMLExportStep3(){
 		//set defaults
-		$type = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
-		$filename = we_base_request::_(we_base_request::FILE, 'filename', 'weExport_' . time() . ($type == we_import_functions::TYPE_CSV ? '.csv' : '.xml'));
+		$type = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
+		$filename = we_base_request::_(we_base_request::FILE, 'filename', 'weExport_' . time() . ($type == we_exim_ExIm::TYPE_CSV ? '.csv' : '.xml'));
 		$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 		$path = we_base_request::_(we_base_request::FILE, 'path', '/');
 		$cdata = we_base_request::_(we_base_request::INT, 'cdata', true);
@@ -197,13 +197,13 @@ class we_customer_EIWizard{
 			];
 
 			switch($type){
-				case we_import_functions::TYPE_XML:
+				case we_exim_ExIm::TYPE_XML:
 					$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, 'cdata', g_l('modules_customer', '[export_xml_cdata]'), true, 'defaultfont', ''));
 					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, 'cdata', g_l('modules_customer', '[export_xml_entities]'), true, 'defaultfont', ''));
 					$parts[] = ['headline' => g_l('modules_customer', '[cdata]'), 'html' => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2];
 					break;
-				case we_import_functions::TYPE_CSV:
+				case we_exim_ExIm::TYPE_CSV:
 					$fileformattable = new we_html_table(['style' => 'margin-top:10px;'], 4, 1);
 					$file_encoding = new we_html_select(['name' => 'csv_lineend', 'class' => 'defaultfont', 'style' => 'width: 254px;']);
 					$file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
@@ -311,7 +311,7 @@ class we_customer_EIWizard{
 			case self::ART_IMPORT:
 				$filename = we_base_request::_(we_base_request::FILE, 'filename');
 				$import_from = we_base_request::_(we_base_request::STRING, 'import_from', self::EXPORT_SERVER);
-				$type = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
+				$type = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
 				$xml_from = we_base_request::_(we_base_request::RAW, 'xml_from', 0);
 				$xml_to = we_base_request::_(we_base_request::RAW, 'xml_to', 1);
 				$dataset = we_base_request::_(we_base_request::RAW, 'dataset', '');
@@ -389,7 +389,7 @@ class we_customer_EIWizard{
 				return '';
 
 			case self::ART_EXPORT:
-				$type = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
+				$type = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
 				$selection = we_base_request::_(we_base_request::STRING, 'selection', self::SELECTION_FILTER);
 				$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 				$path = urldecode(we_base_request::_(we_base_request::FILE, 'path', '/'));
@@ -490,11 +490,11 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep1(){
-		$type = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
+		$type = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
 
 		$generic = new we_html_table(['class' => 'default withSpace'], 2, 1);
-		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_XML, ($type == we_import_functions::TYPE_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "we_cmd('set_topVar', {name: 'type', value: '" . we_import_functions::TYPE_XML . "'});", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
-		$generic->setCol(1, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_CSV, (we_import_functions::TYPE_CSV), 'type', g_l('modules_customer', '[csv_import]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_import_functions::TYPE_CSV . "'});", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
+		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_exim_ExIm::TYPE_XML, ($type == we_exim_ExIm::TYPE_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "we_cmd('set_topVar', {name: 'type', value: '" . we_exim_ExIm::TYPE_XML . "'});", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
+		$generic->setCol(1, 0, [], we_html_forms::radiobutton(we_exim_ExIm::TYPE_CSV, (we_exim_ExIm::TYPE_CSV), 'type', g_l('modules_customer', '[csv_import]'), true, 'defaultfont', "we_cmd('set_topVar', {name: 'type', value: '" . we_exim_ExIm::TYPE_CSV . "'});", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
 		$parts = [
 			['headline' => g_l('modules_customer', '[generic_import]'),
@@ -521,7 +521,7 @@ class we_customer_EIWizard{
 		$fileUploader->setNextCmd('uploader_callback');
 		$fileUploader->setCmdFileSelectOnclick('set_radio_importFrom,,1');
 		$fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 200]);
-		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == we_import_functions::TYPE_CSV ? '.csv' : '.xml'));
+		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == we_exim_ExIm::TYPE_CSV ? '.csv' : '.xml'));
 		$fileUploader->setDisableUploadBtnOnInit(false);
 		$fileUploader->setDimensions(['width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10]);
 
@@ -531,7 +531,7 @@ class we_customer_EIWizard{
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 2);
 		$table->setCol(0, 0, ['colspan' => 2], we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), 'import_from', g_l('modules_customer', '[server_import]'), true, 'defaultfont'));
-		$table->setCol(1, 1, ['style' => 'padding-bottom:5px;'], $this->formFileChooser(250, 'source', $source, 'set_radio_importFrom,0', ($type == we_import_functions::TYPE_XML ? we_base_ContentTypes::XML : '')));
+		$table->setCol(1, 1, ['style' => 'padding-bottom:5px;'], $this->formFileChooser(250, 'source', $source, 'set_radio_importFrom,0', ($type == we_exim_ExIm::TYPE_XML ? we_base_ContentTypes::XML : '')));
 
 		$parts[] = ['headline' => g_l('modules_customer', '[source_file]'),
 			'html' => $table->getHtml(),
@@ -584,7 +584,7 @@ class we_customer_EIWizard{
 
 		if(is_file($filesource) && is_readable($filesource)){
 			switch($type){
-				case we_import_functions::TYPE_CSV:
+				case we_exim_ExIm::TYPE_CSV:
 					$line = we_base_file::loadLine($filesource, 0, 80960);
 					$charsets = ['UTF-8', 'ISO-8859-15', 'ISO-8859-1']; //charsetHandler::getAvailCharsets();
 					$charset = mb_detect_encoding($line, $charsets, true);
@@ -641,7 +641,7 @@ class we_customer_EIWizard{
 
 					$parts = [['headline' => g_l('modules_customer', '[csv_params]'), 'html' => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2]];
 					break;
-				case we_import_functions::TYPE_XML:
+				case we_exim_ExIm::TYPE_XML:
 					//invoke parser
 					$xp = new we_xml_parser($filesource);
 					$xmlWellFormed = ($xp->parseError === '');
@@ -736,7 +736,7 @@ class we_customer_EIWizard{
 		$field_mappings = we_base_request::_(we_base_request::RAW, 'field_mappings', '');
 		$att_mappings = we_base_request::_(we_base_request::RAW, 'att_mappings', '');
 
-		if($type === we_import_functions::TYPE_CSV){
+		if($type === we_exim_ExIm::TYPE_CSV){
 			$arrgs = ['delimiter' => $csv_delimiter,
 				'enclose' => $csv_enclose,
 				'lineend' => $csv_lineend,
@@ -750,7 +750,7 @@ class we_customer_EIWizard{
 		$nodes = we_customer_EI::getDataset($type, $filename, $arrgs);
 		$records = we_customer_EI::getCustomersFieldset();
 
-		$tableheader = ($type == we_import_functions::TYPE_XML ?
+		$tableheader = ($type == we_exim_ExIm::TYPE_XML ?
 			[['dat' => g_l('modules_customer', '[we_flds]')], ['dat' => g_l('modules_customer', '[rcd_flds]')], ['dat' => g_l('import', '[attributes]')]] :
 			[['dat' => g_l('modules_customer', '[we_flds]')], ['dat' => g_l('modules_customer', '[rcd_flds]')]]
 			);
@@ -779,7 +779,7 @@ class we_customer_EIWizard{
 					}
 				}
 			}
-			if($type == we_import_functions::TYPE_XML){
+			if($type == we_exim_ExIm::TYPE_XML){
 				$rows[] = [['dat' => $record],
 					['dat' => $we_fields->getHTML()],
 					['dat' => we_html_tools::htmlTextInput('att_mappings[' . $record . ']', 30, (isset($att_mappings[$record]) ? $att_mappings[$record] : ''), 255, '', 'text', 100)]
@@ -989,7 +989,7 @@ class we_customer_EIWizard{
 	}
 
 	private function getExportCode(){
-		$file_format = we_base_request::_(we_base_request::STRING, 'type', we_import_functions::TYPE_XML);
+		$file_format = we_base_request::_(we_base_request::STRING, 'type', we_exim_ExIm::TYPE_XML);
 		$file_name = we_base_request::_(we_base_request::FILE, 'filename', date('Y-m-d'));
 		$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 		$path = ($export_to == self::EXPORT_SERVER ? we_base_request::_(we_base_request::FILE, 'path', '') : rtrim(TEMP_DIR, '/'));
@@ -1017,11 +1017,11 @@ class we_customer_EIWizard{
 				'cmd' => 'do_export',
 				'step' => 4]);
 
-		if($file_format == we_import_functions::TYPE_XML){
+		if($file_format == we_exim_ExIm::TYPE_XML){
 			$hiddens .= we_html_element::htmlHidden('cdata', $cdata);
 		}
 
-		if($file_format === we_import_functions::TYPE_CSV){
+		if($file_format === we_exim_ExIm::TYPE_CSV){
 			$hiddens .= ($csv_enclose === '"' ?
 				"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
 				we_html_element::htmlHidden("csv_enclose", $csv_enclose)
@@ -1053,10 +1053,10 @@ class we_customer_EIWizard{
 				'export_to' => $export_to,
 				'path' => $path]);
 
-		if($file_format == we_import_functions::TYPE_XML){
+		if($file_format == we_exim_ExIm::TYPE_XML){
 			$hiddens .= we_html_element::htmlHidden('cdata', $cdata);
 		}
-		if($file_format === we_import_functions::TYPE_CSV){
+		if($file_format === we_exim_ExIm::TYPE_CSV){
 			$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter', '');
 			$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_enclose', '');
 			$csv_lineend = we_base_request::_(we_base_request::STRING, 'csv_lineend', '');
@@ -1077,10 +1077,10 @@ class we_customer_EIWizard{
 				'customers' => array_splice($customers, 0, $this->exim_number),
 			];
 
-			if($file_format == we_import_functions::TYPE_XML){
+			if($file_format == we_exim_ExIm::TYPE_XML){
 				$options['cdata'] = $cdata;
 			}
-			if($file_format === we_import_functions::TYPE_CSV){
+			if($file_format === we_exim_ExIm::TYPE_CSV){
 				$options['csv_delimiter'] = $csv_delimiter;
 				$options['csv_enclose'] = $csv_enclose;
 				$options['csv_lineend'] = $csv_lineend;
@@ -1118,7 +1118,7 @@ class we_customer_EIWizard{
 		$filename = we_base_request::_(we_base_request::FILE, 'filename', '');
 		$path = ($export_to == self::EXPORT_SERVER ? we_base_request::_(we_base_request::FILE, 'path', '') : TEMP_DIR);
 
-		if($file_format == we_import_functions::TYPE_XML){
+		if($file_format == we_exim_ExIm::TYPE_XML){
 
 			$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
 			we_customer_EI::save2File($file_name, we_backup_util::weXmlExImFooter);
@@ -1180,7 +1180,7 @@ class we_customer_EIWizard{
 			'filename' => $filename,
 			'exim' => $this->exim_number
 		];
-		if($type === we_import_functions::TYPE_CSV){
+		if($type === we_exim_ExIm::TYPE_CSV){
 			$options['csv_delimiter'] = $csv_delimiter;
 			$options['csv_enclose'] = $csv_enclose;
 			$options['csv_lineend'] = $csv_lineend;

@@ -24,7 +24,7 @@
  */
 
 // FIXME: move to some new class we_exim_preparer => no exporting in modul anymore
-class we_export_preparer extends we_exim_XMLExIm{
+class we_export_preparer extends we_exim_ExIm{
 	var $RefTable;
 	var $options;
 	var $PatternSearch;

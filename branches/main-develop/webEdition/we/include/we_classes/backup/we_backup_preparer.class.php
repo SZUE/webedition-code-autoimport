@@ -111,7 +111,7 @@ abstract class we_backup_preparer{
 
 		//always write protect code uncompressed
 		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_util::weXmlExImProtectCode : ''), 'wb');
-		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_exim_XMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_exim_ExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		return true;
 	}

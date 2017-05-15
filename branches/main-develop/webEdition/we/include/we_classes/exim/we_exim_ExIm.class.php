@@ -24,7 +24,7 @@
  */
 
 // FIXME: rename to we_exim_ExIm
-class we_exim_XMLExIm{
+class we_exim_ExIm{
 	var $destination = [];
 	var $RefTable;
 	var $chunk_count;
@@ -32,6 +32,12 @@ class we_exim_XMLExIm{
 	var $analyzed = [];
 	var $level = 0;
 	//var $recover_mode=0; // 0 -	save all to selected folder; 1 - save with given path
+
+	const TYPE_CSV = 'CSV';
+	const TYPE_XML = 'XML';
+	const TYPE_WE = 'WE';
+	const TYPE_LOCAL_FILES = 'FileImport';
+	const TYPE_SITE = 'siteImport';
 
 	var $options = [
 		'handle_paths' => 0,

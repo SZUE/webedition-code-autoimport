@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_exim_XMLImport extends we_exim_XMLExIm{
+class we_exim_XMLImport extends we_exim_ExIm{
 	var $nodehierarchy = [];
 
 	function __construct(){
@@ -588,7 +588,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
 		$header = ''; //weXMLExIm::getHeader($encoding);
-		$footer = we_exim_XMLExIm::getFooter();
+		$footer = we_exim_ExIm::getFooter();
 
 		$buff = $filename_tmp = "";
 		$fh = ($compress != we_backup_util::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));

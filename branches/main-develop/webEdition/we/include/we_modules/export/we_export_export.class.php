@@ -62,7 +62,7 @@ class we_export_export extends we_base_model{
 	var $ExportDepth;
 	var $Log = [];
 	var $ExportFilename;
-	public $ExportType = we_import_functions::TYPE_WE;
+	public $ExportType = we_exim_ExIm::TYPE_WE;
 	public $XMLCdata;
 	public $XMLTable;
 	public $CSVDelimiter;
@@ -176,7 +176,7 @@ class we_export_export extends we_base_model{
 	}
 
 	function setDefaults(){
-		$this->ExportType = we_import_functions::TYPE_WE;
+		$this->ExportType = we_exim_ExIm::TYPE_WE;
 		$this->ParentID = 0;
 		$this->Filename = 'weExport_' . time();
 		$this->Extension = '.xml';

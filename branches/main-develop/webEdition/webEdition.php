@@ -205,11 +205,11 @@ $const = [
 		]
 	],
 	'exim' => [
-		'TYPE_CSV' => we_import_functions::TYPE_CSV,
-		'TYPE_XML' => we_import_functions::TYPE_XML,
-		'TYPE_WE' => we_import_functions::TYPE_WE,
-		'TYPE_LOCAL_FILES' => we_import_functions::TYPE_LOCAL_FILES,
-		'TYPE_SITE' => we_import_functions::TYPE_SITE,
+		'TYPE_CSV' => we_exim_ExIm::TYPE_CSV,
+		'TYPE_XML' => we_exim_ExIm::TYPE_XML,
+		'TYPE_WE' => we_exim_ExIm::TYPE_WE,
+		'TYPE_LOCAL_FILES' => we_exim_ExIm::TYPE_LOCAL_FILES,
+		'TYPE_SITE' => we_exim_ExIm::TYPE_SITE,
 		'export' => [
 			'ENABLE_DOCUMENTS2CSV' => we_exim_Export::ENABLE_DOCUMENTS2CSV, // FIXME: temporary
 			'SELECTIONTYPE_CLASSNAME' => we_exim_Export::SELECTIONTYPE_CLASSNAME,

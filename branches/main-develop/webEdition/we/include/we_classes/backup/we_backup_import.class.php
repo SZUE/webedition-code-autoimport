@@ -28,8 +28,8 @@ abstract class we_backup_import{
 		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
 		we_backup_util::writeLog();
 		$header = (!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset']) ?
-				we_exim_XMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
-				we_exim_XMLExIm::getHeader('', 'backup'));
+				we_exim_ExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				we_exim_ExIm::getHeader('', 'backup'));
 		$data = $header . we_backup_fileReader::readLine($filename, $offset, $lines, $iscompressed);
 
 		if(strlen($data) == strlen($header)){
