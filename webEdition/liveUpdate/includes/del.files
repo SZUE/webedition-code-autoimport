@@ -252,6 +252,8 @@ we/include/we_modules/glossary/edit_glossary_dictionaries_frameset.php
 we/include/we_modules/glossary/dict/dummy
 we/include/we_modules/glossary/cache/dummy
 we/include/we_modules/export/we_webEditionCmd_export.inc.php
+we/include/we_modules/export/we_export_wizard.class.php
+we/include/we_modules/export/we_export_functions.class.php
 we/include/we_modules/export/we_exportDirSelectorFrameset.php
 we/include/we_modules/export/we_exportDirSelector.php
 we/include/we_modules/export/we_exportDirSelect.php
@@ -528,6 +530,7 @@ we/include/we_classes/helpers/we_errorHandling.inc.php
 we/include/we_classes/fileupload/we_fileupload_uploader_include.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_importfile.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_base.class.php
+we/include/we_classes/exim/we_exim_XMLExport.class.php
 we/include/we_classes/dialog/we_dialog_wysiwygWindow.class.php
 we/include/we_classes/dialog/we_dialog_table.class.php
 we/include/we_classes/dialog/we_dialog_specialChar.class.php
@@ -765,6 +768,7 @@ js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js
 js/md5.js
 js/images.js
+js/export_wizard.js
 js/exit_doc_question.js
 js/dialogs/we_dialog_fullscreenEdit.js
 js/dialogs/we_dialog_fullscreen.js
