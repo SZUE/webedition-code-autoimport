@@ -45,19 +45,25 @@ function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
 
-
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] !== "save_export") {
-		if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
-			args[0] = "save_export";
-		} else {
-			top.content.usetHot();
-		}
+	switch(args[0]){ // define commands not to be replaced by save_export
+		case 'setIconOfDocClass':
+			args[0] = 'loop_through';
+			break;
+		default:
+			// FIXME: we should eliminate this construction!
+			if (hot && args[0] !== "save_export") {
+				if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
+					args[0] = "save_export";
+				} else {
+					top.content.usetHot();
+				}
+			}
 	}
 
 	switch (args[0]) {
@@ -204,6 +210,12 @@ function we_cmd() {
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=" + encodeURI(args[1]);
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
 			break;
+		case 'setHot':
+			hot = true;
+			//top.content.editor.edbody.toggle(args[1]); // FIXME: where do we call setHot mit arguments?
+			break;
+		case 'loop_through':
+			// fall through
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 

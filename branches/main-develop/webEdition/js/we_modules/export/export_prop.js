@@ -66,14 +66,25 @@ function we_cmd() {
 			document.we_form.tabnr.value = args[1];
 			submitForm();
 			break;
-		case "we_export_dirSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+		case "we_export_dirSelector": // FIXME: does not work
+			//url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 			new (WE().util.jsWindow)(caller, url, "we_exportselector", WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);
 			break;
 		case "we_selector_category":
+			we_cmd('setHot');
 			new (WE().util.jsWindow)(caller, url, "we_catselector", WE().consts.size.dialog.big, WE().consts.size.dialog.small, true, true, true, true);
 			break;
+		case "del_cat":
+		case "del_all_cats":
+			we_cmd('setHot');
+			document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
+			document.we_form.tabnr.value = top.content.activ_tab;
+			document.we_form.cat.value = args[1];
+			submitForm();
+			break;
 		case "we_selector_directory":
+			we_cmd('setHot');
 			new (WE().util.jsWindow)(caller, url, "we_selector", WE().consts.size.dialog.big, WE().consts.size.dialog.medium, true, true, true, true);
 			break;
 		case "add_cat":
@@ -83,6 +94,16 @@ function we_cmd() {
 			document.we_form.cat.value = args[1].allIDs.join(",");
 			submitForm();
 			break;
+		case 'inputChooser_syncChoice':
+			document.we_form[args[2]].value=args[1].options[args[1].selectedIndex].value;
+			args[1].selectedIndex = 0;
+			we_cmd('setHot');
+			break;
+		case 'toggle_selection':
+			closeAllSelection();
+			toggle(args[1]);
+			toggleSelectionType('doctype');
+			we_cmd('setHot');
 		case 'switch_type':
 			var type = args[1].value || WE().consts.exim.TYPE_WE;
 			var i = 0;
@@ -197,18 +218,20 @@ function we_cmd() {
 					}
 					top.content.editor.edbody.document.we_form.Extension.value = '.xml';
 			}
+			top.content.hot=true;
 			break;
 		case "setTreeHead":
 			document.we_form.XMLTable.value = args[1].replace(WE().consts.tables.TBL_PREFIX, '');
 			setHead(args[1]);
 			break;
-		case "del_cat":
-		case "del_all_cats":
-			document.we_form.cmd.value = args[0];
-			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
-			document.we_form.tabnr.value = top.content.activ_tab;
-			document.we_form.cat.value = args[1];
-			submitForm();
+		case 'setExportDepth':
+			var r = parseInt(args[1]);
+			if(isNaN(r)){
+				this.value = args[2];
+			} else {
+				this.value = r;
+				we_cmd('setHot');
+			}
 			break;
 		case "updateLog":
 			for (var i = 0; i < args[1].log.length; i++) {
@@ -226,6 +249,12 @@ function we_cmd() {
 		case 'setStatusEnd':
 			showEndStatus();
 			break;
+		case 'setHeaderTitlePath':
+			top.content.editor.edheader.weTabs.setTitlePath(args[1] + top.content.editor.edbody.document.we_form.Extension.value);
+			break;
+		case 'setHot':
+			top.content.setHot();
+			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
@@ -241,11 +270,12 @@ function submitForm(target, action, method) {
 
 function toggle(id) {
 	var elem = document.getElementById(id);
-	if (elem.style.display == "none") {
+	if (elem.style.display === "none") {
 		elem.style.display = "";
 	} else {
 		elem.style.display = "none";
 	}
+	we_cmd('setHot');
 }
 
 function toggleSelectionType(selType) {
@@ -271,6 +301,8 @@ function toggleSelectionType(selType) {
 	for(i = 0; i < displayElems.length; i++){
 		displayElems[i].style.display = '';
 	}
+
+	we_cmd('setHot');
 }
 
 function clearLog() {
