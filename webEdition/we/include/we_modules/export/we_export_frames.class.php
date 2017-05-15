@@ -174,9 +174,9 @@ class we_export_frames extends we_modules_frame{
 
 		$permittedExportTypes = self::getPermittedExportTypes();
 		$exportTypes = array_filter([
-			we_import_functions::TYPE_WE => (in_array(we_import_functions::TYPE_WE, $permittedExportTypes) ? g_l('export', '[wxml_export]') : false),
-			we_import_functions::TYPE_XML => (in_array(we_import_functions::TYPE_XML, $permittedExportTypes) ? g_l('export', '[gxml_export]') : false),
-			we_import_functions::TYPE_CSV => (in_array(we_import_functions::TYPE_CSV, $permittedExportTypes) ? g_l('export', '[csv_export]') : false),
+			we_exim_ExIm::TYPE_WE => (in_array(we_exim_ExIm::TYPE_WE, $permittedExportTypes) ? g_l('export', '[wxml_export]') : false),
+			we_exim_ExIm::TYPE_XML => (in_array(we_exim_ExIm::TYPE_XML, $permittedExportTypes) ? g_l('export', '[gxml_export]') : false),
+			we_exim_ExIm::TYPE_CSV => (in_array(we_exim_ExIm::TYPE_CSV, $permittedExportTypes) ? g_l('export', '[csv_export]') : false),
 		]);
 
 		$parts[] = [
@@ -218,19 +218,19 @@ class we_export_frames extends we_modules_frame{
 
 		$table = new we_html_table(['class' => 'default'], 5, 1);
 
-		$this->View->export->SelectionType = $this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'classname' : $this->View->export->SelectionType;
+		$this->View->export->SelectionType = $this->View->export->ExportType === we_exim_ExIm::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'classname' : $this->View->export->SelectionType;
 
 		$selectorAttribs = ['name' => 'SelectionType',
 			'onchange' => "closeAllType();toggleSelectionType(this.value);top.content.hot=true;",
 			'style' => 'width:520px;',
-			'disabled' => $this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'disabled' : false
+			'disabled' => $this->View->export->ExportType === we_exim_ExIm::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? 'disabled' : false
 		];
 
 		$selectionType = new we_html_select(array_filter($selectorAttribs));
 		$selectionType->addOption(FILE_TABLE, g_l('export', '[documents]'));
 		$selectionType->addOption('doctype', g_l('export', '[doctypename]'));
 		if(defined('OBJECT_TABLE')){
-			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_import_functions::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? ['selected' => 'selected'] : []));
+			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_exim_ExIm::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? ['selected' => 'selected'] : []));
 		}
 		$selectionType->selectOption($this->View->export->SelectionType);
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], $selectionType->getHtml());
@@ -260,10 +260,10 @@ class we_export_frames extends we_modules_frame{
 		);
 
 		switch($this->View->export->ExportType){
-			case we_import_functions::TYPE_CSV:
+			case we_exim_ExIm::TYPE_CSV:
 				$selected = !we_exim_Export::ENABLE_DOCUMENTS2CSV ? OBJECT_FILES_TABLE : addTblPrefix($this->View->export->XMLTable);
 				break;
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				$selected = addTblPrefix($this->View->export->XMLTable);
 				break;
 			default:
@@ -287,9 +287,9 @@ class we_export_frames extends we_modules_frame{
 		$optionsXML = we_html_multiIconBox::getHTML('', $this->getHTMLOptionsXML(), 30, '', -1, '', '', false, $preselect);
 		$optionsCSV = we_html_multiIconBox::getHTML('', $this->getHTMLOptionsCSV(), 30, '', -1, '', '', false, $preselect);
 
-		return we_html_element::htmlDiv(['id' => 'optionsWXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_WE ? 'block' : 'none') . ';'], $optionsWE) .
-			we_html_element::htmlDiv(['id' => 'optionsGXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_XML ? 'block' : 'none') . ';'], $optionsXML) .
-			we_html_element::htmlDiv(['id' => 'optionsCSV', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_import_functions::TYPE_CSV ? 'block' : 'none') . ';'], $optionsCSV);
+		return we_html_element::htmlDiv(['id' => 'optionsWXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_WE ? 'block' : 'none') . ';'], $optionsWE) .
+			we_html_element::htmlDiv(['id' => 'optionsGXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_XML ? 'block' : 'none') . ';'], $optionsXML) .
+			we_html_element::htmlDiv(['id' => 'optionsCSV', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_CSV ? 'block' : 'none') . ';'], $optionsCSV);
 
 	}
 
@@ -426,7 +426,7 @@ class we_export_frames extends we_modules_frame{
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 		
-			$table = $this->View->export->ExportType === we_import_functions::TYPE_CSV ? OBJECT_FILES_TABLE : we_base_request::_(we_base_request::TABLE, "tab");
+			$table = $this->View->export->ExportType === we_exim_ExIm::TYPE_CSV ? OBJECT_FILES_TABLE : we_base_request::_(we_base_request::TABLE, "tab");
 			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . $table . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "")]);
 
 			return $this->getHTMLDocument(we_html_element::htmlBody());
@@ -445,9 +445,9 @@ class we_export_frames extends we_modules_frame{
 
 	public static function getPermittedExportTypes(){
 		return array_filter([
-			(we_base_permission::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']) ? we_import_functions::TYPE_WE : false),
-			(we_base_permission::hasPerm(['GENERICXML_EXPORT']) ? we_import_functions::TYPE_XML : false),
-			(we_base_permission::hasPerm(['CSV_EXPORT']) ? we_import_functions::TYPE_CSV : false)
+			(we_base_permission::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']) ? we_exim_ExIm::TYPE_WE : false),
+			(we_base_permission::hasPerm(['GENERICXML_EXPORT']) ? we_exim_ExIm::TYPE_XML : false),
+			(we_base_permission::hasPerm(['CSV_EXPORT']) ? we_exim_ExIm::TYPE_CSV : false)
 		]);
 	}
 
@@ -470,10 +470,10 @@ class we_export_frames extends we_modules_frame{
 			);
 
 		switch($this->View->export->ExportType){
-			case we_import_functions::TYPE_CSV:
+			case we_exim_ExIm::TYPE_CSV:
 				$exporter = new we_exim_ExportCSV();
 				break;
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				$exporter = new we_exim_ExportXML();
 				break;
 			default:

@@ -26,7 +26,7 @@ class we_exim_ExportWE extends we_exim_Export{
 
 	function __construct(){
 		parent::__construct();
-		$this->exportType = we_import_functions::TYPE_WE;
+		$this->exportType = we_exim_ExIm::TYPE_WE;
 	}
 
 	protected function writeExportItem($doc, $fh, $attribute = [], $isBin = false, $setBackupMarker = false){
@@ -56,7 +56,7 @@ class we_exim_ExportWE extends we_exim_Export{
 
 	protected function fileCreate(){
 		if(parent::fileCreate()){
-			we_base_file::save($this->exportProperties['file'], we_exim_XMLExIm::getHeader(), we_exim_XMLExIm, 'wb');
+			we_base_file::save($this->exportProperties['file'], we_exim_ExIm::getHeader(), we_exim_ExIm, 'wb');
 
 			return true;
 		}
@@ -65,6 +65,6 @@ class we_exim_ExportWE extends we_exim_Export{
 	}
 
 	protected function fileComplete(){
-		we_base_file::save($this->exportProperties['file'], we_exim_XMLExIm::getFooter(), "ab");
+		we_base_file::save($this->exportProperties['file'], we_exim_ExIm::getFooter(), "ab");
 	}
 }

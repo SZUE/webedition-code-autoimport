@@ -27,7 +27,7 @@ abstract class we_customer_EI{
 	public static function exportCustomers($options = []){
 		$code = '';
 		switch($options['format']){
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				$code = self::exportXML($options);
 				break;
 			case 'csv':
@@ -42,9 +42,10 @@ abstract class we_customer_EI{
 
 	public static function getDataset($type, $filename, $arrgs = []){
 		switch($type){
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				return self::getXMLDataset($filename, $arrgs['dataset']);
-			case 'csv':
+			case we_exim_ExIm::TYPE_CSV:
+			case 'csv': // FIXME: is this used?
 				return self::getCSVDataset($filename, $arrgs['delimiter'], $arrgs['enclose'], $arrgs['lineend'], $arrgs['fieldnames'], $arrgs['charset']);
 		}
 	}
@@ -65,7 +66,7 @@ abstract class we_customer_EI{
 			$fields = $customer->getFieldsDbProperties();
 
 			$xml_out = (isset($options['firstexec']) && $options['firstexec'] == -999 ?
-					we_exim_XMLExIm::getHeader('', 'customer') :
+					we_exim_ExIm::getHeader('', 'customer') :
 					'');
 
 			foreach($options['customers'] as $cid){
@@ -86,7 +87,7 @@ abstract class we_customer_EI{
 					$xml_out.=$customer_xml->getHtml() . we_backup_util::backupMarker . "\n";
 				}
 			}
-			return $xml_out . we_exim_XMLExIm::getFooter();
+			return $xml_out . we_exim_ExIm::getFooter();
 		}
 		return '';
 	}
@@ -238,7 +239,7 @@ abstract class we_customer_EI{
 		$filename = $options['filename'];
 
 		switch($type){
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				$dataset = $options['dataset'];
 				$xml_from = $options['xml_from'];
 				$xml_to = $options['xml_to'];
@@ -250,7 +251,8 @@ abstract class we_customer_EI{
 				$ret['file_count'] = $parse->fileId;
 				break;
 
-			case 'csv':
+			case we_exim_ExIm::TYPE_CSV:
+			case 'csv': // FIXME: is this used?
 				$csv_delimiter = $options['csv_delimiter'];
 				$csv_enclose = $options['csv_enclose'];
 				$csv_fields = $options['csv_fieldnames'];
@@ -292,7 +294,7 @@ abstract class we_customer_EI{
 								];
 						}
 						$f = $path . 'temp_' . $fcount . '.xml';
-						self::save2File($f, we_exim_XMLExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement([$rootnode]), 'wb');
+						self::save2File($f, we_exim_ExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement([$rootnode]), 'wb');
 						we_base_file::insertIntoCleanUp($f);
 						$fcount++;
 					}

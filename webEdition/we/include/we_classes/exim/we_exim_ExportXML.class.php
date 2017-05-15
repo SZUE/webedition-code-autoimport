@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_ExportXML extends we_exim_Export{
-	protected $exportType = we_import_functions::TYPE_XML;
+	protected $exportType = we_exim_ExIm::TYPE_XML;
 	protected $permittedContentTypes = [
 		we_base_ContentTypes::WEDOCUMENT,
 		we_base_ContentTypes::OBJECT_FILE
@@ -68,9 +68,9 @@ class we_exim_ExportXML extends we_exim_Export{
 		}
 	}
 
-	protected function formatOutput($content, $tagname, $format = we_import_functions::TYPE_XML, $tabs = 2, $cdata = false, $fix_content = false){
+	protected function formatOutput($content, $tagname, $format = we_exim_ExIm::TYPE_XML, $tabs = 2, $cdata = false, $fix_content = false){
 		switch($format){
-			case we_import_functions::TYPE_XML:
+			case we_exim_ExIm::TYPE_XML:
 				// Generate intending tabs
 				$tab = '';
 				for($i = 0; $i < $tabs; $i++){

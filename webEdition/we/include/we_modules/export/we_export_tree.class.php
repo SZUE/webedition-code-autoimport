@@ -33,30 +33,30 @@ class we_export_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js', 'initTree();');
 	}
 
-	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true, $selected = FILE_TABLE, $exportType = we_import_functions::TYPE_WE){
+	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true, $selected = FILE_TABLE, $exportType = we_exim_ExIm::TYPE_WE){
 		$js = $this->getJSTreeCode() . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
 			$selectorAttribs = ['name' => 'headerSwitch',
 				'onchange' => "we_cmd('setTreeHead', this.value)",
 				'style' => 'width:' . $width . 'px;',
-				'disabled' => ($exportType === we_import_functions::TYPE_CSV ? 'disabled' : false)];
+				'disabled' => ($exportType === we_exim_ExIm::TYPE_CSV ? 'disabled' : false)];
 			$selector = new we_html_select(array_filter($selectorAttribs));
 
 			if(we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')){
 				$selector->addOption(FILE_TABLE, g_l('export', '[documents]'));
 			}
 			if(we_base_permission::hasPerm('CAN_SEE_TEMPLATES')){
-				$selector->addOption(TEMPLATES_TABLE, g_l('export', '[templates]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
+				$selector->addOption(TEMPLATES_TABLE, g_l('export', '[templates]'), ($exportType === we_exim_ExIm::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
 			if(defined('OBJECT_FILES_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")){
 				$selector->addOption(OBJECT_FILES_TABLE, g_l('export', '[objects]'));
 			}
 			if(defined('OBJECT_TABLE') && we_base_permission::hasPerm("CAN_SEE_OBJECTS")){
-				$selector->addOption(OBJECT_TABLE, g_l('export', '[classes]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
+				$selector->addOption(OBJECT_TABLE, g_l('export', '[classes]'), ($exportType === we_exim_ExIm::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && we_base_permission::hasPerm("CAN_SEE_COLLECTIONS")){
-				$selector->addOption(VFILE_TABLE, g_l('export', '[collections]'), ($exportType === we_import_functions::TYPE_XML ? ['disabled' => 'disabled'] : []));
+				$selector->addOption(VFILE_TABLE, g_l('export', '[collections]'), ($exportType === we_exim_ExIm::TYPE_XML ? ['disabled' => 'disabled'] : []));
 			}
 			$selector->selectOption($selected);
 

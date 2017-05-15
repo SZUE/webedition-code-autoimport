@@ -40,7 +40,7 @@ class we_exim_refTable{
 		foreach($properties as $k => $v){
 			$rd->$k = $v;
 		}
-		$rd->Table = we_exim_XMLExIm::getTableForCT($rd->ContentType, (isset($rd->Table)) ? $rd->Table : '');
+		$rd->Table = we_exim_ExIm::getTableForCT($rd->ContentType, (isset($rd->Table)) ? $rd->Table : '');
 		if($this->hasPerms($rd)){
 			$this->Storage[] = $rd;
 		}
@@ -64,7 +64,7 @@ class we_exim_refTable{
 					$allowed = true;
 					break;
 				default:
-					$q = we_exim_XMLExIm::queryForAllowed($rd->Table);
+					$q = we_exim_ExIm::queryForAllowed($rd->Table);
 					$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q);
 					$allowed = $id ? true : false;
 			}

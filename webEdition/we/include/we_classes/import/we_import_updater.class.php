@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_updater extends we_exim_XMLExIm{
+class we_import_updater extends we_exim_ExIm{
 	var $RefTable;
 	var $UpdateItemsCount = 1;
 	var $Patterns;
@@ -135,7 +135,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e("Saving object...");
 		}
 
-		we_exim_XMLExIm::saveObject($object);
+		we_exim_ExIm::saveObject($object);
 
 		if($this->debug){
 			t_e("Object saved");
