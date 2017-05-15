@@ -38,32 +38,10 @@ class liveUpdateTemplates{
 	 * @param integer $height
 	 * @return string
 	 */
-	static function getContainer($headline, $content, $buttons = '', $width = 550, $height = 400){
-		$buttonDiv = '';
-
-		$headlineHeight = 30;
-		$contentHeight = $height - $headlineHeight;
-
-		$gapHeight = 15;
-		$buttonHeight = 20;
-
-		if($buttons){
-			$buttonDiv = '<div style="height: ' . $gapHeight . 'px; background: none"></div>
-			<div id="buttonDiv" style="height:' . $buttonHeight . 'px;">' .
-				$buttons .
-				'</div>';
-
-			$contentHeight -= $buttonHeight - $gapHeight;
-		}
-
-		return '<div id="contentDiv" class="defaultfont" style="width:' . $width . 'px; height: ' . $height . 'px;">
-			<div id="contentHeadlineDiv" style="height: ' . ($headlineHeight) . 'px;">
-			<b>' . $headline . '</b><hr />
-			</div>
-			<div id="contentTextDiv" class="defaultfont" style="height: ' . ($contentHeight) . 'px;">' .
-			$content .
-			'</div>' .
-			$buttonDiv .
+	static function getContainer($headline, $content, $buttons = ''){
+		return '<div id="contentDiv" class="defaultfont">
+			<div id="contentHeadlineDiv"><b>' . $headline . '</b><hr /></div>
+			<div id="contentTextDiv" class="defaultfont" >' . $content . '</div>' . ($buttons ? '<div id="buttonDiv">' . $buttons . '</div>' : '') .
 			'</div>';
 	}
 

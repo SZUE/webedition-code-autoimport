@@ -39,6 +39,14 @@ div#contentDiv {
 	margin: auto;
 	padding: 1px;
 	line-height: 150%;
+	bottom: 10px;
+	left: 10px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+#contentHeadlineDiv{
+	height:30px;
 }
 
 div.messageDiv,
@@ -60,6 +68,16 @@ div.errorDiv {
 
 div#contentTextDiv {
 	overflow: auto;
+	bottom: 0px;
+	left: 0px;
+	position: absolute;
+	right: 0px;
+	top: 30px;
+}
+
+#buttonDiv{
+	height:20px;
+	margin-top:15px;
 }
 
 hr {
@@ -130,7 +148,7 @@ li.upcomingStep {
 
 div#messageLog {
 	border: 1px solid #ccc;
-	height: 220px;
+	height: 400px;
 	margin: 0px;
 	overflow: auto;
 	background-color: #fff;
@@ -141,7 +159,7 @@ div#messageLog {
 
 /* - ProgressBar - */
 #tdInstallerSteps {
-	width: 220px;
+	width: 250px;
 }
 
 #tdMessageLog {
