@@ -51,10 +51,27 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch(args[0]){ // define commands not to be replaced by save_export
+	switch(args[0]){ // commands which are never replaced by save_export
+		case "updateLog":
+			for (var i = 0; i < args[1].log.length; i++) {
+				top.content.editor.edbody.addLog(args[1].log[i]);
+			}
+			top.content.editor.edfooter.setProgress(args[1].percent);
+			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
+			return;
+		case 'submitCmdForm':
+			top.content.cmd.document.we_form.submit();
+			return;
+		case 'startDownload':
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' + args[1];
+			return;
+		case 'setStatusEnd':
+			WE().util.showMessage(WE().consts.g_l.exports.server_finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.content.editor.edfooter.hideProgress();
+			return;
 		case 'setIconOfDocClass':
 			args[0] = 'loop_through';
-			break;
+			return;
 		default:
 			// FIXME: we should eliminate this construction!
 			if (hot && args[0] !== "save_export") {

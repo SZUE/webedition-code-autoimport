@@ -162,7 +162,7 @@ function loadTreeItems(parentFolder, clear, treeItems){
 	}
 
 	for(var i = 0; i < treeItems.length; i++){
-		item = treeItems[i];top.console.log(win.treeData.SelectedItems[item.table], item);
+		item = treeItems[i];
 
 		if(!clear || win.treeData.indexOfEntry(item.id) < 0){
 			item.id = parseInt(item.id);
