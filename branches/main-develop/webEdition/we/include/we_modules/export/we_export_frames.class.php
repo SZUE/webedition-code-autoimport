@@ -148,11 +148,10 @@ class we_export_frames extends we_modules_frame{
 		);
 	}
 
-	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
+	function getHTMLProperties($preselect = ""){
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') .
-			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+		return we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_PROPERTIES ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab2', 'style' => ($tabNr == self::TAB_OPTIONS ? '' : 'display: none')], $this->getHTMLTab2($preselect)) .
 			we_html_element::htmlDiv(['id' => 'tab3', 'style' => ($tabNr == self::TAB_LOG ? '' : 'display: none')], we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 	}
@@ -561,7 +560,7 @@ class we_export_frames extends we_modules_frame{
 				break;
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js') . $this->jsCmd->getCmds(), we_html_element::htmlBody(['onload' => $bodyOnload], $bodyContent));
+		return we_html_tools::getHtmlTop('', '', '', $this->jsCmd->getCmds(), we_html_element::htmlBody(['onload' => $bodyOnload], $bodyContent));
 	}
 
 	private function getUploadCode(){

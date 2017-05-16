@@ -233,22 +233,6 @@ function we_cmd() {
 				we_cmd('setHot');
 			}
 			break;
-		case "updateLog":
-			for (var i = 0; i < args[1].log.length; i++) {
-				top.content.editor.edbody.addLog(args[1].log[i]);
-			}
-			top.content.editor.edfooter.setProgress(args[1].percent);
-			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
-			break;
-		case 'submitCmdForm':
-			top.content.cmd.document.we_form.submit();
-			break;
-		case 'startDownload':
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' + args[1];
-			break;
-		case 'setStatusEnd':
-			showEndStatus();
-			break;
 		case 'setHeaderTitlePath':
 			top.content.editor.edheader.weTabs.setTitlePath(args[1] + top.content.editor.edbody.document.we_form.Extension.value);
 			break;
@@ -338,9 +322,4 @@ function formFileChooser() {
 			new (WE().util.jsWindow)(window, url, "server_selector", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, false, true);
 			break;
 	}
-}
-
-function showEndStatus() {
-	WE().util.showMessage(WE().consts.g_l.exports.server_finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	top.content.editor.edfooter.hideProgress();
 }
