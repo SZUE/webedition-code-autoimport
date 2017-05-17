@@ -92,7 +92,7 @@ function weFileupload_uploader_abstract(win) {
 				self.sender.sendNextFile();
 			}, 100);
 		} else {
-			self.sender.processError({from: 'gui', msg: self.utils.gl.errorNoFileSelected});
+			self.sender.processError({from: 'gui', msg: WE().consts.g_l.fileupload.errorNoFileSelected});
 		}
 	};
 

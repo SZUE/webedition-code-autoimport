@@ -115,12 +115,12 @@ function weFileupload_view_abstract(uploader) {
 				dimension = fileobj.img.fullPrev.height + 'x' + fileobj.img.fullPrev.width + ' px';
 			if(fileobj.isEdited){
 				var deg = parseInt(fileobj.img.processedOptions.rotate),
-					degText = deg === 0 ? '' : (deg === 90 ? '90&deg; ' + self.utils.gl.editRotationRight : (deg === 270 ? '90&deg; ' + self.utils.gl.editRotationLeft : '180&deg;'));
-				info += (fileobj.img.processedOptions.scale ? self.utils.gl.editScaled + ' ' : '') + dimension;
-				info += deg ? (info ? ', ' : '') + self.utils.gl.editRotation + ': ' + degText : '';
-				info += fileobj.img.processedOptions.quality !== self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + self.utils.gl.editQuality + ': ' + fileobj.img.processedOptions.quality + '%' : '';
+					degText = deg === 0 ? '' : (deg === 90 ? '90&deg; ' + WE().consts.g_l.fileupload.editRotationRight : (deg === 270 ? '90&deg; ' + WE().consts.g_l.fileupload.editRotationLeft : '180&deg;'));
+				info += (fileobj.img.processedOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + dimension;
+				info += deg ? (info ? ', ' : '') + WE().consts.g_l.fileupload.editRotation + ': ' + degText : '';
+				info += fileobj.img.processedOptions.quality !== self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + WE().consts.g_l.fileupload.editQuality + ': ' + fileobj.img.processedOptions.quality + '%' : '';
 			} else {
-				info = self.utils.gl.editNotEdited + ': ' + dimension;
+				info = WE().consts.g_l.fileupload.editNotEdited + ': ' + dimension;
 			}
 			doc.getElementById('we_fileUpload_loupeInfo').innerHTML = info;
 
@@ -354,10 +354,10 @@ function weFileupload_view_base(uploader) {
 	};
 
 	self.addFile = function (f) {
-		var sizeText = f.isSizeOk ? self.utils.gl.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
-						'<span style="color:red;">' + self.utils.gl.sizeTextNok + '</span>';
-		var typeText = f.isTypeOk ? self.utils.gl.typeTextOk + f.type :
-						'<span style="color:red;">' + self.utils.gl.typeTextNok + f.type + '</span>';
+		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
+						'<span style="color:red;">' + WE().consts.g_l.fileupload.sizeTextNok + '</span>';
+		var typeText = f.isTypeOk ? WE().consts.g_l.fileupload.typeTextOk + f.type :
+						'<span style="color:red;">' + WE().consts.g_l.fileupload.typeTextNok + f.type + '</span>';
 
 		self.elems.message.innerHTML = sizeText + typeText;
 
@@ -429,9 +429,9 @@ function weFileupload_view_base(uploader) {
 				}
 				return;
 			case 'cancelUpload' :
-				//self.elems.footer['setProgressText' + self.extProgress.name]('progress_text', utils.gl.cancelled);
+				//self.elems.footer['setProgressText' + self.extProgress.name]('progress_text', WE().consts.g_l.fileupload.cancelled);
 				if (self.elems.progress) {
-					self.setInternalProgressCompleted(false, false, self.utils.gl.cancelled);
+					self.setInternalProgressCompleted(false, false, WE().consts.g_l.fileupload.cancelled);
 				}
 				self.controller.setWeButtonState('reset_btn', true);
 				self.controller.setWeButtonState('browse_harddisk_btn', true);
@@ -446,7 +446,7 @@ function weFileupload_view_base(uploader) {
 				self.elems.message.innerHTML = '';
 				self.elems.message.innerHTML.display = 'none';
 				if (self.elems.fileDrag) {
-					self.elems.fileDrag.innerHTML = self.utils.gl.dropText;
+					self.elems.fileDrag.innerHTML = WE().consts.g_l.fileupload.dropText;
 				}
 				if (self.elems.progress) {
 					self.setInternalProgress(0);
@@ -514,10 +514,10 @@ function weFileupload_view_bindoc(uploader) {
 
 	self.addFile = function (f) {
 		var doc = self.uploader.doc;
-		var sizeText = f.isSizeOk ? self.utils.gl.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
-				'<span style="color:red;">' + self.utils.gl.sizeTextNok + '</span>';
-		var typeText = f.isTypeOk ? self.utils.gl.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
-				'<span style="color:red;">' + self.utils.gl.typeTextNok + f.type + '</span>';
+		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
+				'<span style="color:red;">' + WE().consts.g_l.fileupload.sizeTextNok + '</span>';
+		var typeText = f.isTypeOk ? WE().consts.g_l.fileupload.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
+				'<span style="color:red;">' + WE().consts.g_l.fileupload.typeTextNok + f.type + '</span>';
 
 		self.elems.fileDrag.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
 		self.elems.fileDrag.style.backgroundImage = 'none';
@@ -721,7 +721,7 @@ function weFileupload_view_bindoc(uploader) {
 					self.elems.fileDrag.style.backgroundColor = '#ffffff';
 					self.elems.fileDrag.style.backgroundColor = 'rgb(244, 255, 244)'; //'rgb(rgb(244, 255, 244))';//notprocessed
 					//self.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
-					self.elems.txtSize.innerHTML = self.utils.gl.sizeTextOk + '--';
+					self.elems.txtSize.innerHTML = WE().consts.g_l.fileupload.sizeTextOk + '--';
 					btn.disabled = false;
 				}
 				break;
@@ -805,7 +805,7 @@ function weFileupload_view_bindoc(uploader) {
 			text = self.uploader.doc.getElementById('image_edit_mask_text');
 
 		mask.style.display = 'block';
-		text.innerHTML = singleMode ? self.utils.gl.maskProcessImage : self.utils.gl.maskReadImage;
+		text.innerHTML = singleMode ? WE().consts.g_l.fileupload.maskProcessImage : WE().consts.g_l.fileupload.maskReadImage;
 	};
 
 	self.unsetImageEditMessage = function () {
@@ -822,7 +822,7 @@ function weFileupload_view_bindoc(uploader) {
 		}
 
 		var text = self.uploader.doc.getElementById('image_edit_mask_text').innerHTML;
-		text = (changeText ? self.utils.gl.maskProcessImage : text) + '.';
+		text = (changeText ? WE().consts.g_l.fileupload.maskProcessImage : text) + '.';
 		text += '.';
 		self.uploader.doc.getElementById('image_edit_mask_text').innerHTML = text;
 
@@ -919,12 +919,12 @@ function weFileupload_view_import(uploader) {
 			row.getElementsByClassName('elemContentTop')[0].style.display = 'none';
 			row.getElementsByClassName('elemContentBottom')[0].style.display = 'none';
 			row.getElementsByClassName('elemContentMask')[0].style.display = 'block';
-			row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML = self.utils.gl.maskProcessImage;
+			row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML = WE().consts.g_l.fileupload.maskProcessImage;
 			return;
 		}
 
 		if((elem = doc.getElementById('we_fileUploadImporter_mask'))){
-			doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? self.utils.gl.maskImporterProcessImages : self.utils.gl.maskImporterReadImages;
+			doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
 			try{
 				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = self.imageEdit.imageFilesToProcess.length;
 			} catch (e) {
@@ -965,7 +965,7 @@ function weFileupload_view_import(uploader) {
 
 				doc.getElementById('we_fileUploadImporter_busyText').innerHTML += self.imageEdit.imageEditOptions.doEdit ? '.' : '';
 			} else {
-				doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? self.utils.gl.maskImporterProcessImages : self.utils.gl.maskImporterReadImages;
+				doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
 				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = self.imageEdit.imageFilesToProcess.length;
 			}
 		} catch (e) {
@@ -1103,7 +1103,7 @@ function weFileupload_view_import(uploader) {
 				j = i + 1;
 				self.setInternalProgress(fileProg.toFixed(digits), i);
 				if (cur.partNum === 1) {
-					self.elems.footer.setProgressText('progress_title', self.utils.gl.doImport + ' ' + self.utils.gl.file + ' ' + j);
+					self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
 				}
 				self.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 				return;
@@ -1124,7 +1124,7 @@ function weFileupload_view_import(uploader) {
 				}
 				self.setInternalProgressCompleted(false, i, arg.message);
 				if (cur.partNum === 1) {
-					self.elems.footer.setProgressText('progress_title', self.utils.gl.doImport + ' ' + self.utils.gl.file + ' ' + j);
+					self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
 				}
 				self.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 				return;
@@ -1136,7 +1136,7 @@ function weFileupload_view_import(uploader) {
 				self.controller.setWeButtonState('browse_harddisk_btn', false);
 				self.isUploadEnabled = false;
 				self.elems.footer.document.getElementById('progressbar').style.display = '';
-				self.elems.footer.setProgressText('progress_title', self.utils.gl.doImport + ' ' + self.utils.gl.file + ' 1');
+				self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' 1');
 				try {
 					doc.getElementById('div_upload_files').scrollTop = 0;
 				} catch (e) {
@@ -1145,14 +1145,14 @@ function weFileupload_view_import(uploader) {
 				return;
 			case 'cancelUpload' :
 				i = sender.mapFiles[cur.fileNum];
-				self.setInternalProgressCompleted(false, sender.mapFiles[cur.fileNum], self.utils.gl.cancelled);
+				self.setInternalProgressCompleted(false, sender.mapFiles[cur.fileNum], WE().consts.g_l.fileupload.cancelled);
 				try {
 					doc.getElementById('div_upload_files').scrollTop = doc.getElementById('div_uploadFiles_' + i).offsetTop - 200;
 				} catch (e) {
 				}
 				for (j = 0; j < sender.uploadFiles.length; j++) {
 					var file = sender.uploadFiles[j];
-					self.setInternalProgressCompleted(false, sender.mapFiles[file.fileNum], self.utils.gl.cancelled);
+					self.setInternalProgressCompleted(false, sender.mapFiles[file.fileNum], WE().consts.g_l.fileupload.cancelled);
 				}
 
 				self.controller.setWeButtonState('reset_btn', true);
@@ -1249,7 +1249,7 @@ function weFileupload_view_import(uploader) {
 						elems[j].style.backgroundColor = '#ffffff';
 						elems[j].style.backgroundColor = 'rgb(244, 255, 244)';
 						//elems[j].style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(244, 255, 244,.5) 10px)';
-						sizes[j].innerHTML = self.utils.gl.sizeTextOk + '--';
+						sizes[j].innerHTML = WE().consts.g_l.fileupload.sizeTextOk + '--';
 
 						if(setDimensions === 'flip'){
 							switch (fileobj.img.editOptions.scaleWhat) {
@@ -1262,10 +1262,10 @@ function weFileupload_view_import(uploader) {
 							}
 						}
 
-						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + dimensions : infoTops[j].innerHTML) : '--';
+						infoTops[j].innerHTML = setDimensions ? (setDimensions === 'flip' ? (fileobj.img.editOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + dimensions : infoTops[j].innerHTML) : '--';
 						infoMiddles[j].style.display = 'block';
 						deg = fileobj.img.editOptions.rotate;
-						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + self.utils.gl.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + self.utils.gl.editRotationLeft*/ : '180&deg;')));
+						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + WE().consts.g_l.fileupload.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + WE().consts.g_l.fileupload.editRotationLeft*/ : '180&deg;')));
 						infoBottoms[j].style.display = 'block';
 						scaleHelp[j].style.display = 'none';
 						if(setDimensions === 'flip'){
@@ -1284,12 +1284,12 @@ function weFileupload_view_import(uploader) {
 							h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
 							w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
 						}
-						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? self.utils.gl.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
+						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
 
 						deg = fileobj.img.editOptions.rotate;
 						scaleHelp[j].style.display = fileobj.img.tooSmallToScale ? 'inline-block' : 'none';
 						infoMiddles[j].style.display = 'block';
-						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + self.utils.gl.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + self.utils.gl.editRotationLeft*/ : '180&deg;')));
+						infoMiddlesRight[j].innerHTML = (deg === 0 ? '0&deg;' : (deg === 90 ? '90&deg; '/* + WE().consts.g_l.fileupload.editRotationRight*/ : (deg === 270 ? '270&deg; '/* + WE().consts.g_l.fileupload.editRotationLeft*/ : '180&deg;')));
 						infoBottoms[j].style.display = 'block';
 						// FIXME: fileobj.img.editedWidth is undefined when only qualitiy was changed
 						fileobj.img.lastWidthShown = fileobj.img.editedWidth ? fileobj.img.editedWidth : fileobj.img.lastWidthShown;

@@ -187,10 +187,10 @@ function weFileupload_controller_abstract(uploader) {
 		isTypeOk = self.utils.checkFileType(type, f.name),
 		isSizeOk = (f.size <= self.sender.maxUploadSize || !self.sender.maxUploadSize) ? true : false,
 		errorMsg = [
-			self.utils.gl.errorNoFileSelected,
-			self.utils.gl.errorFileSize,
-			self.utils.gl.errorFileType,
-			self.utils.gl.errorFileSizeType
+			WE().consts.g_l.fileupload.errorNoFileSelected,
+			WE().consts.g_l.fileupload.errorFileSize,
+			WE().consts.g_l.fileupload.errorFileType,
+			WE().consts.g_l.fileupload.errorFileSizeType
 		];
 
 		fileObj.type = type;
@@ -325,7 +325,7 @@ function weFileupload_controller_abstract(uploader) {
 			var fileobj = self.sender.preparedFiles[target.getAttribute('data-index')];
 			var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
 					fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
-			var text = self.utils.gl.editTargetsizeTooLarge;
+			var text = WE().consts.g_l.fileupload.editTargetsizeTooLarge;
 
 			target.lastChild.innerHTML = text.replace('##ORIGSIZE##', scaleReference);
 			target.lastChild.style.display = 'block';

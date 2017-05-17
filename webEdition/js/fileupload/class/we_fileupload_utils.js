@@ -28,32 +28,11 @@ function weFileupload_utils_abstract(uploader) {
 	var self = this;
 	self.uploader = uploader;
 
-	self.gl = {
-		errorNoFileSelected: 'no file selected',
-		errorFileSize: 'file size',
-		errorFileType: 'file type',
-		errorFileSizeType: 'file size and type',
-		dropText: '',
-		sizeTextOk: '',
-		sizeTextNok: '',
-		typeTextOk: '',
-		typeTextNok: '',
-		uploadCancelled: '',
-		cancelled: '',
-		doImport: '',
-		file: '',
-		btnClose: '',
-		btnCancel: ''
-	};
-
 	self.init = function (conf) {
 		self.controller = self.uploader.controller; // on init all components are initialized
 		self.sender = self.uploader.sender;
 		self.view = self.uploader.view;
 		self.imageEdit = self.uploader.imageEdit;
-
-		self.gl = WE().consts.g_l.fileupload; // FIXME: call translations on WE().consts.g_l.fileupload directly
-
 		self.init_sub(conf);
 	};
 

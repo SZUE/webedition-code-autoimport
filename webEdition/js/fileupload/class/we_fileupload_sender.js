@@ -580,7 +580,7 @@ function weFileupload_sender_import(uploader) {
 		self.isUploading = false;
 		self.view.repaintGUI({what: 'cancelUpload'});
 		self.postProcess('', true);
-		//WE().util.showMessage(utils.gl.uploadCancelled, 1, win);
+		//WE().util.showMessage(WE().consts.g_l.fileupload.uploadCancelled, 1, win);
 	};
 
 	self.appendMoreData = function (fd) {

@@ -80,24 +80,23 @@ class we_dialog_image extends we_dialog_base{
 				}
 			}
 
+			$this->args["type"] = we_base_link::TYPE_INT;
+			$this->args["extSrc"] = preg_replace(['|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
+					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
+					'|^' . WEBEDITION_DIR . '|',
+					], ['${1}', '${1}', ''], $this->args["src"]);
+
 			if($id !== false){
-				$this->args["type"] = we_base_link::TYPE_INT;
-				$this->args["extSrc"] = '';
 				$this->args["fileID"] = $id;
 				$this->args["fileSrc"] = $id == 0 ? '' : $fileScr;
 				$this->args["thumbnail"] = $thumb;
 			} else {
-				$this->args["type"] = we_base_link::TYPE_EXT;
-				$this->args["extSrc"] = preg_replace(['|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
-					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
-					'|^' . WEBEDITION_DIR . '|',
-					], ['${1}', '${1}', ''], $this->args["src"]);
 				$this->args["fileID"] = '';
 				$this->args["fileSrc"] = '';
 				$this->args["thumbnail"] = 0;
 			}
 		} else {
-			//$this->args["type"] = we_base_link::TYPE_INT;
+			$this->args["type"] = we_base_link::TYPE_INT;
 			$this->args["extSrc"] = '';
 			$this->args["fileSrc"] = '';
 		}
@@ -232,7 +231,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['alt'] = '';
 		$this->args['align'] = '';
 		$this->args['name'] = '';
-		$this->args['type'] = we_base_link::TYPE_EXT;
+		$this->args['type'] = we_base_link::TYPE_INT;
 		$this->args['ratio'] = 1;
 		$this->args['isPresetByDnD'] = 0;
 	}
@@ -275,9 +274,9 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
 			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setWidth(315);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack_setPreview,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 			$weSuggest->setOpenButton(we_gui_suggest::BTN_EDIT);
-			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack,Image')"));
+			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack_setPreview,Image')"));
 			$weSuggest->setIsDropFromTree(true);
 			$weSuggest->setIsDropFromExt(true);
 			$intSrc = $weSuggest->getHTML();

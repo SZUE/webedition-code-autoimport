@@ -174,7 +174,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		  collection_insertFiles
 		  selector_insertFromUploader
 		  sselector_insertFromUploader
-		  suggest_writeBack
+		  suggest_writeBack_setPreview
 		 */
 
 		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
