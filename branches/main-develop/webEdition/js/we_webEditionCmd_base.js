@@ -763,18 +763,22 @@ we_cmd_modules.base = function (args, url, caller) {
 
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPropertyOrElement&cns=document" + postData);
 			break;
+
+		case "suggest_writeBack_setPreview":
+			if (!args[1] || !args[1].currentID || !args[1].currentPath || !args[1].currentType || !args[2]) {
+				WE().t_e('cmd "suggest_writeBack": parameters missing');
+				break;
+			} else if(caller.document.getElementById('div_externalDropbox_' + args[2])){
+				caller.externalDropzoneLoadPreview(args[2], args[1].currentID, args[1].currentTable, args[1].currentType, args[1].currentPath);
+			}
+			/* fall through */
 		case "suggest_writeBack":
 			if (!args[1] || !args[1].currentID || !args[1].currentPath || !args[1].currentType || !args[2]) {
 				WE().t_e('cmd "suggest_writeBack": parameters missing');
-			}
-
-			caller.document.we_form.elements['yuiAcResult' + args[2]].value = args[1].currentID;
-			caller.document.we_form.elements['yuiAcInput' + args[2]].value = args[1].currentPath;
-			caller.document.we_form.elements['yuiAcContentType' + args[2]].value = args[1].currentType;
-
-			// FIXME: re-implement suggestor callback onSelect or onChange to handle this call
-			if(caller.document.getElementById('div_externalDropbox_' + args[2])){
-				caller.externalDropzoneLoadPreview(args[2], args[1].currentID, args[1].currentTable, args[1].currentType, args[1].currentPath);
+			} else {
+				caller.document.we_form.elements['yuiAcResult' + args[2]].value = args[1].currentID;
+				caller.document.we_form.elements['yuiAcInput' + args[2]].value = args[1].currentPath;
+				caller.document.we_form.elements['yuiAcContentType' + args[2]].value = args[1].currentType;
 			}
 			break;
 		case "check_radio_option":
