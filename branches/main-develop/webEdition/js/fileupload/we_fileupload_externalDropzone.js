@@ -107,3 +107,34 @@ function doDragFromTree(text, cmdTree, cts, table){
 		top.we_cmd.apply(top, tmp);
 	}
 }
+
+function externalDropzoneLoadPreview(name, id, table, ct, path){
+	var specialmode = (name === 'Image' && id === -1);
+	if(!specialmode && !(name && id && table && ct && path)){
+		return;
+	}
+
+	if(specialmode){
+		id = document.we_form.elements['yuiAcResultImage'].value;
+		path = document.we_form.elements['yuiAcInputImage'].value;
+		table = WE().consts.tables.FILE_TABLE;
+		ct = WE().consts.contentTypes.IMAGE;
+	}
+
+	if(table === WE().consts.tables.FILE_TABLE && ct === WE().consts.contentTypes.IMAGE){
+		var src, img, preview, imgs;
+
+		preview = top.document.getElementById('preview_' + name);
+		imgs = preview.getElementsByTagName('IMG');
+		if(imgs && imgs.length){
+			preview.removeChild(imgs[0]);
+		}
+
+		src = WE().consts.dirs.WEBEDITION_DIR + 'thumbnail.php?id=' + id + '&size[width]=100&size[height]=100&path=' + encodeURIComponent(path) +  '&extension=.' + path.split('.').pop();
+		img = document.createElement("IMG");
+		img.src = src;
+		img.style = "vertical-align:middle;";
+		preview.appendChild(img);
+	}
+
+}
