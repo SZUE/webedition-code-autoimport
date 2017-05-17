@@ -507,9 +507,12 @@ abstract class we_base_imageEdit{
 
 		// Now we need to ensure that we could read the file
 		if($gdimg){
-			// Detect dimension of image
-			$gdWidth = ImageSX($gdimg);
-			$gdHeight = ImageSY($gdimg);
+
+			// Detect dimension of image and write APP-segments (APP1 = exif, APP13 = iptc) to $imageInfo
+			$imageInfo = [];
+			$imagesize = $fromFile ? getimagesize($imagedata, $imageInfo) : getimagesizefromstring($imagedata, $imageInfo);
+			$gdWidth = $imagesize[0];
+			$gdHeight = $imagesize[1];
 
 			if(($rotate_angle != 0) && function_exists('ImageRotate')){
 				$rotate_angle = floatval($rotate_angle);
@@ -624,14 +627,15 @@ abstract class we_base_imageEdit{
 
 			switch($output_format){
 				case 'jpg':
+					ob_start();
+					imagejpeg($output_gdimg, null, $output_quality);
+					$imageData = self::insertExifIptcToJpeg(ob_get_clean(), $imageInfo);
+
 					// Output to a filename or directly
 					if($output_filename){
-						$gdimg = imagejpeg($output_gdimg, $output_filename, $output_quality) ?
-							basename($output_filename) :
-							'';
+						$gdimg = we_base_file::save($output_filename, $imageData) ? basename($output_filename) : '';
 					} elseif(($tempfilename = tempnam(TEMP_PATH, ''))){
-						imagejpeg($output_gdimg, $tempfilename, $output_quality);
-						$gdimg = we_base_file::load($tempfilename);
+						$gdimg = $imageData;
 
 						// As we read the temporary file we no longer need it
 						unlink($tempfilename);
@@ -751,4 +755,60 @@ abstract class we_base_imageEdit{
 </select>';
 	}
 
+	private static function insertExifIptcToJpeg($imageData, array $imageInfo = []){
+		if ($imageData && is_array($imageInfo) && (!empty($imageInfo['APP1']) || !empty($imageInfo['APP13']))) {
+			$exif = !empty($imageInfo['APP1']) ? $imageInfo['APP1'] : '';
+			if($exif){
+				$exifLength = strlen($exif) + 2;
+				if($exifLength > 0xFFFF){
+					return false;
+				}
+				$exif = chr(0xFF) . chr(0xE1) . chr(($exifLength >> 8) & 0xFF) . chr($exifLength & 0xFF) . $exif;
+			}
+
+			$iptc = !empty($imageInfo['APP13']) ? $imageInfo['APP13'] : '';
+			if($iptc){
+				$iptcLength = strlen($iptc) + 2;
+				if($iptcLength > 65535){
+					return false;
+				}
+				$iptc = chr(0xFF) . chr(0xED) . chr(($iptcLength >> 8) & 0xFF) . chr($iptcLength & 0xFF) . $iptc;
+			}
+
+			$imageData = substr($imageData, 2);
+			$newHead = chr(0xFF) . chr(0xD8);
+
+			$exifAdded = $exif === '';
+			$iptcAdded = $iptc === '';
+
+			while((substr($imageData, 0, 2) & 0xFFF0) === 0xFFE0){ // we are in an APPn segment [E0, EF]
+				$segmentLength = (substr($imageData, 2, 2) & 0xFFFF);
+				$appNumber = (substr($imageData, 1, 1) & 0x0F);
+
+				if ($segmentLength <= 2){ // a valid segment contains at least 2 bytes
+					return false;
+				}
+
+				if(($appNumber >= 1) && (!$exifAdded)){
+					$newHead .= $exif;
+					$exifAdded = true;
+				}
+
+				if(($appNumber >= 13) && (!$iptcAdded)){
+					$newHead .= $iptcdata;
+					$iptcAdded = true;
+				}
+
+				$newHead .= in_array($appNumber, [1, 13]) ? '' : substr($imageData, 0, $segmentLength + 2); // we replace all APP1 and APP13, even if there are no replacements
+				$imageData = substr($imageData, $segmentLength + 2);
+			}
+
+			$newHead .= !$exifAdded ? $exif : ''; // add exif if no APP1 was found
+			$newHead .= !$iptcAdded ? $iptc : ''; // add iptc if no APP13 was found
+
+			return $newHead . $imageData;
+		}
+
+		return $imageData;
+	}
 }
