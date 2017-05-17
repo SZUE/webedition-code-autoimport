@@ -382,18 +382,6 @@ var WebEdition = {
 				});
 				//FIXME: do we need running?
 				return {'running': false, 'valid': isValid};
-			},
-			/*???*/
-			writebackExternalSelection: function (win, result, acId) {
-				if (!result || !result.currentID || !result.currentPath || !result.currentType || !acId) {
-					WE().t_e('suggestor function "writebackExternalSelection": parameters missing');
-				}
-
-				win.document.we_form.elements['yuiAcResult' + acId].value = result.currentID;
-				win.document.we_form.elements['yuiAcInput' + acId].value = result.currentPath;
-				win.document.we_form.elements['yuiAcContentType' + acId].value = result.currentType;
-//FIXME:
-				//YAHOO.autocoml.doOnAcResultChange('yuiAcInput' + acId, result);
 			}
 		}
 	},

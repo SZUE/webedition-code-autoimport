@@ -104,6 +104,7 @@ function selectFile(id) {
 		top.fileSelect.data.currentID = id;
 		top.fileSelect.data.we_editDirID = 0;
 		top.fileSelect.data.currentType = e.contentType;
+		top.fileSelect.data.currentTable = top.fileSelect.options.table;
 		showPreview(id);
 	} else {
 		a.value = "";

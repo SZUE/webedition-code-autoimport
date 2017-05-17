@@ -149,13 +149,13 @@ class we_fileupload_ui_base extends we_fileupload{
 		$cts = $contentTypes ? ',' . implode(',', $contentTypes) . ',' : '';
 
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_externalDropzone.js') . // insert this in every top
-			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag',
+			we_html_element::htmlDiv(['id' => 'div_externalDropbox_' . $name], we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag',
 				'class' => 'we_file_drag',
 				'ondrop' => "handleDrop(event,'" . $name . "', " . ($dragFromTree ? 'true' : 'false') . ", " . ($dragFromExt ? 'true' : 'false') . ", '" . $jsCmdTree . "', '" . $jsCmdExt . "', '" . $cts . "', '" . $table . "');",
 				'ondragover' => "handleDragOver(event, '" . $name . "');",
 				'ondragleave' => "handleDragLeave(event, '" . $name . "');",
 				'style' => 'margin:0px;' . (self::isDragAndDrop() ? '' : 'display:none;') . $style
-				], $content);
+				], $content));
 	}
 
 	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){
