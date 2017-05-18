@@ -97,7 +97,7 @@ function checkDocument() {
 			});
 
 			editHeader.location = "about:blank";
-			editFooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_seem/we_SEEM_openExtDoc_footer.php' ?>";
+			editFooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_seem/we_SEEM_openExtDoc_footer.php";
 
 		}
 	}
