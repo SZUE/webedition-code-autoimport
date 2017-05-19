@@ -1102,8 +1102,8 @@ WHERE o.ID=' . $bid);
 		$resultD = f('SELECT 1 FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' LIMIT 1');
 
 
-		$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>' .
-			we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>';
+		$content = we_html_button::create_button('pref_shop', "javascript:we_cmd('pref_shop');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>' .
+			we_html_button::create_button('payment_val', "javascript:we_cmd('payment_val');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) . '<br/>';
 		if(($resultD) && $resultO){ //docs and objects
 			$content .= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . WEBEDITION_DIR . 'we_showMod.php?mod=shop' . "&pnt=editor&top=1&typ=document '") . '<br/>';
 		} elseif((!$resultD) && $resultO){ // no docs but objects

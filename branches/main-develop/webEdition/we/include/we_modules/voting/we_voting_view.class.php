@@ -480,9 +480,9 @@ class we_voting_view extends we_modules_view{
 		$hiddens = ["cmd" => "home",
 			'pnt' => 'edbody'
 		];
-		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING")) .
+		$content = we_html_button::create_button('new_voting', "javascript:we_cmd('new_voting');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING")) .
 			'<br/>' .
-			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING"));
+			we_html_button::create_button('new_voting_group', "javascript:we_cmd('new_voting_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_VOTING"));
 
 		return parent::getActualHomeScreen("voting", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}

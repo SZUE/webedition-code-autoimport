@@ -288,11 +288,11 @@ class we_glossary_view extends we_modules_view{
 
 		$form = ['name' => 'we_form',];
 
-		$createAbbreviation = we_html_button::create_button('new_glossary_abbreviation', "javascript:top.we_cmd('new_glossary_abbreviation');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
-		$createAcronym = we_html_button::create_button('new_glossary_acronym', "javascript:top.we_cmd('new_glossary_acronym');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
-		$createForeignWord = we_html_button::create_button('new_glossary_foreignword', "javascript:top.we_cmd('new_glossary_foreignword');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
-		$createLink = we_html_button::create_button('new_glossary_link', "javascript:top.opener.top.we_cmd('new_glossary_link');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
-		$createTextReplacement = we_html_button::create_button('new_glossary_textreplacement', "javascript:top.we_cmd('new_glossary_textreplacement');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createAbbreviation = we_html_button::create_button('new_glossary_abbreviation', "javascript:we_cmd('new_glossary_abbreviation');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createAcronym = we_html_button::create_button('new_glossary_acronym', "javascript:we_cmd('new_glossary_acronym');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createForeignWord = we_html_button::create_button('new_glossary_foreignword', "javascript:we_cmd('new_glossary_foreignword');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createLink = we_html_button::create_button('new_glossary_link', "javascript:top.opener.we_cmd('new_glossary_link');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
+		$createTextReplacement = we_html_button::create_button('new_glossary_textreplacement', "javascript:we_cmd('new_glossary_textreplacement');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GLOSSARY"));
 
 		$content = $createAbbreviation . '<br/>' .
 			$createAcronym . '<br/>' .
