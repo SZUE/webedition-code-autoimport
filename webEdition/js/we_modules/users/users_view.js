@@ -119,7 +119,7 @@ function we_cmd() {
 			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.users.view.delete_alert[usersData.Type], usersData.Text), ["delete_user_do"]);
 			break;
 		case "delete_user_do":
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=delete_user_do";
 			break;
 		case "show_search":
 			var keyword = top.content.we_form_treefooter.keyword.value;

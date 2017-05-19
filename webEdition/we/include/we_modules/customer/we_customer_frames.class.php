@@ -317,7 +317,7 @@ class we_customer_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		if(($p = we_base_request::_(we_base_request::STRING, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds());
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
 			utf8_encode($p) :

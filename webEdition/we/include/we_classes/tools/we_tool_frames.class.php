@@ -152,7 +152,7 @@ abstract class we_tool_frames extends we_modules_frame{
 	  } */
 
 	function getHTMLDocument($body, $head = ''){
-		return we_html_tools::getHtmlTop('', '', '', ' ' . $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) . $head, $body);
+		return we_html_tools::getHtmlTop('', '', '', ' ' . $this->jsCmd->getCmds() . $head, $body);
 	}
 
 	private function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $PathName = 'Path', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $disabled = false, $showtrash = false){

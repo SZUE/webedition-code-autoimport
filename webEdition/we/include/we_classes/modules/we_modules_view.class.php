@@ -73,7 +73,7 @@ class we_modules_view implements we_modules_viewIF{
 		$starttable->setCol($row++, 0, ['style' => "text-align:center"], $content);
 
 		ob_start();
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty());
 		?>
 		<body class="home" onload="loaded = true;
 						var we_is_home = 1;">

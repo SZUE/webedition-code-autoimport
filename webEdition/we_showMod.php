@@ -100,7 +100,6 @@ switch($mod){
 	case we_base_moduleInfo::SHOP:
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->View->processCommands($weFrame->jsCmd);
-		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	case we_base_moduleInfo::CUSTOMER:
 		switch($what){
@@ -205,7 +204,10 @@ switch($mod){
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
 				ob_start();
 				$weFrame->View->processCommands($weFrame->jsCmd);
-				$GLOBALS['extraJS'] = ob_get_clean();
+				$extraJS = ob_get_clean();
+				if($extraJS){
+					t_e('bad js', $extraJS);
+				}
 		}
 
 		break;
