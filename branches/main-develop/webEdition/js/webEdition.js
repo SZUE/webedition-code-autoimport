@@ -717,7 +717,7 @@ var WebEdition = {
 						}
 					};
 
-				ab.html('<span class="alertIcon fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/\n/, "<br/>") + "</div>");
+				ab.html('<span class="alertIcon fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span><div>' + message.replace(/(\n|\\n)/, "<br/>") + "</div>");
 				ab.dialog({
 					dialogClass: "no-close",
 					modal: true,
@@ -816,7 +816,7 @@ var WebEdition = {
 				}
 				//try Jquery
 				if (win.top.top.$) {
-					ab.html(icon + "<div>" + message.replace(/\n/, "<br/>") + "</div>");
+					ab.html(icon + "<div>" + message.message.replace(/(\n|\\n)/, "<br/>") + "</div>");
 					ab.dialog({
 						dialogClass: "no-close",
 						modal: true,

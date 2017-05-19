@@ -953,6 +953,7 @@ class we_users_user{
 		}
 		$this->ID = intval($this->ID);
 		switch($this->Type){
+			case '':
 			case self::TYPE_USER:
 				$this->DB_WE->query('DELETE FROM ' . USER_TABLE . ' WHERE ID=' . $this->ID);
 				$this->DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=' . $this->ID);

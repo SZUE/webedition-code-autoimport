@@ -99,7 +99,6 @@ function checkDocument() {
 
 			window.editHeader.location = "about:blank";
 			window.editFooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=openExtDoc_footer";
-
 		}
 	}
 }

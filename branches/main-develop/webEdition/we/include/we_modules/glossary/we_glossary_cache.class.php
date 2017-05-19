@@ -337,7 +337,7 @@ if (window.screen) {
 			}
 		}
 
-		we_cache_file::save('glossar_' . $this->language, $content, SERIALIZE_JSON);
+		we_cache_file::save('glossar_' . $this->language, $content, SERIALIZE_PHP);
 		return $content;
 	}
 
