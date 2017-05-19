@@ -264,32 +264,32 @@ class we_users_view extends we_modules_view{
 		}
 		$jscmd->addCmd('usetHot');
 		if($id){
-			$jscmd->addCmd('updateTreeEntry', ['id' => $user_object->ID, 'parentid' => $user_object->ParentID, 'text' => $user_object->Text, 'class' => ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '')]);
+			$jscmd->addCmd('updateTreeEntry', ['id' => $user_object->ID, 'parentid' => $user_object->ParentID, 'text' => $user_object->username, 'class' => ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '')]);
 		} else {
-			$jscmd->addCmd('makeTreeEntry', ['id' => $user_object->ID, 'parentid' => $user_object->ParentID, 'text' => $user_object->Text, 'open' => false, 'contenttype' => (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? 'we/userGroup' : (($user_object->Type == we_users_user::TYPE_ALIAS) ? 'we/alias' : 'we/user')),
+			$jscmd->addCmd('makeTreeEntry', ['id' => $user_object->ID, 'parentid' => $user_object->ParentID, 'text' => $user_object->username, 'open' => false, 'contenttype' => (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? 'we/userGroup' : (($user_object->Type == we_users_user::TYPE_ALIAS) ? 'we/alias' : 'we/user')),
 				'table' => USER_TABLE, 'published' => ($user_object->LoginDenied ? 0 : 1), 'class' => ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '')]);
 		}
 
 		switch($user_object->Type){
 			case we_users_user::TYPE_ALIAS:
-				$jscmd->addMsg(sprintf(g_l('modules_users', '[alias_saved_ok]'), $user_object->Text), we_base_util::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(sprintf(g_l('modules_users', '[alias_saved_ok]'), $user_object->username), we_base_util::WE_MESSAGE_NOTICE);
 				break;
 			case we_users_user::TYPE_USER_GROUP:
-				$jscmd->addMsg(sprintf(g_l('modules_users', '[group_saved_ok]'), $user_object->Text), we_base_util::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(sprintf(g_l('modules_users', '[group_saved_ok]'), $user_object->username), we_base_util::WE_MESSAGE_NOTICE);
 				break;
 			case we_users_user::TYPE_USER:
 			default:
-				$jscmd->addMsg(sprintf(g_l('modules_users', '[user_saved_ok]'), $user_object->Text), we_base_util::WE_MESSAGE_NOTICE);
+				$jscmd->addMsg(sprintf(g_l('modules_users', '[user_saved_ok]'), $user_object->username), we_base_util::WE_MESSAGE_NOTICE);
 				break;
 		}
 
 		$jscmd->addCmd('setUserData', $user_object->Type == we_users_user::TYPE_USER_GROUP ? $user_object->ID : $user_object->ParentID, $user_object->Type ?: we_users_user::TYPE_USER, $user_object->Path);
 		$jscmd->addCmd('updateTitle', $user_object->Path);
-		echo $jscmd->getCmds();
 	}
 
 	private function delete_user(we_base_jsCmd $jscmd){
 		if(empty($_SESSION['user_session_data'])){
+			$jscmd->addMsg(g_l('alert', '[access_denied]'), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
 
@@ -319,7 +319,7 @@ class we_users_view extends we_modules_view{
 			return;
 		}
 
-		if(isset($GLOBALS["user"]) && $user_object->Text == $GLOBALS["user"]["Username"]){
+		if(isset($GLOBALS["user"]) && $user_object->username == $GLOBALS["user"]["Username"]){
 			$jscmd->addMsg(g_l('alert', '[user_same]'), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
@@ -336,6 +336,8 @@ class we_users_view extends we_modules_view{
 			$jscmd->addCmd('loadUsersContent', ['home' => 1]);
 
 			unset($_SESSION["user_session_data"]);
+		} else {
+			$jscmd->addMsg(g_l('alert', '[access_denied]'), we_base_util::WE_MESSAGE_ERROR);
 		}
 	}
 

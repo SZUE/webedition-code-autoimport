@@ -79,13 +79,13 @@ function we_cmd() {
 			top.content.drawTree();
 			break;
 		case 'makeTreeEntry':
-			top.content.treeData.makeNewEntry.apply(window, args);
+			top.content.treeData.makeNewEntry(args[1]);
 			break;
 		case 'updateTreeEntry':
-			top.content.treeData.updateEntry.apply(window, args);
+			top.content.treeData.updateEntry(args[1]);
 			break;
 		case 'deleteTreeEntry':
-			top.content.treeData.deleteEntry.apply(window, args);
+			top.content.treeData.deleteEntry(args[1]);
 			break;
 		case "exit_doc_question":
 			var yes = args, no = args;
