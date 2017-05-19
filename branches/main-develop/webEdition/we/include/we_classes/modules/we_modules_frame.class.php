@@ -53,7 +53,6 @@ abstract class we_modules_frame{
 	function getHTMLDocument($body, $extraHead = ''){
 		return $this->getHTMLDocumentHeader() .
 			$extraHead .
-			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
 			$this->jsCmd->getCmds() .
 			'</head>' . $body . '</html>';
 	}
@@ -79,12 +78,8 @@ abstract class we_modules_frame{
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			default:
-				$GLOBALS['extraJS'] = $this->jsCmd->getCmds() . $GLOBALS['extraJS'];
-				$ret = (empty($GLOBALS['extraJS']) ?
-					'' :
-					$this->getHTMLDocument(we_html_element::htmlBody(), $GLOBALS['extraJS'])
-					);
-				unset($GLOBALS['extraJS']);
+				$extraJS = $this->jsCmd->getCmds();
+				$ret = ($extraJS ? $this->getHTMLDocument(we_html_element::htmlBody(), $extraJS) : '' );
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
 				return $ret;
 		}
@@ -249,7 +244,10 @@ abstract class we_modules_frame{
 		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands($this->jsCmd);
-		$GLOBALS['extraJS'] = ob_get_clean();
+		$extraJS = ob_get_clean();
+		if(!empty($extraJS)){
+			t_e('bad js will not be processed', $extraJS);
+		}
 	}
 
 	public static function showNotActivatedMsg(){

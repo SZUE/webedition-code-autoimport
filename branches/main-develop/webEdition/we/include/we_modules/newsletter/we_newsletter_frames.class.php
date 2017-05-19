@@ -306,7 +306,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
-			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+			return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds());
 		}
 		$this->jsCmd->addCmd('loadTree', ['clear' => !$pid, 'items' => we_tree_newsletter::getItems($pid)]);
 
@@ -461,23 +461,23 @@ class we_newsletter_frames extends we_modules_frame{
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [
 					], "value", 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [
 					], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [
 					], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [
 					], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [
 					], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [
 					], 'value', 308));
 		}

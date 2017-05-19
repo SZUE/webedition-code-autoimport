@@ -332,9 +332,8 @@ class we_users_view extends we_modules_view{
 		}
 
 		if($user_object->deleteMe()){
-			$cmd = new we_base_jsCmd();
-			$cmd->addCmd('deleteTreeEntry', $user_object->ID);
-			$cmd->addCmd('loadUsersContent', ['home' => 1]);
+			$jscmd->addCmd('deleteTreeEntry', $user_object->ID);
+			$jscmd->addCmd('loadUsersContent', ['home' => 1]);
 
 			unset($_SESSION["user_session_data"]);
 		}

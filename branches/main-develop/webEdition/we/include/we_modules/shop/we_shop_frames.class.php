@@ -86,7 +86,7 @@ class we_shop_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLCmd(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+		return $this->getHTMLDocument(we_html_element::htmlBody(), $this->jsCmd->getCmds());
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){//TODO: maybe abandon the split between former Top- and other editor files

@@ -217,14 +217,17 @@ class we_navigation_ruleFrames{
 		return $table->getHtml() .
 			we_html_element::htmlHiddens([
 				'CategoriesControl' => 0,
-			]);
+		]);
 	}
 
 	public function process(we_base_jsCmd $jscmd){
 		ob_start();
 		$this->Controller->processVariables();
 		$this->Controller->processCommands($jscmd);
-		$GLOBALS['extraJS'] = $jscmd->getCmds() . ob_get_clean();
+		$extraJS = ob_get_clean();
+		if(!empty($extraJS)){
+			t_e('bad js', $extraJS);
+		}
 	}
 
 }
