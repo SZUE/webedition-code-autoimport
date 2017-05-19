@@ -763,22 +763,32 @@ we_cmd_modules.base = function (args, url, caller) {
 
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=SetPropertyOrElement&cns=document" + postData);
 			break;
-
-		case "suggest_writeBack_setPreview":
+		case "we_suggest_processExternalSelection":
 			if (!args[1] || !args[1].currentID || !args[1].currentPath || !args[1].currentType || !args[2]) {
-				WE().t_e('cmd "suggest_writeBack": parameters missing');
-				break;
-			} else if(caller.document.getElementById('div_externalDropbox_' + args[2])){
-				caller.externalDropzoneLoadPreview(args[2], args[1].currentID, args[1].currentTable, args[1].currentType, args[1].currentPath);
-			}
-			/* fall through */
-		case "suggest_writeBack":
-			if (!args[1] || !args[1].currentID || !args[1].currentPath || !args[1].currentType || !args[2]) {
-				WE().t_e('cmd "suggest_writeBack": parameters missing');
+				WE().t_e('cmd "we_suggest_processExternalSelection": parameters missing');
 			} else {
 				caller.document.we_form.elements['yuiAcResult' + args[2]].value = args[1].currentID;
 				caller.document.we_form.elements['yuiAcInput' + args[2]].value = args[1].currentPath;
 				caller.document.we_form.elements['yuiAcContentType' + args[2]].value = args[1].currentType;
+				caller.we_cmd('we_suggest_postprocessSelection', args[1], args[2]);
+			}
+			break;
+		case "we_suggest_postprocessSelection":
+			if (!args[2]) {
+				WE().t_e('cmd "we_suggest_postprocessSelection": parameters missing');
+				break;
+			} else {
+				if(caller.document.getElementById('div_externalDropbox_' + args[2])){
+					// if there is an external dropzone: set preview
+					caller.externalDropzoneLoadPreview(args[2], args[1].currentID, args[1].currentTable, args[1].currentType, args[1].currentPath);
+				}
+
+				var elem, cmd;
+				if((elem = caller.document.getElementById('yuiAcInput' + args[2]))){
+					if ((cmd = elem.getAttribute('data-onSelect'))) {
+						caller.we_cmd(cmd, args[1], args[2]);
+					}
+				}
 			}
 			break;
 		case "check_radio_option":
