@@ -295,7 +295,7 @@ abstract class we_root extends we_class{
 		$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$weSuggest->setInput($textname, $path);
 		if($Pathname === 'ParentPath'){
-			$weSuggest->setjsCommandOnItemSelect('pathOfDocumentChanged');
+			$weSuggest->setJsCommandOnItemSelect('pathOfDocumentChanged');
 		}
 		//FIXME: onblur!
 		$weSuggest->setLabel($label ?: '');

@@ -301,10 +301,15 @@ var WebEdition = {
 					this.result.value = ui.item.ID;
 					this.result.setAttribute('data-contenttype', ui.item.contenttype);
 					this.classList.remove("weMarkInputError");
-					var cmd = this.getAttribute('data-onSelect');
-					if (cmd) {
-						event.target.ownerDocument.defaultView.we_cmd(cmd);
-					}
+
+					var acID = this.id.search('yuiAcInput') === 0 ? this.id.substr(10) : '';
+					var current = {//currentDir : 0,
+							currentID : ui.item.ID,
+							currentPath : ui.item.value,
+							currentType : ui.item.contenttype,
+							currentTable : this.getAttribute('data-table')
+					};
+					event.target.ownerDocument.defaultView.we_cmd('we_suggest_postprocessSelection', current, acID);
 				},
 				/*called if the element was modified*/
 				change: function (event, ui) {

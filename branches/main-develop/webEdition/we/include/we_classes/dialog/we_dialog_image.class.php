@@ -268,15 +268,16 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setAcId("Image");
 			$weSuggest->setContentType(we_base_ContentTypes::IMAGE);
 			$weSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")));
-			$weSuggest->setjsCommandOnItemSelect('dialog_imageChanged');
+			$weSuggest->setJsCommandOnItemSelect('dialog_imageChanged');
 			$weSuggest->setLabel('');
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
 			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setWidth(315);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','suggest_writeBack_setPreview,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileSrc]','','','" . we_base_ContentTypes::IMAGE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"));
 			$weSuggest->setOpenButton(we_gui_suggest::BTN_EDIT);
-			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack_setPreview,Image')"));
+			//$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, 'suggest_writeBack_setPreview,Image')"));
+			$weSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', 0, 0, 0, '')"));
 			$weSuggest->setIsDropFromTree(true);
 			$weSuggest->setIsDropFromExt(true);
 			$intSrc = $weSuggest->getHTML();
@@ -301,7 +302,7 @@ class we_dialog_image extends we_dialog_base{
 			$weSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$weSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
 			$weSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
-			$weSuggest->setjsCommandOnItemSelect('');
+			$weSuggest->setJsCommandOnItemSelect('');
 			$weSuggest->setMaxResults(7);
 			$weSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
 			$weSuggest->setSelector(we_gui_suggest::DocSelector);

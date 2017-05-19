@@ -557,11 +557,16 @@ function selectorOnDblClick(id) {
 
 function exit_open() {
 	var setTabsCurPath;
+	var suggestID = '';
 	if (top.fileSelect.data.JSIDName) {
-		window.opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
+		var elemID = window.opener.document.we_form.elements[top.fileSelect.data.JSIDName];
+		elemID.value = top.fileSelect.data.currentID;
+		suggestID = elemID.id.search('yuiAcResult') === 0 ? elemID.id.substr(11) : suggestID;
 	}
 	if (top.fileSelect.data.JSTextName) {
-		window.opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
+		var elemText = window.opener.document.we_form.elements[top.fileSelect.data.JSTextName];
+		elemText.value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
+		suggestID = suggestID ? suggestID : (elemText.id.search('yuiAcInput') === 0 ? elemText.id.substr(10) : suggestID);
 
 		if ((opener.parent !== undefined) && (opener.parent.frames.editHeader !== undefined)) {
 			if (top.fileSelect.data.currentType !== "") {
@@ -581,6 +586,11 @@ function exit_open() {
 		}
 		WE().layout.weSuggest.checkRequired(opener, opener.document.we_form.elements[top.fileSelect.data.JSTextName].id);
 	}
+
+	// if selector is used in combination with suggestor and we know sugestorID we call sugestors postporcess
+	window.opener.we_cmd('we_suggest_postprocessSelection', top.fileSelect.data, suggestID);
+
+	// if not in combination with suggestor or if using custom selector callback: no onSelect is called automatically
 	if (top.fileSelect.data.JSCommand) {
 		fillIDs();
 		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
