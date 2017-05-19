@@ -399,9 +399,9 @@ class we_users_view extends we_modules_view{
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) .
-			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
-			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
+		$content = we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:we_cmd('new_user');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_USER")) .
+			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:we_cmd('new_group');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_GROUP")) .
+			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:we_cmd('new_alias');", '', 0, 0, "", "", !we_base_permission::hasPerm("NEW_ALIAS"));
 
 		return parent::getActualHomeScreen('users', $content);
 	}
