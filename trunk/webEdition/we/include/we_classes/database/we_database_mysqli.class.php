@@ -97,11 +97,10 @@ class DB_WE extends we_database_base{
 					$this->Link_ID = mysqli_init();
 					$this->Link_ID->options(MYSQLI_OPT_CONNECT_TIMEOUT, 60);
 					if((!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) &&
-					!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) &&
-					!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) 
+						!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) &&
+						!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS)
 
-					)||
-
+						) ||
 						//need the @ operator, since can't catch mysqli warning on reconnect pconnection
 						$this->Link_ID->connect_error){
 						$this->Link_ID = null;
@@ -129,7 +128,7 @@ class DB_WE extends we_database_base{
 			//fix faulty lenght on text-types with connection in utf-8
 			$type = $this->Query_ID->fetch_field_direct($no)->type;
 			if(DB_SET_CHARSET === 'utf8' && $type >= 252 && $type <= 254){
-				$len/=3;
+				$len /= 3;
 			}
 			return $len;
 		} else {
@@ -184,24 +183,20 @@ class DB_WE extends we_database_base{
 			case MYSQLI_TYPE_SET:
 				return 'set';
 			case MYSQLI_TYPE_TINY_BLOB:
-				return 'tinyblob';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'tinyblob' : 'tinytext');
 			case MYSQLI_TYPE_MEDIUM_BLOB:
-				return 'mediumblob';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'mediumblob' : 'mediumtext');
 			case MYSQLI_TYPE_BLOB:
-				return 'blob';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'blob' : 'text');
 			case MYSQLI_TYPE_LONG_BLOB:
-				return 'longblob';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'longblob' : 'longtext');
 			case MYSQLI_TYPE_GEOMETRY:
 				return 'geometry';
 			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)
 			case MYSQLI_TYPE_VAR_STRING:
-				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
-						'varbinary' :
-						'varchar');
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'varbinary' : 'varchar');
 			case MYSQLI_TYPE_STRING:
-				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
-						'binary' :
-						'char');
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ? 'binary' : 'char');
 			default:
 				return '';
 		}
