@@ -1527,6 +1527,11 @@ span[onclick]{
 	font-size: 32px;
 }
 
+.grayicons span.fileicon,
+.grayicons i.we-color{
+	color:lightgray;
+}
+
 .mediumicons span.fileicon .we-icon i,
 .largeicons span.fileicon .we-icon i {
 	bottom: -0.3ex;

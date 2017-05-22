@@ -49,13 +49,13 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$this->editOptsHidden = $hidden;
 	}
 
-	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
+	public function getHTML($fileinfo){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
 		$progress = new we_gui_progressBar(0, 170, '_fileupload');
 		$progress->setProgressTextPlace(we_gui_progressBar::TOP);
 		$divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'], $progress->getHTML('', 'font-size:11px;'));
-		$divFileInfo = we_html_element::htmlDiv([], $fs . '<br />' . $ft . '<br />' . $md);
+		$divFileInfo = we_html_element::htmlDiv([], $fileinfo['size'] . '<br />' . $fileinfo['typetext'] . '<br />' . $fileinfo['metatext']);
 		$divButtons = we_html_element::htmlDiv(['id' => 'div_fileupload_buttons', 'style' => 'width:180px'], $this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
 				$this->getDivBtnUploadCancel($isIE10 ? 84 : 170)
@@ -68,7 +68,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			$divFileInfo . $divButtons . '
 					</td>
 					<td style="width:300px">' .
-			we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone('preview', $thumbnailSmall) .
+			we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone($fileinfo) .
 				($this->contentType === we_base_ContentTypes::IMAGE && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->getFormImageEditClientside($this->type, $this->editOptsHidden) : '') . ($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImportMeta($this->editOptsHidden) : '')
 			) . '
 					</td>

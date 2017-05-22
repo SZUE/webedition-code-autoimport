@@ -546,17 +546,8 @@ class we_imageDocument extends we_binaryDocument{
 			//be compatible
 			return '';
 		}
-		$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, we_base_request::BOOL) : true; //rest is done in getHtmlTag
-		$attribs = ['style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
-			'src' => ICON_DIR . 'no_image.gif',
-			'alt' => 'no-image',
-			'xml' => $xml,
-		];
-		if(isset($this->name)){
-			$attribs['name'] = $this->name;
-		}
 
-		return ($this->html = getHtmlTag('img', $attribs));
+		return '';
 	}
 
 	/**
