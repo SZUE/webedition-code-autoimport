@@ -100,13 +100,13 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 		$divBtnUpload = we_html_element::htmlDiv(['style' => 'float:right;padding-top:10px;width:auto;'], $this->getDivBtnUploadCancel(170));
 
-		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="' . ICON_DIR . '/no_image.gif" alt="no-image" />';
+		$fileinfo = $this->contentType ? ['ct' => $this->contentType] : [];
 		$formUploader = we_html_element::htmlDiv(['id' => 'imageUpload', 'style' => 'display:block;width:384px;'], $this->getJs() .
 				$this->getCss() .
 				$this->getHiddens() .
 				we_html_element::htmlDiv(['style' => 'width:200px'], $divButtons
 				) .
-				we_html_element::htmlDiv(['style' => 'width:400px'], we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone('preview', $noImage) .
+				we_html_element::htmlDiv(['style' => 'width:400px'], we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone($fileinfo) .
 						(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? we_html_element::htmlDiv([], $this->getFormImageEditClientside($this->type)) : '')
 					)
 				) .

@@ -294,11 +294,13 @@ class we_binaryDocument extends we_document{
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload(){
-		$fs = $GLOBALS['we_doc']->getFilesize();
-		$fs = g_l('metadata', '[filesize]') . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
+		$isempty = empty($this->getElement('filesize'));
+		$size = g_l('metadata', '[filesize]') . ": " . round(($GLOBALS['we_doc']->getFilesize() / 1024), 2) . "&nbsp;KB";
+		$ext = $isempty ? '' : $this->Extension;
+		$typetext = g_l('metadata', '[filetype]') . ': ' . ($ext ? substr($ext, 1) : '');
+
 		$metaData = $this->getMetaData();
 		$mdtypes = [];
-
 		if($metaData){
 			if(!empty($metaData["exif"])){
 				$mdtypes[] = "Exif";
@@ -310,20 +312,25 @@ class we_binaryDocument extends we_document{
 				$mdtypes[] = "PDF";
 			}
 		}
-
-		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
-
-		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-			'' :
+		$metatext = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ? '' :
 			g_l('metadata', '[supported_types]') . ': ' .
 			'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
 			(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
 			'</a>');
 
+		$fileinfo = ['size' => $size,
+			'ct' => $this->ContentType,
+			'ext' => $ext,
+			'typetext' => $typetext,
+			'metatext' => $metatext,
+			'thumbnail' => $this->getThumbnail(100, 100),
+			'isempty' => $isempty
+		];
+
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
 		$fileUpload->setEditOptsHidden($this->getElement('data'));
 
-		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
+		return $fileUpload->getHTML($fileinfo);
 	}
 
 	protected function getThumbnail($width = 150, $height = 100){

@@ -64,6 +64,8 @@ function weFileupload_uploader_abstract(win) {
 			if(!self.onload()){
 				self.win.addEventListener('load', self.onload, true);
 			}
+
+			WE().util.setIconOfDocClass(self.doc, 'filedrag_set_icon');
 		}
 	};
 

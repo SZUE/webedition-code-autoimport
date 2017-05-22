@@ -96,12 +96,32 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		return we_html_element::htmlDiv(['style' => 'margin-top:18px;'], $this->getButtonWrapped('reset', false, $width) . $this->getButtonWrapped('browse', false, $width));
 	}
 
-	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
+	protected function getHtmlDropZone($fileinfo = []){
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
+
+		$fileinfo = array_merge(['size' => 0,
+			'ct' => '',
+			'ext' => '',
+			'typetext' => '',
+			'metatext' => '',
+			'thumbnail' => '',
+			'isempty' => true
+		], $fileinfo);
+
+		$attribsContentRight = ['id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right largeicons'];
+		if(!$fileinfo['thumbnail']){
+			$attribsContentRight['class'] .= ' filedrag_set_icon';
+			$attribsContentRight['data-extension'] = $fileinfo['ext'];
+			$attribsContentRight['data-contenttype'] = $fileinfo['ct'];
+		}
+		if($fileinfo['isempty']){
+			$attribsContentRight['class'] .= ' grayicons';
+			$attribsContentRight['data-extension'] = $fileinfo['ct'] === we_base_ContentTypes::APPLICATION ? '' : $fileinfo['ct'];
+		}
 
 		$content = we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')], we_html_element::htmlDiv([
 					'id' => 'div_filedrag_content_left', 'class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')], $dropText) .
-				we_html_element::htmlDiv(['id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right'], ($thumbnailSmall ?: we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
+				we_html_element::htmlDiv($attribsContentRight, ($fileinfo['thumbnail'] ?: ''))
 			) .
 			we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : 'display:none;')], we_html_element::htmlDiv([
 					'id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'], we_html_element::htmlDiv(['id' => 'span_fileDrag_inner_filename']) .
