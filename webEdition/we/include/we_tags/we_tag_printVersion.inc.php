@@ -43,10 +43,11 @@ function we_tag_printVersion(array $attribs, $content){
 		$hideQuery[] = session_name();
 	}
 	if(isset($_REQUEST)){
-		$tmp = filterXss(array_merge($_GET, $_POST));
+		$tmp = array_merge($_GET, $_POST);
 		foreach($tmp as $k => $v){
+			$k = strip_tags($k);
 			if((!is_array($v)) && (!in_array($k, $hideQuery))){
-				$query_string[$k] = $v;
+				$query_string[$k] = strip_tags($v);
 			}
 		}
 	}
@@ -56,7 +57,7 @@ function we_tag_printVersion(array $attribs, $content){
 		$query_string['we_objectID'] = $id;
 		$query_string['tid'] = $tid;
 	} else {
-		$triggerID = $triggerID ? : ($doc->IsDynamic ? $doc->ID : 0);
+		$triggerID = $triggerID ?: ($doc->IsDynamic ? $doc->ID : 0);
 		if($triggerID || $doc->IsDynamic){
 			$query_string['pv_id'] = $id;
 			$query_string['pv_tid'] = $tid;
@@ -74,6 +75,6 @@ function we_tag_printVersion(array $attribs, $content){
 	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($query_string);
 
 	return ($link ?
-			getHtmlTag('a', removeAttribs($attribs, ['tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link']), $content, true) :
-			$attribs['href']);
+		getHtmlTag('a', removeAttribs($attribs, ['tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link']), $content, true) :
+		$attribs['href']);
 }
