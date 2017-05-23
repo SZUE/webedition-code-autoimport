@@ -39,7 +39,7 @@ $l_weClass=array(
 		'dd_ok'=>'<p>Drag &amp; Drop is activated in this browser.</p>',
 		'filter_class'=>'Permit objects of the following classes only',
 		'filter_contenttype'=>'Permit documents of the following content types only',
-		'infoAddFiles'=>'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOther items may have been rejecected because of inapropriate class/mime type.',
+		'infoAddFiles'=>'Inserted: ##INS##<br/>As duplicates rejected: ##REJ##<br/><br/>Other items may have been rejecected because of inapropriate class/mime type.',
 		'insertRecursive'=>'Insert folders recursive',
 		'insertedAndDuplicates'=>'Added: %s
 Rejected as duplicate: %s

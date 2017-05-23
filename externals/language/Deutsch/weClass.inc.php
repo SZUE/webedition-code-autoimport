@@ -39,7 +39,7 @@ $l_weClass=array(
 		'dd_ok'=>'<p><strong>Hinweis:</strong> Drag &amp; Drop ist in diesem Browser aktiviert</p>',
 		'filter_class'=>'Erlaubte Objekte auf folgende Klassen einschränken',
 		'filter_contenttype'=>'Erlaubte Dokumente auf folgende Typen einschränken',
-		'infoAddFiles'=>'Eingefügt: ##INS##\nAls Dubletten abgewiesen: ##REJ##\n\nWeitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
+		'infoAddFiles'=>'Eingefügt: ##INS##<br/>Als Dubletten abgewiesen: ##REJ##<br/><br/>Weitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
 		'insertRecursive'=>'Verzeichnisse rekursiv einfügen',
 		'insertedAndDuplicates'=>'Eingefügt: %s
 Als Duplikate verworfen: %s
