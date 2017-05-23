@@ -537,7 +537,7 @@ class we_imageDocument extends we_binaryDocument{
 				$this->html = ( trim($this->getRollOverScript()) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
-					we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
+					we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) . we_base_imageCrop::getJS() :
 					$this->getRollOverScript() . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
 			return $this->html;
