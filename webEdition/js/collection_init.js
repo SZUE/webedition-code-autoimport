@@ -1,11 +1,12 @@
-<?php
+/* global top, WE, doc */
 
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * webEdition CMS
+ * $Rev: 13374 $
+ * $Author: mokraemer $
+ * $Date: 2017-02-15 19:33:39 +0100 (Mi, 15. Feb 2017) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -19,14 +20,11 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_editor_content_collection extends we_editor_base{
+'use strict';
 
-	public function show(){
-		//$weSuggest = & weSuggest::getInstance();
-		return $this->getPage($this->we_doc->formCollection(), we_html_element::jsScript(JS_DIR . 'collection_init.js', '', ['id' => 'loadVarCollection', 'data-dynamicVars' => setDynamicVar($this->we_doc->getJSDynamic())]));
-	}
-
-}
+$(function () {
+	window.weCollectionEdit = WE().layout.getGUI_Collection(window, WE().util.getDynamicVar(document, 'loadVarCollection', 'data-dynamicVars'));
+});

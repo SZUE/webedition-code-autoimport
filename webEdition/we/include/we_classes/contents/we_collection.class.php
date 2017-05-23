@@ -213,12 +213,10 @@ class we_collection extends we_root{
 	}
 
 	public function getPropertyPage(we_base_jsCmd $jsCmd){
-		return we_html_element::jsScript(JS_DIR . 'collection.js') .
-				JQUERY .
-				we_html_multiIconBox::getHTML('PropertyPage', [
-					['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!we_base_permission::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_ICON],
-					['icon' => we_html_multiIconBox::PROP_CONTENT, 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_ICON],
-					['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON]]
+		return JQUERY . we_html_multiIconBox::getHTML('PropertyPage', [
+			['icon' => we_html_multiIconBox::PROP_PATH, 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!we_base_permission::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_ICON],
+			['icon' => we_html_multiIconBox::PROP_CONTENT, 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_ICON],
+			['icon' => we_html_multiIconBox::PROP_USER, 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners($jsCmd), 'space' => we_html_multiIconBox::SPACE_ICON]]
 		);
 	}
 
@@ -249,42 +247,7 @@ class we_collection extends we_root{
 		}
 		$this->remCT = $tmpRemCT;
 		$attribsFrom = $attribsTo = !we_base_permission::hasPerm('NEW_COLLECTION') ? ['disabled' => 'disabled'] : [];
-		/*
-		  $selectedClasses = [];
-		  $unselectedClasses = [];
-		  $allClasses = [];
-		  $allowedClasses = we_users_util::getAllowedClasses($this->DB_WE);
-		  if(defined('OBJECT_TABLE')){
-		  $this->DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
-		  while($this->DB_WE->next_record()){
-		  if(in_array($this->DB_WE->f('ID'), $allowedClasses)){
-		  if(in_array($this->DB_WE->f('ID'), makeArrayFromCSV($this->remClass))){
-		  $selectedClasses[$this->DB_WE->f('ID')] = $this->DB_WE->f('Text');
-		  } else {
-		  $unselectedClasses[$this->DB_WE->f('ID')] = $this->DB_WE->f('Text');
-		  }
-		  }
-		  }
-		  }
 
-		  $classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsFrom, ["id" => "classListFrom",
-		  "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');"]), 'value', 184);
-		  $classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsTo, ["id" => "classListTo",
-		  "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"]), 'value', 184);
-
-		  $classTable = new we_html_table(['class' => 'collection_props-classes default'], 1, 3);
-		  $classTable->setCol(0, 0, null, $classListFrom);
-		  //FIXME: why a tags, if onclick is used????
-
-		  $classTable->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle'
-		  ], we_html_element::htmlA(['href' => '#',
-		  "onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListFrom'),document.getElementById('classListTo'),true, 'object');return false;"
-		  ], '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
-		  we_html_element::htmlA(['href' => '#',
-		  "onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListTo'),document.getElementById('classListFrom'),true, 'object');return false;"
-		  ], '<i class="fa fa-lg fa-caret-left"></i>'));
-		  $classTable->setCol(0, 2, null, $classListTo);
-		 */
 		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput([
 					'disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356]) :
 				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, ['onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');',
@@ -298,21 +261,23 @@ class we_collection extends we_root{
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
 		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), !we_base_permission::hasPerm('NEW_COLLECTION'));
 
-		$html = $selRemTable .
-				'<div id="collection_props-mime_class">
-	<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
-				'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
-				//we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
-				we_html_tools::htmlSelect('we_' . $this->Name . '_remCT[]', $mimes, 1, array_keys($selectedMime), true, array_merge($attribsFrom, ['class' => 'newSelect']), 'value', 350) .
-				'</div>
-	<div id="classname" class="collection_props-classes" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
-				/* (defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
-				  we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
-				  $classTable->getHTML() : '') . */
-				'</div>
-</div>' .
-				we_html_element::htmlDiv(['class' => 'collection_props-dublettes'], $dublettes) .
-				we_html_element::htmlDiv([], $defDir);
+		$html = $selRemTable . we_html_element::htmlDiv(['id' => 'collection_props-mime_class'],
+			we_html_element::htmlDiv(['id' => 'mimetype',
+					'class' => 'collection_props-mime',
+					'style' => 'display:' . ($this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) ? 'none' : 'block') . ';'
+				], '<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
+				we_html_element::htmlHidden('processRemCT', true) .
+				we_html_tools::htmlSelect('we_' . $this->Name . '_remCT[]', $mimes, 1, array_keys($selectedMime), true, array_merge($attribsFrom, ['class' => 'newSelect']), 'value', 350)
+			) .
+			we_html_element::htmlDiv(['id' => 'classname',
+					'class' => 'collection_props-classes',
+					'style' => 'display:' . ($this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) ? 'block' : 'none') . ';'
+				] /*, $classselect */
+			)
+		) .
+
+		we_html_element::htmlDiv(['class' => 'collection_props-dublettes'], $dublettes) .
+		we_html_element::htmlDiv([], $defDir);
 
 		return $html;
 	}
@@ -378,6 +343,15 @@ class we_collection extends we_root{
 		];
 
 		$weSuggest = &we_gui_suggest::getInstance();
+		
+		/*
+		// for use as dynamic vars
+		return [
+			'grid' => self::makeGridItem($placeholders),//strtr(self::makeGridItem($placeholders), ["'" => "\'", "\r" => '', "\n" => '']),
+			'list' => self::makeListItem($placeholders, $weSuggest),//strtr(self::makeListItem($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => ''])
+			'listMinimal' => self::makeListItemMinimal($placeholders, $weSuggest)//strtr(self::makeListItemMinimal($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => ''])
+		];
+		*/
 
 		return 'WE().consts.collection = {
 			blankItem : {
@@ -386,6 +360,7 @@ class we_collection extends we_root{
 				listMinimal : \'' . strtr(self::makeListItemMinimal($placeholders, $weSuggest), ["'" => "\'", "\r" => '', "\n" => '']) . '\',
 			},
 		};';
+
 	}
 
 	public function getJSDynamic(){
@@ -408,15 +383,26 @@ class we_collection extends we_root{
 		$content = [
 			'collectionArr' => $itemIDs,
 			'storage' => $storage,
+			'collectionCsv' => '',
+			'collectionCount' => 0,
+			'maxIndex' => 0,
+			'collectionName' => ''
 		];
 
 		$doc = [
-			'docRemTable' => $GLOBALS['we_doc']->getRemTable(),
-			'docRemCT' => $GLOBALS['we_doc']->getRemCT(),
-			'docRealRemCT' => $GLOBALS['we_doc']->getRealRemCT(),
-			'docRemClass' => $GLOBALS['we_doc']->getRemClass(),
-			'docDefaultDir' => $GLOBALS['we_doc']->DefaultDir,
-			'docIsDuplicates' => intval($GLOBALS['we_doc']->IsDuplicates),
+			'docClass'=> 'we_collection',
+			'docTransaction' => $GLOBALS['we_transaction'],
+			'docId'=> $this->ID,
+			'docPath' => $this->Path,
+			'docText' => $this->Text,
+			'docTable' => $this->Table,
+			'docName' => $this->Name,
+			'docRemTable' => $this->getRemTable(),
+			'docRemCT' => ',' . trim($this->getRemCT(), ' ,') . ',',
+			'docRealRemCT' => $this->getRealRemCT(),
+			'docRemClass' => $this->getRemClass(),
+			'docDefaultDir' => $this->DefaultDir,
+			'docIsDuplicates' => intval($this->IsDuplicates),
 		];
 
 		$gui = [
@@ -424,9 +410,31 @@ class we_collection extends we_root{
 			'isDragAndDrop' => self::isDragAndDrop() ? 1 : 0,
 			'gridItemDimensions' => $this->gridItemDimensions,
 			'gridItemDimension' => $this->gridItemDimensions[$this->itemsPerRow],
+			'itemsPerRow' => $this->itemsPerRow,
 			'view' => $this->view,
 			'viewSub' => $this->viewSub === 'minimal' ? 'minimal' : 'broad',
+			'elements' => [
+				'container' => [
+					'grid' => null,
+					'list' => null
+				]
+			]
 		];
+		
+	//this.gui = {
+
+		/*
+		gridItemDimension: {
+			item: 200,
+			icon: 32
+		},
+		 * 
+		 */
+		/*
+		itemsPerRow: 4,
+		*/
+	//};
+		
 
 		return ['doc' => $doc, 'content' => $content, 'gui' => $gui];
 	}
@@ -624,11 +632,11 @@ class we_collection extends we_root{
 
 		$itemsCsv = implode(',', array_keys($items));
 		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
-			$this->DB_WE->query('SELECT
-	c.DID, c.Name, c.type, c.Dat, c.BDID FROM ' . CONTENT_TABLE . ' c
-WHERE
-	c.DocumentTable="tblFile" AND c.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((c.type="attrib" AND c.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) OR (c.type="txt" AND c.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') )  OR (c.nHash=x\'' . md5('elemIMG') . '\' AND (c.Dat!="" OR c.BDID != 0) ))'
-			);
+			$this->DB_WE->query('SELECT c.DID, c.Name, c.type, c.Dat, c.BDID FROM ' . CONTENT_TABLE . ' c '
+				. 'WHERE c.DocumentTable="tblFile" AND c.DID IN (' . rtrim($itemsCsv, ',') . ') '
+				. 'AND ((c.type="attrib" AND c.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) '
+				. 'OR (c.type="txt" AND c.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') ) '
+				. 'OR (c.nHash=x\'' . md5('elemIMG') . '\' AND (c.Dat!="" OR c.BDID != 0) ))');
 
 			while($this->DB_WE->next_record()){
 				switch($this->DB_WE->f('Name')){
@@ -755,14 +763,23 @@ WHERE
 	}
 
 	protected function i_setElementsFromHTTP(){
-		if(!we_base_permission::hasPerm('NEW_COLLECTION')){
-			unset($_REQUEST['we_' . $this->Name . '_remTable'], $_REQUEST['we_' . $this->Name . '_remCT'], $_REQUEST['we_' . $this->Name . '_remClass'], $_REQUEST['we_' . $this->Name . '_IsDuplicates'], $_REQUEST['we_' . $this->Name . '_DefaultDir'], $_REQUEST['we_' . $this->Name . '_DefaultPath']);
-		} elseif(isset($_REQUEST['we_' . $this->Name . '_remCT'])){
-			$_REQUEST['we_' . $this->Name . '_remCT'] = implode(',', we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_remCT'));
+		if(we_base_permission::hasPerm('NEW_COLLECTION')){ // user needs this perm to change remCT
+			if(we_base_request::_(we_base_request::BOOL, 'processRemCT', false)){
+				$_REQUEST['we_' . $this->Name . '_remCT'] = implode(',', we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_remCT', []));
+			} else {
+				unset($_REQUEST['we_' . $this->Name . '_remCT']);
+			}
+		} else {
+			// with no perm to create new collectoion user must not change any collection properties
+			unset($_REQUEST['we_' . $this->Name . '_remTable'],
+					$_REQUEST['we_' . $this->Name . '_remCT'],
+					$_REQUEST['we_' . $this->Name . '_remClass'],
+					$_REQUEST['we_' . $this->Name . '_IsDuplicates'],
+					$_REQUEST['we_' . $this->Name . '_DefaultDir'],
+					$_REQUEST['we_' . $this->Name . '_DefaultPath']);
 		}
 
 		if(!we_base_permission::hasPerm('MOVE_COLLECTION')){
-			//unset($_REQUEST['we_' . $this->Name . '_Filename']);
 			unset($_REQUEST['we_' . $this->Name . '_ParentID'], $_REQUEST['we_' . $this->Name . '_ParentPath']);
 		}
 
