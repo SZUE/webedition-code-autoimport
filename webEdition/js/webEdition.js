@@ -934,6 +934,12 @@ var WebEdition = {
 				// TODO
 			}
 		},
+		/**
+		 * load consts if not present in global scope
+		 * @param {document} doc reference to the current document, where we can load the consts
+		 * @param {string} check if WE().consts doesn't have "check" as property, we load the consts with a request
+		 * @returns {nothing}
+		 */
 		loadConsts: function (doc, check) {
 			var cur = WE().consts;
 			var found = true;
@@ -953,6 +959,13 @@ var WebEdition = {
 			fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
 			doc.getElementsByTagName("head")[0].appendChild(fileref);
 		},
+		/**
+		 * load variable data from a tag
+		 * @param {document} doc the document containing the tag
+		 * @param {string} id element containing the data
+		 * @param {string} dataname the attribute of the element containing the data
+		 * @returns {Array|Object} the decoded data
+		 */
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
 			return (el ?
@@ -960,10 +973,19 @@ var WebEdition = {
 				null
 				);
 		},
+		/**
+		 * internal for decoding the data of a tag
+		 */
 		decodeDynamicVar: function (el, dataname) {
 			var data = el.getAttribute(dataname);
 			return data ? JSON.parse(window.atob(data)) : null;
 		},
+		/**
+		 * @param {string} url
+		 * @param {string} data string of data to post, e.g. JSON.stringify(array)
+		 * @param {function} success function with data, function (weResponse)  => weResponse.DataArray.data holds the data by WE
+		 * @returns {nothing}
+		 */
 		rpc: function (url, data, success) {
 			return $.ajax({
 				type: "POST",
