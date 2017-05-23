@@ -174,9 +174,10 @@ abstract class we_textContentDocument extends we_textDocument{
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 
 		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'ID', 'DocType', g_l('weClass', '[doctype]'), 'dt.ID,dt.DocType', $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
-					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
-					"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
+				"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
+				"we_cmd('doctype_changed');") .
+				"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array(
+				'', g_l('weClass', '[nodoctype]')) : '');
 	}
 
 	function formDocTypeTempl(){
@@ -203,6 +204,8 @@ abstract class we_textContentDocument extends we_textDocument{
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB(/* self::primaryDBFiels */);
+					$this->Category = $this->temp_category;
+					$this->TemplateID = $this->temp_template_id;
 					$this->OldPath = $this->Path;
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -217,6 +220,8 @@ abstract class we_textContentDocument extends we_textDocument{
 					if($sessDat && $this->i_initSerializedDat($sessDat)){
 						$this->i_getPersistentSlotsFromDB(/* self::primaryDBFiels */);
 						$this->OldPath = $this->Path;
+						$this->Category = $this->temp_category;
+						$this->TemplateID = $this->temp_template_id;
 
 						break;
 					}// take tmp db, when doc not in schedule db
@@ -363,8 +368,8 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published ?
-				$this->we_publish(true, $rebuildMain) :
-				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
+			$this->we_publish(true, $rebuildMain) :
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
 			);
 	}
 
@@ -373,8 +378,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
-					we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
-					we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
+				we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
+				we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
 				);
 		}
 		return true;
