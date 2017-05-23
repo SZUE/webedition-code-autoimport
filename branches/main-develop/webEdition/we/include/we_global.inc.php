@@ -144,24 +144,6 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
 	return htmlspecialchars($string, $flags, $encoding, $double_encode);
 }
 
-/**
- * filter all bad Xss attacks from var. Arrays can be used.
- * @param mixed $var
- * @deprecated since version 6.3.9
- * @return mixed
- */
-function filterXss($var, $type = 'string'){
-	//t_e('deprecated', __FUNCTION__);
-	if(!is_array($var)){
-		return ($type === 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
-	}
-	$ret = [];
-	foreach($var as $key => $val){
-		$ret[oldHtmlspecialchars(strip_tags($key))] = filterXss($val, $type);
-	}
-	return $ret;
-}
-
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ?: new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
