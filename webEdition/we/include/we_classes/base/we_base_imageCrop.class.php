@@ -29,16 +29,15 @@
  */
 abstract class we_base_imageCrop{
 
-	static function getJS(){
+	static function getJS($attribs){
 		if(!$GLOBALS['we_doc']->issetElement('origwidth')){
 			$GLOBALS['we_doc']->setElement('origwidth', $GLOBALS['we_doc']->getElement('width', 'bdid'), 'attrib', 'bdid');
 		}
 		if(!$GLOBALS['we_doc']->issetElement('origheight')){
 			$GLOBALS['we_doc']->setElement('origheight', $GLOBALS['we_doc']->getElement('height', 'bdid'), 'attrib', 'bdid');
 		}
-
-		$js='{origW:' . $GLOBALS['we_doc']->getElement('origwidth', 'bdid', 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',origH:' . $GLOBALS['we_doc']->getElement('origheight', 'bdid', 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '};';
-		return 	we_html_element::jsScript(JS_DIR . 'imageEditTools.js','ImageEditTools.size='.$js);
+		$js = '{origW:' . (!empty($attribs["width"]) ? $attribs["width"] : ($GLOBALS['we_doc']->getElement('origwidth', 'bdid') ?: 'document.getElementById(\'weImage\') ? document.getElementById(\'weImage\').width : 0')) . ',origH:' . (!empty($attribs["height"]) ? $attribs["width"] : ($GLOBALS['we_doc']->getElement('origheight', 'bdid') ?: 'document.getElementById(\'weImage\') ? document.getElementById(\'weImage\').height : 0')) . '};';
+		return we_html_element::jsScript(JS_DIR . 'imageEditTools.js', 'ImageEditTools.size=' . $js);
 	}
 
 	static function getCSS(){
@@ -53,7 +52,7 @@ abstract class we_base_imageCrop{
 			we_html_element::htmlHidden("cropCoordY", "", "cropCoordY") . '
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
-          <img id="weImage" src="' . $attribs["src"] . '" style="' . (isset($attribs["width"]) ? 'width:' . $attribs["width"] . 'px;' : '' ) . (isset($attribs["height"]) ? 'height:' . $attribs["height"] . 'px;' : '') .'"'. (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' />
+          <img id="weImage" src="' . $attribs["src"] . '" style="' . (isset($attribs["width"]) ? 'width:' . $attribs["width"] . 'px;' : '' ) . (isset($attribs["height"]) ? 'height:' . $attribs["height"] . 'px;' : '') . '"' . (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' />
 <div id="imgfocus_point" style="display:none;" draggable="false"></div>
 </div>
 </div>
@@ -61,10 +60,10 @@ abstract class we_base_imageCrop{
       <div id="weControl" style="display:none;height:24px;background:#CECECE;border-top:solid 1px #fff;padding:3px;">
         <table style="width:100%" class="default">
           <tr>
-        	  <td style="width:100px;padding-top:4px;">
+        	  <td style="width:250px;padding-top:4px;">
         	  	<div id="console" style="display:none;">
         		  <div id="weSizeDiv">
-         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="ImageEditTools.Crop.setCropWidth(this.value);" onkeydown="return ImageEditTools.Crop.catchKeystroke(event,this);" />
+         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="ImageEditTools.Crop.setCropWidth(this.value);" onkeydown="return ImageEditTools.Crop.catchKeystroke(event,this);" /> X 
 								<input type="text" name="CropHeight" id="CropHeight" value="0" onchange="ImageEditTools.Crop.setCropHeight(this.value);" onkeydown="return ImageEditTools.Crop.catchKeystroke(event,this);" />
               </div>
               <a id="cropButtonZoomIn" title="' . g_l('crop', '[enlarge_crop_area]') . '" onmousedown="ImageEditTools.Crop.zoom(1);"><i class="fa fa-expand"></i></a>

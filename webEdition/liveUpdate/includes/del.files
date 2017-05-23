@@ -952,10 +952,6 @@ images/foo.gif
 images/e_busy.gif
 images/e.gif
 images/dition.gif
-images/crop/zoom_out2.gif
-images/crop/zoom_out1.gif
-images/crop/zoom_in2.gif
-images/crop/zoom_in1.gif
 images/black.gif
 images/bg_dialogTop_r.gif
 images/bg_dialogTop.gif
@@ -1119,6 +1115,7 @@ agency_sample.php
 !images/first_steps_wizard
 !images/fileUpload
 !images/edit
+!images/crop
 !images/button
 !images/box
 !images/backgrounds/doclistBg

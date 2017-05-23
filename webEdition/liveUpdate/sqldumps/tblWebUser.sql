@@ -13,6 +13,7 @@
 
 CREATE TABLE ###TBLPREFIX###tblWebUser (
   ID bigint unsigned NOT NULL auto_increment,
+  Username varchar(255) NOT NULL default '',
   `Password` varchar(255) NOT NULL default '',
   Forename varchar(128) NOT NULL default '',
   Surname varchar(128) NOT NULL default '',
@@ -24,7 +25,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   AutoLoginDenied tinyint unsigned NOT NULL default '0',
   ModifyDate int unsigned NOT NULL default '0',
   ModifiedBy enum('','backend','frontend','external') NOT NULL default '',
-  Username varchar(255) NOT NULL default '',
   Newsletter_Ok enum('','ja','0','1','2') NOT NULL default '',
   PRIMARY KEY  (ID),
   UNIQUE KEY Username (Username),

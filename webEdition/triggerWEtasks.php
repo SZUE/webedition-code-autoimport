@@ -20,9 +20,15 @@
 if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
+if(empty($_SERVER['DOCUMENT_ROOT'])){
+	$_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . '/..');
+	//php 7:
+	//'DOCUMENT_ROOT'=>dirname(__FILE__,2)
+}
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //remove all parameters in case some functions might hear to them
-unset($_REQUEST, $_GET, $_POST);
+unset($_REQUEST, $_GET, $_POST, $_COOKIE);
 define('SCHEDULED_BY_CRON', 1);
 if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	we_schedpro::trigger_schedule();
@@ -38,4 +44,3 @@ foreach($tooltasks as $task){
 	include($task);
 }
 we_base_file::cleanTempFiles();
-?>OK

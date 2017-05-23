@@ -35,16 +35,12 @@
 }
 #weSizeDiv {
 	float:left;
-	width:60px;
-	height:15px;
 	padding:0px;
 	margin-right:4px;
-	background-image:url(/webEdition/images/crop/size_wh.gif);background-repeat:no-repeat;
 
 	input {
 		display:block;
-		width:24px;
-		height:13px;
+		width:6em;
 		text-align:center;
 		border:none;
 		//font-family:Arial,Verdana,sans-serif;
@@ -63,29 +59,21 @@
 	position:absolute;
 	left:0px;
 	top:0px;
-	width:1px;
-	height:1px;
-	font:1px/1px verdana,sans-serif;
-	background-image:url(/webEdition/images/crop/horizontal.gif);
-	background-repeat: repeat-x;
 	z-index:10;
 	cursor:n-resize;
 	visibility:hidden;
-	background-color:#000000;
+	border: 1px dashed black;
+	background-color: lightgrey;
 }
 .clVerLine {
 	position: absolute;
 	left:0px;
 	top:0px;
-	width:1px;
-	height:1px;
-	font: 1px/1px verdana,sans-serif;
-	background-image:url(/webEdition/images/crop/vertical.gif);
-	background-repeat:repeat-y;
 	z-index:10;
 	cursor:e-resize;
 	visibility:hidden;
-	background-color:#000000;
+	border: 1px dashed black;
+	background-color: lightgrey;
 }
 #weImage {
 	display:block;
@@ -166,6 +154,6 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-drag: none; 
+	user-drag: none;
 	-webkit-user-drag: none;
 }
