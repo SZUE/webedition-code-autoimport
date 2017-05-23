@@ -816,7 +816,7 @@ var WebEdition = {
 				}
 				//try Jquery
 				if (win.top.top.$) {
-					ab.html(icon + "<div>" + message.message.replace(/(\n|\\n)/, "<br/>") + "</div>");
+					ab.html(icon + "<div>" + message.replace(/(\n|\\n)/, "<br/>") + "</div>");
 					ab.dialog({
 						dialogClass: "no-close",
 						modal: true,
