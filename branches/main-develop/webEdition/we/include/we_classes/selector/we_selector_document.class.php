@@ -363,7 +363,7 @@ class we_selector_document extends we_selector_directory{
 			$filesize = we_base_file::getHumanFileSize($fs);
 
 			if($result['ContentType'] == we_base_ContentTypes::IMAGE && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
-				if($fs === 0){
+				if($fs == 0){
 					$imagesize = [0, 0];
 					$thumbpath = ICON_DIR . 'no_image.gif';
 					$imagepreview = '<img src="' . $thumbpath . '" id="previewpic"><p>' . g_l('fileselector', '[image_not_uploaded]') . '</p>';

@@ -47,6 +47,12 @@ if (doc) {
 		// add event-Handler, replace links after load
 		window.addEventListener("load", seeMode_dealWithLinks, false);
 	}
+
+	window.addEventListener("load", init_editor, false);
+}
+
+function init_editor(){
+	WE().util.setIconOfDocClass(document, 'tag_img_icon');
 }
 
 function seeMode_dealWithLinks() {

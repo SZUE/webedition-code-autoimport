@@ -73,7 +73,7 @@ class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
 	}
 
 	function execute(){
-		if(!$this->resp->getStatus){
+		if(!$this->resp->getStatus()){
 			return $this->resp;
 		}
 

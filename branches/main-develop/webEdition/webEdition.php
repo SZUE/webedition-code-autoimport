@@ -263,6 +263,7 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 	we_html_element::jsScript(JS_DIR . 'weButton.js') .
 	we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
 	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+	we_html_element::jsScript(JS_DIR . 'collection.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/we_fileupload_uploader.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_controller.js') .
 	we_html_element::jsScript(JS_DIR . 'fileupload/class/we_fileupload_sender.js') .
