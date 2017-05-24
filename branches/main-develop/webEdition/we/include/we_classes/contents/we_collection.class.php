@@ -286,11 +286,11 @@ class we_collection extends we_root{
 		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', g_l('weClass', '[collection][insertRecursive]')) .
 				we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" id="collection_slider" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '"/></div>';
-		$btnGridview = we_html_button::create_button('fa:iconview,fa-lg fa-th', '', 'grid', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
+//		$btnGridview = we_html_button::create_button('fa:iconview,fa-lg fa-th', '', 'grid', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 		$btnListview = we_html_button::create_button('fa:listview,fa-lg fa-th-list', '', 'list', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 		$btnListviewMinimal = we_html_button::create_button('fa:listview_minimal,fa-lg fa-align-justify', '', 'minimal', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 
-		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, 'collection_insertFiles,' . $this->ID . ',' . $GLOBALS['we_transaction'], 'btn_import_files_and_insert');
+		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, 'collection_insertFiles,' . $this->ID . ',-1,-1', 'btn_import_files_and_insert');
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', 'collection_btnAddFromTree', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnAddFromTree');
 
 		//TODO: use tables and some padding
@@ -499,7 +499,7 @@ class we_collection extends we_root{
 		$rowHtml->setCol(0, 3, ['class' => 'colControls weMultiIconBoxHeadline'], $rowControlls);
 
 		return we_html_element::htmlDiv(['id' => 'list_item_' . $item['index'], 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml() .
-						we_html_element::htmlDiv(['id' => 'collectionItem_staticIndex_' . $item['index'], 'class' => 'collectionItem_staticIndex', 'style' => 'display:none'])
+						we_html_element::htmlDiv(['id' => 'collectionItem_index_list_' . $item['index'], 'class' => 'collectionItem_index', 'style' => 'display:none'])
 		);
 	}
 
@@ -542,7 +542,7 @@ class we_collection extends we_root{
 		$rowHtml->setCol(0, 3, ['class' => 'colControls weMultiIconBoxHeadline'], $rowControlls);
 
 		return we_html_element::htmlDiv(['id' => 'list_item_' . $item['index'], 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml() .
-						we_html_element::htmlDiv(['id' => 'collectionItem_staticIndex_' . $item['index'], 'class' => 'collectionItem_staticIndex', 'style' => 'display:none']));
+						we_html_element::htmlDiv(['id' => 'collectionItem_index_list_' . $item['index'], 'class' => 'collectionItem_index', 'style' => 'display:none']));
 	}
 
 	private function makeGridItem($item){
@@ -583,7 +583,7 @@ class we_collection extends we_root{
 						) . we_html_element::htmlDiv(['class' => 'divSpace',
 							'id' => 'grid_space_' . $item['index'],
 							'title' => g_l('weClass', '[collection][dblClick_to_insert]')
-								], '') . we_html_element::htmlDiv(['id' => 'collectionItem_staticIndex_' . $item['index'], 'class' => 'collectionItem_staticIndex', 'style' => 'display:none']) .
+								], '') . we_html_element::htmlDiv(['id' => 'collectionItem_index_grid_' . $item['index'], 'class' => 'collectionItem_index', 'style' => 'display:none']) .
 						we_html_element::htmlHidden('collectionItem_we_id', $item['id']) .
 						we_html_element::htmlHidden('collectionItem_we_id_' . $item['index'], $item['id'])
 		);

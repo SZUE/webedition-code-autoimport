@@ -598,7 +598,13 @@ we_cmd_modules.base = function (args, url, caller) {
 				'&we_cmd[full]=0' +
 				'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
 				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
-			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData);
+			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData, function(weResponse){
+				if (weResponse.DataArray.message) {
+					var items = weResponse.DataArray.items;
+					WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, items[0]).replace(/##REJ##/, items[1]), 1, caller);
+					window.setTimeout(top.we_cmd.bind(top, 'exit_addToCollection', '', WE().consts.tables.FILE_TABLE), 1000);
+				}
+			});
 
 			break;
 		case "help_documentation":
@@ -1107,7 +1113,7 @@ function getHotDocumentsString() {
 	return ret;
 }
 
-function collection_insertFiles(args) {
+function collection_insertFiles(args) { // args[2] = collection id, args[3] = index of item, args[4] = position of item
 	if (args[1] === undefined || args[2] === undefined) {
 		return;
 	}
@@ -1136,9 +1142,9 @@ function collection_insertFiles(args) {
 		}
 
 		if (editor) {
-			// FIXME: we need a consize distinction between index and position
-			//var index = editor.getContentEditor().weCollectionEdit.getItemId(editor.getContentEditor().document.getElementById('collectionItem_staticIndex_' + index))
-			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
+			// editor is open so we can replace by index
+			var index = args[3] !== undefined ? args[3] : -1;
+			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, -1, ids.join(), 'bla', recursive, true);
 		} else {
 			var position = args[4] !== undefined ? args[4] : index;
 			we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);

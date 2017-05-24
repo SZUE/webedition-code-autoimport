@@ -371,9 +371,10 @@ function weFileupload_sender_base(uploader) {
 				tmp.splice(1, 0, self.resp);
 				if(win.we_cmd){
 					win.we_cmd.apply(win, tmp);
-				} else { // FIXME: make sure have a function we_cmd on every opener!
+				} else { // FIXME: make sure we have a function we_cmd on every opener!
 					win.top.we_cmd.apply(win, tmp);
 				}
+				win.close();
 			}, 100);
 		}
 	};
@@ -623,6 +624,8 @@ function weFileupload_sender_import(uploader) {
 					tmp.splice(1, 0, self.resp);
 					top.we_cmd.apply(top, tmp);
 				}, 100);
+				//window.setTimeout(self.uploader.reset, 500);
+				//window.setTimeout(function(){top.we_cmd('closeDialog');}, 1000);
 			}
 			window.setTimeout(self.uploader.reset, 1000);
 		}

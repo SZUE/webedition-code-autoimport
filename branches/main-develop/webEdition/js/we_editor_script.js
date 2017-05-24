@@ -348,7 +348,7 @@ function we_cmd() {
 			break;
 		case "updateCollectionItem":
 			_EditorFrame.setEditorIsHot(true);
-			window.weCollectionEdit.callForValidItemsAndInsert(window.weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
+			window.weCollectionEdit.callForValidItemsAndInsert(window.weCollectionEdit.getItemId(document.getElementById('collectionItem_index_' + args[3] + '_' + args[2])), -1, args[1].currentID);
 			break;
 		case "import_files":
 			new (WE().util.jsWindow)(top, url, "import_files", WE().consts.size.dialog.medium, WE().consts.size.dialog.medium, true, false, true); // be sure we have top as opener!

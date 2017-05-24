@@ -218,7 +218,7 @@ class we_import_files{
 
 	private function getButtons(){
 		$bodyAttribs = ['class' => "weDialogButtonsBody"];
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:handleEvent('cancel')", '', 0, 0, '', '', false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel')", '', 0, 0, '', '', false, false);
 
 		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", false);
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:top.handleEvent('next');", '', 0, 0, "", "", $this->step > 0, false);

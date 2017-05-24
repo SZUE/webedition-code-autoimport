@@ -294,8 +294,8 @@ class we_binaryDocument extends we_document{
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload(){
-		$isempty = empty($this->getElement('filesize'));
-		$size = g_l('metadata', '[filesize]') . ": " . round(($GLOBALS['we_doc']->getFilesize() / 1024), 2) . "&nbsp;KB";
+		$isempty = empty(($size = $GLOBALS['we_doc']->getFilesize()));
+		$size = g_l('metadata', '[filesize]') . ": " . round(($size / 1024), 2) . "&nbsp;KB";
 		$ext = $isempty ? '' : $this->Extension;
 		$typetext = g_l('metadata', '[filetype]') . ': ' . ($ext ? substr($ext, 1) : '');
 
