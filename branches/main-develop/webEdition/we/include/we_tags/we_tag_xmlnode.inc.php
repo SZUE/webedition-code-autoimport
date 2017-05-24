@@ -32,7 +32,7 @@ while(' . $unq . '->next()){
 	if(  ' . $unq . '->hasChild() ){
 		$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
 	}else{
-		 echo we_redirect_tagoutput(' . $unq . '->getFeedData(),\'' . $nameTo . '\',\'' . $to . '\');
+		 echo weTag::redirectTagOutput(' . $unq . '->getFeedData(),\'' . $nameTo . '\',\'' . $to . '\');
 	}
 	//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
 	// fix me

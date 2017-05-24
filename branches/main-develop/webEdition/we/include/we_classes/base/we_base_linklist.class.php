@@ -620,10 +620,6 @@ class we_base_linklist{
 		return getHtmlTag('img', $attribs);
 	}
 
-	function mta($hash, $key){
-		return (!empty($hash[$key]) ? (' ' . $key . '="' . $hash[$key] . '"') : '');
-	}
-
 	function last(){
 		if($this->editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" .

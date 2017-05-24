@@ -56,8 +56,8 @@ function we_tag_subscribe(array $attribs){
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
 					$options .= (($list = we_base_request::_(we_base_request::HTML, "we_subscribe_list__")) && in_array($i, $list) ?
-							getHtmlTag('option', ['value' => $i, 'selected' => 'selected'], oldHtmlspecialchars($v)) :
-							getHtmlTag('option', ['value' => $i], oldHtmlspecialchars($v)));
+						getHtmlTag('option', ['value' => $i, 'selected' => 'selected'], oldHtmlspecialchars($v)) :
+						getHtmlTag('option', ['value' => $i], oldHtmlspecialchars($v)));
 				}
 				return getHtmlTag('input', ['type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml]) .
 					getHtmlTag('select', $newAttribs, $options, true);
@@ -82,11 +82,11 @@ function we_tag_subscribe(array $attribs){
 			$values = ($values ? makeArrayFromCSV($values) : ["Text", "HTML"]);
 
 			if($ishtml){
-				$options = getHtmlTag('option', ['value' => 0], oldHtmlspecialchars($values[0])) . "\n";
-				$options .= getHtmlTag('option', ['value' => 1, 'selected' => 'selected'], oldHtmlspecialchars($values[1])) . "\n";
+				$options = getHtmlTag('option', ['value' => 0], oldHtmlspecialchars($values[0])) .
+					getHtmlTag('option', ['value' => 1, 'selected' => 'selected'], oldHtmlspecialchars($values[1]));
 			} else {
-				$options = getHtmlTag('option', ['value' => 0, 'selected' => 'selected'], oldHtmlspecialchars($values[0])) . "\n";
-				$options .= getHtmlTag('option', ['value' => 1], oldHtmlspecialchars($values[1])) . "\n";
+				$options = getHtmlTag('option', ['value' => 0, 'selected' => 'selected'], oldHtmlspecialchars($values[0])) .
+					getHtmlTag('option', ['value' => 1], oldHtmlspecialchars($values[1]));
 			}
 			return getHtmlTag('select', $newAttribs, $options, true);
 
@@ -99,7 +99,6 @@ function we_tag_subscribe(array $attribs){
 			$newAttribs['value'] = we_base_request::_(we_base_request::HTML, "we_subscribe_firstname__", $value);
 
 			return getHtmlTag('input', $newAttribs);
-
 		case "salutation":
 			if($values){
 				$newAttribs = removeAttribs($attribs, ['name', 'type', 'value', 'values', 'maxlength', 'checked']);

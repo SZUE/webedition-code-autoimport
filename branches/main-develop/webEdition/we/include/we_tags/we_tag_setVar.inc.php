@@ -127,6 +127,6 @@ function we_tag_setVar(array $attribs){
 				break;
 			}
 		default:
-			we_redirect_tagoutput($valueFrom, $nameTo, $to);
+			we_tag_tag::redirectTagOutput($valueFrom, $nameTo, $to);
 	}
 }
