@@ -139,85 +139,11 @@ function we_tag($name, $attribs = [], $content = '', $internal = false){
 		default:
 			$foo = $fn($attribs, $content, $internal);
 			$GLOBALS['we_editmode'] = $edMerk;
-			return we_redirect_tagoutput($foo, $nameTo, $to);
+			return we_tag_tag::redirectTagOutput($foo, $nameTo, $to);
 	}
 }
 
 ### tag utility functions ###
-
-function we_setVarArray(&$arr, $string, $value){
-	if(strpos($string, '[') === false){
-		$arr[$string] = $value;
-		return;
-	}
-	$current = &$arr;
-
-	/* 	$arr_matches = [];
-	  preg_match('/[^\[\]]+/', $string, $arr_matches);
-	  $first = $arr_matches[0];
-	  preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
-	  $arr_matches = $arr_matches[1];
-	  array_unshift($arr_matches, $first); */
-	$arr_matches = preg_split('/\]\[|\[|\]/', $string);
-	$last = count($arr_matches) - 1;
-	unset($arr_matches[$last--]); //preg split has an empty element at the end
-	foreach($arr_matches as $pos => $dimension){
-		if(empty($dimension)){
-			$dimension = count($current);
-		}
-		if($pos == $last){
-			$current[$dimension] = $value;
-			return;
-		}
-		if(!isset($current[$dimension])){
-			$current[$dimension] = [];
-		}
-		$current = &$current[$dimension];
-	}
-}
-
-function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
-	switch(isset($GLOBALS['calculate']) ? 'calculate' : $to){
-		case 'request':
-			we_setVarArray($_REQUEST, $nameTo, $returnvalue);
-			return null;
-		case 'post':
-			we_setVarArray($_POST, $nameTo, $returnvalue);
-			return null;
-		case 'get':
-			we_setVarArray($_GET, $nameTo, $returnvalue);
-			return null;
-		case 'global':
-			we_setVarArray($GLOBALS, $nameTo, $returnvalue);
-			return null;
-		case 'session':
-			we_setVarArray($_SESSION, $nameTo, $returnvalue);
-			return null;
-		case 'top':
-			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
-			return null;
-		case 'block' :
-			$nameTo = we_tag_getPostName($nameTo);
-		case 'self' :
-			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
-			return null;
-		case 'sessionfield' :
-			if(isset($_SESSION['webuser'][$nameTo])){
-				$_SESSION['webuser'][$nameTo] = $returnvalue;
-			}
-			return null;
-		case 'calculate':
-			return we_base_util::std_numberformat($returnvalue);
-		case 'screen':
-		default:
-			return $returnvalue;
-	}
-	return null;
-}
-
-function mta($hash, $key){
-	return (isset($hash[$key]) && ($hash[$key] != '' || $key === 'alt')) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
-}
 
 function printElement($code){
 	if($code === ''){//tag calculate can return 0, we need to write this.
