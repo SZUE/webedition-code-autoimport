@@ -1455,10 +1455,10 @@ class we_document extends we_root{
 		$charsets = we_base_charsetHandler::inst()->getCharsetsForTagWizzard();
 		$charsets[''] = '';
 		asort($charsets);
-
+		t_e($charsets);
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_txt[Charset]', $charsets, 1, $value, false, ["onchange" => "_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_editpage');"], 'value') . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlSelect('we_' . $this->Name . '_txt[Charset]', $charsets, 1, $value, false, ["onchange" => "_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_editpage');"], 'value', 0, 'defaultfont', false) . '</td></tr>' .
 			'</table>';
 	}
 
