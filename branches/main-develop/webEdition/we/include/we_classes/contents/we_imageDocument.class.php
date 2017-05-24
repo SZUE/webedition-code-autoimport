@@ -593,8 +593,8 @@ class we_imageDocument extends we_binaryDocument{
 		$content = new we_html_table(['class' => 'default propertydualtable'], 5, 3);
 		$row = 0;
 		// Row 1
-		$content->setCol($row, 0, null, $this->formInput2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$content->setCol($row, 1, null, $this->formInput2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$content->setCol($row, 0, null, $this->formInput2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 1, null, $this->formInput2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 		$content->setCol($row++, 2, null, $this->formInput2(148, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 

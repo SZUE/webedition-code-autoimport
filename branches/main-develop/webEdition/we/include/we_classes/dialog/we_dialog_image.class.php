@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
+
 	//private $weFileupload = null;
 
 	public function __construct($noInternals = true){
@@ -82,9 +83,9 @@ class we_dialog_image extends we_dialog_base{
 
 			$this->args["type"] = we_base_link::TYPE_INT;
 			$this->args["extSrc"] = preg_replace(['|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
-					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
-					'|^' . WEBEDITION_DIR . '|',
-					], ['${1}', '${1}', ''], $this->args["src"]);
+				'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
+				'|^' . WEBEDITION_DIR . '|',
+				], ['${1}', '${1}', ''], $this->args["src"]);
 
 			if($id !== false){
 				$this->args["fileID"] = $id;
@@ -324,20 +325,18 @@ class we_dialog_image extends we_dialog_base{
 		$alt = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[alt]', 5, (isset($this->args["alt"]) ? $this->args["alt"] : ""), "", "", "text", 315), g_l('wysiwyg', '[altText]'));
 		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[title]', 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
-		$foo = '
-			<select class="defaultfont" name="we_dialog_args[align]" style="width:140px;">
-				<option value="">' . g_l('global', '[default]') . '</option>
-				<option value="top"' . (($this->args["align"] === 'top') ? 'selected' : "") . '>Top</option>
-				<option value="middle"' . (($this->args["align"] === "middle") ? "selected" : "") . '>Middle</option>
-				<option value="bottom"' . (($this->args["align"] === "bottom") ? "selected" : "") . '>Bottom</option>
-				<option value="left"' . (($this->args["align"] === "left") ? "selected" : "") . '>Left</option>
-				<option value="right"' . (($this->args["align"] === "right") ? "selected" : "") . '>Right</option>
-				<option value="texttop"' . (($this->args["align"] === "texttop") ? "selected" : "") . '>Text Top</option>
-				<option value="absmiddle"' . (($this->args["align"] === "absmiddle") ? "selected" : "") . '>Abs Middle</option>
-				<option value="baseline"' . (($this->args["align"] === "baseline") ? "selected" : "") . '>Baseline</option>
-				<option value="absbottom"' . (($this->args["align"] === "absbottom") ? "selected" : "") . '>Abs Bottom</option>
-			</select>';
-		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[alignment]'), 'left', 'defaultfont', '', '', '', '', '', '', 0);
+		$align = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('we_dialog_args[align]', [
+					'' => g_l('global', '[default]'),
+					'top' => 'Top',
+					'middle' => 'Middle',
+					'bottom' => 'Bottom',
+					'left' => 'Left',
+					'right' => 'Right',
+					'texttop' => 'Text Top',
+					'absmiddle' => 'Abs Middle',
+					'baseline' => 'Baseline',
+					'absbottom' => 'Abs Bottom'
+					], 1, $this->args["align"]), g_l('wysiwyg', '[alignment]'), 'left', 'defaultfont', '', '', '', '', '', '', 0);
 
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect('width: 140px;'), g_l('wysiwyg', '[css_style]'), 'left', 'defaultfont', '', '', '', '', '', '', 0);
 
@@ -429,7 +428,7 @@ class we_dialog_image extends we_dialog_base{
 				$js = we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('image_writeback')", [
 						'id' => 'loadVarDialog_cmdFrame',
 						'data-payload' => setDynamicVar($payload)
-					]);
+				]);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody());
