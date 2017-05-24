@@ -80,21 +80,17 @@ WeCollection.prototype.initGui = function () {
 	var t = this;
 	var btnsView = this.doc.getElementsByClassName('collection_btnView');
 	for (var i = 0; i < btnsView.length; i++) {
-		btnsView[i].addEventListener('click', function (e) {
-			t.setView(e.target.nodeName === 'BUTTON' ? e.target.name : e.target.parentNode.name);
-		}, true);
+		btnsView[i].addEventListener('click', this.setView.bind(this), true);
 	}
-	this.doc.getElementById('collection_slider').addEventListener('click', function (e) {
-		t.doZoomGrid(e.target.value);
-	}, false);
-	this.doc.getElementsByName('collection_btnAddFromTree')[0].addEventListener('click', function (e) {
-		t.doClickAddItems();
-	}, false);
+	this.doc.getElementById('collection_slider').addEventListener('click', this.doZoomGrid.bind(this), false);
+	this.doc.getElementsByName('collection_btnAddFromTree')[0].addEventListener('click', this.doClickAddItems.bind(this, false), false);
 
 	this.renderView(true);
 };
 
-WeCollection.prototype.setView = function (view) {
+WeCollection.prototype.setView = function (evt) {
+	var view = evt.target.nodeName === 'BUTTON' ? evt.target.name : evt.target.parentNode.name;
+
 	switch (view) {
 		case 'list':
 		case 'minimal':
@@ -250,7 +246,7 @@ WeCollection.prototype.insertItem = function (elem, repaint, item, scope, color,
 };
 
 WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, index, id, type) {
-	var t = this, input, ctrls, space, view;
+	var input, ctrls, space, view;
 
 	switch (viewPlusSub) {
 		case 'grid':
@@ -258,89 +254,49 @@ WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, i
 			elem = elem.getElementsByClassName('divContent')[0];
 
 			if (!last) {
-				elem.addEventListener('mouseover', function () {
-					t.overMouse('item', view, elem);
-				}, false);
-				elem.addEventListener('mouseout', function () {
-					t.outMouse('item', view, elem);
-				}, false);
+				elem.addEventListener('mouseover', this.overMouse.bind(this, 'item', view, elem), false);
+				elem.addEventListener('mouseout', this.outMouse.bind(this, 'item', view, elem), false);
 
 				ctrls = elem.getElementsByClassName('divToolbar')[0];
-				ctrls.addEventListener('mouseover', function () {
-					t.overMouse('btns', view, ctrls);
-				}, false);
-				ctrls.addEventListener('mouseout', function () {
-					t.outMouse('btns', view, ctrls);
-				}, false);
+				ctrls.addEventListener('mouseover', this.overMouse.bind(this, 'btns', view, ctrls), false);
+				ctrls.addEventListener('mouseout', this.outMouse.bind(this, 'btns', view, ctrls), false);
 
 				if (this.gui.isDragAndDrop) {
-					space = t.getItem(elem).getElementsByClassName('divSpace')[0];
-					space.addEventListener('drop', function (e) {
-						t.dropOnItem('space', view, e, space);
-					}, false);
-					space.addEventListener('dragover', function (e) {
-						t.allowDrop(e);
-					}, false);
-					space.addEventListener('dragenter', function (e) {
-						t.enterDrag('space', view, e, space);
-					}, false);
-					space.addEventListener('dragleave', function (e) {
-						t.leaveDrag('space', view, e, space);
-					}, false);
-					space.addEventListener('dblclick', function (e) {
-						t.dblClick('space', view, e, space);
-					}, false);
+					space = this.getItem(elem).getElementsByClassName('divSpace')[0];
+					space.addEventListener('drop', this.dropOnItem.bind(this, 'space', view, space, false), false);
+					space.addEventListener('dragover', this.allowDrop.bind(this), false);
+					space.addEventListener('dragenter', this.enterDrag.bind(this, 'space', view, space, last), false);
+					space.addEventListener('dragleave', this.leaveDrag.bind(this, 'space', view, space), false);
+					space.addEventListener('dblclick', this.dblClick.bind(this, 'space', view, space), false);
 				}
 			}
 			break;
 		case 'list':
 			view = 'list';
 			if (!last) {
-				elem.getElementsByClassName('collectionItem_btnUp')[0].addEventListener('click', function (e) {
-					t.doClickUp(elem);
-				}, false);
-				elem.getElementsByClassName('collectionItem_btnDown')[0].addEventListener('click', function (e) {
-					t.doClickDown(elem);
-				}, false);
+				elem.getElementsByClassName('collectionItem_btnUp')[0].addEventListener('click', this.doClickUp.bind(this, elem), false);
+				elem.getElementsByClassName('collectionItem_btnDown')[0].addEventListener('click', this.doClickDown.bind(this, elem), false);
 			}
 
-			elem.getElementsByClassName('collectionItem_btnAddFromTree')[0].addEventListener('click', function (e) {
-				t.doClickAddItems(this);
-			}, false);
+			elem.getElementsByClassName('collectionItem_btnAddFromTree')[0].addEventListener('click', this.doClickAddItems.bind(this, true), false);
 			/*falls through*/
 		case 'listMinimal':
 			view = 'list';
 			input = this.doc.getElementById('yuiAcInputItem_' + elem.id.substr(10));
-			input.addEventListener('mouseover', function () {
-				elem.draggable = false;
-			});
-			input.addEventListener('mouseout', function () {
-				elem.draggable = true;
-			});
-
-			elem.getElementsByClassName('collectionItem_btnAdd')[0].addEventListener('click', function (e) {
-				t.doClickAdd(elem);
-			}, false);
-
+			input.addEventListener('mouseover', this.doSetDraggable.bind(this, false));
+			input.addEventListener('mouseout', this.doSetDraggable.bind(this, true));
+			elem.getElementsByClassName('collectionItem_btnAdd')[0].addEventListener('click', this.doClickAdd.bind(this, elem), false);
 			if (id === -1) {
-				elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', function (e) {
-					window.we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'we_' + t.we_doc.docName + '_ItemID_' + index, 'we_' + t.we_doc.docName + '_ItemName_' + index, 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
-				}, false);
+				elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', this.doClickSelector.bind(this, index, view), false);
 			}
 			break;
 	}
 
 	if (id !== -1) {
-		elem.getElementsByClassName('collectionItem_btnEdit')[0].addEventListener('click', function (e) {
-			t.doClickOpenToEdit(id, type);
-		}, false);
-		elem.getElementsByClassName('collectionItem_btnTrash')[0].addEventListener('click', function (e) {
-			t.doClickDelete(elem);
-		}, false);
+		elem.getElementsByClassName('collectionItem_btnEdit')[0].addEventListener('click', this.doClickOpenToEdit.bind(this, id), false);
+		elem.getElementsByClassName('collectionItem_btnTrash')[0].addEventListener('click', this.doClickDelete.bind(this, elem), false);
 	} else {
-		elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', function (e) {
-			window.we_cmd('we_selector_document', t.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + t.we_doc.docRemTable, 'collectionItem_we_id_' + index, '', 'updateCollectionItem,' + index, '', '', t.we_doc.docRemCT, 1);
-		}, false);
+		elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', this.doClickSelector.bind(this, index, viewPlusSub === 'grid' ? 'grid' : 'list'), false);
 	}
 
 	if (this.gui.isDragAndDrop) {
@@ -348,24 +304,13 @@ WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, i
 			elem.style.cursor = 'move';
 			elem.draggable = true;
 		}
-		elem.addEventListener('dragleave', function (e) {
-			t.leaveDrag('item', view, e, elem);
-		}, false);
-		elem.addEventListener('drop', function (e) {
-			t.dropOnItem('item', view, e, elem, last);
-		}, false);
-		elem.addEventListener('dragenter', function (e) {
-			t.enterDrag('item', view, e, elem, last);
-		}, false);
-		elem.addEventListener('dragover', function (e) {
-			t.allowDrop(e);
-		}, false);
-		elem.addEventListener('dragstart', function (e) {
-			t.startMoveItem(e, view);
-		}, false);
-		elem.addEventListener('dragend', function (e) {
-			t.dragEnd(e);
-		}, false);
+
+		elem.addEventListener('dragleave', this.leaveDrag.bind(this, 'item', view, elem), false);
+		elem.addEventListener('drop', this.dropOnItem.bind(this, 'item', view, elem, last), false);
+		elem.addEventListener('dragenter', this.enterDrag.bind(this, 'item', view, elem, last), false);
+		elem.addEventListener('dragover', this.allowDrop.bind(this), false);
+		elem.addEventListener('dragstart', this.startMoveItem.bind(this, view), false);
+		elem.addEventListener('dragend', this.dragEnd.bind(this), false);
 	}
 };
 
@@ -398,14 +343,18 @@ WeCollection.prototype.doClickAdd = function (elem) {
 	this.reindexAndRetrieveCollection();
 };
 
-WeCollection.prototype.doClickAddItems = function (elem) {
-	var el = elem ? this.getItem(elem) : null,
+WeCollection.prototype.doClickSelector = function (index, view) {
+	this.win.we_cmd('we_selector_document', this.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, '', '', 'updateCollectionItem,' + index + ',' + view, '', '', this.we_doc.docRemCT, 1);
+};
+
+WeCollection.prototype.doClickAddItems = function (usePos, e) {
+	var el = usePos ? this.getItem(e.target) : null,
 		index = el ? el.id.substr(10) : -1,
 		pos = -1;
 
 	if (el) {
 		for (var i = 0; i < el.parentNode.childNodes.length; i++) {
-			if (el.parentNode.childNodes[i].id == el.id) {
+			if (parseInt(el.parentNode.childNodes[i].id) === parseInt(el.id)) {
 				pos = i;
 				break;
 			}
@@ -422,7 +371,8 @@ WeCollection.prototype.doClickDelete = function (elem) {
 	this.reindexAndRetrieveCollection();
 };
 
-WeCollection.prototype.doZoomGrid = function (value) {
+WeCollection.prototype.doZoomGrid = function (evt) {
+	var value = evt.target.value;
 	var attribDivs = this.gui.elements.container.grid.getElementsByClassName('toolbarAttribs');
 	var iconDivs = this.gui.elements.container.grid.getElementsByClassName('divInner'), next;
 
@@ -447,6 +397,10 @@ WeCollection.prototype.doZoomGrid = function (value) {
 	}
 };
 
+WeCollection.prototype.doSetDraggable = function (draggable, evt) {
+	this.getItem(evt.target).draggable = draggable ? true : false;
+};
+
 WeCollection.prototype.doClickOpenToEdit = function (id) {
 	var table = this.we_doc.docRemTable === 'tblFile' ? WE().consts.tables.FILE_TABLE : WE().consts.tables.OBJECT_FILES_TABLE,
 		ct = this.content.storage['item_' + id].ct;
@@ -458,11 +412,13 @@ WeCollection.prototype.getPlaceholder = function () {
 		return this.dd.placeholder;
 	}
 
-	this.dd.placeholder = this.doc.createElement("div");
+	var ph = this.dd.placeholder = this.doc.createElement("div");
 	this.dd.placeholder.style.backgroundColor = 'white';
 	this.dd.placeholder.setAttribute("ondragover", "window.weCollectionEdit.allowDrop(event)");
+
 	if (this.gui.view === 'grid') {
-		this.dd.placeholder.setAttribute("ondrop", "window.weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
+		this.dd.placeholder.setAttribute("ondrop", "window.weCollectionEdit.dropOnItem(\'item\',\'grid\', this, false, event)");
+		//this.dd.placeholder.addEventListener('ondrop', this.dropOnItem.bind(this, 'item', 'grid', this.dd.placeholder, false), false);
 		this.dd.placeholder.style.float = 'left';
 		this.dd.placeholder.style.display = 'block';
 		this.dd.placeholder.style.height = this.gui.gridItemDimension.item + 'px';
@@ -474,7 +430,7 @@ WeCollection.prototype.getPlaceholder = function () {
 		inner.style.borderStyle = 'dotted';
 		this.dd.placeholder.appendChild(inner);
 	} else {
-		this.dd.placeholder.setAttribute("ondrop", "window.weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
+		this.dd.placeholder.setAttribute("ondrop", "window.weCollectionEdit.dropOnItem(\'item\',\'grid\', this, false, event)");
 		this.dd.placeholder.style.height = (this.gui.viewSub === 'minimal' ? '40px' : '90px');
 		this.dd.placeholder.style.margin = '4px 0 0 0';
 		this.dd.placeholder.style.border = this.styles.standard.border;
@@ -501,6 +457,13 @@ WeCollection.prototype.getItemId = function (elem) {
 	var item = this.getItem(elem);
 
 	return item ? item.id.substr(10) : 0;
+};
+
+WeCollection.prototype.getItemIndex = function (elem) {
+	var item = this.getItem(elem);
+	var tmp = item.getElementsByClassName('collectionItem_index')[0].id.split('_');
+
+	return tmp[tmp.length - 1];
 };
 
 WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex) {
@@ -695,7 +658,7 @@ WeCollection.prototype.allowDrop = function (evt) {
 	evt.preventDefault();
 };
 
-WeCollection.prototype.enterDrag = function (type, view, evt, elem, last) {
+WeCollection.prototype.enterDrag = function (type, view, elem, last, evt) {
 	var el = this.getItem(elem);
 	var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : WE().layout.dragNDrop.dataTransfer.text.split(',');
 	var c, newPos;
@@ -771,7 +734,7 @@ WeCollection.prototype.enterDrag = function (type, view, evt, elem, last) {
 	}
 };
 
-WeCollection.prototype.leaveDrag = function (type, view, evt, elem) { // TODO: use dd.counter for grid too
+WeCollection.prototype.leaveDrag = function (type, view, elem, evt) { // TODO: use dd.counter for grid too
 	if (this.gui.view === 'list') {
 		this.dd.counter--;
 		if (this.dd.counter === 0) {
@@ -826,7 +789,7 @@ WeCollection.prototype.outMouse = function (type, view, elem) {
 	}
 };
 
-WeCollection.prototype.startMoveItem = function (evt, view) {
+WeCollection.prototype.startMoveItem = function (view, evt) {
 	var elem = this.getItem(evt.target);
 	var position = Array.prototype.indexOf.call(this.gui.elements.container[view].children, elem);
 	this.gui.view = view;
@@ -846,7 +809,7 @@ WeCollection.prototype.startMoveItem = function (evt, view) {
 	}
 };
 
-WeCollection.prototype.dropOnItem = function (type, view, evt, elem, last) {
+WeCollection.prototype.dropOnItem = function (type, view, elem, last, evt) {
 	evt.preventDefault();
 
 	var data = [], el, index;
@@ -869,18 +832,14 @@ WeCollection.prototype.dropOnItem = function (type, view, evt, elem, last) {
 					this.gui.elements.container[this.gui.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
 					this.dd.moveItem.el.firstChild.style.borderColor = 'green';
 					this.reindexAndRetrieveCollection();
-
-					window.setTimeout(function () {
-						t.resetItemColors(t.dd.moveItem.el);
-						t.resetDdParams();
-					}, 200);
+					window.setTimeout(this.resetDdParams.bind(this), 200);
 				}
 			}
 			break;
 		case 'dragItem':
 		case 'dragFolder':
 			el = this.getItem(elem);
-			index = el.id.substr(10);
+			position = el.id.substr(10);
 
 			if (type === 'item') {
 				if (this.gui.view === 'list') {
@@ -894,30 +853,32 @@ WeCollection.prototype.dropOnItem = function (type, view, evt, elem, last) {
 			if (WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable === data[1]) {
 				if (!this.we_doc.docRemCT || data[3] === WE().consts.contentTypes.FOLDER || this.we_doc.docRemCT.search(',' + data[3]) !== -1) {
 					var recursive = this.doc.we_form.elements['we_' + this.we_doc.docName + '_InsertRecursive'].value;
-					this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', recursive);
+					this.callForValidItemsAndInsert(-1, position, data[2], false, type !== 'item', recursive);
 					return;
 				}
-				WE().util.showMessage("The item you try to drag doesn't match your collection's contenttypes", WE().consts.message.WE_MESSAGE_ERROR, window); // FIXME: GL()
+				WE().util.showMessage("The item you try to drag doesn't match your collection's contenttypes", WE().consts.message.WE_MESSAGE_ERROR, this.win); // FIXME: GL()
 				this.resetColors();
 			} else {
-				WE().util.showMessage("The tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR, window); // FIXME: GL()
+				WE().util.showMessage("The tree you try to drag from doesn't match your collection's table property", WE().consts.message.WE_MESSAGE_ERROR, this.win); // FIXME: GL()
 			}
-			window.setTimeout(this.resetItemColors, 100, el);
+			window.setTimeout(this.resetItemColors.bind(this), 100, el);
 			break;
 		case 'dragItemFromExtern':
 			var files = evt.dataTransfer.files;
 			if (this.we_doc.docRealRemCT.search(',' + files[0].type + ',') === -1) {
-				WE().util.showMessage('wrong type', WE().consts.message.WE_MESSAGE_ERROR); // FIXME: GL()
+				WE().util.showMessage('wrong type', WE().consts.message.WE_MESSAGE_ERROR, this.win); // FIXME: GL()
 				return;
 			}
 
 			var parentID = this.we_doc.docDefaultDir,
 				ct = files[0].type,
-				position, nextCmd;
+				position, nextCmd, index, tmp;
 
 			el = this.getItem(elem);
 			position = el.id.substr(10);
-			index = el.getElementsByClassName('collectionItem_staticIndex')[0].id.substr(27);
+			tmp = el.getElementsByClassName('collectionItem_index')[0].id.split('_');
+			index = tmp[tmp.length - 1];
+
 			nextCmd = 'collection_insertFiles,' + this.we_doc.docId + ',' + index + ',' + position;
 
 			this.doc.presetFileupload = files;
@@ -939,16 +900,14 @@ WeCollection.prototype.cancelMoveItem = function () {
 	this.dd.moveItem.el.style.borderColor = 'red';
 	this.gui.elements.container[this.gui.view].insertBefore(this.dd.moveItem.el, this.dd.moveItem.next);
 	this.reindexAndRetrieveCollection();
-	window.setTimeout(function () {
-		window.weCollectionEdit.resetItemColors(window.weCollectionEdit.dd.moveItem.el);
-		window.weCollectionEdit.resetDdParams();
-		if (this.gui.view === 'list') {
-
-		}
-	}, 300);
+	window.setTimeout(this.resetDdParams.bind(this), 300);
 };
 
 WeCollection.prototype.resetDdParams = function () {
+	if(this.dd.moveItem && this.dd.moveItem.el){
+		this.resetItemColors(this.dd.moveItem.el);
+	}
+
 	this.dd.placeholder = null;
 	this.dd.counter = 0;
 	this.dd.isMoveItem = false;
@@ -960,9 +919,17 @@ WeCollection.prototype.resetDdParams = function () {
 	this.dd.moveItem.removed = false;
 };
 
-WeCollection.prototype.callForValidItemsAndInsert = function (index, csvIDs, message, notReplace, recursive) {
+WeCollection.prototype.callForValidItemsAndInsert = function (index, position, csvIDs, message, notReplace, recursive) {
 	// FIXME: we need a consize distinction between index and position
-	index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) : this.doc.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
+
+	if(!(Number.isInteger(parseInt(position)) && parseInt(position) > 0)){
+		if(Number.isInteger(parseInt(index)) && parseInt(index) > 0){
+			position = this.getItemId(this.doc.getElementById('collectionItem_index_' + this.gui.view + '_' + index));
+		} else {
+			position = this.getItemId(this.doc.getElementsByName('lastItem_' + this.gui.view)[0]);
+		}
+	}
+
 	notReplace = notReplace !== undefined ? notReplace : false;
 
 	try {
@@ -973,15 +940,12 @@ WeCollection.prototype.callForValidItemsAndInsert = function (index, csvIDs, mes
 				'&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId) +
 				'&we_cmd[full]=' + encodeURIComponent(1) +
 				'&we_cmd[recursive]=' + encodeURIComponent(recursive) +
-				'&we_cmd[index]=' + encodeURIComponent(index) +
+				'&we_cmd[index]=' + encodeURIComponent(position) +
 				'&we_cmd[notReplace]=' + encodeURIComponent(notReplace) +
 				'&we_cmd[message]=' + encodeURIComponent(message);
 			//postData += '&we_cmd[recursive]=' + encodeURIComponent(this.doc.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
-			var t = this;
-			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetValidItemsByID", postData, function(weResponse){
-				t.ajaxCallbackGetValidItemsByID(weResponse);
-			});
+			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetValidItemsByID", postData, this.ajaxCallbackGetValidItemsByID.bind(this));
 		}
 	} catch (e) {
 		top.console.debug(e);
@@ -1000,15 +964,15 @@ WeCollection.prototype.ajaxCallbackGetValidItemsByID = function(weResponse) {
 	} else {
 		var resp = this.addItems(this.doc.getElementById(this.gui.view + '_item_' + index), respArr, notReplace);
 		if (message) {
-			WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
+			WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, this.win);
 		}
 	}
-	window.setTimeout(this.win.weCollectionEdit.resetColors, 300, this.win.weCollectionEdit);
+	window.setTimeout(this.resetColors.bind(this), 300);
 };
 
 WeCollection.prototype.insertImportedDocuments = function (ids) {
 	if (ids) {
-		this.callForValidItemsAndInsert(this.gui.elements.container[this.gui.view].lastChild.id.substr(10), ids.join());
+		this.callForValidItemsAndInsert(-1, this.gui.elements.container[this.gui.view].lastChild.id.substr(10), ids.join());
 	}
 };
 

@@ -47,10 +47,9 @@ class rpcInsertValidItemsByIDCmd extends rpcGetValidItemsByIDCmd{
 			} else {
 				$this->collection->save();
 			}
-			//$script .= alert(sprintf(g_l('weClass', '[collection][insertedAndDuplicates]'), implode(',', $result[0]), implode(',', $result[1])), we_base_util::WE_MESSAGE_ERROR);
-		} else {
 
-		}
+			$this->resp->setData('items', $result);
+		} else { }
 
 		return $this->resp;
 	}
