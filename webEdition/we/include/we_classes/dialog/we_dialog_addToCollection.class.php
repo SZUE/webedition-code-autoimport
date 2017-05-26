@@ -30,6 +30,8 @@ abstract class we_dialog_addToCollection{
 		$targetCollectionPath = we_base_request::_(we_base_request::URL, 'we_cmd', '', 4);
 		$insertIndex = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
 		$insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) !== -1 ? $pos : (we_base_request::_(we_base_request::INT, 'we_targetInsertPos', -1));
+		$hideCheckRecursive = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 7);
+		$presetRecursive = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 8);
 
 		/* FIXME: adapt when collection perms are implemented
 		 *
@@ -80,8 +82,8 @@ abstract class we_dialog_addToCollection{
 <div style="width:440px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . g_l('weClass', '[collection][add]') . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('weClass', '[collection][add_help]') . '</span>
-<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weSuggest->getHTML() . we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClass', '[collection][insertRecursive]')) . '</p></p>
-<div>' . we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left") . '</div></div>
+<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weSuggest->getHTML() . ($hideCheckRecursive ? we_html_element::htmlHidden('InsertRecursive', $presetRecursive) : we_html_forms::checkboxWithHidden($presetRecursive, 'InsertRecursive', g_l('weClass', '[collection][insertRecursive]'))) . '</p></p>
+<div>' . we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add('" . $table . "');"), "", we_html_button::create_button('quit_addToCollection', "javascript:we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left") . '</div></div>
  </form>')
 		);
 	}

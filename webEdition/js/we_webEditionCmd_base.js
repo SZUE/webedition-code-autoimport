@@ -597,7 +597,7 @@ we_cmd_modules.base = function (args, url, caller) {
 				'&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '') +
 				'&we_cmd[full]=0' +
 				'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
-				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
+				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[5] : 0);
 			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData, function(weResponse){
 				if (weResponse.DataArray.message) {
 					var items = weResponse.DataArray.items;
@@ -1144,7 +1144,8 @@ function collection_insertFiles(args) { // args[2] = collection id, args[3] = in
 		if (editor) {
 			// editor is open so we can replace by index
 			var index = args[3] !== undefined ? args[3] : -1;
-			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, -1, ids.join(), 'bla', recursive, true);
+			recursive = editor.getContentEditor().weCollectionEdit.getIsRecursive();
+			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, -1, ids.join(), 'bla', false, recursive);
 		} else {
 			var position = args[4] !== undefined ? args[4] : index;
 			we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);

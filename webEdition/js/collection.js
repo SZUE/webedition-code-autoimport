@@ -344,7 +344,8 @@ WeCollection.prototype.doClickAdd = function (elem) {
 };
 
 WeCollection.prototype.doClickSelector = function (index, view) {
-	this.win.we_cmd('we_selector_document', this.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, '', '', 'updateCollectionItem,' + index + ',' + view, '', '', this.we_doc.docRemCT, 1);
+	var selector = this.we_doc.docRemCT.replace(/,/g, '') === WE().consts.contentTypes.IMAGE ? 'we_selector_image' : 'we_selector_document';
+	this.win.we_cmd(selector, this.we_doc.docDefaultDir, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, '', '', 'updateCollectionItem,' + index + ',' + view + ',' + this.getIsRecursive(), '', '', this.we_doc.docRemCT, 1, 0, 1);
 };
 
 WeCollection.prototype.doClickAddItems = function (usePos, e) {
@@ -361,7 +362,7 @@ WeCollection.prototype.doClickAddItems = function (usePos, e) {
 		}
 	}
 
-	top.we_cmd('addToCollection', 1, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, this.we_doc.docId, this.we_doc.docPath, index, pos);
+	top.we_cmd('addToCollection', 1, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, this.we_doc.docId, this.we_doc.docPath, index, pos, true, this.getIsRecursive());
 };
 
 WeCollection.prototype.doClickDelete = function (elem) {
@@ -464,6 +465,10 @@ WeCollection.prototype.getItemIndex = function (elem) {
 	var tmp = item.getElementsByClassName('collectionItem_index')[0].id.split('_');
 
 	return tmp[tmp.length - 1];
+};
+
+WeCollection.prototype.getIsRecursive = function () {
+	return this.doc.we_form.elements['we_' + this.we_doc.docName + '_InsertRecursive'].value;
 };
 
 WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex) {

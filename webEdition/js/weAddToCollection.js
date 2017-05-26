@@ -45,7 +45,7 @@ var weAddToCollection = {
 			top.drawTree();
 		}
 	},
-	press_ok_add: function () {
+	press_ok_add: function (table) {
 		var selection = [];
 		for (var i = 1; i <= top.treeData.len; i++) {
 			if (top.treeData[i].checked == 1) {
@@ -75,8 +75,10 @@ var weAddToCollection = {
 			document.getElementById('yuiAcResultDir').value,
 			this.conf.targetInsertIndex,
 			this.conf.targetInsertPosition,
-			document.check_InsertRecursive ? document.we_form.check_InsertRecursive.value : 0
+			parseInt(document.we_form.elements['InsertRecursive'].value)
 			);
+
+		window.setTimeout(we_cmd.bind(this, 'exit_addToCollection','',table), 800);
 
 		return;
 	}
