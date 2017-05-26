@@ -286,7 +286,7 @@ class we_collection extends we_root{
 		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', g_l('weClass', '[collection][insertRecursive]')) .
 				we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" id="collection_slider" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '"/></div>';
-//		$btnGridview = we_html_button::create_button('fa:iconview,fa-lg fa-th', '', 'grid', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
+		$btnGridview = we_html_button::create_button('fa:iconview,fa-lg fa-th', '', 'grid', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 		$btnListview = we_html_button::create_button('fa:listview,fa-lg fa-th-list', '', 'list', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 		$btnListviewMinimal = we_html_button::create_button('fa:listview_minimal,fa-lg fa-align-justify', '', 'minimal', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 

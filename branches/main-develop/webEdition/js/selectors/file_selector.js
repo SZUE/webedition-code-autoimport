@@ -588,7 +588,9 @@ function exit_open() {
 	}
 
 	// if selector is used in combination with suggestor and we know sugestorID we call sugestors postporcess
-	window.opener.we_cmd('we_suggest_postprocessSelection', top.fileSelect.data, suggestID);
+	if(suggestID){
+		window.opener.we_cmd('we_suggest_postprocessSelection', top.fileSelect.data, suggestID);
+	}
 
 	// if not in combination with suggestor or if using custom selector callback: no onSelect is called automatically
 	if (top.fileSelect.data.JSCommand) {
