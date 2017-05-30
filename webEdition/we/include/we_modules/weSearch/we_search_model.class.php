@@ -182,7 +182,7 @@ class we_search_model extends we_search_modelBase{
 		parent::load($id);
 		$array = get_object_vars($this);
 		foreach($array as $key => $cur){
-			if(is_string($cur) && substr($cur, 0, 2) === 'a:'){
+			if(is_string($cur) && (preg_match('/^[asO]:\d+:|^b:[01];/', $cur) || preg_match('|^[{\[].*[}\]]$|sm', $cur))){
 				$this->{$key} = we_unserialize($cur);
 			}
 		}
