@@ -60,7 +60,8 @@ switch($cmd){
 	case 'object_changeTempl_ob':
 	case 'object_ws_from_class':
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
-		return 'we_editors/we_editor.inc.php';
+		we_editor_functions::processObjectCmd($cmd);
+		return true;
 	case 'object_obj_search':
 		$_REQUEST['cmd'] = 'search_submit';
 		$weFrame = new we_search_frames();

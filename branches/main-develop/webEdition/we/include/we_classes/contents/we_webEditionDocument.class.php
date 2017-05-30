@@ -337,7 +337,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		we_gui_suggest::setStaticInstance(false); //avoid modification on suggestor
 		$include = $this->editor();
 		$this->EditPageNr = $oldEdit;
-		if($include && $include != WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC){
+		if($include && !is_object($include) && $include != WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC){
 			ob_start();
 			//FIX for old code
 			$DB_WE = $GLOBALS['DB_WE'];

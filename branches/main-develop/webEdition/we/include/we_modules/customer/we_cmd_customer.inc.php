@@ -27,7 +27,8 @@ switch($cmd){
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';
 	case 'customer_applyWeDocumentCustomerFilterFromFolder':
-		return 'we_editors/we_editor.inc.php';
+		we_editor_functions::processFilterCmd($cmd);
+		return true;
 	case 'we_customer_selector':
 		we_selector_file::getSelectorFromRequest();
 		return true;

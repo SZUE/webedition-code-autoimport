@@ -401,7 +401,6 @@ function we_cmd() {
 		case 'object_reload_entry_at_class':
 			opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			break;
-			// it must be the last command
 		case "delete_navi_ask":
 			args[0] = 'delete_navi';
 			WE().util.showConfirm(caller, "", WE().consts.g_l.editorScript.confirm_navDel, args);
