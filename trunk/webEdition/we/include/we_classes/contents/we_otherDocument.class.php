@@ -149,11 +149,11 @@ class we_otherDocument extends we_binaryDocument{
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
 
-	protected function i_descriptionMissing(){
+	/*protected function i_descriptionMissing(){
 		return ($this->IsSearchable ?
 				($this->getElement('Description') === '') :
 				false);
-	}
+	}*/
 
 	public function setMetaDataFromFile($file){
 		if($this->Extension === '.pdf' && file_exists($file)){
