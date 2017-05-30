@@ -39,6 +39,7 @@ abstract class we_tool_autoloader{
 		'cache' => 'we_classes/cache',
 		'captcha' => 'we_classes/captcha',
 		'chooser' => 'we_classes/chooser',
+		'contents'=> 'we_classes/contents',
 		'customer' => 'we_modules/customer',
 		'database' => 'we_classes/database',
 		'dialog' => 'we_classes/dialog',
