@@ -133,7 +133,7 @@ function findInclude($cmd){
 			we_dialog_doctypeEdit::getDialog();
 			return true;
 		case 'rebuild':
-			$wiz=new we_rebuild_wizard();
+			$wiz = new we_rebuild_wizard();
 			$wiz->showFrameset();
 			return true;
 		case 'help':
@@ -199,41 +199,44 @@ function findInclude($cmd){
 			we_navigation_navigation::naviEditor();
 			return true;
 		case 'add_cat':
-		case 'add_entry_to_list':
-		case 'add_link_to_linklist':
 		case 'add_navi':
-		case 'change_link':
-		case 'change_linklist':
-		case 'copyDocumentSelect':
 		case 'copyDocument':
-		case 'del_thumb':
+		case 'copyDocumentSelect':
 		case 'delete_all_cats':
 		case 'delete_all_navi':
 		case 'delete_cat':
-		case 'delete_link':
-		case 'delete_linklist':
-		case 'delete_list':
 		case 'delete_navi':
+			we_editor_functions::processPropertyCmd($cmd);
+			return true;
 		case 'doImage_convertGIF':
 		case 'doImage_convertJPEG':
 		case 'doImage_convertPNG':
 		case 'doImage_crop':
 		case 'do_add_thumbnails':
+		case 'del_thumb':
+		case 'resizeImage':
+		case 'rotateImage':
+			we_editor_functions::processImageCmd($cmd);
+			return true;
+		case 'add_entry_to_list':
+		case 'add_link_to_linklist':
+		case 'change_link':
+		case 'change_linklist':
+		case 'delete_link':
+		case 'delete_linklist':
+		case 'delete_list':
 		case 'doctype_changed':
 		case 'down_entry_at_list':
 		case 'down_link_at_list':
 		case 'insert_entry_at_list':
 		case 'insert_link_at_linklist':
 		case 'load_editor':
-		case 'new_alias':
 		case 'publish':
 		case 'reload_hot_editpage':
 		case 'reload_editpage':
 		case 'remove_image':
-		case 'resizeImage':
 		case 'restore_defaults':
 		case 'revert_published':
-		case 'rotateImage':
 		case 'save_document':
 		case 'switch_edit_page':
 		case 'template_changed':

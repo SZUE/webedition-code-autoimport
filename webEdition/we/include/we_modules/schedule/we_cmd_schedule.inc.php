@@ -28,5 +28,6 @@ switch($cmd){
 	case 'schedule_add_schedcat':
 	case 'schedule_delete_all_schedcats':
 	case 'schedule_delete_schedcat':
-		return 'we_editors/we_editor.inc.php';
+		we_editor_functions::processSchedulerCmd($cmd);
+		return true;
 }

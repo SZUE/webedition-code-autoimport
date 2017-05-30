@@ -34,7 +34,8 @@ switch($cmd){
 	case 'users_del_user':
 	case 'users_del_all_owners':
 	case 'users_add_user':
-		return 'we_editors/we_editor.inc.php';
+		we_editor_functions::processUsersCmd($cmd);
+		return true;
 	case 'users_changeR':
 		echo we_users_util::changeRecursive();
 		return true;
