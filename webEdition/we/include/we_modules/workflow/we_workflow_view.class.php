@@ -812,7 +812,7 @@ class we_workflow_view extends we_modules_view{
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
-				<form name="we_form">' . we_class::hiddenTrans() . '<table>' .
+				<form name="we_form">' . we_contents_base::hiddenTrans() . '<table>' .
 			we_html_multiIconBox::getHTML('', $parts, 30) .
 			'</form></body></html>';
 	}

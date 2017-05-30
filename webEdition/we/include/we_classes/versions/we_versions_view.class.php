@@ -116,7 +116,7 @@ class we_versions_view{
 <table id="advSearch2" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable">
 <tr>
-	<td>' . we_class::hiddenTrans() . '</td>
+	<td>' . we_contents_base::hiddenTrans() . '</td>
 </tr>';
 
 		for($i = 0; $i < count($currentSearchFields); $i++){

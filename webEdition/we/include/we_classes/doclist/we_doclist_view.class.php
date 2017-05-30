@@ -86,7 +86,7 @@ class we_doclist_view extends we_search_view{
 	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:weSearch.switchSearch(0)", false) . '</td>
 </tr>
 </table>' .
-			we_class::hiddenTrans() .
+			we_contents_base::hiddenTrans() .
 			'<table class="default"  style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable' . we_search_view::SEARCH_DOCLIST . '">';
 

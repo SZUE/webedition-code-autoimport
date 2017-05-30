@@ -25,7 +25,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 /* the parent class for documents */
 
-class we_document extends we_root{
+class we_document extends we_contents_root{
 //Extension of the document
 	var $Extension = '';
 //Array of possible filename extensions for the document
@@ -639,7 +639,7 @@ class we_document extends we_root{
 		return parent::registerMediaLinks($temp);
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		parent::we_load($from);
 		// Navigation items
 		$this->i_setExtensions();
@@ -1685,7 +1685,7 @@ class we_document extends we_root{
 		}
 
 		if($we_ID){
-			$we_doc->initByID($we_ID, $we_Table, ( (!empty($GLOBALS['FROM_WE_SHOW_DOC'])) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
+			$we_doc->initByID($we_ID, $we_Table, ( (!empty($GLOBALS['FROM_WE_SHOW_DOC'])) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? self::LOAD_MAID_DB : self::LOAD_TEMP_DB);
 		} else if(!empty($we_dt)){
 			$we_doc->we_initSessDat($we_dt);
 

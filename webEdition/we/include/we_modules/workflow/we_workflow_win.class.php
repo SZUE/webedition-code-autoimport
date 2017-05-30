@@ -52,7 +52,7 @@ abstract class we_workflow_win{
 				], $body));
 	}
 
-	private static function declineWindow($cmd, $we_transaction, we_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
+	private static function declineWindow($cmd, $we_transaction, we_contents_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
 		if($cmd === "ok"){
 			$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID']));
 
@@ -96,7 +96,7 @@ abstract class we_workflow_win{
 			</div>';
 	}
 
-	private static function inWorkflowWindow($cmd, $we_transaction, we_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
+	private static function inWorkflowWindow($cmd, $we_transaction, we_contents_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
 		$cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 
 		if($cmd === 'ok'){
@@ -172,7 +172,7 @@ abstract class we_workflow_win{
 		</div>';
 	}
 
-	private static function passWorkflowWin($cmd, $we_transaction, we_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
+	private static function passWorkflowWin($cmd, $we_transaction, we_contents_root $we_doc, we_base_jsCmd $jsCmd, $wf_text){
 		if($cmd === "ok"){
 			$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID']));
 

@@ -25,7 +25,7 @@
 class we_editor_objectTextarea extends we_editor_base{
 	private $name = '';
 
-	public function __construct(we_root $we_doc, $we_transaction){
+	public function __construct(we_contents_root $we_doc, $we_transaction){
 		parent::__construct($we_doc);
 		$nr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		$this->name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
@@ -130,11 +130,11 @@ class we_editor_objectTextarea extends we_editor_base{
 				"html" => '<table class="default">
 	<tr class="withBigSpace">
 		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, [
-					'onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]) . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($this->we_doc->getElement($this->name . "commands")), [
+					'onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]) . '<br/>' . we_contents_base::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($this->we_doc->getElement($this->name . "commands")), [
 					'id' => "commands", 'style' => "width:392px;height:50px"]) . '</td>	</tr>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, [
-					'onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]) . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($this->we_doc->getElement($this->name . "contextmenu")), [
+					'onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]) . '<br/>' . we_contents_base::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($this->we_doc->getElement($this->name . "contextmenu")), [
 					'id' => "contextmenu", 'style' => "width:392px;height:50px"]) . '</td>
 	</tr>
 </table>',

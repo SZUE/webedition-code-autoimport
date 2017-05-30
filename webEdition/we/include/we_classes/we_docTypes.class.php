@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_docTypes extends we_class{
+class we_docTypes extends we_contents_base{
 	/* The Text that will be shown in the tree-menue */
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
@@ -62,7 +62,7 @@ class we_docTypes extends we_class{
 			$this->checkRemoteLanguage(DOC_TYPES_TABLE, false);
 		}
 
-		return we_class::we_save($resave);
+		return parent::we_save($resave);
 	}
 
 	public function we_save_exim(){

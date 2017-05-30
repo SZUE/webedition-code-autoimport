@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class for tree-objects */
-abstract class we_root extends we_class{
+abstract class we_contents_root extends we_contents_base{
 	const USER_HASACCESS = 1;
 	const FILE_LOCKED = -3;
 	const USER_NO_PERM = -2;
@@ -844,7 +844,7 @@ abstract class we_root extends we_class{
 		$this->ParentPath = $this->getParentPath();
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		parent::we_load($from);
 
 		$this->i_getContentData();
@@ -1326,7 +1326,7 @@ abstract class we_root extends we_class{
 
 	function we_resaveMainTable(){
 		$this->wasUpdate = true;
-		return we_root::we_save(true, true);
+		return we_contents_root::we_save(true, true);
 	}
 
 	public function we_rewrite(){

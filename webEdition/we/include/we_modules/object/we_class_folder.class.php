@@ -448,7 +448,7 @@ class we_class_folder extends we_folder{
 		$out = '
 <table style="width:510px">
 <form name="we_form_search" action="" onsubmit="sub();return false;" method="GET">
-' . we_class::hiddenTrans() . '
+' . self::hiddenTrans() . '
 <input type="hidden" name="todo" />
 <input type="hidden" name="position" />';
 
@@ -562,7 +562,7 @@ class we_class_folder extends we_folder{
 
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
-<form name="we_form" method="post">' . we_class::hiddenTrans() .
+<form name="we_form" method="post">' . self::hiddenTrans() .
 			we_html_element::htmlHiddens(["Order" => $this->searchclass->Order,
 				"do" => ''
 			]) . '

@@ -28,7 +28,7 @@ abstract class we_editor_base{
 	protected $charset = '';
 	protected $title = '';
 
-	public function __construct(we_root $we_doc){
+	public function __construct(we_contents_root $we_doc){
 		$this->jsCmd = new we_base_jsCmd();
 		$this->we_doc = $we_doc;
 	}
@@ -51,7 +51,7 @@ abstract class we_editor_base{
 						'name' => "we_form",
 						'method' => "post",
 						'onsubmit' => "return false;"
-							], $formAttr), we_class::hiddenTrans() .
+							], $formAttr), we_contents_base::hiddenTrans() .
 						$form .
 						we_html_element::htmlHidden("we_complete_request", 1)))
 		);

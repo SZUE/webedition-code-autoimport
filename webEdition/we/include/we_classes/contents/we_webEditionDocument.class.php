@@ -689,9 +689,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $ret;
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		switch($from){
-			case we_class::LOAD_SCHEDULE_DB:
+			case self::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE);
 
@@ -700,7 +700,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						break;
 					}
 				}
-				$from = we_class::LOAD_TEMP_DB;
+				$from = self::LOAD_TEMP_DB;
 			//no break;
 			default:
 				parent::we_load($from);

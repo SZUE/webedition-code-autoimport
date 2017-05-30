@@ -100,7 +100,7 @@ $we_doc->setDocumentControlElements();
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') && $we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	Open seem_edit_include pages in edit-mode
+	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') && $we_doc->userHasAccess() == we_contents_root::USER_HASACCESS){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	} elseif($we_doc instanceof we_imageDocument){
@@ -157,13 +157,13 @@ if($we_doc->ID){
 	}
 	$access = $we_doc->userHasAccess();
 	switch($access){
-		case we_root::USER_HASACCESS:
+		case we_contents_root::USER_HASACCESS:
 			break;
-		case we_root::FILE_LOCKED:
-		case we_root::USER_NO_SAVE:
+		case we_contents_root::FILE_LOCKED:
+		case we_contents_root::USER_NO_SAVE:
 			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 			break;
-		case we_root::FILE_NOT_IN_USER_WORKSPACE:
+		case we_contents_root::FILE_NOT_IN_USER_WORKSPACE:
 		default:
 			we_base_permission::noPermDialog(g_l('alert', '[no_perms]'));
 			break;
@@ -207,7 +207,7 @@ if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	if(!$filelocked){ // file can be edited
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
-		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file
+		if($we_doc->userHasAccess() == we_contents_root::USER_HASACCESS){ //	only when user has access to file
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
@@ -236,7 +236,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
  we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');", [
 	'id' => 'loadVarEdit_frameset', 'data-editFrameset' => setDynamicVar([
 		'SEEM_edit_include' => we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include'),
-		'USERACCESS' => $we_doc->userHasAccess() == we_root::USER_HASACCESS
+		'USERACCESS' => $we_doc->userHasAccess() == we_contents_root::USER_HASACCESS
 ])]);
 
 function setOnload(){
@@ -270,14 +270,14 @@ switch($_SESSION['weS']['we_mode']){
 	<?php
 	$activeEditors = we_base_request::_(we_base_request::RAW_CHECKED, 'activeEditors');
 //FIXME: if we want to remove these iframes, e.g. EditorFrameController.js enumerate the frames, make sure to get all
-	echo we_html_element::htmlIFrame('editHeader', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_header'), 'height:' . $headerSize . 'px;', '', '', false, 'editHeader') .
+	echo we_html_element::htmlIFrame('editHeader', we_contents_base::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_header'), 'height:' . $headerSize . 'px;', '', '', false, 'editHeader') .
 	($showContentEditor ?
 		we_html_element::htmlIFrame('editor_' . $fid, 'about:blank', 'display:none;top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
-		we_html_element::htmlIFrame('contenteditor_' . $fid, we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', '', true, 'contenteditor') :
-		we_html_element::htmlIFrame('editor_' . $fid, we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
+		we_html_element::htmlIFrame('contenteditor_' . $fid, we_contents_base::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', '', true, 'contenteditor') :
+		we_html_element::htmlIFrame('editor_' . $fid, we_contents_base::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_editor') . (isset($parastr) ? '&' . $parastr : '') . '&we_complete_request=1' . ($activeEditors ? '&activeEditors=' . $activeEditors : ''), 'top:' . $headerSize . 'px;', '', setOnload(), true, 'mainEditor') .
 		we_html_element::htmlIFrame('contenteditor_' . $fid, 'about:blank', 'display:none;top:' . $headerSize . 'px;', '', '', true, 'contenteditor')
 	) .
-	we_html_element::htmlIFrame('editFooter', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'), '', '', '', false, 'editorButtonFrame');
+	we_html_element::htmlIFrame('editFooter', we_contents_base::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'), '', '', '', false, 'editorButtonFrame');
 	?>
 </body>
 </html>

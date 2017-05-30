@@ -664,7 +664,7 @@ class we_shop_frames extends we_modules_frame{
 		$htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont', 'style' => 'padding-bottom:20px;'], g_l('modules_shop', '[saferpaydesc]'));
-		$htmlTable->setColContent($row++, 2, we_class::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
+		$htmlTable->setColContent($row++, 2, we_contents_base::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
 
 		$Parts[] = ["html" => $htmlTable->getHtml()];
 
@@ -1042,15 +1042,15 @@ class we_shop_frames extends we_modules_frame{
 		$countrySelectISO = we_html_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 // states which must always pay vat
 
-		$textAreaLiableStates = we_class::htmlTextArea('liableToVat', 3, 30, implode("\n", $weShopVatRule->liableToVat));
+		$textAreaLiableStates = we_contents_base::htmlTextArea('liableToVat', 3, 30, implode("\n", $weShopVatRule->liableToVat));
 // states which must never pay vat
 
-		$textAreaNotLiableStates = we_class::htmlTextArea('notLiableToVat', 3, 30, implode("\n", $weShopVatRule->notLiableToVat));
+		$textAreaNotLiableStates = we_contents_base::htmlTextArea('notLiableToVat', 3, 30, implode("\n", $weShopVatRule->notLiableToVat));
 // states which must only pay under certain circumstances
 // if we make more rules possible - adjust here
 		$actCondition = $weShopVatRule->conditionalRules[0];
 
-		$conditionTextarea = we_class::htmlTextArea('conditionalStates[]', 3, 30, implode("\n", $actCondition['states']));
+		$conditionTextarea = we_contents_base::htmlTextArea('conditionalStates[]', 3, 30, implode("\n", $actCondition['states']));
 		$conditionField = we_html_tools::htmlSelect('conditionalCustomerField[]', $selectFields, 1, $actCondition['customerField']);
 		$conditionSelect = we_html_tools::htmlSelect('conditionalCondition[]', ['is_empty' => g_l('modules_shop', '[vat_country][condition_is_empty]'), 'is_set' => g_l('modules_shop', '[vat_country][condition_is_set]')], 1, $actCondition['condition']);
 		$conditionReturn = we_html_tools::htmlSelect('conditionalReturn[]', ['false' => 'false', 'true' => 'true'], 1, $actCondition['returnValue']);
@@ -1431,7 +1431,7 @@ class we_shop_frames extends we_modules_frame{
 			];
 			$parts[] = ['headline' => g_l('modules_shop', '[shipping][countries]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlTextArea('weShipping_countries', 4, 21, implode("\n", $weShipping->countries)),
+				'html' => we_contents_base::htmlTextArea('weShipping_countries', 4, 21, implode("\n", $weShipping->countries)),
 				'noline' => 1
 			];
 			// foreach ...

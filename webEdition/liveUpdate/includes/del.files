@@ -543,7 +543,9 @@ we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/dialog/we_dialog_Hyperlink.class.php
 we/include/we_classes/database/we_database_mssql.class.php
 we/include/we_classes/csv.inc.php
+we/include/we_classes/contents/we_root.class.php
 we/include/we_classes/contents/we_quicktimeDocument.class.php
+we/include/we_classes/contents/we_class.class.php
 we/include/we_classes/charsetHandler.class.php
 we/include/we_classes/captcha/we_captcha_memory.class.php
 we/include/we_classes/captcha/captchaMemory.class.php

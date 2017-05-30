@@ -604,7 +604,7 @@ abstract class we_base_variants{
 			]
 		];
 
-		return we_class::hiddenTrans() .
+		return we_contents_base::hiddenTrans() .
 		we_html_multiIconBox::getHTML('template_variant', $parts, 30);
 	}
 

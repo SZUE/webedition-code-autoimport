@@ -222,7 +222,7 @@ class we_imageDocument extends we_binaryDocument{
 		$this->checkDisableEditpages();
 	}
 
-	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
+	public function initByID($ID, $Table = '', $from = self::LOAD_MAID_DB){
 		parent::initByID($ID, $Table, $from);
 		if(!empty($GLOBALS['we_editmode'])){
 			$this->checkDisableEditpages();

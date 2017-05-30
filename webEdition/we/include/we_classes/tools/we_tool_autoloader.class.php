@@ -106,7 +106,6 @@ abstract class we_tool_autoloader{
 	private static $classes = [
 		'we_classes/contents' => [
 			'we_binaryDocument' => 'we_binaryDocument.class.php',
-			'we_class' => 'we_class.class.php',
 			'we_collection' => 'we_collection.class.php',
 			'we_document' => 'we_document.class.php',
 			'we_flashDocument' => 'we_flashDocument.class.php',
@@ -114,7 +113,6 @@ abstract class we_tool_autoloader{
 			'we_htmlDocument' => 'we_htmlDocument.class.php',
 			'we_imageDocument' => 'we_imageDocument.class.php',
 			'we_otherDocument' => 'we_otherDocument.class.php',
-			'we_root' => 'we_root.class.php',
 			'we_template' => 'we_template.class.php',
 			'we_temporaryDocument' => 'we_temporaryDocument.class.php',
 			'we_textContentDocument' => 'we_textContentDocument.class.php',

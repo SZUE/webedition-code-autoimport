@@ -24,7 +24,7 @@
  */
 abstract class we_editor_footer{
 
-	private static function fileLocked(we_root $we_doc){
+	private static function fileLocked(we_contents_root $we_doc){
 //	user
 		$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->isLockedByUser()));
 
@@ -58,7 +58,7 @@ abstract class we_editor_footer{
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['id' => 'footerBody'], $messageTbl->getHtml()));
 	}
 
-	private static function fileIsRestricted(we_root $we_doc){
+	private static function fileIsRestricted(we_contents_root $we_doc){
 		$messageTbl = new we_html_table(['class' => 'default footertable'], 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
@@ -67,7 +67,7 @@ abstract class we_editor_footer{
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['id' => 'footerBody'], $messageTbl->getHtml()));
 	}
 
-	private static function workflow(we_root $we_doc){
+	private static function workflow(we_contents_root $we_doc){
 		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) || we_base_permission::hasPerm("PUBLISH")){
 
 			$table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
@@ -87,7 +87,7 @@ abstract class we_editor_footer{
 		return we_html_element::htmlBody(['id' => 'footerBody'], $table->getHtml());
 	}
 
-	private static function addDelButton($table, we_root $we_doc, &$pos){
+	private static function addDelButton($table, we_contents_root $we_doc, &$pos){
 		$ctrlElem = self::getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$ctrlElem || !$ctrlElem['hide']){
 			$table->addCol(2);
@@ -95,7 +95,7 @@ abstract class we_editor_footer{
 		}
 	}
 
-	private static function addCopyButton($table, we_root $we_doc, &$pos){
+	private static function addCopyButton($table, we_contents_root $we_doc, &$pos){
 		$ctrlElem = self::getControlElement('button', 'copy'); //	look tag we:controlElement for details
 		if((!$ctrlElem || !$ctrlElem['hide']) && $we_doc->ID){
 			$table->addCol(2);
@@ -108,7 +108,7 @@ abstract class we_editor_footer{
 	 * @return void
 	 * @desc Prints the footer for the normal mode
 	 */
-	private static function normalMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
+	private static function normalMode(we_contents_root $we_doc, $we_transaction, $haspermNew, $showPubl){
 		$normalTable = new we_html_table(['class' => 'default footertable'], 1, 1);
 		$pos = 0;
 
@@ -255,7 +255,7 @@ abstract class we_editor_footer{
 	 * @return void
 	 * @desc prints the footer for the See-Mode
 	 */
-	private static function SEEMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
+	private static function SEEMode(we_contents_root $we_doc, $we_transaction, $haspermNew, $showPubl){
 		$seeModeTable = new we_html_table(['class' => 'default footertable'], 1, 1);
 		$pos = 0;
 
@@ -379,7 +379,7 @@ abstract class we_editor_footer{
 		return $seeModeTable->getHtml();
 	}
 
-	private static function hasNewPerm(we_root $we_doc){
+	private static function hasNewPerm(we_contents_root $we_doc){
 		//	Check permissions for buttons
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::HTML:
@@ -413,31 +413,31 @@ abstract class we_editor_footer{
 		return false;
 	}
 
-	private static function inWorkflow(we_root $doc){
+	private static function inWorkflow(we_contents_root $doc){
 		if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc){
 			return false;
 		}
 		return ($doc->ID ? we_workflow_utility::inWorkflow($doc->ID, $doc->Table) : false);
 	}
 
-	private static function checkUserAccess(we_root $we_doc){
+	private static function checkUserAccess(we_contents_root $we_doc){
 		switch($we_doc->userHasAccess()){
-			case we_root::USER_HASACCESS : //	all is allowed, creator or owner
+			case we_contents_root::USER_HASACCESS : //	all is allowed, creator or owner
 				break;
 
-			case we_root::FILE_NOT_IN_USER_WORKSPACE : //	file is not in workspace of user
+			case we_contents_root::FILE_NOT_IN_USER_WORKSPACE : //	file is not in workspace of user
 				self::fileInWorkspace();
 				exit();
 
-			case we_root::USER_NO_PERM : //	access is restricted and user has no permission
+			case we_contents_root::USER_NO_PERM : //	access is restricted and user has no permission
 				self::fileIsRestricted($we_doc);
 				exit;
 
-			case we_root::FILE_LOCKED : //	file is locked by another user
+			case we_contents_root::FILE_LOCKED : //	file is locked by another user
 				self::fileLocked($we_doc);
 				exit;
 
-			case we_root::USER_NO_SAVE : //	user has not the right to save the file.
+			case we_contents_root::USER_NO_SAVE : //	user has not the right to save the file.
 				self::fileNoSave();
 				exit;
 		}
@@ -533,7 +533,7 @@ abstract class we_editor_footer{
 			$body = we_html_element::htmlBody(array_merge([
 					'id' => "footerBody",
 					'onload' => "we_footerLoaded();",
-						], $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER))
+						], $we_doc->getEditorBodyAttributes(we_contents_root::EDITOR_FOOTER))
 					, we_html_element::htmlForm([
 						'name' => "we_form",
 						'action' => '',
