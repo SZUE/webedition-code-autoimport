@@ -342,9 +342,9 @@ abstract class we_contents_base{
 		return false;
 	}
 
-	protected function i_descriptionMissing(){
+	/*protected function i_descriptionMissing(){
 		return false;
-	}
+	}*/
 
 	function setDocumentControlElements(){
 		//	function is overwritten in we_webEditionDocument
