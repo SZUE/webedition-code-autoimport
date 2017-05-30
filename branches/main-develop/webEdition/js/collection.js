@@ -122,12 +122,12 @@ WeCollection.prototype.renderView = function (notSetHot) {
 
 	for (var i = 0; i < this.content.collectionArr.length; i++) {
 		var last = (i === (this.content.collectionArr.length) - 1) && (this.content.storage['item_' + this.content.collectionArr[i]].id === -1);
-		this.insertItem(null, false, this.content.storage['item_' + this.content.collectionArr[i]], this, '', last);
+		this.insertItem(null, false, this.content.storage['item_' + this.content.collectionArr[i]], this, '', last, false);
 	}
 	this.reindexAndRetrieveCollection(notSetHot);
 };
 
-WeCollection.prototype.insertItem = function (elem, repaint, item, scope, color, last) {
+WeCollection.prototype.insertItem = function (elem, repaint, item, scope, color, last, insertBefore) {
 	var t = scope ? scope : this,
 		el = elem ? t.getItem(elem) : null,
 		mustInsertPathCutLeft = false,
@@ -225,7 +225,7 @@ WeCollection.prototype.insertItem = function (elem, repaint, item, scope, color,
 	}
 
 	this.doc.body.removeChild(div);
-	newItem = el ? t.gui.elements.container[t.gui.view].insertBefore(div.firstChild, el.nextSibling) : t.gui.elements.container[t.gui.view].appendChild(div.firstChild);
+	newItem = el ? t.gui.elements.container[t.gui.view].insertBefore(div.firstChild, (insertBefore ? el : el.nextSibling)) : t.gui.elements.container[t.gui.view].appendChild(div.firstChild);
 
 	if (mustInsertPathCutLeft) {
 		var colContentText = newItem.getElementsByClassName('colContentTextOnly')[0];
@@ -246,7 +246,7 @@ WeCollection.prototype.insertItem = function (elem, repaint, item, scope, color,
 };
 
 WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, index, id, type) {
-	var input, ctrls, space, view;
+	var input, ctrls, space_left, space_right, view;
 
 	switch (viewPlusSub) {
 		case 'grid':
@@ -262,12 +262,19 @@ WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, i
 				ctrls.addEventListener('mouseout', this.outMouse.bind(this, 'btns', view, ctrls), false);
 
 				if (this.gui.isDragAndDrop) {
-					space = this.getItem(elem).getElementsByClassName('divSpace')[0];
-					space.addEventListener('drop', this.dropOnItem.bind(this, 'space', view, space, false), false);
-					space.addEventListener('dragover', this.allowDrop.bind(this), false);
-					space.addEventListener('dragenter', this.enterDrag.bind(this, 'space', view, space, last), false);
-					space.addEventListener('dragleave', this.leaveDrag.bind(this, 'space', view, space), false);
-					space.addEventListener('dblclick', this.dblClick.bind(this, 'space', view, space), false);
+					space_right = this.getItem(elem).getElementsByClassName('divSpace_right')[0];
+					space_right.addEventListener('drop', this.dropOnItem.bind(this, 'space_right', view, space_right, false), false);
+					space_right.addEventListener('dragover', this.allowDrop.bind(this), false);
+					space_right.addEventListener('dragenter', this.enterDrag.bind(this, 'space_right', view, space_right, last), false);
+					space_right.addEventListener('dragleave', this.leaveDrag.bind(this, 'space_right', view, space_right), false);
+					space_right.addEventListener('dblclick', this.dblClick.bind(this, 'space_right', view, space_right), false);
+
+					space_left = this.getItem(elem).getElementsByClassName('divSpace_left')[0];
+					space_left.addEventListener('drop', this.dropOnItem.bind(this, 'space_left', view, space_left, false), false);
+					space_left.addEventListener('dragover', this.allowDrop.bind(this), false);
+					space_left.addEventListener('dragenter', this.enterDrag.bind(this, 'space_left', view, space_left, last), false);
+					space_left.addEventListener('dragleave', this.leaveDrag.bind(this, 'space_left', view, space_left), false);
+					space_left.addEventListener('dblclick', this.dblClick.bind(this, 'space_left', view, space_left), false);
 				}
 			}
 			break;
@@ -294,10 +301,10 @@ WeCollection.prototype.addListenersToItem = function (viewPlusSub, elem, last, i
 
 	if (id !== -1) {
 		elem.getElementsByClassName('collectionItem_btnEdit')[0].addEventListener('click', this.doClickOpenToEdit.bind(this, id), false);
-		elem.getElementsByClassName('collectionItem_btnTrash')[0].addEventListener('click', this.doClickDelete.bind(this, elem), false);
 	} else {
 		elem.getElementsByClassName('collectionItem_btnSelect')[0].addEventListener('click', this.doClickSelector.bind(this, index, viewPlusSub === 'grid' ? 'grid' : 'list'), false);
 	}
+	elem.getElementsByClassName('collectionItem_btnTrash')[0].addEventListener('click', this.doClickDelete.bind(this, elem), false);
 
 	if (this.gui.isDragAndDrop) {
 		if (!last) {
@@ -333,12 +340,12 @@ WeCollection.prototype.doClickDown = function (elem) {
 	}
 };
 
-WeCollection.prototype.doClickAdd = function (elem) {
+WeCollection.prototype.doClickAdd = function (elem, type, insertBefore) {
 	var el = this.getItem(elem),
 		num = 1;//this.doc.getElementById('numselect_' + el.id.substr(10)).value;
 
 	for (var i = 0; i < num; i++) {
-		el = this.insertItem(el, false);
+		el = this.insertItem(el, true, null, this, '', false, (insertBefore ? true : false));//(el, true);
 	}
 	this.reindexAndRetrieveCollection();
 };
@@ -471,7 +478,7 @@ WeCollection.prototype.getIsRecursive = function () {
 	return this.doc.we_form.elements['we_' + this.we_doc.docName + '_InsertRecursive'].value;
 };
 
-WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex) {
+WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex, insertBefore) {
 	if (elem === undefined) {
 		return false;
 	}
@@ -487,17 +494,15 @@ WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex)
 
 	//set first item on drop row
 	if (items.length) {
-		/*
-		 this.we_doc.docIsDuplicates = this.doc.we_form['check_we_' + this.we_doc.docName + '_IsDuplicates'].checked;
-		 */
 		while (!isFirstSet && items.length) {
 			item = items.shift();
 			if (this.we_doc.docIsDuplicates === 1 || this.content.collectionCsv.search(',' + item.id + ',') === -1) {
-				var newEl = this.insertItem(el, false, item, this, '#00ee00');
+				var newEl = this.insertItem(el, false, item, this, '#00ee00', false, insertBefore);
 				this.doClickDelete(el);
 				el = newEl;
 				itemsSet[0].push(item.id);
 				isFirstSet = true;
+				insertBefore = false;
 			} else {
 				itemsSet[1].push(item.id);
 			}
@@ -527,7 +532,8 @@ WeCollection.prototype.addItems = function (elem, items, notReplace, notReindex)
 					rowsFull = true;
 				}
 			}
-			el = this.insertItem(el, false, items[i], null, '#00ee00');
+			el = this.insertItem(el, false, items[i], null, '#00ee00', false, insertBefore);
+			insertBefore = false;
 		} else {
 			itemsSet[1].push(items[i].id);
 		}
@@ -555,6 +561,7 @@ WeCollection.prototype.reindexAndRetrieveCollection = function (notSetHot) {
 		switch (this.gui.view) {
 			case 'grid':
 				ct.childNodes[i].id = 'grid_item_' + (i + 1);
+				//ct.childNodes[i].firstChild.style.display  = i % this.gui.itemsPerRow === 0 ? 'block' : 'none';
 				//labels[i].id = 'label_' + (i+1);
 				val = ct.childNodes.length > 1 ? parseInt(this.doc.we_form.collectionItem_we_id[i].value) : parseInt(this.doc.we_form.collectionItem_we_id.value);
 				break;
@@ -580,7 +587,7 @@ WeCollection.prototype.reindexAndRetrieveCollection = function (notSetHot) {
 	this.gui.elements.spanNum.innerHTML = this.content.collectionCount;
 
 	if (val !== -1) {
-		this.insertItem(ct.lastChild, true, null, this, '', true);//elem, repaint, item, scope, color, last
+		this.insertItem(ct.lastChild, true, null, this, '', true, false);//elem, repaint, item, scope, color, last
 	}
 
 	if (!this.content.collectionName) {
@@ -592,15 +599,30 @@ WeCollection.prototype.reindexAndRetrieveCollection = function (notSetHot) {
 	}
 };
 
-WeCollection.prototype.hideSpace = function (elem) { // TODO: use classes do define states!
-	elem.style.width = '12px';
-	elem.style.right = '0px';
-	elem.style.border = '1px solid #ffffff';
-	elem.style.backgroundColor = '#ffffff';
+WeCollection.prototype.hideSpace = function (elem, type) { // TODO: use classes do define states!
+	elem.style.width = '8px';
+	elem.style.border = 'none';
+	elem.style.backgroundColor = 'transparent';
 	elem.style.margin = '0';
-	elem.previousSibling.style.right = '14px';
-	if (elem.parentNode.nextSibling) {
-		elem.parentNode.nextSibling.firstChild.style.left = '0px';
+
+	switch(type){
+		case 'space_right':
+			elem.style.right = '0px';
+			elem.previousSibling.style.right = '8px';
+			if (elem.parentNode.nextSibling) {
+				elem.parentNode.nextSibling.getElementsByClassName('divSpace_left')[0].style.left = '0px';
+				elem.parentNode.nextSibling.getElementsByClassName('divContent')[0].style.left = '0px';
+			}
+			break;
+		case 'space_left':
+			elem.style.left = '0px';
+			elem.nextSibling.style.left = '8px';
+			if (elem.parentNode.previousSibling) {
+				elem.parentNode.previousSibling.lastChild.style.right = '0px';
+				elem.parentNode.previousSibling.getElementsByClassName('divSpace_right')[0].style.right = '0px';
+				elem.parentNode.previousSibling.getElementsByClassName('divContent')[0].style.right = '8px';
+			}
+			break;
 	}
 };
 
@@ -622,9 +644,20 @@ WeCollection.prototype.resetItemColors = function (el, color, type) {
 
 	switch (this.gui.view) {
 		case 'grid':
-			elem = type === 'space' ? el.getElementsByClassName('divSpace')[0] : el.getElementsByClassName('divContent')[0];
+			switch(type){
+				case 'space_left':
+					elem = el.getElementsByClassName('divSpace_left')[0];
+					break;
+				case 'space_right':
+					elem = el.getElementsByClassName('divSpace_right')[0];
+					break;
+				default:
+					elem = this.getItem(el).getElementsByClassName('divContent')[0];
+			}
+
 			elem.style.border = (el.getAttribute('name') === 'lastItem_grid' ? set.borderLast : set.border);
 			elem.style.backgroundColor = set.backgroundColor;
+
 			break;
 		case 'list':
 			el.style.border = (el.getAttribute('name') === 'lastItem_list' ? set.borderLast : set.border);
@@ -650,10 +683,19 @@ WeCollection.prototype.addTextCutLeft = function (elem, text, maxwidth) {
 	return;
 };
 
-WeCollection.prototype.dblClick = function (type, view, evt, elem) {
+WeCollection.prototype.dblClick = function (type, view, elem) {
+	var insertBefore = false;
 	switch (type) {
-		case 'space':
-			this.doClickAdd(elem);
+		case 'space_left':
+			if(parseInt(this.getItemId(elem)) === 1){
+				insertBefore = true;
+				
+			} else {
+				elem = this.getItem(elem).previousSibling;
+			}
+			/* fall through */
+		case 'space_right':
+			this.doClickAdd(elem, type, insertBefore);
 			break;
 		default:
 	}
@@ -696,9 +738,9 @@ WeCollection.prototype.enterDrag = function (type, view, elem, last, evt) {
 				this.resetColors();
 				switch (type) {
 					case 'item':
-						//
+						this.dd.counter++;
 						break;
-					case 'space':
+					case 'space_right':
 						// TODO: use classes
 						if (elem.parentNode.id.substr(10) % this.gui.itemsPerRow === 0) {
 							elem.style.width = '36px';
@@ -706,11 +748,29 @@ WeCollection.prototype.enterDrag = function (type, view, elem, last, evt) {
 							elem.style.margin = '0 0 0 4px';
 						} else {
 							elem.style.width = '48px';
-							elem.style.right = '-22px';
+							elem.style.right = '-30px';
 							elem.style.margin = '0 4px 0 4px';
-							elem.previousSibling.style.right = '37px';
+							elem.previousSibling.style.right = '28px';
 							if (elem.parentNode.nextSibling) {
-								elem.parentNode.nextSibling.firstChild.style.left = '22px';
+								elem.parentNode.nextSibling.getElementsByClassName('divSpace_left')[0].style.left = '50px';
+								elem.parentNode.nextSibling.getElementsByClassName('divContent')[0].style.left = '30px';
+							}
+						}
+						break;
+					case 'space_left':
+						// TODO: use classes
+						if (elem.parentNode.id.substr(10) % this.gui.itemsPerRow === 1) {
+							elem.style.width = '36px';
+							elem.nextSibling.style.left = '42px';
+							elem.style.margin = '0 4px 0 0';
+						} else {
+							elem.style.width = '48px';
+							elem.style.left = '-28px';
+							elem.style.margin = '0 4px 0 4px';
+							elem.nextSibling.style.left = '30px';
+							if (elem.parentNode.previousSibling) {
+								elem.parentNode.previousSibling.getElementsByClassName('divSpace_right')[0].style.right = '50px';
+								elem.parentNode.previousSibling.getElementsByClassName('divContent')[0].style.right = '28px';
 							}
 						}
 						break;
@@ -739,7 +799,7 @@ WeCollection.prototype.enterDrag = function (type, view, elem, last, evt) {
 	}
 };
 
-WeCollection.prototype.leaveDrag = function (type, view, elem, evt) { // TODO: use dd.counter for grid too
+WeCollection.prototype.leaveDrag = function (type, view, elem, evt) {
 	if (this.gui.view === 'list') {
 		this.dd.counter--;
 		if (this.dd.counter === 0) {
@@ -757,8 +817,9 @@ WeCollection.prototype.leaveDrag = function (type, view, elem, evt) { // TODO: u
 							this.resetItemColors(elem);
 						}
 						break;
-					case 'space':
-						this.hideSpace(elem);
+					case 'space_left':
+					case 'space_right':
+						this.hideSpace(elem, type);
 						break;
 				}
 				break;
@@ -844,7 +905,7 @@ WeCollection.prototype.dropOnItem = function (type, view, elem, last, evt) {
 		case 'dragItem':
 		case 'dragFolder':
 			el = this.getItem(elem);
-			position = el.id.substr(10);
+			position = (type === 'space_left' ? el.id.substr(10) - 1 : el.id.substr(10));
 
 			if (type === 'item') {
 				if (this.gui.view === 'list') {
@@ -852,7 +913,7 @@ WeCollection.prototype.dropOnItem = function (type, view, elem, last, evt) {
 				}
 				//el.firstChild.style.backgroundColor = 'palegreen';
 			} else {
-				this.hideSpace(elem);
+				this.hideSpace(elem, type);
 			}
 
 			if (WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable === data[1]) {
@@ -927,7 +988,7 @@ WeCollection.prototype.resetDdParams = function () {
 WeCollection.prototype.callForValidItemsAndInsert = function (index, position, csvIDs, message, notReplace, recursive) {
 	// FIXME: we need a consize distinction between index and position
 
-	if(!(Number.isInteger(parseInt(position)) && parseInt(position) > 0)){
+	if(!(Number.isInteger(parseInt(position)) && parseInt(position) > -1)){
 		if(Number.isInteger(parseInt(index)) && parseInt(index) > 0){
 			position = this.getItemId(this.doc.getElementById('collectionItem_index_' + this.gui.view + '_' + index));
 		} else {
@@ -959,15 +1020,22 @@ WeCollection.prototype.callForValidItemsAndInsert = function (index, position, c
 
 WeCollection.prototype.ajaxCallbackGetValidItemsByID = function(weResponse) {
 	var respArr = weResponse.DataArray.items,
-		index = weResponse.DataArray.index,
+		index = parseInt(weResponse.DataArray.index),
 		message = weResponse.DataArray.message,
-		notReplace = weResponse.DataArray.notReplace;
+		notReplace = weResponse.DataArray.notReplace,
+		insertBefore = false;
+
+		if(index === 0){
+			index = 1;
+			insertBefore = true;
+		}
+
 	if (respArr.length === -1) { // option deactivated: check doublettes for single insert too
 		this.doc.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
 		this.doc.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
 		this.reindexAndRetrieveCollection();
 	} else {
-		var resp = this.addItems(this.doc.getElementById(this.gui.view + '_item_' + index), respArr, notReplace);
+		var resp = this.addItems(this.doc.getElementById(this.gui.view + '_item_' + index), respArr, notReplace, false, insertBefore);
 		if (message) {
 			WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, this.win);
 		}

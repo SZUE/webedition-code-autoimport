@@ -109,7 +109,9 @@ var weSearch = {
 		this.conf.editorBodyFrame.document.we_form.elements['Order' + this.conf.whichsearch].value = dataElem.getAttribute('data-order');
 		this.conf.editorBodyFrame.document.we_form.elements.mode.value = dataElem.getAttribute('data-mode');
 	},
-	ajaxCallbackResultList: function (responseText) {
+	ajaxCallbackResultList: function (response) {
+		var responseText = response.DataArray.data;
+
 		if (responseText !== '') {
 			weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = responseText;
 			WE().util.setIconOfDocClass(document, 'resultIcon');
@@ -388,10 +390,8 @@ var weSearch = {
 					hMin = 300;
 					break;
 				case WE().consts.weSearch.SEARCH_DOCLIST:
-					//top.console.log('hier');
 					rows = (document.getElementById('filterTableDoclistSearch').rows.length);
 					mode = document.we_form.mode.value;
-					//top.console.log('hier', mode);
 					h = parseInt(mode) === 1 ? (frameH - (220 + (rows * 28))) : (frameH - 183);
 					break;
 			}
