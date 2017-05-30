@@ -834,8 +834,9 @@ class we_helpers_pdf2text{
 						$tmpText = '';
 					}
 					$hasData = false;
-					list($selectedFont, $fs) = explode(' ', trim($data, ' '));
-					$fs = floatval($fs);
+					$fontData = explode(' ', trim($data, ' '));
+					$selectedFont = $fontData[0];
+					$fs = empty($fontData[1]) ? 10 : floatval($fontData[1]);
 					$selectedFont = trim($selectedFont, self::TRIM_NAME);
 					break;
 				case 'T*'://newline
