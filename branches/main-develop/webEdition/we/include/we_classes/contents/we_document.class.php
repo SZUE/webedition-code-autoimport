@@ -1462,20 +1462,6 @@ class we_document extends we_contents_root{
 	}
 
 	/**
-	 * returns if document can have variants the function returns true otherwise
-	 * false
-	 * if paramter checkField is true, this function checks also, if there are
-	 * already fields selected for the variants.
-	 *
-	 * @param boolean $checkFields
-	 * @return boolean
-	 */
-	function canHaveVariants($checkFields = false){
-// overwrite
-		return false;
-	}
-
-	/**
 	 * @return	array with the filed names and attributes
 	 * @param	none
 	 */

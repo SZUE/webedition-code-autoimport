@@ -1345,6 +1345,20 @@ abstract class we_contents_root extends we_contents_base{
 
 	}
 
+	/**
+	 * returns if document can have variants the function returns true otherwise
+	 * false
+	 * if paramter checkField is true, this function checks also, if there are
+	 * already fields selected for the variants.
+	 *
+	 * @param boolean $checkFields
+	 * @return boolean
+	 */
+	function canHaveVariants($checkFields = false){
+// overwrite
+		return false;
+	}
+
 	protected function registerFileLinks(array $ids, $type, $isTemp = false){
 		$sets = [];
 		foreach($ids as $k => $remObj){
@@ -1559,9 +1573,9 @@ abstract class we_contents_root extends we_contents_base{
 		if($this->i_filenameNotValid()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notValid]'), $this->Path);
 		}
-		/*if($this->i_descriptionMissing()){
-			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_description_missing]'), $this->Path);
-		}*/
+		/* if($this->i_descriptionMissing()){
+		  return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_description_missing]'), $this->Path);
+		  } */
 		if($this->i_filenameNotAllowed()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notAllowed]'), $this->Path);
 		}

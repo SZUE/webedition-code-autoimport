@@ -85,7 +85,7 @@ switch($cmd0){
 			exit(' ContentType Missing !!! ');
 		}
 		if(($we_responseText = $we_doc->checkFieldsOnSave())){
-			we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, false, $isClose, $showAlert, $we_responseText, we_base_util::WE_MESSAGE_ERROR);
+			we_editor_functions::processSave($we_doc, $we_transaction, false, false, false, false, [], $we_responseText, we_base_util::WE_MESSAGE_ERROR);
 			break;
 		}
 
@@ -98,7 +98,7 @@ switch($cmd0){
 			case we_base_ContentTypes::APPLICATION:
 				if((!we_base_permission::hasPerm('NEW_SONSTIGE')) && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML))){
 					$we_JavaScript = [];
-					we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension), we_base_util::WE_MESSAGE_ERROR);
+					we_editor_functions::processSave($we_doc, $we_transaction, false, false, false, false, [], sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
 			//falls through
@@ -107,18 +107,12 @@ switch($cmd0){
 				$wasNew = (intval($we_doc->ID) == 0);
 				$wasPubl = (!empty($we_doc->Published));
 				if(!we_base_permission::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !we_users_util::in_workspace($we_doc->ParentID, get_ws($we_doc->Table, true), $we_doc->Table)){
-					$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
-					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
-					we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
-							]), $isClose, $showAlert, !empty($GLOBALS['publish_doc']));
+					we_editor_functions::saveInc($we_transaction, $we_doc, g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'), we_base_util::WE_MESSAGE_ERROR, $we_JavaScript, false, false, $GLOBALS['we_responseJS'], false, false, !empty($GLOBALS['publish_doc']));
 
 					exit();
 				}
 				if(!$we_doc->userCanSave()){
-					$we_responseText = g_l('alert', '[access_denied]');
-					$we_responseTextType = we_base_util::WE_MESSAGE_ERROR;
-					we_editor_functions::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
-							]), $isClose, $showAlert, !empty($GLOBALS['publish_doc']));
+					we_editor_functions::saveInc($we_transaction, $we_doc, g_l('alert', '[access_denied]'), we_base_util::WE_MESSAGE_ERROR, $we_JavaScript, false, false, $GLOBALS['we_responseJS'], false, false, !empty($GLOBALS['publish_doc']));
 
 					exit();
 				}
@@ -210,8 +204,7 @@ switch($cmd0){
 					if(!we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 						$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID];
 					}
-
-					if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE) && $we_doc->canHaveVariants(true)){
+					if($we_doc->canHaveVariants(true)){
 						we_base_variants::setVariantDataForModel($we_doc, true);
 					}
 				} else {
@@ -244,7 +237,7 @@ switch($cmd0){
 			$we_JavaScript[] = ['addHistory', $we_doc->Table, $we_doc->ID, $we_doc->ContentType];
 		}
 
-		we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, $we_responseText, $we_responseTextType);
+		we_editor_functions::processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, $we_JavaScript, $we_responseText, $we_responseTextType);
 
 		break;
 	case 'unpublish':
