@@ -745,14 +745,14 @@ class we_helpers_pdf2text{
 					}
 					$fonts = array();
 					$this->getPageFonts($fonts, $elem);
-					if(isset($elem['Font'])){
+					if(!empty($elem['Font'])){
 						$tmp = rtrim($elem['Font'], self::TRIM_REF);
 						$data = isset($this->data[$tmp]) ? $this->data[$tmp] : '';
 						if(!empty($data)){
 							$this->getPageFonts($fonts, $data);
 						}
 					}
-					if(isset($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
+					if(!empty($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
 						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);
 					}
 					if(!empty($fonts)){
