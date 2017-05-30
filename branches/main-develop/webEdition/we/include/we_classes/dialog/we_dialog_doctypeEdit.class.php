@@ -199,7 +199,7 @@ abstract class we_dialog_doctypeEdit{
 					'action' => "",
 					'method' => "post",
 					'onsubmit' => "return false"
-					], we_class::hiddenTrans() .
+					], we_contents_base::hiddenTrans() .
 					we_html_multiIconBox::getHTML("", $parts, 30, ($we_doc->ID ?
 							we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
 							'<div style="text-align:right">' . $cancelbut . '</div>'))

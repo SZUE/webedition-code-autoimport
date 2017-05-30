@@ -748,7 +748,7 @@ class we_versions_version{
 	 * @abstract set first document object if no versions exist
 	 * for contentType = text/webedition
 	 */
-	public function setInitialDocObject(we_root $obj){
+	public function setInitialDocObject(we_contents_root $obj){
 		if(is_object($obj) && $obj->ID && in_array($obj->ContentType, self::getContentTypesVersioning())){
 			$_SESSION['weS']['versions']['versionToCompare'][$obj->Table][$obj->ID] = self::getHashValue(self::removeUnneededCompareFields(self::objectToArray($obj)));
 

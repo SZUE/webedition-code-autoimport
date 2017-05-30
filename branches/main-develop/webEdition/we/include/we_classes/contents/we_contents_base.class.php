@@ -23,7 +23,7 @@
  */
 
 /** the parent class of storagable webEdition classes */
-abstract class we_class{
+abstract class we_contents_base{
 	//constants for retrieving data from DB
 
 	const LOAD_MAID_DB = 0;
@@ -236,7 +236,7 @@ abstract class we_class{
 
 # public ##################
 
-	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
+	public function initByID($ID, $Table = FILE_TABLE, $from = self::LOAD_MAID_DB){
 		$this->ID = intval($ID);
 		$this->Table = ($Table ?: FILE_TABLE);
 		$this->we_load($from);

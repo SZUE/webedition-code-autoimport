@@ -192,12 +192,12 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->Filename = $this->i_getDefaultFilename();
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		switch($from){
-			case we_class::LOAD_MAID_DB:
+			case self::LOAD_MAID_DB:
 				parent::we_load($from);
 				break;
-			case we_class::LOAD_TEMP_DB:
+			case self::LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
@@ -206,13 +206,13 @@ abstract class we_textContentDocument extends we_textDocument{
 					$this->TemplateID = $this->temp_template_id;
 					$this->OldPath = $this->Path;
 				} else {
-					$this->we_load(we_class::LOAD_MAID_DB);
+					$this->we_load(self::LOAD_MAID_DB);
 				}
 				break;
-			case we_class::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
-				$this->we_load(we_class::LOAD_TEMP_DB);
+			case self::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(self::LOAD_TEMP_DB);
 				break;
-			case we_class::LOAD_SCHEDULE_DB:
+			case self::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = we_unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE));
 					if($sessDat && $this->i_initSerializedDat($sessDat)){
@@ -224,7 +224,7 @@ abstract class we_textContentDocument extends we_textDocument{
 						break;
 					}// take tmp db, when doc not in schedule db
 				}
-				$this->we_load(we_class::LOAD_TEMP_DB);
+				$this->we_load(self::LOAD_TEMP_DB);
 
 				break;
 		}
@@ -246,7 +246,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		if(!$this->ID && !we_root::we_save(false)){ // when no ID, then allways save before in main table
+		if(!$this->ID && !we_contents_root::we_save(false)){ // when no ID, then allways save before in main table
 			return false;
 		}
 		if(!$resave){
@@ -292,7 +292,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if(!($saveinMainDB ? we_root::we_save(true) : $this->we_save($DoNotMark))){
+		if(!($saveinMainDB ? we_contents_root::we_save(true) : $this->we_save($DoNotMark))){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}
 

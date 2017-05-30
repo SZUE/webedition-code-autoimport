@@ -1023,9 +1023,9 @@ abstract class we_gui_SEEM{
 						'EditorDocumentParameters' => str_replace('"', '', $param),
 					]
 			])])
-			, we_html_element::htmlBody([], we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=openExtDoc_header&filepath=' . urlencode($url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:35px;', '', '', false) .
-				we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_content&filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:35px;left:0px;right:0px;bottom:40px;', '', 'setOnload();') .
-				we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_footer"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false)
+			, we_html_element::htmlBody([], we_html_element::htmlIFrame('extDocHeader', we_contents_base::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=openExtDoc_header&filepath=' . urlencode($url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:35px;', '', '', false) .
+				we_html_element::htmlIFrame('extDocContent', we_contents_base::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_content&filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:35px;left:0px;right:0px;bottom:40px;', '', 'setOnload();') .
+				we_html_element::htmlIFrame('extDocFooter', we_contents_base::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=openExtDoc_footer"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false)
 			)
 		);
 	}

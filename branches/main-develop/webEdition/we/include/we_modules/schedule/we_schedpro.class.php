@@ -337,7 +337,7 @@ class we_schedpro{
 		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
-		$GLOBALS['we_doc']->InitByID($id, $schedFile['table'], we_class::LOAD_SCHEDULE_DB);
+		$GLOBALS['we_doc']->InitByID($id, $schedFile['table'], we_contents_base::LOAD_SCHEDULE_DB);
 		$callPublish = true;
 		$changeTmpDoc = false;
 		$_SESSION['weS']['versions']['fromScheduler'] = true;

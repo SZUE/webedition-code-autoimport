@@ -489,7 +489,7 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 	}
 	$GLOBALS['we_doc'] = new $clNm();
 
-	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_class::LOAD_MAID_DB);
+	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_contents_base::LOAD_MAID_DB);
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
 	$charset = $GLOBALS['we_doc']->getElement('Charset') ?: DEFAULT_CHARSET;
 
@@ -826,7 +826,7 @@ function we_templatePreContent($force = false){//force is used by templates with
 	if(!empty($GLOBALS['we_editmode'])){
 		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
-			we_class::hiddenTrans();
+			we_contents_base::hiddenTrans();
 		}
 		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : $GLOBALS['WE_TEMPLATE_INIT']);
 	}

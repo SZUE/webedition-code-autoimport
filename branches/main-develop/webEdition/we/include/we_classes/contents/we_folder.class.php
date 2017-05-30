@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* a class for handling directories */
-class we_folder extends we_root{
+class we_folder extends we_contents_root{
 	/* Flag which is set, when the file is a folder  */
 	var $WorkspacePath = '';
 	var $WorkspaceID = '';
@@ -84,7 +84,7 @@ class we_folder extends we_root{
 	}
 
 	public function we_initSessDat($sessDat){
-		we_root::we_initSessDat($sessDat);
+		we_contents_root::we_initSessDat($sessDat);
 
 		if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
 			if(!$this->Language){
@@ -487,7 +487,7 @@ class we_folder extends we_root{
 			$we_doc = $DB_WE->f('ClassName');
 			if($we_doc){
 				$we_doc = new $we_doc();
-				$we_doc->initByID($DB_WE->f('ID'), $this->Table, we_class::LOAD_TEMP_DB);
+				$we_doc->initByID($DB_WE->f('ID'), $this->Table, self::LOAD_TEMP_DB);
 				$we_doc->ModifyPathInformation($this->ID);
 			} else {
 				t_e('No class set at entry ', $DB_WE->f('ID'), $this->Table);

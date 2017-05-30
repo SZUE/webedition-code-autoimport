@@ -241,7 +241,7 @@ class we_objectFile extends we_document{
 		}
 
 		$doc = new we_objectFile();
-		$doc->InitByID($id, $this->Table, we_class::LOAD_TEMP_DB);
+		$doc->InitByID($id, $this->Table, self::LOAD_TEMP_DB);
 		$doc->setRootDirID(true);
 		if($this->ID == 0){
 			foreach($this->persistent_slots as $pers){
@@ -1871,7 +1871,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		}
 
 		if(!$this->Published){
-			if(!we_root::we_save(true)){
+			if(!we_contents_root::we_save(true)){
 				return false;
 			}
 			if(!$resave && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
@@ -1962,9 +1962,9 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		}
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		switch($from){
-			case we_class::LOAD_SCHEDULE_DB:
+			case self::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE);
 					if($sessDat){
@@ -1980,12 +1980,12 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 						}
 					}
 				}
-				$from = we_class::LOAD_MAID_DB;
+				$from = self::LOAD_MAID_DB;
 
-			case we_class::LOAD_MAID_DB:
+			case self::LOAD_MAID_DB:
 				parent::we_load($from);
 				break;
-			case we_class::LOAD_TEMP_DB:
+			case self::LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 //fixed: at least TableID must be fetched
@@ -1997,12 +1997,12 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 					$this->i_getPersistentSlotsFromDB('TableID,Published,Text,Path,ParentID');
 					$this->i_getUniqueIDsAndFixNames();
 				} else {
-					$this->we_load(we_class::LOAD_MAID_DB);
+					$this->we_load(self::LOAD_MAID_DB);
 				}
 				$this->setTypeAndLength();
 				break;
-			case we_class::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
-				$this->we_load(we_class::LOAD_TEMP_DB);
+			case self::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(self::LOAD_TEMP_DB);
 				$this->setTypeAndLength();
 				break;
 		}
@@ -2061,7 +2061,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 		$old = $this->Published;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if(!($saveinMainDB ? we_root::we_save(true) : $this->we_save($DoNotMark))){
+		if(!($saveinMainDB ? we_contents_root::we_save(true) : $this->we_save($DoNotMark))){
 			return false;
 		}
 		if($DoNotMark){
@@ -2520,7 +2520,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 			$object->canHaveVariants());
 	}
 
-	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
+	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = self::LOAD_MAID_DB){
 		parent::initByID(intval($we_ID), OBJECT_FILES_TABLE, $from);
 		if($this->issetElement('Charset')){
 			$this->Charset = $this->getElement('Charset');

@@ -81,7 +81,7 @@ class we_workflow_document extends we_workflow_base{
 					$this->document = new $tmp();
 					if($this->document){
 						$this->document->initByID($this->documentID, $docTable);
-						$this->document->we_load(we_class::LOAD_TEMP_DB);
+						$this->document->we_load(we_contents_base::LOAD_TEMP_DB);
 					}
 				}
 			}

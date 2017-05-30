@@ -51,7 +51,7 @@ class we_editor_noTmpl extends we_editor_base{
 				'</head>' .
 				(!empty($GLOBALS['we_editmode']) ? '
 		<body style="margin:15px;">
-			<form name="we_form" method="post">' . we_class::hiddenTrans() .
+			<form name="we_form" method="post">' . we_contents_base::hiddenTrans() .
 				we_html_tools::htmlMessageBox(667, 650, '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($this->we_doc->getElement('Title'))) . '
 </pre>
 	' . we_tag('textarea', ['name' => 'HEAD', 'rows' => 8, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;']) . '<br/>

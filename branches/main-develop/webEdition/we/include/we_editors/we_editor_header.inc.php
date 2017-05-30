@@ -34,7 +34,7 @@ switch($_SESSION['weS']['we_mode']){
 		$we_tabs = new we_gui_tabs();
 		// user has no access to file - only preview mode.
 		$access = $we_doc->userHasAccess();
-		if($access != we_root::USER_HASACCESS && $access != we_root::USER_NO_SAVE){
+		if($access != we_contents_root::USER_HASACCESS && $access != we_contents_root::USER_NO_SAVE){
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
 				$we_tabs->addTab('', we_base_constants::WE_ICON_PREVIEW, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), "['switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "'];", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', '[preview]')]);
 			}
@@ -124,7 +124,7 @@ switch($we_doc->ContentType){
 	default:
 }
 
-echo we_html_tools::getHtmlTop('', '', '',  we_html_element::cssLink(CSS_DIR . 'we_tab.css').we_html_element::jsScript(JS_DIR . 'we_editor_header.js'), we_html_element::htmlBody(array_merge($we_doc->getEditorBodyAttributes(we_root::EDITOR_HEADER), [
+echo we_html_tools::getHtmlTop('', '', '',  we_html_element::cssLink(CSS_DIR . 'we_tab.css').we_html_element::jsScript(JS_DIR . 'we_editor_header.js'), we_html_element::htmlBody(array_merge($we_doc->getEditorBodyAttributes(we_contents_root::EDITOR_HEADER), [
 		'id' => "eHeaderBody",
 		'onresize' => "weTabs.setFrameSize()",
 		'onload' => '_EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .

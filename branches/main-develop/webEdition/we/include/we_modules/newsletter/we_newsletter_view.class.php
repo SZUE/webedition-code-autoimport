@@ -1533,7 +1533,7 @@ class we_newsletter_view extends we_modules_view{
 
 	private static function we_getObjectFileByID($id, $includepath = ''){
 		$mydoc = new we_objectFile();
-		$mydoc->initByID($id, OBJECT_FILES_TABLE, we_class::LOAD_MAID_DB);
+		$mydoc->initByID($id, OBJECT_FILES_TABLE, we_contents_base::LOAD_MAID_DB);
 		return $mydoc->i_getDocument($includepath);
 	}
 

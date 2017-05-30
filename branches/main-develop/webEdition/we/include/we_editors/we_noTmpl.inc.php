@@ -54,7 +54,7 @@ echo we_html_element::htmlDocType();
 	<?php if(!empty($GLOBALS['we_editmode'])){ ?>
 		<body style="margin:15px;">
 			<form name="we_form" method="post"><?php
-				echo we_class::hiddenTrans();
+				echo we_contents_base::hiddenTrans();
 				$foo = '<html><head>' .
 						($we_doc->getElement('Keywords') ?
 						we_html_element::htmlMeta(['name' => 'keywords', 'content' => $we_doc->getElement('Keywords')]) : '') .

@@ -832,7 +832,7 @@ we_templateInit();?>';
 		return true;
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		parent::we_load($from);
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();

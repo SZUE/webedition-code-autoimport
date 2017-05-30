@@ -24,7 +24,7 @@
  */
 /*  a class for handling flashDocuments. */
 
-class we_collection extends we_root{
+class we_collection extends we_contents_root{
 	/*
 	 * FIXME: maybe abandon file- and objectCollection and make one $collection only?
 	 * we have both collections for not immediately deleting existing collections when changing remTable without saving collection:
@@ -193,7 +193,7 @@ class we_collection extends we_root{
 		}
 	}
 
-	public function initByID($ID, $Table = VFILE_TABLE, $from = we_class::LOAD_MAID_DB){
+	public function initByID($ID, $Table = VFILE_TABLE, $from = self::LOAD_MAID_DB){
 		parent::initByID($ID, VFILE_TABLE);
 	}
 
@@ -343,7 +343,7 @@ class we_collection extends we_root{
 		];
 
 		$weSuggest = &we_gui_suggest::getInstance();
-		
+
 		/*
 		// for use as dynamic vars
 		return [
@@ -420,7 +420,7 @@ class we_collection extends we_root{
 				]
 			]
 		];
-		
+
 	//this.gui = {
 
 		/*
@@ -428,13 +428,13 @@ class we_collection extends we_root{
 			item: 200,
 			icon: 32
 		},
-		 * 
+		 *
 		 */
 		/*
 		itemsPerRow: 4,
 		*/
 	//};
-		
+
 
 		return ['doc' => $doc, 'content' => $content, 'gui' => $gui];
 	}
@@ -693,7 +693,7 @@ class we_collection extends we_root{
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . escape_sql_query($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
-	public function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = self::LOAD_MAID_DB){
 		parent::we_load($from);
 		//FIXME: remove this switch after 6.6
 		$this->ContentType = $this->ContentType ?: ($this->IsFolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION);
