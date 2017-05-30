@@ -28,19 +28,19 @@ select:invalid{
 }
 
 .weEditmodeStyle {
-  	border: 0px ! important;
-  	padding: 5px;
+	border: 0px ! important;
+	padding: 5px;
 }
 
 .weEditTable {
-  	background-color: transparent;
-  	border: 1px solid $Grey;
-  	color: black;
-  	font-size: $medfont;
+	background-color: transparent;
+	border: 1px solid $Grey;
+	color: black;
+	font-size: $medfont;
 }
 
 div.we_blockControls button, div.we_blockControls select {
-  	margin-right: 1em;
+	margin-right: 1em;
 }
 
 table.mceLayout {
@@ -71,5 +71,9 @@ table.mceLayout button.weBtn {
 }
 
 .tag_img_icon{
-  	padding: 4px 0 4px 0;
+	padding: 4px 0 4px 0;
+}
+
+wetextarea-HEAD,wetextarea-BODY{
+	width:100%;
 }
