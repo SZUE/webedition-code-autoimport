@@ -697,6 +697,10 @@ class we_collection extends we_contents_root{
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . escape_sql_query($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
+	protected function i_filenameNotValid(){
+		return false;
+	}
+
 	public function we_load($from = self::LOAD_MAID_DB){
 		parent::we_load($from);
 		//FIXME: remove this switch after 6.6
