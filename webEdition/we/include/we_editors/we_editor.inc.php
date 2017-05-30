@@ -144,7 +144,10 @@ switch($cmd0){
 							if(defined('WORKFLOW_TABLE') && (we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table))){
 								we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 							}
-							$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+							// FIXME: fast and dirty fix for wrong messages: we should avoid publishing at all when not needed!
+							if(in_array($we_doc->ContentType, [we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::HTML])){
+								$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+							}
 							$we_responseTextType = we_base_util::WE_MESSAGE_NOTICE;
 // SEEM, here a doc is published
 							$GLOBALS['publish_doc'] = true;

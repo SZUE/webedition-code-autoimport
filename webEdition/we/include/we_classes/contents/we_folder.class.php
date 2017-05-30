@@ -230,34 +230,32 @@ class we_folder extends we_contents_root{
 
 	public function we_save($resave = false, $skipHook = false){
 		$this->i_setText();
+		$collectionFolder = $this->Table == VFILE_TABLE;
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){
 			$this->ClassName = 'we_class_folder';
 		}
 		$update = $this->isMoved();
-		if($update && !$objFolder){
+		$tmp = $this->Path;
+
+		if($update && !$objFolder && !$collectionFolder){
 			if(file_exists($this->OldPath) && file_exists($this->Path)){
 				t_e('Both paths exists!', $this->OldPath, $this->Path);
 				return false;
 			}
 			//leave old dir for parent save
-			$tmp = $this->Path;
 			$this->Path = $this->OldPath;
-			if(!parent::we_save($resave)){
-				return false;
-			}
-			//set back path, since we want to move the dir
-			$this->Path = $tmp;
 		}
+
+		if(!parent::we_save($resave)){
+			return false;
+		}
+		$this->Path = $tmp;
+
 		if(!$this->writeFolder()){
 			return false;
 		}
 
-		if(!$update || $objFolder){
-			if(!parent::we_save($resave) || !$this->writeFolder()){
-				return false;
-			}
-		}
 		$this->OldPath = $this->Path;
 		if(defined('OBJECT_TABLE') && $this->Table === OBJECT_TABLE){
 			$f = new we_class_folder();
@@ -355,6 +353,21 @@ class we_folder extends we_contents_root{
 	protected function i_setText(){
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
+
+	/* 
+	 * not needed if blank and special chars are alloud for collection folders
+	protected function i_filenameNotValid(){
+		switch($this->Table){
+			case VFILE_TABLE: 
+				$this->Filename = $this->Text;
+				break;
+			default:
+				// do nothing
+		}
+
+		return parent::i_filenameNotValid();
+	}
+	*/
 
 	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
@@ -481,10 +494,13 @@ class we_folder extends we_contents_root{
 			$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
 		}
 		//FIMXE: is this really correct? this will only get the first, but not the second level files
-		$DB_WE->query('SELECT ID,ClassName FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));
+		$DB_WE->query('SELECT ID' . ($this->Table === VFILE_TABLE ? ',IsFolder' : ',ClassName') . ' FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));
 		while($DB_WE->next_record()){
 			update_time_limit(30);
-			$we_doc = $DB_WE->f('ClassName');
+
+			// FIXME: add row ClassName to VFILE_TABLE
+			$we_doc = $this->Table === VFILE_TABLE ? ($DB_WE->f('IsFolder') ? 'we_folder' : 'we_collection') : $DB_WE->f('ClassName');
+
 			if($we_doc){
 				$we_doc = new $we_doc();
 				$we_doc->initByID($DB_WE->f('ID'), $this->Table, self::LOAD_TEMP_DB);
