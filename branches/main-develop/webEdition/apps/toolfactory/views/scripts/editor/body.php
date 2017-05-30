@@ -601,7 +601,7 @@ $containerDiv->addElement($form);
 $htmlPage->addElement($containerDiv);
 
 $htmlPage->addInlineJS($js);
-$htmlPage->setBodyAttributes(['class' => 'weEditorBody', 'onload' => 'loaded=1;']);
+$htmlPage->setBodyAttributes(['class' => 'weEditorBody']);
 
 $htmlPage->addInlineCSS($cssLoadingWheel);
 

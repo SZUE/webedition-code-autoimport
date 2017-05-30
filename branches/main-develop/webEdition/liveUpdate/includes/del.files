@@ -371,6 +371,7 @@ we/include/we_editors/we_editor_contentobjectFile.inc.php
 we/include/we_editors/we_editor_contentobject.inc.php
 we/include/we_editors/we_editor_content_collection.inc.php
 we/include/we_editors/we_editor_binaryContent.inc.php
+we/include/we_editors/we_editor.inc.php
 we/include/we_editors/we_editPasswd.inc.php
 we/include/we_editors/we_document_move_question.inc.php
 we/include/we_editors/we_backup_cmd.php

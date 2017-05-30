@@ -218,6 +218,12 @@ function findInclude($cmd){
 		case 'rotateImage':
 			we_editor_functions::processImageCmd($cmd);
 			return true;
+		case 'unpublish':
+			we_editor_functions::doUnpublish();
+			return true;
+		case 'save_document':
+			we_editor_functions::saveDocument();
+			return true;
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':
 		case 'change_link':
@@ -237,10 +243,8 @@ function findInclude($cmd){
 		case 'remove_image':
 		case 'restore_defaults':
 		case 'revert_published':
-		case 'save_document':
 		case 'switch_edit_page':
 		case 'template_changed':
-		case 'unpublish':
 		case 'up_entry_at_list':
 		case 'up_link_at_list':
 		case 'update_file':
@@ -252,7 +256,8 @@ function findInclude($cmd){
 		case 'move_variant_up':
 		case 'preview_variant':
 		case 'remove_variant':
-			return 'we_editors/we_editor.inc.php';
+			we_editor_functions::processEditorCmd($cmd);
+			return true;
 		case 'edit_linklist':
 		case 'edit_link':
 		case 'edit_link_at_class':
