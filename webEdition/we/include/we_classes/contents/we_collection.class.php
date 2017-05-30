@@ -568,24 +568,28 @@ class we_collection extends we_contents_root{
 				) . we_html_element::htmlDiv(['class' => 'toolbarBtns'], $btnEdit . $btnRemove);
 
 		return we_html_element::htmlDiv([//TODO: set dimensions by JS
-					'style' => 'width:200px;height:200px;',
-					'id' => 'grid_item_' . $item['index'],
-					'class' => 'gridItem'
-						], we_html_element::htmlDiv(['title' => $item['path'] . ' (ID: ' . $item['id'] . ')',
-							'class' => 'divContent',
-							'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < 200 ? 'background-size:auto;' : ''),
-							'draggable' => 'false',
-								], we_html_element::htmlDiv(['class' => 'divInner',
-									'style' => 'display:##SHOWBTN##'
-										], $btnSelect) . we_html_element::htmlDiv(['class' => 'divToolbar',
-									'draggable' => false
-										], $toolbar)
-						) . we_html_element::htmlDiv(['class' => 'divSpace',
-							'id' => 'grid_space_' . $item['index'],
-							'title' => g_l('weClass', '[collection][dblClick_to_insert]')
-								], '') . we_html_element::htmlDiv(['id' => 'collectionItem_index_grid_' . $item['index'], 'class' => 'collectionItem_index', 'style' => 'display:none']) .
-						we_html_element::htmlHidden('collectionItem_we_id', $item['id']) .
-						we_html_element::htmlHidden('collectionItem_we_id_' . $item['index'], $item['id'])
+				'style' => 'width:200px;height:200px;',
+				'id' => 'grid_item_' . $item['index'],
+				'class' => 'gridItem'
+			], we_html_element::htmlDiv(['class' => 'divSpace_left',
+				'id' => 'grid_space_left_' . $item['index'],
+				'title' => g_l('weClass', '[collection][dblClick_to_insert]')
+					], '') .
+			we_html_element::htmlDiv(['title' => $item['path'] . ' (ID: ' . $item['id'] . ')',
+				'class' => 'divContent',
+				'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < 200 ? 'background-size:auto;' : ''),
+				'draggable' => 'false',
+					], we_html_element::htmlDiv(['class' => 'divInner',
+						'style' => 'display:##SHOWBTN##'
+							], $btnSelect) . we_html_element::htmlDiv(['class' => 'divToolbar',
+						'draggable' => false
+							], $toolbar)) .
+			we_html_element::htmlDiv(['class' => 'divSpace_right',
+				'id' => 'grid_space_' . $item['index'],
+				'title' => g_l('weClass', '[collection][dblClick_to_insert]')
+					], '') . we_html_element::htmlDiv(['id' => 'collectionItem_index_grid_' . $item['index'], 'class' => 'collectionItem_index', 'style' => 'display:none']) .
+			we_html_element::htmlHidden('collectionItem_we_id', $item['id']) .
+			we_html_element::htmlHidden('collectionItem_we_id_' . $item['index'], $item['id'])
 		);
 	}
 
