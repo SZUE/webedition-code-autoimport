@@ -40,12 +40,12 @@ class we_editor_unusedElements extends we_editor_base{
 			}
 
 			if($delS){
-				$db->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
+				$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND DocumentTable="tblFile" AND Type!="attrib" AND nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
 				);
 			}
 			if($delB){
 				$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND c.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
-				$db->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND c.DocumentTable="tblFile" AND c.Type!="attrib" AND SUBSTRING_INDEX(c.Name,"__",1) IN ("' . implode('","', $strs) . '")'
+				$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $this->we_doc->ID . ') AND DocumentTable="tblFile" AND Type!="attrib" AND SUBSTRING_INDEX(Name,"__",1) IN ("' . implode('","', $strs) . '")'
 				);
 			}
 		}

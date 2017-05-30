@@ -287,7 +287,7 @@ abstract class we_base_delete{
 			return true;
 		}
 
-		return $DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' c WHERE c.DID=' . intval($id) . ' AND c.DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+		return $DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 	}
 
 	private static function getHasPerm($idInfos, $table){
