@@ -392,6 +392,7 @@ abstract class we_editor_functions{
 					'we_JavaScript' => [],
 					'we_responseText' => $we_responseText,
 					'we_responseTextType' => $we_responseTextType,
+					'we_cmd5' => [],
 					'we_responseJS' => $we_responseJS,
 			])]) . ($jsCmd ? $jsCmd->getCmds() : ''), we_html_element::htmlBody());
 	}
@@ -485,7 +486,7 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 		);
 	}
 
-	public static function processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, $we_responseText = '', $we_responseTextType = ''){
+	public static function processSave($we_doc, $we_transaction, $wasSaved, $saveTemplate, $isClose, $showAlert, $we_JavaScript, $we_responseText = '', $we_responseTextType = ''){
 		$we_responseText .= $we_doc->getErrMsg();
 		if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 			//will show the message
@@ -500,8 +501,7 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",WE().consts.size.dia
 			we_schedpro::trigger_schedule();
 			$we_JavaScript[] = ['setEditorDocumentId', $we_doc->ID]; // save/ rename a document
 		}
-		self::saveInc($we_transaction, $we_doc, $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : [
-				]), $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
+		self::saveInc($we_transaction, $we_doc, $we_responseText, $we_responseTextType, $we_JavaScript, $wasSaved, $saveTemplate, $GLOBALS['we_responseJS'], $isClose, $showAlert, !empty($GLOBALS["publish_doc"]));
 	}
 
 	//if document is locked - only Preview mode is possible. otherwise show warning.
