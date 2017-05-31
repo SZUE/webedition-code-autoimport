@@ -386,7 +386,12 @@ class we_thumbnail{
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ?: $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
+
+		/*
+		 * FIXME IMI: $this->imageData (= binary) is temporarily blocked because 
+		 * we_base_imageEdit::ImageCreateFromStringReplacement($imagedata) does not work!
+		 */
+		$outarr = we_base_imageEdit::edit_image(false && $this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;

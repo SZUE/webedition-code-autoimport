@@ -74,6 +74,6 @@ $thumbs[] = ["headline" => "", "html" => $iframe];
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:add_thumbnails();", '', 0, 0, "", "", !$enabled_buttons, false), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
-we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_element::jsScript(JS_DIR . 'add_thumb.js', '', ['id' => 'loadVarAdd_thumb', 'data-thumbData' => setDynamicVar([
+echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_element::jsScript(JS_DIR . 'add_thumb.js', '', ['id' => 'loadVarAdd_thumb', 'data-thumbData' => setDynamicVar([
 			'transaction' => $we_transaction
 	])]), we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "top.focus();"], we_html_multiIconBox::getHTML("", $thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', '[thumbnails]'))));
