@@ -88,7 +88,7 @@ class we_export_frames extends we_modules_frame{
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
+		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
 					'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
 							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
@@ -128,7 +128,7 @@ class we_export_frames extends we_modules_frame{
 		$table2->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setColContent(0, $col++, we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !we_base_permission::hasPerm('MAKE_EXPORT'))
+			$table2->setColContent(0, $col++, we_html_button::create_button(we_html_button::EXPORT, "javascript:top.content.we_cmd('start_export')", '', 0, 0, '', '', !we_base_permission::hasPerm('MAKE_EXPORT'))
 			);
 		}
 
@@ -424,7 +424,7 @@ class we_export_frames extends we_modules_frame{
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-		
+
 			$table = $this->View->export->ExportType === we_exim_ExIm::TYPE_CSV ? OBJECT_FILES_TABLE : we_base_request::_(we_base_request::TABLE, "tab");
 			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . $table . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . we_base_request::_(we_base_request::INTLIST, "openFolders", "")]);
 
@@ -464,7 +464,7 @@ class we_export_frames extends we_modules_frame{
 		];
 
 		$bodyContent = we_html_element::htmlForm(['name' => 'we_form',
-				"method" => "post", 
+				"method" => "post",
 				"action" => $this->frameset], we_html_element::htmlHiddens(['pnt' => 'cmd', 'cmd' => 'do_export'])
 			);
 
