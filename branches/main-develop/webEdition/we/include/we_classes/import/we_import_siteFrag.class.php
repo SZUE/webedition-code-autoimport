@@ -24,10 +24,6 @@
  */
 class we_import_siteFrag extends we_fragment_base{
 
-	function __construct($files){
-		parent::__construct("siteImport", 10, ['style' => 'margin:10px 15px;'], $files);
-	}
-
 	protected function doTask(){
 		switch($this->data["contentType"]){
 			case "post/process":

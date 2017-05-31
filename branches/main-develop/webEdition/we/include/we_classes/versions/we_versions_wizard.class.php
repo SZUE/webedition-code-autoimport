@@ -670,7 +670,7 @@ set_button_state(false);';
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$taskname = md5(session_id() . '_version_wizard');
-		$currentTask = we_base_request::_(we_base_request::RAW, 'fr_' . $taskname . '_ct', 0);
+		$currentTask = we_base_request::_(we_base_request::BOOL, 'doFragments');//true if data was already set
 		$taskFilename = FRAGMENT_LOCATION . $taskname;
 
 		$js = "";
@@ -683,8 +683,8 @@ set_button_state(false);';
 					$data = we_versions_fragment::getDocuments($type, $version_reset);
 					break;
 			}
-			if(count($data)){
-				$fr = new we_versions_fragment($taskname, $data);
+			if(!empty($data)){
+				$fr = new we_versions_fragment($taskname, 5, [], $data);
 
 				return [];
 			}
@@ -692,7 +692,7 @@ set_button_state(false);';
 				""
 			];
 		}
-		$fr = new we_versions_fragment($taskname);
+		$fr = new we_versions_fragment($taskname, 5);
 		return [];
 	}
 

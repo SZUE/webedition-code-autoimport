@@ -259,7 +259,7 @@ class we_rebuild_wizard{
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
 		$taskname = md5(session_id() . '_rebuild');
-		$currentTask = we_base_request::_(we_base_request::INT, 'fr_' . $taskname . '_ct', 0);
+		$currentTask = we_base_request::_(we_base_request::BOOL, 'doFragments');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
 

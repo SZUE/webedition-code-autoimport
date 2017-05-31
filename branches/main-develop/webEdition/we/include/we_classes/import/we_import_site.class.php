@@ -665,7 +665,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			} else {
 				$this->files = '';
 			}
-			new we_import_siteFrag($this->files);
+			new we_import_siteFrag("siteImport", 10, ['style' => 'margin:10px 15px;'], $this->files);
 			return '';
 		}
 
