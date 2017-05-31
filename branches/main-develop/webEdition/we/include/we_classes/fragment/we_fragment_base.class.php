@@ -137,11 +137,12 @@ abstract class we_fragment_base{
 	}
 
 	protected function getJSReload(we_base_jsCmd $jsCmd){
-		$nextTask = $this->currentTask; // + $this->taskPerFragment;
+		$nextTask = $this->currentTask;
 
 		if(($nextTask < $this->numberOfTasks)){
 			$tmp = $_REQUEST;
-			$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
+			$tmp['fr_' . $this->name . '_ct'] = $nextTask;
+			$tmp['doFragments'] = 1;
 			$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
 			$jsCmd->addCmd('location', ['doc' => 'document', 'loc' => $_SERVER['SCRIPT_NAME'] . '?' . $tail]);
 		}

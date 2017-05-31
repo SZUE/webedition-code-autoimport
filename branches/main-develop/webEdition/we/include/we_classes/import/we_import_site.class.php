@@ -648,20 +648,24 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private function _getButtonsHTML(){
 		if($this->step == 1){
-			$this->_fillFiles();
-			if(count($this->files) == 0){
-				$jscmd = new we_base_jsCmd();
+			if(!we_base_request::_(we_base_request::BOOL, 'doFragments')){//true if data was already set
+				$this->_fillFiles();
+				if(empty($this->files)){
+					$jscmd = new we_base_jsCmd();
 
-				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
-				$jscmd->addMsg((count(scandir($importDirectory)) <= 2 ?
-						g_l('importFiles', '[emptyDir]') :
-						g_l('importFiles', '[noFiles]'))
-					, we_base_util::WE_MESSAGE_INFO);
+					$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
+					$jscmd->addMsg((count(scandir($importDirectory)) <= 2 ?
+							g_l('importFiles', '[emptyDir]') :
+							g_l('importFiles', '[noFiles]'))
+						, we_base_util::WE_MESSAGE_INFO);
 
-				$jscmd->addCmd('close');
-				return $jscmd->getCmds();
+					$jscmd->addCmd('close');
+					return $jscmd->getCmds();
+				}
+			} else {
+				$this->files = '';
 			}
-			new we_import_siteFrag($this);
+			new we_import_siteFrag($this->files);
 			return '';
 		}
 
