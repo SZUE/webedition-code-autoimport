@@ -50,7 +50,7 @@ class we_import_siteFrag extends we_fragment_base{
 	protected function updateProgressBar(we_base_jsCmd $jsCmd){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
 		$jsCmd->addCmd('setProgress', [
-			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
+			'progress' => ((int) ((100 / $this->numberOfTasks) * $this->currentTask)),
 			'name' => 'progressTxt',
 			'text' => we_base_util::shortenPath($path, 30),
 			'win' => 'siteimportbuttons'
@@ -59,9 +59,15 @@ class we_import_siteFrag extends we_fragment_base{
 	}
 
 	protected function finish(we_base_jsCmd $jsCmd){
+		$jsCmd->addCmd('setProgress', [
+			'progress' => 100,
+			'name' => 'progressTxt',
+			'text' => '',
+			'win' => 'siteimportbuttons'
+		]);
 		$jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_base_util::WE_MESSAGE_NOTICE);
 		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-		$jsCmd->addCmd('close');
+		$jsCmd->addCmd('close_delayed');
 	}
 
 }
