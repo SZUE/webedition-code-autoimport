@@ -23,15 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_siteFrag extends we_fragment_base{
-	private $obj = null;
 
-	function __construct($obj){
-		$this->obj = $obj;
-		parent::__construct("siteImport", 10, ['style' => 'margin:10px 15px;']);
-	}
-
-	protected function init(){
-		$this->alldata = $this->obj->files;
+	function __construct($files){
+		parent::__construct("siteImport", 10, ['style' => 'margin:10px 15px;'], $files);
 	}
 
 	protected function doTask(){
