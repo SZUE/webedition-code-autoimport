@@ -162,7 +162,7 @@ class we_imageDocument extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_THUMBNAILS:
-				return we_editor_thumbnails($this);
+				return new we_editor_thumbnails($this);
 			default:
 				return parent::editor();
 		}

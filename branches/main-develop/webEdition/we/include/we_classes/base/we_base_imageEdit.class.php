@@ -523,7 +523,7 @@ abstract class we_base_imageEdit{
 			$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
 		}
 
-		$gdimg = ($fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata));
+		$gdimg = ($fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata)); // IMI: CHECK: seems not to work!
 
 		// Now we need to ensure that we could read the file
 		if($gdimg){
