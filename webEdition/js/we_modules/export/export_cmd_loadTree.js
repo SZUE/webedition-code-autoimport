@@ -30,4 +30,11 @@
 window.dynVars = WE().util.getDynamicVar(document, 'loadVarExport_cmd_loadTree', 'data-cmdDynVars');
 var win = (top.content && top.content.editor.edbody.treeData ? top.content.editor.edbody : top);
 
-win.loadTreeItems(window.dynVars.parentFolder, window.dynVars.clear, window.dynVars.treeItems);
+if (win.loadTreeItems) {
+	win.loadTreeItems(window.dynVars.parentFolder, window.dynVars.clear, window.dynVars.treeItems);
+} else {
+	window.setTimeout(function () {
+		var win = (top.content && top.content.editor.edbody.treeData ? top.content.editor.edbody : top);
+		win.loadTreeItems(window.dynVars.parentFolder, window.dynVars.clear, window.dynVars.treeItems);
+	}, 100);
+}

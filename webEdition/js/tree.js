@@ -82,7 +82,7 @@ container.prototype = {
 	},
 	setState: function (state) {
 		this.state = state;
-		if (this.state == this.tree_states.edit) {
+		if (this.state === this.tree_states.edit) {
 			for (var i = 1; i <= this.len; i++) {
 				if (this[i].checked == 1) {
 					this[i].checked = 0;
@@ -230,7 +230,7 @@ container.prototype = {
 		return nf;
 	},
 	makeNewEntry: function (attribs) {
-		if (window.table && this.table !== window.table) {
+		if (attribs.table && treeData.table && treeData.table !== attribs.table) {
 			return;
 		}
 		var pos = this.indexOfEntry(attribs.parentid);
@@ -495,7 +495,7 @@ function drawTree() {
 		"</div>";
 }
 
-function doClick(){
+function doClick() {
 	//override!
 }
 

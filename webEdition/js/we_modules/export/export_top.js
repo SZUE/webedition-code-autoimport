@@ -33,6 +33,11 @@ var hot = false;
 var scrollToVal = 0;
 var table = WE().consts.tables.FILE_TABLE;
 
+function loaded() {
+	window.weTabs.setFrameSize();
+	document.getElementById('tab_' + top.content.activ_tab).className = 'tabActive';
+}
+
 function setHot() {
 	hot = true;
 }
