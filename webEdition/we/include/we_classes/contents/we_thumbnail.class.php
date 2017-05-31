@@ -553,9 +553,9 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function useOriginalSize(){
-		return ($this->generateSmaller ?
-			false :
-			(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
+		return $this->generateSmaller ? false :
+				we_base_imageEdit::isNoThumbnailNeeded($this->imageWidth, $this->imageHeight, $this->thumbWidth, $this->thumbHeight, in_array(self::OPTION_MAXSIZE, $this->options), in_array(self::OPTION_FITINSIDE, $this->options));
+			//(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
 	}
 
 	/**
