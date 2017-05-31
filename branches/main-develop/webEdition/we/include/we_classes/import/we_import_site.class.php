@@ -1355,7 +1355,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$data = '';
 
 		// initializing $we_doc
-		$we_doc = we_document::initDoc([], $contentType);
+		$GLOBALS['we_doc'] = we_document::initDoc([], $contentType);
 
 		// initialize Path Information
 		$GLOBALS['we_doc']->we_new();

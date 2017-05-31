@@ -115,7 +115,6 @@ abstract class we_fragment_base{
 		for($i = 0; $i < $this->taskPerFragment && $this->currentTask < $this->numberOfTasks; $i++){
 			$this->data = $this->alldata[$this->currentTask];
 			$this->doTask();
-
 			$this->currentTask++;
 		}
 
@@ -138,7 +137,7 @@ abstract class we_fragment_base{
 	}
 
 	protected function getJSReload(we_base_jsCmd $jsCmd){
-		$nextTask = $this->currentTask + $this->taskPerFragment;
+		$nextTask = $this->currentTask; // + $this->taskPerFragment;
 
 		if(($nextTask < $this->numberOfTasks)){
 			$tmp = $_REQUEST;
