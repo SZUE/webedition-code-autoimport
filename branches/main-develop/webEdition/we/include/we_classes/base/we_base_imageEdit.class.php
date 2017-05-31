@@ -29,6 +29,7 @@
  */
 abstract class we_base_imageEdit{
 	const IMAGE_EXTENSIONS = 'svgz';
+	const MAXSIZE_ON_FITISIDE = false;
 
 	public static $GDIMAGE_TYPE = ['.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'];
 
@@ -250,8 +251,8 @@ abstract class we_base_imageEdit{
 		}
 	}
 
-	private static function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
-		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
+	private static function calculateImageSize($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
+		if(self::isNoThumbnailNeeded($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
 			return ['width' => $origwidth, 'height' => $origheight, 'useorig' => 1];
 		}
 
@@ -290,32 +291,51 @@ abstract class we_base_imageEdit{
 		return ['width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0];
 	}
 
-	static function calculate_image_sizeFit($origwidth, $origheight, $newwidth, $newheight, $maxsize = true){
-		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
+	private static function calculateImageSizeFit($origwidth, $origheight, $newwidth, $newheight, $maxsize = false){
+		if(!$newwidth || !$newheight){
+			t_e('missing target width or length to fit thumnail inside');
 			return ['width' => $origwidth, 'height' => $origheight, 'useorig' => 1];
 		}
 
-		// If width has been specified set it and compute new height based on source area aspect ratio
-		// here it is set
-		$outsize['width'] = $newwidth;
-		$outsize['height'] = round($origheight * $newwidth / $origwidth);
-
-
-
-		// If width has already been set and the new image is too tall, compute a new width based
-		// on aspect ratio - otherwise, use height and compute new width
-		if($newheight){
-			if($outsize['height'] > $newheight){
-				$outsize['width'] = round($origwidth * $newheight / $origheight);
-				$outsize['height'] = $newheight;
-			}
+		if(self::isNoThumbnailNeeded($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
+			return ['width' => $origwidth, 'height' => $origheight, 'useorig' => 1]; // FIXME: this is not considered anywhere!
 		}
 
-		return ['width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0];
+		if($maxsize || ($origwidth > $newwidth && $origheight > $newheight)){
+			return ['width' => $newwidth, 'height' => $newheight, 'useorig' => 0];
+		}
+
+		// not maxsize and exactly one site is longer than its target size: do not resize but crop if needed to fit inside
+		if($origwidth <= $newwidth){
+			return array('width' => $origwidth, 'height' => $newheight, 'useorig' => 0);
+		}
+		if($origheight <= $newheight){
+			return array('width' => $newwidth, 'height' => $origheight, 'useorig' => 0);
+		}
+
+		/* instead of crop do resize to fit inside
+		 * 
+		if($origwidth > $newwidth){
+			return array('width' => $newwidth, 'height' => round(($origheight / $origwidth) * $newwidth), 'useorig' => 0);
+		}
+		if($origheight > $newheight){
+			return array('width' => round(($origwidth / $origheight) * $newheight), 'height' => $newheight, 'useorig' => 0);
+		}
+		 * 
+		 */
 	}
 
-	private static function should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize = false, $fitinside = false){
-		return (!$maxsize) && (!$fitinside) && ($origwidth <= $newwidth) && ($origheight <= $newheight);
+	public static function isNoThumbnailNeeded($origwidth, $origheight, $newwidth, $newheight, $maxsize = false, $fitinside = false){
+		$newwidth = intval($newwidth);
+		$newheight = intval($newheight);
+		$origwidth = intval($origwidth);
+		$origheight = intval($origheight);
+
+		if(self::MAXSIZE_ON_FITISIDE && $fitinside){
+			return false;
+		}
+
+		return !$maxsize /*&& (!$fitinside)*/ && ($origwidth <= $newwidth || $newwidth === 0) && ($origheight <= $newheight || $newheight === 0);
 	}
 
 	public static function getimagesize($filename){
@@ -514,6 +534,9 @@ abstract class we_base_imageEdit{
 			$gdWidth = $imagesize[0];
 			$gdHeight = $imagesize[1];
 
+			$optFitinside = in_array(we_thumbnail::OPTION_FITINSIDE, $options);
+			$optMaxsize = in_array(we_thumbnail::OPTION_MAXSIZE, $options) || ($optFitinside && self::MAXSIZE_ON_FITISIDE);
+
 			if(($rotate_angle != 0) && function_exists('ImageRotate')){
 				$rotate_angle = floatval($rotate_angle);
 				if($rotate_angle < 0){
@@ -529,7 +552,12 @@ abstract class we_base_imageEdit{
 				}
 			}
 
-			$outsize = self::calculate_image_size($gdWidth, $gdHeight, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
+			if($optFitinside){
+				$outsize = self::calculateImageSizeFit($gdWidth, $gdHeight, $width, $height, $optMaxsize);
+				$optFitinside = $outsize['useorig'] ? false : $optFitinside;
+			} else {
+				$outsize = self::calculateImageSize($gdWidth, $gdHeight, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
+			}
 
 			// Decide, which functions to use (depends on version of GD library)
 			$image_create_function = (self::gd_version() >= 2.0 ? 'imagecreatetruecolor' : 'imagecreate');
@@ -560,8 +588,11 @@ abstract class we_base_imageEdit{
 				default:
 			}
 
-			if((in_array(we_thumbnail::OPTION_FITINSIDE, $options) || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
-				if(in_array(we_thumbnail::OPTION_FITINSIDE, $options)){
+			if(($optFitinside || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
+				if($optFitinside){
+					$width = $outsize['width'];
+					$height = $outsize['height'];
+
 					$wratio = $width / $gdWidth;
 					$hratio = $height / $gdHeight;
 					$ratio = max($width / $gdWidth, $height / $gdHeight);
