@@ -505,43 +505,41 @@ abstract class we_base_imageEdit{
 	}
 
 	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = [we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE], array $crop = [0, 0], $rotate_angle = 0){
-		if($output_format === 'jpeg'){
-			$output_format = 'jpg';
-		}
-		$options = array_filter($options);
-
-		// differentiate between paht and bincontent for better readability...
-		if(($fromFile = strlen($imagedata) < 255 && @file_exists($imagedata))){
-			$imagepath = $imagedata;
-			$bindata = '';
-		} else {
-			$imagepath = '';
-			$bindata = $imagedata;
-		}
-		unset($imagedata);
-		
-
-		// Output format is available
 		if(!in_array($output_format, self::supported_image_types())){
 			return [false, -1, -1];
 		}
-		// Set quality for JPG images
-		if($output_format === 'jpg'){
-			// Keep quality between 1 and 99
-			$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
+
+		if(($writeTmpfile = !(strlen($imagedata) < 255 && @file_exists($imagedata)))){
+			$imagepath = we_base_file::saveTemp($imagedata);
+		} else {
+			$imagepath = $imagedata;
+		}
+		if(($gdimg = self::ImageCreateFromFileReplacement($imagepath))){
+			$imageInfo = [];
+			$imagesize = getimagesize($imagepath, $imageInfo); // $imageinfo contains jpg metadata if exist
+			$metasPng = self::extractMetadataFromPng($imagepath);
+		}
+		unset($imagedata);
+		if($writeTmpfile){
+			unlink($imagepath);
 		}
 
-		$gdimg = ($fromFile ? self::ImageCreateFromFileReplacement($imagepath) : self::ImageCreateFromStringReplacement($bindata));
-
 		// Now we need to ensure that we could read the file
-		if($gdimg){
+		if($gdimg && $imagesize[0] && $imagesize[1]){
+			if($output_format === 'jpeg'){
+				$output_format = 'jpg';
+			}
 
-			// Detect dimension of image and write APP-segments (APP1 = exif, APP13 = iptc) to $imageInfo
-			$imageInfo = [];
-			$imagesize = $fromFile ? getimagesize($imagepath, $imageInfo) : getimagesizefromstring($bindata, $imageInfo);
+			// Set quality for JPG images
+			if($output_format === 'jpg'){
+				// Keep quality between 1 and 99
+				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
+			}
+
+			$options = array_filter($options);
+
 			$gdWidth = $imagesize[0];
 			$gdHeight = $imagesize[1];
-			unset($bindata);
 
 			$optFitinside = in_array(we_thumbnail::OPTION_FITINSIDE, $options);
 			$optMaxsize = in_array(we_thumbnail::OPTION_MAXSIZE, $options) || ($optFitinside && self::MAXSIZE_ON_FITISIDE);
@@ -680,9 +678,7 @@ abstract class we_base_imageEdit{
 						// As we read the temporary file we no longer need it
 						unlink($tempfilename);
 					}
-
 					break;
-
 				case 'png':
 				case 'gif':
 					// Set output function
@@ -691,13 +687,20 @@ abstract class we_base_imageEdit{
 					if($output_filename){
 						$gdimg = $image_out_function($output_gdimg, $output_filename);
 						if($gdimg){
+							if($output_format === 'png' && $metasPng){
+								$gdimg = self::insertMetadataToPng($output_filename, $metasPng);
+							}
 							$gdimg = basename($output_filename);
 						}
 					} elseif(($tempfilename = tempnam(TEMP_PATH, ''))){
 						$image_out_function($output_gdimg, $tempfilename);
-						$gdimg = we_base_file::load($tempfilename);
-
-						// As we read the temporary file we no longer need it
+						if($output_format === 'png' && $metasPng){
+							//self::insertMetadataToPng($tempfilename, $metasPng, true);
+							self::insertMetadataToPng($tempfilename, $metasPng);
+							$gdimg = we_base_file::load($tempfilename);
+						} else {
+							$gdimg = we_base_file::load($tempfilename);
+						}
 						unlink($tempfilename);
 					}
 
@@ -850,5 +853,71 @@ abstract class we_base_imageEdit{
 		}
 
 		return $imageData;
+	}
+
+	/* use $returnReadableData = true to extract Metedata from we_imageDocument */
+	public static function extractMetadataFromPng($imagepath, $returnReadableData = false){
+		if(!@file_exists($imagepath)){
+			return '';
+		}
+
+		$fh = fopen($imagepath, 'r');
+
+		$fileheader = fread($fh, 8);
+		if ($fileheader !== "\x89PNG\x0d\x0a\x1a\x0a"){
+			return '';
+		}
+
+		$readableChunks = [];
+		$reinsertableChunks = '';
+		while(!feof($fh)){
+			$binHead = fread($fh, 8); // Length and Type: 8 bytes
+
+			$head = unpack('Nlength/a4type', $binHead);
+			if($head['type'] == 'IEND'){
+				break;
+			}
+
+			if(in_array($head['type'], ['iTXt', 'tEXt', 'zTXt'])){
+				$reinsertableChunks .= $binHead;
+
+				$content = fread($fh, $head['length']); // Data: length bytes
+				$reinsertableChunks .= $content;
+
+				if($head['type'] === 'tEXt'){
+					list($key, $val) = explode("\0", $content);
+					$readableChunks[$key] = $val;
+				}
+
+				$reinsertableChunks .= fread($fh, 4); // CRC, 4 bytes
+
+			}else{
+				fseek($fh, $head['length'] + 4, SEEK_CUR);
+			}
+		}
+		//t_e($readableChunks);
+
+		return $returnReadableData ? $readableChunks : $reinsertableChunks;
+	}
+
+	private static function insertMetadataToPng($file, $metas, $returnBindata = false){
+		if(!strlen($metas) || !file_exists($file)){
+			return;
+		}
+
+		$fh = fopen($file, 'r');
+		$newBindata = fread($fh, 8); // copy png signagture
+		$newBindata .= ($ihdrHead = fread($fh, 8)); // copy IHDR header
+		$head = unpack('Nlength/a4type', $ihdrHead);
+		$newBindata .= fread($fh, $head['length'] + 4); // copy IHDR content + CRC
+		$newBindata .= $metas; // insert metas
+		$newBindata .= fread($fh, filesize($file)); // copy rest of image
+		fclose($fh);
+
+		if($returnBindata){ // FIXME: this option seems not to work
+			return $newBindata;
+		}
+
+		we_base_file::save($file, $newBindata);
 	}
 }
