@@ -472,7 +472,7 @@ if(!$wfchk){
 		$hasPerm = self::getHasPerm($idInfos, $table);
 		unset($idInfos);
 		$retVal = !$hasPerm ? we_base_permission::NO_PERMISSION : self::checkFilePerm($selectedItems, $table);
-
+t_e($selectedItems, $retVal);
 		switch($retVal){
 			case we_base_permission::NO_PERMISSION:
 				$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_base_util::WE_MESSAGE_ERROR);
@@ -511,8 +511,7 @@ if(!$wfchk){
 			default:
 				if($retVal){ //	user may delete -> delete files !
 					$GLOBALS["we_folder_not_del"] = [];
-
-					$deletedItems = [];
+					$GLOBALS['deletedItems'] = [];
 
 					foreach($selectedItems as $sel){
 						we_base_delete::deleteEntry($sel, $table, true, false, $GLOBALS['DB_WE']);
@@ -521,6 +520,8 @@ if(!$wfchk){
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
 						$jsCmd->addCmd(deleteTreeEntries, defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE);
 					}
+
+					$deletedItems =  $GLOBALS['deletedItems'];
 
 					if(!empty($deletedItems)){
 						$deleted_objects = [];
@@ -558,6 +559,7 @@ if(!$wfchk){
 						}
 
 						$jsCmd->addCmd('closeDeletedDocuments', ',' . implode(",", $deletedItems) . ',', ',' . implode(",", $deleted_objects) . ',');
+						$jsCmd->addCmd('load', $table);
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
