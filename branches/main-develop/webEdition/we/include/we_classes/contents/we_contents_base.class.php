@@ -26,8 +26,8 @@
 abstract class we_contents_base{
 	//constants for retrieving data from DB
 
-	const LOAD_MAID_DB = 0;
-	const LOAD_TEMP_DB = 1;
+	const LOAD_MAID_DB = 0;//default DB
+	const LOAD_TEMP_DB = 1;//temporary saved files
 	const LOAD_REVERT_DB = 2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 	const LOAD_SCHEDULE_DB = 3;
 	//constants define where to write document (guess)

@@ -244,11 +244,11 @@ class we_objectFile extends we_document{
 		$doc->InitByID($id, $this->Table, self::LOAD_TEMP_DB);
 		$doc->setRootDirID(true);
 		if($this->ID == 0){
-			foreach($this->persistent_slots as $pers){
-				$this->{$pers} = isset($doc->{$pers}) ? $doc->{$pers} : '';
+			foreach($this->persistent_slots as $name){
+				$this->{$name} = isset($doc->{$name}) ? $doc->{$name} : '';
 			}
 			$this->CreationDate = time();
-			$this->CreatorID = $_SESSION['user']['ID'];
+			$this->CreatorID = (isset($_SESSION['user']) ? $_SESSION['user']['ID'] : 0);
 			$this->DefaultInit = true;
 			$this->rootDirID = $doc->rootDirID;
 			$this->RootDirPath = $doc->RootDirPath;

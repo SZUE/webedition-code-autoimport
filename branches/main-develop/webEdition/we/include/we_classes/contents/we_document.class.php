@@ -65,7 +65,7 @@ class we_document extends we_contents_root{
 		}
 		$tmp = $this->ClassName;
 		$doc = new $tmp();
-		$doc->InitByID($id, $this->Table);
+		$doc->InitByID($id, $this->Table, self::LOAD_TEMP_DB);
 		$parentIDMerk = $doc->ParentID;
 		if($this->ID == 0){
 			foreach($this->persistent_slots as $name){
@@ -73,15 +73,12 @@ class we_document extends we_contents_root{
 					$this->{$name} = $doc->{$name};
 				}
 			}
-			$this->Published = 0;
-			if(isset($doc->Category)){
-				$this->Category = $doc->Category;
-			}
 			$this->CreationDate = time();
 			$this->CreatorID = (isset($_SESSION['user']) ? $_SESSION['user']['ID'] : 0);
 
 			$this->ID = 0;
 			$this->OldPath = '';
+			$this->Published = 0;
 			$this->Filename .= '_copy';
 			$this->Text = $this->Filename . $this->Extension;
 			$this->setParentID($parentIDMerk);
@@ -89,11 +86,14 @@ class we_document extends we_contents_root{
 			$this->OldPath = $this->Path;
 		}
 		$this->elements = $doc->elements;
-		foreach($this->elements as $n => $e){
+		foreach(array_keys($this->elements) as $n){
 			$this->elements[$n]['cid'] = 0;
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		$this->InWebEdition = true;
+		if(isset($doc->Category)){
+			$this->Category = $doc->Category;
+		}
 		if(isset($this->documentCustomerFilter)){
 			$this->documentCustomerFilter = $doc->documentCustomerFilter;
 		}

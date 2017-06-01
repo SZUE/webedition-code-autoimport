@@ -59,9 +59,9 @@ class we_template extends we_document{
 		$temp->InitByID($id, TEMPLATES_TABLE);
 		//$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
-			foreach($this->persistent_slots as $cur){
-				if($cur != 'elements'){
-					$this->{$cur} = $temp->{$cur};
+			foreach($this->persistent_slots as $name){
+				if($name != 'elements'){
+					$this->{$name} = $temp->{$name};
 				}
 			}
 			$this->CreationDate = time();
