@@ -312,8 +312,10 @@ abstract class we_editor_functions{
 	}
 
 	public static function saveInc($we_transaction, $we_doc, $we_responseText = '', $we_responseTextType = '', array $we_JavaScript = [], $wasSaved = false, $saveTemplate = false, $we_responseJS = [
-	], $isClose = false, $showAlert = false, $publish_doc = false){
+			], $isClose = false, $showAlert = false, $publish_doc = false){
 		$reload = [];
+		$we_responseJS = empty($we_responseJS) ? [] : $we_responseJS;
+
 		if(!empty($wasSaved)){
 			// DOC was saved, mark open tabs to reload if necessary
 			// was saved - not hot anymore
