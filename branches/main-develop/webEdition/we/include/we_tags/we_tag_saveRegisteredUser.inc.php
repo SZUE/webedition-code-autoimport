@@ -99,6 +99,8 @@ function we_tag_saveRegisteredUser(array $attribs){
 				$GLOBALS['we_customer_write_ID'] = $_SESSION['webuser']['ID'];
 				//make sure to always load session data
 				$changesessiondata = true;
+			}else{
+				$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_UNKNOWN_ERROR;
 			}
 		}
 	} else if(!empty($_SESSION['webuser']['registered']) && ($uid == $_SESSION['webuser']['ID'])){ // existing user
@@ -146,6 +148,9 @@ function we_tag_saveRegisteredUser(array $attribs){
 				$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
 				$set_a['ModifiedBy'] = 'frontend';
 				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_SESSION['webuser']['ID']));
+				if(!$GLOBALS['DB_WE']->affected_rows()){
+					$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_UNKNOWN_ERROR;
+				}
 			}
 		}
 	}
@@ -290,6 +295,11 @@ function we_tag_saveRegisteredUser_keepInput($merge = false){
 function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
 	$set = [];
 	$allEncryptedFields = we_customer_customer::getEncryptedFields();
+	$tableInfo = $GLOBALS['DB_WE']->metadata(CUSTOMER_TABLE);
+	$fnames = array();
+	foreach($tableInfo as $t){
+		$fnames[] = $t['name'];
+	}
 
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
@@ -308,7 +318,9 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 				$val = we_customer_customer::cryptPassword($val);
 			default:
 				if(($protected && in_array($name, $protected)) ||
-					($allowed && !in_array($name, $allowed))){
+					($allowed && !in_array($name, $allowed))||
+					!in_array($name, $fnames)
+				){
 					continue;
 				}
 				$set[$name] = (isset($allEncryptedFields[$name]) && $val != we_customer_customer::ENCRYPTED_DATA ?

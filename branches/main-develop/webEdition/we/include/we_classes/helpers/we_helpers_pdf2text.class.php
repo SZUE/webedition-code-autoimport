@@ -745,14 +745,14 @@ class we_helpers_pdf2text{
 					}
 					$fonts = [];
 					$this->getPageFonts($fonts, $elem);
-					if(isset($elem['Font'])){
+					if(!empty($elem['Font'])){
 						$tmp = rtrim($elem['Font'], self::TRIM_REF);
 						$data = isset($this->data[$tmp]) ? $this->data[$tmp] : '';
 						if(!empty($data)){
 							$this->getPageFonts($fonts, $data);
 						}
 					}
-					if(isset($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
+					if(!empty($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
 						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);
 					}
 					if(!empty($fonts)){
@@ -834,8 +834,9 @@ class we_helpers_pdf2text{
 						$tmpText = '';
 					}
 					$hasData = false;
-					list($selectedFont, $fs) = explode(' ', trim($data, ' '));
-					$fs = floatval($fs);
+					$fontData = explode(' ', trim($data, ' '));
+					$selectedFont = $fontData[0];
+					$fs = empty($fontData[1]) ? 10 : floatval($fontData[1]);
 					$selectedFont = trim($selectedFont, self::TRIM_NAME);
 					break;
 				case 'T*'://newline
