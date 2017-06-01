@@ -1646,15 +1646,15 @@ class we_object extends we_document{
 		$doc = new we_object();
 		$doc->InitByID($id, $this->Table, self::LOAD_TEMP_DB);
 		if($this->ID == 0){
-			foreach($this->persistent_slots as $cur){
-				$this->{$cur} = isset($doc->{$cur}) ? $doc->{$cur} : '';
+			foreach($this->persistent_slots as $name){
+				$this->{$name} = isset($doc->{$name}) ? $doc->{$name} : '';
 			}
 			$this->CreationDate = time();
 			$this->CreatorID = $_SESSION['user']["ID"];
 			$this->ID = 0;
-			$this->OldPath = "";
+			$this->OldPath = '';
 			$this->Published = 1;
-			$this->Text .= "_copy";
+			$this->Text .= '_copy';
 			$this->Path = $this->ParentPath . $this->Text;
 			$this->OldPath = $this->Path;
 		}
