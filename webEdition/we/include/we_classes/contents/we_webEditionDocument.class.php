@@ -366,6 +366,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			include($include);
 			$ret = ob_end_clean();
 		}
+		//restore contenttype if modified
+		we_html_tools::headerCtCharset('text/html', $this->Charset ?: $GLOBALS['WE_BACKENDCHARSET']);
 
 		weSuggest::setStaticInstance(true);
 
@@ -754,6 +756,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			t_e('File ' . $we_include . ' not found!');
 			$contents = '';
 		}
+		//restore contenttype if modified
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
