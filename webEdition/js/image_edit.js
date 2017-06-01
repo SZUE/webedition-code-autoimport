@@ -24,6 +24,7 @@
  */
 'use strict';
 var imgEdit = WE().util.getDynamicVar(document, 'loadImage_edit', 'data-imgEdit');
+var doc = top.opener.doc;
 
 document.onkeyup = function (e) {
 	if (e.keyCode === 13) {
