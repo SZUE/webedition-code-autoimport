@@ -59,7 +59,7 @@ class we_search_view extends we_modules_view{
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
 		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'search_submit':
-				$this->searchSubmit();
+				$this->searchSubmit($jscmd);
 				break;
 			case 'weSearch_new' :
 			case 'weSearch_new_forDocuments' :
@@ -204,7 +204,7 @@ class we_search_view extends we_modules_view{
 		$_SESSION['weS'][$this->toolName . '_session'] = $this->Model;
 	}
 
-	private function searchSubmit(){
+	private function searchSubmit(we_base_jsCmd $jscmd){
 		//FIXME: some vars are not set and werent before move
 		global $we_transaction;
 
@@ -227,7 +227,7 @@ class we_search_view extends we_modules_view{
 				$we_doc->searchclass->setLimit();
 
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-				$this->jsCmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
+				$jscmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
 				break;
 			case 'delete':
 				if($we_doc->searchclass->height == 0){
@@ -248,7 +248,7 @@ class we_search_view extends we_modules_view{
 
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-				$this->jsCmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
+				$jscmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
 
 				break;
 			case 'search':
@@ -260,20 +260,20 @@ class we_search_view extends we_modules_view{
 				$we_doc->searchclass->setLimit();
 				$we_doc->SearchStart = 0;
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-				$this->jsCmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
+				$jscmd->addCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
 
 				break;
 			case 'changemeta':
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-				$this->jsCmd->addCmd('we_cmd', ['reload_editpage']);
+				$jscmd->addCmd('we_cmd', ['reload_editpage']);
 				break;
 			case 'changedate':
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-				$this->jsCmd->addCmd('we_cmd', ['reload_editpage']);
+				$jscmd->addCmd('we_cmd', ['reload_editpage']);
 				break;
 			case 'changecheckbox':
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-				$this->jsCmd->addCmd('we_cmd', ['reload_editpage']);
+				$jscmd->addCmd('we_cmd', ['reload_editpage']);
 				break;
 			default:
 				if(($objsf = we_base_request::_(we_base_request::STRING, 'obj_searchField')) !== false){
@@ -295,8 +295,8 @@ class we_search_view extends we_modules_view{
 
 					$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-					$this->jsCmd->addCmd('setStart', 0);
-					$this->jsCmd->addCmd('we_cmd', ['switch_edit_page', $go]);
+					$jscmd->addCmd('setStart', 0);
+					$jscmd->addCmd('we_cmd', ['switch_edit_page', $go]);
 				}
 		}
 	}

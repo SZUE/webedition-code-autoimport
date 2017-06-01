@@ -39,6 +39,14 @@ abstract class we_editor_base{
 
 	public abstract function show();
 
+	/**
+	 *
+	 * @param type $form
+	 * @param type $header
+	 * @param type $bodyAttr
+	 * @param type $formAttr set to false if no form should be generated,else set form attributes
+	 * @return type
+	 */
 	protected function getPage($form, $header = '', $bodyAttr = [], $formAttr = []){
 		return we_html_tools::getHtmlTop($this->title, $this->charset, '', $header .
 				we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
@@ -47,13 +55,16 @@ abstract class we_editor_base{
 						[
 					'class' => "weEditorBody",
 					'onunload' => "doUnload()"
-						], $bodyAttr), we_html_element::htmlForm(array_merge([
+						], $bodyAttr), ($formAttr === false ?
+					$form :
+					we_html_element::htmlForm(array_merge([
 						'name' => "we_form",
 						'method' => "post",
 						'onsubmit' => "return false;"
 							], $formAttr), we_contents_base::hiddenTrans() .
 						$form .
 						we_html_element::htmlHidden("we_complete_request", 1)))
+				)
 		);
 	}
 

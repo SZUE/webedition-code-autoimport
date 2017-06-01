@@ -56,7 +56,7 @@ class we_editor_classFolderFields extends we_editor_base{
 					['html' => $this->we_doc->getSearchDialog()],
 					['html' => $this->we_doc->getSearch()],
 					]
-					, 30), $this->we_doc->getSearchJS()
+					, 30), $this->we_doc->getSearchJS(), [], false//don't make form
 		);
 	}
 
