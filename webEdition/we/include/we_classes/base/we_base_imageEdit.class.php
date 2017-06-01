@@ -220,8 +220,6 @@ abstract class we_base_imageEdit{
 		}
 
 		if(($tempfilename = we_base_file::saveTemp($imagedata))){
-			$imagedata = '';
-			unset($imagedata);
 			if(function_exists($image_create_from_string_replacement_function)){
 				$gdimg = $image_create_from_string_replacement_function($tempfilename);
 			}
@@ -511,7 +509,17 @@ abstract class we_base_imageEdit{
 			$output_format = 'jpg';
 		}
 		$options = array_filter($options);
-		$fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
+
+		// differentiate between paht and bincontent for better readability...
+		if(($fromFile = strlen($imagedata) < 255 && @file_exists($imagedata))){
+			$imagepath = $imagedata;
+			$bindata = '';
+		} else {
+			$imagepath = '';
+			$bindata = $imagedata;
+		}
+		unset($imagedata);
+		
 
 		// Output format is available
 		if(!in_array($output_format, self::supported_image_types())){
@@ -523,16 +531,17 @@ abstract class we_base_imageEdit{
 			$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
 		}
 
-		$gdimg = ($fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata)); // IMI: CHECK: seems not to work!
+		$gdimg = ($fromFile ? self::ImageCreateFromFileReplacement($imagepath) : self::ImageCreateFromStringReplacement($bindata));
 
 		// Now we need to ensure that we could read the file
 		if($gdimg){
 
 			// Detect dimension of image and write APP-segments (APP1 = exif, APP13 = iptc) to $imageInfo
 			$imageInfo = [];
-			$imagesize = $fromFile ? getimagesize($imagedata, $imageInfo) : getimagesizefromstring($imagedata, $imageInfo);
+			$imagesize = $fromFile ? getimagesize($imagepath, $imageInfo) : getimagesizefromstring($bindata, $imageInfo);
 			$gdWidth = $imagesize[0];
 			$gdHeight = $imagesize[1];
+			unset($bindata);
 
 			$optFitinside = in_array(we_thumbnail::OPTION_FITINSIDE, $options);
 			$optMaxsize = in_array(we_thumbnail::OPTION_MAXSIZE, $options) || ($optFitinside && self::MAXSIZE_ON_FITISIDE);
