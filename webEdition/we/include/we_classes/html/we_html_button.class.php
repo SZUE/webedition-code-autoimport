@@ -192,16 +192,7 @@ abstract class we_html_button{
 				break;
 			default:
 				// Check if the link has to be opened in a different frame or in a new window
-				$cmd = $on_click . /* ($target ? // The link will be opened in a different frame or in a new window
-					  // Check if the link has to be opend in a frame or a window
-					  ($target === '_blank' ? // The link will be opened in a new window
-					  "new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', WE().consts.size.dialog.small, WE().consts.size.dialog.smaller, true, true, true);" :
-					  // The link will be opened in a different frame
-					  "target_frame = eval('parent.' + " . $target . ");" .
-					  "target_frame.location.href='" . $href . "';") :
-					  // The link will be opened in the current frame or window
-					 */
-					($href ? "window.location.href='" . $href . "';" : ''); /* ); */
+				$cmd = $on_click . ($href ? "window.location.href='" . $href . "';" : ''); /* ); */
 		}
 
 		return self::getButton($value, ($id ?: ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ?: (g_l('button', '[' . $name . '][alt]', true) ?: '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions, $htmlName);
