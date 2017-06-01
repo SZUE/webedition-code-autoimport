@@ -172,7 +172,7 @@ class we_class_folder extends we_folder{
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return new we_editor_info($this);
 			case we_base_constants::WE_EDITPAGE_FIELDS:
-				return 'we_modules/object/we_classFolder_fields.inc.php';
+				return new we_editor_classFolderFields($this);
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return new we_editor_weDocumentCustomerFilter($this);
 		}
@@ -215,7 +215,7 @@ class we_class_folder extends we_folder{
 		$where = (isset($this->searchclass->searchname) ?
 			$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 			$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
-		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',of.Owners)) ';
+		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
 		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . ' of.ID!=0 AND of.Path LIKE "' . $this->Path . '/%" AND of.IsFolder=0 ' . $whereRestrictOwners);
@@ -446,8 +446,8 @@ class we_class_folder extends we_folder{
 		$this->searchView = we_base_request::_(we_base_request::STRING, 'searchView', $this->searchView);
 
 		$out = '
+<form name="we_form_search" action="" onsubmit="sub();return false;" method="POST">
 <table style="width:510px">
-<form name="we_form_search" action="" onsubmit="sub();return false;" method="GET">
 ' . self::hiddenTrans() . '
 <input type="hidden" name="todo" />
 <input type="hidden" name="position" />';
@@ -542,15 +542,13 @@ class we_class_folder extends we_folder{
 	<td colspan="3">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 	<td colspan="4" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:sub();") . '</td>
 </tr>
-</form>
-</table>';
+</table></form>';
 
 
 		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (empty($this->Order) ? 'Path' : $this->Order));
 		$this->Order = $this->searchclass->Order;
 		$this->searchclass->searchstart = we_base_request::_(we_base_request::INT, 'SearchStart', $this->searchclass->searchstart);
 		$this->searchclass->anzahl = we_base_request::_(we_base_request::INT, 'Anzahl', $this->searchclass->anzahl);
-
 		return $out;
 	}
 

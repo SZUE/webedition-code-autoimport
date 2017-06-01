@@ -290,7 +290,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function xformTemplatePopup($width = 50){
 		$ws = get_ws(TEMPLATES_TABLE, true);
 
-		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE, MYSQL_NUM);
+		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType), $this->DB_WE, MYSQL_NUM);
 		$tlist = ($TID ?: '') . ($Templates ? ',' . $Templates : '');
 
 		if($tlist){
