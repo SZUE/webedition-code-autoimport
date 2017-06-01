@@ -390,6 +390,8 @@ class we_thumbnail{
 		/*
 		 * FIXME IMI: $this->imageData (= binary) is temporarily blocked because 
 		 * we_base_imageEdit::ImageCreateFromStringReplacement($imagedata) does not work!
+		 * 
+		 * btw: isn't it nonse anyway to first temporarily save binarydata as image to hd just to immedialtely reload it from there?
 		 */
 		$outarr = we_base_imageEdit::edit_image(false && $this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 		if($outarr[0]){
