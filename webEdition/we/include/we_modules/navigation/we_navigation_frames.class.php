@@ -69,7 +69,7 @@ class we_navigation_frames extends we_modules_frame{
 		if(($ws = get_ws(NAVIGATION_TABLE, true))){
 			$wsPathArray = id_to_path($ws, NAVIGATION_TABLE, $DB_WE, true);
 			foreach($wsPathArray as $path){
-				$aWsQuery[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getParents($path);
 			}
 		}
 

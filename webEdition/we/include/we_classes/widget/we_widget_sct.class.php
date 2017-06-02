@@ -48,7 +48,7 @@ class we_widget_sct extends we_widget_base{
 
 		$disableObjects = false;
 		if(defined('OBJECT_TABLE')){
-			$allClasses = we_users_util::getAllowedClasses();
+			$allClasses = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 			if(empty($allClasses)){
 				$disableObjects = true;
 			}
@@ -188,7 +188,7 @@ class we_widget_sct extends we_widget_base{
 
 		$disableObjects = false;
 		if(defined('OBJECT_TABLE')){
-			$allClasses = we_users_util::getAllowedClasses();
+			$allClasses = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 			if(empty($allClasses)){
 				$disableObjects = true;
 			}

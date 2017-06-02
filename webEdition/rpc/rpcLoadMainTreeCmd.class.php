@@ -183,88 +183,81 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 		$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 		$offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
-		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'closeFolder'){
-			$openDirs = array_flip(makeArrayFromCSV($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]));
-			unset($openDirs[$parentFolder]);
-			$openDirs = array_keys($openDirs);
-			$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = implode(',', $openDirs);
-		} else {
-			$parentpaths = $wspaces = [];
+		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+			case 'closeFolder':
+				$openDirs = array_flip($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]);
+				unset($openDirs[$parentFolder]);
+				$openDirs = array_keys($openDirs);
+				$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = $openDirs;
+				break;
+			default:
+				$parentpaths = $wspaces = [];
 
+				if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm('ADMINISTRATOR'))){
+					$ac = we_users_util::getAllowedClasses($DB_WE);
+				}
 
-			if(($ws = get_ws($table, true))){
-				$wsPathArray = id_to_path($ws, $table, $DB_WE, true);
+				if(($ws = get_ws($table, true))){
+					$wsPathArray = id_to_path($ws, $table, $DB_WE, true);
 
-				foreach($wsPathArray as $path){
-					$wspaces[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
-					while($path != '/' && $path != '\\' && $path){
-						$parentpaths[] = $path;
-						$path = dirname($path);
+					foreach($wsPathArray as $path){
+						$wspaces[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getParents($path);
+						$parentpaths = array_merge($parentpaths, we_tool_treeDataSource::getParents($path, true));
 					}
 				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
-				if(($ac = we_users_util::getAllowedClasses($DB_WE))){
-					$paths = id_to_path($ac, OBJECT_TABLE, $DB_WE, true);
-					$wspaces[] = 'IsClassFolder=1';
-					foreach($paths as $path){
-						$wspaces[] = 'Path LIKE "' . $DB_WE->escape($path) . '/%"';
+
+				$wsQuery = (isset($ac) ? ' AND TableID IN (' . implode(',', $ac) . ')' : '') .
+					($wspaces ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
+
+				if(($openFolders = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 3))){
+					$_SESSION['prefs']['openFolders_' . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $openFolders;
+				} else {
+					$openFolders = (isset($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ?
+						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] :
+						[]);
+				}
+
+				if($parentFolder){
+					if(!in_array($parentFolder, $openFolders)){
+						$openFolders[] = $parentFolder;
+						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = $openFolders;
 					}
 				}
-			}
 
-			$wsQuery = ($wspaces ? (isset($ac) ? ' AND TableID IN (' . implode(',', $ac) . ')' : '') . ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
+				we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 
-			if(($of = we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 3))){
-				$openFolders = explode(',', $of);
-				$_SESSION["prefs"]["openFolders_" . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $of;
-			}
-
-			$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?
-				explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
-				[]);
-
-
-			if($parentFolder){
-				if(!in_array($parentFolder, $openFolders)){
-					$openFolders[] = $parentFolder;
-					$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(",", $openFolders);
+				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+					return $resp;
 				}
-			}
+				$jsCmd = new we_base_jsCmd();
 
-			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
+				$Tree = new we_tree_main($jsCmd);
+				$treeItems = [];
+				$this->getItems($openFolders, $parentpaths, $wsQuery, $treeItems, $table, $parentFolder, $offset, $Tree->default_segment);
 
-			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-				return $resp;
-			}
-			$jsCmd = new we_base_jsCmd();
-
-			$Tree = new we_tree_main($jsCmd);
-			$treeItems = [];
-			$this->getItems($openFolders, $parentpaths, $wsQuery, $treeItems, $table, $parentFolder, $offset, $Tree->default_segment);
-
-			switch($table){
-				case FILE_TABLE:
-					$name = g_l('global', '[documents]');
-					break;
-				case TEMPLATES_TABLE:
-					$name = g_l('global', '[templates]');
-					break;
-				case OBJECT_FILES_TABLE:
-					$name = g_l('global', '[objects]');
-					break;
-				case OBJECT_TABLE:
-					$name = g_l('javaMenu_object', '[classes]');
-					break;
-				case VFILE_TABLE:
-					$name = g_l('global', '[vfile]');
-					break;
-				default:
-					$name = '';
-			}
-			$resp->setData('treeName', $name);
-			$resp->setData('parentFolder', $parentFolder);
-			$resp->setData('offset', $offset);
-			$resp->setData('items', $Tree->getJSLoadTree($treeItems));
+				switch($table){
+					case FILE_TABLE:
+						$name = g_l('global', '[documents]');
+						break;
+					case TEMPLATES_TABLE:
+						$name = g_l('global', '[templates]');
+						break;
+					case OBJECT_FILES_TABLE:
+						$name = g_l('global', '[objects]');
+						break;
+					case OBJECT_TABLE:
+						$name = g_l('javaMenu_object', '[classes]');
+						break;
+					case VFILE_TABLE:
+						$name = g_l('global', '[vfile]');
+						break;
+					default:
+						$name = '';
+				}
+				$resp->setData('treeName', $name);
+				$resp->setData('parentFolder', $parentFolder);
+				$resp->setData('offset', $offset);
+				$resp->setData('items', $Tree->getJSLoadTree($treeItems));
 		}
 
 		return $resp;

@@ -440,13 +440,13 @@ class we_users_user{
 		$this->permissions_defaults = [];
 		$permissions = we_unserialize($this->Permissions);
 
-		$entries = /*array_merge(we_tool_lookup::getPermissionIncludes(), */(glob(WE_USERS_MODULE_PATH . 'perms/we_perms_*'));
+		$entries = /* array_merge(we_tool_lookup::getPermissionIncludes(), */(glob(WE_USERS_MODULE_PATH . 'perms/we_perms_*'));
 
 		foreach($entries as $entry){
 			list($perm_group_name, $perm_group_title, $perm_defaults) = include($entry);
-			/*if(empty($perm_defaults)){
-				t_e($entry);
-			}*/
+			/* if(empty($perm_defaults)){
+			  t_e($entry);
+			  } */
 			$perm_values = array_keys($perm_defaults);
 
 			if(!($perm_group_name === 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
@@ -2130,7 +2130,14 @@ function toggleRebuildPerm(disabledOnly) {';
 		$db->query('SELECT `key`,`value` FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($id));
 		//read db
 		while($db->next_record(MYSQL_ASSOC)){
-			$ret[$db->f('key')] = $db->f('value');
+			switch($GLOBALS['configs']['user'][$db->f('key')][0]){
+				case we_base_request::INTLIST:
+					$ret[$db->f('key')] = array_filter(explode(',', $db->f('value')));
+					break;
+				default:
+					$ret[$db->f('key')] = $db->f('value');
+					break;
+			}
 		}
 		if($login){
 			$_SESSION['prefs'] = $ret;
@@ -2146,7 +2153,7 @@ function toggleRebuildPerm(disabledOnly) {';
 	 */
 	static function writePrefs($id, $db, array $data = []){
 		$id = intval($id);
-		if($data){
+		if($data){//note data must be different to session data
 			$old = ['userID' => $id];
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
@@ -2162,7 +2169,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$upd = [];
 		foreach($old as $key => $val){
 			if($key != 'userID' && (!isset($data[$key]) || $data[$key] != $val)){
-				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key]) ? $data[$key] : $val)) . '")';
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key]) ? $data[$key] : is_array($val) ? implode(',', $val) : $val)) . '")';
 			}
 		}
 		if(!empty($upd)){

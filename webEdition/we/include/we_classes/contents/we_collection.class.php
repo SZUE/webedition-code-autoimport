@@ -871,7 +871,7 @@ class we_collection extends we_contents_root{
 				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, true);
 				foreach($wsPathArray as $path){
 					$wspaces[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
-					$wsQuery[] = we_tool_treeDataSource::getQueryParents($path);
+					$wsQuery[] = we_tool_treeDataSource::getParents($path);
 				}
 			} elseif(defined('OBJECT_FILES_TABLE') && $this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);

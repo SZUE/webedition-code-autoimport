@@ -210,37 +210,18 @@ abstract class we_users_util{
 		return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
 	}
 
-	public static function getAllowedClasses(we_database_base $db = null){
+	public static function getAllowedClasses(we_database_base $db){
 		if(!defined('OBJECT_FILES_TABLE')){
 			return [];
 		}
-		$db = ($db ?: new DB_WE());
-		$out = [];
-		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
-//		$ws = get_ws(FILE_TABLE, true);
 		$ofWs = get_ws(OBJECT_FILES_TABLE, true);
-		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, true);
-		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
-
-		foreach($db->getAll() as $result){
-			//if(!$ws || we_base_permission::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (we_users_util::in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
-			if(!$ofWs || we_base_permission::hasPerm('ADMINISTRATOR')){
-				$out[] = $result['ID'];
-			} else {
-				$path = $result['Path'] . '/';
-
-// object Workspace check
-				foreach($ofWsArray as $w){
-					if($w == $result['Path'] || (strlen($w) >= strlen($path) && substr($w, 0, strlen($path)) == ($path))){
-						$out[] = $result['ID'];
-						break;
-					}
-				}
-			}
-			//}
+		//return all classes if admin, or no restrictions
+		if(we_base_permission::hasPerm('ADMINISTRATOR') || !$ofWs){
+			return $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
 		}
-
-		return $out;
+		$ret = $db->getAllq('SELECT DISTINCT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID IN (' . $ofWs . ')', true);
+		//if workspace don't exist, make sure we don't show classes
+		return $ret ?: '-1';
 	}
 
 	public static function in_workspace($ID, array $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
