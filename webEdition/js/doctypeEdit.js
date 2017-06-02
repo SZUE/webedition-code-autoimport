@@ -28,6 +28,27 @@
 'use strict';
 WE().util.loadConsts(document, "g_l.doctypeEdit");
 var doctype = WE().util.getDynamicVar(document, 'loadVarDoctypeEdit', 'data-doctype');
+var hot;
+
+function isHot(){
+	return parseInt(document.we_form.elements[document.we_form.isHotName.value].value) ? true : false;
+}
+function setHot(){
+	document.we_form.elements[document.we_form.isHotName.value].value = 1;
+}
+function unsetHot(){
+	document.we_form.elements[document.we_form.isHotName.value].value = 0;
+}
+
+function askForSaveOrRefireCmd(args){
+	if(isHot() && window.confirm(WE().consts.g_l.exports.save_changed_export)){
+		unsetHot();
+		we_cmd("save_docType");
+	} else {
+		unsetHot();
+		we_cmd.apply(document, Array.prototype.slice.call(args));
+	}
+}
 
 var countSaveLoop = 0;
 function we_save_docType(doc, url) {
@@ -39,7 +60,7 @@ function we_save_docType(doc, url) {
 	} else {
 		if (acStatus.running) {
 			countSaveLoop++;
-			window.setTimeout(we_save_docType, 100, doc, url);
+			window.setTimeout(we_save_docType, 100, document, url);
 		} else if (!acStatus.valid) {
 			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
@@ -56,7 +77,7 @@ function we_submitForm(target, url) {
 		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
-	f.target = target;
+	// f.target = target; // FIXME: do we still need this? there are no frames/iFrames anymore to adress...
 	f.action = url;
 	f.method = "post";
 	f.submit();
@@ -96,15 +117,25 @@ function we_cmd() {
 		case "add_dt_template":
 		case "dt_add_cat":
 			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-			we_save_docType(caller, url);
-			break;
-
+			/* fallls through */
 		case "delete_dt_template":
 		case "dt_delete_cat":
+			setHot();
+			we_save_docType(document, url); // FIXME: bad function name since we just submit form to execute cmd other than save!
+			break;
 		case "save_docType":
-			we_save_docType(caller, url);
+			unsetHot();
+			we_save_docType(document, url);
+			break;
+		case "setHot":
+			setHot();
 			break;
 		case "newDocType":
+			if(isHot()){
+				askForSaveOrRefireCmd(args);
+				break;
+			}
+
 			var name = window.prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
 			if (name !== null) {
 				if ((name.indexOf("<") !== -1) || (name.indexOf(">") !== -1)) {
@@ -126,15 +157,21 @@ function we_cmd() {
 			}
 			break;
 		case "change_docType":
+			if(isHot()){
+				askForSaveOrRefireCmd(args);
+				break;
+			}
+			/* fall through */
 		case "deleteDocType":
 		case "deleteDocTypeok":
+			unsetHot();
 			caller.location = url;
 			break;
 		case "confirmDeleteDocType":
 			WE().util.showConfirm(window, "", args[1].msg, args[1].yes);
 			break;
 		default:
-			window.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			window.opener.top.we_cmd.apply(document, Array.prototype.slice.call(arguments));
 
 	}
 }
