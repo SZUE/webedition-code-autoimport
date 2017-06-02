@@ -70,16 +70,12 @@ function doUnload() {
 
 function disableLangDefault(allnames, allvalues, deselect) {
 	var arr = allvalues.split(",");
-	var w, e;
 
-	for (var v in arr) {
-		w = allnames + '[' + arr[v] + ']';
-		e = document.getElementById(w);
-		e.disabled = false;
+	for(var i = 0; i < arr.length; i++){
+		document.we_form.elements[allnames + '[' + arr[i] + ']'].disabled = false;
 	}
-	w = allnames + '[' + deselect + ']';
-	e = document.getElementById(w);
-	e.disabled = true;
+
+	document.we_form.elements[allnames + '[' + deselect + ']'].disabled = true;
 }
 
 function we_cmd() {
