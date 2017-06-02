@@ -71,6 +71,6 @@ function we_cmd() {
 			window.document.we_form.elements.SearchStart.value = args[1];
 			break;
 		default:
-			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }

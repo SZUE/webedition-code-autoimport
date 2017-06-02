@@ -364,7 +364,7 @@ class we_class_folder extends we_folder{
 				'<i class="fa fa-square-o wecheckIcon disabled"></i>'
 				)],
 				["align" => "center",
-					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',',$this->searchclass->f("Workspaces")),FILE_TABLE,$this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
+					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',', $this->searchclass->f("Workspaces")), FILE_TABLE, $this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
 					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
     <i class="fa fa-stack-1x fa-cog"></i>
 </span>' :
@@ -745,9 +745,8 @@ class we_class_folder extends we_folder{
 				$set = [$property => $value];
 				break;
 			case 'Workspaces':
-				$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+				$class = getHash('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 				$set = ['Workspaces' => $class['Workspaces'],
-					'Templates' => $class['Templates'],
 				];
 				break;
 			default:
@@ -757,21 +756,34 @@ class we_class_folder extends we_folder{
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners))';
 		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
 
+		$affected = 'SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners;
 		//change tblIndex
 		switch($property){
 			case 'IsSearchable':
 				$value = intval($value);
 				if($value){
-					//FIXME: we have to add new entries - we have to adapt a rebuild dialog
+					$docs = $GLOBALS['DB_WE']->getAllq($affected, true);
+					foreach($docs as $id){
+						$GLOBALS['we_doc'] = new we_objectFile();
+						$GLOBALS['we_doc']->initByID($id, OBJECT_FILES_TABLE, we_contents_base::LOAD_MAID_DB);
+						$GLOBALS['we_doc']->insertAtIndex();
+					}
 				} else {
-					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . implode(',', $IDs) . ') AND IsFolder=0' . $whereRestrictOwners);
+					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . $affected . ')');
 				}
 				return;
 			case 'Workspaces':
-				//FIXME: we have to add entries for all workspaces - in general we have to call we_objectFile::insertAtIndex - but this will be slow....
 				//delete all unneeded workspaces
 				if($class['Workspaces']){
-					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . implode(',', $IDs) . ') AND IsFolder=0 AND WorkspaceID NOT IN(' . $class['Workspaces'] . ')' . $whereRestrictOwners);
+					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . $affected . ') AND WorkspaceID NOT IN(' . $class['Workspaces'] . ')');
+
+//we need to add all searchable objects to tblindex
+					$docs = $GLOBALS['DB_WE']->getAllq($affected . ' AND IsSearchable=1', true);
+					foreach($docs as $id){
+						$GLOBALS['we_doc'] = new we_objectFile();
+						$GLOBALS['we_doc']->initByID($id, OBJECT_FILES_TABLE, we_contents_base::LOAD_MAID_DB);
+						$GLOBALS['we_doc']->insertAtIndex();
+					}
 				}
 				return;
 		}

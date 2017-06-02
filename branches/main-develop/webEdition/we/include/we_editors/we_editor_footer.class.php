@@ -120,7 +120,7 @@ abstract class we_editor_footer{
 					break;
 				case we_base_ContentTypes::OBJECT:
 					$normalTable->addCol(2);
-					$normalTable->setColContent(0, $pos++, we_html_button::create_button('make_new_object', "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
+					$normalTable->setColContent(0, $pos++, we_html_button::create_button('fat:make_new_object,fa-lg fa-file', "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
 					break;
 			}
 		}
