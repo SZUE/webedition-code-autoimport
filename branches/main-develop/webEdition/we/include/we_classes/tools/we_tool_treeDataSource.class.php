@@ -46,14 +46,14 @@ class we_tool_treeDataSource{
 		}
 	}
 
-	public static function getQueryParents($path){
+	public static function getParents($path, $forQuery = true){
 		$out = [];
 		$db = $GLOBALS['DB_WE'];
 		while($path != '/' && $path != '\\' && $path){
-			$out[] = '"' . $db->escape($path) . '"';
+			$out[] = ($forQuery ? '"' . $db->escape($path) . '"' : $path);
 			$path = dirname($path);
 		}
-		return ($out ? 'Path IN(' . implode(',', $out) . ')' : '');
+		return ($forQuery ? ($out ? 'Path IN(' . implode(',', $out) . ')' : '') : $out);
 	}
 
 	function getItemsDB($ParentID = 0, $offset = 0, $segment = 500){
@@ -70,7 +70,7 @@ class we_tool_treeDataSource{
 		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getParents($path);
 				while($path != '/' && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -163,7 +163,7 @@ class we_tool_treeDataSource{
 			'disabled' => 0,
 			'tooltip' => ''
 			],
-				['icon' => '',
+			['icon' => '',
 				'id' => 2,
 				'parentid' => 1,
 				'text' => 'Custom Item',

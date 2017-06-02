@@ -37,7 +37,7 @@ class we_tree_newsletter extends we_tree_base{
 		if(($ws = get_ws(NEWSLETTER_TABLE, true))){
 			$wsPathArray = id_to_path($ws, NEWSLETTER_TABLE, $db, true);
 			foreach($wsPathArray as $path){
-				$aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

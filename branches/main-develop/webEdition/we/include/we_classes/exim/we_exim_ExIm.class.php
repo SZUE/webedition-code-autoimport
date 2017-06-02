@@ -245,7 +245,7 @@ class we_exim_ExIm{
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = 'Path LIKE "' . $db->escape($path) . '/%"';
-				$wsQuery[] = we_tool_treeDataSource::getQueryParents($path);
+				$wsQuery[] = we_tool_treeDataSource::getParents($path);
 			}
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
