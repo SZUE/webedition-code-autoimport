@@ -367,7 +367,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$ret = ob_end_clean();
 		}
 		//restore contenttype if modified
-		we_html_tools::headerCtCharset('text/html', $this->Charset ?: $GLOBALS['WE_BACKENDCHARSET']);
+		we_html_tools::forceHeaders($this->Charset ?: $GLOBALS['WE_BACKENDCHARSET']);
 
 		weSuggest::setStaticInstance(true);
 
@@ -757,7 +757,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$contents = '';
 		}
 		//restore contenttype if modified
-		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
+		we_html_tools::forceHeaders($GLOBALS['WE_BACKENDCHARSET']);
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 

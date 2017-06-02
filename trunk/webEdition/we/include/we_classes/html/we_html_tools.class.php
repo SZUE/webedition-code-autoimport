@@ -626,6 +626,13 @@ this.selectedIndex = 0;' .
 		}
 	}
 
+	public static function forceHeaders($charset){
+		self::headerCtCharset('text/html',$charset);
+		self::setHttpCode(200);
+		//remove possible redirect
+		header_remove('Location');
+	}
+
 	/**
 	 * @param string $text
 	 * @param string $img
