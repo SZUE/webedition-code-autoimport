@@ -90,7 +90,7 @@ class we_widget_mdc extends we_widget_base{
 		}
 	}
 
-	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
+	public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(["id" => "m_" . $iCurrId . "_inline",
 				'style' => "width:100%;height:" . ($cfg["height"] - 25) . "px;overflow:auto;"

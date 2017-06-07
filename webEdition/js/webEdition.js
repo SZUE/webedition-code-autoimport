@@ -369,7 +369,7 @@ var WebEdition = {
 			/*Check if all required fields are set*/
 			checkRequired: function (win, id) {
 				var isValid = true;
-				win.$((id === undefined ? '.weSuggest' : '#' + id)).each(function () {
+				win.$((id === undefined || !id ? '.weSuggest' : '#' + id)).each(function () {
 					if (
 						!this.getAttribute("disabled") &&
 						this.offsetParent !== null /*returns null if parent is hidden*/ && (

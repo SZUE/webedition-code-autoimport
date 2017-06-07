@@ -29,7 +29,7 @@ class we_widget_rss extends we_widget_base{
 		$this->rssDat = $aProps[3];
 	}
 
-	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
+	public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd){
 		if(!empty($this->rssDat)){
 			list($rssUri, $rssCont, $rssNumItems, $rssTb, $rssTitle) = explode(',', $this->rssDat);
 		} else {//use default if data is corrupt

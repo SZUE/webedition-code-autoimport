@@ -72,7 +72,7 @@ class rpcWidgetCmd extends we_rpc_cmd{
 				}
 				$className = 'we_widget_' . $aProps[0];
 				$widgetInst=new $className($iCurrId);
-				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId);
+				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $aProps);
 
 				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
 						['onload' => 'WE().layout.cockpitFrame.transmit(window,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'

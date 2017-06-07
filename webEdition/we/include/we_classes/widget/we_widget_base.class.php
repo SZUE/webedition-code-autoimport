@@ -35,7 +35,7 @@ abstract class we_widget_base{
 
 	abstract public function __construct($curID = '', $aProps = []);
 
-	abstract public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd);
+	abstract public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd);
 
 	abstract public static function getDefaultConfig();
 
