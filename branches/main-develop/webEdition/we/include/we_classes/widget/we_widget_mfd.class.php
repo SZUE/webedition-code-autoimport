@@ -199,7 +199,7 @@ ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 		$this->lastModified .= '</table>';
 	}
 
-	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
+	public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 		$oTblDiv = we_html_element::htmlDiv(['id' => 'm_' . $iCurrId . '_inline',
 				'style' => 'width:100%;height:' . ($cfg["height"]) . 'px;overflow:auto;',

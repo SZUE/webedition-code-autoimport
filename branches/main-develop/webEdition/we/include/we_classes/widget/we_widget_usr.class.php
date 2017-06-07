@@ -28,7 +28,7 @@ class we_widget_usr extends we_widget_base{
 
 	}
 
-	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
+	public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd){
 		list($num, $usr) = we_users_online::getUsers();
 		$oTblCont = new we_html_table(
 			["id" => "m_" . $iCurrId . "_inline",

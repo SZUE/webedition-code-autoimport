@@ -73,7 +73,7 @@ class we_widget_fdl extends we_widget_base{
 		$this->failedLoginHTML = $failedLoginsTable->getHtml();
 	}
 
-	public function getInsertDiv($iCurrId, we_base_jsCmd $jsCmd){
+	public function getInsertDiv($iCurrId, $aProps, we_base_jsCmd $jsCmd){
 		$cfg = self::getDefaultConfig();
 
 		$oTblDiv = we_html_element::htmlDiv([

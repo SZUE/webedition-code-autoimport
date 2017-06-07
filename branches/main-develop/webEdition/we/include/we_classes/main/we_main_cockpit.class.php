@@ -151,7 +151,7 @@ abstract class we_main_cockpit{
 					$className = 'we_widget_' . $aProps[0];
 					if(class_exists($className)){
 						$widgetInst = new $className($newSCurrId, $aProps);
-						list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $jsCmd);
+						list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $aProps, $jsCmd);
 						$cfg = $className::getDefaultConfig();
 						$widget = we_widget_base::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $cfg["height"], $cfg["isResizable"]);
 						$s2 .= we_html_element::htmlDiv(["id" => "m_" . $iCurrId, "class" => "le_widget"], $widget);
@@ -252,7 +252,7 @@ abstract class we_main_cockpit{
 				$iCurrId = str_replace('m_', '', $newSCurrId);
 				$className = 'we_widget_' . $aProps[0];
 				$widgetInst = new $className($newSCurrId);
-				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $jsCmd);
+				list($oTblDiv, $aLang) = $widgetInst->getInsertDiv($iCurrId, $aProps, $jsCmd);
 
 				echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}') . $jsCmd->getCmds(), we_html_element::htmlBody(
 						['onload' => 'WE().layout.cockpitFrame.transmit(window,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'

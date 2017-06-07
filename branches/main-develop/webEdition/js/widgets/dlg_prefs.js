@@ -29,9 +29,10 @@ var _sCls_ = opener.document.getElementById(prefs._sObjId + '_cls').value;
 
 var _sInitCls, _oSctCls;
 var _iInitCls = 0;
+var _fo;
 
 function initPrefs() {
-	var _fo = document.forms[0];
+	_fo = document.forms[0];
 	_oSctCls = _fo.elements.sct_cls;
 	var iSctClsLen = _oSctCls.length;
 	_sInitCls = _sCls_;
