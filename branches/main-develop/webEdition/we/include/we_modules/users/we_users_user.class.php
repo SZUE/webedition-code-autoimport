@@ -2169,7 +2169,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$upd = [];
 		foreach($old as $key => $val){
 			if($key != 'userID' && (!isset($data[$key]) || $data[$key] != $val)){
-				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key]) ? $data[$key] : is_array($val) ? implode(',', $val) : $val)) . '")';
+				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape(isset($data[$key]) ? $data[$key] : (is_array($val) ? implode(',', $val) : $val)) . '")';
 			}
 		}
 		if(!empty($upd)){

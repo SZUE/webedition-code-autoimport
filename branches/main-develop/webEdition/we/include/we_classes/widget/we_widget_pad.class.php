@@ -159,7 +159,12 @@ class we_widget_pad extends we_widget_base{
 
 		echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::jsScript(JS_DIR . "weCombobox.js") .
 				$jsFile .
-				we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
+				we_html_element::jsScript(JS_DIR . 'widgets/pad.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar([
+						'sObjId' => we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 0),
+						'sTb' => '',		//($isHome ? $title : g_l('cockpit', '[notes]') . " - " . $title ),
+						'sType' => 'pad',
+						'sInitProps' => ''	//($isHome ? $sInitProps : '')
+			])]), we_html_element::htmlBody(
 						["class" => "weDialogBody", "onload" => "initDlg();"
 						], we_html_element::htmlForm(["onsubmit" => "return false;"
 								], we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));

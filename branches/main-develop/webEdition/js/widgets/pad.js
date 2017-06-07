@@ -25,7 +25,6 @@
  */
 'use strict';
 var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
-
 var _oCsv_,
 	_sInitCsv_,
 	_sInitTitle,
@@ -34,7 +33,7 @@ var _oCsv_,
 	_oSctDate,
 	_aRdo = ['sort', 'display', 'date', 'prio'],
 	_lastPreviewCsv = '',
-	_sCls_ = parent.document.getElementById(widget.sObjId + '_cls').value,
+	_sCls_ = getCls(),
 	_ttlB64Esc = encodeURIComponent(window.btoa(widget.sTb));
 
 function weEntity2char(weString) {
@@ -50,7 +49,7 @@ function weChar2entity(weString) {
 }
 
 function getCls() {
-	return window.parent.document.getElementById(widget.sObjId + '_cls').value;
+	return (window.prefs ? opener.document : window.parent.document).getElementById(widget.sObjId + '_cls').value;
 }
 // displays the note dialog on click on a note
 function selectNote(id) {
@@ -351,6 +350,7 @@ function save() {
 	var oCsv_ = opener.document.getElementById(widget.sObjId + '_csv');
 	var sTitleEnc = window.btoa(getTitle());
 	var sBit = getBitString();
+
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
 		(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
