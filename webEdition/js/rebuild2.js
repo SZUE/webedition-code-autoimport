@@ -136,7 +136,7 @@ function we_cmd() {
 			document._errorMessage = (checked > 0 ? "" : WE().consts.g_l.rebuild.noFieldsChecked);
 			break;
 		default:
-			window.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 
