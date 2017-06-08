@@ -56,8 +56,8 @@ class we_fragment_del extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function updateProgressBar(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
 			'name' => 'pb1',
 			'text' => sprintf(g_l('delete', '[delete_entry]'), we_base_util::shortenPath(id_to_path($this->data, $this->table, $this->db), 70)),
@@ -65,17 +65,17 @@ class we_fragment_del extends we_fragment_base{
 		]);
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 		if($_SESSION['weS']['fragDel']['we_not_deleted_entries']){
-			$jsCmd->addMsg(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['fragDel']['we_not_deleted_entries']) . "\n"), we_base_util::WE_MESSAGE_ERROR);
+			$this->jsCmd->addMsg(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['fragDel']['we_not_deleted_entries']) . "\n"), we_base_util::WE_MESSAGE_ERROR);
 		} else {
-			$jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_base_util::WE_MESSAGE_NOTICE);
+			$this->jsCmd->addMsg(g_l('alert', '[delete_ok]'), we_base_util::WE_MESSAGE_NOTICE);
 		}
 
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['fragDel']['we_go_seem_start']){
-			$jsCmd->addCmd('start_multi_editor');
+			$this->jsCmd->addCmd('start_multi_editor');
 		}
-		$jsCmd->addCmd('close');
+		$this->jsCmd->addCmd('close');
 		unset($_SESSION['weS']['fragDel']);
 	}
 

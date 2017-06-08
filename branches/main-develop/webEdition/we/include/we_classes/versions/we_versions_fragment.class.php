@@ -28,8 +28,8 @@ class we_versions_fragment extends we_fragment_base{
 		we_versions_version::todo($this->data);
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function updateProgressBar(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
 			'name' => 'pb1',
 			'text' => we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60),
@@ -37,7 +37,7 @@ class we_versions_fragment extends we_fragment_base{
 		]);
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
 			$versionslog = new we_versions_log();
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
@@ -53,9 +53,9 @@ class we_versions_fragment extends we_fragment_base{
 			default:
 				$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
 		}
-		$jsCmd->addMsg($responseText, we_base_util::WE_MESSAGE_NOTICE);
-		$jsCmd->addCmd('reloadEditors');
-		$jsCmd->addCmd('close');
+		$this->jsCmd->addMsg($responseText, we_base_util::WE_MESSAGE_NOTICE);
+		$this->jsCmd->addCmd('reloadEditors');
+		$this->jsCmd->addCmd('close');
 	}
 
 	/**

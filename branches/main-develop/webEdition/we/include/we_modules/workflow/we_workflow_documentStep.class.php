@@ -117,7 +117,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		return true;
 	}
 
-	function finish(we_base_jsCmd $jsCmd){
+	function finish(){
 		$this->finishDate = time();
 	}
 

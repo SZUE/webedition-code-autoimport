@@ -41,8 +41,8 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function updateProgressBar(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
 			'name' => 'pbar1',
 			'text' => sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)))
@@ -66,13 +66,13 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		return $templ->we_save();
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
-		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-		$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
-		$jsCmd->addCmd('close');
+		$this->jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+		$this->jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
+		$this->jsCmd->addCmd('close');
 	}
 
 }

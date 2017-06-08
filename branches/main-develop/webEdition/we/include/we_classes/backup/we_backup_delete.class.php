@@ -62,12 +62,12 @@ class we_backup_delete extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+	protected function updateProgressBar(){
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", we_base_file::clearPath($this->data[0]));
 		if(strlen($text) > 75){
 			$text = substr($text, 0, 65) . '&hellip;' . substr($text, -10);
 		}
-		$jsCmd->addCmd('setProgress', [
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
 			'name' => 'pb1',
 			'text' => sprintf(g_l('backup', '[delete_entry]'), $text),
@@ -75,11 +75,11 @@ class we_backup_delete extends we_fragment_base{
 		]);
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
-			$jsCmd->addCmd('delFilesNOK');
+			$this->jsCmd->addCmd('delFilesNOK');
 		}
-		$jsCmd->addCmd('close');
+		$this->jsCmd->addCmd('close');
 		unset($_SESSION['weS']['backup_delete']);
 	}
 

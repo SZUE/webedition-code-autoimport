@@ -62,7 +62,7 @@ class we_rebuild_wizard{
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
 		$WE_PB = new we_gui_progressBar(0, ($dc ? 490 : 200));
-		$WE_PB->addText(g_l('rebuild', '[savingDocument]'), we_gui_progressBar::TOP, 'pb1');
+		$WE_PB->addText(/*g_l('rebuild', '[savingDocument]')*/'', we_gui_progressBar::TOP, 'pb1');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", '', 0, 0, "", "", false, false);
@@ -110,13 +110,13 @@ class we_rebuild_wizard{
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
 		$doctypes = implode(',', we_base_request::_(we_base_request::STRING, 'doctypes', []));
-		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ?: ''));
+		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? : ''));
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
-		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ?: ''));
+		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? : ''));
 		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
-		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ?: ''));
+		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? : ''));
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', []);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
@@ -254,7 +254,7 @@ class we_rebuild_wizard{
 		$thumbs = implode(',', we_base_request::_(we_base_request::STRING, "thumbs", []));
 		$catAnd = we_base_request::_(we_base_request::BOOL, "catAnd");
 		$templateID = we_base_request::_(we_base_request::INT, "templateID", 0);
-		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (get_def_ws() ?: ""));
+		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (get_def_ws() ? : ""));
 		$metaFields = we_base_request::_(we_base_request::INT, "_field", []);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
@@ -293,7 +293,7 @@ class we_rebuild_wizard{
 					break;
 			}
 			if($data){
-				$fr = new we_rebuild_fragment($taskname, 5, [], $data);
+				$fr = new we_rebuild_fragment($taskname, 5, [], $data, $this->jsCmd);
 
 				return [];
 			}
@@ -327,7 +327,7 @@ class we_rebuild_wizard{
 				break;
 		}
 
-		$fr = new we_rebuild_fragment($taskname, $count, []);
+		$fr = new we_rebuild_fragment($taskname, $count, [], '', $this->jsCmd);
 
 		return [];
 	}
@@ -449,8 +449,8 @@ class we_rebuild_wizard{
 		}
 
 		$all_content = (we_base_permission::hasPerm('ADMINISTRATOR') ?
-			we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
-			'');
+				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
+				'');
 
 		$filter_content = $this->formCategory($categories, $catAnd) . '<br/><br/>' .
 			self::formDoctypes($doctypes) . '<br/><br/>' .
@@ -708,7 +708,7 @@ class we_rebuild_wizard{
 		return '
 WE().consts.g_l.rebuild=JSON.parse("' . we_base_util::setLangString([
 				'noFieldsChecked' => (g_l('rebuild', '[noFieldsChecked]'))
-				]) . '");';
+			]) . '");';
 	}
 
 }

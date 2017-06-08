@@ -67,7 +67,7 @@ class we_gui_progressBar{
 		$this->addText('', self::BOTTOM, 'elapsedTime');
 
 		foreach($this->texts as $text){
-			$tmp = '<td ' . ($text['name'] ? 'id="' . $text['name'] . $this->name . '" ' : "") . 'class="small bold">' . $text["text"] . '</td>';
+			$tmp = '<td ' . ($text['name'] ? 'id="' . $text['name'] . $this->name . '" ' : "") . 'class="small bold"><span class="cutTextLeft">' . $text["text"] . '</span></td>';
 			switch($text['place']){
 				case self::TOP:
 					$top .= $tmp;
