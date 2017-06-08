@@ -72,6 +72,7 @@ abstract class we_fragment_base{
 	 * @var        int
 	 */
 	protected $initdata = null;
+	protected $jsCmd = null;
 
 	/**
 	 * init Data.
@@ -87,12 +88,14 @@ abstract class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment, array $bodyAttributes = [], $initdata = ""){
+	public function __construct($name, $taskPerFragment, array $bodyAttributes = [], $initdata = "", we_base_jsCmd $jsCmd = null){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		if($initdata){
 			$this->initdata = $initdata;
 		}
+		$this->jsCmd = $jsCmd? : new we_base_jsCmd();
+
 		//FIXME: make this DB entries; create method for early creation, since the whole data might be too much for memory!
 		$filename = WE_FRAGMENT_PATH . $this->name;
 		$this->currentTask = we_base_request::_(we_base_request::INT, 'fr_' . $this->name . '_ct', 0);
@@ -122,21 +125,19 @@ abstract class we_fragment_base{
 	}
 
 	protected function printPage(array $bodyAttributes = []){
-		$jsCmd = new we_base_jsCmd();
-
-		$this->updateProgressBar($jsCmd);
+		$this->updateProgressBar();
 		if($this->currentTask >= $this->numberOfTasks){
 			$filename = WE_FRAGMENT_PATH . $this->name;
 			we_base_file::delete($filename);
-			$this->finish($jsCmd);
+			$this->finish($this->jsCmd);
 		} else {
-			$this->getJSReload($jsCmd);
+			$this->getJSReload();
 		}
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_fragment.js') . $jsCmd->getCmds(), we_html_element::htmlBody($bodyAttributes));
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_fragment.js') . $this->jsCmd->getCmds(), we_html_element::htmlBody($bodyAttributes));
 	}
 
-	protected function getJSReload(we_base_jsCmd $jsCmd){
+	protected function getJSReload(){
 		$nextTask = $this->currentTask;
 
 		if(($nextTask < $this->numberOfTasks)){
@@ -144,11 +145,11 @@ abstract class we_fragment_base{
 			$tmp['fr_' . $this->name . '_ct'] = $nextTask;
 			$tmp['doFragments'] = 1;
 			$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
-			$jsCmd->addCmd('location', ['doc' => 'document', 'loc' => $_SERVER['SCRIPT_NAME'] . '?' . $tail]);
+			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => $_SERVER['SCRIPT_NAME'] . '?' . $tail]);
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+	protected function updateProgressBar(){
 		return '';
 	}
 
@@ -176,7 +177,7 @@ abstract class we_fragment_base{
 	 * Overwrite this function to do the work when everything is finished.
 	 *
 	 */
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 
 	}
 

@@ -140,8 +140,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function updateProgressBar(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))),
 			'name' => 'pbar1',
 			'text' => $this->text
@@ -615,7 +615,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return we_document::initDoc([], $we_ContentType);
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
+	protected function finish(){
 		//$cancelButton = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
@@ -624,22 +624,22 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 
-			$jsCmd->addCmd('setProgress', [
+			$this->jsCmd->addCmd('setProgress', [
 				'progress' => 0,
 				'name' => 'pbar1',
 				'text' => g_l('copyFolder', '[prepareTemplates]')
 			]);
-			$jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
+			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-			$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
-			$jsCmd->addCmd('close');
+			$this->jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+			$this->jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
+			$this->jsCmd->addCmd('close');
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-			$jsCmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
-			$jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
-			$jsCmd->addCmd('close');
+			$this->jsCmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
+			$this->jsCmd->addMsg(g_l('copyFolder', '[copy_success]'), we_base_util::WE_MESSAGE_NOTICE);
+			$this->jsCmd->addCmd('close');
 		}
 	}
 

@@ -37,27 +37,27 @@ class we_import_siteFrag extends we_fragment_base{
 		}
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
+	protected function updateProgressBar(){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
-		$jsCmd->addCmd('setProgress', [
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => ((int) ((100 / $this->numberOfTasks) * $this->currentTask)),
 			'name' => 'progressTxt',
 			'text' => we_base_util::shortenPath($path, 30),
 			'win' => 'siteimportbuttons'
 		]);
-		$jsCmd->addCmd('disableBackNext', 'siteimportbuttons');
+		$this->jsCmd->addCmd('disableBackNext', 'siteimportbuttons');
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function finish(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => 100,
 			'name' => 'progressTxt',
 			'text' => '',
 			'win' => 'siteimportbuttons'
 		]);
-		$jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_base_util::WE_MESSAGE_NOTICE);
-		$jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
-		$jsCmd->addCmd('close_delayed');
+		$this->jsCmd->addMsg(g_l('siteimport', '[importFinished]'), we_base_util::WE_MESSAGE_NOTICE);
+		$this->jsCmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+		$this->jsCmd->addCmd('close_delayed');
 	}
 
 }

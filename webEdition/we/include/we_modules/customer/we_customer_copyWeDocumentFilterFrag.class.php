@@ -106,22 +106,22 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$this->rebuildPath = $targetDoc->Path;
 	}
 
-	protected function updateProgressBar(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function updateProgressBar(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => (( $this->currentTask ) / $this->numberOfTasks) * 100,
 			'name' => 'copyWeDocumentCustomerFilterText',
 			'text' => we_base_util::shortenPath($this->rebuildPath, 55),
 		]);
 	}
 
-	protected function finish(we_base_jsCmd $jsCmd){
-		$jsCmd->addCmd('setProgress', [
+	protected function finish(){
+		$this->jsCmd->addCmd('setProgress', [
 			'progress' => 100,
 			'name' => 'copyWeDocumentCustomerFilterText',
 			'text' => g_l('modules_customerFilter', '[apply_filter_done]'),
 		]);
-		$jsCmd->addMsg(g_l('modules_customerFilter', '[apply_filter_done]'), we_base_util::WE_MESSAGE_NOTICE);
-		$jsCmd->addCmd('close');
+		$this->jsCmd->addMsg(g_l('modules_customerFilter', '[apply_filter_done]'), we_base_util::WE_MESSAGE_NOTICE);
+		$this->jsCmd->addCmd('close');
 	}
 
 }
