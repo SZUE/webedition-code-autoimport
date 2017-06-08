@@ -54,12 +54,12 @@ function hideProgress() {
 }
 
 function updateEst(name, progress) {
-	if (progress === 100) {
+	if (parseFloat(progress) === 100) {
 		progressBar[name].count = 1;
 		progressBar[name].est = 0;
 		return;
 	}
-	if (progress === 0) {
+	if (parseFloat(progress) === 0) {
 		progressBar[name].start = Date.now();
 	}
 	var diffTime = Date.now() - progressBar[name].start;

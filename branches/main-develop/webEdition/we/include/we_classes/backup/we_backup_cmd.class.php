@@ -171,7 +171,7 @@ abstract class we_backup_cmd{
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && !empty($_SESSION['weS']['weBackupVars']['extern_files']) ) || we_backup_util::hasNextTable()){
 			$percent = we_backup_util::getExportPercent();
 			we_backup_util::addLog('Issuing next request.');
-			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js'), we_html_element::htmlBody(['onload' => "run('export','" . $percent . "','" . $description . "');"]));
+			echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js'), we_html_element::htmlBody(['onload' => "run('export'," . $percent . ",'" . $description . "');"]));
 			return;
 		}
 
