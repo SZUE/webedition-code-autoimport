@@ -57,10 +57,10 @@ var oEvt = {
 		oWidgetDiv.onDragEnd = null;
 		oWidgetDiv.onDrag = null;
 	},
-	start: function (oMouseEvt) {
+	start: function (evt) {
 		var obj = oEvt.obj = this.obj;
-		oMouseEvt = oEvt.getEvt(oMouseEvt);
-		if (oMouseEvt.which != 1) {
+		var oMouseEvt = oEvt.getEvt(evt);
+		if (parseInt(oMouseEvt.which) !== 1) {
 			return true;
 		}
 		obj.onDragStart();
@@ -75,8 +75,8 @@ var oEvt = {
 		document.onmousemove = oEvt.drag;
 		return false;
 	},
-	drag: function (oMouseEvt) {
-		oMouseEvt = oEvt.getEvt(oMouseEvt);
+	drag: function (evt) {
+		var oMouseEvt = oEvt.getEvt(evt);
 		if (oMouseEvt.which === 0) {
 			return oEvt.end();
 		}
@@ -101,8 +101,8 @@ var oEvt = {
 		oDiv.onDrag(iLastPosX, iLastPosY);
 		return false;
 	},
-	end: function (oMouseEvt) {
-		oMouseEvt = oEvt.getEvt(oMouseEvt);
+	end: function (evt) {
+		var oMouseEvt = oEvt.getEvt(evt);
 		document.onmousemove = null;
 		document.onmouseup = null;
 		window.clearInterval(oEvt.obj.H);
@@ -112,20 +112,29 @@ var oEvt = {
 		saveSettings();
 		return oDiv;
 	},
-	getEvt: function (oMouseEvt) {
-		if (oMouseEvt === undefined) {
-			oMouseEvt = window.event;
+	getEvt: function (evt) {
+		if (evt === undefined) {
+			evt = window.event;
 		}
-		if (oMouseEvt.layerX !== undefined) {
-			oMouseEvt.layerX = oMouseEvt.offsetX;
+
+		function ClonedEvent(orig){
+			for(var prop in orig){
+				this[prop] = orig[prop];
+			}
+
+			if (this.layerX !== undefined) {
+				this.layerX = this.offsetX;
+			}
+			if (this.layerY !== undefined) {
+				this.layerY = this.offsetY;
+			}
+			/*if (this.which !== undefined) {
+				this.which = this.button;
+			}*/
 		}
-		if (oMouseEvt.layerY !== undefined) {
-			oMouseEvt.layerY = oMouseEvt.offsetY;
-		}
-		/*if (oMouseEvt.which !== undefined) {
-			oMouseEvt.which = oMouseEvt.button;
-		}*/
-		return oMouseEvt;
+		ClonedEvent.prototype = evt.prototype;
+
+		return new ClonedEvent(evt);
 	}
 };
 
