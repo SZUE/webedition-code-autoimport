@@ -27,11 +27,11 @@
 var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-backup');
 
 function doExport() {
-	if ((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
+	if ((!top.edbody.document.we_form.export_send.checked) && (!top.edbody.document.we_form.export_server.checked)) {
 		WE().util.showMessage(WE().consts.g_l.backupWizard.save_not_checked, WE().consts.message.WE_MESSAGE_WARNING, window);
 	} else {
 		top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&operation_mode=busy&step=2";
-		top.body.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd");
+		top.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd");
 	}
 }
 
@@ -47,9 +47,15 @@ function pressYesStep1() {
 	if (_unsavedChanges) {
 		WE().util.showMessage(WE().consts.g_l.backupWizard.recover_backup_unsaved_changes, WE().consts.message.WE_MESSAGE_WARNING, window);
 	} else {
-		top.body.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=body&do_import_after_backup=1";
-		top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy";
-		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=cmd";
+		top.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=edbody&do_import_after_backup=1";
+		top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=busy";
+		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=cmd";
 	}
 
+}
+
+function recoverBackupAfterMaking() {
+	top.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2";
+	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=busy&step=2";
+	top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=cmd&step=2";
 }

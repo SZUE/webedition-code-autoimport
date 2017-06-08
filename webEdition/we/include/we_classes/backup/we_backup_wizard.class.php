@@ -47,7 +47,7 @@ class we_backup_wizard{
 	function getHTMLFrameset(){
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', '', we_html_element::htmlBody([
 					'id' => 'weMainBody']
-					, we_html_element::htmlIFrame('body', $this->frameset . '&pnt=body', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+					, we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
 					we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd')
 				)
@@ -103,7 +103,7 @@ class we_backup_wizard{
 
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard',
 					'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(2);"], we_html_element::htmlForm([
-						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(["pnt" => "body", "step" => 3]) .
+						'name' => 'we_form', "method" => "post"], we_html_element::htmlHiddens(["pnt" => "edbody", "step" => 3]) .
 						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
 					)
 				)
@@ -121,7 +121,7 @@ class we_backup_wizard{
 
 		$this->fileUploader = new we_fileupload_ui_base('we_upload_file');
 		$this->fileUploader->setTypeCondition('accepted', [we_base_ContentTypes::XML], ['.gz', '.tgz']);
-		$this->fileUploader->setCallback('top.body.startImport(true)');
+		$this->fileUploader->setCallback('top.edbody.startImport(true)');
 		$this->fileUploader->setNextCmd('uploaderCallback_startImport');
 		$this->fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 300]);
 		$this->fileUploader->setDimensions(['width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5]);
@@ -602,7 +602,7 @@ class we_backup_wizard{
 		$txt = g_l('backup', '[extern_backup_question_' . we_base_request::_(we_base_request::STRING, "w", "exp") . ']');
 
 		$yesCmd = "self.close();";
-		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
+		$noCmd = "top.opener.top.edbody.clearExtern();" . $yesCmd;
 
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', '', we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus()",
 					"onload" => "self.focus();"], we_html_element::htmlForm(['name' => 'we_form'], we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
@@ -635,9 +635,9 @@ class we_backup_wizard{
 					case 2:
 						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
-					case 3:
+					case 3://recover_backup
 						if(we_base_request::_(we_base_request::BOOL, 'do_import_after_backup')){
-							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';top.busy.location='" . $this->frameset . "&pnt=cmd';top.cmd.location='" . $this->frameset . "&pnt=busy';");
+							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.busy.recoverBackupAfterMaking();");
 						} else if(!empty($_SESSION['weS']['inbackup'])){
 							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.opener.weiter();top.close();");
 							unset($_SESSION['weS']['inbackup']);
@@ -652,20 +652,25 @@ class we_backup_wizard{
 			case self::RECOVER:
 				switch($step){
 					case 1:
-						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::YES, "javascript:pressYesStep1();"), we_html_button::create_button(we_html_button::NO, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
+						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::YES, "javascript:pressYesStep1();"), we_html_button::create_button(we_html_button::NO, "javascript:top.edbody.location='" . $this->frameset . "&pnt=edbody&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 2:
-						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=1'") .
-							we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');");
+						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.edbody.location='" . $this->frameset . "&pnt=edbody&step=1'") .
+							we_html_button::create_button(we_html_button::NEXT, "javascript:top.edbody.we_submitForm('edbody','" . $this->frameset . "');");
 
 						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
 						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 3:
-						$startImportCall = 'top.body.weFileUpload_instance.startUpload()';
-						$cancelCall = 'top.body.weFileUpload_instance.cancelUpload()';
+						if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
+							$startImportCall = 'top.edbody.weFileUpload_instance.startUpload()';
+							$cancelCall = 'top.edbody.weFileUpload_instance.cancelUpload()';
+						} else {
+							$startImportCall = 'top.edbody.startImport()';
+							$cancelCall = 'top.close();';
+						}
 
 						if(defined('WORKFLOW_TABLE')){
 							$db = new DB_WE();
@@ -676,7 +681,7 @@ class we_backup_wizard{
 							$nextbut = we_html_button::create_button('restore_backup', "javascript:" . $startImportCall);
 						}
 
-						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';") . $nextbut;
+						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.edbody.location='" . $this->frameset . "&pnt=edbody&step=2';") . $nextbut;
 						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $cancelCall));
 
 						$table->setCol(0, 1, null, $buttons);
@@ -805,7 +810,7 @@ class we_backup_wizard{
 			case 'frameset':
 				echo $weBackupWizard->getHTMLFrameset();
 				break;
-			case 'body':
+			case 'edbody':
 				echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, 'step', 1));
 				break;
 			case 'cmd':
@@ -833,11 +838,12 @@ class we_backup_wizard{
 			case 'frameset':
 				echo $weBackupWizard->getHTMLFrameset();
 				break;
-			case 'body':
+			case 'edbody':
 				echo $weBackupWizard->getHTMLStep($step);
 				break;
 			case 'cmd':
-				if(($ret = $weBackupWizard->getHTMLCmd())){
+				$jsCmd = new we_base_jsCmd();
+				if(($ret = $weBackupWizard->getHTMLCmd($jsCmd))){
 					echo we_html_tools::getHtmlTop('webEdition', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $ret, we_html_element::htmlBody());
 					break;
 				}

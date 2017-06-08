@@ -403,15 +403,15 @@ abstract class we_backup_preparer{
 						we_base_jsCmd::singleCmd('import_file_found');
 				}
 				$cmd->addMsg(g_l('backup', '[import_file_found]'), we_base_util::WE_MESSAGE_WARNING);
-				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				$cmd->addCmd('location', ['doc' => 'edbody', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2']);
 				return $cmd->getCmds();
 			case 'customer':
 				$cmd->addMsg(g_l('backup', '[customer_import_file_found]'), we_base_util::WE_MESSAGE_WARNING);
-				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				$cmd->addCmd('location', ['doc' => 'edbody', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2']);
 				return $cmd->getCmds();
 			default:
 				$cmd->addMsg(g_l('backup', '[format_unknown]'), we_base_util::WE_MESSAGE_WARNING);
-				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				$cmd->addCmd('location', ['doc' => 'edbody', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2']);
 				return $cmd->getCmds();
 		}
 	}
@@ -441,7 +441,7 @@ abstract class we_backup_preparer{
 
 		$cmd = new we_base_jsCmd();
 		$cmd->addMsg($mess, we_base_util::WE_MESSAGE_ERROR);
-		$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+		$cmd->addCmd('location', ['doc' => 'edbody', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2']);
 		return $cmd->getCmds();
 	}
 

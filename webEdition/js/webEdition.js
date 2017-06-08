@@ -772,12 +772,12 @@ var WebEdition = {
 			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 			var ab;
 			if (win.top.top.$) {
-				ab = win.top.top.$("#alertBox");
+				ab = win.top.$("#alertBox");
 				if (!ab.length) {
-					var alertDiv = win.top.top.document.createElement('dialog');
+					var alertDiv = win.top.document.createElement('dialog'); 
 					alertDiv.id = "alertBox";
-					win.top.top.document.body.appendChild(alertDiv);
-					ab = win.top.top.$("#alertBox");
+					win.top.document.body.appendChild(alertDiv);
+					ab = win.top.$("#alertBox");
 				}
 				if (ab.html()) {//still a present dialog
 					var el = ab.get(0);
