@@ -280,7 +280,7 @@ function setLocation(loc) {
 function startStep(step, doImport) {
 	window.focus();
 	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step + (
-					doImport !== undefined ? "&do_import_after_backup" + doImport : "");
+					doImport !== undefined ? "&do_import_after_backup=" + doImport : "");
 }
 
 function startBusy() {
@@ -322,7 +322,7 @@ function startImport(isFileReady) {
 	if (backup.import_from === "import_upload") {
 		if (isFileReady || document.we_form.we_upload_file.value) {
 			startBusy();
-			top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
+			top.edbody.delete_enabled = WE().layout.button.switch_button_state(top.edbody.document, "delete", "disabled");
 			document.we_form.action = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd";
 			document.we_form.submit();
 		} else {
@@ -331,8 +331,8 @@ function startImport(isFileReady) {
 	} else {
 		if (document.we_form.backup_select.value) {
 			startBusy();
-			top.body.delete_backup_enabled = WE().layout.button.switch_button_state(top.body.document, "delete_backup", "disabled");
-			top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
+			top.edbody.delete_backup_enabled = WE().layout.button.switch_button_state(top.edbody.document, "delete_backup", "disabled");
+			top.edbody.delete_enabled = WE().layout.button.switch_button_state(top.edbody.document, "delete", "disabled");
 			document.we_form.action = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backup_cmd";
 			document.we_form.submit();
 		} else {
@@ -390,7 +390,7 @@ function updateProgress(percent, desc) {
 
 function backupFinished(text) {
 	updateProgress(100, text);
-	top.body.setLocation(WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=body&step=2");
+	top.edbody.setLocation(WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=make_backup&pnt=edbody&step=2");
 	top.cmd.location = "about:blank";
 }
 
@@ -409,8 +409,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=delFrag&currentID=-1", "we_del", WE().consts.size.dialog.small, WE().consts.size.dialog.tiny, true, true, true);
 			break;
 		case "deletebackup":
-			if (top.body.delSelItem) {
-				top.body.delSelItem();
+			if (top.edbody.delSelItem) {
+				top.edbody.delSelItem();
 			}
 			break;
 		case "importFinished":
@@ -421,7 +421,7 @@ function we_cmd() {
 				top.opener.top.we_cmd("import");
 				top.close();
 			} else {
-				top.body.location = WE().consts.dirs + "we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
+				top.edbody.location = WE().consts.dirs + "we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=2";
 			}
 			break;
 		default:
@@ -435,7 +435,7 @@ function finishedImport(doRebuild, file) {
 	if (doRebuild) {
 		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=cmd&operation_mode=rebuild";
 	} else {
-		top.body.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=4&temp_filename=" + file;
+		top.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=recover_backup&pnt=edbody&step=4&temp_filename=" + file;
 	}
 	if (top.busy && top.busy.setProgressText) {
 		top.busy.setProgressText("current_description", WE().consts.g_l.backupWizard.finished);
