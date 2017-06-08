@@ -177,6 +177,7 @@ abstract class we_main_cockpit{
 
 			echo
 			we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
 				we_html_element::cssLink(CSS_DIR . 'home.css') .
 				we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)]) .
 				$jsCmd->getCmds()
