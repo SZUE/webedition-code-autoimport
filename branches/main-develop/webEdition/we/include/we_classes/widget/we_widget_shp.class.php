@@ -197,8 +197,7 @@ FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi
 			. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_base_util::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
 			//note: canvas doesn't support CSS width/height....
 			'<canvas id="' . $this->newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
-			'</div><br style="clear:both;"/>' .
-			($bTarget ? we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') : '' );
+			'</div><br style="clear:both;"/>';
 		$this->jsConfig = [
 			'value' => we_base_util::formatNumber(($total - $canceled)),
 			'label' => 'Ziel in ' . $currency,

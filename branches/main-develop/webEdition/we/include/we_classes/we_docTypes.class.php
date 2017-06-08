@@ -22,6 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+// FIXME: reduce all onchange JS to single function calls 
+
 class we_docTypes extends we_contents_base{
 	/* The Text that will be shown in the tree-menue */
 	var $DocType = 'New DocType';
