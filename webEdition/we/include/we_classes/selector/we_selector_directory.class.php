@@ -298,8 +298,8 @@ class we_selector_directory extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
 		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
-
-		echo $weCmd->getCmds();
+		
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printCreateFolderHTML(){
