@@ -59,6 +59,7 @@ abstract class we_backup_preparer{
 				'lastMem' => 0,
 			],
 			'retry' => 0,
+			'update' => [],
 		];
 
 		self::getOptions($_SESSION['weS']['weBackupVars']['options'], $_SESSION['weS']['weBackupVars']['handle_options']);
@@ -127,12 +128,20 @@ abstract class we_backup_preparer{
 		}
 
 		$offset = strlen(we_backup_util::weXmlExImProtectCode);
-		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($offset)) == we_backup_util::weXmlExImProtectCode) ? $offset : 0;
+		$line = we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($offset));
+		if(empty($line)){
+			return false;
+		}
+		$_SESSION['weS']['weBackupVars']['offset'] = ($line == we_backup_util::weXmlExImProtectCode) ? $offset : 0;
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION;
 
 		$_SESSION['weS']['weBackupVars']['options']['format'] = we_backup_util::getFormat($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
 
 		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
+
+		if($_SESSION['weS']['weBackupVars']['offset_end'] === false){//no such file
+			return false;
+		}
 
 		if($_SESSION['weS']['weBackupVars']['options']['format'] === 'xml'){
 			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['offset_end']);

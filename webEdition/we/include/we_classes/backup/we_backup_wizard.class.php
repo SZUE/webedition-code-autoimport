@@ -32,6 +32,8 @@ class we_backup_wizard{
 	private $json = [];
 
 	function __construct($mode = self::BACKUP){
+		//make sure we reset these vars on opening of this dialog
+		unset($_SESSION['weS']['weBackupVars']);
 		$this->frameset = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . ($mode == self::BACKUP ? 'make_backup' : 'recover_backup');
 		$this->mode = $mode;
 		$this->json['mode'] = $mode;
@@ -616,7 +618,7 @@ class we_backup_wizard{
 		$table = new we_html_table(['class' => 'default', 'style' => "width:100%;text-align:right"], 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
-			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
+			$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('backup', '[working]'));
 			$progress = new we_gui_progressBar(we_base_request::_(we_base_request::INT, "percent", 0), 200);
 			$progress->addText($text, we_gui_progressBar::TOP, "current_description");
 			$head .= we_gui_progressBar::getJSCode();
@@ -843,10 +845,12 @@ class we_backup_wizard{
 				break;
 			case 'cmd':
 				$jsCmd = new we_base_jsCmd();
-				if(($ret = $weBackupWizard->getHTMLCmd($jsCmd))){
-					echo we_html_tools::getHtmlTop('webEdition', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $ret, we_html_element::htmlBody());
+				$weBackupWizard->getHTMLCmd($jsCmd);
+				if(!$jsCmd->isEmpty()){
+					echo we_html_tools::getHtmlTop('webEdition', '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $jsCmd->getCmds(), we_html_element::htmlBody());
 					break;
 				}
+				//FIXME: no break??
 			case 'busy':
 				echo $weBackupWizard->getHTMLBusy();
 				break;
@@ -862,54 +866,54 @@ class we_backup_wizard{
 		//'make_backup' : 'recover_backup'
 		return 'WE().consts.g_l.backupWizard=JSON.parse("' . we_base_util::setLangString([
 				'make_backup' => [
-					'banner_dep' => (g_l('backup', '[make_backup_banner_dep]')),
-					'binary_data' => g_l('backup', '[make_backup_binary_data]'),
-					'binary_dep' => (g_l('backup', '[make_backup_binary_dep]')),
-					'core_data' => g_l('backup', '[make_backup_core_data]'),
-					'customer_data' => g_l('backup', '[make_backup_customer_data]'),
+					'banner_dep' => (g_l('backup', '[export_banner_dep]')),
+					'binary_data' => g_l('backup', '[export_binary_data]'),
+					'binary_dep' => (g_l('backup', '[export_binary_dep]')),
+					'core_data' => g_l('backup', '[export_core_data]'),
+					'customer_data' => g_l('backup', '[export_customer_data]'),
 					'history_data' => g_l('backup', '[make_backup][history_data]'),
-					'newsletter_data' => g_l('backup', '[make_backup_newsletter_data]'),
-					'newsletter_dep' => (g_l('backup', '[make_backup_newsletter_dep]')),
-					'object_data' => g_l('backup', '[make_backup_object_data]'),
-					'schedule_data' => g_l('backup', '[make_backup_schedule_data]'),
-					'schedule_dep' => (g_l('backup', '[make_backup_schedule_dep]')),
-					'shop_data' => g_l('backup', '[make_backup_shop_data]'),
-					'shop_dep' => (g_l('backup', '[make_backup_shop_dep]')),
+					'newsletter_data' => g_l('backup', '[export_newsletter_data]'),
+					'newsletter_dep' => (g_l('backup', '[export_newsletter_dep]')),
+					'object_data' => g_l('backup', '[export_object_data]'),
+					'schedule_data' => g_l('backup', '[export_schedule_data]'),
+					'schedule_dep' => (g_l('backup', '[export_schedule_dep]')),
+					'shop_data' => g_l('backup', '[export_shop_data]'),
+					'shop_dep' => (g_l('backup', '[export_shop_dep]')),
 					'temporary_data' => g_l('backup', '[make_backup][temporary_data]'),
-					'temporary_dep' => (g_l('backup', '[make_backup_temporary_dep]')),
-					'user_data' => g_l('backup', '[make_backup_user_data]'),
-					'versions_binarys_data' => g_l('backup', '[make_backup_versions_binarys_data]'),
-					'versions_binarys_dep' => (g_l('backup', '[make_backup_versions_binarys_dep]')),
-					'versions_data' => g_l('backup', '[make_backup_versions_data]'),
-					'versions_data' => g_l('backup', '[make_backup_versions_data]'),
-					'versions_dep' => (g_l('backup', '[make_backup_versions_dep]')),
-					'workflow_data' => g_l('backup', '[make_backup_workflow_data]'),
-					'workflow_dep' => (g_l('backup', '[make_backup_workflow_dep]')),
+					'temporary_dep' => (g_l('backup', '[export_temporary_dep]')),
+					'user_data' => g_l('backup', '[export_user_data]'),
+					'versions_binarys_data' => g_l('backup', '[export_versions_binarys_data]'),
+					'versions_binarys_dep' => (g_l('backup', '[export_versions_binarys_dep]')),
+					'versions_data' => g_l('backup', '[export_versions_data]'),
+					'versions_data' => g_l('backup', '[export_versions_data]'),
+					'versions_dep' => (g_l('backup', '[export_versions_dep]')),
+					'workflow_data' => g_l('backup', '[export_workflow_data]'),
+					'workflow_dep' => (g_l('backup', '[export_workflow_dep]')),
 				],
 				'recover_backup' => [
-					'banner_dep' => (g_l('backup', '[recover_backup_banner_dep]')),
-					'binary_data' => g_l('backup', '[recover_backup_binary_data]'),
-					'binary_dep' => (g_l('backup', '[recover_backup_binary_dep]')),
-					'core_data' => g_l('backup', '[recover_backup_core_data]'),
-					'customer_data' => g_l('backup', '[recover_backup_customer_data]'),
-					'history_data' => g_l('backup', '[recover_backup][history_data]'),
-					'newsletter_data' => g_l('backup', '[recover_backup_newsletter_data]'),
-					'newsletter_dep' => (g_l('backup', '[recover_backup_newsletter_dep]')),
-					'object_data' => g_l('backup', '[recover_backup_object_data]'),
-					'schedule_data' => g_l('backup', '[recover_backup_schedule_data]'),
-					'schedule_dep' => (g_l('backup', '[recover_backup_schedule_dep]')),
-					'shop_data' => g_l('backup', '[recover_backup_shop_data]'),
-					'shop_dep' => (g_l('backup', '[recover_backup_shop_dep]')),
-					'temporary_data' => g_l('backup', '[recover_backup][temporary_data]'),
-					'temporary_dep' => (g_l('backup', '[recover_backup_temporary_dep]')),
-					'user_data' => g_l('backup', '[recover_backup_user_data]'),
-					'versions_binarys_data' => g_l('backup', '[recover_backup_versions_binarys_data]'),
-					'versions_binarys_dep' => (g_l('backup', '[recover_backup_versions_binarys_dep]')),
-					'versions_data' => g_l('backup', '[recover_backup_versions_data]'),
-					'versions_data' => g_l('backup', '[recover_backup_versions_data]'),
-					'versions_dep' => (g_l('backup', '[recover_backup_versions_dep]')),
-					'workflow_data' => g_l('backup', '[recover_backup_workflow_data]'),
-					'workflow_dep' => (g_l('backup', '[recover_backup_workflow_dep]')),
+					'banner_dep' => (g_l('backup', '[import__banner_dep]')),
+					'binary_data' => g_l('backup', '[import__binary_data]'),
+					'binary_dep' => (g_l('backup', '[import__binary_dep]')),
+					'core_data' => g_l('backup', '[import__core_data]'),
+					'customer_data' => g_l('backup', '[import__customer_data]'),
+					'history_data' => g_l('backup', '[import_][history_data]'),
+					'newsletter_data' => g_l('backup', '[import__newsletter_data]'),
+					'newsletter_dep' => (g_l('backup', '[import__newsletter_dep]')),
+					'object_data' => g_l('backup', '[import__object_data]'),
+					'schedule_data' => g_l('backup', '[import__schedule_data]'),
+					'schedule_dep' => (g_l('backup', '[import__schedule_dep]')),
+					'shop_data' => g_l('backup', '[import__shop_data]'),
+					'shop_dep' => (g_l('backup', '[import__shop_dep]')),
+					'temporary_data' => g_l('backup', '[import_][temporary_data]'),
+					'temporary_dep' => (g_l('backup', '[import__temporary_dep]')),
+					'user_data' => g_l('backup', '[import__user_data]'),
+					'versions_binarys_data' => g_l('backup', '[import__versions_binarys_data]'),
+					'versions_binarys_dep' => (g_l('backup', '[import__versions_binarys_dep]')),
+					'versions_data' => g_l('backup', '[import__versions_data]'),
+					'versions_data' => g_l('backup', '[import__versions_data]'),
+					'versions_dep' => (g_l('backup', '[import__versions_dep]')),
+					'workflow_data' => g_l('backup', '[import__workflow_data]'),
+					'workflow_dep' => (g_l('backup', '[import__workflow_dep]')),
 				],
 				'del_backup_confirm' => g_l('backup', '[del_backup_confirm]'),
 				'delold_confirm' => g_l('backup', '[delold_confirm]'),
