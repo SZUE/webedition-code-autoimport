@@ -37,6 +37,8 @@ if (!_EditorFrame) {
 
 }
 
+var we_mediaReferences = null;
+
 if (doc) {
 	if (doc.cmd) {
 		top.we_cmd.apply(window, [doc.cmd]);
@@ -388,8 +390,8 @@ function we_cmd() {
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
-		case "setMediaReferences":
-			window.we_mediaReferences = args[1];
+		case 'setMediaReferences':
+			we_mediaReferences = args[1];
 			break;
 		case "object_TextArea_apply":
 			opener._EditorFrame.setEditorIsHot(true);

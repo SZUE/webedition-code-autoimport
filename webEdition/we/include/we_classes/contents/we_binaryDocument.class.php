@@ -391,7 +391,7 @@ class we_binaryDocument extends we_document{
 				$ref['id_' . $c] = $v;
 			}
 		}
-		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(window, document.we_form.MediaReferences.value);");
 		$jsCmd->addCmd('setMediaReferences', $ref);
 		$form = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('MediaReferences', $values, 1, '', false, [], 'value', 388), '', 'left', 'defaultfont', '', $button);
 
