@@ -191,11 +191,16 @@ we_cmd_modules.base = function (args, url, caller) {
 			}
 			we_cmd(args[1]);
 			break;
+		case "loadIfActive":
+			if(top.treeData.table !== args[1]){
+				break;
+			}
+			args[0] = 'load';
+			/* falls through */
 		case "load":
 			if (WE().session.seemode) {
 				break;
 			}
-
 			we_cmd("setTab", (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE);
 			/* falls through */
 		case "loadFolder":

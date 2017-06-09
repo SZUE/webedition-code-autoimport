@@ -340,6 +340,7 @@ class we_selector_directory extends we_selector_file{
 		]);
 		$this->printCmdAddEntriesHTML($weCmd);
 		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('loadIfActive', $this->table);
 
 		$this->setWriteSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
