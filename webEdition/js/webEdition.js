@@ -123,11 +123,11 @@ var WebEdition = {
 			}
 		},
 		propEdit: {
-			switchExt: function (doc, id, name) {
-				var a = doc.we_form.elements;
+			switchExt: function (win, id, name) {
+				var a = win.document.we_form.elements;
 				var ok = true;
 				if (id) {
-					ok = window.confirm(WE().consts.g_l.main.confirm_ext_change);
+					ok = win.confirm(WE().consts.g_l.main.confirm_ext_change);
 				}
 				if (ok) {
 					a["we_" + name + "_Extension"].value = (parseInt(a["we_" + name + "_IsDynamic"].value) ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);

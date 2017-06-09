@@ -41,7 +41,7 @@ function unsetHot(){
 }
 
 function askForSaveOrRefireCmd(args){
-	if(isHot() && window.confirm(WE().consts.g_l.exports.save_changed_export)){
+	if(isHot() && window.confirm(WE().consts.g_l.doctypeEdit.save_changed_doctype)){
 		unsetHot();
 		we_cmd("save_docType");
 	} else {
