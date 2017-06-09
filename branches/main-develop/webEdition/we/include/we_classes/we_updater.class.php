@@ -103,7 +103,7 @@ abstract class we_updater{
 		$progress['pos'] += ($db->num_rows() ?: 1);
 
 		//change old tables to have different prim key
-		$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE . ' AND ID>' . intval($init['maxID']) . ' ORDER BY ID LIMIT ' . $maxStep, true);
+		$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE ID>' . intval($init['maxID']) . ' ORDER BY ID LIMIT ' . $maxStep, true);
 		foreach($tables as $table){
 			if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
 				$db->delCol(OBJECT_X_TABLE . $table, 'ID');
@@ -712,7 +712,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					return array_merge($ret, ['what' => 'content']);
 				}
 				self::meassure('updateContent');
-				return ['what' => 'object'];
+				return ['what' => 'object','text' => 'Classes'];
 			case 'object':
 				if(defined('OBJECT_X_TABLE')){
 					$ret = self::updateObjectFilesX($db, $progress);
