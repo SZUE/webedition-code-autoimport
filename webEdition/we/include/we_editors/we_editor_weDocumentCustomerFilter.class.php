@@ -51,9 +51,9 @@ class we_editor_weDocumentCustomerFilter extends we_editor_base{
 		$weSuggest->setLabel(g_l('modules_customer', '[connected_with_customer]'));
 		$weSuggest->setMaxResults(20);
 		$weSuggest->setResult($idname, $this->we_doc->WebUserID);
-		$weSuggest->setSelector(we_gui_suggest::DocSelector);
+		//$weSuggest->setSelector(we_gui_suggest::DocSelector);
 		$weSuggest->setWidth(434);
-		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');"));
+		$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'" . $idname . "','" . $textname . "');"));
 		$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit', document.we_form.elements['yuiAcResultCustomer'].value);"));
 		$weSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);"));
 		$weSuggest->setTable(CUSTOMER_TABLE);
