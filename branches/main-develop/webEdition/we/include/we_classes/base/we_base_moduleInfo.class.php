@@ -102,7 +102,7 @@ abstract class we_base_moduleInfo{
 		self::init();
 		self::$activeModules = [];
 		foreach(self::$we_available_modules as $modul => $conf){
-			if($conf['alwaysActive'] || in_array($modul, self::$userEnabledModules)){
+			if(!empty($conf['alwaysActive']) || in_array($modul, self::$userEnabledModules)){
 				self::$activeModules[] = $modul;
 				if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
 					require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
