@@ -25,7 +25,6 @@
 class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = []){
-
 		if(($table === TEMPLATES_TABLE && !we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ||
 			($table === FILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')) ||
 			($table === VFILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_COLLECTIONS'))){
@@ -101,6 +100,7 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
 			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
+
 		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $queryTable . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$tmpItems = [];
@@ -183,12 +183,18 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'closeFolder':
-				$openDirs = array_flip($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]);
+				$openDirs = is_array($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ? array_flip($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) : [];
 				unset($openDirs[$parentFolder]);
 				$openDirs = array_keys($openDirs);
 				$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = $openDirs;
 				break;
-			default:
+			case 'load':
+				// when switching away from a tree to load another one, write its openFolders to session
+				if(($lastOpenFolders = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 3))){
+					$_SESSION['prefs']['openFolders_' . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $lastOpenFolders;
+				}
+				/* falls through */
+			case 'loadFolder':
 				$parentpaths = $wspaces = [];
 
 				if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!we_base_permission::hasPerm('ADMINISTRATOR'))){
@@ -207,21 +213,16 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 				$wsQuery = (isset($ac) ? ' AND TableID IN (' . implode(',', $ac) . ')' : '') .
 					($wspaces ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
-				if(($openFolders = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 3))){
-					$_SESSION['prefs']['openFolders_' . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $openFolders;
-				} else {
-					$openFolders = (isset($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) && is_array($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ?
+
+				$openFolders = (isset($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) && is_array($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ?
 						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] : []);
-				}
 
 				if($parentFolder){
 					if(!in_array($parentFolder, $openFolders)){
 						$openFolders[] = $parentFolder;
-						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = implode(',', $openFolders);
+						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = $openFolders;
 					}
 				}
-
-				we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 
 				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 					return $resp;
@@ -255,7 +256,11 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 				$resp->setData('parentFolder', $parentFolder);
 				$resp->setData('offset', $offset);
 				$resp->setData('items', $Tree->getJSLoadTree($treeItems));
+				break;
+			default:
+				t_e('called rpcLoadMainTreeCmd with unknwon task/we_cmd[0]');
 		}
+		we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 
 		return $resp;
 	}
