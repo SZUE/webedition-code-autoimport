@@ -24,8 +24,7 @@
  */
 class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
-	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = [
-	]){
+	private function getItems($openFolders, $parentpaths, $wsQuery, &$treeItems, $table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = []){
 
 		if(($table === TEMPLATES_TABLE && !we_base_permission::hasPerm('CAN_SEE_TEMPLATES')) ||
 			($table === FILE_TABLE && !we_base_permission::hasPerm('CAN_SEE_DOCUMENTS')) ||
@@ -70,9 +69,8 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			];
 		}
 
-		$tmp = array_filter($openFolders);
+		$tmp = is_array($openFolders) ? array_filter($openFolders) : [];
 		$tmp[] = $ParentID;
-
 		$elem = 'ID,ParentID,Path,Text,IsFolder,ContentType,ModDate';
 		$queryTable = $table;
 		switch($table){
@@ -212,15 +210,14 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 				if(($openFolders = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 3))){
 					$_SESSION['prefs']['openFolders_' . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $openFolders;
 				} else {
-					$openFolders = (isset($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ?
-						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] :
-						[]);
+					$openFolders = (isset($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) && is_array($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]) ?
+						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] : []);
 				}
 
 				if($parentFolder){
 					if(!in_array($parentFolder, $openFolders)){
 						$openFolders[] = $parentFolder;
-						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = $openFolders;
+						$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = implode(',', $openFolders);
 					}
 				}
 
