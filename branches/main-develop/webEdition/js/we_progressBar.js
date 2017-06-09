@@ -61,14 +61,25 @@ function updateEst(name, progress) {
 	}
 	if (parseFloat(progress) === 0) {
 		progressBar[name].start = Date.now();
+		progressBar[name].lastTime = Date.now();
+		progressBar[name].lastProgress = 0;
 	}
-	var diffTime = Date.now() - progressBar[name].start;
-	progressBar[name].est = (progress > 0 ? ((diffTime * 100) / progress) - diffTime : -1);
+	var diff = {
+		time: Date.now() - progressBar[name].start,
+		timeLast: Date.now() - progressBar[name].lastTime,
+		progressTodo: 100 - progress,
+		progressDiff: progress - progressBar[name].lastProgress,
+	},
+		estFull = (progress > 0 ? (((diff.time * 100) / progress) - diff.time) : 0),
+		estLast = (diff.progressDiff > 0 ? (diff.timeLast * diff.progressTodo / diff.progressDiff) : estFull);
+	progressBar[name].est = (progress > 0 ? (estFull + estLast) / 2 : -1);
 	progressBar[name].count = 30;
 	if (!progressBar[name].timer) {
 		updateElapsed(name);
 		progressBar[name].timer = window.setInterval(updateElapsed, 1000, name);
 	}
+	progressBar[name].lastTime = Date.now();
+	progressBar[name].lastProgress = progress;
 }
 
 function updateElapsed(name) {
