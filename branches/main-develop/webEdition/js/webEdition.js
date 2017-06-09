@@ -1157,11 +1157,11 @@ function getActiveEditors() {
 	return "&activeEditors=" + window.btoa(JSON.stringify(activeEditors));
 }
 
-function we_openMediaReference(id) {
+function we_openMediaReference(win, id) {
 	id = id ? id : 0;
 
-	if (window.we_mediaReferences && window.we_mediaReferences['id_' + id]) {
-		var ref = window.we_mediaReferences['id_' + id];
+	if (win.we_mediaReferences && win.we_mediaReferences['id_' + id]) {
+		var ref = win.we_mediaReferences['id_' + id];
 		switch (ref.type) {
 			case 'module':
 				top.we_cmd(ref.mod + '_edit', ref.id);
