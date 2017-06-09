@@ -425,7 +425,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
 
