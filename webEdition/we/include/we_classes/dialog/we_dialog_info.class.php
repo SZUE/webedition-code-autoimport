@@ -103,7 +103,7 @@ abstract class we_dialog_info{
 			$modetable = new we_html_table(['class' => 'plainTable modeTable'], 1, 3);
 
 			$loginButton = we_html_button::create_button('fat:login,fa-lg fa-sign-in', we_html_button::WE_FORM . ':loginForm', '', 0, 0, "document.getElementById('mainTable').style.display='none';document.getElementById('loading').style.display='block';");
-			if(!we_gui_SEEM){ //	deactivate See-Mode
+			if(!WE_SEEM){ //	deactivate See-Mode
 				if(WE_LOGIN_WEWINDOW){
 					$modetable->setCol(0, 0, [], '');
 					$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2], (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
@@ -112,7 +112,7 @@ abstract class we_dialog_info{
 					$modetable->setCol(0, 1, ['style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2], we_html_element::htmlHidden("mode", "normal") . $loginButton);
 				}
 			} else { //	normal login
-				if(we_gui_SEEM){
+				if(WE_SEEM){
 //	15th Mode
 					$table->setCol($actRow++, 0, ['class' => "small"], g_l('SEEM', '[start_mode]'));
 				}
