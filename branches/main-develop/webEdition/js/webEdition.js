@@ -304,10 +304,10 @@ var WebEdition = {
 
 					var acID = this.id.search('yuiAcInput') === 0 ? this.id.substr(10) : '';
 					var current = {//currentDir : 0,
-							currentID : ui.item.ID,
-							currentPath : ui.item.value,
-							currentType : ui.item.contenttype,
-							currentTable : this.getAttribute('data-table')
+						currentID: ui.item.ID,
+						currentPath: ui.item.value,
+						currentType: ui.item.contenttype,
+						currentTable: this.getAttribute('data-table')
 					};
 					event.target.ownerDocument.defaultView.we_cmd('we_suggest_postprocessSelection', current, acID);
 				},
@@ -774,7 +774,7 @@ var WebEdition = {
 			if (win.top.top.$) {
 				ab = win.top.$("#alertBox");
 				if (!ab.length) {
-					var alertDiv = win.top.document.createElement('dialog'); 
+					var alertDiv = win.top.document.createElement('dialog');
 					alertDiv.id = "alertBox";
 					win.top.document.body.appendChild(alertDiv);
 					ab = win.top.$("#alertBox");
@@ -1217,10 +1217,10 @@ function we_cmd() {
 
 	}
 	/* all base commands should be added to we_webEditionCmd_base.js */
-	var i, mods = WE().consts.modules.jsmods;
+	var i, ret, mods = WE().consts.modules.jsmods;
 	for (i = 0; i < mods.length; i++) {
-		if (we_cmd_modules[mods[i]].apply(caller, [args, url, caller])) {
-			return true;
+		if ((ret = we_cmd_modules[mods[i]].apply(caller, [args, url, caller])) !== false) {
+			return ret;
 		}
 		//if a tool window is requested, we have to open it
 		if (args[0] === (mods[i] + "_edit")) {
