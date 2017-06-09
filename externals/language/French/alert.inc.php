@@ -131,6 +131,7 @@ $l_alert=array(
 	'recipient_exists'=>'Cette adresse E-Mail existe déjà!',
 	'recipient_new_name'=>'Changer l`adresse E-Mail!',
 	'required_field_alert'=>'Le champ `%s` est obligatoire et doit être rempli!',
+	'save_changed_doctype'=>'Document type has been changed. Do you want to save your changes?',
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(

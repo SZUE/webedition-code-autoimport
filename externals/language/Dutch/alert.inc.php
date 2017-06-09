@@ -131,6 +131,7 @@ $l_alert=array(
 	'recipient_exists'=>'Dit e-mail adres bestaat al!',
 	'recipient_new_name'=>'Wijzig e-mail adres!',
 	'required_field_alert'=>'Het veld `%s` is verplicht en moet ingevuld worden!',
+	'save_changed_doctype'=>'Document type has been changed. Do you want to save your changes?',
 	'save_error_fields_value_not_valid'=>'De uitgelichte velden bevatten ongeldige data.\nVoer a.u.b. geldige data in.',
 	
 	'tblFile'=>array(

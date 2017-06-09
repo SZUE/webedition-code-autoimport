@@ -131,6 +131,7 @@ $l_alert=array(
 	'recipient_exists'=>'Sähköpostiosoite on jo olemassa!',
 	'recipient_new_name'=>'Muuta sähköpostiosoitetta!',
 	'required_field_alert'=>'Kenttä `%s` on pakollinen!',
+	'save_changed_doctype'=>'Document type has been changed. Do you want to save your changes?',
 	'save_error_fields_value_not_valid'=>'Korostetut kentät sisältävät virheellisiä syötteitä.\nOle hyvä ja syötä kelvollista dataa.',
 	
 	'tblFile'=>array(
