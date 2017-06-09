@@ -272,7 +272,6 @@ abstract class we_backup_cmd{
 	private static function import(){
 		if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 			self::setImportVars();
-
 			$description = g_l('backup', '[working]');
 		} else if(!empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
 			$description = g_l('backup', '[delete_old_files]');
@@ -326,7 +325,10 @@ abstract class we_backup_cmd{
 				$_SESSION['weS']['weBackupVars']['update'] = we_updater::doUpdate('internal');
 			} else {
 				// perform update
-				$_SESSION['weS']['weBackupVars']['update'] = we_updater::doUpdate($_SESSION['weS']['weBackupVars']['update']['what'], $_SESSION['weS']['weBackupVars']['update']['pos']);
+				$_SESSION['weS']['weBackupVars']['update'] = we_updater::doUpdate($_SESSION['weS']['weBackupVars']['update']['what'], $_SESSION['weS']['weBackupVars']['update']);
+			}
+			if(!$_SESSION['weS']['weBackupVars']['update']){//no more update changes
+				$_SESSION['weS']['weBackupVars']['offset']++;
 			}
 			$description = 'Update ' . (!empty($_SESSION['weS']['weBackupVars']['update']['text']) ? $_SESSION['weS']['weBackupVars']['update']['text'] : '');
 		} elseif(empty($_SESSION['weS']['weBackupVars']['update'])){
@@ -350,7 +352,7 @@ abstract class we_backup_cmd{
 // reload user prefs
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 			$jsCmd = new we_base_jsCmd();
-			$jsCmd->addCmd('finishedImport', [
+			$jsCmd->addCmd('importFinished', [
 				'doRebuild' => $_SESSION['weS']['weBackupVars']['options']['rebuild'],
 				'file' => $_SESSION['weS']['weBackupVars']['options']['rebuild'] ? $_SESSION['weS']['weBackupVars']['backup_file'] : ''
 			]);

@@ -101,4 +101,8 @@ class we_base_jsCmd{
 		return $tmp->getCmds();
 	}
 
+	public function isEmpty(){
+		return empty($this->cmds);
+	}
+
 }

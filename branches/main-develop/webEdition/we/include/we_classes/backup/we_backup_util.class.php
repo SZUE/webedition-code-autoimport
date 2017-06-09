@@ -337,6 +337,8 @@ abstract class we_backup_util{
 				fseek($fh, 0, SEEK_END);
 				$end = ftell($fh);
 				fclose($fh);
+			}else{
+				return false;
 			}
 		} else {
 
