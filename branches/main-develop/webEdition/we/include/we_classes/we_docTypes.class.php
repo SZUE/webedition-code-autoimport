@@ -264,7 +264,7 @@ class we_docTypes extends we_contents_base{
 
 	private function formIsDynamic(){
 		$n = 'we_' . $this->Name . '_IsDynamic';
-		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "we_cmd('setHot');this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');WE().layout.propEdit.switchExt(document," . intval($this->ID) . ",'" . $this->Name . "');");
+		return we_html_forms::checkboxWithHidden($this->IsDynamic, $n, g_l('weClass', '[IsDynamic]'), false, 'defaultfont', "we_cmd('setHot');WE().layout.propEdit.switchExt(window," . intval($this->ID) . ",'" . $this->Name . "');");
 	}
 
 	private function hiddenIsHot(){
@@ -274,7 +274,8 @@ class we_docTypes extends we_contents_base{
 
 	private function formIsSearchable(){
 		$n = 'we_' . $this->Name . '_IsSearchable';
-		return we_html_forms::checkbox(1, $this->IsSearchable, 'check_' . $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "we_cmd('setHot');this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . we_html_element::htmlHidden($n, ($this->IsSearchable ? 1 : 0));
+
+		return we_html_forms::checkboxWithHidden($this->IsSearchable, $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "we_cmd('setHot');");
 	}
 
 	private function formSubDir($width = 100){
@@ -318,13 +319,13 @@ class we_docTypes extends we_contents_base{
 	}
 
 	public static function getJSLangConsts(){
-		return '
-	WE().consts.g_l.doctypeEdit=JSON.parse("' . we_base_util::setLangString([
+		return 'WE().consts.g_l.doctypeEdit=JSON.parse("' . we_base_util::setLangString([
 				'doctype_empty' => (g_l('alert', '[doctype_empty]')),
 				'doctype_exists' => (g_l('alert', '[doctype_exists]')),
 				'doctype_hochkomma' => (g_l('alert', '[doctype_hochkomma]')),
 				'newDocTypeName' => g_l('weClass', '[newDocTypeName]'),
-				]) . '");';
+				'save_changed_doctype' => g_l('alert', '[save_changed_doctype]')
+			]) . '");';
 	}
 
 }
