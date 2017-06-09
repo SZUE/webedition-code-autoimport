@@ -239,6 +239,7 @@ $GLOBALS['configs'] = [// Create array for needed configuration variables
 		'openFolders_tblObject' => [we_base_request::INTLIST, ''],
 		'openFolders_tblObjectFiles' => [we_base_request::INTLIST, ''],
 		'openFolders_tblTemplates' => [we_base_request::INTLIST, ''],
+		'openFolders_tblVFile' => [we_base_request::INTLIST, ''],
 		'promptPlugin' => [we_base_request::BOOL, false],
 		'siteImportPrefs' => [we_base_request::STRING, ''],
 		'usePlugin' => [we_base_request::BOOL, false],
