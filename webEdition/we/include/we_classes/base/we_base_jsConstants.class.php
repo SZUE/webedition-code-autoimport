@@ -194,6 +194,10 @@ abstract class we_base_jsConstants{
 						'same_master_template' => g_l('weClass', '[same_master_template]'),
 						'saveFirstMessage' => g_l('weClass', '[saveFirstMessage]'),
 					],
+					'button' => [
+						'save' => g_l('buttons_global', '[save][value]'),
+						'revert' => g_l('buttons_global', '[revert][value]'),
+					],
 					'scheduler' => [
 						'activeSchedule' => [
 							'title' => g_l('button', '[saveInScheduler][alt]'),
