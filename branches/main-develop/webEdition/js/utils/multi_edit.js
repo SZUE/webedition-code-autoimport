@@ -108,7 +108,7 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 
 	this.delItem = function (child) {
 		this.itemCount--;
-		var parent=this.win.document.getElementById(this.parentId);
+		var parent = this.win.document.getElementById(this.parentId);
 		for (var i = 0; i < this.variantCount; i++) {
 			if (child < this.itemCount) {
 				for (var j = child + 1; j < (this.itemCount + 1); j++) {
@@ -116,13 +116,13 @@ WE().util.multi_edit = function (parentId, win, itemNum, but, width, editable, f
 				}
 			}
 			var item = this.win.document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
-			window.parent.removeChild(item);
+			parent.removeChild(item);
 		}
 
 		var item1 = this.win.document.getElementById(this.name + "_item" + this.itemCount);
-		window.parent.removeChild(item1);
+		parent.removeChild(item1);
 		if (this.relatedItems[child]) {
-			window.parent.removeChild(this.relatedItems[child]);
+			parent.removeChild(this.relatedItems[child]);
 			//remove from list
 			this.relatedItems.splice(child, 1);
 		}
