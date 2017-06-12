@@ -169,6 +169,9 @@ function we_cmd() {
 					break;
 			}
 			break;
+		case "setHot":
+			// prevent call from bubbling up
+			break;
 		case "change_filter":
 			switch (args[1]) {
 				case "add_filter":
@@ -179,7 +182,7 @@ function we_cmd() {
 					break;
 			}
 			break;
-		default:
+		default:top.console.log('args', args);
 			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
