@@ -107,6 +107,7 @@ function we_cmd() {
 			setTab(args[1]);
 			break;
 		case "setIconOfDocClass":
+		case "we_customer_selector":
 			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			break;
 		default:

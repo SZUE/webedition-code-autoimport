@@ -182,7 +182,7 @@ function we_cmd() {
 					break;
 			}
 			break;
-		default:top.console.log('args', args);
+		default:
 			top.opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}
 }
