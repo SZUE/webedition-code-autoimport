@@ -38,7 +38,7 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 
@@ -53,7 +53,7 @@ function we_cmd() {
 		if (window.confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
 			args[0] = "save_banner";
 		} else {
-			top.content.usetHot();
+			top.content.unsetHot();
 		}
 	}
 	switch (args[0]) {
@@ -110,7 +110,7 @@ function we_cmd() {
 			} else {
 				WE().util.showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "banner_edit":
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];

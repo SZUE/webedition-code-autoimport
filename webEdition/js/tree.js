@@ -484,7 +484,7 @@ function scrollToY() {
 function setHot() {
 	hot = true;
 }
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 

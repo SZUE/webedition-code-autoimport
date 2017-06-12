@@ -121,8 +121,8 @@ function setTab(module) {
 		WE().util.showConfirm(window, "", WE().consts.g_l.alert.discard_changed_data, ["setHotTab", module], ["revertTab"]);
 		return;
 	}
-	if (typeof "top.content.usetHot" == "function") {
-		top.content.usetHot();
+	if (typeof "top.content.unsetHot" == "function") {
+		top.content.unsetHot();
 	}
 	current = module;
 	top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);

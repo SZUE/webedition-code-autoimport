@@ -34,7 +34,7 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 
@@ -55,7 +55,7 @@ function we_cmd() {
 		if (window.confirm(WE().consts.g_l.newsletter.save_changed_newsletter)) {
 			args[0] = "save_newsletter";
 		} else {
-			top.content.usetHot();
+			top.content.unsetHot();
 		}
 	}
 	switch (args[0]) {
@@ -129,7 +129,7 @@ function we_cmd() {
 			} else {
 				WE().util.showMessage(WE().consts.g_l.newsletter.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "save_newsletter_question":
 			window.focus();

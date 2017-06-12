@@ -46,7 +46,7 @@ function we_cmd() {
 		if (window.confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			args[0] = "save_glossary";
 		} else {
-			top.content.usetHot();
+			top.content.unsetHot();
 		}
 	}
 	var exc;
@@ -138,7 +138,7 @@ function we_cmd() {
 			} else {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "doAfterSave":
 			if (top.makeNewEntryCheck == 1) {

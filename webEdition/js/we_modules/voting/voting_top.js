@@ -35,7 +35,7 @@ var scrollToVal = 0;
 function setHot() {
 	hot = true;
 }
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 function doUnload() {
@@ -52,7 +52,7 @@ function we_cmd() {
 		if (window.confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			args[0] = "save_voting";
 		} else {
-			top.content.usetHot();
+			top.content.unsetHot();
 		}
 	}
 	switch (args[0]) {
@@ -133,7 +133,7 @@ function we_cmd() {
 			}
 
 			top.content.editor.edbody.submitForm();
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 
 		case "voting_edit":

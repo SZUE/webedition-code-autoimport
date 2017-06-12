@@ -124,7 +124,7 @@ class we_users_view extends we_modules_view{
 
 		$_SESSION["user_session_data"] = $user_object;
 
-		$jscmd->addCmd('usetHot');
+		$jscmd->addCmd('unsetHot');
 		$jscmd->addCmd('setUserData', $user_object->Type == we_users_user::TYPE_USER_GROUP ? $user_object->ID : $user_object->ParentID, $user_object->Type ?: we_users_user::TYPE_USER, $user_object->Path);
 		$jscmd->addCmd('loadUsersContent', ['oldtab' => 0]);
 	}
@@ -262,7 +262,7 @@ class we_users_view extends we_modules_view{
 			$jscmd->addMsg(g_l('modules_users', '[user_path_nok]'), we_base_util::WE_MESSAGE_ERROR);
 			return;
 		}
-		$jscmd->addCmd('usetHot');
+		$jscmd->addCmd('unsetHot');
 		if($id){
 			$jscmd->addCmd('updateTreeEntry', ['id' => $user_object->ID, 'parentid' => $user_object->ParentID, 'text' => $user_object->username, 'class' => ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '')]);
 		} else {
