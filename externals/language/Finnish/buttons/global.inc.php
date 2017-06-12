@@ -537,6 +537,9 @@ $l_buttons_global=array(
 		'alt'=>'Palauta varmuuskopiosta',
 		'value'=>'Palauta varmuuskopio',
 	),
+	'revert'=>array(
+		'value'=>'Revert',
+	),
 	'revert_published'=>array(
 		'alt'=>'Hylkää muutokset ja palauta julkaistu versio.',
 		'value'=>'Palauta julkaistu versio',

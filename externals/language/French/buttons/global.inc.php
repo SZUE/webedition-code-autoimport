@@ -537,6 +537,9 @@ $l_buttons_global=array(
 		'alt'=>'Restaurer la sauvegarde',
 		'value'=>'Restaurer la sauvegarde',
 	),
+	'revert'=>array(
+		'value'=>'Revert',
+	),
 	'revert_published'=>array(
 		'alt'=>'Rejeter les changements et restaurer la version publié.',
 		'value'=>'Restaurer la version publié',

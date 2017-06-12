@@ -537,6 +537,9 @@ $l_buttons_global=array(
 		'alt'=>'Backup wiederherstellen',
 		'value'=>'Backup wiederherstellen',
 	),
+	'revert'=>array(
+		'value'=>'Verwerfen',
+	),
 	'revert_published'=>array(
 		'alt'=>'Änderungen verwerfen und veröffentlichte Version wiederherstellen.',
 		'value'=>'Veröffentlichte Version wiederherstellen',

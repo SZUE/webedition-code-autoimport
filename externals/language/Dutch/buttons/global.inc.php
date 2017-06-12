@@ -537,6 +537,9 @@ $l_buttons_global=array(
 		'alt'=>'Herstel Backup...',
 		'value'=>'Recover Backup',
 	),
+	'revert'=>array(
+		'value'=>'Revert',
+	),
 	'revert_published'=>array(
 		'alt'=>'Negeer wijzigingen en herstel gepubliceerde versie.',
 		'value'=>'Restore published version',
