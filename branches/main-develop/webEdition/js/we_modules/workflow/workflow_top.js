@@ -39,7 +39,7 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 
@@ -53,7 +53,7 @@ function we_cmd() {
 		var hotConfirmMsg = window.confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
-			top.content.usetHot();
+			top.content.unsetHot();
 		} else {
 			top.content.setHot();
 		}
@@ -113,7 +113,7 @@ function we_cmd() {
 		case "save_workflow_do":
 			top.content.editor.edbody.document.we_form.wcmd.value = "save_workflow";
 			top.content.editor.edbody.submitForm();
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "workflow_edit":
 		case "show_document":

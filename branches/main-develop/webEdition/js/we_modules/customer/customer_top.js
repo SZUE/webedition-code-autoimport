@@ -52,7 +52,7 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 
@@ -70,7 +70,7 @@ function we_cmd() {
 		if (window.confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
 		} else {
-			top.content.usetHot();
+			top.content.unsetHot();
 		}
 	}
 
@@ -131,7 +131,7 @@ function we_cmd() {
 			} else {
 				WE().util.showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "customer_edit":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];

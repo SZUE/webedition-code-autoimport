@@ -42,7 +42,7 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }
 
@@ -83,7 +83,7 @@ function we_cmd() {
 				if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
 					args[0] = "save_export";
 				} else {
-					top.content.usetHot();
+					top.content.unsetHot();
 				}
 			}
 	}
@@ -207,7 +207,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 
 			}
-			top.content.usetHot();
+			top.content.unsetHot();
 			break;
 		case "export_edit":
 			if (!WE().util.hasPerm("EDIT_EXPORT")) {

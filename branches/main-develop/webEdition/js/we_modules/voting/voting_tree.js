@@ -54,7 +54,7 @@ function doClick(id, typ) {
 			return;
 		}
 	}
-	top.content.usetHot();
+	top.content.unsetHot();
 	cmd = "voting_edit";
 	node = treeData.get(id);
 	top.content.editor.edbody.location = top.getFrameset() + "&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;

@@ -54,7 +54,7 @@ function doClick(id, typ) {
 			return;
 		}
 	}
-	top.content.usetHot();
+	top.content.unsetHot();
 	cmd = "export_edit";
 	node = treeData.get(id);
 	top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;

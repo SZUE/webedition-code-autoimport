@@ -55,19 +55,19 @@ function we_cmd() {
 				we_cmd.apply(caller, args);
 			}
 			break;
-		case 'usetHot':
-			usetHot();
+		case 'unsetHot':
+			unsetHot();
 			break;
 		case "exit_users":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args));
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args));
 				break;
 			}
 			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "new_user":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args));
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args));
 				break;
 			}
 			if (!WE().util.hasPerm('NEW_USER')) {
@@ -82,7 +82,7 @@ function we_cmd() {
 			break;
 		case "display_user":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args));
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args));
 				break;
 			}
 			top.content.editor.edbody.focus();
@@ -90,7 +90,7 @@ function we_cmd() {
 			break;
 		case "new_group":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args));
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args));
 				break;
 			}
 
@@ -102,7 +102,7 @@ function we_cmd() {
 			break;
 		case "new_alias":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args));
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args));
 				break;
 			}
 			if (!WE().util.hasPerm('NEW_USER')) {
@@ -119,7 +119,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form) {
 				top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 				if (top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd")) {
-					top.content.usetHot();
+					top.content.unsetHot();
 				}
 			}
 			break;
@@ -157,6 +157,6 @@ function setHot() {
 	hot = true;
 }
 
-function usetHot() {
+function unsetHot() {
 	hot = false;
 }

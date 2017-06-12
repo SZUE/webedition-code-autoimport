@@ -52,7 +52,7 @@ function doClick(id, typ) {
 			return;
 		}
 	}
-	top.content.usetHot();
+	top.content.unsetHot();
 	node = treeData.get(id);
 	top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;
 }
