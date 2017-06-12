@@ -319,13 +319,11 @@ var WebEdition = {
 						this.result.value = 0;
 						this.result.setAttribute('data-contenttype', WE().consts.contentTypes.FOLDER);
 					}
-					if (
-						!this.getAttribute("disabled") &&
-						this.offsetParent !== null /*returns null if parent is hidden*/ && (
-							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-							this.value.indexOf(this.getAttribute("data-basedir")) !== 0 || //basedir must match the selected path
-							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+					if (!this.getAttribute("disabled") && this.offsetParent !== null /*returns null if parent is hidden*/ && (
+								this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
+								!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
+								(this.getAttribute("data-selector") !== "customerSelector" && this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
+								(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
 							)
 						) {
 						this.classList.add("weMarkInputError");
@@ -370,13 +368,11 @@ var WebEdition = {
 			checkRequired: function (win, id) {
 				var isValid = true;
 				win.$((id === undefined || !id ? '.weSuggest' : '#' + id)).each(function () {
-					if (
-						!this.getAttribute("disabled") &&
-						this.offsetParent !== null /*returns null if parent is hidden*/ && (
-							this.value && this.value !== "/" && !parseInt(this.result.value) || //sth. was typed, but not selected
-							!parseInt(this.result.value) && this.getAttribute("required") || //a required field has no value
-							(this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
-							(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
+					if (!this.getAttribute("disabled") && this.offsetParent !== null /*returns null if parent is hidden*/ && (
+								(this.value && this.value !== "/" && !parseInt(this.result.value)) || //sth. was typed, but not selected
+								(!parseInt(this.result.value) && this.getAttribute("required")) || //a required field has no value
+								(this.getAttribute("data-selector") !== "customerSelector" && this.value && this.value.indexOf(this.getAttribute("data-basedir")) !== 0) || //basedir must match the selected path
+								(this.getAttribute("data-selector") === "docSelector" && this.result.getAttribute('data-contenttype') === WE().consts.contentTypes.FOLDER) //we need a document, but only a folder is selected
 							)
 						) {
 						this.classList.add("weMarkInputError");
