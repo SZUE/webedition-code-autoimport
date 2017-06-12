@@ -51,7 +51,9 @@ function we_cmd() {
 			//process direct command
 			we_cmd(args.shift());
 			//do commands intended
-			we_cmd.apply(caller, args);
+			if (args.length) {
+				we_cmd.apply(caller, args);
+			}
 			break;
 		case 'usetHot':
 			usetHot();
