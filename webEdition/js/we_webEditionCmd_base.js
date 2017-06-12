@@ -868,6 +868,7 @@ function we_cmd_delete_single_document_question(url) {
 }
 
 function loadCloseFolder(args) {
+	top.document.getElementById('reloadTree').firstChild.classList.add('fa-spin');
 	WE().util.rpc(WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&'), null, function (weResponse) {
 		if (weResponse && weResponse.Success) {
 			if (weResponse.DataArray.treeName) {
@@ -888,6 +889,7 @@ function loadCloseFolder(args) {
 		}
 		top.scrollToY();
 	});
+	window.setTimeout(function(){top.document.getElementById('reloadTree').firstChild.classList.remove('fa-spin');}, 300);
 }
 
 function we_cmd_delete_single_document(url) {

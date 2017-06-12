@@ -1070,11 +1070,10 @@ function weFileupload_view_import(uploader) {
 	self.reloadOpener = function () {
 		try {
 			var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-
-			if (self.uploader.doc.we_form.fu_file_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
-				top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
+			if (parseInt(self.uploader.doc.we_form.fu_file_parentID.value) === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+				top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 			}
-			top.opener.top.we_cmd('load', 'tblFile');
+			top.we_cmd('loadIfActive', WE().consts.tables.FILE_TABLE);
 		} catch (e) {
 			//
 		}
