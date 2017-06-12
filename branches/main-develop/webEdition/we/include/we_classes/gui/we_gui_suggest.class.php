@@ -48,6 +48,7 @@
 class we_gui_suggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
+	const CustomerSelector = 'customerSelector';
 	const BTN_EDIT = true;
 	const USE_DRAG_AND_DROP = true;
 	const BTN_SELECT = 0;
