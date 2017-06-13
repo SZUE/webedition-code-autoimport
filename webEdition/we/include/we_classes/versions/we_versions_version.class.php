@@ -1426,19 +1426,27 @@ class we_versions_version{
 			return;
 		}
 		$db = new DB_WE();
-		$resetArray = [];
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
-
+		/*
 		$data = getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID), $db);
-
+		$resetArray = $tblFields = array();
+		$tableInfo = $db->metadata(VERSIONS_TABLE);
+		foreach($tableInfo as $cur){
+			$tblFields[] = $cur["name"];
+		}
 		if($data){
-			foreach($data as $k => $v){
+			foreach($tblFields as $k => $v){
 				if(isset($data[$v])){
 					$resetArray[$v] = $data[$v];
 				}
 			}
 		}
+		 * 
+		 */
+
+		// FIXME: do we need some verfication of the data hash?
+		$resetArray = getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID), $db);
 
 		if($resetArray){
 			$resetDoc = new $resetArray['ClassName']();

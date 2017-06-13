@@ -51,6 +51,8 @@ class rpcResetVersionCmd extends we_rpc_cmd{
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
+
+		return new we_rpc_response();
 	}
 
 }
