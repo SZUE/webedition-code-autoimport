@@ -56,12 +56,16 @@ function we_cmd() {
 		}
 	}
 	switch (args[0]) {
-		case "exit_voting":
-			if (!hot) {
-				top.opener.top.we_cmd("exit_modules");
-			}
+		case 'unsetHot':
+			unsetHot();
 			break;
-
+		case "exit_voting":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
+			top.opener.top.we_cmd("exit_modules");
+			break;
 		case "vote":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.tabnr.value = 3;
@@ -75,6 +79,10 @@ function we_cmd() {
 			break;
 		case "new_voting":
 		case "new_voting_group":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.cmdid.value = (args[1] ? args[1] : 0);
@@ -135,11 +143,14 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			top.content.unsetHot();
 			break;
-
 		case "voting_edit":
 			if (!WE().util.hasPerm("EDIT_VOTING")) {
 				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
+			}
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];

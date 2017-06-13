@@ -35,33 +35,34 @@ function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
 
-
 function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	if (top.hot && args[0] !== "save_glossary") {
-		if (window.confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
-			args[0] = "save_glossary";
-		} else {
-			top.content.unsetHot();
-		}
-	}
+	var hot = false;
 	var exc;
 
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "exit_glossary":
-			if (!top.hot) {
-				top.opener.top.we_cmd("exit_modules");
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.glossary.view.save_changed_glossary, ["processConfirmHot", "save_glossary"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
 		case "new_glossary_foreignword":
 		case "new_glossary_link":
 		case "new_glossary_textreplacement":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.glossary.view.save_changed_glossary, ["processConfirmHot", "save_glossary"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				if (args[1] !== undefined) {
@@ -153,6 +154,10 @@ function we_cmd() {
 		case "glossary_edit_foreignword":
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.glossary.view.save_changed_glossary, ["processConfirmHot", "save_glossary"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (!WE().util.hasPerm("EDIT_GLOSSARY")) {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
