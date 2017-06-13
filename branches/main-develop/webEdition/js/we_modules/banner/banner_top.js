@@ -49,20 +49,22 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] !== "save_banner") {
-		if (window.confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
-			args[0] = "save_banner";
-		} else {
-			top.content.unsetHot();
-		}
-	}
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "exit_banner":
-			if (!hot) {
-				top.opener.top.we_cmd('exit_modules');
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.banner.view.save_changed_banner, ["processConfirmHot", "save_banner"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd('exit_modules');
 			break;
 		case "new_banner":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.banner.view.save_changed_banner, ["processConfirmHot", "save_banner"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
@@ -71,6 +73,10 @@ function we_cmd() {
 			}
 			break;
 		case "new_bannergroup":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.banner.view.save_changed_banner, ["processConfirmHot", "save_banner"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
@@ -113,11 +119,19 @@ function we_cmd() {
 			top.content.unsetHot();
 			break;
 		case "banner_edit":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.banner.view.save_changed_banner, ["processConfirmHot", "save_banner"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 			top.content.editor.edbody.document.we_form.bid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
 		case "banner_load":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.banner.view.save_changed_banner, ["processConfirmHot", "save_banner"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edheader&page=' + args[1] + '&txt=' + args[2] + '&isFolder=' + args[3];
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=banner&pnt=edfooter';
 			break;

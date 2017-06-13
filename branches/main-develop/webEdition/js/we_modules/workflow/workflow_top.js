@@ -59,10 +59,15 @@ function we_cmd() {
 		}
 	}
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "exit_workflow":
-			if (!top.hot) {
-				top.opener.top.we_cmd('exit_modules');
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.workflow.view.save_changed_workflow, ["processConfirmHot", "save_workflow"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd('exit_modules');
 			break;
 		case 'loadHeadFooter':
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&page=" + args[1].page + '&txt=' + encodeURI(args[1].txt) + (args[1].art ? "&art" + args[1].art : "");
@@ -70,6 +75,10 @@ function we_cmd() {
 			break;
 
 		case "new_workflow":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.workflow.view.save_changed_workflow, ["processConfirmHot", "save_workflow"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 			top.content.editor.edbody.document.we_form.wid.value = args[1];
 			top.content.editor.edbody.submitForm();
@@ -117,6 +126,10 @@ function we_cmd() {
 			break;
 		case "workflow_edit":
 		case "show_document":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.workflow.view.save_changed_workflow, ["processConfirmHot", "save_workflow"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 			top.content.editor.edbody.document.we_form.wid.value = args[1];
 			top.content.editor.edbody.submitForm();

@@ -42,19 +42,15 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	var el, id;
 
-	if (top.content.hot) {
-		switch (args[0]) {
-			case "module_navigation_edit":
-			case "module_navigation_new":
-			case "module_navigation_new_group":
-			case "exit_navigation":
-				args.unshift("exit_doc_question");
-				top.we_cmd.apply(caller, args);
-				return;
-		}
-	}
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "module_navigation_edit":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.alert.exit_doc_question.tools, ["processConfirmHot", "module_navigation_save"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
@@ -67,6 +63,10 @@ function we_cmd() {
 			break;
 		case "module_navigation_new":
 		case "module_navigation_new_group":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.alert.exit_doc_question.tools, ["processConfirmHot", "module_navigation_save"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = false;
 				if (top.content.editor.edbody.document.we_form.presetFolder !== undefined) {
@@ -83,14 +83,6 @@ function we_cmd() {
 				window.treeData.unselectNode();
 			}
 			break;
-		case "exit_doc_question_no":
-			top.content.hot = false;
-			args.shift(); //old command is after this command name
-			we_cmd.apply(caller, args);
-			break;
-		case "exit_doc_question_yes":
-		//save the document
-		/*falls through*/
 		case "module_navigation_save":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
@@ -245,9 +237,11 @@ function we_cmd() {
 			top.content.drawTree();
 			break;
 		case "exit_navigation":
-			if (!hot) {
-				top.opener.top.we_cmd("exit_modules");
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.alert.exit_doc_question.tools, ["processConfirmHot", "module_navigation_save"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "module_navigation_reset_customer_filter":
 			WE().util.showConfirm(window, "", WE().consts.g_l.navigation.view.reset_customerfilter_question, ["module_navigation_do_reset_customer_filter"]);

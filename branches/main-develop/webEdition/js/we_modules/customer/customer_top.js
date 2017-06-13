@@ -66,21 +66,22 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] !== "save_customer") {
-		if (window.confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
-			args[0] = "save_customer";
-		} else {
-			top.content.unsetHot();
-		}
-	}
-
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "exit_customer":
-			if (!hot) {
-				top.opener.top.we_cmd("exit_modules");
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.customer.view.save_changed_customer, ["processConfirmHot", "save_customer"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "new_customer":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.customer.view.save_changed_customer, ["processConfirmHot", "save_customer"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
@@ -134,6 +135,10 @@ function we_cmd() {
 			top.content.unsetHot();
 			break;
 		case "customer_edit":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.customer.view.save_changed_customer, ["processConfirmHot", "save_customer"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 			top.content.editor.edbody.submitForm();

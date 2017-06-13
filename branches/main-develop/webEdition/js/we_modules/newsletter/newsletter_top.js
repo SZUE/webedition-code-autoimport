@@ -51,24 +51,23 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	if (hot && args[0] !== "save_newsletter") {
-		if (window.confirm(WE().consts.g_l.newsletter.save_changed_newsletter)) {
-			args[0] = "save_newsletter";
-		} else {
-			top.content.unsetHot();
-		}
-	}
 	switch (args[0]) {
 		case "exit_newsletter":
-			if (!hot) {
-				top.opener.top.we_cmd("exit_modules");
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.newsletter.save_changed_newsletter, ["processConfirmHot", "save_newsletter"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd("exit_modules");
 			break;
 		case 'loadHeadFooter':
 			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader&page=" + args[1].page + '&txt=' + encodeURI(args[1].txt) + '&group=' + (args[1].folder ? 1 : 0);
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter&group=" + (args[1].folder ? 1 : 0);
 			break;
 		case "new_newsletter":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.newsletter.save_changed_newsletter, ["processConfirmHot", "save_newsletter"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
@@ -76,8 +75,11 @@ function we_cmd() {
 				window.setTimeout(we_cmd, 10, "new_newsletter");
 			}
 			break;
-
 		case "new_newsletter_group":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.newsletter.save_changed_newsletter, ["processConfirmHot", "save_newsletter"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
@@ -85,7 +87,6 @@ function we_cmd() {
 				window.setTimeout(we_cmd, 10, "new_newsletter_group");
 			}
 			break;
-
 		case "delete_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -107,9 +108,7 @@ function we_cmd() {
 			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&home=1&pnt=edfooter";
 			top.content.editor.edbody.document.we_form.ncmd.value = "delete_newsletter";
 			top.content.editor.edbody.submitForm();
-
 			break;
-
 		case "save_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -141,12 +140,15 @@ function we_cmd() {
 			we_cmd('save_newsletter');
 			break;
 		case "newsletter_edit":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.newsletter.save_changed_newsletter, ["processConfirmHot", "save_newsletter"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			top.content.hot = false;
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 			top.content.editor.edbody.document.we_form.nid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
-
 		case "send_test":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -156,7 +158,6 @@ function we_cmd() {
 				top.content.editor.edbody.we_cmd("send_test");
 			}
 			break;
-
 		case "empty_log":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -166,7 +167,6 @@ function we_cmd() {
 				new (WE().util.jsWindow)(caller, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qlog", "log_question", WE().consts.size.dialog.smaller, WE().consts.size.dialog.tiny, true, false, true);
 			}
 			break;
-
 		case "preview_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -176,7 +176,6 @@ function we_cmd() {
 				top.content.editor.edbody.we_cmd("popPreview");
 			}
 			break;
-
 		case "send_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -186,7 +185,6 @@ function we_cmd() {
 				top.content.editor.edbody.we_cmd("popSend");
 			}
 			break;
-
 		case "test_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
 				WE().util.showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -196,7 +194,6 @@ function we_cmd() {
 				top.content.editor.edbody.we_cmd("popSend", "1");
 			}
 			break;
-
 		case "domain_check":
 		case "show_log":
 		case "print_lists":
@@ -210,13 +207,11 @@ function we_cmd() {
 				top.content.editor.edbody.we_cmd(args[0]);
 			}
 			break;
-
 		case "newsletter_settings":
 		case "black_list":
 		case "edit_file":
 			top.content.editor.edbody.we_cmd(args[0]);
 			break;
-
 		case "home":
 			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=editor";
 			break;
@@ -253,7 +248,7 @@ function we_cmd() {
 			// do nothing
 			break;
 		case "unsetHot":
-			top.content.hot = false;
+			hot = false;
 			break;
 		case "ask_camp":
 			window.focus();

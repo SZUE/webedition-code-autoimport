@@ -56,48 +56,25 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch(args[0]){ // commands which are never replaced by save_export
-		case "updateLog":
-			for (var i = 0; i < args[1].log.length; i++) {
-				top.content.editor.edbody.addLog(args[1].log[i]);
-			}
-			top.content.editor.edfooter.setProgress(args[1].percent);
-			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
-			return;
-		case 'submitCmdForm':
-			top.content.cmd.document.we_form.submit();
-			return;
-		case 'startDownload':
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' + args[1];
-			return;
-		case 'setStatusEnd':
-			WE().util.showMessage(WE().consts.g_l.exports.server_finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			top.content.editor.edfooter.hideProgress();
-			return;
-		case 'setIconOfDocClass':
-			args[0] = 'loop_through';
-			return;
-		default:
-			// FIXME: we should eliminate this construction!
-			if (hot && args[0] !== "save_export") {
-				if (window.confirm(WE().consts.g_l.exports.save_changed_export)) {
-					args[0] = "save_export";
-				} else {
-					top.content.unsetHot();
-				}
-			}
-	}
-
 	switch (args[0]) {
+		case 'unsetHot':
+			unsetHot();
+			break;
 		case "exit_export":
-			if (!hot) {
-				top.opener.top.we_cmd("exit_modules");
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.exports.view.save_changed_export, ["processConfirmHot", "save_export"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
 			}
+			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "setTab":
 			top.content.activ_tab = args[1];
 			break;
 		case "new_export_group":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.exports.view.save_changed_export, ["processConfirmHot", "save_export"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
@@ -107,6 +84,10 @@ function we_cmd() {
 			}
 			/* falls through */
 		case "new_export":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.exports.view.save_changed_export, ["processConfirmHot", "save_export"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
@@ -147,8 +128,8 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm("cmd");
 			break;
 		case "start_export":
-			if (top.content.hot) {
-				WE().util.showMessage(WE().consts.g_l.exports.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.exports.view.save_changed_export, ["processConfirmHot", "save_export"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
@@ -210,6 +191,10 @@ function we_cmd() {
 			top.content.unsetHot();
 			break;
 		case "export_edit":
+			if (hot) {
+				WE().util.showConfirm(window, '', WE().consts.g_l.exports.view.save_changed_export, ["processConfirmHot", "save_export"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				break;
+			}
 			if (!WE().util.hasPerm("EDIT_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
@@ -236,8 +221,26 @@ function we_cmd() {
 			hot = true;
 			//top.content.editor.edbody.toggle(args[1]); // FIXME: where do we call setHot mit arguments?
 			break;
-		case 'loop_through':
-			// fall through
+		case "updateLog"://
+			for (var i = 0; i < args[1].log.length; i++) {
+				top.content.editor.edbody.addLog(args[1].log[i]);
+			}
+			top.content.editor.edfooter.setProgress(args[1].percent);
+			top.content.editor.edfooter.setProgressText("current_description", args[1].text);
+			return;
+		case 'submitCmdForm'://
+			top.content.cmd.document.we_form.submit();
+			return;
+		case 'startDownload'://
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' + args[1];
+			return;
+		case 'setStatusEnd':
+			WE().util.showMessage(WE().consts.g_l.exports.server_finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.content.editor.edfooter.hideProgress();
+			return;
+		case 'setIconOfDocClass':
+			args[0] = 'loop_through';
+			return;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 

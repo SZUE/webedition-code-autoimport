@@ -42,6 +42,15 @@ function we_cmd() {
 	var doc;
 
 	switch (args[0]) {
+		case 'processConfirmHot':
+			args.shift();
+			//process direct command
+			top.content.we_cmd(args.shift());
+			//do commands intended
+			if (args.length) {
+				top.content.we_cmd.apply(caller, args);
+			}
+			break;
 		case 'setHot':
 			doc = top.content;
 			doc = doc.document.getElementById("mark") ? doc : doc.editor.edheader;

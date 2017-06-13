@@ -46,28 +46,19 @@ function we_cmd() {
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-		case 'processConfirmHot':
-			args.shift();
-			//process direct command
-			we_cmd(args.shift());
-			//do commands intended
-			if (args.length) {
-				we_cmd.apply(caller, args);
-			}
-			break;
 		case 'unsetHot':
 			unsetHot();
 			break;
 		case "exit_users":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args),WE().consts.g_l.button.save,WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			top.opener.top.we_cmd("exit_modules");
 			break;
 		case "new_user":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args),WE().consts.g_l.button.save,WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			if (!WE().util.hasPerm('NEW_USER')) {
@@ -82,7 +73,7 @@ function we_cmd() {
 			break;
 		case "display_user":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args),WE().consts.g_l.button.save,WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			top.content.editor.edbody.focus();
@@ -90,7 +81,7 @@ function we_cmd() {
 			break;
 		case "new_group":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args),WE().consts.g_l.button.save,WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 
@@ -102,7 +93,7 @@ function we_cmd() {
 			break;
 		case "new_alias":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "usetHot"].concat(args),WE().consts.g_l.button.save,WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.users.view.save_changed_user, ["processConfirmHot", "save_user"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			if (!WE().util.hasPerm('NEW_USER')) {
