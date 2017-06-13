@@ -138,8 +138,8 @@ gesichert wird</li></ul>',
 		'amountPatchesExecuted' => '%s Patch(es) eingespielt',
 		'finished' => 'Die Installation ist beendet. Um alle &Auml;nderungen zu &uuml;bernehmen, wird webEdition nun neu gestartet.',
 	),
-	'languages' =>
-	array('headline' => 'Sprachinstallation',
+	'languages' => array(
+		'headline' => 'Sprachinstallation',
 		'installLamguages' => 'Folgende Sprachen k&ouml;nnen installiert werden.<br />Besonders <i>hervorgehobene</i> Sprachen sind bereits auf dem System installiert, die Installation kann aber wiederholt werden.<br /><b>Wichtiger Hinweis:</b> Als <font color="red">[beta]</font> markierte Sprachen k&ouml;nnen unvollst&auml;ndig und unter Umst&auml;nden fehlerhaft sein. Sie k&ouml;nnen sich jedoch gern an das Projektteam wenden um diese &Uuml;bersetzungen zu vervollst&auml;ndigen.',
 		'languagesNotReady' => 'Folgende Sprachen k&ouml;nnen f&uuml;r diese Version momentan leider nicht installiert werden',
 		'confirmInstallation' => 'Die folgenden Sprachen werden installiert.',

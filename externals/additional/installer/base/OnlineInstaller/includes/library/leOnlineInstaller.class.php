@@ -62,19 +62,21 @@ class leOnlineInstaller{
 		}
 
 		$_SESSION['leInstallerLanguage'] = str_replace('_UTF-8', '', $_SESSION['leInstallerLanguage']);
-		$_SESSION['leInstallerCharset'] = "UTF-8";
+		$_SESSION['leInstallerCharset'] = 'UTF-8';
 
 		// Load language files
-		$LanguageOnlineInstaller = array();
 		if(file_exists(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php')){
 			require(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php');
-			$LanguageOnlineInstaller = $lang;
+			$LanguageOnlineInstaller = $GLOBALS['lang'];
+		}else{
+			$LanguageOnlineInstaller = array();
 		}
 
-		$LanguageApplicationInstaller = array();
 		if(file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")){
 			require(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php");
-			$LanguageApplicationInstaller = $lang;
+			$LanguageApplicationInstaller = $GLOBALS['lang'];
+		}else{
+			$LanguageApplicationInstaller = array();
 		}
 		$GLOBALS['lang'] = array_merge($LanguageOnlineInstaller, $LanguageApplicationInstaller);
 	}

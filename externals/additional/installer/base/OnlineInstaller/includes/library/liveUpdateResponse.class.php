@@ -2,6 +2,11 @@
 /**
  * $Id: liveUpdateResponse.class.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
+if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
+	require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
+} elseif(!class_exists("liveUpdateResponseServer", false)){
+	class_alias("liveUpdateResponse", "liveUpdateResponseServer");
+}
 
 class liveUpdateResponse{
 	var $Type;
@@ -84,9 +89,11 @@ class liveUpdateResponse{
 		}
 
 		if(!function_exists("liveUpdateErrorHandler")){
+
 			function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 				liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext);
 			}
+
 			set_error_handler("liveUpdateErrorHandler");
 		}
 

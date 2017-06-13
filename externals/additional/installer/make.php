@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: make.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
-
 class le_OnlineInstaller_Make{
 
 	/**
@@ -240,12 +240,13 @@ EOF;
 		if(!fclose($fp)){
 			return false;
 		}
-/*
-		header("Content-Type: application/octet-stream");
-		header("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
-		header("Content-Disposition: attachment; filename=OnlineInstaller.php");
-		readfile($saveTo . "OnlineInstaller.php");
- */
+
+		chdir($saveTo);
+		exec('gzip -k ' . "OnlineInstaller.php");
+		@unlink("OnlineInstaller.zip");
+		exec('zip -c ' . "OnlineInstaller.zip OnlineInstaller.php");
+		exec('tar -czf OnlineInstaller.tgz OnlineInstaller.php');
+		unlink("OnlineInstaller.php");
 		echo "done";
 		return true;
 	}
@@ -501,4 +502,4 @@ EOF;
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
-$le_OnlineInstaller->execute('./base', './out/', '2.9.4.2');
+$le_OnlineInstaller->execute('./base', './out/', '2.9.4.3');
