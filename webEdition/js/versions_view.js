@@ -26,7 +26,6 @@
 'use strict';
 WE().util.loadConsts(document, "g_l.versions");
 var searchClass = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-searchClass');
-var doc = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-doc');
 var props = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-props');
 
 function init() {
@@ -227,12 +226,13 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + props.transaction + args, function (responseText) {
-		if (responseText !== "") {
-			document.getElementById("scrollContent").innerHTML = responseText;
-			makeAjaxRequestParametersTop();
-			makeAjaxRequestParametersBottom();
-		}
+
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + doc.docClass + "&id=" + doc.docId + "&table=" + doc.docTable + "&we_transaction=" + props.transaction + args, function (responseText) {
+		scroll.innerHTML = (responseText && responseText.DataArray && responseText.DataArray.data) ?
+				responseText.DataArray.data : '';
+
+		makeAjaxRequestParametersTop();
+		makeAjaxRequestParametersBottom();
 	}, "html");
 }
 
@@ -243,9 +243,9 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=top&cns=versionlist&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
-		if (responseText !== "") {
-			document.getElementById("parametersTop").innerHTML = responseText;
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=top&cns=versionlist&path=" + doc.docPath + "&text=" + doc.docText + "&classname=" + doc.docClass + "&id=" + doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
+		if (responseText && responseText.DataArray && responseText.DataArray.data) {
+			document.getElementById("parametersTop").innerHTML = responseText.DataArray.data;
 		}
 	}, "html");
 }
@@ -257,9 +257,9 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=bottom&cns=versionlist&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + props.transaction + args, function (responseText) {
-		if (responseText !== "") {
-			document.getElementById("parametersBottom").innerHTML = responseText;
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=bottom&cns=versionlist&classname=" + doc.docClass + "&id=" + doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
+		if (responseText && responseText.DataArray && responseText.DataArray.data) {
+			document.getElementById("parametersBottom").innerHTML = responseText.DataArray.data;
 		}
 	}, "html");
 }
@@ -286,7 +286,7 @@ function ajaxCallbackResetVersion(response) {
 		}
 
 		//reload tree
-		top.we_cmd("load", doc.Table, 0);
+		top.we_cmd("load", doc.docTable, 0);
 
 	}
 }
