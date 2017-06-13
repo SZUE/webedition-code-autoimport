@@ -62,6 +62,8 @@ class rpcPublishDocsCmd extends we_rpc_cmd{
 				}
 			}
 		}
+
+		return new we_rpc_response();
 	}
 
 }
