@@ -40,6 +40,8 @@ class rpcDeleteVersionCmd extends we_rpc_cmd{
 			}
 			unset($_SESSION['weS']['versions']['logDeleteIds']);
 		}
+
+		return new we_rpc_response();
 	}
 
 }
