@@ -55,10 +55,11 @@ abstract class we_html_button{
 	const NOT_FOUND = '.fa-lg fa-bullseye';
 	const OK = 'fat:ok,fa-lg fa-check fa-ok';
 	const PLUS = 'fa:btn_function_plus,fa-lg fa-plus';
-	const PREVIEW = 'fat:preview,fa-lg fa-eye';
+	const PREVIEW = 'fa:preview,fa-lg fa-eye';
 	const PUBLISH = 'fat:publish,fa-lg fa-globe';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
+	const RESET_VERSION = 'fa:reset,fa-lg fa-history';
 	const SAVE = 'fat:save,fa-lg fa-save';
 	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
