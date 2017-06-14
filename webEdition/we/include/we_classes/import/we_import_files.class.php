@@ -218,10 +218,12 @@ class we_import_files{
 
 	private function getButtons(){
 		$bodyAttribs = ['class' => "weDialogButtonsBody"];
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel')", '', 0, 0, '', '', false, false);
 
-		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", false);
+		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", false, false);
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:top.handleEvent('next');", '', 0, 0, "", "", $this->step > 0, false);
+		$uploadButton = we_html_button::create_button(we_html_button::UPLOAD, "javascript:top.handleEvent('upload');", '', 0, 0, "", "", true, false, '', false, '', 'weHide');
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel')", '', 0, 0, '', '', false, false);
+		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.handleEvent('close');", '', 0, 0, "", "", false, false, '', false, '', 'weHide');
 
 		// TODO: let we_fileupload set pb
 		$pb = new we_gui_progressBar(0, 200);
@@ -230,8 +232,7 @@ class we_import_files{
 
 		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
-		$table->setCol(0, 1, ["styke" => "text-align:right"], we_html_element::htmlDiv(['id' => 'normButton'], we_html_button::position_yes_no_cancel(($prevButton ? $prevButton . $nextButton : null), null, $cancelButton, 10, '', [
-], 10)));
+		$table->setCol(0, 1, ["styke" => "text-align:right"], we_html_element::htmlDiv(['id' => 'normButton'], we_html_button::position_yes_no_cancel($prevButton . $nextButton . $uploadButton, null, $cancelButton . $closeButton, 10, '', [], 10)));
 
 		$content = $table->getHtml();
 		$body = we_html_element::htmlBody($bodyAttribs, $content);

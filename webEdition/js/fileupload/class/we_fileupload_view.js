@@ -367,8 +367,8 @@ function weFileupload_view_base(uploader) {
 			self.elems.fileName.innerHTML = f.file.name;
 			self.elems.fileName.style.display = '';
 		}
-		self.controller.setWeButtonState('reset_btn', true);
-		self.controller.setWeButtonState(self.uploadBtnName, f.uploadConditionsOk ? true : false, true);
+		WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+		WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, f.uploadConditionsOk ? false : true);
 	};
 
 	self.setDisplay = function (elem, val) { // move to abstract (from binDoc too)
@@ -382,7 +382,7 @@ function weFileupload_view_base(uploader) {
 
 		switch (arg.what) {
 			case 'initGui' :
-				self.controller.setWeButtonState(self.uploadBtnName, !self.disableUploadBtnOnInit, true);
+				WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, self.disableUploadBtnOnInit);
 				return;
 			case 'chunkOK' :
 				var prog = (100 / self.sender.currentFile.size) * self.sender.currentFile.currentWeightFile,
@@ -420,10 +420,10 @@ function weFileupload_view_base(uploader) {
 					self.elems.footer.setProgress(self.extProgress.name, 0);
 					self.elems.extProgressDiv.style.display = '';
 				}
-				self.controller.setWeButtonState('reset_btn', false);
-				self.controller.setWeButtonState('browse_harddisk_btn', false);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
 				if (self.isInternalBtnUpload) {
-					self.controller.setWeButtonState(self.uploadBtnName, false, true);
+					WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, true);
 					self.setDisplay('btnResetUpload', 'none');
 					self.setDisplay('btnCancel', 'inline-block');
 				}
@@ -433,8 +433,8 @@ function weFileupload_view_base(uploader) {
 				if (self.elems.progress) {
 					self.setInternalProgressCompleted(false, false, WE().consts.g_l.fileupload.cancelled);
 				}
-				self.controller.setWeButtonState('reset_btn', true);
-				self.controller.setWeButtonState('browse_harddisk_btn', true);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
 				return;
 			case 'resetGui' :
 				self.sender.preparedFiles = [];
@@ -456,10 +456,10 @@ function weFileupload_view_base(uploader) {
 					self.elems.footer.setProgress(self.extProgress.name, 0);
 					self.elems.extProgressDiv.style.display = 'none';
 				}
-				self.controller.setWeButtonState('browse_harddisk_btn', true);
-				self.controller.setWeButtonState('reset_btn', false);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
 				if (self.isInternalBtnUpload) {
-					self.controller.setWeButtonState(self.uploadBtnName, false, true);
+					WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, true);
 					self.setDisplay('btnResetUpload', 'inline-block');
 					self.setDisplay('btnCancel', 'none');
 				}
@@ -620,24 +620,25 @@ function weFileupload_view_bindoc(uploader) {
 					doc.getElementById('make_preview_weFileupload').disabled = true;//make same as following
 				}
 				*/
-				self.controller.setWeButtonState(self.uploadBtnName, false);
-				self.controller.setWeButtonState('browse_harddisk_btn', true);
+				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
 				return;
 			case self.STATE_PREVIEW_OK:
 				self.setDisplay('fileInputWrapper', 'none');
 				self.setDisplay('divBtnReset', '');
-				self.controller.setWeButtonState('reset_btn', true);
-				self.controller.setWeButtonState(self.uploadBtnName, true);
+				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, false);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
 				return;
 			case self.STATE_PREVIEW_NOK:
 				self.setDisplay('fileInputWrapper', 'none');
 				self.setDisplay('divBtnReset', '');
-				self.controller.setWeButtonState('reset_btn', true);
-				self.controller.setWeButtonState(self.uploadBtnName, false);
+				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
 				return;
 			case self.STATE_UPLOAD:
-				self.controller.setWeButtonState(self.uploadBtnName, false);
-				self.controller.setWeButtonState('reset_btn', false);
+				//WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
+				//WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
+				//WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
 				self.setDisplay('fileInputWrapper', 'none');
 				if (uploader.uiType !== 'wedoc') {
 					self.setDisplay('divBtnReset', 'none');
@@ -649,7 +650,6 @@ function weFileupload_view_bindoc(uploader) {
 				if (self.preview) {
 					self.preview.style.opacity = 0.05;
 				}
-				self.controller.setWeButtonState('browse_harddisk_btn', false);
 		}
 	};
 
@@ -1004,12 +1004,14 @@ function weFileupload_view_import(uploader) {
 		}
 
 		self.elems.extProgressDiv.style.display = 'none';
-		self.controller.setWeButtonText('cancel', 'cancel');
+
+		WE().layout.button.display(self.elems.footer.document, 'close', false);
+		WE().layout.button.display(self.elems.footer.document, 'cancel', true);
 
 		if (f.isSizeOk) {
 			if (!self.isUploadEnabled) {
-				self.controller.setWeButtonState('reset_btn', true);
-				self.controller.enableWeButton('next', true);
+				WE().layout.button.disable(self.elems.footer.document, 'upload', false);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
 				self.isUploadEnabled = true;
 				self.sender.isCancelled = false;
 			}
@@ -1061,8 +1063,8 @@ function weFileupload_view_import(uploader) {
 		}
 		self.nextTitleNr = z;
 		if (!self.utils.containsFiles(self.sender.preparedFiles)) {
-			self.controller.enableWeButton('next', false);
-			self.controller.setWeButtonState('reset_btn', false);
+			WE().layout.button.disable(self.elems.footer.document, 'upload', true);
+			WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
 			self.isUploadEnabled = false;
 		}
 	};
@@ -1129,10 +1131,10 @@ function weFileupload_view_import(uploader) {
 				return;
 			case 'startUpload' :
 				//set buttons state and show initial progress bar
-				self.controller.enableWeButton('back', false);
-				self.controller.enableWeButton('next', false);
-				self.controller.setWeButtonState('reset_btn', false);
-				self.controller.setWeButtonState('browse_harddisk_btn', false);
+				WE().layout.button.disable(self.elems.footer.document, 'back', true);
+				WE().layout.button.disable(self.elems.footer.document, 'upload', true);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
 				self.isUploadEnabled = false;
 				self.elems.footer.document.getElementById('progressbar').style.display = '';
 				self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' 1');
@@ -1153,9 +1155,8 @@ function weFileupload_view_import(uploader) {
 					var file = sender.uploadFiles[j];
 					self.setInternalProgressCompleted(false, sender.mapFiles[file.fileNum], WE().consts.g_l.fileupload.cancelled);
 				}
-
-				self.controller.setWeButtonState('reset_btn', true);
-				self.controller.setWeButtonState('browse_harddisk_btn', true);
+				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
 				return;
 			case 'resetGui' :
 				try {
@@ -1165,7 +1166,8 @@ function weFileupload_view_import(uploader) {
 				self.sender.preparedFiles = [];
 				self.nextTitleNr = 1;
 				self.isUploadEnabled = false;
-				self.controller.enableWeButton('next', false);
+				WE().layout.button.disable(self.elems.footer.document, 'upload', true);
+				WE().layout.button.disable(self.elems.footer.document, 'back', false);
 				self.sender.resetSender();
 				return;
 			default :

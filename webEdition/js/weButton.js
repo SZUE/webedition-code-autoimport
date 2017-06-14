@@ -24,12 +24,13 @@
 'use strict';
 
 WE().layout.button = {
-	disable: function (doc, id) {
+	disable: function (doc, id, disable) {
+		disable = disable === undefined ? true : disable;
 		var el = doc.getElementById(id);
 		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null) {
 			if (el.tagName === "BUTTON") {
-				el.disabled = true;
+				el.disabled = disable;
 				return;
 			}
 		}
@@ -54,18 +55,15 @@ WE().layout.button = {
 			}
 		}
 	},
-	hide: function (doc, id) {
+	display: function (doc, id, display) {
 		var el = doc.getElementById(id);
-		el = (el === null ? doc.getElementById("btn_" + id) : el);
-		if (el !== null) {
-			el.style.display = "none";
-		}
-	},
-	show: function (doc, id) {
-		var el = doc.getElementById(id);
-		el = (el === null ? doc.getElementById("btn_" + id) : el);
-		if (el !== null) {
-			el.style.display = "block";
+
+		if ((el === null ? doc.getElementById("btn_" + id) : el)) {
+			if(display){
+				el.classList.remove("weHide");
+			} else {
+				el.classList.add("weHide");
+			}
 		}
 	},
 	isDisabled: function (doc, id) {

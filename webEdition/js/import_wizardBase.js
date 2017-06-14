@@ -289,8 +289,8 @@ function setFormField(name, value, type, index, frame) {
 
 function handleEvent(evt) {
 	var step = parseInt(top.wizbody.document.we_form.elements.step.value),
-					type = top.wizbody.document.we_form.elements.type.value,
-					task = 'get' + type + '_step_' + step;
+		type = top.wizbody.document.we_form.elements.type.value,
+		task = 'get' + type + '_step_' + step;
 
 	switch (task) {
 		case 'getFileImport_step_1':
@@ -411,22 +411,28 @@ function handleEvent_FileImport_step_2(evt) {
 	var frame = top.wizbody;
 
 	switch (evt) {
-		case "previous":
-			top.location.href = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=import_files";
+		case 'previous':
+			top.location.href = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import_files';
 			break;
-		case "next":
+		case 'next':
+			// do nothing
+			break;
+		case 'upload':
 			if (frame.weFileUpload_instance !== undefined) {
 				frame.weFileUpload_instance.startUpload();
 			} else {
 				WE().t_e('fileupload instance missing');
 			}
 			break;
-		case "cancel":
-			if (frame.weFileUpload_instance !== undefined) {
+		case 'cancel':
+			if (frame.weFileUpload_instance !== undefined && frame.weFileUpload_instance.isUploading()) {
 				frame.weFileUpload_instance.cancelUpload();
 			} else {
-				WE().t_e('fileupload instance missing');
+				top.close();
 			}
+			break;
+		case 'close':
+			top.close();
 			break;
 	}
 }

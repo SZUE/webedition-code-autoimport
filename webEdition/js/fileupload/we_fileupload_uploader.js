@@ -102,6 +102,10 @@ function weFileupload_uploader_abstract(win) {
 		self.sender.cancel();
 	};
 
+	self.isUploading = function () {
+		return self.sender.isUploading;
+	};
+
 	self.reset = function () {
 		self.view.elems.fileSelect.value = null;
 		self.view.repaintGUI({what: 'resetGui'});
