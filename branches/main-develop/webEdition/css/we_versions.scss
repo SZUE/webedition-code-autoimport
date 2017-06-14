@@ -32,8 +32,15 @@
 #pageselect {display: inline;}
 #bottom{display: inline;}
 #beschreibung_print {display: none; }
-.printShow{display: block; }
+.printShow{display: inline; }
 #deleteVersion{display: block; }
 #deleteAllVersions{display: block; }
 #label_deleteAllVersions{display: block; }
-#deleteButton{display: block; }
+#versionList{
+	width:100%;
+	margin-left:1em;
+	td,th{
+		border-bottom:1px solid #D1D1D1;
+		text-align: left;
+	}
+}

@@ -223,7 +223,7 @@ class we_versions_view{
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
-	<td id="print" class="defaultfont"> <a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
+	<td id="print" class="defaultfont"><button class="weBtn weIconButton" type="button" onclick="printScreen();" title="' . g_l('versions', '[printPage]') . '"><i class="fa fa-lg fa-print"></i></button></td>
 </tr>
 </table>';
 	}
@@ -237,7 +237,8 @@ class we_versions_view{
 <tr id="paging_bottom">
  <td id="bottom">' . $this->getNextPrev($foundItems) . '</td>
 </tr>
-</table>';
+</table><br/>'.(we_base_permission::hasPerm('ADMINISTRATOR') ? '<span id="deleteButton">' .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</span><br/>' : '');
 	}
 
 	/**
@@ -248,19 +249,18 @@ class we_versions_view{
 		$anzahl = $this->Model->getProperty('currentAnzahl');
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 
-		$out = '<table class="default"><tr><td id="zurueck">' .
+		$out = '<span style="display:inline-block">' .
 			($searchstart ?
 			we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
 			we_html_button::create_button(we_html_button::BACK, "", '', 0, 0, "", "", true)) .
-			'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			'<b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
 			$we_search_anzahl :
 			$searchstart + $anzahl) .
-			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b> ' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
-			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true)) .
-			'</td><td>';
+			we_html_button::create_button(we_html_button::NEXT, "", '', 0, 0, "", "", true));
 
 		$pages = [];
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -279,7 +279,7 @@ class we_versions_view{
 		}
 
 		$out .= $select .
-			'</td></tr></table>';
+			'</span>';
 
 		return $out;
 	}
@@ -355,7 +355,7 @@ class we_versions_view{
 					($fromImport ?: '') .
 					($resetFromVersion ?: '')],
 				['dat' => (we_base_permission::hasPerm('ADMINISTRATOR')) ? we_html_forms::checkbox($versions[$f]['ID'], 0, 'deleteVersion', '', false, 'defaultfont', '') : ''],
-				['dat' => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", '', 0, 0, "", "", $disabledReset) . "</span>"],
+				['dat' => "<span class='printShow'>" . we_html_button::create_button(we_html_button::RESET_VERSION, "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", '', 0, 0, "", "", $disabledReset) . "</span>"],
 				['dat' => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $table . "'," . $id . "," . $versions[$f]["version"] . ");") . "</span>"],
 				['dat' => "<span class='printShow'>" .
 					(($versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
@@ -378,9 +378,7 @@ class we_versions_view{
 			['dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'],
 			['dat' => g_l('versions', '[modifications]')],
-			['dat' => (we_base_permission::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
-				we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
-				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")],
+			['dat' => we_html_button::create_button(we_html_button::TOGGLE, "javascript:checkAll();", '', 0, 0, '', '', false, true, '', false, g_l('versions', '[mark]'))],
 			['dat' => ''],
 			['dat' => ''],
 			['dat' => ''],
@@ -442,26 +440,26 @@ class we_versions_view{
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
 		return '
-<table style="width:100%" cellpadding="5">
+<table id="versionList" cellpadding="5">
+<thead>
 <tr>
-	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;"></td>
-	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . '</td>
-	<td style="vertical-align:top;width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . '</td>
-	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . '</td>
-	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . '</td>
-	<td style="vertical-align:top;width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
+	<th style="width:110px;" class="middlefont">' . $headline[0]["dat"] . '</th>
+	<th style="width:15em;" class="middlefont">' . $headline[1]["dat"] . '</th>
+	<th style="width:120px;" class="middlefont">' . $headline[2]["dat"] . '</th>
+	<th style="width:120px;" class="middlefont">' . $headline[4]["dat"] . '</th>
+	<th style="width:auto;" class="middlefont">' . $headline[3]["dat"] . '</th>
+	<th></th>
 </tr>
-</table>
-<div id="scrollContent" style="background-color:#fff;width:100%">' .
+</thead>' .
 			$this->tabListContent($content) .
-			'</div>';
+			'</table>';
 	}
 
 	function tabListContent($content){
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 		$anzahl = $this->Model->getProperty('currentAnzahl');
 
-		$out = '<table cellpadding="5" style="width:100%" id="contentTable"><tbody>';
+		$out = '<tbody id="contentTable">';
 
 		$anz = count($content);
 		$x = $searchstart + $anzahl;
@@ -473,26 +471,19 @@ class we_versions_view{
 			$out .= '<tr>' . self::tblListRow($content[$m]) . '</tr>';
 		}
 
-		$out .= '</tbody></table>';
+		$out .= '</tbody>';
 
 		return $out;
 	}
 
 	private static function tblListRow($content){
-		//$anz = count($content) - 1;
-		return '<td style="vertical-align:top;width:15px;"></td>
-<td style="vertical-align:top;width:110px;height:30px;" class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:15em;" class="middlefont">' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:120px;" class="middlefont">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:120px;" class="middlefont">' . ((!empty($content[4]["dat"])) ? $content[4]["dat"] : "&nbsp;") . '</td>
-<td rowspan="2" style="vertical-align:top;line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[3]["dat"])) ? $content[3]["dat"] : "&nbsp;") . '</td>
-</tr>
-<tr>
-<td style="width:15px;border-bottom:1px solid #D1D1D1;"></td>
-<td colspan="2" style="vertical-align:top;width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[5]["dat"]) ) ? $content[5]["dat"] : "&nbsp;") . ((!empty($content[7]["dat"])) ? $content[7]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[6]["dat"])) ? $content[6]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>
-<td style="vertical-align:top;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>';
+		return '<td class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
+<td class="middlefont">' . ((empty($content[1]["dat"])) ? '' : $content[1]["dat"] ) . '</td>
+<td class="middlefont">' . ((empty($content[2]["dat"])) ? '' : $content[2]["dat"]) . '</td>
+<td class="middlefont">' . ((empty($content[4]["dat"])) ? '' : $content[4]["dat"]) . '</td>
+<td class="middlefont">' . ((empty($content[3]["dat"])) ? '' : $content[3]["dat"]) . '</td>
+<td class="middlefont">' . ((empty($content[6]["dat"])) ? '' : $content[6]["dat"] ) . ((empty($content[5]["dat"]) ) ? '' : $content[5]["dat"] ) . ((empty($content[7]["dat"])) ? '' : $content[7]["dat"] ) . '</td>
+';
 	}
 
 	public function getHTMLforVersions($content){

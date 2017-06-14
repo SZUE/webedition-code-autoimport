@@ -29,7 +29,7 @@ var searchClass = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-
 var props = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-props');
 
 function init() {
-	sizeScrollContent();
+	//sizeScrollContent();
 }
 
 function printScreen() {
@@ -206,11 +206,12 @@ function checkAll() {
 	var checkAllDoc = document.getElementsByName("deleteAllVersions");
 	var checkboxes = document.getElementsByName("deleteVersion");
 	var check = false;
-	var label = document.getElementById("label_deleteAllVersions");
+/*	var label = document.getElementById("label_deleteAllVersions");
 	label.innerHTML = WE().consts.g_l.versions.mark;
+	*/
 	if (checkAllDoc[0].checked) {
 		check = true;
-		label.innerHTML = WE().consts.g_l.versions.notMark;
+//		label.innerHTML = WE().consts.g_l.versions.notMark;
 	}
 	for (var i = 0; i < checkboxes.length; i++) {
 		checkboxes[i].checked = check;
