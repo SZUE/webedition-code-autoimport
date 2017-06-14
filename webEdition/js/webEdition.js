@@ -1243,10 +1243,12 @@ function we_cmd() {
 
 function objectAssign(target, src) {
 	if (Object.assign) {
-		return Object.assign.call(Array.prototype.slice.call(arguments));
+		return Object.assign(target, src);
 	}
 	for (var key in src) {
-		target[key] = src[key];
+		if (src.hasOwnProperty(key)) {
+			target[key] = src[key];
+		}
 	}
 	return target;
 }
