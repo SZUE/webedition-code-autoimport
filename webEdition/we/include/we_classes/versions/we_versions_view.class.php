@@ -443,12 +443,12 @@ class we_versions_view{
 <table id="versionList" cellpadding="5">
 <thead>
 <tr>
-	<th style="width:110px;" class="middlefont">' . $headline[0]["dat"] . '</th>
+	<th class="middlefont">' . $headline[0]["dat"] . '</th>
 	<th style="width:15em;" class="middlefont">' . $headline[1]["dat"] . '</th>
-	<th style="width:120px;" class="middlefont">' . $headline[2]["dat"] . '</th>
-	<th style="width:120px;" class="middlefont">' . $headline[4]["dat"] . '</th>
-	<th style="width:auto;" class="middlefont">' . $headline[3]["dat"] . '</th>
-	<th></th>
+	<th class="middlefont">' . $headline[2]["dat"] . '</th>
+	<th class="middlefont">' . $headline[4]["dat"] . '</th>
+	<th class="middlefont">' . $headline[3]["dat"] . '</th>
+	<th class="middlefont"></th>
 </tr>
 </thead>' .
 			$this->tabListContent($content) .
