@@ -21,10 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-#scrollContent {overflow: auto; }
+#scrollContent {overflow: auto;}
 #searchTable {display: block; }
-#eintraege_pro_seite {display: inline;margin-right:10px; }
-#anzahl {display: inline;margin-right:10px;  }
+#eintraege_pro_seite {display: inline;margin-right:10px;}
+#anzahl {display: inline;margin-right:10px;}
 #eintraege {display: none; }
 #print {display: inline;}
 #zurueck {display: block;}
@@ -36,11 +36,14 @@
 #deleteVersion{display: block; }
 #deleteAllVersions{display: block; }
 #label_deleteAllVersions{display: block; }
-#versionList{
-	width:100%;
+.contentTable{
+	width:90%;
 	margin-left:1em;
 	td,th{
 		border-bottom:1px solid #D1D1D1;
 		text-align: left;
 	}
+}
+#parametersTop{
+	padding-left: 1em;
 }

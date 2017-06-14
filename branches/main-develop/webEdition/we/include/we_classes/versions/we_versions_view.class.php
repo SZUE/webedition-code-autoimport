@@ -378,7 +378,7 @@ class we_versions_view{
 			['dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'],
 			['dat' => g_l('versions', '[modifications]')],
-			['dat' => we_html_button::create_button(we_html_button::TOGGLE, "javascript:checkAll();", '', 0, 0, '', '', false, true, '', false, g_l('versions', '[mark]'))],
+			['dat' => we_html_button::create_button(we_html_button::TOGGLE, 'javascript:checkAll();', '', 0, 0, '', '', false, false, '', false, g_l('versions', '[mark]'))],
 			['dat' => ''],
 			['dat' => ''],
 			['dat' => ''],
@@ -439,27 +439,31 @@ class we_versions_view{
 	 */
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
-		return '
-<table id="versionList" cellpadding="5">
-<thead>
-<tr>
-	<th class="middlefont">' . $headline[0]["dat"] . '</th>
-	<th style="width:15em;" class="middlefont">' . $headline[1]["dat"] . '</th>
-	<th class="middlefont">' . $headline[2]["dat"] . '</th>
-	<th class="middlefont">' . $headline[4]["dat"] . '</th>
-	<th class="middlefont">' . $headline[3]["dat"] . '</th>
-	<th class="middlefont"></th>
-</tr>
-</thead>' .
-			$this->tabListContent($content) .
-			'</table>';
+		return 
+'<table class="contentTable" cellpadding="5">
+	<thead>
+		<tr id="contentTable_headTR">
+			<th class="middlefont">' . $headline[0]["dat"] . '</th>
+			<th class="middlefont">' . $headline[1]["dat"] . '</th>
+			<th class="middlefont">' . $headline[2]["dat"] . '</th>
+			<th class="middlefont">' . $headline[4]["dat"] . '</th>
+			<th class="middlefont">' . $headline[3]["dat"] . '</th>
+			<th class="middlefont"></th>
+		</tr>
+	</thead>
+</table>
+<div id="scrollContent" style="background-color:#fff;width:100%">' .
+	'<table id="contentTable" class="contentTable" cellpadding="5">' .
+				$this->tabListContent($content) .
+	'</table>
+</div>';
 	}
 
 	function tabListContent($content){
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 		$anzahl = $this->Model->getProperty('currentAnzahl');
 
-		$out = '<tbody id="contentTable">';
+		$out = '<tbody id="contentTbody">';
 
 		$anz = count($content);
 		$x = $searchstart + $anzahl;
@@ -477,10 +481,10 @@ class we_versions_view{
 	}
 
 	private static function tblListRow($content){
-		return '<td class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
-<td class="middlefont">' . ((empty($content[1]["dat"])) ? '' : $content[1]["dat"] ) . '</td>
-<td class="middlefont">' . ((empty($content[2]["dat"])) ? '' : $content[2]["dat"]) . '</td>
-<td class="middlefont">' . ((empty($content[4]["dat"])) ? '' : $content[4]["dat"]) . '</td>
+		return '<td class="middlefont" style="min-width:70px;">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
+<td class="middlefont" style="min-width:70px;">' . ((empty($content[1]["dat"])) ? '' : $content[1]["dat"] ) . '</td>
+<td class="middlefont" style="min-width:110px;">' . ((empty($content[2]["dat"])) ? '' : $content[2]["dat"]) . '</td>
+<td class="middlefont" style="min-width:65px;">' . ((empty($content[4]["dat"])) ? '' : $content[4]["dat"]) . '</td>
 <td class="middlefont">' . ((empty($content[3]["dat"])) ? '' : $content[3]["dat"]) . '</td>
 <td class="middlefont">' . ((empty($content[6]["dat"])) ? '' : $content[6]["dat"] ) . ((empty($content[5]["dat"]) ) ? '' : $content[5]["dat"] ) . ((empty($content[7]["dat"])) ? '' : $content[7]["dat"] ) . '</td>
 ';

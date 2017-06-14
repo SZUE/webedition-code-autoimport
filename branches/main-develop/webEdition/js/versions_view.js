@@ -27,9 +27,21 @@
 WE().util.loadConsts(document, "g_l.versions");
 var searchClass = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-searchClass');
 var props = WE().util.getDynamicVar(document, 'loadVarVersionView', 'data-props');
+var isAllChecked = false;
 
 function init() {
-	//sizeScrollContent();
+	resizeVersionsTable();
+	sizeScrollContent();
+	window.addEventListener('resize', resizeVersionsTable);
+}
+
+function resizeVersionsTable(){
+	var headTR = document.getElementById('contentTable_headTR');
+	var firstContentTR = document.getElementById('contentTbody').firstChild;
+
+	for (var i = 0, td; i < headTR.cells.length; i++) {
+		headTR.cells[i].style.width = (firstContentTR.cells[i].offsetWidth - 2) + 'px';
+	}
 }
 
 function printScreen() {
@@ -203,18 +215,12 @@ function switchSearch(mode) {
 }
 
 function checkAll() {
-	var checkAllDoc = document.getElementsByName("deleteAllVersions");
+	isAllChecked = !isAllChecked;
+	document.getElementById('selectAll').title = isAllChecked ? WE().consts.g_l.versions.notMark : WE().consts.g_l.versions.mark;
+
 	var checkboxes = document.getElementsByName("deleteVersion");
-	var check = false;
-/*	var label = document.getElementById("label_deleteAllVersions");
-	label.innerHTML = WE().consts.g_l.versions.mark;
-	*/
-	if (checkAllDoc[0].checked) {
-		check = true;
-//		label.innerHTML = WE().consts.g_l.versions.notMark;
-	}
 	for (var i = 0; i < checkboxes.length; i++) {
-		checkboxes[i].checked = check;
+		checkboxes[i].checked = isAllChecked;
 	}
 }
 
@@ -229,9 +235,10 @@ function makeAjaxRequestDoclist() {
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
 
 	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + doc.docClass + "&id=" + doc.docId + "&table=" + doc.docTable + "&we_transaction=" + props.transaction + args, function (responseText) {
-		scroll.innerHTML = (responseText && responseText.DataArray && responseText.DataArray.data) ?
-				responseText.DataArray.data : '';
+		scroll.innerHTML = '<table id="contentTable" class="contentTable" cellpadding="5">' + ((responseText && responseText.DataArray && responseText.DataArray.data) ?
+				responseText.DataArray.data : '') + '</table>';
 
+		resizeVersionsTable();
 		makeAjaxRequestParametersTop();
 		makeAjaxRequestParametersBottom();
 	}, "html");
@@ -317,7 +324,6 @@ function sizeScrollContent() {
 }
 
 function deleteVers() {
-	var checkAllDoc = document.getElementsByName("deleteAllVersions");
 	var checkboxes = document.getElementsByName("deleteVersion");
 	var check = false;
 	var i;
@@ -338,11 +344,10 @@ function deleteVers() {
 	}
 	var Check = window.confirm(WE().consts.g_l.versions.deleteVersions);
 	if (Check === true) {
-		var label = document.getElementById("label_deleteAllVersions");
-		if (checkAllDoc[0].checked) {
-			checkAllDoc[0].checked = false;
-			label.innerHTML = WE().consts.g_l.versions.mark;
-			if (document.we_form.searchstart.value !== 0) {
+		if (isAllChecked) {
+			isAllChecked = false;
+			document.getElementById('selectAll').title = WE().consts.g_l.versions.mark;
+			if (parseInt(document.we_form.searchstart.value) !== 0) {
 				document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
 			}
 		} else {
@@ -354,7 +359,7 @@ function deleteVers() {
 				}
 			}
 			if (allChecked) {
-				if (document.we_form.searchstart.value !== 0) {
+				if (parseInt(document.we_form.searchstart.value) !== 0) {
 					document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
 				}
 			}
