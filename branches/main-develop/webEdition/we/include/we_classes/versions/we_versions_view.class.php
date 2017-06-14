@@ -235,10 +235,10 @@ class we_versions_view{
 	public function getParameterBottom($foundItems){
 		return '<table class="default" style="margin-top:20px;margin-left:220px;">
 <tr id="paging_bottom">
- <td id="bottom">' . $this->getNextPrev($foundItems) . '</td>
+ <td id="bottom">' . $this->getNextPrev($foundItems) . '</td><td>' . (we_base_permission::hasPerm('ADMINISTRATOR') ? '<span id="deleteButton">' .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</span>' : '') . '</td>
 </tr>
-</table><br/>'.(we_base_permission::hasPerm('ADMINISTRATOR') ? '<span id="deleteButton">' .
-				we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</span><br/>' : '');
+</table>';
 	}
 
 	/**
