@@ -323,7 +323,7 @@ lcase(Description) LIKE "%' . $kw . '%"
 		<td colspan="3">
 			<table class="default">
 			<tr>
-				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; submitForm(); }") . '</td>
+				<td class="small">' . (we_base_permission::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-globe', "javascript: if(window.confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; submitForm(); }", '', 0, 0, '', '', false, true, '', false, '', 'weHide') . '</td>
 				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
 			</tr>
 			</table>

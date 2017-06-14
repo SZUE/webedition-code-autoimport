@@ -358,7 +358,7 @@ function activateButtons() {
 		WE().layout.button.hide(document, 'execute');
 		if (doc.cmd3 !== "checkOnly") {
 			WE().layout.button.enable(document, 'publish');
-			WE().layout.button.show(document, 'publish');
+			WE().layout.button.display(document, 'publish', true);
 		}
 
 	} else {

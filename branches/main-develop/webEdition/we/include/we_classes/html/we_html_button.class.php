@@ -117,6 +117,7 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
+	// FIXME: add param display and set class weHide if display===false
 	static function create_button($name, $href, $htmlName = '', $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = [
 	]){
 		$cmd = '';

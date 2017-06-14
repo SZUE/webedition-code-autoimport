@@ -574,9 +574,6 @@ function weFileupload_sender_import(uploader) {
 	};
 
 	self.cancel = function () {
-		if (!self.isUploading) {
-			top.close();
-		}
 		self.isCancelled = true;
 		self.isUploading = false;
 		self.view.repaintGUI({what: 'cancelUpload'});
@@ -624,8 +621,8 @@ function weFileupload_sender_import(uploader) {
 					tmp.splice(1, 0, self.resp);
 					top.we_cmd.apply(top, tmp);
 				}, 100);
-				//window.setTimeout(self.uploader.reset, 500);
-				//window.setTimeout(function(){top.we_cmd('closeDialog');}, 1000);
+				self.uploader.reset();
+				window.setTimeout(function(){self.uploader.win.top.close();}, 1000);
 			}
 			window.setTimeout(self.uploader.reset, 1000);
 		}
@@ -634,7 +631,9 @@ function weFileupload_sender_import(uploader) {
 		//reinitialize some vars to add and upload more files
 		self.isUploading = false;
 		self.resetSender();
-		self.controller.setWeButtonText('cancel', 'close');
+
+		WE().layout.button.display(self.view.elems.footer.document, 'cancel', false);
+		WE().layout.button.display(self.view.elems.footer.document, 'close', true);
 	};
 
 	self.processError = function (arg) {
@@ -666,8 +665,8 @@ function weFileupload_sender_import(uploader) {
 		self.totalFiles = self.totalWeight = self.currentWeight = self.currentWeightTag = 0;
 		self.view.elems.footer.setProgress("", 0);
 		self.view.elems.extProgressDiv.style.display = 'none';
-		self.controller.setWeButtonState('reset_btn', true);
-		self.controller.setWeButtonState('browse_harddisk_btn', true);
+		WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+		WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
 	};
 
 }

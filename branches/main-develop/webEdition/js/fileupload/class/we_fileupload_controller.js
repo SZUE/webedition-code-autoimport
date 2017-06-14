@@ -216,20 +216,6 @@ function weFileupload_controller_abstract(uploader) {
 		e.target.className = (e.type === 'dragover' ? self.elemFileDragClasses + ' we_file_drag_hover' : self.elemFileDragClasses);
 	};
 
-	self.setWeButtonState = function (btn, enable, isFooter) {
-		isFooter = isFooter ? true : false;
-		var doc = self.uploader.doc;
-
-		if (isFooter) {
-			top.WE().layout.button[enable ? 'enable' : 'disable'](self.view.elems.footer.document, btn);
-		} else {
-			top.WE().layout.button[enable ? 'enable' : 'disable'](doc, btn);
-			if (btn === 'browse_harddisk_btn') {
-				top.WE().layout.button[enable ? 'enable' : 'disable'](doc, 'browse_btn');
-			}
-		}
-	};
-
 	this.editImageButtonOnClick = function(btn, index, general){
 		btn.disabled = true;
 
@@ -421,8 +407,9 @@ function weFileupload_controller_import(uploader) {
 	weFileupload_controller_abstract.call(self, uploader);
 
 	self.onload_sub = function () {
-		self.setWeButtonText('next', 'upload');
-		self.enableWeButton('next', false);
+		WE().layout.button.display(self.view.elems.footer.document, 'next', false);
+		WE().layout.button.display(self.view.elems.footer.document, 'upload', true);
+		WE().layout.button.disable(self.view.elems.footer.document, 'upload', true);
 
 		if (self.uploader.EDIT_IMAGES_CLIENTSIDE) {
 			var generalform = self.uploader.doc.we_form;
@@ -463,7 +450,7 @@ function weFileupload_controller_import(uploader) {
 
 			if (f.isSizeOk) {
 				if (!self.view.isUploadEnabled) {
-					self.enableWeButton('next', true);
+					WE().layout.button.disable(self.view.elems.footer.document, 'upload', false);
 					self.view.isUploadEnabled = true;
 					self.sender.isCancelled = false;
 				}
@@ -472,37 +459,6 @@ function weFileupload_controller_import(uploader) {
 			if(self.imageEdit.IS_MEMORY_MANAGMENT){
 				self.imageEdit.memorymanagerRegister(f);
 			}
-		}
-	};
-
-	self.enableWeButton = function (btn, enabled) {
-		self.view.elems.footer[btn + '_enabled'] = top.WE().layout.button.switch_button_state(self.view.elems.footer.document, btn, (enabled ? 'enabled' : 'disabled'));
-	};
-
-	self.setWeButtonText = function (btn, text) {
-		var replace;
-		try{
-			var test = WE().consts.g_l.fileupload;
-		} catch(e){
-			WE().t_e("'WE().consts.g_l.fileupload' not loaded");
-			return;
-		}
-
-		switch (text) {
-			case 'close' :
-				replace = WE().consts.g_l.fileupload.btnClose;
-				break;
-			case 'cancel' :
-				replace = WE().consts.g_l.fileupload.btnCancel;
-				break;
-			case 'upload' :
-			/*falls through*/
-			default:
-				replace = WE().consts.g_l.fileupload.btnUpload;
-		}
-
-		if (replace) {
-			top.WE().layout.button.setText(self.view.elems.footer.document, btn, replace);
 		}
 	};
 

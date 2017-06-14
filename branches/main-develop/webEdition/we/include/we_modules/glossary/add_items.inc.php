@@ -252,7 +252,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 							$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 							if($cmd3 != "checkOnly"){
-								$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
+								$Buttons .= we_html_element::jsElement("WE().layout.button.display(document, 'publish', false);");
 							}
 
 							$Parts = [
