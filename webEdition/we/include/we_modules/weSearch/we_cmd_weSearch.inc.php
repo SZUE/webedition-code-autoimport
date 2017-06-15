@@ -21,50 +21,41 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 switch($cmd){
 	case 'weSearch_edit':
 		$_REQUEST['mod'] = 'weSearch';
 		$_REQUEST['pnt'] = 'show_frameset';
-//fixme: this is just a copy, values are not passed correctly
+
 		unset($_SESSION['weS'][$tool . '_session']);
 
-		$keyword = '';
+		$_REQUEST['keyword'] = '';
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
 			$_SESSION['weS']['weSearch']['keyword'] = $cmd1;
-			$keyword = $cmd1;
+			$_REQUEST['keyword'] = $cmd1;
 		}
 
 		switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', "", 2))){//FIXME: bad to have different types at one query
 			case FILE_TABLE:
-				$tab = 1;
-				$table = 1;
 				$_SESSION['weS']['weSearch']["checkWhich"] = 1;
 				$cmd = 'weSearch_new_forDocuments';
 				break;
 			case TEMPLATES_TABLE:
-				$tab = 2;
-				$table = 2;
 				$_SESSION['weS']['weSearch']["checkWhich"] = 2;
 				$cmd = 'weSearch_new_forTemplates';
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$tab = 3;
-				$table = 3;
 				$_SESSION['weS']['weSearch']["checkWhich"] = 3;
 				$cmd = 'weSearch_new_forObjects';
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$tab = 3;
-				$table = 4;
 				$_SESSION['weS']['weSearch']["checkWhich"] = 4;
 				$cmd = 'weSearch_new_forClasses';
 				break;
 			default:
-				$tab = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
-				$table = 5;
 				$cmd = 'weSearch_new';
 		}
-
+		$_REQUEST['cmd'] = $cmd;
 
 		return '../../we_showMod.php';
 }
