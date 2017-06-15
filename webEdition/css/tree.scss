@@ -36,9 +36,11 @@
 	padding: 0px;
 	padding-left:1ex;
 	white-space: nowrap;
-	&.deleteSelector,
+	&.deleteSelector{
+		top:150px;
+	}
 	&.moveSelector{
-		top:160px;
+		top:165px;
 	}
 	&.collectionSelector{
 		top:205px;

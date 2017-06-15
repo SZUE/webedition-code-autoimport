@@ -472,7 +472,7 @@ if(!$wfchk){
 		$hasPerm = self::getHasPerm($idInfos, $table);
 		unset($idInfos);
 		$retVal = !$hasPerm ? we_base_permission::NO_PERMISSION : self::checkFilePerm($selectedItems, $table);
-t_e($selectedItems, $retVal);
+
 		switch($retVal){
 			case we_base_permission::NO_PERMISSION:
 				$jsCmd->addMsg(g_l('alert', '[no_perms_action]'), we_base_util::WE_MESSAGE_ERROR);
@@ -559,7 +559,11 @@ t_e($selectedItems, $retVal);
 						}
 
 						$jsCmd->addCmd('closeDeletedDocuments', ',' . implode(",", $deletedItems) . ',', ',' . implode(",", $deleted_objects) . ',');
-						$jsCmd->addCmd('load', $table);
+						if($wecmd0 === "do_delete"){ // delete from select tree
+							$jsCmd->addCmd('del_continue', $table);
+						} else {
+							$jsCmd->addCmd('load', $table);
+						}
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode

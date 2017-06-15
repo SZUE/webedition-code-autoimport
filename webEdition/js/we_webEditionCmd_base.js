@@ -148,6 +148,8 @@ we_cmd_modules.base = function (args, url, caller) {
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
+			/* falls through */
+		case "del_continue":
 			top.treeData.setState(top.treeData.tree_states.select);
 			top.treeData.unselectNode();
 			top.drawTree();
