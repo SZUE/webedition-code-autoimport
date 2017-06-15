@@ -39,8 +39,8 @@ function resizeVersionsTable(){
 	var headTR = document.getElementById('contentTable_headTR');
 	var firstContentTR = document.getElementById('contentTbody').firstChild;
 
-	for (var i = 0, td; i < headTR.cells.length; i++) {
-		headTR.cells[i].style.width = (firstContentTR.cells[i].offsetWidth - 2) + 'px';
+	for (var i = 0; i < headTR.cells.length; i++) {
+		headTR.cells[i].style.width = (firstContentTR.cells[i].offsetWidth) + 'px';
 	}
 }
 

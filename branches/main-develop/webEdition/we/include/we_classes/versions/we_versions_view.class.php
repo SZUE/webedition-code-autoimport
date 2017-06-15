@@ -106,7 +106,7 @@ class we_versions_view{
 	<td style="width:100%"></td>
 </tr>
 </table>
-<table class="default" id="advSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch" style="width:550px;margin-left:2em;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
@@ -233,7 +233,7 @@ class we_versions_view{
 	 * @return string html-Code
 	 */
 	public function getParameterBottom($foundItems){
-		return '<table class="default" style="margin-top:20px;margin-left:220px;">
+		return '<table class="default" style="margin-top:20px;margin-left:208px;">
 <tr id="paging_bottom">
  <td id="bottom">' . $this->getNextPrev($foundItems) . '</td><td>' . (we_base_permission::hasPerm('ADMINISTRATOR') ? '<span id="deleteButton">' .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</span>' : '') . '</td>
