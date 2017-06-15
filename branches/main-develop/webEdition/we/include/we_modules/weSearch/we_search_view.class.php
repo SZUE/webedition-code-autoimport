@@ -68,41 +68,44 @@ class we_search_view extends we_modules_view{
 			case 'weSearch_new_forClasses' :
 			case 'weSearch_new_forMedia' :
 			case 'weSearch_new_advSearch' :
-				//case 'weSearch_new_group' :
+			//case 'weSearch_new_group' :
 				$this->Model = new we_search_model($cmdid);
 				switch($cmd){
 					case 'weSearch_new_forDocuments' :
-					case 'weSearch_new_forMedia' :
 						$tables = 1; // TODO: use constants
+						$tab = 1;
 						break;
 					case 'weSearch_new_forTemplates' :
 						$tables = 2;
-						break;
-					case 'weSearch_new_forObjects' :
-						$tables = 3;
-						break;
-					case 'weSearch_new_forClasses' :
-						$tables = 4;
-						break;
-					case 'weSearch_new_forVersions' :
-						$tables = 5;
+						$tab = 2;
 						break;
 					case 'weSearch_new_forMedia' :
 						$tables = 1;
+						$tab = 5;
+						break;
+					case 'weSearch_new_forObjects' :
+						$tables = 3;
+						$tab = 3;
+						break;
+					case 'weSearch_new_forClasses' :
+						$tables = 4;
+						$tab = 3;
+						break;
+					case 'weSearch_new_forVersions' :
+						$tables = 5;
+						$tab = 3;
 						break;
 					case 'weSearch_new_advSearch' :
 					case 'weSearch_new' :
 						$tables = 0;
+						$tab = 3;
 				}
-
-				$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 				$keyword = we_base_request::_(we_base_request::STRING, 'keyword');
 				$this->Model->setPredefinedSearch($tab, $keyword, $tables);
 				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(0);
 				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text);
 				break;
-
 			case 'weSearch_edit' : // get model from db
 				$this->Model = new we_search_model($cmdid);
 				$this->Model->prepareModelForSearch();
@@ -115,7 +118,6 @@ class we_search_view extends we_modules_view{
 				}
 				$jscmd->addCmd('loadHeaderFooter', $tab, $this->Model->Text, $cmdid, $this->Model->ID);
 				break;
-
 			case 'weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
@@ -197,7 +199,6 @@ class we_search_view extends we_modules_view{
 					$_REQUEST['pnt'] = 'edbody';
 				}
 				break;
-
 			default :
 		}
 

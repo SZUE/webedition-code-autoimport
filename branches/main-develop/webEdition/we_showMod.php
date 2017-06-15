@@ -23,7 +23,6 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-
 $mod = we_base_request::_(we_base_request::STRING, 'mod');
 
 if(strpos($mod, '?')){//FIXME:remove
@@ -59,6 +58,8 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 		$sid = $mod === 'customer' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'sid');
 		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
+		$searchInitParams = $mod === we_base_moduleInfo::SEARCH ? '&cmd=' . we_base_request::_(we_base_request::STRING, 'cmd') . '&keyword=' . we_base_request::_(we_base_request::STRING, 'keyword') : '';
+
 		$we_tabs = new we_gui_tabs();
 		$mods = we_base_moduleInfo::getAllModules();
 		we_base_moduleInfo::orderModuleArray($mods);
@@ -74,7 +75,7 @@ if($what === 'show_frameset'){ //old call to show_frameset.php
 		}
 
 		echo we_html_element::htmlDiv(['style' => 'right:0px;', 'name' => 'naviDiv', 'id' => 'naviDiv'], '<div id="main" >' . $we_tabs->getHTML() . '</div>') .
-		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
+		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . $searchInitParams . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
 		;
 		?></body></html><?php
 	return;
@@ -94,7 +95,7 @@ switch($mod){
 		$weFrame->process();
 		break;
 	case we_base_moduleInfo::SEARCH:
-		$weFrame = new we_search_frames();
+		$weFrame = new we_search_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 	case we_base_moduleInfo::SHOP:
