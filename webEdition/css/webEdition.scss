@@ -45,6 +45,7 @@ body{
 
 	&.weEditorBody {
 		padding: 10px 0px;
+		box-sizing:border-box;
 		div.multiIcon {
 			div.weMultiIconBoxHeadline {
 				font-size: 16px;
