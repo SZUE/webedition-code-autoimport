@@ -550,9 +550,11 @@ td.boxHeader{
 	left:0px;
 	right:0px;
 	overflow: hidden;
-	&.deleteSelector,
+	&.deleteSelector{
+		height:156px;
+	}
 	&.moveSelector{
-		height:160px;
+		height:170px;
 	}
 	&.collectionSelector{
 		height:205px;
@@ -935,7 +937,7 @@ optgroup{
 }
 
 .weTreeHeaderMove {
-	height:139px;
+	height:144px;
 }
 
 .weTreeHeaderAddToCollection{

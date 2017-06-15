@@ -291,6 +291,7 @@ abstract class we_base_move{
 							$jsCmd->addCmd('moveInfo');
 						} else {
 							$jsCmd->addMsg(g_l('alert', '[move_ok]'), we_base_util::WE_MESSAGE_NOTICE);
+							$jsCmd->addCmd('mv', 1, $table);
 						}
 					}
 				} else {
@@ -344,7 +345,7 @@ abstract class we_base_move{
 			$weSuggest->setSelector(we_gui_suggest::DirSelector);
 			$weSuggest->setTable($table);
 			$weSuggest->setWidth(250);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements.' . $idname . '.value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements." . $idname . ".value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);
 
 			$weAcSelector = $weSuggest->getHTML();
 
@@ -359,7 +360,7 @@ abstract class we_base_move{
 		}
 
 		echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
-				we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');"), $body);
+				we_html_element::jsScript(JS_DIR . 'move.js', ($cmd0 === 'do_move' ? '' : "initMove('" . $table . "');")), $body);
 	}
 
 	public static function getMoveInfo(){
