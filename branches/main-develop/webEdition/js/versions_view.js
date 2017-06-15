@@ -36,11 +36,13 @@ function init() {
 }
 
 function resizeVersionsTable(){
-	var headTR = document.getElementById('contentTable_headTR');
-	var firstContentTR = document.getElementById('contentTbody').firstChild;
+	var headCells = document.getElementById('contentTable_headTR').cells;
+	var cntRow;
 
-	for (var i = 0; i < headTR.cells.length; i++) {
-		headTR.cells[i].style.width = (firstContentTR.cells[i].offsetWidth) + 'px';
+	if((cntRow = document.getElementById('contentTbody').firstChild)){
+		for (var i = 0; i < headCells.length; i++) {
+			headCells[i].style.width = (cntRow.cells[i].offsetWidth) + 'px';
+		}
 	}
 }
 
