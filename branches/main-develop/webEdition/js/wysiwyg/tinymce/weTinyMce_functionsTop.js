@@ -329,6 +329,8 @@ WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function (win) {
 	var rawConfObj;
 	var dialogProps = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-dialogProperties');
 
+	// when inline=false configuration was written to win.opener.tinyMceRawConfigurations
+	// => we are on popup and take configuration from opener
 	if(dialogProps && dialogProps.isDialog){
 		rawConfObj = win.opener.tinyMceRawConfigurations[dialogProps.weFieldname];
 		rawConfObj.weEditorType = dialogProps.weEditorType;
@@ -337,6 +339,7 @@ WE().layout.we_tinyMCE.functions.initAllFromDataAttribute = function (win) {
 		return;
 	}
 
+	// we are in main window: take all configuration for this editor from getDynamicVar
 	var configurations = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-configurations');
 	if(configurations && configurations.length){
 		for(var i = 0; i < configurations.length; i++){
