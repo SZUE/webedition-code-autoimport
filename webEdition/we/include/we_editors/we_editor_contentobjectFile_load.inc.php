@@ -104,7 +104,7 @@ switch($cmd){
 				break;
 		}
 
-		$content = we_gui_OrderContainer::getResponse('reload', $identifier, '
+		$content = we_gui_OrderContainer::wrapField('reload', $identifier, '
 <div id="' . $identifier . '" class="objectFileElement">
 	<div id="f' . $identifier . '" class="default defaultfont">
 	' . $we_doc->getFieldHTML($jsCmd, $name, $type, []) . '

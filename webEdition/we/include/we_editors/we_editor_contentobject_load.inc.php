@@ -45,7 +45,7 @@ function reloadElement(we_base_jsCmd $jsCmd, $we_transaction, $we_doc, $id){
 
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-	return we_gui_OrderContainer::getResponse('reload', $uniqid, $content);// .
+	return we_gui_OrderContainer::wrapField($jsCmd, 'reload', $uniqid, $content);// .
 		//we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",' . intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) . ');');
 }
 
@@ -90,7 +90,7 @@ switch($cmd){
 			'</span>
 		</div></div>';
 
-		$content .= we_gui_OrderContainer::getResponse('add', $uniqid, $cnt, $afterid);
+		$content .= we_gui_OrderContainer::wrapField($jsCmd, 'add', $uniqid, $cnt, $afterid);
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		break;
@@ -163,7 +163,7 @@ switch($cmd){
 			$identifier = array_pop(explode('_', $id, 2));
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->removeEntryFromClass($identifier);
-			$content .= we_gui_OrderContainer::getResponse('delete', $uniqid);
+			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'delete', $uniqid);
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}
 		break;
@@ -185,7 +185,7 @@ if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
 	WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
 }';
 			}
-			$content .= we_gui_OrderContainer::getResponse('up', $uniqid) .
+			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'up', $uniqid) .
 			($ret ? we_html_element::jsElement($ret) : '');
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}
@@ -208,7 +208,7 @@ if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
 		WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
 }';
 			}
-			$content .= we_gui_OrderContainer::getResponse('down', $uniqid) .
+			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'down', $uniqid) .
 			($ret ? we_html_element::jsElement($ret) : '');
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}

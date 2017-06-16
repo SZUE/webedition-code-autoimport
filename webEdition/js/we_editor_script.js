@@ -407,6 +407,13 @@ function we_cmd() {
 			args[0] = 'delete_navi';
 			WE().util.showConfirm(caller, "", WE().consts.g_l.editorScript.confirm_navDel, args);
 			break;
+		case "orderContainer_processCommand":
+			// this command is used on cmd-frame when processing field replacements
+			var container;
+			if((container = _EditorFrame.getContentEditor().orderContainer)){
+				container.processCommand(document, args[1], args[2], args[3]);
+			}
+			break;
 		default:
 			window.parent.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 

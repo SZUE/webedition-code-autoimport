@@ -23,60 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_gui_OrderContainer{
-
-	private static function getCmd($mode, $uniqueid = false, $afterid = false){
-		// FIXME: call generic we_cmd 'objectField_action, action=mode, uniqueid, afterid'
-		$afterid = ($afterid ? "'" . $afterid . "'" : "null");
-
-		switch(strtolower($mode)){
-			case 'add':
-				return "container.add(document, '" . $uniqueid . "', $afterid);";
-			case 'reload':
-				return "container.reload(document, '" . $uniqueid . "');";
-			case 'delete':
-			case 'del':
-				return "container.del('" . $uniqueid . "');";
-			case 'moveup':
-			case 'up':
-				return "container.up('" . $uniqueid . "');";
-			case 'movedown':
-			case 'down':
-				return "container.down('" . $uniqueid . "');";
-			default:
-				return "";
-		}
-	}
-
-	public static function getResponse($mode, $uniqueid, $content = '', $afterid = false){
-		if(!($cmd = self::getCmd($mode, $uniqueid, $afterid))){
+	public static function wrapField(we_base_jsCmd $jsCmd, $mode, $uniqueid, $content = '', $afterid = false){
+		if(!in_array($mode, ['add', 'reload', 'delete', 'del', 'moveup', 'up', 'movedown', 'down'])){
 			return '';
 		}
+		$jsCmd->addCmd('orderContainer_processCommand', $mode, $uniqueid, $afterid);
 
-		return (!$content ? '' : '<div id="orderContainer" style="display: none;">' . $content . '</div>') .
-			we_html_element::jsElement('var container=_EditorFrame.getContentEditor().orderContainer;' .
-				$cmd .
-				self::getDisableButtonJS()
-			);
+		return (!$content ? '' : '<div id="orderContainer" style="display: none;">' . $content . '</div>');
 	}
-
-// end: getResponse
-
-	private static function getDisableButtonJS(){
-		return '';
-//FIXME: this doesn't work
-		/* return '
-		  for(i=0; i < top.container.position.length; i++) {
-		  id = top.container.position[i];
-		  id = id.replace(/entry_/, "");
-		  WE().layout.button.enable(targetF.document, "btn_direction_up_" + id);
-		  WE().layout.button.enable(targetF.document, "btn_direction_down_" + id);
-		  if(i == 0) {
-		  WE().layout.button.disable(targetF.document, "btn_direction_up_" + id);
-		  }
-		  if(i+1 == top.container.position.length) {
-		  WE().layout.button.disable(targetF.document, "btn_direction_down_" + id);
-		  }
-		  }'; */
-	}
-
 }
