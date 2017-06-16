@@ -30,6 +30,11 @@ var weOrderContainer = function (id) {
 	this.elements = [];
 	this.position = [];
 
+	this.init = function() {
+		this.setButtonsDisabled();
+		this.reinitTinyEditors();
+	};
+
 	this.processCommand = function (doc, cmd, id, afterid){
 		switch(cmd){
 			case 'add':
@@ -52,6 +57,7 @@ var weOrderContainer = function (id) {
 				this.down(id);
 		}
 		this.setButtonsDisabled();
+		this.reinitTinyEditors();
 	};
 
 	this.add = function (doc, id, afterid) {
@@ -240,6 +246,18 @@ var weOrderContainer = function (id) {
 		}
 	};
 
+	this.reinitTinyEditors = function(){
+		var configs;
+		if((configs = window.tinyMceRawConfigurations)){
+			for (var key in configs) {
+				if (configs.hasOwnProperty(key) && typeof configs[key] === 'object'
+						&& document.getElementById('we_' + window.doc.docName + '_input[' + key + ']')) {
+					WE().layout.we_tinyMCE.functions.initEditor(window, configs[key]);
+				}
+			}
+		}
+	};
+
 	this.createDIV = function (node) {
 		var div = document.createElement("div");
 		var attr = document.createAttribute("id");
@@ -275,3 +293,6 @@ var weOrderContainer = function (id) {
 };
 
 var orderContainer = new weOrderContainer("orderContainer");
+$(function () {
+	orderContainer.init();
+});
