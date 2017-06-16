@@ -25,6 +25,7 @@
 abstract class we_gui_OrderContainer{
 
 	private static function getCmd($mode, $uniqueid = false, $afterid = false){
+		// FIXME: call generic we_cmd 'objectField_action, action=mode, uniqueid, afterid'
 		$afterid = ($afterid ? "'" . $afterid . "'" : "null");
 
 		switch(strtolower($mode)){
@@ -46,20 +47,16 @@ abstract class we_gui_OrderContainer{
 		}
 	}
 
-	public static function getResponse($mode, $uniqueid, $string = "", $afterid = false){
+	public static function getResponse($mode, $uniqueid, $content = '', $afterid = false){
 		if(!($cmd = self::getCmd($mode, $uniqueid, $afterid))){
-			return "";
+			return '';
 		}
 
-		return ($string != "" ?
-			'<div id="orderContainer" style="display: none;">'
-			. $string
-			. '</div>' : '') .
-			we_html_element::jsElement('
-var container=_EditorFrame.getContentEditor().orderContainer;' .
+		return (!$content ? '' : '<div id="orderContainer" style="display: none;">' . $content . '</div>') .
+			we_html_element::jsElement('var container=_EditorFrame.getContentEditor().orderContainer;' .
 				$cmd .
 				self::getDisableButtonJS()
-		);
+			);
 	}
 
 // end: getResponse
