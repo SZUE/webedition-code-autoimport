@@ -49,7 +49,6 @@ function reloadElement(we_base_jsCmd $jsCmd, $we_transaction, $we_doc, $id){
 		//we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",' . intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) . ');');
 }
 
-
 $cmd = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 $id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
@@ -157,7 +156,6 @@ switch($cmd){
 		$we_doc->removeMetaFromClass($name, 0);
 		$content .= reloadElement($jsCmd, $we_transaction, $we_doc, $id);
 		break;
-
 	case 'object_delete_entry_at_class':
 		if(isset($id)){
 			$identifier = array_pop(explode('_', $id, 2));
@@ -167,53 +165,24 @@ switch($cmd){
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}
 		break;
-
 	case 'object_up_entry_at_class':
-		$sort = $we_doc->getElement('we_sort');
-
 		if(isset($id)){
 			$identifier = array_pop(explode('_', $id, 2));
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->upEntryAtClass($identifier);
-			$ret = '';
-			foreach(array_keys($sort) as $sortId){
-				$field = $we_doc->elements['wholename' . $sortId]['dat'];
-				$ret .= '
-var target = _EditorFrame.getContentEditor(),
-	confname = "' . $field . 'default";
-if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
-	WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
-}';
-			}
-			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'up', $uniqid) .
-			($ret ? we_html_element::jsElement($ret) : '');
+			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'up', $uniqid);
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}
 		break;
-
 	case 'object_down_entry_at_class':
-		$sort = $we_doc->getElement('we_sort');
-
-		if(isset($id)){
+		if(isset($id)){t_e('wedoc', $we_doc);
 			$identifier = array_pop(explode('_', $id, 2));
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->downEntryAtClass($identifier);
-			$ret = '';
-			foreach(array_keys($sort) as $sortId){
-				$field = $we_doc->elements['wholename' . $sortId]['dat'];
-				$ret .= '
-var target = _EditorFrame.getContentEditor(),
-	confname = "' . $field . 'default";
-if(typeof target.tinyMceRawConfigurations[confname] === \'object\'){
-		WE().layout.we_tinyMCE.functions.initEditor(target, target.tinyMceRawConfigurations[confname]);
-}';
-			}
-			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'down', $uniqid) .
-			($ret ? we_html_element::jsElement($ret) : '');
+			$content .= we_gui_OrderContainer::wrapField($jsCmd, 'down', $uniqid);
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		}
 		break;
-
 	default:
 		break;
 }
