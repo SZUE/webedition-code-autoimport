@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: leWizard.class.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
-
 class leWizard{
 	var $IsCurrent = false;
 	var $Name = "";
@@ -17,16 +17,12 @@ class leWizard{
 		/*
 		 * Initialise all steps of this wizard
 		 */
-		if($Type == LE_ONLINE_INSTALLER_WIZARD){
-			$Path = LE_ONLINE_INSTALLER_PATH;
-		} else {
-			$Path = LE_APPLICATION_INSTALLER_PATH;
-		}
+		$Path = ($Type == LE_ONLINE_INSTALLER_WIZARD ? LE_ONLINE_INSTALLER_PATH : LE_APPLICATION_INSTALLER_PATH);
 
-		if(file_exists($Path . "/includes/wizards/" . $this->Name . "/steps.inc.php")){
+		if(file_exists($Path . '/includes/wizards/' . $this->Name . '/steps.inc.php')){
 
 			// get names of steps in the wizard
-			require_once($Path . "/includes/wizards/" . $this->Name . "/steps.inc.php");
+			require_once($Path . '/includes/wizards/' . $this->Name . '/steps.inc.php');
 
 			foreach($leInstallerSteps as $Step){
 				if(file_exists($Path . "/includes/wizards/" . $this->Name . "/" . $Step . ".class.php")){

@@ -316,7 +316,7 @@ if ($success) {
 				'Type' => 'ChangesResponse',
 				'Next' => self::getProceedNextCommandResponse($nextUrl, $progress, $message),
 				'TargetVersion' => (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']),
-				'LogMsg' => sprintf($GLOBALS['luSystemLanguage'][$_SESSION['update_cmd']]['start'], (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '')),
+				'LogMsg' => sprintf($GLOBALS['lang'][$_SESSION['update_cmd']]['start'], (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '')),
 				'Error' => self::getErrorMessageResponse('', $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning1'] . '__QUOTA__' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning2'])
 		]);
 	}
@@ -344,10 +344,10 @@ if ($success) {
 				'Repeat' => self::getProceedNextCommandResponse($repeatUrl, $progress),
 				'Lang' => [
 					'notice' => $GLOBALS['lang']['installer']['updateDatabaseNotice'],
-					'tableExists' => $GLOBALS['luSystemLanguage']['installer']['tableExists'],
-					'tableChanged' => $GLOBALS['luSystemLanguage']['installer']['tableChanged'],
-					'entryExists' => $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'],
-					'error' => $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery']
+					'tableExists' => $GLOBALS['lang']['installer']['tableExists'],
+					'tableChanged' => $GLOBALS['lang']['installer']['tableChanged'],
+					'entryExists' => $GLOBALS['lang']['installer']['entryAlreadyExists'],
+					'error' => $GLOBALS['lang']['installer']['errorExecutingQuery']
 				]
 		]);
 	}
@@ -555,15 +555,15 @@ window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('installer', 'finis
 	static function getErrorMessageResponse($headline = '', $message = '', $type = ''){
 		switch($type){
 			case "notWritableError":
-				$headline = $GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'];
+				$headline = $GLOBALS['lang']['installer']['fileNotWritableError'];
 		}
 		return [
-			'headline' => $headline ?: '<br /><strong class="errorText">' . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>',
+			'headline' => $headline ?: '<br /><strong class="errorText">' . $GLOBALS['lang']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>',
 			'message' => $message . ($message ? '' : '<br/>'),
 			'lang' => [
-				'errorMessage' => $GLOBALS['luSystemLanguage']['installer']['errorMessage'],
-				'errorIn' => $GLOBALS['luSystemLanguage']['installer']['errorIn'],
-				'errorLine' => $GLOBALS['luSystemLanguage']['installer']['errorLine']
+				'errorMessage' => $GLOBALS['lang']['installer']['errorMessage'],
+				'errorIn' => $GLOBALS['lang']['installer']['errorIn'],
+				'errorLine' => $GLOBALS['lang']['installer']['errorLine']
 			]
 		];
 	}
@@ -577,21 +577,21 @@ window.open(\'?' . updateUtilUpdate::getCommonHrefParameters('installer', 'finis
 	 */
 	static function getErrorMessage($headline = '', $message = '', $type = ''){
 
-		$headline = !$headline ? "<br /><strong class=\'errorText\'>" . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>' : $headline;
+		$headline = !$headline ? "<br /><strong class=\'errorText\'>" . $GLOBALS['lang']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>' : $headline;
 		$message .= $message ? '<br />\\\n' : '';
 
 		switch($type){
 			case "notWritableError":
-				$errorMessage = '"<div class=\'errorDiv\'>" . "' . sprintf($GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'], $message) . '" . "</div>"';
+				$errorMessage = '"<div class=\'errorDiv\'>" . "' . sprintf($GLOBALS['lang']['installer']['fileNotWritableError'], $message) . '" . "</div>"';
 				break;
 
 			default:
 				$errorMessage = '"<div class=\'errorDiv\'>"
 						. "' . $headline . '<br />"
 						. "' . $message . '"
-						. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
-						.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
-						. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
+						. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['lang']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
+						.												"' . $GLOBALS['lang']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
+						. 												"' . $GLOBALS['lang']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
 																	   : "")
 						. "</div>"';
 		}

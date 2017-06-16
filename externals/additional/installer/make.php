@@ -247,7 +247,7 @@ EOF;
 		exec('zip -c ' . "OnlineInstaller.zip OnlineInstaller.php");
 		exec('tar -czf OnlineInstaller.tgz OnlineInstaller.php');
 		unlink("OnlineInstaller.php");
-		echo "done";
+		echo "done\n";
 		return true;
 	}
 

@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: upgradeUpdate.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-
 class upgradeUpdate{
 
 	/**
@@ -56,7 +56,8 @@ class upgradeUpdate{
 		$version_type = updateUpdate::getOnlyVersionType($versionnumber);
 		$version_type_version = updateUpdate::getOnlyVersionTypeVersion($versionnumber);
 		$version_branch = updateUpdate::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version,
+				$version_branch));
 
 
 		$retArray['Type'] = 'eval';
@@ -190,7 +191,8 @@ if (!$success) {
 		$version_type = updateUpdate::getOnlyVersionType($versionnumber);
 		$version_type_version = updateUpdate::getOnlyVersionTypeVersion($versionnumber);
 		$version_branch = updateUpdate::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+		$we_version = updateUtilUpdate::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version,
+				$version_branch));
 
 
 		// folder name for old webEdition folder (i.e. "webEdition5" for version 5.x or webEdition5light for light version)
@@ -290,7 +292,7 @@ if ($success) {
 
 // insert into log
 if ($success) {
-	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['upgrade']['finished'] . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
+	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['lang']['upgrade']['finished'] . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
 	?>' . upgradeUpdate::getFinishUpgradeResponsePart("<div>" . $GLOBALS['lang']['upgrade']['finished'] . "</div>") . '<?php
 } else {
 	' . installerUpdate::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['finishInstallationError']) . '

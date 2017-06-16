@@ -99,7 +99,7 @@ class languagesUpdate extends languagesBase{
 $filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 $liveUpdateFnc->deleteDir($filesDir);
 
-$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
+$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['lang']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
 
 ?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>")
 		];

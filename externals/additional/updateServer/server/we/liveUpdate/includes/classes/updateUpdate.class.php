@@ -370,7 +370,7 @@ $liveUpdateFnc->deleteDir($filesDir);
 
 if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtilUpdate::encodeCode($we_version['replace']) . '", "' . updateUtilUpdate::encodeCode($we_version['needle']) . '")	) {
 
-	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
+	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['lang']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
 
 	?>' . installerUpdate::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['update']['finished'] . "</div>") . '<?php
 
