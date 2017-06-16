@@ -73,7 +73,7 @@ class leOnlineInstaller{
 			require(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php") :
 			array());
 
-		$GLOBALS['lang'] = array_merge($LanguageOnlineInstaller, $LanguageApplicationInstaller);
+		$GLOBALS['lang'] = array_merge_recursive($LanguageOnlineInstaller, $LanguageApplicationInstaller);
 	}
 
 	static function getAvailableLanguages(){
