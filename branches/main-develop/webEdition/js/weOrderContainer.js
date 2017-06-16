@@ -30,6 +30,29 @@ var weOrderContainer = function (id) {
 	this.elements = [];
 	this.position = [];
 
+	this.processCommand = function (doc, cmd, id, afterid){
+		switch(cmd){
+			case 'add':
+				afterid = afterid ? afterid : null;
+				this.add(doc, id, afterid);
+				break;
+			case 'reload':
+				this.reload(doc, id);
+				break;
+			case 'delete':
+			case 'del':
+				this.del(id);
+				break;
+			case 'moveup':
+			case 'up':
+				this.up(id);
+				break;
+			case 'movedown':
+			case 'down':
+				this.down(id);
+		}
+		this.setButtonsDisabled();
+	};
 
 	this.add = function (doc, id, afterid) {
 
@@ -94,7 +117,7 @@ var weOrderContainer = function (id) {
 	};
 
 
-	this.reload = function (doc, id, selectedId, selectedValue) {
+	this.reload = function (doc, id /*, selectedId, selectedValue*/) {
 
 		var found = false;
 		//var pos = this.position.length;
@@ -198,9 +221,24 @@ var weOrderContainer = function (id) {
 			document.getElementById(this.container).removeChild(up);
 			document.getElementById(this.container).insertBefore(up, down);
 		}
-
 	};
 
+	this.setButtonsDisabled = function(){
+		var i, id;
+		for(i = 0; i < this.position.length; i++) {
+			id = this.position[i].replace(/entry_/, '');
+	
+			WE().layout.button.disable(document, "btn_direction_up_" + id, false);
+			WE().layout.button.disable(document, "btn_direction_down_" + id, false);
+
+			if(i === 0) {
+				WE().layout.button.disable(document, "btn_direction_up_" + id, true);
+			}
+			if(i + 1 === this.position.length) {
+				WE().layout.button.disable(document, "btn_direction_down_" + id, true);
+			}
+		}
+	};
 
 	this.createDIV = function (node) {
 		var div = document.createElement("div");
