@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: leOnlineInstaller.class.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
-
 class leOnlineInstaller{
 	/**
 	 * @var array
@@ -65,19 +65,14 @@ class leOnlineInstaller{
 		$_SESSION['leInstallerCharset'] = 'UTF-8';
 
 		// Load language files
-		if(file_exists(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php')){
-			require(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php');
-			$LanguageOnlineInstaller = $GLOBALS['lang'];
-		}else{
-			$LanguageOnlineInstaller = array();
-		}
+		$LanguageOnlineInstaller = (file_exists(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php') ?
+			require(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php') :
+			array());
 
-		if(file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")){
-			require(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php");
-			$LanguageApplicationInstaller = $GLOBALS['lang'];
-		}else{
-			$LanguageApplicationInstaller = array();
-		}
+		$LanguageApplicationInstaller = (file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php") ?
+			require(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php") :
+			array());
+
 		$GLOBALS['lang'] = array_merge($LanguageOnlineInstaller, $LanguageApplicationInstaller);
 	}
 

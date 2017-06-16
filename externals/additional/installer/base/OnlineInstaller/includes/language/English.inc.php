@@ -2,7 +2,7 @@
 /**
  * $Id: English.inc.php 13539 2017-03-12 11:39:19Z mokraemer $
  */
-$GLOBALS['lang'] = array(
+return array(
 	'Template' => array(
 		'headline' => 'webEdition Online Installer',
 		'title' => 'webEdition Online Installer',

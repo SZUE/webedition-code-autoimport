@@ -37,7 +37,7 @@ define('INSTALLATIONLOG_TABLE', 'we6_installation_log');
 /**
  * Special stuff for modules
  */
-define('MIN_INSTALLER_V', '2.9.4.0');
+define('MIN_INSTALLER_V', '2.9.4.4');
 
 /*
  * Needed constants and parameters
@@ -45,7 +45,7 @@ define('MIN_INSTALLER_V', '2.9.4.0');
 
 define('VERSIONNUMBER_LENGTH', 4);
 
-define("DOWNLOAD_KBYTES_PER_STEP", 750);
+define('DOWNLOAD_KBYTES_PER_STEP', 750);
 
 define('EXECUTE_QUERIES_PER_STEP', 15);
 

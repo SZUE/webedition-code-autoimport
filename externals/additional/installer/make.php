@@ -502,4 +502,4 @@ EOF;
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
-$le_OnlineInstaller->execute('./base', './out/', '2.9.4.3');
+$le_OnlineInstaller->execute('./base', './out/', '2.9.4.4');
