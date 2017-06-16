@@ -31,14 +31,13 @@ class we_editor_contentobjectFile extends we_editor_base{
 	}
 
 	public function show(){
-
 		$this->charset = (!empty($this->we_doc->Charset) ? //	send charset which might be determined in template
 			$this->we_doc->Charset : DEFAULT_CHARSET);
 
 //we_html_tools::headerCtCharset('text/html', $charset);
 
 		$editMode = !$this->previewMode;
-		$parts = $this->we_doc->getFieldsHTML($editMode);
+		$parts = $this->we_doc->getFieldsHTML($this->jsCmd, $editMode);
 		if(is_array($this->we_doc->DefArray)){
 			foreach($this->we_doc->DefArray as $n => $v){
 				if(is_array($v)){

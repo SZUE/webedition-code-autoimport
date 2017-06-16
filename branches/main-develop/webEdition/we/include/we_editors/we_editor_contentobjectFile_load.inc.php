@@ -57,6 +57,7 @@ if($we_doc->CSS){
 	}
 }
 
+$jsCmd = new we_base_jsCmd();
 
 switch($cmd){
 	case "object_reload_entry_at_object":
@@ -106,7 +107,7 @@ switch($cmd){
 		$content = we_gui_OrderContainer::getResponse('reload', $identifier, '
 <div id="' . $identifier . '" class="objectFileElement">
 	<div id="f' . $identifier . '" class="default defaultfont">
-	' . $we_doc->getFieldHTML($name, $type, []) . '
+	' . $we_doc->getFieldHTML($jsCmd, $name, $type, []) . '
 	</div>
 </div>');
 

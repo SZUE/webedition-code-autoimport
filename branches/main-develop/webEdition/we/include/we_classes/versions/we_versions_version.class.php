@@ -1118,6 +1118,7 @@ class we_versions_version{
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $binaryFile, $documentObj);
 						} else {
+							// FIXME: causes memory overflow when $siteFile is too big
 							we_base_file::save($binaryFile, gzencode(file_get_contents($siteFile), 9));
 						}
 				}

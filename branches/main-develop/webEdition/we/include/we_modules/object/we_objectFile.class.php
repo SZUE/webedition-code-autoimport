@@ -592,7 +592,7 @@ class we_objectFile extends we_document{
 		return $tableInfo2;
 	}
 
-	function getFieldHTML($name, $type, array $attribs, $editable = true, $variant = false){
+	function getFieldHTML(we_base_jsCmd $jsCmd, $name, $type, array $attribs, $editable = true, $variant = false){
 		switch($type){
 			case self::TYPE_INPUT:
 				return $this->getInputFieldHTML($type, $name, $attribs, $editable, $variant);
@@ -659,7 +659,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getFieldsHTML($editable, $asString = false){
+	function getFieldsHTML(we_base_jsCmd $jsCmd, $editable, $asString = false){
 		$dv = we_unserialize($this->classData['DefaultValues']);
 
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID, true, $this->DB_WE);
@@ -681,12 +681,12 @@ class we_objectFile extends we_document{
 			}
 
 			if($asString){
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
+				$c2 = $this->getFieldHTML($jsCmd, $field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
 				if($c2){
 					$c .= $c2 . we_html_element::htmlBr() . we_html_element::htmlBr();
 				}
 			} else {
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
+				$c2 = $this->getFieldHTML($jsCmd, $field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
 				$parts[] = ['headline' => '',
 					'html' => $c2,
 					'name' => $realName];
