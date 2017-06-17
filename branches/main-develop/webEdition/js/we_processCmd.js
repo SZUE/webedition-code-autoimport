@@ -42,7 +42,6 @@ window.addEventListener('load', function () {
 					top.close();
 					break;
 				case 'close_delayed':
-					top.console.log('delayed');
 					window.setTimeout(function() {top.close();}, 1200);
 					break;
 				case 'history.back':

@@ -51,15 +51,9 @@ class we_editor_objectTextarea extends we_editor_base{
 			$this->we_doc->setElement($this->name . 'tinyparams', we_base_request::_(we_base_request::RAW_CHECKED, 'tinyparams', ''));
 			$this->we_doc->setElement($this->name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 			$this->we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-			$this->jsCmd->addCmd('object_TextArea_apply');
+			//$this->jsCmd->addCmd('object_TextArea_apply');
 
-			if((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-				$this->elStatus('dhtmledit') === 'on' &&
-				$this->elStatus('inlineedit') === 'on'){
-				$this->jsCmd->addCmd('object_switch_edit_page', 1, $we_transaction);
-			} else {
-				$this->jsCmd->addCmd('object_reload_entry_at_class', '', $we_transaction, $nr);
-			}
+			$this->jsCmd->addCmd('object_changeTextareaParams_at_class', '', $we_transaction, $nr);//object_change_entry_at_class
 			$this->jsCmd->addCmd('close');
 		}
 	}
@@ -202,8 +196,9 @@ class we_editor_objectTextarea extends we_editor_base{
 		$out .= we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $this->we_doc->getElement($this->name) . '" - ' . g_l('modules_object', '[attributes]'));
 
 		return $this->getPage($out, '', [
-				'onload' => "top.focus();",
-				'class' => "weDialogBody"], [
+				'onload' => 'top.focus();',
+				'onunload' => '',
+				'class' => 'weDialogBody'], [
 				'action' => $_SERVER['SCRIPT_NAME']
 		]);
 	}
