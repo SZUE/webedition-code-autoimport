@@ -175,7 +175,7 @@ switch($cmd){
 		}
 		break;
 	case 'object_down_entry_at_class':
-		if(isset($id)){t_e('wedoc', $we_doc);
+		if(isset($id)){
 			$identifier = array_pop(explode('_', $id, 2));
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->downEntryAtClass($identifier);

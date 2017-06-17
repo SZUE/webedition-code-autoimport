@@ -1380,7 +1380,7 @@ class we_object extends we_document{
 		}
 
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		$cmd = 'object_reload_entry_at_class,' . $GLOBALS['we_transaction'] . ',' . $i . ');';
+		$cmd = 'object_reload_entry_at_class,' . $GLOBALS['we_transaction'] . ',' . $i;
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_image','" . $id . "','" . FILE_TABLE . "','" . $fname . "','','" . $cmd . "','',0,'" . we_base_ContentTypes::IMAGE . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')") .
@@ -1411,7 +1411,7 @@ class we_object extends we_document{
 		}
 
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		$cmd = 'object_reload_entry_at_class,' . $GLOBALS['we_transaction'] . ',' . $i . ');';
+		$cmd = 'object_reload_entry_at_class,' . $GLOBALS['we_transaction'] . ',' . $i;
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $fname . "','','" . $cmd . "','',0,'" . we_base_ContentTypes::FLASH . "')") .
@@ -1424,7 +1424,7 @@ class we_object extends we_document{
 		$id = $defaultname; //$this->getElement($defaultname);
 		$other->initByID($id, FILE_TABLE, false);
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		$cmd = 'object_reload_entry_at_class,0,' . $GLOBALS['we_transaction'] . ',' . $i . ');';
+		$cmd = 'object_reload_entry_at_class,0,' . $GLOBALS['we_transaction'] . ',' . $i;
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $fname . "','','" . $cmd . "','',0,'" . we_base_ContentTypes::APPLICATION . "')") .

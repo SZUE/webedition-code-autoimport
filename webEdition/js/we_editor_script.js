@@ -400,18 +400,18 @@ function we_cmd() {
 		case 'object_switch_edit_page':
 			opener.we_cmd("switch_edit_page", args[1], args[2]);
 			break;
-		case 'object_reload_entry_at_class':
-			opener.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
+		case 'object_changeTextareaParams_at_class':
+			args[0] = 'object_reload_entry_at_class';
+			opener.parent.we_cmd.apply(window, Array.prototype.slice.call(args));
 			break;
 		case "delete_navi_ask":
 			args[0] = 'delete_navi';
 			WE().util.showConfirm(caller, "", WE().consts.g_l.editorScript.confirm_navDel, args);
 			break;
 		case "orderContainer_processCommand":
-			// this command is used on cmd-frame when processing field replacements
 			var container;
 			if((container = _EditorFrame.getContentEditor().orderContainer)){
-				container.processCommand(document, args[1], args[2], args[3]);
+				container.processCommand(window, args[1], args[2], args[3]);
 			}
 			break;
 		default:

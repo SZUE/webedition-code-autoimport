@@ -32,17 +32,17 @@ var weOrderContainer = function (id) {
 
 	this.init = function() {
 		this.setButtonsDisabled();
-		this.reinitTinyEditors();
+		this.reinitWysiwygEditors();
 	};
 
-	this.processCommand = function (doc, cmd, id, afterid){
+	this.processCommand = function (win, cmd, id, afterid){
 		switch(cmd){
 			case 'add':
 				afterid = afterid ? afterid : null;
-				this.add(doc, id, afterid);
+				this.add(win.document, id, afterid);
 				break;
 			case 'reload':
-				this.reload(doc, id);
+				this.reload(win.document, id, win);
 				break;
 			case 'delete':
 			case 'del':
@@ -55,9 +55,8 @@ var weOrderContainer = function (id) {
 			case 'movedown':
 			case 'down':
 				this.down(id);
-		}
+		};
 		this.setButtonsDisabled();
-		this.reinitTinyEditors();
 	};
 
 	this.add = function (doc, id, afterid) {
@@ -74,7 +73,7 @@ var weOrderContainer = function (id) {
 
 		if (afterid !== null) {
 			for (i = 0; i < this.position.length; i++) {
-				if (this.position[i] == afterid) {
+				if (this.position[i] === afterid) {
 					pos = i + 1;
 				}
 			}
@@ -102,7 +101,7 @@ var weOrderContainer = function (id) {
 
 		child = document.getElementById(this.container).childNodes;
 
-		if (doc == document) {
+		if (doc === document) {
 			node = doc.getElementById(id);
 			div = node;
 		} else {
@@ -114,7 +113,7 @@ var weOrderContainer = function (id) {
 			div = this.createDIV(node);
 		}
 
-		if (this.position.length == 1 || pos >= this.position.length - 1) {
+		if (this.position.length === 1 || pos >= this.position.length - 1) {
 			document.getElementById(this.container).appendChild(div);
 		} else {
 			document.getElementById(this.container).insertBefore(div, child[pos]);
@@ -122,8 +121,7 @@ var weOrderContainer = function (id) {
 		this.fixIESelectBug(doc, id);
 	};
 
-
-	this.reload = function (doc, id /*, selectedId, selectedValue*/) {
+	this.reload = function (doc, id, win /*, selectedId, selectedValue*/) {
 
 		var found = false;
 		//var pos = this.position.length;
@@ -131,15 +129,15 @@ var weOrderContainer = function (id) {
 		var div;
 
 		for (var i = 0; i < this.position.length; i++) {
-			if (this.position[i] == id) {
+			if (this.position[i] === id) {
 				//pos = i;
 				found = true;
+				break;
 			}
 		}
 
-		if (found === true) {
-
-			if (doc == document) {
+		if (found) {
+			if (doc === document) {
 				node = doc.getElementById(id);
 				div = node;
 			} else {
@@ -153,25 +151,35 @@ var weOrderContainer = function (id) {
 
 			document.getElementById(id).innerHTML = div.innerHTML;
 
+			var wysiwygConfigs;
+			if((wysiwygConfigs = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-configurations'))){
+				window.tinyMceRawConfigurations = window.tinyMceRawConfigurations ? window.tinyMceRawConfigurations : {};
+				var config;
+				for(var i = 0; i < wysiwygConfigs.length; i++){
+					config = wysiwygConfigs[i];
+					window.tinyMceRawConfigurations[config.weFieldName] = config;
+					if(config.weEditorType === 'inlineTrue'){
+						WE().layout.we_tinyMCE.functions.initEditor(window, config);
+					}
+				}
+			}
 		}
 
 		this.fixIESelectBug(doc, id);
-
 	};
-
 
 	this.del = function (id) {
 		var node = null,
 			i, pos;
 		for (i = 0; i < this.elements.length; i++) {
-			if (this.elements[i].id == id) {
+			if (this.elements[i].id === id) {
 				this.elements.splice(i, 1);
 				i = this.elements.length;
 			}
 		}
 
 		for (i = 0; i < this.position.length; i++) {
-			if (this.position[i] == id) {
+			if (this.position[i] === id) {
 				pos = i;
 				this.position.splice(i, 1);
 				i = this.position.length;
@@ -190,7 +198,7 @@ var weOrderContainer = function (id) {
 			temp;
 
 		for (var i = 1; i < this.position.length; i++) {
-			if (this.position[i] == id) {
+			if (this.position[i] === id) {
 				up = document.getElementById(this.position[i]);
 				down = document.getElementById(this.position[(i - 1)]);
 				temp = this.position[(i - 1)];
@@ -204,6 +212,8 @@ var weOrderContainer = function (id) {
 			document.getElementById(this.container).removeChild(up);
 			document.getElementById(this.container).insertBefore(up, down);
 		}
+
+		this.reinitWysiwygEditors();
 	};
 
 
@@ -213,7 +223,7 @@ var weOrderContainer = function (id) {
 			temp;
 
 		for (var i = 0; i < this.position.length - 1; i++) {
-			if (this.position[i] == id) {
+			if (this.position[i] === id) {
 				up = document.getElementById(this.position[i + 1]);
 				down = document.getElementById(this.position[i]);
 				temp = this.position[(i + 1)];
@@ -227,6 +237,8 @@ var weOrderContainer = function (id) {
 			document.getElementById(this.container).removeChild(up);
 			document.getElementById(this.container).insertBefore(up, down);
 		}
+
+		this.reinitWysiwygEditors();
 	};
 
 	this.setButtonsDisabled = function(){
@@ -245,13 +257,16 @@ var weOrderContainer = function (id) {
 			}
 		}
 	};
+	
+	
 
-	this.reinitTinyEditors = function(){
+	this.reinitWysiwygEditors = function(){
 		var configs;
 		if((configs = window.tinyMceRawConfigurations)){
 			for (var key in configs) {
-				if (configs.hasOwnProperty(key) && typeof configs[key] === 'object'
-						&& document.getElementById('we_' + window.doc.docName + '_input[' + key + ']')) {
+				if (configs.hasOwnProperty(key) && typeof configs[key] === 'object' &&
+							document.getElementById('we_' + window.doc.docName + '_input[' + key + ']') &&
+							configs[key].weEditorType === 'inlineTrue'){
 					WE().layout.we_tinyMCE.functions.initEditor(window, configs[key]);
 				}
 			}
@@ -275,7 +290,7 @@ var weOrderContainer = function (id) {
 	this.fixIESelectBug = function (doc, id) {
 		var i, j;
 		if (!document.importNode) {
-			var node = (doc == document ? document : document.getElementById(id));
+			var node = (doc === document ? document : document.getElementById(id));
 
 			for (j = 0; j < doc.getElementsByTagName("select").length; j++) {
 
