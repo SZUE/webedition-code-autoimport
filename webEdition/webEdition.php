@@ -113,6 +113,7 @@ $const = [
 		'TEMPLATE' => we_base_ContentTypes::TEMPLATE,
 		'WEDOCUMENT' => we_base_ContentTypes::WEDOCUMENT,
 		'OBJECT_FILE' => we_base_ContentTypes::OBJECT_FILE,
+		'OBJECT' => we_base_ContentTypes::OBJECT,
 		'IMAGE' => we_base_ContentTypes::IMAGE,
 		'HTML' => we_base_ContentTypes::HTML,
 		'FLASH' => we_base_ContentTypes::FLASH,
