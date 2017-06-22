@@ -425,8 +425,8 @@ class we_folder extends we_root{
 				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
-		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
-					we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid][expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
+					($this->ID ? we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) : '') . '</td></tr>
 					</table></td></tr>' :
 					'') .
 				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
