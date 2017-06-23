@@ -537,7 +537,7 @@ function we_tag_userInput(array $attribs, $content){
 				);
 				return getHtmlTag('input', $attsHidden);
 			}
-			$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
+			$currentdate = weTag_getAttribute('currentdate', $attribs, true, we_base_request::BOOL);
 			$orgVal = $orgVal ? : ($currentdate ? time() : 0);
 			$year = date('Y');
 			$minyear = weTag_getAttribute('minyear', $attribs, 0, we_base_request::INT);
