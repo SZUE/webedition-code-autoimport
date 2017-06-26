@@ -172,7 +172,7 @@ function keyEditorListener(_successor) {
 		_editor = false;
 		_editorType = "";
 
-		if(!top || !WE()){
+		if (!top || !WE()) {
 			return;
 		}
 		// check if an editor is open
@@ -249,9 +249,9 @@ function keyModuleListener(_successor) {
 		if (this.win.top.weModuleWindow !== undefined) {
 			if (evt.keyCode === 83) { // S (Save)
 				if (this.win.top.content &&
-								this.win.top.content.editor &&
-								this.win.top.content.editor.edfooter &&
-								this.win.top.content.editor.edfooter.we_save !== undefined) {
+					this.win.top.content.editor &&
+					this.win.top.content.editor.edfooter &&
+					this.win.top.content.editor.edfooter.we_save !== undefined) {
 					this.cancelEvent(evt);
 					this.win.top.content.editor.edfooter.we_save();
 					return true;
@@ -282,19 +282,19 @@ function keyToolListener(_successor) {
 		if (this.win.top.weToolWindow !== undefined) {
 			if (evt.keyCode == 83) { // S (Save)
 				if (this.win.top.content &&
-								this.win.top.content.resize &&
-								this.win.top.content.resize.editor &&
-								this.win.top.content.resize.editor.edfooter &&
-								this.win.top.content.resize.editor.edfooter.we_save !== undefined) {
+					this.win.top.content.resize &&
+					this.win.top.content.resize.editor &&
+					this.win.top.content.resize.editor.edfooter &&
+					this.win.top.content.resize.editor.edfooter.we_save !== undefined) {
 					this.cancelEvent(evt);
 					this.win.top.content.resize.editor.edfooter.we_save();
 					return true;
 				}
 				if (this.win.top.content &&
-								this.win.top.content.resize &&
-								this.win.top.content.resize.editor &&
-								this.win.top.content.resize.editor.edfooter &&
-								this.win.top.content.weCmdController) {
+					this.win.top.content.resize &&
+					this.win.top.content.resize.editor &&
+					this.win.top.content.resize.editor.edfooter &&
+					this.win.top.content.weCmdController) {
 					this.win.top.content.weCmdController.fire({
 						"cmdName": "app_" + this.win.top.content.appName + "_save"
 					});
@@ -322,7 +322,7 @@ function keyTagWizardListener(_successor) {
 			_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
 			if (_activeEditorFrame.getEditorContentType() === "text/weTmpl" &&
-							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
+				_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
 
 				_activeEditorFrame.getEditorFrameWindow().frames.editFooter.openTagWizardPrompt();
 				this.cancelEvent(evt);
@@ -372,9 +372,12 @@ WE().handler.keyListener = new keyEditorListener(new keyModuleListener(new keyTo
 function dealWithKeyboardShortCut(evt, win) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
+	if (!window.WE || !WE()) {
+		return;
+	}
 	WE().handler.keyListener.win = win;
 	switch (evt.keyCode) {
-		case -1:
+		case - 1:
 			WE().handler.keyListener.cancelEvent(evt);
 			return true;
 		case 27: // ESCAPE
@@ -388,6 +391,6 @@ function dealWithKeyboardShortCut(evt, win) {
 			break;
 		default:
 			return (evt.ctrlKey || evt.metaKey ?
-							WE().handler.keyListener.dealEvent(evt) : true);
+				WE().handler.keyListener.dealEvent(evt) : true);
 	}
 }

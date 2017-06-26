@@ -34,10 +34,10 @@ function doClickDirect(id, ct, table, fenster) {
 		fenster = window;
 	}
 	//  the actual position is the top-window, maybe the first window was closed
-	if (!fenster.top.opener || fenster.top.opener.isLoginScreen || fenster.top.opener.closed) {
+	//if (!fenster.top.opener || fenster.top.opener.isLoginScreen || fenster.top.opener.closed) {
 		WE().layout.weEditorFrameController.openDocument(table, id, ct);
 
-	} else {
+	/*} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
 		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE().consts.message.WE_MESSAGE_WARNING, window);
 		if (top.opener.top.doClickDirect) {
@@ -53,7 +53,7 @@ function doClickDirect(id, ct, table, fenster) {
 			}
 		}
 		top.close();
-	}
+	}*/
 }
 
 function doClickWithParameters(id, ct, table, parameters) {
