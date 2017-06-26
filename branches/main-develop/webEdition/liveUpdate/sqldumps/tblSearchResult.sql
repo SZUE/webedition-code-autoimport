@@ -25,7 +25,7 @@ CREATE TABLE ###TBLPREFIX###tblSearchResult (
 	remTable tinytext NOT NULL,
 	remCT tinytext NOT NULL,
 	remClass MEDIUMINT unsigned NOT NULL,
-	PRIMARY KEY (UID,docTable,docID)
+	PRIMARY KEY (UID,docTable,docID,VersionID)
 )ENGINE=MyISAM;
 
 /* query separator */

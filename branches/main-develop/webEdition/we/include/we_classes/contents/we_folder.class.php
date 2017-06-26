@@ -354,11 +354,11 @@ class we_folder extends we_contents_root{
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 
-	/* 
+	/*
 	 * not needed if blank and special chars are alloud for collection folders
 	protected function i_filenameNotValid(){
 		switch($this->Table){
-			case VFILE_TABLE: 
+			case VFILE_TABLE:
 				$this->Filename = $this->Text;
 				break;
 			default:

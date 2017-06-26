@@ -372,6 +372,9 @@ WE().handler.keyListener = new keyEditorListener(new keyModuleListener(new keyTo
 function dealWithKeyboardShortCut(evt, win) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
+	if (!window.WE || !WE()) {
+		return;
+	}
 	WE().handler.keyListener.win = win;
 	switch (evt.keyCode) {
 		case - 1:
