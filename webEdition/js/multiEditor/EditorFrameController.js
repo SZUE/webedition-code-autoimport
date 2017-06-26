@@ -1283,9 +1283,10 @@ TabView.prototype = {
 	 * marks a tab as modified an not safed
 	 */
 	setModified: function (frameId, modified) {
-		this.myDoc.getElementById('mod_' + frameId).style.visibility = (modified ?
-			"visible" :
-			"hidden");
+		var doc = this.myDoc.getElementById('mod_' + frameId);
+		if (doc) {
+			doc.style.visibility = (modified ? "visible" : "hidden");
+		}
 	},
 	/**
 	 * displays the loading loading icon
