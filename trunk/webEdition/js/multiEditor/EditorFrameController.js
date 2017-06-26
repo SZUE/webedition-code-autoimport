@@ -304,7 +304,7 @@ EditorFrameController.prototype = {
 
 		// if all Editors are closed,
 		if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
-						this.getAllHotEditors().length === 0) {
+			this.getAllHotEditors().length === 0) {
 			return true;
 		}
 		if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
@@ -353,7 +353,7 @@ EditorFrameController.prototype = {
 
 			// if all Editors are closed,
 			if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
-							this.getAllHotEditors().length === 0) {
+				this.getAllHotEditors().length === 0) {
 				return true;
 			}
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
@@ -506,13 +506,13 @@ EditorFrameController.prototype = {
 			if (_currentEditor.getEditorIsInUse()) {
 
 				top.weNavigationHistory.addDocToHistory(
-								_currentEditor.getEditorEditorTable(),
-								_currentEditor.getEditorDocumentId(),
-								_currentEditor.getEditorContentType(),
-								_currentEditor.getEditorEditCmd(),
-								_currentEditor.getEditorUrl(),
-								_currentEditor.getEditorDocumentParameters()
-								);
+					_currentEditor.getEditorEditorTable(),
+					_currentEditor.getEditorDocumentId(),
+					_currentEditor.getEditorContentType(),
+					_currentEditor.getEditorEditCmd(),
+					_currentEditor.getEditorUrl(),
+					_currentEditor.getEditorDocumentParameters()
+					);
 
 				// activate tab
 				WE().layout.multiTabs.openTab(editorId);
@@ -1264,9 +1264,12 @@ TabView.prototype = {
 	 * marks a tab as modified an not safed
 	 */
 	setModified: function (frameId, modified) {
-		this.myDoc.getElementById('mod_' + frameId).style.visibility = (modified ?
-						"visible" :
-						"hidden");
+		var doc = this.myDoc.getElementById('mod_' + frameId);
+		if (doc) {
+			doc.style.visibility = (modified ?
+				"visible" :
+				"hidden");
+		}
 	},
 	/**
 	 * displays the loading loading icon
