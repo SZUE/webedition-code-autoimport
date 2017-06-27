@@ -33,7 +33,7 @@ window.dynVars = WE().util.getDynamicVar(document, 'loadVarExport_prop', 'data-d
 function doOnload() { // FIXME: if this script wasn't used in cmd frame too, we could call start() directly (without this fn and attrib onload on body)!
 	loaded=1;
 	if(typeof window.startTree === 'function'){
-		startTree();
+		window.startTree();
 	}
 	start();
 }
@@ -50,7 +50,7 @@ function start(){
 		if(typeof window.dynVars.initialTreeData.openFolders === 'object'){
 			top.content.editor.edbody.treeData.openFolders = window.dynVars.initialTreeData.openFolders;
 		}
-		setHead(window.dynVars.modelProperties.currentTable);
+		window.setHead(window.dynVars.modelProperties.currentTable);
 	}
 }
 
@@ -104,6 +104,7 @@ function we_cmd() {
 			toggle(args[1]);
 			toggleSelectionType('doctype');
 			we_cmd('setHot');
+			break;
 		case 'switch_type':
 			var type = args[1].value || WE().consts.exim.TYPE_WE;
 			var i = 0;
@@ -140,7 +141,7 @@ function we_cmd() {
 					// set to alloud table if needed
 					if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE ||
 							top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.FILE_TABLE){
-						setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+						window.setHead(WE().consts.tables.OBJECT_FILES_TABLE);
 						top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.FILE_TABLE;
 					}
 
@@ -160,7 +161,7 @@ function we_cmd() {
 						toggleSelectionType(WE().consts.exim.export.SELECTIONTYPE_CLASSNAME);
 
 						// manual: set tree to object and disable table selector
-						setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+						window.setHead(WE().consts.tables.OBJECT_FILES_TABLE);
 						top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.OBJECT_FILES_TABLE;
 						top.content.editor.edbody.document.we_form.headerSwitch.disabled = true;
 					} else {
@@ -185,7 +186,7 @@ function we_cmd() {
 						// set to alloud table if needed
 						if(top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.OBJECT_FILES_TABLE ||
 								top.content.editor.edbody.document.we_form.headerSwitch.value !== WE().consts.tables.FILE_TABLE){
-							setHead(WE().consts.tables.OBJECT_FILES_TABLE);
+							window.setHead(WE().consts.tables.OBJECT_FILES_TABLE);
 							top.content.editor.edbody.document.we_form.headerSwitch.value = WE().consts.tables.FILE_TABLE;
 						}
 					}
@@ -198,6 +199,7 @@ function we_cmd() {
 					top.content.editor.edbody.document.we_form.Extension.value = '.csv';
 					break;
 				case WE().consts.exim.TYPE_CSV:
+				/*falls through*/
 				default:
 					// auto: all selectenTypes alloud => no changes needed but selector may be disabled
 					top.content.editor.edbody.document.we_form.SelectionType.disabled = false;
@@ -222,7 +224,7 @@ function we_cmd() {
 			break;
 		case "setTreeHead":
 			document.we_form.XMLTable.value = args[1].replace(WE().consts.tables.TBL_PREFIX, '');
-			setHead(args[1]);
+			window.setHead(args[1]);
 			break;
 		case 'setExportDepth':
 			var r = parseInt(args[1]);
@@ -276,6 +278,7 @@ function toggleSelectionType(selType) {
 			cl = selType;
 			break;
 		case WE().consts.exim.export.SELECTIONTYPE_DOCUMENT:
+		/*falls through*/
 		default:
 			cl = WE().consts.exim.export.SELECTIONTYPE_DOCUMENT;
 	}

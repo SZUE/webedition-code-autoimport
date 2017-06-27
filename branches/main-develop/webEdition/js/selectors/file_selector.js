@@ -595,14 +595,14 @@ function exit_open() {
 	// if not in combination with suggestor or if using custom selector callback: no onSelect is called automatically
 	if (top.fileSelect.data.JSCommand) {
 		fillIDs();
-		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
+		/*if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
 			eval(top.fileSelect.data.JSCommand);
 			WE().t_e("old JS Command found", top.fileSelect.data.JSCommand);
-		} else {
+		} else {*/
 			var tmp = top.fileSelect.data.JSCommand.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
 			window.opener.we_cmd.apply(opener, tmp);
-		}
+		//}
 	}
 
 	window.close();

@@ -401,8 +401,7 @@ function we_tag_userInput(array $attribs, $content){
 			$ret = '';
 			if(!defined('WE_TEXTAREA_JS')){
 				define('WE_TEXTAREA_JS', 1);
-				$ret = we_html_element::jsScript(JS_DIR . 'windows.js') .
-					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
+				$ret = we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 			$ret .= (!$inlineedit ? STYLESHEET_MINIMAL : '');
 

@@ -1126,15 +1126,14 @@ function collection_insertFiles(args) { // args[2] = collection id, args[3] = in
 	if (args[1] === undefined || args[2] === undefined) {
 		return;
 	}
-
-	var collection = parseInt(args[2]);
-	var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
+	var index=(args[3] !== undefined ? args[3] : -1),
+		collection = parseInt(args[2]),
+		ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
 		args[1].currentID] : args[1]));
 
 	if (collection && ids) {
 		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 			editor = null,
-			index = args[3] !== undefined ? args[3] : -1,
 			recursive = args[5] !== undefined ? args[5] : false,
 			transaction, frameId, candidate;
 
@@ -1152,7 +1151,6 @@ function collection_insertFiles(args) { // args[2] = collection id, args[3] = in
 
 		if (editor) {
 			// editor is open so we can replace by index
-			var index = args[3] !== undefined ? args[3] : -1;
 			recursive = editor.getContentEditor().weCollectionEdit.getIsRecursive();
 			editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, -1, ids.join(), 'bla', false, recursive);
 		} else {

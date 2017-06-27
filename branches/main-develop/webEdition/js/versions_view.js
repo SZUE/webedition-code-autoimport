@@ -236,7 +236,7 @@ function makeAjaxRequestDoclist() {
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
 
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + doc.docClass + "&id=" + doc.docId + "&table=" + doc.docTable + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchResult", "cns=versionlist&classname=" + window.doc.docClass + "&id=" + window.doc.docId + "&table=" + window.doc.docTable + "&we_transaction=" + props.transaction + args, function (responseText) {
 		scroll.innerHTML = '<table id="contentTable" class="contentTable" cellpadding="5">' + ((responseText && responseText.DataArray && responseText.DataArray.data) ?
 				responseText.DataArray.data : '') + '</table>';
 
@@ -253,7 +253,7 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=top&cns=versionlist&path=" + doc.docPath + "&text=" + doc.docText + "&classname=" + doc.docClass + "&id=" + doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=top&cns=versionlist&path=" + window.doc.docPath + "&text=" + window.doc.docText + "&classname=" + window.doc.docClass + "&id=" + window.doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText && responseText.DataArray && responseText.DataArray.data) {
 			document.getElementById("parametersTop").innerHTML = responseText.DataArray.data;
 		}
@@ -267,7 +267,7 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=bottom&cns=versionlist&classname=" + doc.docClass + "&id=" + doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
+	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=GetSearchParameters", "position=bottom&cns=versionlist&classname=" + window.doc.docClass + "&id=" + window.doc.docId + "&we_transaction=" + props.transaction + args, function (responseText) {
 		if (responseText && responseText.DataArray && responseText.DataArray.data) {
 			document.getElementById("parametersBottom").innerHTML = responseText.DataArray.data;
 		}
@@ -296,7 +296,7 @@ function ajaxCallbackResetVersion(response) {
 		}
 
 		//reload tree
-		top.we_cmd("load", doc.docTable, 0);
+		top.we_cmd("load", window.doc.docTable, 0);
 
 	}
 }

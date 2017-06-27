@@ -42,7 +42,7 @@ window.addEventListener('load', function () {
 					top.close();
 					break;
 				case 'close_delayed':
-					window.setTimeout(function() {top.close();}, 1200);
+					window.setTimeout(top.close, 1200);
 					break;
 				case 'history.back':
 					history.back();

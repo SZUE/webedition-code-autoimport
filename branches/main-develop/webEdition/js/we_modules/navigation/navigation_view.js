@@ -44,7 +44,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case 'unsetHot':
-			unsetHot();
+			window.unsetHot();
 			break;
 		case "module_navigation_edit":
 			if (hot) {

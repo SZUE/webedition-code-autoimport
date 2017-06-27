@@ -531,12 +531,13 @@ $we_menu = [
 		'perm' => 'EDIT_PASSWD',
 	], ['parent' => 'extras',
 		'perm' => 'EDIT_PASSWD',
-	], [// Extras > versioning
+	], /* dialog does not work correctly
+	 * [// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'versions_wizard',
 		'perm' => 'ADMINISTRATOR',
-	], [// Extras > versioning-log
+	],*/ [// Extras > versioning-log
 		'text' => g_l('javaMenu_global', '[versioning_log]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'versioning_log',

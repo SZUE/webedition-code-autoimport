@@ -75,7 +75,7 @@ var weAddToCollection = {
 			document.getElementById('yuiAcResultDir').value,
 			this.conf.targetInsertIndex,
 			this.conf.targetInsertPosition,
-			parseInt(document.we_form.elements['InsertRecursive'].value)
+			parseInt(document.we_form.elements.InsertRecursive.value)
 			);
 
 		window.setTimeout(we_cmd.bind(this, 'exit_addToCollection','',table), 800);

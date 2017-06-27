@@ -117,7 +117,7 @@ function we_cmd() {
 		case "add_dt_template":
 		case "dt_add_cat":
 			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-			/* fallls through */
+			/*falls through*/
 		case "delete_dt_template":
 		case "dt_delete_cat":
 			setHot();

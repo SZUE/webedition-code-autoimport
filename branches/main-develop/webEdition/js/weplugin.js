@@ -143,7 +143,7 @@ function initPlugin() {
 }
 
 function nojava() {
-	WE().util.showMessage(g_l.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
+	WE().util.showMessage(window.g_l.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
 	top.opener.top.plugin.location = "about:blank";
 	wait_count = 0;
 }
