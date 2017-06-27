@@ -149,3 +149,34 @@ jsWindow.prototype = {
 		return false;
 	}
 };
+
+//used for we:userInput
+function open_wysiwyg_win() {
+	var url = "/webEdition/we_cmd_frontend.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+
+	/*if (window.screen) {
+	 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
+	 w = screen.availWidth;
+	 }*/
+	var wyw = Math.max(arguments[2], arguments[9]);
+	wyw = wyw ? wyw : 800;
+	var wyh = parseInt(arguments[3]) + parseInt(arguments[10]);
+	wyh = wyh ? wyh : 600;
+	if (window.screen) {
+		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
+		screen_height = screen_height - 40;
+		var screen_width = screen.availWidth - 10;
+		wyw = Math.min(screen_width, wyw);
+		wyh = Math.min(screen_height, wyh);
+	}
+// set new width & height;
+
+	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw).replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]=" + (wyh - arguments[10]));
+	new (WE !== undefined ? WE().util.jsWindow : top.jsWindow)(window, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+}

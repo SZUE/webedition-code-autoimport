@@ -882,7 +882,6 @@ class we_newsletter_frames extends we_modules_frame{
 
 					$content .= we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(["cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=true;",
 								'style' => "width:440px;"], oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
-						we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]'));
 					break;
 

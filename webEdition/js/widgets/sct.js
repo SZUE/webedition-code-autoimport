@@ -30,7 +30,7 @@ var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 function initWidget_sct(_id) {
 	var _width = "100%";
-	if (resizeIdx('get', _id) === "1") {
+	if (window.resizeIdx('get', _id) === "1") {
 		_width = "46%";
 	}
 

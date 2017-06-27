@@ -259,7 +259,7 @@ function setMultiEdits() {
 		return;
 	}
 	question_edit = new (WE().util.multi_edit)("question", window, 1, "", 520, true);
-	answers_edit = new multi_editMulti("answers", document.we_form, 0, votings.delBut1, 500, true);
+	answers_edit = new (WE().util.multi_editMulti)("answers", document.we_form, 0, votings.delBut1, 500, true);
 	answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
 	answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
 	answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);

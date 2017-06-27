@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -23,7 +25,7 @@
  */
 'use strict';
 
-var multi_editMulti = function (parentId, form, itemNum, but, width, editable, minCount) {
+WE().util.multi_editMulti = function (parentId, form, itemNum, but, width, editable, minCount) {
 	this.variantCount = 0;
 	this.itemCount = 0;
 	this.currentVariant = 0;

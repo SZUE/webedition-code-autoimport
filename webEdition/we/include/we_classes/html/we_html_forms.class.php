@@ -183,7 +183,6 @@ abstract class we_html_forms{
 			weTag_getAttribute('showmenues', $attribs, true, we_base_request::BOOL) :
 			weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL))
 			);
-		$importrtf = weTag_getAttribute('importrtf', $attribs, false, we_base_request::BOOL);
 		$doc = (!empty($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ?: !empty($GLOBALS[$doc]->InWebEdition));
 		$inlineedit = // we are in frontend, where default is inlineedit = true
@@ -266,7 +265,7 @@ abstract class we_html_forms{
 		$atts['style'] = $style ? implode(';', $style) : '';
 		$atts['class'] = ($class ? $class . ' ' : '') . 'wetextarea wetextarea-' . $origName;
 
-		if($showAutobr || $importrtf){
+		/*if($showAutobr || $importrtf){
 			$clearval = $value;
 			$value = strtr($value, [
 				'<?' => '##|lt;?##',
@@ -280,7 +279,7 @@ abstract class we_html_forms{
 			$attr = makeHTMLTagAtts($atts);
 			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr && !$hideautobr ? "true" : "false") . ',\'' . $attr . '\',' . ($xml ? "true" : "false") . ');') .
 				'<noscript><textarea name="' . $name . '" ' . $attr . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
-		} else {
+		} else */{
 			$atts['name'] = $name;
 			$out .= getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
 		}

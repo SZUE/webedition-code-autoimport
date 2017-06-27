@@ -265,5 +265,5 @@ function addElement(elvalues) {
 }
 
 function rebuildCheckboxClicked() {
-	toggleRebuildPerm(false);
+	window.toggleRebuildPerm(false);
 }

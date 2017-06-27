@@ -282,8 +282,8 @@ function addBlack() {
 				return;
 			}
 
-			if (!inSelectBox(p, newRecipient)) {
-				addElement(p, "#", newRecipient, true);
+			if (!window.inSelectBox(p, newRecipient)) {
+				window.addElement(p, "#", newRecipient, true);
 			} else {
 				WE().util.showMessage(WE().consts.g_l.newsletter.email_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
@@ -339,8 +339,8 @@ function set_import(val) {
 		document.we_form.seb.value = 0;
 	}
 
-	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
-	submitForm("black_list");
+	window.populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	window.submitForm("black_list");
 }
 
 function set_export(val) {
@@ -350,8 +350,8 @@ function set_export(val) {
 		document.we_form.sib.value = 0;
 	}
 
-	populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
-	submitForm("black_list");
+	window.populateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+	window.submitForm("black_list");
 }
 
 function clearLog() {

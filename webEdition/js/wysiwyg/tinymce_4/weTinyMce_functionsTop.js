@@ -112,9 +112,10 @@ WE().layout.we_tinyMCE.setup.addMissingMenuItems = function (ed){
 					text: 'Align left',
 					icon: 'fa fa-align-left',
 					context: 'format',
-					onclick: function(){
+					onclick: settings.weWin.tinymce.execCommand.bind(this,'justifyleft', false, null)
+					/*function(){
 						settings.weWin.tinymce.execCommand('justifyleft', false, null);
-					}
+					}*/
 					/*
 					onPostRender: function() {
 						var ctrl = this;

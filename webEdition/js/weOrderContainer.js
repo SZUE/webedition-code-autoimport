@@ -55,7 +55,7 @@ var weOrderContainer = function (id) {
 			case 'movedown':
 			case 'down':
 				this.down(id);
-		};
+		}
 		this.setButtonsDisabled();
 	};
 
@@ -123,12 +123,12 @@ var weOrderContainer = function (id) {
 
 	this.reload = function (doc, id, win /*, selectedId, selectedValue*/) {
 
-		var found = false;
+		var found = false,
 		//var pos = this.position.length;
-		var node = null;
-		var div;
+		node = null,
+			div,i;
 
-		for (var i = 0; i < this.position.length; i++) {
+		for (i = 0; i < this.position.length; i++) {
 			if (this.position[i] === id) {
 				//pos = i;
 				found = true;
@@ -155,7 +155,7 @@ var weOrderContainer = function (id) {
 			if((wysiwygConfigs = WE().util.getDynamicVar(win.document, 'loadVar_tinyConfigs', 'data-configurations'))){
 				window.tinyMceRawConfigurations = window.tinyMceRawConfigurations ? window.tinyMceRawConfigurations : {};
 				var config;
-				for(var i = 0; i < wysiwygConfigs.length; i++){
+				for(i = 0; i < wysiwygConfigs.length; i++){
 					config = wysiwygConfigs[i];
 					window.tinyMceRawConfigurations[config.weFieldName] = config;
 					if(config.weEditorType === 'inlineTrue'){
@@ -245,7 +245,7 @@ var weOrderContainer = function (id) {
 		var i, id;
 		for(i = 0; i < this.position.length; i++) {
 			id = this.position[i].replace(/entry_/, '');
-	
+
 			WE().layout.button.disable(document, "btn_direction_up_" + id, false);
 			WE().layout.button.disable(document, "btn_direction_down_" + id, false);
 
@@ -257,8 +257,8 @@ var weOrderContainer = function (id) {
 			}
 		}
 	};
-	
-	
+
+
 
 	this.reinitWysiwygEditors = function(){
 		var configs;

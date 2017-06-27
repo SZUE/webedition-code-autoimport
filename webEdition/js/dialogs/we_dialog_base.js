@@ -1,4 +1,4 @@
-/* global WE, top,weDoOk */
+/* global WE, top */
 
 /**
  * webEdition SDK
@@ -61,10 +61,10 @@ function doKeyDown(e) {
 
 function weDoOk() {
 	if(dialogVars.onEnterKey){
-		if(weTinyDialog_doOk){
-			weTinyDialog_doOk();
-		} else if(weDialog_doOk){ // for use in other then tiny-dialogs
-			weDialog_doOk();
+		if(window.weTinyDialog_doOk){
+			window.weTinyDialog_doOk();
+		} else if(window.weDialog_doOk){ // for use in other then tiny-dialogs
+			window.weDialog_doOk();
 		} else {
 			WE().t_e('we_dialog_base.js: missing function doOk()');
 		}

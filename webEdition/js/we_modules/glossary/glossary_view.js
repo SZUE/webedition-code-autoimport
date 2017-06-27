@@ -39,13 +39,13 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 	var hot = false;
 	var exc;
 
 	switch (args[0]) {
 		case 'unsetHot':
-			unsetHot();
+			window.unsetHot();
 			break;
 		case "exit_glossary":
 			if (hot) {

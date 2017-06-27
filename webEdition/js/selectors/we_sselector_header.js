@@ -165,15 +165,15 @@ function exit_close() {
 
 
 	if (top.fileSelect.data.cmd4) {
-		if (top.fileSelect.data.cmd4.indexOf(".") > 0) {
+		/*if (top.fileSelect.data.cmd4.indexOf(".") > 0) {
 			//FIXME:eval
 			eval(top.fileSelect.data.cmd4);
 			WE().t_e("old JS Command found", top.fileSelect.data.cmd4);
-		} else {
+		} else {*/
 			var tmp = top.fileSelect.data.cmd4.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
 			window.opener.we_cmd.apply(opener, tmp);
-		}
+		//}
 	}
 
 	close();

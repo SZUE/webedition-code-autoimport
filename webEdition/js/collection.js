@@ -689,7 +689,7 @@ WeCollection.prototype.dblClick = function (type, view, elem) {
 		case 'space_left':
 			if(parseInt(this.getItemId(elem)) === 1){
 				insertBefore = true;
-				
+
 			} else {
 				elem = this.getItem(elem).previousSibling;
 			}
@@ -938,7 +938,7 @@ WeCollection.prototype.dropOnItem = function (type, view, elem, last, evt) {
 
 			var parentID = this.we_doc.docDefaultDir,
 				ct = files[0].type,
-				position, nextCmd, index, tmp;
+				position, nextCmd, tmp;
 
 			el = this.getItem(elem);
 			position = el.id.substr(10);

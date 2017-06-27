@@ -216,7 +216,7 @@ function weFileupload_controller_abstract(uploader) {
 		e.target.className = (e.type === 'dragover' ? self.elemFileDragClasses + ' we_file_drag_hover' : self.elemFileDragClasses);
 	};
 
-	this.editImageButtonOnClick = function(btn, index, general){
+	self.editImageButtonOnClick = function(btn, index, general){
 		btn.disabled = true;
 
 		if(!btn.form){ // FIXME: this is a dirty fix: why can we have a button without form?
