@@ -216,14 +216,12 @@ class we_schedpro{
 				$extraheadl = g_l('modules_schedule', '[dirctory]');
 		}
 
-		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
-<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][0]') . '</option>
-<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][1]') . '</option>
-<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][2]') . '</option>
-<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][3]') . '</option>
-<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][4]') . '</option>
-<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][5]') . '</option>
-</select>';
+
+		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">';
+		foreach([self::TYPE_ONCE, self::TYPE_HOUR, self::TYPE_DAY, self::TYPE_WEEK, self::TYPE_MONTH, self::TYPE_YEAR] as $val){
+			$typepopup .= '<option value="' . $val . '"' . (($this->type == $val) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . $val . ']') . '</option>';
+		}
+		$typepopup .= '</select>';
 
 
 		$checknname = md5(uniqid(__FUNCTION__, true));
