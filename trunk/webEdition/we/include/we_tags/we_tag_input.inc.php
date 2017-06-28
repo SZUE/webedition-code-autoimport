@@ -45,7 +45,7 @@ function we_tag_input(array $attribs, $content){
 		//all edit-specific things
 		switch($type){
 			case 'date':
-				$currentdate = weTag_getAttribute('currentdate', $attribs, true, we_base_request::BOOL);
+				$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
 				$d = abs($GLOBALS['we_doc']->getElement($name));
 				return we_html_tools::getDateInput('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', $d? : ($currentdate ? time() : 0), true, $format);
 			case 'checkbox':
