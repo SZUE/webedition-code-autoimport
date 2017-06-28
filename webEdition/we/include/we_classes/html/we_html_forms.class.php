@@ -265,24 +265,8 @@ abstract class we_html_forms{
 		$atts['style'] = $style ? implode(';', $style) : '';
 		$atts['class'] = ($class ? $class . ' ' : '') . 'wetextarea wetextarea-' . $origName;
 
-		/*if($showAutobr || $importrtf){
-			$clearval = $value;
-			$value = strtr($value, [
-				'<?' => '##|lt;?##',
-				'<script' => '<##scr#ipt##',
-				'</script' => '</##scr#ipt##',
-				'\\' => '\\\\',
-				"\n" => '\n',
-				"\r" => '\r',
-				'"' => '\\"'
-			]);
-			$attr = makeHTMLTagAtts($atts);
-			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr && !$hideautobr ? "true" : "false") . ',\'' . $attr . '\',' . ($xml ? "true" : "false") . ');') .
-				'<noscript><textarea name="' . $name . '" ' . $attr . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
-		} else */{
-			$atts['name'] = $name;
-			$out .= getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
-		}
+		$atts['name'] = $name;
+		$out .= getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
 
 		return $out;
 	}

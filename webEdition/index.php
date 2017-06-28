@@ -69,21 +69,21 @@ function printLoginPage($login, $status = 200, $js = '', $body = ''){
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
 
-	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'weFrontendEdit_header.js').
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
-		we_html_element::jsElement('
-var message_reporting=JSON.parse("' . we_base_util::setLangString([
-				'notice' => g_l('alert', '[notice]'),
-				'warning' => g_l('alert', '[warning]'),
-				'error' => g_l('alert', '[error]'),
-			]) . '");') .
 		($login != we_users_user::LOGIN_OK ?
 			we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
 			we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]) :
 			'') .
 		we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
 		we_html_element::jsElement('
-	isLoginScreen = true;
+var message_reporting=JSON.parse("' . we_base_util::setLangString([
+				'notice' => g_l('alert', '[notice]'),
+				'warning' => g_l('alert', '[warning]'),
+				'error' => g_l('alert', '[error]'),
+			]) . '");
+  isLoginScreen = true;
 	cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
 	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
@@ -278,7 +278,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			$headerjs = 'function open_we() {
 var aw=' . (empty($_SESSION['prefs']['weWidth']) ? 8000 : $_SESSION['prefs']['weWidth']) . ';
 var ah=' . (empty($_SESSION['prefs']['weHeight']) ? 6000 : $_SESSION['prefs']['weHeight']) . ';
-win=new jsWindow(top.window, "' . WEBEDITION_DIR . 'webEdition.php?h="+ah+"&w="+aw,"' . md5(uniqid(__FILE__, true)) . '", "mainwindow", aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
+win=new (WE().util.jsWindow)(top.window, "' . WEBEDITION_DIR . 'webEdition.php?h="+ah+"&w="+aw,"' . md5(uniqid(__FILE__, true)) . '", "mainwindow", aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
 
 			break;
 		case we_users_user::LOGIN_CREDENTIALS_INVALID:

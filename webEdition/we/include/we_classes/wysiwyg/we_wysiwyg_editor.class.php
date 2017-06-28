@@ -44,7 +44,7 @@ class we_wysiwyg_editor{
 		'wespellchecker', 'welink', 'wefullscreen', 'wegallery'];
 	private $externalPlugins = ['weabbr', 'weacronym', 'weadaptunlink', /*'wecontextmenu',*/ 'wefullscreen', 'wegallery', 'weimage',
 		'weinsertbreak', 'welang', 'welink', 'wetable', 'weutil', 'wevisualaid',/*'wewordcount',*/ 'xhtmlxtras']; //TINY4
-	private $internalPlugins = ['colorpicker', 'compat3x', 'lists', 'paste', 'wordcount', 'importcss', 'advlist', 'textcolor', 'anchor', 'charmap', 'code', 
+	private $internalPlugins = ['colorpicker', 'compat3x', 'lists', 'paste', 'wordcount', 'importcss', 'advlist', 'textcolor', 'anchor', 'charmap', 'code',
 		'hr', 'insertdatetime', 'nonbreaking', 'searchreplace', 'template', /*'bbcode', */'codesample', 'contextmenu', 'fullscreen'/*, 'visualchars', 'imagetools'*/];
 	private $createContextmenu = true;
 	private $filteredElements = [];
@@ -289,7 +289,7 @@ class we_wysiwyg_editor{
 			}
 		}
 
-		if(IS_TINYMCE_4){ //TINY4	
+		if(IS_TINYMCE_4){ //TINY4
 
 		} else {
 			if($this->cssClasses){
@@ -454,6 +454,7 @@ class we_wysiwyg_editor{
 		define('WE_WYSIWG_HEADER', 1);
 
 		if($frontendEdit){
+			//FIXME: all headers should be added at a central instance in header (we_templateHead).
 			$frontendHeader = '';
 			if(!defined('WE_FRONTEND_EDIT_HEADER')){
 				define('WE_FRONTEND_EDIT_HEADER', 1);
@@ -801,7 +802,7 @@ class we_wysiwyg_editor{
 
 		return $ret;
 	}
-	
+
 	public function addTableCommand($cmd){
 		$this->tableCommands[$this->wysiwygCmdToTiny($cmd)] = true;
 	}
@@ -809,7 +810,7 @@ class we_wysiwyg_editor{
 	public function isTableCommands(){
 		return !empty($this->tableCommands);
 	}
-	
+
 	public function isTableMenuCommand($cmd){
 		return isset($this->tableMenuCommands[$cmd]);
 	}
@@ -876,7 +877,7 @@ class we_wysiwyg_editor{
 	}
 
 	private function processFormatsMenu(){
-		$this->styleFormats = array_merge((in_array('formatselect', $this->usedCommandsMenu) ? $this->formats : []), 
+		$this->styleFormats = array_merge((in_array('formatselect', $this->usedCommandsMenu) ? $this->formats : []),
 				(in_array('styleselect', $this->usedCommandsMenu) ? $this->styleFormats : []));
 		//$this->blockImportCss = !in_array('styleselect', $this->usedCommandsMenu) ? true : $this->blockImportCss;
 	}
@@ -947,7 +948,7 @@ class we_wysiwyg_editor{
 			$fontSizes = str_replace(',', ' ', $this->fontsizes);
 			$formatselects['toolbar'][] = 'fontsizes';
 			$formatselects['toolbarSettings']['fontsizes'] = str_replace(',', ' ', $fontSizes);
-			 * 
+			 *
 			 */
 		}
 		if(in_array('formatselect', $this->usedCommandsMenu)){
@@ -1019,7 +1020,7 @@ class we_wysiwyg_editor{
 		if(!IS_TINYMCE_4){
 			return;
 		}
-	
+
 		$fullToolbar = ['tableprops', 'tabledelete', '|', 'tableinsertrowbefore', 'tableinsertrowafter', 'tabledeleterow', '|', 'tableinsertcolbefore', 'tableinsertcolafter', 'tabledeletecol'];
 		$toolbar = '';
 		$isLastSep = false;
@@ -1298,7 +1299,7 @@ class we_wysiwyg_editor{
 
 			return implode(' ', $usedPlugins);
 		}
-		
+
 		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
 		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $this->usedCommands));
 

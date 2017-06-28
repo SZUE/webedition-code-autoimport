@@ -254,10 +254,10 @@ $head = we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWE
 		'data-consts' => setDynamicVar($const),
 	]) .
 	we_html_element::jsScript(JS_DIR . 'we_webEditionCmd_base.js') .
-	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .
+	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
 	JQUERY .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
-	we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;') .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
 	we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
 	we_html_element::jsScript(JS_DIR . 'weSidebar.js') .

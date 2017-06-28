@@ -23,17 +23,15 @@
 /* global WE, top */
 'use strict';
 
-var weNavigationHistory = function () {
+WE().layout.weNavigationHistory = {
 
-	this.documentHistory = [];
-	this.currentIndex = -1;
-	this.saveInHistory = true;
-	this.addDocToHistory = function (table, id, ct, editcmd, url, parameters) {
-
+	documentHistory: [],
+	currentIndex: -1,
+	saveInHistory: true,
+	addDocToHistory: function (table, id, ct, editcmd, url, parameters) {
 		if (this.saveInHistory) {
 
-			if (this.currentIndex != (this.documentHistory.length - 1)) { // reset navigation History when needed
-
+			if (this.currentIndex !== (this.documentHistory.length - 1)) { // reset navigation History when needed
 				do {
 					this.documentHistory.pop();
 				} while (this.currentIndex < (this.documentHistory.length - 1));
@@ -41,7 +39,7 @@ var weNavigationHistory = function () {
 				this.documentHistory = [];
 			}
 
-			this.documentHistory.push(new NavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
+			this.documentHistory.push(new this.NavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
 			while (this.documentHistory.length > 50) {
 				this.documentHistory.shift();
 			}
@@ -49,9 +47,9 @@ var weNavigationHistory = function () {
 			this.currentIndex = (this.documentHistory.length - 1);
 		}
 		this.saveInHistory = true;
-	};
+	},
 
-	this.navigateBack = function () {
+	navigateBack: function () {
 		if (this.documentHistory.length) {
 			if (this.currentIndex > 0) {
 				this.saveInHistory = false;
@@ -65,9 +63,9 @@ var weNavigationHistory = function () {
 		} else {
 			this.getNoDocumentMessage();
 		}
-	};
+	},
 
-	this.navigateNext = function () {
+	navigateNext: function () {
 		if (this.documentHistory.length) {
 			if (this.currentIndex < (this.documentHistory.length - 1)) {
 				this.currentIndex++;
@@ -81,9 +79,8 @@ var weNavigationHistory = function () {
 		} else {
 			this.getNoDocumentMessage();
 		}
-	};
-
-	this.navigateReload = function () {
+	},
+	navigateReload: function () {
 		if (this.documentHistory.length) {
 			var _currentEditor;
 			if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) { // reload current Editor
@@ -98,37 +95,36 @@ var weNavigationHistory = function () {
 		} else {
 			this.getNoDocumentMessage();
 		}
-	};
+	},
 
-	this.getNoDocumentMessage = function () {
+	getNoDocumentMessage: function () {
 		WE().util.showMessage(WE().consts.g_l.main.nav_no_entry, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	};
+	},
+	NavigationHistoryEntry: function (table, id, ct, editcmd, url, parameters) {
+		this.table = table;
+		this.id = id;
+		this.ct = ct;
+		this.editcmd = editcmd;
+		this.url = url;
+		this.parameters = parameters;
+		this.executeHistoryEntry = function () {
+
+			if (this.editcmd || (this.id && this.id != "0")) {
+				WE().layout.weEditorFrameController.openDocument(
+					this.table,
+					this.id,
+					this.ct,
+					this.editcmd,
+					'',
+					this.url,
+					'',
+					'',
+					this.parameters
+					);
+				return true;
+			}
+			return false;
+		};
+	}
 };
 
-var NavigationHistoryEntry = function (table, id, ct, editcmd, url, parameters) {
-
-	this.table = table;
-	this.id = id;
-	this.ct = ct;
-	this.editcmd = editcmd;
-	this.url = url;
-	this.parameters = parameters;
-	this.executeHistoryEntry = function () {
-
-		if (this.editcmd || (this.id && this.id != "0")) {
-			WE().layout.weEditorFrameController.openDocument(
-				this.table,
-				this.id,
-				this.ct,
-				this.editcmd,
-				'',
-				this.url,
-				'',
-				'',
-				this.parameters
-				);
-			return true;
-		}
-		return false;
-	};
-};

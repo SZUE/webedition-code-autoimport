@@ -114,17 +114,17 @@ class we_import_site{
 	public function getHTML(){
 		switch($this->cmd){
 			case 'updateSiteImportTable' :
-				return $this->_updateSiteImportTable();
+				return $this->updateSiteImportTable();
 			case 'createWePageSettings' :
-				return $this->_getCreateWePageSettingsHTML();
+				return $this->getCreateWePageSettingsHTML();
 			case 'saveWePageSettings' :
-				return $this->_getSaveWePageSettingsHTML();
+				return $this->getSaveWePageSettingsHTML();
 			case 'content' :
-				return $this->_getContentHTML();
+				return $this->getContentHTML();
 			case 'buttons' :
-				return $this->_getButtonsHTML();
+				return $this->getButtonsHTML();
 			default :
-				return $this->_getFrameset();
+				return $this->getFrameset();
 		}
 	}
 
@@ -135,7 +135,7 @@ class we_import_site{
 	 *
 	 * @return	array
 	 */
-	private static function _getFieldsFromTemplate($tid){
+	private static function getFieldsFromTemplate($tid){
 		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c WHERE c.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.DID=' . intval($tid) . ' AND c.nHash=x\'' . md5("completeData") . '\'');
 		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
@@ -190,9 +190,9 @@ class we_import_site{
 	 *
 	 * @return	string
 	 */
-	private function _updateSiteImportTable(){
+	private function updateSiteImportTable(){
 
-		$templateFields = self::_getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
+		$templateFields = self::getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
 		$hasDateFields = false;
 
 		$values = [];
@@ -238,9 +238,9 @@ class we_import_site{
 			}
 		}
 
-		return $this->_getHtmlPage('', we_html_element::jsElement('
+		return $this->getHtmlPage('', we_html_element::jsElement('
 var tableDivObj = parent.document.getElementById("tablediv");
-tableDivObj.innerHTML = "' . strtr(addslashes($this->_getSiteImportTableHTML($templateFields, $values)), ["\r" => '\r', "\n" => '\n']) . '"
+tableDivObj.innerHTML = "' . strtr(addslashes($this->getSiteImportTableHTML($templateFields, $values)), ["\r" => '\r', "\n" => '\n']) . '"
 parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";'
 		));
 	}
@@ -250,7 +250,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getSaveWePageSettingsHTML(){
+	private function getSaveWePageSettingsHTML(){
 		$ct = we_base_request::_(we_base_request::STRING, 'createType');
 
 		$data = ($ct === 'specify' ?
@@ -276,7 +276,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$_SESSION['prefs']['siteImportPrefs'] = we_serialize($data);
 		// update DB
 		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION['user']["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
-		return $this->_getHtmlPage('', we_base_jsCmd::singleCmd('close'));
+		return $this->getHtmlPage('', we_base_jsCmd::singleCmd('close'));
 	}
 
 	/**
@@ -287,7 +287,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getSiteImportTableHTML($fields, $values = []){
+	private function getSiteImportTableHTML($fields, $values = []){
 
 		$headlines = [['dat' => g_l('siteimport', '[fieldName]')],
 			['dat' => g_l('siteimport', '[startMark]')],
@@ -298,7 +298,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		if(count($fields) > 0){
 			$i = 0;
 			foreach(array_keys($fields) as $name){
-				list($valpre, $valpost) = $this->_getIndexOfValues($values, $name);
+				list($valpre, $valpost) = $this->getIndexOfValues($values, $name);
 				$content[] = [
 					['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
 					['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
@@ -318,7 +318,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	array
 	 */
-	private function _getIndexOfValues($values, $name){
+	private function getIndexOfValues($values, $name){
 		foreach($values as $cur){
 			if($cur['name'] === $name){
 				return [$cur['pre'], $cur['post']];
@@ -332,7 +332,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getCreateWePageSettingsHTML(){
+	private function getCreateWePageSettingsHTML(){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : [];
 
 		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
@@ -344,7 +344,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', '[newTemplate]'));
 		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "0";
 
-		$templateFields = self::_getFieldsFromTemplate($valueTemplateId);
+		$templateFields = self::getFieldsFromTemplate($valueTemplateId);
 		$hasDateFields = false;
 		foreach($templateFields as $type){
 			if($type === "date"){
@@ -360,10 +360,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect("dateFormat", $dateformatvals, 1, $valueDateFormat, false, [
 				'onchange' => "dateFormatChanged(this);"]) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput("dateformatField", 20, $valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
-		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($templateFields, $valueFieldValues) . '</div></div>';
+		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->getSiteImportTableHTML($templateFields, $valueFieldValues) . '</div></div>';
 
 		$regExCheckbox = we_html_forms::checkboxWithHidden($valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', '[useRegEx]'), ENT_QUOTES));
-		$specifyHTML = $this->_getTemplateSelectHTML($valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($valueTemplateId ? 'block' : 'none') . '">' . $dateFormatHTML . $regExCheckbox . $table . '</div>';
+		$specifyHTML = $this->getTemplateSelectHTML($valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($valueTemplateId ? 'block' : 'none') . '">' . $dateFormatHTML . $regExCheckbox . $table . '</div>';
 
 		$vals = [
 			"auto" => oldHtmlspecialchars(g_l('siteimport', '[cresteAutoTemplate]'), ENT_QUOTES),
@@ -371,7 +371,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		];
 
 		$html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect("createType", $vals, 1, $valueCreateType, false, [
-				'onchange' => "createTypeChanged(this);"]) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+				'onchange' => "createTypeChanged(this);"]) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$html = '<div style="height:480px">' . $html . '</div>';
 
@@ -388,7 +388,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('siteimport', '[importSettingsWePages]')) .
 			'</form></body>';
 
-		return $this->_getHtmlPage($bodyhtml, we_html_element::jsScript(JS_DIR . 'import_site.js'));
+		return $this->getHtmlPage($bodyhtml, we_html_element::jsScript(JS_DIR . 'import_site.js'));
 	}
 
 	/**
@@ -398,7 +398,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getTemplateSelectHTML($tid){
+	private function getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid));
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','templateID','templateDummy','displayTable','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
@@ -412,7 +412,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getContentHTML(){
+	private function getContentHTML(){
 		// Suorce Directory
 
 		$from_button = we_base_permission::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
@@ -631,14 +631,14 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				"method" => "post",
 				"target" => "siteimportcmd"
 				], we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
-				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false, g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
+				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, '', $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false, g_l('siteimport', '[siteimport]')) . $this->getHiddensHTML());
 
 		$body = we_html_element::htmlBody(["class" => "weDialogBody", "onunload" => "doUnload();"
 				], $content);
 
 		$js = we_html_element::jsScript(JS_DIR . 'import_site.js');
 
-		return $this->_getHtmlPage($body, $js . JQUERY);
+		return $this->getHtmlPage($body, $js . JQUERY);
 	}
 
 	/**
@@ -646,10 +646,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 *
 	 * @return	string
 	 */
-	private function _getButtonsHTML(){
+	private function getButtonsHTML(){
 		if($this->step == 1){
 			if(!we_base_request::_(we_base_request::BOOL, 'doFragments')){//true if data was already set
-				$this->_fillFiles();
+				$this->fillFiles();
 				if(empty($this->files)){
 					$jscmd = new we_base_jsCmd();
 
@@ -686,7 +686,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$table->setCol(0, 1, ['style' => "text-align:right"], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
-		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_gui_progressBar::getJSCode());
+		return $this->getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . we_gui_progressBar::getJSCode());
 	}
 
 	/**
@@ -697,7 +697,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @param $sourcePath string
 	 * @static
 	 */
-	private static function _importWebEditionPage($content, &$we_doc, $sourcePath){
+	private static function importWebEditionPage($content, &$we_doc, $sourcePath){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : [];
 
 		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
@@ -709,12 +709,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : g_l('siteimport', '[newTemplate]');
 		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : '';
 
-		$content = self::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
+		$content = self::makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
 
 		if($valueCreateType === "auto"){
-			self::_importAuto($content, $we_doc, $valueTemplateName, $valueTemplateParentID);
+			self::importAuto($content, $we_doc, $valueTemplateName, $valueTemplateParentID);
 		} else {
-			self::_importSpecify($content, $we_doc, $valueTemplateId, $valueUseRegex, $valueFieldValues, $valueDateFormat, $valueDateFormatField);
+			self::importSpecify($content, $we_doc, $valueTemplateId, $valueUseRegex, $valueFieldValues, $valueDateFormat, $valueDateFormatField);
 		}
 	}
 
@@ -750,7 +750,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return string
 	 * @static
 	 */
-	private static function _makeAbsolutePath($path, $sourcePath, $parentPath){
+	private static function makeAbsolutePath($path, $sourcePath, $parentPath){
 		if(!preg_match('|^[a-z]+://|i', $path)){
 			if(substr($path, 0, 1) === '/'){
 				// if href is an absolute URL convert it into a relative URL
@@ -780,7 +780,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return string
 	 * @static
 	 */
-	private static function _formPathHTML($templateName, $myid){
+	private static function formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 
 		$weSuggest = & we_gui_suggest::getInstance();
@@ -828,7 +828,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return string
 	 * @static
 	 */
-	private static function _makeAbsolutPathOfContent($content, $sourcePath, $parentPath){
+	private static function makeAbsolutPathOfContent($content, $sourcePath, $parentPath){
 		$sourcePath = substr($sourcePath, strlen($_SERVER['DOCUMENT_ROOT']));
 		if(substr($sourcePath, 0, 1) != "/"){
 			$sourcePath = "/" . $sourcePath;
@@ -838,7 +838,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs){
 			foreach($regs[2] as $i => $orig_href){
-				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
+				$new_href = self::makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -849,7 +849,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		preg_match_all('/(<[^>]+src=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs){
 			foreach($regs[2] as $i => $orig_href){
-				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
+				$new_href = self::makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -864,7 +864,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\(\'?)([^\'\)]+)(\'?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -885,7 +885,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\("?)([^"\)]+)("?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -907,7 +907,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\([\'"]?)([^\'"\)]+)([\'"]?\))/iU', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
 						}
@@ -930,7 +930,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @param $templateParentID int
 	 * @static
 	 */
-	private static function _importAuto($content, &$we_doc, $templateFilename, $templateParentID){
+	private static function importAuto($content, &$we_doc, $templateFilename, $templateParentID){
 
 		$textareaCode = '<we:textarea name="content" wysiwyg="true" width="800" height="600" xml="true" inlineedit="true"/>';
 		$titleCode = "<we:title />";
@@ -1077,11 +1077,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @param $dateFormatValue string
 	 * @static
 	 */
-	private static function _importSpecify($content, &$we_doc, $templateId, $useRegex, $fieldValues, $dateFormat, $dateFormatValue){
+	private static function importSpecify($content, &$we_doc, $templateId, $useRegex, $fieldValues, $dateFormat, $dateFormatValue){
 
 		// TODO width & height of image
 		// get field infos of template
-		$templateFields = self::_getFieldsFromTemplate($templateId);
+		$templateFields = self::getFieldsFromTemplate($templateId);
 
 		foreach($fieldValues as $field){
 			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field['name'])){
@@ -1151,7 +1151,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return string
 	 * @static
 	 */
-	private static function _makeInternalLink($href){
+	private static function makeInternalLink($href){
 		list($id, $ct) = self::path_to_id_ct($href, FILE_TABLE, self::$DB);
 		if(substr($ct, 0, 5) === 'text/'){
 			$href = we_base_link::TYPE_INT_PREFIX . $id;
@@ -1169,13 +1169,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return string
 	 * @static
 	 */
-	private static function _external_to_internal($content){
+	private static function external_to_internal($content){
 		// replace hrefs
 		$regs = $regs2 = [];
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs){
 			foreach($regs[2] as $i => $orig_href){
-				$new_href = self::_makeInternalLink($orig_href);
+				$new_href = self::makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1186,7 +1186,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		preg_match_all('/(<[^>]+src=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs){
 			foreach($regs[2] as $i => $orig_href){
-				$new_href = self::_makeInternalLink($orig_href);
+				$new_href = self::makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1201,7 +1201,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\(\'?)([^\'\)]+)(\'?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeInternalLink($orig_url);
+						$new_url = self::makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1222,7 +1222,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\("?)([^"\)]+)("?\))/i', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeInternalLink($orig_url);
+						$new_url = self::makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1244,7 +1244,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				preg_match_all('/(url\([\'"]?)([^\'"\)]+)([\'"]?\))/iU', $style, $regs2, PREG_PATTERN_ORDER);
 				if($regs2){
 					foreach($regs2[2] as $z => $orig_url){
-						$new_url = self::_makeInternalLink($orig_url);
+						$new_url = self::makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
 						}
@@ -1298,7 +1298,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				default:
 					switch($element['type']){
 						case 'txt' :
-							$GLOBALS['we_doc']->elements[$fieldname]['dat'] = self::_external_to_internal($element['dat']);
+							$GLOBALS['we_doc']->elements[$fieldname]['dat'] = self::external_to_internal($element['dat']);
 							break;
 					}
 			}
@@ -1420,7 +1420,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		// initialize Content
 		switch($contentType){
 			case we_base_ContentTypes::WEDOCUMENT :
-				self::_importWebEditionPage($data, $GLOBALS['we_doc'], $sourcePath);
+				self::importWebEditionPage($data, $GLOBALS['we_doc'], $sourcePath);
 				$GLOBALS['we_doc']->IsSearchable = $isSearchable;
 				break;
 			case we_base_ContentTypes::FOLDER:
@@ -1503,14 +1503,14 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * this function is called right before starting to import the files
 	 *
 	 */
-	private function _fillFiles(){
+	private function fillFiles(){
 		// directory from which we import (real path)
 		// when running on windows we have to change slashes to backslashes
 		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/'));
 		$this->files = [];
 		//$this->actualDepth = 0;
 		$this->postProcess = [];
-		$this->_fillDirectories($importDirectory);
+		$this->fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
 
 		$tmp = [];
@@ -1541,7 +1541,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * this function fills the $this->files and $this->_postProcess arrays
 	 * @param $importDirectory string
 	 */
-	private function _fillDirectories($importDirectory){
+	private function fillDirectories($importDirectory){
 		update_time_limit(60);
 
 		$weDirectory = rtrim(WEBEDITION_PATH, '/');
@@ -1674,7 +1674,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						'importMetadata' => 0
 					];
 					//$this->actualDepth++;
-					$this->_fillDirectories($PathOfEntry);
+					$this->fillDirectories($PathOfEntry);
 					//$this->actualDepth--;
 				}
 			}
@@ -1686,7 +1686,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * returns hidden fields
 	 * @return string
 	 */
-	private function _getHiddensHTML(){
+	private function getHiddensHTML(){
 		return
 			we_html_element::htmlHiddens([
 				'we_cmd[0]' => 'siteImport',
@@ -1694,17 +1694,17 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				'step' => 1]);
 	}
 
-	private function _getFrameset(){
+	private function getFrameset(){
 		$body = we_html_element::htmlBody(['id' => 'weMainBody']
 				, we_html_element::htmlIFrame('siteimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport&cmd=content", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('siteimportbuttons', "we_cmd.php?we_cmd[0]=siteImport&cmd=buttons", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 				we_html_element::htmlIFrame('siteimportcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		);
 
-		return $this->_getHtmlPage($body);
+		return $this->getHtmlPage($body);
 	}
 
-	private function _getHtmlPage($body, $js = ''){
+	private function getHtmlPage($body, $js = ''){
 		return we_html_tools::getHtmlTop('', '', '', $js, $body);
 	}
 
