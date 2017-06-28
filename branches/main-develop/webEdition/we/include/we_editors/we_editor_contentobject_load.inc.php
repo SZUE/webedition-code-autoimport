@@ -45,8 +45,7 @@ function reloadElement(we_base_jsCmd $jsCmd, $we_transaction, $we_doc, $id){
 
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-	return we_gui_OrderContainer::wrapField($jsCmd, 'reload', $uniqid, $content);// .
-		//we_html_element::jsElement('reinitTiny("' . $wholename . 'default]","' . $we_transaction . '",' . intval(we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) . ');');
+	return we_gui_OrderContainer::wrapField($jsCmd, 'reload', $uniqid, $content);
 }
 
 $cmd = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0);
