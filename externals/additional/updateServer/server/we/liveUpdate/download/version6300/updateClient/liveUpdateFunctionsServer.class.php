@@ -400,7 +400,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getFieldsOfTable($tableName, we_database_base $db){
+	function getFieldsOfTable($tableName, $db){
 		$db = $this->db;
 
 		$fieldsOfTable = array();
@@ -582,7 +582,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 *
 	 * @param string $query
 	 */
-	function executeUpdateQuery($query, we_database_base $db = null){
+	function executeUpdateQuery($query, $db = null){
 		$db = $this->db;
 
 		// when executing a create statement, try to create table,
