@@ -114,17 +114,4 @@ return [
 		'cmd' => 'newsletter_settings',
 		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
 	],
-	'help' => [
-		'text' => g_l('modules_newsletter', '[help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('modules_newsletter', '[help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-		'enableadd' => 1,
-	],
-	['text' => g_l('modules_newsletter', '[info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	]
 ];

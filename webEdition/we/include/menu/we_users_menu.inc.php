@@ -61,16 +61,4 @@ return [
 		'parent' => 'user',
 		'cmd' => 'exit_users',
 	],
-	'help' => [
-		'text' => g_l('javaMenu_users', '[menu_help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('javaMenu_users', '[menu_help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	['text' => g_l('javaMenu_users', '[menu_info]') . '&hellip;',
-		'parent' => '001500',
-		'cmd' => 'info_modules',
-	],
 ];

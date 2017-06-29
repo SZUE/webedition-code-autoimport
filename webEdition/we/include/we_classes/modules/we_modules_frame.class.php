@@ -97,7 +97,7 @@ abstract class we_modules_frame{
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => 'startTree();'], we_html_element::htmlExIFrame('header', self::getHTMLHeader(
 						(isset($this->toolDir) ?
 						$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
-						WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
+						WE_INCLUDES_PATH . 'menu/we_' . $this->module . '_menu.inc.php'))) .
 				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
 				$this->getHTMLResize($extraUrlParams) .
 				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)

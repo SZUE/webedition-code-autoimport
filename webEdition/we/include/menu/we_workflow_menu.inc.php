@@ -66,16 +66,4 @@ return [
 		'parent' => 'workflow',
 		'cmd' => 'exit_workflow',
 	],
-	'help' => [
-		'text' => g_l('javaMenu_workflow', '[help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('javaMenu_workflow', '[help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	['text' => g_l('javaMenu_workflow', '[info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	]
 ];

@@ -71,16 +71,4 @@ return [
 		'cmd' => 'module_navigation_reset_customer_filter',
 		'hide' => !defined('CUSTOMER_TABLE')
 	],
-	'help' => [
-		'text' => g_l('navigation', '[menu_help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('navigation', '[menu_help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	['text' => g_l('navigation', '[menu_info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	]
 ];

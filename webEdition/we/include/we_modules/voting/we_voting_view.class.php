@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 class we_voting_view extends we_modules_view{
 	var $voting;
-	var $icon_pattern = "";
 
 	function __construct(){
 		parent::__construct();

@@ -33,7 +33,6 @@ class we_search_view extends we_modules_view{
 	const SEARCH_VERSION = 'VersionSearch';
 
 	var $toolName;
-	var $icon_pattern = '';
 	var $page = 1;
 	public $searchclass;
 	var $searchclassExp;

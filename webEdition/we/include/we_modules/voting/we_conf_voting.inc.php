@@ -24,8 +24,7 @@
 define('VOTING_TABLE', TBL_PREFIX . 'tblvoting');
 define('VOTING_LOG_TABLE', TBL_PREFIX . 'tblvotinglog');
 
-define('WE_VOTING_MODULE_DIR', WE_MODULES_DIR . 'voting/');
-
-we_base_request::registerTables(['VOTING_TABLE' => VOTING_TABLE,
+we_base_request::registerTables([
+	'VOTING_TABLE' => VOTING_TABLE,
 	'VOTING_LOG_TABLE' => VOTING_LOG_TABLE
- ]);
+]);
