@@ -140,20 +140,7 @@ abstract class we_dialog_doctypeEdit{
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-
-//FIXME: currently we don't have a class so we can't move js-g_l
-
 		switch($wecmd0){
-			case "deleteDocType":
-				if(!we_base_permission::hasPerm("EDIT_DOCTYPE")){
-					$jsCmd->addMsg(g_l('alert', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
-					break;
-				}
-				$jsCmd->addCmd('confirmDeleteDocType', [
-					'msg' => sprintf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType),
-					'yes' => ["deleteDocTypeok", we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)]
-				]);
-				break;
 			case "deleteDocTypeok":
 				list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
 				$jsCmd->addCmd($cmd, $val);
@@ -193,7 +180,7 @@ abstract class we_dialog_doctypeEdit{
 			we_html_element::jsScript(JS_DIR . 'multiIconBox.js'), we_html_element::htmlBody([
 				'class' => "weDialogBody",
 				'onunload' => "doUnload()",
-				'onload' => "self.focus();"
+				'onload' => "self.focus();WE().util.setIconOfDocClass(document,'chooserFileIcon');"
 				], we_html_element::htmlForm([
 					'name' => "we_form",
 					'action' => "",

@@ -30,24 +30,18 @@ WE().util.loadConsts(document, "g_l.doctypeEdit");
 var doctype = WE().util.getDynamicVar(document, 'loadVarDoctypeEdit', 'data-doctype');
 var hot;
 
-function isHot(){
+function isHot() {
 	return parseInt(document.we_form.elements[document.we_form.isHotName.value].value) ? true : false;
 }
-function setHot(){
+function setHot() {
 	document.we_form.elements[document.we_form.isHotName.value].value = 1;
 }
-function unsetHot(){
+function unsetHot() {
 	document.we_form.elements[document.we_form.isHotName.value].value = 0;
 }
 
-function askForSaveOrRefireCmd(args){
-	if(isHot() && window.confirm(WE().consts.g_l.doctypeEdit.save_changed_doctype)){
-		unsetHot();
-		we_cmd("save_docType");
-	} else {
-		unsetHot();
-		we_cmd.apply(document, Array.prototype.slice.call(args));
-	}
+function askForSaveOrRefireCmd(args) {
+	WE().util.showConfirm(window, "", WE().consts.g_l.doctypeEdit.save_changed_doctype, ["save_docType"], ["continueCommand", Array.prototype.slice.call(args)]);
 }
 
 var countSaveLoop = 0;
@@ -92,7 +86,7 @@ function doUnload() {
 function disableLangDefault(allnames, allvalues, deselect) {
 	var arr = allvalues.split(",");
 
-	for(var i = 0; i < arr.length; i++){
+	for (var i = 0; i < arr.length; i++) {
 		document.we_form.elements[allnames + '[' + arr[i] + ']'].disabled = false;
 	}
 
@@ -106,6 +100,10 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
+		case "continueCommand":
+			unsetHot();
+			we_cmd.apply(window, args[1]);
+			break;
 		case "we_selector_image":
 		case "we_selector_document":
 		case "we_selector_directory":
@@ -131,7 +129,7 @@ function we_cmd() {
 			setHot();
 			break;
 		case "newDocType":
-			if(isHot()){
+			if (isHot()) {
 				askForSaveOrRefireCmd(args);
 				break;
 			}
@@ -157,7 +155,7 @@ function we_cmd() {
 			}
 			break;
 		case "change_docType":
-			if(isHot()){
+			if (isHot()) {
 				askForSaveOrRefireCmd(args);
 				break;
 			}
@@ -168,7 +166,7 @@ function we_cmd() {
 			caller.location = url;
 			break;
 		case "confirmDeleteDocType":
-			WE().util.showConfirm(window, "", args[1].msg, args[1].yes);
+			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.doctypeEdit.doctype_delete_prompt, args[1]), ["deleteDocTypeok", args[2]]);
 			break;
 		default:
 			window.opener.top.we_cmd.apply(document, Array.prototype.slice.call(arguments));

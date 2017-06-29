@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-// FIXME: reduce all onchange JS to single function calls 
+// FIXME: reduce all onchange JS to single function calls
 
 class we_docTypes extends we_contents_base{
 	/* The Text that will be shown in the tree-menue */
@@ -154,10 +153,10 @@ class we_docTypes extends we_contents_base{
 
 	public function formDocTypeHeader(){
 		return $this->hiddenIsHot() .
-'<table class="default">
+			'<table class="default">
 	<tr>
 		<td style="padding-right:20px;">' . $this->formDocTypes2() . '</td>
-		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')") . '</td>
+		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('fa:new_doctype,fa-lg fa-plus', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('fa:delete_doctype,fa-lg fa-trash-o', "javascript:we_cmd('confirmDeleteDocType', '" . $this->DocType . '","' . $this->ID . "')") . '</td>
 	</tr>
 </table>';
 	}
@@ -269,7 +268,7 @@ class we_docTypes extends we_contents_base{
 
 	private function hiddenIsHot(){
 		return we_html_element::htmlHidden('isHotName', 'we_' . $this->Name . '_IsHot') . // FIXME: fast and dirty: handle Name over to editor js
-				we_html_element::htmlHidden('we_' . $this->Name . '_IsHot', $this->IsHot);
+			we_html_element::htmlHidden('we_' . $this->Name . '_IsHot', $this->IsHot);
 	}
 
 	private function formIsSearchable(){
@@ -324,7 +323,8 @@ class we_docTypes extends we_contents_base{
 				'doctype_exists' => (g_l('alert', '[doctype_exists]')),
 				'doctype_hochkomma' => (g_l('alert', '[doctype_hochkomma]')),
 				'newDocTypeName' => g_l('weClass', '[newDocTypeName]'),
-				'save_changed_doctype' => g_l('alert', '[save_changed_doctype]')
+				'save_changed_doctype' => g_l('alert', '[save_changed_doctype]'),
+				'doctype_delete_prompt' => g_l('weClass', '[doctype_delete_prompt]'),
 			]) . '");';
 	}
 

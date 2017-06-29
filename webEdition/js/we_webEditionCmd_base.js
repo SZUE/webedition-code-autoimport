@@ -1027,7 +1027,10 @@ function we_cmd_new_document(url) {
 
 function open_wysiwyg_window(args, caller) {
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
-		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
+		try {
+			WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
+		} catch (e) {
+		}
 	}
 
 	var wyw = args[2];
