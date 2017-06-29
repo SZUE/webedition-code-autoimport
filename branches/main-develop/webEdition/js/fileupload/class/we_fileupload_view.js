@@ -24,87 +24,86 @@
  */
 'use strict';
 
-function weFileupload_view_abstract(uploader) {
-	var self = this;
-	self.uploader = uploader;
+function Fileupload_view_abstract(uploader) {
+	this.uploader = uploader;
 
-	self.isDragAndDrop = true;
-	self.footerName = '';
-	self.elems = {};
-	self.intProgress = {
+	this.isDragAndDrop = true;
+	this.footerName = '';
+	this.elems = {};
+	this.intProgress = {
 		isExtProgress: false,
 		width: 0
 	};
-	self.extProgress = {
+	this.extProgress = {
 		isExtProgress: true,
 		name: '',
 		width: 0,
 		parentElemId: 'progressbar'
 	};
-	self.previewSize = 116;
-	self.useOriginalAsPreviewIfNotEdited = false;
-	self.lastLoupIndex = -1;
-	self.loupeVisible = false;
+	this.previewSize = 116;
+	this.useOriginalAsPreviewIfNotEdited = false;
+	this.lastLoupIndex = -1;
+	this.loupeVisible = false;
 
-	self.init = function (conf) {
-		self.controller = self.uploader.controller; // on init all components are initialized
-		self.sender = self.uploader.sender;
-		self.imageEdit = self.uploader.imageEdit;
-		self.utils = self.uploader.utils;
+	this.init = function (conf) {
+		this.controller = this.uploader.controller; // on init all components are initialized
+		this.sender = this.uploader.sender;
+		this.imageEdit = this.uploader.imageEdit;
+		this.utils = this.uploader.utils;
 
-		self.isDragAndDrop = typeof conf.isDragAndDrop !== 'undefined' ? conf.isDragAndDrop : self.isDragAndDrop;
-		self.footerName = conf.footerName ? conf.footerName : self.footerName;
+		this.isDragAndDrop = typeof conf.isDragAndDrop !== 'undefined' ? conf.isDragAndDrop : this.isDragAndDrop;
+		this.footerName = conf.footerName ? conf.footerName : this.footerName;
 		if (typeof conf.intProgress === 'object') {
-			self.intProgress.isIntProgress = conf.intProgress.isInternalProgress || self.intProgress.isIntProgress;
-			self.intProgress.width = conf.intProgress.width || self.intProgress.width;
+			this.intProgress.isIntProgress = conf.intProgress.isInternalProgress || this.intProgress.isIntProgress;
+			this.intProgress.width = conf.intProgress.width || this.intProgress.width;
 		}
 		if (typeof conf.extProgress === 'object') {
-			self.extProgress.isExtProgress = conf.extProgress.isExternalProgress || self.extProgress.isExtProgress;
-			self.extProgress.parentElemId = conf.extProgress.parentElemId || self.extProgress.parentElemId;
-			self.extProgress.name = conf.extProgress.name;
+			this.extProgress.isExtProgress = conf.extProgress.isExternalProgress || this.extProgress.isExtProgress;
+			this.extProgress.parentElemId = conf.extProgress.parentElemId || this.extProgress.parentElemId;
+			this.extProgress.name = conf.extProgress.name;
 		}
 	};
 
-	self.onload = function (){
-		var doc = self.uploader.doc;
+	this.onload = function (){
+		var doc = this.uploader.doc;
 
-		self.elems.fileSelect = doc.getElementById(uploader.fieldName);
-		self.elems.fileDrag = doc.getElementById('div_' + uploader.fieldName + '_fileDrag');//FIXME: change to div_fileDrag
-		self.elems.fileInputWrapper = doc.getElementById('div_' + uploader.fieldName + '_fileInputWrapper');//FIXME: change to div_fileInputWrapper
+		this.elems.fileSelect = doc.getElementById(uploader.fieldName);
+		this.elems.fileDrag = doc.getElementById('div_' + uploader.fieldName + '_fileDrag');//FIXME: change to div_fileDrag
+		this.elems.fileInputWrapper = doc.getElementById('div_' + uploader.fieldName + '_fileInputWrapper');//FIXME: change to div_fileInputWrapper
 
-		self.elems.footer = self.footerName ? self.uploader.win.parent.frames[self.footerName] : self.uploader.win;
-		self.elems.extProgressDiv = self.elems.footer.document.getElementById(self.extProgress.parentElemId);
-		self.extProgress.isExtProgress = !self.elems.extProgressDiv ? false : self.extProgress.isExtProgress;
+		this.elems.footer = this.footerName ? this.uploader.win.parent.frames[this.footerName] : this.uploader.win;
+		this.elems.extProgressDiv = this.elems.footer.document.getElementById(this.extProgress.parentElemId);
+		this.extProgress.isExtProgress = !this.elems.extProgressDiv ? false : this.extProgress.isExtProgress;
 
-		self.onload_sub();
+		this.onload_sub();
 	};
 
-	self.onload_sub = function (){
+	this.onload_sub = function (){
 		// to be overridden
 	};
 
-	self.setImageEditMessage = function (){
+	this.setImageEditMessage = function (){
 		// to be overridden
 	};
 
-	self.unsetImageEditMessage = function (){
+	this.unsetImageEditMessage = function (){
 		// to be overridden
 	};
 
-	self.repaintImageEditMessage = function (){
+	this.repaintImageEditMessage = function (){
 		// to be overridden
 	};
 
-	self.repaintGUI = function (){
+	this.repaintGUI = function (){
 		// to be overridden
 	};
 
-	self.repaintEntry = function (){
+	this.repaintEntry = function (){
 		// to be overridden
 	};
 
-	self.setPreviewLoupe = function(fileobj, pt){
-		var doc = self.uploader.doc;
+	this.setPreviewLoupe = function(fileobj, pt){
+		var doc = this.uploader.doc;
 
 		if(fileobj.isUploadStarted){
 			return;
@@ -118,7 +117,7 @@ function weFileupload_view_abstract(uploader) {
 					degText = deg === 0 ? '' : (deg === 90 ? '90&deg; ' + WE().consts.g_l.fileupload.editRotationRight : (deg === 270 ? '90&deg; ' + WE().consts.g_l.fileupload.editRotationLeft : '180&deg;'));
 				info += (fileobj.img.processedOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + dimension;
 				info += deg ? (info ? ', ' : '') + WE().consts.g_l.fileupload.editRotation + ': ' + degText : '';
-				info += fileobj.img.processedOptions.quality !== self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + WE().consts.g_l.fileupload.editQuality + ': ' + fileobj.img.processedOptions.quality + '%' : '';
+				info += fileobj.img.processedOptions.quality !== this.imageEdit.OPTS_QUALITY_NEUTRAL_VAL && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + WE().consts.g_l.fileupload.editQuality + ': ' + fileobj.img.processedOptions.quality + '%' : '';
 			} else {
 				info = WE().consts.g_l.fileupload.editNotEdited + ': ' + dimension;
 			}
@@ -136,11 +135,11 @@ function weFileupload_view_abstract(uploader) {
 			return;
 		}
 
-		if(self.lastLoupIndex !== -1 && self.lastLoupIndex !== fileobj.index && self.sender.preparedFiles[self.lastLoupIndex]){
+		if(this.lastLoupIndex !== -1 && this.lastLoupIndex !== fileobj.index && this.sender.preparedFiles[this.lastLoupIndex]){
 			// in importer we delete fullPreview of an fileobj when moving to an other file
-			self.sender.preparedFiles[self.lastLoupIndex].img.fullPrev = null;
+			this.sender.preparedFiles[this.lastLoupIndex].img.fullPrev = null;
 		}
-		self.lastLoupIndex = fileobj.index;
+		this.lastLoupIndex = fileobj.index;
 
 
 		var mask = doc.getElementById('we_fileUploadImporter_mask');
@@ -151,10 +150,10 @@ function weFileupload_view_abstract(uploader) {
 		if(!(fileobj.img.fullPrev || fileobj.dataUrl || fileobj.dataArray)){
 			doc.getElementById('we_fileUpload_loupeFallback').innerHTML = 'Für dieses Bild bzw. für die aktuellen Bearbeitungsoptionen<br/>wurde noch keine Vorschau erstellt.';
 			doc.getElementById('we_fileUpload_loupeFallback').style.display = 'block';
-			self.loupeVisible = false;
+			this.loupeVisible = false;
 			return;
 		}
-		self.loupeVisible = true;
+		this.loupeVisible = true;
 
 		fileobj.loupInner = doc.getElementById('we_fileUpload_loupeInner');
 		fileobj.loupInner.style.display = 'block';
@@ -162,13 +161,13 @@ function weFileupload_view_abstract(uploader) {
 		doc.getElementById('we_fileUpload_spinner').style.display = 'block';
 
 		if(fileobj.img.fullPrev){
-			self.setPreviewLoupe(fileobj, 1); // we always keep 1 rendered image in loupe
+			this.setPreviewLoupe(fileobj, 1); // we always keep 1 rendered image in loupe
 		} else if(fileobj.dataUrl || fileobj.dataArray){ // we have dataURL or dataArray
 			fileobj.img.fullPrev = new Image();
-			self.utils.logTimeFromStart('start load fullpreview', true);
+			this.utils.logTimeFromStart('start load fullpreview', true);
 			fileobj.img.fullPrev.onload = function(){
-				self.utils.logTimeFromStart('end load fullpreview');
-				self.setPreviewLoupe(fileobj, 1);
+				this.utils.logTimeFromStart('end load fullpreview');
+				this.setPreviewLoupe(fileobj, 1);
 			};
 			window.setTimeout(function () {
 				/*
@@ -205,12 +204,12 @@ function weFileupload_view_abstract(uploader) {
 		}
 	};
 
-	self.movePreviewLoupe = function(e, fileobj){
+	this.movePreviewLoupe = function(e, fileobj){
 		if(fileobj.isUploadStarted){
 			return;
 		}
 		try{
-			if(e.timeStamp - self.lastklick < 10){
+			if(e.timeStamp - this.lastklick < 10){
 				// in Chrome onclick fires mosemove too: this causes the newly set focuspoint to be slightly wrong...
 				return;
 			}
@@ -218,8 +217,8 @@ function weFileupload_view_abstract(uploader) {
 			if(fileobj.loupInner && fileobj.loupInner.firstChild){
 				var offsetLeft = (-fileobj.loupInner.firstChild.width / fileobj.img.previewCanvas.width * e.offsetX) + (fileobj.loupInner.parentNode.offsetWidth / 2);
 				var offsetTop = (-fileobj.loupInner.firstChild.height / fileobj.img.previewCanvas.height * e.offsetY) + (fileobj.loupInner.parentNode.offsetHeight / 2);
-				self.offesetLeft = offsetLeft;
-				self.offsetTop = offsetTop;
+				this.offesetLeft = offsetLeft;
+				this.offsetTop = offsetTop;
 
 				fileobj.loupInner.style.left = Math.round(offsetLeft) + 'px';
 				fileobj.loupInner.style.top = Math.round(offsetTop) + 'px';
@@ -232,10 +231,10 @@ function weFileupload_view_abstract(uploader) {
 		}
 	};
 
-	self.unsetPreviewLoupe = function(fileobj){
-		var doc = self.uploader.doc;
+	this.unsetPreviewLoupe = function(fileobj){
+		var doc = this.uploader.doc;
 
-		self.loupeVisible = false;
+		this.loupeVisible = false;
 		if(fileobj.loupInner){
 			fileobj.loupInner.style.display = 'none';
 			fileobj.loupInner.parentNode.style.display = 'none';
@@ -257,11 +256,11 @@ function weFileupload_view_abstract(uploader) {
 		}
 	};
 
-	self.grabFocusPoint = function(e, fileobj){
-		if(!self.loupeVisible){
+	this.grabFocusPoint = function(e, fileobj){
+		if(!this.loupeVisible){
 			return;
 		}
-		self.lastklick = e.timeStamp;
+		this.lastklick = e.timeStamp;
 		if(fileobj.img.previewCanvas.width && fileobj.img.previewCanvas.height){
 			fileobj.focusPoint.style.display = 'none';
 			fileobj.focusPointFixed.style.display = 'block';
@@ -269,7 +268,7 @@ function weFileupload_view_abstract(uploader) {
 			var focusY = ((e.offsetY / fileobj.img.previewCanvas.height) * 2) - 1;
 			fileobj.img.focusX = focusX.toFixed(2);
 			fileobj.img.focusY = focusY.toFixed(2);
-			self.writeFocusToForm(fileobj);
+			this.writeFocusToForm(fileobj);
 			window.setTimeout(function () {
 				fileobj.focusPoint.style.top = (fileobj.loupInner.parentNode.offsetHeight / 2) + 'px';
 				fileobj.focusPoint.style.left = (fileobj.loupInner.parentNode.offsetWidth / 2) + 'px';
@@ -279,189 +278,188 @@ function weFileupload_view_abstract(uploader) {
 		}
 	};
 
-	self.writeFocusToForm = function(filobj){
+	this.writeFocusToForm = function(filobj){
 		// to be overridden
 	};
 
 	//TODO: adapt these progress fns to standard progressbars
-	self.setInternalProgressText = function (name, text, index) {
+	this.setInternalProgressText = function (name, text, index) {
 		var p = typeof index === 'undefined' || index === false ? '' : '_' + index;
-		self.uploader.doc.getElementById('span_' + uploader.fieldName + '_' + name + p).innerHTML = text;
+		this.uploader.doc.getElementById('span_' + uploader.fieldName + '_' + name + p).innerHTML = text;
 	};
 
-	self.replacePreviewCanvas = function() {
+	this.replacePreviewCanvas = function() {
 		// to be overridden
 	};
 
-	self.setInternalProgress = function (progress, index) {
+	this.setInternalProgress = function (progress, index) {
 		try{
-			var coef = self.intProgress.width / 100,
+			var coef = this.intProgress.width / 100,
 				i = typeof index !== 'undefined' || index === false ? index : false,
 				p = i === false ? '' : '_' + i;
 
-			self.uploader.doc.getElementById(uploader.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
-			self.uploader.doc.getElementById(uploader.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
+			this.uploader.doc.getElementById(uploader.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
+			this.uploader.doc.getElementById(uploader.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
 
-			self.setInternalProgressText('progress_text', progress + '%', index);
+			this.setInternalProgressText('progress_text', progress + '%', index);
 		} catch(e){}
 	};
 
-	self.setInternalProgressCompleted = function (success, index, txt) {
+	this.setInternalProgressCompleted = function (success, index, txt) {
 		var s = success || false,
 				i = index || false,
 				p = !i ? '' : '_' + i;
 
 		if (s) {
-			self.setInternalProgress(100, i);
-			self.uploader.doc.getElementById(uploader.fieldName + '_progress_image').className = 'progress_finished';
+			this.setInternalProgress(100, i);
+			this.uploader.doc.getElementById(uploader.fieldName + '_progress_image').className = 'progress_finished';
 		} else {
-			self.uploader.doc.getElementById(uploader.fieldName + '_progress_image' + p).className = 'progress_failed';
+			this.uploader.doc.getElementById(uploader.fieldName + '_progress_image' + p).className = 'progress_failed';
 		}
 	};
 
-	self.formEditOptsReset = function (form) {
+	this.formEditOptsReset = function (form) {
 		form.elements.fuOpts_scaleWhat.value = 'pixel_l';
 		form.elements.fuOpts_scale.value = '';
 		form.elements.fuOpts_rotate.value = 0;
-		form.elements.fuOpts_quality.value = self.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
+		form.elements.fuOpts_quality.value = this.imageEdit.OPTS_QUALITY_NEUTRAL_VAL;
 	};
 
-	self.formCustomEditOptsSync = function () {
+	this.formCustomEditOptsSync = function () {
 		// to be overridden
 	};
 }
 
-function weFileupload_view_base(uploader) {
-	var self = this;
-	weFileupload_view_abstract.call(self, uploader);
+function Fileupload_view_base(uploader) {
+	Fileupload_view_abstract.call(this, uploader);
 
-	self.uploader = uploader;
-	self.uploadBtnName = '';
-	self.isInternalBtnUpload = false;
-	self.disableUploadBtnOnInit = false;
+	this.uploader = uploader;
+	this.uploadBtnName = '';
+	this.isInternalBtnUpload = false;
+	this.disableUploadBtnOnInit = false;
 
-	self.onload = function(){
-		var doc = self.uploader.doc;
+	this.onload = function(){
+		var doc = this.uploader.doc;
 
-		self.elems.message = doc.getElementById('div_' + self.fieldName + '_message');
-		self.elems.progress = doc.getElementById('div_' + self.fieldName + '_progress');
-		self.elems.progressText = doc.getElementById('span_' + self.fieldName + '_progress_text');
-		self.elems.progressMoreText = doc.getElementById('span_' + self.fieldName + '_progress_more_text');
-		self.elems.fileName = doc.getElementById('div_' + self.fieldName + '_fileName');
-		self.elems.btnResetUpload = doc.getElementById('div_' + self.fieldName + '_btnResetUpload');
-		self.elems.btnCancel = doc.getElementById('div_' + self.fieldName + '_btnCancel');
-		self.repaintGUI({what: 'initGui'});
+		this.elems.message = doc.getElementById('div_' + this.fieldName + '_message');
+		this.elems.progress = doc.getElementById('div_' + this.fieldName + '_progress');
+		this.elems.progressText = doc.getElementById('span_' + this.fieldName + '_progress_text');
+		this.elems.progressMoreText = doc.getElementById('span_' + this.fieldName + '_progress_more_text');
+		this.elems.fileName = doc.getElementById('div_' + this.fieldName + '_fileName');
+		this.elems.btnResetUpload = doc.getElementById('div_' + this.fieldName + '_btnResetUpload');
+		this.elems.btnCancel = doc.getElementById('div_' + this.fieldName + '_btnCancel');
+		this.repaintGUI({what: 'initGui'});
 	};
 
-	self.addFile = function (f) {
-		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
+	this.addFile = function (f) {
+		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + this.utils.computeSize(f.size) + ', ' :
 						'<span style="color:red;">' + WE().consts.g_l.fileupload.sizeTextNok + '</span>';
 		var typeText = f.isTypeOk ? WE().consts.g_l.fileupload.typeTextOk + f.type :
 						'<span style="color:red;">' + WE().consts.g_l.fileupload.typeTextNok + f.type + '</span>';
 
-		self.elems.message.innerHTML = sizeText + typeText;
+		this.elems.message.innerHTML = sizeText + typeText;
 
-		if (self.isDragAndDrop) {
-			self.elems.fileDrag.innerHTML = f.file.name;
+		if (this.isDragAndDrop) {
+			this.elems.fileDrag.innerHTML = f.file.name;
 		} else {
-			self.elems.fileName.innerHTML = f.file.name;
-			self.elems.fileName.style.display = '';
+			this.elems.fileName.innerHTML = f.file.name;
+			this.elems.fileName.style.display = '';
 		}
-		WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
-		WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, f.uploadConditionsOk ? false : true);
+		WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
+		WE().layout.button.disable(this.elems.footer.document, this.uploadBtnName, f.uploadConditionsOk ? false : true);
 	};
 
-	self.setDisplay = function (elem, val) { // move to abstract (from binDoc too)
-		if (self.elems[elem]) {
-			self.elems[elem].style.display = val;
+	this.setDisplay = function (elem, val) { // move to abstract (from binDoc too)
+		if (this.elems[elem]) {
+			this.elems[elem].style.display = val;
 		}
 	};
 
-	self.repaintGUI = function (arg) {
-		var doc = self.uploader.doc;
+	this.repaintGUI = function (arg) {
+		var doc = this.uploader.doc;
 
 		switch (arg.what) {
 			case 'initGui' :
-				WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, self.disableUploadBtnOnInit);
+				WE().layout.button.disable(this.elems.footer.document, this.uploadBtnName, this.disableUploadBtnOnInit);
 				return;
 			case 'chunkOK' :
-				var prog = (100 / self.sender.currentFile.size) * self.sender.currentFile.currentWeightFile,
-								digits = self.sender.currentFile.totalParts > 1000 ? 2 : (self.sender.currentFile.totalParts > 100 ? 1 : 0);
+				var prog = (100 / this.sender.currentFile.size) * this.sender.currentFile.currentWeightFile,
+								digits = this.sender.currentFile.totalParts > 1000 ? 2 : (this.sender.currentFile.totalParts > 100 ? 1 : 0);
 
-				if (self.elems.progress) {
-					self.setInternalProgress(prog.toFixed(digits), false);
+				if (this.elems.progress) {
+					this.setInternalProgress(prog.toFixed(digits), false);
 				}
-				if (self.extProgress.isExtProgress) {
-					self.elems.footer.setProgress(self.extProgress.name, prog.toFixed(digits));
+				if (this.extProgress.isExtProgress) {
+					this.elems.footer.setProgress(this.extProgress.name, prog.toFixed(digits));
 				}
 				return;
 			case 'fileOK' :
-				if (self.elems.progress) {
-					self.setInternalProgressCompleted(true);
+				if (this.elems.progress) {
+					this.setInternalProgressCompleted(true);
 				}
-				if (self.extProgress.isExtProgress) {
-					self.elems.footer.setProgress(self.extProgress.name, 100);
+				if (this.extProgress.isExtProgress) {
+					this.elems.footer.setProgress(this.extProgress.name, 100);
 				}
 				return;
 			case 'fileNOK' :
-				if (self.elems.progress) {
-					self.setInternalProgressCompleted(false);
+				if (this.elems.progress) {
+					this.setInternalProgressCompleted(false);
 				}
 				return;
 			case 'startSendFile' :
-				if (self.elems.progress) {
-					self.elems.message.style.display = 'none';
+				if (this.elems.progress) {
+					this.elems.message.style.display = 'none';
 					doc.getElementById(uploader.fieldName + '_progress_image').className = "progress_image";
-					self.elems.progress.style.display = '';
-					self.elems.progressMoreText.style.display = '';
-					self.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + self.utils.computeSize(self.sender.currentFile.size);
+					this.elems.progress.style.display = '';
+					this.elems.progressMoreText.style.display = '';
+					this.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + this.utils.computeSize(this.sender.currentFile.size);
 				}
-				if (self.extProgress.isExtProgress) {
-					self.elems.footer.setProgress(self.extProgress.name, 0);
-					self.elems.extProgressDiv.style.display = '';
+				if (this.extProgress.isExtProgress) {
+					this.elems.footer.setProgress(this.extProgress.name, 0);
+					this.elems.extProgressDiv.style.display = '';
 				}
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
-				if (self.isInternalBtnUpload) {
-					WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, true);
-					self.setDisplay('btnResetUpload', 'none');
-					self.setDisplay('btnCancel', 'inline-block');
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', true);
+				if (this.isInternalBtnUpload) {
+					WE().layout.button.disable(this.elems.footer.document, this.uploadBtnName, true);
+					this.setDisplay('btnResetUpload', 'none');
+					this.setDisplay('btnCancel', 'inline-block');
 				}
 				return;
 			case 'cancelUpload' :
 				//self.elems.footer['setProgressText' + self.extProgress.name]('progress_text', WE().consts.g_l.fileupload.cancelled);
-				if (self.elems.progress) {
-					self.setInternalProgressCompleted(false, false, WE().consts.g_l.fileupload.cancelled);
+				if (this.elems.progress) {
+					this.setInternalProgressCompleted(false, false, WE().consts.g_l.fileupload.cancelled);
 				}
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', false);
 				return;
 			case 'resetGui' :
-				self.sender.preparedFiles = [];
-				self.currentFile = -1;
+				this.sender.preparedFiles = [];
+				this.currentFile = -1;
 
-				if(!self.elems.message){
+				if(!this.elems.message){
 					doc.getElementById('div_' + uploader.fieldName + '_message');
 				}
-				self.elems.message.innerHTML = '';
-				self.elems.message.innerHTML.display = 'none';
-				if (self.elems.fileDrag) {
-					self.elems.fileDrag.innerHTML = WE().consts.g_l.fileupload.dropText;
+				this.elems.message.innerHTML = '';
+				this.elems.message.innerHTML.display = 'none';
+				if (this.elems.fileDrag) {
+					this.elems.fileDrag.innerHTML = WE().consts.g_l.fileupload.dropText;
 				}
-				if (self.elems.progress) {
-					self.setInternalProgress(0);
-					self.elems.progress.style.display = 'none';
+				if (this.elems.progress) {
+					this.setInternalProgress(0);
+					this.elems.progress.style.display = 'none';
 				}
-				if (self.extProgress.isExtProgress) {
-					self.elems.footer.setProgress(self.extProgress.name, 0);
-					self.elems.extProgressDiv.style.display = 'none';
+				if (this.extProgress.isExtProgress) {
+					this.elems.footer.setProgress(this.extProgress.name, 0);
+					this.elems.extProgressDiv.style.display = 'none';
 				}
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
-				if (self.isInternalBtnUpload) {
-					WE().layout.button.disable(self.elems.footer.document, self.uploadBtnName, true);
-					self.setDisplay('btnResetUpload', 'inline-block');
-					self.setDisplay('btnCancel', 'none');
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', false);
+				if (this.isInternalBtnUpload) {
+					WE().layout.button.disable(this.elems.footer.document, this.uploadBtnName, true);
+					this.setDisplay('btnResetUpload', 'inline-block');
+					this.setDisplay('btnCancel', 'none');
 				}
 				return;
 			default :
@@ -469,58 +467,57 @@ function weFileupload_view_base(uploader) {
 		}
 	};
 }
-weFileupload_view_base.prototype = Object.create(weFileupload_view_abstract.prototype);
-weFileupload_view_base.prototype.constructor = weFileupload_view_base;
+Fileupload_view_base.prototype = Object.create(Fileupload_view_abstract.prototype);
+Fileupload_view_base.prototype.constructor = Fileupload_view_base;
 
-function weFileupload_view_bindoc(uploader) {
-	var self = this;
-	weFileupload_view_abstract.call(self, uploader);
+function Fileupload_view_bindoc(uploader) {
+	Fileupload_view_abstract.call(this, uploader);
 
-	self.uploader = uploader;
+	this.uploader = uploader;
 
-	self.uploadBtnName = '';
-	self.icon = '';
-	self.binDocType = 'other';
-	self.previewSize = 116;
-	self.useOriginalAsPreviewIfNotEdited = true;
-	self.preview = null;
-	self.STATE_RESET = 0;
-	self.STATE_PREVIEW_OK = 1;
-	self.STATE_PREVIEW_NOK = 2;
-	self.STATE_UPLOAD = 3;
+	this.uploadBtnName = '';
+	this.icon = '';
+	this.binDocType = 'other';
+	this.previewSize = 116;
+	this.useOriginalAsPreviewIfNotEdited = true;
+	this.preview = null;
+	this.STATE_RESET = 0;
+	this.STATE_PREVIEW_OK = 1;
+	this.STATE_PREVIEW_NOK = 2;
+	this.STATE_UPLOAD = 3;
 
-	self.onload_sub = function () {
-		var doc = self.uploader.doc;
+	this.onload_sub = function () {
+		var doc = this.uploader.doc;
 
-		self.elems.fileDrag_state_0 = doc.getElementById('div_fileupload_fileDrag_state_0');
-		self.elems.fileDrag_state_1 = doc.getElementById('div_fileupload_fileDrag_state_1');
-		self.elems.fileDrag_mask = doc.getElementById('div_' + uploader.fieldName + '_fileDrag');
-		self.elems.dragInnerRight = doc.getElementById('div_upload_fileDrag_innerRight');
-		self.elems.divRight = doc.getElementById('div_fileupload_right');
-		self.elems.txtFilename = doc.getElementById('span_fileDrag_inner_filename');
-		self.elems.txtFilename_1 = doc.getElementById('span_fileDrag_inner_filename_1');//??
-		self.elems.txtSize = doc.getElementById('span_fileDrag_inner_size');
-		self.elems.txtType = doc.getElementById('span_fileDrag_inner_type');
-		self.elems.txtEdit= doc.getElementById('span_fileDrag_inner_edit');
-		self.elems.divBtnReset = doc.getElementById('div_fileupload_btnReset');
-		self.elems.divBtnCancel = doc.getElementById('div_fileupload_btnCancel');
-		self.elems.divBtnUpload = doc.getElementById('div_fileupload_btnUpload');
-		self.elems.divProgressBar = doc.getElementById('div_fileupload_progressBar');
-		self.elems.divButtons = doc.getElementById('div_fileupload_buttons');
+		this.elems.fileDrag_state_0 = doc.getElementById('div_fileupload_fileDrag_state_0');
+		this.elems.fileDrag_state_1 = doc.getElementById('div_fileupload_fileDrag_state_1');
+		this.elems.fileDrag_mask = doc.getElementById('div_' + uploader.fieldName + '_fileDrag');
+		this.elems.dragInnerRight = doc.getElementById('div_upload_fileDrag_innerRight');
+		this.elems.divRight = doc.getElementById('div_fileupload_right');
+		this.elems.txtFilename = doc.getElementById('span_fileDrag_inner_filename');
+		this.elems.txtFilename_1 = doc.getElementById('span_fileDrag_inner_filename_1');//??
+		this.elems.txtSize = doc.getElementById('span_fileDrag_inner_size');
+		this.elems.txtType = doc.getElementById('span_fileDrag_inner_type');
+		this.elems.txtEdit= doc.getElementById('span_fileDrag_inner_edit');
+		this.elems.divBtnReset = doc.getElementById('div_fileupload_btnReset');
+		this.elems.divBtnCancel = doc.getElementById('div_fileupload_btnCancel');
+		this.elems.divBtnUpload = doc.getElementById('div_fileupload_btnUpload');
+		this.elems.divProgressBar = doc.getElementById('div_fileupload_progressBar');
+		this.elems.divButtons = doc.getElementById('div_fileupload_buttons');
 
-		self.spinner = doc.createElement("i");
-		self.spinner.className = "fa fa-2x fa-spinner fa-pulse";
+		this.spinner = doc.createElement("i");
+		this.spinner.className = "fa fa-2x fa-spinner fa-pulse";
 	};
 
-	self.addFile = function (f) {
-		var doc = self.uploader.doc;
-		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + self.utils.computeSize(f.size) + ', ' :
+	this.addFile = function (f) {
+		var doc = this.uploader.doc;
+		var sizeText = f.isSizeOk ? WE().consts.g_l.fileupload.sizeTextOk + this.utils.computeSize(f.size) + ', ' :
 				'<span style="color:red;">' + WE().consts.g_l.fileupload.sizeTextNok + '</span>';
 		var typeText = f.isTypeOk ? WE().consts.g_l.fileupload.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
 				'<span style="color:red;">' + WE().consts.g_l.fileupload.typeTextNok + f.type + '</span>';
 
-		self.elems.fileDrag.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
-		self.elems.fileDrag.style.backgroundImage = 'none';
+		this.elems.fileDrag.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
+		this.elems.fileDrag.style.backgroundImage = 'none';
 
 		var fn = f.file.name;
 		var fe = '';
@@ -531,10 +528,10 @@ function weFileupload_view_bindoc(uploader) {
 			fn = fn.substr(0, 18) + '...' + fn.substring((fn.length - 2), fn.length) + '.';
 		}
 
-		self.elems.txtFilename.innerHTML = fn + fe;
+		this.elems.txtFilename.innerHTML = fn + fe;
 		//self.elems.fileDrag_mask.title = f.file.name;
-		self.elems.txtSize.innerHTML = sizeText;
-		self.elems.txtType.innerHTML = typeText;
+		this.elems.txtSize.innerHTML = sizeText;
+		this.elems.txtType.innerHTML = typeText;
 		if(f.isEdited){
 			/*
 			 * we may use this for img smaller than target size message
@@ -554,30 +551,30 @@ function weFileupload_view_bindoc(uploader) {
 			self.elems.txtEdit.style.display = 'block';
 			*/
 		} else {
-			self.elems.txtEdit.style.display = 'none';
+			this.elems.txtEdit.style.display = 'none';
 		}
-		self.setDisplay('fileDrag_state_0', 'none');
-		self.setDisplay('fileDrag_state_1', 'block');
-		self.elems.dragInnerRight.innerHTML = '';
+		this.setDisplay('fileDrag_state_0', 'none');
+		this.setDisplay('fileDrag_state_1', 'block');
+		this.elems.dragInnerRight.innerHTML = '';
 
 		if (f.uploadConditionsOk) {
-			self.sender.isAutostartPermitted = true;
-			self.controller.setEditorIsHot();
+			this.sender.isAutostartPermitted = true;
+			this.controller.setEditorIsHot();
 		} else {
-			self.sender.isAutostartPermitted = false;
+			this.sender.isAutostartPermitted = false;
 		}
 
 		if (f.type.search("image/") !== -1){
 			if(f.img.previewImg){
-				self.preview = f.img.previewImg;
-				self.elems.dragInnerRight.innerHTML = '';
-				self.elems.dragInnerRight.appendChild(self.preview);
+				this.preview = f.img.previewImg;
+				this.elems.dragInnerRight.innerHTML = '';
+				this.elems.dragInnerRight.appendChild(this.preview);
 			} else if(f.img.previewCanvas){
-				self.preview = f.img.previewCanvas;
-				self.elems.dragInnerRight.innerHTML = '';
-				self.elems.dragInnerRight.appendChild(self.preview);
+				this.preview = f.img.previewCanvas;
+				this.elems.dragInnerRight.innerHTML = '';
+				this.elems.dragInnerRight.appendChild(this.preview);
 			}
-			self.setGuiState(f.uploadConditionsOk ? self.STATE_PREVIEW_OK : self.STATE_PREVIEW_NOK);
+			this.setGuiState(f.uploadConditionsOk ? this.STATE_PREVIEW_OK : this.STATE_PREVIEW_NOK);
 			if(f.type !== 'image/jpeg'){
 				//doc.getElementsByClassName('optsQuality')[0].value = 50;
 				doc.getElementsByClassName('optsQuality')[0].disabled = true;
@@ -590,71 +587,71 @@ function weFileupload_view_bindoc(uploader) {
 			doc.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].disable = false;
 		} else {
 			if (f.uploadConditionsOk) {
-				self.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:24px 0 0 26px;height:62px;width:54px;">' + self.icon + '</div>';
-				self.setGuiState(self.STATE_PREVIEW_OK);
+				this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:24px 0 0 26px;height:62px;width:54px;">' + this.icon + '</div>';
+				this.setGuiState(this.STATE_PREVIEW_OK);
 			} else {
-				self.elems.dragInnerRight.innerHTML = '<div class="bold" style="margin:18px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;">!?</div>';
-				self.setGuiState(self.STATE_PREVIEW_NOK);
+				this.elems.dragInnerRight.innerHTML = '<div class="bold" style="margin:18px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;">!?</div>';
+				this.setGuiState(this.STATE_PREVIEW_NOK);
 			}
 		}
 	};
 
-	self.setGuiState = function (state) {
+	this.setGuiState = function (state) {
 		switch (state) {
-			case self.STATE_RESET:
-				self.setDisplay('fileDrag_state_0', 'block');
-				self.setDisplay('fileDrag_state_1', 'none');
-				self.elems.fileDrag.style.backgroundColor = 'transparent';
-				self.elems.fileDrag.style.backgroundImage = 'none';
-				self.setDisplay('fileInputWrapper', 'block');
-				if (self.isDragAndDrop && self.elems.fileDrag) {
-					self.setDisplay('fileDrag', 'block');
+			case this.STATE_RESET:
+				this.setDisplay('fileDrag_state_0', 'block');
+				this.setDisplay('fileDrag_state_1', 'none');
+				this.elems.fileDrag.style.backgroundColor = 'transparent';
+				this.elems.fileDrag.style.backgroundImage = 'none';
+				this.setDisplay('fileInputWrapper', 'block');
+				if (this.isDragAndDrop && this.elems.fileDrag) {
+					this.setDisplay('fileDrag', 'block');
 				}
-				self.setDisplay('divBtnReset', 'none');
-				self.setDisplay('divBtnUpload', '');
-				self.setDisplay('divProgressBar', 'none');
-				self.setDisplay('divBtnCancel', 'none');
-				self.setDisplay('dragInnerRight', '');
+				this.setDisplay('divBtnReset', 'none');
+				this.setDisplay('divBtnUpload', '');
+				this.setDisplay('divProgressBar', 'none');
+				this.setDisplay('divBtnCancel', 'none');
+				this.setDisplay('dragInnerRight', '');
 				/*
 				if (uploader.EDIT_IMAGES_CLIENTSIDE) {
 					doc.getElementById('make_preview_weFileupload').disabled = true;//make same as following
 				}
 				*/
-				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
+				WE().layout.button.disable(this.uploader.doc, this.uploadBtnName, true);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', false);
 				return;
-			case self.STATE_PREVIEW_OK:
-				self.setDisplay('fileInputWrapper', 'none');
-				self.setDisplay('divBtnReset', '');
-				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, false);
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+			case this.STATE_PREVIEW_OK:
+				this.setDisplay('fileInputWrapper', 'none');
+				this.setDisplay('divBtnReset', '');
+				WE().layout.button.disable(this.uploader.doc, this.uploadBtnName, false);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
 				return;
-			case self.STATE_PREVIEW_NOK:
-				self.setDisplay('fileInputWrapper', 'none');
-				self.setDisplay('divBtnReset', '');
-				WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
+			case this.STATE_PREVIEW_NOK:
+				this.setDisplay('fileInputWrapper', 'none');
+				this.setDisplay('divBtnReset', '');
+				WE().layout.button.disable(this.uploader.doc, this.uploadBtnName, true);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
 				return;
-			case self.STATE_UPLOAD:
+			case this.STATE_UPLOAD:
 				//WE().layout.button.disable(self.uploader.doc, self.uploadBtnName, true);
 				//WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
 				//WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
-				self.setDisplay('fileInputWrapper', 'none');
+				this.setDisplay('fileInputWrapper', 'none');
 				if (uploader.uiType !== 'wedoc') {
-					self.setDisplay('divBtnReset', 'none');
+					this.setDisplay('divBtnReset', 'none');
 				}
-				self.setDisplay('divBtnUpload', 'none');
-				self.setDisplay('divBtnReset', 'none');
-				self.setDisplay('divProgressBar', '');
-				self.setDisplay('divBtnCancel', '');
-				if (self.preview) {
-					self.preview.style.opacity = 0.05;
+				this.setDisplay('divBtnUpload', 'none');
+				this.setDisplay('divBtnReset', 'none');
+				this.setDisplay('divProgressBar', '');
+				this.setDisplay('divBtnCancel', '');
+				if (this.preview) {
+					this.preview.style.opacity = 0.05;
 				}
 		}
 	};
 
-	self.repaintGUI = function (arg) {
-		var cur = self.sender.currentFile,
+	this.repaintGUI = function (arg) {
+		var cur = this.sender.currentFile,
 			fileProg = 0,
 			digits = 0,
 			opacity = 0;
@@ -663,24 +660,24 @@ function weFileupload_view_bindoc(uploader) {
 			case 'chunkOK' :
 				digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
 				fileProg = (100 / cur.size) * cur.currentWeightFile;
-				self.setInternalProgress(fileProg.toFixed(digits));
+				this.setInternalProgress(fileProg.toFixed(digits));
 				opacity = fileProg / 100;
-				if (self.preview) {
-					self.preview.style.opacity = opacity.toFixed(2);
+				if (this.preview) {
+					this.preview.style.opacity = opacity.toFixed(2);
 				}
 				return;
 			case 'fileOK' :
-				self.sender.preparedFiles = [];
-				if (self.preview) {
-					self.preview.style.opacity = 1;
+				this.sender.preparedFiles = [];
+				if (this.preview) {
+					this.preview.style.opacity = 1;
 				}
 				return;
 			case 'startSendFile' :
-				self.setInternalProgress(0);
-				self.setGuiState(self.STATE_UPLOAD);
+				this.setInternalProgress(0);
+				this.setGuiState(this.STATE_UPLOAD);
 				return;
 			case 'chunkNOK' :
-				self.sender.processError({from: 'gui', msg: arg.message});
+				this.sender.processError({from: 'gui', msg: arg.message});
 				/* falls through */
 			case 'initGui' :
 			case 'fileNOK' :
@@ -688,58 +685,58 @@ function weFileupload_view_bindoc(uploader) {
 			case 'resetGui' :
 				/* falls through */
 			default:
-				self.sender.preparedFiles = [];
-				self.sender.currentFile = -1;
-				self.setInternalProgress(0);
-				self.setGuiState(self.STATE_RESET);
+				this.sender.preparedFiles = [];
+				this.sender.currentFile = -1;
+				this.setInternalProgress(0);
+				this.setGuiState(this.STATE_RESET);
 				return;
 		}
 	};
 
-	self.previewSyncRotation = function(pos, rotation){
-		if(self.sender.preparedFiles.length){
-			self.imageEdit.processimageRotatePreview(self.sender.preparedFiles[0], rotation);
-			self.replacePreviewCanvas(self.sender.preparedFiles[0]);
+	this.previewSyncRotation = function(pos, rotation){
+		if(this.sender.preparedFiles.length){
+			this.imageEdit.processimageRotatePreview(this.sender.preparedFiles[0], rotation);
+			this.replacePreviewCanvas(this.sender.preparedFiles[0]);
 		}
 	};
 
-	self.setEditStatus = function(state){
-		var doc = self.uploader.doc;
-		var fileobj = self.sender.preparedFiles.length ? self.sender.preparedFiles[0] : null;
+	this.setEditStatus = function(state){
+		var doc = this.uploader.doc;
+		var fileobj = this.sender.preparedFiles.length ? this.sender.preparedFiles[0] : null;
 		var btn = doc.getElementsByClassName('weFileupload_btnImgEditRefresh ')[0];
 
 		state = !fileobj ? 'empty' : state;
 		state = state ? state : !fileobj ? 'empty' : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
 
-		if (self.uploader.uiType === 'wedoc') {
-			self.hideOptions(false);
+		if (this.uploader.uiType === 'wedoc') {
+			this.hideOptions(false);
 		}
 
 		switch(state){
 			case 'notprocessed':
-				if(self.sender.preparedFiles.length){
-					self.elems.fileDrag.style.backgroundColor = '#ffffff';
-					self.elems.fileDrag.style.backgroundColor = 'rgb(244, 255, 244)'; //'rgb(rgb(244, 255, 244))';//notprocessed
+				if(this.sender.preparedFiles.length){
+					this.elems.fileDrag.style.backgroundColor = '#ffffff';
+					this.elems.fileDrag.style.backgroundColor = 'rgb(244, 255, 244)'; //'rgb(rgb(244, 255, 244))';//notprocessed
 					//self.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
-					self.elems.txtSize.innerHTML = WE().consts.g_l.fileupload.sizeTextOk + '--';
+					this.elems.txtSize.innerHTML = WE().consts.g_l.fileupload.sizeTextOk + '--';
 					btn.disabled = false;
 				}
 				break;
 			case 'processed':
-				if(self.sender.preparedFiles.length){
-					self.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
-					self.elems.fileDrag.style.backgroundImage =  'none';
+				if(this.sender.preparedFiles.length){
+					this.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
+					this.elems.fileDrag.style.backgroundImage =  'none';
 					btn.disabled = true;
 				}
 				break;
 			case 'donotedit':
-				self.elems.fileDrag.style.backgroundColor = 'rgb(232, 232, 255)';
-				self.elems.fileDrag.style.backgroundImage =  'none';
+				this.elems.fileDrag.style.backgroundColor = 'rgb(232, 232, 255)';
+				this.elems.fileDrag.style.backgroundImage =  'none';
 				btn.disabled = false;
 				break;
 			case 'empty':
-				self.elems.fileDrag.style.backgroundColor = 'white';
-				self.elems.fileDrag.style.backgroundImage =  'none';
+				this.elems.fileDrag.style.backgroundColor = 'white';
+				this.elems.fileDrag.style.backgroundImage =  'none';
 				btn.disabled = true;
 		}
 		if(fileobj && fileobj.img.tooSmallToScale){
@@ -751,8 +748,8 @@ function weFileupload_view_bindoc(uploader) {
 		}
 	};
 
-	self.hideOptions = function(hide){
-		var doc = self.uploader.doc;
+	this.hideOptions = function(hide){
+		var doc = this.uploader.doc;
 		if(hide){
 			doc.getElementById('editImage').style.display = 'none';
 			doc.getElementById('div_importMeta').style.display = 'none';
@@ -764,132 +761,131 @@ function weFileupload_view_bindoc(uploader) {
 		}
 	};
 
-	self.disableCustomEditOpts = function () {
+	this.disableCustomEditOpts = function () {
 		// to be overridden
 	};
 
-	self.writeFocusToForm = function(fileobj){
+	this.writeFocusToForm = function(fileobj){
 		if (!uploader.EDIT_IMAGES_CLIENTSIDE) {
 			return;
 		}
 
-		var doc = self.uploader.doc;
+		var doc = this.uploader.doc;
 
 		doc.we_form.elements.fu_doc_focusX.value = fileobj.img.focusX;
 		doc.we_form.elements.fu_doc_focusY.value = fileobj.img.focusY;
 	};
 
 	//TODO: use progress fns from abstract after adapting them to standard progress
-	self.setInternalProgress = function (progress, index) {
-		var coef = self.intProgress.width / 100;
-		var mt = typeof self.sender.currentFile === 'object' ? ' / ' + self.utils.computeSize(self.sender.currentFile.size) : '';
-		var doc = self.uploader.doc;
+	this.setInternalProgress = function (progress, index) {
+		var coef = this.intProgress.width / 100;
+		var mt = typeof this.sender.currentFile === 'object' ? ' / ' + this.utils.computeSize(this.sender.currentFile.size) : '';
+		var doc = this.uploader.doc;
 
 		doc.getElementById('progress_image_fileupload').style.width = coef * progress + "px";
 		doc.getElementById('progress_image_bg_fileupload').style.width = (coef * 100) - (coef * progress) + "px";
 		doc.getElementById('progress_text_fileupload').innerHTML = progress + '%' + mt;
 	};
 
-	self.setDisplay = function (elem, val) {
-		if (self.elems[elem]) {
-			self.elems[elem].style.display = val;
+	this.setDisplay = function (elem, val) {
+		if (this.elems[elem]) {
+			this.elems[elem].style.display = val;
 		}
 	};
 
-	self.setImageEditMessage = function (singleMode) {
+	this.setImageEditMessage = function (singleMode) {
 		if (!uploader.EDIT_IMAGES_CLIENTSIDE) {
 			return;
 		}
 
-		var mask = self.uploader.doc.getElementById('div_fileupload_fileDrag_mask'),
-			text = self.uploader.doc.getElementById('image_edit_mask_text');
+		var mask = this.uploader.doc.getElementById('div_fileupload_fileDrag_mask'),
+			text = this.uploader.doc.getElementById('image_edit_mask_text');
 
 		mask.style.display = 'block';
 		text.innerHTML = singleMode ? WE().consts.g_l.fileupload.maskProcessImage : WE().consts.g_l.fileupload.maskReadImage;
 	};
 
-	self.unsetImageEditMessage = function () {
+	this.unsetImageEditMessage = function () {
 		if (!uploader.EDIT_IMAGES_CLIENTSIDE) {
 			return;
 		}
-		var mask = self.uploader.doc.getElementById('div_fileupload_fileDrag_mask');
+		var mask = this.uploader.doc.getElementById('div_fileupload_fileDrag_mask');
 		mask.style.display = 'none';
 	};
 
-	self.repaintImageEditMessage = function (empty, changeText) {
+	this.repaintImageEditMessage = function (empty, changeText) {
 		if (!uploader.EDIT_IMAGES_CLIENTSIDE) {
 			return;
 		}
 
-		var text = self.uploader.doc.getElementById('image_edit_mask_text').innerHTML;
+		var text = this.uploader.doc.getElementById('image_edit_mask_text').innerHTML;
 		text = (changeText ? WE().consts.g_l.fileupload.maskProcessImage : text) + '.';
 		text += '.';
-		self.uploader.doc.getElementById('image_edit_mask_text').innerHTML = text;
+		this.uploader.doc.getElementById('image_edit_mask_text').innerHTML = text;
 
 	};
 
-	self.repaintEntry = function (fileobj) {
-		self.addFile(fileobj);
+	this.repaintEntry = function (fileobj) {
+		this.addFile(fileobj);
 		if (!uploader.EDIT_IMAGES_CLIENTSIDE) {
 			return;
 		}
-		self.replacePreviewCanvas(fileobj);
-		self.setEditStatus();
+		this.replacePreviewCanvas(fileobj);
+		this.setEditStatus();
 	};
 
-	self.formCustomEditOptsSync = function(){
+	this.formCustomEditOptsSync = function(){
 		//
 	};
 
-	self.replacePreviewCanvas = function(fileobj) {
-		self.elems.dragInnerRight.innerHTML = '';
-		self.elems.dragInnerRight.appendChild(fileobj.img.previewCanvas);
+	this.replacePreviewCanvas = function(fileobj) {
+		this.elems.dragInnerRight.innerHTML = '';
+		this.elems.dragInnerRight.appendChild(fileobj.img.previewCanvas);
 
-		self.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){self.setPreviewLoupe(fileobj);}, false);
-		self.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){self.movePreviewLoupe(e, fileobj);}, false);
-		self.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){self.unsetPreviewLoupe(fileobj);}, false);
-		self.elems.dragInnerRight.firstChild.addEventListener('click', function(e){self.grabFocusPoint(e,fileobj);}, false);
+		this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){this.setPreviewLoupe(fileobj);}, false);
+		this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){this.movePreviewLoupe(e, fileobj);}, false);
+		this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){this.unsetPreviewLoupe(fileobj);}, false);
+		this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){this.grabFocusPoint(e,fileobj);}, false);
 	};
 }
-weFileupload_view_bindoc.prototype = Object.create(weFileupload_view_abstract.prototype);
-weFileupload_view_bindoc.prototype.constructor = weFileupload_view_bindoc;
+Fileupload_view_bindoc.prototype = Object.create(Fileupload_view_abstract.prototype);
+Fileupload_view_bindoc.prototype.constructor = Fileupload_view_bindoc;
 
-function weFileupload_view_import(uploader) {
-	var self = this;
-	weFileupload_view_abstract.call(self, uploader);
+function Fileupload_view_import(uploader) {
+	Fileupload_view_abstract.call(this, uploader);
 
-	self.fileTable = '';
-	self.htmlFileRow = '';
-	self.nextTitleNr = 1;
-	self.isUploadEnabled = false;
-	self.messageWindow = null;
-	self.previewSize = 110;
+	this.fileTable = '';
+	this.htmlFileRow = '';
+	this.nextTitleNr = 1;
+	this.isUploadEnabled = false;
+	this.messageWindow = null;
+	this.previewSize = 110;
 	//self.useOriginalAsPreviewIfNotEdited = true;
 
-	self.addFile = function (f, index) {
-		self.appendRow(f, self.sender.preparedFiles.length - 1);
+	this.addFile = function (f, index) {
+		this.appendRow(f, this.sender.preparedFiles.length - 1);
 	};
 
-	self.repaintEntry = function (fileobj) { // TODO: get rid of fileobj.entry
+	this.repaintEntry = function (fileobj) { // TODO: get rid of fileobj.entry
 		if(!fileobj.entry){
-			fileobj.entry = self.uploader.doc.getElementById('div_uploadFiles_' + fileobj.index);
+			fileobj.entry = this.uploader.doc.getElementById('div_uploadFiles_' + fileobj.index);
 			if(!fileobj.entry){
-				self.uploader.win.console.log('an error occured: fileobj.entry is undefined');
+				this.uploader.win.console.log('an error occured: fileobj.entry is undefined');
 				return;
 			}
 		}
 
-		fileobj.entry.getElementsByClassName('elemSize')[0].innerHTML = (fileobj.isSizeOk ? self.utils.computeSize(fileobj.size) : '<span style="color:red">> ' + ((self.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');
+		fileobj.entry.getElementsByClassName('elemSize')[0].innerHTML = (fileobj.isSizeOk ? this.utils.computeSize(fileobj.size) : '<span style="color:red">> ' + ((this.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');
 
-		if(self.imageEdit.EDITABLE_CONTENTTYPES.indexOf(fileobj.type) !== -1){
+		if(this.imageEdit.EDITABLE_CONTENTTYPES.indexOf(fileobj.type) !== -1){
 			fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
 			fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
 			fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
-			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = (fileobj.img.origWidth ? fileobj.img.origWidth + ' x ' + fileobj.img.origHeight + ' px': '--') + ', ' + self.utils.computeSize(fileobj.img.originalSize);
+			fileobj.entry.getElementsByClassName('rowDimensionsOriginal')[0].innerHTML = (fileobj.img.origWidth ? fileobj.img.origWidth + ' x ' + fileobj.img.origHeight + ' px': '--') + ', ' + this.utils.computeSize(fileobj.img.originalSize);
 			//fileobj.entry.getElementsByClassName('optsQualitySlide')[0].style.display = fileobj.type === 'image/jpeg' ? 'block' : 'none';
-			self.replacePreviewCanvas(fileobj);
+			this.replacePreviewCanvas(fileobj);
 			//self.formCustomEditOptsSync(fileobj.index, false);
-			self.setEditStatus('', fileobj.index, false);
+			this.setEditStatus('', fileobj.index, false);
 		} else {
 			fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'block';
 			fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'none';
@@ -900,20 +896,20 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.replacePreviewCanvas = function(fileobj) {
+	this.replacePreviewCanvas = function(fileobj) {
 		var elem = fileobj.entry.getElementsByClassName('elemPreviewPreview')[0];
 		elem.innerHTML = '';
 		elem.appendChild(fileobj.img.previewCanvas);
 
-		elem.firstChild.addEventListener('mouseenter', function(){self.setPreviewLoupe(fileobj);}, false);
-		elem.firstChild.addEventListener('mousemove', function(e){self.movePreviewLoupe(e, fileobj);}, false);
-		elem.firstChild.addEventListener('mouseleave', function(){self.unsetPreviewLoupe(fileobj);}, false);
-		elem.firstChild.addEventListener('click', function(e){self.grabFocusPoint(e,fileobj);}, false);
+		elem.firstChild.addEventListener('mouseenter', function(){this.setPreviewLoupe(fileobj);}, false);
+		elem.firstChild.addEventListener('mousemove', function(e){this.movePreviewLoupe(e, fileobj);}, false);
+		elem.firstChild.addEventListener('mouseleave', function(){this.unsetPreviewLoupe(fileobj);}, false);
+		elem.firstChild.addEventListener('click', function(e){this.grabFocusPoint(e,fileobj);}, false);
 	};
 
-	self.setImageEditMessage = function (singleMode, index) {
+	this.setImageEditMessage = function (singleMode, index) {
 		var row, elem;
-		var doc = self.uploader.doc;
+		var doc = this.uploader.doc;
 
 		if(singleMode && (row = doc.getElementById('div_uploadFiles_' + index))){
 			row.getElementsByClassName('elemContentTop')[0].style.display = 'none';
@@ -924,9 +920,9 @@ function weFileupload_view_import(uploader) {
 		}
 
 		if((elem = doc.getElementById('we_fileUploadImporter_mask'))){
-			doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
+			doc.getElementById('we_fileUploadImporter_busyText').innerHTML = this.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
 			try{
-				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = self.imageEdit.imageFilesToProcess.length;
+				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = this.imageEdit.imageFilesToProcess.length;
 			} catch (e) {
 			}
 			doc.getElementById('we_fileUploadImporter_busyMessage').style.display = 'block';
@@ -935,9 +931,9 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.unsetImageEditMessage = function (singleMode, index) {
+	this.unsetImageEditMessage = function (singleMode, index) {
 		var row, elem;
-		var doc = self.uploader.doc;
+		var doc = this.uploader.doc;
 
 		if(singleMode && (row = doc.getElementById('div_uploadFiles_' + index))){
 			row.getElementsByClassName('elemContentTop')[0].style.display = 'block';
@@ -952,48 +948,48 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.repaintImageEditMessage = function(step, singleMode, index) {
+	this.repaintImageEditMessage = function(step, singleMode, index) {
 		var row;
-		var doc = self.uploader.doc;
+		var doc = this.uploader.doc;
 
 		try{
 			if(step){
 				if(false && singleMode && (row = doc.getElementById('div_uploadFiles_' + index))){
-					row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML += self.imageEdit.imageEditOptions.doEdit ? '.' : '';
+					row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML += this.imageEdit.imageEditOptions.doEdit ? '.' : '';
 					return;
 				}
 
-				doc.getElementById('we_fileUploadImporter_busyText').innerHTML += self.imageEdit.imageEditOptions.doEdit ? '.' : '';
+				doc.getElementById('we_fileUploadImporter_busyText').innerHTML += this.imageEdit.imageEditOptions.doEdit ? '.' : '';
 			} else {
-				doc.getElementById('we_fileUploadImporter_busyText').innerHTML = self.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
-				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = self.imageEdit.imageFilesToProcess.length;
+				doc.getElementById('we_fileUploadImporter_busyText').innerHTML = this.imageEdit.imageEditOptions.doEdit ? WE().consts.g_l.fileupload.maskImporterProcessImages : WE().consts.g_l.fileupload.maskImporterReadImages;
+				doc.getElementById('we_fileUploadImporter_messageNr').innerHTML = this.imageEdit.imageFilesToProcess.length;
 			}
 		} catch (e) {
 		}
 	};
 
-	self.appendRow = function (f, index) {
-		var doc = self.uploader.doc;
+	this.appendRow = function (f, index) {
+		var doc = this.uploader.doc;
 		var div, entry;
 		var parts = f.file.name.split('.');
-		var row = self.htmlFileRow.replace(/WEFORMNUM/g, index).replace(/WE_FORM_NUM/g, (self.nextTitleNr++)).
+		var row = this.htmlFileRow.replace(/WEFORMNUM/g, index).replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
 				replace(/FILENAME/g, (f.file.name)).
 				replace(/FNAME/g, (parts[0])).
 				replace(/FENDING/g, (parts[1])).
-				replace(/FILESIZE/g, (f.isSizeOk ? self.utils.computeSize(f.size) : '<span style="color:red">> ' + ((self.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+				replace(/FILESIZE/g, (f.isSizeOk ? this.utils.computeSize(f.size) : '<span style="color:red">> ' + ((this.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
-		self.uploader.win.weAppendMultiboxRow(row, '', 0, 0, 0, -1);
-		entry = self.uploader.doc.getElementById('div_uploadFiles_' + index);
+		this.uploader.win.weAppendMultiboxRow(row, '', 0, 0, 0, -1);
+		entry = this.uploader.doc.getElementById('div_uploadFiles_' + index);
 
 		div = doc.getElementById('div_upload_files');
 		//div.scrollTop = getElementById('div_upload_files').div.scrollHeight;
 //		doc.getElementById('fileInput_uploadFiles_' + index).addEventListener('change', self.controller.replaceSelectionHandler, false);
 
-		self.addTextCutLeft(doc.getElementById('showName_uploadFiles_' + index), f.file.name, 230);
+		this.addTextCutLeft(doc.getElementById('showName_uploadFiles_' + index), f.file.name, 230);
 
 		if(uploader.EDIT_IMAGES_CLIENTSIDE){
 			//doc.getElementById('customOpts_' + index).style.display = self.imageEdit.isImageEditActive ? 'inline-block' : 'none';
-			if(self.imageEdit.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
+			if(this.imageEdit.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
 				doc.getElementById('icon_uploadFiles_' + index).style.display = 'none';
 				doc.getElementById('preview_uploadFiles_' + index).style.display = 'block';
 				doc.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
@@ -1003,20 +999,20 @@ function weFileupload_view_import(uploader) {
 			}
 		}
 
-		self.elems.extProgressDiv.style.display = 'none';
+		this.elems.extProgressDiv.style.display = 'none';
 
-		WE().layout.button.display(self.elems.footer.document, 'close', false);
-		WE().layout.button.display(self.elems.footer.document, 'cancel', true);
+		WE().layout.button.display(this.elems.footer.document, 'close', false);
+		WE().layout.button.display(this.elems.footer.document, 'cancel', true);
 
 		if (f.isSizeOk) {
-			if (!self.isUploadEnabled) {
-				WE().layout.button.disable(self.elems.footer.document, 'upload', false);
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
-				self.isUploadEnabled = true;
-				self.sender.isCancelled = false;
+			if (!this.isUploadEnabled) {
+				WE().layout.button.disable(this.elems.footer.document, 'upload', false);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
+				this.isUploadEnabled = true;
+				this.sender.isCancelled = false;
 			}
 		} else {
-			self.sender.preparedFiles[index] = null;
+			this.sender.preparedFiles[index] = null;
 		}
 
 		f.index = index;
@@ -1024,55 +1020,55 @@ function weFileupload_view_import(uploader) {
 
 		var form = doc.getElementById('form_editOpts_' + index);
 
-		form.elements.fuOpts_filenameInput.addEventListener('change', self.controller.editFilename, false);
-		form.elements.fuOpts_filenameInput.addEventListener('blur', self.controller.editFilename, false);
-		doc.getElementById('showName_uploadFiles_' + index).addEventListener('click', self.controller.editFilename, false);
+		form.elements.fuOpts_filenameInput.addEventListener('change', this.controller.editFilename, false);
+		form.elements.fuOpts_filenameInput.addEventListener('blur', this.controller.editFilename, false);
+		doc.getElementById('showName_uploadFiles_' + index).addEventListener('click', this.controller.editFilename, false);
 
 		var btn = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
-		btn.addEventListener('click', function(){self.controller.editImageButtonOnClick(btn, index, false);}, false);
+		btn.addEventListener('click', function(){this.controller.editImageButtonOnClick(btn, index, false);}, false);
 
 		var rotLeft = form.getElementsByClassName('fuOpts_addRotationLeft')[0];
-		rotLeft.addEventListener('click', function(){self.controller.customEditOptsOnChange(rotLeft, index, false);}, false);
+		rotLeft.addEventListener('click', function(){this.controller.customEditOptsOnChange(rotLeft, index, false);}, false);
 
 		var rotRight = form.getElementsByClassName('fuOpts_addRotationRight')[0];
-		rotRight.addEventListener('click', function(){self.controller.customEditOptsOnChange(rotRight, index, false);}, false);
+		rotRight.addEventListener('click', function(){this.controller.customEditOptsOnChange(rotRight, index, false);}, false);
 
-		form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseenter', function(e){self.controller.editOptionsHelp(e.target, 'enter');}, false);
-		form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseleave', function(e){self.controller.editOptionsHelp(e.target, 'leave');}, false);
+		form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseenter', function(e){this.controller.editOptionsHelp(e.target, 'enter');}, false);
+		form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseleave', function(e){this.controller.editOptionsHelp(e.target, 'leave');}, false);
 
 	};
 
-	self.deleteRow = function (index, button) {
+	this.deleteRow = function (index, button) {
 		var prefix = 'div_uploadFiles_', num = 0, z = 1, i, sp;
-		var divs = self.uploader.doc.getElementsByTagName('DIV');
+		var divs = this.uploader.doc.getElementsByTagName('DIV');
 
-		self.imageEdit.memorymanagerUnregister(self.sender.preparedFiles[index]);
-		self.sender.preparedFiles[index] = null;
+		this.imageEdit.memorymanagerUnregister(this.sender.preparedFiles[index]);
+		this.sender.preparedFiles[index] = null;
 
-		self.uploader.win.weDelMultiboxRow(index);
+		this.uploader.win.weDelMultiboxRow(index);
 
 		for (i = 0; i < divs.length; i++) {
 			if (divs[i].id.length > prefix.length && divs[i].id.substring(0, prefix.length) === prefix) {
 				num = divs[i].id.substring(prefix.length, divs[i].id.length);
-				sp = self.uploader.doc.getElementById('headline_uploadFiles_' + num);
+				sp = this.uploader.doc.getElementById('headline_uploadFiles_' + num);
 				if (sp) {
 					sp.innerHTML = z;
 				}
 				z++;
 			}
 		}
-		self.nextTitleNr = z;
-		if (!self.utils.containsFiles(self.sender.preparedFiles)) {
-			WE().layout.button.disable(self.elems.footer.document, 'upload', true);
-			WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
-			self.isUploadEnabled = false;
+		this.nextTitleNr = z;
+		if (!this.utils.containsFiles(this.sender.preparedFiles)) {
+			WE().layout.button.disable(this.elems.footer.document, 'upload', true);
+			WE().layout.button.disable(this.uploader.doc, 'reset_btn', true);
+			this.isUploadEnabled = false;
 		}
 	};
 
-	self.reloadOpener = function () {
+	this.reloadOpener = function () {
 		try {
 			var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			if (parseInt(self.uploader.doc.we_form.fu_file_parentID.value) === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+			if (parseInt(this.uploader.doc.we_form.fu_file_parentID.value) === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
 				top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 			}
 			top.we_cmd('loadIfActive', WE().consts.tables.FILE_TABLE);
@@ -1081,20 +1077,20 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.repaintGUI = function (arg) {
+	this.repaintGUI = function (arg) {
 		var i, j, fileProg = 0, totalProg = 0, digits = 0;
-		var sender = self.sender;
+		var sender = this.sender;
 		var cur = sender.currentFile;
 		var totalDigits = sender.totalChunks > 1000 ? 2 : (sender.totalChunks > 100 ? 1 : 0);
-		var doc = self.uploader.doc;
+		var doc = this.uploader.doc;
 
 		switch (arg.what) {
 			case 'startSendFile':
 				i = sender.mapFiles[cur.fileNum];
-				if(self.imageEdit.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1){
+				if(this.imageEdit.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1){
 					doc.getElementById('image_edit_done_' + i).style.display = 'block';
 				}
-				doc.getElementById('showName_uploadFiles_'  + i).removeEventListener('click', self.controller.editFilename);
+				doc.getElementById('showName_uploadFiles_'  + i).removeEventListener('click', this.controller.editFilename);
 				break;
 			case 'chunkOK' :
 				digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
@@ -1102,18 +1098,18 @@ function weFileupload_view_import(uploader) {
 				totalProg = (100 / sender.totalWeight) * sender.currentWeight;
 				i = sender.mapFiles[cur.fileNum];
 				j = i + 1;
-				self.setInternalProgress(fileProg.toFixed(digits), i);
+				this.setInternalProgress(fileProg.toFixed(digits), i);
 				if (cur.partNum === 1) {
-					self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
+					this.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
 				}
-				self.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
+				this.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 				return;
 			case 'fileOK' :
 				i = sender.mapFiles[cur.fileNum];
 				try {
 					doc.getElementById('div_upload_files').scrollTop = doc.getElementById('div_uploadFiles_' + i).offsetTop - 360;
 				} catch (e) {}
-				self.setInternalProgressCompleted(true, i, '');
+				this.setInternalProgressCompleted(true, i, '');
 				return;
 			case 'chunkNOK' :
 				totalProg = (100 / sender.totalWeight) * sender.currentWeight;
@@ -1123,21 +1119,21 @@ function weFileupload_view_import(uploader) {
 					doc.getElementById('div_upload_files').scrollTop = doc.getElementById('div_uploadFiles_' + i).offsetTop - 200;
 				} catch (e) {
 				}
-				self.setInternalProgressCompleted(false, i, arg.message);
+				this.setInternalProgressCompleted(false, i, arg.message);
 				if (cur.partNum === 1) {
-					self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
+					this.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' ' + j);
 				}
-				self.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
+				this.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 				return;
 			case 'startUpload' :
 				//set buttons state and show initial progress bar
-				WE().layout.button.disable(self.elems.footer.document, 'back', true);
-				WE().layout.button.disable(self.elems.footer.document, 'upload', true);
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', true);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', true);
-				self.isUploadEnabled = false;
-				self.elems.footer.document.getElementById('progressbar').style.display = '';
-				self.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' 1');
+				WE().layout.button.disable(this.elems.footer.document, 'back', true);
+				WE().layout.button.disable(this.elems.footer.document, 'upload', true);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', true);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', true);
+				this.isUploadEnabled = false;
+				this.elems.footer.document.getElementById('progressbar').style.display = '';
+				this.elems.footer.setProgressText('progress_title', WE().consts.g_l.fileupload.doImport + ' ' + WE().consts.g_l.fileupload.file + ' 1');
 				try {
 					doc.getElementById('div_upload_files').scrollTop = 0;
 				} catch (e) {
@@ -1146,40 +1142,40 @@ function weFileupload_view_import(uploader) {
 				return;
 			case 'cancelUpload' :
 				i = sender.mapFiles[cur.fileNum];
-				self.setInternalProgressCompleted(false, sender.mapFiles[cur.fileNum], WE().consts.g_l.fileupload.cancelled);
+				this.setInternalProgressCompleted(false, sender.mapFiles[cur.fileNum], WE().consts.g_l.fileupload.cancelled);
 				try {
 					doc.getElementById('div_upload_files').scrollTop = doc.getElementById('div_uploadFiles_' + i).offsetTop - 200;
 				} catch (e) {
 				}
 				for (j = 0; j < sender.uploadFiles.length; j++) {
 					var file = sender.uploadFiles[j];
-					self.setInternalProgressCompleted(false, sender.mapFiles[file.fileNum], WE().consts.g_l.fileupload.cancelled);
+					this.setInternalProgressCompleted(false, sender.mapFiles[file.fileNum], WE().consts.g_l.fileupload.cancelled);
 				}
-				WE().layout.button.disable(self.uploader.doc, 'reset_btn', false);
-				WE().layout.button.disable(self.uploader.doc, 'browse_harddisk_btn', false);
+				WE().layout.button.disable(this.uploader.doc, 'reset_btn', false);
+				WE().layout.button.disable(this.uploader.doc, 'browse_harddisk_btn', false);
 				return;
 			case 'resetGui' :
 				try {
 					doc.getElementById('td_uploadFiles').innerHTML = '';
 				} catch (e) {
 				}
-				self.sender.preparedFiles = [];
-				self.nextTitleNr = 1;
-				self.isUploadEnabled = false;
-				WE().layout.button.disable(self.elems.footer.document, 'upload', true);
-				WE().layout.button.disable(self.elems.footer.document, 'back', false);
-				self.sender.resetSender();
+				this.sender.preparedFiles = [];
+				this.nextTitleNr = 1;
+				this.isUploadEnabled = false;
+				WE().layout.button.disable(this.elems.footer.document, 'upload', true);
+				WE().layout.button.disable(this.elems.footer.document, 'back', false);
+				this.sender.resetSender();
 				return;
 			default :
 				return;
 		}
 	};
 
-	self.setInternalProgressCompleted = function (success, index, txt) {
-		var doc = self.uploader.doc;
+	this.setInternalProgressCompleted = function (success, index, txt) {
+		var doc = this.uploader.doc;
 
 		if (success) {
-			self.setInternalProgress(100, index);
+			this.setInternalProgress(100, index);
 			if (doc.getElementById(uploader.fieldName + '_progress_image_' + index)) {
 				doc.getElementById(uploader.fieldName + '_progress_image_' + index).className = 'progress_finished';
 			}
@@ -1194,40 +1190,40 @@ function weFileupload_view_import(uploader) {
 		}
 	};
 
-	self.formCustomEditOptsSync = function (pos, general, initRotation) {
+	this.formCustomEditOptsSync = function (pos, general, initRotation) {
 		if(initRotation){
 			var indices;
 
 			pos = general ? -1 : (pos && pos !== -1 ? pos : -1);
-			indices = self.imageEdit.getImageEditIndices(pos, general, true);
+			indices = this.imageEdit.getImageEditIndices(pos, general, true);
 
 			for(var i = 0; i < indices.length; i++){
-				self.uploader.doc.getElementById('fuOpts_rotate_' + indices[i]).value = self.uploader.doc.we_form.elements.fuOpts_rotate.value;
+				this.uploader.doc.getElementById('fuOpts_rotate_' + indices[i]).value = this.uploader.doc.we_form.elements.fuOpts_rotate.value;
 			}
 		}
 	};
 
-	self.disableCustomEditOpts = function (disable) {
-			var customEdits = self.uploader.doc.getElementsByClassName('btnRefresh');
+	this.disableCustomEditOpts = function (disable) {
+			var customEdits = this.uploader.doc.getElementsByClassName('btnRefresh');
 
 			for(var i = 0; i < customEdits.length; i++){
 				customEdits[i].style.display = disable ? 'none' : 'inline-block';
 			}
 	};
 
-	self.previewSyncRotation = function(pos, rotation){
-		var indices = self.imageEdit.getImageEditIndices(pos, pos === -1, false);
+	this.previewSyncRotation = function(pos, rotation){
+		var indices = this.imageEdit.getImageEditIndices(pos, pos === -1, false);
 
 		for(var i = 0; i < indices.length; i++){
-			self.imageEdit.processimageRotatePreview(self.sender.preparedFiles[indices[i]], rotation);
-			self.replacePreviewCanvas(self.sender.preparedFiles[indices[i]]);
+			this.imageEdit.processimageRotatePreview(this.sender.preparedFiles[indices[i]], rotation);
+			this.replacePreviewCanvas(this.sender.preparedFiles[indices[i]]);
 		}
 	};
 
-	self.setEditStatus = function(preset, pos, general, setDimensions){
-		var doc = self.uploader.doc;
+	this.setEditStatus = function(preset, pos, general, setDimensions){
+		var doc = this.uploader.doc;
 		var divUploadFiles = doc.getElementById('div_upload_files');
-		var indices = self.imageEdit.getImageEditIndices(pos, general, true);
+		var indices = this.imageEdit.getImageEditIndices(pos, general, true);
 		var elems = doc.getElementsByClassName('elemContentBottom');
 		var sizes = doc.getElementsByClassName('weFileUploadEntry_size');
 		var buttons = doc.getElementsByClassName('rowBtnProcess');
@@ -1242,7 +1238,7 @@ function weFileupload_view_import(uploader) {
 
 		for(i = 0; i < indices.length; i++){
 			j = indices[i];
-			fileobj = self.sender.preparedFiles[j];
+			fileobj = this.sender.preparedFiles[j];
 			state = preset ? preset : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
 
 			switch(state){
@@ -1281,11 +1277,11 @@ function weFileupload_view_import(uploader) {
 
 						// FIXME: fileobj.img.editedWidth is undefined when only qualitiy was changed
 						var w, h;
-						if(self.sender.preparedFiles[j].dataUrl){
+						if(this.sender.preparedFiles[j].dataUrl){
 							h = fileobj.img.editedHeight ? fileobj.img.editedHeight : (fileobj.img.lastHeightShown ? fileobj.img.lastHeightShown : fileobj.img.origHeight);
 							w = fileobj.img.editedWidth ? fileobj.img.editedWidth : (fileobj.img.lastWidthtShown ? fileobj.img.lastWidthShown : fileobj.img.origWidth);
 						}
-						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + (self.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
+						infoTops[j].innerHTML = (fileobj.img.editOptions.scale ? WE().consts.g_l.fileupload.editScaled + ' ' : '') + (this.sender.preparedFiles[j].dataUrl ? w + ' x ' + h + ' px' : '--');
 
 						deg = fileobj.img.editOptions.rotate;
 						scaleHelp[j].style.display = fileobj.img.tooSmallToScale ? 'inline-block' : 'none';
@@ -1309,12 +1305,12 @@ function weFileupload_view_import(uploader) {
 					fileobj.img.lastWidthShown = fileobj.img.origWidth;
 					fileobj.img.lastHeightShown = fileobj.img.origHeight;
 			}
-			buttons[j].disabled = self.sender.preparedFiles[j].dataUrl ? true : false;
-			asteriskes[j].style.color = self.sender.preparedFiles[j].dataUrl ? 'lightgray' : 'red';
+			buttons[j].disabled = this.sender.preparedFiles[j].dataUrl ? true : false;
+			asteriskes[j].style.color = this.sender.preparedFiles[j].dataUrl ? 'lightgray' : 'red';
 		}
 	};
 
-	self.addTextCutLeft = function(elem, text, maxwidth){
+	this.addTextCutLeft = function(elem, text, maxwidth){
 		if(!elem){
 			return;
 		}
@@ -1332,5 +1328,5 @@ function weFileupload_view_import(uploader) {
 		return;
 	};
 }
-weFileupload_view_import.prototype = Object.create(weFileupload_view_abstract.prototype);
-weFileupload_view_import.prototype.constructor = weFileupload_view_import;
+Fileupload_view_import.prototype = Object.create(Fileupload_view_abstract.prototype);
+Fileupload_view_import.prototype.constructor = Fileupload_view_import;

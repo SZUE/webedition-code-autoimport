@@ -186,9 +186,8 @@
 			};
 
 			var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
-
-			var items = [];
-			items.push(
+			var i;
+			var items = [
 				//['weadaptbold', ed.settings.wePluginClasses.weadaptbold, 'prop'],
 				//['weadaptitalic', ed.settings.wePluginClasses.weadaptitalic, 'prop'],
 				['bold', 'bold', 'prop'],
@@ -272,9 +271,9 @@
 						['selectall', 'selectall', 'top'],
 						['replace', 'replace', 'top'],
 						['separator', '', 'top', false, true]
-						);
+			];
 					//verify commands, restrict cm-items when param weContextmenuCommands not empty, and count cm-items
-					for (var i = 0; i < items.length; i++) {
+					for (i = 0; i < items.length; i++) {
 						if (ed.buttons[items[i][0]] && (!restrict || restrict[items[i][0]])) {
 						//if (ed.controlManager.controls[ed.editorId + '_' + items[i][0]] && (!restrict || restrict[items[i][0]])) {
 							cm_cmds[items[i][0]] = true;
@@ -327,7 +326,7 @@
 					}
 
 					//display top menu
-					for (var i = 0; i < items.length; i++) {
+					for (i = 0; i < items.length; i++) {
 						if (items[i][0] in cm_cmds) {
 							menu_item = ed.controlManager.buttons[items[i][0]];
 							if ((small_cm || menu_item && items[i][2] !== 'top') && (small_cm || menu_item.state.data.active || items[i][0] in active_items || items[i][2] in active_groups)) {

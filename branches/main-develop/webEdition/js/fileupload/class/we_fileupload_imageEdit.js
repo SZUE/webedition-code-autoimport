@@ -24,14 +24,13 @@
  */
 'use strict';
 
-function weFileupload_imageEdit_abstract(uploader) {
-	var self = this;
-	self.uploader = uploader;
+function Fileupload_imageEdit_abstract(uploader) {
+	this.uploader = uploader;
 
-	self.imageFilesToProcess = [];
-	self.isImageEditActive = false;
+	this.imageFilesToProcess = [];
+	this.isImageEditActive = false;
 
-	self.PICA_CONFIGURATION = {
+	this.PICA_CONFIGURATION = {
 		quality: 3, // [0,3]
 		unsharpAmount: 0, // [0, 200]
 		unsharpRadius: 0.5, // [0.5, 2]
@@ -39,89 +38,89 @@ function weFileupload_imageEdit_abstract(uploader) {
 		alpha: false
 	};
 
-	self.IMG_NEXT = 0;
-	self.IMG_START = 10;
-	self.IMG_LOAD_CANVAS = 1;
-	self.IMG_EXTRACT_METADATA = 2;
-	self.IMG_SCALE = 3;
-	self.IMG_ROTATE = 4;
-	self.IMG_APPLY_FILTERS = 5;
-	self.IMG_WRITE_IMAGE = 6;
-	self.IMG_INSERT_METADATA = 7;
-	self.IMG_MAKE_PREVIEW = 8;
-	self.IMG_POSTPROCESS = 9;
+	this.IMG_NEXT = 0;
+	this.IMG_START = 10;
+	this.IMG_LOAD_CANVAS = 1;
+	this.IMG_EXTRACT_METADATA = 2;
+	this.IMG_SCALE = 3;
+	this.IMG_ROTATE = 4;
+	this.IMG_APPLY_FILTERS = 5;
+	this.IMG_WRITE_IMAGE = 6;
+	this.IMG_INSERT_METADATA = 7;
+	this.IMG_MAKE_PREVIEW = 8;
+	this.IMG_POSTPROCESS = 9;
 
-	self.OPTS_QUALITY_NEUTRAL_VAL = 90;
-	self.PRESERVE_IMG_DATAURL = true;
-	self.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
-	self.MAX_LONGEST = -1;
+	this.OPTS_QUALITY_NEUTRAL_VAL = 90;
+	this.PRESERVE_IMG_DATAURL = true;
+	this.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
+	this.MAX_LONGEST = -1;
 
-	self.IS_MEMORY_MANAGMENT = false;
-	self.PROCESS_PREVIEWS_ONLY = false;
+	this.IS_MEMORY_MANAGMENT = false;
+	this.PROCESS_PREVIEWS_ONLY = false;
 	//self.MEMORY_LIMIT = 31457280;
-	self.MEMORY_LIMIT = 83886080; // 80 MB
-	
-	self.imageEditOptions = {
+	this.MEMORY_LIMIT = 83886080; // 80 MB
+
+	this.imageEditOptions = {
 		doEdit: false,
 		from: 'general',
 		scaleWhat: 'pixel_l',
 		scale: 0,
 		rotate: 0,
-		quality: self.OPTS_QUALITY_NEUTRAL_VAL
+		quality: this.OPTS_QUALITY_NEUTRAL_VAL
 	};
 
-	self.processimageRepeatLoadCanvas = 0;
-	self.memoryManagement = {
+	this.processimageRepeatLoadCanvas = 0;
+	this.memoryManagement = {
 		registeredSum: 0,
 		registeredValues: {},
 		queueEdited: [],
 		queueNotEdited: []
 	};
 
-	self.init = function (conf) {
-		self.imageEdit = self.uploader.imageEdit;// on init all components are initialized
-		self.sender = self.uploader.sender;
-		self.view = self.uploader.view;
-		self.utils = self.uploader.utils;
-		self.MAX_LONGEST = conf.imageeditMaxLongest ? parseInt(conf.imageeditMaxLongest) : -1;
+	this.init = function (conf) {
+		this.imageEdit = this.uploader.imageEdit;// on init all components are initialized
+		this.sender = this.uploader.sender;
+		this.view = this.uploader.view;
+		this.utils = this.uploader.utils;
+		this.MAX_LONGEST = conf.imageeditMaxLongest ? parseInt(conf.imageeditMaxLongest) : -1;
 
-		self.init_sub(conf);
+		this.init_sub(conf);
 	};
 
-	self.init_sub = function () {
+	this.init_sub = function () {
 		// to be overridden
 	};
 
-	self.processImages = function() {
-		self.PROCESS_PREVIEWS_ONLY = false;
-		if (self.imageFilesToProcess && self.imageFilesToProcess.length) {
-			self.setImageEditOptionsGeneral();
-			self.view.setImageEditMessage();
-			self.processNextImage();
+	this.processImages = function() {
+		this.PROCESS_PREVIEWS_ONLY = false;
+		if (this.imageFilesToProcess && this.imageFilesToProcess.length) {
+			this.setImageEditOptionsGeneral();
+			this.view.setImageEditMessage();
+			this.processNextImage();
 		} else {
-			self.view.unsetImageEditMessage();
+			this.view.unsetImageEditMessage();
 		}
 	};
 
-	self.processNextImage = function() {
-		if (self.imageFilesToProcess.length) {
-			var fileobj = self.imageFilesToProcess.shift();
-			self.utils.logTimeFromStart('start edit image', true, fileobj);
-			self.setImageEditOptionsFile(fileobj);
-			self.processImage(fileobj, self.IMG_START);
+	this.processNextImage = function() {
+		if (this.imageFilesToProcess.length) {
+			var fileobj = this.imageFilesToProcess.shift();
+			this.utils.logTimeFromStart('start edit image', true, fileobj);
+			this.setImageEditOptionsFile(fileobj);
+			this.processImage(fileobj, this.IMG_START);
 		} else {
-			self.processImages();
+			this.processImages();
 		}
 	};
 
-	self.processSingleImage = function(fileobj, finishProcess){
-		self.PROCESS_PREVIEWS_ONLY = false;
+	this.processSingleImage = function(fileobj, finishProcess){
+		this.PROCESS_PREVIEWS_ONLY = false;
 		if(finishProcess){
 			fileobj.processSingleImage = false;
-			self.view.unsetImageEditMessage(true, fileobj.preparedFilesIndex);//
-			if (fileobj.img.callback === 'sendNextFile' && self.sender.prepareUpload(true)) {
+			this.view.unsetImageEditMessage(true, fileobj.preparedFilesIndex);//
+			if (fileobj.img.callback === 'sendNextFile' && this.sender.prepareUpload(true)) {
 				window.setTimeout(function () {
-					self.sender.sendNextFile();
+					this.sender.sendNextFile();
 				}, 100);
 			}
 			return;
@@ -129,24 +128,24 @@ function weFileupload_imageEdit_abstract(uploader) {
 
 		if(fileobj){
 			fileobj.processSingleImage = true;
-			self.view.setImageEditMessage(true, fileobj.preparedFilesIndex);
-			self.utils.logTimeFromStart('start edit image', true);
-			self.setImageEditOptionsFile(fileobj);
-			self.processImage(fileobj, self.IMG_START);
+			this.view.setImageEditMessage(true, fileobj.preparedFilesIndex);
+			this.utils.logTimeFromStart('start edit image', true);
+			this.setImageEditOptionsFile(fileobj);
+			this.processImage(fileobj, this.IMG_START);
 		}
 	};
-	
+
 	/*
 	 * reedit a single image or all images using general options applying opts from GUI
 	 *
 	 */
-	self.reeditImage = function (index, general) {
-		var indices = self.getImageEditIndices(index, general, false);
+	this.reeditImage = function (index, general) {
+		var indices = this.getImageEditIndices(index, general, false);
 
 		for(var i = 0; i < indices.length; i++){
-			self.imageFilesToProcess.push(self.sender.preparedFiles[indices[i]]);
+			this.imageFilesToProcess.push(this.sender.preparedFiles[indices[i]]);
 		}
-		self.processImages();
+		this.processImages();
 	};
 
 	/*
@@ -157,113 +156,113 @@ function weFileupload_imageEdit_abstract(uploader) {
 	 * we use this to free disk space when edited images are not valid anymore after changing options
 	 *
 	 */
-	self.uneditImage = function (index, general) {
-		var indices = self.getImageEditIndices(index, general, false);
+	this.uneditImage = function (index, general) {
+		var indices = this.getImageEditIndices(index, general, false);
 		var fileobj;
 
 		for(var i = 0; i < indices.length; i++){
-			fileobj = self.sender.preparedFiles[indices[i]];
+			fileobj = this.sender.preparedFiles[indices[i]];
 			fileobj.dataArray = null;
 			fileobj.dataUrl = null;
 			fileobj.size = fileobj.img.originalSize;
 			fileobj.img.previewImg = null;
 			fileobj.img.fullPrev = null;
 			fileobj.img.actualRotation = 0;
-			self.setImageEditOptionsFile(fileobj); // write actually valid editoptions
-			
+			this.setImageEditOptionsFile(fileobj); // write actually valid editoptions
+
 			fileobj.img.processedOptions = { // reset last edited options
 				doEdit: false,
 				from: 'general',
 				scaleWhat: 'pixel_l',
 				scale: 0,
 				rotate: 0,
-				quality: self.OPTS_QUALITY_NEUTRAL_VAL
+				quality: this.OPTS_QUALITY_NEUTRAL_VAL
 			};
 			fileobj.isEdited = false;
-			self.memorymanagerRegister(fileobj);
+			this.memorymanagerRegister(fileobj);
 		}
 
 		return;
 	};
 
-	self.openImageEditor = function(pos){
+	this.openImageEditor = function(pos){
 		// to be overridden
 	};
 
-	self.processImage = function(fileobj, task) {
+	this.processImage = function(fileobj, task) {
 		if(!fileobj){
-			self.processNextImage();
+			this.processNextImage();
 			return;
 		}
 
 		switch(task) {
-			case self.IMG_START:
-				if(self.PROCESS_PREVIEWS_ONLY && fileobj.img.previewCanvas){
-					self.processImage(fileobj, self.IMG_NEXT);
+			case this.IMG_START:
+				if(this.PROCESS_PREVIEWS_ONLY && fileobj.img.previewCanvas){
+					this.processImage(fileobj, this.IMG_NEXT);
 					return;
 				}
-				self.processimageExtractLandscape(fileobj, self.IMG_LOAD_CANVAS);
+				this.processimageExtractLandscape(fileobj, this.IMG_LOAD_CANVAS);
 				break;
-			case self.IMG_LOAD_CANVAS: // TODO: make IMG_START
+			case this.IMG_LOAD_CANVAS: // TODO: make IMG_START
 				if(!fileobj.img.editOptions.doEdit && fileobj.size > 10485760){ // nothing to edit and image is too big for preview (>10MB)
-					self.processImage(fileobj, self.IMG_NEXT);
+					this.processImage(fileobj, this.IMG_NEXT);
 					return;
 				}
-				self.processimageLoadCanvas(fileobj, fileobj.img.editOptions.doEdit ? self.IMG_EXTRACT_METADATA : self.IMG_MAKE_PREVIEW);
+				this.processimageLoadCanvas(fileobj, fileobj.img.editOptions.doEdit ? this.IMG_EXTRACT_METADATA : this.IMG_MAKE_PREVIEW);
 				break;
-			case self.IMG_EXTRACT_METADATA:
-				self.processimageExtractMetadata(fileobj, self.IMG_SCALE);
+			case this.IMG_EXTRACT_METADATA:
+				this.processimageExtractMetadata(fileobj, this.IMG_SCALE);
 				//self.processimageScale(fileobj, self.IMG_ROTATE);
 				break;
-			case self.IMG_SCALE:
-				self.processimageScale(fileobj, self.IMG_ROTATE);
+			case this.IMG_SCALE:
+				this.processimageScale(fileobj, this.IMG_ROTATE);
 				//self.processimageRotate(fileobj, self.IMG_APPLY_FILTERS);
 				break;
-			case self.IMG_ROTATE:
-				self.processimageRotate(fileobj, self.IMG_APPLY_FILTERS);
+			case this.IMG_ROTATE:
+				this.processimageRotate(fileobj, this.IMG_APPLY_FILTERS);
 				//self.processimageExtractMetadata(fileobj, self.IMG_SCALE);
 				break;
-			case self.IMG_APPLY_FILTERS:
-				self.imageEdit.processimageApplyFilters(fileobj, self.IMG_WRITE_IMAGE);
+			case this.IMG_APPLY_FILTERS:
+				this.imageEdit.processimageApplyFilters(fileobj, this.IMG_WRITE_IMAGE);
 				break;
-			case self.IMG_WRITE_IMAGE:
-				self.processimageWriteImage(fileobj, self.IMG_INSERT_METADATA);
+			case this.IMG_WRITE_IMAGE:
+				this.processimageWriteImage(fileobj, this.IMG_INSERT_METADATA);
 				//self.processimageWriteImage(fileobj, self.IMG_MAKE_PREVIEW);
 				break;
-			case self.IMG_INSERT_METADATA:
-				self.processimagInsertMetadata(fileobj, self.IMG_MAKE_PREVIEW);
+			case this.IMG_INSERT_METADATA:
+				this.processimagInsertMetadata(fileobj, this.IMG_MAKE_PREVIEW);
 				break;
-			case self.IMG_MAKE_PREVIEW:
-				self.processimageMakePreview(fileobj, self.IMG_POSTPROCESS);
+			case this.IMG_MAKE_PREVIEW:
+				this.processimageMakePreview(fileobj, this.IMG_POSTPROCESS);
 				break;
-			case self.IMG_POSTPROCESS:
-				self.processimagePostProcess(fileobj, self.IMG_NEXT);
+			case this.IMG_POSTPROCESS:
+				this.processimagePostProcess(fileobj, this.IMG_NEXT);
 				break;
-			case self.IMG_NEXT:
+			case this.IMG_NEXT:
 			/*falls through*/
 			default:
-				self.processNextImage();
+				this.processNextImage();
 		}
 	};
 
-	self.resetImageEdit = function (fileobj) {
+	this.resetImageEdit = function (fileobj) {
 		fileobj.dataArray = null;
 		fileobj.dataUrl = null;
-		if(self.IS_MEMORY_MANAGMENT){
-			self.memorymanagerRegister(fileobj);
+		if(this.IS_MEMORY_MANAGMENT){
+			this.memorymanagerRegister(fileobj);
 		}
 	};
 
-	self.abstractSetImageEditOptionsGeneral = function (formname) {
-		var form = self.uploader.doc.forms[(formname ? formname : 'we_form')],
+	this.abstractSetImageEditOptionsGeneral = function (formname) {
+		var form = this.uploader.doc.forms[(formname ? formname : 'we_form')],
 			scale = form.elements.fuOpts_scale.value,
 			deg = parseInt(form.elements.fuOpts_rotate.value),
 			quality = parseInt(form.elements.fuOpts_quality.value),
-			opts = self.imageEditOptions;
+			opts = this.imageEditOptions;
 
 		scale = parseInt(scale ? scale : 0);
 
-		if (parseInt(form.elements.fuOpts_doEdit.value) === 1 && (scale || deg || quality !== self.OPTS_QUALITY_NEUTRAL_VAL)) {
+		if (parseInt(form.elements.fuOpts_doEdit.value) === 1 && (scale || deg || quality !== this.OPTS_QUALITY_NEUTRAL_VAL)) {
 			opts.doEdit = true;
 			opts.scaleWhat = form.elements.fuOpts_scaleWhat.value;
 			opts.scale = scale;
@@ -274,20 +273,20 @@ function weFileupload_imageEdit_abstract(uploader) {
 			opts.scaleWhat = 'pixel_l';
 			opts.scale = 0;
 			opts.rotate = 0;
-			opts.quality = self.OPTS_QUALITY_NEUTRAL_VAL;
+			opts.quality = this.OPTS_QUALITY_NEUTRAL_VAL;
 		}
 	};
 
-	self.setImageEditOptionsGeneral = function () {
-		self.abstractSetImageEditOptionsGeneral();
+	this.setImageEditOptionsGeneral = function () {
+		this.abstractSetImageEditOptionsGeneral();
 	};
 
-	self.setImageEditOptionsFile = function (fileobj) {
-		fileobj.img.editOptions = JSON.parse(JSON.stringify(self.imageEditOptions));
+	this.setImageEditOptionsFile = function (fileobj) {
+		fileobj.img.editOptions = JSON.parse(JSON.stringify(this.imageEditOptions));
 		//fileobj.img.editOptions.from = type; // FIXME: what type is this?
 	};
 
-	self.processimageExtractLandscape = function(fileobj, nexttask) {
+	this.processimageExtractLandscape = function(fileobj, nexttask) {
 		if(fileobj.type === 'image/jpeg' && !fileobj.img.isOrientationChecked){
 			var reader = new FileReader(),
 				exif, tags;
@@ -312,16 +311,16 @@ function weFileupload_imageEdit_abstract(uploader) {
 						}
 					}
 				} catch (error) {}
-				self.processImage(fileobj, nexttask);
+				this.processImage(fileobj, nexttask);
 			};
 			reader.readAsArrayBuffer(fileobj.file.slice(0, 128 * 1024));
 		} else {
 			fileobj.img.isOrientationChecked = true;
-			self.processImage(fileobj, nexttask);
+			this.processImage(fileobj, nexttask);
 		}
 	};
 
-	self.processimageLoadCanvas = function(fileobj, nexttask) {
+	this.processimageLoadCanvas = function(fileobj, nexttask) {
 		var reader = new FileReader();
 
 		reader.onload = function() {
@@ -329,79 +328,79 @@ function weFileupload_imageEdit_abstract(uploader) {
 				fileobj.dataUrl = reader.result;
 
 				if(fileobj.img.previewCanvas){ // preview done during earlier editing: directly jump top postprocess
-					self.processimagePostProcess(fileobj, self.IMG_NEXT);
+					this.processimagePostProcess(fileobj, this.IMG_NEXT);
 					return;
 				}
 			}
 
 			fileobj.img.image = new Image();
 			fileobj.img.image.onload = function() {
-				fileobj.img.workingCanvas = self.uploader.doc.createElement('canvas');
-				if(!fileobj.img.image && self.processimageRepeatLoadCanvas < 5){
-					self.processimageRepeatLoadCanvas++;
-					self.processimageLoadCanvas(fileobj, nexttask);
+				fileobj.img.workingCanvas = this.uploader.doc.createElement('canvas');
+				if(!fileobj.img.image && this.processimageRepeatLoadCanvas < 5){
+					this.processimageRepeatLoadCanvas++;
+					this.processimageLoadCanvas(fileobj, nexttask);
 				}
-				self.processimageRepeatLoadCanvas = 0;
+				this.processimageRepeatLoadCanvas = 0;
 				fileobj.img.workingCanvas.width = fileobj.img.image.width;
 				fileobj.img.workingCanvas.height = fileobj.img.image.height;
 				if(!fileobj.img.origWidth || !fileobj.img.origHeight){
 					fileobj.img.origWidth = fileobj.img.image.width;
 					fileobj.img.origHeight = fileobj.img.image.height;
-					self.setImageEditOptionsFile(fileobj); // set editOptions again after orig dimensions are extracted
+					this.setImageEditOptionsFile(fileobj); // set editOptions again after orig dimensions are extracted
 				}
 				fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
 				fileobj.img.image = null;
-				self.utils.logTimeFromStart('canvas loaded');
-				nexttask = self.PROCESS_PREVIEWS_ONLY ? self.IMG_MAKE_PREVIEW : nexttask;
-				self.processImage(fileobj, nexttask);
+				this.utils.logTimeFromStart('canvas loaded');
+				nexttask = this.PROCESS_PREVIEWS_ONLY ? this.IMG_MAKE_PREVIEW : nexttask;
+				this.processImage(fileobj, nexttask);
 			};
 
-			self.view.repaintImageEditMessage(true, true);
+			this.view.repaintImageEditMessage(true, true);
 			fileobj.img.image.src = reader.result;
 		};
 		reader.readAsDataURL(fileobj.file);
 	};
 
-	self.processimageExtractMetadata = function(fileobj, nexttask) {
+	this.processimageExtractMetadata = function(fileobj, nexttask) {
 		switch(fileobj.type){
 			case 'image/jpeg':
 				if(fileobj.img.jpgCustomSegments){
-					self.processImage(fileobj, nexttask);
+					this.processImage(fileobj, nexttask);
 					return;
 				}
-				self.processimageExtractMetadataJPG(fileobj, nexttask);
+				this.processimageExtractMetadataJPG(fileobj, nexttask);
 				break;
 			case 'image/png':
-				self.processimageExtractMetadataPNG(fileobj, nexttask);
+				this.processimageExtractMetadataPNG(fileobj, nexttask);
 				break;
 			default:
-				self.processImage(fileobj, nexttask);
+				this.processImage(fileobj, nexttask);
 		}
 	};
 
-	self.processimageExtractMetadataJPG = function(fileobj, nexttask, complete) {
+	this.processimageExtractMetadataJPG = function(fileobj, nexttask, complete) {
 			var reader = new FileReader();
 			var segments;
 
 			reader.onloadend = function () {
-				self.utils.logTimeFromStart('file read to extract meta');
-				segments = self.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
+				this.utils.logTimeFromStart('file read to extract meta');
+				segments = this.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
 				if(segments === false && !fileobj.img.extractMetaSecondTry){
 					// 128 KB was not enough to reach SOS: we try again reading the whole file
 					fileobj.img.extractMetaSecondTry = true;
-					self.processimageExtractMetadataJPG(fileobj, nexttask, true);
+					this.processimageExtractMetadataJPG(fileobj, nexttask, true);
 				}
 				fileobj.img.jpgCustomSegments = segments;
-				self.utils.logTimeFromStart('meta jpg extracted');
-				self.view.repaintImageEditMessage(true);
+				this.utils.logTimeFromStart('meta jpg extracted');
+				this.view.repaintImageEditMessage(true);
 				if(nexttask){
-					self.processImage(fileobj, nexttask);
+					this.processImage(fileobj, nexttask);
 				}
 			};
 			reader.readAsArrayBuffer((complete ? fileobj.file : fileobj.file.slice(0, 128 * 1024)));
 	};
 
-	self.processimageExtractMetadataPNG = function(fileobj, nexttask) {
+	this.processimageExtractMetadataPNG = function(fileobj, nexttask) {
 		var reader = new FileReader();
 
 		reader.onloadend = function () {
@@ -421,17 +420,17 @@ function weFileupload_imageEdit_abstract(uploader) {
 				WE().t_e('extracting png metadata failed');
 			}
 
-			self.utils.logTimeFromStart('meta png exttracted');
-			self.view.repaintImageEditMessage(true);
-			self.processImage(fileobj, nexttask);
+			this.utils.logTimeFromStart('meta png exttracted');
+			this.view.repaintImageEditMessage(true);
+			this.processImage(fileobj, nexttask);
 		};
 		reader.readAsArrayBuffer(fileobj.file);
 	};
 
-	self.processimageScale = function(fileobj, nexttask){
+	this.processimageScale = function(fileobj, nexttask){
 		if(!fileobj.img.editOptions.scale){
-			self.utils.logTimeFromStart('scaling skipped');
-			self.processImage(fileobj, nexttask);
+			this.utils.logTimeFromStart('scaling skipped');
+			this.processImage(fileobj, nexttask);
 			return; // IMPORTANT!
 		}
 
@@ -440,16 +439,16 @@ function weFileupload_imageEdit_abstract(uploader) {
 		var ratio = scaleWhat === 'pixel_w' ? fileobj.img.editOptions.scale/fileobj.img.workingCanvas.width :
 					fileobj.img.editOptions.scale/fileobj.img.workingCanvas.height;
 		if(ratio >= 1){
-			self.utils.logTimeFromStart('scaling: image smaller than targetsize');
-			self.processImage(fileobj, nexttask); // we do not upscale!
+			this.utils.logTimeFromStart('scaling: image smaller than targetsize');
+			this.processImage(fileobj, nexttask); // we do not upscale!
 			return; // IMPORTANT!
 		}
 
-		var targetCanvas = self.uploader.doc.createElement('canvas');
+		var targetCanvas = this.uploader.doc.createElement('canvas');
 		targetCanvas.width = fileobj.img.workingCanvas.width * ratio;
 		targetCanvas.height = fileobj.img.workingCanvas.height * ratio;
 
-		WE().layout.fileupload.pica.resizeCanvas(fileobj.img.workingCanvas, targetCanvas, self.PICA_CONFIGURATION, function (err) {
+		WE().layout.fileupload.pica.resizeCanvas(fileobj.img.workingCanvas, targetCanvas, this.PICA_CONFIGURATION, function (err) {
 			if(err){
 				WE().t_e('scaling image failed');
 				fileobj.img.editedWidth = 'n.n.';
@@ -461,15 +460,15 @@ function weFileupload_imageEdit_abstract(uploader) {
 				targetCanvas = null;
 			}
 
-			self.utils.logTimeFromStart('scaling done');
+			this.utils.logTimeFromStart('scaling done');
 			fileobj.isEdited = true;
 
-			self.view.repaintImageEditMessage(true);
-			self.processImage(fileobj, nexttask);
+			this.view.repaintImageEditMessage(true);
+			this.processImage(fileobj, nexttask);
 		});
 	};
 
-	self.processimageRotate = function(fileobj, nexttask, preview, degrees, correctPreviewOrientation){
+	this.processimageRotate = function(fileobj, nexttask, preview, degrees, correctPreviewOrientation){
 		var deg = (preview && degrees !== undefined) ? degrees : fileobj.img.editOptions.rotate,
 			target = preview ? 'previewCanvas' : 'workingCanvas';
 
@@ -508,12 +507,12 @@ function weFileupload_imageEdit_abstract(uploader) {
 				cx = -fileobj.img[target].width;
 				break;
 			default:
-				self.utils.logTimeFromStart('rotation skipped');
-				self.processImage(fileobj, nexttask);
+				this.utils.logTimeFromStart('rotation skipped');
+				this.processImage(fileobj, nexttask);
 				return;
 		}
 
-		var targetCanvas = self.uploader.doc.createElement('canvas'),
+		var targetCanvas = this.uploader.doc.createElement('canvas'),
 			ctxTargetCanvas = targetCanvas.getContext("2d");
 			targetCanvas.width = cw;
 			targetCanvas.height = ch;
@@ -536,79 +535,79 @@ function weFileupload_imageEdit_abstract(uploader) {
 		if(target === 'workingCanvas'){
 			fileobj.isEdited = true;
 			fileobj.img.actualRotation = deg;
-			self.utils.logTimeFromStart('rotation done');
-			self.view.repaintImageEditMessage(true);
-			self.processImage(fileobj, nexttask);
+			this.utils.logTimeFromStart('rotation done');
+			this.view.repaintImageEditMessage(true);
+			this.processImage(fileobj, nexttask);
 		}
 	};
 
-	self.processimageApplyFilters = function(fileobj, nexttask){
-		self.processImage(fileobj, nexttask);
+	this.processimageApplyFilters = function(fileobj, nexttask){
+		this.processImage(fileobj, nexttask);
 	};
 
-	self.processimageWriteImage_2 = function(fileobj, nexttask){
+	this.processimageWriteImage_2 = function(fileobj, nexttask){
 		fileobj.img.workingCanvas.toBlob(function (blob) { // DO WE NEED toBlob TO GET UINT8ARRAY?
 															// THIS FN CAUASES PROBLEMS WITH PNG!
 			var reader = new FileReader();
 			reader.onload = function() {
 				fileobj.dataArray = new Uint8Array(reader.result);
-				self.utils.logTimeFromStart('image written');
-				self.processImage(fileobj, nexttask);
+				this.utils.logTimeFromStart('image written');
+				this.processImage(fileobj, nexttask);
 			};
 			reader.readAsArrayBuffer(blob);
 		}, fileobj.type, (fileobj.img.editOptions.quality/100));
 	};
 
-	self.processimageWriteImage = function(fileobj, nexttask){
+	this.processimageWriteImage = function(fileobj, nexttask){
 		/*
 		if(fileobj.type !== 'image/png'){
 			self.processimageWriteImage_2(fileobj, nexttask);
 		}
 		*/
 		fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/90));
-		fileobj.dataArray = self.utils.dataURLToUInt8Array(fileobj.dataUrl);
+		fileobj.dataArray = this.utils.dataURLToUInt8Array(fileobj.dataUrl);
 		//self.jpgGetSegmentsIfExist(fileobj.dataArray, [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
 
-		if(!self.PRESERVE_IMG_DATAURL){
+		if(!this.PRESERVE_IMG_DATAURL){
 			fileobj.dataUrl = null;
 		}
-		fileobj.isEdited = fileobj.img.editOptions.quality < self.OPTS_QUALITY_NEUTRAL_VAL ? true : fileobj.isEdited;
+		fileobj.isEdited = fileobj.img.editOptions.quality < this.OPTS_QUALITY_NEUTRAL_VAL ? true : fileobj.isEdited;
 
-		self.utils.logTimeFromStart('image written fn 2');
-		self.processImage(fileobj, nexttask);
+		this.utils.logTimeFromStart('image written fn 2');
+		this.processImage(fileobj, nexttask);
 	};
 
-	self.processimagInsertMetadata = function(fileobj, nexttask) {
+	this.processimagInsertMetadata = function(fileobj, nexttask) {
 		switch(fileobj.type){
 			case 'image/jpeg':
-				self.processimagInsertMetadataJPG(fileobj, nexttask);
+				this.processimagInsertMetadataJPG(fileobj, nexttask);
 				break;
 			case 'image/png':
-				self.processimagInsertMetadataPNG(fileobj, nexttask);
+				this.processimagInsertMetadataPNG(fileobj, nexttask);
 				break;
 			default:
-				self.utils.logTimeFromStart('no metadata to reinsert');
-				self.processImage(fileobj, nexttask);
+				this.utils.logTimeFromStart('no metadata to reinsert');
+				this.processImage(fileobj, nexttask);
 		}
 	};
 
-	self.processimagInsertMetadataJPG = function(fileobj, nexttask) {
+	this.processimagInsertMetadataJPG = function(fileobj, nexttask) {
 		if(fileobj.img.jpgCustomSegments) {
-			fileobj.dataArray = self.jpgInsertSegment(fileobj.dataArray, fileobj.img.jpgCustomSegments);
+			fileobj.dataArray = this.jpgInsertSegment(fileobj.dataArray, fileobj.img.jpgCustomSegments);
 			fileobj.size = fileobj.dataArray.length;
-			self.view.repaintImageEditMessage(true);
+			this.view.repaintImageEditMessage(true);
 		}
 
-		self.utils.logTimeFromStart('metadata reinserted');
-		self.processImage(fileobj, nexttask);
+		this.utils.logTimeFromStart('metadata reinserted');
+		this.processImage(fileobj, nexttask);
 	};
 
-	self.processimagInsertMetadataPNG = function(fileobj, nexttask) {
-		self.utils.logTimeFromStart('metadata reinsert skipped');
+	this.processimagInsertMetadataPNG = function(fileobj, nexttask) {
+		this.utils.logTimeFromStart('metadata reinsert skipped');
 		//self.processImage(fileobj, nexttask);
 
 		if(fileobj.img.pngTextChunks && fileobj.img.pngTextChunks.length){
-			fileobj.dataArray = self.pngReinsertTextchunks(fileobj.dataArray, fileobj.img.pngTextChunks);
+			fileobj.dataArray = this.pngReinsertTextchunks(fileobj.dataArray, fileobj.img.pngTextChunks);
 
 			/*
 			var combinedChuks = [];
@@ -639,37 +638,37 @@ function weFileupload_imageEdit_abstract(uploader) {
 			fileobj.dataArray = newUInt8Array ? newUInt8Array : fileobj.dataArray;
 			*/
 
-			self.view.repaintImageEditMessage(true);
+			this.view.repaintImageEditMessage(true);
 		}
 
-		self.utils.logTimeFromStart('metadata reinserted');
-		self.processImage(fileobj, nexttask);
+		this.utils.logTimeFromStart('metadata reinserted');
+		this.processImage(fileobj, nexttask);
 	};
 
-	self.processimageMakePreview = function(fileobj, nexttask){
+	this.processimageMakePreview = function(fileobj, nexttask){
 		if(fileobj && fileobj.img.workingCanvas){
 			if(fileobj.img.previewCanvas){
-				self.processimageRotatePreview(fileobj, -1, nexttask);
+				this.processimageRotatePreview(fileobj, -1, nexttask);
 				return;
 			}
 
-			var tmpCanvas = self.uploader.doc.createElement("canvas"),
+			var tmpCanvas = this.uploader.doc.createElement("canvas"),
 				ctxTmpCanvas,
-				previewCanvas = self.uploader.doc.createElement("canvas"),
+				previewCanvas = this.uploader.doc.createElement("canvas"),
 				clone = null,
 				prevWidth, prevHeight;
 
-			if(fileobj.img.workingCanvas.width < self.view.previewSize && fileobj.img.workingCanvas.height < self.view.previewSize){
+			if(fileobj.img.workingCanvas.width < this.view.previewSize && fileobj.img.workingCanvas.height < this.view.previewSize){
 				prevHeight = fileobj.img.workingCanvas.width;
 				prevWidth = fileobj.img.workingCanvas.height;
 			} else {
 				if(fileobj.img.workingCanvas.width > fileobj.img.workingCanvas.height){
-					prevWidth = self.view.previewSize;
-					prevHeight = Math.round(self.view.previewSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height);
+					prevWidth = this.view.previewSize;
+					prevHeight = Math.round(this.view.previewSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height);
 
 				} else {
-					prevHeight = self.view.previewSize;
-					prevWidth = Math.round(self.view.previewSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width);
+					prevHeight = this.view.previewSize;
+					prevWidth = Math.round(this.view.previewSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width);
 				}
 			}
 
@@ -694,42 +693,42 @@ function weFileupload_imageEdit_abstract(uploader) {
 			fileobj.img.previewRotation = fileobj.img.actualRotation;
 
 			if(fileobj.img.orientationValue){
-				self.processimageRotate(fileobj, -1, true, 0, true);
+				this.processimageRotate(fileobj, -1, true, 0, true);
 			}
 
 			tmpCanvas = ctxTmpCanvas = previewCanvas = clone = null;
 
-			self.utils.logTimeFromStart('preview done');
+			this.utils.logTimeFromStart('preview done');
 		}
 
-		self.processImage(fileobj, nexttask);
+		this.processImage(fileobj, nexttask);
 		return;
 	};
 
-	self.processimageRotatePreview = function(fileobj, deg, nexttask){
+	this.processimageRotatePreview = function(fileobj, deg, nexttask){
 			if(fileobj && fileobj.img.previewCanvas){
 				var targetRotation = deg === -1 ? fileobj.img.actualRotation : deg;
 				var realRotation = (targetRotation - fileobj.img.previewRotation + 360)  % 360;
 
-				self.processimageRotate(fileobj, -1, true, realRotation);
-				self.view.replacePreviewCanvas(fileobj);
+				this.processimageRotate(fileobj, -1, true, realRotation);
+				this.view.replacePreviewCanvas(fileobj);
 				fileobj.img.previewRotation = targetRotation;
 			}
 
 			if(!nexttask){
 				return;
 			}
-			self.processImage(fileobj, nexttask);
+			this.processImage(fileobj, nexttask);
 	};
 
-	self.processimagePostProcess = function(fileobj, nexttask){
+	this.processimagePostProcess = function(fileobj, nexttask){
 		fileobj.img.originalSize = fileobj.file.size;
 
 		if(fileobj.dataArray && fileobj.isEdited){
 			fileobj.size = fileobj.dataArray.length;
 		}
 		fileobj.dataArray = null; // we recompute it from dataUrl and metas while uploading
-		if(false && self.PROCESS_PREVIEWS_ONLY){
+		if(false && this.PROCESS_PREVIEWS_ONLY){
 			fileobj.dataUrl = null;
 		}
 
@@ -740,40 +739,40 @@ function weFileupload_imageEdit_abstract(uploader) {
 		fileobj.img.fullPrev = null;
 
 		fileobj.img.processedOptions = JSON.parse(JSON.stringify(fileobj.img.editOptions));
-		fileobj.totalParts = Math.ceil(fileobj.size / self.sender.chunkSize);
-		fileobj.lastChunkSize = fileobj.size % self.sender.chunkSize;
-		self.sender.preparedFiles[fileobj.preparedFilesIndex] = fileobj; // do we need this?
-		self.view.repaintEntry(fileobj);
-		self.view.repaintImageEditMessage();
-		self.utils.logTimeFromStart('processing finished', false, fileobj);
+		fileobj.totalParts = Math.ceil(fileobj.size / this.sender.chunkSize);
+		fileobj.lastChunkSize = fileobj.size % this.sender.chunkSize;
+		this.sender.preparedFiles[fileobj.preparedFilesIndex] = fileobj; // do we need this?
+		this.view.repaintEntry(fileobj);
+		this.view.repaintImageEditMessage();
+		this.utils.logTimeFromStart('processing finished', false, fileobj);
 
-		if(false && self.IS_MEMORY_MANAGMENT){
-			self.memorymanagerRegister(fileobj);
-			if(self.memorymanagerIsOverflow()){
-				self.memorymanagerEmptySpace();
+		if(false && this.IS_MEMORY_MANAGMENT){
+			this.memorymanagerRegister(fileobj);
+			if(this.memorymanagerIsOverflow()){
+				this.memorymanagerEmptySpace();
 				//win.console.log('emptied space for this file');
 
-				if(self.imageFilesToProcess.length){ //
-					if(fileobj.img.editOptions.doEdit && self.memorymanagerIsUneditedPreviewToDelete){
+				if(this.imageFilesToProcess.length){ //
+					if(fileobj.img.editOptions.doEdit && this.memorymanagerIsUneditedPreviewToDelete){
 						//win.console.log('dataURLs of unedited where deleted: go on');
 					} else {
 						//win.console.log('processing images must be stopped: we will make previews if needed and then stop');
-						self.PROCESS_PREVIEWS_ONLY = true;
+						this.PROCESS_PREVIEWS_ONLY = true;
 					}
 				}
 			}
 		}
 
 		if(fileobj.processSingleImage){
-			self.processSingleImage(fileobj, true);
+			this.processSingleImage(fileobj, true);
 		} else {
-			self.processImage(fileobj, nexttask);
+			this.processImage(fileobj, nexttask);
 		}
 	};
 
-	self.memorymanagerRegister = function(fileobj){
-		var m = self.memoryManagement;
-		self.memorymanagerUnregister(fileobj);
+	this.memorymanagerRegister = function(fileobj){
+		var m = this.memoryManagement;
+		this.memorymanagerUnregister(fileobj);
 
 		if(fileobj.dataArray || fileobj.dataUrl){
 			var size = parseInt((fileobj.dataArray ? fileobj.dataArray.length : 0)) + parseInt((fileobj.dataUrl ? fileobj.dataUrl.length : 0));
@@ -785,8 +784,8 @@ function weFileupload_imageEdit_abstract(uploader) {
 		//win.console.log('register', m, sender.preparedFiles);
 	};
 
-	self.memorymanagerUnregister = function(fileobj){
-		var m = self.memoryManagement, i;
+	this.memorymanagerUnregister = function(fileobj){
+		var m = this.memoryManagement, i;
 
 		if(m.registeredValues['o_' + fileobj.index]){
 			m.registeredSum -= m.registeredValues['o_' + fileobj.index];
@@ -802,17 +801,17 @@ function weFileupload_imageEdit_abstract(uploader) {
 		//win.console.log('unregister', m, sender.preparedFiles);
 	};
 
-	self.memorymanagerReregisterAll = function(){
-		self.memorymanagerReset();
+	this.memorymanagerReregisterAll = function(){
+		this.memorymanagerReset();
 
-		for(var i = 0; i < self.sender.preparedFiles.length; i++){
-			self.memorymanagerRegister(self.sender.preparedFiles[i]);
+		for(var i = 0; i < this.sender.preparedFiles.length; i++){
+			this.memorymanagerRegister(this.sender.preparedFiles[i]);
 		}
 		//win.console.log('register all', self.memoryManagement, sender.preparedFiles);
 	};
 
-	self.memorymanagerReset = function(){
-		self.memoryManagement = {
+	this.memorymanagerReset = function(){
+		this.memoryManagement = {
 			registeredSum: 0,
 			registeredValues: {},
 			queueEdited: [],
@@ -820,31 +819,31 @@ function weFileupload_imageEdit_abstract(uploader) {
 		};
 	};
 
-	self.memorymanagerIsOverflow = function(){
-		return self.memoryManagement.registeredSum > self.MEMORY_LIMIT;
+	this.memorymanagerIsOverflow = function(){
+		return this.memoryManagement.registeredSum > this.MEMORY_LIMIT;
 	};
 
-	self.memorymanagerIsUneditedPreviewToDelete = function(){
-		return self.memoryManagement.queueNotEdited.length > 0;
+	this.memorymanagerIsUneditedPreviewToDelete = function(){
+		return this.memoryManagement.queueNotEdited.length > 0;
 	};
 
-	self.memorymanagerEmptySpace = function(){
-		var m = self.memoryManagement,
+	this.memorymanagerEmptySpace = function(){
+		var m = this.memoryManagement,
 			fileobj, index;
 
-		while((m.queueEdited.length || m.queueNotEdited.length) && m.registeredSum > self.MEMORY_LIMIT){
+		while((m.queueEdited.length || m.queueNotEdited.length) && m.registeredSum > this.MEMORY_LIMIT){
 			index = m.queueNotEdited.length ? m.queueNotEdited.shift() : m.queueEdited.shift();
-			fileobj = self.sender.preparedFiles[index];
+			fileobj = this.sender.preparedFiles[index];
 
-			self.uneditImage(fileobj.index);
-			self.view.setEditStatus('', fileobj.index);
+			this.uneditImage(fileobj.index);
+			this.view.setEditStatus('', fileobj.index);
 		}
 	};
 
-	self.jpgInsertSegment = function (uint8array, exifSegment) {
-		if(uint8array[0] == 255 && uint8array[1] == 216 && uint8array[2] == 255 && uint8array[3] == 224){ // type=jpg
+	this.jpgInsertSegment = function (uint8array, exifSegment) {
+		if(uint8array[0] === 255 && uint8array[1] === 216 && uint8array[2] === 255 && uint8array[3] === 224){ // type=jpg
 			var pos = 0;
-			if(!Uint8Array.prototype.indexOf){ // IE11
+			if(!uint8array.prototype.indexOf){ // IE11
 				for(var i = 4; i < uint8array.length; i++){
 					if(uint8array[i] === 255){
 						pos = i;
@@ -858,24 +857,24 @@ function weFileupload_imageEdit_abstract(uploader) {
 			var head = uint8array.subarray(0, pos),
 				segments = uint8array.subarray(pos);
 
-			return self.utils.concatTypedArrays(Uint8Array, [head, exifSegment, segments]);
+			return this.utils.concatTypedArrays(uint8array, [head, exifSegment, segments]);
 		}
 	};
 
-	self.jpgGetExifSegment = function (uint8array){ // unused?
-		return self.jpgGetSegment(uint8array, 225);
+	this.jpgGetExifSegment = function (uint8array){ // unused?
+		return this.jpgGetSegment(uint8array, 225);
 	};
 
 	// use this to extract a certain segment: not intended to be used several times in sequence
-	self.jpgGetSegment = function (uint8array, marker) {
+	this.jpgGetSegment = function (uint8array, marker) {
 		var head = 0;
 
 		while (head < uint8array.length) {
-			if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+			if (uint8array[head] === 255 && uint8array[head + 1] === 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
 				break;
 			}
 
-			if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+			if (uint8array[head] === 255 && uint8array[head + 1] === 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 				head += 2;
 			} else {
 				var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -892,18 +891,18 @@ function weFileupload_imageEdit_abstract(uploader) {
 		return false;
 	};
 
-	self.jpgGetAllSegmentsUpToSOS = function(uint8array) { // unused?
+	this.jpgGetAllSegmentsUpToSOS = function(uint8array) { // unused?
 		var head = 0,
 			segments = {},
 			order = [];
 
 		while (head < uint8array.length) {
 			// each segment starts with 255 (FF) and its segment marker
-			if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // 218 (DA): SOS = Start of Scan = image data (canvas works on)
+			if (uint8array[head] === 255 && uint8array[head + 1] === 218){ // 218 (DA): SOS = Start of Scan = image data (canvas works on)
 				//win.console.log('found SOS at pos', head, segments);
 				break;
 			}
-			if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+			if (uint8array[head] === 255 && uint8array[head + 1] === 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 				head += 2;
 			} else {
 				var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -918,7 +917,7 @@ function weFileupload_imageEdit_abstract(uploader) {
 		return {order: order, segments: segments};
 	};
 
-	self.jpgGetSegmentsIfExist = function (uint8array, segments, concat) {
+	this.jpgGetSegmentsIfExist = function (uint8array, segments, concat) {
 		var head = 0,
 			searchObj = {},
 			segmentsArr = [],
@@ -930,12 +929,12 @@ function weFileupload_imageEdit_abstract(uploader) {
 		}
 
 		while (head < uint8array.length) {
-			if (uint8array[head] == 255 && uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+			if (uint8array[head] === 255 && uint8array[head + 1] === 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
 				SOSfound = true;
 				break;
 			}
 
-			if (uint8array[head] == 255 && uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+			if (uint8array[head] === 255 && uint8array[head + 1] === 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
 				head += 2;
 			} else {
 				var length = uint8array[head + 2] * 256 + uint8array[head + 3],
@@ -960,10 +959,10 @@ function weFileupload_imageEdit_abstract(uploader) {
 			return false;
 		}
 
-		return concat ? self.utils.concatTypedArrays(Uint8Array, segmentsArr) : segmentsArr;
+		return concat ? this.utils.concatTypedArrays(Uint8Array, segmentsArr) : segmentsArr;
 	};
 
-	self.pngReinsertTextchunks = function(dataArray, pngTextChunks){
+	this.pngReinsertTextchunks = function(dataArray, pngTextChunks){
 		var combinedChunks = [];
 		try{
 			var chunks = WE().layout.fileupload.extractChunks(dataArray);
@@ -993,28 +992,26 @@ function weFileupload_imageEdit_abstract(uploader) {
 	};
 }
 
-function weFileupload_imageEdit_base(uploader) {
-	var self = this;
-	weFileupload_imageEdit_abstract.call(self, uploader);
+function Fileupload_imageEdit_base(uploader) {
+	Fileupload_imageEdit_abstract.call(this, uploader);
 
-	self.uploader = uploader;
+	this.uploader = uploader;
 }
-weFileupload_imageEdit_base.prototype = Object.create(weFileupload_imageEdit_abstract.prototype);
-weFileupload_imageEdit_base.prototype.constructor = weFileupload_imageEdit_base;
+Fileupload_imageEdit_base.prototype = Object.create(Fileupload_imageEdit_abstract.prototype);
+Fileupload_imageEdit_base.prototype.constructor = Fileupload_imageEdit_base;
 
-function weFileupload_imageEdit_bindoc(uploader) {
-	var self = this;
-	weFileupload_imageEdit_abstract.call(self, uploader);
+function Fileupload_imageEdit_bindoc(uploader) {
+	Fileupload_imageEdit_abstract.call(this, uploader);
 
-	self.uploader = uploader;
+	this.uploader = uploader;
 
-	self.setImageEditOptionsFile = function () {
-		self.setImageEditOptionsGeneral();
-		if(self.sender.preparedFiles.length){
-			var fileobj = self.sender.preparedFiles[0];
+	this.setImageEditOptionsFile = function () {
+		this.setImageEditOptionsGeneral();
+		if(this.sender.preparedFiles.length){
+			var fileobj = this.sender.preparedFiles[0];
 
-			fileobj.img.editOptions = JSON.parse(JSON.stringify(self.imageEditOptions));
-			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : self.OPTS_QUALITY_NEUTRAL_VAL;
+			fileobj.img.editOptions = JSON.parse(JSON.stringify(this.imageEditOptions));
+			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : this.OPTS_QUALITY_NEUTRAL_VAL;
 			fileobj.img.editOptions.from = 'general';
 
 			if(fileobj.img.editOptions.rotate % 180 === 90 && fileobj.img.editOptions.scaleWhat !== 'pixel_l'){
@@ -1032,39 +1029,38 @@ function weFileupload_imageEdit_bindoc(uploader) {
 				fileobj.img.tooSmallToScale = false;
 			}
 
-			fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scale || fileobj.img.editOptions.rotate || (fileobj.img.editOptions.quality !== self.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
+			fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scale || fileobj.img.editOptions.rotate || (fileobj.img.editOptions.quality !== this.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
 		}
 	};
 
-	self.getImageEditIndices = function(pos, general){
-		return self.sender.preparedFiles.length ? [0] : [];
+	this.getImageEditIndices = function(pos, general){
+		return this.sender.preparedFiles.length ? [0] : [];
 	};
 }
-weFileupload_imageEdit_bindoc.prototype = Object.create(weFileupload_imageEdit_abstract.prototype);
-weFileupload_imageEdit_bindoc.prototype.constructor = weFileupload_imageEdit_bindoc;
+Fileupload_imageEdit_bindoc.prototype = Object.create(Fileupload_imageEdit_abstract.prototype);
+Fileupload_imageEdit_bindoc.prototype.constructor = Fileupload_imageEdit_bindoc;
 
-function weFileupload_imageEdit_import(uploader) {
-	var self = this;
-	weFileupload_imageEdit_abstract.call(self, uploader);
+function Fileupload_imageEdit_import(uploader) {
+	Fileupload_imageEdit_abstract.call(this, uploader);
 
-	self.PRESERVE_IMG_DATAURL = true;
-	self.IS_MEMORY_MANAGMENT = true;
-	self.isImageEditActive = true;
+	this.PRESERVE_IMG_DATAURL = true;
+	this.IS_MEMORY_MANAGMENT = true;
+	this.isImageEditActive = true;
 
-	self.setImageEditOptionsFile = function (fileobj, general) {
-		var indices = self.getImageEditIndices(general ? -1 : fileobj.index, general);
+	this.setImageEditOptionsFile = function (fileobj, general) {
+		var indices = this.getImageEditIndices(general ? -1 : fileobj.index, general);
 
 		// first global editOptiona are read out
-		self.setImageEditOptionsGeneral();
+		this.setImageEditOptionsGeneral();
 
 		for(var i = 0; i < indices.length; i++){
-			fileobj = self.sender.preparedFiles[indices[i]];
-			var form = self.uploader.doc.getElementById('form_editOpts_' + fileobj.index);
+			fileobj = this.sender.preparedFiles[indices[i]];
+			var form = this.uploader.doc.getElementById('form_editOpts_' + fileobj.index);
 
-			fileobj.img.editOptions = JSON.parse(JSON.stringify(self.imageEditOptions));
+			fileobj.img.editOptions = JSON.parse(JSON.stringify(this.imageEditOptions));
 
 			// reset quality to neutral for all images but jpeg
-			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : self.OPTS_QUALITY_NEUTRAL_VAL;
+			fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : this.OPTS_QUALITY_NEUTRAL_VAL;
 
 			// we sync general rotation to entries, thus fuOpts_rotate on entries is allways actual: take rotation from there
 			if(parseInt(form.elements.fuOpts_rotate.value) === -1){ // initial value when entry is just added
@@ -1088,29 +1084,29 @@ function weFileupload_imageEdit_import(uploader) {
 				fileobj.img.tooSmallToScale = false;
 			}
 
-			fileobj.img.editOptions.doEdit = parseInt(fileobj.img.editOptions.scale) || fileobj.img.editOptions.rotate || (parseInt(fileobj.img.editOptions.quality) !== self.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
+			fileobj.img.editOptions.doEdit = parseInt(fileobj.img.editOptions.scale) || fileobj.img.editOptions.rotate || (parseInt(fileobj.img.editOptions.quality) !== this.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
 		}
 	};
 
-	self.getImageEditIndices = function(index, general, formposition){
+	this.getImageEditIndices = function(index, general, formposition){
 		var indices = [],
 			forms, i;
 
 		if(general){
-			forms = self.uploader.doc.getElementsByName('form_editOpts');
+			forms = this.uploader.doc.getElementsByName('form_editOpts');
 			for(i = 0; i < forms.length; i++){
 				index = forms[i].getAttribute('data-index');
-				if (self.sender.preparedFiles[index] && self.EDITABLE_CONTENTTYPES.indexOf(self.sender.preparedFiles[index].type) !== -1 &&
+				if (this.sender.preparedFiles[index] && this.EDITABLE_CONTENTTYPES.indexOf(this.sender.preparedFiles[index].type) !== -1 &&
 								//!forms[i].elements.fuOpts_useCustomOpts.checked &&
-								!self.sender.preparedFiles[index].isUploadStarted) {
+								!this.sender.preparedFiles[index].isUploadStarted) {
 					indices.push(formposition ? i : index);
 				}
 			}
-		} else if (index !== undefined && index > -1 && self.sender.preparedFiles[index] &&
-						self.EDITABLE_CONTENTTYPES.indexOf(self.sender.preparedFiles[index].type) !== -1) {
+		} else if (index !== undefined && index > -1 && this.sender.preparedFiles[index] &&
+						this.EDITABLE_CONTENTTYPES.indexOf(this.sender.preparedFiles[index].type) !== -1) {
 			indices.push(index);
 			if(formposition){
-				forms = self.uploader.doc.getElementsByName('form_editOpts');
+				forms = this.uploader.doc.getElementsByName('form_editOpts');
 				for(i = 0; i < forms.length; i++){
 					if(forms[i].getAttribute('data-index') == index){
 						return [index];
@@ -1122,5 +1118,5 @@ function weFileupload_imageEdit_import(uploader) {
 		return indices;
 	};
 }
-weFileupload_imageEdit_import.prototype = Object.create(weFileupload_imageEdit_abstract.prototype);
-weFileupload_imageEdit_import.prototype.constructor = weFileupload_imageEdit_import;
+Fileupload_imageEdit_import.prototype = Object.create(Fileupload_imageEdit_abstract.prototype);
+Fileupload_imageEdit_import.prototype.constructor = Fileupload_imageEdit_import;

@@ -24,32 +24,31 @@
  */
 'use strict';
 
-function weFileupload_utils_abstract(uploader) {
-	var self = this;
-	self.uploader = uploader;
+function Fileupload_utils_abstract(uploader) {
+	this.uploader = uploader;
 
-	self.init = function (conf) {
-		self.controller = self.uploader.controller; // on init all components are initialized
-		self.sender = self.uploader.sender;
-		self.view = self.uploader.view;
-		self.imageEdit = self.uploader.imageEdit;
-		self.init_sub(conf);
+	this.init = function (conf) {
+		this.controller = this.uploader.controller; // on init all components are initialized
+		this.sender = this.uploader.sender;
+		this.view = this.uploader.view;
+		this.imageEdit = this.uploader.imageEdit;
+		this.init_sub(conf);
 	};
 
-	self.init_sub = function () {
+	this.init_sub = function () {
 		// to be overridden
 	};
 
-	self.logTimeFromStart = function(text, resetStart, more){
+	this.logTimeFromStart = function(text, resetStart, more){
 		if(uploader.debug){
 			var date = new Date();
 
-			self.start = resetStart ? date.getTime() : self.start;
-			self.uploader.win.console.log((text ? text : ''), (date.getTime() - self.start)/1000, more ? more : '');
+			this.start = resetStart ? date.getTime() : this.start;
+			this.uploader.win.console.log((text ? text : ''), (date.getTime() - this.start)/1000, more ? more : '');
 		}
 	};
 
-	self.containsFiles = function (arr) {
+	this.containsFiles = function (arr) {
 		for (var i = 0; i < arr.length; i++) {
 			if (typeof arr[i] === 'object' && arr[i] !== null) {
 				return true;
@@ -58,7 +57,7 @@ function weFileupload_utils_abstract(uploader) {
 		return false;
 	};
 
-	self.contains = function (a, obj) {
+	this.contains = function (a, obj) {
 		var i = a.length;
 		while (i--) {
 			if (a[i] !== null && a[i].file.name === obj.name) {
@@ -69,10 +68,10 @@ function weFileupload_utils_abstract(uploader) {
 		return false;
 	};
 
-	self.checkFileType = function (type, name) {
+	this.checkFileType = function (type, name) {
 		var n = name || '',
 			ext = n.split('.').pop().toLowerCase(),
-			tc = self.sender.typeCondition,
+			tc = this.sender.typeCondition,
 			typeGroup = type.split('/').shift() + '/*';
 
 		ext = ext ? '.' + ext : '';
@@ -107,15 +106,15 @@ function weFileupload_utils_abstract(uploader) {
 		return 1; // it's not forbidden and there are no explicitly aloud mine/extensions
 	};
 
-	self.computeSize = function (size) {
+	this.computeSize = function (size) {
 		return (size / 1024 > 1023 ? ((size / 1024) / 1024).toFixed(1) + ' MB' : (size / 1024).toFixed(1) + ' KB');
 	};
 
-	self.dataURLToUInt8Array = function (dataURL) {
+	this.dataURLToUInt8Array = function (dataURL) {
 		var BASE64_MARKER = ';base64,',
 			parts = dataURL.split(BASE64_MARKER),
 			//contentType = parts[0].split(':')[1],
-			raw = self.uploader.win.atob(parts[1]),
+			raw = this.uploader.win.atob(parts[1]),
 			rawLength = raw.length,
 			uInt8Array = new Uint8Array(rawLength);
 
@@ -127,7 +126,7 @@ function weFileupload_utils_abstract(uploader) {
 		//return new Blob([uInt8Array], {type: contentType});
 	};
 
-	self.concatTypedArrays = function (resultConstructor, arrays) {
+	this.concatTypedArrays = function (resultConstructor, arrays) {
 		var size = 0, i,
 			pos = 0;
 
@@ -146,28 +145,23 @@ function weFileupload_utils_abstract(uploader) {
 	};
 }
 
-function weFileupload_utils_base(uploader) {
-	var self = this;
-	weFileupload_utils_abstract.call(self, uploader);
-
-	self.uploader = uploader;
+function Fileupload_utils_base(uploader) {
+	Fileupload_utils_abstract.call(this, uploader);
+	this.uploader = uploader;
 }
-weFileupload_utils_base.prototype = Object.create(weFileupload_utils_abstract.prototype);
-weFileupload_utils_base.prototype.constructor = weFileupload_utils_base;
+Fileupload_utils_base.prototype = Object.create(Fileupload_utils_abstract.prototype);
+Fileupload_utils_base.prototype.constructor = Fileupload_utils_base;
 
-function weFileupload_utils_bindoc(uploader) {
-	var self = this;
-	weFileupload_utils_abstract.call(self, uploader);
-
-	self.uploader = uploader;
+function Fileupload_utils_bindoc(uploader) {
+	Fileupload_utils_abstract.call(this, uploader);
+	this.uploader = uploader;
 }
-weFileupload_utils_bindoc.prototype = Object.create(weFileupload_utils_abstract.prototype);
-weFileupload_utils_bindoc.prototype.constructor = weFileupload_utils_bindoc;
+Fileupload_utils_bindoc.prototype = Object.create(Fileupload_utils_abstract.prototype);
+Fileupload_utils_bindoc.prototype.constructor = Fileupload_utils_bindoc;
 
-function weFileupload_utils_import(uploader) {
-	var self = this;
-	weFileupload_utils_abstract.call(self, uploader);
+function Fileupload_utils_import(uploader) {
+	Fileupload_utils_abstract.call(this, uploader);
 }
-weFileupload_utils_import.prototype = Object.create(weFileupload_utils_abstract.prototype);
-weFileupload_utils_import.prototype.constructor = weFileupload_utils_import;
+Fileupload_utils_import.prototype = Object.create(Fileupload_utils_abstract.prototype);
+Fileupload_utils_import.prototype.constructor = Fileupload_utils_import;
 

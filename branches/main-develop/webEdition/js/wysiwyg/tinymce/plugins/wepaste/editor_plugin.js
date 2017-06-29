@@ -14,7 +14,7 @@ function removeClasses(match, g1) {
 		return '';
 	}
 
-	var cls = grep(explode(g1.replace(/^(["'])(.*)\1$/, "$2"), " "),
+	var cls = tinymce.grep(tinymce.explode(g1.replace(/^(["'])(.*)\1$/, "$2"), " "),
 		function (v) {
 			return (/^(?!mso)/i.test(v));
 		}
@@ -413,7 +413,7 @@ function block(e) {
 		_preProcess: function (pl, o) {
 			var ed = this.editor,
 				h = o.content,
-				grep = tinymce.grep,
+				//grep = tinymce.grep,
 				explode = tinymce.explode,
 				trim = tinymce.trim,
 				len, stripClass;

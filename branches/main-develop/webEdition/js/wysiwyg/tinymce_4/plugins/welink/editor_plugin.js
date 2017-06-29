@@ -6,7 +6,7 @@
 			this.editor = a;
 
 			a.addCommand("mceWelink", function (ui, dropID) {
-				var dropID = dropID || 0;
+				dropID = dropID || 0;
 
 				a.isWeLinkInitialized = false;
 				var c = a.selection;
