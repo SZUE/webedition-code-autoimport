@@ -599,7 +599,9 @@ function rpc(a, b, c, d, e, wid, path) {
 function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	var docIFrm, iFrmScr, doc;
 	var oInline = document.getElementById(sObjId + '_inline');
-
+	if (!oInline) {//currently happens on add of notes
+		return;
+	}
 	oInline.style.display = "block";
 
 	switch (sType) {

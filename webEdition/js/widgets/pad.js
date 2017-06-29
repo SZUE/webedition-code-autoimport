@@ -37,19 +37,15 @@ var _oCsv_,
 	_ttlB64Esc = encodeURIComponent(window.btoa(widget.sTb));
 
 function weEntity2char(weString) {
-	weString = weString.replace('&lt;', '<');
-	weString = weString.replace('&gt;', '>');
-	return weString;
+	return weString.replace('&lt;', '<').replace('&gt;', '>');
 }
 
 function weChar2entity(weString) {
-	weString = weString.replace('<', '&lt;');
-	weString = weString.replace('>', '&gt;');
-	return weString;
+	return weString.replace('<', '&lt;').replace('>', '&gt;');
 }
 
 function getCls() {
-	return (window.prefs ? opener.document : window.parent.document).getElementById(widget.sObjId + '_cls').value;
+	return WE().layout.cockpitFrame.document.getElementById(widget.sObjId + '_cls').value;
 }
 // displays the note dialog on click on a note
 function selectNote(id) {
