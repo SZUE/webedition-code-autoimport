@@ -473,6 +473,7 @@ var WebEdition = {
 				case 'we/bannerFolder':
 				case 'folder':
 					return simplepre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
+				case 'we/thumb':
 				case  'image/*':
 					return pre + '<i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case 'text/js':
@@ -566,7 +567,8 @@ var WebEdition = {
 					return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
 				case 'settings':
 					return simplepre + '<i class="fa fa-list fa-stack-2x we-color"></i>' + post;
-
+				case 'we/doctype':
+					return pre + '<i class="fa fa-flask fa-stack-2x ' + contentType + '"></i>' + post;
 				default:
 					return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 			}

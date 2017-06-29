@@ -75,7 +75,6 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-		$hiddens = ['cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0)];
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
@@ -115,7 +114,6 @@ abstract class we_tool_frames extends we_modules_frame{
 		$hiddens = ['cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
 		];
 
 		return $this->View->getCommonHiddens($hiddens) .

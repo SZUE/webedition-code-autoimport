@@ -164,7 +164,6 @@ class we_search_frames extends we_modules_frame{
 		return $this->View->getCommonHiddens(['cmd' => '',
 				'pnt' => 'edbody',
 				'tabnr' => $tabNr,
-				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
 			]) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
 			we_html_element::htmlDiv(['id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')], $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .

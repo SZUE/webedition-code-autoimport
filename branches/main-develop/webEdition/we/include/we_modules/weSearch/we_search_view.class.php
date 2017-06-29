@@ -1441,7 +1441,6 @@ class we_search_view extends we_modules_view{
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
 				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''),
-				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
 		]);
 	}
 

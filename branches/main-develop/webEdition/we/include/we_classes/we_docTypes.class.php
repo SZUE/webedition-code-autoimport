@@ -195,7 +195,7 @@ class we_docTypes extends we_contents_base{
 	 * @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
 	 * @return string
 	 */
-	private function formDocTypes2($arrHide = []){
+	private function formDocTypes2(){
 		$vals = [];
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
@@ -203,9 +203,6 @@ class we_docTypes extends we_contents_base{
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
 			$t = $this->DB_WE->f('DocType');
-			if(in_array($t, $arrHide)){
-				continue;
-			}
 			$vals[$v] = $t;
 		}
 		return we_html_tools::htmlSelect("DocTypes", $vals, 8, $this->ID, false, ['style' => "width:328px", 'onchange' => 'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)']);

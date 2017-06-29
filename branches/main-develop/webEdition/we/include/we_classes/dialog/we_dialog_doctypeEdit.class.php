@@ -83,6 +83,8 @@ abstract class we_dialog_doctypeEdit{
 						if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType LIMIT 1'))){
 							$we_doc->initByID($id, DOC_TYPES_TABLE);
 						}
+						list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
+						$jsCmd->addCmd($cmd, $val);
 					} else {
 						$we_doc->initByID(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), DOC_TYPES_TABLE);
 					}
@@ -139,13 +141,6 @@ abstract class we_dialog_doctypeEdit{
 		$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-
-		switch($wecmd0){
-			case "deleteDocTypeok":
-				list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
-				$jsCmd->addCmd($cmd, $val);
-				break;
-		}
 
 		if($we_doc->ID){
 			$parts = [["headline" => g_l('weClass', '[doctypes]'),
