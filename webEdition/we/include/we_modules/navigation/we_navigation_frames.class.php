@@ -178,7 +178,7 @@ class we_navigation_frames extends we_modules_frame{
 			return $this->View->getHomeScreen();
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties())), $this->View->getJSProperty($this->jsVars) .
+		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties())), we_html_element::jsScript(JS_DIR . 'multiIconBox.js') . $this->View->getJSProperty($this->jsVars) .
 				$this->jsCmd->getCmds());
 	}
 
@@ -230,9 +230,9 @@ class we_navigation_frames extends we_modules_frame{
 				'noline' => 1
 			], [
 				'headline' => '',
-				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'setHot', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'setHot', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' .
 				we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
-						g_l('navigation', '[icon_properties]')) . "')", false, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', '[icon_properties]') . '</span></td></tr></table>',
+						g_l('navigation', '[icon_properties]')) . "')", "right", g_l('global', '[openCloseBox]')) . '</td><td><span class="defaultfont" id="text_' . $uniqname . '">' . g_l('navigation', '[icon_properties]') . '</span></td></tr></table>',
 				'space' => we_html_multiIconBox::SPACE_ICON,
 				'icon' => we_html_multiIconBox::PROP_IMAGE,
 				'noline' => 1
