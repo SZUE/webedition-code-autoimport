@@ -1208,7 +1208,10 @@ function we_cmd() {
 			case 'edit_folder':
 				break;
 			default:
+			try {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+			} catch (e) {
+			}
 		}
 
 	}
