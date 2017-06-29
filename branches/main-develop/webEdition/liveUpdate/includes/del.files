@@ -772,6 +772,7 @@ js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js
 js/md5.js
 js/images.js
+js/header_msg.js
 js/export_wizard.js
 js/exit_doc_question.js
 js/dialogs/we_dialog_fullscreenEdit.js

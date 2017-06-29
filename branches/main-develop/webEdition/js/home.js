@@ -279,7 +279,7 @@ function setLabel(id, prefix, postfix) {
 	var el_label = document.getElementById(id + '_lbl');
 	var w = parseInt(el_label.style.width);
 	var suspensionPts = '',
-					label;
+		label;
 	if (prefix === undefined || postfix === undefined) {
 		label = getLabel(id);
 	} else {
@@ -348,8 +348,8 @@ function setOpacity(sId, degree) {
 
 function fadeTrans(wizId, start, end, ms) {
 	var v = Math.round(ms / 100),
-					t = 0,
-					i;
+		t = 0,
+		i;
 	if (start > end) {
 		for (i = start; i >= end; i--) {
 			//var obj = document.getElementById(wizId);
@@ -432,9 +432,9 @@ function createWidget(typ, row, col) {
 	} else { // add to empty col - before wildcard!
 		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
-						divClone,
-						_td.childNodes[0]
-						);
+			divClone,
+			_td.childNodes[0]
+			);
 	}
 	if (!cockpit.oCfg[typ].isResizable) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
@@ -565,9 +565,10 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
  */
 function rpc(a, b, c, d, e, wid, path) {
 	//FIXME: remove this!
-	var sType = document.getElementById(wid + '_type').value;
+	var sType = document.getElementById(wid + '_type').value,
+		args = Array.prototype.slice.call(arguments);
+
 	showLoadingSymbol(wid);
-	var args = Array.prototype.slice.call(arguments);
 
 	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
@@ -592,7 +593,6 @@ function rpc(a, b, c, d, e, wid, path) {
 	document.getElementsByTagName("body")[0].removeChild(document.getElementById("_tmpSubmitForm"));
 
 	return false;
-	// end bugfix #1145
 }
 
 
@@ -660,18 +660,6 @@ function closeAllModalWindows() {
 	}
 }
 
-function setMsgCount(num) {
-	if (document.getElementById('msg_count')) {
-		document.getElementById('msg_count').innerHTML = '<b>' + num + '</b>';
-	}
-}
-
-function setTaskCount(num) {
-	if (document.getElementById('task_count')) {
-		document.getElementById('task_count').innerHTML = '<b>' + num + '</b>';
-	}
-}
-
 function setUsersOnline(num) {
 	if (document.getElementById('num_users')) {
 		document.getElementById('num_users').innerHTML = num;
@@ -730,8 +718,8 @@ function getDimension(theString, styleClassElement) {
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-						theString + '<\/span>';
+			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+			theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
