@@ -253,8 +253,6 @@ abstract class we_dialog_sysinfo{
 				g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? self::getWarning(g_l('sysinfo', '[phpext warning2]'), g_l('sysinfo', '[phpext warning]') . implode(', ', $phpextensionsMissing)) : g_l('sysinfo', ($phpExtensionsDetectable ? '[available]' : '[detectable warning]')) ),
 				g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && (mcrypt_module_open(MCRYPT_TWOFISH, '', MCRYPT_MODE_OFB, '')) ? self::getOK() : self::getWarning(g_l('sysinfo', '[crypt_warning]'), '-'))
 			],
-			'Deprecated' => ['we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="default_saveRegisteredUser_register"') === 'true' ? self::getWarning('Deprecated', 'true') : self::getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
-			],
 		];
 
 		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));

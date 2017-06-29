@@ -27,8 +27,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 	$userempty = weTag_getAttribute('userempty', $attribs, '', we_base_request::STRING);
 	$passempty = weTag_getAttribute('passempty', $attribs, '', we_base_request::STRING);
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, we_base_request::BOOL);
-	$default_register = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin"  AND pref_name="default_saveRegisteredUser_register"') === 'true';
-	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, we_base_request::BOOL) : $default_register);
+	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, false, we_base_request::BOOL) : false);
 	$protected = weTag_getAttribute('protected', $attribs, '', we_base_request::STRING_LIST);
 	$allowed = weTag_getAttribute('allowed', $attribs, '', we_base_request::STRING_LIST);
 	$pwdRule = weTag_getAttribute('passwordRule', $attribs, '', we_base_request::RAW);

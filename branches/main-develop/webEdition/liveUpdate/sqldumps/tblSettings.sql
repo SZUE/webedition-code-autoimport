@@ -36,5 +36,3 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='Prefs',pref_value='{"start_year":1900,"default_sort_view":"--Keine Sortierung--","treetext_format":"#Username (#Forename #Surname)","default_order":""}';
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='SortView',pref_value='';
-/* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='default_saveRegisteredUser_register',pref_value='false';
