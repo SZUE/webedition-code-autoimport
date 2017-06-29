@@ -113,8 +113,6 @@ class we_customer_settings{
 	function __construct(){
 		$this->db = new DB_WE();
 		$this->customer = new we_customer_customer();
-		$this->properties = ['default_saveRegisteredUser_register' => 'false',
-		];
 
 		$this->PropertyTitle = ['Username' => g_l('modules_customer', '[username]'),
 			'Password' => g_l('modules_customer', '[password]'),
