@@ -27,14 +27,20 @@
 var iconBox = WE().util.getDynamicVar(document, 'loadVarMultiIconBox', 'data-iconbox');
 
 function weToggleBox(name, textDown, textRight) {
-	var t = document.getElementById('table_' + name);
-	var s = document.getElementById('text_' + name);
+	var t = document.getElementById('table_' + name),
+		s = document.getElementById('text_' + name),
+		but = document.getElementById("btn_direction" + name),
+		icon = but.getElementsByClassName("fa")[0];
 	if (t.style.display === "none") {
 		t.style.display = "";
 		s.innerHTML = textDown;
+		icon.classList.remove("fa-caret-right");
+		icon.classList.add("fa-caret-down");
 	} else {
 		t.style.display = "none";
 		s.innerHTML = textRight;
+		icon.classList.remove("fa-caret-down");
+		icon.classList.add("fa-caret-right");
 	}
 }
 
