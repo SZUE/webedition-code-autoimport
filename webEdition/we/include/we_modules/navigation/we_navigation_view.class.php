@@ -24,7 +24,6 @@
  */
 class we_navigation_view extends we_modules_view{
 
-	var $icon_pattern = '';
 	var $page = 1;
 
 	public function __construct(){
