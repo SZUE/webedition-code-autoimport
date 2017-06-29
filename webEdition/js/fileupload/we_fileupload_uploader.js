@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top,Fileupload_controller_base,Fileupload_sender_base,Fileupload_view_base,Fileupload_imageEdit_base,Fileupload_utils_base,Fileupload_controller_bindoc,Fileupload_sender_bindoc,Fileupload_view_bindoc,Fileupload_imageEdit_bindoc,Fileupload_utils_bindoc, Fileupload_controller_import,Fileupload_sender_import,Fileupload_view_import,Fileupload_imageEdit_import,Fileupload_utils_import */
 
 /**
  webEdition CMS
@@ -26,163 +26,160 @@
 
 WE().util.loadConsts(document, 'g_l.fileupload');
 
-function weFileupload_uploader_abstract(win) {
-	var self = this;
+function Fileupload_uploader_abstract(win) {
 
-	self.win = win;
-	self.doc = win.document;
+	this.win = win;
+	this.doc = win.document;
 
-	self.controller = null;
-	self.sender = null;
-	self.view = null;
-	self.imageEdit = null;
-	self.utils = null;
+	this.controller = null;
+	this.sender = null;
+	this.view = null;
+	this.imageEdit = null;
+	this.utils = null;
 
-	self.fieldName = '';
-	self.genericFilename = '';
-	self.fileuploadType = 'base';
-	self.uiType = 'base';
-	self.debug = false;
-	self.EDIT_IMAGES_CLIENTSIDE = false;
+	this.fieldName = '';
+	this.genericFilename = '';
+	this.fileuploadType = 'base';
+	this.uiType = 'base';
+	this.debug = false;
+	this.EDIT_IMAGES_CLIENTSIDE = false;
 
 
-	self.init = function (conf) {
+	this.init = function (conf) {
 		if (typeof conf !== 'undefined') {
-			self.fieldName = conf.fieldName ? conf.fieldName : self.fieldName;
-			self.uiType = conf.uiType ? conf.uiType : self.uiType;
-			self.genericFilename = conf.genericFilename ? conf.genericFilename : self.genericFilename;
-			self.EDIT_IMAGES_CLIENTSIDE = conf.clientsideImageEditing ? true : false;
+			this.fieldName = conf.fieldName ? conf.fieldName : this.fieldName;
+			this.uiType = conf.uiType ? conf.uiType : this.uiType;
+			this.genericFilename = conf.genericFilename ? conf.genericFilename : this.genericFilename;
+			this.EDIT_IMAGES_CLIENTSIDE = conf.clientsideImageEditing ? true : false;
 
-			self.controller.init(conf);
-			self.sender.init(conf);
-			self.view.init(conf);
-			self.imageEdit.init(conf);
-			self.utils.init(conf);
+			this.controller.init(conf);
+			this.sender.init(conf);
+			this.view.init(conf);
+			this.imageEdit.init(conf);
+			this.utils.init(conf);
 
-			self.init_sub(conf);
+			this.init_sub(conf);
 
-			if(!self.onload()){
-				self.win.addEventListener('load', self.onload, true);
+			if(!this.onload()){
+				this.win.addEventListener('load', this.onload, true);
 			}
 
-			WE().util.setIconOfDocClass(self.doc, 'filedrag_set_icon');
+			WE().util.setIconOfDocClass(this.doc, 'filedrag_set_icon');
 		}
 	};
 
-	self.onload = function () {
-		if(!self.doc.getElementById(self.fieldName)){
+	this.onload = function () {
+		if(!this.doc.getElementById(this.fieldName)){
 			return false;
 		}
 
-		self.sender.onload();
-		self.view.onload();
-		self.controller.onload();
+		this.sender.onload();
+		this.view.onload();
+		this.controller.onload();
 
-		self.onload_sub();
+		this.onload_sub();
 
 		return true;
 	};
 
-	self.onload_sub = function () {
+	this.onload_sub = function () {
 		// to be overridden
 	};
 
-	self.startUpload = function () {
-		if (self.sender.prepareUpload()) {
+	this.startUpload = function () {
+		if (this.sender.prepareUpload()) {
 			//setTimeout(sender.sendNextFile, 100); // FIXME: check why this does not work!!
 			window.setTimeout(function () {
-				self.sender.sendNextFile();
+				this.sender.sendNextFile();
 			}, 100);
 		} else {
-			self.sender.processError({from: 'gui', msg: WE().consts.g_l.fileupload.errorNoFileSelected});
+			this.sender.processError({from: 'gui', msg: WE().consts.g_l.fileupload.errorNoFileSelected});
 		}
 	};
 
-	self.cancelUpload = function () {
-		self.sender.cancel();
+	this.cancelUpload = function () {
+		this.sender.cancel();
 	};
 
-	self.isUploading = function () {
-		return self.sender.isUploading;
+	this.isUploading = function () {
+		return this.sender.isUploading;
 	};
 
-	self.reset = function () {
-		self.view.elems.fileSelect.value = null;
-		self.view.repaintGUI({what: 'resetGui'});
+	this.reset = function () {
+		this.view.elems.fileSelect.value = null;
+		this.view.repaintGUI({what: 'resetGui'});
 	};
 
-	self.deleteRow = function (index, but) {
-		self.view.deleteRow(index, but);
+	this.deleteRow = function (index, but) {
+		this.view.deleteRow(index, but);
 	};
 
-	self.getType = function () {
-		return self.fileuploadType;
+	this.getType = function () {
+		return this.fileuploadType;
 	};
 
-	self.doUploadIfReady = function (callback) {
+	this.doUploadIfReady = function (callback) {
 		callback();
 		return;
 	};
 
-	self.reeditImage = function (index, general) {
-		self.imageEdit.reeditImage(index, general);
+	this.reeditImage = function (index, general) {
+		this.imageEdit.reeditImage(index, general);
 	};
 
-	self.openImageEditor = function(pos){
-		self.imageEdit.openImageEditor(pos);
+	this.openImageEditor = function(pos){
+		this.imageEdit.openImageEditor(pos);
 	};
 }
 
-function weFileupload_uploader_base(win, conf) {
-	weFileupload_uploader_abstract.call(self, win, conf);
+function Fileupload_uploader_base(win, conf) {
+	Fileupload_uploader_abstract.call(this, win, conf);
 
-	var self = this;
-	self.fileuploadType = 'base';
+	this.fileuploadType = 'base';
 
-	self.controller = new weFileupload_controller_base(self);
-	self.sender = new weFileupload_sender_base(self);
-	self.view = new weFileupload_view_base(self);
-	self.imageEdit = new weFileupload_imageEdit_base(self);
-	self.utils = new weFileupload_utils_base(self);
+	this.controller = new Fileupload_controller_base(this);
+	this.sender = new Fileupload_sender_base(this);
+	this.view = new Fileupload_view_base(this);
+	this.imageEdit = new Fileupload_imageEdit_base(this);
+	this.utils = new Fileupload_utils_base(this);
 
-	self.init = function (conf) {
-		self.init_abstract(conf);
-		self.view.uploadBtnName = conf.uploadBtnName ? conf.uploadBtnName : self.view.uploadBtnName;
-		self.view.isInternalBtnUpload = conf.isInternalBtnUpload ? conf.isInternalBtnUpload : self.view.isInternalBtnUpload;
-		self.view.disableUploadBtnOnInit = conf.disableUploadBtnOnInit ? conf.disableUploadBtnOnInit : false;
+	this.init = function (conf) {
+		this.init_abstract(conf);
+		this.view.uploadBtnName = conf.uploadBtnName ? conf.uploadBtnName : this.view.uploadBtnName;
+		this.view.isInternalBtnUpload = conf.isInternalBtnUpload ? conf.isInternalBtnUpload : this.view.isInternalBtnUpload;
+		this.view.disableUploadBtnOnInit = conf.disableUploadBtnOnInit ? conf.disableUploadBtnOnInit : false;
 	};
 
-	self.onload = function () {
-		if(!self.onload_abstract(self)){
+	this.onload = function () {
+		if(!this.onload_abstract(this)){
 			return false;
 		}
 
 		//self.view.onload();
-		self.controller.checkIsPresetFiles();
+		this.controller.checkIsPresetFiles();
 
 		return true;
 	};
 }
-weFileupload_uploader_base.prototype = Object.create(weFileupload_uploader_abstract.prototype);
-weFileupload_uploader_base.prototype.constructor = weFileupload_uploader_base;
+Fileupload_uploader_base.prototype = Object.create(Fileupload_uploader_abstract.prototype);
+Fileupload_uploader_base.prototype.constructor = Fileupload_uploader_base;
 
-function weFileupload_uploader_bindoc(win) {
-	var self = this;
-	weFileupload_uploader_abstract.call(self, win);
+function Fileupload_uploader_bindoc(win) {
+	Fileupload_uploader_abstract.call(this, win);
 
-	self.fileuploadType = 'binDoc';
+	this.fileuploadType = 'binDoc';
 
-	self.controller = new weFileupload_controller_bindoc(self);
-	self.sender = new weFileupload_sender_bindoc(self);
-	self.view = new weFileupload_view_bindoc(self);
-	self.imageEdit = new weFileupload_imageEdit_bindoc(self);
-	self.utils = new weFileupload_utils_bindoc(self);
+	this.controller = new Fileupload_controller_bindoc(this);
+	this.sender = new Fileupload_sender_bindoc(this);
+	this.view = new Fileupload_view_bindoc(this);
+	this.imageEdit = new Fileupload_imageEdit_bindoc(this);
+	this.utils = new Fileupload_utils_bindoc(this);
 
-	self.init_sub = function (conf) {
-		var sender = self.sender;
-		var view = self.view;
+	this.init_sub = function (conf) {
+		var sender = this.sender;
+		var view = this.view;
 
-		self.fieldName = 'we_File';
+		this.fieldName = 'we_File';
 		sender.form.action = conf.form.action ? conf.form.action : sender.form.action;
 
 		view.uploadBtnName = conf.uploadBtnName ? conf.uploadBtnName : view.uploadBtnName;
@@ -194,45 +191,44 @@ function weFileupload_uploader_bindoc(win) {
 		}
 	};
 
-	self.onload_sub = function () {
-		self.controller.checkIsPresetFiles(self);
+	this.onload_sub = function () {
+		this.controller.checkIsPresetFiles(this);
 	};
 }
-weFileupload_uploader_bindoc.prototype = Object.create(weFileupload_uploader_abstract.prototype);
-weFileupload_uploader_bindoc.prototype.constructor = weFileupload_uploader_bindoc;
+Fileupload_uploader_bindoc.prototype = Object.create(Fileupload_uploader_abstract.prototype);
+Fileupload_uploader_bindoc.prototype.constructor = Fileupload_uploader_bindoc;
 
-function weFileupload_uploader_import(win) {
-	var self = this;
-	weFileupload_uploader_abstract.call(self, win);
-	self.fileuploadType = 'importer';
+function Fileupload_uploader_import(win) {
+	Fileupload_uploader_abstract.call(this, win);
+	this.fileuploadType = 'importer';
 
-	self.controller = new weFileupload_controller_import(self);
-	self.sender = new weFileupload_sender_import(self);
-	self.view = new weFileupload_view_import(self);
-	self.imageEdit = new weFileupload_imageEdit_import(self);
-	self.utils = new weFileupload_utils_import(self);
+	this.controller = new Fileupload_controller_import(this);
+	this.sender = new Fileupload_sender_import(this);
+	this.view = new Fileupload_view_import(this);
+	this.imageEdit = new Fileupload_imageEdit_import(this);
+	this.utils = new Fileupload_utils_import(this);
 
-	self.init_sub = function (conf) {
+	this.init_sub = function (conf) {
 		if (typeof conf !== 'undefined') {
-			self.sender.isGdOk = typeof conf.isGdOk !== 'undefined' ? conf.isGdOk : self.sender.isGdOk;
-			self.view.htmlFileRow = conf.htmlFileRow ? conf.htmlFileRow : self.view.htmlFileRow;
-			self.utils.fileTable = conf.fileTable ? conf.fileTable : self.view.fileTable;
+			this.sender.isGdOk = typeof conf.isGdOk !== 'undefined' ? conf.isGdOk : this.sender.isGdOk;
+			this.view.htmlFileRow = conf.htmlFileRow ? conf.htmlFileRow : this.view.htmlFileRow;
+			this.utils.fileTable = conf.fileTable ? conf.fileTable : this.view.fileTable;
 		}
 	};
 }
-weFileupload_uploader_import.prototype = Object.create(weFileupload_uploader_abstract.prototype);
-weFileupload_uploader_import.prototype.constructor = weFileupload_uploader_import;
+Fileupload_uploader_import.prototype = Object.create(Fileupload_uploader_abstract.prototype);
+Fileupload_uploader_import.prototype.constructor = Fileupload_uploader_import;
 
 WE().layout.fileupload.getFileUpload = function(type, win) {
 
 	switch(type){
 		case 'base':
-			return new weFileupload_uploader_base(win);
+			return new Fileupload_uploader_base(win);
 		case 'preview' :
 		case 'wedoc' :
 		case 'editor' :
-			return new weFileupload_uploader_bindoc(win);
+			return new Fileupload_uploader_bindoc(win);
 		case 'importer':
-			return new weFileupload_uploader_import(win);
+			return new Fileupload_uploader_import(win);
 	}
 };

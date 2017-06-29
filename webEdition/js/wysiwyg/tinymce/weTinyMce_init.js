@@ -34,7 +34,7 @@ var tinyEditorsInlineFalse = tinyEditorsInlineFalse ? tinyEditorsInlineFalse : {
 var tinyWrappers = tinyWrappers ? tinyWrappers : {};
 
 tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject);
-tinyMCE.PluginManager.load = tinyPluginManager;
+tinyMCE.PluginManager.load = TinyPluginManager;
 
 function TinyWrapper(fieldname) {
 	if (!tinyWrappers[fieldname]) {
@@ -43,7 +43,7 @@ function TinyWrapper(fieldname) {
 	return tinyWrappers[fieldname];
 }
 
-function tinyPluginManager(n, u, cb, s) {
+function TinyPluginManager(n, u, cb, s) {
 	var t = this, url = u;
 	function loadDependencies() {
 		var dependencies = t.dependencies(n);
