@@ -56,6 +56,10 @@ we_cmd_modules.base = function (args, url, caller) {
 				return top.plugin.getDocCount();
 			}
 			return 0;
+		case "initPreview"://command after add widget
+		case "initGauge":
+			WE().layout.cockpitFrame.we_cmd.apply(WE().layout.cockpitFrame, args);
+			break;
 		case "setIconOfDocClass":
 			WE().util.setIconOfDocClass(caller.document, args[1]);
 			break;
@@ -194,7 +198,7 @@ we_cmd_modules.base = function (args, url, caller) {
 			we_cmd(args[1]);
 			break;
 		case "loadIfActive":
-			if(top.treeData.table !== args[1]){
+			if (top.treeData.table !== args[1]) {
 				break;
 			}
 			args[0] = 'load';
@@ -605,7 +609,7 @@ we_cmd_modules.base = function (args, url, caller) {
 				'&we_cmd[full]=0' +
 				'&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1) +
 				'&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[5] : 0);
-			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData, function(weResponse){
+			WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=InsertValidItemsByID&cns=collection", postData, function (weResponse) {
 				if (weResponse.DataArray.message) {
 					var items = weResponse.DataArray.items;
 					WE().util.showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, items[0]).replace(/##REJ##/, items[1]), 1, caller);
@@ -791,13 +795,13 @@ we_cmd_modules.base = function (args, url, caller) {
 				WE().t_e('cmd "we_suggest_postprocessSelection": parameters missing');
 				break;
 			} else {
-				if(caller.document.getElementById('div_externalDropbox_' + args[2])){
+				if (caller.document.getElementById('div_externalDropbox_' + args[2])) {
 					// if there is an external dropzone: set preview
 					caller.externalDropzoneLoadPreview(args[2], args[1].currentID, args[1].currentTable, args[1].currentType, args[1].currentPath);
 				}
 
 				var elem, cmd;
-				if((elem = caller.document.getElementById('yuiAcInput' + args[2]))){
+				if ((elem = caller.document.getElementById('yuiAcInput' + args[2]))) {
 					if ((cmd = elem.getAttribute('data-onSelect'))) {
 						caller.we_cmd(cmd, args[1], args[2]);
 					}
@@ -891,7 +895,9 @@ function loadCloseFolder(args) {
 		}
 		top.scrollToY();
 	});
-	window.setTimeout(function(){top.document.getElementById('reloadTree').firstChild.classList.remove('fa-spin');}, 300);
+	window.setTimeout(function () {
+		top.document.getElementById('reloadTree').firstChild.classList.remove('fa-spin');
+	}, 300);
 }
 
 function we_cmd_delete_single_document(url) {
@@ -1126,10 +1132,10 @@ function collection_insertFiles(args) { // args[2] = collection id, args[3] = in
 	if (args[1] === undefined || args[2] === undefined) {
 		return;
 	}
-	var index=(args[3] !== undefined ? args[3] : -1),
+	var index = (args[3] !== undefined ? args[3] : -1),
 		collection = parseInt(args[2]),
 		ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [
-		args[1].currentID] : args[1]));
+			args[1].currentID] : args[1]));
 
 	if (collection && ids) {
 		var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
