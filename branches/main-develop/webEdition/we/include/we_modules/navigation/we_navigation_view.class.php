@@ -31,13 +31,6 @@ class we_navigation_view extends we_modules_view{
 		$this->Model = new we_navigation_navigation();
 	}
 
-	function getCommonHiddens($cmds = []){
-		return
-				parent::getCommonHiddens($cmds) .
-				we_html_element::htmlHiddens(['vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
-		]);
-	}
-
 	function getJSTop(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}

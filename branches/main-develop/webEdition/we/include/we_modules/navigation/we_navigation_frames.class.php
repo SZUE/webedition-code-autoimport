@@ -172,8 +172,6 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-		//	$hiddens = ['cmd' => 'tool_' . $this->module . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0)];
-
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
@@ -759,7 +757,6 @@ class we_navigation_frames extends we_modules_frame{
 			'cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
 		];
 
 		//$weSuggest = & weSuggest::getInstance();
