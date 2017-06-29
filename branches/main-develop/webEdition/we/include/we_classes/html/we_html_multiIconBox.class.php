@@ -52,7 +52,7 @@ abstract class we_html_multiIconBox{
 	const PROP_IMAGE = '<i class="fa fa-image"></i>';
 	const PROP_SORT = '<i class="fa fa-sort"></i>';
 	const PROP_NEWSLETTER = '<i class="fa fa-newspaper-o"></i>';
-	const PROP_MAIL= '<i class="fa fa-envelope"></i>';
+	const PROP_MAIL = '<i class="fa fa-envelope"></i>';
 	//INFO
 	const INFO_CALENDAR = '<i class="fa fa-calendar"></i>';
 	const INFO_WORKFLOW = '<i class="fa fa-gears"></i>';
@@ -77,8 +77,8 @@ abstract class we_html_multiIconBox{
 		$uniqname = $name ?: md5(uniqid(__FILE__, true));
 
 		$out = $headline ?
-			self::_getBoxStartHeadline($name, $headline, $uniqname, $marginLeft) :
-			self::_getBoxStart($uniqname, $name);
+			self::getBoxStartHeadline($name, $headline, $uniqname, $marginLeft) :
+			self::getBoxStart($uniqname, $name);
 
 		foreach($content as $i => $c){
 			if($c === null){
@@ -110,7 +110,7 @@ abstract class we_html_multiIconBox{
 			$out .= '</td></tr></table>';
 		}
 
-		$out .= self::_getBoxEnd();
+		$out .= self::getBoxEnd();
 
 		return ($buttons ?
 			//ignore height, replace by bottom:
@@ -126,18 +126,22 @@ abstract class we_html_multiIconBox{
 		])]);
 	}
 
-	private static function _getBoxStartHeadline($name, $headline, $uniqname, $marginLeft = 0){
+	public static function addBoxContainer($uniqname, $name, $data){
+		return self::getBoxStart($uniqname, $name) . $data . self::getBoxEnd();
+	}
+
+	private static function getBoxStartHeadline($name, $headline, $uniqname, $marginLeft = 0){
 		return '<div class="default multiIcon defaultfont" style="overflow:auto" id="' . $name . '">
 	<div class="weDialogHeadline' . ($marginLeft ? ' withMargin' : '') . '">' . $headline . '</div>
 	<div id="td_' . $uniqname . '">';
 	}
 
-	static function _getBoxStart($uniqname, $name = ''){
+	private static function getBoxStart($uniqname, $name = ''){
 		return '<div class="default multiIcon defaultfont" style="padding-bottom:2px;" id="' . $name . '">
 		<div id="td_' . $uniqname . '">';
 	}
 
-	static function _getBoxEnd(){
+	private static function getBoxEnd(){
 		return '</div>
 </div>';
 	}
