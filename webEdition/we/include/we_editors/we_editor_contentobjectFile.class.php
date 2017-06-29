@@ -63,9 +63,7 @@ class we_editor_contentobjectFile extends we_editor_base{
 
 		$content = '';
 		if($editMode){
-			$content .= we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
-				'<div id="orderContainer"></div>' .
-				we_html_multiIconBox::_getBoxEnd();
+			$content .= we_html_multiIconBox::addBoxContainer(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), '<div id="orderContainer"></div>');
 			foreach($parts as $part){
 				$content .= '<div id="' . $part['name'] . '" class="objectFileElement"><div id="f' . $part['name'] . '" class="default defaultfont">' . $part["html"] . '</div></div>';
 				$this->jsCmd->addCmd('orderContainerAdd', $part['name']);

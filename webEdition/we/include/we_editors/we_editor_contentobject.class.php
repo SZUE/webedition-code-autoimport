@@ -64,18 +64,16 @@ class we_editor_contentobject extends we_editor_base{
 			$this->jsCmd->addCmd('orderContainerAdd', $uniqid);
 		}
 
-		return $this->getPage($this->we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart($uniquename) .
-				'<div id="orderContainer"></div><div id="' . $uniquename . '_div">
+		return $this->getPage($this->we_doc->getEmptyDefaultFields() . we_html_multiIconBox::addBoxContainer($uniquename, '', '<div id="orderContainer"></div><div id="' . $uniquename . '_div">
  <table style="margin-left:30px;margin-bottom:15px;" class="default">
  <tr>
  <td style="vertical-align:top"></td>
  <td class="defaultfont">' .
-				we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . "');") .
-				'</td>
+					we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . "');") .
+					'</td>
  </tr>
  </table>
- </div>' .
-				we_html_multiIconBox::_getBoxEnd() .
+ </div>') .
 				$content, we_html_element::jsScript(JS_DIR . '/weOrderContainer.js') . $head, [
 				'onload' => "doScrollTo();"
 		]);
