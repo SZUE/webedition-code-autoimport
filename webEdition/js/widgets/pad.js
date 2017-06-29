@@ -221,10 +221,6 @@ function toggleTblValidity() {
 	}
 }
 
-function init() {
-	window.parent.rpcHandleResponse(widget.sType, widget.sObjId, document.getElementById(widget.sType), widget.sTb);
-}
-
 // saves a note, using the function rpc() in home.inc.php (750)
 function saveNote() {
 	var fo = document.forms[0],

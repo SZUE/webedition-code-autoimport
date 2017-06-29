@@ -47,8 +47,8 @@ abstract class we_main_cockpit{
 			$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 			$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home');
 			if(!$bResetProps && $iLayoutCols){
-				$aDat = array_filter((we_unserialize(we_base_preferences::getUserPref('cockpit_dat')) ? : $aCfgProps)) ? : $aCfgProps;
-				$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss')) ? : we_widget_rss::getTopFeeds();
+				$aDat = array_filter((we_unserialize(we_base_preferences::getUserPref('cockpit_dat')) ?: $aCfgProps)) ?: $aCfgProps;
+				$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss')) ?: we_widget_rss::getTopFeeds();
 				if(count($aDat) > $iLayoutCols){
 					while(count($aDat) > $iLayoutCols){
 						$aDelCol = array_pop($aDat);
@@ -207,7 +207,7 @@ abstract class we_main_cockpit{
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 			case "loadTree" :
 				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-					echo we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . (we_base_request::_(we_base_request::STRING, 'openFolders') ? : "") . '&we_cmd[4]=top']), we_html_element::htmlBody());
+					echo we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=' . we_base_request::_(we_base_request::TABLE, "tab") . '&we_cmd[2]=' . $pid . '&we_cmd[3]=' . (we_base_request::_(we_base_request::STRING, 'openFolders') ?: "") . '&we_cmd[4]=top']), we_html_element::htmlBody());
 				}
 				break;
 			case 'dialog':
