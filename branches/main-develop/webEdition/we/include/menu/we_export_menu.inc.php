@@ -40,7 +40,7 @@ return [
 	],
 	'export' => [
 		'text' => g_l('export', '[export]'),
-		'icon'=>'fa fa-download'
+		'icon' => 'fa fa-download'
 	],
 	[
 		'text' => g_l('export', '[save]'),
@@ -59,19 +59,5 @@ return [
 		'text' => g_l('export', '[quit]'),
 		'parent' => 'export',
 		'cmd' => 'exit_export',
-	],
-	'help' => [
-		'text' => g_l('export', '[help]'),
-		'icon'=>'fa fa-question-circle'
-	],
-	[
-		'text' => g_l('export', '[help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	[
-		'text' => g_l('export', '[info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
 	],
 ];

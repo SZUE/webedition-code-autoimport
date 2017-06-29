@@ -44,20 +44,9 @@ container.prototype.openClose = function (id) {
 	}
 };
 
-function doClick(id, typ) {
-	var cmd = "";
-	var node;
-	if (top.content.hot) {
-		if (window.confirm(WE().consts.g_l.voting.save_changed_voting)) {
-			cmd = "save_voting";
-			top.content.we_cmd("save_voting");
-			return;
-		}
-	}
-	top.content.unsetHot();
-	cmd = "voting_edit";
-	node = treeData.get(id);
-	top.content.editor.edbody.location = top.getFrameset() + "&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + top.content.activ_tab;
+function doClick(id) {
+	var item = treeData.get(id);
+	top.content.we_cmd('display_voting', item.id);
 }
 
 function info(text) {

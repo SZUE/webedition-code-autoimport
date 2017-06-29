@@ -78,18 +78,4 @@ return [
 		'cmd' => 'banner_code',
 		'perm' => 'EDIT_BANNER || ADMINISTRATOR',
 	],
-	'help' => [
-		'text' => g_l('modules_banner', '[help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	[
-		'text' => g_l('modules_banner', '[help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	[
-		'text' => g_l('modules_banner', '[info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	],
 ];

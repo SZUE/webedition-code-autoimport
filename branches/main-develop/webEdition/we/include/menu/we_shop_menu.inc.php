@@ -100,20 +100,6 @@ $we_menu_shop = [
 		'cmd' => 'delete_shop',
 		'perm' => 'DELETE_SHOP_ARTICLE || ADMINISTRATOR',
 	],
-	'help' => [
-		'text' => g_l('javaMenu_shop', '[menu_help]'),
-		'perm' => 'SHOW_HELP',
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('javaMenu_shop', '[menu_help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-		'perm' => 'SHOW_HELP',
-	],
-	['text' => g_l('javaMenu_shop', '[menu_info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	],
 ];
 
 foreach($years as $cur){

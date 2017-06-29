@@ -61,21 +61,6 @@ $we_menu_glossary = [
 		'cmd' => 'glossary_settings',
 		'perm' => 'ADMINISTRATOR',
 	],
-//
-// ---> Menu Help
-//
-	'help' => [
-		'text' => g_l('modules_glossary', '[menu_help]'),
-		'icon' => 'fa fa-question-circle'
-	],
-	['text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	['text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	]
 ];
 
 $langs = getWeFrontendLanguagesForBackend();

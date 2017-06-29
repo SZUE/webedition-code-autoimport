@@ -96,18 +96,4 @@ return [
 		'parent' => 'customer',
 		'cmd' => 'exit_customer',
 	],
-	'help' => [
-		'text' => g_l('modules_customer', '[menu_help]'),
-		'icon'=>'fa fa-question-circle'
-	],
-	[
-		'text' => g_l('modules_customer', '[menu_help]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'help_modules',
-	],
-	[
-		'text' => g_l('modules_customer', '[menu_info]') . '&hellip;',
-		'parent' => 'help',
-		'cmd' => 'info_modules',
-	],
 ];

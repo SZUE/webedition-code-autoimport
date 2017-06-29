@@ -61,10 +61,22 @@ function we_cmd() {
 			break;
 		case "exit_voting":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"
+				].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			top.opener.top.we_cmd("exit_modules");
+			break;
+		case "display_voting":
+			if (top.content.hot) {
+				if (window.confirm(WE().consts.g_l.voting.save_changed_voting)) {
+					top.content.we_cmd("save_voting");
+					return;
+				}
+			}
+			top.content.unsetHot();
+			top.content.editor.edbody.location = top.getFrameset() + "&pnt=edbody&cmd=voting_edit&cmdid=" + args[1] + "&tabnr=" + top.content.activ_tab;
+
 			break;
 		case "vote":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -80,7 +92,8 @@ function we_cmd() {
 		case "new_voting":
 		case "new_voting_group":
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"
+				].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -149,7 +162,8 @@ function we_cmd() {
 				return;
 			}
 			if (hot) {
-				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
+				WE().util.showConfirm(window, '', WE().consts.g_l.voting.save_changed_voting, ["processConfirmHot", "save_voting"], ["processConfirmHot", "unsetHot"
+				].concat(args), WE().consts.g_l.button.save, WE().consts.g_l.button.revert);
 				break;
 			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
