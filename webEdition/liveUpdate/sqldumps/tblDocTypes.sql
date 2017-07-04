@@ -28,6 +28,7 @@
 CREATE TABLE ###TBLPREFIX###tblDocTypes (
   ID mediumint unsigned NOT NULL auto_increment,
   DocType varchar(64) NOT NULL default '',
+	IsFolder tinyint unsigned NOT NULL default '0',
   Extension varchar(16) NOT NULL default '',
   ParentID int unsigned NOT NULL default '0',
   ParentPath text NOT NULL default '',

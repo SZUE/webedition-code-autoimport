@@ -71,7 +71,6 @@ function we_submitForm(target, url) {
 		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
-	// f.target = target; // FIXME: do we still need this? there are no frames/iFrames anymore to adress...
 	f.action = url;
 	f.method = "post";
 	f.submit();

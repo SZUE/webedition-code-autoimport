@@ -28,15 +28,36 @@ function we_cmd() {
 	/*jshint validthis:true */
 	var caller = (this && this.window === this ? this : window);
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var url2 = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edbody&");
 
 	switch (args[0]) {
 		case 'unsetHot':
 			unsetHot();
 			break;
+		case "setTab":
+			top.content.activ_tab = args[1];
+			break;
+		case "save_docType":
+			top.content.unsetHot();
+			top.content.editor.edbody.we_save_docType(document, url2);
+			break;
+		case "newDocType":
+			if (top.content.hot) {
+				top.content.editor.edbody.askForSaveOrRefireCmd(args);
+				break;
+			}
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edheader&we_cmd[0]=newDocType";
+			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edbody&we_cmd[0]=newDocType";
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edfooter&&we_cmd[0]=newDocType";
+			break;
 		case 'display_doctype':
 			top.content.editor.edbody.focus();
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=cmd&cmd=display_doctype&id=" + args[1];
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edheader&we_cmd[1]=" + args[1];
+			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edbody&we_cmd[1]=" + args[1];
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edfooter&we_cmd[1]=" + args[1];
+			break;
+		case 'updateMenu':
+			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 			break;
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));

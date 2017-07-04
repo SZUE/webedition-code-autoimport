@@ -296,18 +296,19 @@ class we_voting_view extends we_modules_view{
 
 				$allData = $this->voting->loadDB();
 				$CSV_Charset = we_base_request::_(we_base_request::STRING, 'the_charset', 'UTF-8');
-				$content = [$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[time]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[ip]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[user_agent]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[cookie]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[log_fallback]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[status]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerID]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerText]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-successor]'))) . $enclose . $delimiter .
-					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-additionalfields]'))) . $enclose . $delimiter
+				$content = [iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', $enclose . trim(g_l('modules_voting', '[voting-session]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[voting-id]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[time]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[ip]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[user_agent]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[cookie]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[log_fallback]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[status]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[answerID]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[answerText]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[voting-successor]')) . $enclose . $delimiter .
+						$enclose . trim(g_l('modules_voting', '[voting-additionalfields]')) . $enclose . $delimiter
+					)
 				];
 
 				foreach($allData as $key => $data){

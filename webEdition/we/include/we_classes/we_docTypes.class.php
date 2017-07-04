@@ -46,15 +46,9 @@ class we_docTypes extends we_contents_base{
 	}
 
 	public function we_save($resave = false){
-		$idArr = makeArrayFromCSV($this->Templates);
-		$newIdArr = [];
-		foreach($idArr as $id){
-			$path = id_to_path($id, TEMPLATES_TABLE);
-			if($id && $path){
-				$newIdArr[] = $id;
-			}
-		}
-		$this->Templates = implode(',', $newIdArr);
+		$idArr = explode(',', $this->Templates);
+		$newIdArr = id_to_path($idArr, TEMPLATES_TABLE, $this->DB_WE, true);
+		$this->Templates = implode(',', array_keys($newIdArr));
 
 		if(LANGLINK_SUPPORT){
 			if(($llink = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_LangDocType'))){
