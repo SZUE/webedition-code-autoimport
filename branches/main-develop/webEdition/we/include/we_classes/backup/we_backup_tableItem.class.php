@@ -144,15 +144,7 @@ class we_backup_tableItem extends we_base_model{
 
 	static function convertSCharsetEncoding($fromC, $toC, $string){
 		if($fromC != '' && $toC != ''){
-			if(function_exists('iconv')){
 				return iconv($fromC, $toC . '//TRANSLIT', $string);
-			}
-			if($fromC === 'UTF-8' && $toC === 'ISO-8859-1'){
-				return utf8_decode($string);
-			}
-			if($fromC === 'ISO-8859-1' && $toC === 'UTF-8'){
-				return utf8_encode($string);
-			}
 		}
 		return $string;
 	}

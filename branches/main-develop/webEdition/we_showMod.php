@@ -215,6 +215,7 @@ switch($mod){
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
 				ob_start();
 				$weFrame->View->processCommands($weFrame->jsCmd);
+				//FIXME: remove
 				$extraJS = ob_get_clean();
 				if($extraJS){
 					t_e('bad js', $extraJS);

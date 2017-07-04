@@ -108,11 +108,7 @@ class we_wizard_codeSnippet{
 		}
 
 		if($charset != "UTF-8" && $charset){
-			if(function_exists("iconv")){
-				$string = iconv("UTF-8", $charset, $string);
-			} elseif($charset === "ISO-8859-1"){
-				$string = utf8_decode($string);
-			}
+			$string = iconv("UTF-8", $charset, $string);
 		}
 
 		return $string;

@@ -55,9 +55,9 @@ abstract class we_dialog_doctypeEdit{
 			case "newDocType":
 				if(($dt = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1))){
 					$we_doc->DocType = urldecode($dt);
+					$we_doc->we_save();
 					list($cmd, $val) = we_main_headermenu::getMenuReloadCode('', true);
 					$jsCmd->addCmd($cmd, $val);
-					$we_doc->we_save();
 				}
 				break;
 			case "deleteDocTypeok":

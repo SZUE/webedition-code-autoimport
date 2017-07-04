@@ -221,13 +221,8 @@ class we_navigation_ruleFrames{
 	}
 
 	public function process(we_base_jsCmd $jscmd){
-		ob_start();
 		$this->Controller->processVariables();
 		$this->Controller->processCommands($jscmd);
-		$extraJS = ob_get_clean();
-		if(!empty($extraJS)){
-			t_e('bad js', $extraJS);
-		}
 	}
 
 }

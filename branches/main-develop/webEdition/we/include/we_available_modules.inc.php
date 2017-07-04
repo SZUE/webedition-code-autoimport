@@ -210,5 +210,31 @@ return [
 		'dependson' => '',
 		'childmodule' => '',
 		'tables' => ['SEARCH_TABLE']
-	]
+	],
+	/*'thumbs' => ['name' => 'thumbs',
+		'text' => g_l('javaMenu_global', '[thumbnails]'),
+		'text_short' => g_l('javaMenu_global', '[thumbnails]'),
+		'perm' => 'ADMINISTRATOR',
+		'icon' => 'fa-image',
+		'inModuleMenu' => true,
+		'inModuleWindow' => true,
+		'alwaysActive' => true,
+		'hasSettings' => false,
+		'dependson' => '',
+		'childmodule' => '',
+		'tables' => ['THUMBNAILS_TABLE']
+	],*/
+	'doctype' => ['name' => 'doctype',
+		'text' => g_l('javaMenu_global', '[document_types]') ,
+		'text_short' =>g_l('javaMenu_global', '[document_types]') ,
+		'perm' => 'EDIT_DOCTYPE',
+		'icon' => 'fa-flask',
+		'inModuleMenu' => true,
+		'inModuleWindow' => true,
+		'alwaysActive' => true,
+		'hasSettings' => false,
+		'dependson' => '',
+		'childmodule' => '',
+		'tables' => ['DOC_TYPES_TABLE']
+	],
 ];

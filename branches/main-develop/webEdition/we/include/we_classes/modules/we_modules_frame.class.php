@@ -244,6 +244,7 @@ abstract class we_modules_frame{
 		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands($this->jsCmd);
+		//FIXME:remove
 		$extraJS = ob_get_clean();
 		if(!empty($extraJS)){
 			t_e('bad js will not be processed', $extraJS);
