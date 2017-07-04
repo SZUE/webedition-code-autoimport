@@ -366,12 +366,13 @@ function submitForm(target,action,method) {
 			$orderTable = '
 		<table width="99%" class="default defaultfont">
 			<tr class="defaultfont lowContrast">
-				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
-				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Titel]') . '</th>
-				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
-				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
-				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+				<th colspan="2" style="padding: 0 5px 0 5px;">' . g_l('modules_shop', '[anzahl]') . '</th>
+				<th colspan="2" style="width: 100px;padding: 0 5px 0 5px;">' . g_l('modules_shop', '[Titel]') . '</th>
+				<th colspan="2" style="width: 150px;padding: 0 5px 0 5px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
+				<th colspan="2" style="padding: 0 5px 0 5px;">' . g_l('modules_shop', '[Preis]') . '</th>
+				<th colspan="2" style="padding: 0 5px 0 5px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
+				($calcVat ? '<th style="padding: 0 5px 0 5px;">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+				<th style="padding: 0 5px 0 5px;"></th>
 			</tr>';
 
 
@@ -419,7 +420,7 @@ function submitForm(target,action,method) {
 				$orderTable .= '
 		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+			<td>' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
 			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_TITLE_FIELD_NAME, 35) . '</td>
 			<td></td>
@@ -446,7 +447,7 @@ function submitForm(target,action,method) {
 
 					$caField = '';
 					foreach($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $value){
-						$caField .= "$key: $value; ";
+						$caField .= "$key: $value; " . we_html_element::htmlBr();
 					}
 
 					$orderTable .='
