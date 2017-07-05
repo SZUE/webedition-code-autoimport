@@ -39,7 +39,7 @@ class we_doctype_frames extends we_modules_frame{
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
 						we_html_button::SAVE => [['EDIT_DOCTYPE'], 'save_docType'],
-						we_html_button::DELETE => [['EDIT_DOCTYPE'], 'confirmDeleteDocType']
+						we_html_button::DELETE => [['EDIT_DOCTYPE'], ['confirmDeleteDocType',$this->View->Model->DocType]]
 				]);
 
 			default:
@@ -101,9 +101,9 @@ class we_doctype_frames extends we_modules_frame{
 	}
 
 	function getHTMLProperties(we_base_jsCmd $jsCmd){// TODO: move to View
-		$t = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		//$t = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		return we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js') .
-			we_html_element::htmlDiv(['id' => 'tab1'], we_html_multiIconBox::getHTML('', $this->getHTMLTab1($jsCmd), 0, '', -1, '', '', false, $preselect));
+			we_html_element::htmlDiv(['id' => 'tab1'], we_html_multiIconBox::getHTML('', $this->getHTMLTab1($jsCmd), 0, '', -1, '', '', false));
 	}
 
 	protected function getHTMLCmd(){

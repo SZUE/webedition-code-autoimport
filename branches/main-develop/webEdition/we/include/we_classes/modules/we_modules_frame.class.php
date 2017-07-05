@@ -211,7 +211,7 @@ abstract class we_modules_frame{
 		foreach($btn_cmd as $but => $cur){
 			list($right, $cmd) = $cur;
 			if(empty($right) || we_base_permission::hasPerm($right)){
-				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
+				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . (is_array($cmd) ? implode("','", $cmd) : $cmd) . "')"));
 			}
 		}
 		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'footerBody'], $table2->getHtml()), $extraHead);

@@ -51,12 +51,12 @@ class we_doctype_view extends we_modules_view{
 					$jsCmd->addMsg(g_l('weClass', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 					break;
 				}
-				$oldID = $this->Model->we_initSessDat($_SESSION['weS']['doctype_session']);
+				$this->Model->we_initSessDat($_SESSION['weS']['doctype_session']);
 				if(preg_match('|[\'",]|', $this->Model->DocType)){
 					$jsCmd->addMsg(g_l('alert', '[doctype_hochkomma]'), we_base_util::WE_MESSAGE_ERROR);
 				} else if(!$this->Model->DocType){
 					$jsCmd->addMsg(g_l('alert', '[doctype_empty]'), we_base_util::WE_MESSAGE_ERROR);
-				} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($this->Model->DocType) . '" LIMIT 1')) && ($this->Model->ID != $id)){
+				} elseif(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($this->Model->DocType) . '" AND ID!='.intval($this->Model->ID).' LIMIT 1')){
 					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $this->Model->DocType), we_base_util::WE_MESSAGE_ERROR);
 				} elseif($this->Model->we_save()){
 					$jsCmd->addMsg(sprintf(g_l('weClass', '[doctype_save_ok]'), $this->Model->DocType), we_base_util::WE_MESSAGE_NOTICE);

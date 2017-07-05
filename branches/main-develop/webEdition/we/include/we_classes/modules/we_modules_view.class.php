@@ -72,18 +72,12 @@ class we_modules_view implements we_modules_viewIF{
 		$starttable->setCol($row++, 0, ['class' => 'defaultfont', "colspan" => 3], "");
 		$starttable->setCol($row++, 0, ['style' => "text-align:center"], $content);
 
-		ob_start();
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty());
-		?>
-		<body class="home" onload="loaded = true;
-						var we_is_home = 1;">
-			<div id="tabelle"><?= $starttable->getHtml(); ?></div>
-			<div id="modimage"><img src="<?= IMAGE_DIR . "backgrounds/bg-editor.png"; ?>" class="blank_editor_logo" /></div>
-				<?= $body; ?>
-		</body>
-		</html>
-		<?php
-		return ob_get_clean();
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty(), we_html_element::htmlBody([
+					'class' => "home",
+					'onload' => "loaded = true;var we_is_home = 1;"], '<div id="tabelle">' . $starttable->getHtml() . '</div>
+			<div id="modimage"><img src="' . IMAGE_DIR . "backgrounds/bg-editor.png" . '" class="blank_editor_logo" /></div>' .
+					$body)
+		);
 	}
 
 }

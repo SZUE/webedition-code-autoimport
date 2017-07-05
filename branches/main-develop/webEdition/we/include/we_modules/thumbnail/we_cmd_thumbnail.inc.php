@@ -21,14 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return [
-	'new' => [
-		'text' => g_l('modules_voting', '[menu_new]'),
-		'icon' => 'fa fa-plus-circle',
-	],
-	['text' => g_l('thumbnails', '[new]'),
-		'parent' => 'new',
-		'cmd' => 'add_thumbnail',
-		'perm' => 'ADMINISTRATOR',
-	],
-];
+switch($cmd){
+	case 'thumbnail_edit':
+		$_REQUEST['mod'] = 'thumbnail';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
+}

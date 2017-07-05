@@ -28,7 +28,7 @@ WE().util.loadConsts(document, "g_l.doctypeEdit");
 var activeTab = 0;
 
 function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
+        WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function disableLangDefault(allnames, allvalues, deselect) {
@@ -64,6 +64,16 @@ function we_save_docType(document, url) {
 			submitForm(url);
 		}
 	}
+}
+
+
+function submitForm(url) {
+	var f = /*form ? window.document.forms[form] :*/ window.document.we_form;
+	f.target = "edbody";
+	f.action = url;
+	f.method = "post";
+
+	f.submit();
 }
 
 function we_cmd() {
@@ -107,27 +117,10 @@ function we_cmd() {
 				askForSaveOrRefireCmd(args);
 				break;
 			}
-			/* fall through */
-		case "deleteDocType":
-		case "deleteDocTypeok":
 			top.content.unsetHot();
 			caller.location = url;
 			break;
-		case "confirmDeleteDocType":
-			WE().util.showConfirm(window, "", WE().util.sprintf(WE().consts.g_l.doctypeEdit.doctype_delete_prompt, args[1]), ["deleteDocTypeok", args[2]]);
-			break;
 		default:
 			top.content.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
-
 	}
-}
-
-
-function submitForm(url) {
-	var f = /*form ? window.document.forms[form] :*/ window.document.we_form;
-	f.target = "edbody";
-	f.action = url;
-	f.method = "post";
-
-	f.submit();
 }

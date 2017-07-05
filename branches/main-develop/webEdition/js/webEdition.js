@@ -473,7 +473,7 @@ var WebEdition = {
 				case 'we/bannerFolder':
 				case 'folder':
 					return simplepre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
-				case 'we/thumb':
+				case 'we/thumbnail':
 				case  'image/*':
 					return pre + '<i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case 'text/js':
