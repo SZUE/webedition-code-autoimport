@@ -115,7 +115,7 @@ function save_all_values(){
 	global $DB_WE;
 
 	if(we_base_permission::hasPerm('ADMINISTRATOR')){
-		$setArray = ['Date' => sql_function('UNIX_TIMESTAMP()')];
+		$setArray = [];
 		// Update settings
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'thumbnail_name', null), 'Name');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_width', null), 'Width');

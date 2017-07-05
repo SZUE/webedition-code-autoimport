@@ -21,14 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return [
-	'new' => [
-		'text' => g_l('modules_voting', '[menu_new]'),
-		'icon' => 'fa fa-plus-circle',
-	],
-	['text' => g_l('thumbnails', '[new]'),
-		'parent' => 'new',
-		'cmd' => 'add_thumbnail',
-		'perm' => 'ADMINISTRATOR',
-	],
-];
+/*define('DOC_TYPES_TABLE', TBL_PREFIX . 'tblDocTypes');
+
+we_base_request::registerTables([
+	'DOC_TYPES_TABLE' => DOC_TYPES_TABLE,
+]);*/

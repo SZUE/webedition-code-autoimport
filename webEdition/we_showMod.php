@@ -144,8 +144,8 @@ switch($mod){
 		break;
 
 	case we_base_moduleInfo::THUMB:
-		/*$weFrame = new we_thumb_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();*/
+		$weFrame = new we_thumbnail_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+		$weFrame->process();
 		break;
 
 	case we_base_moduleInfo::NAVIGATION:
