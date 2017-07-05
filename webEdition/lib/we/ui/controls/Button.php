@@ -97,6 +97,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconTaskStatus = 'kIconTaskStatus';
 	const kIconTaskTrash = 'kIconTaskTrash';
 	const kIconTaskUpdate = 'kIconTaskUpdate';
+	const kIconOptimize = 'kIconOptimize';
 
 	/**
 	 * Default class name for button
@@ -568,6 +569,8 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 					return '';
 				case self::kIconTaskUpdate:
 					return '';
+				case self::kIconOptimize:
+					return we_html_button::OPTIMIZE;
 				default:
 					$this->_isTextReady = true;
 					return $this->getText();
