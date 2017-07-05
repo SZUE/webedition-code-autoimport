@@ -37,28 +37,15 @@ function we_cmd() {
 		case "setTab":
 			top.content.activ_tab = args[1];
 			break;
-		case "save_docType":
-			top.content.unsetHot();
-			top.content.editor.edbody.we_save_docType(document, url2);
+		case "we_save":
 			break;
-		case "newDocType":
-			if (top.content.hot) {
-				top.content.editor.edbody.askForSaveOrRefireCmd(args);
-				break;
-			}
-			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edheader&we_cmd[0]=newDocType";
-			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edbody&we_cmd[0]=newDocType";
-			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edfooter&&we_cmd[0]=newDocType";
-			break;
-		case 'display_doctype':
+		case 'display_thumb':
 			top.content.editor.edbody.focus();
-			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edheader&we_cmd[1]=" + args[1];
-			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edbody&we_cmd[1]=" + args[1];
-			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=doctype&pnt=edfooter&we_cmd[1]=" + args[1];
+			top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=thumbnail&pnt=edheader&we_cmd[1]=" + args[1];
+			top.content.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=thumbnail&pnt=edbody&we_cmd[1]=" + args[1];
+			top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=thumbnail&pnt=edfooter&we_cmd[1]=" + args[1];
 			break;
-		case 'updateMenu':
-			top.opener.top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
-			break;
+
 		default:
 			top.we_cmd.apply(caller, Array.prototype.slice.call(arguments));
 	}

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect(['CAN_SEE_TEMPLATES', 'EDIT_DOCTYPE']);
-
+//FIXME: remove this!
 abstract class we_dialog_doctypeEdit{
 
 	public static function getDialog(){
