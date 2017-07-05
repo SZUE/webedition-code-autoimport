@@ -297,7 +297,14 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 
 		$db->query('DELETE FROM ' . CAPTCHADEF_TABLE . ' WHERE ID NOT IN (SELECT ID FROM ' . TEMPLATES_TABLE . ')');
-		//FIXME: clean inconsistent objects
+
+
+		if(defined('OBJECT_X_TABLE')){
+			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
+			foreach($tables as $table){
+				$db->query('DELETE FROM ' . OBJECT_X_TABLE . $table . ' WHERE OF_ID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+			}
+		}
 	}
 
 	private static function updateCats(we_database_base $db = null){
@@ -712,7 +719,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					return array_merge($ret, ['what' => 'content']);
 				}
 				self::meassure('updateContent');
-				return ['what' => 'object','text' => 'Classes'];
+				return ['what' => 'object', 'text' => 'Classes'];
 			case 'object':
 				if(defined('OBJECT_X_TABLE')){
 					$ret = self::updateObjectFilesX($db, $progress);
