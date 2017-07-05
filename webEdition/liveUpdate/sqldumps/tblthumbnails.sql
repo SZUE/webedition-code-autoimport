@@ -1,7 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblthumbnails (
   ID int unsigned NOT NULL auto_increment,
   Name varchar(255) NOT NULL DEFAULT '',
-  `Date` int unsigned NOT NULL DEFAULT '0',
   Format ENUM('','jpg','png','gif') NOT NULL DEFAULT '',
   Height smallint unsigned default NULL,
   Width smallint unsigned default NULL,
@@ -25,3 +24,5 @@ CREATE TABLE ###TBLPREFIX###tblthumbnails (
 ###UPDATEDROPCOL(Interlace,###TBLPREFIX###tblthumbnails)###
 /* query separator */
 ###UPDATEDROPCOL(Fitinside,###TBLPREFIX###tblthumbnails)###
+/* query separator */
+###UPDATEDROPCOL(Date,###TBLPREFIX###tblthumbnails)###
