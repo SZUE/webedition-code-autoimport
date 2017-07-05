@@ -67,6 +67,7 @@ abstract class we_html_button{
 	const TOGGLE = 'fa:selectAll,fa-lg fa-check-square-o,fa-lg fa-square-o';
 	const NOT_FOUND = '.fa-lg fa-bullseye';
 	const MAKE_PREVIEW = 'fa:make_preview,fa-lg fa-refresh, fa-lg fa-search';
+	const OPTIMIZE = 'fa:select,fa-lg fa-wrench,fa-lg fa-thumbs-o-up';
 
 	/**
 	 * Gets the HTML Code for the button.

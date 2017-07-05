@@ -174,24 +174,21 @@ body {
 	display: block;
 	height: 18px;
 	padding: 2px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/image.gif)
-		0 0px no-repeat;
+	background: transparent;
 }
 
 .we_document {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/we_dokument.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .folder {
 	display: block;
 	height: 16px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/folder.gif) 0 0px no-repeat;
+	background: transparent;
 	font-weight:bold;
 }
 
@@ -199,8 +196,7 @@ body {
 	display: block;
 	height: 16px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/folderopen.gif) 0 0px no-repeat;
+	background: transparent;
 	font-weight:bold;
 }
 
@@ -208,48 +204,42 @@ body {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/html.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .text_css {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/css.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .text_weTmpl {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/we_template.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .text_js {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/javascript.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .text_plain {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/link.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .flash {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/flashmovie.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .quicktime {
@@ -257,48 +247,42 @@ body {
 	height: 18px;
 	padding-left: 20px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/quicktime.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .xml {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/link.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .pdf {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/pdf.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .zip {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/zip.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .word {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/word.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .excel {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/excel.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .powerpoint {
@@ -306,32 +290,28 @@ body {
 	height: 18px;
 	padding-left: 20px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/powerpoint.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .powerpoint {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/powerpoint.gif) 0
-		0px no-repeat;
+	background: transparent;
 }
 
 .object {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent url(../../../../../../images/tree/icons/object.gif)
-		0 0px no-repeat;
+	background: transparent;
 }
 
 .objectFile {
 	display: block;
 	height: 18px;
 	padding:3px 0 0 3px;
-	background: transparent
-		url(../../../../../../images/tree/icons/objectFile.gif) 0 0px no-repeat;
+	background: transparent;
 }
 
 .selected {
