@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-
+//FIXME: remove this!
 // Check if we need to create a new thumbnail
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && we_base_permission::hasPerm('ADMINISTRATOR')){
 	$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');

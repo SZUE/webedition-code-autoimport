@@ -15,7 +15,7 @@ abstract class we_base_moduleInfo{
 	const SEARCH = 'weSearch';
 	const SHOP = 'shop';
 	const SPELLCHECKER = 'spellchecker';
-	const THUMB = 'thumb';
+	const THUMB = 'thumbnail';
 	const USERS = 'users';
 	const VOTING = 'voting';
 	const WORKFLOW = 'workflow';
