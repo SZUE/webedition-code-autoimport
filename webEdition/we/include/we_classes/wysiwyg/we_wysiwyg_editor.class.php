@@ -109,7 +109,7 @@ class we_wysiwyg_editor{
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '${1}', $this->name);
 			$this->fieldName_clean = str_replace(array('-', '.', '#', ' '), array('_minus_', '_dot_', '_sharp_', '_blank_'), $this->fieldName);
-		};
+		}
 		$this->origName = $origName;
 		$this->bgcol = $bgcol;
 		if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
