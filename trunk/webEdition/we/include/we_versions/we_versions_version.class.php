@@ -1635,7 +1635,7 @@ class we_versions_version{
 			if($publish){
 				$_SESSION['weS']['versions']['doPublish'] = true;
 			}
-			$resetDoc->we_save();
+			$resetDoc->we_save(false, true);
 			if($publish){
 				unset($_SESSION['weS']['versions']['doPublish']);
 				$resetDoc->we_publish();

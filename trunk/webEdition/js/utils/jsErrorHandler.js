@@ -35,6 +35,10 @@ function errorHandler(msg, file, line, col, errObj) {
 			console.log(errObj);
 		}
 	}
+	if(msg.match(/Der Aufgerufene/g)){
+		//ignore these IE errors
+		return;
+	}
 	try {//we don' want to raise errors inside
 		var loc = (this.location ? this.location : document.location);
 		postData = 'we_cmd[msg]=' + encodeURIComponent(msg) +
