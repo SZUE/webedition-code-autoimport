@@ -149,7 +149,7 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-					$fields['name'], '100%', '100%', $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates'], $fields['fontsizes']
+					$fields['name'], '100%', '', $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates'], $fields['fontsizes']
 			);
 			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 			$okBut = we_html_button::create_button(we_html_button::OK, "javascript:document.we_form.submit();");
