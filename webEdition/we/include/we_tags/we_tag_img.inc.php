@@ -186,7 +186,7 @@ function we_tag_img(array $attribs){
 				($id ?
 						//	show edit_image_button
 						//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-						we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )") :
+						we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "')") :
 						// disable edit_image_button
 						we_html_button::create_button(we_html_button::EDIT, "#", false, 100, 20, "", "", true)
 				) .
