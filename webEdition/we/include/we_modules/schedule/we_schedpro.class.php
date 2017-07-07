@@ -163,22 +163,22 @@ function checkFooter(){
 
 	function getHTML($isobj = false){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" onchange="changeSchedOption(this,' . $this->nr . ');">
-<option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
-<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
+<option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][publish]') . '</option>
+<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][park]') . '</option>';
 		if((permissionhandler::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm('DELETE_OBJECTFILE') && $isobj)){
-			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DELETE . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][delete]') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DOCTYPE . ']') . '</option>
-<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CALL . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][doctype]') . '</option>
+<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][call]') . '</option>';
 		}
-		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CATEGORY . ']') . '</option>';
+		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][category]') . '</option>';
 		if((permissionhandler::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm("MOVE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DIR . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][directory]') . '</option>';
 		}
 		$taskpopup .= '
-<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_ENABLED . ']') . '</option>
-<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_DISABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][search_enable]') . '</option>
+<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][search_disable]') . '</option>
 </select>';
 		$extracont = '';
 		$extraheadl = '';
@@ -248,12 +248,12 @@ function checkFooter(){
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
-<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_ONCE . ']') . '</option>
-<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_HOUR . ']') . '</option>
-<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_DAY . ']') . '</option>
-<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_WEEK . ']') . '</option>
-<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_MONTH . ']') . '</option>
-<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_YEAR . ']') . '</option>
+<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][once]') . '</option>
+<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][hour]') . '</option>
+<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][day]') . '</option>
+<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][week]') . '</option>
+<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][month]') . '</option>
+<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][year]') . '</option>
 </select>';
 
 
@@ -445,8 +445,8 @@ function checkFooter(){
 
 		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
-					$GLOBALS['we_doc']->we_publish() :
-					$GLOBALS['we_doc']->we_unpublish());
+				$GLOBALS['we_doc']->we_publish() :
+				$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
 				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->getErrMsg(), $GLOBALS['we_doc']);
@@ -732,13 +732,13 @@ function checkFooter(){
 	}
 
 	static function publInScheduleTable($object, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = array();
 		foreach($object->schedArr as $s){
 			$serializedDoc = ($s['task'] == self::SCHEDULE_FROM && $s['active'] ?
-					we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
-					false);
+				we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+				false);
 
 			$Wann = self::getNextTimestamp($s, time());
 			if($serializedDoc !== false){
