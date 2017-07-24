@@ -635,13 +635,15 @@ $_we_active_integrated_modules = array("users","customer","schedule","shop","edi
 
 
 // Proxysettings
-$replaceCode['we_proxysettings']['path'][4900] = '/webEdition/liveUpdate/includes/proxysettings.inc%s';
-$replaceCode['we_proxysettings']['replace'][4900] = '<?php
+$replaceCode['we_proxysettings'] = [
+	'path' => [4900 => '/webEdition/liveUpdate/includes/proxysettings.inc%s'],
+	'replace' => [4900 => '<?php
 	define("WE_PROXYHOST", "%s");
 	define("WE_PROXYPORT", "%s");
 	define("WE_PROXYUSER", "%s");
 	define("WE_PROXYPASSWORD", "%s");
-';
+']
+];
 
 // insert tblPrefs
 $replaceCode['insert_tblPrefs']['path'][4900] = '';

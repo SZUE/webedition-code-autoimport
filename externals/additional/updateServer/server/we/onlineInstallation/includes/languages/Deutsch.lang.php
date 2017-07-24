@@ -1,5 +1,6 @@
 <?php
-$GLOBALS['lang'] = array('installer' => array(
+$GLOBALS['lang'] = array(
+	'installer' => array(
 		'alpha' => 'Alpha',
 		'amountDatabaseQueries' => '%s von %s Datenbankqueries wurden ausgef&uuml;hrt.',
 		'amountFilesCopied' => '%s von %s Dateien wurden installiert.',
@@ -43,10 +44,10 @@ $GLOBALS['lang'] = array('installer' => array(
 		'writeApplicationConfiguration' => 'webEdition konfigurieren',
 	),
 	'installerDownload' => array(
+		'copyInstallerFiles' => 'Daten installieren',
 		'determineInstallerFiles' => 'Ben&ouml;tigte Daten ermitteln',
 		'downloadInstallerFiles' => 'Daten herunterladen',
 		'prepareInstallerFiles' => 'Daten vorbereiten',
-		'copyInstallerFiles' => 'Daten installieren',
 	),
 );
 

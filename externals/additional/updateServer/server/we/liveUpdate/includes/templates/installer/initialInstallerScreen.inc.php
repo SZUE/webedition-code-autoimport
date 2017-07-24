@@ -25,27 +25,19 @@ $liveUpdateResponse = [
 <table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 <tr>
 	<td id="tdInstallerSteps" valign="top" rowspan="2">
-		<ul id="ulInstallerSteps">
-			' . $stepList . '
-		</ul>
+		<ul id="ulInstallerSteps">' . $stepList . '</ul>
 	</td>
 	<td valign="top" id="tdMessageLog" colspan="2">
-		<div id="messageLog">
-			<strong>' . $GLOBALS['lang']['installer'][$firstStep] . '</strong>
-		</div>
+		<div id="messageLog"><strong>' . $GLOBALS['lang']['installer'][$firstStep] . '</strong></div>
 	</td>
 </tr>
 <tr>
-	<td id="tdProgressBar">
-		' . progressBarUpdate::getProgressBarHtml() . '
-	</td>
+	<td id="tdProgressBar">' . progressBarUpdate::getProgressBarHtml() . '</td>
 	<td align="right" id="tdRefreshButton"><button type="button" class="weBtn" onclick="proceedUrl();"><i class="fa fa-lg fa-refresh"></i> ' . $GLOBALS['lang']['button']['refresh'] . '</button></td>
 </tr>
 </table>
 <script>
 	activateLiInstallerStep("' . $firstStep . '");
-</script>
-<script>
 	proceedUrl();
 </script>'
 ];

@@ -574,8 +574,7 @@ if ($success) {
 			exit;
 
 		}
-			';
-
+';
 
 		$tblPrefsQuery = updateUtilInstaller::getReplaceCode('insert_tblPrefs');
 		$tblUserQuery = updateUtilInstaller::getReplaceCode('insert_tblUser');
