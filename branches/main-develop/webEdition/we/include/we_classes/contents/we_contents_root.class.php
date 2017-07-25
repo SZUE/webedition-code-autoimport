@@ -1326,7 +1326,7 @@ abstract class we_contents_root extends we_contents_base{
 
 	function we_resaveMainTable(){
 		$this->wasUpdate = true;
-		return we_contents_root::we_save(true, true);
+		return self::we_save(true, true);
 	}
 
 	public function we_rewrite(){

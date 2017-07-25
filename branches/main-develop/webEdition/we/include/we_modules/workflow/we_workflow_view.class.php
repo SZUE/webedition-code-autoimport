@@ -957,7 +957,7 @@ class we_workflow_view extends we_modules_view{
 					'height' => '',
 					'align' => '',
 				],
-				['dat' => '<div class="middlefont"><nobr>' . $v['Datum'] . '</nobr></div>',
+				['dat' => '<div class="middlefont">' . $v['Datum'] . '</div>',
 					'height' => '',
 					'align' => 'right',
 				],

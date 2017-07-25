@@ -347,9 +347,9 @@ class we_versions_view{
 			$resetFromVersion = ($versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $versions[$f]['resetFromVersion'] . "--" : "";
 
 			$content[] = [
-				['dat' => '<nobr>' . $vers . '</nobr>'],
-				['dat' => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'],
-				['dat' => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-") . ' </nobr>'],
+				['dat' => $vers],
+				['dat' => we_base_util::shortenPath($user, 30)],
+				['dat' => ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-")],
 				['dat' => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler ?: '') .
 					($fromImport ?: '') .
@@ -439,8 +439,8 @@ class we_versions_view{
 	 */
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
-		return 
-'<table class="contentTable" cellpadding="5">
+		return
+			'<table class="contentTable" cellpadding="5">
 	<thead>
 		<tr id="contentTable_headTR">
 			<th class="middlefont">' . $headline[0]["dat"] . '</th>
@@ -453,9 +453,9 @@ class we_versions_view{
 	</thead>
 </table>
 <div id="scrollContent" style="background-color:#fff;width:100%">' .
-	'<table id="contentTable" class="contentTable" cellpadding="5">' .
-				$this->tabListContent($content) .
-	'</table>
+			'<table id="contentTable" class="contentTable" cellpadding="5">' .
+			$this->tabListContent($content) .
+			'</table>
 </div>';
 	}
 

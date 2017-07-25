@@ -137,10 +137,8 @@ class we_customer_frames extends we_modules_frame{
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',], we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv([
-						'id' => 'headrow'], we_html_element::htmlNobr(
-							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
-							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-							)
+						'id' => 'headrow'], we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
+						we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 						)
 					) .
 					$tabs->getHTML()
@@ -433,10 +431,10 @@ class we_customer_frames extends we_modules_frame{
 		$table->setCol($cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 1, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
@@ -448,7 +446,7 @@ class we_customer_frames extends we_modules_frame{
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_order->getHtml());
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");

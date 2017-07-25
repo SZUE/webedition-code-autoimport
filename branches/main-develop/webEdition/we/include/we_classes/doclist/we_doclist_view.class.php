@@ -52,14 +52,22 @@ class we_doclist_view extends we_search_view{
 						'btnTrash' => we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)"),
 						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]', 'search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]');"),
 						'fieldSearch' => we_html_tools::htmlTextInput('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]"', 'text', 170),
-						'selStatus' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selSpeicherart' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selLocation' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selLocationDate' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selLocationText' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selModFields' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'selUsers' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
-						'searchFields' => we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", we_search_view::SEARCH_DOCLIST), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
+						'selStatus' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, [
+							'class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selSpeicherart' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, [
+							'class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocation' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, [
+							'class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocationDate' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, [
+							'class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocationText' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, [
+							'class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selModFields' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, [
+							'class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selUsers' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'searchFields' => we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", we_search_view::SEARCH_DOCLIST), 1, "", false, [
+							'class' => "defaultfont", 'id' => "searchFields" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
 					]
 					]
 		)]);
@@ -235,10 +243,10 @@ class we_doclist_view extends we_search_view{
 					['dat' => '<span class="iconListview"><span class="resultIcon" data-contenttype="' . $result[$f]["ContentType"] . '" data-extension="' . $result[$f]['Extension'] . '"></span></span>'],
 					// TODO: set thumb ptah when doctype is image/*
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $result[$f]['Text'] . '"><u>' . we_base_util::shortenPath($result[$f]['Text'], $we_PathLength)],
-					//['dat' => '<nobr>' . g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') . '</nobr>'),
-					['dat' => '<nobr>' . we_base_util::shortenPath($result[$f]['SiteTitle'], $we_PathLength) . '</nobr>'],
-					['dat' => '<nobr>' . ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-') . '</nobr>'],
-					['dat' => '<nobr>' . ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-') . '</nobr>']
+					//['dat' => g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') ),
+					['dat' => we_base_util::shortenPath($result[$f]['SiteTitle'], $we_PathLength)],
+					['dat' => ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-')],
+					['dat' => ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-')]
 				];
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result[$f]['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result[$f]['Path']) : 0;
@@ -267,8 +275,8 @@ class we_doclist_view extends we_search_view{
 
 				if($result[$f]['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($result[$f]["Published"] >= $result[$f]['ModDate'] && $result[$f]['Published'] ?
-							$result[$f]['TemplateID'] :
-							$result[$f]['temp_template_id']);
+						$result[$f]['TemplateID'] :
+						$result[$f]['temp_template_id']);
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
@@ -300,8 +308,8 @@ class we_doclist_view extends we_search_view{
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '">' . $imageView . '</a>'],
 					['dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)],
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]["Text"] . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 17) . '</u></a>'],
-					['dat' => '<nobr>' . ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-') . '</nobr>'],
-					['dat' => '<nobr>' . ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : "-") . '</nobr>'],
+					['dat' => ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-')],
+					['dat' => ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : "-")],
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]['Text'] . '">' . $imageViewPopup . '</a>'],
 					['dat' => we_base_file::getHumanFileSize($fs)],
 					['dat' => $imagesize[0] . " x " . $imagesize[1]],

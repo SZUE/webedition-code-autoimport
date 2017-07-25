@@ -290,20 +290,11 @@ function we_makeTextFromPath(path) {
 }
 
 function weonclick(e) {
-	if (document.all) {
-		if (e.ctrlKey || e.altKey) {
-			top.metaKeys.ctrl = true;
-		}
-		if (e.shiftKey) {
-			top.metaKeys.shift = true;
-		}
-	} else {
-		if (e.altKey || e.metaKey || e.ctrlKey) {
-			top.metaKeys.ctrl = true;
-		}
-		if (e.shiftKey) {
-			top.metaKeys.shift = true;
-		}
+	if (e.altKey || e.metaKey || e.ctrlKey) {
+		top.metaKeys.ctrl = true;
+	}
+	if (e.shiftKey) {
+		top.metaKeys.shift = true;
 	}
 	if (top.fileSelect.options.multiple) {
 		if ((top.metaKeys.shift === false) && (top.metaKeys.ctrl === false)) {
@@ -588,7 +579,7 @@ function exit_open() {
 	}
 
 	// if selector is used in combination with suggestor and we know sugestorID we call sugestors postporcess
-	if(suggestID){
+	if (suggestID) {
 		window.opener.we_cmd('we_suggest_postprocessSelection', top.fileSelect.data, suggestID);
 	}
 
@@ -596,12 +587,12 @@ function exit_open() {
 	if (top.fileSelect.data.JSCommand) {
 		fillIDs();
 		/*if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
-			eval(top.fileSelect.data.JSCommand);
-			WE().t_e("old JS Command found", top.fileSelect.data.JSCommand);
-		} else {*/
-			var tmp = top.fileSelect.data.JSCommand.split(',');
-			tmp.splice(1, 0, top.fileSelect.data);
-			window.opener.we_cmd.apply(opener, tmp);
+		 eval(top.fileSelect.data.JSCommand);
+		 WE().t_e("old JS Command found", top.fileSelect.data.JSCommand);
+		 } else {*/
+		var tmp = top.fileSelect.data.JSCommand.split(',');
+		tmp.splice(1, 0, top.fileSelect.data);
+		window.opener.we_cmd.apply(opener, tmp);
 		//}
 	}
 

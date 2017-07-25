@@ -67,7 +67,7 @@ class we_search_view extends we_modules_view{
 			case 'weSearch_new_forClasses' :
 			case 'weSearch_new_forMedia' :
 			case 'weSearch_new_advSearch' :
-			//case 'weSearch_new_group' :
+				//case 'weSearch_new_group' :
 				$this->Model = new we_search_model($cmdid);
 				switch($cmd){
 					case 'weSearch_new_forDocuments' :
@@ -364,7 +364,7 @@ class we_search_view extends we_modules_view{
 				'SEARCH_DOCS' => self::SEARCH_DOCS,
 				'SEARCH_MEDIA' => self::SEARCH_MEDIA,
 				'SEARCH_TMPL' => self::SEARCH_TMPL,
-				]) . '");';
+			]) . '");';
 	}
 
 	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true, $dataOnly = false){
@@ -822,8 +822,8 @@ class we_search_view extends we_modules_view{
 				$content[] = [['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'],
 					['dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)],
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'],
-					['dat' => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'],
-					['dat' => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'],
+					['dat' => ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-")],
+					['dat' => ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-")],
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'],
 					['dat' => $result[$f]['fileSize']],
 					['dat' => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']],

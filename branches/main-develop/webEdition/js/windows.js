@@ -178,5 +178,5 @@ function open_wysiwyg_win() {
 // set new width & height;
 
 	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw).replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]=" + (wyh - arguments[10]));
-	new (WE().util.jsWindow)(window, url, "we_wysiwygWin", Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+	new (WE().util.jsWindow)(window, url, "we_wysiwygWin", Math.max(220, wyw), Math.max(100, wyh + 60), true, false, true);
 }

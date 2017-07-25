@@ -111,7 +111,7 @@ function we_tag_formfield(array $attribs){
 				<tr>';
 
 			foreach($ff as $f => $m){
-				$tbl .= '<td style="color: black; margin-left:5px;"><nobr><span class="small bold">' . $f . ':</span>&nbsp;';
+				$tbl .= '<td style="color: black; margin-left:5px;"><span class="small bold">' . $f . ':</span>&nbsp;';
 				$val = isset($m['value']) ? $m['value'] : '';
 
 				$default = isset($m['default']) ? makeArrayFromCSV($m['default']) : [];
@@ -147,7 +147,7 @@ function we_tag_formfield(array $attribs){
 						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '" />';
 					}
 				}
-				$tbl .= '</span></nobr></td>';
+				$tbl .= '</span></td>';
 			}
 			$tbl .= '</tr>
 			</table>

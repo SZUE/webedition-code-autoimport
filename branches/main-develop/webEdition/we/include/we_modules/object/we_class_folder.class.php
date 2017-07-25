@@ -275,8 +275,8 @@ class we_class_folder extends we_folder{
 				['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'],
 				['dat' => $this->searchclass->f("ID")],
 				['dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("Workspaces")), 32)],
-				['dat' => '<nobr>' . ($this->searchclass->f("Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("Published")) : "-") . '</nobr>'],
-				['dat' => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'],
+				['dat' => ($this->searchclass->f("Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("Published")) : "-")],
+				['dat' => ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-")],
 				['dat' => $this->searchclass->f("Url")],
 				['dat' => $this->searchclass->f("TriggerID") ? id_to_path($this->searchclass->f("TriggerID")) : ''],
 				['dat' => $this->searchclass->f("Charset")],
@@ -446,7 +446,7 @@ class we_class_folder extends we_folder{
 		$this->searchView = we_base_request::_(we_base_request::STRING, 'searchView', $this->searchView);
 
 		$out = '
-<form name="we_form_search" action="" onsubmit="sub();return false;" method="POST">
+<form name="we_form_search" onsubmit="sub();return false;" method="POST">
 <table style="width:510px">
 ' . self::hiddenTrans() . '
 <input type="hidden" name="todo" />

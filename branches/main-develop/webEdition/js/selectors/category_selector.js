@@ -279,20 +279,11 @@ function weonclick(e) {
 		}
 	} else {
 		top.metaKeys.inputClick = false;
-		if (document.all) {
-			if (e.ctrlKey || e.altKey) {
-				top.metaKeys.ctrl = true;
-			}
-			if (e.shiftKey) {
-				top.metaKeys.shift = true;
-			}
-		} else {
-			if (e.altKey || e.metaKey || e.ctrlKey) {
-				top.metaKeys.ctrl = true;
-			}
-			if (e.shiftKey) {
-				top.metaKeys.shift = true;
-			}
+		if (e.altKey || e.metaKey || e.ctrlKey) {
+			top.metaKeys.ctrl = true;
+		}
+		if (e.shiftKey) {
+			top.metaKeys.shift = true;
 		}
 		if (!top.metaKeys.shift && !top.metaKeys.ctrl) {
 			top.unselectAllFiles();

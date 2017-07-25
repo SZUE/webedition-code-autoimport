@@ -115,8 +115,8 @@ function we_cmd() {
 			break;
 		case 'delete_Cat':
 			var obj = args[1],
-							cat = args[2],
-							reload = !args[3];
+				cat = args[2],
+				reload = !args[3];
 
 			if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value.indexOf(',' + cat + ',') !== -1) {
 				if (caller.wizbody.document.we_form.elements['v[' + obj + 'Categories]'].value) {
@@ -242,7 +242,7 @@ function set_button_state() {
 function weChangeDocType(f) {
 	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=ChangeDocType', 'cns=importExport&docType=' + f.value, function (weResponse) {
 		var node, prop,
-						elems = weResponse.DataArray.elements;
+			elems = weResponse.DataArray.elements;
 
 		for (var i = 0; i < elems.length; i++) {
 			if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
@@ -370,7 +370,7 @@ function handleEvent_step_1(evt, type) {
 
 	if (type === 'XML') {
 		f.elements['v[we_TemplateID]'].value = (f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value :
-						f.elements.docTypeTemplateId.value);
+			f.elements.docTypeTemplateId.value);
 	}
 
 	switch (evt) {
@@ -524,8 +524,8 @@ function doNext_FileImportStep1() {
 
 function doNext_WEStep1() {
 	var f = top.wizbody.document.we_form,
-					fs = f.elements['v[fserver]'].value,
-					fl = 'placeholder.xml';
+		fs = f.elements['v[fserver]'].value,
+		fl = 'placeholder.xml';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs !== '/') {
 		if (fs.match(/\.\./) == '..') {
@@ -591,9 +591,9 @@ function doNext_XMLStep1() {
 
 function doNext_CSVStep1() {
 	var f = top.wizbody.document.we_form,
-					fvalid = true,
-					fs = f.elements['v[fserver]'].value,
-					fl = 'placeholder.xml';
+		fvalid = true,
+		fs = f.elements['v[fserver]'].value,
+		fl = 'placeholder.xml';
 
 	if ((f.elements['v[rdofloc]'][0].checked) && fs != '/') {
 		if (fs.match(/\.\./) === '..') {
@@ -711,29 +711,14 @@ function onChangeSelectObject(node) {
 function addField(form, fieldType, fieldName, fieldValue) {
 	if (document.getElementById) {
 		var input = document.createElement('INPUT');
-		if (document.all) {
-			input.type = fieldType;
-			input.name = fieldName;
-			input.value = fieldValue;
-		} else if (document.getElementById) {
-			input.setAttribute('type', fieldType);
-			input.setAttribute('name', fieldName);
-			input.setAttribute('value', fieldValue);
-		}
+		input.type = fieldType;
+		input.name = fieldName;
+		input.value = fieldValue;
 		form.appendChild(input);
 	}
 }
 function getField(form, fieldName) {
-	if (!document.all) {
-		return form[fieldName];
-	} else {
-		for (var e = 0; e < form.elements.length; e++) {
-			if (form.elements[e].name === fieldName) {
-				return form.elements[e];
-			}
-		}
-	}
-	return null;
+	return form[fieldName];
 }
 function removeField(form, fieldName) {
 	var field = getField(form, fieldName);
@@ -769,7 +754,7 @@ function cycle() {
 	var bf = top.wizbody.document.we_form;
 	for (var i = 0; i < bf.elements.length; i++) {
 		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
-						(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
+			(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
 			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
 		}
 	}

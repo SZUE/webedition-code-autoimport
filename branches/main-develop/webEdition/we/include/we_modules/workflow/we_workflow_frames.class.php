@@ -81,10 +81,9 @@ class we_workflow_frames extends we_modules_frame{
 				'id' => 'eHeaderBody',
 				], we_html_element::htmlDiv(
 					['id' => 'main'], we_html_element::htmlDiv(
-						['id' => 'headrow'], we_html_element::htmlNobr(
-							we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-					)) .
+						['id' => 'headrow'], we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+						we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+					) .
 					$we_tabs->getHTML()
 				)
 		);
