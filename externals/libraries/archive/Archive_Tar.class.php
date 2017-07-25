@@ -1087,7 +1087,7 @@ class Archive_Tar {
     $v_gid = sprintf("%6s ", DecOct($v_info[5]));
     $v_perms = sprintf("%6s ", DecOct($v_info['mode']));
 
-    $v_mtime = sprintf("%11s", DecOct($v_info['mode']));
+    $v_mtime = sprintf("%11s", DecOct($v_info['mtime']));
 
     $v_linkname = '';
 
@@ -1636,7 +1636,7 @@ class Archive_Tar {
               // Drupal integration.
               // Changed the code to use drupal_mkdir() instead of mkdir().
 			  //if (!@drupal_mkdir($v_header['filename'], 0777)) {
-			  if (!we_base_file::delete($v_header['filename'], 0777)) {
+			  if (!we_base_file::delete($v_header['filename'], true)) {
                 $this->_error('Unable to create directory {'
 					              . $v_header['filename'] . '}');
                 return false;
@@ -1867,7 +1867,7 @@ class Archive_Tar {
     // Drupal integration.
     // Changed the code to use drupal_mkdir() instead of mkdir().
     //if (!@drupal_mkdir($p_dir, 0777)) {
-	if (!@mkdir($p_dir, 0777)) {
+	if (!@mkdir($p_dir, octdec(intval(WE_NEW_FOLDER_MOD)) )) {
       $this->_error("Unable to create directory '$p_dir'");
       return false;
     }
