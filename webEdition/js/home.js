@@ -704,30 +704,18 @@ function removeWidgetOK(wizId) {
 
 function getDimension(theString, styleClassElement) {
 	var dim = {};
-
-	if (document.getElementById && document.createElement) {
-		var span = document.createElement('span');
-		span.id = 'newSpan';
-		span.style.position = 'absolute';
-		span.style.visibility = 'hidden';
-		if (styleClassElement) {
-			span.className = styleClassElement;
-		}
-		span.appendChild(document.createTextNode(theString));
-		document.body.appendChild(span);
-		dim.height = span.offsetHeight;
-		dim.width = span.offsetWidth;
-		document.body.removeChild(span);
-	} else if (document.all && document.body.insertAdjacentHTML) {
-		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
-			(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
-			theString + '<\/span>';
-		document.body.insertAdjacentHTML('beforeEnd', html);
-		dim.height = document.all.newSpan.offsetHeight;
-		dim.width = document.all.newSpan.offsetWidth;
-		document.all.newSpan.outerHTML = '';
+	var span = document.createElement('span');
+	span.id = 'newSpan';
+	span.style.position = 'absolute';
+	span.style.visibility = 'hidden';
+	if (styleClassElement) {
+		span.className = styleClassElement;
 	}
-
+	span.appendChild(document.createTextNode(theString));
+	document.body.appendChild(span);
+	dim.height = span.offsetHeight;
+	dim.width = span.offsetWidth;
+	document.body.removeChild(span);
 	return dim;
 }
 

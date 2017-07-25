@@ -299,15 +299,6 @@ abstract class we_html_element{
 	}
 
 	/**
-	 * Function generates html code for html nobr element
-	 *
-	 * @return		string
-	 */
-	public static function htmlNobr($content = ''){
-		return we_html_baseElement::getHtmlCode(new we_html_baseElement('nobr', true, [], $content));
-	}
-
-	/**
 	 * Function generates html code for html br element
 	 *
 	 * @param		$content								string			(optional)

@@ -57,7 +57,7 @@ function disable_xhtml_fields(val, fields) {
 		if (val == 1) {
 			elem.disabled = false;
 			label.style.color = "black";
-			label.style.cursor = document.all ? "hand" : "pointer";
+			label.style.cursor = "hand";
 		} else {
 			elem.disabled = true;
 			label.style.color = "grey";
@@ -72,7 +72,7 @@ function set_xhtml_field(val, field) {
 
 function handle_message_reporting_click() {
 	var val = 0,
-					fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
+		fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
 	for (var i = 0; i < fields.length; i++) {
 
 		if (document.getElementById(fields[i]).checked) {
@@ -87,7 +87,7 @@ function set_state_error_handler() {
 	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked === true) {
 		_new_state = false;
 		_new_style = 'black';
-		_new_cursor = document.all ? 'hand' : 'pointer';
+		_new_cursor = 'hand';
 	} else {
 		_new_state = true;
 		_new_style = 'gray';
@@ -218,9 +218,9 @@ function setDefaultLocale(Value) {
 
 function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient,
-					i = p.length,
-					edit_enabled,
-					delete_enabled;
+		i = p.length,
+		edit_enabled,
+		delete_enabled;
 	if (i === 0) {
 		edit_enabled = WE().layout.button.switch_button_state(document, 'edit', 'disabled');
 		delete_enabled = WE().layout.button.switch_button_state(document, 'delete', 'disabled');
@@ -289,8 +289,8 @@ function formmailBlockOnOff() {
 
 function set_state() {
 	var _new_state = (document.getElementsByName('newconf[useproxy]')[0].checked === true ?
-					false :
-					true);
+		false :
+		true);
 
 	document.getElementsByName('newconf[proxyhost]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
@@ -587,7 +587,7 @@ function reloadUsedEditors(force) {
 	for (var frameId in _usedEditors) {
 
 		if (force || ((_usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.TEMPLATES_TABLE || _usedEditors[frameId].getEditorEditorTable() === WE().consts.tables.FILE_TABLE) &&
-						_usedEditors[frameId].getEditorEditPageNr() == WE().consts.global.WE_EDITPAGE_CONTENT)) {
+			_usedEditors[frameId].getEditorEditPageNr() == WE().consts.global.WE_EDITPAGE_CONTENT)) {
 
 			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 				_usedEditors[frameId].setEditorReloadNeeded(true);

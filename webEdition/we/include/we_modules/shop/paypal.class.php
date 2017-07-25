@@ -146,7 +146,7 @@ class paypal_class{
 			echo "<html>";
 			echo "<body onload=\"document.forms['paypal_form'].submit();\">";
 			echo "<body>";
-			echo "<div style='text-align:center'><h2>" . $messageAuto . "</h2></center>\n";
+			echo "<div style='text-align:center'><h2>" . $messageAuto . "</h2></div>\n";
 			echo "<form method=\"post\" name=\"paypal_form\" ";
 			echo "action=\"" . $this->paypal_url . "\">\n";
 
@@ -155,7 +155,7 @@ class paypal_class{
 			}
 
 			echo "</div><br/><br/>" . $messageMan . "<br/><br/>\n";
-			echo "<input type=\"submit\" value=\"PayPal\" /></center>\n";
+			echo "<input type=\"submit\" value=\"PayPal\" /></div>\n";
 
 			echo "</form>\n";
 			echo "</body></html>\n";

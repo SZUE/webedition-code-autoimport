@@ -825,7 +825,7 @@ function we_templateHead($fullHeader = false){
 function we_templatePreContent($force = false){//force is used by templates with a full html/body.
 	if(!empty($GLOBALS['we_editmode'])){
 		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
-			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
+			echo '<form name="we_form" method="post" onsubmit="return false;">' .
 			we_contents_base::hiddenTrans();
 		}
 		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : $GLOBALS['WE_TEMPLATE_INIT']);

@@ -89,10 +89,8 @@ class we_export_frames extends we_modules_frame{
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
-					'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
-							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
-							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-							)
+					'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
+						we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 						)
 					) .
 					$we_tabs->getHTML()
@@ -162,8 +160,8 @@ class we_export_frames extends we_modules_frame{
 				'headline' => g_l('export', '[property]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text_visible", '', str_replace($this->View->export->Extension, '', $this->View->export->Text), '', 'style="width: 490px;" id="yuiAcInputPathName" onchange="we_cmd(\'setHot\');" onblur="we_cmd(\'setHeaderTitlePath\', this.value);"') . '<span class="exportExtension"> ' . $this->View->export->Extension . '</span>', g_l('export', '[name]')) .
 				we_html_element::htmlHiddens(['Extension' => $this->View->export->Extension,
-						'Text' => str_replace($this->View->export->Extension, '', $this->View->export->Text)]) .
-					'<br/>' . $this->getHTMLDirChooser(),
+					'Text' => str_replace($this->View->export->Extension, '', $this->View->export->Text)]) .
+				'<br/>' . $this->getHTMLDirChooser(),
 				'space' => we_html_multiIconBox::SPACE_MED]
 		];
 
@@ -180,9 +178,8 @@ class we_export_frames extends we_modules_frame{
 
 		$parts[] = [
 			'headline' => g_l('export', '[export_to]'),
-			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('ExportType', $exportTypes, 1, $this->View->export->ExportType, false,
-					['onchange' => "we_cmd('switch_type', this);"], 'value', 520), g_l('export', '[file_format]')
-				),
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect('ExportType', $exportTypes, 1, $this->View->export->ExportType, false, ['onchange' => "we_cmd('switch_type', this);"], 'value', 520), g_l('export', '[file_format]')
+			),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		];
@@ -229,22 +226,22 @@ class we_export_frames extends we_modules_frame{
 		$selectionType->addOption(FILE_TABLE, g_l('export', '[documents]'));
 		$selectionType->addOption('doctype', g_l('export', '[doctypename]'));
 		if(defined('OBJECT_TABLE')){
-			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_exim_ExIm::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? ['selected' => 'selected'] : []));
+			$selectionType->addOption('classname', g_l('export', '[classname]'), ($this->View->export->ExportType === we_exim_ExIm::TYPE_CSV && !we_exim_Export::ENABLE_DOCUMENTS2CSV ? [
+					'selected' => 'selected'] : []));
 		}
 		$selectionType->selectOption($this->View->export->SelectionType);
 		$table->setCol(0, 0, ['style' => 'padding-bottom:5px;'], $selectionType->getHtml());
 
 		$table->setCol(1, 0, ['class' => 'selectionTypes doctype', 'style' => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')], we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, [
-			'onchange' => "we_cmd('setHot');"], 'value', 520)
+				'onchange' => "we_cmd('setHot');"], 'value', 520)
 		);
 
-		$table->setCol(2, 0, ['class' => 'selectionTypes doctype document', 'style' => ($this->View->export->SelectionType !== 'classname' ? 'display:block' : 'display: none')],
-			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
+		$table->setCol(2, 0, ['class' => 'selectionTypes doctype document', 'style' => ($this->View->export->SelectionType !== 'classname' ? 'display:block' : 'display: none')], we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 
 		if(defined('OBJECT_TABLE')){
 			$table->setCol(3, 0, ['class' => 'selectionTypes classname', 'style' => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")], we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, [
-				'onchange' => "we_cmd('setHot');"], 'value', 520)
+					'onchange' => "we_cmd('setHot');"], 'value', 520)
 			);
 		}
 
@@ -289,7 +286,6 @@ class we_export_frames extends we_modules_frame{
 		return we_html_element::htmlDiv(['id' => 'optionsWXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_WE ? 'block' : 'none') . ';'], $optionsWE) .
 			we_html_element::htmlDiv(['id' => 'optionsGXML', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_XML ? 'block' : 'none') . ';'], $optionsXML) .
 			we_html_element::htmlDiv(['id' => 'optionsCSV', 'class' => 'exportOptions', 'style' => 'display: ' . ($this->View->export->ExportType === we_exim_ExIm::TYPE_CSV ? 'block' : 'none') . ';'], $optionsCSV);
-
 	}
 
 	private function getHTMLOptionsWE(){
@@ -368,10 +364,10 @@ class we_export_frames extends we_modules_frame{
 				'colon' => g_l('export', '[colon]'),
 				'tab' => g_l('export', '[tab]'),
 				'space' => g_l('export', '[space]')
-			], g_l('export', '[csv_delimiter]')));
+				], g_l('export', '[csv_delimiter]')));
 		$fileformattable->setColContent(2, 0, $this->getHTMLChooser("CSVEnclose", $this->View->export->CSVEnclose, ["doublequote" => g_l('export', '[double_quote]'),
 				"singlequote" => g_l('export', '[single_quote]')
-			], g_l('export', '[csv_enclose]')));
+				], g_l('export', '[csv_enclose]')));
 		$fileformattable->setColContent(3, 0, we_html_forms::checkboxWithHidden(($this->View->export->CSVFieldnames ? true : false), 'CSVFieldnames', g_l('export', '[csv_fieldnames]'), false, 'defaultfont'));
 
 		return [['headline' => g_l('export', '[csv_params]'), 'html' => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED]];
@@ -466,7 +462,7 @@ class we_export_frames extends we_modules_frame{
 		$bodyContent = we_html_element::htmlForm(['name' => 'we_form',
 				"method" => "post",
 				"action" => $this->frameset], we_html_element::htmlHiddens(['pnt' => 'cmd', 'cmd' => 'do_export'])
-			);
+		);
 
 		switch($this->View->export->ExportType){
 			case we_exim_ExIm::TYPE_CSV:
@@ -539,11 +535,11 @@ class we_export_frames extends we_modules_frame{
 				$exporter->exportPostprocess();
 
 				if($this->View->export->ExportTo === 'local'){
-					$progress_update['log'][] = we_html_element::htmlB(we_html_element::htmlSpan(['class' => 'defaultfont'], '<br/>' . g_l('export', '[backup_finished]') . ' - ' . date("d.m.Y H:i:s"). "<br/>" .
-							g_l('export', '[download_starting2]') . "<br/><br/>" .
-							g_l('export', '[download_starting3]') . "<br/>" .
-							we_html_element::htmlB(we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename),
-									'download' => $this->View->export->ExportFilename], g_l('export', '[download]'))) . "<br/><br/>"
+					$progress_update['log'][] = we_html_element::htmlB(we_html_element::htmlSpan(['class' => 'defaultfont'], '<br/>' . g_l('export', '[backup_finished]') . ' - ' . date("d.m.Y H:i:s") . "<br/>" .
+								g_l('export', '[download_starting2]') . "<br/><br/>" .
+								g_l('export', '[download_starting3]') . "<br/>" .
+								we_html_element::htmlB(we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename),
+										'download' => $this->View->export->ExportFilename], g_l('export', '[download]'))) . "<br/><br/>"
 					));
 				} else {
 					$progress_update['log'][] = we_html_element::htmlB('<br/>' . g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"));

@@ -735,7 +735,7 @@ class we_object extends we_document{
 					'</td></tr>
 <tr style="vertical-align:top">
 	<td style="width:100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
-	<td class="defaultfont"><nobr>' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . 'max', 'dat'), 3, "onchange=\"we_cmd('object_reload_entry_at_class','','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "');\"", "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
+	<td class="defaultfont">' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . 'max', 'dat'), 3, "onchange=\"we_cmd('object_reload_entry_at_class','','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "');\"", "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</td>
 </tr>
 <tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td class="defaultfont"><table>';
 

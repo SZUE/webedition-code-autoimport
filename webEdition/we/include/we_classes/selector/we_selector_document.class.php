@@ -376,7 +376,7 @@ class we_selector_document extends we_selector_directory{
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
 					]);
-					$imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' border='0' id='previewpic'></a>";
+					$imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' id='previewpic'></a>";
 				}
 			}
 
