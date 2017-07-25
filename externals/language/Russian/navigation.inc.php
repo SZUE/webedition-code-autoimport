@@ -63,7 +63,7 @@ $l_navigation=array(
 	'limit_access'=>'Define customer access level',
 	'linkSelection'=>'Link selection',
 	'link'=>'Link',
-	'link_attribute'=>'Link attributes (e.g. id="1", class=, ...)',
+	'link_attribute'=>'Link attributes (e.g. id="1")',
 	'link_language'=>'Link',
 	'linkprops_desc'=>'Here you can define the additional link properties. In dynamic items only link target and popup window properties will be applied.',
 	'manual_selection'=>'Manual selection',

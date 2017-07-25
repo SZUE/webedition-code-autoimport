@@ -63,7 +63,7 @@ $l_navigation=array(
 	'limit_access'=>'Eigene Zugangsregeln für Kunden definieren',
 	'linkSelection'=>'Link Auswahl',
 	'link'=>'Link',
-	'link_attribute'=>'Link Attribute (z.B. id="1", class=, ..)',
+	'link_attribute'=>'Link Attribute (z.B. id="1")',
 	'link_language'=>'Link',
 	'linkprops_desc'=>'Hier können Sie zusätzliche Link-Eigenschaften definieren. Für dynamische Einträge werden nur die Link-Eigenschaften Linkziel und Popup-Fenster verwendet.',
 	'manual_selection'=>'Manuelle Auswahl',
