@@ -1055,17 +1055,19 @@ class we_search_search extends we_search_base{
 				}
 				$where = str_replace('WETABLE.', 'f.', $this->where);
 
-				$this->db->query('INSERT INTO ' . SEARCHRESULT_TABLE . ' (UID,docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ' . $_SESSION['user']['ID'] . ',ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . $where);
-
-				//first check published documents
-				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' sr JOIN ' . CONTENT_TABLE . ' c ON (sr.docID=c.DID AND sr.docTable=c.DocumentTable) ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID= c.DID') .
-					' SET sr.SiteTitle=c.Dat' .
-					' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND c.nHash=x\'' . md5("Title") . '\' AND c.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND c.DID IN ' . $tmpTableWhere : ' AND ' . $where));
+				$this->db->query('INSERT INTO ' . SEARCHRESULT_TABLE .
+					' (UID,docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension,SiteTitle) SELECT
+					' . $_SESSION['user']['ID'] . ',f.ID,"' . stripTblPrefix(FILE_TABLE) . '",f.Text,f.Path,f.ParentID,f.IsFolder,f.IsProtected,f.temp_template_id,f.TemplateID,f.ContentType,f.CreationDate,f.CreatorID,f.ModDate,f.Published,f.Extension,c.Dat
+FROM
+	`' . FILE_TABLE . '` f LEFT JOIN
+	`' . CONTENT_TABLE . '` c ON (f.ID=c.DID AND c.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.nHash=x\'' . md5("Title") . '\')
+WHERE ' . $where);
 
 				//check unpublished documents
+				//FIXME: use JSON_VALUE. when Mysql 5.7 / Maria 10.2 is supported
 				$titles = [];
-				$this->db->query('SELECT td.DocumentID, td.DocumentObject FROM `' . TEMPORARY_DOC_TABLE . '` td ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID=td.DocumentID') . ' WHERE td.docTable="tblFile" AND td.Active=1 ' . ($path ? ' AND td.DocumentID IN ' . $tmpTableWhere : ' AND ' . $where));
-				while($this->db->next_record()){
+				$this->db->query('SELECT td.DocumentID,td.DocumentObject FROM `' . TEMPORARY_DOC_TABLE . '` td ' . ($path ? '' : ' JOIN `' . FILE_TABLE . '` f ON f.ID=td.DocumentID') . ' WHERE td.docTable="tblFile" AND td.Active=1 ' . ($path ? ' AND td.DocumentID IN ' . $tmpTableWhere : ' AND ' . $where));
+				while($this->db->next_record(MYSQLI_ASSOC)){
 					$tempDoc = we_unserialize($this->db->f('DocumentObject'));
 					if(!empty($tempDoc[0]['elements']['Title'])){
 						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
@@ -1161,7 +1163,7 @@ class we_search_search extends we_search_base{
 		$this->searchMediaLinks(0, true, $IDs); // we write $this->usedMediaLinks here, where we allready have final list of found media
 		if($this->usedMedia){
 			foreach($this->usedMedia as $v){
-				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' SET `IsUsed`=1 WHERE UID=' . $_SESSION['user']['ID'] . ' AND docID=' . intval($v) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
+				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' SET IsUsed=1 WHERE UID=' . $_SESSION['user']['ID'] . ' AND docID=' . intval($v) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 			}
 		}
 	}
