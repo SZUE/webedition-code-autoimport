@@ -54,12 +54,12 @@ abstract class we_updater{
 			return false;
 		}
 		//this is from 6.3.9
-		$db = $db ?: new DB_WE();
+		$db = $db ? : new DB_WE();
 		$tmpDB = new DB_WE();
-		$init = $progress = ($progress ?: [
-			'pos' => 0,
-			'maxID' => 0,
-			'max' => f('SELECT COUNT(1) FROM ' . OBJECT_TABLE . ' WHERE DefaultValues LIKE "a:%"')
+		$init = $progress = ($progress ? : [
+				'pos' => 0,
+				'maxID' => 0,
+				'max' => f('SELECT COUNT(1) FROM ' . OBJECT_TABLE . ' WHERE DefaultValues LIKE "a:%"')
 		]);
 
 		$maxStep = 15;
@@ -100,7 +100,7 @@ abstract class we_updater{
 			$progress['maxID'] = $db->f('ID');
 		}
 		//make sure we always progress
-		$progress['pos'] += ($db->num_rows() ?: 1);
+		$progress['pos'] += ($db->num_rows() ? : 1);
 
 		//change old tables to have different prim key
 		$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE ID>' . intval($init['maxID']) . ' ORDER BY ID LIMIT ' . $maxStep, true);
@@ -261,7 +261,7 @@ abstract class we_updater{
 	}
 
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
-		$db = $db ?: $GLOBALS['DB_WE'];
+		$db = $db ? : $GLOBALS['DB_WE'];
 
 		if($db->isTabExist(LINK_TABLE)){
 			$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
@@ -308,7 +308,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateCats(we_database_base $db = null){
-		$db = $db ?: $GLOBALS['DB_WE'];
+		$db = $db ? : $GLOBALS['DB_WE'];
 
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
 			if(f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
@@ -331,7 +331,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	public static function meassure($name){
 		static $last = 0;
 		static $times = [];
-		$last = $last ?: microtime(true);
+		$last = $last ? : microtime(true);
 		if($name == -1){
 			t_e('notice', 'time for updates', $times);
 			return;
@@ -342,7 +342,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function removeObsoleteFiles($path = ''){
-		$path = $path ?: WEBEDITION_PATH . 'liveUpdate/includes/';
+		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(!is_file($path . 'del.files')){
 			return true;
 		}
@@ -375,14 +375,13 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		if(!$db->isTabExist(LINK_TABLE)){
 			return false;
 		}
-		$init = $progress = ($progress ?: [
-			'pos' => 0,
-			'maxID' => 0,
-			'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'')
+		$init = $progress = ($progress ? : [
+				'pos' => 0,
+				'maxID' => 0,
+				'max' => f('SELECT COUNT(1) FROM ' . CONTENT_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\'')
 		]);
 		$maxStep = 2000;
 
-		//FIXME!!!! LINK_TABLE
 		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
 			if($db->isKeyExistAtAll(CONTENT_TABLE, 'prim') || $db->addKey(CONTENT_TABLE, 'UNIQUE KEY prim(DID,DocumentTable,nHash)')){
 				$db->query('RENAME TABLE ' . LINK_TABLE . ' TO ' . LINK_TABLE . '_old');
@@ -401,6 +400,31 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 	private static function updateDateInContent(we_database_base $db){
 		$db->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=Dat,Dat=NULL WHERE DocumentTable="tblFile" AND type="date" AND Dat IS NOT NULL');
+	}
+
+	private static function updateTempTable(we_database_base $db, array $progress = []){
+		$init = $progress = ($progress ? : [
+				'pos' => 0,
+				'max' => f('SELECT COUNT(1) FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "a:2%"')
+		]);
+		$maxStep = 200;
+
+
+		if(!$progress['max'] || ($progress['pos'] > $progress['max'])){//finished
+			return false;
+		}
+
+		$db->query('SELECT td.DocumentID,td.DocumentObject,docTable FROM `' . TEMPORARY_DOC_TABLE . '` td  WHERE DocumentObject LIKE "a:2%" LIMIT ' . $maxStep);
+		$db2 = new DB_WE();
+		while($db->next_record(MYSQLI_ASSOC)){
+			$db2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' . we_database_base::arraySetter([
+					'DocumentObject' => we_serialize(we_unserialize($db->f('DocumentObject')), SERIALIZE_JSON)
+				]) . ' WHERE DocumentID=' . $db->f('DocumentID') . ' AND docTable="' . $db->f('docTable') . '"');
+		}
+
+		$progress['pos'] = min($progress['pos'] + $maxStep, $progress['max'] + 1);
+
+		return array_merge($progress, ['text' => 'Temptable ' . $progress['pos'] . ' / ' . $progress['max']]);
 	}
 
 	private static function updateVersionsTable(we_database_base $db){
@@ -567,10 +591,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			return;
 		}
 		$db = new DB_WE();
-		$init = $progress = ($progress ?: [
-			'pos' => 0,
-			'maxID' => 0,
-			'max' => f('SELECT COUNT(DISTINCT IntOrderID) FROM ' . SHOP_TABLE)
+		$init = $progress = ($progress ? : [
+				'pos' => 0,
+				'maxID' => 0,
+				'max' => f('SELECT COUNT(DISTINCT IntOrderID) FROM ' . SHOP_TABLE)
 		]);
 
 		$maxStep = 150;
@@ -594,7 +618,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 		$idAr = $db->getAllq('SELECT IntOrderID FROM ' . SHOP_TABLE . ' WHERE ID>' . intval($progress['maxID']) . ' GROUP BY IntOrderID LIMIT ' . $maxStep, true);
 
-		$progress['pos'] += count($idAr) ?: 1;
+		$progress['pos'] += count($idAr) ? : 1;
 		$progress['maxID'] = end($idAr);
 
 		$ids = implode(',', $idAr);
@@ -746,6 +770,15 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				}
 				self::updateDateInContent($db);
 				self::meassure('updateContentDate');
+			case 'tempTable':
+				$ret = self::updateTempTable($db, $progress);
+				if($ret){
+					self::meassure(-1);
+					return array_merge($ret, ['what' => 'tempTable']);
+				}
+				self::meassure('updateTemp');
+				return ['what' => 'replayUpdateDB', 'text' => 'Classes'];
+			case 'replayUpdateDB':
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				self::meassure(-1);
