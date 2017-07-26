@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblNewsletterConfirm (
-  confirmID varchar(96) NOT NULL default '',
+  confirmID binary(16) NOT NULL default '',
   subscribe_mail varchar(255) NOT NULL default '',
   subscribe_html tinyint unsigned NOT NULL default '0',
   subscribe_salutation varchar(255) NOT NULL default '',
@@ -8,7 +8,7 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterConfirm (
   subscribe_lastname varchar(255) NOT NULL default '',
   lists text NOT NULL,
   expires int unsigned NOT NULL default '0',
-  PRIMARY KEY (confirmID(30)),
+  PRIMARY KEY (confirmID),
   KEY expires (expires),
-  KEY subscribe (subscribe_mail(50),confirmID(30))
+  KEY subscribe (subscribe_mail(20))
 ) ENGINE=MyISAM;

@@ -34,7 +34,7 @@ function we_tag_newsletterSalutation(array $attribs){
 		case 'lastname':
 			return (isset($GLOBALS['WE_LASTNAME']) ) ? $GLOBALS['WE_LASTNAME'] : '';
 		case 'email':
-			return isset($GLOBALS['WE_MAIL']) ? $GLOBALS['WE_MAIL'] : (isset($GLOBALS['WE_NEWSLETTER_EMAIL']) ? $GLOBALS['WE_NEWSLETTER_EMAIL'] : '');
+			return isset($GLOBALS['WE_MAIL']) ? $GLOBALS['WE_MAIL'] : '';
 		case 'salutation':
 		default:
 			return isset($GLOBALS['WE_SALUTATION']) ? $GLOBALS['WE_SALUTATION'] : '';

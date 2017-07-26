@@ -27,14 +27,13 @@ abstract class we_newsletter_util{
 	static function unsubscribeNewsletter(we_database_base $db, $customer, $emailField, $abos, $paths, $unsubscribe_mail){
 		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
 		$unsubscribe_mail = strtolower(preg_replace("|[\r\n,]|", '', $unsubscribe_mail));
-		$GLOBALS['WE_NEWSLETTER_EMAIL'] = $unsubscribe_mail;
+		$GLOBALS['WE_MAIL'] = $unsubscribe_mail;
 		if(!we_check_email($unsubscribe_mail)){
 			$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_EMAIL_INVALID; // E-Mail ungueltig
 			return false;
 		}
 
-
-		$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail ="' . $db->escape($unsubscribe_mail) . '"');
+		$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail="' . $db->escape($unsubscribe_mail) . '"');
 
 		$emailExists = ($customer ?
 			self::removeFromDB($db, $emailField, $unsubscribe_mail, $abos) :
@@ -185,7 +184,7 @@ abstract class we_newsletter_util{
 	}
 
 	static function addDoubleOptIn(we_database_base $db, $type, $customer_email_field, $f, array $abos, array $paths, $mailid, $attribs){
-		$confirmID = md5(uniqid(__FUNCTION__, true));
+		$confirmID = md5(uniqid($f['subscribe_mail'], true));
 		$lists = [];
 		$emailExistsInOneOfTheLists = false;
 		switch($type){
@@ -247,7 +246,8 @@ abstract class we_newsletter_util{
 
 		if($mailid){
 			$db->query('REPLACE INTO ' . NEWSLETTER_CONFIRM_TABLE . ' SET ' .
-				we_database_base::arraySetter(['confirmID' => $confirmID,
+				we_database_base::arraySetter([
+					'confirmID' => sql_function('x\'' . $confirmID . '\''),
 					'subscribe_mail' => strtolower($f['subscribe_mail']),
 					'subscribe_html' => $f['subscribe_html'],
 					'subscribe_salutation' => $f['subscribe_salutation'],
