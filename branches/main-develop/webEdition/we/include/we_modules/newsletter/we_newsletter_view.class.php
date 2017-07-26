@@ -885,7 +885,7 @@ class we_newsletter_view extends we_modules_view{
 				break;
 			case we_newsletter_block::OBJECT:
 				$path = ($block->Field != "" && $block->Field ?
-					TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE)) : '');
+						TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE)) : '');
 
 				if($block->LinkID && $path){
 					$content = self::we_getObjectFileByID($block->LinkID, $path);
@@ -916,8 +916,8 @@ class we_newsletter_view extends we_modules_view{
 					break;
 				}
 				$content = ($block->Source ?
-					$block->Source :
-					str_ireplace(['&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",], [' ', "<", ">", '"', "&",], preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
+						$block->Source :
+						str_ireplace(['&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",], [' ', "<", ">", '"', "&",], preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
 				//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
 
 				break;
@@ -952,10 +952,10 @@ class we_newsletter_view extends we_modules_view{
 
 									if(isset($src["path"])){
 										$path = (dirname($src["path"]) ?
-											dirname($src["path"]) . "/" :
-											(isset($url["path"]) ?
-											dirname($url["path"]) . "/" :
-											''));
+												dirname($src["path"]) . "/" :
+												(isset($url["path"]) ?
+													dirname($url["path"]) . "/" :
+													''));
 									}
 									$newname = $url["scheme"] . "://" . preg_replace("|/+|", "/", $url["host"] . "/" . $path . basename($name));
 									$content = str_replace($name, $newname, $content);
@@ -1008,53 +1008,6 @@ class we_newsletter_view extends we_modules_view{
 			$content = $newplain = str_ireplace(['&nbsp;', '&lt;', '&gt;', '&quot;', '&amp;',], [' ', '<', '>', '"', '&'], $newplain);
 		}
 
-		return $content;
-	}
-
-	function getBlockContents(){
-		$content = [];
-		$keys = array_keys($this->newsletter->blocks);
-		foreach($keys as $kblock){
-			$blockid = $kblock + 1;
-
-			$content[] = [
-				'plain' => [
-					'defaultC' => $this->getContent($blockid, 0, 0, '', '', '', '', '###CUSTOMERID###'),
-					'femaleC' => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'maleC' => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'title_firstname_lastnameC' => $this->getContent($blockid, 0, 0, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'title_lastnameC' => $this->getContent($blockid, 0, 0, '', '###TITLE###', '', '###LASTNAME###', '###CUSTOMERID###'),
-					'firstname_lastnameC' => $this->getContent($blockid, 0, 0, '', '', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'firstnameC' => $this->getContent($blockid, 0, 0, '', '', '###FIRSTNAME###', '', '###CUSTOMERID###'),
-					'lastnameC' => $this->getContent($blockid, 0, 0, '', '', '', '###LASTNAME###', '###CUSTOMERID###'),
-					'default' => $this->getContent($blockid, 0, 0, '', '', '', '', ''),
-					'female' => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'male' => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'title_firstname_lastname' => $this->getContent($blockid, 0, 0, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'title_lastname' => $this->getContent($blockid, 0, 0, '', '###TITLE###', '', '###LASTNAME###', ''),
-					'firstname_lastname' => $this->getContent($blockid, 0, 0, '', '', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'firstname' => $this->getContent($blockid, 0, 0, '', '', '###FIRSTNAME###', '', ''),
-					'lastname' => $this->getContent($blockid, 0, 0, '', '', '', '###LASTNAME###', ''),
-				],
-				'html' => [
-					'defaultC' => $this->getContent($blockid, 0, 1, '', '', '', '', '###CUSTOMERID###'),
-					'femaleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'maleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'title_firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '', '###LASTNAME###', '###CUSTOMERID###'),
-					'title_lastnameC' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-					'firstnameC' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', '###CUSTOMERID###'),
-					'lastnameC' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', '###CUSTOMERID###'),
-					'default' => $this->getContent($blockid, 0, 1, '', '', '', '', ''),
-					'female' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'male' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'title_firstname_lastname' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '', '###LASTNAME###', ''),
-					'title_lastname' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'firstname_lastname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '###LASTNAME###', ''),
-					'firstname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', ''),
-					'lastname' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', ''),
-			]];
-		}
 		return $content;
 	}
 
@@ -1136,7 +1089,7 @@ class we_newsletter_view extends we_modules_view{
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
-		$phpmail->setCharSet($this->newsletter->Charset ?: $GLOBALS['WE_BACKENDCHARSET']);
+		$phpmail->setCharSet($this->newsletter->Charset ? : $GLOBALS['WE_BACKENDCHARSET']);
 		if($hm){
 			$phpmail->addHTMLPart($content);
 		}
@@ -1201,14 +1154,14 @@ class we_newsletter_view extends we_modules_view{
 		update_mem_limit(128);
 
 		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : [
-			];
+		];
 
 		if($select == self::MAILS_FILE){
 			return $extern;
 		}
 
 		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : [
-			];
+		];
 		if($select == self::MAILS_EMAILS){
 			return $list;
 		}
@@ -1227,18 +1180,18 @@ class we_newsletter_view extends we_modules_view{
 			$filtersql = implode(' ', $filterarr);
 
 			$customers = ($this->newsletter->groups[$group - 1]->SendAll ?
-				'SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . ($filtersql !== '' ? $filtersql : 1) :
-				implode(',', array_map('intval', explode(',', $this->newsletter->groups[$group - 1]->Customers))));
+					'SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . ($filtersql !== '' ? $filtersql : 1) :
+					implode(',', array_map('intval', explode(',', $this->newsletter->groups[$group - 1]->Customers))));
 
 			if(!empty($customers) || !empty($filtersql)){ //Fix #10898
 				$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db);
 				$selectX = $this->settings['customer_email_field'] .
 					($emails_only ? '' :
-					',' . $this->settings['customer_html_field'] . ',' .
-					$this->settings['customer_salutation_field'] . ',' .
-					$this->settings['customer_title_field'] . ',' .
-					$this->settings['customer_firstname_field'] . ',' .
-					$this->settings['customer_lastname_field']
+						',' . $this->settings['customer_html_field'] . ',' .
+						$this->settings['customer_salutation_field'] . ',' .
+						$this->settings['customer_title_field'] . ',' .
+						$this->settings['customer_firstname_field'] . ',' .
+						$this->settings['customer_lastname_field']
 					);
 				$this->db->query('SELECT ID,' . $selectX . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql ? ' AND (' . $filtersql . ')' : ''));
 				while($this->db->next_record()){
@@ -1432,41 +1385,41 @@ class we_newsletter_view extends we_modules_view{
 		for($blockid = 0; $blockid < $blockcount; $blockid++){
 
 			we_cache_file::save('nl_' . $blockcache . "_p_" . $blockid, [
-				"defaultC" => $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###"),
-				"femaleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
-				"maleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
-				"title_firstname_lastnameC" => $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
-				"title_lastnameC" => $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", "###CUSTOMERID###"),
-				"firstname_lastnameC" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###"),
-				"firstnameC" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "", "###CUSTOMERID###"),
-				"lastnameC" => $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", "###CUSTOMERID###"),
+				"defaultC" => $this->getContent($blockid, 0, 0, "", "", "", "", we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"femaleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"maleC" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"title_firstname_lastnameC" => $this->getContent($blockid, 0, 0, "", we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"title_lastnameC" => $this->getContent($blockid, 0, 0, "", we_newsletter_base::TITLE_REPLACE_TEXT, "", we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"firstname_lastnameC" => $this->getContent($blockid, 0, 0, "", "", we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"firstnameC" => $this->getContent($blockid, 0, 0, "", "", we_newsletter_base::FIRSTNAME_REPLACE_TEXT, "", we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				"lastnameC" => $this->getContent($blockid, 0, 0, "", "", "", we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
 				"default" => $this->getContent($blockid, 0, 0, "", "", "", "", ""),
-				"female" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", ""),
-				"male" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", ""),
-				"title_firstname_lastname" => $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", ""),
-				"title_lastname" => $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", ""),
-				"firstname_lastname" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", ""),
-				"firstname" => $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "", ""),
-				"lastname" => $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", ""),
+				"female" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
+				"male" => $this->getContent($blockid, 0, 0, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
+				"title_firstname_lastname" => $this->getContent($blockid, 0, 0, "", we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
+				"title_lastname" => $this->getContent($blockid, 0, 0, "", we_newsletter_base::TITLE_REPLACE_TEXT, "", we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
+				"firstname_lastname" => $this->getContent($blockid, 0, 0, "", "", we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
+				"firstname" => $this->getContent($blockid, 0, 0, "", "", we_newsletter_base::FIRSTNAME_REPLACE_TEXT, "", ""),
+				"lastname" => $this->getContent($blockid, 0, 0, "", "", "", we_newsletter_base::LASTNAME_REPLACE_TEXT, ""),
 				], 86400);
 
 			we_cache_file::save('nl_' . $blockcache . '_h_' . $blockid, [
-				'defaultC' => $this->getContent($blockid, 0, 1, '', '', '', '', '###CUSTOMERID###'),
-				'femaleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-				'maleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-				'title_firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-				'title_lastnameC' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '', '###LASTNAME###', '###CUSTOMERID###'),
-				'firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###'),
-				'firstnameC' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', '###CUSTOMERID###'),
-				'lastnameC' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', '###CUSTOMERID###'),
+				'defaultC' => $this->getContent($blockid, 0, 1, '', '', '', '', we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'femaleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'maleC' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'title_firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'title_lastnameC' => $this->getContent($blockid, 0, 1, '', we_newsletter_base::TITLE_REPLACE_TEXT, '', we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'firstname_lastnameC' => $this->getContent($blockid, 0, 1, '', '', we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'firstnameC' => $this->getContent($blockid, 0, 1, '', '', we_newsletter_base::FIRSTNAME_REPLACE_TEXT, '', we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
+				'lastnameC' => $this->getContent($blockid, 0, 1, '', '', '', we_newsletter_base::LASTNAME_REPLACE_TEXT, we_newsletter_base::CUSTOMERID_REPLACE_TEXT),
 				'default' => $this->getContent($blockid, 0, 1, '', '', '', '', ''),
-				'female' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-				'male' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-				'title_firstname_lastname' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '###FIRSTNAME###', '###LASTNAME###', ''),
-				'title_lastname' => $this->getContent($blockid, 0, 1, '', '###TITLE###', '', '###LASTNAME###', ''),
-				'firstname_lastname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '###LASTNAME###', ''),
-				'firstname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', ''),
-				'lastname' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', ''),
+				'female' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::FEMALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
+				'male' => $this->getContent($blockid, 0, 1, $this->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD], we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
+				'title_firstname_lastname' => $this->getContent($blockid, 0, 1, '', we_newsletter_base::TITLE_REPLACE_TEXT, we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
+				'title_lastname' => $this->getContent($blockid, 0, 1, '', we_newsletter_base::TITLE_REPLACE_TEXT, '', we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
+				'firstname_lastname' => $this->getContent($blockid, 0, 1, '', '', we_newsletter_base::FIRSTNAME_REPLACE_TEXT, we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
+				'firstname' => $this->getContent($blockid, 0, 1, '', '', we_newsletter_base::FIRSTNAME_REPLACE_TEXT, '', ''),
+				'lastname' => $this->getContent($blockid, 0, 1, '', '', '', we_newsletter_base::LASTNAME_REPLACE_TEXT, ''),
 				'inlines' => ($this->newsletter->blocks[$blockid]->Pack ? $this->cacheInlines($buffer, $blockcache) : []),
 				], 86400);
 		}

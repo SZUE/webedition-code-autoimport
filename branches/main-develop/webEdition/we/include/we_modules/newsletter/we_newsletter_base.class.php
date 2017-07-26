@@ -35,6 +35,10 @@ class we_newsletter_base{
 	const FEMALE_SALUTATION_FIELD = 'female_salutation';
 	const MALE_SALUTATION_FIELD = 'male_salutation';
 	const EMAIL_REPLACE_TEXT = '###EMAIL###';
+	const FIRSTNAME_REPLACE_TEXT = '###FIRSTNAME###';
+	const LASTNAME_REPLACE_TEXT = '###LASTNAME###';
+	const CUSTOMERID_REPLACE_TEXT = '###CUSTOMERID###';
+	const TITLE_REPLACE_TEXT = '###TITLE###';
 
 	var $db;
 	var $table;
@@ -153,9 +157,9 @@ class we_newsletter_base{
 				$arr2 = explode(",", $row);
 				if(count($arr2)){
 					$ret[] = ($emails_only ?
-						$arr2[0] :
-						[$arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "",
-						isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks]);
+							$arr2[0] :
+							[$arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "",
+							isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks]);
 				}
 			}
 		}

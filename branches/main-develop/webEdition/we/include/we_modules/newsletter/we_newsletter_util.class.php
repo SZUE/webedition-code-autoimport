@@ -36,13 +36,13 @@ abstract class we_newsletter_util{
 		$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail="' . $db->escape($unsubscribe_mail) . '"');
 
 		$emailExists = ($customer ?
-			self::removeFromDB($db, $emailField, $unsubscribe_mail, $abos) :
-			self::removeFromFile($paths, $unsubscribe_mail));
+				self::removeFromDB($db, $emailField, $unsubscribe_mail, $abos) :
+				self::removeFromFile($paths, $unsubscribe_mail));
 
 		if($emailExists){
 			return true;
 		}
-		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = $GLOBALS['WE_REMOVENEWSLETTER_STATUS'] ?: we_newsletter_base::STATUS_EMAIL_EXISTS;
+		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = $GLOBALS['WE_REMOVENEWSLETTER_STATUS'] ? : we_newsletter_base::STATUS_EMAIL_EXISTS;
 		return false;
 	}
 
@@ -75,7 +75,7 @@ abstract class we_newsletter_util{
 		if($emailExists){
 			$fields = ['ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
 				'ModifiedBy' => 'frontend',
-				];
+			];
 			$hook = new we_hook_base('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
 				'isUnsubscribe' => true]);
 			$hook->executeHook();
@@ -154,7 +154,7 @@ abstract class we_newsletter_util{
 			'subscribe_title' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_title__', ''))),
 			'subscribe_firstname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_firstname__', ''))),
 			'subscribe_lastname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_lastname__', '')))
-			];
+		];
 	}
 
 	static function mailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, array $f, $includeimages){
@@ -168,13 +168,14 @@ abstract class we_newsletter_util{
 
 		$adminmailtextHTML = strtr(
 			(($adminmailid > 0) && we_base_file::isWeFile($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '')
-			, ['###MAIL###' => $f['subscribe_mail'],
+			, [
+			'###MAIL###' => $f['subscribe_mail'],
 			'###SALUTATION###' => $f['subscribe_salutation'],
-			'###TITLE###' => $f['subscribe_title'],
-			'###FIRSTNAME###' => $f['subscribe_firstname'],
-			'###LASTNAME###' => $f['subscribe_lastname'],
+			we_newsletter_base::TITLE_REPLACE_TEXT => $f['subscribe_title'],
+			we_newsletter_base::FIRSTNAME_REPLACE_TEXT => $f['subscribe_firstname'],
+			we_newsletter_base::LASTNAME_REPLACE_TEXT => $f['subscribe_lastname'],
 			'###HTML###' => $f['subscribe_html'],
-			]);
+		]);
 		$phpmail->addHTMLPart($adminmailtextHTML);
 		if(isset($includeimages)){
 			$phpmail->setIsEmbedImages($includeimages);
@@ -276,7 +277,7 @@ abstract class we_newsletter_util{
 
 			$confirmLink = ($cnt == 0 ? $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') : '') . $confirmLink;
 			$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];
-			$GLOBALS['WE_TITLE'] = '###TITLE###';
+			$GLOBALS['WE_TITLE'] = we_newsletter_base::TITLE_REPLACE_TEXT;
 			$GLOBALS['WE_SALUTATION'] = $f['subscribe_salutation'];
 			$GLOBALS['WE_FIRSTNAME'] = $f['subscribe_firstname'];
 			$GLOBALS['WE_LASTNAME'] = $f['subscribe_lastname'];
@@ -290,7 +291,7 @@ abstract class we_newsletter_util{
 					unset($GLOBALS['we_doc']);
 				}
 				$mailtextHTML = $mailid && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid, '', $GLOBALS['DB_WE']) : '';
-				$mailtextHTML = str_replace('###TITLE###', $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtextHTML) : $mailtextHTML));
+				$mailtextHTML = str_replace(we_newsletter_base::TITLE_REPLACE_TEXT, $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])' . we_newsletter_base::TITLE_REPLACE_TEXT . '%', '${1} ' . $f['subscribe_title'], $mailtextHTML) : $mailtextHTML));
 			}
 
 			$GLOBALS['WE_HTMLMAIL'] = false;
@@ -303,7 +304,7 @@ abstract class we_newsletter_util{
 			}
 
 			$mailtext = $mailid && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
-			$mailtext = str_replace('###TITLE###', $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtext) : $mailtext));
+			$mailtext = str_replace(we_newsletter_base::TITLE_REPLACE_TEXT, $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])' . we_newsletter_base::TITLE_REPLACE_TEXT . '%', '${1} ' . $f['subscribe_title'], $mailtext) : $mailtext));
 
 			$placeholderfieldsmatches = [];
 			if(preg_match_all('/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/', $mailtext, $placeholderfieldsmatches)){
@@ -432,21 +433,21 @@ abstract class we_newsletter_util{
 			$GLOBALS['WE_NEWSUBSCRIBER_USERNAME'] = $f['subscribe_mail'];
 		}
 		$fields = (!$uid ? ['Username' => $f['subscribe_mail'],
-			'Path' => '/' . $f['subscribe_mail'],
-			'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
-			'MemberSince' => time(),
-			'LoginDenied' => 0,
-			'LastLogin' => 0,
-			'LastAccess' => 0,
-			($customerFieldPrefs['customer_salutation_field'] != 'ID' ? $customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
-			($customerFieldPrefs['customer_title_field'] != 'ID' ? $customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
-			($customerFieldPrefs['customer_firstname_field'] != 'ID' ? $customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
-			($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
-			($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
-			($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
-			] : ['ModifyDate' => time(),
-			'ModifiedBy' => 'frontend',
-			]);
+				'Path' => '/' . $f['subscribe_mail'],
+				'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
+				'MemberSince' => time(),
+				'LoginDenied' => 0,
+				'LastLogin' => 0,
+				'LastAccess' => 0,
+				($customerFieldPrefs['customer_salutation_field'] != 'ID' ? $customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
+				($customerFieldPrefs['customer_title_field'] != 'ID' ? $customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
+				($customerFieldPrefs['customer_firstname_field'] != 'ID' ? $customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
+				($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
+				($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
+				($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
+				] : ['ModifyDate' => time(),
+				'ModifiedBy' => 'frontend',
+		]);
 		$hook = new we_hook_base('customer_preSave', '', ['customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
 			'isSubscribe' => true, 'isUnsubscribe' => false]);
 		$hook->executeHook();
