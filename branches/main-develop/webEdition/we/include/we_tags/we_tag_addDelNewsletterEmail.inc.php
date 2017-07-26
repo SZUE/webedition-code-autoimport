@@ -95,7 +95,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 		$err = we_newsletter_base::STATUS_SUCCESS;
 		$f = we_newsletter_util::getNewsletterFields(we_base_request::_(we_base_request::HTML, 'confirmID', 0), $err, we_base_request::_(we_base_request::EMAIL, 'mail', ''), we_base_request::_(we_base_request::EMAIL, 'we_subscribe_email__')); //FIXME: use data from above
 		// Setting Globals FOR WE-Tags
-		$GLOBALS['WE_NEWSLETTER_EMAIL'] = isset($f['subscribe_mail']) ? $f['subscribe_mail'] : '';
+		$GLOBALS['WE_MAIL'] = isset($f['subscribe_mail']) ? $f['subscribe_mail'] : '';
 		$GLOBALS['WE_SALUTATION'] = isset($f['subscribe_salutation']) ? $f['subscribe_salutation'] : '';
 		$GLOBALS['WE_TITLE'] = isset($f['subscribe_title']) ? $f['subscribe_title'] : '';
 		$GLOBALS['WE_FIRSTNAME'] = isset($f['subscribe_firstname']) ? $f['subscribe_firstname'] : '';
