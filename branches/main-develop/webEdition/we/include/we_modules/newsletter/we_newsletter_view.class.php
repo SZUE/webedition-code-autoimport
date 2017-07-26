@@ -827,21 +827,6 @@ class we_newsletter_view extends we_modules_view{
 		return $we_doc;
 	}
 
-	/* function we_includeEntity(&$we_doc, $tmpid){
-	  if($tmpid != "" && $tmpid != 0){
-	  $path = id_to_path($tmpid, TEMPLATES_TABLE);
-	  }
-
-	  $path = ($path ? TEMPLATES_PATH . $path : $we_doc->TemplatePath);
-
-	  if(file_exists($path)){
-	  include($path);
-	  } else {
-	  echo STYLESHEET .
-	  '<div class="defaultfont lowContrast" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
-	  }
-	  } */
-
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = '', $title = '', $firstname = '', $lastname = '', $customerid = 0){
 		if(!isset($this->newsletter->blocks[$pblk])){
 			return '';
@@ -874,7 +859,7 @@ class we_newsletter_view extends we_modules_view{
 					$path = "";
 				}
 				if($block->LinkID && $path){
-					$content = ($block->LinkID > 0) && we_base_file::isWeFile($block->LinkID, FILE_TABLE, $this->db) ? we_getDocumentByID($block->LinkID, $path, $this->db) : 'No such File';
+					$content = $block->LinkID && we_base_file::isWeFile($block->LinkID, FILE_TABLE, $this->db) ? we_getDocumentByID($block->LinkID, $path, $this->db) : 'No such File';
 				}
 				break;
 			case we_newsletter_block::DOCUMENT_FIELD:
@@ -983,7 +968,7 @@ class we_newsletter_view extends we_modules_view{
 				if($urlReplace){
 					$content = preg_replace('-(["\'])//-', '${1}' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 				}
-				$content = preg_replace(['-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
+				return preg_replace(['-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
 					'-(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
 					'-(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
 					'-(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i',
@@ -995,20 +980,17 @@ class we_newsletter_view extends we_modules_view{
 					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
 					], $content);
 			}
-		} else {
-			$urlReplace = we_folder::getUrlReplacements($this->db, true, true);
-			if($urlReplace){
-				$content = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
-			}
-			$newplain = preg_replace(['|<br */? *>|', '|<title>.*</title>|i',], "\n", $content);
-			if($block->Type != we_newsletter_block::TEXT){
-				$newplain = strip_tags($newplain);
-			}
-			$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
-			$content = $newplain = str_ireplace(['&nbsp;', '&lt;', '&gt;', '&quot;', '&amp;',], [' ', '<', '>', '"', '&'], $newplain);
+			return $content;
 		}
-
-		return $content;
+		$urlReplace = we_folder::getUrlReplacements($this->db, true, true);
+		if($urlReplace){
+			$content = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+		}
+		$newplain = preg_replace(['|<br */? *>|', '|<title>.*</title>|i', "|&nbsp;(&nbsp;)+|i"], ["\n", '', "\t"], $content);
+		if($block->Type != we_newsletter_block::TEXT){
+			$newplain = strip_tags($newplain);
+		}
+		return str_ireplace(['&nbsp;', '&lt;', '&gt;', '&quot;', '&amp;',], [' ', '<', '>', '"', '&'], $newplain);
 	}
 
 	function getGroupBlocks($group){

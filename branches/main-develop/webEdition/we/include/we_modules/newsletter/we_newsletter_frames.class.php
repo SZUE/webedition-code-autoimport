@@ -461,23 +461,23 @@ class we_newsletter_frames extends we_modules_frame{
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [
 					], "value", 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [
 					], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [
 					], 'value', 308));
 		}
@@ -1788,16 +1788,16 @@ class we_newsletter_frames extends we_modules_frame{
 
 			$this->View->db->query('UPDATE ' . NEWSLETTER_TABLE . ' SET Step=0,Offset=0 WHERE ID=' . $this->View->newsletter->ID);
 			if(!$test){
-				$this->View->newsletter->addLog("log_end_send");
+				$this->View->newsletter->addLog('log_end_send');
 			}
 			$this->jsCmd->addCmd('updateLog', $progress_update);
 			return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', 'self.focus();'));
 		}
 
 		if($start && !$test && !$reload){
-			$this->View->newsletter->addLog("log_continue_send");
+			$this->View->newsletter->addLog('log_continue_send');
 		} else if(!$test && !$reload){
-			$this->View->newsletter->addLog("log_start_send");
+			$this->View->newsletter->addLog('log_start_send');
 		}
 
 		$content = "";
@@ -1808,18 +1808,18 @@ class we_newsletter_frames extends we_modules_frame{
 		for($j = $start; $j < $end; $j++){
 			$email = trim($emails[$j][0]);
 
-			$user_groups = explode(",", $emails[$j][6]);
+			$user_groups = explode(',', $emails[$j][6]);
 			$user_blocks = $emails[$j][7];
 
 			sort($user_blocks);
 			$user_blocks = array_unique($user_blocks);
 
-			$htmlmail = isset($emails[$j][1]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][1])) : "";
-			$salutation = isset($emails[$j][2]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][2])) : "";
-			$title = isset($emails[$j][3]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][3])) : "";
-			$firstname = isset($emails[$j][4]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][4])) : "";
-			$lastname = isset($emails[$j][5]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][5])) : "";
-			$customerid = isset($emails[$j][8]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][8])) : "";
+			$htmlmail = isset($emails[$j][1]) ? str_replace(["\r", "\n"], '', $emails[$j][1]) : '';
+			$salutation = isset($emails[$j][2]) ? str_replace(["\r", "\n"], '', $emails[$j][2]) : '';
+			$title = isset($emails[$j][3]) ? str_replace(["\r", "\n"], '', $emails[$j][3]) : '';
+			$firstname = isset($emails[$j][4]) ? str_replace(["\r", "\n"], '', $emails[$j][4]) : '';
+			$lastname = isset($emails[$j][5]) ? str_replace(["\r", "\n"], '', $emails[$j][5]) : '';
+			$customerid = isset($emails[$j][8]) ? str_replace(["\r", "\n"], '', $emails[$j][8]) : '';
 			$iscustomer = (isset($emails[$j][9]) && $emails[$j][9] === 'customer' ? 'C' : '');
 
 			$contentDefault = $content_plainDefault = $contentF = $contentF_plain = $contentM = $contentM_plain = $contentTFL = $contentTFL_plain = $contentTL = $contentTL_plain = $contentFL = $contentFL_plain = $contentLN = $contentLN_plain = $contentFN = $contentFN_plain = '';
@@ -1834,29 +1834,29 @@ class we_newsletter_frames extends we_modules_frame{
 				$html_block = we_cache_file::load('nl_' . $blockcache . "_h_" . $user_block);
 				$plain_block = we_cache_file::load('nl_' . $blockcache . "_p_" . $user_block);
 
-				$contentDefault .= $html_block["default" . $iscustomer];
-				$content_plainDefault .= $plain_block["default" . $iscustomer];
+				$contentDefault .= $html_block['default' . $iscustomer];
+				$content_plainDefault .= $plain_block['default' . $iscustomer];
 
-				$contentF .= $html_block["female" . $iscustomer];
-				$contentF_plain .= $plain_block["female" . $iscustomer];
+				$contentF .= $html_block['female' . $iscustomer];
+				$contentF_plain .= $plain_block['female' . $iscustomer];
 
-				$contentM .= $html_block["male" . $iscustomer];
-				$contentM_plain .= $plain_block["male" . $iscustomer];
+				$contentM .= $html_block['male' . $iscustomer];
+				$contentM_plain .= $plain_block['male' . $iscustomer];
 
-				$contentTFL .= $html_block["title_firstname_lastname" . $iscustomer];
-				$contentTFL_plain .= $plain_block["title_firstname_lastname" . $iscustomer];
+				$contentTFL .= $html_block['title_firstname_lastname' . $iscustomer];
+				$contentTFL_plain .= $plain_block['title_firstname_lastname' . $iscustomer];
 
-				$contentTL .= $html_block["title_lastname" . $iscustomer];
-				$contentTL_plain .= $plain_block["title_lastname" . $iscustomer];
+				$contentTL .= $html_block['title_lastname' . $iscustomer];
+				$contentTL_plain .= $plain_block['title_lastname' . $iscustomer];
 
-				$contentFL .= $html_block["firstname_lastname" . $iscustomer];
-				$contentFL_plain .= $plain_block["firstname_lastname" . $iscustomer];
+				$contentFL .= $html_block['firstname_lastname' . $iscustomer];
+				$contentFL_plain .= $plain_block['firstname_lastname' . $iscustomer];
 
-				$contentLN .= $html_block["lastname" . $iscustomer];
-				$contentLN_plain .= $plain_block["lastname" . $iscustomer];
+				$contentLN .= $html_block['lastname' . $iscustomer];
+				$contentLN_plain .= $plain_block['lastname' . $iscustomer];
 
-				$contentFN .= $html_block["firstname" . $iscustomer];
-				$contentFN_plain .= $plain_block["firstname" . $iscustomer];
+				$contentFN .= $html_block['firstname' . $iscustomer];
+				$contentFN_plain .= $plain_block['firstname' . $iscustomer];
 
 				$inlines = array_merge($inlines, $html_block['inlines']);
 			}
@@ -1877,7 +1877,7 @@ class we_newsletter_frames extends we_modules_frame{
 					we_newsletter_base::TITLE_REPLACE_TEXT => $title
 				];
 
-				$content = strtr(($title ? preg_replace('|([^ ])'.we_newsletter_base::TITLE_REPLACE_TEXT.'|', '${1} ' . $title, $contentM) : $contentM), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])' . we_newsletter_base::TITLE_REPLACE_TEXT . '|', '${1} ' . $title, $contentM) : $contentM), $rep);
 				$content_plain = strtr(($title ? preg_replace('|([^ ])' . we_newsletter_base::TITLE_REPLACE_TEXT . '|', '${1} ' . $title, $contentM_plain) : $contentM_plain), $rep);
 			} else if($title && $firstname && $lastname){
 				$rep = [
