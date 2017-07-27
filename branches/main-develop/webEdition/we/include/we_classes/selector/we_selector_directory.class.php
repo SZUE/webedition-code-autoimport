@@ -112,7 +112,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this). '&what='.$what.'&rootDirID=' . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
+		return WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . get_class($this) . '&what=' . $what . '&rootDirID=' . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function getFramsetJSFile(){
@@ -263,7 +263,7 @@ class we_selector_directory extends we_selector_file{
 		$isWS = we_users_util::in_workspace($this->dir, get_ws($this->table, true), $this->table, $this->db);
 		if($isWS && $this->id == 0){
 			$this->path = '/';
-			$this->dir=0;
+			$this->dir = 0;
 		}
 		$weCmd->addCmd('clearEntries');
 		if($isWS){
@@ -298,7 +298,7 @@ class we_selector_directory extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
 		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
-		
+
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
@@ -434,16 +434,16 @@ class we_selector_directory extends we_selector_file{
 			$result = [
 				'Text' => $data['Text'],
 				'Path' => $data['Path'],
-				'ContentType' => isset($data['ContentType']) ? $data['ContentType'] : '',
-				'Type' => isset($data['Type']) ? $data['Type'] : '',
-				'CreationDate' => isset($data['CreationDate']) ? $data['CreationDate'] : '',
-				'ModDate' => isset($data['ModDate']) ? $data['ModDate'] : '',
-				'Filename' => isset($data['Filename']) ? $data['Filename'] : '',
-				'Extension' => isset($data['Extension']) ? $data['Extension'] : '',
-				'MasterTemplateID' => isset($data['MasterTemplateID']) ? $data['MasterTemplateID'] : '',
-				'IncludedTemplates' => isset($data['IncludedTemplates']) ? $data['IncludedTemplates'] : '',
-				'ClassName' => isset($data['ClassName']) ? $data['ClassName'] : '',
-				'Templates' => isset($data['Templates']) ? $data['Templates'] : '',
+				'ContentType' => empty($data['ContentType']) ? '' : $data['ContentType'],
+				'Type' => empty($data['Type']) ? '' : $data['Type'],
+				'CreationDate' => empty($data['CreationDate']) ? '' : $data['CreationDate'],
+				'ModDate' => empty($data['ModDate']) ? '' : $data['ModDate'],
+				'Filename' => empty($data['Filename']) ? '' : $data['Filename'],
+				'Extension' => empty($data['Extension']) ? '' : $data['Extension'],
+				'MasterTemplateID' => empty($data['MasterTemplateID']) ? '' : $data['MasterTemplateID'],
+				'IncludedTemplates' => empty($data['IncludedTemplates']) ? '' : $data['IncludedTemplates'],
+				'ClassName' => empty($data['ClassName']) ? '' : $data['ClassName'],
+				'Templates' => empty($data['Templates']) ? '' : $data['Templates'],
 			];
 		}
 		$path = $data ? $data['Path'] : '';
@@ -509,10 +509,10 @@ class we_selector_directory extends we_selector_file{
 							$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->id,
 									'size' => ['width' => 150,
 										'height' => 200
-										],
+									],
 									'path' => $result['Path'],
 									'extension' => $extension,
-									]);
+							]);
 						} else {
 							$thumbpath = $result['Path'];
 						}

@@ -49,7 +49,7 @@ class we_imageDocument extends we_binaryDocument{
 		array_push($this->persistent_slots, 'Thumbs');
 		$this->ContentType = we_base_ContentTypes::IMAGE;
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_IMAGEEDIT, we_base_constants::WE_EDITPAGE_THUMBNAILS);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_IMAGEEDIT, we_base_constants::WE_EDITPAGE_THUMBNAILS]);
 		}
 		self::$imgCnt++;
 	}

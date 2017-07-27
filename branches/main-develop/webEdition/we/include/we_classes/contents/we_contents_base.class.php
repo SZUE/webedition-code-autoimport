@@ -26,8 +26,8 @@
 abstract class we_contents_base{
 	//constants for retrieving data from DB
 
-	const LOAD_MAID_DB = 0;//default DB
-	const LOAD_TEMP_DB = 1;//temporary saved files
+	const LOAD_MAID_DB = 0; //default DB
+	const LOAD_TEMP_DB = 1; //temporary saved files
 	const LOAD_REVERT_DB = 2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 	const LOAD_SCHEDULE_DB = 3;
 	//constants define where to write document (guess)
@@ -121,7 +121,7 @@ abstract class we_contents_base{
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput($name, $size = 25, $type = 'txt'){
-		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ?: $name), $size);
+		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ? : $name), $size);
 	}
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
@@ -135,7 +135,7 @@ abstract class we_contents_base{
 		$out = we_html_element::htmlHidden($formname, $this->getElement($name)) .
 			'<table class="default" style="border:1px solid black">
 				<tr>
-					<td style="background-color: ' . ($value ?: 'inherit') . ';">
+					<td style="background-color: ' . ($value ? : 'inherit') . ';">
 						<a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="display:block;width:' . $width . 'px;height:' . $height . 'px">&nbsp;</span></a>
 					</td>
 				</tr>
@@ -189,8 +189,8 @@ abstract class we_contents_base{
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
 
 	function formInput2($width, $name, $size, $type = 'txt', $attribs = '', $infoname = ''){
-		$infotext = $infoname ? ' (' . (g_l('weClass', '[' . $infoname . ']', true) ?: $infoname) . ': ' . $this->getElement($infoname) . ')' : '';
-		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ?: $name) . $infotext, $size, $width, '', $attribs);
+		$infotext = $infoname ? ' (' . (g_l('weClass', '[' . $infoname . ']', true) ? : $infoname) . ': ' . $this->getElement($infoname) . ')' : '';
+		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ? : $name) . $infotext, $size, $width, '', $attribs);
 	}
 
 	function formSelect2($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [
@@ -238,7 +238,7 @@ abstract class we_contents_base{
 
 	public function initByID($ID, $Table = FILE_TABLE, $from = self::LOAD_MAID_DB){
 		$this->ID = intval($ID);
-		$this->Table = ($Table ?: FILE_TABLE);
+		$this->Table = ($Table ? : FILE_TABLE);
 		$this->we_load($from);
 		$GLOBALS['we_ID'] = intval($ID); //FIXME: check if we need this !
 		$GLOBALS['we_Table'] = $this->Table;
@@ -312,9 +312,9 @@ abstract class we_contents_base{
 		}
 	}
 
-	protected function i_savePersistentSlotsToDB($felder = ''){
+	protected function i_savePersistentSlotsToDB(array $felder = []){
 		$tableInfo = $this->DB_WE->metadata($this->Table, we_database_base::META_NAME);
-		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
+		$feldArr = $felder ? $felder : $this->persistent_slots;
 		$fields = [];
 		if(!$this->wasUpdate && $this->insertID && f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID) . ' LIMIT 1', '', $this->DB_WE)){
 			return false;
@@ -323,28 +323,30 @@ abstract class we_contents_base{
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 
-				if($fieldName === 'ID'){
-					if(!$this->wasUpdate && $this->insertID){//for Apps to be able to manipulate Insert-ID
-						$fields['ID'] = $this->insertID;
-						$this->insertID = 0;
-					}
-				} else {
-					$fields[$fieldName] = $val;
+				switch($fieldName){
+					case 'ID':
+						if(!$this->wasUpdate && $this->insertID){//for Apps to be able to manipulate Insert-ID
+							$fields['ID'] = $this->insertID;
+							$this->insertID = 0;
+						}
+						break;
+					default:
+						$fields[$fieldName] = $val;
 				}
 			}
 		}
 		if($fields){
 			$where = ($this->wasUpdate || $this->ID ? ' WHERE ID=' . intval($this->ID) : '');
 			$ret = (bool) ($this->DB_WE->query(($where ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
-			$this->ID = ($this->ID ?: $this->DB_WE->getInsertId());
+			$this->ID = ($this->ID ? : $this->DB_WE->getInsertId());
 			return $ret;
 		}
 		return false;
 	}
 
-	/*protected function i_descriptionMissing(){
-		return false;
-	}*/
+	/* protected function i_descriptionMissing(){
+	  return false;
+	  } */
 
 	function setDocumentControlElements(){
 		//	function is overwritten in we_webEditionDocument
@@ -356,8 +358,8 @@ abstract class we_contents_base{
 
 	function isValidEditPage($editPageNr){
 		return (is_array($this->EditPageNrs) ?
-			in_array($editPageNr, $this->EditPageNrs) :
-			false);
+				in_array($editPageNr, $this->EditPageNrs) :
+				false);
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
