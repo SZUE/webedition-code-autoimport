@@ -2,7 +2,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   DID int unsigned NOT NULL default '0',
   `expire` DATETIME NOT NULL,
   `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`task` enum('publish','park','delete','doctype','category','directory','search_enable','search_disable','call') default 'publish',
+	`task` enum('publish','park','delete','doctype','category','directory','search_enable','search_disable','call') NOT NULL default 'publish',
   ClassName enum('we_htmlDocument','we_webEditionDocument','we_objectFile') NOT NULL,
   SerializedData longblob NOT NULL,
   Schedpro text NOT NULL,

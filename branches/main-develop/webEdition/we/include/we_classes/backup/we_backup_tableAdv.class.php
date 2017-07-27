@@ -65,7 +65,7 @@ class we_backup_tableAdv{
 					'Key' => 'PRI',
 					'Default' => '',
 					'Extra' => 'auto_increment'
-					];
+				];
 			}
 		}
 		// fix for bannerviews table - primary key has been added
@@ -77,7 +77,7 @@ class we_backup_tableAdv{
 					'Key' => 'PRI',
 					'Default' => '',
 					'Extra' => 'auto_increment'
-					];
+				];
 			}
 		}
 	}
@@ -95,7 +95,7 @@ class we_backup_tableAdv{
 			}
 			$this->elements[$this->db->f('Table')] = ['Field' => 'create'];
 			foreach($zw as $k => $v){
-				$this->elements[$this->db->f("Table")]['line' . $k] = $v;
+				$this->elements[$this->db->f('Table')]['line' . $k] = $v;
 			}
 		}
 		//$this->fetchNewColumns();
@@ -129,7 +129,7 @@ class we_backup_tableAdv{
 
 		//FIXME: this is NOT Save for MySQL Updates!!!!
 		array_pop($myarray); //get rid of old Engine statement
-		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=MyISAM;';
+		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=' . we_database_base::getValidDBEngine();
 		$query = implode(' ', $myarray);
 		return ($this->db->query($query));
 	}
