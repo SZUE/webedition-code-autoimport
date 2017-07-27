@@ -39,7 +39,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 				array_push($this->persistent_slots, 'From', 'To');
 			}
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_SCHEDULER);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_SCHEDULER]);
 		}
 	}
 
@@ -173,9 +173,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 
 		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'dt.ID,dt.DocType', g_l('weClass', '[doctype]'), $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
-				"WE().util.showConfirm(window, '', '" . g_l('weClass', '[doctype_changed_question]') . "',['doctype_changed']);" :
-				"we_cmd('doctype_changed');"), [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!we_base_permission::hasPerm('EDIT_DOCTYPE'))), ((we_base_permission::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
-				'', g_l('weClass', '[nodoctype]')] : '');
+					"WE().util.showConfirm(window, '', '" . g_l('weClass', '[doctype_changed_question]') . "',['doctype_changed']);" :
+					"we_cmd('doctype_changed');"), [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", '', 0, 0, "", "", (!we_base_permission::hasPerm('EDIT_DOCTYPE'))), ((we_base_permission::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? [
+					'', g_l('weClass', '[nodoctype]')] : '');
 	}
 
 	function formDocTypeTempl(){
@@ -366,8 +366,8 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published ?
-			$this->we_publish(true, $rebuildMain) :
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
+				$this->we_publish(true, $rebuildMain) :
+				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID))
 			);
 	}
 
@@ -376,8 +376,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
-				we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
-				we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
+					we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
+					we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
 				);
 		}
 		return true;
@@ -387,7 +387,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
 		$this->wasUpdate = true;
-		$this->i_savePersistentSlotsToDB('Filename,Extension,Text,Path,ParentID');
+		$this->i_savePersistentSlotsToDB(['Filename', 'Extension', 'Text', 'Path', 'ParentID']);
 		$this->we_resaveTemporaryTable();
 		$this->insertAtIndex();
 		$this->modifyChildrenPath(); // only on folders, because on other classes this function is empty
@@ -401,7 +401,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
 		}
-		if(!$this->i_savePersistentSlotsToDB('Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,DocType,WebUserID,Language')){
+		if(!$this->i_savePersistentSlotsToDB(['Path', 'Text', 'Filename', 'Extension', 'ParentID', 'CreatorID', 'ModifierID', 'RestrictOwners', 'Owners', 'Published', 'ModDate', 'temp_template_id', 'temp_category', 'DocType', 'WebUserID', 'Language'])){
 			return false;
 		}
 		return ($write ? $this->i_writeDocument() : true);

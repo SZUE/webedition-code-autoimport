@@ -41,7 +41,7 @@ class we_class_folder extends we_folder{
 		array_push($this->persistent_slots, 'searchclass', 'TriggerID', 'TableID');
 		if(isWE()){
 			if($this->ID){
-				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+				$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO]);
 			}
 		}
 		$this->ContentType = we_base_ContentTypes::FOLDER;
@@ -56,7 +56,7 @@ class we_class_folder extends we_folder{
 			return;
 		}
 		if($this->ID){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [ we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO]);
 		}
 	}
 
@@ -64,8 +64,8 @@ class we_class_folder extends we_folder{
 		$sp = explode('/', $this->Path);
 		$this->ClassPath = '/' . $sp[1];
 
-		list($this->RootfolderID, $this->TableID) = (getHash('SELECT IFNULL(of.ID,0),o.ID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON (of.TableID=o.ID AND of.IsClassFolder=1) WHERE o.Path="' . $this->DB_WE->escape($this->ClassPath) . '"', $this->DB_WE, MYSQL_NUM) ?: [
-			0, 0]);
+		list($this->RootfolderID, $this->TableID) = (getHash('SELECT IFNULL(of.ID,0),o.ID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON (of.TableID=o.ID AND of.IsClassFolder=1) WHERE o.Path="' . $this->DB_WE->escape($this->ClassPath) . '"', $this->DB_WE, MYSQL_NUM) ? : [
+				0, 0]);
 	}
 
 	public function we_rewrite(){
@@ -213,8 +213,8 @@ class we_class_folder extends we_folder{
 	function searchProperties(){
 		$userWSArray = $this->setDefaultWorkspaces();
 		$where = (isset($this->searchclass->searchname) ?
-			$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-			$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
+				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
+				$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
@@ -250,24 +250,24 @@ class we_class_folder extends we_folder{
 			$content[] = [
 				["align" => "center",
 					'dat' => ((we_base_permission::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"])) && we_base_permission::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
-					'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
-					'<i class="fa fa-square-o wecheckIcon disabled"></i>')],
+						'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
+						'<i class="fa fa-square-o wecheckIcon disabled"></i>')],
 				["align" => "center",
 					"height" => 35,
 					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',', $this->searchclass->f("Workspaces")), FILE_TABLE, $this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
     <i class="fa fa-stack-1x fa-cog"></i>
 </span>' :
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '">
   <i class="fa fa-stack-2x fa-ban"></i>
   <i class="fa fa-stack-1x fa-cog"></i>
 </span>'
 					)],
 				['dat' => ($this->searchclass->f("IsSearchable") ?
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '">
     <i class="fa fa-stack-1x fa-search"></i>
 </span>' :
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '">
   <i class="fa fa-stack-2x fa-ban"></i>
   <i class="fa fa-stack-1x fa-search"></i>
 </span>'
@@ -303,8 +303,8 @@ class we_class_folder extends we_folder{
 		}
 
 		$where = (isset($this->searchclass->searchname) ?
-			$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-			$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
+				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
@@ -360,25 +360,25 @@ class we_class_folder extends we_folder{
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
 			$content[$f] = [["align" => "center",
 				'dat' => (we_base_permission::hasPerm("DELETE_OBJECTFILE") ?
-				'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
-				'<i class="fa fa-square-o wecheckIcon disabled"></i>'
+					'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
+					'<i class="fa fa-square-o wecheckIcon disabled"></i>'
 				)],
 				["align" => "center",
 					'dat' => (((we_users_util::in_workspace($this->WorkspaceID, explode(',', $this->searchclass->f("Workspaces")), FILE_TABLE, $this->DB_WE) && $this->searchclass->f("Workspaces") != "") || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '">
     <i class="fa fa-stack-1x fa-cog"></i>
 </span>' :
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '">
   <i class="fa fa-stack-2x fa-ban"></i>
   <i class="fa fa-stack-1x fa-cog"></i>
 </span>'
 					)
 				],
 				['dat' => ($this->searchclass->f("IsSearchable") ?
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '">
     <i class="fa fa-stack-1x fa-search"></i>
 </span>' :
-					'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '">
+						'<span class="fa-stack" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '">
   <i class="fa fa-stack-2x fa-ban"></i>
   <i class="fa fa-stack-1x fa-search"></i>
 </span>')],
@@ -459,10 +459,10 @@ class we_class_folder extends we_folder{
 				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
 				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" ?
-					$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
-					[0 => g_l('global', '[no]'),
-					1 => g_l('global', '[yes]'),
-					]
+						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
+						[0 => g_l('global', '[no]'),
+						1 => g_l('global', '[yes]'),
+						]
 					);
 
 				$out .= '

@@ -93,7 +93,7 @@ class we_docTypes extends we_contents_base{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ?: 'de_DE');
+				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
 			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
 				$this->Language = $h['Language'];
 				$ParentID = $h['ParentID'];
@@ -103,7 +103,7 @@ class we_docTypes extends we_contents_base{
 	}
 
 	private function formLangLinks(){
-		$value = ($this->Language ?: $GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$languages = getWeFrontendLanguagesForBackend();
 
@@ -111,7 +111,7 @@ class we_docTypes extends we_contents_base{
 			$htmlzw = '';
 			foreach($languages as $langkey => $lang){
 				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE);
-				$htmlzw .= $this->formDocTypes3($lang, $langkey, ($LDID ?: 0));
+				$htmlzw .= $this->formDocTypes3($lang, $langkey, ($LDID ? : 0));
 				$langkeys[] = $langkey;
 			}
 			return we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($inputName, $languages, 1, $value, false, ['onchange' => 'we_cmd(\'setHot\');dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
@@ -246,15 +246,14 @@ class we_docTypes extends we_contents_base{
 		if($this->Templates){
 			$tlist = array_merge($tlist, explode(',', $this->Templates));
 		}
-		$tlist = array_filter(array_unique($tlist));
+		$tlist = array_unique(array_filter($tlist));
 		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
 		return $this->formSelect2(0, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', ['onchange' => "we_cmd('setHot')"], 'left', 'defaultfont', '', '', [
 				0, g_l('weClass', '[none]')]);
 	}
 
 	private function formIsDynamic(){
-		$n = 'we_' . $this->Name . '_IsDynamic';
-		return we_html_forms::checkboxWithHidden($this->IsDynamic, $n, g_l('weClass', '[IsDynamic]'), false, 'defaultfont', "we_cmd('setHot');WE().layout.propEdit.switchExt(window," . intval($this->ID) . ",'" . $this->Name . "');");
+		return we_html_forms::checkboxWithHidden($this->IsDynamic, 'we_' . $this->Name . '_IsDynamic', g_l('weClass', '[IsDynamic]'), false, 'defaultfont', "we_cmd('setHot');WE().layout.propEdit.switchExt(window," . intval($this->ID) . ",'" . $this->Name . "');");
 	}
 
 	private function hiddenIsHot(){
@@ -263,9 +262,7 @@ class we_docTypes extends we_contents_base{
 	}
 
 	private function formIsSearchable(){
-		$n = 'we_' . $this->Name . '_IsSearchable';
-
-		return we_html_forms::checkboxWithHidden($this->IsSearchable, $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "we_cmd('setHot');");
+		return we_html_forms::checkboxWithHidden($this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "we_cmd('setHot');");
 	}
 
 	private function formSubDir($width = 100){
@@ -281,7 +278,7 @@ class we_docTypes extends we_contents_base{
 	 * @return         string
 	 */
 	public static function getDoctypeQuery(we_database_base $db = null){
-		$db = $db ?: new DB_WE();
+		$db = $db ? : new DB_WE();
 
 		$paths = [];
 		$ws = get_ws(FILE_TABLE, true);
@@ -301,10 +298,10 @@ class we_docTypes extends we_contents_base{
 			$paths[] = 'dtf.Path LIKE "' . $db->escape($db->f('Path')) . '/%"';
 		}
 		return ($paths ?
-			['join' => '',
-			'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
-			] : ['join' => '',
-			'where' => '1 ORDER BY dt.DocType'
+				['join' => '',
+				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
+				] : ['join' => '',
+				'where' => '1 ORDER BY dt.DocType'
 		]);
 	}
 

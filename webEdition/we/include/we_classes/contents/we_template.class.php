@@ -43,7 +43,7 @@ class we_template extends we_document{
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection', 'Display');
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS]);
 		}
 		$this->Published = 1;
 		$this->InWebEdition = true;
@@ -410,7 +410,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		return ($this->getElement('allVariants') ?: []);
+		return ($this->getElement('allVariants') ? : []);
 	}
 
 	/**
@@ -500,7 +500,7 @@ we_templateInit();?>';
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
-		$myid = $this->MasterTemplateID ?: '';
+		$myid = $this->MasterTemplateID ? : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "", $this->DB_WE);
 
 		$weSuggest->setAcId('MasterTemplate');
@@ -663,7 +663,6 @@ we_templateInit();?>';
 			}
 		}
 
-		$tmpArr = makeArrayFromCSV($tmplCSV);
 		foreach($tmpArr as $tid){
 			if(!in_array($tid, $arr) && $tid != $id){
 				$arr[] = $tid;
@@ -734,10 +733,10 @@ we_templateInit();?>';
 					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
-						(isset($masterTags[$name]['content']) ?
-						$masterTags[$name]['content'] :
-						'') :
-						$code), $masterTemplateCode);
+							(isset($masterTags[$name]['content']) ?
+								$masterTags[$name]['content'] :
+								'') :
+							$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -914,8 +913,8 @@ we_templateInit();?>';
 			}
 		}
 		return (empty($this->MediaLinks) ?
-			true :
-			parent::registerMediaLinks(false, true));
+				true :
+				parent::registerMediaLinks(false, true));
 	}
 
 	// .tmpl mod
@@ -945,8 +944,8 @@ we_templateInit();?>';
 		$cacheName = 'cmTags_' . ($css ? '1' : '0') . '_' . md5(serialize($setting));
 		if(($cache = we_cache_file::load($cacheName))){
 			return ($css ?
-				implode('', $cache) :
-				'WE().layout.editors.CodeMirror={weHints:{' . implode(',', $cache) . '}};');
+					implode('', $cache) :
+					'WE().layout.editors.CodeMirror={weHints:{' . implode(',', $cache) . '}};');
 		}
 		$ret = [];
 		$allTags = [];
@@ -1023,7 +1022,7 @@ we_templateInit();?>';
 		return 'WE().consts.g_l.tagWizzard=JSON.parse("' . we_base_util::setLangString([
 				'fill_required_fields' => g_l('taged', '[fill_required_fields]'),
 				'no_type_selected' => g_l('taged', '[no_type_selected]'),
-				]) . '");';
+			]) . '");';
 	}
 
 	public static function getJSTWConsts(){

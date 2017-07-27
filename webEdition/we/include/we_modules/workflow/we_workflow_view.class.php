@@ -46,7 +46,7 @@ class we_workflow_view extends we_modules_view{
 		$this->uid = 'wf_' . md5(uniqid(__FILE__, true));
 		$this->workflowDef = new we_workflow_workflow();
 		$this->documentDef = new we_workflow_document();
-		array_push($this->hiddens, 'ID', 'Status');
+		$this->hiddens = array_merge($this->hiddens, ['ID', 'Status']);
 	}
 
 	function getHiddens(){
@@ -60,14 +60,14 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getHiddensFormPropertyPage(){
-		array_push($this->hiddens, 'Text', 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects', 'EmailPath', 'LastStepAutoPublish');
+		$this->hiddens = array_merge($this->hiddens, ['Text', 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects', 'EmailPath', 'LastStepAutoPublish']);
 
 		return '';
 	}
 
 	function getHiddensFormOverviewPage(){
 		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
-		array_push($this->hiddens, 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'Objects');
+		$this->hiddens = array_merge($this->hiddens, ['Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'Objects']);
 
 		$out = '';
 
@@ -170,12 +170,12 @@ class we_workflow_view extends we_modules_view{
 				$this->getCategoryHTML($jsCmd),
 				], 25) .
 			(defined('OBJECT_TABLE') ?
-			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
-				$this->getObjectHTML($jsCmd),
-				$this->getObjCategoryHTML($jsCmd),
-				$this->getObjectFileFoldersHTML($jsCmd),
-				], 25) :
-			'');
+				$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
+					$this->getObjectHTML($jsCmd),
+					$this->getObjCategoryHTML($jsCmd),
+					$this->getObjectFileFoldersHTML($jsCmd),
+					], 25) :
+				'');
 	}
 
 	private function getFoldersHTML(we_base_jsCmd $jsCmd){
@@ -375,12 +375,7 @@ class we_workflow_view extends we_modules_view{
 			case 'add_cat':
 				$arr = $this->workflowDef->Categories;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat', []))){
-					foreach($ids as $id){
-						if(strlen($id) && (!in_array($id, $arr))){
-							array_push($arr, $id);
-						}
-					}
-					$this->workflowDef->Categories = $arr;
+					$this->workflowDef->Categories = array_unique(array_filter(array_merge($arr, $ids)), SORT_NUMERIC);
 				}
 				break;
 			case 'del_cat':
@@ -399,12 +394,7 @@ class we_workflow_view extends we_modules_view{
 			case 'add_objcat':
 				$arr = $this->workflowDef->ObjCategories;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat', []))){
-					foreach($ids as $id){
-						if((!in_array($id, $arr))){
-							$arr[] = $id;
-						}
-					}
-					$this->workflowDef->ObjCategories = $arr;
+					$this->workflowDef->ObjCategories = array_unique(array_filter(array_merge($arr, $ids)), SORT_NUMERIC);
 				}
 				break;
 			case 'del_objcat':
@@ -423,12 +413,7 @@ class we_workflow_view extends we_modules_view{
 			case 'add_folder':
 				$arr = $this->workflowDef->Folders;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wfolder')) !== false){
-					foreach($ids as $id){
-						if((!in_array($id, $arr))){
-							$arr[] = $id;
-						}
-					}
-					$this->workflowDef->Folders = $arr;
+					$this->workflowDef->Folders = array_unique(array_filter(array_merge($arr, $ids)), SORT_NUMERIC);;
 				}
 				break;
 			case 'del_folder':
@@ -447,12 +432,7 @@ class we_workflow_view extends we_modules_view{
 			case 'add_object_file_folder':
 				$arr = $this->workflowDef->ObjectFileFolders;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'woffolder')) !== false){
-					foreach($ids as $id){
-						if((!in_array($id, $arr))){
-							$arr[] = $id;
-						}
-					}
-					$this->workflowDef->ObjectFileFolders = $arr;
+					$this->workflowDef->ObjectFileFolders = array_unique(array_filter(array_merge($arr, $ids)), SORT_NUMERIC);;
 				}
 				break;
 			case 'del_object_file_folder':
@@ -508,7 +488,6 @@ class we_workflow_view extends we_modules_view{
 			case 'save_workflow':
 				if(we_base_request::_(we_base_request::INT, 'wid') !== false){
 					$newone = (!$this->workflowDef->ID);
-					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!we_base_permission::hasPerm('EDIT_WORKFLOW') && !we_base_permission::hasPerm('NEW_WORKFLOW')){
 						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
@@ -518,7 +497,8 @@ class we_workflow_view extends we_modules_view{
 						$jscmd->addMsg(g_l('modules_workflow', '[no_perms]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
-					if($double){
+					//duplicate
+					if(f('SELECT 1 FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)).' LIMIT 1', '', $this->db)){
 						$jscmd->addMsg(g_l('modules_workflow', '[double_name]'), we_base_util::WE_MESSAGE_ERROR);
 						return;
 					}
@@ -970,14 +950,14 @@ class we_workflow_view extends we_modules_view{
 
 		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
-			we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
-			we_html_button::create_button(we_html_button::BACK, '', '', 0, 0, '', '', true)
+				we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
+				we_html_button::create_button(we_html_button::BACK, '', '', 0, 0, '', '', true)
 			) .
 			'</td><td class="defaultfont" style="padding: 0 10px 0 10px;"><b>' . (($anz) ? $offset + 1 : 0) . '-' .
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' .
 			((($offset + $numRows) < $anz) ?
-			we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
-			we_html_button::create_button(we_html_button::NEXT, '', '', 0, 0, '', '', true)
+				we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
+				we_html_button::create_button(we_html_button::NEXT, '', '', 0, 0, '', '', true)
 			) .
 			'</td><td></tr></table>';
 
@@ -985,8 +965,8 @@ class we_workflow_view extends we_modules_view{
 
 
 		return ($logs ?
-			we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, $content, $headlines), '', $buttonsTable) :
-			we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
+				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, $content, $headlines), '', $buttonsTable) :
+				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){

@@ -70,7 +70,7 @@ class we_collection extends we_contents_root{
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'viewSub', 'itemsPerRow');
 
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO]);
 			if(defined('CUSTOMER_TABLE') && (we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
@@ -756,7 +756,7 @@ class we_collection extends we_contents_root{
 		$this->ModDate = strtotime($this->ModDate);
 	}
 
-	protected function i_savePersistentSlotsToDB($felder = ''){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
+	protected function i_savePersistentSlotsToDB(array $felder = []){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
 		if(($key = array_search('CreationDate', $this->persistent_slots)) !== false){
 			unset($this->persistent_slots[$key]);
 		}

@@ -54,7 +54,7 @@ class we_binaryDocument extends we_document{
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged', 'IsProtected');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VERSIONS);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VERSIONS]);
 			if(defined('CUSTOMER_TABLE') && (we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
@@ -119,11 +119,11 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-			($size == -1 ?
-			we_base_file::load($file) :
-			we_base_file::loadPart($file, 0, $size)
-			) :
-			'');
+				($size == -1 ?
+					we_base_file::load($file) :
+					we_base_file::loadPart($file, 0, $size)
+				) :
+				'');
 	}
 
 	protected function i_writeDocument(){
@@ -313,10 +313,10 @@ class we_binaryDocument extends we_document{
 			}
 		}
 		$metatext = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ? '' :
-			g_l('metadata', '[supported_types]') . ': ' .
-			'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-			(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
-			'</a>');
+				g_l('metadata', '[supported_types]') . ': ' .
+				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
+				'</a>');
 
 		$fileinfo = ['size' => $size,
 			'ct' => $this->ContentType,

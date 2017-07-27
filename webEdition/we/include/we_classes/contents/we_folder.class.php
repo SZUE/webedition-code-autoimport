@@ -49,7 +49,7 @@ class we_folder extends we_contents_root{
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
 			if($this->ID){
-				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+				$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO]);
 			} else {
 				$this->EditPageNrs = array(we_base_constants::WE_EDITPAGE_PROPERTIES);
 			}
@@ -118,7 +118,7 @@ class we_folder extends we_contents_root{
 			return;
 		}
 		if($this->ID){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+			$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO]);
 		}
 
 		if(defined('CUSTOMER_TABLE') && we_base_permission::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER'])){
@@ -126,7 +126,7 @@ class we_folder extends we_contents_root{
 				case FILE_TABLE:
 				case OBJECT_FILES_TABLE:
 					if($this->ID){
-						array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+						$this->EditPageNrs = array_merge($this->EditPageNrs, [we_base_constants::WE_EDITPAGE_WEBUSER]);
 					}
 			}
 		}
