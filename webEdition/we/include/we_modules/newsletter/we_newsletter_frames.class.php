@@ -439,7 +439,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		foreach($texts as $text){
 			if(!isset($settings[$text])){
-				$this->View->putSetting($text, (isset($defaults[$text]) ? $defaults[$text] : 0));
+				$this->View->saveSetting($text, (isset($defaults[$text]) ? $defaults[$text] : 0), $this->db);
 				$settings = we_newsletter_view::getSettings();
 			}
 
@@ -489,7 +489,7 @@ class we_newsletter_frames extends we_modules_frame{
 		foreach($radios as $radio){
 			if(!isset($settings[$radio])){
 
-				$this->View->putSetting($radio, (isset($defaults[$radio]) ? $defaults[$radio] : 1));
+				$this->View->saveSetting($radio, (isset($defaults[$radio]) ? $defaults[$radio] : 1), $this->db);
 				$settings = we_newsletter_view::getSettings();
 			}
 			if(in_array($radio, $extra_radio_text)){

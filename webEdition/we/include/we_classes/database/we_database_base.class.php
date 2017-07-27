@@ -65,6 +65,7 @@ abstract class we_database_base{
 	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
 	private static $queryCache = [];
+	private static $defaultEngine = '';
 
 	/** Connects to the database, which this is done by the constructor
 	 *
@@ -384,7 +385,7 @@ abstract class we_database_base{
 			}
 		}
 		static $date = 0;
-		$date = $date ?: date('Y-m-d');
+		$date = $date ? : date('Y-m-d');
 
 		$this->Insert_ID = 0;
 		$this->Affected_Rows = 0;
@@ -772,8 +773,8 @@ abstract class we_database_base{
 			$query = [];
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-					$value . ' ' . $mode :
-					$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -859,10 +860,8 @@ abstract class we_database_base{
 			t_e('create table needs an array');
 			return;
 		}
-		if($engine === 'MYISAM'){
-			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
-			$engine = (in_array(strtolower($defaultEngine), ['myisam', 'aria']) ? $defaultEngine : 'myisam');
-		}
+		$engine = ($engine === 'MYISAM' ? self::getValidDBEngine() : $engine);
+
 		$cols_sql = [];
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
@@ -944,7 +943,7 @@ abstract class we_database_base{
 	}
 
 	public function getPrimaryKeys($tab, array $create = []){
-		$zw = $create ?: $this->getTableCreateArray($tab);
+		$zw = $create ? : $this->getTableCreateArray($tab);
 		if(!$zw){
 			return false;
 		}
@@ -1116,7 +1115,7 @@ abstract class we_database_base{
 	 */
 	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
-		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE) ?: f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
+		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE) ? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
 		return $res;
 	}
 
@@ -1151,6 +1150,17 @@ abstract class we_database_base{
 		}
 		$this->free();
 		return $data;
+	}
+
+	public static function getValidDBEngine(){
+		if(self::$defaultEngine){
+			return self::$defaultEngine;
+		}
+
+		$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
+		self::$defaultEngine = (in_array(strtolower($defaultEngine), ['myisam', 'aria']) ? $defaultEngine : 'myisam');
+
+		return self::$defaultEngine;
 	}
 
 }
