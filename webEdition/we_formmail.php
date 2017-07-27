@@ -129,12 +129,6 @@ abstract class we_base_formmail{
 		return preg_replace($bad_strings, '($1)$2', $str_to_test);
 	}
 
-	private static function contains_newlines($str_to_test){
-		if(preg_match("/(\\n+|\\r+)/", $str_to_test) != 0){
-			self::print_error('newline found in ' . $str_to_test . '. Suspected injection attempt - mail not being sent.');
-		}
-	}
-
 	private static function check_required($required){
 		if($required){
 			$we_requiredarray = explode(',', $required);
@@ -174,14 +168,10 @@ abstract class we_base_formmail{
 		exit();
 	}
 
-	private static function check_recipient($email){
-		return (f('SELECT 1 FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '" LIMIT 1'));
-	}
-
 	private static function check_captcha(){
 		return ($name = empty(self::$data['captchaname']) ? '' : self::$data['captchaname'] ?
-			we_captcha_captcha::check($name) :
-			true); // Fix: #10297
+				we_captcha_captcha::check($name) :
+				true); // Fix: #10297
 	}
 
 	private static function addFiles(we_mail_mail $phpmail){
@@ -304,16 +294,16 @@ abstract class we_base_formmail{
 		}
 
 		$from = we_base_request::_(we_base_request::EMAIL, 'from', WE_DEFAULT_EMAIL);
-		$email = $email ?: $from;
+		$email = $email ? : $from;
 		$subject = preg_replace("/(\\n+|\\r+)/", '', we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT));
-		$charset = preg_replace("/(\\n+|\\r+)/", '', str_replace(["\n", "\r"], '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET'])));
+		$charset = preg_replace("/(\\n+|\\r+)/", '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET']));
 		$recipients = we_base_request::_(we_base_request::INTLIST, 'recipient');
 		$mimetype = we_base_request::_(we_base_request::STRING, 'mimetype', '');
 		$fromMail = (we_base_request::_(we_base_request::BOOL, 'forcefrom') ? $from : $email);
 
 		$wasSent = false;
 
-		if(!$recipients){
+		if(!$recipients || !($recipientsList = $GLOBALS['DB_WE']->getAllq('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID IN (' . $recipients . ')', true))){
 			self::print_error(g_l('global', '[email_no_recipient]'));
 		}
 
@@ -332,8 +322,6 @@ abstract class we_base_formmail{
 
 		$phpmail = new we_mail_mail('', $subject, $sender);
 		$phpmail->setCharSet($charset);
-
-		$recipientsList = $GLOBALS['DB_WE']->getAllq('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID IN (' . $recipients . ')', true);
 
 		if(!$recipientsList){
 			self::print_error(g_l('global', '[email_no_recipient]'));
