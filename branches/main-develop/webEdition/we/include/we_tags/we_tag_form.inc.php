@@ -65,8 +65,8 @@ function we_tag_form(array $attribs){
 	$formAttribs['method'] = $method;
 
 	$we_form_action = ($id ?
-		($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-		($action ?: $_SERVER['SCRIPT_NAME']));
+			($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+			($action ? : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = [];
@@ -86,14 +86,14 @@ function we_tag_form(array $attribs){
 					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'type',
 						'value' => (
 						isset($GLOBALS['lv']->classID) ?
-						we_shop_shop::OBJECT :
-						($GLOBALS['lv'] instanceof we_listview_document ?
-						we_shop_shop::DOCUMENT :
-						(isset($GLOBALS['we_obj']->ID) ?
-						we_shop_shop::OBJECT :
-						we_shop_shop::DOCUMENT
-						)
-						))
+							we_shop_shop::OBJECT :
+							($GLOBALS['lv'] instanceof we_listview_document ?
+								we_shop_shop::DOCUMENT :
+								(isset($GLOBALS['we_obj']->ID) ?
+									we_shop_shop::OBJECT :
+									we_shop_shop::DOCUMENT
+								)
+							))
 						]
 					) .
 					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
@@ -183,8 +183,7 @@ function we_tag_form(array $attribs){
 					$recipientArray[$key] = '"' . trim($val) . '"';
 				}
 
-				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $recipientArray) . ')');
-				$ids = $GLOBALS['DB_WE']->getAll(true);
+				$ids = $GLOBALS['DB_WE']->getAllq('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $recipientArray) . ')', true);
 
 				$ret = getHtmlTag('form', $formAttribs, '', false, true);
 				$data = array_filter([
@@ -193,12 +192,12 @@ function we_tag_form(array $attribs){
 					'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
 					'recipient' => ($ids ? implode(',', $ids) : ''),
 					'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
-					'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
-					'error_page' => $onerror ?: 0,
+					'from' => weTag_getAttribute('from', $attribs, WE_DEFAULT_EMAIL, we_base_request::EMAIL),
+					'error_page' => $onerror ? : 0,
 					'mail_error_page' => $onmailerror ? $onmailerror : 0,
 					'recipient_error_page' => $onrecipienterror ? $onrecipienterror : '',
 					'ok_page' => $onsuccess ? $onsuccess : 0,
-					'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
+					'charset' => weTag_getAttribute('charset', $attribs, $GLOBALS['WE_BACKENDCHARSET'], we_base_request::STRING),
 					'confirm_mail' => $confirmmail,
 					'pre_confirm' => $GLOBALS['we_doc']->getElement($preconfirm),
 					'post_confirm' => $GLOBALS['we_doc']->getElement($postconfirm),
