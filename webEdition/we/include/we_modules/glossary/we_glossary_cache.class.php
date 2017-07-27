@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_glossary_cache{
-
 	/**
 	 * language of the cache
 	 *
@@ -103,6 +101,7 @@ class we_glossary_cache{
 
 			// Language
 			if($Type == we_glossary_glossary::TYPE_LINK){
+				$temp['class'] = 'glossarLink';
 				$urladd = [];
 
 				if(isset($Attributes['mode'])){
@@ -216,8 +215,8 @@ class we_glossary_cache{
 				}
 
 				$temp['href'] .= ($urladd ? '?' . implode('&', $urladd) : '') .
-						// Anchor
-						(!empty($Attributes['anchor']) ?
+					// Anchor
+					(!empty($Attributes['anchor']) ?
 						'#' . $Attributes['anchor'] :
 						'');
 
@@ -230,8 +229,8 @@ class we_glossary_cache{
 					$height = (!empty($Attributes['popup_height']) ? $Attributes['popup_height'] : 100);
 
 					$temp['onclick'] = 'var we_winOpts=\'\';' .
-							// popup_center
-							(!empty($Attributes['popup_center']) ? '
+						// popup_center
+						(!empty($Attributes['popup_center']) ? '
 if (window.screen) {
 	var w=' . $width . ';
 	var h=' . $height . ';
@@ -248,31 +247,31 @@ if (window.screen) {
 ' .
 // popup_xposition
 							(!empty($Attributes['popup_xposition']) ?
-							"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
-							'') .
+								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
+								'') .
 							// popup_yposition
 							(!empty($Attributes['popup_yposition']) ?
-							"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
-							'')
-							) .
-							// popup_width
-							strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width .
-									// popup_height
-									",height=" . $height .
-									// popup_status
-									",status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') .
-									// popup_scrollbars
-									",scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') .
-									// popup_menubar
-									",menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') .
-									// popup_resizable
-									",resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') .
-									// popup_location
-									",location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') .
-									// popup_toolbar
-									",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
-									"';" .
-									"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", ['\'' => '@@@we@@@']);
+								"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
+								'')
+						) .
+						// popup_width
+						strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width .
+							// popup_height
+							",height=" . $height .
+							// popup_status
+							",status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') .
+							// popup_scrollbars
+							",scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') .
+							// popup_menubar
+							",menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') .
+							// popup_resizable
+							",resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') .
+							// popup_location
+							",location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') .
+							// popup_toolbar
+							",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
+							"';" .
+							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", ['\'' => '@@@we@@@']);
 
 					$temp['href'] = '#';
 				}
