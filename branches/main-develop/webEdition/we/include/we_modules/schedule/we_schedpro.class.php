@@ -137,22 +137,22 @@ class we_schedpro{
 
 	function getHTML(we_base_jsCmd $jsCmd, $isobj = false){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" onchange="changeSchedOption(this,' . $this->nr . ');">
-<option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
-<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
+<option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][publish]') . '</option>
+<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][park]') . '</option>';
 		if((we_base_permission::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (we_base_permission::hasPerm('DELETE_OBJECTFILE') && $isobj)){
-			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DELETE . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][delete]') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DOCTYPE . ']') . '</option>
-<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CALL . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][doctype]') . '</option>
+<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][call]') . '</option>';
 		}
-		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CATEGORY . ']') . '</option>';
+		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][category]') . '</option>';
 		if((we_base_permission::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (we_base_permission::hasPerm("MOVE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DIR . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][directory]') . '</option>';
 		}
 		$taskpopup .= '
-<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_ENABLED . ']') . '</option>
-<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_DISABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][search_enable]') . '</option>
+<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][search_disable]') . '</option>
 </select>';
 		$extracont = '';
 		$extraheadl = '';

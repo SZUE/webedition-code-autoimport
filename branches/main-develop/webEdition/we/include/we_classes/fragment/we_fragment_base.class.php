@@ -145,7 +145,7 @@ abstract class we_fragment_base{
 			$tmp['fr_' . $this->name . '_ct'] = $nextTask;
 			$tmp['doFragments'] = 1;
 			$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
-			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => $_SERVER['SCRIPT_NAME'] . '?' . $tail]);
+			$this->jsCmd->addCmd('location', ['doc' => 'document', 'loc' => getScriptName() . '?' . $tail]);
 		}
 	}
 

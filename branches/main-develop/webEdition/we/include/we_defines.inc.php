@@ -119,7 +119,7 @@ define('SESSION_NAME', 'WESESSION');
  */
 if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
-		$_SERVER['HTTP_REQUEST_URI'] = (isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']) .
+		$_SERVER['HTTP_REQUEST_URI'] = getScriptName() .
 			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }

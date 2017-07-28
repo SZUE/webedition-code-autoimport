@@ -72,7 +72,7 @@ function we_tag_printVersion(array $attribs, $content){
 		}
 	}
 
-	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($query_string);
+	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : getScriptName()) . '?' . http_build_query($query_string);
 
 	return ($link ?
 		getHtmlTag('a', removeAttribs($attribs, ['tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link']), $content, true) :

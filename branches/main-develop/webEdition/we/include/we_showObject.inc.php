@@ -167,7 +167,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 	}
 }
 
-$pid = ($pid ?: f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"') );
+$pid = ($pid ?: f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(getScriptName()) . '"') );
 $tid = ($tid ?: $GLOBALS['we_obj']->getTemplateID($pid));
 
 $tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';

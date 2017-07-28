@@ -320,7 +320,7 @@ class we_thumbnail{
 		 * Is this the right place to execute it? or should we move it to init() or some other place?
 		 */
 		if(($createIfNotExist && (!$this->exists() || (intval(filectime($this->getOutputPath(true))) < intval($this->getDate())))) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
-			t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
+			t_e('Error creating thumbnail for file', $this->imageFileName . $this->imageExtension);
 			return false;
 		}
 		// END

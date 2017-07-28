@@ -154,7 +154,7 @@ function we_tag_paypal(array $attribs){
 		$p->paypal_url = $paypalURL; // testing paypal url
 //$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';	  // paypal url
 // setup a variable for this script (ie: 'http://www.webedition.org/shop/paypal.php')
-		$this_script = getServerUrl() . $_SERVER['SCRIPT_NAME'];
+		$this_script = getServerUrl() . getScriptName();
 
 // if there is not action variable, set the default action of 'process'
 

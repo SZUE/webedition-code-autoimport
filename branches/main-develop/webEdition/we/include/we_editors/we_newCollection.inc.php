@@ -68,7 +68,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 
 $jsDynamicVars = ['name' => $collection->Name,
 	'cmd' =>  $cmd,
-	'scriptName' => $_SERVER['SCRIPT_NAME'],
+	'scriptName' => getScriptName(),
 	'cmdOnSuccess' => $jsCommandOnSuccess,
 	'data' => ['id' => $id, 'text' => $collection->Path]
 

@@ -70,6 +70,7 @@ abstract class we_html_button{
 	const UPLOAD = 'fat:upload,fa-lg fa-upload';
 	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
 	const YES = 'fat:yes,fa-lg fa-check fa-ok';
+	const OPTIMIZE = 'fa:select,fa-lg fa-wrench,fa-lg fa-thumbs-o-up';
 
 	/**
 	 * Gets the HTML Code for the button.

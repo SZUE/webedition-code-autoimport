@@ -506,7 +506,7 @@ function we_tag_field(array $attribs){
 		if(($GLOBALS['lv'] instanceof we_listview_search) && $GLOBALS['lv']->f('ClassID')){
 			$tail = ($tid ? '&amp;we_objectTID=' . $tid : '');
 
-			$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
+			$path_parts = pathinfo(getScriptName());
 			$isSeo = $GLOBALS['lv']->objectseourls;
 			if($isSeo){
 				$h = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')));
@@ -526,7 +526,7 @@ function we_tag_field(array $attribs){
 					$pidstr :
 					($isSeo && $objecturl ?
 						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl :
-						$_SERVER['SCRIPT_NAME'] . $objecturl
+						getScriptName() . $objecturl
 					) . $pidstr);
 
 			$linkAttribs['href'] .= $tail;
@@ -538,7 +538,7 @@ function we_tag_field(array $attribs){
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
 			$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid', we_base_request::STRING);
-			$linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
+			$linkAttribs['href'] = getScriptName() . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?
 					$linkAttribs['href'] :

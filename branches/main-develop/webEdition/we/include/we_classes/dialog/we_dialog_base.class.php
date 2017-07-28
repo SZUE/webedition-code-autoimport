@@ -182,7 +182,7 @@ class we_dialog_base{
 
 		$target = (!$this->onOkJsOnly ? ' target="we_cmd_frame"' : '');
 
-		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . '>' . $hiddens;
+		return '<form name="we_form" action="' . getScriptName() . '" method="post"' . $target . '>' . $hiddens;
 	}
 
 	function getHiddenArgs(){

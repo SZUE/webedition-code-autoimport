@@ -70,7 +70,7 @@ echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_code.js');
 <body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();
 			document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
-	<form onsubmit="return checkForm(this);" name="we_form" action="<?= $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+	<form onsubmit="return checkForm(this);" name="we_form" action="<?= getScriptName(); ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$typeselect = '<select name="type">
 <option' . (($type === "js") ? " selected" : "") . '>js</option>
