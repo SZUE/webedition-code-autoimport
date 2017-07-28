@@ -50,7 +50,7 @@ abstract class we_core_Permissions{
 
 		//correct some settings
 		if(!isset($GLOBALS['TOOLNAME']) && isset($GLOBALS['controller'])){
-			$GLOBALS['controller']->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME'])));
+			$GLOBALS['controller']->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname(getScriptName())));
 		}
 		//make sure apps work! correct old apps!
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');

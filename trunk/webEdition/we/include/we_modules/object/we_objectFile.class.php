@@ -3013,7 +3013,7 @@ class we_objectFile extends we_document{
 			return '';
 		}
 
-		$path = $path ? : $_SERVER['SCRIPT_NAME'];
+		$path = $path ? : getScriptName();
 		$DB_WE = ($DB_WE ? : new DB_WE());
 
 		$foo = getHash('SELECT of.Published,of.Workspaces,of.ExtraWorkspacesSelected,of.TriggerID,f.Published AS fPub FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . FILE_TABLE . ' f ON (of.TriggerID=f.ID AND f.IsDynamic=1) WHERE of.ID=' . intval($id), $DB_WE);

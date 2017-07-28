@@ -337,7 +337,7 @@ function getFooter(){
 function getMainDialog(){
 	// Check if we need to save settings
 	if(!we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
-		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHiddens(array('we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0)) . render_dialog());
+		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => getScriptName()), we_html_element::htmlHiddens(array('we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0)) . render_dialog());
 	}
 
 	$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');

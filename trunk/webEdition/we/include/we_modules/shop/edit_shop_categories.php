@@ -89,7 +89,7 @@ while($DB_WE->next_record()){
 	$data = $DB_WE->getRecord();
 	$allCategoryDirs[$data['ID']] = $data['Path'];
 }
-$selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
+$selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . getScriptName() . '\');'));
 
 if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	$allVats = we_shop_vats::getAllShopVATs();
@@ -242,11 +242,11 @@ function we_cmd(){
 			case "save":
 				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				document.we_form.onsaveclose.value = 1;
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+				we_submitForm("' . getScriptName() . '");
 				break;
 			case "save_notclose":
 				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+				we_submitForm("' . getScriptName() . '");
 				break;
 			default:
 				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));

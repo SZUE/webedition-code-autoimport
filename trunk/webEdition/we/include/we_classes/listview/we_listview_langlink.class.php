@@ -230,7 +230,7 @@ class we_listview_langlink extends we_listview_base{
 
 				$path_parts = pathinfo((!empty($link['TriggerID']) ?
 								id_to_path($link['TriggerID']) :
-								$_SERVER['SCRIPT_NAME'])
+								getScriptName())
 				);
 
 				if($this->objectseourls && $link['Url'] != '' && show_SeoLinks()){
@@ -242,7 +242,7 @@ class we_listview_langlink extends we_listview_base{
 				} else {
 					$WE_PATH = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-									$_SERVER['SCRIPT_NAME']) .
+									getScriptName()) .
 							'?we_objectID=' . $link['LDID'];
 				}
 			}

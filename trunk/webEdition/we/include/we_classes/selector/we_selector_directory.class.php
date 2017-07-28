@@ -113,7 +113,7 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
+		return getScriptName() . "what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function getFramsetJSFile(){

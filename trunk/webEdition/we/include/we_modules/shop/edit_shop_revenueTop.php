@@ -43,7 +43,7 @@ function orderBy($a, $b){
 
 function getTitleLink($text, $orderKey){
 	$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
-	$href = $_SERVER['SCRIPT_NAME'] .
+	$href = getScriptName() .
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $orderKey .
@@ -54,7 +54,7 @@ function getTitleLink($text, $orderKey){
 }
 
 function getPagerLink(){
-	return $_SERVER['SCRIPT_NAME'] .
+	return getScriptName() .
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .

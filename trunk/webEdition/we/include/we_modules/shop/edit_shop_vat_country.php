@@ -56,7 +56,7 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 			window.close();
 			break;
 		case "save":
-			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+			we_submitForm("' . getScriptName() . '");
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));

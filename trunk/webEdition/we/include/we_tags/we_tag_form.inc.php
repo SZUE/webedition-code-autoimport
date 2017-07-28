@@ -65,8 +65,8 @@ function we_tag_form(array $attribs){
 	$formAttribs['method'] = $method;
 
 	$we_form_action = ($id ?
-		($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-		($action ?: $_SERVER['SCRIPT_NAME']));
+		($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : getScriptName()) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+		($action ?: getScriptName()));
 
 	if($type != 'search'){
 		$regs = array();
@@ -170,7 +170,7 @@ function we_tag_form(array $attribs){
 			$formAttribs['method'] = 'post'; //don't allow anything else
 			$formAttribs['name'] = $formname;
 			$formAttribs['onsubmit'] = $onsubmit;
-			$formAttribs['action'] = ($id === 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : WEBEDITION_DIR . 'we_formmail.php'));
+			$formAttribs['action'] = ($id === 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : getScriptName()) : ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : WEBEDITION_DIR . 'we_formmail.php'));
 
 
 			//  now prepare all needed hidden-fields:

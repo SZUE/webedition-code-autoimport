@@ -240,7 +240,7 @@ var mk=null;
 var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
-	formtarget:"' . $_SERVER['SCRIPT_NAME'] . '",
+	formtarget:"' . getScriptName() . '",
 	multiple:' . intval($this->multiple) . ',
 	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
 	open_doc:"' . $this->open_doc . '"
@@ -321,7 +321,7 @@ function exit_open(){' .
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
+		return getScriptName() . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
 	}
 
 	protected function printBodyHTML(){
