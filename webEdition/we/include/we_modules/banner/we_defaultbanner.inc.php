@@ -64,7 +64,7 @@ echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/we_defaultbanner.js',
 ?>
 </head>
 <body class="weDialogBody" onunload="doUnload()">
-	<form name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+	<form name="we_form" action="<?php echo getScriptName(); ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$DefaultBannerID = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");

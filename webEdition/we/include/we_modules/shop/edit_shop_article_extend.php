@@ -39,7 +39,7 @@ function orderBy($a, $b){
 }
 
 function getTitleLinkObj($text, $orderKey){
-	$href = $_SERVER['SCRIPT_NAME'] .
+	$href = getScriptName() .
 		'?typ=' . $GLOBALS['typeObj'] .
 		'&orderBy=' . $orderKey .
 		'&ViewClass=' . $GLOBALS['classid'] .
@@ -51,7 +51,7 @@ function getTitleLinkObj($text, $orderKey){
 
 function getPagerLinkObj(){
 
-	return $_SERVER['SCRIPT_NAME'] .
+	return getScriptName() .
 		'?typ=' . $GLOBALS['typeObj'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&ViewClass=' . $GLOBALS['classid'] .
@@ -61,7 +61,7 @@ function getPagerLinkObj(){
 
 function getTitleLinkDoc($text, $orderKey){
 
-	$href = $_SERVER['SCRIPT_NAME'] .
+	$href = getScriptName() .
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $orderKey .
 		'&actPage=' . $GLOBALS['actPage'] .
@@ -80,7 +80,7 @@ function getTitleLinkDoc($text, $orderKey){
 }
 
 function getPagerLinkDoc(){
-	return $_SERVER['SCRIPT_NAME'] .
+	return getScriptName() .
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&actPage=' . $GLOBALS['actPage'] .
@@ -155,7 +155,7 @@ if(isset($daten)){
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
+		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . getScriptName() . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
 
 		if($fe){
 			$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' WHERE ID IN (' . implode(',', $fe) . ')');

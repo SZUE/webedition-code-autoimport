@@ -193,7 +193,7 @@ function we_tag_a(array $attribs, $content){
 	}
 
 	if($return){
-		$param[] = 'we_returnpage=' . rawurlencode($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']);
+		$param[] = 'we_returnpage=' . rawurlencode(getScriptName() . '?' . $_SERVER['QUERY_STRING']);
 	}
 
 	if($hrefonly){

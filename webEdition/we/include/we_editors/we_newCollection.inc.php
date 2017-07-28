@@ -108,7 +108,7 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 			if(document.we_form["we_" + name + "_Filename"].value){
 				document.we_form["we_cmd[0]"].value = cmd;
 				document.we_form["dosave"].value = 1;
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+				we_submitForm("' . getScriptName() . '");
 			} else {
 				alert("no name set");
 			}

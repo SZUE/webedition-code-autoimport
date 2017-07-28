@@ -149,7 +149,7 @@ class we_fragment_base{
 		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
 		$tail = defined('PHP_QUERY_RFC3986') ? http_build_query($tmp, null, '&', PHP_QUERY_RFC3986) : http_build_query($tmp, null, '&');
 
-		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
+		$onload = "document.location='" . getScriptName() . '?' . $tail . "';";
 
 		$onload = ($this->pause ?
 				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :

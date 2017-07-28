@@ -197,7 +197,7 @@ class we_listview_search extends we_listview_base{
 
 				$path_parts = ($objecttriggerid ?
 						pathinfo(id_to_path($objecttriggerid)) :
-						pathinfo($_SERVER['SCRIPT_NAME'])
+						pathinfo(getScriptName())
 					);
 
 				$pidstr = ($this->DB_WE->Record['WorkspaceID'] ? '?pid=' . intval($this->DB_WE->Record['WorkspaceID']) : '');
@@ -210,7 +210,7 @@ class we_listview_search extends we_listview_base{
 				} else {
 					$this->DB_WE->Record['WE_PATH'] = ($fileData && $fileData['Url'] ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $fileData['Url'] . $pidstr :
-							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
+							getScriptName() . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
 				$this->DB_WE->Record['WE_URL'] = $fileData ? $fileData['Url'] : '';

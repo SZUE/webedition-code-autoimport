@@ -71,7 +71,7 @@ $allVats = we_shop_vats::getAllShopVATs();
 
 $vatJavaScript = '
 WE().consts.g_l.shop.vat_confirm_delete="' . g_l('modules_shop', '[vat][js_confirm_delete]') . '";
-var SCRIPT_NAME="' . $_SERVER['SCRIPT_NAME'] . '";
+var SCRIPT_NAME="' . getScriptName() . '";
 var allVats = {
 	vat_0: {id:0,text:"' . g_l('modules_shop', '[vat][new_vat_name]') . '",vat:19,standard:0,country:"DE",province:"",textProvince:""}
 };';

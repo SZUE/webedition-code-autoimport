@@ -72,13 +72,13 @@ if(permissionhandler::hasPerm("administrator")){
 
 		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
 			($start > 0 ?
-				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+				we_html_button::create_button(we_html_button::BACK, getScriptName() . "?start=" . ($start - $count)) : //bt_back
 				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)) .
 			"</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
 			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . '</b></td><td style="padding-right:20px;">' .
 			($next < $num_all ?
-				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+				we_html_button::create_button(we_html_button::NEXT, getScriptName() . "?start=" . $next) : //bt_next
 				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)) .
 			'</td></tr></table>';
 
@@ -106,7 +106,7 @@ if(permissionhandler::hasPerm("administrator")){
 	$script = we_html_element::jsElement('
 function clearLog() {
 	if (confirm("' . addslashes(g_l('prefs', '[clear_log_question]')) . '")) {
-		document.location="' . $_SERVER['SCRIPT_NAME'] . '?clearlog=1";
+		document.location="' . getScriptName() . '?clearlog=1";
 	}
 }
 function clearEntry(id,ip) {
@@ -114,7 +114,7 @@ function clearEntry(id,ip) {
 
 
 	if (confirm(txt.replace(/%s/,ip))) {
-		document.location="' . $_SERVER['SCRIPT_NAME'] . '?clearEntry="+id;
+		document.location="' . getScriptName() . '?clearEntry="+id;
 	}
 }');
 

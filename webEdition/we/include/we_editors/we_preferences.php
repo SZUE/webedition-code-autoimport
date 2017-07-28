@@ -2410,7 +2410,7 @@ for(i=1;i<childs.length;++i){
 	'</head>' .
 	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
 } else {
-	$form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
+	$form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => getScriptName()), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$we_cmd_js = we_html_element::jsElement('function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));

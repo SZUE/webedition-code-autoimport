@@ -662,7 +662,7 @@ function submitForm(target,action,method) {
 		echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
-var SCRIPT_NAME= "' . $_SERVER['SCRIPT_NAME'] . '";
+var SCRIPT_NAME= "' . getScriptName() . '";
 var bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
 var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
 

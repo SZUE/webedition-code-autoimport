@@ -83,7 +83,7 @@ function we_tag_writeVoting(array $attribs){
 	}
 	if($allowredirect && !$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['_we_voting_SuccessorID'])){
 		$mypath = id_to_path($GLOBALS['_we_voting_SuccessorID']);
-		if($mypath && $mypath != $_SERVER['SCRIPT_NAME']){
+		if($mypath && $mypath != getScriptName()){
 			header("Location: " . $mypath); /* Redirect browser */
 
 			/* Make sure that code below does not get executed when we redirect. */

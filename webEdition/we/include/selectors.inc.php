@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $class = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $class . '&';
+$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'] = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $class . '&';
 
 switch($class){
 	case 'we_navigation_dirSelector':

@@ -181,7 +181,7 @@ function exit_open() {
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
+		return getScriptName() . 'what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
 	}
 
 	protected function printCmdAddEntriesHTML(){

@@ -73,7 +73,7 @@ function we_cmd(){
 
 	switch (args[0]) {
 		case "save":
-			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+			we_submitForm("' . getScriptName() . '");
 			break;
 		case "close":
 			window.close();
@@ -82,12 +82,12 @@ function we_cmd(){
 			if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
 				var we_cmd_field = document.getElementById("we_cmd_field");
 				we_cmd_field.value = "deleteShipping";
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+				we_submitForm("' . getScriptName() . '");
 
 			}
 			break;
 		case "newEntry":
-			document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=newShipping";
+			document.location = "' . getScriptName() . '?we_cmd[0]=newShipping";
 			break;
 		case "addShippingCostTableRow":
 			addShippingCostTableRow();
@@ -207,7 +207,7 @@ function we_submitForm(url){
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default defaultfont">
 	<tr>
-		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
+		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . getScriptName() . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
 		<td style="width:10px;"></td>
 		<td style="vertical-align:top">'
 				. we_html_button::create_button('new_entry', 'javascript:we_cmd(\'newEntry\');') .

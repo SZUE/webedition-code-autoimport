@@ -273,7 +273,7 @@ abstract class we_newsletter_util{
 			$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
 			$cnt = 0;
-			$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
+			$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : getScriptName()) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
 			if(($urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true, true))){
 				$confirmLink = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
 			}

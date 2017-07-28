@@ -72,7 +72,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&noChoose=' . $this->noChoose;
+		return getScriptName() . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&noChoose=' . $this->noChoose;
 	}
 
 	protected function printHeaderTable($extra = ''){
@@ -500,7 +500,7 @@ function we_checkName() {
 }') .
 			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
-	<form action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
+	<form action="' . getScriptName() . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() .
 				'</div></form>' : '' ) .
 			(isset($yuiSuggest) ?
