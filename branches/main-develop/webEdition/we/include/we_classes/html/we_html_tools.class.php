@@ -356,7 +356,7 @@ this.selectedIndex = 0;' .
 			}
 			$out = '<table class="default"><tr><td>' .
 				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
-				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="we_cmd(\'setHot\');if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+				'</td><td><select class="weSelect" name="wetmp_' . $name . '" ' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="we_cmd(\'setHot\');if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
 			}

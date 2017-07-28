@@ -365,7 +365,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			return;
 		}
 
-		$html = we_html_element::htmlDiv([], we_html_element::htmlLabel([], 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
+		$html = we_html_element::htmlDiv([], we_html_element::htmlLabel([], 'Alternativ Text') . '<br/>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
 			we_html_element::htmlDiv([], we_html_element::htmlLabel([], 'Titel') . '<div>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378) . '</div>');
 		$headline = 'Attribute';
 

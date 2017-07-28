@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]'), '', '', we_html_
 );
 ?>
 <body class="weDialogBody"<?= 'onload="init(' . ($isA ? '\'' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '\'' : 'window.dialogArguments.bgcolor') . ')"'; ?>>
-	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
+	<form name="we_form" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
 <?php
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, ($isA ? "javascript:setColor();" : we_html_button::WE_FORM . ":we_form")), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()"));

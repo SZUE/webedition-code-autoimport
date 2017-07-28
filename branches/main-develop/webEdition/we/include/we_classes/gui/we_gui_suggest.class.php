@@ -147,7 +147,7 @@ class we_gui_suggest{
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
-			$dropzoneContent = g_l('global', '[dragndrop][selection]') . '<br>' . g_l('global', '[dragndrop][dnd_text][' . (($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0)) . ']');
+			$dropzoneContent = g_l('global', '[dragndrop][selection]') . '<br/>' . g_l('global', '[dragndrop][dnd_text][' . (($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0)) . ']');
 			$dropzoneStyle = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
