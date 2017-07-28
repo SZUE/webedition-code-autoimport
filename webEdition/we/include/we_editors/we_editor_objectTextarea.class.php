@@ -199,7 +199,7 @@ class we_editor_objectTextarea extends we_editor_base{
 				'onload' => 'top.focus();',
 				'onunload' => '',
 				'class' => 'weDialogBody'], [
-				'action' => $_SERVER['SCRIPT_NAME']
+				'action' => getScriptName()
 		]);
 	}
 

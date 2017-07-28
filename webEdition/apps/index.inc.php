@@ -44,7 +44,7 @@ $controller->throwExceptions(true);
 $controller->setParam('noViewRenderer', true);
 
 // set some app specific parameter
-$controller->setParam('appDir', WE_APPS_DIR . $TOOLNAME); // dirname(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME'])));
+$controller->setParam('appDir', WE_APPS_DIR . $TOOLNAME); // dirname(str_replace($_SERVER['DOCUMENT_ROOT'], '', getScriptName())));
 $controller->setParam('appPath', WE_APPS_PATH . $TOOLNAME);
 $controller->setParam('appName', $TOOLNAME);
 

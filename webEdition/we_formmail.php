@@ -73,7 +73,7 @@ abstract class we_base_formmail{
 			}
 		}
 
-		$docBlock = $blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
+		$docBlock = $blocked |= (FORMMAIL_VIAWEDOC && getScriptName() == WEBEDITION_DIR . basename(__FILE__));
 
 		if($blocked){
 			self::print_error('Email dispatch blocked / Email Versand blockiert' . ($formBlock ? ' (Token)!' : ($docBlock ? '(Doc)' : '(Log)!')));

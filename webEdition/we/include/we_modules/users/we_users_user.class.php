@@ -2189,7 +2189,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				'IP' => $_SERVER['REMOTE_ADDR'],
 				'Servername' => $_SERVER['SERVER_NAME'],
 				'Port' => $_SERVER['SERVER_PORT'],
-				'Script' => $_SERVER['SCRIPT_NAME']
+				'Script' => getScriptName()
 		]));
 	}
 

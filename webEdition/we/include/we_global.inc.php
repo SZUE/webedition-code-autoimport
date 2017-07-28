@@ -1081,3 +1081,7 @@ function setDynamicVar($data){
 	$json = new Services_JSON(/*Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION*/);
 	return base64_encode($json->encode($data, false));
 }
+
+function getScriptName(){
+	return isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['SCRIPT_NAME'];
+}

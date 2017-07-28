@@ -381,7 +381,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;width:400px;height:200px;" src="about:blank" id="iloadframe" name="iloadframe"></iframe>
-					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">' .
+					<form onsubmit="return false;" name="we_form" method="post" action="' . getScriptName() . '" target="iloadframe">' .
 			we_html_element::htmlHiddens([
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
 				"ok" => 1]) . we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .

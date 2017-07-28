@@ -129,10 +129,10 @@ if($object && $object['ID']){
 		$_REQUEST['we_objectID'] = $object['ID'];
 		$_REQUEST['we_oid'] = $object['ID'];
 
-		$_SERVER['SCRIPT_NAME'] = $triggerDocPath;
+		$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'] = $triggerDocPath;
 
 		we_html_tools::setHttpCode(200);
-		include(WEBEDITION_PATH . '../' . $_SERVER['SCRIPT_NAME']);
+		include(WEBEDITION_PATH . '../' . getScriptName());
 		exit;
 	}
 }

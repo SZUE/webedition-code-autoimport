@@ -42,7 +42,7 @@ return liveUpdateTemplates::getHtml(g_l('liveUpdate', '[beta][headline]'), '
 </tr>
 <tr><td colspan="2"><br /><br /></td></tr>
 <tr>
-	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($_SESSION['weS']['testUpdate'], 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
+	<td></td><td><form name="betaform" action="' . getScriptName() . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($_SESSION['weS']['testUpdate'], 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
 		<br />
 		<br />
 	</td>
