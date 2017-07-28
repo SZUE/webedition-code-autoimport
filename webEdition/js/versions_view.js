@@ -90,7 +90,7 @@ function deleteVersionAjax() {
 	}
 	args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(check);
 	var scroll = document.getElementById("scrollContent");
-	scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
+	scroll.innerHTML = "<table width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
 	WE().util.rpc(WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=DeleteVersion", "cns=versionlist&" + args);
 }

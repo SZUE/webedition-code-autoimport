@@ -56,7 +56,7 @@ abstract class we_main_multiContentFrame{
 <div id="multiEditorDocumentTabsFrameDiv">
 	<div id="weMultiTabs">
 		<div id="tabContainer" name="tabContainer"></div>
-		<div class="hidden" id="tabDummy" title="" name="" onclick="WE().layout.multiTabs.selectFrame(this)">
+		<div class="hidden" id="tabDummy" onclick="WE().layout.multiTabs.selectFrame(this)">
 			<span class="spacer status" id="###loadId###" title="" ></span>
 			<span id="###tabTextId###" class="cutText text"></span>
 			<span class="spacer trailing">
