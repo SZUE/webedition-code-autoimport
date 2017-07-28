@@ -1,8 +1,8 @@
 <?php
+
 /**
  * $Id: licenseInstaller.class.php 13561 2017-03-13 13:40:03Z mokraemer $
  */
-
 class licenseInstaller extends licenseBase{
 
 	/**
@@ -12,14 +12,13 @@ class licenseInstaller extends licenseBase{
 	 */
 	static function getVersionFormResponse(){
 
-		$AvailableVersions = updateInstaller::getVersionsLanguageArray(false);
+		$AvailableVersions = updateInstaller::getVersionsLanguageArray(false,0,!empty($_SESSION['testUpdate']));
 		//$NotLiveVersions = update::getNotLiveVersions();
 		$SubVersions = updateInstaller::getSubVersions();
 		$AlphaBetaVersions = updateInstaller::getAlphaBetaVersions();
 		$VersionNames = updateInstaller::getVersionNames();
 
-		$MatchingVersions = array();
-		$VersionsMissingLanguage = array();
+		$MatchingVersions = $VersionsMissingLanguage = array();
 		foreach(array_keys($AvailableVersions) as $Version){
 			$MatchingVersions[$Version] = updateUtilInstaller::number2version($Version);
 		}

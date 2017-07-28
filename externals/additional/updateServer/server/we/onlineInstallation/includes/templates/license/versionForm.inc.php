@@ -21,18 +21,13 @@ if(!empty($VersionsMissingLanguage) && !empty($MatchingVersions)){
 		$Missing = 0;
 	}
 	if($Missing > $Available){
-		if(isset($_SESSION['testUpdate']) && empty($NotLiveVersions)){
-			$Output .= '### . $this->Language[\'noNotLiveVersion\'] . ###<br /><br />';
-			;
-		} else {
-			$Output .= '### . sprintf($this->Language[\'missingTranslations\'], ###' . $Missing . '###, ###' . $Available . '###) . ###<br /><br />';
-		}
+		$Output .= (isset($_SESSION['testUpdate']) && empty($NotLiveVersions) ?
+			'### . $this->Language[\'noNotLiveVersion\'] . ###<br /><br />' :
+			'### . sprintf($this->Language[\'missingTranslations\'], ###' . $Missing . '###, ###' . $Available . '###) . ###<br /><br />');
 	} else {
-		if(isset($_SESSION['testUpdate']) && empty($NotLiveVersions)){
-			$Output .= '### . $this->Language[\'noNotLiveVersion\'] . ###<br /><br />';
-		} else {
-			$Output .= '### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />';
-		}
+		$Output .= (isset($_SESSION['testUpdate']) && empty($NotLiveVersions) ?
+			'### . $this->Language[\'noNotLiveVersion\'] . ###<br /><br />' :
+			'### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />');
 	}
 } else if(!empty($MatchingVersions)){
 	$Output .= '### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />';
@@ -41,11 +36,9 @@ if(!empty($MatchingVersions)){
 	$ModMatchingVersions = $MatchingVersions;
 	$_SESSION['MatchingVersions'] = $MatchingVersions;
 	foreach($ModMatchingVersions as $key => &$value){
-		if(isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
-			$branchText = '|' . $AlphaBetaVersions[$key]['branch'];
-		} else {
-			$branchText = '';
-		}
+		$branchText = (isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']?
+			'|' . $AlphaBetaVersions[$key]['branch']:
+			'');
 		$value = ($VersionNames[$key] ? $VersionNames[$key] : $value) .
 			' (' . $value . ' ' .
 			$GLOBALS['lang']['installer'][$AlphaBetaVersions[$key]['type']] .
@@ -58,13 +51,9 @@ if(!empty($MatchingVersions)){
 									"le_version",
 									unserialize(***' . serialize($ModMatchingVersions) . '***),
 									"' . (isset($_SESSION['clientInstalledVersion']) && key_exists($_SESSION['clientInstalledVersion'], $MatchingVersions) ?
-			$_SESSION['clientInstalledVersion'] :
-			array_shift($flippedVers)
-		) . '",
-									array(
-										"style" => "width:293px",
-									)
-								)';
+		$_SESSION['clientInstalledVersion'] :
+		array_shift($flippedVers)
+		) . '",array("style" => "width:293px",))';
 	$VersionSelectBox = str_replace(['"', "'"], ["###", "***"], $VersionSelectBox);
 
 	$Output .= '<strong>### . $this->Language[\'version\'] . ###</strong><br />'
