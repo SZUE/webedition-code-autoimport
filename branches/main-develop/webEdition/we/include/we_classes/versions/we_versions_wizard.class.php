@@ -385,8 +385,6 @@ function goTo(where){
 	f.submit();
 }
 
-
-
 function set_button_state(alldis) {
 					if(top.wizbusy){
 						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
@@ -524,20 +522,18 @@ set_button_state(false);';
 
 		//js
 		$jsCheckboxCheckAll = '';
-		$jsCheckboxCtIf = '';
+		$jsCheckboxCtIf = [];
 
-		$jsCheckboxArgs = '';
+		//$jsCheckboxArgs = '';
 		foreach($version->contentTypes as $k){
 			if($k != "all"){
 				$jsCheckboxCheckAll .= 'document.getElementById("version_reset_' . $k . '").checked = checked;';
 			}
-			if($jsCheckboxCtIf != ""){
-				$jsCheckboxCtIf .= " && ";
-			}
-			$jsCheckboxCtIf .= 'document.getElementById("version_reset_' . $k . '").checked==0';
-			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_reset_' . $k . '").checked);';
+			$jsCheckboxCtIf [] = 'document.getElementById("version_reset_' . $k . '").checked==0';
+//			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
+		$jsCheckboxCtIf = implode('&&', $jsCheckboxCtIf);
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event(\"next\");", '', 0, 0, "", "", "", false);
 
 		$js = 'window.onload = function(){
@@ -670,7 +666,7 @@ set_button_state(false);';
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$taskname = md5(session_id() . '_version_wizard');
-		$currentTask = we_base_request::_(we_base_request::BOOL, 'doFragments');//true if data was already set
+		$currentTask = we_base_request::_(we_base_request::BOOL, 'doFragments'); //true if data was already set
 		$taskFilename = FRAGMENT_LOCATION . $taskname;
 
 		$js = "";

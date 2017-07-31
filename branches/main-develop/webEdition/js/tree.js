@@ -165,7 +165,7 @@ container.prototype = {
 			for (ai = ind; ai <= this.len - 1; ai++) {
 				this[ai] = this[ai + 1];
 			}
-			this.len[this.len] = null;
+			delete this[this.len];
 			this.len--;
 			drawTree();
 		}
