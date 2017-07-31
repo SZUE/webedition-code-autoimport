@@ -64,8 +64,8 @@ class we_search_modelBase extends we_tool_model{
 	public function __construct($table = ''){
 		parent::__construct($table);
 	}
-	
-	function save($force_new = false, $isAdvanced = false){
+
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		return parent::save($force_new, $isAdvanced, true); // allways use jsonSer!
 	}
 
