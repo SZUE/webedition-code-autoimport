@@ -39,8 +39,8 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$this->type = 'wedoc';
 		$this->dimensions['dragWidth'] = 300;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['we_transaction', 'text'],
-				['we_doc_ct', 'text'],
-				['we_doc_ext', 'text']
+			['we_doc_ct', 'text'],
+			['we_doc_ext', 'text']
 		]);
 		$this->cliensideImageEditing = ($this->contentType === we_base_ContentTypes::IMAGE);
 	}
@@ -49,7 +49,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$this->editOptsHidden = $hidden;
 	}
 
-	public function getHTML($fileinfo){
+	public function getHTML(array $fileinfo = []){//FIXME: this has to be compatible with base class
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
 		$progress = new we_gui_progressBar(0, 170, '_fileupload');
