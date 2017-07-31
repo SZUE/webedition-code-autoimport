@@ -59,7 +59,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 		return parent::getJs() . we_html_multiIconBox::getDynJS('uploadFiles');
 	}
 
-	public function getHTML($hiddens = ''){
+	public function getHTML($hiddens = ''){//FIXME: this has to be compatible with base class
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		$alert = we_html_element::htmlHiddens(['we_cmd[0]' => 'import_files',
 				'cmd' => 'content',
@@ -164,8 +164,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base { // FIXME: extend
 			we_html_element::htmlDiv(['class' => 'elemContent'],
 				we_html_element::htmlForm(['id' => 'form_editOpts_WEFORMNUM', 'name' => 'form_editOpts', 'data-type' => 'importer_rowForm', 'data-index' => 'WEFORMNUM'],
 					we_html_element::htmlDiv(['class' => 'elemContentTop'],
-						we_html_element::htmlDiv(['id' => 'name_uploadFiles_WEFORMNUM', 'class' => 'elemFilename'], 
-							we_html_element::htmlDiv(['id' => 'editName_uploadFiles_WEFORMNUM', 'data-name' => 'editName_uploadFiles', 'style' => 'display:none;'], 
+						we_html_element::htmlDiv(['id' => 'name_uploadFiles_WEFORMNUM', 'class' => 'elemFilename'],
+							we_html_element::htmlDiv(['id' => 'editName_uploadFiles_WEFORMNUM', 'data-name' => 'editName_uploadFiles', 'style' => 'display:none;'],
 								we_html_element::htmlInput(['type' => 'text', 'data-name' => 'fuOpts_filenameInput', 'data-index' => 'WEFORMNUM', 'name' => 'fuOpts_filenameInput', 'id' => 'fuOpts_filenameInput_WEFORMNUM', 'value' => 'FNAME', 'class' => 'inputElemFilename']) . ' .FENDING' .
 								we_html_element::htmlHidden('fuOpts_index', 'WEFORMNUM')
 							) .
