@@ -77,12 +77,12 @@ function we_tag_object(array $attribs){
 			$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 			$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
 
-			$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+			$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','reload_hot_editpage','','" . $rootDirID . "','" . we_base_ContentTypes::OBJECT_FILE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
 			$weSuggest = &we_gui_suggest::getInstance();
 			$weSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
-			$weSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+			$weSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::OBJECT_FILE);
 			$weSuggest->setInput($textname, $path);
 			$weSuggest->setResult($idname, $we_oid);
 			$weSuggest->setMaxResults(10);
@@ -111,7 +111,7 @@ function we_tag_object(array $attribs){
 
 	if($we_oid && $classid){
 		$unique = md5(uniqid(__FUNCTION__, true));
-		$lv = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', 'of.ID=' . intval($we_oid)  . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$lv = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', 'of.ID=' . intval($we_oid) . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$avail = $lv->next_record();
 
 		if($avail){

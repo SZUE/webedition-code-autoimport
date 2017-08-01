@@ -22,8 +22,8 @@ $once = new we_tagData_selectAttribute('once', we_tagData_selectAttribute::getTr
 $kind = new we_tagData_selectAttribute('kind', [new we_tagData_option('all', false, ''), new we_tagData_option('int', false, ''), new we_tagData_option('ext', false, '')], false, '');
 $name = new we_tagData_textAttribute('name', false, '');
 $description = new we_tagData_textAttribute('description', false, '');
-$id_temp = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('id', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
-$path_temp = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('path', TEMPLATES_TABLE, 'text/weTmpl', false, '', true) : null);
+$id_temp = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('id', TEMPLATES_TABLE, we_base_ContentTypes::TEMPLATE, false, '') : null);
+$path_temp = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('path', TEMPLATES_TABLE, we_base_ContentTypes::TEMPLATE, false, '', true) : null);
 $rootdir = new we_tagData_textAttribute('rootdir', false, '');
 $startid = new we_tagData_selectorAttribute('startid', FILE_TABLE, we_tagData_selectorAttribute::FOLDER, false, '');
 

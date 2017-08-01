@@ -818,7 +818,7 @@ class we_imageDocument extends we_binaryDocument{
 			$weSuggest->setInput($objtextname, $objPath);
 			$weSuggest->setResult($objidname, $this->getElement('ObjID', 'bdid'));
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','check_radio_option," . $checkLinkname . ",3,1','','','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','check_radio_option," . $checkLinkname . ",3,1','','','" . we_base_ContentTypes::OBJECT_FILE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
 			$weSuggest->setMaxResults(10);
 			$weSuggest->setWidth(280);
 			$weSuggest->setSelector(we_gui_suggest::DocSelector);

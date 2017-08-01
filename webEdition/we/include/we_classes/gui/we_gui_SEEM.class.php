@@ -341,7 +341,7 @@ abstract class we_gui_SEEM{
 						break;
 
 					case 'object':
-						$handler = "WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "','" . $SEEM_LinkArray[1][$i] . "','objectFile');";
+						$handler = "WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "','" . $SEEM_LinkArray[1][$i] . "','" . we_base_ContentTypes::OBJECT_FILE . "');";
 						$code = str_replace($link . '</a>', we_html_button::create_button('fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin', 'javascript:' . $handler) . '</a>', $code);
 						break;
 
@@ -451,7 +451,7 @@ abstract class we_gui_SEEM{
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 					$javascriptCode .= (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-						"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'objectFile');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+						"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . ",'" . we_base_ContentTypes::OBJECT_FILE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 						//	target is a normal file.
 						"top.doClickWithParameters('" . $linkArray[6][$i] . "'," . intval($linkArray[7][$i]) . ",'" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", [
 							'we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
@@ -474,7 +474,7 @@ abstract class we_gui_SEEM{
 				}
 
 				$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-					" onclick=\"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . "','objectFile')\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+					" onclick=\"WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "'," . intval($theParameterArray["we_objectID"]) . "','" . we_base_ContentTypes::OBJECT_FILE . "')\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 					" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
 					);
 			} elseif(!trim($linkArray[5][$i])){

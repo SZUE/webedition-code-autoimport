@@ -692,7 +692,7 @@ class we_search_view extends we_modules_view{
 					switch($result[$f]['ContentType']){
 						case we_base_ContentTypes::WEDOCUMENT:
 						case we_base_ContentTypes::HTML:
-						case 'objectFile':
+						case we_base_ContentTypes::OBJECT_FILE:
 							$actionCheckbox = (!$showPubCheckbox ?
 								(we_base_permission::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE)) ?
 								we_html_forms::checkbox($result[$f]['docID'] . '_' . addTblPrefix($result[$f]['docTable']), 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :

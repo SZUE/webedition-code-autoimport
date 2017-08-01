@@ -28,7 +28,7 @@ $name = new we_tagData_choiceAttribute('name', [new we_tagData_option('WE_Path')
 		], false, false, '');
 $classid = (defined('OBJECT_TABLE') ? new we_tagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $hyperlink = new we_tagData_selectAttribute('hyperlink', we_tagData_selectAttribute::getTrueFalse(), false, '');
-$tid = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
+$tid = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, we_base_ContentTypes::TEMPLATE, false, '') : null);
 $href = new we_tagData_textAttribute('href', false, '');
 $target = new we_tagData_choiceAttribute('target', [new we_tagData_option('_top'),
 	new we_tagData_option('_parent'),

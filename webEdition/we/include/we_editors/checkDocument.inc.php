@@ -62,7 +62,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
-		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType === 'text/html'){
+		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType === we_base_ContentTypes::HTML){
 			$content = str_replace("<?xml", '<?= "<?xml"; ?>', $content);
 		}
 

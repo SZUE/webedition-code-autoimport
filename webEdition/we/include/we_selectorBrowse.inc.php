@@ -244,7 +244,7 @@ if(is_array($files)){
 				'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
 			$body .= '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' class="' . $bgcol . '" style="' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector treeIcon" data-contenttype="' . ($indb ?: ($islink ? 'symlink' : ($isfolder ? we_base_ContentTypes::FOLDER : 'application/*'))) . '" data-extension="' . $ext . '"></td>
+	<td class="selector treeIcon" data-contenttype="' . ($indb ?: ($islink ? 'symlink' : ($isfolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::APPLICATION))) . '" data-extension="' . $ext . '"></td>
 	<td class="selector filename">' . $text_to_show . '</td>
 	<td class="selector filetype">' . $type . '</td>
 	<td class="selector moddate">' . $date . '</td>

@@ -34,8 +34,6 @@ class we_editor_contentobjectFile extends we_editor_base{
 		$this->charset = (!empty($this->we_doc->Charset) ? //	send charset which might be determined in template
 			$this->we_doc->Charset : DEFAULT_CHARSET);
 
-//we_html_tools::headerCtCharset('text/html', $charset);
-
 		$editMode = !$this->previewMode;
 		$parts = $this->we_doc->getFieldsHTML($this->jsCmd, $editMode);
 		if(is_array($this->we_doc->DefArray)){

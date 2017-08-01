@@ -167,39 +167,39 @@ class we_versions_logView{
 				foreach($data as $k => $v){
 					list(, $k) = explode('_', $k, 2);
 					switch($k){
-						case "image/*":
-						case "text/html":
-						case "text/webedition":
-						case "text/js":
-						case "text/css":
-						case "text/plain":
-						case "text/htaccess":
-						case "text/weTmpl"://#4120
-						case "application/x-shockwave-flash":
+						case we_base_ContentTypes::IMAGE:
+						case we_base_ContentTypes::HTML:
+						case we_base_ContentTypes::WEDOCUMENT:
+						case we_base_ContentTypes::JS:
+						case we_base_ContentTypes::CSS:
+						case we_base_ContentTypes::TEXT:
+						case we_base_ContentTypes::HTACCESS:
+						case we_base_ContentTypes::TEMPLATE://#4120
+						case we_base_ContentTypes::FLASH:
 						case "video/quicktime":
-						case "application/*":
-						case "text/xml":
-						case "objectFile":
+						case we_base_ContentTypes::APPLICATION:
+						case we_base_ContentTypes::XML:
+						case we_base_ContentTypes::OBJECT_FILE:
 							$val = g_l('logging', (!empty($v)) ? '[activated]' : '[deactivated]');
-							$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[' . $k . ']') . ": " . $val;
+							$out .= '-> ' . g_l('logging', '[contenttype]') . ' ' . g_l('contentTypes', '[' . $k . ']') . ': ' . $val;
 							break;
-						case "time_days":
-							$val = (!empty($v) && $v != -1) ? ($v / $secondsDay) : "";
-							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " . g_l('logging', '[days]') . ": " . $val;
+						case 'time_days':
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsDay) : '';
+							$out .= '-> ' . g_l('logging', '[zeitraum]') . ' ' . g_l('logging', '[days]') . ': ' . $val;
 							break;
-						case "time_weeks":
-							$val = (!empty($v) && $v != -1) ? ($v / $secondsWeek) : "";
-							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
-								g_l('logging', '[weeks]') . ": " . $val;
+						case 'time_weeks':
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsWeek) : '';
+							$out .= '-> ' . g_l('logging', '[zeitraum]') . ' ' .
+								g_l('logging', '[weeks]') . ': ' . $val;
 							break;
-						case "time_years":
-							$val = (!empty($v) && $v != -1) ? ($v / $secondsYear) : "";
-							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
-								g_l('logging', '[years]') . ": " . $val;
+						case 'time_years':
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsYear) : '';
+							$out .= '-> ' . g_l('logging', '[zeitraum]') . ' ' .
+								g_l('logging', '[years]') . ': ' . $val;
 							break;
-						case "anzahl":
-							$val = (!empty($v)) ? $v : "";
-							$out .= '-> ' . g_l('logging', '[anzahlVersions]') . ": " . $val;
+						case 'anzahl':
+							$val = (!empty($v)) ? $v : '';
+							$out .= '-> ' . g_l('logging', '[anzahlVersions]') . ': ' . $val;
 							break;
 					}
 					$out .= we_html_element::htmlBr();

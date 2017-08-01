@@ -188,7 +188,6 @@ switch($cmd){
 
 $charset = (!empty($we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
 	$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
-//we_html_tools::headerCtCharset('text/html', $charset);
 //	---> Loading the Stylesheets
 $head = '';
 if($we_doc->CSS){
