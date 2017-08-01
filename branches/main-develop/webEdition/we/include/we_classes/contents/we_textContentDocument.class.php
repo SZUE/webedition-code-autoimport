@@ -27,7 +27,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	public $DocType = '';
 
 	/* these fields are never read from temporary tables */
-	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected,CreationDate,RebuildDate';
+	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected,CreationDate';
 
 	function __construct(){
 		parent::__construct();
